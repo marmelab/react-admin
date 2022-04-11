@@ -148,7 +148,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
             // In this case, it will be the choice id
             // eslint-disable-next-line eqeqeq
             if (eventOrChoice?.target?.value != undefined) {
-                field.onChange(eventOrChoice.target.value);
+                field.onChange(eventOrChoice);
             } else {
                 // Or we might receive a choice directly, for instance a newly created one
                 field.onChange([

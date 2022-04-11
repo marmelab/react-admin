@@ -589,4 +589,81 @@ describe('<SelectInput />', () => {
             expect(screen.queryByText(newChoice.name)).not.toBeNull();
         });
     });
+
+    it('should recive an event object on change', async () => {
+        const choices = [...defaultProps.choices];
+        const onChange = jest.fn();
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm>
+                    <SelectInput
+                        {...defaultProps}
+                        choices={choices}
+                        defaultValue="ang"
+                        inputProps={{ 'data-testid': 'content-input' }}
+                        onChange={onChange}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        const input = screen.getByTestId('content-input');
+        fireEvent.change(input, {
+            target: { value: 'rea' },
+        });
+
+        await waitFor(() => {
+            expect(onChange).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    bubbles: true,
+                    cancelable: false,
+                    currentTarget: null,
+                    eventPhase: 3,
+                    isTrusted: false,
+                    type: 'change',
+                })
+            );
+        });
+    });
+
+    it('should recive a value on change when creating a new choice', async () => {
+        jest.spyOn(console, 'warn').mockImplementation(() => {});
+        const choices = [...defaultProps.choices];
+        const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
+        const onChange = jest.fn();
+
+        const Create = () => {
+            const context = useCreateSuggestionContext();
+            const handleClick = () => {
+                choices.push(newChoice);
+                context.onCreate(newChoice);
+            };
+
+            return <button onClick={handleClick}>Get the kid</button>;
+        };
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput
+                        {...defaultProps}
+                        choices={choices}
+                        create={<Create />}
+                        onChange={onChange}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        const input = screen.getByLabelText('resources.posts.fields.language');
+        fireEvent.mouseDown(input);
+
+        fireEvent.click(screen.getByText('ra.action.create'));
+        fireEvent.click(screen.getByText('Get the kid'));
+
+        await waitFor(() => {
+            expect(onChange).toHaveBeenCalledWith('js_fatigue');
+        });
+    });
 });
