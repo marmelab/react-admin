@@ -1816,16 +1816,57 @@ The form components don't handle redirection anymore, as redirections are now ha
 
 To upgrade, replace all occurrences of `<FormWithRedirect>` with  `<Form>`.
 
+Also, the `render` prop has been removed, and the form content is now passed as child of the `<Form>` element.
+
 ```diff
 - import { FormWithRedirect } from 'react-admin';
 + import { Form } from 'react-admin';
 
 export const MyForm = () => (
++    <Form>
 -    <FormWithRedirect
-+    <Form
-        render={() => ...}
-    />
+-        render={({handleSubmit}) => (
+-            <form onSubmit={handleSubmit}>
+                 <input type="text" id="name" name="name" />
+                 <button type="submit">Save</button>
+-            </form>
+-        )}
+-    />
++    </Form>
 );
+```
+
+If you need to access the form state (`valid`, `invalid`, `pristine`, `dirty`), you can call [the react-hook-form `useFormState` hook](https://react-hook-form.com/api/useformstate) instead:
+
+```diff
+import { FormWithRedirect } from 'react-admin';
++ import { Form } from 'react-admin';
++ import { useFormState } from 'react-hook-form';
+
+const MyCustomForm = () => {
+    return (
+-        <FormWithRedirect
++        <Form>
+-            render={({ valid, dirty, handleSubmit }) => (
+-               <form onSubmit={handleSubmit}>
+                    ...
+-                    <SubmitButton disabled={!dirty || !valid}>Save</SubmitButton>
++                    <SubmitButton>Save</SubmitButton>
+-               </form>
+            )}
+-       />
++       </Form>
+    );
+};
+
+-const SubmitButton = ({ disabled, ...props }) => {
++const SubmitButton = (props) => {
++    const { isDirty, isValid } = useFormState();
+    return (
+-        <button disabled={disabled} {...props} />
++        <button disabled={!isDirty || !isValid} {...props} />
+    );
+}
 ```
 
 ### `sanitizeEmptyValues` Has Been Removed
@@ -1854,40 +1895,6 @@ If you actually need to remove empty values, you can use the `parse` prop on a p
 ```
 
 Or use the `transform` prop on the `<Create>`, `<Edit>`, or `<SaveButton>` components. 
-
-### `<FormWithRedirect>` Render Function Arguments Have Changed
-
-`<FormWithRedirect>` used to call its child function with an object containing parts of the `final-form` form state (`valid`, `invalid`, `pristine`, `dirty`). It now only passes the `handleSubmit` function, which must be passed down to the `onSubmit` prop of the underlying form. If you need to access the form state, call [the react-hook-form `useFormState` hook](https://react-hook-form.com/api/useformstate):
-
-```diff
-import { FormWithRedirect } from 'react-admin';
-+ import { useFormState } from 'react-hook-form';
-
-const MyCustomForm = () => {
-    return (
--        <FormWithRedirect
-+        <Form
--            render={({ valid, dirty, handleSubmit }) => (
-+            render={({ handleSubmit }) => (
-                <form onSubmit={handleSubmit}>
-                    ...
--                    <SubmitButton disabled={!dirty || !valid}>Save</SubmitButton>
-+                    <SubmitButton>Save</SubmitButton>
-                </form>
-            )}
-        />
-    );
-};
-
--const SubmitButton = ({ disabled, ...props }) => {
-+const SubmitButton = (props) => {
-+    const { isDirty, isValid } = useFormState();
-    return (
--        <button disabled={disabled} {...props} />
-+        <button disabled={!isDirty || !isValid} {...props} />
-    );
-}
-```
 
 ### `useFormGroup` Hook Returned State Has Changed
 
@@ -2089,22 +2096,21 @@ const ResetFormButton = () => {
 
 If you had custom forms using `<FormWithRedirect>`, custom toolbars or buttons, you probably relied on either the `handleSubmit` or `handleSubmitWithRedirect` prop to submit your form (and wonder which one to use).
 
-We now embrace the native behavior of html forms and their buttons so you must render a `<form>` element and set its `onSubmit` prop:
+We now embrace the native behavior of html forms and their buttons. Any button with `type="submit"` will call `handleSubmit`, while buttons with `type="button"` won't:
 
 ```diff
 const MyForm = () => {
     return (
         <Create>
-            <FormWithRedirect
+-           <FormWithRedirect
++           <Form>
 -                render={formProps) => (
-+                render={({ handleSubmit, ...formProps }) => (
-+                    <form onSubmit={handleSubmit}>
                          <TextInput source="name" />
 -                        <MySaveButton handleSubmit={handleSubmit}>
 +                        <MySaveButton />
-+                    </form>
-                )}
-            />
+-                )}
+-           />
++           </Form>
         </Create>
     );
 };
@@ -2121,41 +2127,31 @@ If you relied on the `handleSubmitWithRedirect` to change the redirection:
 ```diff
 const MyForm = () => {
     return (
-        <Create>
-            <FormWithRedirect
+-        <Create>
++        <Create redirect="show">
+-            <FormWithRedirect
++            <Form>
 -                render={({ handleSubmitWithRedirect, ...formProps }) => (
-+                render={({ handleSubmit, ...formProps }) => (
-+                    <form onSubmit={handleSubmit}>
                          <TextInput source="name" />
 -                        <MySaveButton handleSubmitWithRedirect={handleSubmitWithRedirect}>
 +                        <MySaveButton />
-+                    </form>
-                )}
-            />
+-                )}
+-            />
++            </Form>
         </Create>
     );
 };
 
-import { useSaveContext, useRedirect } from 'react-admin';
-import { useForm } from 'react-final-form';
 -const MySaveButton = ({ handleSubmitWithRedirect }) => (
 +const MySaveButton = () => {
-+    const { save } = useSaveContext();
-+    const form = useForm(); 
-+    const redirect = useRedirect();
-+    const handleClick = (event) => {
-+        event.preventDefault(); // Prevent the default form submission
-+        const values = form.getState().values;
-+        save(values, {
-+            onSuccess: (data) => redirect('show', '/posts', data.id)
-+        })
-+    };
     return (
 -        <button onClick={() => handleSubmitWithRedirect('show')}>Save</button>
-+        <button type="button" onClick={handleClick}>Save</button>
++        <button type="submit">Save</button>
     );
 );
 ```
+
+You can also use a function to handle the redirection target, as described in [the redirection after submission documentation](./EditTutorial.md#redirection-after-submission).
 
 ### `<SaveButton>` Accepts `mutationOptions` Instead of `onSuccess` and `onFailure`
 
@@ -2205,14 +2201,9 @@ const MyCustomCreate = () => {
 
     return (
         <CreateContextProvider value={createControllerProps}>
-            <Form
-                onSubmit={handleSubmit}
-                render={formProps => (
-                    <form onSubmit={props.handleSubmit}>
-                        ...
-                    </form>
-                )}
-            />
+            <Form onSubmit={handleSubmit}>
+               ...
+            </Form>
         </CreateContextProvider>
     )
 }
@@ -2235,16 +2226,14 @@ const CustomForm = ({ save, ...props }) => {
         <Form
             {...props}
             onSubmit={save}
-            render={formProps => (
--                <FormContextProvider value={formContext}>
-+                <FormGroupsProvider>
-                    <form {...formProps}>
-                        ...
-                    </form>
--                </FormContextProvider>
-+                </FormGroupsProvider>
+        >
+-           <FormContextProvider value={formContext}>
++           <FormGroupsProvider>
+                ...
+-           </FormContextProvider>
++           </FormGroupsProvider>
             )}
-        />
+        </Form>
     );
 };
 ```
