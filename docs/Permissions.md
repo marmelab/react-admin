@@ -221,6 +221,41 @@ export const UserList = () => {
 };
 ```
 
+**Tip**: `usePermissions` is asynchronous, which means that `permissions` will always be `undefined` on mount. Once the `authProvider.getPermissions()` promise is resolved, `permissions` will be set to the value returned by the promise, and the component will re-render. This may cause surprises when using `permissions` in props that are not reactive, e.g. `defaultValue`:
+
+```jsx
+export const UserCreate = () => {
+    const { permissions } = usePermissions();
+    return (
+        <Create>
+            <SimpleForm>
+                <TextInput source="name" defaultValue={
+                    // this doesn't work: the defaultValue will always be 'user' 
+                    permissions === 'admin' ? 'admin' : 'user'
+                } />
+            </SimpleForm>
+        </Create>
+    );
+}
+```
+
+In `react-hook-form`, `defaultValue` is only used on mount - changing its value after the initial render doesn't change the default value. The solution is to delay the rendering of the input until the permissions are resolved:
+
+```jsx
+export const UserCreate = () => {
+    const { permissions } = usePermissions();
+    return (
+        <Create>
+            <SimpleForm>
+                {permissions && <TextInput source="name" defaultValue={
+                    permissions === 'admin' ? 'admin' : 'user'
+                } />}
+            </SimpleForm>
+        </Create>
+    );
+}
+```
+
 ## Restricting Access to a Menu
 
 What if you want to check the permissions inside a [custom menu](./Admin.md#menu)? Much like getting permissions inside a custom page, you'll have to use the `usePermissions` hook:
