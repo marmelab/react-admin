@@ -8,6 +8,7 @@ import { createMemoryHistory } from 'history';
 import { useCheckAuth } from './useCheckAuth';
 import AuthContext from './AuthContext';
 
+import { BasenameContextProvider } from '../routing';
 import { useNotify } from '../notification/useNotify';
 import { AuthProvider } from '../types';
 import { defaultAuthParams } from './useAuthProvider';
@@ -17,13 +18,11 @@ jest.mock('../notification/useNotify');
 const notify = jest.fn();
 useNotify.mockImplementation(() => notify);
 
-const defaultParams = {};
-
 const TestComponent = ({
-    params = defaultParams,
-    logoutOnFailure = true,
-    redirectTo = defaultAuthParams.loginUrl,
-    disableNotification = false,
+    params,
+    logoutOnFailure,
+    redirectTo,
+    disableNotification,
 }: {
     params?: any;
     logoutOnFailure?: boolean;
@@ -148,6 +147,24 @@ describe('useCheckAuth', () => {
             expect(notify).toHaveBeenCalledTimes(0);
             expect(screen.queryByText('authenticated')).toBeNull();
             expect(history.location.pathname).toBe('/login');
+        });
+    });
+
+    it('should take basename into account when redirecting to login', async () => {
+        const history = createMemoryHistory({ initialEntries: ['/foo'] });
+        render(
+            <HistoryRouter history={history}>
+                <BasenameContextProvider basename="/foo">
+                    <AuthContext.Provider value={authProvider}>
+                        <TestComponent params={{ token: false }} />
+                    </AuthContext.Provider>
+                </BasenameContextProvider>
+            </HistoryRouter>
+        );
+        await waitFor(() => {
+            expect(notify).toHaveBeenCalledTimes(1);
+            expect(screen.queryByText('authenticated')).toBeNull();
+            expect(history.location.pathname).toBe('/foo/login');
         });
     });
 });
