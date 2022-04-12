@@ -106,7 +106,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
         register(source);
 
         return () => {
-            unregister(source);
+            unregister(source, { keepValue: true });
         };
     }, [register, unregister, source]);
 
