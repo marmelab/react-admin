@@ -1,4 +1,18 @@
 import { FieldValues } from 'react-hook-form';
+import _ from 'lodash';
+
+// Flattening an object into path keys:
+// https://github.com/lodash/lodash/issues/2240#issuecomment-418820848
+const flattenKeys = (obj, path = []) =>
+    !_.isObject(obj)
+        ? { [path.join('.')]: obj }
+        : _.reduce(
+              obj,
+              (cum, next, key) =>
+                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                  _.merge(cum, flattenKeys(next, [...path, key])),
+              {}
+          );
 
 /**
  * Convert a simple validation function that returns an object matching the form shape with errors
@@ -30,15 +44,16 @@ export const getSimpleValidationResolver = (validate: ValidateForm) => async (
     if (!errors || Object.getOwnPropertyNames(errors).length === 0) {
         return { values: data, errors: {} };
     }
+    const flattenErrors = flattenKeys(errors);
 
     return {
         values: {},
-        errors: Object.keys(errors).reduce(
+        errors: Object.keys(flattenErrors).reduce(
             (acc, field) => ({
                 ...acc,
                 [field]: {
                     type: 'manual',
-                    message: errors[field],
+                    message: flattenErrors[field],
                 },
             }),
             {} as FieldValues
