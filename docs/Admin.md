@@ -381,7 +381,7 @@ import { createBrowserHistory } from 'history';
 
 const history = createBrowserHistory();
 const App = () => (
-    <Admin basename="admin" history={history}>
+    <Admin basename="/admin" history={history}>
         ...
     </Admin>
 );

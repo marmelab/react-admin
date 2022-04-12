@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef } from 'react';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import { useResetStore } from '../store';
+import { useBasename } from '../routing';
+import { removeDoubleSlashes } from '../routing/useCreatePath';
 import { useLocation, useNavigate, Path } from 'react-router-dom';
 
 /**
@@ -32,6 +34,10 @@ const useLogout = (): Logout => {
     const navigateRef = useRef(navigate);
     const location = useLocation();
     const locationRef = useRef(location);
+    const basename = useBasename();
+    const loginUrl = removeDoubleSlashes(
+        `${basename}/${defaultAuthParams.loginUrl}`
+    );
 
     /*
      * We need the current location to pass in the router state
@@ -52,7 +58,7 @@ const useLogout = (): Logout => {
     const logout = useCallback(
         (
             params = {},
-            redirectTo = defaultAuthParams.loginUrl,
+            redirectTo = loginUrl,
             redirectToCurrentLocationAfterLogin = true
         ) =>
             authProvider.logout(params).then(redirectToFromProvider => {
@@ -91,14 +97,14 @@ const useLogout = (): Logout => {
 
                 return redirectToFromProvider;
             }),
-        [authProvider, resetStore]
+        [authProvider, resetStore, loginUrl]
     );
 
     const logoutWithoutProvider = useCallback(
         _ => {
             navigate(
                 {
-                    pathname: defaultAuthParams.loginUrl,
+                    pathname: loginUrl,
                 },
                 {
                     state: {
@@ -109,7 +115,7 @@ const useLogout = (): Logout => {
             resetStore();
             return Promise.resolve();
         },
-        [resetStore, location, navigate]
+        [resetStore, location, navigate, loginUrl]
     );
 
     return authProvider ? logout : logoutWithoutProvider;
