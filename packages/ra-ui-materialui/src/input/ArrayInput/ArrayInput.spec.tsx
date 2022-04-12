@@ -195,7 +195,7 @@ describe('<ArrayInput />', () => {
         });
     });
 
-    it('should mantain its value after having been unmounted', async () => {
+    it('should mantain its form value after having been unmounted', async () => {
         let value, setArrayInputVisible;
 
         const MyArrayInput = () => {
