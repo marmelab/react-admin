@@ -24,7 +24,7 @@ describe('getSimpleValidationResolver', () => {
         });
     });
 
-    it('should resolve to a flattened error object', async () => {
+    it('should resolve array values as nested keys', async () => {
         const result = await validator({
             title: 'title too short',
             backlinks: [
