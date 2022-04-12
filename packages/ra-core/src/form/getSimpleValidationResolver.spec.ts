@@ -4,7 +4,7 @@ describe('getSimpleValidationResolver', () => {
     const validator = getSimpleValidationResolver(values => values);
 
     it('should receive a flattened errors object', async () => {
-        const errors = await validator({
+        const result = await validator({
             title: 'title too short',
             backlinks: [
                 { url: 'url too short', id: 'missing id' },
@@ -12,7 +12,7 @@ describe('getSimpleValidationResolver', () => {
             ],
         });
 
-        expect(errors).toEqual({
+        expect(result).toEqual({
             values: {},
             errors: {
                 title: { type: 'manual', message: 'title too short' },
@@ -36,13 +36,13 @@ describe('getSimpleValidationResolver', () => {
         });
     });
 
-    it('should treat an empty array as no error', async () => {
-        const errors = await validator({
+    it('should treat an empty array value as no error', async () => {
+        const result = await validator({
             title: 'title too short',
             backlinks: [],
         });
 
-        expect(errors).toEqual({
+        expect(result).toEqual({
             values: {},
             errors: {
                 title: { type: 'manual', message: 'title too short' },
@@ -50,13 +50,13 @@ describe('getSimpleValidationResolver', () => {
         });
     });
 
-    it('should treat an empty object as no error', async () => {
-        const errors = await validator({
+    it('should treat an empty object value as no error', async () => {
+        const result = await validator({
             title: 'title too short',
             backlinks: {},
         });
 
-        expect(errors).toEqual({
+        expect(result).toEqual({
             values: {},
             errors: {
                 title: { type: 'manual', message: 'title too short' },
@@ -64,13 +64,13 @@ describe('getSimpleValidationResolver', () => {
         });
     });
 
-    it('should use nested error keys', async () => {
-        const errors = await validator({
+    it('should use nested values keys', async () => {
+        const result = await validator({
             title: 'title too short',
             'backlinks.0.url': 'url too short',
         });
 
-        expect(errors).toEqual({
+        expect(result).toEqual({
             values: {},
             errors: {
                 title: { type: 'manual', message: 'title too short' },
