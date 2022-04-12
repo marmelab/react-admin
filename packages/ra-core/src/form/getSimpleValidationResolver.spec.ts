@@ -1,9 +1,30 @@
-import { getSimpleValidationResolver } from './getSimpleValidationResolver';
+import {
+    getSimpleValidationResolver,
+    flattenKeys,
+} from './getSimpleValidationResolver';
 
 describe('getSimpleValidationResolver', () => {
     const validator = getSimpleValidationResolver(values => values);
 
     it('should return a flattened object', async () => {
+        const result = flattenKeys({
+            title: 'title too short',
+            backlinks: [
+                { url: 'url too short', id: 'missing id' },
+                { url: 'url too short', id: 'missing id' },
+            ],
+        });
+
+        expect(result).toEqual({
+            title: 'title too short',
+            'backlinks.0.url': 'url too short',
+            'backlinks.0.id': 'missing id',
+            'backlinks.1.url': 'url too short',
+            'backlinks.1.id': 'missing id',
+        });
+    });
+
+    it('should resolve to a flattened error object', async () => {
         const result = await validator({
             title: 'title too short',
             backlinks: [
