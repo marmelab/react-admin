@@ -8,6 +8,7 @@ import { NumberInput } from '../NumberInput';
 import { TextInput } from '../TextInput';
 import { ArrayInput } from './ArrayInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
+import { useFormContext } from 'react-hook-form';
 
 describe('<ArrayInput />', () => {
     it('should pass its record props to its child', async () => {
@@ -191,6 +192,62 @@ describe('<ArrayInput />', () => {
         await waitFor(() => {
             expect(screen.queryByText('id_required')).not.toBeNull();
             expect(screen.queryByText('foo_required')).not.toBeNull();
+        });
+    });
+
+    it('should mantain its value after having been unmounted', async () => {
+        let value, setArrayInputVisible;
+
+        const MyArrayInput = () => {
+            const [visible, setVisible] = React.useState(true);
+            const { getValues } = useFormContext();
+            value = jest.fn(() => getValues('arr'));
+            value();
+
+            setArrayInputVisible = setVisible;
+
+            return (
+                visible && (
+                    <ArrayInput resource="bar" source="arr">
+                        <SimpleFormIterator>
+                            <TextInput source="id" />
+                            <TextInput source="foo" />
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                )
+            );
+        };
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    onSubmit={jest.fn}
+                    defaultValues={{
+                        arr: [
+                            { id: 1, foo: 'bar' },
+                            { id: 2, foo: 'baz' },
+                        ],
+                    }}
+                >
+                    <MyArrayInput />
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        await waitFor(() => {
+            expect(value.mock.results[0].value).toEqual([
+                { id: 1, foo: 'bar' },
+                { id: 2, foo: 'baz' },
+            ]);
+        });
+
+        setArrayInputVisible(false);
+
+        await waitFor(() => {
+            expect(value.mock.results[0].value).toEqual([
+                { id: 1, foo: 'bar' },
+                { id: 2, foo: 'baz' },
+            ]);
         });
     });
 });
