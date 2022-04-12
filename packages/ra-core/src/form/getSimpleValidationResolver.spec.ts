@@ -3,7 +3,7 @@ import { getSimpleValidationResolver } from './getSimpleValidationResolver';
 describe('getSimpleValidationResolver', () => {
     const validator = getSimpleValidationResolver(values => values);
 
-    it('should receive a flattened errors object', async () => {
+    it('should return a flattened object', async () => {
         const result = await validator({
             title: 'title too short',
             backlinks: [
