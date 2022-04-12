@@ -92,7 +92,6 @@ const useLogout = (): Logout => {
                 if (redirectToParts[1]) {
                     newLocation.search = redirectToParts[1];
                 }
-                console.log(`Redirecting to ${JSON.stringify(newLocation)}`);
                 navigateRef.current(newLocation, newLocationOptions);
                 resetStore();
 
