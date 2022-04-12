@@ -63,4 +63,22 @@ describe('getSimpleValidationResolver', () => {
             },
         });
     });
+
+    it('should resolve nested error keys', async () => {
+        const errors = await validator({
+            title: 'title too short',
+            'backlinks.0.url': 'url too short',
+        });
+
+        expect(errors).toEqual({
+            values: {},
+            errors: {
+                title: { type: 'manual', message: 'title too short' },
+                'backlinks.0.url': {
+                    type: 'manual',
+                    message: 'url too short',
+                },
+            },
+        });
+    });
 });
