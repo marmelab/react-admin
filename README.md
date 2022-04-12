@@ -71,8 +71,8 @@ import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditBut
 import BookIcon from '@mui/icons-material/Book';
 export const PostIcon = BookIcon;
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" />
@@ -89,8 +89,8 @@ const PostTitle = () => {
     return <span>Post {record ? `"${record.title}"` : ''}</span>;
 };
 
-export const PostEdit = (props) => (
-    <Edit title={<PostTitle />} {...props}>
+export const PostEdit = () => (
+    <Edit title={<PostTitle />}>
         <SimpleForm>
             <TextInput disabled source="id" />
             <TextInput source="title" />
@@ -103,8 +103,8 @@ export const PostEdit = (props) => (
     </Edit>
 );
 
-export const PostCreate = (props) => (
-    <Create title="Create a Post" {...props}>
+export const PostCreate = () => (
+    <Create title="Create a Post">
         <SimpleForm>
             <TextInput source="title" />
             <TextInput source="teaser" options={{ multiline: true }} />
