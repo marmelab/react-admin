@@ -44,16 +44,16 @@ export const getSimpleValidationResolver = (validate: ValidateForm) => async (
     if (!errors || Object.getOwnPropertyNames(errors).length === 0) {
         return { values: data, errors: {} };
     }
-    const flattenErrors = flattenKeys(errors);
+    const flattenedErrors = flattenKeys(errors);
 
     return {
         values: {},
-        errors: Object.keys(flattenErrors).reduce(
+        errors: Object.keys(flattenedErrors).reduce(
             (acc, field) => ({
                 ...acc,
                 [field]: {
                     type: 'manual',
-                    message: flattenErrors[field],
+                    message: flattenedErrors[field],
                 },
             }),
             {} as FieldValues

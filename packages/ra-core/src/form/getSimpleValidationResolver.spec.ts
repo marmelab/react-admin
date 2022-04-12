@@ -1,7 +1,7 @@
 import { getSimpleValidationResolver } from './getSimpleValidationResolver';
 
 describe('getSimpleValidationResolver', () => {
-    const validator = getSimpleValidationResolver(errors => errors);
+    const validator = getSimpleValidationResolver(values => values);
 
     it('should receive a flattened errors object', async () => {
         const errors = await validator({
