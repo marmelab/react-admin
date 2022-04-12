@@ -1,5 +1,107 @@
 # Changelog
 
+## v4.0.0
+
+React-admin v4 focuses on modernizing the inner workings of react-admin. It improves the developper experience a great deal, and paves the way for future changes. It is the result of 6 months of intensive refactoring, development, and test.
+
+The following list concerns version 4.0.0, as well as all the pre-releases (alpha, beta, and rc).
+
+### 🎉 New features
+
+- Add `<Admin requireAuth>` to hide the app until auth is checked (#7475)
+- Add `<Admin basename>` to allow mounting react-admin inside a sub path (#7100, #6917)
+- Add the ability to pass custom params to all `dataProvider` hooks (#7116)
+- Add support for partial pagination (i.e. no `total`) (#7120)
+- Add support for `sx` props in all `ra-ui-materialui` components (#7175)
+- Add headless `<Form>` component (#7087)
+- Add `<ReferenceOneField>` (#7060)
+- Add `<CustomRoutes>` (#7345)
+- Add `useStore` and persistent preferences (backport from `ra-enterprise`) (#7158, #7366)
+- Add Saved Queries (#7354)
+- Add `<ToggleThemeButton>` (#7340)
+- Add `<LocalesMenuButton>` (#7332)
+- Add `useSetTheme` (#7008)
+- Add `combineDataProvider` helper (#7055)
+- Add `<Datagrid expandSingle>` to limit the number of expanded rows to 1 (#7454)
+- Add `<ChoicesContextProvider>` in all ReferenceInputs to avoid child cloning and allow choices filtering, pagination, and sorting (#7185)
+- Add `<FileInput validateFileRemoval>` prop to allow confirmation before file deletion (#7003)
+- Add ability to register custom `<Resource options>` (#7392)
+
+### 📦 Dependency Updates
+
+- Add React 18 compatibility (#7377)
+- Upgrade `material-ui` to v5 (and it's now called `MUI`) (#6650)
+- Use `react-query` for data fetching instead of home made solution (#6779, #6916, #7006, #7016, #7025, #6891, #7035, #7020, #7035, #7001)
+- Replace `react-final-form` with `react-hook-form` (#7087)
+- Upgrade `react-router` to [V6](https://reactrouter.com/docs/en/v6/api) (#6873)
+- Replace `Quill` by `TipTap` in `<RichTextInput>` (#7153)
+- Upgrade dependencies to their latest major versions
+
+### 🏹 Updated Syntax
+
+- Change the `Record` TypeScript name to `RaRecord` (#7078)
+- Change data provider hooks signature to reflect the data provider signature
+- Remove prop injection and child cloning, use context instead (#7060, #7218, #7215, #7214, #7207, #7206, #7205, #7203).
+- Remove `record` prop injection
+- Remove permissions injection in main route controllers (#6921)
+- Avoid cloning Inputs components to pass `variant` and `margin`, and document theme override instead (#7223)
+- Rename `loading` to `isLoading` in `authProvider` hooks return type (#7334)
+- Rename `initialValues` to `defaultValues` in `<Form>` (caused by switch to `react-hook-form`)
+- Move `bulkActionButtons` from `<List>` to `<Datagrid>` (#7114)
+- Rename `currentSort` to `sort` (#7076)
+- Change `setSort` signature to make it consistent across components (#7065)
+- Use MUI autocomplete instead of our own (#6924, #6971)
+- Rename `<TranslationProvider>` to `<I18nContextProvider>`
+- Switch `<WithPermissions>` wrapping to a `useAuthenticated` hook in main controllers (#6921)
+- Move `<Notification>` component into `<AdminUI>` to avoid gotchas when overriding the layout (#7082)
+
+### 🧹 Cleanup
+
+- Remove `Redux` (#7177)
+- Remove `redux-saga` and saga-based side effects (#6684)
+- Remove `connected-react-router` (#6704)
+- Remove `basePath` (#7100)
+- Remove `addLabel` prop in Field components (#7223)
+- Remove `Resource` initialization, Store Resource definitions in Context rather than in store (#7051)
+- Remove HOCs (like `addField`) and render props
+- Remove `useQuery` and `useMutation` (as `react-query` already provides them) (#7001)
+- Remove application cache and `validUntil` (#7001)
+- Remove `useVersion` (#7001)
+- Remove `allowEmpty` prop in choice inputs (#7200)
+- Remove deprecated `sort` prop in `<DataGridHeaderCell>` (#7065)
+- Remove `<FormWithRedirect>` and `handleSubmitWithRedirect` (#7087)
+- Remove `TestContext` (`<AdminContext>` does the trick) and `ra-test` (#7148)
+- Remove declarative side effects support in dataProvider (#6687)
+- Remove `useGetMatching` (use getList instead) (#6916)
+- Remove support for `undoable` prop now that we have `mutationMode` (#6711)
+- Remove `withTranslate` HOC (#7157)
+- Remove `ra-test` (#7148)
+- Use `esbuild` instead of `webpack` for simple example
+- Use GitHub actions instead of Travis for CI
+
+### 📚 Updated Documentation
+
+- The [v4 documentation](https://marmelab.com/react-admin/doc/4.0/Readme.html) was deeply reorganized to allow easier discovery and faster navigation.
+- Most of the common hooks and components now have a dedicated documentation page.
+- We've added a Storybook to help you discover the components API.
+- The demos ([e-commerce](https://github.com/marmelab/react-admin/tree/master/examples/demo), [CRM](https://github.com/marmelab/react-admin/tree/master/examples/crm)) were updated to show how to build application in idiomatic react-admin.
+
+### 🪜 Upgrade Guide
+
+As this is a major release, there are breaking changes. We documented all the changes required in a react-admin v3 application to make it compatible with version 4 in [the react-admin v4 Upgrade Guide](https://marmelab.com/react-admin/doc/4.0/Upgrade.html).
+
+### 📊 Statistics
+
+* 1,259 changed files
+* [2,210 commits](https://github.com/marmelab/react-admin/compare/3.x...master)
+* [100,420 additions and 90,560 deletions](https://github.com/marmelab/react-admin/compare/3.x..master)
+
+Since react-admin counts about 112,000 lines of code, this means that 90% of the code was touched. 
+
+### 💌 Thank You
+
+Many thanks to all the contributors (whether they helped developing, testing, documenting, proofreading react-admin v4), and in particular to the core team ([fzaninotto](https://github.com/fzaninotto), [djhi](https://github.com/djhi), [WiXSL](https://github.com/WiXSL)) for their hard work.
+
 ## v3.19.11
 
 * Fix `history` dependency ([#7481](https://github.com/marmelab/react-admin/pull/7481)) ([WiXSL](https://github.com/WiXSL))
