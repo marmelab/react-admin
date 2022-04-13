@@ -11,7 +11,6 @@ import AuthContext from './AuthContext';
 import { BasenameContextProvider } from '../routing';
 import { useNotify } from '../notification/useNotify';
 import { AuthProvider } from '../types';
-import { defaultAuthParams } from './useAuthProvider';
 
 jest.mock('../notification/useNotify');
 
