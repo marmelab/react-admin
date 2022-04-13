@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { Form, FormProps, MutationMode } from 'ra-core';
+import { Form, FormProps } from 'ra-core';
 import { Stack, CardContent, SxProps, StackProps } from '@mui/material';
 import { Toolbar } from './Toolbar';
 
@@ -60,7 +60,6 @@ export const SimpleForm = (props: SimpleFormProps) => {
 SimpleForm.propTypes = {
     children: PropTypes.node,
     defaultValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     // @ts-ignore
     record: PropTypes.object,
     redirect: PropTypes.oneOfType([
@@ -79,8 +78,6 @@ export interface SimpleFormProps
     className?: string;
     component?: React.ComponentType<any>;
     defaultValues?: any;
-    mutationMode?: MutationMode;
-    resource?: string;
     toolbar?: ReactElement | false;
     sx?: SxProps;
 }
@@ -97,7 +94,6 @@ const sanitizeRestProps = ({
     className,
     component,
     defaultValues,
-    mutationMode,
     onSubmit,
     record,
     resource,
