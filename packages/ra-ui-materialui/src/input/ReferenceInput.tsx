@@ -104,11 +104,8 @@ export const ReferenceInput = (props: ReferenceInputProps) => {
 
 ReferenceInput.propTypes = {
     children: PropTypes.element.isRequired,
-    className: PropTypes.string,
-    classes: PropTypes.object,
     filter: PropTypes.object,
     label: PropTypes.string,
-    onChange: PropTypes.func,
     page: PropTypes.number,
     perPage: PropTypes.number,
     record: PropTypes.object,
@@ -130,7 +127,6 @@ ReferenceInput.defaultProps = {
 
 export interface ReferenceInputProps extends InputProps {
     children: ReactElement;
-    className?: string;
     label?: string;
     page?: number;
     perPage?: number;

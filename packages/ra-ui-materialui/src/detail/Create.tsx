@@ -79,8 +79,8 @@ Create.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     aside: PropTypes.element,
     children: PropTypes.element,
-    classes: PropTypes.object,
     className: PropTypes.string,
+    disableAuthentication: PropTypes.bool,
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
@@ -95,4 +95,5 @@ Create.propTypes = {
     hasList: PropTypes.bool,
     mutationOptions: PropTypes.object,
     transform: PropTypes.func,
+    sx: PropTypes.any,
 };
