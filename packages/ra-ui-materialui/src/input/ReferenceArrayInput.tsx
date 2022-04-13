@@ -103,7 +103,6 @@ export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
 
 ReferenceArrayInput.propTypes = {
     children: PropTypes.element.isRequired,
-    className: PropTypes.string,
     filter: PropTypes.object,
     label: PropTypes.string,
     page: PropTypes.number,
@@ -126,7 +125,6 @@ ReferenceArrayInput.defaultProps = {
 
 export interface ReferenceArrayInputProps extends InputProps {
     children: ReactElement;
-    className?: string;
     label?: string;
     page?: number;
     perPage?: number;

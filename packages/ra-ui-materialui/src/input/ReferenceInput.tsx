@@ -127,7 +127,6 @@ ReferenceInput.defaultProps = {
 
 export interface ReferenceInputProps extends InputProps {
     children: ReactElement;
-    className?: string;
     label?: string;
     page?: number;
     perPage?: number;
