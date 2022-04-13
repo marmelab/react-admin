@@ -118,8 +118,11 @@ export interface NumberInputProps
 
 const convertStringToNumber = value => {
     const float = parseFloat(value);
+    if (isNaN(float)) return null;
 
-    return isNaN(float) ? null : float;
+    return value.indexOf('.') === -1
+        ? float
+        : float.toFixed(value.split('.')[1].length);
 };
 
 const convertNumberToString = value => {
