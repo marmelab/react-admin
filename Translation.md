@@ -7,7 +7,7 @@ title: "Translation"
 
 The react-admin user interface uses English as the default language. But you can also display the UI and content in other languages, allow changing language at runtime, even lazy-loading optional languages to avoid increasing the bundle size with all translations. 
 
-You will use translation features mostly via the `i18nProvider`, and a set of hooks (`useTranslate`, `useLocale`, `useSetLocale`).
+You will use translation features mostly via the `i18nProvider`, and a set of hooks (`useTranslate`, `useLocaleState`).
 
 **Tip**: We'll use a bit of custom vocabulary in this chapter:
  
@@ -16,7 +16,7 @@ You will use translation features mostly via the `i18nProvider`, and a set of ho
 
 ## Introducing the `i18nProvider`
 
-Just like for data fetching and authentication, react-admin relies on a simple object for translations. It's called the `i18nProvider`, and it manages translation and language change using two methods:
+Just like for data fetching and authentication, react-admin relies on a simple object for translations. It's called the `i18nProvider`, and it manages translation and language changes using tree methods:
 
 ```js
 const i18nProvider = {
@@ -46,6 +46,8 @@ If you want to add or update translations, you'll have to provide your own `i18n
 React-admin components use translation keys for their labels, and rely on the `i18nProvider` to translate them. For instance:
 
 ```jsx
+import { Button, useTranslate } from 'react-admin';
+
 const SaveButton = ({ doSave }) => {
     const translate = useTranslate(); // returns the i18nProvider.translate() method
     return (
@@ -157,6 +159,8 @@ const App = () => (
 export default App;
 ```
 
+Note that if the app provides a language switcher, and a user selects a different language, this choice is persisted across reloads until the user logs out.
+
 ## Available Locales
 
 You can find translation packages for the following languages:
@@ -178,6 +182,7 @@ You can find translation packages for the following languages:
 - Finnish (`fi`): [aikain/ra-language-finnish](https://github.com/aikain/ra-language-finnish)
 - French (`fr`): [marmelab/ra-language-french](https://github.com/marmelab/react-admin/tree/master/packages/ra-language-french)
 - German (`de`): [greenbananaCH/ra-language-german](https://github.com/greenbananaCH/ra-language-german) (tree translation: [straurob/ra-tree-language-german](https://github.com/straurob/ra-tree-language-german))
+- Greek (`el`): [panterz/ra-language-greek](https://github.com/panterz/ra-language-greek)
 - Hebrew (`he`): [ak-il/ra-language-hebrew](https://github.com/ak-il/ra-language-hebrew)
 - Hindi (`hi`): [harshit-budhraja/ra-language-hindi](https://github.com/harshit-budhraja/ra-language-hindi)
 - Hungarian (`hu`): [phelion/ra-language-hungarian](https://github.com/phelion/ra-language-hungarian)
@@ -204,7 +209,6 @@ In addition, the previous version of react-admin, called admin-on-rest, was tran
 
 - Chinese (Traditional) (`cht`): [leesei/aor-language-chinese-traditional](https://github.com/leesei/aor-language-chinese-traditional)
 - Croatian (`hr`): [ariskemper/aor-language-croatian](https://github.com/ariskemper/aor-language-croatian)
-- Greek (`el`): [zifnab87/aor-language-greek](https://github.com/zifnab87/aor-language-greek)
 - Slovenian (`sl`): [ariskemper/aor-language-slovenian](https://github.com/ariskemper/aor-language-slovenian)
 - Thai (`th`): [liverbool/aor-language-thai](https://github.com/liverbool/aor-language-thai)
 
@@ -212,9 +216,15 @@ These packages are not directly interoperable with react-admin, but the upgrade 
 
 If you want to contribute a new translation, feel free to submit a pull request to update [this page](https://github.com/marmelab/react-admin/blob/master/docs/Translation.md) with a link to your package.
 
-## `useSetLocale`: Changing Locale At Runtime
+## `useLocaleState`: Reading and Setting The Locale At Runtime
 
-If you want to offer the ability to change locale at runtime, you must provide an `i18nProvider` that contains the messages for all possible locales:
+The `useLocaleState` hook allows to read and update the locale. It uses a syntax similar to react's `useState` hook.
+
+```jsx
+const [locale, setLocale] = useLocaleState();
+```
+
+If you want to offer the ability to change locale at runtime, this hook will come in handy. First, you must provide an `i18nProvider` that contains the messages for all possible locales:
 
 ```jsx
 import * as React from "react";
@@ -238,40 +248,15 @@ const App = () => (
 export default App;
 ```
 
-Then, use the `useSetLocale` hook to change locale. For instance, the following component allows the user to switch the interface language between English and French:
+Then, use the `useLocaleState` hook to read and update the locale. For instance, the following component allows the user to switch the interface language between English and French:
 
 ```jsx
 import * as React from "react";
-import Button from '@material-ui/core/Button';
-import { useSetLocale } from 'react-admin';
+import Button from '@mui/material/Button';
+import { useLocaleState } from 'react-admin';
 
 const LocaleSwitcher = () => {
-    const setLocale = useSetLocale();
-    return (
-        <div>
-            <div>Language</div>
-            <Button onClick={() => setLocale('fr')}>English</Button>
-            <Button onClick={() => setLocale('en')}>French</Button>
-        </div>
-    );
-};
-
-export default LocaleSwitcher;
-```
-
-## `useLocale`: Getting The Current Locale
-
-Your language switcher component probably needs to know the current locale, in order to disable/transform the button for the current language. The `useLocale` hook returns the current locale:
-
-```jsx
-import * as React from 'react';
-import { Component } from 'react';
-import Button from '@material-ui/core/Button';
-import { useLocale, useSetLocale } from 'react-admin';
-
-const LocaleSwitcher = () => {
-    const locale = useLocale();
-    const setLocale = useSetLocale();
+    const [locale, setLocale] = useLocaleState();
     return (
         <div>
             <div>Language</div>
@@ -293,6 +278,8 @@ const LocaleSwitcher = () => {
 
 export default LocaleSwitcher;
 ```
+
+As this is a very common need, react-admin provides the [`<LocalesMenuButton>`](./LocalesMenuButton.md) component.
 
 ## Lazy-Loading Locales
 
@@ -352,55 +339,16 @@ const App = () => (
 export default App;
 ```
 
-Beware that users from all around the world may use your application, so make sure the `i18nProvider` returns default messages even for unknown locales?
-
-## Restoring The Locale Choice
-
-The `<LanguageSwitcher>` component is part of `ra-preferences`, an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> module. It displays a button in the App Bar letting users choose their preferred language, and **persists that choice in localStorage**. Users only have to set their preferred locale once per browser.
+**Tip**: `resolveBrowserLocale` returns the main locale string ('en', 'fr', etc.), if you use a locale with a region (e.g. 'en-US', 'en-GB'), you must pass { fullLocale:`true` } as a second argument to `resolveBrowserLocale` in order to obtain the full locale string.
 
 ```jsx
-import * as React from 'react';
-import { LanguageSwitcher } from '@react-admin/ra-preferences';
-import polyglotI18nProvider from 'ra-i18n-polyglot';
-import englishMessages from 'ra-language-english';
-import frenchMessages from 'ra-language-french';
-import { Admin, Resource, List, SimpleList, Layout, AppBar } from 'react-admin';
-import { Box, Typography } from '@material-ui/core';
-
-const MyAppBar = props => (
-    <AppBar {...props}>
-        <Box flex="1">
-            <Typography variant="h6" id="react-admin-title"></Typography>
-        </Box>
-        <LanguageSwitcher
-            languages={[
-                { locale: 'en', name: 'English' },
-                { locale: 'fr', name: 'Français' },
-            ]}
-            defaultLanguage="English"
-        />
-    </AppBar>
-);
-
-const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
-
 const i18nProvider = polyglotI18nProvider(
-    locale => (locale === 'fr' ? frenchMessages : englishMessages),
-    'en' // Default locale
-);
-
-const App = () => (
-    <Admin
-        i18nProvider={i18nProvider}
-        dataProvider={dataProvider}
-        layout={MyLayout}
-    >
-        <Resource name="posts" list={PostList} />
-    </Admin>
+    locale => messages[locale] ? messages[locale] : messages.en,
+    resolveBrowserLocale('en', { fullLocale: true }) // 'en' => Default locale when browser locale can't be resolved, { fullLocale: true } => Return full locale
 );
 ```
 
-Check [the `ra-preferences` documentation](https://marmelab.com/ra-enterprise/modules/ra-preferences) for more details.
+Beware that users from all around the world may use your application, so make sure the `i18nProvider` returns default messages, even for unknown locales.
 
 ## Translation Messages
 
@@ -528,28 +476,6 @@ export default MyHelloButton;
 // and translate the `resources.customers.fields.first_name` key
 ```
 
-## `withTranslate` HOC
-
-If you're stuck with class components, react-admin also exports a `withTranslate` higher-order component, which injects the `translate` function as prop. 
-
-```jsx
-// in src/MyHelloButton.js
-import * as React from 'react';
-import { Component } from 'react';
-import { withTranslate } from 'react-admin';
-
-class MyHelloButton extends Component {
-    render() {
-        const { translate } = this.props;
-        return (
-            <button>{translate('myroot.hello.world')}</button>
-        );
-    } 
-};
-
-export default withTranslate(MyHelloButton);
-```
-
 ## Using Specific Polyglot Features
 
 Polyglot.js is a fantastic library: in addition to being small, fully maintained, and totally framework-agnostic, it provides some nice features such as interpolation and pluralization, that you can use in react-admin.
@@ -662,13 +588,15 @@ ie: `Sind Sie sicher, dass Sie diesen Kommentar löschen möchten?`
 To do this, simply add a `forcedCaseName` key next to the `name` key in your translation file.
 
 ```js
-resources: {
-    comments: {
-        name: 'Kommentar |||| Kommentare',
-        forcedCaseName: 'Kommentar |||| Kommentare',
-        fields: {
-            id: 'Id',
-            name: 'Bezeichnung',
+{
+    resources: {
+        comments: {
+            name: 'Kommentar |||| Kommentare',
+            forcedCaseName: 'Kommentar |||| Kommentare',
+            fields: {
+                id: 'Id',
+                name: 'Bezeichnung',
+            }
         }
     }
 }
@@ -704,8 +632,8 @@ This solution is all-or-nothing: you can't silence only *some* missing translati
 
 Some of your records may contain fields that are translated in multiple languages. It's common, in such cases, to offer an interface allowing admin users to see and edit each translation. React-admin provides 2 components for that:
 
-- To display translatable fields, use the [`<TranslatableFields>`](./Fields.md#translatable-fields) component
-- To edit translatable fields, use the [`<TranslatableInputs>`](./Inputs.md#translatable-inputs) component
+- To display translatable fields, use the [`<TranslatableFields>`](./TranslatableFields.md) component
+- To edit translatable fields, use the [`<TranslatableInputs>`](./TranslatableInputs.md) component
 
 They both expect the translatable values to have the following structure:
 

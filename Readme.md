@@ -51,25 +51,25 @@ render(
 );
 ```
 
-The `<Resource>` component is a configuration component that allows defining sub components for each of the admin view: `list`, `edit`, and `create`. These components use Material UI and custom components from react-admin:
+The `<Resource>` component is a configuration component that allows defining sub components for each of the admin view: `list`, `edit`, and `create`. These components use MUI and custom components from react-admin:
 
 {% raw %}
 ```jsx
 // in posts.js
 import * as React from "react";
 import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, TextInput, DateInput } from 'react-admin';
-import BookIcon from '@material-ui/icons/Book';
+import BookIcon from '@mui/icons-material/Book';
 export const PostIcon = BookIcon;
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" />
             <DateField source="published_at" />
             <TextField source="average_note" />
             <TextField source="views" />
-            <EditButton basePath="/posts" />
+            <EditButton />
         </Datagrid>
     </List>
 );
@@ -78,8 +78,8 @@ const PostTitle = ({ record }) => {
     return <span>Post {record ? `"${record.title}"` : ''}</span>;
 };
 
-export const PostEdit = (props) => (
-    <Edit title={<PostTitle />} {...props}>
+export const PostEdit = () => (
+    <Edit title={<PostTitle />}>
         <SimpleForm>
             <TextInput disabled source="id" />
             <TextInput source="title" />
@@ -92,8 +92,8 @@ export const PostEdit = (props) => (
     </Edit>
 );
 
-export const PostCreate = (props) => (
-    <Create title="Create a Post" {...props}>
+export const PostCreate = () => (
+    <Create title="Create a Post">
         <SimpleForm>
             <TextInput source="title" />
             <TextInput source="teaser" options={{ multiline: true }} />
@@ -118,7 +118,7 @@ See the [Data Providers documentation](./DataProviders.md) for details.
 
 ## Architecture: Batteries Included But Removable
 
-React-admin is designed as a library of loosely coupled React components built on top of [material-ui](https://v4.mui.com/), in addition to React hooks allowing to reuse the logic with a custom UI. 
+React-admin is designed as a library of loosely coupled React components built on top of [MUI](https://mui.com/), in addition to React hooks allowing to reuse the logic with a custom UI. 
 
 You may replace one part of react-admin with your own, e.g. to use a custom Datagrid, GraphQL instead of REST, or Bootstrap instead of Material Design.
 
@@ -134,14 +134,14 @@ Read more about the [Architecture choices](./Architecture.md).
 The [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise) <img class="icon" src="./img/premium.svg" /> offers additional features and services for react-admin:
 
 - Save weeks of development thanks to the **Private Modules**, valid on an unlimited number of domains and projects.
-  - `ra-preferences`: Persist user preferences (language, theme, filters, datagrid columns, sidebar position, etc) in local storage.
+  - `ra-preferences`: Persist user preferences (language, theme, filters, datagrid columns, sidebar position, etc.) in local storage.
   - `ra-navigation`: Multi-level menu and breadcrumb, with the ability to define a custom path for your resources.
   - `ra-realtime`: Display live notifications, auto-update content on the screen, lock content when editing, with adapters for real-time backends.
   - `ra-editable-datagrid`: Edit data directly in the list view, for better productivity. Excel-like editing experience.
   - `ra-form-layout`: New form layouts for complex data entry tasks (accordion, wizard, etc.)
   - `ra-relationships`: Visualize and edit complex relationships, including many-to-many relationships.
-  - `ra-tree`: Edit and visualize tree structures. Reorganize by drag and drop. Adapts to any data structure on the backend (parent_id, children, nested sets, etc).
-  - `ra-tour`: Guided tours for react-admin applications. Step-by-step instructions, Material-ui skin.
+  - `ra-tree`: Edit and visualize tree structures. Reorganize by drag and drop. Adapts to any data structure on the backend (parent_id, children, nested sets, etc.).
+  - `ra-tour`: Guided tours for react-admin applications. Step-by-step instructions, MUI skin.
   - `ra-markdown`: Read Markdown data, and edit it using a WYSIWYG editor in your admin
 - Get **Support** from experienced react and react-admin developers, who will help you find the right information and troubleshoot your bugs.
 - Get a **50% Discount on Professional Services** in case you need coaching, audit, or custom development by our experts.
