@@ -145,7 +145,6 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
 
     const handleChange = useCallback(
         (eventOrChoice: ChangeEvent<HTMLInputElement> | RaRecord) => {
-            console.log(eventOrChoice);
             // We might receive an event from the mui component
             // In this case, it will be the choice id
             if (eventOrChoice?.target) {
