@@ -845,6 +845,26 @@ describe('<AutocompleteInput />', () => {
         expect(screen.queryByText('Leo Tolstoy')).toBeNull();
     });
 
+    it('should allow to clear the value inside a ReferenceInput field', async () => {
+        render(<InsideReferenceInput />);
+        await waitFor(() => {
+            expect(
+                (screen.getByRole('textbox') as HTMLInputElement).value
+            ).toBe('Leo Tolstoy');
+        });
+        fireEvent.click(screen.getByLabelText('Clear value'));
+        userEvent.tab();
+        // Couldn't reproduce the infinite loop issue without this timeout
+        // See https://github.com/marmelab/react-admin/issues/7482
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        await waitFor(() => {
+            expect(
+                (screen.getByRole('textbox') as HTMLInputElement).value
+            ).toEqual('');
+        });
+        expect(screen.queryByText('Leo Tolstoy')).toBeNull();
+    });
+
     it("should allow to edit the input if it's inside a FormDataConsumer", () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
