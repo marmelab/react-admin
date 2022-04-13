@@ -45,6 +45,6 @@
         "tsup": "^5.11.11"
     },
     "peerDependencies": {
-        "ra-core": "^4.0.0-rc.1"
+        "ra-core": "^4.0.0"
     }
 }
