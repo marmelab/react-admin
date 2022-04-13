@@ -108,7 +108,6 @@ ReferenceInput.propTypes = {
     classes: PropTypes.object,
     filter: PropTypes.object,
     label: PropTypes.string,
-    onChange: PropTypes.func,
     page: PropTypes.number,
     perPage: PropTypes.number,
     record: PropTypes.object,
