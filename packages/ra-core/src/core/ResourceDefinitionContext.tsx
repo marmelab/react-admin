@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createContext, useCallback, useState } from 'react';
+import { createContext, useCallback, useState, useMemo } from 'react';
 import isEqual from 'lodash/isEqual';
 
 import { ResourceDefinition } from '../types';
@@ -8,14 +8,15 @@ export type ResourceDefinitions = {
     [name: string]: ResourceDefinition;
 };
 
-export type ResourceDefinitionContextValue = [
-    ResourceDefinitions,
-    (config: ResourceDefinition) => void
-];
+export type ResourceDefinitionContextValue = {
+    definitions: ResourceDefinitions;
+    setDefinition: (config: ResourceDefinition) => void;
+    reset: () => void;
+};
 
 export const ResourceDefinitionContext = createContext<
     ResourceDefinitionContextValue
->([{}, () => {}]);
+>({ definitions: {}, setDefinition: () => {}, reset: () => {} });
 
 /**
  * Context to store the current resource Definition.
@@ -56,10 +57,17 @@ export const ResourceDefinitionContextProvider = ({
         );
     }, []);
 
+    const reset = useCallback(() => {
+        setState(defaultDefinitions);
+    }, [defaultDefinitions]);
+
+    const contextValue = useMemo(
+        () => ({ definitions, setDefinition, reset }),
+        [definitions] // eslint-disable-line react-hooks/exhaustive-deps
+    );
+
     return (
-        <ResourceDefinitionContext.Provider
-            value={[definitions, setDefinition]}
-        >
+        <ResourceDefinitionContext.Provider value={contextValue}>
             {children}
         </ResourceDefinitionContext.Provider>
     );

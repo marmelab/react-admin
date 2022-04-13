@@ -23,4 +23,4 @@ import {
  * // }
  */
 export const useResourceDefinitions = (): ResourceDefinitions =>
-    useContext(ResourceDefinitionContext)[0];
+    useContext(ResourceDefinitionContext).definitions;
