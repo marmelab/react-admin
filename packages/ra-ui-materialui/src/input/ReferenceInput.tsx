@@ -104,8 +104,6 @@ export const ReferenceInput = (props: ReferenceInputProps) => {
 
 ReferenceInput.propTypes = {
     children: PropTypes.element.isRequired,
-    className: PropTypes.string,
-    classes: PropTypes.object,
     filter: PropTypes.object,
     label: PropTypes.string,
     page: PropTypes.number,
