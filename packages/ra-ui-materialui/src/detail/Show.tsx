@@ -75,6 +75,7 @@ Show.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     children: PropTypes.node.isRequired,
     className: PropTypes.string,
+    disableAuthentication: PropTypes.bool,
     emptyWhileLoading: PropTypes.bool,
     component: PropTypes.elementType,
     resource: PropTypes.string,

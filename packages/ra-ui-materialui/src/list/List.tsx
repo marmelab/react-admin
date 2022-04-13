@@ -96,7 +96,6 @@ List.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     aside: PropTypes.element,
     children: PropTypes.element.isRequired,
-    classes: PropTypes.object,
     className: PropTypes.string,
     emptyWhileLoading: PropTypes.bool,
     filter: PropTypes.object,
@@ -117,10 +116,6 @@ List.propTypes = {
     title: TitlePropType,
     // the props managed by react-admin
     disableSyncWithLocation: PropTypes.bool,
-    hasCreate: PropTypes.bool,
-    hasEdit: PropTypes.bool,
-    hasList: PropTypes.bool,
-    hasShow: PropTypes.bool,
     resource: PropTypes.string,
 };
 
