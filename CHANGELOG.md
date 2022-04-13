@@ -2,7 +2,7 @@
 
 ## v4.0.0
 
-React-admin v4 focuses on modernizing the inner workings of react-admin. It improves the developper experience a great deal, and paves the way for future changes. It is the result of 6 months of intensive refactoring, development, and test.
+React-admin v4 focuses on modernizing the inner workings of the library. It improves the developper experience a great deal, and paves the way for future changes. It is the result of 6 months of intensive refactoring, development, and test.
 
 The following list concerns version 4.0.0, as well as all the pre-releases (alpha, beta, and rc).
 
@@ -94,9 +94,9 @@ As this is a major release, there are breaking changes. We documented all the ch
 
 * 1,259 changed files
 * [2,210 commits](https://github.com/marmelab/react-admin/compare/3.x...master)
-* [100,420 additions and 90,560 deletions](https://github.com/marmelab/react-admin/compare/3.x..master)
+* [100,420 additions and 90,560 deletions](https://github.com/marmelab/react-admin/compare/3.x..master) (code and documentation)
 
-Since react-admin counts about 112,000 lines of code, this means that 90% of the code was touched. 
+Since react-admin counts about 112,000 lines of code, this means that 90% of the codebase was touched. 
 
 ### 💌 Thank You
 
