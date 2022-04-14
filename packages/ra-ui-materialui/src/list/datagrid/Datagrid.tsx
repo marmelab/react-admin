@@ -114,6 +114,8 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         className,
         empty,
         expand,
+        // @ts-ignore
+        fullWidth,
         hasBulkActions = false,
         hover,
         isRowSelectable,
