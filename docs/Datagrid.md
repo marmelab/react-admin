@@ -67,26 +67,28 @@ For instance, the `<Datagrid isRowSelectable>` prop allows to hide the selection
 
 ```jsx
 // in src/PostList.js
-import { Datagrid, DatagridBody, List, TextField } from 'react-admin';
+import { Datagrid, DatagridBody, List, TextField, RecordContextProvider } from 'react-admin';
 import { TableCell, TableRow, Checkbox } from '@mui/material';
 
-const MyDatagridRow = ({ id, onToggleItem, children, selected, selectable }) => (
-    <TableRow key={id}>
-        {/* first column: selection checkbox */}
-        <TableCell padding="none">
-            <Checkbox
-                disabled={selectable}
-                checked={selected}
-                onClick={event => onToggleItem(id, event)}
-            />
-        </TableCell>
-        {/* data columns based on children */}
-        {React.Children.map(children, field => (
-            <TableCell key={`${id}-${field.props.source}`}>
-                {field}
+const MyDatagridRow = ({ record, id, onToggleItem, children, selected, selectable }) => (
+    <RecordContextProvider value={record}>
+        <TableRow>
+            {/* first column: selection checkbox */}
+            <TableCell padding="none">
+                <Checkbox
+                    disabled={selectable}
+                    checked={selected}
+                    onClick={event => onToggleItem(id, event)}
+                />
             </TableCell>
-        ))}
-    </TableRow>
+            {/* data columns based on children */}
+            {React.Children.map(children, field => (
+                <TableCell key={`${id}-${field.props.source}`}>
+                    {field}
+                </TableCell>
+            ))}
+        </TableRow>
+    </RecordContextProvider>
 );
 
 const MyDatagridBody = props => <DatagridBody {...props} row={<MyDatagridRow />} />;
