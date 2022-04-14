@@ -20,7 +20,9 @@ about: Something isn't working as expected. Please tell us!
 **Related code:**
 <!-- If you are able to illustrate the bug or feature request with an example, please provide a sample application via one of the following means: -->
 
-* Preferably, a CodeSandbox forked from https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/simple
+* Preferably, a CodeSandbox forked from 
+  - https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/simple (v4)
+  - https://codesandbox.io/s/github/marmelab/react-admin/tree/3.x/examples/simple (v3)
 * A link to a GitHub repo with the minimal codebase to reproduce the issue
 
 
