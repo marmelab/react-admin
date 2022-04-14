@@ -152,10 +152,12 @@ describe('<FilterForm />', () => {
                 nestedToClear: { nestedValue: 'def' },
                 classicUpdated: 'ghi',
                 nestedUpdated: { nestedValue: 'jkl' },
+                published_at: new Date('2022-01-01T03:00:00.000Z'),
             };
             const newFilterValues = {
                 classicUpdated: 'ghi2',
                 nestedUpdated: { nestedValue: 'jkl2' },
+                published_at: '2022-01-01T03:00:00.000Z',
             };
 
             expect(
@@ -165,6 +167,7 @@ describe('<FilterForm />', () => {
                 nestedToClear: { nestedValue: '' },
                 classicUpdated: 'ghi2',
                 nestedUpdated: { nestedValue: 'jkl2' },
+                published_at: '2022-01-01T03:00:00.000Z',
             });
         });
     });
