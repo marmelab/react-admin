@@ -45,7 +45,7 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
                         hasBulkActions: hasBulkActions && !!selectedIds,
                         hover,
                         id: record.id,
-                        key: record.id,
+                        key: record.id ?? `row${rowIndex}`,
                         onToggleItem,
                         record,
                         resource,
