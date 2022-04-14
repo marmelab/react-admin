@@ -8,14 +8,21 @@ A frontend Framework for building data-driven applications running in the browse
 
 ## Features
 
-* **Backend Agnostic**: Connects to any API (REST or GraphQL, see the [list of more than 45 adapters](https://marmelab.com/react-admin/DataProviderList.html))
-* **All The Building Blocks You Need**: Provides hooks and components for roles & permissions, routing, forms & validation, datagrid, search & filter, relationships, validation, rich text editor, i18n, notifications, menus, theming, caching, etc.
-* **High Quality**: Accessibility, responsive, secure, fast, testable
-* **Great User Experience**: Optimistic rendering, filter-as-you-type, undo, preferences, saved queries
-* **Great Developer Experience**: Complete documentation, storybook, demo apps with source code, modular architecture, declarative API, TypeScript
-* **Complete Customization**: Replace any component with your own
-* **Type Safety**: Develop either in TypeScript or JavaScript
-* Powered by [MUI](https://mui.com/), [react-hook-form](https://react-hook-form.com), [react-router](https://reacttraining.com/react-router/), [react-query](https://react-query.tanstack.com/), [TypeScript](https://www.typescriptlang.org/) and a few more
+* 🔌 **Backend Agnostic**: Connects to any API (REST or GraphQL, see the [list of more than 45 adapters](https://marmelab.com/react-admin/DataProviderList.html))
+
+* 🧩 **All The Building Blocks You Need**: Provides hooks and components for authentication, routing, forms & validation, datagrid, search & filter, relationships, validation, roles & permissions, rich text editor, i18n, notifications, menus, theming, caching, etc.
+
+* 🪡 **High Quality**: Accessibility, responsive, secure, fast, testable
+
+* 💻 **Great Developer Experience**: Complete documentation, IDE autocompletion, type safety, storybook, demo apps with source code, modular architecture, declarative API
+
+* 👑 **Great User Experience**: Optimistic rendering, filter-as-you-type, undo, preferences, saved queries
+
+* 🛠 **Complete Customization**: Replace any component with your own
+
+* ☂️ **Opt-In Types**: Develop either in TypeScript or JavaScript
+
+* 👨‍👩‍👧‍👦 Powered by [MUI](https://mui.com/), [react-hook-form](https://react-hook-form.com), [react-router](https://reacttraining.com/react-router/), [react-query](https://react-query.tanstack.com/), [TypeScript](https://www.typescriptlang.org/) and a few more
 
 ## Installation
 
