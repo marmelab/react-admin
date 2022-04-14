@@ -340,7 +340,6 @@ nav {
   flex-wrap: wrap;
   justify-content: center;
   align-self: center;
-  max-width: 700px;
   flex-grow: 0;
 }
 
@@ -653,6 +652,9 @@ nav {
 }
 
 @media (max-width: 767px) {
+  .container {
+    margin: 0 1em;
+  }
   .github-stars {
     display: none;
   }
