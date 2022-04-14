@@ -73,7 +73,7 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
             error={(isTouched || isSubmitted) && invalid}
             helperText={
                 <InputHelperText
-                    touched={isTouched}
+                    touched={isTouched || isSubmitted}
                     error={error?.message}
                     helperText={helperText}
                 />
