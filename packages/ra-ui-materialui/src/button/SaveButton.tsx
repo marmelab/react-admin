@@ -16,6 +16,7 @@ import {
     useSaveContext,
     useTranslate,
     warning,
+    setSubmissionErrors,
 } from 'ra-core';
 
 import { sanitizeButtonRestProps } from './Button';
@@ -87,6 +88,19 @@ export const SaveButton = <RecordType extends RaRecord = any>(
         'Cannot use <SaveButton mutationOptions> props on a button of type "submit". To override the default mutation options on a particular save button, set the <SaveButton type="button"> prop, or set mutationOptions in the main view component (<Create> or <Edit>).'
     );
 
+    const handleSubmitWithErrors = useCallback(
+        async values => {
+            const errors = await saveContext?.save(values, {
+                ...mutationOptions,
+                transform,
+            });
+            if (errors != null) {
+                setSubmissionErrors(errors, form.setError);
+            }
+        },
+        [form.setError, mutationOptions, saveContext, transform]
+    );
+
     const handleClick: MouseEventHandler<HTMLButtonElement> = useCallback(
         async event => {
             if (onClick) {
@@ -98,9 +112,11 @@ export const SaveButton = <RecordType extends RaRecord = any>(
             if (type === 'button') {
                 // this button doesn't submit the form, so it doesn't trigger useIsFormInvalid in <FormContent>
                 // therefore we need to check for errors manually
+                event.preventDefault();
                 const isFormValid = await form.trigger();
                 if (!isFormValid) {
-                    event.preventDefault();
+                    event.stopPropagation();
+                    await form.handleSubmit(handleSubmitWithErrors)(event);
                     notify('ra.message.invalid_form', { type: 'warning' });
                     return;
                 }
@@ -111,7 +127,16 @@ export const SaveButton = <RecordType extends RaRecord = any>(
                 });
             }
         },
-        [form, notify, mutationOptions, saveContext, transform, onClick, type]
+        [
+            onClick,
+            type,
+            form,
+            saveContext,
+            mutationOptions,
+            transform,
+            handleSubmitWithErrors,
+            notify,
+        ]
     );
 
     const displayedLabel = label && translate(label, { _: label });
