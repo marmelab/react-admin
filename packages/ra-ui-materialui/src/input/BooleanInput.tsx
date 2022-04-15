@@ -30,6 +30,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
         resource,
         source,
         validate,
+        options,
         sx,
         ...rest
     } = props;
@@ -77,6 +78,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
                         onFocus={onFocus}
                         checked={field.value}
                         {...sanitizeInputRestProps(rest)}
+                        {...options}
                         disabled={disabled}
                     />
                 }
@@ -113,4 +115,6 @@ BooleanInput.defaultProps = {
 
 export type BooleanInputProps = CommonInputProps &
     SwitchProps &
-    Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'>;
+    Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'> & {
+        options: SwitchProps;
+    };

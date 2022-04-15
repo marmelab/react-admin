@@ -2636,21 +2636,6 @@ import { BooleanInput } from 'react-admin';
 />
 ```
 
-### `BooleanInput` `options` Prop Has Been Removed
-
-In previous versions BooleanInput's `options` prop was used for passing props to the underlying MUI's `Switch` component. Now you just pass them directly to the `BooleanInput`.
-
-```diff
-import { BooleanInput } from 'react-admin';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-
-<BooleanInput 
-    source="favorite"
--   options={{ checkedIcon: <FavoriteIcon /> }}
-+   checkedIcon={<FavoriteIcon />}
-/>
-```
-
 ### `allowEmpty` Has Been Removed
 
 The `<SelectInput>`, `<SelectArrayInput>`, `<AutocompleteInput>` and `<AutocompleteArrayInput>` components used to accept an `allowEmpty` prop. When set to `true`, a choice was added for setting the input value to an empty value (empty string by default).
