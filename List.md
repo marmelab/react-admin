@@ -636,7 +636,7 @@ By default, `<List>` operates on the current `ResourceContext` (defined at the r
 
 ```jsx
 export const UsersList = () => (
-    <List sresource="users">
+    <List resource="users">
         ...
     </List>
 );
