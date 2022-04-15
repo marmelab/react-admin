@@ -12,7 +12,6 @@ import {
     RaRecord,
     TransformData,
     UpdateParams,
-    useNotify,
     useSaveContext,
     useTranslate,
     warning,
@@ -67,7 +66,6 @@ export const SaveButton = <RecordType extends RaRecord = any>(
         ...rest
     } = props;
     const translate = useTranslate();
-    const notify = useNotify();
     const form = useFormContext();
     const saveContext = useSaveContext();
     const { isDirty, isValidating } = useFormState();
@@ -88,14 +86,20 @@ export const SaveButton = <RecordType extends RaRecord = any>(
         'Cannot use <SaveButton mutationOptions> props on a button of type "submit". To override the default mutation options on a particular save button, set the <SaveButton type="button"> prop, or set mutationOptions in the main view component (<Create> or <Edit>).'
     );
 
-    const handleSubmitWithErrors = useCallback(
+    const handleSubmit = useCallback(
         async values => {
-            const errors = await saveContext?.save(values, { transform });
+            let errors;
+            if (saveContext?.save) {
+                errors = await saveContext.save(values, {
+                    ...mutationOptions,
+                    transform,
+                });
+            }
             if (errors != null) {
                 setSubmissionErrors(errors, form.setError);
             }
         },
-        [form.setError, saveContext, transform]
+        [form.setError, saveContext, mutationOptions, transform]
     );
 
     const handleClick: MouseEventHandler<HTMLButtonElement> = useCallback(
@@ -110,30 +114,11 @@ export const SaveButton = <RecordType extends RaRecord = any>(
                 // this button doesn't submit the form, so it doesn't trigger useIsFormInvalid in <FormContent>
                 // therefore we need to check for errors manually
                 event.preventDefault();
-                const isFormValid = await form.trigger();
-                if (!isFormValid) {
-                    event.stopPropagation();
-                    await form.handleSubmit(handleSubmitWithErrors)(event);
-                    notify('ra.message.invalid_form', { type: 'warning' });
-                    return;
-                }
-                const values = form.getValues();
-                saveContext?.save(values, {
-                    ...mutationOptions,
-                    transform,
-                });
+                event.stopPropagation();
+                await form.handleSubmit(handleSubmit)(event);
             }
         },
-        [
-            onClick,
-            type,
-            form,
-            saveContext,
-            mutationOptions,
-            transform,
-            handleSubmitWithErrors,
-            notify,
-        ]
+        [onClick, type, form, handleSubmit]
     );
 
     const displayedLabel = label && translate(label, { _: label });
