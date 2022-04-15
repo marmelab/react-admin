@@ -6,6 +6,7 @@ import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
 import { SimpleForm } from '../form';
 import { BooleanInput } from './BooleanInput';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 export default { title: 'ra-ui-materialui/input/BooleanInput' };
 
@@ -18,6 +19,12 @@ export const Basic = () => (
 export const Disabled = () => (
     <Wrapper>
         <BooleanInput source="published" disabled />
+    </Wrapper>
+);
+
+export const CustomIcon = () => (
+    <Wrapper>
+        <BooleanInput source="published" checkedIcon={<FavoriteIcon />} />
     </Wrapper>
 );
 

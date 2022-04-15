@@ -16,6 +16,7 @@ import { InputPropTypes } from './InputPropTypes';
 export const BooleanInput = (props: BooleanInputProps) => {
     const {
         className,
+        row = false,
         defaultValue = false,
         format,
         label,
@@ -62,7 +63,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
     return (
         <FormGroup
             className={clsx('ra-input', `ra-input-${source}`, className)}
-            {...sanitizeInputRestProps(rest)}
+            row={row}
         >
             <FormControlLabel
                 control={
