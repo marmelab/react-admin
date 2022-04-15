@@ -90,15 +90,12 @@ export const SaveButton = <RecordType extends RaRecord = any>(
 
     const handleSubmitWithErrors = useCallback(
         async values => {
-            const errors = await saveContext?.save(values, {
-                ...mutationOptions,
-                transform,
-            });
+            const errors = await saveContext?.save(values, { transform });
             if (errors != null) {
                 setSubmissionErrors(errors, form.setError);
             }
         },
-        [form.setError, mutationOptions, saveContext, transform]
+        [form.setError, saveContext, transform]
     );
 
     const handleClick: MouseEventHandler<HTMLButtonElement> = useCallback(
