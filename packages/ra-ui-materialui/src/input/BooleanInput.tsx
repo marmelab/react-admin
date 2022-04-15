@@ -30,6 +30,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
         resource,
         source,
         validate,
+        sx,
         ...rest
     } = props;
     const {
@@ -64,6 +65,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
         <FormGroup
             className={clsx('ra-input', `ra-input-${source}`, className)}
             row={row}
+            sx={sx}
         >
             <FormControlLabel
                 control={
