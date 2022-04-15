@@ -1,5 +1,19 @@
 # Changelog
 
+## v4.0.1
+
+* Fix `<DateTimeInput>` doesn't work when used as filter ([#7551](https://github.com/marmelab/react-admin/pull/7551)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<BooleanInput>` helper text doesn't use `isSubmitted` ([#7552](https://github.com/marmelab/react-admin/pull/7552)) ([afilp](https://github.com/afilp))
+* Fix `<SimpleForm>` should not accept `mutationMode` prop ([#7533](https://github.com/marmelab/react-admin/pull/7533)) ([WiXSL](https://github.com/WiXSL))
+* Fix React warning when using a `<Datagrid>` on data without an `id` ([#7548](https://github.com/marmelab/react-admin/pull/7548)) ([WiXSL](https://github.com/WiXSL))
+* Fix outdated `propTypes` on a few components ([#7535](https://github.com/marmelab/react-admin/pull/7535)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `<Datagrid>` usage example shows bulk actions ([#7547](https://github.com/marmelab/react-admin/pull/7547)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `<Datagrid>` body snippet is missing `<RecordContextProvider>` ([#7546](https://github.com/marmelab/react-admin/pull/7546)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix link to the `ra-rbac` module ([#7545](https://github.com/marmelab/react-admin/pull/7545)) ([artnest](https://github.com/artnest))
+* [Doc] Fix typo in `useEditContext` section ([#7542](https://github.com/marmelab/react-admin/pull/7542)) ([usman-coe](https://github.com/usman-coe))
+* [Doc] Fix typo in `<List>` component section ([#7536](https://github.com/marmelab/react-admin/pull/7536)) ([Eric013](https://github.com/Eric013))
+* Fix yarn.lock and dependencies versions ([#7532](https://github.com/marmelab/react-admin/pull/7532)) ([WiXSL](https://github.com/WiXSL))
+
 ## v4.0.0
 
 React-admin v4 focuses on modernizing the inner workings of the library. It improves the developper experience a great deal, and paves the way for future changes. It is the result of 6 months of intensive refactoring, development, and test.
