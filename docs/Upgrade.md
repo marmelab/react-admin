@@ -441,7 +441,7 @@ To use a `BrowserHistory` instead of the default `HashHistory`, you previously h
 
 ```diff
 -import { createBrowserHistory } from 'react-router';
-+import { BrowserRouter } from 'react-router';
++import { BrowserRouter } from 'react-router-dom';
 import { Admin, Resource } from 'react-admin';
 
 const App = () => (
