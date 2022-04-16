@@ -1380,7 +1380,7 @@ So the `RecordMap` type is no longer necessary and was removed. TypeScript compi
 
 ```diff
 -import { useGetList, RecordMap } from 'react-admin';
-+import { useGetList, Record } from 'react-admin';
++import { useGetList, RaRecord as Record } from 'react-admin';
 
 const PostListContainer = () => {
 -   const { data, ids, loading } = useGetList(
