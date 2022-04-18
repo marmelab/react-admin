@@ -48,11 +48,11 @@ All input components accept the following props:
 
 React-admin uses [react-hook-form](https://react-hook-form.com/) to control form inputs. Each input component also accepts all react-hook-form [useController](https://react-hook-form.com/api/usecontroller) hook options, with the addition of:
 
-| Prop           | Required | Type       | Default | Description                                                                                                                                                                                                     |
-| -------------- | -------- | ---------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `defaultValue` | Optional | `mixed`    | -       | Value to be set when the property is `null` or `undefined`                                                                                                                                                      |
-| `format`       | Optional | `Function` | -       | Callback taking the value from the form state and the name of the field, and returns the input value. See the [Transforming Input Value](./Inputs.md#transforming-input-value-tofrom-record) section.           |
-| `parse`        | Optional | `Function` | -       | Callback taking the input value and name of the field, and returns the value you want stored in the form state. See the [Transforming Input Value](./Inputs.md#transforming-input-value-tofrom-record) section. |
+| Prop           | Required | Type       | Default | Description                                                                                                                                                                                                      |
+| -------------- | -------- | ---------- | ------- |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `defaultValue` | Optional | `mixed`    | -       | Value to be set when the property is `undefined`                                                                                                                                                                 |
+| `format`       | Optional | `Function` | -       | Callback taking the value from the form state and the name of the field, and returns the input value. See the [Transforming Input Value](./Inputs.md#transforming-input-value-tofrom-record) section.            |
+| `parse`        | Optional | `Function` | -       | Callback taking the input value and name of the field, and returns the value you want stored in the form state. See the [Transforming Input Value](./Inputs.md#transforming-input-value-tofrom-record) section.  |
 
 Additional props are passed down to the underlying component (usually a MUI component). For instance, when setting the `className` prop on a `TextInput` component, the underlying MUI `<TextField>` receives it, and renders with custom styles. You can also set the underlying component `variant` and `margin` that way.
 
@@ -99,26 +99,40 @@ Say the user would like to input values of 0-100 to a percentage field but your 
 `<DateInput>` stores and returns a string. If you would like to store a JavaScript Date object in your record instead:
 
 ```jsx
-const dateFormatter = v => {
-  // v is a `Date` object
-  if (!(v instanceof Date) || isNaN(v)) return;
-  const pad = '00';
-  const yy = v.getFullYear().toString();
-  const mm = (v.getMonth() + 1).toString();
-  const dd = v.getDate().toString();
-  return `${yy}-${(pad + mm).slice(-2)}-${(pad + dd).slice(-2)}`;
+const dateFormatRegex = /^\d{4}-\d{2}-\d{2}$/;
+const dateParseRegex = /(\d{4})-(\d{2})-(\d{2})/;
+
+const convertDateToString = value => {
+    // value is a `Date` object
+    if (!(value instanceof Date) || isNaN(value.getDate())) return '';
+    const pad = '00';
+    const yyyy = value.getFullYear().toString();
+    const MM = (value.getMonth() + 1).toString();
+    const dd = value.getDate().toString();
+    return `${yyyy}-${(pad + MM).slice(-2)}-${(pad + dd).slice(-2)}`;
 };
 
-const dateParser = v => {
-  // v is a string of "YYYY-MM-DD" format
-  const match = /(\d{4})-(\d{2})-(\d{2})/.exec(v);
-  if (match === null) return;
-  const d = new Date(match[1], parseInt(match[2], 10) - 1, match[3]);
-  if (isNaN(d)) return;
-  return d;
+const dateFormatter = value => {
+    // null, undefined and empty string values should not go through dateFormatter
+    // otherwise, it returns undefined and will make the input an uncontrolled one.
+    if (value == null || value === '') return '';
+    if (value instanceof Date) return convertDateToString(value);
+    // Valid dates should not be converted
+    if (dateFormatRegex.test(value)) return value;
+
+    return convertDateToString(new Date(value));
 };
 
-<DateInput source="isodate" format={dateFormatter} parse={dateParser} />
+const dateParser = value => {
+    //value is a string of "YYYY-MM-DD" format
+    const match = dateParseRegex.exec(value);
+    if (match === null) return;
+    const d = new Date(match[1], parseInt(match[2], 10) - 1, match[3]);
+    if (isNaN(d.getDate())) return;
+    return d;
+};
+
+<DateInput source="isodate" format={dateFormatter} parse={dateParser} defaultValue={new Date()} />
 ```
 
 ### Linking Two Inputs

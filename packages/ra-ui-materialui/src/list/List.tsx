@@ -96,7 +96,6 @@ List.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     aside: PropTypes.element,
     children: PropTypes.element.isRequired,
-    classes: PropTypes.object,
     className: PropTypes.string,
     emptyWhileLoading: PropTypes.bool,
     filter: PropTypes.object,

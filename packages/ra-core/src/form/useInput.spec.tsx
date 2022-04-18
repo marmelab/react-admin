@@ -79,6 +79,7 @@ describe('useInput', () => {
                         resource="posts"
                         onBlur={handleBlur}
                         onChange={handleChange}
+                        defaultValue=""
                     >
                         {({ id, field }) => {
                             return (

@@ -58,13 +58,17 @@ import { useEffect, useState } from 'react';
  * import {
  *     AdminContext,
  *     AdminUI,
+ *     defaultI18nProvider,
+ *     localStorageStore,
  *     Resource,
  *     ListGuesser,
  *     useDataProvider,
  * } from 'react-admin';
  *
+ * const store = localStorageStore();
+ *
  * const App = () => (
- *     <AdminContext dataProvider={myDataProvider}>
+ *     <AdminContext dataProvider={myDataProvider} i18nProvider={defaultI18nProvider} store={store}>
  *         <Resources />
  *     </AdminContext>
  * );
@@ -101,6 +105,7 @@ export const Admin = (props: AdminProps) => {
         loginPage,
         menu, // deprecated, use a custom layout instead
         notification,
+        queryClient,
         requireAuth,
         store,
         ready,
@@ -122,6 +127,7 @@ export const Admin = (props: AdminProps) => {
             i18nProvider={i18nProvider}
             store={store}
             history={history}
+            queryClient={queryClient}
             theme={theme}
         >
             <AdminUI

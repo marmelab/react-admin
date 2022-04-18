@@ -84,7 +84,7 @@ describe('<Show />', () => {
     });
 
     it('should accept queryOptions prop', async () => {
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+        jest.spyOn(console, 'error').mockImplementation(() => {});
         const onError = jest.fn();
         const dataProvider = {
             getOne: () => Promise.reject('error'),

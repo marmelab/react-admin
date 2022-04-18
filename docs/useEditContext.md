@@ -30,7 +30,7 @@ export const PostEdit = () => (
 );
 
 const Aside = () => {
-    const { record, isLoading } = usEditContext();
+    const { record, isLoading } = useEditContext();
     if (isLoading) return null;
     return (
         <div>

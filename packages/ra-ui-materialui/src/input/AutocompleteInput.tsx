@@ -266,7 +266,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 ]);
             }
         } else {
-            field.onChange(getChoiceValue(newValue));
+            field.onChange(getChoiceValue(newValue) || '');
         }
     };
 
@@ -347,7 +347,11 @@ If you provided a React element for the optionText prop, you must also provide t
         }
     }, [getOptionLabel, multiple, selectedChoice]);
 
-    const handleInputChange = (event: any, newInputValue: string) => {
+    const handleInputChange = (
+        event: any,
+        newInputValue: string,
+        reason: string
+    ) => {
         setFilterValue(newInputValue);
         debouncedSetFilter(newInputValue);
     };
@@ -386,8 +390,12 @@ If you provided a React element for the optionText prop, you must also provide t
         return options;
     };
 
-    const handleAutocompleteChange = (event: any, newValue) => {
-        handleChangeWithCreateSupport(newValue);
+    const handleAutocompleteChange = (
+        event: any,
+        newValue: any,
+        reason: string
+    ) => {
+        handleChangeWithCreateSupport(newValue != null ? newValue : '');
     };
 
     const oneSecondHasPassed = useTimeout(1000, filterValue);

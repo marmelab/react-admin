@@ -28,6 +28,7 @@ describe('<ReferenceArrayInput />', () => {
     });
 
     it('should display an error if error is defined', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
         const MyComponent = () => <span id="mycomponent" />;
         render(
             <AdminContext

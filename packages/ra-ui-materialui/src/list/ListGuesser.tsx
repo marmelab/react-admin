@@ -66,8 +66,8 @@ const ListViewGuesser = (props: Omit<ListViewProps, 'children'>) => {
 
 export const ${inflection.capitalize(
                         inflection.singularize(resource)
-                    )}List = props => (
-    <List {...props}>
+                    )}List = () => (
+    <List>
 ${inferredChild.getRepresentation()}
     </List>
 );`

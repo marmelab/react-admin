@@ -1,6 +1,6 @@
 {
     "name": "ra-data-graphql",
-    "version": "4.0.0-rc.1",
+    "version": "4.0.1",
     "private": true,
     "description": "A GraphQL data provider for react-admin",
     "main": "dist/index",
@@ -38,7 +38,7 @@
     },
     "peerDependencies": {
         "graphql": "^15.6.0",
-        "ra-core": "^4.0.0-rc.1"
+        "ra-core": "^4.0.0"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",

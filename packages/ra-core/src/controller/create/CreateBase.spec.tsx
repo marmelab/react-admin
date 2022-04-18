@@ -134,6 +134,7 @@ describe('CreateBase', () => {
     });
 
     it('should allow to override the onError function', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
         const dataProvider = testDataProvider({
             create: jest.fn((_, { data }) =>
                 Promise.reject({ message: 'test' })

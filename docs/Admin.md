@@ -43,7 +43,7 @@ Here are all the props accepted by the component:
 - [`history`](#history)
 - [`basename`](#basename)
 - [`ready`](#ready)
-- [`requireAuth`](#requireAuth)
+- [`requireAuth`](#requireauth)
 - [`store`](#store)
 
 ## `dataProvider`
@@ -381,7 +381,7 @@ import { createBrowserHistory } from 'history';
 
 const history = createBrowserHistory();
 const App = () => (
-    <Admin basename="admin" history={history}>
+    <Admin basename="/admin" history={history}>
         ...
     </Admin>
 );
@@ -488,16 +488,26 @@ Setting Resources dynamically using the children-as-function syntax may not be e
 
 So it's impossible, for instance, to have a dynamic list of resources based on a call to the `dataProvider` (since the `dataProvider` is only defined after the `<Admin>` component renders).
 
-To overcome this limitation, you can build your own `<Admin>` component using two lower-level components: `<AdminContext>` (responsible for putting the providers in contexts) and `<AdminUI>` (responsible for displaying the UI). Here is an example:
+To overcome this limitation, you can build your own `<Admin>` component using two lower-level components: `<AdminContext>` (responsible for putting the providers in contexts) and `<AdminUI>` (responsible for displaying the UI). Through this approach you'll have to bring your own i18n provider and store. Luckily react-admin provides easy to use defaults for you. Here is an example:
 
 ``` jsx
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { AdminContext, AdminUI, Resource, ListGuesser, useDataProvider } from 'react-admin';
+import {
+    AdminContext,
+    AdminUI,
+    defaultI18nProvider,
+    localStorageStore,
+    Resource,
+    ListGuesser,
+    useDataProvider,
+} from 'react-admin';
+
+const store = localStorageStore();
 
 function App() {
     return (
-        <AdminContext dataProvider={myDataProvider}>
+        <AdminContext dataProvider={myDataProvider} i18nProvider={defaultI18nProvider} store={store}>
             <AsyncResources />
         </AdminContext>
     );

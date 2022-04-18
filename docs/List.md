@@ -52,7 +52,7 @@ You can find more advanced examples of `<List>` usage in the [demos](./Demos.md)
 
 ![Actions Toolbar](./img/actions-toolbar.png)
 
-You can replace the list of default actions by your own element using the `actions` prop:
+You can replace the list of default actions by your own elements using the `actions` prop:
 
 ```jsx
 import { 
@@ -636,7 +636,7 @@ By default, `<List>` operates on the current `ResourceContext` (defined at the r
 
 ```jsx
 export const UsersList = () => (
-    <List sresource="users">
+    <List resource="users">
         ...
     </List>
 );

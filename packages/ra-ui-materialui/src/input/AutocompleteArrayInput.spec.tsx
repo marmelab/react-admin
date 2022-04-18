@@ -334,35 +334,6 @@ describe('<AutocompleteArrayInput />', () => {
         });
     });
 
-    it('should show the suggestions when the input value is empty and the input is focused and choices arrived late', () => {
-        const { rerender } = render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput {...defaultProps} />
-                </SimpleForm>
-            </AdminContext>
-        );
-        rerender(
-            <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        choices={[
-                            { id: 't', name: 'Technical' },
-                            { id: 'p', name: 'Programming' },
-                        ]}
-                    />
-                </SimpleForm>
-            </AdminContext>
-        );
-
-        userEvent.type(
-            screen.getByLabelText('resources.posts.fields.tags'),
-            'a'
-        );
-        expect(screen.queryAllByRole('option')).toHaveLength(2);
-    });
-
     it('should resolve value from input value', () => {
         const onChange = jest.fn();
         render(
@@ -887,5 +858,34 @@ describe('<AutocompleteArrayInput />', () => {
         expect(
             screen.queryByText('Choice is New Kid On The Block')
         ).not.toBeNull();
+    });
+
+    it('should show the suggestions when the input value is empty and the input is focused and choices arrived late', () => {
+        const { rerender } = render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <AutocompleteArrayInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
+        );
+        rerender(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <AutocompleteArrayInput
+                        {...defaultProps}
+                        choices={[
+                            { id: 't', name: 'Technical' },
+                            { id: 'p', name: 'Programming' },
+                        ]}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        userEvent.type(
+            screen.getByLabelText('resources.posts.fields.tags'),
+            'a'
+        );
+        expect(screen.queryAllByRole('option')).toHaveLength(2);
     });
 });

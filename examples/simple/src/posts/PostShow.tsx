@@ -52,7 +52,7 @@ const PostShow = () => {
                                 <TextField source="teaser" />
                             )}
                         <ArrayField source="backlinks">
-                            <Datagrid>
+                            <Datagrid bulkActionButtons={false}>
                                 <DateField source="date" />
                                 <UrlField source="url" />
                             </Datagrid>

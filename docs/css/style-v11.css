@@ -13,7 +13,10 @@ footer {
         padding-left: 0;
     }
     main > .container {
-        padding-top: 30px;
+        padding-top: 70px;
+    }
+    nav {
+        position: fixed;
     }
 }
 
@@ -117,6 +120,7 @@ ul.sidenav code {
     width: 23px;
     height: 23px;
     vertical-align: middle;
+    box-shadow: none;
 }
 
 .table-of-contents {

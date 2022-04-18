@@ -33,7 +33,7 @@ const PostCreateToolbar = props => {
     const { reset } = useFormContext();
 
     return (
-        <Toolbar {...props}>
+        <Toolbar>
             <SaveButton label="post.action.save_and_edit" variant="text" />
             <SaveButton
                 label="post.action.save_and_show"

@@ -182,6 +182,7 @@ describe('EditBase', () => {
     });
 
     it('should allow to override the onError function', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
         const dataProvider = testDataProvider({
             getOne: () =>
                 // @ts-ignore
