@@ -105,6 +105,7 @@ export const Admin = (props: AdminProps) => {
         loginPage,
         menu, // deprecated, use a custom layout instead
         notification,
+        queryClient,
         requireAuth,
         store,
         ready,
@@ -126,6 +127,7 @@ export const Admin = (props: AdminProps) => {
             i18nProvider={i18nProvider}
             store={store}
             history={history}
+            queryClient={queryClient}
             theme={theme}
         >
             <AdminUI

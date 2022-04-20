@@ -1,6 +1,6 @@
-# react-admin [![Build Status](https://travis-ci.org/marmelab/react-admin.svg?branch=master)](https://travis-ci.org/marmelab/react-admin) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmarmelab%2Freact-admin.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmarmelab%2Freact-admin?ref=badge_shield) [![StandWithUkraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
+# react-admin [![Build status](https://github.com/marmelab/react-admin/actions/workflows/test.yml/badge.svg)](https://github.com/marmelab/react-admin/actions/workflows/test.yml) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmarmelab%2Freact-admin.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmarmelab%2Freact-admin?ref=badge_shield) [![StandWithUkraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
 
-A frontend Framework for building data-driven applications running in the browser on top of REST/GraphQL APIs, using ES6, [React](https://facebook.github.io/react/) and [Material Design](https://material.io/). Previously named [admin-on-rest](https://github.com/marmelab/admin-on-rest). Open sourced and maintained by [marmelab](https://marmelab.com/).
+A frontend Framework for building data-driven applications running in the browser on top of REST/GraphQL APIs, using ES6, [React](https://facebook.github.io/react/) and [Material Design](https://material.io/). Open sourced and maintained by [marmelab](https://marmelab.com/).
 
 [Home page](https://marmelab.com/react-admin/) - [Documentation](https://marmelab.com/react-admin/Tutorial.html) - [Demo](https://marmelab.com/react-admin-demo/) - [Blog](https://marmelab.com/en/blog/#react-admin) - [Releases](https://github.com/marmelab/react-admin/releases) - [Support](https://stackoverflow.com/questions/tagged/react-admin)
 
@@ -8,25 +8,21 @@ A frontend Framework for building data-driven applications running in the browse
 
 ## Features
 
-* Adapts to any backend (REST, GraphQL, SOAP, etc.)
-* Powered by [MUI](https://mui.com/), [react-hook-form](https://react-hook-form.com), [react-router](https://reacttraining.com/react-router/) and a few more
-* Super-fast UI thanks to optimistic rendering (renders before the server returns)
-* Undo updates and deletes for a few seconds
-* Relationships (many to one, one to many)
-* Data Validation
-* Internationalization (i18n)
-* Themeable, Highly customizable interface
-* Supports any authentication provider (REST API, OAuth, Basic Auth, ...)
-* Full-featured datagrid (sort, pagination, filters)
-* Large library of components for various data types: boolean, number, rich text, etc.
-* Conditional formatting
-* Filter-as-you-type
-* Supports any form layout (simple, tabbed, etc.)
-* Custom actions
-* WYSIWYG editor
-* Customize dashboard, menu, layout
-* Super easy to extend and override (it's just React components)
-* Can be included in another React app
+* 🔌 **Backend Agnostic**: Connects to any API (REST or GraphQL, see the [list of more than 45 adapters](https://marmelab.com/react-admin/DataProviderList.html))
+
+* 🧩 **All The Building Blocks You Need**: Provides hooks and components for authentication, routing, forms & validation, datagrid, search & filter, relationships, validation, roles & permissions, rich text editor, i18n, notifications, menus, theming, caching, etc.
+
+* 🪡 **High Quality**: Accessibility, responsive, secure, fast, testable
+
+* 💻 **Great Developer Experience**: Complete documentation, IDE autocompletion, type safety, storybook, demo apps with source code, modular architecture, declarative API
+
+* 👑 **Great User Experience**: Optimistic rendering, filter-as-you-type, undo, preferences, saved queries
+
+* 🛠 **Complete Customization**: Replace any component with your own
+
+* ☂️ **Opt-In Types**: Develop either in TypeScript or JavaScript
+
+* 👨‍👩‍👧‍👦 Powered by [MUI](https://mui.com/), [react-hook-form](https://react-hook-form.com), [react-router](https://reacttraining.com/react-router/), [react-query](https://react-query.tanstack.com/), [TypeScript](https://www.typescriptlang.org/) and a few more
 
 ## Installation
 
@@ -128,15 +124,16 @@ See the [Data Providers documentation](https://marmelab.com/react-admin/DataProv
 
 ## Batteries Included But Removable
 
-React-admin is designed as a library of loosely coupled React components built on top of [MUI](https://mui.com/), in addition to custom react hooks exposing reusable controller logic. It is very easy to replace one part of react-admin with your own, e.g. to use a custom datagrid, GraphQL instead of REST, or Bootstrap instead of Material Design.
+React-admin is designed as a library of loosely coupled React components and hooks exposing reusable controller logic. It is very easy to replace any part of react-admin with your own, e.g. to use a custom datagrid, GraphQL instead of REST, or Bootstrap instead of Material Design.
 
 ## Examples
 
 There are several examples inside the `examples` folder:
 
-* `simple` ([CodeSandbox](https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/simple)): a simple application with posts, comments and users that we use for our e2e tests.
-* `tutorial` ([CodeSandbox](https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/tutorial)): the application built while following the tutorial.
-* `demo`: ([Live](https://marmelab.com/react-admin-demo/)) A fictional poster shop admin, serving as the official react-admin demo.
+* `simple` ([CodeSandbox](https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/simple)): a simple blog with posts, comments and users that we use for our e2e tests.
+* `e-commerce`: ([demo](https://marmelab.com/react-admin-demo/), [source](https://github.com/marmelab/react-admin/tree/master/examples/demo)) A fictional poster shop admin, serving as the official react-admin demo.
+* `CRM`: ([demo](https://marmelab.com/react-admin-crm/), [source](https://github.com/marmelab/react-admin/tree/master/examples/crm)) A customer relationship management application
+* `tutorial` ([CodeSandbox](https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/tutorial)): the application built while following the [tutorial](https://marmelab.com/react-admin/Tutorial.html).
 
 You can run those example applications by calling:
 

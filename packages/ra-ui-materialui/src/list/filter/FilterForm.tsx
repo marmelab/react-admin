@@ -237,7 +237,13 @@ const getInputValue = (
     key: string,
     filterValues: Record<string, any>
 ) => {
+    if (formValues[key] === undefined || formValues[key] === null) {
+        return '';
+    }
     if (Array.isArray(formValues[key])) {
+        return lodashGet(filterValues, key, '');
+    }
+    if (formValues[key] instanceof Date) {
         return lodashGet(filterValues, key, '');
     }
     if (typeof formValues[key] === 'object') {

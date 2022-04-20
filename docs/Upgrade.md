@@ -441,7 +441,7 @@ To use a `BrowserHistory` instead of the default `HashHistory`, you previously h
 
 ```diff
 -import { createBrowserHistory } from 'react-router';
-+import { BrowserRouter } from 'react-router';
++import { BrowserRouter } from 'react-router-dom';
 import { Admin, Resource } from 'react-admin';
 
 const App = () => (
@@ -1380,7 +1380,7 @@ So the `RecordMap` type is no longer necessary and was removed. TypeScript compi
 
 ```diff
 -import { useGetList, RecordMap } from 'react-admin';
-+import { useGetList, Record } from 'react-admin';
++import { useGetList, RaRecord } from 'react-admin';
 
 const PostListContainer = () => {
 -   const { data, ids, loading } = useGetList(
@@ -1400,7 +1400,7 @@ const PostListContainer = () => {
 };
 
 -const PostListDetail = ({ ids, data }: { ids: string[], data: RecordMap }) => {
-+const PostListDetail = ({ data }: { data: Record[] }) => {
++const PostListDetail = ({ data }: { data: RaRecord[] }) => {
 -   return <>{ids.map(id => <span key={id}>{data[id].title}</span>)}</>;
 +   return <>{data.map(record => <span key={record.id}>{record.title}</span>)}</>;
 };
