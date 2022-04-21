@@ -190,7 +190,12 @@ export const FilterListItem = memo((props: FilterListItemProps) => {
                 />
                 {isSelected && (
                     <ListItemSecondaryAction>
-                        <IconButton size="small" onClick={toggleFilter}>
+                        <IconButton size="small" onClick={ 
+                            (event) => {
+                                    event.stopPropagation();
+                                    toggleFilter();
+                                }
+                            }>
                             <CancelIcon />
                         </IconButton>
                     </ListItemSecondaryAction>
