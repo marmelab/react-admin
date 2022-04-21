@@ -140,4 +140,20 @@ describe('useConfigureAdminRouterFromChildren', () => {
         expectResourceToBeRegistered('comments');
         expectResourceToBeRegistered('userResource');
     });
+    it('should remove admin resource definitions when logged as admin and then as user', async () => {
+        const { rerender } = render(<TestedComponent role="admin" />);
+        await waitFor(() => expect(screen.getByText('Layout')).not.toBeNull());
+        expectResourceToBeRegistered('posts');
+        expectResourceToBeRegistered('comments');
+        expectResourceToBeRegistered('userResource');
+        expectResourceToBeRegistered('adminResource');
+
+        rerender(<TestedComponent role="user" />);
+        await waitFor(() =>
+            expectResourceToBeRegistered('adminResource', false)
+        );
+        expectResourceToBeRegistered('posts');
+        expectResourceToBeRegistered('comments');
+        expectResourceToBeRegistered('userResource');
+    });
 });
