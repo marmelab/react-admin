@@ -196,7 +196,7 @@ export const FilterListItem = memo((props: FilterListItemProps) => {
                                 event.stopPropagation();
                                 toggleFilter();
                             }}
-                            >
+                        >
                             <CancelIcon />
                         </IconButton>
                     </ListItemSecondaryAction>
