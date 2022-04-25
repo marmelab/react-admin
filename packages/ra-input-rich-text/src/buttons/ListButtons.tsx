@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MouseEvent } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 
 import { Editor } from '@tiptap/react';
 import {
@@ -24,6 +24,8 @@ export const ListButtons = (props: ToggleButtonGroupProps) => {
         _: 'Numbered list',
     });
 
+    const [value, setValue] = useState<string>();
+
     const handleChange = (
         event: MouseEvent<HTMLElement>,
         newFormat: string
@@ -40,12 +42,30 @@ export const ListButtons = (props: ToggleButtonGroupProps) => {
         });
     };
 
-    const value = ListValues.reduce((acc, value) => {
-        if (editor && editor.isActive(value)) {
-            return value;
+    useEffect(() => {
+        const handleUpdate = () => {
+            setValue(() =>
+                ListValues.reduce((acc, value) => {
+                    if (editor && editor.isActive(value)) {
+                        return value;
+                    }
+                    return acc;
+                }, undefined)
+            );
+        };
+
+        if (editor) {
+            editor.on('update', handleUpdate);
+            editor.on('selectionUpdate', handleUpdate);
         }
-        return acc;
-    }, '');
+
+        return () => {
+            if (editor) {
+                editor.off('update', handleUpdate);
+                editor.off('selectionUpdate', handleUpdate);
+            }
+        };
+    }, [editor]);
 
     return (
         <ToggleButtonGroup

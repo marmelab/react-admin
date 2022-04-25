@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MouseEvent } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 
 import { Editor } from '@tiptap/react';
 import {
@@ -18,6 +18,7 @@ import { useTiptapEditor } from '../useTiptapEditor';
 export const FormatButtons = (props: ToggleButtonGroupProps) => {
     const editor = useTiptapEditor();
     const translate = useTranslate();
+    const [values, setValues] = useState<string[]>([]);
 
     const boldLabel = translate('ra.tiptap.bold', {
         _: 'Bold',
@@ -39,6 +40,31 @@ export const FormatButtons = (props: ToggleButtonGroupProps) => {
         _: 'Code',
     });
 
+    useEffect(() => {
+        const handleUpdate = () => {
+            setValues(() =>
+                FormatValues.reduce((acc, value) => {
+                    if (editor && editor.isActive(value)) {
+                        acc.push(value);
+                    }
+                    return acc;
+                }, [])
+            );
+        };
+
+        if (editor) {
+            editor.on('update', handleUpdate);
+            editor.on('selectionUpdate', handleUpdate);
+        }
+
+        return () => {
+            if (editor) {
+                editor.off('update', handleUpdate);
+                editor.off('selectionUpdate', handleUpdate);
+            }
+        };
+    }, [editor]);
+
     const handleChange = (
         event: MouseEvent<HTMLElement>,
         newFormats: string[]
@@ -59,33 +85,20 @@ export const FormatButtons = (props: ToggleButtonGroupProps) => {
         });
     };
 
-    const value = FormatValues.reduce((acc, value) => {
-        if (editor && editor.isActive(value)) {
-            acc.push(value);
-        }
-        return acc;
-    }, []);
-
     return (
         <ToggleButtonGroup
             {...props}
             disabled={!editor?.isEditable}
             onChange={handleChange}
-            value={value}
+            value={values}
         >
-            <ToggleButton
-                value="bold"
-                aria-label={boldLabel}
-                title={boldLabel}
-                selected={editor && editor.isActive('bold')}
-            >
+            <ToggleButton value="bold" aria-label={boldLabel} title={boldLabel}>
                 <FormatBold fontSize="inherit" />
             </ToggleButton>
             <ToggleButton
                 value="italic"
                 aria-label={italicLabel}
                 title={italicLabel}
-                selected={editor && editor.isActive('italic')}
             >
                 <FormatItalic fontSize="inherit" />
             </ToggleButton>
@@ -93,7 +106,6 @@ export const FormatButtons = (props: ToggleButtonGroupProps) => {
                 value="underline"
                 aria-label={underlineLabel}
                 title={underlineLabel}
-                selected={editor && editor.isActive('underline')}
             >
                 <FormatUnderlined fontSize="inherit" />
             </ToggleButton>
@@ -101,16 +113,10 @@ export const FormatButtons = (props: ToggleButtonGroupProps) => {
                 value="strike"
                 aria-label={strikeLabel}
                 title={strikeLabel}
-                selected={editor && editor.isActive('strike')}
             >
                 <FormatStrikethrough fontSize="inherit" />
             </ToggleButton>
-            <ToggleButton
-                value="code"
-                aria-label={codeLabel}
-                title={codeLabel}
-                selected={editor && editor.isActive('code')}
-            >
+            <ToggleButton value="code" aria-label={codeLabel} title={codeLabel}>
                 <Code fontSize="inherit" />
             </ToggleButton>
         </ToggleButtonGroup>

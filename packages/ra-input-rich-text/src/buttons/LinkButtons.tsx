@@ -4,16 +4,12 @@ import InsertLink from '@mui/icons-material/InsertLink';
 
 import { useTranslate } from 'ra-core';
 import { useTiptapEditor } from '../useTiptapEditor';
+import { useEditorSelection } from './useEditorSelection';
 
 export const LinkButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
     const editor = useTiptapEditor();
     const translate = useTranslate();
-    const disabled = editor
-        ? editor.state.doc.textBetween(
-              editor.state.selection.from,
-              editor.state.selection.to
-          ).length === 0
-        : false;
+    const currentTextSelection = useEditorSelection();
 
     const label = translate('ra.tiptap.link', {
         _: 'Add a link',
@@ -39,7 +35,7 @@ export const LinkButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
             aria-label={label}
             title={label}
             {...props}
-            disabled={!editor?.isEditable || disabled}
+            disabled={!editor?.isEditable || !currentTextSelection}
             value="link"
             onClick={handleClick}
             selected={editor && editor.isActive('link')}
