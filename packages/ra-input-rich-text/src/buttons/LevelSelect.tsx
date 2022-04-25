@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { List, ListItem, ListItemText, Menu, MenuItem } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { Editor } from '@tiptap/react';
 import { useTranslate } from 'ra-core';
 import clsx from 'clsx';
 import { useTiptapEditor } from '../useTiptapEditor';
@@ -15,6 +14,7 @@ export const LevelSelect = (props: LevelSelectProps) => {
         null
     );
     const { size } = props;
+    const [selectedOption, setSelectedOption] = useState(options[0]);
 
     const handleMenuItemClick = (
         event: React.MouseEvent<HTMLLIElement, MouseEvent>,
@@ -43,8 +43,43 @@ export const LevelSelect = (props: LevelSelectProps) => {
         setAnchorElement(null);
     };
 
-    const selectedOption =
-        options.find(option => isSelectedOption(editor, option)) || options[0];
+    useEffect(() => {
+        const handleUpdate = () => {
+            setSelectedOption(currentOption =>
+                options.reduce((acc, option) => {
+                    if (editor) {
+                        if (
+                            option.value === 'paragraph' &&
+                            editor.isActive('paragraph')
+                        ) {
+                            return option;
+                        }
+
+                        if (
+                            editor.isActive('heading', {
+                                level: (option as HeadingLevelOption).level,
+                            })
+                        ) {
+                            return option;
+                        }
+                    }
+                    return acc;
+                }, currentOption)
+            );
+        };
+
+        if (editor) {
+            editor.on('update', handleUpdate);
+            editor.on('selectionUpdate', handleUpdate);
+        }
+
+        return () => {
+            if (editor) {
+                editor.off('update', handleUpdate);
+                editor.off('selectionUpdate', handleUpdate);
+            }
+        };
+    }, [editor]);
 
     return (
         <Root>
@@ -159,18 +194,6 @@ const options: Array<LevelOption | HeadingLevelOption> = [
         level: 6,
     },
 ];
-
-const isSelectedOption = (editor: Editor, option: LevelOption): boolean => {
-    if (!editor) {
-        return false;
-    }
-
-    if (option.value === 'paragraph') {
-        return editor.isActive('paragraph');
-    }
-
-    return editor.isActive('heading', { level: option.level });
-};
 
 const PREFIX = 'RaRichTextInputLevelSelect';
 const classes = {
