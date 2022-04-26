@@ -10,7 +10,6 @@ export type ResourceDefinitions = {
 
 export type ResourceDefinitionContextValue = {
     definitions: ResourceDefinitions;
-    setDefinition: (config: ResourceDefinition) => void;
     register: (config: ResourceDefinition) => void;
     unregister: (config: ResourceDefinition) => void;
 };
@@ -19,7 +18,6 @@ export const ResourceDefinitionContext = createContext<
     ResourceDefinitionContextValue
 >({
     definitions: {},
-    setDefinition: () => {},
     register: () => {},
     unregister: () => {},
 });
@@ -52,17 +50,6 @@ export const ResourceDefinitionContextProvider = ({
         defaultDefinitions
     );
 
-    const setDefinition = useCallback((config: ResourceDefinition) => {
-        setState(prev =>
-            isEqual(prev[config.name], config)
-                ? prev
-                : {
-                      ...prev,
-                      [config.name]: config,
-                  }
-        );
-    }, []);
-
     const register = useCallback((config: ResourceDefinition) => {
         setState(prev =>
             isEqual(prev[config.name], config)
@@ -82,7 +69,7 @@ export const ResourceDefinitionContextProvider = ({
     }, []);
 
     const contextValue = useMemo(
-        () => ({ definitions, setDefinition, register, unregister }),
+        () => ({ definitions, register, unregister }),
         [definitions] // eslint-disable-line react-hooks/exhaustive-deps
     );
 
