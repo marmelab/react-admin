@@ -7,7 +7,6 @@ import { CoreAdminContext } from './CoreAdminContext';
 import { CoreAdminRoutes } from './CoreAdminRoutes';
 import { Resource } from './Resource';
 import { CoreLayoutProps } from '../types';
-import { testDataProvider } from '../dataProvider';
 
 const ResourceDefinitionsTestComponent = () => {
     const definitions = useResourceDefinitions();
@@ -22,138 +21,84 @@ const ResourceDefinitionsTestComponent = () => {
 };
 
 const MyLayout = ({ children }: CoreLayoutProps) => (
-    <div>
-        <div>
-            <ResourceDefinitionsTestComponent />
-        </div>
-        Layout {children}
-    </div>
+    <>
+        <ResourceDefinitionsTestComponent />
+        {children}
+    </>
 );
 const CatchAll = () => <div />;
 const Loading = () => <>Loading</>;
 
-const authProvider = {
-    login: jest.fn().mockResolvedValue(''),
-    logout: jest.fn().mockResolvedValue(''),
-    checkAuth: jest.fn().mockResolvedValue(''),
-    checkError: jest.fn().mockResolvedValue(''),
-    getPermissions: jest.fn().mockResolvedValue(''),
-};
-
 const TestedComponent = ({ role }) => {
     const history = createMemoryHistory();
-    const getResourcesFromPermissions = _permissions => {
-        if (role === 'admin') {
-            return [
-                <Resource
-                    name="userResource"
-                    list={() => <span>UserResourceList</span>}
-                />,
-                <Resource
-                    name="adminResource"
-                    list={() => <span>AdminResourceList</span>}
-                />,
-            ];
-        }
-        if (role === 'user') {
-            return [
-                <Resource
-                    name="userResource"
-                    list={() => <span>UserResourceList</span>}
-                />,
-            ];
-        }
-        return [];
-    };
 
     return (
-        <CoreAdminContext
-            dataProvider={testDataProvider()}
-            authProvider={authProvider}
-            history={history}
-        >
+        <CoreAdminContext history={history}>
             <CoreAdminRoutes
                 layout={MyLayout}
                 catchAll={CatchAll}
                 loading={Loading}
             >
-                <Resource name="posts" list={() => <span>PostList</span>} />
-                <Resource
-                    name="comments"
-                    list={() => <span>CommentList</span>}
-                />
-                {getResourcesFromPermissions}
+                <Resource name="posts" />
+                <Resource name="comments" />
+                {() =>
+                    role === 'admin'
+                        ? [<Resource name="user" />, <Resource name="admin" />]
+                        : role === 'user'
+                        ? [<Resource name="user" />]
+                        : []
+                }
             </CoreAdminRoutes>
         </CoreAdminContext>
     );
 };
 
-const expectResourceToBeRegistered = (
-    resource: string,
-    shouldBeRegistered = true
-) => {
-    if (shouldBeRegistered) {
-        expect(
-            screen.queryByText(`"name":"${resource}"`, { exact: false })
-        ).not.toBeNull();
-    } else {
-        expect(
-            screen.queryByText(`"name":"${resource}"`, { exact: false })
-        ).toBeNull();
-    }
-};
+const expectResource = (resource: string) =>
+    expect(screen.queryByText(`"name":"${resource}"`, { exact: false }));
 
 describe('useConfigureAdminRouterFromChildren', () => {
-    it('should load unrestricted resource definitions', async () => {
+    it('should always load static resources', async () => {
         render(<TestedComponent role="guest" />);
-        await waitFor(() => expect(screen.getByText('Layout')).not.toBeNull());
-        expectResourceToBeRegistered('posts');
-        expectResourceToBeRegistered('comments');
+        await waitFor(() => expect(screen.queryByText('Loading')).toBeNull());
+        expectResource('posts').not.toBeNull();
+        expectResource('comments').not.toBeNull();
+        expectResource('user').toBeNull();
+        expectResource('admin').toBeNull();
     });
-    it('should load unrestricted and user restricted resource definitions', async () => {
-        render(<TestedComponent role="user" />);
-        await waitFor(() => expect(screen.getByText('Layout')).not.toBeNull());
-        expectResourceToBeRegistered('posts');
-        expectResourceToBeRegistered('comments');
-        expectResourceToBeRegistered('userResource');
-        expectResourceToBeRegistered('adminResource', false);
-    });
-    it('should load unrestricted and admin restricted resource definitions', async () => {
+    it('should load dynamic resource definitions', async () => {
         render(<TestedComponent role="admin" />);
-        await waitFor(() => expect(screen.getByText('Layout')).not.toBeNull());
-        expectResourceToBeRegistered('posts');
-        expectResourceToBeRegistered('comments');
-        expectResourceToBeRegistered('userResource');
-        expectResourceToBeRegistered('adminResource');
+        await waitFor(() => expect(screen.queryByText('Loading')).toBeNull());
+        expectResource('user').not.toBeNull();
+        expectResource('admin').not.toBeNull();
     });
-    it('should add admin resource definitions when logged as user and then as admin', async () => {
+    it('should allow adding new resource after the first render', async () => {
         const { rerender } = render(<TestedComponent role="user" />);
-        await waitFor(() => expect(screen.getByText('Layout')).not.toBeNull());
-        expectResourceToBeRegistered('posts');
-        expectResourceToBeRegistered('comments');
-        expectResourceToBeRegistered('userResource');
-        expectResourceToBeRegistered('adminResource', false);
+        await waitFor(() => expect(screen.queryByText('Loading')).toBeNull());
+        expectResource('posts').not.toBeNull();
+        expectResource('comments').not.toBeNull();
+        expectResource('user').not.toBeNull();
+        expectResource('admin').toBeNull();
 
         rerender(<TestedComponent role="admin" />);
-        await waitFor(() => expectResourceToBeRegistered('adminResource'));
-        expectResourceToBeRegistered('posts');
-        expectResourceToBeRegistered('comments');
-        expectResourceToBeRegistered('userResource');
+        await waitFor(() => expect(screen.queryByText('Loading')).toBeNull());
+        expectResource('posts').not.toBeNull();
+        expectResource('comments').not.toBeNull();
+        expectResource('user').not.toBeNull();
+        expectResource('admin').not.toBeNull();
     });
-    it('should remove admin resource definitions when logged as admin and then as user', async () => {
+    it('should allow removing a resource after the first render', async () => {
         const { rerender } = render(<TestedComponent role="admin" />);
-        await waitFor(() => expect(screen.getByText('Layout')).not.toBeNull());
-        expectResourceToBeRegistered('posts');
-        expectResourceToBeRegistered('comments');
-        expectResourceToBeRegistered('userResource');
-        expectResourceToBeRegistered('adminResource');
+        await waitFor(() => expect(screen.queryByText('Loading')).toBeNull());
+        expectResource('posts').not.toBeNull();
+        expectResource('comments').not.toBeNull();
+        expectResource('user').not.toBeNull();
+        expectResource('admin').not.toBeNull();
 
         rerender(<TestedComponent role="user" />);
-        await waitFor(() =>
-            expectResourceToBeRegistered('adminResource', false)
-        );
-        expectResourceToBeRegistered('posts');
-        expectResourceToBeRegistered('comments');
-        expectResourceToBeRegistered('userResource');
+        await waitFor(() => expect(screen.queryByText('Loading')).toBeNull());
+        expectResource('posts').not.toBeNull();
+        expectResource('comments').not.toBeNull();
+        expectResource('user').not.toBeNull();
+        expectResource('admin').toBeNull();
     });
 });
