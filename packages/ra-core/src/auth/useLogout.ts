@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { removeDoubleSlashes } from '../routing/useCreatePath';
 import { useLocation, useNavigate, Path } from 'react-router-dom';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import { useResetStore } from '../store';
 import { useBasename } from '../routing';
-import { useResetResourceDefinitions } from '../core/useResetResourceDefinitions';
+import { removeDoubleSlashes } from '../routing/useCreatePath';
 
 /**
  * Get a callback for calling the authProvider.logout() method,
@@ -28,7 +27,6 @@ import { useResetResourceDefinitions } from '../core/useResetResourceDefinitions
 const useLogout = (): Logout => {
     const authProvider = useAuthProvider();
     const resetStore = useResetStore();
-    const resetResources = useResetResourceDefinitions();
     const navigate = useNavigate();
     // useNavigate forces rerenders on every navigation, even if we don't use the result
     // see https://github.com/remix-run/react-router/issues/7634
@@ -66,7 +64,6 @@ const useLogout = (): Logout => {
             authProvider.logout(params).then(redirectToFromProvider => {
                 if (redirectToFromProvider === false) {
                     resetStore();
-                    resetResources();
                     // do not redirect
                     return;
                 }
@@ -97,11 +94,10 @@ const useLogout = (): Logout => {
                 }
                 navigateRef.current(newLocation, newLocationOptions);
                 resetStore();
-                resetResources();
 
                 return redirectToFromProvider;
             }),
-        [authProvider, resetStore, resetResources, loginUrl]
+        [authProvider, resetStore, loginUrl]
     );
 
     const logoutWithoutProvider = useCallback(

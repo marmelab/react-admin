@@ -14,7 +14,7 @@ import {
     ResourceProps,
 } from '../types';
 import { CustomRoutesProps } from './CustomRoutes';
-import { useRegisterResource } from './useRegisterResource';
+import { useResourceDefinitionContext } from './useResourceDefinitionContext';
 
 /**
  * This hook inspects the CoreAdminRouter children and returns them separated in three groups:
@@ -41,7 +41,7 @@ export const useConfigureAdminRouterFromChildren = (
     const getPermissions = useGetPermissions();
     const doLogout = useLogout();
     const { authenticated } = useAuthState();
-    const registerResource = useRegisterResource();
+    const { register, unregister } = useResourceDefinitionContext();
     // Gather custom routes and resources that were declared as direct children of CoreAdminRouter
     // e.g. Not returned from the child function (if any)
     // We need to know right away wether some resources were declared to correctly
@@ -155,14 +155,31 @@ export const useConfigureAdminRouterFromChildren = (
                 const definition = ((resource.type as unknown) as ResourceWithRegisterFunction).registerResource(
                     resource.props
                 );
-                registerResource(definition);
+                register(definition);
             } else {
                 throw new Error(
                     'When using a custom Resource element, it must have a static registerResource method accepting its props and returning a ResourceDefinition'
                 );
             }
         });
-    }, [registerResource, resources]);
+        return () => {
+            resources.forEach(resource => {
+                if (
+                    typeof ((resource.type as unknown) as ResourceWithRegisterFunction)
+                        .registerResource === 'function'
+                ) {
+                    const definition = ((resource.type as unknown) as ResourceWithRegisterFunction).registerResource(
+                        resource.props
+                    );
+                    unregister(definition);
+                } else {
+                    throw new Error(
+                        'When using a custom Resource element, it must have a static registerResource method accepting its props and returning a ResourceDefinition'
+                    );
+                }
+            });
+        };
+    }, [register, unregister, resources]);
 
     return {
         customRoutesWithLayout,
