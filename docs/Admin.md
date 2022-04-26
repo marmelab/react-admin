@@ -532,4 +532,4 @@ function AsyncResources() {
 }
 ```
 
-In this example, we override the `<AdminUI ready>` component to prevent the admin from displaying [the ready screen](#ready) in development while the list of resources is loading. You can also set `ready` prop to `<Loading>` to show that the resources afe loading. 
+In this example, we override the `<AdminUI ready>` component to prevent the admin from displaying [the ready screen](#ready) in development while the list of resources is loading. You can also set `ready` prop to `<Loading>` to show that the resources are loading.
