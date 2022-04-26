@@ -524,7 +524,7 @@ function AsyncResources() {
     }, []);
 
     return (
-        <AdminUI ready={() => <Loading />}>
+        <AdminUI ready={Loading}>
             {resources.map(resource => (
                 <Resource name={resource.name} key={resource.key} list={ListGuesser} />
             ))}
