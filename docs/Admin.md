@@ -500,7 +500,6 @@ import {
     localStorageStore,
     Resource,
     ListGuesser,
-    Loading,
     useDataProvider,
 } from 'react-admin';
 
@@ -524,7 +523,7 @@ function AsyncResources() {
     }, []);
 
     return (
-        <AdminUI ready={Loading}>
+        <AdminUI ready={() => <span />}>
             {resources.map(resource => (
                 <Resource name={resource.name} key={resource.key} list={ListGuesser} />
             ))}
@@ -533,4 +532,4 @@ function AsyncResources() {
 }
 ```
 
-In this example, we override the `<AdminUI ready>` component to prevent the admin from displaying [the ready screen](#ready) while the list of resources is loading.
+In this example, we override the `<AdminUI ready>` component to prevent the admin from displaying [the ready screen](#ready) in development while the list of resources is loading. You can also set `ready` prop to `<Loading>` to show that the resources afe loading. 
