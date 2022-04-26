@@ -51,7 +51,7 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
     }, [checkAuth, requireAuth]);
 
     if (status === 'empty') {
-        return <Ready />;
+        return oneSecondHasPassed ? <Ready /> : null;
     }
 
     if (status === 'loading' || !canRender) {

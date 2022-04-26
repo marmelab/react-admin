@@ -98,6 +98,7 @@ export const CoreAdmin = (props: CoreAdminProps) => {
         loading,
         loginPage,
         menu, // deprecated, use a custom layout instead
+        ready,
         requireAuth,
         title = 'React Admin',
     } = props;
@@ -120,6 +121,7 @@ export const CoreAdmin = (props: CoreAdminProps) => {
                 loading={loading}
                 loginPage={loginPage}
                 requireAuth={requireAuth}
+                ready={ready}
             >
                 {children}
             </CoreAdminUI>
