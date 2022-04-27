@@ -45,7 +45,7 @@ If you can't find a Data Provider for your backend below, no worries! [Writing a
 * **[PostgREST](https://postgrest.org/)**: [raphiniert-com/ra-data-postgrest](https://github.com/raphiniert-com/ra-data-postgrest)
 * **[Prisma](https://github.com/weakky/ra-data-prisma)**: [weakky/ra-data-prisma](https://github.com/weakky/ra-data-prisma)
 * **[Prisma Version 2](https://www.prisma.io/)**: [panter/ra-data-prisma](https://github.com/panter/ra-data-prisma)
-* **[Prisma](https://www.npmjs.com/package/ra-data-simple-prisma)**: [codeledge/ra-prisma](https://github.com/codeledge/ra-prisma)
+* **[Prisma NextJS](https://www.npmjs.com/package/ra-data-simple-prisma)**: [codeledge/ra-prisma](https://github.com/codeledge/ra-prisma-nextjs)
 * **[ProcessMaker3](https://www.processmaker.com/)**: [ckoliber/ra-data-processmaker3](https://github.com/ckoliber/ra-data-processmaker3)
 * **[REST-HAPI](https://github.com/JKHeadley/rest-hapi)**: [ra-data-rest-hapi](https://github.com/mkg20001/ra-data-rest-hapi)
 * **[Sails.js](https://sailsjs.com/)**: [mpampin/ra-data-json-sails](https://github.com/mpampin/ra-data-json-sails)
