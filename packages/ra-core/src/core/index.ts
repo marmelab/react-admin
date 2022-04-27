@@ -8,7 +8,7 @@ export * from './ResourceContext';
 export * from './ResourceContextProvider';
 export * from './ResourceDefinitionContext';
 export * from './useGetResourceLabel';
-export * from './useRegisterResource';
+export * from './useResourceDefinitionContext';
 export * from './useResourceContext';
 export * from './useResourceDefinition';
 export * from './useResourceDefinitions';

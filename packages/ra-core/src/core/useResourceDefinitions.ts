@@ -1,9 +1,5 @@
-import { useContext } from 'react';
-
-import {
-    ResourceDefinitionContext,
-    ResourceDefinitions,
-} from './ResourceDefinitionContext';
+import { ResourceDefinitions } from './ResourceDefinitionContext';
+import { useResourceDefinitionContext } from './useResourceDefinitionContext';
 
 /**
  * Get the definition of the all resources
@@ -23,4 +19,4 @@ import {
  * // }
  */
 export const useResourceDefinitions = (): ResourceDefinitions =>
-    useContext(ResourceDefinitionContext)[0];
+    useResourceDefinitionContext().definitions;

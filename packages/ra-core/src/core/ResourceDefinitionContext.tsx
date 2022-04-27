@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createContext, useCallback, useState } from 'react';
+import { createContext, useCallback, useState, useMemo } from 'react';
 import isEqual from 'lodash/isEqual';
 
 import { ResourceDefinition } from '../types';
@@ -8,14 +8,19 @@ export type ResourceDefinitions = {
     [name: string]: ResourceDefinition;
 };
 
-export type ResourceDefinitionContextValue = [
-    ResourceDefinitions,
-    (config: ResourceDefinition) => void
-];
+export type ResourceDefinitionContextValue = {
+    definitions: ResourceDefinitions;
+    register: (config: ResourceDefinition) => void;
+    unregister: (config: ResourceDefinition) => void;
+};
 
 export const ResourceDefinitionContext = createContext<
     ResourceDefinitionContextValue
->([{}, () => {}]);
+>({
+    definitions: {},
+    register: () => {},
+    unregister: () => {},
+});
 
 /**
  * Context to store the current resource Definition.
@@ -45,7 +50,7 @@ export const ResourceDefinitionContextProvider = ({
         defaultDefinitions
     );
 
-    const setDefinition = useCallback((config: ResourceDefinition) => {
+    const register = useCallback((config: ResourceDefinition) => {
         setState(prev =>
             isEqual(prev[config.name], config)
                 ? prev
@@ -56,10 +61,20 @@ export const ResourceDefinitionContextProvider = ({
         );
     }, []);
 
+    const unregister = useCallback((config: ResourceDefinition) => {
+        setState(prev => {
+            const { [config.name]: _, ...rest } = prev;
+            return rest;
+        });
+    }, []);
+
+    const contextValue = useMemo(
+        () => ({ definitions, register, unregister }),
+        [definitions] // eslint-disable-line react-hooks/exhaustive-deps
+    );
+
     return (
-        <ResourceDefinitionContext.Provider
-            value={[definitions, setDefinition]}
-        >
+        <ResourceDefinitionContext.Provider value={contextValue}>
             {children}
         </ResourceDefinitionContext.Provider>
     );

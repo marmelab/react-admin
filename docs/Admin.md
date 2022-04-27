@@ -500,6 +500,7 @@ import {
     localStorageStore,
     Resource,
     ListGuesser,
+    Loading,
     useDataProvider,
 } from 'react-admin';
 
@@ -523,7 +524,7 @@ function AsyncResources() {
     }, []);
 
     return (
-        <AdminUI>
+        <AdminUI ready={Loading}>
             {resources.map(resource => (
                 <Resource name={resource.name} key={resource.key} list={ListGuesser} />
             ))}
@@ -531,3 +532,5 @@ function AsyncResources() {
     );
 }
 ```
+
+In this example, we override the `<AdminUI ready>` component to prevent the admin from displaying [the ready screen](#ready) in development while the list of resources is empty.

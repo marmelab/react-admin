@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef } from 'react';
+import { useLocation, useNavigate, Path } from 'react-router-dom';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import { useResetStore } from '../store';
 import { useBasename } from '../routing';
 import { removeDoubleSlashes } from '../routing/useCreatePath';
-import { useLocation, useNavigate, Path } from 'react-router-dom';
 
 /**
  * Get a callback for calling the authProvider.logout() method,
