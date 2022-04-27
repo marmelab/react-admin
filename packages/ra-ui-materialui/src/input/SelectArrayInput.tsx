@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, ChangeEvent } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
@@ -17,6 +17,7 @@ import {
     useInput,
     useChoicesContext,
     useChoices,
+    RaRecord,
 } from 'ra-core';
 import { InputHelperText } from './InputHelperText';
 import { FormControlProps } from '@mui/material/FormControl';
@@ -143,12 +144,11 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
     });
 
     const handleChange = useCallback(
-        (eventOrChoice: any) => {
+        (eventOrChoice: ChangeEvent<HTMLInputElement> | RaRecord) => {
             // We might receive an event from the mui component
             // In this case, it will be the choice id
-            // eslint-disable-next-line eqeqeq
-            if (eventOrChoice?.target?.value != undefined) {
-                field.onChange(eventOrChoice.target.value);
+            if (eventOrChoice?.target) {
+                field.onChange(eventOrChoice);
             } else {
                 // Or we might receive a choice directly, for instance a newly created one
                 field.onChange([
@@ -295,6 +295,7 @@ export type SelectArrayInputProps = ChoicesProps &
     Omit<FormControlProps, 'defaultValue' | 'onBlur' | 'onChange'> & {
         disableValue?: string;
         source?: string;
+        onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
     };
 
 SelectArrayInput.propTypes = {

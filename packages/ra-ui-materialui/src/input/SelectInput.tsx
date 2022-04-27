@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement, useCallback } from 'react';
+import { ReactElement, useCallback, ChangeEvent } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import MenuItem from '@mui/material/MenuItem';
@@ -12,6 +12,7 @@ import {
     useTranslate,
     ChoicesProps,
     useChoices,
+    RaRecord,
 } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
@@ -183,12 +184,11 @@ export const SelectInput = (props: SelectInputProps) => {
     ]);
 
     const handleChange = useCallback(
-        async (eventOrChoice: any) => {
+        async (eventOrChoice: ChangeEvent<HTMLInputElement> | RaRecord) => {
             // We might receive an event from the mui component
             // In this case, it will be the choice id
-            // eslint-disable-next-line eqeqeq
-            if (eventOrChoice?.target?.value != undefined) {
-                field.onChange(eventOrChoice.target.value);
+            if (eventOrChoice?.target) {
+                field.onChange(eventOrChoice);
             } else {
                 // Or we might receive a choice directly, for instance a newly created one
                 field.onChange(getChoiceValue(eventOrChoice));
@@ -373,10 +373,11 @@ const StyledResettableTextField = styled(ResettableTextField, {
 export type SelectInputProps = Omit<CommonInputProps, 'source'> &
     ChoicesProps &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
-    Omit<TextFieldProps, 'label' | 'helperText' | 'classes'> & {
+    Omit<TextFieldProps, 'label' | 'helperText' | 'classes' | 'onChange'> & {
         disableValue?: string;
         emptyText?: string | ReactElement;
         emptyValue?: any;
         // Source is optional as AutocompleteInput can be used inside a ReferenceInput that already defines the source
         source?: string;
+        onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
     };
