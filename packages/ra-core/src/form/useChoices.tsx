@@ -13,7 +13,7 @@ export type OptionTextFunc = (choice: any) => string | OptionTextElement;
 export type OptionText = OptionTextElement | OptionTextFunc | string;
 
 export interface ChoicesProps {
-    choices?: RaRecord[];
+    choices?: any[];
     isFetching?: boolean;
     isLoading?: boolean;
     optionValue?: string;
