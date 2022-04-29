@@ -1,9 +1,11 @@
-import React, {
+import * as React from 'react';
+import {
     Children,
     Fragment,
     ReactElement,
     ReactNode,
     useEffect,
+    useRef,
 } from 'react';
 import { useLogout, useGetPermissions, useAuthState } from '../auth';
 import { useSafeSetState } from '../util';
@@ -41,6 +43,7 @@ export const useConfigureAdminRouterFromChildren = (
     const getPermissions = useGetPermissions();
     const doLogout = useLogout();
     const { authenticated } = useAuthState();
+    const permissions = useRef();
     const { register, unregister } = useResourceDefinitionContext();
     // Gather custom routes and resources that were declared as direct children of CoreAdminRouter
     // e.g. Not returned from the child function (if any)
@@ -68,27 +71,6 @@ export const useConfigureAdminRouterFromChildren = (
 
     // Whenever children are updated, update our custom routes and resources
     useEffect(() => {
-        const routesAndResources = getRoutesAndResourceFromNodes(children);
-        setCustomRoutesWithLayout(routesAndResources.customRoutesWithLayout);
-        setCustomRoutesWithoutLayout(
-            routesAndResources.customRoutesWithoutLayout
-        );
-        setResources(routesAndResources.resources);
-        setStatus(
-            getStatus({
-                children,
-                ...routesAndResources,
-            })
-        );
-    }, [
-        children,
-        setCustomRoutesWithLayout,
-        setCustomRoutesWithoutLayout,
-        setResources,
-        setStatus,
-    ]);
-
-    useEffect(() => {
         const resolveChildFunction = async (
             childFunc: RenderResourcesFunction
         ) => {
@@ -108,29 +90,55 @@ export const useConfigureAdminRouterFromChildren = (
             };
 
             try {
-                const permissions = await getPermissions();
-                const childrenFuncResult = childFunc(permissions);
+                const childrenFuncResult = childFunc(permissions.current);
                 if ((childrenFuncResult as Promise<ReactNode>).then) {
                     (childrenFuncResult as Promise<ReactNode>).then(
                         resolvedChildren => {
                             updateRoutesAndResources(resolvedChildren);
+                            setStatus('ready');
                         }
                     );
                 } else {
                     updateRoutesAndResources(childrenFuncResult);
+                    setStatus('ready');
                 }
-
-                setStatus('ready');
             } catch (error) {
                 console.error(error);
                 doLogout();
             }
         };
 
-        const functionChild = getSingleChildFunction(children);
-        if (functionChild) {
-            resolveChildFunction(functionChild);
-        }
+        const updateFromChildren = async () => {
+            try {
+                const newPermissions = await getPermissions();
+                permissions.current = newPermissions;
+            } catch (error) {
+                console.error(error);
+                doLogout();
+            }
+
+            const functionChild = getSingleChildFunction(children);
+            const routesAndResources = getRoutesAndResourceFromNodes(children);
+            setCustomRoutesWithLayout(
+                routesAndResources.customRoutesWithLayout
+            );
+            setCustomRoutesWithoutLayout(
+                routesAndResources.customRoutesWithoutLayout
+            );
+            setResources(routesAndResources.resources);
+            setStatus(
+                !!functionChild
+                    ? 'loading'
+                    : routesAndResources.resources.length > 0
+                    ? 'ready'
+                    : 'empty'
+            );
+
+            if (functionChild) {
+                resolveChildFunction(functionChild);
+            }
+        };
+        updateFromChildren();
     }, [
         authenticated,
         children,
@@ -150,7 +158,8 @@ export const useConfigureAdminRouterFromChildren = (
                     .registerResource === 'function'
             ) {
                 const definition = ((resource.type as unknown) as ResourceWithRegisterFunction).registerResource(
-                    resource.props
+                    resource.props,
+                    permissions.current
                 );
                 register(definition);
             } else {
@@ -166,7 +175,8 @@ export const useConfigureAdminRouterFromChildren = (
                         .registerResource === 'function'
                 ) {
                     const definition = ((resource.type as unknown) as ResourceWithRegisterFunction).registerResource(
-                        resource.props
+                        resource.props,
+                        permissions.current
                     );
                     unregister(definition);
                 } else {
@@ -207,7 +217,10 @@ const getStatus = ({
 };
 
 type ResourceWithRegisterFunction = {
-    registerResource: (props: ResourceProps) => ResourceDefinition;
+    registerResource: (
+        props: ResourceProps,
+        permissions: any
+    ) => ResourceDefinition;
 };
 
 /**

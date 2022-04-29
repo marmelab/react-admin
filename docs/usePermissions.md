@@ -70,20 +70,9 @@ import { usePermissions } from "@react-admin/ra-rbac";
 
 const authProvider = {
     // ...
-    getPermissions: () => Promise.resolve({
-        permissions: [
-            { action: ["read", "write"], resource: "users", record: { "id": "123" } },
-        ],
-        roles: ["reader"],
-    }),
-    getRoles: () => Promise.resolve({
-        admin: [
-            { action: "*", resource: "*" }
-        ],
-        reader: [
-            { action: "read", resource: "*" }
-        ]
-    })
+    getPermissions: () => Promise.resolve([
+        { action: ["read", "write"], resource: "users", record: { "id": "123" } },
+    ])
 };
 
 const { isLoading, permissions } = usePermissions();

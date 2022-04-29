@@ -182,39 +182,24 @@ const allProductsButStock = [
 
 ## `authProvider` Methods
 
-Ra-rbac builds up on react-admin's `authProvider` API. It precises the return format of the `getPermissions()` method, and requires a new `getRoles()` method.
-
-- `getPermissions()` must return a promise for object containing `permissions` (an array of permissions) and `roles` (an array of roles).
-- `getRoles()` must return a promise for an object containing role definition.
+Ra-rbac builds up on react-admin's `authProvider` API. It precises the return format of the `getPermissions()` method which must return a promise for object containing `permissions` (an array of permissions).
 
 ```jsx
 const authProvider = {
     // ...
-    getPermissions: () => Promise.resolve({
-        "permissions": [
-            { action: ["read", "write"], resource: "users", record: { "id": "123" } },
-        ],
-        "roles": ["reader"],
-    }),
-    getRoles: () => Promise.resolve({
-        "admin": [
-            { action: "*", resource: "*" }
-        ],
-        "reader": [
-            { action: "read", resource: "*" }
-        ]
-    })
+    getPermissions: () => Promise.resolve([
+        { action: ["read", "write"], resource: "users", record: { "id": "123" } },
+    ])
 };
 ```
 
-For every restricted resource, ra-rbac calls `authProvider.getPermissions()` to get the user roles and permissions. If `getPermissions()` returns at least one role, ra-rbac also calls `authProvider.getRoles()` to get the role definitions. It then merges permissions and role definitions to build up the user permissions.
+For every restricted resource, ra-rbac calls `authProvider.getPermissions()` to get the permissions.
 
 For the example dataProvider above, this translates to the following set of permissions:
 
-- `{ action: "read", resource: "*" }` (from the `reader` role)
-- `{ action: ["read", "write"], resource: "users", record: { "id": "123" } }` (from the `permissions` key)
+`{ action: ["read", "write"], resource: "users", record: { "id": "123" } }`
 
-In practice, the roles and permissions are usually returned upon login rather than in the `authProvider` code. The authProvider stores the roles and permissions in memory or localStorage. The `authProvider.getPermissions()` and `authProvider.getRoles()` methods only retrieve the roles and permissions from localStorage. 
+In practice, the permissions are usually returned upon login rather than in the `authProvider` code. The authProvider stores the permissions in memory or localStorage. The `authProvider.getPermissions()` method only retrieve the permissions from localStorage. 
 
 ```jsx
 const authProvider = {
@@ -233,15 +218,11 @@ const authProvider = {
             })
             .then(data => {
                 localStorage.setItem('permissions', JSON.stringify(data.permissions));
-                localStorage.setItem('roles', JSON.stringify(data.roles));
             });
     },
     // ...
     getPermissions: () => {
         return JSON.parse(localStorage.getItem("permissions"));
-    },
-    getRoles: () => {
-        return JSON.parse(localStorage.getItem("roles"));
     },
 };
 ```
@@ -382,7 +363,7 @@ const App = () => (
 
 ## Performance
 
-`authProvider.getPermissions()` and `authProvider.getRoles()` can return promises, which in theory allows to rely on the authentication server for permissions. The downside is that this slows down the app a great deal, as each page may contain dozens of calls to these methods.
+`authProvider.getPermissions()` can return a promise, which in theory allows to rely on the authentication server for permissions. The downside is that this slows down the app a great deal, as each page may contain dozens of calls to these methods.
 
 In practice, your `authProvider` should use short-lived sessions, and refresh the permissions only when the session ends. JSON Web tokens (JWT) work that way.
 
@@ -400,20 +381,6 @@ const getPermissions = () => {
             .then(data => {
                 permissions = data.permissions;
                 permissionsExpiresAt = Date.now() + 1000 * 60 * 5; // 5 minutes
-            });
-}
-
-let roles; // memory cache
-let rolesExpiresAt = 0; 
-const getRoles = () => {
-    const request = new Request('https://mydomain.com/roles', {
-            headers: new Headers({ 'Authorization': `Bearer ${localStorage.getItem('token')}` }),
-        });
-        return fetch(request)
-            .then(res => resp.json())
-            .then(data => {
-                roles = data.roles;
-                rolesExpiresAt = Date.now() + 1000 * 60 * 5; // 5 minutes
             });
 }
 
@@ -438,9 +405,6 @@ const authProvider = {
     // ...
     getPermissions: () => {
         return Date.now() > permissionsExpiresAt ? getPermissions() : permissions;
-    },
-    getRoles: () => {
-        return Date.now() > rolesExpiresAt ? getRoles() : roles;
     },
 };
 ```
