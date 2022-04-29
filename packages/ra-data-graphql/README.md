@@ -1,15 +1,13 @@
 # ra-data-graphql
 
 A GraphQL data provider for [react-admin](https://github.com/marmelab/react-admin/)
-built with [Apollo](https://www.apollodata.com/)
+based on **introspection**. Built with [Apollo](https://www.apollodata.com/)
+
+This is a low level library designed to be used as a base of other GraphQL providers (such as `ra-data-graphql-simple`). Do not use it directly. If you want to build a GraphQL data provider **without using introspection**, don't use this package but follow the [Writing a data provider](https://marmelab.com/react-admin/DataProviderWriting.html#getlist) documentation.
 
 - [Installation](#installation)
 - [Usage](#installation)
 - [Options](#options)
-
-This is a very low level library which is not meant to be used directly unless you really want full control or are building a custom GraphQL data provider.
-
-It provides the foundations for other GraphQL data provider packages such as `ra-data-graphql-simple`
 
 ## About GraphQL and Apollo
 
