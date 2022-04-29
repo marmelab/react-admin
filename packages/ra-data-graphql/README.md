@@ -1,20 +1,15 @@
 # ra-data-graphql
 
-A GraphQL data provider for [react-admin](https://github.com/marmelab/react-admin/)
-built with [Apollo](https://www.apollodata.com/)
+Tools for building a GraphQL data provider for [react-admin](https://github.com/marmelab/react-admin/)
+based on **introspection**. Built with [Apollo Client](https://www.apollographql.com/apollo-client)
+
+This is a low level library designed to be used as a base of other GraphQL providers (such as `ra-data-graphql-simple`). Do not use it directly. If you want to build a GraphQL data provider **without using introspection**, don't use this package but follow the [Writing a data provider](https://marmelab.com/react-admin/DataProviderWriting.html#getlist) documentation.
 
 - [Installation](#installation)
 - [Usage](#installation)
 - [Options](#options)
 
-This is a very low level library which is not meant to be used directly unless you really want full control or are building a custom GraphQL data provider.
-
-It provides the foundations for other GraphQL data provider packages such as `ra-data-graphql-simple`
-
-## About GraphQL and Apollo
-
-This library is meant to be used with Apollo on the **client** side but
-you're free to use any graphql **server**.
+Note: This library is meant to be used with Apollo on the **client** side, but you're free to use any graphql **server**.
 
 ## How does it work?
 
@@ -26,7 +21,7 @@ Once the query and the function are passed back to `ra-data-graphql`, the actual
 
 Below is a rough graph summarizing how the data flows:
 
-`ra-core` => `ra-data-graphql` => `your-adaptator` => `ra-data-graphql` => `ra-core`
+`ra-core` => `ra-data-graphql` => `your-adapter` => `ra-data-graphql` => `ra-core`
 
 ## Installation
 
