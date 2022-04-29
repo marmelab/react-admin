@@ -35,7 +35,9 @@ import { listFieldTypes } from './listFieldTypes';
  * );
  */
 export const ListGuesser = <RecordType extends RaRecord = any>() => {
-    const controllerProps = useListController<RecordType>();
+    const controllerProps = useListController<RecordType>({
+        queryOptions: { keepPreviousData: false },
+    });
     return (
         <ListContextProvider value={controllerProps}>
             <ListViewGuesser {...controllerProps} />
@@ -47,6 +49,11 @@ const ListViewGuesser = (props: Omit<ListViewProps, 'children'>) => {
     const { data } = useListContext(props);
     const resource = useResourceContext();
     const [inferredChild, setInferredChild] = useState(null);
+
+    useEffect(() => {
+        setInferredChild(null);
+    }, [resource]);
+
     useEffect(() => {
         if (data && data.length > 0 && !inferredChild) {
             const inferredElements = getElementsFromRecords(
