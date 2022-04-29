@@ -69,6 +69,7 @@ dataProvider.getManyReference('comments', {
     id: 123,
     sort: { field: 'created_at', order: 'DESC' }
 });
+dataProvider.create('posts', { data: { title: "hello, world" } });
 dataProvider.update('posts', {
     id: 123,
     data: { title: "hello, world!" },
@@ -78,7 +79,6 @@ dataProvider.updateMany('posts', {
     ids: [123, 234],
     data: { views: 0 },
 });
-dataProvider.create('posts', { data: { title: "hello, world" } });
 dataProvider.delete('posts', {
     id: 123,
     previousData: { title: "hello, world" }
@@ -273,12 +273,11 @@ export default {
 };
 ```
 
-## Example Implementation
+## Example REST Implementation
 
 Let's say that you want to map the react-admin requests to a REST backend exposing the following API:
 
-
-### getList
+**getList**
 
 ```
 GET http://path.to.my.api/posts?sort=["title","ASC"]&range=[0, 4]&filter={"author_id":12}
@@ -295,7 +294,7 @@ Content-Range: posts 0-4/27
 ]
 ```
 
-### getOne
+**getOne**
 
 ```
 GET http://path.to.my.api/posts/123
@@ -305,7 +304,7 @@ Content-Type: application/json
 { "id": 123, "title": "hello, world", "author_id": 12 }
 ```
 
-### getMany
+**getMany**
 
 ```
 GET http://path.to.my.api/posts?filter={"ids":[123,124,125]}
@@ -319,7 +318,7 @@ Content-Type: application/json
 ]
 ```
 
-### getManyReference
+**getManyReference**
 
 ```
 GET http://path.to.my.api/comments?sort=["created_at","DESC"]&range=[0, 24]&filter={"post_id":123}
@@ -333,7 +332,7 @@ Content-Range: comments 0-1/2
 ]
 ```
 
-### create
+**create**
 
 ```
 POST http://path.to.my.api/posts
@@ -344,7 +343,7 @@ Content-Type: application/json
 { "id": 123, "title": "hello, world", "author_id": 12 }
 ```
 
-### update
+**update**
 
 ```
 PUT http://path.to.my.api/posts/123
@@ -355,7 +354,7 @@ Content-Type: application/json
 { "id": 123, "title": "hello, world!", "author_id": 12 }
 ```
 
-### updateMany
+**updateMany**
 
 ```
 PUT http://path.to.my.api/posts?filter={"id":[123,124,125]}
@@ -366,7 +365,7 @@ Content-Type: application/json
 [123, 124, 125]
 ```
 
-### delete
+**delete**
 
 ```
 DELETE http://path.to.my.api/posts/123
@@ -376,7 +375,7 @@ Content-Type: application/json
 { "id": 123, "title": "hello, world", "author_id": 12 }
 ```
 
-### deleteMany
+**deleteMany**
 
 ```
 DELETE http://path.to.my.api/posts?filter={"id":[123,124,125]}
@@ -444,6 +443,14 @@ export default {
         }));
     },
 
+    create: (resource, params) =>
+        httpClient(`${apiUrl}/${resource}`, {
+            method: 'POST',
+            body: JSON.stringify(params.data),
+        }).then(({ json }) => ({
+            data: { ...params.data, id: json.id },
+        })),
+
     update: (resource, params) =>
         httpClient(`${apiUrl}/${resource}/${params.id}`, {
             method: 'PUT',
@@ -460,14 +467,6 @@ export default {
         }).then(({ json }) => ({ data: json }));
     },
 
-    create: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}`, {
-            method: 'POST',
-            body: JSON.stringify(params.data),
-        }).then(({ json }) => ({
-            data: { ...params.data, id: json.id },
-        })),
-
     delete: (resource, params) =>
         httpClient(`${apiUrl}/${resource}/${params.id}`, {
             method: 'DELETE',
@@ -482,6 +481,365 @@ export default {
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json }));
     },
+};
+```
+
+## Example GraphQL Implementation
+
+There are two ways to implement a GraphQL Data Provider: 
+
+- Write the queries and mutations by hand - that's what's described in this section.
+- Take advantage of GraphQL introspection capabilities, and let the data provider "guess" the queries and mutations. For this second case, use [ra-data-graphql](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-graphql) as the basis of your provider.
+
+Let’s say that you want to map the react-admin requests to a GraphQL backend exposing the following API (inspired by [the Hasura GraphQL syntax](https://hasura.io/docs/latest/graphql/core/api-reference/graphql-api/index/)):
+
+**getList**
+
+```
+query {
+    posts(limit: 4, offset: 0, order_by: { title: 'asc' }, where: { author_id: { _eq: 12 } }) {
+        id
+        title
+        body
+        author_id
+        created_at
+    }
+    posts_aggregate(where: where: { author_id: { _eq: 12 } }) {
+        aggregate {
+            count
+        }
+    }
+}
+```
+
+**getOne**
+
+```
+query {
+    posts_by_pk(id: 123) {
+        id
+        title
+        body
+        author_id
+        created_at
+    }
+}
+```
+
+**getMany**
+
+```
+query {
+    posts(where: { id: { _in: [123, 124, 125] } }) {
+        id
+        title
+        body
+        author_id
+        created_at
+    }
+}
+```
+
+**getManyReference**
+
+```
+query {
+    posts(where: { author_id: { _eq: 12 } }) {
+        id
+        title
+        body
+        author_id
+        created_at
+    }
+}
+```
+
+**create**
+
+```
+mutation {
+    insert_posts_one(objects: { title: "hello, world!", author_id: 12 }) {
+        id
+        title
+        body
+        author_id
+        created_at
+    }
+}
+```
+
+**update**
+
+```
+mutation {
+    update_posts_by_pk(pk_columns: { id: 123 }, _set: { title: "hello, world!" }) {
+        id
+        title
+        body
+        author_id
+        created_at
+    }
+}
+```
+
+**updateMany**
+
+```
+mutation {
+    update_posts(where: { id: { _in: [123, 124, 125] } }, _set: { title: "hello, world!" }) {
+        affected_rows
+    }
+}
+```
+
+**delete**
+
+```
+mutation {
+    delete_posts_by_pk(id: 123) {
+        id
+        title
+        body
+        author_id
+        created_at
+    }
+}
+```
+
+**deleteMany**
+
+```
+mutation {
+    delete_posts(where: { id: { _in: [123, 124, 125] } }) {
+        affected_rows
+    }
+}
+```
+
+Here is an example implementation, that you can use as a base for your own Data Providers:
+
+```js
+import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
+import { omit } from "lodash";
+
+const apiUrl = 'https://my.api.com/v1/graphql';
+
+const client = new ApolloClient({
+  uri: apiUrl,
+  headers: { "x-graphql-token": "YYY" },
+  cache: new InMemoryCache(),
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'no-cache',
+      errorPolicy: 'ignore',
+    },
+    query: {
+      fetchPolicy: 'no-cache',
+      errorPolicy: 'all',
+    },
+  }
+});
+
+const fields = {
+  posts: "id title body author_id created_at",
+  authors: "id name"
+};
+
+export const dataProvider = {
+  getList: (resource, { sort, pagination, filter }) => {
+    const { field, order } = sort;
+    const { page, perPage } = pagination;
+    return client
+      .query({
+        query: gql`
+            query ($limit: Int, $offset: Int, $order_by: [${resource}_order_by!], $where: ${resource}_bool_exp) {
+                ${resource}(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {
+                    ${fields[resource]}
+                }
+                ${resource}_aggregate(where: $where) {
+                    aggregate {
+                        count
+                    }
+                }
+            }`,
+        variables: {
+          limit: perPage,
+          offset: (page - 1) * perPage,
+          order_by: { [field]: order.toLowerCase() },
+          where: Object.keys(filter).reduce(
+            (prev, key) => ({
+              ...prev,
+              [key]: { _eq: filter[key] },
+            }),
+            {}
+          ),
+        },
+      })
+      .then((result) => ({
+        data: result.data[resource],
+        total: result.data[`${resource}_aggregate`].aggregate.count,
+      }));
+  },
+  getOne: (resource, params) => {
+    return client
+      .query({
+        query: gql`
+            query ($id: Int!) {
+                ${resource}_by_pk(id: $id) {
+                    ${fields[resource]}
+                }
+            }`,
+        variables: {
+          id: params.id,
+        },
+      })
+      .then((result) => ({ data: result.data[`${resource}_by_pk`] }));
+  },
+  getMany: (resource, params) => {
+    return client
+      .query({
+        query: gql`
+            query ($where: ${resource}_bool_exp) {
+                ${resource}(where: $where) {
+                    ${fields[resource]}
+                }
+            }`,
+        variables: {
+          where: {
+            id: { _in: params.ids },
+          },
+        },
+      })
+      .then((result) => ({ data: result.data[resource] }));
+  },
+  getManyReference: (
+    resource,
+    { target, id, sort, pagination, filter }
+  ) => {
+    const { field, order } = sort;
+    const { page, perPage } = pagination;
+    return client
+      .query({
+        query: gql`
+            query ($limit: Int, $offset: Int, $order_by: [${resource}_order_by!], $where: ${resource}_bool_exp) {
+                ${resource}(limit: $limit, offset: $offset, order_by: $order_by, where: $where) {
+                    ${fields[resource]}
+                }
+                ${resource}_aggregate(where: $where) {
+                    aggregate {
+                        count
+                    }
+                }
+            }`,
+        variables: {
+          limit: perPage,
+          offset: (page - 1) * perPage,
+          order_by: { [field]: order.toLowerCase() },
+          where: Object.keys(filter).reduce(
+            (prev, key) => ({
+              ...prev,
+              [key]: { _eq: filter[key] },
+            }),
+            { [target]: { _eq: id } }
+          ),
+        },
+      })
+      .then((result) => ({
+        data: result.data[resource],
+        total: result.data[`${resource}_aggregate`].aggregate.count,
+      }));
+  },
+  create: (resource, params) => {
+    return client
+      .mutate({
+        mutation: gql`
+            mutation ($data: ${resource}_insert_input!) {
+                insert_${resource}_one(object: $data) {
+                    ${fields[resource]}
+                }
+            }`,
+        variables: {
+          data: omit(params.data, ['__typename']),
+        },
+      })
+      .then((result) => ({
+        data: result.data[`insert_${resource}_one`],
+      }));
+  },
+  update: (resource, params) => {
+    return client
+      .mutate({
+        mutation: gql`
+            mutation ($id: Int!, $data: ${resource}_set_input!) {
+                update_${resource}_by_pk(pk_columns: { id: $id }, _set: $data) {
+                    ${fields[resource]}
+                }
+            }`,
+        variables: {
+          id: params.id,
+          data: omit(params.data, ['__typename']),
+        },
+      })
+      .then((result) => ({
+        data: result.data[`update_${resource}_by_pk`],
+      }));
+  },
+  updateMany: (resource, params) => {
+    return client
+      .mutate({
+        mutation: gql`
+            mutation ($where: ${resource}_bool_exp!, $data: ${resource}_set_input!) {
+                update_${resource}(where: $where, _set: $data) {
+                    affected_rows
+                }
+            }`,
+        variables: {
+          where: {
+            id: { _in: params.ids },
+          },
+          data: omit(params.data, ['__typename']),
+        },
+      })
+      .then((result) => ({
+        data: params.ids,
+      }));
+  },
+  delete: (resource, params) => {
+    return client
+      .mutate({
+        mutation: gql`
+            mutation ($id: Int!) {
+                delete_${resource}_by_pk(id: $id) {
+                    ${fields[resource]}
+                }
+            }`,
+        variables: {
+          id: params.id,
+        },
+      })
+      .then((result) => ({
+        data: result.data[`delete_${resource}_by_pk`],
+      }));
+  },
+  deleteMany: (resource, params) => {
+    return client
+      .mutate({
+        mutation: gql`
+            mutation ($where: ${resource}_bool_exp!) {
+                delete_${resource}(where: $where) {
+                    affected_rows
+                }
+            }`,
+        variables: {
+          where: {
+            id: { _in: params.ids },
+          },
+        },
+      })
+      .then((result) => ({
+        data: params.ids,
+      }));
+  },
 };
 ```
 
