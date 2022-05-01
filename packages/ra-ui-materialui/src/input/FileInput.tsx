@@ -21,11 +21,14 @@ import { SxProps } from '@mui/system';
 
 export const FileInput = (props: FileInputProps) => {
     const {
+        accept,
         children,
         className,
         format,
         helperText,
         inputProps: inputPropsOptions,
+        maxSize,
+        minSize,
         multiple = false,
         label,
         labelMultiple = 'ra.input.file.upload_several',
@@ -136,6 +139,9 @@ export const FileInput = (props: FileInputProps) => {
             : undefined;
 
     const { getRootProps, getInputProps } = useDropzone({
+        accept,
+        maxSize,
+        minSize,
         multiple,
         ...options,
         onDrop,
@@ -202,6 +208,7 @@ export const FileInput = (props: FileInputProps) => {
 };
 
 FileInput.propTypes = {
+    accept: PropTypes.string,
     children: PropTypes.element,
     className: PropTypes.string,
     id: PropTypes.string,
@@ -209,6 +216,8 @@ FileInput.propTypes = {
     label: PropTypes.string,
     labelMultiple: PropTypes.string,
     labelSingle: PropTypes.string,
+    maxSize: PropTypes.number,
+    minSize: PropTypes.number,
     multiple: PropTypes.bool,
     validateFileRemoval: PropTypes.func,
     options: PropTypes.object,
@@ -242,10 +251,13 @@ const StyledLabeled = styled(Labeled, {
 }));
 
 export type FileInputProps = CommonInputProps & {
+    accept?: DropzoneOptions['accept'];
     className?: string;
     children?: ReactNode;
     labelMultiple?: string;
     labelSingle?: string;
+    maxSize?: DropzoneOptions['maxSize'];
+    minSize?: DropzoneOptions['minSize'];
     multiple?: DropzoneOptions['multiple'];
     options?: DropzoneOptions;
     onRemove?: Function;
