@@ -27,13 +27,13 @@ export const FileInput = (props: FileInputProps) => {
         format,
         helperText,
         inputProps: inputPropsOptions,
-        label,
-        labelMultiple = 'ra.input.file.upload_several',
-        labelSingle = 'ra.input.file.upload_single',
         maxSize,
         minSize,
         multiple = false,
-        onDrop: onDropProp,
+        label,
+        labelMultiple = 'ra.input.file.upload_several',
+        labelSingle = 'ra.input.file.upload_single',
+        options = {},
         onRemove: onRemoveProp,
         parse,
         placeholder,
@@ -43,6 +43,7 @@ export const FileInput = (props: FileInputProps) => {
         validateFileRemoval,
         ...rest
     } = props;
+    const { onDrop: onDropProp } = options;
     const translate = useTranslate();
 
     // turn a browser dropped file structure into expected structure
@@ -142,8 +143,8 @@ export const FileInput = (props: FileInputProps) => {
         maxSize,
         minSize,
         multiple,
+        ...options,
         onDrop,
-        ...rest,
     });
 
     return (
@@ -207,10 +208,7 @@ export const FileInput = (props: FileInputProps) => {
 };
 
 FileInput.propTypes = {
-    accept: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.arrayOf(PropTypes.string),
-    ]),
+    accept: PropTypes.string,
     children: PropTypes.element,
     className: PropTypes.string,
     id: PropTypes.string,
@@ -252,15 +250,19 @@ const StyledLabeled = styled(Labeled, {
     [`& .${FileInputClasses.removeButton}`]: {},
 }));
 
-export type FileInputProps = DropzoneOptions &
-    CommonInputProps & {
-        className?: string;
-        children?: ReactNode;
-        labelMultiple?: string;
-        labelSingle?: string;
-        onRemove?: Function;
-        placeholder?: ReactNode;
-        inputProps?: any;
-        validateFileRemoval?(file): boolean | Promise<boolean>;
-        sx?: SxProps;
-    };
+export type FileInputProps = CommonInputProps & {
+    accept?: DropzoneOptions['accept'];
+    className?: string;
+    children?: ReactNode;
+    labelMultiple?: string;
+    labelSingle?: string;
+    maxSize?: DropzoneOptions['maxSize'];
+    minSize?: DropzoneOptions['minSize'];
+    multiple?: DropzoneOptions['multiple'];
+    options?: DropzoneOptions;
+    onRemove?: Function;
+    placeholder?: ReactNode;
+    inputProps?: any;
+    validateFileRemoval?(file): boolean | Promise<boolean>;
+    sx?: SxProps;
+};
