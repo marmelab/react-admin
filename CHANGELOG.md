@@ -1,5 +1,22 @@
 # Changelog
 
+## v4.0.2
+
+* Publish GraphQL data provider packages ([#7607](https://github.com/marmelab/react-admin/pull/7607)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix missing  `<Admin queryClient>` prop ([#7558](https://github.com/marmelab/react-admin/pull/7558)) ([joshq00](https://github.com/joshq00))
+* Fix `logout` doesn't reset resource registration ([#7539](https://github.com/marmelab/react-admin/pull/7539)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ListGuesser>` does not update when resource changes ([#7605](https://github.com/marmelab/react-admin/pull/7605)) ([djhi](https://github.com/djhi))
+* Fix cannot set custom icon in `<BooleanInput>` ([#7556](https://github.com/marmelab/react-admin/pull/7556)) ([WiXSL](https://github.com/WiXSL))
+* Fix cannot clear filter form when clicking the clerar button on Firefox ([#7574](https://github.com/marmelab/react-admin/pull/7574)) ([smeng9](https://github.com/smeng9))
+* Fix `<RichTextInput>` buttons don't update correctly ([#7585](https://github.com/marmelab/react-admin/pull/7585)) ([djhi](https://github.com/djhi))
+* [TypeScript] Fix missing `<ArrayInput sx>` prop ([#7571](https://github.com/marmelab/react-admin/pull/7571)) ([djhi](https://github.com/djhi))
+* [TypeScript] Fix `<SelectInput choices>` type only allow Records ([#7595](https://github.com/marmelab/react-admin/pull/7595)) ([bingluen](https://github.com/bingluen))
+* [TypeScript] Fix `<SelectInput>` / `<SelectArrayInput>` `onChange` handler ([#7519](https://github.com/marmelab/react-admin/pull/7519)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Add an example GraphQL data provider ([#7602](https://github.com/marmelab/react-admin/pull/7602)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix missing `<SelectInput>` props ([#7566](https://github.com/marmelab/react-admin/pull/7566)) ([smeng9](https://github.com/smeng9))
+* [Doc] Fix Upgrade instructions for List views ([#7563](https://github.com/marmelab/react-admin/pull/7563)) ([hjr3](https://github.com/hjr3))
+* [Doc] Fix Upgrade instructions regarding router imports ([#7562](https://github.com/marmelab/react-admin/pull/7562)) ([hjr3](https://github.com/hjr3))
+
 ## v4.0.1
 
 * Fix `<DateTimeInput>` doesn't work when used as filter ([#7551](https://github.com/marmelab/react-admin/pull/7551)) ([WiXSL](https://github.com/WiXSL))
