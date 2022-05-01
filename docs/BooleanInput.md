@@ -24,12 +24,7 @@ You can use the `options` prop to pass any option supported by the MUI's `Switch
 import { BooleanInput } from 'react-admin';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
-<BooleanInput
-    source="favorite"
-    options={{
-        checkedIcon: <FavoriteIcon />,
-    }}
-/>
+<BooleanInput source="favorite" checkedIcon={<FavoriteIcon />} />
 ```
 {% endraw %}
 
