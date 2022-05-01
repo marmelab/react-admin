@@ -21,7 +21,6 @@ import { SxProps } from '@mui/system';
 
 export const FileInput = (props: FileInputProps) => {
     const {
-        accept,
         children,
         className,
         format,
@@ -30,10 +29,7 @@ export const FileInput = (props: FileInputProps) => {
         label,
         labelMultiple = 'ra.input.file.upload_several',
         labelSingle = 'ra.input.file.upload_single',
-        maxSize,
-        minSize,
-        multiple = false,
-        onDrop: onDropProp,
+        options,
         onRemove: onRemoveProp,
         parse,
         placeholder,
@@ -43,6 +39,7 @@ export const FileInput = (props: FileInputProps) => {
         validateFileRemoval,
         ...rest
     } = props;
+    const { multiple = false, onDrop: onDropProp } = options;
     const translate = useTranslate();
 
     // turn a browser dropped file structure into expected structure
@@ -138,12 +135,9 @@ export const FileInput = (props: FileInputProps) => {
             : undefined;
 
     const { getRootProps, getInputProps } = useDropzone({
-        accept,
-        maxSize,
-        minSize,
+        ...options,
         multiple,
         onDrop,
-        ...rest,
     });
 
     return (
@@ -207,10 +201,6 @@ export const FileInput = (props: FileInputProps) => {
 };
 
 FileInput.propTypes = {
-    accept: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.arrayOf(PropTypes.string),
-    ]),
     children: PropTypes.element,
     className: PropTypes.string,
     id: PropTypes.string,
@@ -218,8 +208,6 @@ FileInput.propTypes = {
     label: PropTypes.string,
     labelMultiple: PropTypes.string,
     labelSingle: PropTypes.string,
-    maxSize: PropTypes.number,
-    minSize: PropTypes.number,
     multiple: PropTypes.bool,
     validateFileRemoval: PropTypes.func,
     options: PropTypes.object,
@@ -252,15 +240,15 @@ const StyledLabeled = styled(Labeled, {
     [`& .${FileInputClasses.removeButton}`]: {},
 }));
 
-export type FileInputProps = DropzoneOptions &
-    CommonInputProps & {
-        className?: string;
-        children?: ReactNode;
-        labelMultiple?: string;
-        labelSingle?: string;
-        onRemove?: Function;
-        placeholder?: ReactNode;
-        inputProps?: any;
-        validateFileRemoval?(file): boolean | Promise<boolean>;
-        sx?: SxProps;
-    };
+export type FileInputProps = CommonInputProps & {
+    className?: string;
+    children?: ReactNode;
+    labelMultiple?: string;
+    labelSingle?: string;
+    options?: DropzoneOptions;
+    onRemove?: Function;
+    placeholder?: ReactNode;
+    inputProps?: any;
+    validateFileRemoval?(file): boolean | Promise<boolean>;
+    sx?: SxProps;
+};
