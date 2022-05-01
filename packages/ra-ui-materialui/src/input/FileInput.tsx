@@ -26,10 +26,11 @@ export const FileInput = (props: FileInputProps) => {
         format,
         helperText,
         inputProps: inputPropsOptions,
+        multiple = false,
         label,
         labelMultiple = 'ra.input.file.upload_several',
         labelSingle = 'ra.input.file.upload_single',
-        options,
+        options = {},
         onRemove: onRemoveProp,
         parse,
         placeholder,
@@ -39,7 +40,7 @@ export const FileInput = (props: FileInputProps) => {
         validateFileRemoval,
         ...rest
     } = props;
-    const { multiple = false, onDrop: onDropProp } = options;
+    const { onDrop: onDropProp } = options;
     const translate = useTranslate();
 
     // turn a browser dropped file structure into expected structure
@@ -135,8 +136,8 @@ export const FileInput = (props: FileInputProps) => {
             : undefined;
 
     const { getRootProps, getInputProps } = useDropzone({
-        ...options,
         multiple,
+        ...options,
         onDrop,
     });
 
@@ -245,6 +246,7 @@ export type FileInputProps = CommonInputProps & {
     children?: ReactNode;
     labelMultiple?: string;
     labelSingle?: string;
+    multiple?: DropzoneOptions['multiple'];
     options?: DropzoneOptions;
     onRemove?: Function;
     placeholder?: ReactNode;
