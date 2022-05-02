@@ -44,8 +44,6 @@ const authProvider = {
     getIdentity: () => Promise.resolve(),
     // get the user permissions (optional)
     getPermissions: () => Promise.resolve(),
-    // get the user roles (optional - only for Role-Based Access Control)
-    getRoles: () => Promise.resolve(),
 };
 ```
 
