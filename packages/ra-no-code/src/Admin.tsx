@@ -12,7 +12,7 @@ import {
     ResourceConfigurationPage,
     ResourceConfigurationProvider,
 } from './ResourceConfiguration';
-import { ImportResourceDialog, Layout } from './ui';
+import { Layout, Ready } from './ui';
 import { Route } from 'react-router';
 import { useApplication } from './ApplicationContext';
 
@@ -43,30 +43,26 @@ const InnerAdmin = (props: AdminProps) => {
     const hasResources = !!resources && Object.keys(resources).length > 0;
 
     return (
-        <RaAdmin layout={Layout} {...props}>
+        <RaAdmin layout={Layout} ready={Ready} {...props}>
             <CustomRoutes>
                 <Route
                     path="/configure/:resource"
                     element={<ResourceConfigurationPage />}
                 />
             </CustomRoutes>
-            {hasResources ? (
-                Object.keys(resources).map(resource => (
-                    <Resource
-                        key={resource}
-                        name={resource}
-                        options={{ label: resources[resource].label }}
-                        list={List}
-                        edit={Edit}
-                        create={Create}
-                        show={Show}
-                    />
-                ))
-            ) : (
-                <CustomRoutes>
-                    <Route path="/" element={<ImportResourceDialog open />} />
-                </CustomRoutes>
-            )}
+            {hasResources
+                ? Object.keys(resources).map(resource => (
+                      <Resource
+                          key={resource}
+                          name={resource}
+                          options={{ label: resources[resource].label }}
+                          list={List}
+                          edit={Edit}
+                          create={Create}
+                          show={Show}
+                      />
+                  ))
+                : null}
         </RaAdmin>
     );
 };
