@@ -70,7 +70,7 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
 
     return (
         <Component className={className} {...sanitizeListRestProps(rest)}>
-            {data.map(record => {
+            {data.map((record, rowIndex) => {
                 const resourceLinkPath = !linkType
                     ? false
                     : createPath({
@@ -81,7 +81,10 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
 
                 if (resourceLinkPath) {
                     return (
-                        <RecordContextProvider value={record} key={record.id}>
+                        <RecordContextProvider
+                            value={record}
+                            key={record.id ?? `row${rowIndex}`}
+                        >
                             <Link
                                 className={SingleFieldListClasses.link}
                                 to={resourceLinkPath}
@@ -99,7 +102,10 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
                 }
 
                 return (
-                    <RecordContextProvider value={record} key={record.id}>
+                    <RecordContextProvider
+                        value={record}
+                        key={record.id ?? `row${rowIndex}`}
+                    >
                         {children}
                     </RecordContextProvider>
                 );
