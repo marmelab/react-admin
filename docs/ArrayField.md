@@ -56,25 +56,7 @@ And here is how to display all the tags of the current post as `<Chip>` componen
 
 ## Properties
 
-| Prop       | Required | Type   | Default | Description                                                   |
-| ---------- | -------- | ------ | ------- | ------------------------------------------------------------- |
-| `fieldKey` | Optional | string | -       | Name for the field to be used as key when displaying children |
-
-`<ArrayField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
-
-## Usage
-
-If the array value contains a lot of items, you may experience slowdowns in the UI. In such cases, set the `fieldKey` prop to use one field as key, and reduce CPU and memory usage:
-
-```diff
--<ArrayField source="backlinks">
-+<ArrayField source="backlinks" fieldKey="uuid">
-    <Datagrid>
-        <DateField source="date" />
-        <UrlField source="url" />
-    </Datagrid>
-</ArrayField>
-```
+`<ArrayField>` accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
 
 **Tip**: If you need to render a custom collection, it's often simpler to write your own component:
 
