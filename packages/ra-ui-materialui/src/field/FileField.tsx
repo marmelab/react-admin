@@ -8,6 +8,7 @@ import { useRecordContext } from 'ra-core';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import { SxProps } from '@mui/system';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * Render a link to a file based on a path contained in a record field
@@ -121,7 +122,7 @@ const PREFIX = 'RaFileField';
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver({}),
 })({
     display: 'inline-block',
 });

@@ -14,6 +14,7 @@ import AlertError from '@mui/icons-material/ErrorOutline';
 import clsx from 'clsx';
 import { useTranslate } from 'ra-core';
 import { SxProps } from '@mui/system';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * Confirmation dialog
@@ -155,7 +156,7 @@ export const ConfirmClasses = {
 
 const StyledDialog = styled(Dialog, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(ConfirmClasses),
 })(({ theme }) => ({
     [`& .${ConfirmClasses.confirmPrimary}`]: {
         color: theme.palette.primary.main,

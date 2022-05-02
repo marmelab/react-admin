@@ -21,6 +21,7 @@ import { LinearProgress } from '../layout';
 import { Link } from '../Link';
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
 import { SxProps } from '@mui/system';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * Fetch reference record, and delegate rendering to child component.
@@ -253,7 +254,7 @@ export const ReferenceFieldClasses = {
 
 const Root = styled('span', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(ReferenceFieldClasses),
 })(({ theme }) => ({
     [`& .${ReferenceFieldClasses.link}`]: {
         '& > *': {

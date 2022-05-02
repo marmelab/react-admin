@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCheckAuth } from 'ra-core';
 
 import { LoginForm as DefaultLoginForm } from './LoginForm';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * A standalone login page, to serve as authentication gate to the admin
@@ -95,7 +96,7 @@ export const LoginClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(LoginClasses),
 })(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',

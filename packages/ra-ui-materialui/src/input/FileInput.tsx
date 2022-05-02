@@ -18,6 +18,7 @@ import { FileInputPreview } from './FileInputPreview';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 import { SxProps } from '@mui/system';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const FileInput = (props: FileInputProps) => {
     const {
@@ -236,7 +237,7 @@ export const FileInputClasses = {
 
 const StyledLabeled = styled(Labeled, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(FileInputClasses),
 })(({ theme }) => ({
     width: '100%',
     [`& .${FileInputClasses.dropZone}`]: {

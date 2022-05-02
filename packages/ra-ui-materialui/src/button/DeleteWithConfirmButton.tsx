@@ -19,6 +19,7 @@ import {
 
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
     props: DeleteWithConfirmButtonProps<RecordType>
@@ -136,7 +137,7 @@ const PREFIX = 'RaDeleteWithConfirmButton';
 
 const StyledButton = styled(Button, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver({}),
 })(({ theme }) => ({
     color: theme.palette.error.main,
     '&:hover': {

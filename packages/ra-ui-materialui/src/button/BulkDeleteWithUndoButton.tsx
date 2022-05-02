@@ -15,6 +15,7 @@ import {
 
 import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const BulkDeleteWithUndoButton = (
     props: BulkDeleteWithUndoButtonProps
@@ -105,7 +106,7 @@ const PREFIX = 'RaBulkDeleteWithUndoButton';
 
 const StyledButton = styled(Button, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver({}),
 })(({ theme }) => ({
     color: theme.palette.error.main,
     '&:hover': {

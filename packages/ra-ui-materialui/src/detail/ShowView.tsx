@@ -8,6 +8,7 @@ import { useShowContext, useResourceDefinition } from 'ra-core';
 import { ShowProps } from '../types';
 import { ShowActions } from './ShowActions';
 import { Title } from '../layout';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 const defaultActions = <ShowActions />;
 
@@ -89,7 +90,7 @@ export const ShowClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(ShowClasses),
 })(({ theme }) => ({
     [`& .${ShowClasses.main}`]: {
         display: 'flex',

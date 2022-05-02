@@ -16,6 +16,7 @@ import { stringify } from 'query-string';
 import { useListContext } from 'ra-core';
 
 import { SavedQuery } from './useSavedQueries';
+import { makeOverridesResolver } from '../../makeOverridesResolver';
 
 const arePropsEqual = (
     prevProps: SavedQueryFilterListItemProps,
@@ -105,7 +106,7 @@ export const SavedQueryFilterListItemClasses = {
 
 const StyledListItem = styled(ListItem, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(SavedQueryFilterListItemClasses),
 })(() => ({
     [`& .${SavedQueryFilterListItemClasses.listItemButton}`]: {
         paddingRight: '2em',

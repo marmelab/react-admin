@@ -15,6 +15,7 @@ import { DRAWER_WIDTH, CLOSED_DRAWER_WIDTH } from './Sidebar';
 import { useSidebarState } from './useSidebarState';
 import { DashboardMenuItem } from './DashboardMenuItem';
 import { MenuItemLink } from './MenuItemLink';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const Menu = (props: MenuProps) => {
     const resources = useResourceDefinitions();
@@ -93,7 +94,7 @@ export const MenuClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(MenuClasses),
 })(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',

@@ -23,6 +23,7 @@ import { styled } from '@mui/material/styles';
 import { useResourceContext } from 'ra-core';
 import { Toolbar } from './Toolbar';
 import { TabbedFormTabs, getTabbedFormTabFullPath } from './TabbedFormTabs';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
     const {
@@ -138,7 +139,7 @@ export const TabbedFormClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(TabbedFormClasses),
 })(({ theme }) => ({
     [`& .MuiTab-root.${TabbedFormClasses.errorTabButton}`]: {
         color: theme.palette.error.main,

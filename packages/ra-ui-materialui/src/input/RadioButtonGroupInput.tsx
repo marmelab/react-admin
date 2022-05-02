@@ -25,6 +25,7 @@ import { InputHelperText } from './InputHelperText';
 import { RadioButtonGroupInputItem } from './RadioButtonGroupInputItem';
 import { Labeled } from '../Labeled';
 import { LinearProgress } from '../layout';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * An Input component for a radio button group, using an array of objects for the options
@@ -270,7 +271,7 @@ export const RadioButtonGroupInputClasses = {
 
 const StyledFormControl = styled(FormControl, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(RadioButtonGroupInputClasses),
 })(({ theme }) => ({
     [`& .${RadioButtonGroupInputClasses.label}`]: {
         transform: 'translate(0, 5px) scale(0.75)',

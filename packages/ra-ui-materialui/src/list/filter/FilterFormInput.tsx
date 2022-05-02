@@ -5,6 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import ActionHide from '@mui/icons-material/HighlightOff';
 import clsx from 'clsx';
 import { useResourceContext, useTranslate } from 'ra-core';
+import { makeOverridesResolver } from '../../makeOverridesResolver';
 
 export const FilterFormInput = props => {
     const { filterElement, handleHide, className } = props;
@@ -58,7 +59,7 @@ export const FilterFormInputClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(FilterFormInputClasses),
 })(({ theme }) => ({
     display: 'flex',
     alignItems: 'flex-end',

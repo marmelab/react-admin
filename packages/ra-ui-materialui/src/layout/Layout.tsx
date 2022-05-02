@@ -16,6 +16,7 @@ import { Menu as DefaultMenu, MenuProps } from './Menu';
 import { Error, ErrorProps } from './Error';
 import { SkipNavigationButton } from '../button';
 import { useSidebarState } from './useSidebarState';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const Layout = (props: LayoutProps) => {
     const {
@@ -93,7 +94,7 @@ export const LayoutClasses = {
 
 const StyledLayout = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(LayoutClasses),
 })(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',

@@ -5,6 +5,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useTranslate } from 'ra-core';
 
 import { useSidebarState } from './useSidebarState';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * A button that toggles the sidebar. Used by default in the <AppBar>.
@@ -59,7 +60,7 @@ export const SidebarToggleButtonClasses = {
 
 const StyledIconButton = styled(IconButton, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(SidebarToggleButtonClasses),
 })(({ theme }) => ({
     [`& .${SidebarToggleButtonClasses.menuButtonIconClosed}`]: {
         transition: theme.transitions.create(['transform'], {

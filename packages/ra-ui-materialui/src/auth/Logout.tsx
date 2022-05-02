@@ -13,6 +13,7 @@ import { MenuItemProps } from '@mui/material/MenuItem';
 import ExitIcon from '@mui/icons-material/PowerSettingsNew';
 import clsx from 'clsx';
 import { useTranslate, useLogout } from 'ra-core';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * Logout button component, to be passed to the Admin component
@@ -65,7 +66,7 @@ export const LogoutClasses = {
 
 const StyledMenuItem = styled(MenuItem, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(LogoutClasses),
 })(({ theme }) => ({
     color: theme.palette.text.secondary,
 

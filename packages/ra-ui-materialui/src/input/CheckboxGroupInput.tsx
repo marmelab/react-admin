@@ -23,6 +23,7 @@ import { CheckboxGroupInputItem } from './CheckboxGroupInputItem';
 import { InputHelperText } from './InputHelperText';
 import { Labeled } from '../Labeled';
 import { LinearProgress } from '../layout';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * An Input component for a checkbox group, using an array of objects for the options
@@ -282,7 +283,7 @@ export const CheckboxGroupInputClasses = {
 
 const StyledFormControl = styled(FormControl, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(CheckboxGroupInputClasses),
 })(({ theme }) => ({
     [`& .${CheckboxGroupInputClasses.label}`]: {
         transform: 'translate(0, 8px) scale(0.75)',

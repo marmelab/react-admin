@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 import { Pagination, PaginationProps } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useTranslate } from 'ra-core';
+import { makeOverridesResolver } from '../../makeOverridesResolver';
 
 export const PaginationActions: FC<PaginationActionsProps> = memo(props => {
     const {
@@ -83,7 +84,7 @@ const PREFIX = 'RaPaginationActions';
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver({}),
 })(({ theme }) => ({
     flexShrink: 0,
     ml: 4,

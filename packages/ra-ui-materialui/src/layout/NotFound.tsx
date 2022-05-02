@@ -7,6 +7,7 @@ import History from '@mui/icons-material/History';
 
 import { useAuthenticated, useTranslate } from 'ra-core';
 import { Title } from './Title';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const NotFound = props => {
     const { className, title, ...rest } = props;
@@ -58,7 +59,7 @@ export const NotFoundClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(NotFoundClasses),
 })(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',

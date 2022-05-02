@@ -2,6 +2,7 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import Toolbar, { ToolbarProps } from '@mui/material/Toolbar';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const TopToolbar = (props: ToolbarProps) => <StyledToolbar {...props} />;
 
@@ -15,7 +16,7 @@ const PREFIX = 'RaTopToolbar';
 
 const StyledToolbar = styled(Toolbar, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver({}),
 })(({ theme }) => ({
     display: 'flex',
     justifyContent: 'flex-end',

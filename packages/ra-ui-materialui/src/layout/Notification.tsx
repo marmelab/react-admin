@@ -10,6 +10,7 @@ import {
     undoableEventEmitter,
     useTranslate,
 } from 'ra-core';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 const defaultAnchorOrigin: SnackbarOrigin = {
     vertical: 'bottom',
@@ -131,7 +132,7 @@ export const NotificationClasses = {
 
 const StyledSnackbar = styled(Snackbar, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(NotificationClasses),
 })(({ theme, type }: NotificationProps & { theme?: Theme }) => ({
     [`& .${NotificationClasses.success}`]: {
         backgroundColor: theme.palette.success.main,

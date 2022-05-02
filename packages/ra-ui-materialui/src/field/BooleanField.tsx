@@ -11,6 +11,7 @@ import { useTranslate, useRecordContext } from 'ra-core';
 
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const BooleanField: FunctionComponent<BooleanFieldProps> = memo(
     props => {
@@ -96,7 +97,7 @@ const PREFIX = 'RaBooleanField';
 
 const StyledTypography = styled(Typography, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver({}),
 })({
     display: 'inline-flex',
     verticalAlign: 'middle',

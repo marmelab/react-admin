@@ -10,6 +10,7 @@ import ListItemText from '@mui/material/ListItemText';
 
 import { Placeholder } from './Placeholder';
 import { useTimeout } from 'ra-core';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const SimpleListLoading = (props: Props & ListProps) => {
     const {
@@ -83,7 +84,7 @@ export const SimpleListLoadingClasses = {
 
 const StyledList = styled(List, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(SimpleListLoadingClasses),
 })(({ theme }) => ({
     [`& .${SimpleListLoadingClasses.primary}`]: {
         width: '30vw',

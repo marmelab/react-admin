@@ -18,6 +18,7 @@ import {
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const BulkUpdateWithConfirmButton = (
     props: BulkUpdateWithConfirmButtonProps
@@ -171,7 +172,7 @@ const PREFIX = 'RaBulkUpdateWithConfirmButton';
 
 const StyledButton = styled(Button, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver({}),
 })(({ theme }) => ({
     color: theme.palette.primary.main,
     '&:hover': {

@@ -11,6 +11,7 @@ import { RemoveSavedQueryIconButton } from './RemoveSavedQueryIconButton';
 import { AddSavedQueryIconButton } from './AddSavedQueryIconButton';
 import { SavedQueryFilterListItem } from './SavedQueryFilterListItem';
 import { FilterList } from './FilterList';
+import { makeOverridesResolver } from '../../makeOverridesResolver';
 
 /**
  * FilterList-like component allowing to save and restore a query (filters, sort, perPage).
@@ -117,7 +118,7 @@ export const SavedQueriesListClasses = {
 
 const Root = styled(FilterList, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(SavedQueriesListClasses),
 })(({ theme }) => ({
     [`& .${SavedQueriesListClasses.floatingIcon}`]: {
         position: 'absolute',

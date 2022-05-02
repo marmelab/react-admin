@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { FileInput, FileInputProps, FileInputClasses } from './FileInput';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const ImageInput = (props: ImageInputProps) => (
     <StyledFileInput
@@ -16,7 +17,7 @@ const PREFIX = 'RaImageInput';
 
 const StyledFileInput = styled(FileInput, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(FileInputClasses),
 })(({ theme }) => ({
     width: '100%',
 

@@ -7,6 +7,7 @@ import clsx from 'clsx';
 
 import { FieldTitle } from 'ra-core';
 import { ResponsiveStyleValue } from '@mui/system';
+import { makeOverridesResolver } from './makeOverridesResolver';
 
 /**
  * Wrap a field or an input with a label if necessary.
@@ -89,7 +90,7 @@ export const LabeledClasses = {
 
 const Root = styled(Stack, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(LabeledClasses),
 })(({ theme }) => ({
     display: 'inline-flex',
     marginBottom: '0.2em',

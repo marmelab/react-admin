@@ -12,6 +12,7 @@ import { ListToolbar } from './ListToolbar';
 import { Pagination as DefaultPagination } from './pagination';
 import { ListActions as DefaultActions } from './ListActions';
 import { Empty } from './Empty';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 const defaultActions = <DefaultActions />;
 const defaultPagination = <DefaultPagination />;
@@ -168,7 +169,7 @@ export const ListClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(ListClasses),
 })(({ theme }) => ({
     display: 'flex',
 

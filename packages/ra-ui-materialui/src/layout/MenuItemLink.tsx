@@ -15,6 +15,7 @@ import {
 
 import { useSidebarState } from './useSidebarState';
 import { useTranslate, useBasename } from 'ra-core';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * Displays a menu item with a label and an icon - or only the icon with a tooltip when the sidebar is minimized.
@@ -167,7 +168,7 @@ export const MenuItemLinkClasses = {
 
 const StyledMenuItem = styled(MenuItem, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(MenuItemLinkClasses),
 })(({ theme }) => ({
     color: theme.palette.text.secondary,
 

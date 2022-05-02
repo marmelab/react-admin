@@ -10,6 +10,7 @@ import {
 } from 'ra-core';
 import { TranslatableFieldsTabs } from './TranslatableFieldsTabs';
 import { TranslatableFieldsTabContent } from './TranslatableFieldsTabContent';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * Provides a way to show multiple languages for any field passed as children.
@@ -113,7 +114,7 @@ const PREFIX = 'RaTranslatableFields';
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver({}),
 })(({ theme }) => ({
     flexGrow: 1,
     marginTop: theme.spacing(1),

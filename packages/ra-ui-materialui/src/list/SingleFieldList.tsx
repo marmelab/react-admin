@@ -19,6 +19,7 @@ import {
 } from 'ra-core';
 
 import { Link } from '../Link';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * Iterator component to be used to display a list of entities, using a single field
@@ -141,7 +142,7 @@ export const SingleFieldListClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(SingleFieldListClasses),
 })(({ theme }) => ({
     display: 'flex',
     flexWrap: 'wrap',

@@ -16,6 +16,7 @@ import { fieldPropTypes, PublicFieldProps, InjectedFieldProps } from './types';
 import { LinearProgress } from '../layout';
 import { styled } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * A container component that fetches records from another resource specified
@@ -168,7 +169,7 @@ export const ReferenceArrayFieldClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(ReferenceArrayFieldClasses),
 })(({ theme }) => ({
     [`& .${ReferenceArrayFieldClasses.progress}`]: {
         marginTop: theme.spacing(2),

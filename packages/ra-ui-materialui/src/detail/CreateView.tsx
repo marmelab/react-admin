@@ -8,6 +8,7 @@ import clsx from 'clsx';
 
 import { CreateProps } from '../types';
 import { Title } from '../layout';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const CreateView = (props: CreateViewProps) => {
     const {
@@ -97,7 +98,7 @@ export const CreateClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(CreateClasses),
 })(({ theme }) => ({
     [`& .${CreateClasses.main}`]: {
         display: 'flex',

@@ -11,6 +11,7 @@ import {
     OptionalRecordContextProvider,
 } from 'ra-core';
 import { Labeled } from '../Labeled';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * Layout for a Show view showing fields in one column.
@@ -114,7 +115,7 @@ export const SimpleShowLayoutClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(SimpleShowLayoutClasses),
 })(({ theme }) => ({
     flex: 1,
     padding: `${theme.spacing(1)} ${theme.spacing(2)}`,

@@ -9,6 +9,7 @@ import {
 } from 'react';
 import { useTranslatableContext, RaRecord } from 'ra-core';
 import { Labeled } from '../Labeled';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * Default container for a group of translatable fields inside a TranslatableFields components.
@@ -87,7 +88,7 @@ const PREFIX = 'RaTranslatableFieldsTabContent';
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver({}),
 })(({ theme }) => ({
     flexGrow: 1,
     padding: theme.spacing(2),

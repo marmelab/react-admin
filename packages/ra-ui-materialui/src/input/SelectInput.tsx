@@ -18,6 +18,7 @@ import {
 import { CommonInputProps } from './CommonInputProps';
 import {
     ResettableTextField,
+    ResettableTextFieldClasses,
     ResettableTextFieldStyles,
 } from './ResettableTextField';
 import { InputHelperText } from './InputHelperText';
@@ -28,6 +29,7 @@ import {
     useSupportCreateSuggestion,
     SupportCreateSuggestionOptions,
 } from './useSupportCreateSuggestion';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * An Input component for a select box, using an array of objects for the options
@@ -364,7 +366,7 @@ const PREFIX = 'RaSelectInput';
 
 const StyledResettableTextField = styled(ResettableTextField, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(ResettableTextFieldClasses),
 })(({ theme }) => ({
     ...ResettableTextFieldStyles,
     minWidth: theme.spacing(20),

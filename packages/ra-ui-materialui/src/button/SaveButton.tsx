@@ -19,6 +19,7 @@ import {
 } from 'ra-core';
 
 import { sanitizeButtonRestProps } from './Button';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * Submit button for resource forms (Edit and Create).
@@ -179,7 +180,7 @@ const PREFIX = 'RaSaveButton';
 
 const StyledButton = styled(Button, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver({}),
 })(({ theme }) => ({
     position: 'relative',
     [`& .MuiSvgIcon-root, & .MuiIcon-root, & .MuiCircularProgress-root`]: {

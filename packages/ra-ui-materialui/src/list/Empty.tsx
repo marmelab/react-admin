@@ -10,6 +10,7 @@ import {
 } from 'ra-core';
 
 import { CreateButton } from '../button';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const Empty = (props: EmptyProps) => {
     const { className } = props;
@@ -69,7 +70,7 @@ export const EmptyClasses = {
 
 const Root = styled('span', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(EmptyClasses),
 })(({ theme }) => ({
     flex: 1,
     [`& .${EmptyClasses.message}`]: {

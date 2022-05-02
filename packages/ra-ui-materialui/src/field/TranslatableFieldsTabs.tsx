@@ -6,6 +6,7 @@ import Tabs, { TabsProps } from '@mui/material/Tabs';
 import { useTranslatableContext } from 'ra-core';
 import { TranslatableFieldsTab } from './TranslatableFieldsTab';
 import { AppBarProps } from '../layout';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * Default locale selector for the TranslatableFields component. Generates a tab for each specified locale.
@@ -52,7 +53,7 @@ const PREFIX = 'RaTranslatableFieldsTabs';
 
 const StyledAppBar = styled(AppBar, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver({}),
 })(({ theme }) => ({
     boxShadow: 'none',
     borderRadius: 0,

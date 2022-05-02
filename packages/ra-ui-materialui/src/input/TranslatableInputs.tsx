@@ -8,6 +8,7 @@ import {
 } from 'ra-core';
 import { TranslatableInputsTabs } from './TranslatableInputsTabs';
 import { TranslatableInputsTabContent } from './TranslatableInputsTabContent';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * Provides a way to edit multiple languages for any input passed as children.
@@ -110,7 +111,7 @@ const PREFIX = 'RaTranslatableInputs';
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver({}),
 })(({ theme }) => ({
     flexGrow: 1,
     marginTop: theme.spacing(1),

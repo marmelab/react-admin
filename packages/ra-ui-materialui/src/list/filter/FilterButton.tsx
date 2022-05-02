@@ -22,6 +22,7 @@ import { FilterContext } from '../FilterContext';
 import { extractValidSavedQueries, useSavedQueries } from './useSavedQueries';
 import { AddSavedQueryDialog } from './AddSavedQueryDialog';
 import { RemoveSavedQueryDialog } from './RemoveSavedQueryDialog';
+import { makeOverridesResolver } from '../../makeOverridesResolver';
 
 export const FilterButton = (props: FilterButtonProps): JSX.Element => {
     const { filters: filtersProp, className, ...rest } = props;
@@ -226,7 +227,7 @@ const PREFIX = 'RaFilterButton';
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver({}),
 })(({ theme }) => ({
     display: 'inline-block',
 }));

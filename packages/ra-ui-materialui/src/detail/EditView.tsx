@@ -14,6 +14,7 @@ import {
 import { EditActions as DefaultActions } from './EditActions';
 import { Title } from '../layout';
 import { EditProps } from '../types';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const EditView = (props: EditViewProps) => {
     const {
@@ -122,7 +123,7 @@ export const EditClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(EditClasses),
 })({
     [`& .${EditClasses.main}`]: {
         display: 'flex',

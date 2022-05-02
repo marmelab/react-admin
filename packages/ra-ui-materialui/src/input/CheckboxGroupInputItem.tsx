@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { useChoices } from 'ra-core';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const CheckboxGroupInputItem = props => {
     const {
@@ -62,7 +63,7 @@ export const CheckboxGroupInputItemClasses = {
 
 const StyledFormControlLabel = styled(FormControlLabel, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(CheckboxGroupInputItemClasses),
 })({
     [`& .${CheckboxGroupInputItemClasses.checkbox}`]: {
         height: 32,

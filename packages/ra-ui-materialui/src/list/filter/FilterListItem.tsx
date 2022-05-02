@@ -13,6 +13,7 @@ import CancelIcon from '@mui/icons-material/CancelOutlined';
 import { useTranslate, useListFilterContext, shallowEqual } from 'ra-core';
 import matches from 'lodash/matches';
 import pickBy from 'lodash/pickBy';
+import { makeOverridesResolver } from '../../makeOverridesResolver';
 
 const arePropsEqual = (prevProps, nextProps) =>
     prevProps.label === nextProps.label &&
@@ -215,7 +216,7 @@ export const FilterListItemClasses = {
 
 const StyledListItem = styled(ListItem, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(FilterListItemClasses),
 })(({ theme }) => ({
     [`& .${FilterListItemClasses.listItemButton}`]: {
         paddingRight: '2em',

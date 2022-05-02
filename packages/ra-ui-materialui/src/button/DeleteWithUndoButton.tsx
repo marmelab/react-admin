@@ -16,6 +16,7 @@ import {
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
     props: DeleteWithUndoButtonProps<RecordType>
@@ -90,7 +91,7 @@ const PREFIX = 'RaDeleteWithUndoButton';
 
 const StyledButton = styled(Button, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver({}),
 })(({ theme }) => ({
     color: theme.palette.error.main,
     '&:hover': {

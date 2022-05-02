@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import CardContent from '@mui/material/CardContent';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * Overrides MUI CardContent to allow inner content
@@ -36,7 +37,7 @@ export const CardContentInnerClasses = {
 
 const Root = styled(CardContent, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(CardContentInnerClasses),
 })(({ theme }) => ({
     paddingTop: 0,
     paddingBottom: 0,

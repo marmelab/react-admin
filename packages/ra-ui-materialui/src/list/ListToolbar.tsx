@@ -8,6 +8,7 @@ import { Exporter } from 'ra-core';
 
 import { FilterForm } from './filter';
 import { FilterContext } from './FilterContext';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const ListToolbar: FC<ListToolbarProps> = memo(props => {
     const { filters, actions, className, ...rest } = props;
@@ -65,7 +66,7 @@ const PREFIX = 'RaListToolbar';
 
 const Root = styled(Toolbar, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver({}),
 })(({ theme }) => ({
     justifyContent: 'space-between',
     alignItems: 'flex-end',

@@ -11,6 +11,7 @@ import {
     SortPayload,
     useResourceContext,
 } from 'ra-core';
+import { makeOverridesResolver } from '../../makeOverridesResolver';
 
 export const DatagridHeaderCell = (
     props: DatagridHeaderCellProps
@@ -109,7 +110,7 @@ export const DatagridHeaderCellClasses = {
 // Remove the sort icons when not active
 const StyledTableCell = styled(TableCell, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(DatagridHeaderCellClasses),
 })(({ theme }) => ({
     [`& .MuiTableSortLabel-icon`]: {
         display: 'none',

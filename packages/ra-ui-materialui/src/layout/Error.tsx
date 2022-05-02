@@ -16,6 +16,7 @@ import History from '@mui/icons-material/History';
 import { TitleComponent, useTranslate } from 'ra-core';
 import { Title, TitlePropType } from './Title';
 import { useResetErrorBoundaryOnLocationChange } from './useResetErrorBoundaryOnLocationChange';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const Error = (
     props: InternalErrorProps & {
@@ -154,7 +155,7 @@ export const ErrorClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(ErrorClasses),
 })(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',

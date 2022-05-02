@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { useTranslate, useResourceContext, useCreatePath } from 'ra-core';
 
 import { Button, ButtonProps, sanitizeButtonRestProps } from './Button';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * Opens the Create view of a given resource
@@ -98,7 +99,7 @@ export const CreateButtonClasses = {
 
 const StyledFab = styled(Fab, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(CreateButtonClasses),
 })(({ theme }) => ({
     [`&.${CreateButtonClasses.floating}`]: {
         color: theme.palette.getContrastText(theme.palette.primary.main),

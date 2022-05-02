@@ -12,6 +12,7 @@ import clsx from 'clsx';
 import { RaRecord } from 'ra-core';
 
 import { SaveButton, DeleteButton } from '../button';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * The Toolbar displayed at the bottom of forms.
@@ -113,7 +114,7 @@ export const ToolbarClasses = {
 
 const StyledToolbar = styled(MuiToolbar, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(ToolbarClasses),
 })(({ theme }) => ({
     backgroundColor:
         theme.palette.mode === 'light'

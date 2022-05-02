@@ -6,6 +6,7 @@ import { useTranslate } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
 import { TextInput, TextInputProps } from './TextInput';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const SearchInput = (props: SearchInputProps) => {
     const translate = useTranslate();
@@ -41,7 +42,7 @@ const PREFIX = 'RaSearchInput';
 
 const StyledTextInput = styled(TextInput, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver({}),
 })({
     marginTop: 0,
 });

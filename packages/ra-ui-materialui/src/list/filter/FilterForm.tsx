@@ -26,6 +26,7 @@ import cloneDeep from 'lodash/cloneDeep';
 
 import { FilterFormInput } from './FilterFormInput';
 import { FilterContext } from '../FilterContext';
+import { makeOverridesResolver } from '../../makeOverridesResolver';
 
 export const FilterForm = (props: FilterFormProps) => {
     const { defaultValues, filters: filtersProps, ...rest } = props;
@@ -201,7 +202,7 @@ export const FilterFormClasses = {
 
 const StyledForm = styled('form', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(FilterFormClasses),
 })(({ theme }) => ({
     marginTop: theme.spacing(-0.5),
     marginBottom: theme.spacing(0.5),

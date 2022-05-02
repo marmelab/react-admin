@@ -2,6 +2,7 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 import { Button } from './Button';
 import { useTranslate } from 'ra-core';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const SkipNavigationButton = () => {
     const translate = useTranslate();
@@ -20,7 +21,7 @@ const PREFIX = 'RaSkipNavigationButton';
 
 const StyledButton = styled(Button, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver({}),
 })(({ theme }) => ({
     position: 'fixed',
     padding: theme.spacing(1),

@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTranslate } from 'ra-core';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const Loading = props => {
     const {
@@ -47,7 +48,7 @@ export const LoadingClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(LoadingClasses),
 })(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',

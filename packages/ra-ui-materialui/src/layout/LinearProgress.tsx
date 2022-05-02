@@ -5,6 +5,7 @@ import Progress, {
 } from '@mui/material/LinearProgress';
 import PropTypes from 'prop-types';
 import { useTimeout } from 'ra-core';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * Progress bar formatted to replace an input or a field in a form layout
@@ -50,7 +51,7 @@ const PREFIX = 'RaLinearProgress';
 
 const StyledProgress = styled(Progress, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver({}),
 })(({ theme }) => ({
     margin: `${theme.spacing(1)} 0`,
     width: theme.spacing(20),

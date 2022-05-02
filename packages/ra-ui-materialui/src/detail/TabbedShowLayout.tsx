@@ -23,6 +23,7 @@ import {
     TabbedShowLayoutTabs,
     getShowLayoutTabFullPath,
 } from './TabbedShowLayoutTabs';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * Layout for a Show view showing fields grouped in tabs and laid out in a single column.
@@ -210,7 +211,7 @@ export const TabbedShowLayoutClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(TabbedShowLayoutClasses),
 })(({ theme }) => ({
     flex: 1,
     [`& .${TabbedShowLayoutClasses.content}`]: {

@@ -1,5 +1,7 @@
 import { styled } from '@mui/material';
 
+import { makeOverridesResolver } from '../../makeOverridesResolver';
+
 const PREFIX = 'RaDatagrid';
 
 export const DatagridClasses = {
@@ -26,7 +28,7 @@ export const DatagridClasses = {
 
 export const DatagridRoot = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(DatagridClasses),
 })(({ theme }) => ({
     [`& .${DatagridClasses.table}`]: {
         tableLayout: 'auto',

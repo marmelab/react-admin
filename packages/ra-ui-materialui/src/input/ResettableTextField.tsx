@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useTranslate } from 'ra-core';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * An override of the default MUI TextField which is resettable
@@ -239,5 +240,5 @@ export const ResettableTextFieldStyles = {
 
 const StyledTextField = styled(MuiTextField, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(ResettableTextFieldClasses),
 })(ResettableTextFieldStyles);

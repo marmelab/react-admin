@@ -18,6 +18,7 @@ import {
     getFieldLabelTranslationArgs,
     shallowEqual,
 } from 'ra-core';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * A button allowing to change the sort field and order.
@@ -156,7 +157,7 @@ export interface SortButtonProps {
 
 const StyledButton = styled(Button, {
     name: 'RaSortButton',
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver({}),
 })({
     '&.MuiButton-sizeSmall': {
         // fix for icon misalignment on small buttons, see https://github.com/mui/material-ui/pull/30240

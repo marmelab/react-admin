@@ -18,6 +18,7 @@ import {
     useTranslate,
 } from 'ra-core';
 import { Path } from 'react-router';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export type LocationDescriptor = Partial<Path> & {
     redirect?: boolean;
@@ -149,7 +150,7 @@ const PREFIX = 'RaButton';
 
 const StyledButton = styled(MuiButton, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver({}),
 })({
     '&.MuiButton-sizeSmall': {
         // fix for icon misalignment on small buttons, see https://github.com/mui/material-ui/pull/30240

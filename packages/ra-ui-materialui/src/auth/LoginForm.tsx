@@ -11,6 +11,7 @@ import {
     useSafeSetState,
 } from 'ra-core';
 import { TextInput } from '../input';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const LoginForm = (props: LoginFormProps) => {
     const { redirectTo, className } = props;
@@ -105,7 +106,7 @@ export const LoginFormClasses = {
 
 const StyledForm = styled(Form, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(LoginFormClasses),
 })(({ theme }) => ({
     [`& .${LoginFormClasses.content}`]: {
         width: 300,

@@ -38,6 +38,7 @@ import {
 import { CommonInputProps } from './CommonInputProps';
 import { InputHelperText } from './InputHelperText';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
@@ -535,7 +536,7 @@ export const AutocompleteInputClasses = {
 
 const StyledAutocomplete = styled(Autocomplete, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(AutocompleteInputClasses),
 })(({ theme }) => ({
     [`& .${AutocompleteInputClasses.textField}`]: {
         minWidth: theme.spacing(20),

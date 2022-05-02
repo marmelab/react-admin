@@ -8,6 +8,7 @@ import { useLoading } from 'ra-core';
 
 import { RefreshIconButton } from '../button';
 import { SxProps } from '@mui/system';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const LoadingIndicator = (props: LoadingIndicatorProps) => {
     const { className, sx, ...rest } = props;
@@ -56,7 +57,7 @@ export const LoadingIndicatorClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(LoadingIndicatorClasses),
 })(({ theme }) => ({
     [`& .${LoadingIndicatorClasses.loader}`]: {
         marginLeft: theme.spacing(2),

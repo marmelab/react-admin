@@ -7,6 +7,7 @@ import lodashGet from 'lodash/get';
 import { useLocale } from 'ra-core';
 
 import { useSidebarState } from './useSidebarState';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const Sidebar = (props: SidebarProps) => {
     const { children, closedSize, size, ...rest } = props;
@@ -83,7 +84,7 @@ export const SidebarClasses = {
 const StyledDrawer = styled(Drawer, {
     name: PREFIX,
     slot: 'Root',
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(SidebarClasses),
 })(({ open, theme }) => ({
     height: 'calc(100vh - 3em)',
 

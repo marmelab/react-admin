@@ -17,6 +17,7 @@ import { SidebarToggleButton } from './SidebarToggleButton';
 import { LoadingIndicator } from './LoadingIndicator';
 import { UserMenu } from './UserMenu';
 import { HideOnScroll } from './HideOnScroll';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * The AppBar component renders a custom MuiAppBar.
@@ -145,7 +146,7 @@ export const AppBarClasses = {
 
 const StyledAppBar = styled(MuiAppBar, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(AppBarClasses),
 })(({ theme }) => ({
     [`& .${AppBarClasses.toolbar}`]: {
         paddingRight: 24,

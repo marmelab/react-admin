@@ -4,6 +4,7 @@ import { useLocaleState } from 'ra-core';
 import { Box, Button, Menu, MenuItem, styled } from '@mui/material';
 import LanguageIcon from '@mui/icons-material/Translate';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * Language selector. Changes the locale in the app and persists it in
@@ -90,7 +91,7 @@ export const LocalesMenuButtonClasses = {
 
 const Root = styled(Box, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(LocalesMenuButtonClasses),
 })(({ theme }) => ({
     [`& .${LocalesMenuButtonClasses.selectedLanguage}`]: {
         marginLeft: theme.spacing(1),

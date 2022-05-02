@@ -9,6 +9,7 @@ import { useInput, useTranslate, FieldTitle } from 'ra-core';
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
     const {
@@ -106,7 +107,7 @@ export const NullableBooleanInputClasses = {
 
 const StyledTextField = styled(TextField, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(NullableBooleanInputClasses),
 })(({ theme, fullWidth }) => ({
     [`&.${NullableBooleanInputClasses.input}`]: {
         width: fullWidth ? '100%' : theme.spacing(16),

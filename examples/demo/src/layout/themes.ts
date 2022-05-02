@@ -16,9 +16,9 @@ export const darkTheme = {
             styleOverrides: {
                 root: {
                     borderLeft: '3px solid #000',
-                    '&.RaMenuItemLink-active': {
-                        borderLeft: '3px solid #90caf9',
-                    },
+                },
+                active: {
+                    borderLeft: '3px solid #90caf9',
                 },
             },
         },
@@ -86,9 +86,9 @@ export const lightTheme = {
             styleOverrides: {
                 root: {
                     borderLeft: '3px solid #fff',
-                    '&.RaMenuItemLink-active': {
-                        borderLeft: '3px solid #4f3cc9',
-                    },
+                },
+                active: {
+                    borderLeft: '3px solid #4f3cc9',
                 },
             },
         },

@@ -29,6 +29,7 @@ import {
     SupportCreateSuggestionOptions,
     useSupportCreateSuggestion,
 } from './useSupportCreateSuggestion';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * An Input component for a select box allowing multiple selections, using an array of objects for the options
@@ -376,7 +377,7 @@ export const SelectArrayInputClasses = {
 
 const StyledFormControl = styled(FormControl, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(SelectArrayInputClasses),
 })(({ theme }) => ({
     minWidth: theme.spacing(20),
     [`& .${SelectArrayInputClasses.chips}`]: {

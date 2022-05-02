@@ -16,6 +16,7 @@ import {
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { UserMenuContextProvider } from './UserMenuContextProvider';
 import { Logout } from '../auth/Logout';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * The UserMenu component renders a Mui Button that shows a Menu.
@@ -164,7 +165,7 @@ export const UserMenuClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(UserMenuClasses),
 })(({ theme }) => ({
     [`& .${UserMenuClasses.userButton}`]: {
         textTransform: 'none',

@@ -22,6 +22,7 @@ import {
 } from 'ra-core';
 
 import TopToolbar from '../layout/TopToolbar';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
     const {
@@ -111,7 +112,7 @@ export const BulkActionsToolbarClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(BulkActionsToolbarClasses),
 })(({ theme }) => ({
     position: 'relative',
     [`& .${BulkActionsToolbarClasses.toolbar}`]: {

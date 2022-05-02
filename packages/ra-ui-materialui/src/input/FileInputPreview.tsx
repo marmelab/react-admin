@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import RemoveCircle from '@mui/icons-material/RemoveCircle';
 import IconButton from '@mui/material/IconButton';
 import { useTranslate } from 'ra-core';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const FileInputPreview = (props: FileInputPreviewProps) => {
     const { children, className, onRemove, file, ...rest } = props;
@@ -57,7 +58,7 @@ const FileInputPreviewClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(FileInputPreviewClasses),
 })(({ theme }) => ({
     [`& .${FileInputPreviewClasses.removeButton}`]: {},
 

@@ -26,6 +26,7 @@ import {
 } from 'ra-core';
 
 import { SimpleListLoading } from './SimpleListLoading';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 /**
  * The <SimpleList> component renders a list of records as a MUI <List>.
@@ -284,7 +285,7 @@ export const SimpleListClasses = {
 
 const Root = styled(List, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(SimpleListClasses),
 })({
     [`& .${SimpleListClasses.tertiary}`]: { float: 'right', opacity: 0.541176 },
 });

@@ -9,6 +9,7 @@ import { useRecordContext } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { makeOverridesResolver } from '../makeOverridesResolver';
 
 export const ChipField: FC<ChipFieldProps> = memo(props => {
     const { className, source, emptyText, ...rest } = props;
@@ -59,7 +60,7 @@ const ChipFieldClasses = {
 
 const StyledChip = styled(Chip, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: makeOverridesResolver(ChipFieldClasses),
 })({
     [`&.${ChipFieldClasses.chip}`]: { margin: 4, cursor: 'inherit' },
 });
