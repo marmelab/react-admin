@@ -62,9 +62,7 @@ export const useConfigureAdminRouterFromChildren = (
     const [status, setStatus] = useSafeSetState<AdminRouterStatus>(() =>
         getStatus({
             children,
-            resources,
-            customRoutesWithLayout,
-            customRoutesWithoutLayout,
+            ...routesAndResources,
         })
     );
 
@@ -180,7 +178,6 @@ export const useConfigureAdminRouterFromChildren = (
         };
     }, [register, unregister, resources]);
 
-    console.log({ status });
     return {
         customRoutesWithLayout,
         customRoutesWithoutLayout,
