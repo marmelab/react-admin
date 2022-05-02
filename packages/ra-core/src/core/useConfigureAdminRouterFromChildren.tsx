@@ -60,16 +60,14 @@ export const useConfigureAdminRouterFromChildren = (
     >(routesAndResources.resources);
 
     const [status, setStatus] = useSafeSetState<AdminRouterStatus>(() =>
-        !!getSingleChildFunction(children)
-            ? 'loading'
-            : resources.length > 0
-            ? 'ready'
-            : 'empty'
+        getStatus({
+            children,
+            ...routesAndResources,
+        })
     );
 
     // Whenever children are updated, update our custom routes and resources
     useEffect(() => {
-        const functionChild = getSingleChildFunction(children);
         const routesAndResources = getRoutesAndResourceFromNodes(children);
         setCustomRoutesWithLayout(routesAndResources.customRoutesWithLayout);
         setCustomRoutesWithoutLayout(
@@ -77,11 +75,10 @@ export const useConfigureAdminRouterFromChildren = (
         );
         setResources(routesAndResources.resources);
         setStatus(
-            !!functionChild
-                ? 'loading'
-                : routesAndResources.resources.length > 0
-                ? 'ready'
-                : 'empty'
+            getStatus({
+                children,
+                ...routesAndResources,
+            })
         );
     }, [
         children,
@@ -187,6 +184,26 @@ export const useConfigureAdminRouterFromChildren = (
         status,
         resources,
     };
+};
+
+const getStatus = ({
+    children,
+    resources,
+    customRoutesWithLayout,
+    customRoutesWithoutLayout,
+}: {
+    children: ReactNode;
+    resources: ReactElement<ResourceProps>[];
+    customRoutesWithLayout: ReactElement<CustomRoutesProps>[];
+    customRoutesWithoutLayout: ReactElement<CustomRoutesProps>[];
+}) => {
+    return getSingleChildFunction(children)
+        ? 'loading'
+        : resources.length > 0 ||
+          customRoutesWithLayout.length > 0 ||
+          customRoutesWithoutLayout.length > 0
+        ? 'ready'
+        : 'empty';
 };
 
 type ResourceWithRegisterFunction = {
