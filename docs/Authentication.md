@@ -36,7 +36,7 @@ const authProvider = {
     login: params => Promise.resolve(),
     // when the dataProvider returns an error, check if this is an authentication error
     checkError: error => Promise.resolve(),
-    // chen the user navigates, make sure that their credentials are still valid
+    // when the user navigates, make sure that their credentials are still valid
     checkAuth: params => Promise.resolve(),
     // remove local credentials and notify the auth server that the user logged out
     logout: () => Promise.resolve(),
