@@ -149,7 +149,7 @@ export const FileInput = (props: FileInputProps) => {
 
     return (
         <StyledLabeled
-            id={id}
+            htmlFor={id}
             label={label}
             className={clsx('ra-input', `ra-input-${source}`, className)}
             source={source}
@@ -166,6 +166,7 @@ export const FileInput = (props: FileInputProps) => {
                 >
                     <input
                         id={id}
+                        name={id}
                         {...getInputProps({
                             ...inputPropsOptions,
                         })}
