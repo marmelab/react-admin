@@ -112,7 +112,6 @@ interface Props {
     disabled?: boolean;
     label?: string;
     size?: 'small' | 'medium' | 'large';
-    icon?: ReactElement;
     redirect?: RedirectionSideEffect;
     variant?: string;
     // May be injected by Toolbar
