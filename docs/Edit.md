@@ -70,7 +70,6 @@ You can customize the `<Edit>` component using the following props:
 * [`mutationMode`](#mutationmode): switch to optimistic or pessimistic mutations (undoable by default)
 * [`mutationOptions`](#mutationoptions): options for the `dataProvider.update()` call
 * [`queryOptions`](#queryoptions): options for the `dataProvider.getOne()` call
-* [`record`](#record): use the provided record as base instead of fetching it
 * [`redirect`](#redirect): change the redirect location after successful creation
 * [`resource`](#resource): override the name of the resource to create
 * [`sx`](#sx-css-api): Override the styles
@@ -401,24 +400,6 @@ const PostEdit = () => (
 {% endraw %}
 
 Refer to the [useQuery documentation](https://react-query.tanstack.com/reference/useQuery) in the react-query website for a list of the possible options.
-
-## `record`
-
-On mount, the `<Edit>` component will fetch the record to edit using the `resource` and the `id` from the URL. You can also use `<Edit>` independently of the URL, by passing a record directly via the `record` prop.
-
-{% raw %}
-```jsx
-const PostEdit = () => (
-    <Edit record={{ id: 123, title: 'Hello' }}>
-        <SimpleForm>
-            ...
-        </SimpleForm>
-    </Edit>
-);
-```
-{% endraw %}
-
-This is useful when you want to embed an edition view in another view, for instance when displaying the edit form in a dialog. 
 
 ## `redirect`
 
