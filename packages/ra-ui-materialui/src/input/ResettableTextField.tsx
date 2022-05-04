@@ -23,8 +23,8 @@ export const ResettableTextField = forwardRef(
             value,
             resettable,
             disabled,
-            variant = 'filled',
-            margin = 'dense',
+            variant,
+            margin,
             className,
             ...rest
         } = props;

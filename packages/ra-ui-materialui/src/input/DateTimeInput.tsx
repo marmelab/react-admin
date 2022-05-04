@@ -26,14 +26,14 @@ export const DateTimeInput = ({
     format = formatDateTime,
     label,
     helperText,
-    margin = 'dense',
+    margin,
     onBlur,
     onChange,
     source,
     resource,
     parse = parseDateTime,
     validate,
-    variant = 'filled',
+    variant,
     ...rest
 }: DateTimeInputProps) => {
     const { field, fieldState, formState, id, isRequired } = useInput({

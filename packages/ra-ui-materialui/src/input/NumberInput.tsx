@@ -26,7 +26,7 @@ export const NumberInput = ({
     format = convertNumberToString,
     helperText,
     label,
-    margin = 'dense',
+    margin,
     onBlur,
     onChange,
     parse = convertStringToNumber,
@@ -36,7 +36,7 @@ export const NumberInput = ({
     min,
     max,
     validate,
-    variant = 'filled',
+    variant,
     inputProps: overrideInputProps,
     ...rest
 }: NumberInputProps) => {

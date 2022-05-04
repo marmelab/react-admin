@@ -75,6 +75,13 @@ export const defaultTheme = {
                 },
             },
         },
+        MuiTextField: {
+            defaultProps: {
+                variant: 'filled',
+                margin: 'dense',
+                size: 'small',
+            },
+        },
     },
 };
 

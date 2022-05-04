@@ -1,4 +1,11 @@
-export const darkTheme = {
+import { ThemeOptions } from '@mui/material';
+
+type RaTheme = {
+    sidebar: { width: number };
+    components: { RaMenuItemLink: { styleOverrides: any } };
+};
+
+export const darkTheme: ThemeOptions & RaTheme = {
     palette: {
         primary: {
             main: '#90caf9',
@@ -56,10 +63,17 @@ export const darkTheme = {
                 },
             },
         },
+        MuiTextField: {
+            defaultProps: {
+                variant: 'filled',
+                margin: 'dense',
+                size: 'small',
+            },
+        },
     },
 };
 
-export const lightTheme = {
+export const lightTheme: ThemeOptions & RaTheme = {
     palette: {
         primary: {
             main: '#4f3cc9',
@@ -162,6 +176,13 @@ export const lightTheme = {
                 root: {
                     border: 'none',
                 },
+            },
+        },
+        MuiTextField: {
+            defaultProps: {
+                variant: 'filled',
+                margin: 'dense',
+                size: 'small',
             },
         },
     },
