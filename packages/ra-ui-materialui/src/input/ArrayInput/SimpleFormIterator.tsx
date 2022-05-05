@@ -12,7 +12,7 @@ import { styled } from '@mui/material';
 import clsx from 'clsx';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
-import { RaRecord } from 'ra-core';
+import { RaRecord, useRecordContext } from 'ra-core';
 import { UseFieldArrayReturn } from 'react-hook-form';
 
 import { useArrayInput } from './useArrayInput';
@@ -36,7 +36,6 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         reOrderButtons = <DefaultReOrderButtons />,
         children,
         className,
-        record,
         resource,
         source,
         disabled,
@@ -46,6 +45,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         getItemLabel = DefaultLabelFn,
     } = props;
     const { append, fields, move, remove } = useArrayInput(props);
+    const record = useRecordContext(props.record);
 
     const removeField = useCallback(
         (index: number) => {
