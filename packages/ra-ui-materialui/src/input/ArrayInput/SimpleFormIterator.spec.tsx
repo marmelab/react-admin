@@ -180,6 +180,31 @@ describe('<SimpleFormIterator />', () => {
         expect(screen.queryAllByText('ra.action.remove').length).toBe(0);
     });
 
+    it('should not display remove button if disableRemove return value is truthy', () => {
+        render(
+            <Wrapper>
+                <SimpleForm
+                    record={{
+                        id: 'whatever',
+                        emails: [{ email: 'badEmail' }, { email: '' }],
+                    }}
+                >
+                    <ArrayInput source="emails">
+                        <SimpleFormIterator
+                            disableRemove={record => {
+                                return record.email === 'badEmail';
+                            }}
+                        >
+                            <TextInput source="email" />
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </Wrapper>
+        );
+
+        expect(screen.queryAllByText('ra.action.remove').length).toBe(1);
+    });
+
     it('should not display remove button if disabled is truthy', () => {
         render(
             <Wrapper>
