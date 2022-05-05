@@ -43,11 +43,33 @@ describe('getFieldLabelTranslationArgs', () => {
         ]);
     });
 
-    it('should return the source and resource as translate key', () =>
+    it('should return the source and resource as translate key', () => {
         expect(
             getFieldLabelTranslationArgs({
                 resource: 'posts',
                 source: 'title',
             })
-        ).toEqual([`resources.posts.fields.title`, { _: 'Title' }]));
+        ).toEqual([`resources.posts.fields.title`, { _: 'Title' }]);
+    });
+
+    it('should accept custom label args when no label is provided', () => {
+        expect(
+            getFieldLabelTranslationArgs({
+                resource: 'posts',
+                source: 'title',
+                labelArgs: { _: 'Special Title' },
+            })
+        ).toEqual([`resources.posts.fields.title`, { _: 'Special Title' }]);
+    });
+
+    it('should accept custom label args when a label is provided', () => {
+        expect(
+            getFieldLabelTranslationArgs({
+                resource: 'posts',
+                source: 'title',
+                label: 'my.own.key',
+                labelArgs: { _: 'Special Title' },
+            })
+        ).toEqual([`my.own.key`, { _: 'Special Title' }]);
+    });
 });

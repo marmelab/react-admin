@@ -2,6 +2,7 @@ import inflection from 'inflection';
 
 interface Args {
     label?: string;
+    labelArgs?: Record<string, any>;
     resource?: string;
     source?: string;
 }
@@ -22,15 +23,15 @@ export default (options?: Args): TranslationArguments => {
         return [''];
     }
 
-    const { label, resource, source } = options;
-
+    const { label, labelArgs, resource, source } = options;
     return typeof label !== 'undefined'
-        ? [label, { _: label }]
+        ? [label, { _: label, ...labelArgs }]
         : typeof source !== 'undefined'
         ? [
               `resources.${resource}.fields.${source}`,
               {
                   _: inflection.transform(source, ['underscore', 'humanize']),
+                  ...labelArgs,
               },
           ]
         : [''];

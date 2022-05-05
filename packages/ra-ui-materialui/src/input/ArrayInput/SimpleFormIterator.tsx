@@ -83,8 +83,9 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
             add: addField,
             remove: removeField,
             reOrder: handleReorder,
+            source,
         }),
-        [fields.length, addField, removeField, handleReorder]
+        [addField, fields.length, handleReorder, removeField, source]
     );
     return fields ? (
         <SimpleFormIteratorContext.Provider value={context}>
