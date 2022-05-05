@@ -127,21 +127,7 @@ export const SimpleFormIteratorItem = React.forwardRef(
                                               translate(
                                                   ...getFieldLabelTranslationArgs(
                                                       {
-                                                          label:
-                                                              input.props
-                                                                  .label ??
-                                                              // We prefix the source with the ArrayInput source to avoid conflicts with other inputs
-                                                              `resources.${resource}.fields.${parentSource}.${source}`,
-                                                          labelArgs: {
-                                                              // We use the input source before it is transformed into `arraySource.0.inputSource
-                                                              _: inflection.transform(
-                                                                  source,
-                                                                  [
-                                                                      'underscore',
-                                                                      'humanize',
-                                                                  ]
-                                                              ),
-                                                          },
+                                                          parentSource,
                                                           resource,
                                                           source,
                                                       }

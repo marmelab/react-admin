@@ -52,24 +52,13 @@ describe('getFieldLabelTranslationArgs', () => {
         ).toEqual([`resources.posts.fields.title`, { _: 'Title' }]);
     });
 
-    it('should accept custom label args when no label is provided', () => {
+    it('should accept use the parentSource to build the translation key if provided', () => {
         expect(
             getFieldLabelTranslationArgs({
                 resource: 'posts',
-                source: 'title',
-                labelArgs: { _: 'Special Title' },
+                source: 'url',
+                parentSource: 'backlinks',
             })
-        ).toEqual([`resources.posts.fields.title`, { _: 'Special Title' }]);
-    });
-
-    it('should accept custom label args when a label is provided', () => {
-        expect(
-            getFieldLabelTranslationArgs({
-                resource: 'posts',
-                source: 'title',
-                label: 'my.own.key',
-                labelArgs: { _: 'Special Title' },
-            })
-        ).toEqual([`my.own.key`, { _: 'Special Title' }]);
+        ).toEqual([`resources.posts.fields.backlinks.url`, { _: 'Url' }]);
     });
 });
