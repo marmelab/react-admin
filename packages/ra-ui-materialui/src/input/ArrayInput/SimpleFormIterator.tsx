@@ -16,7 +16,10 @@ import { RaRecord } from 'ra-core';
 import { UseFieldArrayReturn } from 'react-hook-form';
 
 import { useArrayInput } from './useArrayInput';
-import { SimpleFormIteratorClasses } from './useSimpleFormIteratorStyles';
+import {
+    SimpleFormIteratorClasses,
+    SimpleFormIteratorPrefix,
+} from './useSimpleFormIteratorStyles';
 import { SimpleFormIteratorContext } from './SimpleFormIteratorContext';
 import {
     DisableRemoveFunction,
@@ -176,7 +179,10 @@ export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
     source?: string;
 }
 
-const Root = styled('ul')(({ theme }) => ({
+const Root = styled('ul', {
+    name: SimpleFormIteratorPrefix,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     padding: 0,
     marginBottom: 0,
     '& > li:last-child': {
