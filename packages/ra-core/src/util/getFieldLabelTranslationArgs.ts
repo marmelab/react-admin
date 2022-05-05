@@ -2,6 +2,7 @@ import inflection from 'inflection';
 
 interface Args {
     label?: string;
+    parentSource?: string;
     resource?: string;
     source?: string;
 }
@@ -22,13 +23,14 @@ export default (options?: Args): TranslationArguments => {
         return [''];
     }
 
-    const { label, resource, source } = options;
-
+    const { label, parentSource, resource, source } = options;
     return typeof label !== 'undefined'
         ? [label, { _: label }]
         : typeof source !== 'undefined'
         ? [
-              `resources.${resource}.fields.${source}`,
+              `resources.${resource}.fields.${
+                  parentSource ? `${parentSource}.${source}` : source
+              }`,
               {
                   _: inflection.transform(source, ['underscore', 'humanize']),
               },

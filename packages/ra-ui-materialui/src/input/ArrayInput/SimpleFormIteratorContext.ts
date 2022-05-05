@@ -11,8 +11,9 @@ export const SimpleFormIteratorContext = createContext<
 >(undefined);
 
 export type SimpleFormIteratorContextValue = {
-    total: number;
     add: () => void;
     remove: (index: number) => void;
     reOrder: (index: number, newIndex: number) => void;
+    source: string;
+    total: number;
 };

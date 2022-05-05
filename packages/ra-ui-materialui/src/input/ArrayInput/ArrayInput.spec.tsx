@@ -116,19 +116,19 @@ describe('<ArrayInput />', () => {
             </AdminContext>
         );
         expect(
-            screen.queryAllByLabelText('resources.bar.fields.id')
+            screen.queryAllByLabelText('resources.bar.fields.arr.id')
         ).toHaveLength(2);
         expect(
             screen
-                .queryAllByLabelText('resources.bar.fields.id')
+                .queryAllByLabelText('resources.bar.fields.arr.id')
                 .map(input => (input as HTMLInputElement).value)
         ).toEqual(['123', '456']);
         expect(
-            screen.queryAllByLabelText('resources.bar.fields.foo')
+            screen.queryAllByLabelText('resources.bar.fields.arr.foo')
         ).toHaveLength(2);
         expect(
             screen
-                .queryAllByLabelText('resources.bar.fields.foo')
+                .queryAllByLabelText('resources.bar.fields.arr.foo')
                 .map(input => (input as HTMLInputElement).value)
         ).toEqual(['bar', 'baz']);
     });
@@ -169,7 +169,7 @@ describe('<ArrayInput />', () => {
         });
         fireEvent.click(screen.getByText('ra.action.add'));
         const firstId = screen.getAllByLabelText(
-            'resources.bar.fields.id *'
+            'resources.bar.fields.arr.id *'
         )[0];
         fireEvent.change(firstId, {
             target: { value: 'aaa' },
@@ -179,7 +179,7 @@ describe('<ArrayInput />', () => {
         });
         fireEvent.blur(firstId);
         const firstFoo = screen.getAllByLabelText(
-            'resources.bar.fields.foo *'
+            'resources.bar.fields.arr.foo *'
         )[0];
         fireEvent.change(firstFoo, {
             target: { value: 'aaa' },
@@ -195,7 +195,7 @@ describe('<ArrayInput />', () => {
         });
     });
 
-    it('should mantain its form value after having been unmounted', async () => {
+    it('should maintain its form value after having been unmounted', async () => {
         let value, setArrayInputVisible;
 
         const MyArrayInput = () => {
