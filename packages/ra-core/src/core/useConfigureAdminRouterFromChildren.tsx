@@ -10,7 +10,7 @@ import {
     useEffect,
     useState,
 } from 'react';
-import { useLogout, useGetPermissions, useAuthState } from '../auth';
+import { useLogout, usePermissions, useAuthState } from '../auth';
 import { useSafeSetState } from '../util';
 import {
     AdminChildren,
@@ -43,7 +43,7 @@ import { useResourceDefinitionContext } from './useResourceDefinitionContext';
 export const useConfigureAdminRouterFromChildren = (
     children: AdminChildren
 ): RoutesAndResources & { status: AdminRouterStatus } => {
-    const permissions = usePermissionsWithLogout();
+    const { permissions } = usePermissions();
 
     // Whenever children are updated, update our custom routes and resources
     const [routesAndResources, status] = useRoutesAndResourcesFromChildren(
@@ -60,25 +60,6 @@ export const useConfigureAdminRouterFromChildren = (
         status,
         resources: routesAndResources.resources,
     };
-};
-
-const usePermissionsWithLogout = () => {
-    const getPermissions = useGetPermissions();
-    const doLogout = useLogout();
-    const [permissions, setPermissions] = useState<any>();
-
-    useEffect(() => {
-        getPermissions()
-            .then(newPermissions => {
-                setPermissions(newPermissions);
-            })
-            .catch(error => {
-                console.error(error);
-                doLogout();
-            });
-    }, [doLogout, getPermissions]);
-
-    return permissions;
 };
 
 /**
