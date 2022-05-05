@@ -45,7 +45,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         getItemLabel = DefaultLabelFn,
     } = props;
     const { append, fields, move, remove } = useArrayInput(props);
-    const record = useRecordContext(props.record);
+    const record = useRecordContext(props);
 
     const removeField = useCallback(
         (index: number) => {
