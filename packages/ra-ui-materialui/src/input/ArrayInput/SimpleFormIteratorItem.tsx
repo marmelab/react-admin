@@ -12,7 +12,6 @@ import {
 import { Typography } from '@mui/material';
 import clsx from 'clsx';
 import { getFieldLabelTranslationArgs, RaRecord, useTranslate } from 'ra-core';
-import inflection from 'inflection';
 
 import { SimpleFormIteratorClasses } from './useSimpleFormIteratorStyles';
 import { useSimpleFormIterator } from './useSimpleFormIterator';
