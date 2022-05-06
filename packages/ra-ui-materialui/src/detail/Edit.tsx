@@ -55,9 +55,27 @@ export const Edit = <RecordType extends RaRecord = any>(
     props: EditProps<RecordType> & { children: ReactNode }
 ) => {
     useCheckMinimumRequiredProps('Edit', ['children'], props);
+    const {
+        resource,
+        id,
+        mutationMode,
+        mutationOptions,
+        queryOptions,
+        redirect,
+        transform,
+        ...rest
+    } = props;
     return (
-        <EditBase {...props}>
-            <EditView {...props} />
+        <EditBase
+            resource={resource}
+            id={id}
+            mutationMode={mutationMode}
+            mutationOptions={mutationOptions}
+            queryOptions={queryOptions}
+            redirect={redirect}
+            transform={transform}
+        >
+            <EditView {...rest} />
         </EditBase>
     );
 };

@@ -54,9 +54,23 @@ export const Create = <RecordType extends RaRecord = any>(
     props: CreateProps<RecordType> & { children: ReactElement }
 ): ReactElement => {
     useCheckMinimumRequiredProps('Create', ['children'], props);
+    const {
+        resource,
+        record,
+        redirect,
+        transform,
+        mutationOptions,
+        ...rest
+    } = props;
     return (
-        <CreateBase {...props}>
-            <CreateView {...props} />
+        <CreateBase
+            resource={resource}
+            record={record}
+            redirect={redirect}
+            transform={transform}
+            mutationOptions={mutationOptions}
+        >
+            <CreateView {...rest} />
         </CreateBase>
     );
 };
