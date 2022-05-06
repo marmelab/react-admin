@@ -72,6 +72,9 @@ describe('Create Page', () => {
         cy.get(CreatePage.elements.input('authors.0.user_id')).should(
             el => expect(el).to.exist
         );
+        cy.get(CreatePage.elements.input('authors.0.user_id')).should(
+            'have.focus'
+        );
         cy.get(CreatePage.elements.input('authors.0.role')).should(
             el => expect(el).to.not.exist
         );

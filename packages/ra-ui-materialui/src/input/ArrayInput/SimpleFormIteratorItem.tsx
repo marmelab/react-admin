@@ -7,7 +7,9 @@ import {
     isValidElement,
     ReactElement,
     ReactNode,
+    useEffect,
     useMemo,
+    useRef,
 } from 'react';
 import { Typography } from '@mui/material';
 import clsx from 'clsx';
@@ -24,6 +26,7 @@ import {
 export const SimpleFormIteratorItem = React.forwardRef(
     (props: SimpleFormIteratorItemProps, ref: any) => {
         const {
+            autoFocus,
             children,
             disabled,
             disableReordering,
@@ -77,6 +80,18 @@ export const SimpleFormIteratorItem = React.forwardRef(
             [index, total, reOrder, remove]
         );
 
+        // Auto focus management
+        const inputsContainerRef = useRef<HTMLElement>();
+        useEffect(() => {
+            if (autoFocus) {
+                const firstInput = inputsContainerRef.current.querySelector(
+                    'input, select, textarea'
+                ) as HTMLInputElement;
+
+                firstInput.focus();
+            }
+        }, [autoFocus]);
+
         return (
             <SimpleFormIteratorItemContext.Provider value={context}>
                 <li className={SimpleFormIteratorClasses.line} ref={ref}>
@@ -103,7 +118,10 @@ export const SimpleFormIteratorItem = React.forwardRef(
                                 })}
                         </div>
                     </div>
-                    <section className={SimpleFormIteratorClasses.form}>
+                    <section
+                        ref={inputsContainerRef}
+                        className={SimpleFormIteratorClasses.form}
+                    >
                         {Children.map(
                             children,
                             (input: ReactElement, index2) => {
@@ -162,6 +180,7 @@ export type DisableRemoveFunction = (record: RaRecord) => boolean;
 
 export type SimpleFormIteratorItemProps = Partial<ArrayInputContextValue> & {
     children?: ReactNode;
+    autoFocus?: boolean;
     disabled?: boolean;
     disableRemove?: boolean | DisableRemoveFunction;
     disableReordering?: boolean;

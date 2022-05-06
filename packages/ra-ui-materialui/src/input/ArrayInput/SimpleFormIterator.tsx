@@ -7,6 +7,7 @@ import {
     ReactNode,
     useCallback,
     useMemo,
+    useRef,
 } from 'react';
 import { styled } from '@mui/material';
 import clsx from 'clsx';
@@ -47,6 +48,9 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     const { append, fields, move, remove } = useArrayInput(props);
     const record = useRecordContext(props);
 
+    // Inputs shouldn't be auto focused by default, only when their parent item has just been added
+    const shouldAutoFocus = useRef(false);
+
     const removeField = useCallback(
         (index: number) => {
             remove(index);
@@ -57,6 +61,8 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     const addField = useCallback(
         (item: any = undefined) => {
             append(item);
+            // As soon as users add a new item, we enable autoFocus for their first input
+            shouldAutoFocus.current = true;
         },
         [append]
     );
@@ -110,6 +116,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                         reOrderButtons={reOrderButtons}
                         resource={resource}
                         source={source}
+                        autoFocus={shouldAutoFocus.current}
                     >
                         {children}
                     </SimpleFormIteratorItem>
