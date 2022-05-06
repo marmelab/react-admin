@@ -430,7 +430,7 @@ In some cases, neither the `<Datagrid>` nor the `<SimpleList>` components allow 
 {% raw %}
 ```jsx
 import { List, useListContext } from 'react-admin';
-import { Stack, Typography } from '@mui/icons-material/Star';
+import { Stack, Typography } from '@mui/material';
 
 const SimpleBookList = () => {
     const { data } = useListContext();

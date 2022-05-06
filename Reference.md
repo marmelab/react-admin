@@ -209,7 +209,6 @@ title: "Reference"
 * [`useTour`](https://marmelab.com/ra-enterprise/modules/ra-tour)<img class="icon" src="./img/premium.svg" />
 * [`useTranslate`](./Translation.md#usetranslate-hook)
 * [`useUpdate`](./useUpdate.md)
-* `useUpdateLoading`
 * [`useUpdateMany`](./useUpdateMany.md)
 * [`useUnselect`](./useUnselect.md)
 * [`useUnselectAll`](./useUnselectAll.md)

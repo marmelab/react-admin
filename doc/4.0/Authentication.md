@@ -36,7 +36,7 @@ const authProvider = {
     login: params => Promise.resolve(),
     // when the dataProvider returns an error, check if this is an authentication error
     checkError: error => Promise.resolve(),
-    // chen the user navigates, make sure that their credentials are still valid
+    // when the user navigates, make sure that their credentials are still valid
     checkAuth: params => Promise.resolve(),
     // remove local credentials and notify the auth server that the user logged out
     logout: () => Promise.resolve(),
@@ -44,8 +44,6 @@ const authProvider = {
     getIdentity: () => Promise.resolve(),
     // get the user permissions (optional)
     getPermissions: () => Promise.resolve(),
-    // get the user roles (optional - only for Role-Based Access Control)
-    getRoles: () => Promise.resolve(),
 };
 ```
 

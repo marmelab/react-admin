@@ -5,7 +5,7 @@ title: "useCanAccess"
 
 # `useCanAccess`
 
-This hook, part of [the ra-rbac module](https://marmelab.com/ra-rbac)<img class="icon" src="./img/premium.svg" />, calls the `authProvider.getPermissions()` and `authProvider.getRoles()` to get the role definitions, then checks whether the requested action and resource are allowed for the current user. 
+This hook, part of [the ra-rbac module](https://marmelab.com/ra-rbac)<img class="icon" src="./img/premium.svg" />, calls the `authProvider.getPermissions()` to get the role definitions, then checks whether the requested action and resource are allowed for the current user. 
 
 `useCanAccess` takes an object `{ action, resource, record }` as argument. It returns an object describing the state of the RBAC request. As calls to the `authProvider` are asynchronous, the hook returns a `loading` state in addition to the `canAccess` key.
 
