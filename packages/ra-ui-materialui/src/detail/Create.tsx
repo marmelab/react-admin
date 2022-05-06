@@ -1,16 +1,11 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import {
-    CreateContextProvider,
-    RaRecord,
-    ResourceContextProvider,
-    useCheckMinimumRequiredProps,
-    useCreateController,
-} from 'ra-core';
+import { RaRecord, useCheckMinimumRequiredProps } from 'ra-core';
 
 import { CreateProps } from '../types';
 import { CreateView } from './CreateView';
+import { CreateBase } from 'ra-core';
 
 /**
  * Page component for the Create view
@@ -59,19 +54,10 @@ export const Create = <RecordType extends RaRecord = any>(
     props: CreateProps<RecordType> & { children: ReactElement }
 ): ReactElement => {
     useCheckMinimumRequiredProps('Create', ['children'], props);
-    const controllerProps = useCreateController<RecordType>(props);
-    const body = (
-        <CreateContextProvider value={controllerProps}>
-            <CreateView {...props} {...controllerProps} />
-        </CreateContextProvider>
-    );
-    return props.resource ? (
-        // support resource override via props
-        <ResourceContextProvider value={props.resource}>
-            {body}
-        </ResourceContextProvider>
-    ) : (
-        body
+    return (
+        <CreateBase {...props}>
+            <CreateView {...props} />
+        </CreateBase>
     );
 };
 

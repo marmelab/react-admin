@@ -1,15 +1,10 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import {
-    EditContextProvider,
-    ResourceContextProvider,
-    useCheckMinimumRequiredProps,
-    useEditController,
-    RaRecord,
-} from 'ra-core';
+import { useCheckMinimumRequiredProps, RaRecord } from 'ra-core';
 import { EditProps } from '../types';
 import { EditView } from './EditView';
+import { EditBase } from 'ra-core';
 
 /**
  * Page component for the Edit view
@@ -60,19 +55,10 @@ export const Edit = <RecordType extends RaRecord = any>(
     props: EditProps<RecordType> & { children: ReactNode }
 ) => {
     useCheckMinimumRequiredProps('Edit', ['children'], props);
-    const controllerProps = useEditController<RecordType>(props);
-    const body = (
-        <EditContextProvider value={controllerProps}>
-            <EditView {...props} {...controllerProps} />
-        </EditContextProvider>
-    );
-    return props.resource ? (
-        // support resource override via props
-        <ResourceContextProvider value={props.resource}>
-            {body}
-        </ResourceContextProvider>
-    ) : (
-        body
+    return (
+        <EditBase {...props}>
+            <EditView {...props} />
+        </EditBase>
     );
 };
 
