@@ -13,6 +13,7 @@
 * Fix `<FileInput>` doesn't accept `options` prop ([#7611](https://github.com/marmelab/react-admin/pull/7611)) ([fzaninotto](https://github.com/fzaninotto))
 * Fix duplicate key error in `<SingleFieldList>` ([#7617](https://github.com/marmelab/react-admin/pull/7617)) ([djhi](https://github.com/djhi))
 * Fix Form validation when `<SaveButton type>` is "button" ([#7557](https://github.com/marmelab/react-admin/pull/7557)) ([WiXSL](https://github.com/WiXSL))
+* Fix `NullableBooleanInput` helper text doesn't take `isSubmitted` into account ([#7553](https://github.com/marmelab/react-admin/pull/7553)) ([afilp](https://github.com/afilp))
 * [TypeScript] Fix `ra-data-graphql` options type ([#7638](https://github.com/marmelab/react-admin/pull/7638)) ([arjunyel](https://github.com/arjunyel))
 * [TypeScript] Fix `<Button/>` props type mention unsupported `icon` prop ([#7627](https://github.com/marmelab/react-admin/pull/7627)) ([smeng9](https://github.com/smeng9))
 * [Doc] Fix wrong import in List docs ([#7647](https://github.com/marmelab/react-admin/pull/7647)) ([davidhenley](https://github.com/davidhenley))
@@ -20,7 +21,6 @@
 * [Doc] Fix `<ArrayField>` doc mentions unsupported `fieldKey` prop ([#7613](https://github.com/marmelab/react-admin/pull/7613)) ([smeng9](https://github.com/smeng9))
 * [Doc] Fix instructions for using react-admin in a sub path ([#7612](https://github.com/marmelab/react-admin/pull/7612)) ([fzaninotto](https://github.com/fzaninotto))
 * [Doc] Add Prisma REST to the list of third-party Data Providers ([#7568](https://github.com/marmelab/react-admin/pull/7568)) ([mshd](https://github.com/mshd))
-* Fix `NullableBooleanInput` helper text doesn't take `isSubmitted` into account ([#7553](https://github.com/marmelab/react-admin/pull/7553)) ([afilp](https://github.com/afilp))
 
 ## v4.0.2
 
