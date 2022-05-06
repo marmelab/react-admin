@@ -6,6 +6,7 @@ import {
 } from './useCreateController';
 import { CreateContextProvider } from './CreateContextProvider';
 import { RaRecord } from '../../types';
+import { ResourceContextProvider } from '../../core';
 
 /**
  * Call useCreateController and put the value in a CreateContext
@@ -39,8 +40,19 @@ import { RaRecord } from '../../types';
 export const CreateBase = <RecordType extends RaRecord = any>({
     children,
     ...props
-}: CreateControllerProps<RecordType> & { children: ReactNode }) => (
-    <CreateContextProvider value={useCreateController(props)}>
-        {children}
-    </CreateContextProvider>
-);
+}: CreateControllerProps<RecordType> & { children: ReactNode }) => {
+    const controllerProps = useCreateController<RecordType>(props);
+    const body = (
+        <CreateContextProvider value={controllerProps}>
+            {children}
+        </CreateContextProvider>
+    );
+    return props.resource ? (
+        // support resource override via props
+        <ResourceContextProvider value={props.resource}>
+            {body}
+        </ResourceContextProvider>
+    ) : (
+        body
+    );
+};
