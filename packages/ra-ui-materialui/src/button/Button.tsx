@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement, ElementType } from 'react';
 import PropTypes from 'prop-types';
 import {
     Button as MuiButton,
@@ -107,7 +107,7 @@ interface Props {
     children?: ReactElement;
     className?: string;
     color?: MuiPropTypes.Color;
-    component?: ReactNode;
+    component?: ElementType;
     to?: string | LocationDescriptor;
     disabled?: boolean;
     label?: string;
