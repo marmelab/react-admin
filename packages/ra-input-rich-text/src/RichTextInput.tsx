@@ -72,6 +72,7 @@ export const RichTextInput = (props: RichTextInputProps) => {
         defaultValue = '',
         disabled = false,
         editorOptions = DefaultEditorOptions,
+        contentType = 'html',
         fullWidth,
         helperText,
         label,
@@ -127,8 +128,7 @@ export const RichTextInput = (props: RichTextInputProps) => {
                 return;
             }
 
-            const html = editor.getHTML();
-            field.onChange(html);
+            field.onChange(contentType === 'html' ? editor.getHTML() : editor.getJSON());
             field.onBlur();
         };
 
@@ -265,6 +265,7 @@ export type RichTextInputProps = CommonInputProps &
     Omit<LabeledProps, 'children'> & {
         disabled?: boolean;
         readOnly?: boolean;
+        contentType?: 'json' | 'html';
         editorOptions?: Partial<EditorOptions>;
         toolbar?: ReactNode;
     };
