@@ -11,21 +11,16 @@ Whether you need to adjust a CSS rule for a single component, or change the colo
 
 All react-admin components expose an `sx` property, which allows to customize the component style. It uses the CSS-in-JS solution offered by MUI, [MUI System](https://mui.com/system/basics/#the-sx-prop). This `sx` prop is kind of like [React's `style` prop](https://reactjs.org/docs/dom-elements.html#style), but it's more powerful.
 
-- It supports all CSS properties, plus some shorthand for common CSS properties, e.g. `pt` for `paddingTop`
-
+{% raw %}
 ```jsx
-<CardContent sx={{ pt: 2 }}>
-```
+// It supports all CSS properties, plus some shorthand for common CSS properties,
+// e.g. pt for paddingTop
+<CardContent sx={{ pt: 2 }} />
 
-- It allows to style pseudo-elements, like `:hover` or `:last-child`:
+// It allows to style pseudo-elements, like :hover or :last-child
+<CardContent sx={{ pt: 2, "&:last-child": { pb: 2 } }} />
 
-```jsx
-<CardContent sx={{ pt: 2, "&:last-child": { pb: 2 } }}>
-```
-
-- It allows responsive values without media queries:
-
-```jsx
+// It allows responsive values without media queries:
 <Box
     sx={{
         width: {
@@ -39,21 +34,16 @@ All react-admin components expose an `sx` property, which allows to customize th
 >
     This box has a responsive width.
 </Box>
+
+// It allows to style children, e.g. to style the <Avatar> inside a <Card>:
+<Card sx={{ '& .MuiAvatar': { width: 48, height: 48 } }} />
+
+// It allows to use theme variables, like the spacing or the palette colors:
+<Card sx={{ bgcolor: "grey.200" }} />
+
+// It offers property name autocompletion in IDEs thanks to TypeScript
 ```
-
-- It allows to style children, e.g. to style the `Avatar` inside a `Card`:
-
-```jsx
-<Card sx={{ '& .MuiAvatar': { width: 48, height: 48 } }}>
-```
-
-- It allows to use theme variables, like the spacing or the palette colors:
-
-```jsx
-  <Card sx={{ bgcolor: "grey.200" }}>
- ```
-
-- It offers property name autocompletion in IDEs thanks to TypeScript
+{% endraw %}
 
 Check [The MUI documentation on the `sx` prop](https://mui.com/material-ui/customization/how-to-customize/#1-one-off-customization) for more information.
 
@@ -149,6 +139,7 @@ export const MyDatagrid = styled(Datagrid)({
 
 You can then use this component instead of react-admin's `<Datagrid>` component:
 
+{% raw %}
 ```diff
 // in src/post/PostList.js
 import {
@@ -190,6 +181,7 @@ export const PostList = () => (
     </List>
 );
 ```
+{% endraw %}
 
 Again, to guess the name of the subclass to use (like `.RaDatagrid-headerCell` above) for customizing a component, you can use the developer tools of your browser, or check the react-admin documentation for individual components (e.g. the [Datagrid CSS documentation](./Datagrid.md#sx-css-api)).
 
