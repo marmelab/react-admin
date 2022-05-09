@@ -12,6 +12,7 @@
     padding-top: 0 !important;
     padding-bottom: 0 !important;
     line-height: normal;
+    font-size: 0.9em;
 }
 
 .toc-list-item > ol > li.toc-list-item:first-child {
