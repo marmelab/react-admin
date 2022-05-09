@@ -3083,7 +3083,7 @@ If you created a custom app (without the `<Admin>` component), you may have used
 
 ### Custom Themes Must Extend `defaultTheme`
 
-If you pass a custom object to `<Admin theme>` to change the look and feel of your application, the object must now extend the `defaultTheme` object, or the inputs will default to the `outmined`  variant:
+If you pass a custom object to `<Admin theme>` to change the look and feel of your application, the object must now extend the `defaultTheme` object, or the inputs will default to the `outlined` variant instead of the `filled` variant:
 
 ```diff
 +import { defaultTheme } from 'react-admin';
@@ -3100,6 +3100,28 @@ const theme = {
                 },
             }
         }
+    }
+};
+```
+
+Alternately, set the default `variant`  for `MuiTextField` to `filled`:
+
+```diff
+const theme = {
+    components: {
+        RaDatagrid: {
+            root: {
+                backgroundColor: "Lavender",
+                "& .RaDatagrid-headerCell": {
+                    backgroundColor: "MistyRose",
+                },
+            }
+        }
++       MuiTextField: {
++           defaultProps: {
++               variant: 'filled',
++           }
++       }
     }
 };
 ```
