@@ -24,6 +24,8 @@ import {
     TextField,
     TextInput,
     useTranslate,
+    ReferenceArrayInput,
+    SelectArrayInput,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import ResetViewsButton from './ResetViewsButton';
@@ -36,6 +38,14 @@ const QuickFilter = ({ label, source, defaultValue }) => {
 
 const postFilter = [
     <SearchInput source="q" alwaysOn />,
+    <ReferenceArrayInput
+        reference="tags"
+        source="tags"
+        sort={{ field: 'name.en', order: 'ASC' }}
+        alwaysOn
+    >
+        <SelectArrayInput optionText="name.en" />
+    </ReferenceArrayInput>,
     <TextInput source="title" defaultValue="Qui tempore rerum et voluptates" />,
     <QuickFilter
         label="resources.posts.fields.commentable"
