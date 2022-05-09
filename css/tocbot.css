@@ -11,6 +11,7 @@
 .toc-list-item code {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
+    line-height: normal;
 }
 
 .toc-list-item > ol > li.toc-list-item:first-child {
