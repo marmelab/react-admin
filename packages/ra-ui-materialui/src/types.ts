@@ -15,6 +15,7 @@ export interface EditProps<RecordType extends RaRecord = any> {
     actions?: ReactElement | false;
     aside?: ReactElement;
     className?: string;
+    meta?: Record<string, any>;
     component?: ElementType;
     id?: Identifier;
     mutationMode?: MutationMode;
