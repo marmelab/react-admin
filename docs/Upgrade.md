@@ -3081,6 +3081,29 @@ If you created a custom app (without the `<Admin>` component), you may have used
 
 ## Miscellaneous
 
+### Custom Themes Must Extend `defaultTheme`
+
+If you pass a custom object to `<Admin theme>` to change the look and feel of your application, the object must now extend the `defaultTheme` object, or the inputs will default to the `outmined`  variant:
+
+```diff
++import { defaultTheme } from 'react-admin';
+
+const theme = {
++   ...defaultTheme,
+    components: {
++       ...defaultTheme.components,
+        RaDatagrid: {
+            root: {
+                backgroundColor: "Lavender",
+                "& .RaDatagrid-headerCell": {
+                    backgroundColor: "MistyRose",
+                },
+            }
+        }
+    }
+};
+```
+
 ### `useNotify` Now Takes An Options Object
 
 When a component has to display a notification, developers may want to tweak the type, duration, translation arguments, or the ability to undo the action. The callback returned by `useNotify()` used to accept a long series of argument, but the syntax wasn't very intuitive. To improve the developer experience, these options are now part of an `options` object, passed as second argument.
