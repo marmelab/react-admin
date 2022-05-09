@@ -55,23 +55,27 @@ export const NumberInput = ({
         validate,
         ...rest,
     });
-    const [value, setValue] = React.useState(field.value);
-
-    // update the value when the record changes
-    React.useEffect(() => {
-        const stringValue = convertNumberToString(field.value);
-        setValue(value => (value !== stringValue ? stringValue : value));
-    }, [field.value]);
 
     const inputProps = { ...overrideInputProps, step, min, max };
 
-    // handle the text value manually
-    // to allow transitory values like '1.0' that will lead to '1.02'
+    // This is a controlled input that doesn't transform the user input on change.
+    // The user input is only turned into a number on blur.
+    // This is to allow transitory values like '1.0' that will lead to '1.02'
+
+    // text typed by the user and displayed in the input, unparsed
+    const [value, setValue] = React.useState(format(field.value));
+
+    // update the input text when the record changes
+    React.useEffect(() => {
+        const stringValue = format(field.value);
+        setValue(value => (value !== stringValue ? stringValue : value));
+    }, [field.value]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    // update the input text when the user types in the input
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (onChange) {
             onChange(event);
         }
-
         if (
             typeof event.target === 'undefined' ||
             typeof event.target.value === 'undefined'
@@ -108,6 +112,7 @@ export const NumberInput = ({
         <TextField
             id={id}
             {...field}
+            // override the react-hook-form value, onChange and onBlur props
             value={value}
             onChange={handleChange}
             onBlur={handleBlur}
