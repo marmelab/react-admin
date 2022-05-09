@@ -11,6 +11,9 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 /**
  * An Input component for a number
  *
+ * Due to limitations in React controlled components and number formatting,
+ * this input only updates the form value on blur.
+ *
  * @example
  * <NumberInput source="nb_views" />
  *
@@ -18,7 +21,6 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
  * @example
  * <NumberInput source="nb_views" step={1} />
  *
- * The object passed as `options` props is passed to the MUI <TextField> component
  */
 export const NumberInput = ({
     className,
