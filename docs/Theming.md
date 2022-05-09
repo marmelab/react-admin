@@ -289,7 +289,7 @@ const theme = {
 
 ## Writing a Custom Theme
 
-MUI theming also allows to change the default palette, typography, colors, etc. This is very useful to change the react-admin style to match the branding of your commpany.
+MUI theming also allows to change the default palette, typography, colors, etc. This is very useful to change the react-admin style to match the branding of your company.
 
 For instance, here is how to override the default react-admin colors and fonts:
 
