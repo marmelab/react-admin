@@ -95,7 +95,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         label,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
-        margin = 'dense',
+        margin,
         onBlur,
         onChange,
         onCreate,
@@ -106,7 +106,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         source: sourceProp,
         translateChoice,
         validate,
-        variant = 'filled',
+        variant,
         ...rest
     } = props;
 

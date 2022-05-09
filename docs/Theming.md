@@ -7,47 +7,68 @@ title: "Theming"
 
 Whether you need to adjust a CSS rule for a single component, or change the color of the labels in the entire app, you're covered!
 
-## Overriding A Component Style
+## `sx`: Overriding A Component Style
 
-Every react-admin component exposes an `sx` property from MUI besides providing a `className` property, which is always applied to the root element.
-
-Here is an example customizing an `EditButton` component inside a `Datagrid`, using the `sx` property from MUI:
+All react-admin components expose an `sx` property, which allows to customize the component style. It uses the CSS-in-JS solution offered by MUI, [MUI System](https://mui.com/system/basics/#the-sx-prop). This `sx` prop is kind of like [React's `style` prop](https://reactjs.org/docs/dom-elements.html#style), but it's more powerful.
 
 {% raw %}
 ```jsx
-import * as React from 'react';
-import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
+// It supports all CSS properties, plus some shorthand for common CSS properties,
+// e.g. pt for paddingTop
+<CardContent sx={{ pt: 2 }} />
 
-const MyEditButton = (props) => (
-    <EditButton
-        sx={{
-            fontWeight: "bold",
-            // This is CSS-in-JS syntax to target a deeper element using css selector, here the svg icon for this button
-            "& svg": { color: "orange" },
-        }}
-        {...props}
-    />
-);
+// It allows to style pseudo-elements, like :hover or :last-child
+<CardContent sx={{ pt: 2, "&:last-child": { pb: 2 } }} />
+
+// It allows responsive values without media queries:
+<Box
+    sx={{
+        width: {
+            xs: 100, // theme.breakpoints.up('xs')
+            sm: 200, // theme.breakpoints.up('sm')
+            md: 300, // theme.breakpoints.up('md')
+            lg: 400, // theme.breakpoints.up('lg')
+            xl: 500, // theme.breakpoints.up('xl')
+        },
+    }}
+>
+    This box has a responsive width.
+</Box>
+
+// It allows to style children, e.g. to style the <Avatar> inside a <Card>:
+<Card sx={{ '& .MuiAvatar': { width: 48, height: 48 } }} />
+
+// It allows to use theme variables, like the spacing or the palette colors:
+<Card sx={{ bgcolor: "grey.200" }} />
+
+// It offers property name autocompletion in IDEs thanks to TypeScript
+```
+{% endraw %}
+
+Check [The MUI documentation on the `sx` prop](https://mui.com/material-ui/customization/how-to-customize/#1-one-off-customization) for more information.
+
+Here is an example: Customizing the `<EditButton>` inside a `<Datagrid>`, using the `sx` prop:
+
+{% raw %}
+```jsx
+import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
 
 export const ProductList = () => (
     <List>
         <Datagrid>
             <TextField source="sku" />
             <TextField source="price" />
-            <MyEditButton />
+            <EditButton sx={{ fontWeight: "bold" }}/>
         </Datagrid>
     </List>
 );
 ```
 {% endraw %}
 
-For some components, you may want to override not only the root component style, but also the style of components inside the root. In this case, you can take advantage of the `sx` property to customize the CSS API that the component uses internally.
-
-Here is an example using the `sx` property of the `<Datagrid>` component:
+Here is another example, illustrating the ability to customize a specific part of a component - here, only the header of a `<Datagrid>`:
 
 {% raw %}
 ```jsx
-import * as React from 'react';
 import {
     BooleanField,
     Datagrid,
@@ -62,14 +83,11 @@ import Icon from '@mui/icons-material/Person';
 
 export const VisitorIcon = Icon;
 
-// The `Datagrid` component uses MUI System, and supports overriding styles through the `sx` property 
 export const PostList = () => (
     <List>
         <Datagrid
             sx={{
-                "&.RaDatagrid-table": { // No space between & and .
-                    backgroundColor: "Lavender",
-                },
+                backgroundColor: "Lavender",
                 "& .RaDatagrid-headerCell": {
                     backgroundColor: "MistyRose",
                 },
@@ -92,9 +110,289 @@ This example results in:
 
 ![Visitor List with customized CSS classes](./img/list_with_customized_css.png)
 
-Take a look at a component documentation and source code to know which classes are available for styling. For instance, you can have a look at the [Datagrid CSS documentation](./Datagrid.md#sx-css-api).
+To guess the name of the subclass to use (like `.RaDatagrid-headerCell` above) for customizing a component, you can use the developer tools of your browser:
 
-If you need more control over the HTML code, you can also create your own [Field](./Fields.md#writing-your-own-field-component) and [Input](./Inputs.md#writing-your-own-input-component) components.
+![Developer tools](./img/sx-class-name.png)
+
+The react-admin documentation for individual components also lists the classes available for styling. For instance, here is the [Datagrid CSS documentation](./Datagrid.md#sx-css-api):
+
+![Datagrid CSS documentation](./img/sx-documentation.png)
+
+## Reusable Components
+
+To reuse the same style overrides in different locations across your application, create a reusable component using [the MUI `styled()` utility](https://mui.com/system/styled/). It's a function that creates a new component based on a source component and custom styles. The basinc syntax is `styled(Component)(styles) => Component` (where `styles` forllows the same syntax as the `sx` prop).
+
+For instance, to create a custom `<Datagrid>` component with the header style defined in the previous section:
+
+```jsx
+// in src/MyDatagrid.js
+import { styled } from '@mui/system';
+import { Datagrid } from 'react-admin';
+
+export const MyDatagrid = styled(Datagrid)({
+    backgroundColor: "Lavender",
+    "& .RaDatagrid-headerCell": {
+        backgroundColor: "MistyRose",
+    },
+});
+```
+
+You can then use this component instead of react-admin's `<Datagrid>` component:
+
+{% raw %}
+```diff
+// in src/post/PostList.js
+import {
+    BooleanField,
+-   Datagrid,
+    DateField,
+    EditButton,
+    List,
+    NumberField,
+    TextField,
+    ShowButton,
+} from 'react-admin';
+import Icon from '@mui/icons-material/Person';
+
+export const VisitorIcon = Icon;
+
++import { MyDatagrid } from '../MyDatagrid';
+
+export const PostList = () => (
+    <List>
+-       <Datagrid
+-           sx={{
+-               backgroundColor: "Lavender",
+-               "& .RaDatagrid-headerCell": {
+-                   backgroundColor: "MistyRose",
+-               },
+-           }}
+-       >
++       <MyDatagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <DateField source="published_at" sortByOrder="DESC" />
+            <BooleanField source="commentable" sortable={false} />
+            <NumberField source="views" sortByOrder="DESC" />
+            <EditButton />
+            <ShowButton />
++       </MyDatagrid>
+-       </Datagrid>
+    </List>
+);
+```
+{% endraw %}
+
+Again, to guess the name of the subclass to use (like `.RaDatagrid-headerCell` above) for customizing a component, you can use the developer tools of your browser, or check the react-admin documentation for individual components (e.g. the [Datagrid CSS documentation](./Datagrid.md#sx-css-api)).
+
+**Tip**: If you need more control over the HTML code, you can also create your own [Field](./Fields.md#writing-your-own-field-component) and [Input](./Inputs.md#writing-your-own-input-component) components.
+
+## Global Theme Overrides
+
+If you want to override the style of a component across the entire application, you can use a custom theme, leveraging [the MUI Theming support](https://mui.com/material-ui/customization/theming/).
+
+React-admin already wraps the app with [a MUI `<ThemeProvider>`](https://mui.com/material-ui/customization/theming/#themeprovider). Pass a custom `theme` to the `<Admin>` component to override the style of the entire application:
+
+```jsx
+const theme = { ... };
+
+const App = () => (
+    <Admin theme={theme}>
+        // ...
+    </Admin>
+);
+```
+
+Leveraging this technique, you can create a custom theme that overrides the style of a component for the entire application.
+
+For instance, to create a custom theme that overrides the style of the `<Datagrid>` component:
+
+```jsx
+import { defaultTheme } from 'react-admin';
+
+const theme = {
+    ...defaultTheme,
+    components: {
+        ...defaultTheme.components,
+        RaDatagrid: {
+            root: {
+                backgroundColor: "Lavender",
+                "& .RaDatagrid-headerCell": {
+                    backgroundColor: "MistyRose",
+                },
+            }
+        }
+    }
+};
+
+const App = () => (
+    <Admin theme={theme}>
+        // ...
+    </Admin>
+);
+```
+
+There are 2 important gotchas here:
+
+- Don't forget to merge your custom style overrides with the ones from react-admin's `defaultTheme`, otherwise the application will have the default MUI theme (most notably, outlined text inputs)
+- Custom style overrides must live under a `root` key. Then, the style override syntax is the same as the one used for the `sx` prop.
+
+Note that you don't need to call `createTheme` yourself. React-admin will do it for you.
+
+Again, to guess the name of the subclass to use (like `.RaDatagrid-headerCell` above) for customizing a component, you can use the developer tools of your browser, or check the react-admin documentation for individual components (e.g. the [Datagrid CSS documentation](./Datagrid.md#sx-css-api)).
+
+You can use this technique to override not only styles, but also default for components. That's how react-admin applies the `filled` variant to all `TextField` components. So for instance, to change the variant to `outlined`, create a custom theme as follows:
+
+```jsx
+import { defaultTheme } from 'react-admin';
+
+const theme = {
+    ...defaultTheme,
+    components: {
+        ...defaultTheme.components,
+        MuiTextField: {
+            defaultProps: {
+                variant: 'outlined',
+            },
+        },
+        MuiFormControl: {
+            defaultProps: {
+                variant: 'outlined',
+            },
+        },
+    }
+};
+```
+
+**Tip**: TypeScript will be picky when overriding the `variant` `defaultProp`. To avoid compilation errors, type the `variant` value as `const`:
+
+```ts
+import { defaultTheme } from 'react-admin';
+
+const theme = {
+    ...defaultTheme,
+    components: {
+        ...defaultTheme.components,
+        MuiTextField: {
+            defaultProps: {
+                variant: 'outlined' as const,
+            },
+        },
+        MuiFormControl: {
+            defaultProps: {
+                variant: 'outlined' as const,
+            },
+        },
+    }
+};
+```
+
+## Writing a Custom Theme
+
+MUI theming also allows to change the default palette, typography, colors, etc. This is very useful to change the react-admin style to match the branding of your company.
+
+For instance, here is how to override the default react-admin colors and fonts:
+
+```jsx
+import { defaultTheme } from 'react-admin';
+import indigo from '@mui/material/colors/indigo';
+import pink from '@mui/material/colors/pink';
+import red from '@mui/material/colors/red';
+
+const myTheme = {
+    ...defaultTheme,
+    palette: {
+        primary: indigo,
+        secondary: pink,
+        error: red,
+        contrastThreshold: 3,
+        tonalOffset: 0.2,
+    },
+    typography: {
+        // Use the system font instead of the default Roboto font.
+        fontFamily: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Arial', 'sans-serif'].join(','),
+    },
+};
+```
+
+A `theme` object can contain the following keys:
+
+* `breakpoints`
+* `direction`
+* `mixins`
+* `components`
+* `palette`
+* `props`
+* `shadows`
+* `spacing`
+* `transitions`
+* `typography`
+* `zIndex`
+
+**Tip**: Check [MUI default theme documentation](https://mui.com/customization/default-theme/) to see the default values and meaning for these keys.
+
+Once your theme is defined, pass it to the `<Admin>` component, in the `theme` prop.
+
+```jsx
+const App = () => (
+    <Admin theme={myTheme} dataProvider={...}>
+        // ...
+    </Admin>
+);
+```
+
+## Light and Dark Themes
+
+MUI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark theme, create a custom theme object with a `mode: 'dark'` palette, and pass it as the `<Admin theme>` prop:
+
+```jsx
+import { defaultTheme } from 'react-admin';
+const theme = {
+    ...defaultTheme,
+    palette: {
+        mode: 'dark', // Switching the dark mode on is a single property value change.
+    },
+};
+
+const App = () => (
+    <Admin theme={theme} dataProvider={...}>
+        // ...
+    </Admin>
+);
+```
+
+![Dark theme](./img/dark-theme.png)
+
+If you want to let users choose between the light and dark themes, check the next section.
+
+## Changing the Theme Programmatically
+
+You can define several themes (usually a light and a dark theme), and let the user choose between them.
+
+React-admin provides the `useTheme` hook to read and update the theme programmatically. It uses the same syntax as `useState`:
+
+```jsx
+import { defaultTheme, useTheme } from 'react-admin';
+import { Button } from '@mui/material';
+
+const lightTheme = defaultTheme;
+const darkTheme = {
+    ...defaultTheme,
+    palette: {
+        mode: 'dark',
+    },
+};
+
+const ThemeToggler = () => {
+    const [theme, setTheme] = useTheme();
+
+    return (
+        <Button onClick={() => setTheme(theme.palette.mode === 'dark' ? lightTheme : darkTheme)}>
+            {theme.palette.mode === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+        </Button>
+    );
+}
+```
 
 ## Conditional Formatting
 
@@ -237,116 +535,6 @@ export const PostList = () => {
 
 **Tip**: Previous versions of react-admin shipped a `<Responsive>` component to do media queries. This component is now deprecated. Use `useMediaQuery` instead.
 
-## Using a Predefined Theme
-
-MUI also supports [complete theming](https://mui.com/customization/themes) out of the box. MUI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop.
-
-```jsx
-const theme = {
-    palette: {
-        mode: 'dark', // Switching the dark mode on is a single property value change.
-    },
-};
-
-const App = () => (
-    <Admin theme={theme} dataProvider={simpleRestProvider('http://path.to.my.api')}>
-        // ...
-    </Admin>
-);
-```
-
-![Dark theme](./img/dark-theme.png)
-
-## Writing a Custom Theme
-
-If you need more fine-tuning, you'll need to write your own `theme` object, following [MUI themes documentation](https://mui.com/customization/themes/).
-
-For instance, here is how to override the default react-admin theme:
-
-```jsx
-import { defaultTheme } from 'react-admin';
-import merge from 'lodash/merge';
-import indigo from '@mui/material/colors/indigo';
-import pink from '@mui/material/colors/pink';
-import red from '@mui/material/colors/red';
-
-const myTheme = merge({}, defaultTheme, {
-    palette: {
-        primary: indigo,
-        secondary: pink,
-        error: red,
-        contrastThreshold: 3,
-        tonalOffset: 0.2,
-    },
-    typography: {
-        // Use the system font instead of the default Roboto font.
-        fontFamily: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Arial', 'sans-serif'].join(','),
-    },
-    components: {
-        MuiButton: { // override the styles of all instances of this component
-            styleOverrides: {
-                root: { // Name of the rule
-                    color: 'white', // Some CSS
-                },
-            },
-        },
-    },
-});
-```
-
-A `theme` object can contain the following keys:
-
-* `breakpoints`
-* `direction`
-* `mixins`
-* `components`
-* `palette`
-* `props`
-* `shadows`
-* `spacing`
-* `transitions`
-* `typography`
-* `zIndex`
-
-**Tip**: Check [MUI default theme documentation](https://mui.com/customization/default-theme/) to see the default values and meaning for these keys.
-
-Once your theme is defined, pass it to the `<Admin>` component, in the `theme` prop.
-
-```jsx
-const App = () => (
-    <Admin theme={myTheme} dataProvider={simpleRestProvider('http://path.to.my.api')}>
-        // ...
-    </Admin>
-);
-```
-
-## Changing the Theme Programmatically
-
-React-admin provides the `useTheme` hook to read and update the theme programmatically. It uses the same syntax as `useState`:
-
-```jsx
-import { defaultTheme, useTheme } from 'react-admin';
-import { Button } from '@mui/material';
-
-const lightTheme = defaultTheme;
-const darkTheme = {
-    ...defaultTheme,
-    palette: {
-        mode: 'dark',
-    },
-};
-
-const ThemeToggler = () => {
-    const [theme, setTheme] = useTheme();
-
-    return (
-        <Button onClick={() => setTheme(theme.palette.mode === 'dark' ? lightTheme : darkTheme)}>
-            {theme.palette.mode === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
-        </Button>
-    );
-}
-```
-
 ## Using a Custom Layout
 
 Instead of the default layout, you can use your own component as the admin layout. Just use the `layout` prop of the `<Admin>` component:
@@ -356,7 +544,7 @@ Instead of the default layout, you can use your own component as the admin layou
 import MyLayout from './MyLayout';
 
 const App = () => (
-    <Admin layout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin layout={MyLayout} dataProvider={...}>
         // ...
     </Admin>
 );
@@ -506,7 +694,7 @@ const theme = {
 };
 
 const App = () => (
-    <Admin theme={theme} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin theme={theme} dataProvider={...}>
         // ...
     </Admin>
 );
@@ -724,7 +912,7 @@ Then, use this layout in the `<Admin>` with the `layout` prop:
 import MyLayout from './MyLayout';
 
 const App = () => (
-    <Admin layout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin layout={MyLayout} dataProvider={...}>
         // ...
     </Admin>
 );
@@ -856,7 +1044,7 @@ Then, use this layout in the `<Admin>` `layout` prop:
 import { Layout }  from './Layout';
 
 const App = () => (
-    <Admin layout={Layout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin layout={Layout} dataProvider={...}>
         // ...
     </Admin>
 );
@@ -1125,7 +1313,7 @@ Then, use this layout in the `<Admin>` `layout` prop:
 import MyLayout from './MyLayout';
 
 const App = () => (
-    <Admin layout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin layout={MyLayout} dataProvider={...}>
         // ...
     </Admin>
 );

@@ -143,7 +143,7 @@ export const AutocompleteInput = <
         label,
         limitChoicesToValue,
         matchSuggestion,
-        margin = 'dense',
+        margin,
         fieldState: fieldStateOverride,
         filterToQuery = DefaultFilterToQuery,
         formState: formStateOverride,
@@ -159,13 +159,13 @@ export const AutocompleteInput = <
         resource: resourceProp,
         shouldRenderSuggestions,
         setFilter,
-        size = 'small',
+        size,
         source: sourceProp,
         suggestionLimit,
         TextFieldProps,
         translateChoice,
         validate,
-        variant = 'filled',
+        variant,
         ...rest
     } = props;
 

@@ -1,3 +1,5 @@
+import { defaultTheme } from 'react-admin';
+
 export const darkTheme = {
     palette: {
         primary: {
@@ -12,6 +14,7 @@ export const darkTheme = {
         width: 200,
     },
     components: {
+        ...defaultTheme.components,
         RaMenuItemLink: {
             styleOverrides: {
                 root: {
@@ -27,32 +30,6 @@ export const darkTheme = {
                 colorSecondary: {
                     color: '#ffffffb3',
                     backgroundColor: '#616161e6',
-                },
-            },
-        },
-        MuiButtonBase: {
-            defaultProps: {
-                // disable ripple for perf reasons
-                disableRipple: true,
-            },
-            styleOverrides: {
-                root: {
-                    '&:hover:active::after': {
-                        // recreate a static ripple color
-                        // use the currentColor to make it work both for outlined and contained buttons
-                        // but to dim the background without dimming the text,
-                        // put another element on top with a limited opacity
-                        content: '""',
-                        display: 'block',
-                        width: '100%',
-                        height: '100%',
-                        position: 'absolute',
-                        top: 0,
-                        right: 0,
-                        backgroundColor: 'currentColor',
-                        opacity: 0.3,
-                        borderRadius: 'inherit',
-                    },
                 },
             },
         },
@@ -82,6 +59,7 @@ export const lightTheme = {
         width: 200,
     },
     components: {
+        ...defaultTheme.components,
         RaMenuItemLink: {
             styleOverrides: {
                 root: {
@@ -103,32 +81,6 @@ export const lightTheme = {
                 },
             },
         },
-        MuiButtonBase: {
-            defaultProps: {
-                // disable ripple for perf reasons
-                disableRipple: true,
-            },
-            styleOverrides: {
-                root: {
-                    '&:hover:active::after': {
-                        // recreate a static ripple color
-                        // use the currentColor to make it work both for outlined and contained buttons
-                        // but to dim the background without dimming the text,
-                        // put another element on top with a limited opacity
-                        content: '""',
-                        display: 'block',
-                        width: '100%',
-                        height: '100%',
-                        position: 'absolute',
-                        top: 0,
-                        right: 0,
-                        backgroundColor: 'currentColor',
-                        opacity: 0.3,
-                        borderRadius: 'inherit',
-                    },
-                },
-            },
-        },
         MuiAppBar: {
             styleOverrides: {
                 colorSecondary: {
@@ -144,23 +96,6 @@ export const lightTheme = {
                 },
                 barColorPrimary: {
                     backgroundColor: '#d7d7d7',
-                },
-            },
-        },
-        MuiFilledInput: {
-            styleOverrides: {
-                root: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                    '&$disabled': {
-                        backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                    },
-                },
-            },
-        },
-        MuiSnackbarContent: {
-            styleOverrides: {
-                root: {
-                    border: 'none',
                 },
             },
         },

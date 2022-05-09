@@ -268,6 +268,37 @@ import { FormDataConsumer } from 'react-admin';
  );
 ```
 
+### Overriding The Input Variant
+
+MUI offers [3 variants for text fields](https://mui.com/material-ui/react-text-field/#basic-textfield): `outlined`, `filled`, and `standard`. The default react-admin theme uses the `filled` variant. If you want your application to use another variant, override the `<Admin theme>` prop with a [custom theme](./Theming.md#global-theme-overrides), as follows:
+
+```jsx
+import { defaultTheme } from 'react-admin';
+
+const theme = {
+    ...defaultTheme,
+    components: {
+        ...defaultTheme.components,
+        MuiTextField: {
+            defaultProps: {
+                variant: 'outlined' as const,
+            },
+        },
+        MuiFormControl: {
+            defaultProps: {
+                variant: 'outlined' as const,
+            },
+        },
+    }
+};
+
+const App = () => (
+    <Admin theme={theme}>
+        // ...
+    </Admin>
+);
+```
+
 ## Writing Your Own Input Component
 
 If you need a more specific input type, you can write it directly in React. You'll have to rely on react-hook-form's [useController](https://react-hook-form.com/api/usecontroller) hook, to handle the value update cycle.
