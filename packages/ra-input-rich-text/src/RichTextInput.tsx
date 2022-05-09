@@ -128,8 +128,7 @@ export const RichTextInput = (props: RichTextInputProps) => {
                 return;
             }
 
-            const newContent = contentType === 'json' 
-                ? editor.getJSON() 
+            const newContent = contentType === 'json' ? editor.getJSON() 
                 : editor.getHTML();
 
             field.onChange(newContent);
