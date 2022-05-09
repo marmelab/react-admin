@@ -7,43 +7,76 @@ title: "Theming"
 
 Whether you need to adjust a CSS rule for a single component, or change the color of the labels in the entire app, you're covered!
 
-## Overriding A Component Style
+## `sx`: Overriding A Component Style
 
-Every react-admin component exposes an `sx` property from MUI besides providing a `className` property, which is always applied to the root element.
+All react-admin components expose an `sx` property, which allows to customize the component style. It uses the CSS-in-JS solution offered by MUI, [MUI System](https://mui.com/system/basics/#the-sx-prop). This `sx` prop is kind of like [React's `style` prop](https://reactjs.org/docs/dom-elements.html#style), but it's more powerful.
 
-Here is an example customizing an `EditButton` component inside a `Datagrid`, using the `sx` property from MUI:
+- It supports all CSS properties, plus some shorthand for common CSS properties, e.g. `pt` for `paddingTop`
+
+```jsx
+<CardContent sx={{ pt: 2 }}>
+```
+
+- It allows to style pseudo-elements, like `:hover` or `:last-child`:
+
+```jsx
+<CardContent sx={{ pt: 2, "&:last-child": { pb: 2 } }}>
+```
+
+- It allows responsive values without media queries:
+
+```jsx
+<Box
+    sx={{
+        width: {
+            xs: 100, // theme.breakpoints.up('xs')
+            sm: 200, // theme.breakpoints.up('sm')
+            md: 300, // theme.breakpoints.up('md')
+            lg: 400, // theme.breakpoints.up('lg')
+            xl: 500, // theme.breakpoints.up('xl')
+        },
+    }}
+>
+    This box has a responsive width.
+</Box>
+```
+
+- It allows to style children, e.g. to style the `Avatar` inside a `Card`:
+
+```jsx
+<Card sx={{ '& .MuiAvatar': { width: 48, height: 48 } }}>
+```
+
+- It allows to use theme variables, like the spacing or the palette colors:
+
+```jsx
+  <Card sx={{ bgcolor: "grey.200" }}>
+ ```
+
+- It offers property name autocompletion in IDEs thanks to TypeScript
+
+Check [The MUI documentation on the `sx` prop](https://mui.com/material-ui/customization/how-to-customize/#1-one-off-customization) for more information.
+
+Here is an example: Customizing the `<EditButton>` inside a `<Datagrid>`, using the `sx` prop:
 
 {% raw %}
 ```jsx
 import * as React from 'react';
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
 
-const MyEditButton = (props) => (
-    <EditButton
-        sx={{
-            fontWeight: "bold",
-            // This is CSS-in-JS syntax to target a deeper element using css selector, here the svg icon for this button
-            "& svg": { color: "orange" },
-        }}
-        {...props}
-    />
-);
-
 export const ProductList = () => (
     <List>
         <Datagrid>
             <TextField source="sku" />
             <TextField source="price" />
-            <MyEditButton />
+            <EditButton sx={{ fontWeight: "bold" }}/>
         </Datagrid>
     </List>
 );
 ```
 {% endraw %}
 
-For some components, you may want to override not only the root component style, but also the style of components inside the root. In this case, you can take advantage of the `sx` property to customize the CSS API that the component uses internally.
-
-Here is an example using the `sx` property of the `<Datagrid>` component:
+Here is another example, illustrating the ability to customize a specific part of a component - here, only the header of a `<Datagrid>`:
 
 {% raw %}
 ```jsx
@@ -62,14 +95,11 @@ import Icon from '@mui/icons-material/Person';
 
 export const VisitorIcon = Icon;
 
-// The `Datagrid` component uses MUI System, and supports overriding styles through the `sx` property 
 export const PostList = () => (
     <List>
         <Datagrid
             sx={{
-                "&.RaDatagrid-table": { // No space between & and .
-                    backgroundColor: "Lavender",
-                },
+                backgroundColor: "Lavender",
                 "& .RaDatagrid-headerCell": {
                     backgroundColor: "MistyRose",
                 },
@@ -92,9 +122,15 @@ This example results in:
 
 ![Visitor List with customized CSS classes](./img/list_with_customized_css.png)
 
-Take a look at a component documentation and source code to know which classes are available for styling. For instance, you can have a look at the [Datagrid CSS documentation](./Datagrid.md#sx-css-api).
+To guess the name of the subclass to use (like `.RaDatagrid-headerCell` above) for customizing a component, you can use the developer tools of your browser:
 
-If you need more control over the HTML code, you can also create your own [Field](./Fields.md#writing-your-own-field-component) and [Input](./Inputs.md#writing-your-own-input-component) components.
+![Developer tools](./img/sx-class-name.png)
+
+The react-admin documentation for individual components also lists the classes available for styling. For instance, here is the [Datagrid CSS documentation](./Datagrid.md#sx-css-api):
+
+![Datagrid CSS documentation](./img/sx-documentation.png)
+
+**Tip**: If you need more control over the HTML code, you can also create your own [Field](./Fields.md#writing-your-own-field-component) and [Input](./Inputs.md#writing-your-own-input-component) components.
 
 ## Conditional Formatting
 
@@ -283,6 +319,7 @@ const myTheme = merge({}, defaultTheme, {
         fontFamily: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Arial', 'sans-serif'].join(','),
     },
     components: {
+        ...defaultTheme.components,
         MuiButton: { // override the styles of all instances of this component
             styleOverrides: {
                 root: { // Name of the rule
