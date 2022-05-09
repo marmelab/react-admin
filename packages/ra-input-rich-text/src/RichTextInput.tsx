@@ -136,7 +136,7 @@ export const RichTextInput = (props: RichTextInputProps) => {
         return () => {
             editor.off('update', handleEditorUpdate);
         };
-    }, [editor, field]);
+    }, [editor, field, contentType]);
 
     return (
         <Labeled
