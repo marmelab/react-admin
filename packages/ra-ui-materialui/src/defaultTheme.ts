@@ -77,9 +77,16 @@ export const defaultTheme = {
         },
         MuiTextField: {
             defaultProps: {
-                variant: 'filled',
-                margin: 'dense',
-                size: 'small',
+                variant: 'filled' as const,
+                margin: 'dense' as const,
+                size: 'small' as const,
+            },
+        },
+        MuiFormControl: {
+            defaultProps: {
+                variant: 'filled' as const,
+                margin: 'dense' as const,
+                size: 'small' as const,
             },
         },
     },
