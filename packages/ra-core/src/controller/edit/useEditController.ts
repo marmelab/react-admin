@@ -49,6 +49,7 @@ export const useEditController = <RecordType extends RaRecord = any>(
     const {
         disableAuthentication,
         id: propsId,
+        meta = {},
         mutationMode = 'undoable',
         mutationOptions = {},
         queryOptions = {},
@@ -69,7 +70,7 @@ export const useEditController = <RecordType extends RaRecord = any>(
         RecordType
     >(
         resource,
-        { id },
+        { id, meta },
         {
             onError: () => {
                 notify('ra.notification.item_doesnt_exist', {
@@ -201,6 +202,7 @@ export const useEditController = <RecordType extends RaRecord = any>(
 export interface EditControllerProps<RecordType extends RaRecord = any> {
     disableAuthentication?: boolean;
     id?: RecordType['id'];
+    meta?: Record<string, any>;
     mutationMode?: MutationMode;
     mutationOptions?: UseMutationOptions<
         RecordType,
