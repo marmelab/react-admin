@@ -52,7 +52,7 @@ import { RichTextInputToolbar } from './RichTextInputToolbar';
  *     <RichTextInput
  *         toolbar={(
  *             <RichTextInputToolbar>
- *                 <RichTextInputLevelSelect size={size} />
+ *                 <LevelSelect size={size} />
  *                 <FormatButtons size={size} />
  *                 <ListButtons size={size} />
  *                 <LinkButtons size={size} />
