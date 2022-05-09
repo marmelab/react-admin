@@ -48,8 +48,6 @@ export const NumberInput = ({
         isRequired,
     } = useInput({
         defaultValue,
-        format,
-        parse,
         resource,
         source,
         validate,
