@@ -22,14 +22,14 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
  */
 export const NumberInput = ({
     className,
-    defaultValue = '',
+    defaultValue = null,
     format = convertNumberToString,
     helperText,
     label,
     margin,
     onBlur,
     onChange,
-    parse = convertStringToNumber,
+    parse,
     resource,
     source,
     step,
@@ -49,21 +49,68 @@ export const NumberInput = ({
     } = useInput({
         defaultValue,
         format,
-        onBlur,
-        onChange,
         parse,
         resource,
         source,
         validate,
         ...rest,
     });
+    const [value, setValue] = React.useState(field.value);
+
+    // update the value when the record changes
+    React.useEffect(() => {
+        const stringValue = convertNumberToString(field.value);
+        setValue(value => (value !== stringValue ? stringValue : value));
+    }, [field.value]);
 
     const inputProps = { ...overrideInputProps, step, min, max };
+
+    // handle the text value manually
+    // to allow transitory values like '1.0' that will lead to '1.02'
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (onChange) {
+            onChange(event);
+        }
+
+        if (
+            typeof event.target === 'undefined' ||
+            typeof event.target.value === 'undefined'
+        ) {
+            return;
+        }
+        setValue(event.target.value);
+    };
+
+    // set the numeric value on the form on blur
+    const handleBlur = (...event: any[]) => {
+        if (onBlur) {
+            onBlur(...event);
+        }
+        const eventParam = event[0] as React.FocusEvent<HTMLInputElement>;
+        if (
+            typeof eventParam.target === 'undefined' ||
+            typeof eventParam.target.value === 'undefined'
+        ) {
+            return;
+        }
+        const target = eventParam.target;
+        const newValue = target.valueAsNumber
+            ? parse
+                ? parse(target.valueAsNumber)
+                : target.valueAsNumber
+            : parse
+            ? parse(target.value)
+            : convertStringToNumber(target.value);
+        field.onChange(newValue);
+    };
 
     return (
         <TextField
             id={id}
             {...field}
+            value={value}
+            onChange={handleChange}
+            onBlur={handleBlur}
             className={clsx('ra-input', `ra-input-${source}`, className)}
             type="number"
             size="small"
@@ -117,11 +164,13 @@ export interface NumberInputProps
 }
 
 const convertStringToNumber = value => {
+    if (value == null || value === '') {
+        return null;
+    }
     const float = parseFloat(value);
 
-    return isNaN(float) ? null : float;
+    return isNaN(float) ? 0 : float;
 };
 
-const convertNumberToString = value => {
-    return value === null ? '' : value.toString();
-};
+const convertNumberToString = value =>
+    value == null || isNaN(value) ? '' : value.toString();
