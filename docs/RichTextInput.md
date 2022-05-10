@@ -144,3 +144,22 @@ export const MyEditorOptions = {
 	],
 };
 ```
+
+## Changing the content type
+
+By default the RichTextInput will store and load the content as html. You can change this to json instead by passing in a prop `contentType` set to `json` if you prefer. This will export the input data as json instead. You can read more about this in the [tiptap docs](https://tiptap.dev/guide/output#option-1-json).
+
+Example:
+
+```jsx
+export function NewsForm() {
+  return (
+    <SimpleForm>
+      <TextInput source='title' />
+      <RichTextInput source='body' contentType="json" />
+    </SimpleForm>
+  );
+}
+```
+
+**Note:** Setting the contentType to json will make the value of this field incompatible with `RichTextField`. You can use tiptap's [generateHTML utility](https://tiptap.dev/api/utilities/html#generate-html-from-json) for this instead.
