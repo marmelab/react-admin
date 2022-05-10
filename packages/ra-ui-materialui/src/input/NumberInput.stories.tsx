@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { required } from 'ra-core';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 
 import { NumberInput } from './NumberInput';
 import { AdminContext } from '../AdminContext';
