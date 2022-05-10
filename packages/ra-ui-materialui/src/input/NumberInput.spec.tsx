@@ -5,6 +5,7 @@ import { NumberInput } from './NumberInput';
 import { AdminContext } from '../AdminContext';
 import { SaveButton } from '../button';
 import { SimpleForm, Toolbar } from '../form';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 describe('<NumberInput />', () => {
     const defaultProps = {
@@ -17,6 +18,11 @@ describe('<NumberInput />', () => {
             <SaveButton alwaysEnable />
         </Toolbar>
     );
+
+    const RecordWatcher = () => {
+        const views = useWatch({ name: 'views' });
+        return <code>views:{JSON.stringify(views)}</code>;
+    };
 
     it('should use a mui TextField', () => {
         render(
@@ -45,6 +51,47 @@ describe('<NumberInput />', () => {
             'resources.posts.fields.views'
         ) as HTMLInputElement;
         expect(input.step).toEqual('0.1');
+    });
+
+    it('should change when the user types a number', () => {
+        render(
+            <AdminContext>
+                <SimpleForm defaultValues={{ views: 12 }} onSubmit={jest.fn()}>
+                    <NumberInput {...defaultProps} />
+                    <RecordWatcher />
+                </SimpleForm>
+            </AdminContext>
+        );
+        screen.getByText('views:12');
+        const input = screen.getByLabelText(
+            'resources.posts.fields.views'
+        ) as HTMLInputElement;
+        fireEvent.change(input, { target: { value: '3' } });
+        fireEvent.blur(input);
+        screen.getByText('views:3');
+    });
+
+    it('should reinitialize when form values change', () => {
+        const UpdateViewsButton = () => {
+            const { setValue } = useFormContext();
+            return (
+                <button onClick={() => setValue('views', 45)}>
+                    Update views
+                </button>
+            );
+        };
+        render(
+            <AdminContext>
+                <SimpleForm defaultValues={{ views: 12 }} onSubmit={jest.fn()}>
+                    <NumberInput {...defaultProps} />
+                    <UpdateViewsButton />
+                    <RecordWatcher />
+                </SimpleForm>
+            </AdminContext>
+        );
+        screen.getByText('views:12');
+        fireEvent.click(screen.getByText('Update views'));
+        screen.getByText('views:45');
     });
 
     describe('format and parse', () => {
