@@ -54,7 +54,7 @@ Or to remove some prebuilt components like the `<AlignmentButtons>`:
 import {
 	RichTextInput,
 	RichTextInputToolbar,
-	RichTextInputLevelSelect,
+	LevelSelect,
 	FormatButtons,
 	ListButtons,
 	LinkButtons,
@@ -66,7 +66,7 @@ const MyRichTextInput = ({ size, ...props }) => (
 	<RichTextInput
 		toolbar={
 			<RichTextInputToolbar>
-				<RichTextInputLevelSelect size={size} />
+				<LevelSelect size={size} />
 				<FormatButtons size={size} />
 				<ListButtons size={size} />
 				<LinkButtons size={size} />
@@ -92,7 +92,7 @@ import {
 	DefaultEditorOptions,
 	RichTextInput,
 	RichTextInputToolbar,
-	RichTextInputLevelSelect,
+	LevelSelect,
 	FormatButtons,
 	AlignmentButtons,
 	ListButtons,
@@ -108,7 +108,7 @@ const MyRichTextInput = ({ size, ...props }) => (
 		editorOptions={MyEditorOptions}
 		toolbar={
 			<RichTextInputToolbar>
-				<RichTextInputLevelSelect size={size} />
+				<LevelSelect size={size} />
 				<FormatButtons size={size} />
 				<AlignmentButtons {size} />
 				<ListButtons size={size} />

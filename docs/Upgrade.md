@@ -2581,7 +2581,7 @@ import {
 	RichTextInput,
 +	DefaultEditorOptions,
 +	RichTextInputToolbar,
-+	RichTextInputLevelSelect,
++	LevelSelect,
 +	FormatButtons,
 +	AlignmentButtons,
 +	ListButtons,
@@ -2601,7 +2601,7 @@ const MyRichTextInput = (props) => (
 -        configureQuill={configureQuill}
 +        toolbar={
 +			<RichTextInputToolbar>
-+				<RichTextInputLevelSelect size={size} />
++				<LevelSelect size={size} />
 +				<FormatButtons size={size} />
 +				<AlignmentButtons {size} />
 +				<ListButtons size={size} />
