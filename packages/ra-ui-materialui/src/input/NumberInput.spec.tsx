@@ -12,6 +12,12 @@ describe('<NumberInput />', () => {
         resource: 'posts',
     };
 
+    const MyToolbar = () => (
+        <Toolbar>
+            <SaveButton alwaysEnable />
+        </Toolbar>
+    );
+
     it('should use a mui TextField', () => {
         render(
             <AdminContext>
@@ -42,11 +48,6 @@ describe('<NumberInput />', () => {
     });
 
     describe('format and parse', () => {
-        const MyToolbar = () => (
-            <Toolbar>
-                <SaveButton alwaysEnable />
-            </Toolbar>
-        );
         it('should get the same value as injected value ', async () => {
             const onSubmit = jest.fn();
 
@@ -228,6 +229,7 @@ describe('<NumberInput />', () => {
             render(
                 <AdminContext>
                     <SimpleForm
+                        toolbar={<MyToolbar />}
                         defaultValues={{ views: 12 }}
                         onSubmit={jest.fn()}
                     >
@@ -238,6 +240,7 @@ describe('<NumberInput />', () => {
                     </SimpleForm>
                 </AdminContext>
             );
+            fireEvent.click(screen.getByText('ra.action.save'));
             const error = screen.queryByText('error');
             expect(error).toBeNull();
         });
@@ -246,6 +249,32 @@ describe('<NumberInput />', () => {
             render(
                 <AdminContext>
                     <SimpleForm
+                        toolbar={<MyToolbar />}
+                        defaultValues={{ views: 12 }}
+                        onSubmit={jest.fn()}
+                    >
+                        <NumberInput
+                            {...defaultProps}
+                            validate={value => undefined}
+                        />
+                    </SimpleForm>
+                </AdminContext>
+            );
+            const input = screen.getByLabelText('resources.posts.fields.views');
+            fireEvent.change(input, { target: { value: '3' } });
+            fireEvent.blur(input);
+
+            fireEvent.click(screen.getByText('ra.action.save'));
+
+            const error = screen.queryByText('error');
+            expect(error).toBeNull();
+        });
+
+        it('should be displayed if field has been touched and is invalid', async () => {
+            render(
+                <AdminContext>
+                    <SimpleForm
+                        toolbar={<MyToolbar />}
                         defaultValues={{ views: 12 }}
                         onSubmit={jest.fn()}
                     >
@@ -258,29 +287,9 @@ describe('<NumberInput />', () => {
             );
             const input = screen.getByLabelText('resources.posts.fields.views');
             fireEvent.change(input, { target: { value: '3' } });
-            input.blur();
-
-            const error = screen.queryByText('error');
-            expect(error).toBeNull();
-        });
-
-        it('should be displayed if field has been touched and is invalid', async () => {
-            render(
-                <AdminContext>
-                    <SimpleForm
-                        defaultValues={{ views: 12 }}
-                        onSubmit={jest.fn()}
-                        mode="onBlur"
-                    >
-                        <NumberInput
-                            {...defaultProps}
-                            validate={() => 'error'}
-                        />
-                    </SimpleForm>
-                </AdminContext>
-            );
-            const input = screen.getByLabelText('resources.posts.fields.views');
             fireEvent.blur(input);
+
+            fireEvent.click(screen.getByText('ra.action.save'));
 
             await waitFor(() => {
                 expect(screen.getByText('error')).not.toBeNull();
