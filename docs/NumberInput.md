@@ -5,17 +5,19 @@ title: "The NumberInput Component"
 
 # `<NumberInput>`
 
-`<NumberInput>` translates to an HTML `<input type="number">`.
-
-![NumberInput](./img/number-input.gif)
-
-It is necessary for numeric values because of a [known React bug](https://github.com/facebook/react/issues/1425), which prevents using the more generic [`<TextInput>`](./TextInput.md) in that case.
+`<NumberInput>` translates to an HTML `<input type="number">`, and converts the user input to a number.
 
 ```jsx
 import { NumberInput } from 'react-admin';
 
 <NumberInput source="nb_views" />
 ```
+
+![NumberInput](./img/number-input.gif)
+
+`<NumberInput>` converts the input value to a number (integer or float) *on blur*. This is because if the input updates the form value on every keystroke, it will prevent users from entering certain float values. For instance, to enter the number `1.02`, a user would type `1.0`, that JavaScript converts to the number `1`.
+
+If you need the form value to update on change instead of on blur (for instance to update another input based on the number input value), you can build your own number input using `<TextInput>`, and the `format` and `parse` props. But be aware that this only works for integer values. 
 
 ## Properties
 

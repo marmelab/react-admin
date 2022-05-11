@@ -79,7 +79,7 @@ export const PostCreate = () => (
 
 ## `id`
 
-Normally, a submit button only works when placed inside a `<form>` tag. However, you can place a submit button outside of the form if the submit button `form_id` matches the form `id`.
+Normally, a submit button only works when placed inside a `<form>` tag. However, you can place a submit button outside of the form if the submit button `form` matches the form `id`.
 
 Set this form `id` via the `id` prop.
 
@@ -93,7 +93,7 @@ export const PostCreate = () => (
                 <NumberInput source="nb_views" />
             </Stack>
         </Form>
-        <SaveButton formId="post_create_form" />
+        <SaveButton form="post_create_form" />
     </Create>
 );
 ```

@@ -1,5 +1,27 @@
 # Changelog
 
+## v4.0.3
+
+* Fix `<SimpleFormIterator disableRemove>` doesn't receive the `record` argument ([#7645](https://github.com/marmelab/react-admin/pull/7645)) ([andrico1234](https://github.com/andrico1234))
+* Fix cannot create an admin without resources ([#7609](https://github.com/marmelab/react-admin/pull/7609)) ([djhi](https://github.com/djhi))
+* Fix cannot define ressource config based on Permissions ([#7606](https://github.com/marmelab/react-admin/pull/7606)) ([djhi](https://github.com/djhi))
+* Fix `<Admin>` forbids login when `authProvider.setPermissions()` isn't implemented ([#7642](https://github.com/marmelab/react-admin/pull/7642)) ([djhi](https://github.com/djhi))
+* Fix `<SimpleFormIterator>` children display wrong labels ([#7641](https://github.com/marmelab/react-admin/pull/7641)) ([djhi](https://github.com/djhi))
+* Fix style overrides in `<SimpleFormIterator>` ([#7630](https://github.com/marmelab/react-admin/pull/7630)) ([andrico1234](https://github.com/andrico1234))
+* Fix ability to disable redirect in `useCreateController` ([#7633](https://github.com/marmelab/react-admin/pull/7633)) ([waltheri](https://github.com/waltheri))
+* Fix `<FileInput>` no longer passes `source` to `name` attribute ([#7619](https://github.com/marmelab/react-admin/pull/7619)) ([djhi](https://github.com/djhi))
+* Fix `<FileInput>` doesn't accept `options` prop ([#7611](https://github.com/marmelab/react-admin/pull/7611)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix duplicate key error in `<SingleFieldList>` ([#7617](https://github.com/marmelab/react-admin/pull/7617)) ([djhi](https://github.com/djhi))
+* Fix Form validation when `<SaveButton type>` is "button" ([#7557](https://github.com/marmelab/react-admin/pull/7557)) ([WiXSL](https://github.com/WiXSL))
+* Fix `NullableBooleanInput` helper text doesn't take `isSubmitted` into account ([#7553](https://github.com/marmelab/react-admin/pull/7553)) ([afilp](https://github.com/afilp))
+* [TypeScript] Fix `ra-data-graphql` options type ([#7638](https://github.com/marmelab/react-admin/pull/7638)) ([arjunyel](https://github.com/arjunyel))
+* [TypeScript] Fix `<Button/>` props type mention unsupported `icon` prop ([#7627](https://github.com/marmelab/react-admin/pull/7627)) ([smeng9](https://github.com/smeng9))
+* [Doc] Fix wrong import in List docs ([#7647](https://github.com/marmelab/react-admin/pull/7647)) ([davidhenley](https://github.com/davidhenley))
+* [Doc] Fix Edit doc mentions unsupported prop ([#7628](https://github.com/marmelab/react-admin/pull/7628)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<ArrayField>` doc mentions unsupported `fieldKey` prop ([#7613](https://github.com/marmelab/react-admin/pull/7613)) ([smeng9](https://github.com/smeng9))
+* [Doc] Fix instructions for using react-admin in a sub path ([#7612](https://github.com/marmelab/react-admin/pull/7612)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add Prisma REST to the list of third-party Data Providers ([#7568](https://github.com/marmelab/react-admin/pull/7568)) ([mshd](https://github.com/mshd))
+
 ## v4.0.2
 
 * Publish GraphQL data provider packages ([#7607](https://github.com/marmelab/react-admin/pull/7607)) ([fzaninotto](https://github.com/fzaninotto))
