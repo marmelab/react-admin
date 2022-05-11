@@ -59,7 +59,11 @@ export const useInput = (props: InputProps): UseInputValue => {
     // This ensures dynamically added inputs have their value set correctly (ArrayInput for example).
     // We don't do this for the form level defaultValues so that it works as it should in react-hook-form
     // (i.e. field level defaultValue override form level defaultValues for this field).
-    const { field: controllerField, fieldState, formState } = useController({
+    const {
+        field: controllerField,
+        fieldState,
+        formState,
+    } = useController({
         name: finalName,
         defaultValue: get(record, source, defaultValue),
         rules: {
@@ -97,8 +101,8 @@ export const useInput = (props: InputProps): UseInputValue => {
             if (onChange) {
                 onChange(...event);
             }
-            const eventOrValue = (props.type === "checkbox" 
-                && event[0]?.target?.value === 'on'
+            const eventOrValue = (props.type === 'checkbox' &&
+            event[0]?.target?.value === 'on'
                 ? event[0].target.checked
                 : event[0]?.target?.value ?? event[0]) as any;
             controllerField.onChange(
