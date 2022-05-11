@@ -24,7 +24,7 @@ export const FormatButtons = (props: ToggleButtonGroupProps) => {
         _: 'Bold',
     });
 
-    const italicLabel = translate('ra.tiptap.Italic', {
+    const italicLabel = translate('ra.tiptap.italic', {
         _: 'Italic',
     });
 
