@@ -4,6 +4,7 @@ import { ReactElement } from 'react';
 import { RaRecord } from '../../types';
 import { useShowController, ShowControllerProps } from './useShowController';
 import { ShowContextProvider } from './ShowContextProvider';
+import { ResourceContextProvider } from '../../core';
 
 /**
  * Call useShowController and put the value in a ShowContext
@@ -37,8 +38,19 @@ import { ShowContextProvider } from './ShowContextProvider';
 export const ShowBase = <RecordType extends RaRecord = any>({
     children,
     ...props
-}: { children: ReactElement } & ShowControllerProps<RecordType>) => (
-    <ShowContextProvider value={useShowController<RecordType>(props)}>
-        {children}
-    </ShowContextProvider>
-);
+}: { children: ReactElement } & ShowControllerProps<RecordType>) => {
+    const controllerProps = useShowController<RecordType>(props);
+    const body = (
+        <ShowContextProvider value={controllerProps}>
+            {children}
+        </ShowContextProvider>
+    );
+    return props.resource ? (
+        // support resource override via props
+        <ResourceContextProvider value={props.resource}>
+            {body}
+        </ResourceContextProvider>
+    ) : (
+        body
+    );
+};

@@ -16,6 +16,7 @@ export interface EditProps<RecordType extends RaRecord = any> {
     aside?: ReactElement;
     className?: string;
     component?: ElementType;
+    disableAuthentication?: boolean;
     id?: Identifier;
     mutationMode?: MutationMode;
     queryOptions?: UseQueryOptions<RecordType>;
@@ -36,6 +37,9 @@ export interface CreateProps<RecordType extends RaRecord = any> {
     aside?: ReactElement;
     className?: string;
     component?: ElementType;
+    disableAuthentication?: boolean;
+    hasEdit?: boolean;
+    hasShow?: boolean;
     record?: Partial<RecordType>;
     redirect?: RedirectionSideEffect;
     resource?: string;
