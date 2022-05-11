@@ -63,6 +63,7 @@ export const Edit = <RecordType extends RaRecord = any>(
         queryOptions,
         redirect,
         transform,
+        disableAuthentication,
         ...rest
     } = props;
     return (
@@ -74,6 +75,7 @@ export const Edit = <RecordType extends RaRecord = any>(
             queryOptions={queryOptions}
             redirect={redirect}
             transform={transform}
+            disableAuthentication={disableAuthentication}
         >
             <EditView {...rest} />
         </EditBase>

@@ -60,6 +60,9 @@ export const Create = <RecordType extends RaRecord = any>(
         redirect,
         transform,
         mutationOptions,
+        disableAuthentication,
+        hasEdit,
+        hasShow,
         ...rest
     } = props;
     return (
@@ -69,6 +72,9 @@ export const Create = <RecordType extends RaRecord = any>(
             redirect={redirect}
             transform={transform}
             mutationOptions={mutationOptions}
+            disableAuthentication={disableAuthentication}
+            hasEdit={hasEdit}
+            hasShow={hasShow}
         >
             <CreateView {...rest} />
         </CreateBase>
@@ -81,7 +87,6 @@ Create.propTypes = {
     children: PropTypes.element,
     className: PropTypes.string,
     disableAuthentication: PropTypes.bool,
-    hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
     redirect: PropTypes.oneOfType([
@@ -92,7 +97,6 @@ Create.propTypes = {
     resource: PropTypes.string,
     title: PropTypes.node,
     record: PropTypes.object,
-    hasList: PropTypes.bool,
     mutationOptions: PropTypes.object,
     transform: PropTypes.func,
     sx: PropTypes.any,
