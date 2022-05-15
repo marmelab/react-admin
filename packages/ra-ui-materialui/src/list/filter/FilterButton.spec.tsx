@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import { createTheme } from '@mui/material/styles';
 
 import { AdminContext } from '../../AdminContext';
@@ -42,6 +42,49 @@ describe('<FilterButton />', () => {
 
             expect(queryByText('Returned')).not.toBeNull();
             expect(queryByText('Name')).toBeNull();
+        });
+
+        it('should not display the filter button if all filters are shown and there is no filter value', () => {
+            render(
+                <AdminContext theme={theme}>
+                    <FilterButton
+                        {...defaultProps}
+                        filters={[
+                            <TextInput source="title" label="Title" />,
+                            <TextInput source="customer.name" label="Name" />,
+                        ]}
+                        displayedFilters={{
+                            title: true,
+                            'customer.name': true,
+                        }}
+                    />
+                </AdminContext>
+            );
+            expect(screen.queryByLabelText('ra.action.add_filter')).toBeNull();
+        });
+
+        it('should display the filter button if all filters are shown and there is a filter value', () => {
+            render(
+                <AdminContext theme={theme}>
+                    <FilterButton
+                        {...defaultProps}
+                        filters={[
+                            <TextInput source="title" label="Title" />,
+                            <TextInput source="customer.name" label="Name" />,
+                        ]}
+                        displayedFilters={{
+                            title: true,
+                            'customer.name': true,
+                        }}
+                        filterValues={{ title: 'foo' }}
+                    />
+                </AdminContext>
+            );
+            expect(
+                screen.queryByLabelText('ra.action.add_filter')
+            ).not.toBeNull();
+            fireEvent.click(screen.getByLabelText('ra.action.add_filter'));
+            screen.getByText('ra.saved_queries.new_label');
         });
 
         it('should return disabled filter menu item when "disabled" passed to filter', () => {
