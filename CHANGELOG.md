@@ -1,5 +1,17 @@
 # Changelog
 
+## v4.0.4
+
+* Fix cannot use theme to override input `variant` ([#7636](https://github.com/marmelab/react-admin/pull/7636)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<NumberInput>` edge cases ([#7673](https://github.com/marmelab/react-admin/pull/7673)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ShowBase>`, `<CreateBase>` and `<EditBase>` components don't support `resource` override via props ([#7652](https://github.com/marmelab/react-admin/pull/7652)) ([slax57](https://github.com/slax57))
+* Fix inconsistent casing for translation keys of `ra-input-rich-text` ([#7683](https://github.com/marmelab/react-admin/pull/7683)) ([friday](https://github.com/friday))
+* Fix warning when using some valid `<Button color>` values ([#7681](https://github.com/marmelab/react-admin/pull/7681)) ([smeng9](https://github.com/smeng9))
+* [TypeScript] Fix `<Button>` component prop type ([#7664](https://github.com/marmelab/react-admin/pull/7664)) ([okovpashko](https://github.com/okovpashko))
+* [Doc] Fix "Prefilling the Form" example in Create chapter ([#7684](https://github.com/marmelab/react-admin/pull/7684)) ([slax57](https://github.com/slax57))
+* [Doc] Fix `<RichTextInputToolbar>` example in `ra-input-rich-text` chapter ([#7671](https://github.com/marmelab/react-admin/pull/7671)) ([friday](https://github.com/friday))
+* [Doc] Fix `<SaveButton formId>` prop should be called `<SaveButton form>` ([#7658](https://github.com/marmelab/react-admin/pull/7658)) ([smeng9](https://github.com/smeng9))
+
 ## v4.0.3
 
 * Fix `<SimpleFormIterator disableRemove>` doesn't receive the `record` argument ([#7645](https://github.com/marmelab/react-admin/pull/7645)) ([andrico1234](https://github.com/andrico1234))
