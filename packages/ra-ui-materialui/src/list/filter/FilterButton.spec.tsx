@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, fireEvent, screen, waitFor } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import { createTheme } from '@mui/material/styles';
 
 import { AdminContext } from '../../AdminContext';
