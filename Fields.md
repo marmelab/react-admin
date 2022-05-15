@@ -254,7 +254,7 @@ const PostList = () => (
 
 ## `source`
 
-The name of the property to display. Can contain strings. 
+The name of the property to display. Can contain dots for accessing properties of nested objects. 
 
 ```jsx
 <TextField source="author.first_name" />

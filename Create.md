@@ -375,8 +375,8 @@ const CreateRelatedCommentButton = ({ record }) => (
         component={Link}
         to={{
             pathname: '/comments/create',
-            state: { record: { post_id: record.id } },
         }}
+        state={{ record: { post_id: record.id } }}
     >
         Write a comment for that post
     </Button>

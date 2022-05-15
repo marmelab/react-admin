@@ -203,7 +203,6 @@ title: "Reference"
 * `useSortState`
 * [`useStore`](./useStore.md)
 * [`useStoreContext`](./useStoreContext.md)
-* [`useStyles`](./Theming.md#overriding-a-component-style)
 * `useSuggestions`
 * [`useTheme`](./Theming.md#changing-the-theme-programmatically)
 * [`useTour`](https://marmelab.com/ra-enterprise/modules/ra-tour)<img class="icon" src="./img/premium.svg" />
