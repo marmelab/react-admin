@@ -109,6 +109,9 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
         setRemoveSavedQueryDialogOpen(true);
     };
 
+    if (hiddenFilters.length === 0 && !hasFilterValues) {
+        return null;
+    }
     return (
         <Root className={className} {...sanitizeRestProps(rest)}>
             <Button
