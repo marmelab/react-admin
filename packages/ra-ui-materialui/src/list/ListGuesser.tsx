@@ -88,6 +88,7 @@ const ListViewGuesser = (props: Omit<ListViewProps, 'children'>) => {
                 null,
                 inferredElements
             );
+            setInferredChild(inferredChild.getElement());
 
             if (process.env.NODE_ENV === 'production') return;
 
@@ -118,7 +119,6 @@ ${inferredChild.getRepresentation()}
     </List>
 );`
             );
-            setInferredChild(inferredChild.getElement());
         }
     }, [data, inferredChild, resource]);
 

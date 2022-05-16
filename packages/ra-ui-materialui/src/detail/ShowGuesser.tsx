@@ -39,6 +39,7 @@ const ShowViewGuesser = props => {
                 null,
                 inferredElements
             );
+            setInferredChild(inferredChild.getElement());
 
             if (process.env.NODE_ENV === 'production') return;
 
@@ -69,7 +70,6 @@ ${inferredChild.getRepresentation()}
     </Show>
 );`
             );
-            setInferredChild(inferredChild.getElement());
         }
     }, [record, inferredChild, resource]);
 
