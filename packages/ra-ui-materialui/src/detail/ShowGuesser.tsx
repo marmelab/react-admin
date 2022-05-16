@@ -27,9 +27,9 @@ export const ShowGuesser = ({
 const ShowViewGuesser = props => {
     const resource = useResourceContext(props);
     const { record } = useShowContext();
-    const [inferredChild, setInferredChild] = useState(null);
+    const [child, setChild] = useState(null);
     useEffect(() => {
-        if (record && !inferredChild) {
+        if (record && !child) {
             const inferredElements = getElementsFromRecords(
                 [record],
                 showFieldTypes
@@ -39,7 +39,7 @@ const ShowViewGuesser = props => {
                 null,
                 inferredElements
             );
-            setInferredChild(inferredChild.getElement());
+            setChild(inferredChild.getElement());
 
             if (process.env.NODE_ENV === 'production') return;
 
@@ -48,7 +48,7 @@ const ShowViewGuesser = props => {
                 .concat(
                     Array.from(
                         new Set(
-                            Array.from(representation.matchAll(/<([^\/\s>]+)/g))
+                            Array.from(representation.matchAll(/<([^/\s>]+)/g))
                                 .map(match => match[1])
                                 .filter(component => component !== 'span')
                         )
@@ -71,9 +71,9 @@ ${inferredChild.getRepresentation()}
 );`
             );
         }
-    }, [record, inferredChild, resource]);
+    }, [record, child, resource]);
 
-    return <ShowView {...props}>{inferredChild}</ShowView>;
+    return <ShowView {...props}>{child}</ShowView>;
 };
 
 ShowViewGuesser.propTypes = ShowView.propTypes;

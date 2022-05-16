@@ -71,14 +71,14 @@ export const ListGuesser = <RecordType extends RaRecord = any>(
 const ListViewGuesser = (props: Omit<ListViewProps, 'children'>) => {
     const { data } = useListContext(props);
     const resource = useResourceContext();
-    const [inferredChild, setInferredChild] = useState(null);
+    const [child, setChild] = useState(null);
 
     useEffect(() => {
-        setInferredChild(null);
+        setChild(null);
     }, [resource]);
 
     useEffect(() => {
-        if (data && data.length > 0 && !inferredChild) {
+        if (data && data.length > 0 && !child) {
             const inferredElements = getElementsFromRecords(
                 data,
                 listFieldTypes
@@ -88,7 +88,7 @@ const ListViewGuesser = (props: Omit<ListViewProps, 'children'>) => {
                 null,
                 inferredElements
             );
-            setInferredChild(inferredChild.getElement());
+            setChild(inferredChild.getElement());
 
             if (process.env.NODE_ENV === 'production') return;
 
@@ -120,9 +120,9 @@ ${inferredChild.getRepresentation()}
 );`
             );
         }
-    }, [data, inferredChild, resource]);
+    }, [data, child, resource]);
 
-    return <ListView {...props}>{inferredChild}</ListView>;
+    return <ListView {...props}>{child}</ListView>;
 };
 
 ListViewGuesser.propTypes = ListView.propTypes;

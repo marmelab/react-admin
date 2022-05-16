@@ -44,9 +44,9 @@ export const EditGuesser = (props: EditProps) => {
 const EditViewGuesser = props => {
     const resource = useResourceContext(props);
     const { record } = useEditContext();
-    const [inferredChild, setInferredChild] = useState(null);
+    const [child, setChild] = useState(null);
     useEffect(() => {
-        if (record && !inferredChild) {
+        if (record && !child) {
             const inferredElements = getElementsFromRecords(
                 [record],
                 editFieldTypes
@@ -56,16 +56,17 @@ const EditViewGuesser = props => {
                 null,
                 inferredElements
             );
-            setInferredChild(inferredChild.getElement());
+            setChild(inferredChild.getElement());
 
             if (process.env.NODE_ENV === 'production') return;
 
             const representation = inferredChild.getRepresentation();
+
             const components = ['Edit']
                 .concat(
                     Array.from(
                         new Set(
-                            Array.from(representation.matchAll(/<([^\/\s>]+)/g))
+                            Array.from(representation.matchAll(/<([^/\s>]+)/g))
                                 .map(match => match[1])
                                 .filter(component => component !== 'span')
                         )
@@ -88,9 +89,9 @@ ${representation}
 );`
             );
         }
-    }, [record, inferredChild, resource]);
+    }, [record, child, resource]);
 
-    return <EditView {...props}>{inferredChild}</EditView>;
+    return <EditView {...props}>{child}</EditView>;
 };
 
 EditViewGuesser.propTypes = EditView.propTypes;
