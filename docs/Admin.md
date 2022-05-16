@@ -275,7 +275,10 @@ See the [Theming documentation](./Theming.md#using-a-custom-menu) for more detai
 MUI supports [theming](https://mui.com/customization/themes). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom MUI theme by using the `theme` prop:
 
 ```jsx
+import { defaultTheme } from 'react-admin';
+
 const theme = {
+    ...defaultTheme,
     palette: {
         type: 'dark', // Switching the dark mode on is a single property value change.
     },
@@ -290,7 +293,7 @@ const App = () => (
 
 ![Dark theme](./img/dark-theme.png)
 
-For more details on predefined themes and custom themes, refer to the [MUI Customization documentation](https://mui.com/customization/themes/).
+For more details on predefined themes and custom themes, refer to [the Theming chapter](./Theming.md#global-theme-overrides) of the react-admin documentation.
 
 ## `layout`
 

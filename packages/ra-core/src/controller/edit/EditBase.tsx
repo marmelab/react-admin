@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { RaRecord } from '../../types';
 import { useEditController, EditControllerProps } from './useEditController';
 import { EditContextProvider } from './EditContextProvider';
+import { ResourceContextProvider } from '../../core';
 
 /**
  * Call useEditController and put the value in a EditContext
@@ -37,8 +38,19 @@ import { EditContextProvider } from './EditContextProvider';
 export const EditBase = <RecordType extends RaRecord = any>({
     children,
     ...props
-}: { children: ReactNode } & EditControllerProps<RecordType>) => (
-    <EditContextProvider value={useEditController<RecordType>(props)}>
-        {children}
-    </EditContextProvider>
-);
+}: { children: ReactNode } & EditControllerProps<RecordType>) => {
+    const controllerProps = useEditController<RecordType>(props);
+    const body = (
+        <EditContextProvider value={controllerProps}>
+            {children}
+        </EditContextProvider>
+    );
+    return props.resource ? (
+        // support resource override via props
+        <ResourceContextProvider value={props.resource}>
+            {body}
+        </ResourceContextProvider>
+    ) : (
+        body
+    );
+};

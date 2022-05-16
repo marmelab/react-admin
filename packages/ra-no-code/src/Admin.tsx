@@ -43,7 +43,7 @@ const InnerAdmin = (props: AdminProps) => {
     const hasResources = !!resources && Object.keys(resources).length > 0;
 
     return (
-        <RaAdmin ready={Ready} layout={Layout} {...props}>
+        <RaAdmin layout={Layout} ready={Ready} {...props}>
             <CustomRoutes>
                 <Route
                     path="/configure/:resource"
@@ -62,7 +62,7 @@ const InnerAdmin = (props: AdminProps) => {
                           show={Show}
                       />
                   ))
-                : undefined}
+                : null}
         </RaAdmin>
     );
 };

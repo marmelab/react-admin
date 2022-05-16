@@ -11,7 +11,12 @@ import {
     useResourceContext,
 } from 'ra-core';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
-import { InputLabel, FormControl, FormHelperText } from '@mui/material';
+import {
+    InputLabel,
+    FormControl,
+    FormHelperText,
+    FormControlProps,
+} from '@mui/material';
 import isEqual from 'lodash/isEqual';
 
 import { LinearProgress } from '../../layout';
@@ -214,11 +219,13 @@ export const getArrayInputError = error => {
     return error;
 };
 
-export type ArrayInputProps = CommonInputProps & {
+export interface ArrayInputProps
+    extends CommonInputProps,
+        Omit<FormControlProps, 'defaultValue' | 'onBlur' | 'onChange'> {
     className?: string;
     children: ReactElement;
     disabled?: boolean;
     isFetching?: boolean;
     isLoading?: boolean;
     record?: Partial<RaRecord>;
-};
+}

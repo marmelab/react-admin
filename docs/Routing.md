@@ -120,13 +120,20 @@ const App = () => (
 );
 ```
 
+This makes all links be prefixed with `/admin`.
+
+Note that it is your responsibility to serve the admin from the sub path, e.g. by setting the `homepage` field in your `package.json` if you use [Create React App](https://create-react-app.dev/docs/deployment/#building-for-relative-paths).
+
+If you want to use react-admin as a sub path of a larger React application, check the next section for instructions. 
+
 ## Using React-Admin Inside a Route
 
-If you want to include a react-admin app inside another app using a react-router `<Route>`, you need to set the `<Admin basename>` prop, too. This will let react-admin build absolute URLs including the sub path.
+You can include a react-admin app inside another app, using a react-router `<Route>`:
 
 ```jsx
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Admin, Resource } from 'react-admin';
+import { StoreFront } from './StoreFront';
+import { StoreAdmin } from './StoreAdmin';
 
 export const App = () => (
     <BrowserRouter>
@@ -136,12 +143,19 @@ export const App = () => (
         </Routes>
     </BrowserRouter>
 );
+```
 
-const StoreFront = () => (/* ... */);
+React-admin will have to prefix all the internal links with `/admin`. Use the `<Admin basename>` prop for that:
 
-const StoreAdmin = () => (
+```jsx
+// in src/StoreAdmin.js
+import { Admin, Resource } from 'react-admin';
+
+export const StoreAdmin = () => (
     <Admin basename="/admin" dataProvider={...}>
-        <Resource name="posts" />
+        <Resource name="posts" {...posts} />
     </Admin>
 );
 ```
+
+ This will let react-admin build absolute URLs including the sub path.

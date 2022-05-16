@@ -2,7 +2,7 @@ import * as React from 'react';
 import { isValidElement, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
-import { Tab as MuiTab } from '@mui/material';
+import { Tab as MuiTab, TabProps as MuiTabProps } from '@mui/material';
 import clsx from 'clsx';
 import { useTranslate, useFormGroup } from 'ra-core';
 import { useFormState } from 'react-hook-form';
@@ -50,7 +50,7 @@ export const FormTabHeader = ({
     );
 };
 
-interface FormTabHeaderProps {
+interface FormTabHeaderProps extends Omit<MuiTabProps, 'children'> {
     className?: string;
     hidden?: boolean;
     icon?: ReactElement;

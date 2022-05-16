@@ -115,7 +115,7 @@ export type GetWatchQueryOptions = (
 export type Options = {
     client?: ApolloClient<unknown>;
     clientOptions?: Partial<ApolloClientOptions<unknown>>;
-    introspection?: false | IntrospectionOptions;
+    introspection?: false | Partial<IntrospectionOptions>;
     override?: {
         [key: string]: (params: any) => BuildQueryResult;
     };

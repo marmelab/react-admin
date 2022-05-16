@@ -1,16 +1,11 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import {
-    CreateContextProvider,
-    RaRecord,
-    ResourceContextProvider,
-    useCheckMinimumRequiredProps,
-    useCreateController,
-} from 'ra-core';
+import { RaRecord, useCheckMinimumRequiredProps } from 'ra-core';
 
 import { CreateProps } from '../types';
 import { CreateView } from './CreateView';
+import { CreateBase } from 'ra-core';
 
 /**
  * Page component for the Create view
@@ -59,19 +54,30 @@ export const Create = <RecordType extends RaRecord = any>(
     props: CreateProps<RecordType> & { children: ReactElement }
 ): ReactElement => {
     useCheckMinimumRequiredProps('Create', ['children'], props);
-    const controllerProps = useCreateController<RecordType>(props);
-    const body = (
-        <CreateContextProvider value={controllerProps}>
-            <CreateView {...props} {...controllerProps} />
-        </CreateContextProvider>
-    );
-    return props.resource ? (
-        // support resource override via props
-        <ResourceContextProvider value={props.resource}>
-            {body}
-        </ResourceContextProvider>
-    ) : (
-        body
+    const {
+        resource,
+        record,
+        redirect,
+        transform,
+        mutationOptions,
+        disableAuthentication,
+        hasEdit,
+        hasShow,
+        ...rest
+    } = props;
+    return (
+        <CreateBase
+            resource={resource}
+            record={record}
+            redirect={redirect}
+            transform={transform}
+            mutationOptions={mutationOptions}
+            disableAuthentication={disableAuthentication}
+            hasEdit={hasEdit}
+            hasShow={hasShow}
+        >
+            <CreateView {...rest} />
+        </CreateBase>
     );
 };
 
@@ -81,7 +87,6 @@ Create.propTypes = {
     children: PropTypes.element,
     className: PropTypes.string,
     disableAuthentication: PropTypes.bool,
-    hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
     redirect: PropTypes.oneOfType([
@@ -92,7 +97,6 @@ Create.propTypes = {
     resource: PropTypes.string,
     title: PropTypes.node,
     record: PropTypes.object,
-    hasList: PropTypes.bool,
     mutationOptions: PropTypes.object,
     transform: PropTypes.func,
     sx: PropTypes.any,

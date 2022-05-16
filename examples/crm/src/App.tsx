@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Admin, Resource, ListGuesser } from 'react-admin';
+import { Admin, Resource, ListGuesser, defaultTheme } from 'react-admin';
 import { dataProvider } from './dataProvider';
 import { authProvider } from './authProvider';
 import Layout from './Layout';
@@ -15,6 +15,7 @@ const App = () => (
         layout={Layout}
         dashboard={Dashboard}
         theme={{
+            ...defaultTheme,
             palette: {
                 background: {
                     default: '#fafafb',

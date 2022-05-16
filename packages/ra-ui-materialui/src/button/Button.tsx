@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement, ElementType } from 'react';
 import PropTypes from 'prop-types';
 import {
     Button as MuiButton,
@@ -107,12 +107,11 @@ interface Props {
     children?: ReactElement;
     className?: string;
     color?: MuiPropTypes.Color;
-    component?: ReactNode;
+    component?: ElementType;
     to?: string | LocationDescriptor;
     disabled?: boolean;
     label?: string;
     size?: 'small' | 'medium' | 'large';
-    icon?: ReactElement;
     redirect?: RedirectionSideEffect;
     variant?: string;
     // May be injected by Toolbar
@@ -139,7 +138,19 @@ Button.propTypes = {
     alignIcon: PropTypes.oneOf(['left', 'right']),
     children: PropTypes.element,
     className: PropTypes.string,
-    color: PropTypes.oneOf(['default', 'inherit', 'primary', 'secondary']),
+    color: PropTypes.oneOfType([
+        PropTypes.oneOf([
+            'inherit',
+            'default',
+            'primary',
+            'secondary',
+            'error',
+            'info',
+            'success',
+            'warning',
+        ]),
+        PropTypes.string,
+    ]),
     disabled: PropTypes.bool,
     label: PropTypes.string,
     size: PropTypes.oneOf(['small', 'medium', 'large']),

@@ -50,7 +50,7 @@ export const useCreateController = <RecordType extends RaRecord = RaRecord>(
     const resource = useResourceContext(props);
     const { hasEdit, hasShow } = useResourceDefinition(props);
     const finalRedirectTo =
-        redirectTo || getDefaultRedirectRoute(hasShow, hasEdit);
+        redirectTo ?? getDefaultRedirectRoute(hasShow, hasEdit);
     const location = useLocation();
     const translate = useTranslate();
     const notify = useNotify();
@@ -157,6 +157,8 @@ export const useCreateController = <RecordType extends RaRecord = RaRecord>(
 
 export interface CreateControllerProps<RecordType extends RaRecord = RaRecord> {
     disableAuthentication?: boolean;
+    hasEdit?: boolean;
+    hasShow?: boolean;
     record?: Partial<RecordType>;
     redirect?: RedirectionSideEffect;
     resource?: string;

@@ -16,6 +16,7 @@ import { InputPropTypes } from './InputPropTypes';
 export const BooleanInput = (props: BooleanInputProps) => {
     const {
         className,
+        row = false,
         defaultValue = false,
         format,
         label,
@@ -29,6 +30,8 @@ export const BooleanInput = (props: BooleanInputProps) => {
         resource,
         source,
         validate,
+        options,
+        sx,
         ...rest
     } = props;
     const {
@@ -62,7 +65,8 @@ export const BooleanInput = (props: BooleanInputProps) => {
     return (
         <FormGroup
             className={clsx('ra-input', `ra-input-${source}`, className)}
-            {...sanitizeInputRestProps(rest)}
+            row={row}
+            sx={sx}
         >
             <FormControlLabel
                 control={
@@ -74,6 +78,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
                         onFocus={onFocus}
                         checked={field.value}
                         {...sanitizeInputRestProps(rest)}
+                        {...options}
                         disabled={disabled}
                     />
                 }
@@ -110,4 +115,6 @@ BooleanInput.defaultProps = {
 
 export type BooleanInputProps = CommonInputProps &
     SwitchProps &
-    Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'>;
+    Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'> & {
+        options: SwitchProps;
+    };

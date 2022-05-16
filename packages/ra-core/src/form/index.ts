@@ -34,6 +34,7 @@ export * from './validate';
 export * from './FormGroupContext';
 export * from './FormGroupContextProvider';
 export * from './FormGroupsProvider';
+export * from './setSubmissionErrors';
 export * from './useApplyInputDefaultValues';
 export * from './useChoices';
 export * from './useFormGroup';

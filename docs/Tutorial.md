@@ -997,3 +997,5 @@ Now that you've completed the tutorial, the best way to learn react-admin is by 
 - [Fields](./Fields.md)
 - [Inputs](./Inputs.md)
 - [The Store](./Store.md)
+
+To help you close the gap between theoritical knowledge and practical experience, take advantage of the react-admin [Demos](./Demos.md). They are great examples of how to use react-admin in a real world application. They also show the best practices for going beyond simple CRUD apps.

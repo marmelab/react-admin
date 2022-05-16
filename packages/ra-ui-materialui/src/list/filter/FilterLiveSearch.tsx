@@ -28,7 +28,7 @@ export const FilterLiveSearch = memo(
         sx?: SxProps;
         variant?: 'filled' | 'outlined';
     }) => {
-        const { source = 'q', variant = 'filled', ...rest } = props;
+        const { source = 'q', variant, ...rest } = props;
         const { filterValues, setFilters } = useListFilterContext();
         const translate = useTranslate();
 
