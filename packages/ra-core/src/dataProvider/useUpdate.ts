@@ -72,11 +72,14 @@ import { RaRecord, UpdateParams, MutationMode } from '../types';
  * const [update, { data }] = useUpdate<Product>('products', { id, data: diff, previousData: product });
  *                    \-- data is Product
  */
-export const useUpdate = <RecordType extends RaRecord = any>(
+export const useUpdate = <
+    RecordType extends RaRecord = any,
+    MutationError = unknown
+>(
     resource?: string,
     params: Partial<UpdateParams<RecordType>> = {},
-    options: UseUpdateOptions<RecordType> = {}
-): UseUpdateResult<RecordType> => {
+    options: UseUpdateOptions<RecordType, MutationError> = {}
+): UseUpdateResult<RecordType, boolean, MutationError> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const { id, data, meta } = params;
@@ -140,7 +143,7 @@ export const useUpdate = <RecordType extends RaRecord = any>(
 
     const mutation = useMutation<
         RecordType,
-        unknown,
+        MutationError,
         Partial<UseUpdateMutateParams<RecordType>>
     >(
         ({
@@ -177,7 +180,7 @@ export const useUpdate = <RecordType extends RaRecord = any>(
                 }
             },
             onError: (
-                error: unknown,
+                error: MutationError,
                 variables: Partial<UseUpdateMutateParams<RecordType>> = {},
                 context: { snapshot: Snapshot }
             ) => {
@@ -229,7 +232,7 @@ export const useUpdate = <RecordType extends RaRecord = any>(
             },
             onSettled: (
                 data: RecordType,
-                error: unknown,
+                error: MutationError,
                 variables: Partial<UseUpdateMutateParams<RecordType>> = {},
                 context: { snapshot: Snapshot }
             ) => {
@@ -422,30 +425,32 @@ export interface UseUpdateMutateParams<RecordType extends RaRecord = any> {
 }
 
 export type UseUpdateOptions<
-    RecordType extends RaRecord = any
+    RecordType extends RaRecord = any,
+    MutationError = unknown
 > = UseMutationOptions<
     RecordType,
-    unknown,
+    MutationError,
     Partial<UseUpdateMutateParams<RecordType>>
 > & { mutationMode?: MutationMode };
 
 export type UseUpdateResult<
     RecordType extends RaRecord = any,
-    TReturnPromise extends boolean = boolean
+    TReturnPromise extends boolean = boolean,
+    MutationError = unknown
 > = [
     (
         resource?: string,
         params?: Partial<UpdateParams<RecordType>>,
         options?: MutateOptions<
             RecordType,
-            unknown,
+            MutationError,
             Partial<UseUpdateMutateParams<RecordType>>,
             unknown
         > & { mutationMode?: MutationMode; returnPromise?: TReturnPromise }
     ) => Promise<TReturnPromise extends true ? RecordType : void>,
     UseMutationResult<
         RecordType,
-        unknown,
+        MutationError,
         Partial<UpdateParams<RecordType> & { resource?: string }>,
         unknown
     >

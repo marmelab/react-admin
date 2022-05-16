@@ -11,7 +11,10 @@ import {
 } from 'ra-core';
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
-export interface EditProps<RecordType extends RaRecord = any> {
+export interface EditProps<
+    RecordType extends RaRecord = any,
+    MutationOptionsError = unknown
+> {
     actions?: ReactElement | false;
     aside?: ReactElement;
     className?: string;
@@ -22,7 +25,7 @@ export interface EditProps<RecordType extends RaRecord = any> {
     queryOptions?: UseQueryOptions<RecordType>;
     mutationOptions?: UseMutationOptions<
         RecordType,
-        unknown,
+        MutationOptionsError,
         UseUpdateMutateParams<RecordType>
     >;
     redirect?: RedirectionSideEffect;
@@ -32,7 +35,10 @@ export interface EditProps<RecordType extends RaRecord = any> {
     sx?: SxProps;
 }
 
-export interface CreateProps<RecordType extends RaRecord = any> {
+export interface CreateProps<
+    RecordType extends RaRecord = any,
+    MutationOptionsError = unknown
+> {
     actions?: ReactElement | false;
     aside?: ReactElement;
     className?: string;
@@ -45,7 +51,7 @@ export interface CreateProps<RecordType extends RaRecord = any> {
     resource?: string;
     mutationOptions?: UseMutationOptions<
         RecordType,
-        unknown,
+        MutationOptionsError,
         UseCreateMutateParams<RecordType>
     >;
     transform?: TransformData;

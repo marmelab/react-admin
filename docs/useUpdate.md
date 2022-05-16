@@ -61,3 +61,17 @@ const IncreaseLikeButton = ({ record }) => {
     return <button disabled={isLoading} onClick={handleClick}>Like</button>;
 };
 ```
+
+**Tip**: If you use TypeScript, you can specify the record and error types for more type safety:
+
+```tsx
+useUpdate<Product, Error>(undefined, undefined, {
+    onError: (error) => {
+        // error is an instance of Error.
+    },
+    onSettled: (data, error) => {
+        // data is an instance of Product.
+        // error is an instance of Error.
+    },
+})
+```
