@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { FormGroupContextProvider } from 'ra-core';
-import { Stack, StackProps } from '@mui/material';
+import { Stack, StackProps, TabProps as MuiTabProps } from '@mui/material';
 
 import { FormTabHeader } from './FormTabHeader';
 
@@ -31,6 +31,7 @@ export const FormTab = (props: FormTabProps) => {
             className={className}
             syncWithLocation={syncWithLocation}
             onChange={onChange}
+            {...sanitizeRestProps(rest)}
         />
     );
 
@@ -70,7 +71,9 @@ FormTab.propTypes = {
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
-export interface FormTabProps extends StackProps {
+export interface FormTabProps
+    extends Omit<StackProps, 'color'>,
+        Omit<MuiTabProps, 'children' | 'classes' | 'ref'> {
     className?: string;
     children?: ReactNode;
     contentClassName?: string;
@@ -87,3 +90,24 @@ export interface FormTabProps extends StackProps {
 FormTab.displayName = 'FormTab';
 
 const hiddenStyle = { display: 'none' };
+
+const sanitizeRestProps = ({
+    classes,
+    ref,
+    margin,
+    ...rest
+}: Omit<
+    FormTabProps,
+    | 'className'
+    | 'contentClassName'
+    | 'children'
+    | 'hidden'
+    | 'icon'
+    | 'intent'
+    | 'label'
+    | 'onChange'
+    | 'path'
+    | 'resource'
+    | 'syncWithLocation'
+    | 'value'
+>) => rest;
