@@ -5,7 +5,7 @@ title: "useUpdate"
 
 # `useUpdate`
 
-This hook allows to call `dataProvider.update()` when the callback is executed, and update a single record based on its `id` and a `data` argument. 
+This hook allows to call `dataProvider.update()` when the callback is executed, and update a single record based on its `id` and a `data` argument.
 
 ```jsx
 // syntax

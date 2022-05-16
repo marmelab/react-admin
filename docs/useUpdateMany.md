@@ -5,7 +5,7 @@ title: "useUpdateMany"
 
 # `useUpdateMany`
 
-This hook allows to call `dataProvider.updateMany()` when the callback is executed, and update an array of records based on their `ids` and a `data` argument. 
+This hook allows to call `dataProvider.updateMany()` when the callback is executed, and update an array of records based on their `ids` and a `data` argument.
 
 
 ```jsx

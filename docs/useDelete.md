@@ -5,7 +5,7 @@ title: "useDelete"
 
 # `useDelete`
 
-This hook allows calling `dataProvider.delete()` when the callback is executed and deleting a single record based on its `id`. 
+This hook allows calling `dataProvider.delete()` when the callback is executed and deleting a single record based on its `id`.
 
 ```jsx
 // syntax

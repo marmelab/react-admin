@@ -5,7 +5,7 @@ title: "useDeleteMany"
 
 # `useDeleteMany`
 
-This hook allows to call `dataProvider.deleteMany()` when the callback is executed, and delete an array of records based on their `ids`. 
+This hook allows to call `dataProvider.deleteMany()` when the callback is executed, and delete an array of records based on their `ids`.
 
 ```jsx
 // syntax

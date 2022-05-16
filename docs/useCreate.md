@@ -5,7 +5,7 @@ title: "useCreate"
 
 # `useCreate`
 
-This hook allows to call `dataProvider.create()` when the callback is executed. 
+This hook allows to call `dataProvider.create()` when the callback is executed.
 
 ```jsx
 // syntax
