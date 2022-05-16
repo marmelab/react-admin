@@ -28,6 +28,11 @@ const ShowViewGuesser = props => {
     const resource = useResourceContext(props);
     const { record } = useShowContext();
     const [child, setChild] = useState(null);
+
+    useEffect(() => {
+        setChild(null);
+    }, [resource]);
+
     useEffect(() => {
         if (record && !child) {
             const inferredElements = getElementsFromRecords(

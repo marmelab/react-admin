@@ -45,6 +45,11 @@ const EditViewGuesser = props => {
     const resource = useResourceContext(props);
     const { record } = useEditContext();
     const [child, setChild] = useState(null);
+
+    useEffect(() => {
+        setChild(null);
+    }, [resource]);
+
     useEffect(() => {
         if (record && !child) {
             const inferredElements = getElementsFromRecords(
