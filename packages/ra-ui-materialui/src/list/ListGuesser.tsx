@@ -2,15 +2,15 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import inflection from 'inflection';
 import {
-    useListController,
+    ListBase,
     getElementsFromRecords,
     InferredElement,
-    ListContextProvider,
     useListContext,
     useResourceContext,
     RaRecord,
 } from 'ra-core';
 
+import { ListProps } from './List';
 import { ListView, ListViewProps } from './ListView';
 import { listFieldTypes } from './listFieldTypes';
 
@@ -34,14 +34,37 @@ import { listFieldTypes } from './listFieldTypes';
  *     </Admin>
  * );
  */
-export const ListGuesser = <RecordType extends RaRecord = any>() => {
-    const controllerProps = useListController<RecordType>({
-        queryOptions: { keepPreviousData: false },
-    });
+export const ListGuesser = <RecordType extends RaRecord = any>(
+    props: Omit<ListProps, 'children'>
+) => {
+    const {
+        debounce,
+        disableAuthentication,
+        disableSyncWithLocation,
+        exporter,
+        filter,
+        filterDefaultValues,
+        perPage,
+        queryOptions,
+        resource,
+        sort,
+        ...rest
+    } = props;
     return (
-        <ListContextProvider value={controllerProps}>
-            <ListViewGuesser {...controllerProps} />
-        </ListContextProvider>
+        <ListBase<RecordType>
+            debounce={debounce}
+            disableAuthentication={disableAuthentication}
+            disableSyncWithLocation={disableSyncWithLocation}
+            exporter={exporter}
+            filter={filter}
+            filterDefaultValues={filterDefaultValues}
+            perPage={perPage}
+            queryOptions={{ keepPreviousData: false }}
+            resource={resource}
+            sort={sort}
+        >
+            <ListViewGuesser {...rest} />
+        </ListBase>
     );
 };
 
@@ -66,19 +89,35 @@ const ListViewGuesser = (props: Omit<ListViewProps, 'children'>) => {
                 inferredElements
             );
 
-            process.env.NODE_ENV !== 'production' &&
-                // eslint-disable-next-line no-console
-                console.log(
-                    `Guessed List:
+            if (process.env.NODE_ENV === 'production') return;
+
+            const representation = inferredChild.getRepresentation();
+            const components = ['List']
+                .concat(
+                    Array.from(
+                        new Set(
+                            Array.from(representation.matchAll(/<([^\/\s>]+)/g))
+                                .map(match => match[1])
+                                .filter(component => component !== 'span')
+                        )
+                    )
+                )
+                .sort();
+
+            // eslint-disable-next-line no-console
+            console.log(
+                `Guessed List:
+
+import { ${components.join(', ')} } from 'react-admin';
 
 export const ${inflection.capitalize(
-                        inflection.singularize(resource)
-                    )}List = () => (
+                    inflection.singularize(resource)
+                )}List = () => (
     <List>
 ${inferredChild.getRepresentation()}
     </List>
 );`
-                );
+            );
             setInferredChild(inferredChild.getElement());
         }
     }, [data, inferredChild, resource]);
