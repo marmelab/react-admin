@@ -468,7 +468,7 @@ export default TextField;
 
 In a Show view, you may want to display or hide fields based on the value of another field - for instance, show an `email` field only if the `hasEmail` boolean field is `true`.
 
-For such cases, you can use the custom field approach: read the `record` from the context, and render another Field based on the value.
+For such cases, you can use [the `<WithRecord>` component](./WithRecord.md), or the custom field approach: write a custom field that reads the `record` from the context, and renders another Field based on the value.
 
 ```jsx
 import { Show, SimpleShowLayout, TextField, EmailField } from 'react-admin';
