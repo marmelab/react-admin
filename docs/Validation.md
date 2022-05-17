@@ -12,7 +12,7 @@ React-admin relies on [react-hook-form](https://react-hook-form.com/) for the va
 - using the `resolver` prop at the Form level (validation by schema)
 - using the return value from the server (server-side validation)
 
-Please note that **validation at the form level and input level are mutually exclusive**. Indeed, with `react-hook-form`, you can’t have both form level validation and input level validation. This is because form level validation is meant to be used for schema based validation (with libraries such as `yup` for instance, see [Schema Validation](#schema-validation) for an example).
+You can’t use both form level validation and input level validation - this is a `react-hook-form` limitation.
 
 ## Global Validation
 
