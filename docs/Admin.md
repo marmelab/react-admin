@@ -144,7 +144,7 @@ The common settings that react-admin developers often overwrite are:
 import { QueryClient } from 'react-query';
 
 const queryClient = new QueryClient({
-    defaultOptions: {}
+    defaultOptions: {
         queries: {
             /**
              * The time in milliseconds after data is considered stale.
