@@ -9,6 +9,7 @@ import {
     DeleteParams,
     useRecordContext,
     useSaveContext,
+    SaveContextValue,
 } from 'ra-core';
 
 import { ButtonProps } from './Button';
@@ -79,7 +80,8 @@ export const DeleteButton = <RecordType extends RaRecord = any>(
 };
 
 export interface DeleteButtonProps<RecordType extends RaRecord = any>
-    extends Omit<ButtonProps, 'record'> {
+    extends Omit<ButtonProps, 'record'>,
+        SaveContextValue {
     className?: string;
     confirmTitle?: string;
     confirmContent?: string;

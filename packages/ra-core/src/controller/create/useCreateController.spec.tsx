@@ -5,9 +5,14 @@ import { Location } from 'react-router-dom';
 
 import { getRecordFromLocation } from './useCreateController';
 import { CreateController } from './CreateController';
-import { testDataProvider } from '../../dataProvider';
+import { testDataProvider, useCreate } from '../../dataProvider';
 import { useNotificationContext } from '../../notification';
 import { CoreAdminContext } from '../../core';
+import {
+    Middleware,
+    SaveContextProvider,
+    useAddMiddleware,
+} from '../saveContext';
 
 describe('useCreateController', () => {
     describe('getRecordFromLocation', () => {
@@ -396,5 +401,66 @@ describe('useCreateController', () => {
         expect(create).toHaveBeenCalledWith('posts', {
             data: { foo: 'bar', transformed: true },
         });
+    });
+
+    it('should allow to register middlewares', async () => {
+        let saveCallback;
+        const create = jest
+            .fn()
+            .mockImplementationOnce((_, { data }) =>
+                Promise.resolve({ data: { id: 123, ...data } })
+            );
+        const dataProvider = testDataProvider({
+            create,
+        });
+        const middleware: Middleware<ReturnType<typeof useCreate>[0]> = jest.fn(
+            (resource, params, options, next) => {
+                return next(
+                    resource,
+                    { ...params, meta: { addedByMiddleware: true } },
+                    options
+                );
+            }
+        );
+
+        const Child = () => {
+            useAddMiddleware<ReturnType<typeof useCreate>[0]>(middleware);
+            return null;
+        };
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <CreateController {...defaultProps}>
+                    {({ save, saving, addMiddleware, removeMiddleware }) => {
+                        saveCallback = save;
+                        return (
+                            <SaveContextProvider
+                                value={{
+                                    save,
+                                    saving,
+                                    addMiddleware,
+                                    removeMiddleware,
+                                }}
+                            >
+                                <Child />
+                            </SaveContextProvider>
+                        );
+                    }}
+                </CreateController>
+            </CoreAdminContext>
+        );
+        await act(async () => saveCallback({ foo: 'bar' }));
+
+        expect(create).toHaveBeenCalledWith('posts', {
+            data: { foo: 'bar' },
+            meta: { addedByMiddleware: true },
+        });
+        expect(middleware).toHaveBeenCalledWith(
+            'posts',
+            {
+                data: { foo: 'bar' },
+            },
+            expect.any(Object),
+            expect.any(Function)
+        );
     });
 });

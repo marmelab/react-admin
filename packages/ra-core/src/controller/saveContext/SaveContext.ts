@@ -6,11 +6,17 @@ import {
     TransformData,
     MutationMode,
 } from '../../types';
+import { Middleware } from './useMutationMiddlewares';
 
-export interface SaveContextValue<RecordType extends RaRecord = any> {
+export interface SaveContextValue<
+    RecordType extends RaRecord = any,
+    MutateFunc extends (...args: any[]) => any = (...args: any[]) => any
+> {
     save?: SaveHandler<RecordType>;
     saving?: boolean;
     mutationMode?: MutationMode;
+    addMiddleware?: (callback: Middleware<MutateFunc>) => void;
+    removeMiddleware?: (callback: Middleware<MutateFunc>) => void;
 }
 
 export type SaveHandler<RecordType> = (

@@ -169,7 +169,11 @@ describe('<SaveButton />', () => {
                     id: 123,
                     title: 'ipsum',
                 },
-                { data: { id: 123, title: 'ipsum' }, resource: 'posts' },
+                {
+                    id: '123',
+                    data: { id: 123, title: 'ipsum' },
+                    resource: 'posts',
+                },
                 { snapshot: [] }
             );
         });
@@ -217,7 +221,11 @@ describe('<SaveButton />', () => {
                 {
                     message: 'not good',
                 },
-                { data: { id: 123, title: 'ipsum' }, resource: 'posts' },
+                {
+                    id: '123',
+                    data: { id: 123, title: 'ipsum' },
+                    resource: 'posts',
+                },
                 { snapshot: [] }
             );
         });

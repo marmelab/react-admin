@@ -68,6 +68,7 @@ CreateView.propTypes = {
 };
 
 const sanitizeRestProps = ({
+    addMiddleware = null,
     defaultTitle = null,
     hasCreate = null,
     hasEdit = null,
@@ -84,6 +85,7 @@ const sanitizeRestProps = ({
     save = null,
     saving = null,
     transform = null,
+    removeMiddleware = null,
     ...rest
 }) => rest;
 

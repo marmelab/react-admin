@@ -3,12 +3,7 @@ import { useParams } from 'react-router-dom';
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
-import {
-    RaRecord,
-    MutationMode,
-    TransformData,
-    UpdateParams,
-} from '../../types';
+import { RaRecord, MutationMode, TransformData } from '../../types';
 import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
 import {
@@ -16,10 +11,11 @@ import {
     useUpdate,
     useRefresh,
     UseGetOneHookValue,
+    UseUpdateMutateParams,
 } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import { useResourceContext, useGetResourceLabel } from '../../core';
-import { SaveHandler } from '../saveContext';
+import { SaveContextValue, useMutationMiddlewares } from '../saveContext';
 
 /**
  * Prepare data for the Edit view.
@@ -64,7 +60,11 @@ export const useEditController = <RecordType extends RaRecord = any>(
     const { id: routeId } = useParams<'id'>();
     const id = propsId || decodeURIComponent(routeId);
     const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
-
+    const {
+        addMiddleware,
+        getMutateWithMiddlewares,
+        removeMiddleware,
+    } = useMutationMiddlewares();
     const { data: record, error, isLoading, isFetching, refetch } = useGetOne<
         RecordType
     >(
@@ -126,23 +126,32 @@ export const useEditController = <RecordType extends RaRecord = any>(
                           previousData: recordCached.previousData,
                       })
                     : data
-            ).then((data: Partial<RecordType>) =>
-                update(
+            ).then((data: Partial<RecordType>) => {
+                const mutate = getMutateWithMiddlewares(update);
+                return mutate(
                     resource,
-                    { data },
+                    { id, data },
                     {
-                        onSuccess: onSuccessFromSave
-                            ? onSuccessFromSave
-                            : onSuccess
-                            ? onSuccess
-                            : () => {
-                                  notify('ra.notification.updated', {
-                                      type: 'info',
-                                      messageArgs: { smart_count: 1 },
-                                      undoable: mutationMode === 'undoable',
-                                  });
-                                  redirect(redirectTo, resource, data.id, data);
-                              },
+                        onSuccess: async (data, variables, context) => {
+                            if (onSuccessFromSave) {
+                                return onSuccessFromSave(
+                                    data,
+                                    variables,
+                                    context
+                                );
+                            }
+
+                            if (onSuccess) {
+                                return onSuccess(data, variables, context);
+                            }
+
+                            notify('ra.notification.updated', {
+                                type: 'info',
+                                messageArgs: { smart_count: 1 },
+                                undoable: mutationMode === 'undoable',
+                            });
+                            redirect(redirectTo, resource, data.id, data);
+                        },
                         onError: onErrorFromSave
                             ? onErrorFromSave
                             : onError
@@ -167,9 +176,11 @@ export const useEditController = <RecordType extends RaRecord = any>(
                                   );
                               },
                     }
-                )
-            ),
+                );
+            }),
         [
+            id,
+            getMutateWithMiddlewares,
             mutationMode,
             notify,
             onError,
@@ -192,9 +203,11 @@ export const useEditController = <RecordType extends RaRecord = any>(
         record,
         redirect: DefaultRedirect,
         refetch,
+        addMiddleware: addMiddleware,
         resource,
         save,
         saving,
+        removeMiddleware: removeMiddleware,
     };
 };
 
@@ -205,7 +218,7 @@ export interface EditControllerProps<RecordType extends RaRecord = any> {
     mutationOptions?: UseMutationOptions<
         RecordType,
         unknown,
-        UpdateParams<RecordType>
+        UseUpdateMutateParams<RecordType>
     >;
     queryOptions?: UseQueryOptions<RecordType>;
     redirect?: RedirectionSideEffect;
@@ -214,7 +227,8 @@ export interface EditControllerProps<RecordType extends RaRecord = any> {
     [key: string]: any;
 }
 
-export interface EditControllerResult<RecordType extends RaRecord = any> {
+export interface EditControllerResult<RecordType extends RaRecord = any>
+    extends SaveContextValue {
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
     data?: RecordType;
@@ -222,9 +236,6 @@ export interface EditControllerResult<RecordType extends RaRecord = any> {
     defaultTitle: string;
     isFetching: boolean;
     isLoading: boolean;
-    mutationMode?: MutationMode;
-    save: SaveHandler<RecordType>;
-    saving: boolean;
     record?: RecordType;
     refetch: UseGetOneHookValue<RecordType>['refetch'];
     redirect: RedirectionSideEffect;

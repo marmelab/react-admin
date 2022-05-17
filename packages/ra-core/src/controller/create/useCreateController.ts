@@ -6,12 +6,12 @@ import { Location } from 'history';
 import { UseMutationOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
-import { useCreate } from '../../dataProvider';
+import { useCreate, UseCreateMutateParams } from '../../dataProvider';
 import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
-import { SaveHandler } from '../saveContext';
+import { SaveContextValue, useMutationMiddlewares } from '../saveContext';
 import { useTranslate } from '../../i18n';
-import { RaRecord, CreateParams, TransformData } from '../../types';
+import { RaRecord, TransformData } from '../../types';
 import {
     useResourceContext,
     useResourceDefinition,
@@ -57,6 +57,11 @@ export const useCreateController = <RecordType extends RaRecord = RaRecord>(
     const redirect = useRedirect();
     const recordToUse = record ?? getRecordFromLocation(location) ?? undefined;
     const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
+    const {
+        addMiddleware,
+        getMutateWithMiddlewares,
+        removeMiddleware,
+    } = useMutationMiddlewares();
 
     const [create, { isLoading: saving }] = useCreate<RecordType>(
         resource,
@@ -79,27 +84,30 @@ export const useCreateController = <RecordType extends RaRecord = RaRecord>(
                     : transform
                     ? transform(data)
                     : data
-            ).then((data: Partial<RecordType>) =>
-                create(
+            ).then((data: Partial<RecordType>) => {
+                const mutate = getMutateWithMiddlewares(create);
+                mutate(
                     resource,
                     { data },
                     {
-                        onSuccess: onSuccessFromSave
-                            ? onSuccessFromSave
-                            : onSuccess
-                            ? onSuccess
-                            : newRecord => {
-                                  notify('ra.notification.created', {
-                                      type: 'info',
-                                      messageArgs: { smart_count: 1 },
-                                  });
-                                  redirect(
-                                      finalRedirectTo,
-                                      resource,
-                                      newRecord.id,
-                                      newRecord
-                                  );
-                              },
+                        onSuccess: async (data, variables, context) => {
+                            if (onSuccessFromSave) {
+                                return onSuccessFromSave(
+                                    data,
+                                    variables,
+                                    context
+                                );
+                            }
+                            if (onSuccess) {
+                                return onSuccess(data, variables, context);
+                            }
+
+                            notify('ra.notification.created', {
+                                type: 'info',
+                                messageArgs: { smart_count: 1 },
+                            });
+                            redirect(finalRedirectTo, resource, data.id, data);
+                        },
                         onError: onErrorFromSave
                             ? onErrorFromSave
                             : onError
@@ -124,11 +132,12 @@ export const useCreateController = <RecordType extends RaRecord = RaRecord>(
                                   );
                               },
                     }
-                )
-            ),
+                );
+            }),
         [
             create,
             finalRedirectTo,
+            getMutateWithMiddlewares,
             notify,
             onError,
             onSuccess,
@@ -152,6 +161,8 @@ export const useCreateController = <RecordType extends RaRecord = RaRecord>(
         resource,
         record: recordToUse,
         redirect: finalRedirectTo,
+        addMiddleware: addMiddleware,
+        removeMiddleware: removeMiddleware,
     };
 };
 
@@ -163,22 +174,19 @@ export interface CreateControllerProps<RecordType extends RaRecord = RaRecord> {
     mutationOptions?: UseMutationOptions<
         RecordType,
         unknown,
-        CreateParams<RecordType>
+        UseCreateMutateParams<RecordType>
     >;
     transform?: TransformData;
 }
 
-export interface CreateControllerResult<
-    RecordType extends RaRecord = RaRecord
-> {
+export interface CreateControllerResult<RecordType extends RaRecord = RaRecord>
+    extends SaveContextValue {
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
     data?: RecordType;
     defaultTitle: string;
     isFetching: boolean;
     isLoading: boolean;
-    save: SaveHandler<RecordType>;
-    saving: boolean;
     record?: Partial<RecordType>;
     redirect: RedirectionSideEffect;
     resource: string;

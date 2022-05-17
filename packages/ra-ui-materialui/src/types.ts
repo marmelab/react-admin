@@ -5,9 +5,9 @@ import {
     RaRecord,
     MutationMode,
     TransformData,
-    UpdateParams,
-    CreateParams,
     RedirectionSideEffect,
+    UseCreateMutateParams,
+    UseUpdateMutateParams,
 } from 'ra-core';
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
@@ -22,7 +22,7 @@ export interface EditProps<RecordType extends RaRecord = any> {
     mutationOptions?: UseMutationOptions<
         RecordType,
         unknown,
-        UpdateParams<RecordType>
+        UseUpdateMutateParams<RecordType>
     >;
     redirect?: RedirectionSideEffect;
     resource?: string;
@@ -42,7 +42,7 @@ export interface CreateProps<RecordType extends RaRecord = any> {
     mutationOptions?: UseMutationOptions<
         RecordType,
         unknown,
-        CreateParams<RecordType>
+        UseCreateMutateParams<RecordType>
     >;
     transform?: TransformData;
     title?: string | ReactElement;

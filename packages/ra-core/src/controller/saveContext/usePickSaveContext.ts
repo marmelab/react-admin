@@ -11,9 +11,22 @@ export const usePickSaveContext = <
     context: ContextType
 ): SaveContextValue => {
     const value = useMemo(
-        () => pick(context, ['save', 'saving', 'mutationMode']),
+        () =>
+            pick(context, [
+                'save',
+                'saving',
+                'mutationMode',
+                'addMiddleware',
+                'removeMiddleware',
+            ]),
         /* eslint-disable react-hooks/exhaustive-deps */
-        [context.save, context.saving, context.mutationMode]
+        [
+            context.save,
+            context.saving,
+            context.mutationMode,
+            context.addMiddleware,
+            context.removeMiddleware,
+        ]
         /* eslint-enable react-hooks/exhaustive-deps */
     );
 
