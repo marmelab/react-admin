@@ -97,7 +97,7 @@ const ListViewGuesser = (props: Omit<ListViewProps, 'children'>) => {
                 .concat(
                     Array.from(
                         new Set(
-                            Array.from(representation.matchAll(/<([^\/\s>]+)/g))
+                            Array.from(representation.matchAll(/<([^/\s>]+)/g))
                                 .map(match => match[1])
                                 .filter(component => component !== 'span')
                         )
