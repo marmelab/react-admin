@@ -61,9 +61,9 @@ export const useEditController = <RecordType extends RaRecord = any>(
     const id = propsId || decodeURIComponent(routeId);
     const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
     const {
-        addMiddleware,
+        registerMutationMiddleware,
         getMutateWithMiddlewares,
-        removeMiddleware,
+        unregisterMutationMiddleware,
     } = useMutationMiddlewares();
     const { data: record, error, isLoading, isFetching, refetch } = useGetOne<
         RecordType
@@ -203,11 +203,11 @@ export const useEditController = <RecordType extends RaRecord = any>(
         record,
         redirect: DefaultRedirect,
         refetch,
-        addMiddleware: addMiddleware,
+        registerMutationMiddleware,
         resource,
         save,
         saving,
-        removeMiddleware: removeMiddleware,
+        unregisterMutationMiddleware,
     };
 };
 

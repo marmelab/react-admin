@@ -15,8 +15,8 @@ export interface SaveContextValue<
     save?: SaveHandler<RecordType>;
     saving?: boolean;
     mutationMode?: MutationMode;
-    addMiddleware?: (callback: Middleware<MutateFunc>) => void;
-    removeMiddleware?: (callback: Middleware<MutateFunc>) => void;
+    registerMutationMiddleware?: (callback: Middleware<MutateFunc>) => void;
+    unregisterMutationMiddleware?: (callback: Middleware<MutateFunc>) => void;
 }
 
 export type SaveHandler<RecordType> = (

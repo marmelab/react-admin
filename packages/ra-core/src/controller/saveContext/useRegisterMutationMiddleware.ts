@@ -6,17 +6,20 @@ import { useSaveContext } from './useSaveContext';
  * Internal hook that registers a middleware for the save function in the current SaveContext.
  * @param callback The middleware function.
  */
-export const useAddMiddleware = <
+export const useRegisterMutationMiddleware = <
     MutateFunc extends (...args: any[]) => any = (...args: any[]) => any
 >(
     callback: Middleware<MutateFunc>
 ) => {
-    const { addMiddleware, removeMiddleware } = useSaveContext();
+    const {
+        registerMutationMiddleware,
+        unregisterMutationMiddleware,
+    } = useSaveContext();
 
     useEffect(() => {
-        addMiddleware(callback);
+        registerMutationMiddleware(callback);
         return () => {
-            removeMiddleware(callback);
+            unregisterMutationMiddleware(callback);
         };
-    }, [callback, addMiddleware, removeMiddleware]);
+    }, [callback, registerMutationMiddleware, unregisterMutationMiddleware]);
 };

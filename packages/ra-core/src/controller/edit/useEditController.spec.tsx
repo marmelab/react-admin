@@ -10,7 +10,7 @@ import { CoreAdminContext } from '../../core';
 import { useNotificationContext } from '../../notification';
 import { SaveContextProvider } from '..';
 import undoableEventEmitter from '../../dataProvider/undoableEventEmitter';
-import { Middleware, useAddMiddleware } from '../saveContext';
+import { Middleware, useRegisterMutationMiddleware } from '../saveContext';
 import { testDataProvider, useUpdate } from '../../dataProvider';
 
 describe('useEditController', () => {
@@ -33,20 +33,9 @@ describe('useEditController', () => {
                         record,
                         save,
                         saving,
-                        addMiddleware,
-                        removeMiddleware,
-                    }) => (
-                        <SaveContextProvider
-                            value={{
-                                save,
-                                saving,
-                                addMiddleware,
-                                removeMiddleware,
-                            }}
-                        >
-                            <div>{record && record.title}</div>
-                        </SaveContextProvider>
-                    )}
+                        registerMutationMiddleware,
+                        unregisterMutationMiddleware,
+                    }) => <div>{record && record.title}</div>}
                 </EditController>
             </CoreAdminContext>
         );
@@ -78,20 +67,9 @@ describe('useEditController', () => {
                                     record,
                                     save,
                                     saving,
-                                    addMiddleware,
-                                    removeMiddleware,
-                                }) => (
-                                    <SaveContextProvider
-                                        value={{
-                                            save,
-                                            saving,
-                                            addMiddleware,
-                                            removeMiddleware,
-                                        }}
-                                    >
-                                        <div>{record && record.title}</div>
-                                    </SaveContextProvider>
-                                )}
+                                    registerMutationMiddleware,
+                                    unregisterMutationMiddleware,
+                                }) => <div>{record && record.title}</div>}
                             </EditController>
                         }
                     />
@@ -117,18 +95,12 @@ describe('useEditController', () => {
                     resource="posts"
                     queryOptions={{ onError }}
                 >
-                    {({ save, saving, addMiddleware, removeMiddleware }) => (
-                        <SaveContextProvider
-                            value={{
-                                save,
-                                saving,
-                                addMiddleware,
-                                removeMiddleware,
-                            }}
-                        >
-                            <div />
-                        </SaveContextProvider>
-                    )}
+                    {({
+                        save,
+                        saving,
+                        registerMutationMiddleware,
+                        unregisterMutationMiddleware,
+                    }) => <div />}
                 </EditController>
             </CoreAdminContext>
         );
@@ -157,16 +129,16 @@ describe('useEditController', () => {
                         record,
                         save,
                         saving,
-                        addMiddleware,
-                        removeMiddleware,
+                        registerMutationMiddleware,
+                        unregisterMutationMiddleware,
                     }) => {
                         return (
                             <SaveContextProvider
                                 value={{
                                     save,
                                     saving,
-                                    addMiddleware,
-                                    removeMiddleware,
+                                    registerMutationMiddleware,
+                                    unregisterMutationMiddleware,
                                 }}
                             >
                                 <>
@@ -217,8 +189,8 @@ describe('useEditController', () => {
                     {({
                         save,
                         saving,
-                        addMiddleware,
-                        removeMiddleware,
+                        registerMutationMiddleware,
+                        unregisterMutationMiddleware,
                         record,
                     }) => {
                         return (
@@ -226,8 +198,8 @@ describe('useEditController', () => {
                                 value={{
                                     save,
                                     saving,
-                                    addMiddleware,
-                                    removeMiddleware,
+                                    registerMutationMiddleware,
+                                    unregisterMutationMiddleware,
                                 }}
                             >
                                 <>
@@ -287,8 +259,8 @@ describe('useEditController', () => {
                     {({
                         save,
                         saving,
-                        addMiddleware,
-                        removeMiddleware,
+                        registerMutationMiddleware,
+                        unregisterMutationMiddleware,
                         record,
                     }) => {
                         saveCallback = save;
@@ -297,8 +269,8 @@ describe('useEditController', () => {
                                 value={{
                                     save,
                                     saving,
-                                    addMiddleware,
-                                    removeMiddleware,
+                                    registerMutationMiddleware,
+                                    unregisterMutationMiddleware,
                                 }}
                             >
                                 <>{JSON.stringify(record)}</>
@@ -341,15 +313,20 @@ describe('useEditController', () => {
             <CoreAdminContext dataProvider={dataProvider}>
                 <Notification />
                 <EditController {...defaultProps} mutationMode="pessimistic">
-                    {({ save, saving, addMiddleware, removeMiddleware }) => {
+                    {({
+                        save,
+                        saving,
+                        registerMutationMiddleware,
+                        unregisterMutationMiddleware,
+                    }) => {
                         saveCallback = save;
                         return (
                             <SaveContextProvider
                                 value={{
                                     save,
                                     saving,
-                                    addMiddleware,
-                                    removeMiddleware,
+                                    registerMutationMiddleware,
+                                    unregisterMutationMiddleware,
                                 }}
                             >
                                 <div />;
@@ -402,15 +379,20 @@ describe('useEditController', () => {
                     mutationMode="pessimistic"
                     mutationOptions={{ onSuccess }}
                 >
-                    {({ save, saving, addMiddleware, removeMiddleware }) => {
+                    {({
+                        save,
+                        saving,
+                        registerMutationMiddleware,
+                        unregisterMutationMiddleware,
+                    }) => {
                         saveCallback = save;
                         return (
                             <SaveContextProvider
                                 value={{
                                     save,
                                     saving,
-                                    addMiddleware,
-                                    removeMiddleware,
+                                    registerMutationMiddleware,
+                                    unregisterMutationMiddleware,
                                 }}
                             >
                                 <div />
@@ -451,15 +433,20 @@ describe('useEditController', () => {
                     mutationMode="optimistic"
                     mutationOptions={{ onSuccess }}
                 >
-                    {({ save, saving, addMiddleware, removeMiddleware }) => {
+                    {({
+                        save,
+                        saving,
+                        registerMutationMiddleware,
+                        unregisterMutationMiddleware,
+                    }) => {
                         saveCallback = save;
                         return (
                             <SaveContextProvider
                                 value={{
                                     save,
                                     saving,
-                                    addMiddleware,
-                                    removeMiddleware,
+                                    registerMutationMiddleware,
+                                    unregisterMutationMiddleware,
                                 }}
                             >
                                 <div />
@@ -499,15 +486,20 @@ describe('useEditController', () => {
                     {...defaultProps}
                     mutationOptions={{ onSuccess }}
                 >
-                    {({ save, saving, addMiddleware, removeMiddleware }) => {
+                    {({
+                        save,
+                        saving,
+                        registerMutationMiddleware,
+                        unregisterMutationMiddleware,
+                    }) => {
                         saveCallback = save;
                         return (
                             <SaveContextProvider
                                 value={{
                                     save,
                                     saving,
-                                    addMiddleware,
-                                    removeMiddleware,
+                                    registerMutationMiddleware,
+                                    unregisterMutationMiddleware,
                                 }}
                             >
                                 <div />
@@ -549,15 +541,20 @@ describe('useEditController', () => {
                     mutationMode="pessimistic"
                     mutationOptions={{ onSuccess }}
                 >
-                    {({ save, saving, addMiddleware, removeMiddleware }) => {
+                    {({
+                        save,
+                        saving,
+                        registerMutationMiddleware,
+                        unregisterMutationMiddleware,
+                    }) => {
                         saveCallback = save;
                         return (
                             <SaveContextProvider
                                 value={{
                                     save,
                                     saving,
-                                    addMiddleware,
-                                    removeMiddleware,
+                                    registerMutationMiddleware,
+                                    unregisterMutationMiddleware,
                                 }}
                             >
                                 <div />
@@ -601,15 +598,20 @@ describe('useEditController', () => {
             <CoreAdminContext dataProvider={dataProvider}>
                 <Notification />
                 <EditController {...defaultProps} mutationMode="pessimistic">
-                    {({ save, saving, addMiddleware, removeMiddleware }) => {
+                    {({
+                        save,
+                        saving,
+                        registerMutationMiddleware,
+                        unregisterMutationMiddleware,
+                    }) => {
                         saveCallback = save;
                         return (
                             <SaveContextProvider
                                 value={{
                                     save,
                                     saving,
-                                    addMiddleware,
-                                    removeMiddleware,
+                                    registerMutationMiddleware,
+                                    unregisterMutationMiddleware,
                                 }}
                             >
                                 <div />
@@ -656,15 +658,20 @@ describe('useEditController', () => {
                     mutationMode="pessimistic"
                     mutationOptions={{ onError }}
                 >
-                    {({ save, saving, addMiddleware, removeMiddleware }) => {
+                    {({
+                        save,
+                        saving,
+                        registerMutationMiddleware,
+                        unregisterMutationMiddleware,
+                    }) => {
                         saveCallback = save;
                         return (
                             <SaveContextProvider
                                 value={{
                                     save,
                                     saving,
-                                    addMiddleware,
-                                    removeMiddleware,
+                                    registerMutationMiddleware,
+                                    unregisterMutationMiddleware,
                                 }}
                             >
                                 <div />
@@ -706,15 +713,20 @@ describe('useEditController', () => {
                     mutationMode="optimistic"
                     mutationOptions={{ onError }}
                 >
-                    {({ save, saving, addMiddleware, removeMiddleware }) => {
+                    {({
+                        save,
+                        saving,
+                        registerMutationMiddleware,
+                        unregisterMutationMiddleware,
+                    }) => {
                         saveCallback = save;
                         return (
                             <SaveContextProvider
                                 value={{
                                     save,
                                     saving,
-                                    addMiddleware,
-                                    removeMiddleware,
+                                    registerMutationMiddleware,
+                                    unregisterMutationMiddleware,
                                 }}
                             >
                                 <div />
@@ -770,15 +782,20 @@ describe('useEditController', () => {
                     mutationMode="pessimistic"
                     mutationOptions={{ onError }}
                 >
-                    {({ save, saving, addMiddleware, removeMiddleware }) => {
+                    {({
+                        save,
+                        saving,
+                        registerMutationMiddleware,
+                        unregisterMutationMiddleware,
+                    }) => {
                         saveCallback = save;
                         return (
                             <SaveContextProvider
                                 value={{
                                     save,
                                     saving,
-                                    addMiddleware,
-                                    removeMiddleware,
+                                    registerMutationMiddleware,
+                                    unregisterMutationMiddleware,
                                 }}
                             >
                                 <div />
@@ -823,15 +840,20 @@ describe('useEditController', () => {
                     mutationMode="pessimistic"
                     transform={transform}
                 >
-                    {({ save, saving, addMiddleware, removeMiddleware }) => {
+                    {({
+                        save,
+                        saving,
+                        registerMutationMiddleware,
+                        unregisterMutationMiddleware,
+                    }) => {
                         saveCallback = save;
                         return (
                             <SaveContextProvider
                                 value={{
                                     save,
                                     saving,
-                                    addMiddleware,
-                                    removeMiddleware,
+                                    registerMutationMiddleware,
+                                    unregisterMutationMiddleware,
                                 }}
                             >
                                 <div />
@@ -877,15 +899,20 @@ describe('useEditController', () => {
                     mutationMode="pessimistic"
                     transform={transform}
                 >
-                    {({ save, saving, addMiddleware, removeMiddleware }) => {
+                    {({
+                        save,
+                        saving,
+                        registerMutationMiddleware,
+                        unregisterMutationMiddleware,
+                    }) => {
                         saveCallback = save;
                         return (
                             <SaveContextProvider
                                 value={{
                                     save,
                                     saving,
-                                    addMiddleware,
-                                    removeMiddleware,
+                                    registerMutationMiddleware,
+                                    unregisterMutationMiddleware,
                                 }}
                             >
                                 <div />
@@ -938,21 +965,28 @@ describe('useEditController', () => {
         );
 
         const Child = () => {
-            useAddMiddleware<ReturnType<typeof useUpdate>[0]>(middleware);
+            useRegisterMutationMiddleware<ReturnType<typeof useUpdate>[0]>(
+                middleware
+            );
             return null;
         };
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <EditController {...defaultProps} mutationMode="pessimistic">
-                    {({ save, saving, addMiddleware, removeMiddleware }) => {
+                    {({
+                        save,
+                        saving,
+                        registerMutationMiddleware,
+                        unregisterMutationMiddleware,
+                    }) => {
                         saveCallback = save;
                         return (
                             <SaveContextProvider
                                 value={{
                                     save,
                                     saving,
-                                    addMiddleware,
-                                    removeMiddleware,
+                                    registerMutationMiddleware,
+                                    unregisterMutationMiddleware,
                                 }}
                             >
                                 <Child />

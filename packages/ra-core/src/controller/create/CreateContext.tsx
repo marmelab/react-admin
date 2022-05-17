@@ -28,8 +28,8 @@ export const CreateContext = createContext<CreateControllerResult>({
     resource: null,
     save: null,
     saving: null,
-    addMiddleware: null,
-    removeMiddleware: null,
+    registerMutationMiddleware: null,
+    unregisterMutationMiddleware: null,
 });
 
 CreateContext.displayName = 'CreateContext';

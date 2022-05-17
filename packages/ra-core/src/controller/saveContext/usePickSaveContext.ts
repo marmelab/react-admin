@@ -16,16 +16,16 @@ export const usePickSaveContext = <
                 'save',
                 'saving',
                 'mutationMode',
-                'addMiddleware',
-                'removeMiddleware',
+                'registerMutationMiddleware',
+                'unregisterMutationMiddleware',
             ]),
         /* eslint-disable react-hooks/exhaustive-deps */
         [
             context.save,
             context.saving,
             context.mutationMode,
-            context.addMiddleware,
-            context.removeMiddleware,
+            context.registerMutationMiddleware,
+            context.unregisterMutationMiddleware,
         ]
         /* eslint-enable react-hooks/exhaustive-deps */
     );

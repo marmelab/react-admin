@@ -11,7 +11,7 @@ import { CoreAdminContext } from '../../core';
 import {
     Middleware,
     SaveContextProvider,
-    useAddMiddleware,
+    useRegisterMutationMiddleware,
 } from '../saveContext';
 
 describe('useCreateController', () => {
@@ -424,21 +424,28 @@ describe('useCreateController', () => {
         );
 
         const Child = () => {
-            useAddMiddleware<ReturnType<typeof useCreate>[0]>(middleware);
+            useRegisterMutationMiddleware<ReturnType<typeof useCreate>[0]>(
+                middleware
+            );
             return null;
         };
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <CreateController {...defaultProps}>
-                    {({ save, saving, addMiddleware, removeMiddleware }) => {
+                    {({
+                        save,
+                        saving,
+                        registerMutationMiddleware,
+                        unregisterMutationMiddleware,
+                    }) => {
                         saveCallback = save;
                         return (
                             <SaveContextProvider
                                 value={{
                                     save,
                                     saving,
-                                    addMiddleware,
-                                    removeMiddleware,
+                                    registerMutationMiddleware,
+                                    unregisterMutationMiddleware,
                                 }}
                             >
                                 <Child />

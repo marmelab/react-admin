@@ -30,8 +30,8 @@ export const EditContext = createContext<EditControllerResult>({
     resource: null,
     save: null,
     saving: null,
-    addMiddleware: null,
-    removeMiddleware: null,
+    registerMutationMiddleware: null,
+    unregisterMutationMiddleware: null,
 });
 
 EditContext.displayName = 'EditContext';

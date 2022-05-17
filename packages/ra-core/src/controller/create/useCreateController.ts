@@ -58,9 +58,9 @@ export const useCreateController = <RecordType extends RaRecord = RaRecord>(
     const recordToUse = record ?? getRecordFromLocation(location) ?? undefined;
     const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
     const {
-        addMiddleware,
+        registerMutationMiddleware,
         getMutateWithMiddlewares,
-        removeMiddleware,
+        unregisterMutationMiddleware,
     } = useMutationMiddlewares();
 
     const [create, { isLoading: saving }] = useCreate<RecordType>(
@@ -161,8 +161,8 @@ export const useCreateController = <RecordType extends RaRecord = RaRecord>(
         resource,
         record: recordToUse,
         redirect: finalRedirectTo,
-        addMiddleware: addMiddleware,
-        removeMiddleware: removeMiddleware,
+        registerMutationMiddleware,
+        unregisterMutationMiddleware,
     };
 };
 
