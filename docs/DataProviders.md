@@ -374,10 +374,12 @@ import { Admin } from 'react-admin';
 import { QueryClient } from 'react-query';
 
 const queryClient = new QueryClient({
-    query: {
-        retry: false,
-        staleTime: 10000,
-    },
+    defaultOptions: {
+        queries: {
+            retry: false,
+            staleTime: Infinity,
+        },
+    }
 });
 
 const App = () => (
