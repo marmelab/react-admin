@@ -97,8 +97,8 @@ export const useInput = (props: InputProps): UseInputValue => {
             if (onChange) {
                 onChange(...event);
             }
-            const eventOrValue = (typeof event[0]?.target?.checked ===
-                'boolean' && event[0]?.target?.value === 'on'
+            const eventOrValue = (props.type === 'checkbox' &&
+            event[0]?.target?.value === 'on'
                 ? event[0].target.checked
                 : event[0]?.target?.value ?? event[0]) as any;
             controllerField.onChange(
@@ -132,6 +132,7 @@ export type InputProps<ValueType = any> = Omit<
         onBlur?: (...event: any[]) => void;
         onChange?: (...event: any[]) => void;
         parse?: (value: any) => ValueType;
+        type?: string;
         resource?: string;
         source: string;
         validate?: Validator | Validator[];

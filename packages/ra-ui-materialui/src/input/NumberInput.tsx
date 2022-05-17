@@ -161,7 +161,12 @@ export interface NumberInputProps
     extends CommonInputProps,
         Omit<
             TextFieldProps,
-            'label' | 'helperText' | 'defaultValue' | 'onChange' | 'onBlur'
+            | 'label'
+            | 'helperText'
+            | 'defaultValue'
+            | 'onChange'
+            | 'onBlur'
+            | 'type'
         > {
     step?: string | number;
     min?: string | number;
