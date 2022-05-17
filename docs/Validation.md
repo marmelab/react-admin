@@ -215,8 +215,6 @@ export const ProductEdit = () => (
 
 **Tip**: The props of your Input components are passed to a `react-hook-form` [useController](https://react-hook-form.com/api/usecontroller) hook.
 
-**Tip**: You can use *both* Form validation and input validation.
-
 **Tip**: The custom validator function can return a promise, e.g. to use server-side validation. See next section for details.
 
 ## Async Validation
