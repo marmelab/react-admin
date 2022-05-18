@@ -112,22 +112,13 @@ describe('useEditController', () => {
                 <EditController {...defaultProps} mutationMode="pessimistic">
                     {({ record, save, saving }) => {
                         return (
-                            <SaveContextProvider
-                                value={{
-                                    save,
-                                    saving,
-                                }}
-                            >
-                                <>
-                                    <p>{record?.test}</p>
-                                    <button
-                                        aria-label="save"
-                                        onClick={() =>
-                                            save({ test: 'updated' })
-                                        }
-                                    />
-                                </>
-                            </SaveContextProvider>
+                            <>
+                                <p>{record?.test}</p>
+                                <button
+                                    aria-label="save"
+                                    onClick={() => save({ test: 'updated' })}
+                                />
+                            </>
                         );
                     }}
                 </EditController>
@@ -163,24 +154,15 @@ describe('useEditController', () => {
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <EditController {...defaultProps}>
-                    {({ save, saving, record }) => {
+                    {({ save, record }) => {
                         return (
-                            <SaveContextProvider
-                                value={{
-                                    save,
-                                    saving,
-                                }}
-                            >
-                                <>
-                                    <p>{record?.test}</p>
-                                    <button
-                                        aria-label="save"
-                                        onClick={() =>
-                                            save({ test: 'updated' })
-                                        }
-                                    />
-                                </>
-                            </SaveContextProvider>
+                            <>
+                                <p>{record?.test}</p>
+                                <button
+                                    aria-label="save"
+                                    onClick={() => save({ test: 'updated' })}
+                                />
+                            </>
                         );
                     }}
                 </EditController>
@@ -225,18 +207,9 @@ describe('useEditController', () => {
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <EditController {...defaultProps} mutationMode="pessimistic">
-                    {({ save, saving, record }) => {
+                    {({ save, record }) => {
                         saveCallback = save;
-                        return (
-                            <SaveContextProvider
-                                value={{
-                                    save,
-                                    saving,
-                                }}
-                            >
-                                <>{JSON.stringify(record)}</>
-                            </SaveContextProvider>
-                        );
+                        return <>{JSON.stringify(record)}</>;
                     }}
                 </EditController>
             </CoreAdminContext>
@@ -274,18 +247,9 @@ describe('useEditController', () => {
             <CoreAdminContext dataProvider={dataProvider}>
                 <Notification />
                 <EditController {...defaultProps} mutationMode="pessimistic">
-                    {({ save, saving }) => {
+                    {({ save }) => {
                         saveCallback = save;
-                        return (
-                            <SaveContextProvider
-                                value={{
-                                    save,
-                                    saving,
-                                }}
-                            >
-                                <div />;
-                            </SaveContextProvider>
-                        );
+                        return <div />;
                     }}
                 </EditController>
             </CoreAdminContext>
@@ -333,18 +297,9 @@ describe('useEditController', () => {
                     mutationMode="pessimistic"
                     mutationOptions={{ onSuccess }}
                 >
-                    {({ save, saving }) => {
+                    {({ save }) => {
                         saveCallback = save;
-                        return (
-                            <SaveContextProvider
-                                value={{
-                                    save,
-                                    saving,
-                                }}
-                            >
-                                <div />
-                            </SaveContextProvider>
-                        );
+                        return <div />;
                     }}
                 </EditController>
             </CoreAdminContext>
@@ -380,18 +335,9 @@ describe('useEditController', () => {
                     mutationMode="optimistic"
                     mutationOptions={{ onSuccess }}
                 >
-                    {({ save, saving }) => {
+                    {({ save }) => {
                         saveCallback = save;
-                        return (
-                            <SaveContextProvider
-                                value={{
-                                    save,
-                                    saving,
-                                }}
-                            >
-                                <div />
-                            </SaveContextProvider>
-                        );
+                        return <div />;
                     }}
                 </EditController>
             </CoreAdminContext>
@@ -426,18 +372,9 @@ describe('useEditController', () => {
                     {...defaultProps}
                     mutationOptions={{ onSuccess }}
                 >
-                    {({ save, saving }) => {
+                    {({ save }) => {
                         saveCallback = save;
-                        return (
-                            <SaveContextProvider
-                                value={{
-                                    save,
-                                    saving,
-                                }}
-                            >
-                                <div />
-                            </SaveContextProvider>
-                        );
+                        return <div />;
                     }}
                 </EditController>
             </CoreAdminContext>
@@ -474,18 +411,9 @@ describe('useEditController', () => {
                     mutationMode="pessimistic"
                     mutationOptions={{ onSuccess }}
                 >
-                    {({ save, saving }) => {
+                    {({ save }) => {
                         saveCallback = save;
-                        return (
-                            <SaveContextProvider
-                                value={{
-                                    save,
-                                    saving,
-                                }}
-                            >
-                                <div />
-                            </SaveContextProvider>
-                        );
+                        return <div />;
                     }}
                 </EditController>
             </CoreAdminContext>
@@ -524,18 +452,9 @@ describe('useEditController', () => {
             <CoreAdminContext dataProvider={dataProvider}>
                 <Notification />
                 <EditController {...defaultProps} mutationMode="pessimistic">
-                    {({ save, saving }) => {
+                    {({ save }) => {
                         saveCallback = save;
-                        return (
-                            <SaveContextProvider
-                                value={{
-                                    save,
-                                    saving,
-                                }}
-                            >
-                                <div />
-                            </SaveContextProvider>
-                        );
+                        return <div />;
                     }}
                 </EditController>
             </CoreAdminContext>
@@ -577,18 +496,9 @@ describe('useEditController', () => {
                     mutationMode="pessimistic"
                     mutationOptions={{ onError }}
                 >
-                    {({ save, saving }) => {
+                    {({ save }) => {
                         saveCallback = save;
-                        return (
-                            <SaveContextProvider
-                                value={{
-                                    save,
-                                    saving,
-                                }}
-                            >
-                                <div />
-                            </SaveContextProvider>
-                        );
+                        return <div />;
                     }}
                 </EditController>
             </CoreAdminContext>
@@ -625,18 +535,9 @@ describe('useEditController', () => {
                     mutationMode="optimistic"
                     mutationOptions={{ onError }}
                 >
-                    {({ save, saving }) => {
+                    {({ save }) => {
                         saveCallback = save;
-                        return (
-                            <SaveContextProvider
-                                value={{
-                                    save,
-                                    saving,
-                                }}
-                            >
-                                <div />
-                            </SaveContextProvider>
-                        );
+                        return <div />;
                     }}
                 </EditController>
             </CoreAdminContext>
@@ -687,18 +588,9 @@ describe('useEditController', () => {
                     mutationMode="pessimistic"
                     mutationOptions={{ onError }}
                 >
-                    {({ save, saving }) => {
+                    {({ save }) => {
                         saveCallback = save;
-                        return (
-                            <SaveContextProvider
-                                value={{
-                                    save,
-                                    saving,
-                                }}
-                            >
-                                <div />
-                            </SaveContextProvider>
-                        );
+                        return <div />;
                     }}
                 </EditController>
             </CoreAdminContext>
@@ -738,18 +630,9 @@ describe('useEditController', () => {
                     mutationMode="pessimistic"
                     transform={transform}
                 >
-                    {({ save, saving }) => {
+                    {({ save }) => {
                         saveCallback = save;
-                        return (
-                            <SaveContextProvider
-                                value={{
-                                    save,
-                                    saving,
-                                }}
-                            >
-                                <div />
-                            </SaveContextProvider>
-                        );
+                        return <div />;
                     }}
                 </EditController>
             </CoreAdminContext>
@@ -790,18 +673,9 @@ describe('useEditController', () => {
                     mutationMode="pessimistic"
                     transform={transform}
                 >
-                    {({ save, saving }) => {
+                    {({ save }) => {
                         saveCallback = save;
-                        return (
-                            <SaveContextProvider
-                                value={{
-                                    save,
-                                    saving,
-                                }}
-                            >
-                                <div />
-                            </SaveContextProvider>
-                        );
+                        return <div />;
                     }}
                 </EditController>
             </CoreAdminContext>
