@@ -2,13 +2,13 @@ import { RaRecord, Identifier } from '../types';
 import { UseGetManyHookValue, useGetManyAggregate } from '../dataProvider';
 import { UseQueryOptions } from 'react-query';
 
-interface UseReferenceProps<RecordType extends RaRecord = RaRecord> {
+interface UseReferenceProps<RecordType extends RaRecord = any> {
     id: Identifier;
     reference: string;
     options?: UseQueryOptions<RecordType[], Error>;
 }
 
-export interface UseReferenceResult<RecordType extends RaRecord = RaRecord> {
+export interface UseReferenceResult<RecordType extends RaRecord = any> {
     isLoading: boolean;
     isFetching: boolean;
     referenceRecord?: RecordType;
