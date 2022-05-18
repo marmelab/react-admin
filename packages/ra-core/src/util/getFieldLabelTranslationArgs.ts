@@ -1,8 +1,10 @@
 import inflection from 'inflection';
 
+import { useResourceContext } from '../core/useResourceContext';
+import { useTitlePrefix } from './useTitlePrefix';
+
 interface Args {
     label?: string;
-    parentSource?: string;
     resource?: string;
     source?: string;
 }
@@ -19,21 +21,38 @@ type TranslationArguments = [string, any?];
  *  </span>
  */
 export default (options?: Args): TranslationArguments => {
-    if (!options) {
-        return [''];
+    if (!options) return [''];
+
+    const { label, resource, source } = options;
+
+    const prefix = useTitlePrefix();
+    const resourceFromContext = useResourceContext();
+
+    if (typeof label !== 'undefined') return [label, { _: label }];
+
+    if (typeof source !== 'undefined') {
+        // source may be composed, e.g. 'author.name', or 'pictures.0.url' in ArrayInput
+        const sourceSuffix = source.split('.').pop();
+        const defaultLabel = inflection.transform(sourceSuffix, [
+            'underscore',
+            'humanize',
+        ]);
+        if (!resource) {
+            if (prefix) {
+                return [`${prefix}.${sourceSuffix}`, { _: defaultLabel }];
+            } else {
+                return [
+                    `resources.${resourceFromContext}.fields.${sourceSuffix}`,
+                    { _: defaultLabel },
+                ];
+            }
+        } else {
+            return [
+                `resources.${resource}.fields.${sourceSuffix}`,
+                { _: defaultLabel },
+            ];
+        }
     }
 
-    const { label, parentSource, resource, source } = options;
-    return typeof label !== 'undefined'
-        ? [label, { _: label }]
-        : typeof source !== 'undefined'
-        ? [
-              `resources.${resource}.fields.${
-                  parentSource ? `${parentSource}.${source}` : source
-              }`,
-              {
-                  _: inflection.transform(source, ['underscore', 'humanize']),
-              },
-          ]
-        : [''];
+    return [''];
 };

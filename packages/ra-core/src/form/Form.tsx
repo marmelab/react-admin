@@ -5,6 +5,8 @@ import { FormProvider, FieldValues, UseFormProps } from 'react-hook-form';
 import { FormGroupsProvider } from './FormGroupsProvider';
 import { RaRecord } from '../types';
 import { useRecordContext, OptionalRecordContextProvider } from '../controller';
+import { useResourceContext } from '../core';
+import { TitlePrefixContextProvider } from '../util';
 import { ValidateForm } from './getSimpleValidationResolver';
 import { useAugmentedForm } from './useAugmentedForm';
 
@@ -38,22 +40,25 @@ import { useAugmentedForm } from './useAugmentedForm';
 export const Form = (props: FormProps) => {
     const { children, id, className, noValidate = false } = props;
     const record = useRecordContext(props);
+    const resource = useResourceContext(props);
     const { form, formHandleSubmit } = useAugmentedForm(props);
 
     return (
         <OptionalRecordContextProvider value={record}>
-            <FormProvider {...form}>
-                <FormGroupsProvider>
-                    <form
-                        onSubmit={formHandleSubmit}
-                        noValidate={noValidate}
-                        id={id}
-                        className={className}
-                    >
-                        {children}
-                    </form>
-                </FormGroupsProvider>
-            </FormProvider>
+            <TitlePrefixContextProvider prefix={`resources.${resource}.fields`}>
+                <FormProvider {...form}>
+                    <FormGroupsProvider>
+                        <form
+                            onSubmit={formHandleSubmit}
+                            noValidate={noValidate}
+                            id={id}
+                            className={className}
+                        >
+                            {children}
+                        </form>
+                    </FormGroupsProvider>
+                </FormProvider>
+            </TitlePrefixContextProvider>
         </OptionalRecordContextProvider>
     );
 };
@@ -71,6 +76,7 @@ export interface FormOwnProps {
     formRootPathname?: string;
     id?: string;
     record?: Partial<RaRecord>;
+    resource?: string;
     onSubmit?: (data: FieldValues) => any | Promise<any>;
     warnWhenUnsavedChanges?: boolean;
 }

@@ -116,22 +116,6 @@ export const SimpleFormIteratorItem = React.forwardRef(
                                         ? `${member}.${source}`
                                         : member,
                                     index: source ? undefined : index2,
-                                    label:
-                                        input.props.label === '' ||
-                                        input.props.label === false
-                                            ? input.props.label
-                                            : // We can't rely on the default label inference done in the input by FieldTitle because
-                                              // at the time it renders, its source will be something like `arraySource.0.inputSource`
-                                              // and inference will fail
-                                              translate(
-                                                  ...getFieldLabelTranslationArgs(
-                                                      {
-                                                          parentSource,
-                                                          resource,
-                                                          source,
-                                                      }
-                                                  )
-                                              ),
                                     disabled,
                                     ...inputProps,
                                 });

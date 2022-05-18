@@ -3,7 +3,6 @@ import { ReactElement, memo } from 'react';
 
 import { useTranslate } from '../i18n';
 import getFieldLabelTranslationArgs from './getFieldLabelTranslationArgs';
-import { useResourceContext } from '../core/useResourceContext';
 
 export interface FieldTitleProps {
     isRequired?: boolean;
@@ -13,8 +12,7 @@ export interface FieldTitleProps {
 }
 
 export const FieldTitle = (props: FieldTitleProps) => {
-    const { source, label, isRequired } = props;
-    const resource = useResourceContext(props);
+    const { source, label, resource, isRequired } = props;
     const translate = useTranslate();
 
     if (label === false || label === '') {

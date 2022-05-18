@@ -9,6 +9,7 @@ import {
     useApplyInputDefaultValues,
     useGetValidationErrorMessage,
     useResourceContext,
+    TitlePrefixContextProvider,
 } from 'ra-core';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import {
@@ -179,20 +180,21 @@ export const ArrayInput = (props: ArrayInputProps) => {
                 <FieldTitle
                     label={label}
                     source={source}
-                    resource={resource}
                     isRequired={isRequired(validate)}
                 />
             </InputLabel>
             <ArrayInputContext.Provider value={fieldProps}>
-                {cloneElement(Children.only(children), {
-                    ...fieldProps,
-                    record,
-                    resource,
-                    source,
-                    variant,
-                    margin,
-                    disabled,
-                })}
+                <TitlePrefixContextProvider prefix={source}>
+                    {cloneElement(Children.only(children), {
+                        ...fieldProps,
+                        record,
+                        resource,
+                        source,
+                        variant,
+                        margin,
+                        disabled,
+                    })}
+                </TitlePrefixContextProvider>
             </ArrayInputContext.Provider>
             {!!((isDirty || isSubmitted) && invalid) || helperText ? (
                 <FormHelperText error={(isDirty || isSubmitted) && invalid}>

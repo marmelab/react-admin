@@ -24,6 +24,10 @@ export default {
                 nb_view: 'Nb de vues',
                 password: 'Mot de passe (si protégé)',
                 pictures: 'Photos associées',
+                'pictures.url': 'URL',
+                'pictures.authors': 'Auteurs',
+                // FIXME: cannot translate labels for two nested ArrayInputs
+                'pictures.authors.name': 'Nom',
                 published_at: 'Publié le',
                 teaser: 'Description',
                 tags: 'Catégories',
