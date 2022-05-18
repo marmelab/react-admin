@@ -30,29 +30,38 @@ export default (options?: Args): TranslationArguments => {
 
     if (typeof label !== 'undefined') return [label, { _: label }];
 
-    if (typeof source !== 'undefined') {
-        // source may be composed, e.g. 'author.name', or 'pictures.0.url' in ArrayInput
-        const sourceSuffix = source.split('.').pop();
-        const defaultLabel = inflection.transform(sourceSuffix, [
-            'underscore',
-            'humanize',
-        ]);
-        if (!resource) {
-            if (prefix) {
-                return [`${prefix}.${sourceSuffix}`, { _: defaultLabel }];
-            } else {
-                return [
-                    `resources.${resourceFromContext}.fields.${sourceSuffix}`,
-                    { _: defaultLabel },
-                ];
-            }
-        } else {
-            return [
-                `resources.${resource}.fields.${sourceSuffix}`,
-                { _: defaultLabel },
-            ];
-        }
+    if (typeof source === 'undefined') return [''];
+
+    const { sourceWithoutDigits, sourceSuffix } = getSourceParts(source);
+
+    const defaultLabel = inflection.transform(sourceSuffix, [
+        'underscore',
+        'humanize',
+    ]);
+
+    if (resource) {
+        return [
+            `resources.${resource}.fields.${sourceWithoutDigits}`,
+            { _: defaultLabel },
+        ];
     }
 
-    return [''];
+    if (prefix) {
+        return [`${prefix}.${sourceWithoutDigits}`, { _: defaultLabel }];
+    }
+
+    return [
+        `resources.${resourceFromContext}.fields.${sourceWithoutDigits}`,
+        { _: defaultLabel },
+    ];
+};
+
+// source is like 'pictures.0.url'
+const getSourceParts = (source: string) => {
+    // remove digits, e.g. 'book.authors.2.categories.3.identifier.name' => 'book.authors.categories.identifier.name'
+    const sourceWithoutDigits = source.replace(/\.\d+\./g, '.');
+    // get final part, e.g. 'book.authors.2.categories.3.identifier.name' => 'identifier.name'
+    const matches = source.match(/^.*\.\d+\.(.*)$/);
+    const sourceSuffix = matches ? matches[1] : source;
+    return { sourceWithoutDigits, sourceSuffix };
 };

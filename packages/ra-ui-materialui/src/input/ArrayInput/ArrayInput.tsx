@@ -9,7 +9,6 @@ import {
     useApplyInputDefaultValues,
     useGetValidationErrorMessage,
     useResourceContext,
-    TitlePrefixContextProvider,
 } from 'ra-core';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import {
@@ -184,17 +183,15 @@ export const ArrayInput = (props: ArrayInputProps) => {
                 />
             </InputLabel>
             <ArrayInputContext.Provider value={fieldProps}>
-                <TitlePrefixContextProvider prefix={source}>
-                    {cloneElement(Children.only(children), {
-                        ...fieldProps,
-                        record,
-                        resource,
-                        source,
-                        variant,
-                        margin,
-                        disabled,
-                    })}
-                </TitlePrefixContextProvider>
+                {cloneElement(Children.only(children), {
+                    ...fieldProps,
+                    record,
+                    resource,
+                    source,
+                    variant,
+                    margin,
+                    disabled,
+                })}
             </ArrayInputContext.Provider>
             {!!((isDirty || isSubmitted) && invalid) || helperText ? (
                 <FormHelperText error={(isDirty || isSubmitted) && invalid}>
