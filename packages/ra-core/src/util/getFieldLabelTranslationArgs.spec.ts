@@ -51,14 +51,4 @@ describe('getFieldLabelTranslationArgs', () => {
             })
         ).toEqual([`resources.posts.fields.title`, { _: 'Title' }]);
     });
-
-    it('should accept use the parentSource to build the translation key if provided', () => {
-        expect(
-            getFieldLabelTranslationArgs({
-                resource: 'posts',
-                source: 'url',
-                parentSource: 'backlinks',
-            })
-        ).toEqual([`resources.posts.fields.backlinks.url`, { _: 'Url' }]);
-    });
 });
