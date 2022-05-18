@@ -98,7 +98,7 @@ describe('Admin', () => {
         screen.getByText('Reference', { selector: 'th *' });
         screen.getByText('Date', { selector: 'th *' });
         screen.getByText('Customer', { selector: 'th *' });
-        screen.getByText('Basket.product', { selector: 'th *' });
+        screen.getByText('Basket product', { selector: 'th *' });
         screen.getByText('Total ex taxes', { selector: 'th *' });
         screen.getByText('Delivery fees', { selector: 'th *' });
         screen.getByText('Tax rate', { selector: 'th *' });
