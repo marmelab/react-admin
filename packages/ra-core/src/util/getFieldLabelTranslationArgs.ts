@@ -1,7 +1,7 @@
 import inflection from 'inflection';
 
 import { useResourceContext } from '../core/useResourceContext';
-import { useTitlePrefix } from './useTitlePrefix';
+import { useLabelPrefix } from './useLabelPrefix';
 
 interface Args {
     label?: string;
@@ -25,7 +25,7 @@ export default (options?: Args): TranslationArguments => {
 
     const { label, resource, source } = options;
 
-    const prefix = useTitlePrefix();
+    const prefix = useLabelPrefix();
     const resourceFromContext = useResourceContext();
 
     if (typeof label !== 'undefined') return [label, { _: label }];

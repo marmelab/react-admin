@@ -6,7 +6,7 @@ import { FormGroupsProvider } from './FormGroupsProvider';
 import { RaRecord } from '../types';
 import { useRecordContext, OptionalRecordContextProvider } from '../controller';
 import { useResourceContext } from '../core';
-import { TitlePrefixContextProvider } from '../util';
+import { LabelPrefixContextProvider } from '../util';
 import { ValidateForm } from './getSimpleValidationResolver';
 import { useAugmentedForm } from './useAugmentedForm';
 
@@ -45,7 +45,7 @@ export const Form = (props: FormProps) => {
 
     return (
         <OptionalRecordContextProvider value={record}>
-            <TitlePrefixContextProvider prefix={`resources.${resource}.fields`}>
+            <LabelPrefixContextProvider prefix={`resources.${resource}.fields`}>
                 <FormProvider {...form}>
                     <FormGroupsProvider>
                         <form
@@ -58,7 +58,7 @@ export const Form = (props: FormProps) => {
                         </form>
                     </FormGroupsProvider>
                 </FormProvider>
-            </TitlePrefixContextProvider>
+            </LabelPrefixContextProvider>
         </OptionalRecordContextProvider>
     );
 };
