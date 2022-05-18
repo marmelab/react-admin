@@ -32,10 +32,10 @@ export default (options?: Args): TranslationArguments => {
 
     const { sourceWithoutDigits, sourceSuffix } = getSourceParts(source);
 
-    const defaultLabel = inflection.transform(sourceSuffix, [
-        'underscore',
-        'humanize',
-    ]);
+    const defaultLabel = inflection.transform(
+        sourceSuffix.replace(/\./g, ' '),
+        ['underscore', 'humanize']
+    );
 
     if (resource) {
         return [
