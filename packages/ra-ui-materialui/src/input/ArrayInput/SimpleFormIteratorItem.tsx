@@ -34,6 +34,7 @@ export const SimpleFormIteratorItem = React.forwardRef(
             record,
             removeButton,
             reOrderButtons,
+            resource,
             source,
         } = props;
 
@@ -109,6 +110,7 @@ export const SimpleFormIteratorItem = React.forwardRef(
                                         ? `${member}.${source}`
                                         : member,
                                     index: source ? undefined : index2,
+                                    resource,
                                     disabled,
                                     ...inputProps,
                                 });
