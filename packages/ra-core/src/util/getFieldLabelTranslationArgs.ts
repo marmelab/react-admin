@@ -84,10 +84,10 @@ const getSourceParts = (source: string) => {
 };
 
 // 48 and 57 are the char codes for "0" and "9", respectively
-function onlyDigits(s) {
+const onlyDigits = s => {
     for (let i = s.length - 1; i >= 0; i--) {
         const d = s.charCodeAt(i);
         if (d < 48 || d > 57) return false;
     }
     return true;
-}
+};
