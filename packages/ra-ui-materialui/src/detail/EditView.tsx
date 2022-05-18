@@ -89,6 +89,7 @@ EditView.propTypes = {
 };
 
 const sanitizeRestProps = ({
+    addMiddleware = null,
     defaultTitle = null,
     hasCreate = null,
     hasEdit = null,
@@ -105,6 +106,7 @@ const sanitizeRestProps = ({
     mutationOptions = null,
     permissions = null,
     refetch = null,
+    removeMiddleware = null,
     resource = null,
     save = null,
     saving = null,

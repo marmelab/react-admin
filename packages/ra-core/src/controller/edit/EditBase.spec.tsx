@@ -115,7 +115,11 @@ describe('EditBase', () => {
                     id: 12,
                     test: 'test',
                 },
-                { data: { test: 'test' }, resource: 'posts' },
+                {
+                    id: 12,
+                    data: { test: 'test' },
+                    resource: 'posts',
+                },
                 { snapshot: [] }
             );
         });
@@ -174,7 +178,11 @@ describe('EditBase', () => {
                     id: 12,
                     test: 'test',
                 },
-                { data: { test: 'test' }, resource: 'posts' },
+                {
+                    id: 12,
+                    data: { test: 'test' },
+                    resource: 'posts',
+                },
                 { snapshot: [] }
             );
         });
@@ -228,7 +236,11 @@ describe('EditBase', () => {
         await waitFor(() => {
             expect(onError).toHaveBeenCalledWith(
                 { message: 'test' },
-                { data: { test: 'test' }, resource: 'posts' },
+                {
+                    id: 12,
+                    data: { test: 'test' },
+                    resource: 'posts',
+                },
                 { snapshot: [] }
             );
         });
@@ -284,7 +296,11 @@ describe('EditBase', () => {
         await waitFor(() => {
             expect(onErrorOverride).toHaveBeenCalledWith(
                 { message: 'test' },
-                { data: { test: 'test' }, resource: 'posts' },
+                {
+                    id: 12,
+                    data: { test: 'test' },
+                    resource: 'posts',
+                },
                 { snapshot: [] }
             );
         });

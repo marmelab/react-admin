@@ -309,7 +309,11 @@ describe('<Edit />', () => {
                         id: 123,
                         title: 'ipsum',
                     },
-                    { data: { id: 123, title: 'ipsum' }, resource: 'foo' },
+                    {
+                        id: '123',
+                        data: { id: 123, title: 'ipsum' },
+                        resource: 'foo',
+                    },
                     { snapshot: [] }
                 );
             });
@@ -367,7 +371,11 @@ describe('<Edit />', () => {
                         id: 123,
                         title: 'ipsum',
                     },
-                    { data: { id: 123, title: 'ipsum' }, resource: 'foo' },
+                    {
+                        id: '123',
+                        data: { id: 123, title: 'ipsum' },
+                        resource: 'foo',
+                    },
                     { snapshot: [] }
                 );
                 expect(onSuccess).not.toHaveBeenCalled();
@@ -418,7 +426,11 @@ describe('<Edit />', () => {
             await waitFor(() => {
                 expect(onError).toHaveBeenCalledWith(
                     { message: 'not good' },
-                    { data: { id: 123, title: 'ipsum' }, resource: 'foo' },
+                    {
+                        id: '123',
+                        data: { id: 123, title: 'ipsum' },
+                        resource: 'foo',
+                    },
                     { snapshot: [] }
                 );
             });
@@ -476,7 +488,11 @@ describe('<Edit />', () => {
                     {
                         message: 'not good',
                     },
-                    { data: { id: 123, title: 'ipsum' }, resource: 'foo' },
+                    {
+                        id: '123',
+                        data: { id: 123, title: 'ipsum' },
+                        resource: 'foo',
+                    },
                     { snapshot: [] }
                 );
                 expect(onError).not.toHaveBeenCalled();
