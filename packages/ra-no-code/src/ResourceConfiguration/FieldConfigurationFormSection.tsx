@@ -1,9 +1,5 @@
 import * as React from 'react';
-import {
-    getFieldLabelTranslationArgs,
-    TextInput,
-    useTranslate,
-} from 'react-admin';
+import { TextInput, useTranslateLabel } from 'react-admin';
 import { CardContent } from '@mui/material';
 import { FieldTypeInput } from './FieldConfiguration/FieldTypeInput';
 import { FieldViewsInput } from './FieldConfiguration/FieldViewsInput';
@@ -11,12 +7,12 @@ import { ConfigurationInputsFromFieldDefinition } from './ConfigurationInputsFro
 
 export const FieldConfigurationFormSection = props => {
     const { sourcePrefix, field, resource } = props;
-    const translate = useTranslate();
-    const labelArgs = getFieldLabelTranslationArgs({
+    const translateLabel = useTranslateLabel();
+    const labelArgs = {
         source: field.props.source,
         resource,
         label: field.props.label,
-    });
+    };
 
     return (
         <CardContent>
@@ -30,7 +26,7 @@ export const FieldConfigurationFormSection = props => {
                 source={`${sourcePrefix}.props.label`}
                 label="Label"
                 fullWidth
-                initialValue={translate(...labelArgs)}
+                defaultValue={translateLabel(labelArgs)}
             />
             <FieldTypeInput
                 source={`${sourcePrefix}.type`}

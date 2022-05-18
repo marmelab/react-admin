@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { Tab } from '@mui/material';
-import { getFieldLabelTranslationArgs, useTranslate } from 'react-admin';
+import { useTranslateLabel } from 'react-admin';
 
 const PREFIX = 'FieldConfigurationTab';
 
@@ -27,18 +27,18 @@ const StyledTab = styled(Tab)(({ theme }) => ({
 }));
 
 export const FieldConfigurationTab = ({ field, resource, ...props }) => {
-    const translate = useTranslate();
-    const labelArgs = getFieldLabelTranslationArgs({
+    const translateLabel = useTranslateLabel();
+    const labelArgs = {
         source: field.props.source,
         resource,
         label: field.props.label,
-    });
+    };
 
     return (
         <StyledTab
             {...props}
             key={field.props.source}
-            label={translate(...labelArgs)}
+            label={translateLabel(labelArgs)}
             id={`nav-tab-${field.props.source}`}
             aria-controls={`nav-tabpanel-${field.props.source}`}
             classes={classes}

@@ -11,7 +11,7 @@ import {
 } from 'react';
 import { Typography } from '@mui/material';
 import clsx from 'clsx';
-import { getFieldLabelTranslationArgs, RaRecord, useTranslate } from 'ra-core';
+import { RaRecord, useTranslate } from 'ra-core';
 
 import { SimpleFormIteratorClasses } from './useSimpleFormIteratorStyles';
 import { useSimpleFormIterator } from './useSimpleFormIterator';
@@ -34,17 +34,10 @@ export const SimpleFormIteratorItem = React.forwardRef(
             record,
             removeButton,
             reOrderButtons,
-            resource,
             source,
         } = props;
 
-        const translate = useTranslate();
-        const {
-            total,
-            reOrder,
-            remove,
-            source: parentSource,
-        } = useSimpleFormIterator();
+        const { total, reOrder, remove } = useSimpleFormIterator();
         // Returns a boolean to indicate whether to disable the remove button for certain fields.
         // If disableRemove is a function, then call the function with the current record to
         // determining if the button should be disabled. Otherwise, use a boolean property that

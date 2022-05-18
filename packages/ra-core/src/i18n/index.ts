@@ -13,4 +13,5 @@ export * from './useSetLocale';
 export * from './useTranslatable';
 export * from './useTranslatableContext';
 export * from './useTranslate';
+export * from './useTranslateLabel';
 export * from './useI18nProvider';

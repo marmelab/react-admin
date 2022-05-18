@@ -1,11 +1,10 @@
 import inflection from 'inflection';
 
-import { useResourceContext } from '../core/useResourceContext';
-import { useLabelPrefix } from './useLabelPrefix';
-
 interface Args {
     label?: string;
+    prefix?: string;
     resource?: string;
+    resourceFromContext?: string;
     source?: string;
 }
 
@@ -19,14 +18,13 @@ type TranslationArguments = [string, any?];
  *  <span>
  *      {translate(...getFieldLabelTranslationArgs({ label, resource, source }))}
  *  </span>
+ *
+ * @see useTranslateLabel for a ready-to-use hook
  */
 export default (options?: Args): TranslationArguments => {
     if (!options) return [''];
 
-    const { label, resource, source } = options;
-
-    const prefix = useLabelPrefix();
-    const resourceFromContext = useResourceContext();
+    const { label, prefix, resource, resourceFromContext, source } = options;
 
     if (typeof label !== 'undefined') return [label, { _: label }];
 
