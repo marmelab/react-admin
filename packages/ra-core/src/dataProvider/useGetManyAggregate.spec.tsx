@@ -141,14 +141,14 @@ describe('useGetManyAggregate', () => {
     });
 
     it('should use data from query cache on mount', async () => {
-        const FecthGetMany = () => {
-            useGetManyAggregate('posts', { ids: ['1'] });
+        const FetchGetMany = () => {
+            useGetManyAggregate('posts', { ids: [1] });
             return <span>dummy</span>;
         };
         const hookValue = jest.fn();
         const { rerender } = render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <FecthGetMany />
+                <FetchGetMany />
             </CoreAdminContext>
         );
         await waitFor(() => {
@@ -163,14 +163,16 @@ describe('useGetManyAggregate', () => {
                 />
             </CoreAdminContext>
         );
-        expect(hookValue).toHaveBeenCalledWith(
-            expect.objectContaining({
-                data: [{ id: 1, title: 'foo' }],
-                isFetching: true,
-                isLoading: false,
-                error: null,
-            })
-        );
+        await waitFor(() => {
+            expect(hookValue).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    data: [{ id: 1, title: 'foo' }],
+                    isFetching: true,
+                    isLoading: false,
+                    error: null,
+                })
+            );
+        });
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(2);
         });
@@ -301,5 +303,71 @@ describe('useGetManyAggregate', () => {
                 ids: [1, 2, 3, 4],
             });
         });
+    });
+
+    it('should aggregate multiple calls for the same resource into one even if one of the calls requests all the aggregated ids', async () => {
+        const firstCallback = jest.fn();
+        const secondCallback = jest.fn();
+        const thirdCallback = jest.fn();
+        const dataProvider = testDataProvider({
+            getMany: jest.fn().mockResolvedValue({
+                data: [
+                    { id: 1, title: 'one' },
+                    { id: 2, title: 'two' },
+                    { id: 3, title: 'three' },
+                ],
+            }),
+        });
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseGetManyAggregate
+                    resource="posts"
+                    ids={[1]}
+                    callback={firstCallback}
+                />
+                <UseGetManyAggregate
+                    resource="posts"
+                    ids={[1, 2]}
+                    callback={secondCallback}
+                />
+                <UseGetManyAggregate
+                    resource="posts"
+                    ids={[1, 2, 3]}
+                    callback={thirdCallback}
+                />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
+            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
+                ids: [1, 2, 3],
+            });
+        });
+
+        await waitFor(() => {
+            expect(firstCallback).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    data: [{ id: 1, title: 'one' }],
+                })
+            );
+        });
+
+        expect(secondCallback).toHaveBeenCalledWith(
+            expect.objectContaining({
+                data: [
+                    { id: 1, title: 'one' },
+                    { id: 2, title: 'two' },
+                ],
+            })
+        );
+        expect(thirdCallback).toHaveBeenCalledWith(
+            expect.objectContaining({
+                data: [
+                    { id: 1, title: 'one' },
+                    { id: 2, title: 'two' },
+                    { id: 3, title: 'three' },
+                ],
+            })
+        );
     });
 });
