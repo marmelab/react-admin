@@ -238,7 +238,11 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
                         // We must then resolve all the pending calls with the data they requested
                         callsForResource.forEach(({ ids, resolve }) => {
                             resolve(
-                                data.filter(record => ids.includes(record.id))
+                                data.filter(record =>
+                                    ids
+                                        .map(id => String(id))
+                                        .includes(String(record.id))
+                                )
                             );
                         });
                     },
@@ -276,7 +280,13 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
             )
             .then(data => {
                 callsForResource.forEach(({ ids, resolve }) => {
-                    resolve(data.filter(record => ids.includes(record.id)));
+                    resolve(
+                        data.filter(record =>
+                            ids
+                                .map(id => String(id))
+                                .includes(String(record.id))
+                        )
+                    );
                 });
             })
             .catch(error =>

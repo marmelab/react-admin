@@ -142,7 +142,7 @@ describe('useGetManyAggregate', () => {
 
     it('should use data from query cache on mount', async () => {
         const FetchGetMany = () => {
-            useGetManyAggregate('posts', { ids: [1] });
+            useGetManyAggregate('posts', { ids: ['1'] });
             return <span>dummy</span>;
         };
         const hookValue = jest.fn();
@@ -163,16 +163,14 @@ describe('useGetManyAggregate', () => {
                 />
             </CoreAdminContext>
         );
-        await waitFor(() => {
-            expect(hookValue).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    data: [{ id: 1, title: 'foo' }],
-                    isFetching: true,
-                    isLoading: false,
-                    error: null,
-                })
-            );
-        });
+        expect(hookValue).toHaveBeenCalledWith(
+            expect.objectContaining({
+                data: [{ id: 1, title: 'foo' }],
+                isFetching: true,
+                isLoading: false,
+                error: null,
+            })
+        );
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(2);
         });
