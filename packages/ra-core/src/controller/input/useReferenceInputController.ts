@@ -111,6 +111,9 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
     } = useReference<RecordType>({
         id: currentValue,
         reference,
+        options: {
+            enabled: currentValue != null && currentValue !== '',
+        },
     });
     // add current value to possible sources
     let finalData: RecordType[], finalTotal: number;
