@@ -75,6 +75,17 @@ describe('getFieldLabelTranslationArgs', () => {
         ]);
     });
 
+    it.skip('should ignore the source part corresponding to embedded forms', () => {
+        expect(
+            getFieldLabelTranslationArgs({
+                resource: 'posts',
+                resourceFromContext: 'users',
+                prefix: 'resources.users.fields',
+                source: 'referenceOne.users@@name',
+            })
+        ).toEqual(['resources.users.fields.name', { _: 'Name' }]);
+    });
+
     it('should prefer the resource over the prefix', () => {
         expect(
             getFieldLabelTranslationArgs({
