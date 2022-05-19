@@ -1,5 +1,12 @@
 # Changelog
 
+## v4.1.0
+
+* Add `LabelPrefix` context to better guess correct input labels ([#7710](https://github.com/marmelab/react-admin/pull/7710)) ([fzaninotto](https://github.com/fzaninotto))
+* Add middlewares support to create and edit controllers ([#7701](https://github.com/marmelab/react-admin/pull/7701)) ([djhi](https://github.com/djhi))
+* Add imports to guesser output ([#7699](https://github.com/marmelab/react-admin/pull/7699)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to change icon for `<DashboardMenuItem>` ([#7577](https://github.com/marmelab/react-admin/pull/7577)) ([kristelvdakker](https://github.com/kristelvdakker))
+
 ## v4.0.5
 
 * Fix `<ReferenceField>` sometimes gets stuck on loading state ([#7708](https://github.com/marmelab/react-admin/pull/7708)) ([djhi](https://github.com/djhi))
