@@ -365,6 +365,32 @@ export default App;
 
 **Tip**: This example uses the function version of `setState` (`setDataProvider(() => dataProvider))`) instead of the more classic version (`setDataProvider(dataProvider)`). This is because some legacy Data Providers are actually functions, and `setState` would call them immediately on mount.  
 
+## Default Query Options
+
+If you often need to pass the same query options to the data provider, you can use [the `<Admin queryClient>` prop](./Admin.md#queryclient) to set them globally.
+
+```jsx
+import { Admin } from 'react-admin';
+import { QueryClient } from 'react-query';
+
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: false,
+            staleTime: Infinity,
+        },
+    }
+});
+
+const App = () => (
+    <Admin queryClient={queryClient} dataProvider={...}>
+        ...
+    </Admin>
+);
+```
+
+To know which query options you can override, check the [Querying the API documentation](./Actions.md#query-options) and [the `<Admin queryClient>` prop documentation](./Admin.md#queryclient).
+
 ## Combining Data Providers
 
 If you need to build an app relying on more than one API, you may face a problem: the `<Admin>` component accepts only one `dataProvider` prop. You can combine multiple data providers into one using the `combineDataProviders` helper. It expects a function as parameter accepting a resource name and returning a data provider for that resource.

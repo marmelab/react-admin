@@ -12,6 +12,8 @@ React-admin relies on [react-hook-form](https://react-hook-form.com/) for the va
 - using the `resolver` prop at the Form level (validation by schema)
 - using the return value from the server (server-side validation)
 
+You can’t use both form level validation and input level validation - this is a `react-hook-form` limitation.
+
 ## Global Validation
 
 The value of the form `validate` prop must be a function taking the record as input, and returning an object with error messages indexed by field. For instance:
@@ -212,8 +214,6 @@ export const ProductEdit = () => (
 {% endraw %}
 
 **Tip**: The props of your Input components are passed to a `react-hook-form` [useController](https://react-hook-form.com/api/usecontroller) hook.
-
-**Tip**: You can use *both* Form validation and input validation.
 
 **Tip**: The custom validator function can return a promise, e.g. to use server-side validation. See next section for details.
 

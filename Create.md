@@ -425,32 +425,50 @@ And if you want to prefill the form with constant values, use the `defaultValues
 
 ## Save And Add Another
 
-Whe users need to create several records in a row, a good UX is to stay on the Create form after a successfull submission, and to empty that form to allow a new entry. 
+When users need to create several records in a row, a good UX is to stay on the Create form after a successfull submission, and to empty that form to allow a new entry. 
 
-Setting the `<Create redirect={false}>` prop only solves part of the problem: the form still needs to be emptied. That's why the right implementation for this use case is to use the `mutationOptions` prop:
+Setting the `<Create redirect={false}>` prop only solves part of the problem: the form still needs to be emptied. That's why the right implementation for this use case is to add a custom `<SaveButton>` in the form toolbar, making useof  the `mutationOptions` prop:
 
 {% raw %}
 ```jsx
 import * as React from 'react';
-import { useNotify, Create, SimpleForm } from 'react-admin';
+import {
+    Create,
+    SaveButton,
+    SimpleForm,
+    Toolbar,
+    useNotify,
+} from 'react-admin';
 import { useFormContext } from 'react-hook-form';
 
-const PostCreate = () => {
-    const { reset } = useFormContext();
+const PostCreateToolbar = () => {
     const notify = useNotify();
-
-    const  onSuccess = () => {
-        reset();
-        window.scrollTo(0, 0);
-        notify('ra.notification.created', {
-            type: 'info',
-            messageArgs: { smart_count: 1 },
-        });
-    };
+    const { reset } = useFormContext();
 
     return (
-        <Create mutationOptions={{ onSuccess }}>
-            <SimpleForm>
+        <Toolbar>
+            <SaveButton
+                label="post.action.save_and_add"
+                variant="text"
+                mutationOptions={{
+                    onSuccess: () => {
+                        reset();
+                        window.scrollTo(0, 0);
+                        notify('ra.notification.created', {
+                            type: 'info',
+                            messageArgs: { smart_count: 1 },
+                        });
+                    },
+                }}
+            />
+        </Toolbar>
+    );
+};
+
+const PostCreate = () => {
+    return (
+        <Create>
+            <SimpleForm toolbar={<PostCreateToolbar />}>
                 ...
             </SimpleForm>
         </Create>
