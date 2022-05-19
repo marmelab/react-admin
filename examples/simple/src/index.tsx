@@ -31,7 +31,7 @@ render(
                 />
             </CustomRoutes>
             <Resource name="posts" {...posts} />
-            <Resource name="comments" {...comments} />
+            <Resource name="comments" list={comments.create} />
             <Resource name="tags" {...tags} />
             {permissions => (
                 <>
