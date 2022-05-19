@@ -447,7 +447,7 @@ If you provided a React element for the optionText prop, you must also provide t
                             <FieldTitle
                                 label={label}
                                 source={source}
-                                resource={resource}
+                                resource={resourceProp}
                                 isRequired={
                                     typeof isRequiredOverride !== 'undefined'
                                         ? isRequiredOverride

@@ -153,7 +153,7 @@ const PostEdit = () => {
                                     source="user_id"
                                     reference="users"
                                 >
-                                    <AutocompleteInput label="User" />
+                                    <AutocompleteInput />
                                 </ReferenceInput>
                                 <FormDataConsumer>
                                     {({
@@ -181,7 +181,6 @@ const PostEdit = () => {
                                                     },
                                                 ]}
                                                 {...rest}
-                                                label="Role"
                                             />
                                         ) : null
                                     }

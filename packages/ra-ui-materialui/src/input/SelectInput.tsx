@@ -238,7 +238,7 @@ export const SelectInput = (props: SelectInputProps) => {
             <Labeled
                 label={label}
                 source={source}
-                resource={resource}
+                resource={resourceProp}
                 className={clsx('ra-input', `ra-input-${source}`, className)}
                 isRequired={isRequired}
             >
@@ -261,7 +261,7 @@ export const SelectInput = (props: SelectInputProps) => {
                         <FieldTitle
                             label={label}
                             source={source}
-                            resource={resource}
+                            resource={resourceProp}
                             isRequired={isRequired}
                         />
                     )
