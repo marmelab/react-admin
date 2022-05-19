@@ -8,7 +8,6 @@ import {
     RaRecord,
     useApplyInputDefaultValues,
     useGetValidationErrorMessage,
-    useResourceContext,
 } from 'ra-core';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import {
