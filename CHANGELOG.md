@@ -1,5 +1,17 @@
 # Changelog
 
+## v4.0.5
+
+* Fix `<ReferenceField>` sometimes gets stuck on loading state ([#7708](https://github.com/marmelab/react-admin/pull/7708)) ([djhi](https://github.com/djhi))
+* Fix `<ReferenceInput>` sometimes gets stuck on loading state ([#7707](https://github.com/marmelab/react-admin/pull/7707)) ([djhi](https://github.com/djhi))
+* Fix `<ReferenceArrayInput>` with `<AutocompleteArrayInput>` throws error if the array is empty ([#7694](https://github.com/marmelab/react-admin/pull/7694)) ([slax57](https://github.com/slax57))
+* Fix `<FormTab>` doesn't highlight selected tab label ([#7693](https://github.com/marmelab/react-admin/pull/7693)) ([slax57](https://github.com/slax57))
+* Fix `<Filter>` shows filter button even though there is no filter to add ([#7691](https://github.com/marmelab/react-admin/pull/7691)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<TextInput>` changes 'on' into 'false' ([#7682](https://github.com/marmelab/react-admin/pull/7682)) ([Andonyaa](https://github.com/Andonyaa))
+* [Doc] Fix "Save And Add Another" example in forms section ([#7709](https://github.com/marmelab/react-admin/pull/7709)) ([slax57](https://github.com/slax57))
+* [Doc] Fix missing doc for `<Admin queryClient>` prop ([#7704](https://github.com/marmelab/react-admin/pull/7704)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix Validation chapter misses section explaining that global and input level validation can not be combined ([#7703](https://github.com/marmelab/react-admin/pull/7703)) ([slax57](https://github.com/slax57))
+
 ## v4.0.4
 
 * Fix cannot use theme to override input `variant` ([#7636](https://github.com/marmelab/react-admin/pull/7636)) ([fzaninotto](https://github.com/fzaninotto))
