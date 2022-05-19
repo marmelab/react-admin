@@ -113,9 +113,11 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
 
     const formHandleSubmit = useCallback(
         (event: BaseSyntheticEvent) => {
-            // Prevent outer forms to receive the event
-            event.stopPropagation();
-            form.handleSubmit(handleSubmit)(event);
+            if (!event.defaultPrevented) {
+                // Prevent outer forms to receive the event
+                event.stopPropagation();
+                form.handleSubmit(handleSubmit)(event);
+            }
             return;
         },
         [form, handleSubmit]
