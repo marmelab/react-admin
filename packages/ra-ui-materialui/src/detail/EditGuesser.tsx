@@ -2,8 +2,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import inflection from 'inflection';
 import {
-    useEditController,
-    EditContextProvider,
+    EditBase,
     InferredElement,
     useResourceContext,
     useEditContext,
@@ -14,12 +13,45 @@ import { EditProps } from '../types';
 import { EditView } from './EditView';
 import { editFieldTypes } from './editFieldTypes';
 
+export const EditGuesser = (props: EditProps) => {
+    const {
+        resource,
+        id,
+        mutationMode,
+        mutationOptions,
+        queryOptions,
+        redirect,
+        transform,
+        disableAuthentication,
+        ...rest
+    } = props;
+    return (
+        <EditBase
+            resource={resource}
+            id={id}
+            mutationMode={mutationMode}
+            mutationOptions={mutationOptions}
+            queryOptions={queryOptions}
+            redirect={redirect}
+            transform={transform}
+            disableAuthentication={disableAuthentication}
+        >
+            <EditViewGuesser {...rest} />
+        </EditBase>
+    );
+};
+
 const EditViewGuesser = props => {
     const resource = useResourceContext(props);
     const { record } = useEditContext();
-    const [inferredChild, setInferredChild] = useState(null);
+    const [child, setChild] = useState(null);
+
     useEffect(() => {
-        if (record && !inferredChild) {
+        setChild(null);
+    }, [resource]);
+
+    useEffect(() => {
+        if (record && !child) {
             const inferredElements = getElementsFromRecords(
                 [record],
                 editFieldTypes
@@ -29,34 +61,42 @@ const EditViewGuesser = props => {
                 null,
                 inferredElements
             );
+            setChild(inferredChild.getElement());
 
-            process.env.NODE_ENV !== 'production' &&
-                // eslint-disable-next-line no-console
-                console.log(
-                    `Guessed Edit:
+            if (process.env.NODE_ENV === 'production') return;
+
+            const representation = inferredChild.getRepresentation();
+
+            const components = ['Edit']
+                .concat(
+                    Array.from(
+                        new Set(
+                            Array.from(representation.matchAll(/<([^/\s>]+)/g))
+                                .map(match => match[1])
+                                .filter(component => component !== 'span')
+                        )
+                    )
+                )
+                .sort();
+
+            // eslint-disable-next-line no-console
+            console.log(
+                `Guessed Edit:
+
+import { ${components.join(', ')} } from 'react-admin';
 
 export const ${inflection.capitalize(
-                        inflection.singularize(resource)
-                    )}Edit = () => (
+                    inflection.singularize(resource)
+                )}Edit = () => (
     <Edit>
-${inferredChild.getRepresentation()}
+${representation}
     </Edit>
 );`
-                );
-            setInferredChild(inferredChild.getElement());
+            );
         }
-    }, [record, inferredChild, resource]);
+    }, [record, child, resource]);
 
-    return <EditView {...props}>{inferredChild}</EditView>;
+    return <EditView {...props}>{child}</EditView>;
 };
 
 EditViewGuesser.propTypes = EditView.propTypes;
-
-export const EditGuesser = (props: EditProps) => {
-    const controllerProps = useEditController(props);
-    return (
-        <EditContextProvider value={controllerProps}>
-            <EditViewGuesser {...props} />
-        </EditContextProvider>
-    );
-};

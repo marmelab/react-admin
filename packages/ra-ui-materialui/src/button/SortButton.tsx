@@ -15,7 +15,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import {
     useListSortContext,
     useTranslate,
-    getFieldLabelTranslationArgs,
+    useTranslateLabel,
     shallowEqual,
 } from 'ra-core';
 
@@ -48,6 +48,7 @@ const SortButton = (props: SortButtonProps) => {
     const { fields, label = 'ra.sort.sort_by', icon = defaultIcon } = props;
     const { resource, sort, setSort } = useListSortContext();
     const translate = useTranslate();
+    const translateLabel = useTranslateLabel();
     const isXSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')
     );
@@ -72,12 +73,10 @@ const SortButton = (props: SortButtonProps) => {
     };
 
     const buttonLabel = translate(label, {
-        field: translate(
-            ...getFieldLabelTranslationArgs({
-                resource,
-                source: sort.field,
-            })
-        ),
+        field: translateLabel({
+            resource,
+            source: sort.field,
+        }),
         order: translate(`ra.sort.${sort.order}`),
         _: label,
     });
@@ -121,12 +120,10 @@ const SortButton = (props: SortButtonProps) => {
                         data-sort={field}
                         key={field}
                     >
-                        {translate(
-                            ...getFieldLabelTranslationArgs({
-                                resource,
-                                source: field,
-                            })
-                        )}{' '}
+                        {translateLabel({
+                            resource,
+                            source: field,
+                        })}{' '}
                         {translate(
                             `ra.sort.${
                                 sort.field === field

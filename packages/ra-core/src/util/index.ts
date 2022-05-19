@@ -27,3 +27,6 @@ export {
 export type { FieldTitleProps };
 export * from './hooks';
 export * from './shallowEqual';
+export * from './LabelPrefixContext';
+export * from './LabelPrefixContextProvider';
+export * from './useLabelPrefix';
