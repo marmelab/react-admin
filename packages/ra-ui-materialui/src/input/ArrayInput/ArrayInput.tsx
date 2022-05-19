@@ -8,7 +8,6 @@ import {
     RaRecord,
     useApplyInputDefaultValues,
     useGetValidationErrorMessage,
-    useResourceContext,
 } from 'ra-core';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import {
@@ -77,6 +76,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
         children,
         helperText,
         record,
+        resource: resourceFromProps,
         source,
         validate,
         variant,
@@ -88,7 +88,6 @@ export const ArrayInput = (props: ArrayInputProps) => {
         ? composeSyncValidators(validate)
         : validate;
     const getValidationErrorMessage = useGetValidationErrorMessage();
-    const resource = useResourceContext(props);
 
     const fieldProps = useFieldArray({
         name: source,
@@ -179,7 +178,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
                 <FieldTitle
                     label={label}
                     source={source}
-                    resource={resource}
+                    resource={resourceFromProps}
                     isRequired={isRequired(validate)}
                 />
             </InputLabel>
@@ -187,7 +186,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
                 {cloneElement(Children.only(children), {
                     ...fieldProps,
                     record,
-                    resource,
+                    resource: resourceFromProps,
                     source,
                     variant,
                     margin,

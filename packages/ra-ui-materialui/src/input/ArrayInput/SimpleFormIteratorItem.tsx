@@ -11,7 +11,7 @@ import {
 } from 'react';
 import { Typography } from '@mui/material';
 import clsx from 'clsx';
-import { getFieldLabelTranslationArgs, RaRecord, useTranslate } from 'ra-core';
+import { RaRecord } from 'ra-core';
 
 import { SimpleFormIteratorClasses } from './useSimpleFormIteratorStyles';
 import { useSimpleFormIterator } from './useSimpleFormIterator';
@@ -38,13 +38,7 @@ export const SimpleFormIteratorItem = React.forwardRef(
             source,
         } = props;
 
-        const translate = useTranslate();
-        const {
-            total,
-            reOrder,
-            remove,
-            source: parentSource,
-        } = useSimpleFormIterator();
+        const { total, reOrder, remove } = useSimpleFormIterator();
         // Returns a boolean to indicate whether to disable the remove button for certain fields.
         // If disableRemove is a function, then call the function with the current record to
         // determining if the button should be disabled. Otherwise, use a boolean property that
@@ -116,22 +110,7 @@ export const SimpleFormIteratorItem = React.forwardRef(
                                         ? `${member}.${source}`
                                         : member,
                                     index: source ? undefined : index2,
-                                    label:
-                                        input.props.label === '' ||
-                                        input.props.label === false
-                                            ? input.props.label
-                                            : // We can't rely on the default label inference done in the input by FieldTitle because
-                                              // at the time it renders, its source will be something like `arraySource.0.inputSource`
-                                              // and inference will fail
-                                              translate(
-                                                  ...getFieldLabelTranslationArgs(
-                                                      {
-                                                          parentSource,
-                                                          resource,
-                                                          source,
-                                                      }
-                                                  )
-                                              ),
+                                    resource,
                                     disabled,
                                     ...inputProps,
                                 });

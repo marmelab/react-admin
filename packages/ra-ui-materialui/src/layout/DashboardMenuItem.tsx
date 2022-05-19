@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import { useTranslate, useBasename } from 'ra-core';
@@ -6,20 +6,21 @@ import { useTranslate, useBasename } from 'ra-core';
 import { MenuItemLink } from './MenuItemLink';
 
 export const DashboardMenuItem = (props: DashboardMenuItemProps) => {
-    const { locale, ...rest } = props;
+    const { locale, leftIcon = <DashboardIcon />, ...rest } = props;
     const translate = useTranslate();
     const basename = useBasename();
     return (
         <MenuItemLink
             to={`${basename}/`}
             primaryText={translate('ra.page.dashboard')}
-            leftIcon={<DashboardIcon />}
+            leftIcon={leftIcon}
             {...rest}
         />
     );
 };
 
 export interface DashboardMenuItemProps {
+    leftIcon?: ReactElement;
     locale?: string;
     onClick?: () => void;
     dense?: boolean;
@@ -30,6 +31,7 @@ export interface DashboardMenuItemProps {
 }
 
 DashboardMenuItem.propTypes = {
+    leftIcon: PropTypes.element,
     locale: PropTypes.string,
     onClick: PropTypes.func,
     dense: PropTypes.bool,
