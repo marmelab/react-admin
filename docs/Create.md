@@ -448,6 +448,7 @@ const PostCreateToolbar = () => {
     return (
         <Toolbar>
             <SaveButton
+                type="button"
                 label="post.action.save_and_add"
                 variant="text"
                 mutationOptions={{
@@ -478,3 +479,5 @@ const PostCreate = () => {
 {% endraw %}
 
 You can also leave the choice to the user, by supplying two submit buttons: one with a redirect, and one with a form reset. The same technique applies: use the `mutationOptions` prop on the `<SaveButton>` component.
+
+Note: In order to get the `mutationOptions` being considered, you have to set the `type` prop of the `SaveButton` to `button`.
