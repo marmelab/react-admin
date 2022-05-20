@@ -79,8 +79,10 @@ export const DeleteButton = <RecordType extends RaRecord = any>(
     );
 };
 
-export interface DeleteButtonProps<RecordType extends RaRecord = any>
-    extends Omit<ButtonProps, 'record'>,
+export interface DeleteButtonProps<
+    RecordType extends RaRecord = any,
+    MutationOptionsError = unknown
+> extends Omit<ButtonProps, 'record'>,
         SaveContextValue {
     className?: string;
     confirmTitle?: string;
@@ -94,7 +96,7 @@ export interface DeleteButtonProps<RecordType extends RaRecord = any>
     // May be injected by Toolbar
     mutationOptions?: UseMutationOptions<
         RecordType,
-        unknown,
+        MutationOptionsError,
         DeleteParams<RecordType>
     >;
 }

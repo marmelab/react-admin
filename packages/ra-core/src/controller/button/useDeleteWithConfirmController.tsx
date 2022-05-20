@@ -159,7 +159,8 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
 };
 
 export interface UseDeleteWithConfirmControllerParams<
-    RecordType extends RaRecord = any
+    RecordType extends RaRecord = any,
+    MutationOptionsError = unknown
 > {
     mutationMode?: MutationMode;
     record?: RecordType;
@@ -169,7 +170,7 @@ export interface UseDeleteWithConfirmControllerParams<
     onClick?: ReactEventHandler<any>;
     mutationOptions?: UseMutationOptions<
         RecordType,
-        unknown,
+        MutationOptionsError,
         DeleteParams<RecordType>
     >;
 }
