@@ -1,19 +1,21 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
+import { SxProps } from '@mui/material';
 import PropTypes from 'prop-types';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTranslate } from 'ra-core';
 
-export const Loading = props => {
+export const Loading = (props: LoadingProps) => {
     const {
         className,
         loadingPrimary = 'ra.page.loading',
         loadingSecondary = 'ra.message.loading',
+        ...rest
     } = props;
 
     const translate = useTranslate();
     return (
-        <Root className={className}>
+        <Root className={className} {...rest}>
             <div className={LoadingClasses.message}>
                 <CircularProgress
                     className={LoadingClasses.icon}
@@ -36,6 +38,13 @@ Loading.defaultProps = {
     loadingPrimary: 'ra.page.loading',
     loadingSecondary: 'ra.message.loading',
 };
+
+export interface LoadingProps {
+    className?: string;
+    loadingPrimary?: string;
+    loadingSecondary?: string;
+    sx?: SxProps;
+}
 
 const PREFIX = 'RaLoading';
 
