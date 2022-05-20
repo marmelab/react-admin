@@ -282,7 +282,7 @@ const emailValidators = [required(), validateEmailUnicity];
 
 export const UserCreate = () => (
     <Create>
-        <SimpleForm validate={validateUserCreation}>
+        <SimpleForm>
             ...
             <TextInput label="Email" source="email" validate={emailValidators} />
             ...
