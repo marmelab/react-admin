@@ -143,7 +143,10 @@ export const SaveButton = <RecordType extends RaRecord = any>(
 
 const defaultIcon = <ContentSave />;
 
-interface Props<RecordType extends RaRecord = any> {
+interface Props<
+    RecordType extends RaRecord = any,
+    MutationOptionsError = unknown
+> {
     className?: string;
     disabled?: boolean;
     icon?: ReactElement;
@@ -151,7 +154,7 @@ interface Props<RecordType extends RaRecord = any> {
     label?: string;
     mutationOptions?: UseMutationOptions<
         RecordType,
-        unknown,
+        MutationOptionsError,
         CreateParams<RecordType> | UpdateParams<RecordType>
     >;
     transform?: TransformData;
