@@ -215,12 +215,14 @@ const theme = {
     components: {
         ...defaultTheme.components,
         RaDatagrid: {
-            root: {
-                backgroundColor: "Lavender",
-                "& .RaDatagrid-headerCell": {
-                    backgroundColor: "MistyRose",
-                },
-            }
+            styleOverrides: {
+              root: {
+                  backgroundColor: "Lavender",
+                  "& .RaDatagrid-headerCell": {
+                      backgroundColor: "MistyRose",
+                  },
+              }
+           }
         }
     }
 };
