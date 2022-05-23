@@ -1,22 +1,50 @@
 import {
     getSimpleValidationResolver,
-    flattenKeys,
+    flattenErrors,
 } from './getSimpleValidationResolver';
 
 describe('getSimpleValidationResolver', () => {
     const validator = getSimpleValidationResolver(values => values);
 
     it('should return a flattened object', async () => {
-        const result = flattenKeys({
+        const result = flattenErrors({
             title: 'title too short',
             backlinks: [
                 { url: 'url too short', id: 'missing id' },
                 { url: 'url too short', id: 'missing id' },
             ],
         });
-
         expect(result).toEqual({
             title: 'title too short',
+            'backlinks.0.url': 'url too short',
+            'backlinks.0.id': 'missing id',
+            'backlinks.1.url': 'url too short',
+            'backlinks.1.id': 'missing id',
+        });
+    });
+
+    it('should support complex translation messages', async () => {
+        const result = flattenErrors({
+            title: 'title too short',
+            body: {
+                message: 'Not good for %{variable}',
+                args: {
+                    variable: 'you',
+                },
+            },
+            backlinks: [
+                { url: 'url too short', id: 'missing id' },
+                { url: 'url too short', id: 'missing id' },
+            ],
+        });
+        expect(result).toEqual({
+            title: 'title too short',
+            body: {
+                message: 'Not good for %{variable}',
+                args: {
+                    variable: 'you',
+                },
+            },
             'backlinks.0.url': 'url too short',
             'backlinks.0.id': 'missing id',
             'backlinks.1.url': 'url too short',

@@ -1,19 +1,26 @@
 import { FieldValues } from 'react-hook-form';
 import _ from 'lodash';
+import { ValidationErrorMessageWithArgs } from './validate';
 
 // Flattening an object into path keys:
 // https://github.com/lodash/lodash/issues/2240#issuecomment-418820848
-export const flattenKeys = (obj, path = []) =>
+export const flattenErrors = (obj, path = []) =>
     !_.isObject(obj)
         ? { [path.join('.')]: obj }
         : _.reduce(
               obj,
-              (cum, next, key) =>
-                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                  _.merge(cum, flattenKeys(next, [...path, key])),
+              (cum, next, key) => {
+                  if (
+                      (obj[key] as ValidationErrorMessageWithArgs).message !=
+                          null &&
+                      (obj[key] as ValidationErrorMessageWithArgs).args != null
+                  ) {
+                      return _.merge(cum, { [key]: obj[key] });
+                  }
+                  return _.merge(cum, flattenErrors(next, [...path, key]));
+              },
               {}
           );
-
 /**
  * Convert a simple validation function that returns an object matching the form shape with errors
  * to a validation resolver compatible with react-hook-form.
@@ -44,7 +51,7 @@ export const getSimpleValidationResolver = (validate: ValidateForm) => async (
     if (!errors || Object.getOwnPropertyNames(errors).length === 0) {
         return { values: data, errors: {} };
     }
-    const flattenedErrors = flattenKeys(errors);
+    const flattenedErrors = flattenErrors(errors);
 
     return {
         values: {},
