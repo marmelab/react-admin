@@ -94,7 +94,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                         : null;
                 })}
             </Component>
-            {toolbar}
+            {toolbar !== false ? toolbar : null}
         </Root>
     );
 };
@@ -126,7 +126,7 @@ export interface TabbedFormViewProps {
     formRootPathname?: string;
     syncWithLocation?: boolean;
     tabs?: ReactElement;
-    toolbar?: ReactElement;
+    toolbar?: ReactElement | false;
     sx?: SxProps;
 }
 

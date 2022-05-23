@@ -78,3 +78,15 @@ export const CustomLayout = () => (
         </TabbedForm>
     </Wrapper>
 );
+
+export const NoToolbar = () => (
+    <Wrapper>
+        <TabbedForm toolbar={false}>
+            <FormTab label="main">
+                <TextInput source="title" fullWidth />
+                <TextInput source="author" sx={{ width: '50%' }} />
+                <NumberInput source="year" sx={{ width: '50%' }} />
+            </FormTab>
+        </TabbedForm>
+    </Wrapper>
+);

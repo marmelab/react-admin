@@ -66,3 +66,13 @@ export const StackProps = () => (
         </SimpleForm>
     </Wrapper>
 );
+
+export const NoToolbar = () => (
+    <Wrapper>
+        <SimpleForm toolbar={false}>
+            <TextInput source="title" fullWidth />
+            <TextInput source="author" />
+            <NumberInput source="year" />
+        </SimpleForm>
+    </Wrapper>
+);

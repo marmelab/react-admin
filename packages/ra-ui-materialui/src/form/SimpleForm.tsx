@@ -52,7 +52,7 @@ export const SimpleForm = (props: SimpleFormProps) => {
                     {children}
                 </Stack>
             </Component>
-            {toolbar}
+            {toolbar !== false ? toolbar : null}
         </Form>
     );
 };
