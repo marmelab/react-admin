@@ -180,5 +180,39 @@ describe('<DateTimeInput />', () => {
                 ).not.toBeNull();
             });
         });
+
+        it('should be displayed if field has been touched multiple times and is invalid', async () => {
+            const onSubmit = jest.fn();
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm onSubmit={onSubmit}>
+                        <DateTimeInput
+                            {...defaultProps}
+                            validate={required()}
+                        />
+                    </SimpleForm>
+                </AdminContext>
+            );
+            const input = screen.getByLabelText(
+                'resources.posts.fields.publishedAt *'
+            );
+            fireEvent.change(input, {
+                target: { value: new Date().toISOString() },
+            });
+            fireEvent.blur(input);
+            await waitFor(() => {
+                expect(screen.queryByText('ra.validation.required')).toBeNull();
+            });
+            fireEvent.change(input, {
+                target: { value: '' },
+            });
+            fireEvent.blur(input);
+            fireEvent.click(screen.getByText('ra.action.save'));
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('ra.validation.required')
+                ).not.toBeNull();
+            });
+        });
     });
 });
