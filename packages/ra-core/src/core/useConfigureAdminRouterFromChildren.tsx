@@ -97,7 +97,7 @@ const useRoutesAndResourcesFromChildren = (
         ) => {
             try {
                 const childrenFuncResult = childFunc(permissions);
-                if ((childrenFuncResult as Promise<ReactNode>).then) {
+                if ((childrenFuncResult as Promise<ReactNode>)?.then) {
                     (childrenFuncResult as Promise<ReactNode>).then(
                         resolvedChildren => {
                             mergeRoutesAndResources(
