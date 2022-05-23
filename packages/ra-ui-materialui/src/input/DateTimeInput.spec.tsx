@@ -181,7 +181,7 @@ describe('<DateTimeInput />', () => {
             });
         });
 
-        it.only('should be displayed if field has been touched multiple times and is invalid', async () => {
+        it('should be displayed if field has been touched multiple times and is invalid', async () => {
             const onSubmit = jest.fn();
             render(
                 <AdminContext dataProvider={testDataProvider()}>
