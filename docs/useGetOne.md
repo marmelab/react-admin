@@ -95,8 +95,8 @@ As this hook is often used to fetch references, react-admin exposes a `useRefere
 +import { useReference } from 'react-admin';
 
 const UserProfile = ({ record }) => {
--   const { data: user, isLoading, error } = useGetOne('users', { id: record.id });
-+   const { referenceRecord: user, isLoading, error } = useReference({ reference: 'users', id: [record.id] });
+-   const { data: user, isLoading, error } = useGetOne('users', { id: record.userId });
++   const { referenceRecord: user, isLoading, error } = useReference({ reference: 'users', id: record.userId });
     if (isLoading) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return <div>User {data.username}</div>;
