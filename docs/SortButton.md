@@ -26,6 +26,14 @@ const ListActions = () => (
 );
 ```
 
+## Props
+
+| Prop     | Required | Type           | Default               | Description                         |
+|----------|----------|----------------|-----------------------|-------------------------------------|
+| `fields` | Required | `string[]`     | -                     | List of fields to offer sort on     |
+| `icon`   | Optional | `ReactElement` | `<ArrowDropDownIcon>` | iconElement, e.g. `<CommentIcon />` |
+| `label`  | Optional | `string`       | 'ra.sort.sort_by'     | label or translation message to use |
+
 ## `fields`
 
 The `fields` prop expects an array of strings. Each string is the name of a field to sort on. The `<SortButton>` renders the corresponding menu item depending on the current sort order (ASC by default, or DESC if the current sort field is active).
@@ -42,5 +50,16 @@ You can customize the icon rendered on the left of the button by passing an `ico
 <SortButton 
     fields={['reference', 'sales', 'stock']}
     icon={<SortIcon />}
+/>
+```
+
+## `label`
+
+You can customize the label of the button by passing a `label` prop.
+
+```jsx
+<SortButton 
+    fields={['reference', 'sales', 'stock']}
+    label="Sort by"
 />
 ```
