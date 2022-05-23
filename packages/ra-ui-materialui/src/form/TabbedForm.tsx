@@ -125,7 +125,7 @@ export interface TabbedFormProps
     resource?: string;
     syncWithLocation?: boolean;
     tabs?: ReactElement;
-    toolbar?: ReactElement;
+    toolbar?: ReactElement | false;
     warnWhenUnsavedChanges?: boolean;
 }
 
