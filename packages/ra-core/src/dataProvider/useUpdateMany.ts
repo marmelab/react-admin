@@ -73,7 +73,7 @@ export const useUpdateMany = <
     resource?: string,
     params: Partial<UpdateManyParams<Partial<RecordType>>> = {},
     options: UseUpdateManyOptions<RecordType, MutationError> = {}
-): UseUpdateManyResult<RecordType, MutationError> => {
+): UseUpdateManyResult<RecordType, boolean, MutationError> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const { ids, data, meta } = params;
@@ -276,9 +276,15 @@ export const useUpdateMany = <
             unknown,
             Partial<UseUpdateManyMutateParams<RecordType>>,
             unknown
-        > & { mutationMode?: MutationMode } = {}
+        > & { mutationMode?: MutationMode; returnPromise?: boolean } = {}
     ) => {
-        const { mutationMode, onSuccess, onSettled, onError } = updateOptions;
+        const {
+            mutationMode,
+            returnPromise,
+            onSuccess,
+            onSettled,
+            onError,
+        } = updateOptions;
 
         // store the hook time params *at the moment of the call*
         // because they may change afterwards, which would break the undoable mode
@@ -289,7 +295,19 @@ export const useUpdateMany = <
             mode.current = mutationMode;
         }
 
+        if (returnPromise && mode.current !== 'pessimistic') {
+            console.warn(
+                'The returnPromise parameter can only be used if the mutationMode is set to pessimistic'
+            );
+        }
+
         if (mode.current === 'pessimistic') {
+            if (returnPromise) {
+                return mutation.mutateAsync(
+                    { resource: callTimeResource, ...callTimeParams },
+                    { onSuccess, onSettled, onError }
+                );
+            }
             return mutation.mutate(
                 { resource: callTimeResource, ...callTimeParams },
                 { onSuccess, onSettled, onError }
@@ -418,6 +436,7 @@ export type UseUpdateManyOptions<
 
 export type UseUpdateManyResult<
     RecordType extends RaRecord = any,
+    TReturnPromise extends boolean = boolean,
     MutationError = unknown
 > = [
     (
@@ -428,8 +447,8 @@ export type UseUpdateManyResult<
             MutationError,
             Partial<UseUpdateManyMutateParams<RecordType>>,
             unknown
-        > & { mutationMode?: MutationMode }
-    ) => Promise<void>,
+        > & { mutationMode?: MutationMode; returnPromise?: TReturnPromise }
+    ) => Promise<TReturnPromise extends true ? Array<RecordType['id']> : void>,
     UseMutationResult<
         Array<RecordType['id']>,
         MutationError,
