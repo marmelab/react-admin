@@ -21,7 +21,6 @@ To let users choose several values in a list using a dropdown, use `<SelectArray
 | `options`         | Optional | `Object`                   | -                  | Props to pass to the underlying `<SelectInput>` element                                                                                |
 | `optionText`      | Optional | `string` &#124; `Function` | `name`             | Field name of record to display in the suggestion item or function which accepts the current record as argument (`record => {string}`) |
 | `optionValue`     | Optional | `string`                   | `id`               | Field name of record containing the value to use as input value                                                                        |
-| `resettable`      | Optional | `boolean`                  | `false`            | If `true`, display a button to reset the changes in this input value                                                                   |
 | `translateChoice` | Optional | `boolean`                  | `true`             | Whether the choices should be translated                                                                                               |
 
 `<SelectArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
