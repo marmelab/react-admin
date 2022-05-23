@@ -80,6 +80,31 @@ const TestedComponentReturningNull = ({ role }) => {
     );
 };
 
+const TestedComponentWithAuthProvider = ({ callback }) => {
+    const history = createMemoryHistory();
+    const authProvider = {
+        login: () => Promise.resolve(),
+        logout: () => Promise.resolve(),
+        checkAuth: () => Promise.resolve(),
+        checkError: () => Promise.resolve(),
+        getPermissions: () => Promise.resolve('admin'),
+    };
+
+    return (
+        <CoreAdminContext history={history} authProvider={authProvider}>
+            <CoreAdminRoutes
+                layout={MyLayout}
+                catchAll={CatchAll}
+                loading={Loading}
+            >
+                <Resource name="posts" />
+                <Resource name="comments" />
+                {callback}
+            </CoreAdminRoutes>
+        </CoreAdminContext>
+    );
+};
+
 const ResourceWithPermissions = (props: ResourceProps) => (
     <Resource {...props} />
 );
@@ -185,6 +210,16 @@ describe('useConfigureAdminRouterFromChildren', () => {
         expectResource('comments').not.toBeNull();
         expectResource('user').toBeNull();
         expectResource('admin').toBeNull();
+    });
+    it('should not call the children function until the permissions have been retrieved', async () => {
+        const callback = jest.fn(() =>
+            Promise.resolve(resolve => setTimeout(resolve, 50))
+        );
+
+        render(<TestedComponentWithAuthProvider callback={callback} />);
+        await waitFor(() => expect(callback).toHaveBeenCalled());
+
+        expect(callback).not.toHaveBeenCalledWith(undefined);
     });
     it('should load dynamic resource definitions', async () => {
         render(<TestedComponent role="admin" />);
