@@ -16,7 +16,7 @@ import {
 } from 'ra-core';
 import get from 'lodash/get';
 
-import { TabbedFormView } from './TabbedFormView';
+import { TabbedFormView, TabbedFormViewProps } from './TabbedFormView';
 import { useFormRootPath } from './useFormRootPath';
 
 /**
@@ -113,7 +113,8 @@ export interface TabbedFormProps
         Omit<
             HtmlHTMLAttributes<HTMLFormElement>,
             'defaultValue' | 'onSubmit' | 'children'
-        > {
+        >,
+        Partial<TabbedFormViewProps> {
     children: ReactNode;
     className?: string;
     defaultValues?: any;
