@@ -9,6 +9,7 @@ const SegmentsInput = (props: SelectArrayInputProps) => (
         source="groups"
         translateChoice
         choices={segments}
+        resettable
     />
 );
 

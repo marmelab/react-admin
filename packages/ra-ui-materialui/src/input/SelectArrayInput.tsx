@@ -29,6 +29,7 @@ import {
     SupportCreateSuggestionOptions,
     useSupportCreateSuggestion,
 } from './useSupportCreateSuggestion';
+import { ResettableTextField } from './ResettableTextField';
 
 /**
  * An Input component for a select box allowing multiple selections, using an array of objects for the options
@@ -102,6 +103,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         optionText,
         optionValue,
         parse,
+        resettable,
         resource: resourceProp,
         source: sourceProp,
         translateChoice,
@@ -273,6 +275,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     {...field}
                     onChange={handleChangeWithCreateSupport}
                     value={field.value || []}
+                    input={<ResettableTextField resettable={resettable} />}
                 >
                     {finalChoices.map(renderMenuItem)}
                 </Select>
@@ -296,6 +299,7 @@ export type SelectArrayInputProps = ChoicesProps &
         disableValue?: string;
         source?: string;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
+        resettable?: boolean;
     };
 
 SelectArrayInput.propTypes = {
@@ -354,6 +358,7 @@ const sanitizeRestProps = ({
     perPage,
     record,
     reference,
+    resettable,
     resource,
     setFilter,
     setPagination,
