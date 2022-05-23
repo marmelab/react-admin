@@ -260,33 +260,6 @@ This button is an internal component used by react-admin in [the Filter button/f
 
 To override the style of all instances of `<FilterButton>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaFilterButton` key.
 
-### `<SortButton>`
-
-Some List views don't have a natural UI for sorting - e.g. the `<SimpleList>`, or a list of images, don't have column headers like the `<Datagrid>`. For these cases, react-admin offers the `<SortButton>`, which displays a dropdown list of fields that the user can choose to sort on.
-
-![Sort Button](./img/sort-button.gif)
-
-`<SortButton>` expects one prop: `fields`, the list of fields it should allow to sort on. For instance, here is how to offer a button to sort on the `reference`, `sales`, and `stock` fields:
-
-```jsx
-import * as React from 'react';
-import { TopToolbar, SortButton, CreateButton, ExportButton } from 'react-admin';
-
-const ListActions = () => (
-    <TopToolbar>
-        <SortButton fields={['reference', 'sales', 'stock']} />
-        <CreateButton />
-        <ExportButton />
-    </TopToolbar>
-);
-```
-
-| Prop     | Required | Type           | Default               | Description                         |
-|----------|----------|----------------|-----------------------|-------------------------------------|
-| `fields` | Required | `string[]`     | -                     | List of fields to offer sort on     |
-| `icon`   | Optional | `ReactElement` | `<ArrowDropDownIcon>` | iconElement, e.g. `<CommentIcon />` |
-| `label`  | Optional | `string`       | 'ra.sort.sort_by'     | label or translation message to use |
-
 ## Record Buttons
 
 ### `<DeleteButton>`
@@ -333,7 +306,6 @@ const MyEdit = () => (
 {% endraw %}
 
 ### `<CloneButton>`
-### `<SaveButton>`
 
 ## Miscellaneous
 
