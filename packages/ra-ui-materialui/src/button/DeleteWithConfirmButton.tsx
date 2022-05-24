@@ -10,7 +10,6 @@ import {
     MutationMode,
     RaRecord,
     DeleteParams,
-    RedirectionSideEffect,
     useDeleteWithConfirmController,
     useRecordContext,
     useResourceContext,
@@ -97,17 +96,12 @@ const defaultIcon = <ActionDelete />;
 export interface DeleteWithConfirmButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown
-> extends Omit<ButtonProps, 'record'> {
-    className?: string;
+> extends ButtonProps<RecordType> {
     confirmTitle?: string;
     confirmContent?: React.ReactNode;
     icon?: ReactElement;
-    label?: string;
     mutationMode?: MutationMode;
     onClick?: ReactEventHandler<any>;
-    record?: RecordType;
-    redirect?: RedirectionSideEffect;
-    resource?: string;
     // May be injected by Toolbar - sanitized in Button
     translateOptions?: object;
     mutationOptions?: UseMutationOptions<

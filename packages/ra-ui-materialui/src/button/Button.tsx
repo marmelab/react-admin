@@ -19,12 +19,6 @@ import {
 } from 'ra-core';
 import { Path } from 'react-router';
 
-export type LocationDescriptor = Partial<Path> & {
-    redirect?: boolean;
-    state?: any;
-    replace?: boolean;
-};
-
 /**
  * A generic Button with side icon. Only the icon is displayed on small screens.
  *
@@ -38,7 +32,9 @@ export type LocationDescriptor = Partial<Path> & {
  * </Button>
  *
  */
-export const Button = (props: ButtonProps) => {
+export const Button = <RecordType extends RaRecord = RaRecord>(
+    props: ButtonProps<RecordType>
+) => {
     const {
         alignIcon = 'left',
         children,
@@ -102,7 +98,7 @@ export const Button = (props: ButtonProps) => {
     );
 };
 
-interface Props {
+interface Props<RecordType extends RaRecord = RaRecord> {
     alignIcon?: 'left' | 'right';
     children?: ReactElement;
     className?: string;
@@ -114,13 +110,16 @@ interface Props {
     size?: 'small' | 'medium' | 'large';
     redirect?: RedirectionSideEffect;
     variant?: string;
-    // May be injected by Toolbar
-    record?: RaRecord;
+    // May be provided manually
+    record?: RecordType;
     resource?: string;
     mutationMode?: MutationMode;
 }
 
-export type ButtonProps = Props & MuiButtonProps;
+export type ButtonProps<RecordType extends RaRecord = RaRecord> = Props<
+    RecordType
+> &
+    MuiButtonProps;
 
 export const sanitizeButtonRestProps = ({
     // The next props are injected by Toolbar
@@ -185,4 +184,10 @@ const getLinkParams = (locationDescriptor?: LocationDescriptor | string) => {
         replace,
         state,
     };
+};
+
+export type LocationDescriptor = Partial<Path> & {
+    redirect?: boolean;
+    state?: any;
+    replace?: boolean;
 };
