@@ -97,7 +97,6 @@ You can tweak how this component fetches the possible values using the `page`, `
 
 ```jsx
 <ReferenceArrayInput
-    label="Tags"
     reference="tags"
     source="tags"
     enableGetChoices={({ q }) => (q ? q.length >= 2 : false)}
