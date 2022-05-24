@@ -8,7 +8,6 @@ import clsx from 'clsx';
 import { UseMutationOptions } from 'react-query';
 import {
     RaRecord,
-    RedirectionSideEffect,
     useDeleteWithUndoController,
     DeleteParams,
     useRecordContext,
@@ -59,15 +58,9 @@ const defaultIcon = <ActionDelete />;
 export interface DeleteWithUndoButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown
-> extends Omit<ButtonProps, 'record'> {
-    className?: string;
+> extends ButtonProps<RecordType> {
     icon?: ReactElement;
-    label?: string;
     onClick?: ReactEventHandler<any>;
-    record?: RecordType;
-    redirect?: RedirectionSideEffect;
-    resource?: string;
-    // May be injected by Toolbar - sanitized in Button
     mutationOptions?: UseMutationOptions<
         RecordType,
         MutationOptionsError,

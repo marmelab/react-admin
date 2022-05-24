@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { UseMutationOptions } from 'react-query';
 import {
     RaRecord,
-    RedirectionSideEffect,
     MutationMode,
     DeleteParams,
     useRecordContext,
@@ -82,18 +81,12 @@ export const DeleteButton = <RecordType extends RaRecord = any>(
 export interface DeleteButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown
-> extends Omit<ButtonProps, 'record'>,
+> extends ButtonProps<RecordType>,
         SaveContextValue {
-    className?: string;
     confirmTitle?: string;
     confirmContent?: string;
     icon?: ReactElement;
-    label?: string;
     mutationMode?: MutationMode;
-    record?: RecordType;
-    redirect?: RedirectionSideEffect;
-    resource?: string;
-    // May be injected by Toolbar
     mutationOptions?: UseMutationOptions<
         RecordType,
         MutationOptionsError,
