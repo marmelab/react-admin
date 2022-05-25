@@ -24,7 +24,10 @@ import { useI18nProvider } from './useI18nProvider';
  */
 export const useLocales = (options?: UseLocalesOptions) => {
     const i18nProvider = useI18nProvider();
-    const locales = useMemo(() => i18nProvider.getLocales(), [i18nProvider]);
+    const locales = useMemo(
+        () => (i18nProvider?.getLocales ? i18nProvider?.getLocales() : []),
+        [i18nProvider]
+    );
     return options?.locales ?? locales;
 };
 
