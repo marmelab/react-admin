@@ -23,6 +23,7 @@ const i18nProvider = {
     translate: (key, options) => string,
     changeLocale: locale => Promise,
     getLocale: () => string,
+    getLocales: () => [{ locale: string; name: string; }], // Optional
 }
 ```
 

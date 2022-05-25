@@ -20,12 +20,7 @@ import { Typography } from '@mui/material';
 export const MyAppBar = (props) => (
     <AppBar {...props}>
         <Typography flex="1" variant="h6" id="react-admin-title"></Typography>
-        <LocalesMenuButton
-            languages={[
-                { locale: 'en', name: 'English' },
-                { locale: 'fr', name: 'Français' },
-            ]}
-        />
+        <LocalesMenuButton />
     </AppBar>
 );
 ```
@@ -44,6 +39,7 @@ const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
 
 const i18nProvider = polyglotI18nProvider(
     locale => (locale === 'fr' ? frenchMessages : englishMessages),
+    getLocales: () => [{ locale: 'en', name: 'English' }, { locale: 'fr', name: 'Français' }],
     'en' // Default locale
 );
 
@@ -60,7 +56,7 @@ const App = () => (
 
 ## `languages`
 
-An array of objects (`{ locale, name }`) representing the key and the label of the languages available to end users.
+An array of objects (`{ locale, name }`) representing the key and the label of the languages available to end users. You can omit this prop if your `i18nProvider` has a `getLocales` function.
 
 ```jsx
 <LocalesMenuButton languages={[

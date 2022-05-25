@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { MouseEvent, useState } from 'react';
-import { useLocaleState } from 'ra-core';
+import { useLocaleState, useLocales } from 'ra-core';
 import { Box, Button, Menu, MenuItem, styled } from '@mui/material';
 import LanguageIcon from '@mui/icons-material/Translate';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -25,8 +25,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
  *         </AppBar>
  *     );
  */
-export const LocalesMenuButton = ({ languages }: LocalesMenuButtonProps) => {
+export const LocalesMenuButton = (props: LocalesMenuButtonProps) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const languages = useLocales({ locales: props.languages });
     const [locale, setLocale] = useLocaleState();
 
     const getNameForLocale = (locale: string): string => {
@@ -73,6 +74,7 @@ export const LocalesMenuButton = ({ languages }: LocalesMenuButtonProps) => {
                     <MenuItem
                         key={language.locale}
                         onClick={changeLocale(language.locale)}
+                        selected={language.locale === locale}
                     >
                         {language.name}
                     </MenuItem>
@@ -98,5 +100,5 @@ const Root = styled(Box, {
 }));
 
 export interface LocalesMenuButtonProps {
-    languages: { locale: string; name: string }[];
+    languages?: { locale: string; name: string }[];
 }
