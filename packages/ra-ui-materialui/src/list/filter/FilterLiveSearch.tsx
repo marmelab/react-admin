@@ -26,6 +26,7 @@ export const FilterLiveSearch = memo(
     (props: {
         source?: string;
         sx?: SxProps;
+        fullWidth?: boolean;
         variant?: 'filled' | 'outlined';
     }) => {
         const { source = 'q', variant, ...rest } = props;
