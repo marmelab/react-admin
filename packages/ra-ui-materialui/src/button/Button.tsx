@@ -11,12 +11,7 @@ import {
     Theme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import {
-    MutationMode,
-    RaRecord,
-    RedirectionSideEffect,
-    useTranslate,
-} from 'ra-core';
+import { MutationMode, RedirectionSideEffect, useTranslate } from 'ra-core';
 import { Path } from 'react-router';
 
 /**
@@ -32,9 +27,7 @@ import { Path } from 'react-router';
  * </Button>
  *
  */
-export const Button = <RecordType extends RaRecord = RaRecord>(
-    props: ButtonProps<RecordType>
-) => {
+export const Button = (props: ButtonProps) => {
     const {
         alignIcon = 'left',
         children,
@@ -98,7 +91,7 @@ export const Button = <RecordType extends RaRecord = RaRecord>(
     );
 };
 
-interface Props<RecordType extends RaRecord = RaRecord> {
+interface Props {
     alignIcon?: 'left' | 'right';
     children?: ReactElement;
     className?: string;
@@ -110,22 +103,16 @@ interface Props<RecordType extends RaRecord = RaRecord> {
     size?: 'small' | 'medium' | 'large';
     redirect?: RedirectionSideEffect;
     variant?: string;
-    // May be provided manually
-    record?: RecordType;
     resource?: string;
     mutationMode?: MutationMode;
 }
 
-export type ButtonProps<RecordType extends RaRecord = RaRecord> = Props<
-    RecordType
-> &
-    MuiButtonProps;
+export type ButtonProps = Props & MuiButtonProps;
 
 export const sanitizeButtonRestProps = ({
     // The next props are injected by Toolbar
     invalid,
     pristine,
-    record,
     redirect,
     resource,
     mutationMode,

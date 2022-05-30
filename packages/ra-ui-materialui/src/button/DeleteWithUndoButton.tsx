@@ -58,7 +58,7 @@ const defaultIcon = <ActionDelete />;
 export interface DeleteWithUndoButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown
-> extends ButtonProps<RecordType> {
+> extends ButtonProps {
     icon?: ReactElement;
     onClick?: ReactEventHandler<any>;
     mutationOptions?: UseMutationOptions<
@@ -66,6 +66,7 @@ export interface DeleteWithUndoButtonProps<
         MutationOptionsError,
         DeleteParams<RecordType>
     >;
+    record?: RecordType;
 }
 
 DeleteWithUndoButton.propTypes = {

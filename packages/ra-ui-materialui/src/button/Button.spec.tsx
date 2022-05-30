@@ -9,7 +9,6 @@ import { AdminContext } from '../AdminContext';
 const invalidButtonDomProps = {
     invalid: false,
     pristine: false,
-    record: { id: 123, foo: 'bar' },
     resource: 'posts',
     mutationMode: 'pessimistic' as MutationMode,
 };

@@ -8,7 +8,6 @@ import ContentSave from '@mui/icons-material/Save';
 import { useFormContext, useFormState } from 'react-hook-form';
 import {
     CreateParams,
-    MutationMode,
     RaRecord,
     TransformData,
     UpdateParams,
@@ -160,10 +159,6 @@ interface Props<
     transform?: TransformData;
     saving?: boolean;
     variant?: string;
-    // May be injected by Toolbar - sanitized in Button
-    record?: RaRecord;
-    resource?: string;
-    mutationMode?: MutationMode;
 }
 
 export type SaveButtonProps<RecordType extends RaRecord = any> = Props<
