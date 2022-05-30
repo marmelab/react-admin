@@ -17,9 +17,7 @@ import { AdminContext } from '../AdminContext';
 
 const invalidButtonDomProps = {
     disabled: true,
-    record: { id: 123, foo: 'bar' },
     resource: 'posts',
-    mutationMode: 'pessimistic' as MutationMode,
 };
 
 describe('<SaveButton />', () => {

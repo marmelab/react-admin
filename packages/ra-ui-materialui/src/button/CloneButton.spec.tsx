@@ -1,18 +1,13 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen } from '@testing-library/react';
-import { MutationMode } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { CloneButton } from './CloneButton';
 
 const invalidButtonDomProps = {
-    invalid: false,
-    pristine: false,
     record: { id: 123, foo: 'bar' },
-    redirect: 'list',
     resource: 'posts',
-    mutationMode: 'pessimistic' as MutationMode,
 };
 
 describe('<CloneButton />', () => {
