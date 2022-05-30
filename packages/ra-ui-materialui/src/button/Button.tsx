@@ -46,7 +46,6 @@ export const Button = (props: ButtonProps) => {
     const isXSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')
     );
-    const restProps = sanitizeButtonRestProps(rest);
 
     return isXSmall ? (
         label && !disabled ? (
@@ -55,7 +54,7 @@ export const Button = (props: ButtonProps) => {
                     aria-label={translatedLabel}
                     className={className}
                     color={color}
-                    {...restProps}
+                    {...rest}
                     {...linkParams}
                     size="large"
                 >
@@ -67,7 +66,7 @@ export const Button = (props: ButtonProps) => {
                 className={className}
                 color={color}
                 disabled={disabled}
-                {...restProps}
+                {...rest}
                 {...linkParams}
                 size="large"
             >
@@ -83,7 +82,7 @@ export const Button = (props: ButtonProps) => {
             disabled={disabled}
             startIcon={alignIcon === 'left' && children ? children : undefined}
             endIcon={alignIcon === 'right' && children ? children : undefined}
-            {...restProps}
+            {...rest}
             {...linkParams}
         >
             {translatedLabel}
@@ -105,17 +104,6 @@ interface Props {
 }
 
 export type ButtonProps = Props & MuiButtonProps;
-
-export const sanitizeButtonRestProps = ({
-    // The next props are injected by Toolbar
-    invalid,
-    pristine,
-    redirect,
-    resource,
-    mutationMode,
-    hasCreate,
-    ...rest
-}: any) => rest;
 
 Button.propTypes = {
     alignIcon: PropTypes.oneOf(['left', 'right']),

@@ -17,8 +17,6 @@ import {
     setSubmissionErrors,
 } from 'ra-core';
 
-import { sanitizeButtonRestProps } from './Button';
-
 /**
  * Submit button for resource forms (Edit and Create).
  *
@@ -132,7 +130,7 @@ export const SaveButton = <RecordType extends RaRecord = any>(
             disabled={disabled}
             onClick={handleClick}
             // TODO: find a way to display the loading state (LoadingButton from mui Lab?)
-            {...sanitizeButtonRestProps(rest)}
+            {...rest}
         >
             {finalSaving ? <CircularProgress size={18} thickness={2} /> : icon}
             {displayedLabel}
