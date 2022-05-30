@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ContentCreate from '@mui/icons-material/Create';
-import { ButtonProps as MuiButtonProps } from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import {
     RaRecord,
@@ -73,8 +72,7 @@ interface Props<RecordType extends RaRecord = any> {
 export type EditButtonProps<RecordType extends RaRecord = any> = Props<
     RecordType
 > &
-    ButtonProps &
-    MuiButtonProps;
+    ButtonProps;
 
 EditButton.propTypes = {
     icon: PropTypes.element,
