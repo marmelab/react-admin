@@ -5,7 +5,7 @@ title: "useUpdateMany"
 
 # `useUpdateMany`
 
-This hook allows to call `dataProvider.updateMany()` when the callback is executed, and update an array of records based on their `ids` and a `data` argument. 
+This hook allows to call `dataProvider.updateMany()` when the callback is executed, and update an array of records based on their `ids` and a `data` argument.
 
 
 ```jsx
@@ -59,4 +59,18 @@ const BulkResetViewsButton = ({ selectedIds }) => {
     if (error) { return <p>ERROR</p>; }
     return <button disabled={isLoading} onClick={handleClick}>Reset views</button>;
 };
+```
+
+**Tip**: If you use TypeScript, you can specify the record and error types for more type safety:
+
+```tsx
+useUpdateMany<Product, Error>(undefined, undefined, {
+    onError: (error) => {
+        // error is an instance of Error.
+    },
+    onSettled: (data, error) => {
+        // data is an instance of Product.
+        // error is an instance of Error.
+    },
+})
 ```

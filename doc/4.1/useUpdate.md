@@ -5,7 +5,7 @@ title: "useUpdate"
 
 # `useUpdate`
 
-This hook allows to call `dataProvider.update()` when the callback is executed, and update a single record based on its `id` and a `data` argument. 
+This hook allows to call `dataProvider.update()` when the callback is executed, and update a single record based on its `id` and a `data` argument.
 
 ```jsx
 // syntax
@@ -60,4 +60,18 @@ const IncreaseLikeButton = ({ record }) => {
     if (error) { return <p>ERROR</p>; }
     return <button disabled={isLoading} onClick={handleClick}>Like</button>;
 };
+```
+
+**Tip**: If you use TypeScript, you can specify the record and error types for more type safety:
+
+```tsx
+useUpdate<Product, Error>(undefined, undefined, {
+    onError: (error) => {
+        // error is an instance of Error.
+    },
+    onSettled: (data, error) => {
+        // data is an instance of Product.
+        // error is an instance of Error.
+    },
+})
 ```

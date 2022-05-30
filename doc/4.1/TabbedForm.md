@@ -176,19 +176,19 @@ export const PostCreate = () => {
 
 Pass an `sx` prop to customize the style of the main component and the underlying elements.
 
-The most common usage is to limit the width of the form, to avoid long inputs on large screens:
-
 {% raw %}
 ```jsx
 export const PostCreate = () => (
     <Create>
-        <TabbedForm sx={{ maxWidth: 600 }}>
+        <TabbedForm sx={{ border: '1px solid red' }}>
             ...
         </TabbedForm>
     </Create>
 );
 ```
 {% endraw %}
+
+**Tip:** If you want to customize the _content_ of the tabs instead, for example to limit the width of the form, you should rather add an `sx` prop to the [`<FormTab>` component](#formtab).
 
 ## `syncWithLocation`
 

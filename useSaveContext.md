@@ -32,7 +32,7 @@ const MyComponent = () => {
         console.log(data);
     }
     const saving = false;
-    const mutatinoMode = "pessimistic";
+    const mutationMode = "pessimistic";
     return (
         <SaveContextProvider value={{ save, saving, mutationMode }}>
             <MyForm />

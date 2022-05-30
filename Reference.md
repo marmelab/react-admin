@@ -107,7 +107,7 @@ title: "Reference"
 * [`<RichTextField>`](./RichTextField.md)
 * [`<RichTextInput>`](./RichTextInput.md)
 * [`<RowForm>`](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid#rowform)<img class="icon" src="./img/premium.svg" />
-* `<SaveButton>`
+* [`<SaveButton>`](./SaveButton.md)
 * [`<SavedQueriesList>`](./SavedQueriesList.md)
 * [`<Search>`](https://marmelab.com/ra-enterprise/modules/ra-search#the-search-component)<img class="icon" src="./img/premium.svg" />
 * [`<SearchInput>`](./FilteringTutorial.md#searchinput)
@@ -125,7 +125,7 @@ title: "Reference"
 * [`<SimpleList>`](./SimpleList.md)
 * [`<SimpleShowLayout>`](./SimpleShowLayout.md)
 * [`<SingleFieldList>`](./SingleFieldList.md)
-* [`<SortButton>`](./Buttons.md#sortbutton)
+* [`<SortButton>`](./SortButton.md)
 * `<Tab>`
 * [`<TabbedForm>`](./TabbedForm.md)
 * [`<TabbedShowLayout>`](./TabbedShowLayout.md)
