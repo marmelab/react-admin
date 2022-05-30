@@ -11,7 +11,7 @@ import {
     Theme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { MutationMode, RedirectionSideEffect, useTranslate } from 'ra-core';
+import { useTranslate } from 'ra-core';
 import { Path } from 'react-router';
 
 /**
@@ -101,10 +101,7 @@ interface Props {
     disabled?: boolean;
     label?: string;
     size?: 'small' | 'medium' | 'large';
-    redirect?: RedirectionSideEffect;
     variant?: string;
-    resource?: string;
-    mutationMode?: MutationMode;
 }
 
 export type ButtonProps = Props & MuiButtonProps;
