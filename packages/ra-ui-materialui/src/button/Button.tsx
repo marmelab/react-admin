@@ -11,12 +11,7 @@ import {
     Theme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import {
-    MutationMode,
-    RaRecord,
-    RedirectionSideEffect,
-    useTranslate,
-} from 'ra-core';
+import { useTranslate } from 'ra-core';
 import { Path } from 'react-router';
 
 /**
@@ -32,9 +27,7 @@ import { Path } from 'react-router';
  * </Button>
  *
  */
-export const Button = <RecordType extends RaRecord = RaRecord>(
-    props: ButtonProps<RecordType>
-) => {
+export const Button = (props: ButtonProps) => {
     const {
         alignIcon = 'left',
         children,
@@ -53,7 +46,6 @@ export const Button = <RecordType extends RaRecord = RaRecord>(
     const isXSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')
     );
-    const restProps = sanitizeButtonRestProps(rest);
 
     return isXSmall ? (
         label && !disabled ? (
@@ -62,7 +54,7 @@ export const Button = <RecordType extends RaRecord = RaRecord>(
                     aria-label={translatedLabel}
                     className={className}
                     color={color}
-                    {...restProps}
+                    {...rest}
                     {...linkParams}
                     size="large"
                 >
@@ -74,7 +66,7 @@ export const Button = <RecordType extends RaRecord = RaRecord>(
                 className={className}
                 color={color}
                 disabled={disabled}
-                {...restProps}
+                {...rest}
                 {...linkParams}
                 size="large"
             >
@@ -90,7 +82,7 @@ export const Button = <RecordType extends RaRecord = RaRecord>(
             disabled={disabled}
             startIcon={alignIcon === 'left' && children ? children : undefined}
             endIcon={alignIcon === 'right' && children ? children : undefined}
-            {...restProps}
+            {...rest}
             {...linkParams}
         >
             {translatedLabel}
@@ -98,7 +90,7 @@ export const Button = <RecordType extends RaRecord = RaRecord>(
     );
 };
 
-interface Props<RecordType extends RaRecord = RaRecord> {
+interface Props {
     alignIcon?: 'left' | 'right';
     children?: ReactElement;
     className?: string;
@@ -108,30 +100,10 @@ interface Props<RecordType extends RaRecord = RaRecord> {
     disabled?: boolean;
     label?: string;
     size?: 'small' | 'medium' | 'large';
-    redirect?: RedirectionSideEffect;
     variant?: string;
-    // May be provided manually
-    record?: RecordType;
-    resource?: string;
-    mutationMode?: MutationMode;
 }
 
-export type ButtonProps<RecordType extends RaRecord = RaRecord> = Props<
-    RecordType
-> &
-    MuiButtonProps;
-
-export const sanitizeButtonRestProps = ({
-    // The next props are injected by Toolbar
-    invalid,
-    pristine,
-    record,
-    redirect,
-    resource,
-    mutationMode,
-    hasCreate,
-    ...rest
-}: any) => rest;
+export type ButtonProps = Props & MuiButtonProps;
 
 Button.propTypes = {
     alignIcon: PropTypes.oneOf(['left', 'right']),

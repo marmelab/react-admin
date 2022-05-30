@@ -9,6 +9,7 @@ import {
     useRecordContext,
     useSaveContext,
     SaveContextValue,
+    RedirectionSideEffect,
 } from 'ra-core';
 
 import { ButtonProps } from './Button';
@@ -81,7 +82,7 @@ export const DeleteButton = <RecordType extends RaRecord = any>(
 export interface DeleteButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown
-> extends ButtonProps<RecordType>,
+> extends ButtonProps,
         SaveContextValue {
     confirmTitle?: string;
     confirmContent?: string;
@@ -92,6 +93,9 @@ export interface DeleteButtonProps<
         MutationOptionsError,
         DeleteParams<RecordType>
     >;
+    record?: RecordType;
+    redirect?: RedirectionSideEffect;
+    resource?: string;
 }
 
 DeleteButton.propTypes = {

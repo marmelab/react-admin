@@ -8,7 +8,6 @@ import ContentSave from '@mui/icons-material/Save';
 import { useFormContext, useFormState } from 'react-hook-form';
 import {
     CreateParams,
-    MutationMode,
     RaRecord,
     TransformData,
     UpdateParams,
@@ -17,8 +16,6 @@ import {
     warning,
     setSubmissionErrors,
 } from 'ra-core';
-
-import { sanitizeButtonRestProps } from './Button';
 
 /**
  * Submit button for resource forms (Edit and Create).
@@ -133,7 +130,7 @@ export const SaveButton = <RecordType extends RaRecord = any>(
             disabled={disabled}
             onClick={handleClick}
             // TODO: find a way to display the loading state (LoadingButton from mui Lab?)
-            {...sanitizeButtonRestProps(rest)}
+            {...rest}
         >
             {finalSaving ? <CircularProgress size={18} thickness={2} /> : icon}
             {displayedLabel}
@@ -160,10 +157,6 @@ interface Props<
     transform?: TransformData;
     saving?: boolean;
     variant?: string;
-    // May be injected by Toolbar - sanitized in Button
-    record?: RaRecord;
-    resource?: string;
-    mutationMode?: MutationMode;
 }
 
 export type SaveButtonProps<RecordType extends RaRecord = any> = Props<

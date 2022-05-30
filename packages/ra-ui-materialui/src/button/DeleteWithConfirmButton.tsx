@@ -14,6 +14,7 @@ import {
     useRecordContext,
     useResourceContext,
     useTranslate,
+    RedirectionSideEffect,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
@@ -96,7 +97,7 @@ const defaultIcon = <ActionDelete />;
 export interface DeleteWithConfirmButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown
-> extends ButtonProps<RecordType> {
+> extends ButtonProps {
     confirmTitle?: string;
     confirmContent?: React.ReactNode;
     icon?: ReactElement;
@@ -109,6 +110,9 @@ export interface DeleteWithConfirmButtonProps<
         MutationOptionsError,
         DeleteParams<RecordType>
     >;
+    record?: RecordType;
+    redirect?: RedirectionSideEffect;
+    resource?: string;
 }
 
 DeleteWithConfirmButton.propTypes = {

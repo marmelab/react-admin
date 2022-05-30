@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ContentCreate from '@mui/icons-material/Create';
-import { ButtonProps as MuiButtonProps } from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import {
     RaRecord,
@@ -25,7 +24,9 @@ import { Button, ButtonProps } from './Button';
  *     <EditButton label="Edit comment" />
  * );
  */
-export const EditButton = (props: EditButtonProps) => {
+export const EditButton = <RecordType extends RaRecord = any>(
+    props: EditButtonProps<RecordType>
+) => {
     const {
         icon = defaultIcon,
         label = 'ra.action.edit',
@@ -61,14 +62,18 @@ const defaultIcon = <ContentCreate />;
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
-interface Props {
+interface Props<RecordType extends RaRecord = any> {
     icon?: ReactElement;
     label?: string;
-    record?: RaRecord;
+    record?: RecordType;
+    resource?: string;
     scrollToTop?: boolean;
 }
 
-export type EditButtonProps = Props & ButtonProps & MuiButtonProps;
+export type EditButtonProps<RecordType extends RaRecord = any> = Props<
+    RecordType
+> &
+    ButtonProps;
 
 EditButton.propTypes = {
     icon: PropTypes.element,

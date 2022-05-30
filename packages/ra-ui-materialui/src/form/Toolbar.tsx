@@ -9,7 +9,6 @@ import {
     Theme,
 } from '@mui/material';
 import clsx from 'clsx';
-import { RaRecord } from 'ra-core';
 
 import { SaveButton, DeleteButton } from '../button';
 
@@ -55,11 +54,7 @@ import { SaveButton, DeleteButton } from '../button';
  * @prop {ReactElement[]} children Customize the buttons you want to display in the <Toolbar>.
  *
  */
-export const Toolbar = <
-    RecordType extends Partial<RaRecord> = Partial<RaRecord>
->(
-    props: ToolbarProps<RecordType>
-) => {
+export const Toolbar = (props: ToolbarProps) => {
     const { children, className, resource, ...rest } = props;
 
     const isXs = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
@@ -88,18 +83,16 @@ export const Toolbar = <
     );
 };
 
-export interface ToolbarProps<RecordType extends Partial<RaRecord> = any>
-    extends Omit<MuiToolbarProps, 'classes'> {
+export interface ToolbarProps extends Omit<MuiToolbarProps, 'classes'> {
     children?: ReactNode;
     className?: string;
-    record?: RecordType;
     resource?: string;
 }
 
 Toolbar.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
-    record: PropTypes.any,
+
     resource: PropTypes.string,
 };
 
