@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 import expect from 'expect';
-import { MutationMode } from 'ra-core';
 
 import { Button } from './Button';
 import { AdminContext } from '../AdminContext';
@@ -9,8 +8,6 @@ import { AdminContext } from '../AdminContext';
 const invalidButtonDomProps = {
     invalid: false,
     pristine: false,
-    resource: 'posts',
-    mutationMode: 'pessimistic' as MutationMode,
 };
 
 describe('<Button />', () => {
