@@ -9,6 +9,7 @@ export * from './TranslatableContextProvider';
 export * from './TranslationUtils';
 export * from './useLocaleState';
 export * from './useLocale';
+export * from './useLocales';
 export * from './useSetLocale';
 export * from './useTranslatable';
 export * from './useTranslatableContext';

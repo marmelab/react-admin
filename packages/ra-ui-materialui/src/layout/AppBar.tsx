@@ -11,12 +11,13 @@ import {
     useMediaQuery,
     Theme,
 } from '@mui/material';
-import { ComponentPropType } from 'ra-core';
+import { ComponentPropType, useLocales } from 'ra-core';
 
 import { SidebarToggleButton } from './SidebarToggleButton';
 import { LoadingIndicator } from './LoadingIndicator';
 import { UserMenu } from './UserMenu';
 import { HideOnScroll } from './HideOnScroll';
+import { LocalesMenuButton } from '../button';
 
 /**
  * The AppBar component renders a custom MuiAppBar.
@@ -65,6 +66,7 @@ export const AppBar: FC<AppBarProps> = memo(props => {
         ...rest
     } = props;
 
+    const locales = useLocales();
     const isXSmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('sm')
     );
@@ -92,6 +94,9 @@ export const AppBar: FC<AppBarProps> = memo(props => {
                     ) : (
                         children
                     )}
+                    {locales && locales.length > 1 ? (
+                        <LocalesMenuButton />
+                    ) : null}
                     <LoadingIndicator />
                     {typeof userMenu === 'boolean' ? (
                         userMenu === true ? (
