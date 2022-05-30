@@ -66,6 +66,7 @@ interface Props<RecordType extends RaRecord = any> {
     icon?: ReactElement;
     label?: string;
     record?: RecordType;
+    resource?: string;
     scrollToTop?: boolean;
 }
 

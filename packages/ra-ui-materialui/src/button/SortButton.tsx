@@ -147,8 +147,9 @@ const arePropsEqual = (prevProps, nextProps) =>
 
 export interface SortButtonProps {
     fields: string[];
-    label?: string;
     icon?: ReactElement;
+    label?: string;
+    resource?: string;
 }
 
 const StyledButton = styled(Button, {

@@ -14,6 +14,7 @@ import {
     useRecordContext,
     useResourceContext,
     useTranslate,
+    RedirectionSideEffect,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
@@ -110,6 +111,8 @@ export interface DeleteWithConfirmButtonProps<
         DeleteParams<RecordType>
     >;
     record?: RecordType;
+    redirect?: RedirectionSideEffect;
+    resource?: string;
 }
 
 DeleteWithConfirmButton.propTypes = {

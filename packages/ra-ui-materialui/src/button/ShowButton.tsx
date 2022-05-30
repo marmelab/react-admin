@@ -29,6 +29,7 @@ const ShowButton = <RecordType extends RaRecord = any>(
         icon = defaultIcon,
         label = 'ra.action.show',
         record: recordProp,
+        resource: resourceProp,
         scrollToTop = true,
         ...rest
     } = props;
@@ -65,6 +66,7 @@ interface Props<RecordType extends RaRecord = any> {
     icon?: ReactElement;
     label?: string;
     record?: RecordType;
+    resource?: string;
     scrollToTop?: boolean;
 }
 

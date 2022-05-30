@@ -37,6 +37,7 @@ export const ListButton = (props: ListButtonProps) => {
     const {
         icon = defaultIcon,
         label = 'ra.action.list',
+        resource: resourceProp,
         scrollToTop = true,
         ...rest
     } = props;
@@ -66,6 +67,7 @@ const defaultIcon = <ActionList />;
 interface Props {
     icon?: ReactElement;
     label?: string;
+    resource?: string;
     scrollToTop?: boolean;
 }
 

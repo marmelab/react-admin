@@ -12,6 +12,7 @@ import {
     DeleteParams,
     useRecordContext,
     useResourceContext,
+    RedirectionSideEffect,
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
@@ -67,6 +68,8 @@ export interface DeleteWithUndoButtonProps<
         DeleteParams<RecordType>
     >;
     record?: RecordType;
+    redirect?: RedirectionSideEffect;
+    resource?: string;
 }
 
 DeleteWithUndoButton.propTypes = {
