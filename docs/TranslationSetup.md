@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Translation"
+title: "Setup"
 ---
 
 # Setup
