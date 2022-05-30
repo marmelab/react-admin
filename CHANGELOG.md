@@ -1,5 +1,32 @@
 # Changelog
 
+## v4.1.1
+
+* Fix `<DateTimeInput validate={required()} />` doesn't work correctly ([#7744](https://github.com/marmelab/react-admin/pull/7744)) ([djhi](https://github.com/djhi))
+* Fix `validate` function errors messages are not display when passed as translatable object ([#7741](https://github.com/marmelab/react-admin/pull/7741)) ([djhi](https://github.com/djhi))
+* Fix `useUpdateMany` does not support the `returnPromise` option ([#7740](https://github.com/marmelab/react-admin/pull/7740)) ([djhi](https://github.com/djhi))
+* Fix cannot remove `<SimpleForm>` and `<TabbedForm>` toolbar with `toolbar={false}` ([#7738](https://github.com/marmelab/react-admin/pull/7738)) ([djhi](https://github.com/djhi))
+* Fix `<Admin>` calls its child function without permissions while loading them ([#7737](https://github.com/marmelab/react-admin/pull/7737)) ([djhi](https://github.com/djhi))
+* Fix `useConfigureAdminRouterFromChildren` when child function return null ([#7731](https://github.com/marmelab/react-admin/pull/7731)) ([djhi](https://github.com/djhi))
+* Fix `<TabbedForm>` ignores the `sx` prop ([#7721](https://github.com/marmelab/react-admin/pull/7721)) ([slax57](https://github.com/slax57))
+* Fix `<Loading>` ignores the `sx` prop ([#7723](https://github.com/marmelab/react-admin/pull/7723)) ([slax57](https://github.com/slax57))
+* Fix `<Form>` submit cannot be prevented with `event.preventDefault` ([#7715](https://github.com/marmelab/react-admin/pull/7715)) ([slax57](https://github.com/slax57))
+* Fix `<AutocompleteInput>` tests regression ([#7714](https://github.com/marmelab/react-admin/pull/7714)) ([slax57](https://github.com/slax57))
+* [Doc] Fix typo in `useSaveContext` code snippet ([#7747](https://github.com/marmelab/react-admin/pull/7747)) ([wgiddens](https://github.com/wgiddens))
+* [Doc] Fix `<SelectArrayInput>` doc mentions non-existent prop resettable ([#7743](https://github.com/marmelab/react-admin/pull/7743)) ([djhi](https://github.com/djhi))
+* [Doc] Fix `<SaveButton>` is documented in two different chapters ([#7742](https://github.com/marmelab/react-admin/pull/7742)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix typo in custom form layout example ([#7734](https://github.com/marmelab/react-admin/pull/7734)) ([ApolloRisky](https://github.com/ApolloRisky))
+* [Doc] Fix `useGetOne` section about query aggregation ([#7732](https://github.com/marmelab/react-admin/pull/7732)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix global theme overrides example ([#7727](https://github.com/marmelab/react-admin/pull/7727)) ([mediafreakch](https://github.commediafreakch))
+* [Doc] Fix Form Validation section mentions ability to do both async validation per input and global validation ([#7726](https://github.com/marmelab/react-admin/pull/7726)) ([slax57](https://github.com/slax57))
+* [Doc] Fix `<BooleanInput>` example for overriding check icon ([#7720](https://github.com/marmelab/react-admin/pull/7720)) ([mediafreakch](https://github.commediafreakch))
+* [Doc] Fix tutorial example cannot be run in CodeSandbox ([#7713](https://github.com/marmelab/react-admin/pull/7713)) ([slax57](https://github.com/slax57))
+* [TypeScript] Fix `<Button>` component props accepts a record ([#7764](https://github.com/marmelab/react-admin/pull/7764)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix `<Button>` component props ([#7750](https://github.com/marmelab/react-admin/pull/7750)) ([djhi](https://github.com/djhi))
+* [TypeScript] Fix `<SingleFieldList>` rejects the `sx` prop ([#7735](https://github.com/marmelab/react-admin/pull/7735)) ([djhi](https://github.com/djhi))
+* [TypeScript] Fix missing `useMutation` error typing definitions ([#7722](https://github.com/marmelab/react-admin/pull/7722)) ([soullivaneuh](https://github.comsoullivaneuh))
+* [TypeScript] Fix cannot specify the error type in mutation hooks ([#7698](https://github.com/marmelab/react-admin/pull/7698)) ([soullivaneuh](https://github.comsoullivaneuh))
+
 ## v4.1.0
 
 * Add `LabelPrefix` context to better guess correct input labels ([#7710](https://github.com/marmelab/react-admin/pull/7710)) ([fzaninotto](https://github.com/fzaninotto))
