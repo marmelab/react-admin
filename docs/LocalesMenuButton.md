@@ -11,7 +11,7 @@ The `<LocalesMenuButton>` component, also known as the "language switcher", disp
 
 ## Usage
 
-Add the `<LocalesMenuButton>` to a custom `<AppBar>`, and list the locales available to end users:
+Add the `<LocalesMenuButton>` to a custom `<AppBar>`:
 
 ```jsx
 import { LocalesMenuButton, AppBar } from 'react-admin';
@@ -53,6 +53,8 @@ const App = () => (
     </Admin>
 );
 ```
+
+**Tip**: the `<LocalesMenuButton>` will be added to the `<AppBar>` automatically if you have multiple locales declared in the `getLocales` method of your `i18nProvider`.
 
 ## `languages`
 

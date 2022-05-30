@@ -16,14 +16,14 @@ You will use translation features mostly via the `i18nProvider`, and a set of ho
 
 ## Introducing the `i18nProvider`
 
-Just like for data fetching and authentication, react-admin relies on a simple object for translations. It's called the `i18nProvider`, and it manages translation and language changes using tree methods:
+Just like for data fetching and authentication, react-admin relies on a simple object for translations. It's called the `i18nProvider`, and it manages translation and language changes using the following methods:
 
 ```js
 const i18nProvider = {
     translate: (key, options) => string,
     changeLocale: locale => Promise,
     getLocale: () => string,
-    getLocales: () => [{ locale: string; name: string; }], // Optional
+    getLocales: () => [{ locale: string; name: string; }], // Optional. Used by LocalesMenuButton if available
 }
 ```
 
