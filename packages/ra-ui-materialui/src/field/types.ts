@@ -14,7 +14,7 @@ export interface PublicFieldProps {
     sortBy?: string;
     sortByOrder?: SortOrder;
     source?: string;
-    label?: string | ReactElement | false;
+    label?: string | ReactElement | boolean;
     sortable?: boolean;
     className?: string;
     cellClassName?: string;
