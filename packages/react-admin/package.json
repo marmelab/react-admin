@@ -44,7 +44,7 @@
         "ra-i18n-polyglot": "^4.1.1",
         "ra-language-english": "^4.1.1",
         "ra-ui-materialui": "^4.1.1",
-        "react-hook-form": "^7.27.0",
+        "react-hook-form": "^7.31.0",
         "react-router": "^6.1.0",
         "react-router-dom": "^6.1.0"
     }
