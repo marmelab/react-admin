@@ -21419,7 +21419,7 @@ __metadata:
     query-string: ^7.1.1
     react: ^17.0.0
     react-dom: ^17.0.0
-    react-hook-form: ^7.27.0
+    react-hook-form: ^7.31.0
     react-is: ^17.0.2
     react-query: ^3.32.1
     react-router: ^6.1.0
@@ -21432,7 +21432,7 @@ __metadata:
     history: ^5.1.0
     react: ^16.9.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.9.0 || ^17.0.0 || ^18.0.0
-    react-hook-form: ^7.27.0
+    react-hook-form: ^7.31.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
   languageName: unknown
@@ -21567,7 +21567,7 @@ __metadata:
     ra-ui-materialui: ^4.1.1
     react: ^17.0.0
     react-dom: ^17.0.0
-    react-hook-form: ^7.27.0
+    react-hook-form: ^7.31.0
     tsup: ^5.11.11
   peerDependencies:
     "@mui/icons-material": ^5.0.1
@@ -21659,7 +21659,7 @@ __metadata:
     react-dom: ^17.0.0
     react-dropzone: ^12.0.4
     react-error-boundary: ^3.1.4
-    react-hook-form: ^7.27.0
+    react-hook-form: ^7.31.0
     react-query: ^3.32.1
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
@@ -21854,7 +21854,7 @@ __metadata:
     ra-i18n-polyglot: ^4.1.1
     ra-language-english: ^4.1.1
     ra-ui-materialui: ^4.1.1
-    react-hook-form: ^7.27.0
+    react-hook-form: ^7.31.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
     rimraf: ^2.6.3
@@ -22076,12 +22076,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.27.0":
-  version: 7.27.1
-  resolution: "react-hook-form@npm:7.27.1"
+"react-hook-form@npm:^7.31.0":
+  version: 7.31.3
+  resolution: "react-hook-form@npm:7.31.3"
   peerDependencies:
-    react: ^16.8.0 || ^17
-  checksum: 0a125d61080202acfba3be84dc7156fe79812a2f640658fb96b20b688555abc1d6bd5b5ff64933d3e1050bfe191271654bfcbdc32126c30a702acf003e600b0c
+    react: ^16.8.0 || ^17 || ^18
+  checksum: 41875aad648dbb9f9f0b297fc6e4601656ceae502ec4d77a7644cc66eb54f1ba0c645bac6bce7d5e099d4e52f5870c2dd9d48d6760220453412c1d5865b72738
   languageName: node
   linkType: hard
 
@@ -23932,7 +23932,7 @@ __metadata:
     react-admin: ^4.1.1
     react-app-polyfill: ^1.0.4
     react-dom: ^17.0.0
-    react-hook-form: ^7.27.0
+    react-hook-form: ^7.31.0
     react-query: ^3.32.1
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
