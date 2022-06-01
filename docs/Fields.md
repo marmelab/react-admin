@@ -863,7 +863,7 @@ You can also use a custom `link` function to get a custom path for the children.
 ]
 ```
 
-Then react-admin renders the `<PostList>` with a loader for the `<ReferenceField>`, fetches the API for the related users in one call (`GET http://path.to.my.api/users?ids=[789,735]`), and re-renders the list once the data arrives. This accelerates the rendering and minimizes network load.
+Then react-admin renders the `<PostList>` with a loader for the `<ReferenceField>`, fetches the API for the related users in one call (`GET http://path.to.my.api/users?filter={"ids":[789,735]}`), and re-renders the list once the data arrives. This accelerates the rendering and minimizes network load.
 
 ### `<ReferenceManyField>`
 
