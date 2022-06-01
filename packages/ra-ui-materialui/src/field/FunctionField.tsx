@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useMemo } from 'react';
-import { RaRecord, useRecordContext } from 'ra-core';
+import { useRecordContext } from 'ra-core';
 import PropTypes from 'prop-types';
 import Typography, { TypographyProps } from '@mui/material/Typography';
 
