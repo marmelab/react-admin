@@ -65,15 +65,19 @@ import { AutocompleteInput, AutocompleteInputProps } from './AutocompleteInput';
  * @example
  * <AutocompleteArrayInput source="gender" choices={choices} translateChoice={false}/>
  */
+
 export const AutocompleteArrayInput = <
     OptionType extends RaRecord = RaRecord,
-    DisableClearable extends boolean | undefined = false,
+    DisableClearable extends boolean | undefined = boolean | undefined,
     SupportCreate extends boolean | undefined = false
 >({
     defaultValue,
     ...props
-}: AutocompleteArrayInputProps) => (
-    // @ts-ignore
+}: AutocompleteArrayInputProps<
+    OptionType,
+    DisableClearable,
+    SupportCreate
+>) => (
     <AutocompleteInput<OptionType, true, DisableClearable, SupportCreate>
         {...props}
         multiple
