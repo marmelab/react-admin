@@ -25,8 +25,7 @@ export interface PublicFieldProps {
     fullWidth?: boolean;
 }
 
-// Props injected by react-admin
-export interface InjectedFieldProps<RecordType extends RaRecord = any> {
+export interface InjectedFieldProps<RecordType = any> {
     record?: RecordType;
     resource?: string;
 }
