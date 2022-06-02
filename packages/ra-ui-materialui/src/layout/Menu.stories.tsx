@@ -1,14 +1,11 @@
 import * as React from 'react';
-import { Menu } from './Menu';
+
 import { Resource, testDataProvider } from 'ra-core';
 import { defaultTheme, Admin } from 'react-admin';
-import { Layout } from '..';
-import { AppBar, Typography } from '@mui/material';
+import { AppBar, Typography, Box } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
-import { Box } from '@mui/material';
 import { ToggleThemeButton } from '../button';
-import { Title } from './Title';
-import { SidebarToggleButton } from './SidebarToggleButton';
+import { Layout, Menu, SidebarToggleButton, Title } from '.';
 
 export default { title: 'ra-ui-materialui/layout/Menu' };
 
