@@ -13,10 +13,11 @@ const resources = ['Posts', 'Comments', 'Tags', 'Users', 'Orders', 'Reviews'];
 
 export const MenuDefault = () => (
     <Admin dataProvider={testDataProvider()} layout={StorybookLayoutDefault}>
-        {resources.map(resource => {
+        {resources.map((resource, index) => {
             return (
                 <Resource
                     name={resource}
+                    key={`ressource_${index}`}
                     list={<StorybookList name={resource} />}
                 />
             );
