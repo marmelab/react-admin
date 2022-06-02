@@ -540,7 +540,7 @@ You can also prevent `<ReferenceField>` from adding link to children by setting 
 ]
 ```
 
-Then react-admin renders the `<CommentList>` with a loader for the `<ReferenceField>`, fetches the API for the related posts in one call (`GET http://path.to.my.api/posts?ids=[789,735]`), and re-renders the list once the data arrives. This accelerates the rendering, and minimizes network load.
+Then react-admin renders the `<CommentList>` with a loader for the `<ReferenceField>`, fetches the API for the related posts in one call (`GET http://path.to.my.api/posts?filter={"ids":[789,735]}`), and re-renders the list once the data arrives. This accelerates the rendering, and minimizes network load.
 
 ## `<ReferenceManyField>`
 
