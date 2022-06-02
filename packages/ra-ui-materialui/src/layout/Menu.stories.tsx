@@ -32,10 +32,11 @@ const StorybookMenuDefault = () => {
 
 export const MenuDense = () => (
     <Admin dataProvider={testDataProvider()} layout={StorybookLayoutDense}>
-        {resources.map(resource => {
+        {resources.map((resource, index) => {
             return (
                 <Resource
                     name={resource}
+                    key={`ressource_${index}`}
                     list={<StorybookList name={resource} />}
                 />
             );
