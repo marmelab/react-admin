@@ -17,7 +17,7 @@ export const MenuDefault = () => (
             return (
                 <Resource
                     name={resource}
-                    key={`ressource_${index}`}
+                    key={`resource_${index}`}
                     list={<StorybookList name={resource} />}
                 />
             );
@@ -37,7 +37,7 @@ export const MenuDense = () => (
             return (
                 <Resource
                     name={resource}
-                    key={`ressource_${index}`}
+                    key={`resource_${index}`}
                     list={<StorybookList name={resource} />}
                 />
             );
