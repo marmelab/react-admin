@@ -14,6 +14,7 @@ export const messages = {
             name: 'Post |||| Posts',
             fields: {
                 commentable_short: 'Com.',
+                commentable: 'Commentable',
                 notifications: 'Notifications recipients',
                 nb_view: 'Nb views',
                 password: 'Password (if protected post)',
