@@ -1,5 +1,14 @@
 # Changelog
 
+## v4.1.2
+
+* Fix `DatagridContext` and `useDatagridContext` aren't exported ([#7779](https://github.com/marmelab/react-admin/pull/7779)) ([djhi](https://github.com/djhi))
+* Fix `<ArrayInput>` doesn't allow null as value ([#7768](https://github.com/marmelab/react-admin/pull/7768)) ([septentrion-730n](https://github.com/septentrion-730n))
+* Fix `<AutocompleteArrayInput>` accepts true as `disableClearable` value ([#7766](https://github.com/marmelab/react-admin/pull/7766)) ([septentrion-730n](https://github.com/septentrion-730n))
+* [Typescript] Fix `<FunctionField>` generic typing restriction ([#7770](https://github.com/marmelab/react-admin/pull/7770)) ([septentrion-730n](https://github.com/septentrion-730n))
+* [TypeScript] Fix `<FilterLiveSearch>` missing `fullWidth` prop and harmonize `label` prop type between `CommonInputProps` and `LabeledProps` ([#7757](https://github.com/marmelab/react-admin/pull/7757)) ([septentrion-730n](https://github.com/septentrion-730n))
+* [Doc] Fix quick filters screencast doesn't show saved filters ([#7778](https://github.com/marmelab/react-admin/pull/7778)) ([septentrion-730n](https://github.com/septentrion-730n))
+
 ## v4.1.1
 
 * Fix `<DateTimeInput validate={required()} />` doesn't work correctly ([#7744](https://github.com/marmelab/react-admin/pull/7744)) ([djhi](https://github.com/djhi))
