@@ -367,7 +367,7 @@ export const useUpdate = <
             setTimeout(
                 () =>
                     onSuccess(
-                        previousRecord,
+                        { ...previousRecord, ...callTimeData },
                         { resource: callTimeResource, ...callTimeParams },
                         { snapshot: snapshot.current }
                     ),
@@ -378,7 +378,7 @@ export const useUpdate = <
             setTimeout(
                 () =>
                     reactMutationOptions.onSuccess(
-                        previousRecord,
+                        { ...previousRecord, ...callTimeData },
                         { resource: callTimeResource, ...callTimeParams },
                         { snapshot: snapshot.current }
                     ),
