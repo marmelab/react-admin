@@ -33,17 +33,17 @@
     "dependencies": {
         "@apollo/client": "^3.6.6",
         "graphql-ast-types-browser": "~1.0.2",
-        "lodash": "~4.17.21",
+        "lodash": "^4.17.21",
         "pluralize": "~8.0.0",
         "ra-data-graphql": "^4.0.3"
     },
     "peerDependencies": {
-        "graphql": "^15 || ^16",
+        "graphql": "^15",
         "ra-core": "^4.1.2"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
-        "graphql": "^16.5.0",
+        "graphql": "^15.6.0",
         "npm-dts": "^1.3.11",
         "rimraf": "^2.6.3",
         "tsup": "^5.11.11"

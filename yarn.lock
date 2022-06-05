@@ -10856,7 +10856,7 @@ __metadata:
     date-fns: ^2.19.0
     fakerest: ^3.0.0
     fetch-mock: ~9.11.0
-    graphql: ^16.5.0
+    graphql: ^15.6.0
     graphql-tag: ^2.12.6
     inflection: ~1.12.0
     json-graphql-server: ~2.3.0
@@ -14137,13 +14137,6 @@ __metadata:
   version: 15.8.0
   resolution: "graphql@npm:15.8.0"
   checksum: 30cc09b77170a9d1ed68e4c017ec8c5265f69501c96e4f34f8f6613f39a886c96dd9853eac925f212566ed651736334c8fe24ceae6c44e8d7625c95c3009a801
-  languageName: node
-  linkType: hard
-
-"graphql@npm:^16.5.0":
-  version: 16.5.0
-  resolution: "graphql@npm:16.5.0"
-  checksum: 082bad733549a032fe313dd94b780c0e2a46a6a362183e02e2050f6e083fb49722afb1413b069314d5ba1bc3fa14e22817820a9e61e2bbcba8d35f925d0de60e
   languageName: node
   linkType: hard
 
@@ -17690,7 +17683,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:4.x, lodash@npm:^4.17.11, lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.7.0, lodash@npm:~4.17.21, lodash@npm:~4.17.5":
+"lodash@npm:4.x, lodash@npm:^4.17.11, lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.19, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:^4.7.0, lodash@npm:~4.17.5":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: d8cbea072bb08655bb4c989da418994b073a608dffa608b09ac04b43a791b12aeae7cd7ad919aa4c925f33b48490b5cfe6c1f71d827956071dae2e7bb3a6b74c
@@ -21515,16 +21508,16 @@ __metadata:
   dependencies:
     "@apollo/client": ^3.6.6
     cross-env: ^5.2.0
-    graphql: ^16.5.0
+    graphql: ^15.6.0
     graphql-ast-types-browser: ~1.0.2
-    lodash: ~4.17.21
+    lodash: ^4.17.21
     npm-dts: ^1.3.11
     pluralize: ~8.0.0
     ra-data-graphql: ^4.0.3
     rimraf: ^2.6.3
     tsup: ^5.11.11
   peerDependencies:
-    graphql: ^15 || ^16
+    graphql: ^15
     ra-core: ^4.1.2
   languageName: unknown
   linkType: soft
@@ -21535,14 +21528,14 @@ __metadata:
   dependencies:
     "@apollo/client": ^3.6.6
     cross-env: ^5.2.0
-    graphql: ^16.5.0
-    lodash: ~4.17.21
+    graphql: ^15.6.0
+    lodash: ^4.17.21
     npm-dts: ^1.3.11
     pluralize: ~8.0.0
     rimraf: ^2.6.3
     tsup: ^5.11.11
   peerDependencies:
-    graphql: ^15 || ^16
+    graphql: ^15
     ra-core: ^4.1.2
   languageName: unknown
   linkType: soft
