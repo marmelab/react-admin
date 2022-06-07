@@ -5,6 +5,19 @@ title: "Writing An I18nProvider"
 
 # Writing An I18nProvider
 
+An `i18nProvider` should be an object with tree methods:
+
+```jsx
+// in src/i18nProvider.js
+export const i18nProvider = {
+    translate: (key, options) => string,
+    changeLocale: locale => Promise<void>,
+    getLocale: () => string,
+}
+```
+
+## Basic Implementation
+
 Here is the simplest possible implementation for an `i18nProvider` with English and French messages:
 
 ```js
@@ -47,7 +60,11 @@ const i18nProvider = {
 };
 ```
 
-But this is too naive: react-admin expects that i18nProviders support string interpolation for translation, and asynchronous message loading for locale change. That's why react-admin bundles an `i18nProvider` *factory* called `polyglotI18nProvider`. This factory relies on [polyglot.js](https://airbnb.io/polyglot.js/), which uses JSON files for translations. It only expects one argument: a function returning a list of messages based on a locale passed as argument. 
+This works, but it is too limited: react-admin expects that i18nProviders support string interpolation for translation, and asynchronous message loading for locale change. 
+
+## Leveraging Polyglot
+
+That's why react-admin bundles an `i18nProvider` *factory* called `ra-i18n-polyglot`. This factory relies on [polyglot.js](https://airbnb.io/polyglot.js/), which uses JSON files for translations. It only expects one argument: a function returning a list of messages based on a locale passed as argument. 
 
 So the previous provider can be written as:
 
@@ -82,3 +99,7 @@ const i18nProvider = polyglotI18nProvider(locale =>
     'en' // Default locale
 );
 ```
+
+The default (English) messages are available in [the `ra-language-english` package source](https://github.com/marmelab/react-admin/blob/master/packages/ra-language-english/src/index.ts).
+
+Check the [Setting Up Translation](./TranslationSetup.md) for detailed instructions on how to build an `i18nProvider` this way.

@@ -5,7 +5,16 @@ title: "useTranslate"
 
 # `useTranslate`
 
-If you need to translate messages in your own components, React-admin provides a `useTranslate` hook, which returns the `translate` function:
+If you need to translate messages in your own components, React-admin provides a `useTranslate` hook, which returns the `translate` function.
+
+## Syntax
+
+```jsx
+const translate = useTranslate();
+const translatedMessage = translate(translationKey, options);
+```
+
+## Usage
 
 ```jsx
 // in src/MyHelloButton.js
@@ -38,9 +47,9 @@ export default MyHelloButton;
 // and translate the `resources.customers.fields.first_name` key
 ```
 
-## Using Specific Polyglot Features
+## Using Pluralization and Interpolation
 
-Polyglot.js is a fantastic library: in addition to being small, fully maintained, and totally framework-agnostic, it provides some nice features such as interpolation and pluralization, that you can use in react-admin.
+Polyglot.js provides some nice features such as interpolation and pluralization, that you can use in react-admin.
 
 ```js
 const messages = {

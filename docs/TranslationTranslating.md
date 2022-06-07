@@ -3,9 +3,9 @@ layout: default
 title: "Translating"
 ---
 
-# Translating
+# Translating UI Components
 
-The `message` returned by the `polyglotI18nProvider` function argument should be a dictionary where the keys identify interface components, and values are the translated string. This dictionary is a simple JavaScript object looking like the following:
+The messages returned by the `polyglotI18nProvider` function argument should be a dictionary where the keys identify interface components, and values are the translated string. This dictionary is a simple JavaScript object looking like the following:
 
 ```js
 {
@@ -24,25 +24,49 @@ The `message` returned by the `polyglotI18nProvider` function argument should be
 }
 ```
 
-## Translating The Interface
+All react-admin core components use keys starting with the `ra` prefix, to prevent collisions with your own custom translations.
 
-All core translations are in the `ra` namespace, in order to prevent collisions with your own custom translations. The root key used at runtime is determined by the value of the `locale` prop.
+The default (English) messages are available in [the `ra-language-english` package source](https://github.com/marmelab/react-admin/blob/master/packages/ra-language-english/src/index.ts).
 
-The default messages are available [here](https://github.com/marmelab/react-admin/blob/master/packages/ra-language-english/src/index.ts).
+
+**Tip**: You can see the raw translation keys in the UI by passing a dummy `i18nProvider` to the `<Admin>` component:
+
+```jsx
+const i18nProvider = {
+    translate: key => key,
+    changeLocale: locale => Promise.resolve(),
+    getLocale: () => 'en',
+}
+
+const App = () => (
+    <Admin 
+        dataProvider={dataProvider}
+        i18nProvider={i18nProvider}
+    >
+        {/* ... */}
+    </Admin>
+);
+```
 
 ## Translating Resource and Field Names
 
-By default, React-admin uses resource names ("post", "comment", etc.) and field names ("title", "first_name", etc.) everywhere in the interface. It simply "humanizes" the technical identifiers to make them look better (e.g. "first_name" becomes "First name").
+When react-admin needs to render a resource name ("post", "comment", etc.) or a field name ("title", "first_name", etc.), it "humanizes" the technical identifier to make it look better (e.g. "first_name" becomes "First name").
 
 However, before humanizing names, react-admin checks the `messages` dictionary for a possible translation, with the following keys:
 
 - `resources.${resourceName}.name` for resource names (used for the menu and page titles)
 - `resources.${resourceName}.fields.${fieldName}` for field names (used for datagrid header and form input labels)
 
-This lets you translate your own resource and field names by passing a `messages` object with a `resources` key:
+This lets you customize resource and field names for each locale.
+
+Create an object containing the translation messages for your app resource and field names:
 
 ```js
-{
+// in src/i18n/en.js
+import englishMessages from 'ra-language-english';
+
+export const en = {
+    ...englishMessages,
     resources: {
         shoe: {
             name: 'Shoe |||| Shoes',
@@ -62,29 +86,93 @@ This lets you translate your own resource and field names by passing a `messages
         }
     },
     ...
-}
+};
 ```
 
-As you can see, [polyglot pluralization](https://airbnb.io/polyglot.js/#pluralization) is used here, but it is optional.
+What's with the strange `||||` syntax? `ra-i18n-polyglot` comes with [a pluralization system](https://airbnb.io/polyglot.js/#pluralization) allowing to define both singular and plural translations for a key. It even works for languages with more than one plural forms (like slavic languages)!
 
-Using `resources` keys is an alternative to using the `label` prop in Field and Input components, with the advantage of supporting translation.
+**Tip**: Providing translation for resource and field names using the `i18nProvider` is an alternative to using the `label` prop in Field and Input components, with the advantage of supporting translation.
 
-## Translating Validation Errors
+## Translating Custom Components
 
-In Create and Edit views, forms can use custom validators. These validator functions should return translation keys rather than translated messages. React-admin automatically passes these identifiers to the translation function: 
+If you need to translate messages in your own components, React-admin provides [the `useTranslate` hook](./useTranslate.md), which returns the `translate` function. 
+
+Imagine a translation key for the text to translate, e.g. 'myroot.hello.world' for a 'Hello, World' button, and call the `translate` function with this key:
+
+```jsx
+// in src/MyHelloButton.js
+import * as React from "react";
+import { useTranslate } from 'react-admin';
+
+export const MyHelloButton = () => {
+    const translate = useTranslate();
+    return (
+        <button>{translate('myroot.hello.world')}</button>
+    );
+};
+```
+
+**Tip**: For your message identifiers, choose a different root name than `ra` and `resources`, which are reserved.
+
+Then, in your translation messages, define the translation for the key 'myroot.hello.world':
+
+```js
+// in src/i18n/en.js
+import englishMessages from 'ra-language-english';
+
+export const en = {
+    ...englishMessages,
+    myroot: {
+        hello: {
+            world: 'Hello, World',
+        },
+    },
+    ...
+};
+```
+
+**Tip**: Don't use `useTranslate` for Field and Input labels, or for page titles, as they are already translated:
+
+```jsx
+// don't do this
+<TextField source="first_name" label={translate('myroot.first_name')} />
+
+// do this instead
+<TextField source="first_name" label="myroot.first_name" />
+
+// or even better, use the default translation key
+<TextField source="first_name" />
+// and translate the `resources.customers.fields.first_name` key
+```
+
+## Translating Form Validation Errors
+
+In Create and Edit views, forms can use [custom validators](./Validation.md#per-input-validation-custom-function-validator). These validator functions should return translation keys rather than translated messages. React-admin automatically passes these identifiers to the translation function.
+
+For instance, here is a validator function that only allows numbers greater than 10:
 
 ```js
 // in validators/required.js
-const required = () => (value, allValues, props) =>
-    value
-        ? undefined
-        : 'myroot.validation.required';
+const greaterThanTen = (value, allValues, props) =>
+    value <= 10
+        ? 'myroot.validation.greaterThanTen'
+        : undefined;
+
+// in PersonEdit.js
+const PersonEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="name" />
+            <TextInput source="age" validate={greaterThanTen} />
+        </SimpleForm>
+    </Edit>
+);
 
 // in i18n/en.json
 export default {
     myroot: {
         validation: {
-            required: 'Required field',
+            greaterThanTen: 'Should be greater than 10',
         }
     }
 };
@@ -95,9 +183,9 @@ If the translation depends on a variable, the validator can return an object rat
 ```js
 // in validators/minLength.js
 const minLength = (min) => (value, allValues, props) => 
-    value.length >= min
-        ? undefined
-        : { message: 'myroot.validation.minLength', args: { min } };
+    value.length < min
+        ? { message: 'myroot.validation.minLength', args: { min } }
+        : undefined;
 
 // in i18n/en.js
 export default {
@@ -111,44 +199,68 @@ export default {
 
 ## Translating Notification Messages
 
-By default, react-admin translates the notification messages. You can pass variables for polyglot interpolation with custom notifications. For example:
+If you use [the `useNotify` hook](./useNotify.md) to display a notification to the user, you can use a translation key for the notification text. React-admin will translate it automatically - no need to call `translate`.
 
-```js
-notify('myroot.hello.world', { messageArgs: { name: 'Planet Earth' } });
+```jsx
+const ValidateCommentButton = ({ id }) => {
+    const notify = useNotify();
+    const [update] = useUpdate();
+    const handleClick = () => {
+        update(
+            'comments',
+            { id, data: { status: 'approved' } },
+            { onSuccess: () => notify('myroot.comments.validate.success') }
+        );
+    };
+    return <button onClick={handleClick}>Validate</button>;
+}
 ```
 
-Assuming you have the following in your custom messages:
+## Translating Record Content
 
-```js
-// in src/App.js
-const messages = {
-    en: {
-        myroot: {
-            hello: {
-                world: 'Hello, %{name}!',
-            },
-        },
-    },
-};
+Some of your records may contain data with multiple versions - one for each locale. 
+
+For instance, a product may have one reference, but several names. A `product` record would look like this:
+
+```jsx
+{
+    id: 123,
+    reference: 'GURSIKSO',
+    name: {
+        en: 'Evening dress',
+        fr: 'Robe du soir',
+    }
+}
 ```
 
-## Translating The Empty Page
+React-admin provides a specialized component to display such translatable data ([`<TranslatableFields>`](./TranslatableFields.md)), and another specialized component to edit it ([`<TranslatableInputs>`](./TranslatableInputs.md)):
 
-React-admin uses the keys `ra.page.empty` and `ra.page.invite` when displaying the page inviting the user to create the first record.
+```jsx
+import { Edit, SimpleForm, TextInput, TranslatableInputs } from 'react-admin';
 
-If you want to override these messages in a specific resource you can add the following keys to your translation:
+export const ProductEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="reference" />
+            <TranslatableInputs locales={['en', 'fr']}>
+                <TextInput source="name" />
+            </TranslatableInputs>
+        </SimpleForm>
+    </Edit>
+);
+```
 
-- `resources.${resourceName}.empty` for the primary message (e.g. "No posts yet.")
-- `resources.${resourceName}.invite` for the message inviting the user to create one (e.g. "Do you want to create one?")
+Check the documentation for each of these components for details. 
 
-## Specific case in Confirm messages and Empty Page
+## Forcing The Case in Confirm messages and Empty Page
 
 In confirm messages and in the empty page, the resource name appears in the middle of sentences, and react-admin automatically sets the resource name translation to lower case.
 
 > Are you sure you want to delete this comment?
 
 This works in English, but you may want to display resources in another way to match with language rules, like in German, where names are always capitalized.
-ie: `Sind Sie sicher, dass Sie diesen Kommentar löschen möchten?`
+
+> Sind Sie sicher, dass Sie diesen Kommentar löschen möchten?
 
 To do this, simply add a `forcedCaseName` key next to the `name` key in your translation file.
 
@@ -165,55 +277,4 @@ To do this, simply add a `forcedCaseName` key next to the `name` key in your tra
         }
     }
 }
-```
-
-## Translating Record Fields
-
-Some of your records may contain fields that are translated in multiple languages. It's common, in such cases, to offer an interface allowing admin users to see and edit each translation. React-admin provides 2 components for that:
-
-- To display translatable fields, use the [`<TranslatableFields>`](./TranslatableFields.md) component
-- To edit translatable fields, use the [`<TranslatableInputs>`](./TranslatableInputs.md) component
-
-They both expect the translatable values to have the following structure:
-
-```js
-{
-    name: {
-        en: 'The english value',
-        fr: 'The french value',
-        tlh: 'The klingon value',
-    },
-    description: {
-        en: 'The english value',
-        fr: 'The french value',
-        tlh: 'The klingon value',
-    }
-}
-```
-
-## Mixing Interface and Domain Translations
-
-When translating an admin, interface messages (e.g. "List", "Page", etc.) usually come from a third-party package, while your domain messages (e.g. "Shoe", "Date of birth", etc.) come from your own code. That means you need to combine these messages before passing them to `<Admin>`. The recipe for combining messages is to use ES6 destructuring:
-
-```jsx
-import { Admin } from 'react-admin';
-import polyglotI18nProvider from 'ra-i18n-polyglot';
-// interface translations
-import englishMessages from 'ra-language-english';
-import frenchMessages from 'ra-language-french';
-
-// domain translations
-import * as domainMessages from './i18n';
-
-const messages = {
-    fr: { ...frenchMessages, ...domainMessages.fr },
-    en: { ...englishMessages, ...domainMessages.en },
-};
-const i18nProvider = polyglotI18nProvider(locale => messages[locale]);
-
-const App = () => (
-    <Admin i18nProvider={i18nProvider}>
-        ...
-    </Admin>
-);
 ```

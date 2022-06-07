@@ -3,181 +3,129 @@ layout: default
 title: "Setup"
 ---
 
-# Setup
+# Setting Up Translations
 
-Just like for the `dataProvider` and the `authProvider`, you can *inject* the `i18nProvider` to your react-admin app using the `<Admin>` component:
+If you want to add or update translations, you'll have to provide your own `i18nProvider`.
+
+Just like for the `dataProvider` and the `authProvider`, you can inject the `i18nProvider` to your react-admin app using the `<Admin i18nProvider>` prop:
 
 ```jsx
-import i18nProvider from './i18n/i18nProvider';
+import { i18nProvider } from './i18nProvider';
 
 const App = () => (
     <Admin 
         dataProvider={dataProvider}
-        authProvider={authProvider}
         i18nProvider={i18nProvider}
     >
-        <Resource name="posts" list={/* ... */}>
-        // ...
+        {/* ... */}
+    </Admin>
+);
 ```
 
-If you want to add or update translations, you'll have to provide your own `i18nProvider`.
-
-React-admin components use translation keys for their labels, and rely on the `i18nProvider` to translate them. For instance:
-
-```jsx
-import { Button, useTranslate } from 'react-admin';
-
-const SaveButton = ({ doSave }) => {
-    const translate = useTranslate(); // returns the i18nProvider.translate() method
-    return (
-        <Button onClick={doSave}>
-            {translate('ra.action.save')} // will translate to "Save" in English and "Enregistrer" in French
-        </Button>
-    );
-};
-```
+In most cases, the `i18nProvider` will contain translations for both react-admin keys and of your own keys.
 
 ## Changing The Default Locale
 
-The default react-admin locale is `en`, for English. If you want to display the interface in another language by default, you'll have to install a third-party package. For instance, to change the interface to French, you must install the `ra-language-french` npm package, then use it in a custom `i18nProvider`, as follows:
+If you want to display the interface in another language than English by default, you have to setup an `i18nProvider` that provides the translation for all the keys used by react-admin. Fortunately, the react-admin community has already written translations for more than 40 locales. Check the [list of available locales](./TranslationLocales.md) to find the locale you're looking for.
+
+For instance, to change the interface to French, install the `ra-language-french` npm package, then use it in a custom `i18nProvider`, as follows:
 
 ```jsx
-import * as React from "react";
-import { Admin, Resource } from 'react-admin';
+// in src/i18nProvider.js
 import polyglotI18nProvider from 'ra-i18n-polyglot';
-import frenchMessages from 'ra-language-french';
+import fr from 'ra-language-french';
 
-const i18nProvider = polyglotI18nProvider(() => frenchMessages, 'fr');
-
-const App = () => (
-    <Admin i18nProvider={i18nProvider}>
-        ...
-    </Admin>
-);
-
-export default App;
+export const i18nProvider = polyglotI18nProvider(() => fr, 'fr');
 ```
 
-Note that if the app provides a language switcher, and a user selects a different language, this choice is persisted across reloads until the user logs out.
+**Tip**: The `ra-i18n-polyglot` package allows to build an `i18nProvider` based on translation messages. It relies on [the Polyglot.js library](https://airbnb.io/polyglot.js/).
 
-## Available Locales
+## Supporting Multiple Languages
 
-You can find translation packages for the following languages:
+If you want to let users switch the interface to another locale at runtime, import more than one translation package, and configure `ra-i18n-polyglot` to use them. `ra-i18n-polyglot` generates an `i18nProvider` based on a function parameter. The function takes a locale argument, and should return the translations for that locale. 
 
-- Arabic (`ar`): [developerium/ra-language-arabic](https://github.com/developerium/ra-language-arabic)
-- Armenian (`am`): [mrdntgrn/ra-language-armenian](https://github.com/mrdntgrn/ra-language-armenian)
-- Belarusian (`be`): [tui-ru/ra-language-belarusian](https://github.com/tui-ru/ra-language-belarusian)
-- Brazilian Portuguese (`pt-br`): [gucarletto/ra-language-pt-br](https://github.com/gucarletto/ra-language-pt-br)
-- Bulgarian (`bg`): [ptodorov0/ra-language-bulgarian](https://github.com/ptodorov0/ra-language-bulgarian)
-- Catalan (`ca`): [joshf/ra-language-catalan](https://github.com/joshf/ra-language-catalan)
-- Chinese (`zh-TW`): [areyliu6/ra-language-chinese-traditional](https://github.com/areyliu6/ra-language-chinese-traditional)
-- Chinese (`zh`): [chen4w/ra-language-chinese](https://github.com/chen4w/ra-language-chinese)
-- Czech (`cs`): [binao/ra-language-czech](https://github.com/binao/ra-language-czech)
-- Danish (`da`): [nikri/ra-language-danish](https://github.com/nikri/ra-language-danish)
-- Dutch (`nl`): [nickwaelkens/ra-language-dutch](https://github.com/nickwaelkens/ra-language-dutch)
-- English (`en`): [marmelab/ra-language-english](https://github.com/marmelab/react-admin/tree/master/packages/ra-language-english)
-- Estonian (`et`): [tui-ru/ra-language-estonian](https://github.com/tui-ru/ra-language-estonian)
-- Farsi (`fa`): [hamidfzm/ra-language-farsi](https://github.com/hamidfzm/ra-language-farsi)
-- Finnish (`fi`): [aikain/ra-language-finnish](https://github.com/aikain/ra-language-finnish)
-- French (`fr`): [marmelab/ra-language-french](https://github.com/marmelab/react-admin/tree/master/packages/ra-language-french)
-- German (`de`): [greenbananaCH/ra-language-german](https://github.com/greenbananaCH/ra-language-german) (tree translation: [straurob/ra-tree-language-german](https://github.com/straurob/ra-tree-language-german))
-- Greek (`el`): [panterz/ra-language-greek](https://github.com/panterz/ra-language-greek)
-- Hebrew (`he`): [ak-il/ra-language-hebrew](https://github.com/ak-il/ra-language-hebrew)
-- Hindi (`hi`): [harshit-budhraja/ra-language-hindi](https://github.com/harshit-budhraja/ra-language-hindi)
-- Hungarian (`hu`): [phelion/ra-language-hungarian](https://github.com/phelion/ra-language-hungarian)
-- Indonesian (`id`): [danangekal/ra-language-indonesian-new](https://github.com/danangekal/ra-language-indonesian-new)
-- Italian (`it`): [stefsava/ra-italian](https://github.com/stefsava/ra-italian)
-- Japanese (`ja`): [bicstone/ra-language-japanese](https://github.com/bicstone/ra-language-japanese)
-- Korean (`ko`): [acidsound/ra-language-korean](https://github.com/acidsound/ra-language-korean)
-- Latvian (`lv`): [tui-ru/ra-language-latvian](https://github.com/tui-ru/ra-language-latvian)
-- Lithuanian (`lt`): [tui-ru/ra-language-lithuanian](https://github.com/tui-ru/ra-language-lithuanian)
-- Malay (`ms`): [kayuapi/ra-language-malay](https://github.com/kayuapi/ra-language-malay.git)
-- Norwegian (`no`): [jon-harald/ra-language-norwegian](https://github.com/jon-harald/ra-language-norwegian)
-- Polish (`pl`): [tymek/ra-language-polish](https://github.com/tymek/ra-language-polish)
-- Portuguese (`pt`): [henriko202/ra-language-portuguese](https://github.com/henriko202/ra-language-portuguese)
-- Romanian (`ro`): [gyhaLabs/ra-language-romanian](https://github.com/gyhaLabs/ra-language-romanian)
-- Russian (`ru`): [klucherev/ra-language-russian](https://github.com/klucherev/ra-language-russian)
-- Slovak (`sk`): [zavadpe/ra-language-slovak](https://github.com/zavadpe/ra-language-slovak)
-- Spanish (`es`): [blackboxvision/ra-language-spanish](https://github.com/BlackBoxVision/ra-language-spanish)
-- Swedish (`sv`): [kolben/ra-language-swedish](https://github.com/kolben/ra-language-swedish)
-- Turkish (`tr`): [KamilGunduz/ra-language-turkish](https://github.com/KamilGunduz/ra-language-turkish)
-- Ukrainian (`ua`): [koresar/ra-language-ukrainian](https://github.com/koresar/ra-language-ukrainian)
-- Vietnamese (`vi`): [hieunguyendut/ra-language-vietnamese](https://github.com/hieunguyendut/ra-language-vietnamese)
+For instance, to support English and French:
 
-In addition, the previous version of react-admin, called admin-on-rest, was translated in the following languages:
-
-- Chinese (Traditional) (`cht`): [leesei/aor-language-chinese-traditional](https://github.com/leesei/aor-language-chinese-traditional)
-- Croatian (`hr`): [ariskemper/aor-language-croatian](https://github.com/ariskemper/aor-language-croatian)
-- Slovenian (`sl`): [ariskemper/aor-language-slovenian](https://github.com/ariskemper/aor-language-slovenian)
-- Thai (`th`): [liverbool/aor-language-thai](https://github.com/liverbool/aor-language-thai)
-
-These packages are not directly interoperable with react-admin, but the upgrade is straightforward; rename the root key from "aor" to "ra". We invite the authors of the packages listed above to republish their translations for react-admin, using a different package name.
-
-If you want to contribute a new translation, feel free to submit a pull request to update [this page](https://github.com/marmelab/react-admin/blob/master/docs/Translation.md) with a link to your package.
-
-## Lazy-Loading Locales
-
-Bundling all the possible locales in the `i18nProvider` is a great recipe to increase your bundle size, and slow down the initial application load. Fortunately, the `i18nProvider` returns a *promise* for locale change calls to load secondary locales on demand. And the `polyglotI18nProvider` accepts when its argument function returns a Promise, too. For example:
-
-```js
+```jsx
+// in src/i18nProvider.js
 import polyglotI18nProvider from 'ra-i18n-polyglot';
-import englishMessages from '../en.js';
+import en from 'ra-language-english';
+import fr from 'ra-language-french';
 
-const i18nProvider = polyglotI18nProvider(locale => {
-    if (locale === 'en') {
-        // initial call, must return synchronously
-        return englishMessages;
-    }
-    if (locale === 'fr') {
-        return import('../i18n/fr.js').then(messages => messages.default);
-    }
-}, 'en');
+const translations = { en, fr };
+
+export const i18nProvider = polyglotI18nProvider(locale => translations[locale], 'en');
+```
+
+The second argument to the `polyglotI18nProvider` function is the default locale.
+
+Next, create a custom App Bar containing the `<LocalesMenuButton>` button, which lets users change the current locale:
+
+```jsx
+// in src/MyAppBar.js
+import { LocalesMenuButton, AppBar } from 'react-admin';
+import { Typography } from '@mui/material';
+
+export const MyAppBar = () => (
+    <AppBar>
+        <Typography flex="1" variant="h6" id="react-admin-title"/>
+        <LocalesMenuButton
+            languages={[
+                { locale: 'en', name: 'English' },
+                { locale: 'fr', name: 'Français' },
+            ]}
+        />
+    </AppBar>
+);
+```
+
+Then, pass the custom App Bar to a custom `<Layout>`, and the `<Layout>` to your `<Admin>`:
+
+```jsx
+import { Admin } from 'react-admin';
+
+import { MyAppBar } from './MyAppBar';
+import { i18nProvider } from './i18nProvider';
+
+const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
 
 const App = () => (
-    <Admin i18nProvider={i18nProvider}>
+    <Admin
+        i18nProvider={i18nProvider}
+        dataProvider={dataProvider}
+        layout={MyLayout}
+    >
         ...
     </Admin>
 );
 ```
+
+That's all it takes to have a multilingual UI. As an added benefit, once a user has chosen a locale different than the default one, the react-admin app will always render using that locale (thanks to [the Store](./Store.md)).
 
 ## Using The Browser Locale
 
 React-admin provides a helper function named `resolveBrowserLocale()`, which detects the user's browser locale. To use it, simply pass the function as the `initialLocale` argument of `polyglotI18nProvider`.
 
 ```jsx
-import * as React from "react";
-import { 
-    Admin,
-    Resource,
-    resolveBrowserLocale,
-} from 'react-admin';
+// in src/i18nProvider.js
+import { resolveBrowserLocale } from 'react-admin';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
-import englishMessages from 'ra-language-english';
-import frenchMessages from 'ra-language-french';
+import en from 'ra-language-english';
+import fr from 'ra-language-french';
 
-const messages = {
-    fr: frenchMessages,
-    en: englishMessages,
-};
-const i18nProvider = polyglotI18nProvider(
-    locale => messages[locale] ? messages[locale] : messages.en,
+const translations = { en, fr };
+
+export const i18nProvider = polyglotI18nProvider(
+    locale => translations[locale] ? translations[locale] : translations.en,
     resolveBrowserLocale()
 );
-
-const App = () => (
-    <Admin i18nProvider={i18nProvider}>
-        ...
-    </Admin>
-);
-
-export default App;
 ```
 
-**Tip**: `resolveBrowserLocale` returns the main locale string ('en', 'fr', etc.), if you use a locale with a region (e.g. 'en-US', 'en-GB'), you must pass { fullLocale:`true` } as a second argument to `resolveBrowserLocale` in order to obtain the full locale string.
+**Tip**: `resolveBrowserLocale` returns the main locale string ('en', 'fr', etc.), if you use a locale with a region (e.g. 'en-US', 'en-GB'), you must pass `{ fullLocale: true }` as a second argument to `resolveBrowserLocale` in order to obtain the full locale string.
 
 ```jsx
-const i18nProvider = polyglotI18nProvider(
-    locale => messages[locale] ? messages[locale] : messages.en,
+export const i18nProvider = polyglotI18nProvider(
+    locale => translations[locale] ? translations[locale] : translations.en,
     resolveBrowserLocale('en', { fullLocale: true }) // 'en' => Default locale when browser locale can't be resolved, { fullLocale: true } => Return full locale
 );
 ```
@@ -193,16 +141,15 @@ But you may want to avoid this for some messages, e.g. error messages from a dat
 The fastest way to do so is to use the third parameter of the `polyglotI18nProvider` function to pass the `allowMissing` option to Polyglot at initialization:
 
 ```diff
+// in src/i18nProvider.js
 import polyglotI18nProvider from 'ra-i18n-polyglot';
-import englishMessages from './i18n/englishMessages';
-import frenchMessages from './i18n/frenchMessages';
+import en from './i18n/englishMessages';
+import fr from './i18n/frenchMessages';
 
 const i18nProvider = polyglotI18nProvider(locale => 
-    locale === 'fr' ? frenchMessages : englishMessages,
+    locale === 'fr' ? fr : en,
     'en', // Default locale
-+   {
-+       allowMissing: true
-+   }
++   { allowMissing: true }
 );
 ```
 
