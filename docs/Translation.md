@@ -7,7 +7,7 @@ title: "Translation"
 
 ![Switching interface language](./img/translation.gif)
 
-The react-admin user interface uses English as the default language. But you can also display the UI and content in other languages, allow changing language at runtime, even lazy-loading optional languages to avoid increasing the bundle size with all translations. 
+The react-admin user interface uses English as the default language. But you can also display the UI and content in other languages, allow changing language at runtime, and even lazy-loading optional languages to avoid increasing the bundle size with all translations. 
 
 You will use translation features mostly via the `i18nProvider`, and a set of hooks (`useTranslate`, `useLocaleState`).
 
@@ -21,7 +21,7 @@ We'll use a bit of custom vocabulary in this section:
 
 Just like for data fetching and authentication, react-admin is agnostic to your translation backend. It relies on a provider for internationalization. It's called the `i18nProvider`, and it manages translation and language changes.
 
-It should be an object with tree methods:
+It should be an object with three methods:
 
 ```jsx
 // in src/i18nProvider.js
@@ -51,9 +51,9 @@ If you want to add or update translations, you’ll have to provide your own `i1
 
 ## Translation Keys
 
-React-admin components use translation keys for their text, and rely on the `i18nProvider` to translate them.
+React-admin components use translation keys for their text and rely on the `i18nProvider` to translate them.
 
-For instance, the `<SaveButton>` renders the word 'Save' in English, and 'Enregistrer' in French. This is because the button actually renders the return value of the `i18nProvider.translate('ra.action.save')` method:
+For instance, the `<SaveButton>` renders the word 'Save' in English and 'Enregistrer' in French. This is because the button actually renders the return value of the `i18nProvider.translate('ra.action.save')` method:
 
 ```jsx
 import { Button, useTranslate } from 'react-admin';
@@ -90,7 +90,7 @@ Check the [Translating the UI](./TranslationTranslating.md) for example usage of
 
 ## `ra-i18n-polyglot`
 
-Although you can build an `i18nProvider` from scratch, react-admin provides package called `ra-i18n-polyglot` that leverages [the Polyglot.js library](https://airbnb.io/polyglot.js/) to build an `i18nProvider` based on a dictionary of translations.
+Although you can build an `i18nProvider` from scratch, react-admin provides a package called `ra-i18n-polyglot` that leverages [the Polyglot.js library](https://airbnb.io/polyglot.js/) to build an `i18nProvider` based on a dictionary of translations.
 
 ```jsx
 // in src/i18nProvider.js
@@ -164,7 +164,7 @@ const englishMessages = {
         boolean: {
             true: 'Yes',
             false: 'No',
-            null: ' ',
+            null: ' ',
         },
         /* ...*/
     },
@@ -205,7 +205,7 @@ const englishMessages = {
 
 **Tip**: The default (English) messages are available in [the `ra-language-english` package source](https://github.com/marmelab/react-admin/blob/master/packages/ra-language-english/src/index.ts).
 
-When building a internationalized app with react-admin, the usual workflow is therefore to let developers write the main translation file. Then, pass this file to a team of translators, whith the task to translate it. They can use any software they want for that (even software build got Gettext/PO files, as it's possible to convert POT to and from JSON). Finally, aggregate all the translations into an `i18nProvider`.
+When building an internationalized app with react-admin, the usual workflow is therefore to let developers write the main translation file. Then, pass this file to a team of translators, with the task to translate it. They can use any software they want for that (even software using Gettext/PO files, as it's possible to convert POT to and from JSON). Finally, aggregate all the translations into an `i18nProvider`.
 
 Check [the translation setup documentation](./TranslationSetup.md) to understand how to build your own translation file, the [list of available translations](./TranslationLocales.md) to find a translation for your language, and  [Translating the UI](./TranslationTranslating.md) to understand how to translate react-admin commponents.
 

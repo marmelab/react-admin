@@ -22,11 +22,11 @@ const App = () => (
 );
 ```
 
-In most cases, the `i18nProvider` will contain translations for both react-admin keys and of your own keys.
+In most cases, the `i18nProvider` will contain translations for both react-admin keys and your own keys.
 
 ## Changing The Default Locale
 
-If you want to display the interface in another language than English by default, you have to setup an `i18nProvider` that provides the translation for all the keys used by react-admin. Fortunately, the react-admin community has already written translations for more than 40 locales. Check the [list of available locales](./TranslationLocales.md) to find the locale you're looking for.
+If you want to display the interface in another language than English by default, you have to set up an `i18nProvider` that provides the translation for all the keys used by react-admin. Fortunately, the react-admin community has already written translations for more than 40 locales. Check the [list of available locales](./TranslationLocales.md) to find the locale you're looking for.
 
 For instance, to change the interface to French, install the `ra-language-french` npm package, then use it in a custom `i18nProvider`, as follows:
 
@@ -42,7 +42,7 @@ export const i18nProvider = polyglotI18nProvider(() => fr, 'fr');
 
 ## Supporting Multiple Languages
 
-If you want to let users switch the interface to another locale at runtime, import more than one translation package, and configure `ra-i18n-polyglot` to use them. `ra-i18n-polyglot` generates an `i18nProvider` based on a function parameter. The function takes a locale argument, and should return the translations for that locale. 
+If you want to let users switch the interface to another locale at runtime, import more than one translation package, and configure `ra-i18n-polyglot` to use them. `ra-i18n-polyglot` generates an `i18nProvider` based on a function parameter. The function takes a locale argument and should return the translations for that locale. 
 
 For instance, to support English and French:
 
@@ -121,7 +121,7 @@ export const i18nProvider = polyglotI18nProvider(
 );
 ```
 
-**Tip**: `resolveBrowserLocale` returns the main locale string ('en', 'fr', etc.), if you use a locale with a region (e.g. 'en-US', 'en-GB'), you must pass `{ fullLocale: true }` as a second argument to `resolveBrowserLocale` in order to obtain the full locale string.
+**Tip**: `resolveBrowserLocale` returns the main locale string ('en', 'fr', etc.), if you use a locale with a region (e.g. 'en-US', 'en-GB'), you must pass `{ fullLocale: true }` as a second argument to `resolveBrowserLocale` to obtain the full locale string.
 
 ```jsx
 export const i18nProvider = polyglotI18nProvider(

@@ -89,7 +89,7 @@ export const en = {
 };
 ```
 
-What's with the strange `||||` syntax? `ra-i18n-polyglot` comes with [a pluralization system](https://airbnb.io/polyglot.js/#pluralization) allowing to define both singular and plural translations for a key. It even works for languages with more than one plural forms (like slavic languages)!
+What's with the strange `||||` syntax? `ra-i18n-polyglot` comes with [a pluralization system](https://airbnb.io/polyglot.js/#pluralization) allowing to define both singular and plural translations for a key. It even works for languages with more than one plural form (like Slavic languages)!
 
 **Tip**: Providing translation for resource and field names using the `i18nProvider` is an alternative to using the `label` prop in Field and Input components, with the advantage of supporting translation.
 
@@ -254,7 +254,7 @@ Check the documentation for each of these components for details.
 
 ## Forcing The Case in Confirm messages and Empty Page
 
-In confirm messages and in the empty page, the resource name appears in the middle of sentences, and react-admin automatically sets the resource name translation to lower case.
+In confirmation messages and on the empty page, the resource name appears in the middle of sentences, and react-admin automatically sets the resource name translation to lower case.
 
 > Are you sure you want to delete this comment?
 

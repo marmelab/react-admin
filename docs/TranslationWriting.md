@@ -5,7 +5,7 @@ title: "Writing An I18nProvider"
 
 # Writing An I18nProvider
 
-An `i18nProvider` should be an object with tree methods:
+An `i18nProvider` should be an object with three methods:
 
 ```jsx
 // in src/i18nProvider.js
@@ -64,7 +64,7 @@ This works, but it is too limited: react-admin expects that i18nProviders suppor
 
 ## Leveraging Polyglot
 
-That's why react-admin bundles an `i18nProvider` *factory* called `ra-i18n-polyglot`. This factory relies on [polyglot.js](https://airbnb.io/polyglot.js/), which uses JSON files for translations. It only expects one argument: a function returning a list of messages based on a locale passed as argument. 
+That's why react-admin bundles an `i18nProvider` *factory* called `ra-i18n-polyglot`. This factory relies on [polyglot.js](https://airbnb.io/polyglot.js/), which uses JSON files for translations. It only expects one argument: a function returning a list of messages based on a locale passed as an argument. 
 
 So the previous provider can be written as:
 

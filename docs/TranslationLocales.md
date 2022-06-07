@@ -47,7 +47,7 @@ You can find translation packages for the following languages:
 - Ukrainian (`ua`): [koresar/ra-language-ukrainian](https://github.com/koresar/ra-language-ukrainian)
 - Vietnamese (`vi`): [hieunguyendut/ra-language-vietnamese](https://github.com/hieunguyendut/ra-language-vietnamese)
 
-In addition, the previous version of react-admin, called admin-on-rest, was translated in the following languages:
+In addition, the previous version of react-admin, called admin-on-rest, was translated into the following languages:
 
 - Chinese (Traditional) (`cht`): [leesei/aor-language-chinese-traditional](https://github.com/leesei/aor-language-chinese-traditional)
 - Croatian (`hr`): [ariskemper/aor-language-croatian](https://github.com/ariskemper/aor-language-croatian)
