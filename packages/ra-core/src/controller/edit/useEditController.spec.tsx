@@ -69,6 +69,44 @@ describe('useEditController', () => {
         await waitFor(() => {
             expect(getOne).toHaveBeenCalledWith('posts', { id: 'test?' });
         });
+        await waitFor(() => {
+            expect(screen.queryAllByText('hello')).toHaveLength(1);
+        });
+    });
+
+    it('should use the id provided through props if any', async () => {
+        const getOne = jest
+            .fn()
+            .mockImplementationOnce(() =>
+                Promise.resolve({ data: { id: 0, title: 'hello' } })
+            );
+        const dataProvider = ({ getOne } as unknown) as DataProvider;
+        const history = createMemoryHistory({
+            initialEntries: ['/posts/test%3F'],
+        });
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider} history={history}>
+                <Routes>
+                    <Route
+                        path="/posts/:id"
+                        element={
+                            <EditController id={0} resource="posts">
+                                {({ record }) => (
+                                    <div>{record && record.title}</div>
+                                )}
+                            </EditController>
+                        }
+                    />
+                </Routes>
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(getOne).toHaveBeenCalledWith('posts', { id: 0 });
+        });
+        await waitFor(() => {
+            expect(screen.queryAllByText('hello')).toHaveLength(1);
+        });
     });
 
     it('should accept custom client query options', async () => {
