@@ -801,10 +801,10 @@ export const PostList = () => (
         <SimpleList
             primaryText={record => record.title}
             secondaryText={record => (
-							<ReferenceField label="User" source="userId" reference="users">
-              	<TextField source="name" />
-            	</ReferenceField>
-						)}
+                <ReferenceField label="User" source="userId" reference="users">
+                  <TextField source="name" />
+                </ReferenceField>
+            )}
         />
     </List>
 );
@@ -829,14 +829,14 @@ export const PostList = () => {
     return (
         <List>
             {isSmall ? (
-							<SimpleList
-								primaryText={record => record.title}
-								secondaryText={record => (
-									<ReferenceField label="User" source="userId" reference="users">
-										<TextField source="name" />
-									</ReferenceField>
-								)}
-							/>
+                            <SimpleList
+                                primaryText={record => record.title}
+                                secondaryText={record => (
+                                    <ReferenceField label="User" source="userId" reference="users">
+                                        <TextField source="name" />
+                                    </ReferenceField>
+                                )}
+                            />
             ) : (
                 <Datagrid>
                     <TextField source="id" />
