@@ -172,7 +172,7 @@ You can customize this automated label by specifying a `label` prop. `<SimpleSho
 <TextField source="author.name" label={<FieldTitle label="Author" />} />
 ```
 
-**Tip**: If your admin has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.md#translating-resource-and-field-names) for details.
+**Tip**: If your admin has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./TranslationTranslating.md#translating-resource-and-field-names) for details.
 
 **Tip**: You can opt out of the label decoration by passing `false` to the `label` prop.
 

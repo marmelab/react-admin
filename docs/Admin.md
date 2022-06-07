@@ -94,7 +94,29 @@ The [Auth Provider documentation](./Authentication.md) explains how to implement
 
 ## `i18nProvider`
 
-The `i18nProvider` props let you translate the GUI. The [Translation Documentation](./Translation.md) details this process.
+The `i18nProvider` props let you translate the GUI. For instance, to switch the UI to French instead of the default English:
+
+```jsx
+// in src/i18nProvider.js
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import fr from 'ra-language-french';
+
+export const i18nProvider = polyglotI18nProvider(() => fr, 'fr');
+
+// in src/App.js
+import { i18nProvider } from './i18nProvider';
+
+const App = () => (
+    <Admin 
+        dataProvider={dataProvider}
+        i18nProvider={i18nProvider}
+    >
+        {/* ... */}
+    </Admin>
+);
+```
+
+The [Translation Documentation](./Translation.md) details this process.
 
 ## `queryClient`
 
