@@ -33,7 +33,7 @@ See the [Input](./Inputs.md#third-party-components) page.
 
 ## Translations
 
-See the [Translation](./Translation.md#available-locales) page.
+See the [Available Translation](./TranslationLocales.md) page.
 
 ## Authentication Providers
 

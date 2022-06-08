@@ -80,7 +80,7 @@ const PostCreateToolbar = () => (
 );
 ```
 
-**Tip**: The label will go through [the `useTranslate` hook](./Translation.md), so you can use translation keys.
+**Tip**: The label will go through [the `useTranslate` hook](./useTranslate.md), so you can use translation keys.
 
 ## `mutationOptions`
 
