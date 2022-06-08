@@ -398,73 +398,24 @@ const ThemeToggler = () => {
 
 ## Conditional Formatting
 
-Sometimes you want the format to depend on the value. The following example shows how to create a new custom `NumberField` component which highlight its text in red when its value is 100 or higher.
+Sometimes you want the format to depend on the value. Use `useRecordContext` to grab the record in a component, and the `sx` prop to apply the format.
+
+The following example shows how to create a new `<ColoredNumberField>` component, which renders with red text when its value is less than 0.
 
 {% raw %}
 ```jsx
-import * as React from 'react';
-import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
+import { iseRecordContext, NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
 
-const ColoredNumberFieldStyles = {
-    small: { color: 'black' },
-    big: { color: 'red' },
-};
-
-const ColoredNumberField = (props) => (
-    <NumberField
-        sx={{
-            ...(props.record[props.source] < 100 &&
-                ColoredNumberFieldStyles.small),
-            ...(props.record[props.source] >= 100 &&
-                ColoredNumberFieldStyles.big),
-        }}
-        {...props}
-    />
-);
-
-// Ensure the original component defaultProps are still applied as they may be used by its parents (such as the `Show` component):
-ColoredNumberField.defaultProps = NumberField.defaultProps;
-
-export const PostList = () => (
-    <List>
-        <Datagrid>
-            <TextField source="id" />
-            ...
-            <ColoredNumberField source="nb_views" />
-            <EditButton />
-        </Datagrid>
-    </List>
-);
-```
-{% endraw %}
-
-Furthermore, you may extract this highlighting strategy into a Higher Order Component if you'd like to reuse it for other components as well:
-
-{% raw %}
-```jsx
-import * as React from 'react';
-import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
-
-const ColoredNumberFieldStyles = {
-    small: { color: 'black' },
-    big: { color: 'red' },
-};
-
-const colored = (WrappedComponent) => (props) =>
-    (
-        <WrappedComponent
-            sx={{
-                ...(props.record[props.source] < 100 &&
-                    ColoredNumberFieldStyles.small),
-                ...(props.record[props.source] >= 100 &&
-                    ColoredNumberFieldStyles.big),
-            }}
+const ColoredNumberField = (props) => {
+    const record = useRecordContext();
+    return (
+        <NumberField
+            sx={{ color: record[prop.source] < 0 ? 'red' : 'black' }}
             {...props}
         />
     );
+};
 
-
-const ColoredNumberField = colored(NumberField);
 // Ensure the original component defaultProps are still applied as they may be used by its parents (such as the `Show` component):
 ColoredNumberField.defaultProps = NumberField.defaultProps;
 
@@ -481,7 +432,7 @@ export const PostList = () => (
 ```
 {% endraw %}
 
-If you want to read more about higher-order components, check out this SitePoint tutorial: [Higher Order Components: A React Application Design Pattern](https://www.sitepoint.com/react-higher-order-components/)
+**Tip**: if you don't want to create a custom component to apply conditional formatting, you can also use [the `<WithRecord>` component](./WithRecord.md)].
 
 ## `useMediaQuery` Hook
 
