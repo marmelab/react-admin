@@ -10,24 +10,22 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 For instance, here is how to fetch the authors related to a book record by matching `book.id` to `book_authors.book_id`, then matching `book_authors.author_id` to `authors.id`, and then display the author last_name for each, in a `<ChipField>`:
 
 ```jsx
-import * as React from 'react';
-import { 
+import {
     Show,
     SimpleShowLayout,
     TextField,
     DateField,
     SingleFieldList,
     ChipField,
-    EditButton,
 } from 'react-admin';
-import { ReferenceManyToManyField } from '@react-admin/ra-many-to-many';
+import { ReferenceManyToManyField } from '@react-admin/ra-relationships';
 
-export const BookShow = props => (
-    <Show {...props}>
+export const BookShow = () => (
+    <Show>
         <SimpleShowLayout>
             <TextField source="title" />
             <DateField source="publication_date" />
-            <ReferenceManyToManyField 
+            <ReferenceManyToManyField
                 reference="authors"
                 through="book_authors"
                 using="book_id,author_id"
@@ -55,4 +53,4 @@ This example uses the following schema:
 └──────────────────┘       └──────────────┘      └───────────────┘
 ```
 
-Check [the `ra-relationships` documentation](https://marmelab.com/ra-enterprise/modules/ra-relationships) for more details.
+Check [the `ra-relationships` documentation](https://marmelab.com/ra-enterprise/modules/ra-relationships#referencemanytomanyfield) for more details.
