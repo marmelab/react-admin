@@ -139,6 +139,8 @@ const englishMessages: TranslationMessages = {
         },
         notification: {
             updated: 'Element updated |||| %{smart_count} elements updated',
+            inputError:
+                'The input must not be empty |||| %{smart_count} input must not be empty',
             created: 'Element created',
             deleted: 'Element deleted |||| %{smart_count} elements deleted',
             bad_item: 'Incorrect element',

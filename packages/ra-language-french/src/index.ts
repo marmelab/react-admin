@@ -144,6 +144,8 @@ const frenchMessages: TranslationMessages = {
         notification: {
             updated:
                 'Élément mis à jour |||| %{smart_count} élements mis à jour',
+            inputError:
+                'Le champ ne doit pas être vide |||| %{smart_count} le champ ne doit pas être vide',
             created: 'Élément créé',
             deleted: 'Élément supprimé |||| %{smart_count} élements supprimés',
             bad_item: 'Élément inconnu',

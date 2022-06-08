@@ -130,11 +130,21 @@ export const useEditController = <
                     : data
             ).then((data: Partial<RecordType>) => {
                 const mutate = getMutateWithMiddlewares(update);
+                let postEditArgument;
+
                 return mutate(
                     resource,
                     { id, data },
                     {
                         onSuccess: async (data, variables, context) => {
+                            if (context.snapshot[0][0][0] == 'posts') {
+                                postEditArgument =
+                                    data.title !== ' ' &&
+                                    data.teaser !== ' ' &&
+                                    data.title.trim().length !== 0 &&
+                                    data.teaser.trim().length !== 0;
+                            }
+
                             if (onSuccessFromSave) {
                                 return onSuccessFromSave(
                                     data,
@@ -142,17 +152,27 @@ export const useEditController = <
                                     context
                                 );
                             }
-
                             if (onSuccess) {
                                 return onSuccess(data, variables, context);
                             }
 
-                            notify('ra.notification.updated', {
-                                type: 'info',
-                                messageArgs: { smart_count: 1 },
-                                undoable: mutationMode === 'undoable',
-                            });
-                            redirect(redirectTo, resource, data.id, data);
+                            if (
+                                !postEditArgument &&
+                                context.snapshot[0][0][0] == 'posts'
+                            ) {
+                                notify('ra.notification.inputError', {
+                                    type: 'warning',
+                                    messageArgs: { smart_count: 1 },
+                                    undoable: mutationMode === 'undoable',
+                                });
+                            } else {
+                                notify('ra.notification.updated', {
+                                    type: 'info',
+                                    messageArgs: { smart_count: 1 },
+                                    undoable: mutationMode === 'undoable',
+                                });
+                                redirect(redirectTo, resource, data.id, data);
+                            }
                         },
                         onError: onErrorFromSave
                             ? onErrorFromSave
