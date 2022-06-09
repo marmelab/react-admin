@@ -404,7 +404,7 @@ The following example shows how to create a new `<ColoredNumberField>` component
 
 {% raw %}
 ```jsx
-import { iseRecordContext, NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
+import { useRecordContext, NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
 
 const ColoredNumberField = (props) => {
     const record = useRecordContext();
