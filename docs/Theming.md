@@ -1029,7 +1029,7 @@ export const Menu = (props) => {
                         name
                     }
                     leftIcon={
-                        resources[name].icon ? resources[name].icon : <DefaultIcon />
+                        resources[name].icon ? createElement(resources[name].icon) : <DefaultIcon />
                     }
                     onClick={props.onMenuClick}
                     sidebarIsOpen={open}
