@@ -44,7 +44,7 @@
         "react-router-dom": "^6.1.0",
         "react-test-renderer": "~16.8.6",
         "rimraf": "^2.6.3",
-        "tsup": "^5.11.11"
+        "tsup": "^6.1.0"
     },
     "peerDependencies": {
         "@mui/icons-material": "^5.0.1",
