@@ -32,7 +32,7 @@
         "react-router": "^6.1.0",
         "react-router-dom": "^6.1.0",
         "rimraf": "^2.6.3",
-        "tsup": "^5.11.11"
+        "tsup": "^6.1.0"
     },
     "peerDependencies": {
         "react": "^16.9.0 || ^17.0.0 || ^18.0.0",
