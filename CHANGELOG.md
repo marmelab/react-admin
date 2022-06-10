@@ -1,5 +1,20 @@
 # Changelog
 
+## v4.1.3
+
+* Fix `<BooleanInput>` and `<CheckboxInput>` don't have focus states (re-add ripple) ([#7772](https://github.com/marmelab/react-admin/pull/7772)) ([andrico1234](https://github.com/andrico1234))
+* Fix edit and show controllers do not handle falsy identifiers ([#7790](https://github.com/marmelab/react-admin/pull/7790)) ([djhi](https://github.com/djhi))
+* Fix sourcemaps in packages build ([#7803](https://github.com/marmelab/react-admin/pull/7803)) ([djhi](https://github.com/djhi))
+* Fix user cannot to load saved queries when `alwaysOn` filters are empty ([#7786](https://github.com/marmelab/react-admin/pull/7786)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `useUpdate` passes old record to onSuccess in optimistic mode ([#7783](https://github.com/marmelab/react-admin/pull/7783)) ([djhi](https://github.com/djhi))
+* Fix `<Menu>` storybook is missing ([#7776](https://github.com/marmelab/react-admin/pull/7776)) ([septentrion-730n](https://github.com/septentrion-730n))
+* [Doc] Fix custom menu items example ([#7804](https://github.com/marmelab/react-admin/pull/7804)) ([davidhenley](https://github.com/davidhenley))
+* [Doc] Fix typo in Theming code snippet ([#7802](https://github.com/marmelab/react-admin/pull/7802)) ([AntonOfTheWoods](https://github.com/AntonOfTheWoods))
+* [Doc] Fix Theming doc uses outdated syntax for conditional formatting example ([#7799](https://github.com/marmelab/react-admin/pull/7799)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix Enterprise Edition modules syntax following 4.0 release ([#7795](https://github.com/marmelab/react-admin/pull/7795)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<DualListInput>` menu item misses the premium badge ([#7789](https://github.com/marmelab/react-admin/pull/7789)) ([davidhenley](https://github.com/davidhenley))
+* [Doc] Restructure Translation Documentation ([#7759](https://github.com/marmelab/react-admin/pull/7759)) ([djhi](https://github.com/djhi))
+
 ## v4.1.2
 
 * Fix `DatagridContext` and `useDatagridContext` aren't exported ([#7779](https://github.com/marmelab/react-admin/pull/7779)) ([djhi](https://github.com/djhi))
