@@ -43,12 +43,13 @@ import { useResourceDefinitionContext } from './useResourceDefinitionContext';
 export const useConfigureAdminRouterFromChildren = (
     children: AdminChildren
 ): RoutesAndResources & { status: AdminRouterStatus } => {
-    const { permissions } = usePermissions();
+    const { permissions, isLoading } = usePermissions();
 
     // Whenever children are updated, update our custom routes and resources
     const [routesAndResources, status] = useRoutesAndResourcesFromChildren(
         children,
-        permissions
+        permissions,
+        isLoading
     );
 
     // Whenever the resources change, we must ensure they're all registered
@@ -70,7 +71,8 @@ export const useConfigureAdminRouterFromChildren = (
  */
 const useRoutesAndResourcesFromChildren = (
     children: ReactNode,
-    permissions: any
+    permissions: any,
+    isLoading: boolean
 ): [RoutesAndResources, AdminRouterStatus] => {
     // Gather custom routes and resources that were declared as direct children of CoreAdminRouter
     // e.g. Not returned from the child function (if any)
@@ -97,7 +99,7 @@ const useRoutesAndResourcesFromChildren = (
         ) => {
             try {
                 const childrenFuncResult = childFunc(permissions);
-                if ((childrenFuncResult as Promise<ReactNode>).then) {
+                if ((childrenFuncResult as Promise<ReactNode>)?.then) {
                     (childrenFuncResult as Promise<ReactNode>).then(
                         resolvedChildren => {
                             mergeRoutesAndResources(
@@ -136,11 +138,14 @@ const useRoutesAndResourcesFromChildren = (
                 resolveChildFunction(functionChild);
             }
         };
-        updateFromChildren();
+        if (!isLoading) {
+            updateFromChildren();
+        }
     }, [
         authenticated,
         children,
         doLogout,
+        isLoading,
         mergeRoutesAndResources,
         permissions,
         setRoutesAndResources,

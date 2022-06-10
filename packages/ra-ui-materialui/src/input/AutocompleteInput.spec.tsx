@@ -14,6 +14,8 @@ import { AutocompleteInput } from './AutocompleteInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import { InsideReferenceInput } from './AutocompleteInput.stories';
 import { act } from '@testing-library/react-hooks';
+import { ReferenceArrayInput } from './ReferenceArrayInput';
+import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 
 describe('<AutocompleteInput />', () => {
     const defaultProps = {
@@ -907,5 +909,30 @@ describe('<AutocompleteInput />', () => {
         fireEvent.focus(input);
         userEvent.type(input, 'Hello World!');
         expect(input.value).toEqual('Hello World!');
+    });
+
+    it('should display "No options" and not throw any error inside a ReferenceArrayInput field when referenced list is empty', async () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm>
+                    <ReferenceArrayInput
+                        label="Tags"
+                        reference="tags"
+                        source="tags"
+                    >
+                        <AutocompleteArrayInput />
+                    </ReferenceArrayInput>
+                </SimpleForm>
+            </AdminContext>
+        );
+        // Give time for the (previously thrown) error to happen
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await waitFor(() => {
+            screen.getByText('resources.undefined.fields.tags');
+        });
+        fireEvent.click(screen.getByText('resources.undefined.fields.tags'));
+        await waitFor(() => {
+            screen.getByText('No options');
+        });
     });
 });

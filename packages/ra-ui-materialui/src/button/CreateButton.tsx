@@ -8,7 +8,7 @@ import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 import { useTranslate, useResourceContext, useCreatePath } from 'ra-core';
 
-import { Button, ButtonProps, sanitizeButtonRestProps } from './Button';
+import { Button, ButtonProps } from './Button';
 
 /**
  * Opens the Create view of a given resource
@@ -28,6 +28,7 @@ const CreateButton = (props: CreateButtonProps) => {
         className,
         icon = defaultIcon,
         label = 'ra.action.create',
+        resource: resourceProp,
         scrollToTop = true,
         variant,
         ...rest
@@ -48,7 +49,7 @@ const CreateButton = (props: CreateButtonProps) => {
             color="primary"
             className={clsx(CreateButtonClasses.floating, className)}
             aria-label={label && translate(label)}
-            {...sanitizeButtonRestProps(rest)}
+            {...rest}
         >
             {icon}
         </StyledFab>
@@ -96,9 +97,9 @@ export const CreateButtonClasses = {
     floating: `${PREFIX}-floating`,
 };
 
-const StyledFab = styled(Fab, {
+const StyledFab = (styled(Fab, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: (_props, styles) => styles.root,
 })(({ theme }) => ({
     [`&.${CreateButtonClasses.floating}`]: {
         color: theme.palette.getContrastText(theme.palette.primary.main),
@@ -110,7 +111,7 @@ const StyledFab = styled(Fab, {
         position: 'fixed',
         zIndex: 1000,
     },
-}));
+})) as unknown) as typeof Fab;
 
 export default memo(CreateButton, (prevProps, nextProps) => {
     return (

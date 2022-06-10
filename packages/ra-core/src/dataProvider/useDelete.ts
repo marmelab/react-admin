@@ -68,11 +68,14 @@ import { RaRecord, DeleteParams, MutationMode } from '../types';
  * const [delete, { data }] = useDelete<Product>('products', { id, previousData: product });
  *                    \-- data is Product
  */
-export const useDelete = <RecordType extends RaRecord = any>(
+export const useDelete = <
+    RecordType extends RaRecord = any,
+    MutationError = unknown
+>(
     resource?: string,
     params: Partial<DeleteParams<RecordType>> = {},
-    options: UseDeleteOptions<RecordType> = {}
-): UseDeleteResult<RecordType> => {
+    options: UseDeleteOptions<RecordType, MutationError> = {}
+): UseDeleteResult<RecordType, MutationError> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const { id, previousData } = params;
@@ -141,7 +144,7 @@ export const useDelete = <RecordType extends RaRecord = any>(
 
     const mutation = useMutation<
         RecordType,
-        unknown,
+        MutationError,
         Partial<UseDeleteMutateParams<RecordType>>
     >(
         ({
@@ -176,7 +179,7 @@ export const useDelete = <RecordType extends RaRecord = any>(
                 }
             },
             onError: (
-                error: unknown,
+                error: MutationError,
                 variables: Partial<UseDeleteMutateParams<RecordType>> = {},
                 context: { snapshot: Snapshot }
             ) => {
@@ -227,7 +230,7 @@ export const useDelete = <RecordType extends RaRecord = any>(
             },
             onSettled: (
                 data: RecordType,
-                error: unknown,
+                error: MutationError,
                 variables: Partial<UseDeleteMutateParams<RecordType>> = {},
                 context: { snapshot: Snapshot }
             ) => {
@@ -258,7 +261,7 @@ export const useDelete = <RecordType extends RaRecord = any>(
         callTimeParams: Partial<DeleteParams<RecordType>> = {},
         updateOptions: MutateOptions<
             RecordType,
-            unknown,
+            MutationError,
             Partial<UseDeleteMutateParams<RecordType>>,
             unknown
         > & { mutationMode?: MutationMode } = {}
@@ -388,27 +391,31 @@ export interface UseDeleteMutateParams<RecordType extends RaRecord = any> {
 }
 
 export type UseDeleteOptions<
-    RecordType extends RaRecord = any
+    RecordType extends RaRecord = any,
+    MutationError = unknown
 > = UseMutationOptions<
     RecordType,
-    unknown,
+    MutationError,
     Partial<UseDeleteMutateParams<RecordType>>
 > & { mutationMode?: MutationMode };
 
-export type UseDeleteResult<RecordType extends RaRecord = any> = [
+export type UseDeleteResult<
+    RecordType extends RaRecord = any,
+    MutationError = unknown
+> = [
     (
         resource?: string,
         params?: Partial<DeleteParams<RecordType>>,
         options?: MutateOptions<
             RecordType,
-            unknown,
+            MutationError,
             Partial<UseDeleteMutateParams<RecordType>>,
             unknown
         > & { mutationMode?: MutationMode }
     ) => Promise<void>,
     UseMutationResult<
         RecordType,
-        unknown,
+        MutationError,
         Partial<DeleteParams<RecordType> & { resource?: string }>,
         unknown
     >

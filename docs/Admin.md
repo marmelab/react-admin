@@ -32,6 +32,7 @@ Here are all the props accepted by the component:
 - [`dataProvider`](#dataprovider)
 - [`authProvider`](#authprovider)
 - [`i18nProvider`](#i18nprovider)
+- [`queryClient`](#queryclient)
 - [`title`](#title)
 - [`dashboard`](#dashboard)
 - [`disableTelemetry`](#disabletelemetry)
@@ -93,7 +94,104 @@ The [Auth Provider documentation](./Authentication.md) explains how to implement
 
 ## `i18nProvider`
 
-The `i18nProvider` props let you translate the GUI. The [Translation Documentation](./Translation.md) details this process.
+The `i18nProvider` props let you translate the GUI. For instance, to switch the UI to French instead of the default English:
+
+```jsx
+// in src/i18nProvider.js
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import fr from 'ra-language-french';
+
+export const i18nProvider = polyglotI18nProvider(() => fr, 'fr');
+
+// in src/App.js
+import { i18nProvider } from './i18nProvider';
+
+const App = () => (
+    <Admin 
+        dataProvider={dataProvider}
+        i18nProvider={i18nProvider}
+    >
+        {/* ... */}
+    </Admin>
+);
+```
+
+The [Translation Documentation](./Translation.md) details this process.
+
+## `queryClient`
+
+React-admin uses [react-query](https://react-query.tanstack.com/) to fetch, cache and update data. Internally, the `<Admin>` component creates a react-query [`QueryClient`](https://react-query.tanstack.com/reference/QueryClient) on mount, using [react-query's "aggressive but sane" defaults](https://react-query.tanstack.com/guides/important-defaults):
+
+* Queries consider cached data as stale
+* Stale queries are refetched automatically in the background when:
+  * New instances of the query mount
+  * The window is refocused
+  * The network is reconnected
+  * The query is optionally configured with a refetch interval
+* Query results that are no longer used in the current page are labeled as "inactive" and remain in the cache in case they are used again at a later time.
+* By default, "inactive" queries are garbage collected after 5 minutes.
+* Queries that fail are silently retried 3 times, with exponential backoff delay before capturing and displaying an error to the UI.
+* Query results by default are structurally shared to detect if data has actually changed and if not, the data reference remains unchanged to better help with value stabilization with regards to `useMemo` and `useCallback`. 
+
+If you want to override the react-query default query and mutation default options, or use a specific client or mutation cache, you can create your own `QueryClient` instance and pass it to the `<Admin queryClient>` prop:
+
+```jsx
+import { Admin } from 'react-admin';
+import { QueryClient } from 'react-query';
+
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: false,
+            structuralSharing: false,
+        },
+        mutations: {
+            retryDelay: 10000,
+        },
+    },
+});
+
+const App = () => (
+    <Admin queryClient={queryClient} dataProvider={...}>
+        ...
+    </Admin>
+);
+```
+
+To know which options you can pass to the `QueryClient` constructor, check the [react-query documentation](https://react-query.tanstack.com/reference/QueryClient) and the [query options](https://react-query.tanstack.com/reference/useQuery) and [mutation options](https://react-query.tanstack.com/reference/useMutation) sections.
+
+The common settings that react-admin developers often overwrite are:
+
+```jsx
+import { QueryClient } from 'react-query';
+
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            /**
+             * The time in milliseconds after data is considered stale.
+             * If set to `Infinity`, the data will never be considered stale.
+             */
+            staleTime: 10000,
+            /**
+             * If `false`, failed queries will not retry by default.
+             * If `true`, failed queries will retry infinitely., failureCount: num
+             * If set to an integer number, e.g. 3, failed queries will retry until the failed query count meets that number.
+             * If set to a function `(failureCount, error) => boolean` failed queries will retry until the function returns false.
+             */
+            retry: false,
+            /**
+             * If set to `true`, the query will refetch on window focus if the data is stale.
+             * If set to `false`, the query will not refetch on window focus.
+             * If set to `'always'`, the query will always refetch on window focus.
+             * If set to a function, the function will be executed with the latest data and query to compute the value.
+             * Defaults to `true`.
+             */
+            refetchOnWindowFocus: false,
+        },
+    },
+});
+```
 
 ## `title`
 

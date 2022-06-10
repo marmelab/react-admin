@@ -7,12 +7,18 @@ export interface FieldTitleProps {
     isRequired?: boolean;
     resource?: string;
     source?: string;
-    label?: string | ReactElement | false;
+    label?: string | ReactElement | boolean;
 }
 
 export const FieldTitle = (props: FieldTitleProps) => {
     const { source, label, resource, isRequired } = props;
     const translateLabel = useTranslateLabel();
+
+    if (label === true) {
+        throw new Error(
+            'Label parameter must be a string, a ReactElement or false'
+        );
+    }
 
     if (label === false || label === '') {
         return null;

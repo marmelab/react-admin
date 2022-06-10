@@ -1,5 +1,75 @@
 # Changelog
 
+## v4.1.3
+
+* Fix `<BooleanInput>` and `<CheckboxInput>` don't have focus states (re-add ripple) ([#7772](https://github.com/marmelab/react-admin/pull/7772)) ([andrico1234](https://github.com/andrico1234))
+* Fix edit and show controllers do not handle falsy identifiers ([#7790](https://github.com/marmelab/react-admin/pull/7790)) ([djhi](https://github.com/djhi))
+* Fix sourcemaps in packages build ([#7803](https://github.com/marmelab/react-admin/pull/7803)) ([djhi](https://github.com/djhi))
+* Fix user cannot to load saved queries when `alwaysOn` filters are empty ([#7786](https://github.com/marmelab/react-admin/pull/7786)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `useUpdate` passes old record to onSuccess in optimistic mode ([#7783](https://github.com/marmelab/react-admin/pull/7783)) ([djhi](https://github.com/djhi))
+* Fix `<Menu>` storybook is missing ([#7776](https://github.com/marmelab/react-admin/pull/7776)) ([septentrion-730n](https://github.com/septentrion-730n))
+* [Doc] Fix custom menu items example ([#7804](https://github.com/marmelab/react-admin/pull/7804)) ([davidhenley](https://github.com/davidhenley))
+* [Doc] Fix typo in Theming code snippet ([#7802](https://github.com/marmelab/react-admin/pull/7802)) ([AntonOfTheWoods](https://github.com/AntonOfTheWoods))
+* [Doc] Fix Theming doc uses outdated syntax for conditional formatting example ([#7799](https://github.com/marmelab/react-admin/pull/7799)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix Enterprise Edition modules syntax following 4.0 release ([#7795](https://github.com/marmelab/react-admin/pull/7795)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<DualListInput>` menu item misses the premium badge ([#7789](https://github.com/marmelab/react-admin/pull/7789)) ([davidhenley](https://github.com/davidhenley))
+* [Doc] Restructure Translation Documentation ([#7759](https://github.com/marmelab/react-admin/pull/7759)) ([djhi](https://github.com/djhi))
+
+## v4.1.2
+
+* Fix `DatagridContext` and `useDatagridContext` aren't exported ([#7779](https://github.com/marmelab/react-admin/pull/7779)) ([djhi](https://github.com/djhi))
+* Fix `<ArrayInput>` doesn't allow null as value ([#7768](https://github.com/marmelab/react-admin/pull/7768)) ([septentrion-730n](https://github.com/septentrion-730n))
+* Fix `<AutocompleteArrayInput>` accepts true as `disableClearable` value ([#7766](https://github.com/marmelab/react-admin/pull/7766)) ([septentrion-730n](https://github.com/septentrion-730n))
+* [Typescript] Fix `<FunctionField>` generic typing restriction ([#7770](https://github.com/marmelab/react-admin/pull/7770)) ([septentrion-730n](https://github.com/septentrion-730n))
+* [TypeScript] Fix `<FilterLiveSearch>` missing `fullWidth` prop and harmonize `label` prop type between `CommonInputProps` and `LabeledProps` ([#7757](https://github.com/marmelab/react-admin/pull/7757)) ([septentrion-730n](https://github.com/septentrion-730n))
+* [Doc] Fix quick filters screencast doesn't show saved filters ([#7778](https://github.com/marmelab/react-admin/pull/7778)) ([septentrion-730n](https://github.com/septentrion-730n))
+
+## v4.1.1
+
+* Fix `<DateTimeInput validate={required()} />` doesn't work correctly ([#7744](https://github.com/marmelab/react-admin/pull/7744)) ([djhi](https://github.com/djhi))
+* Fix `validate` function errors messages are not display when passed as translatable object ([#7741](https://github.com/marmelab/react-admin/pull/7741)) ([djhi](https://github.com/djhi))
+* Fix `useUpdateMany` does not support the `returnPromise` option ([#7740](https://github.com/marmelab/react-admin/pull/7740)) ([djhi](https://github.com/djhi))
+* Fix cannot remove `<SimpleForm>` and `<TabbedForm>` toolbar with `toolbar={false}` ([#7738](https://github.com/marmelab/react-admin/pull/7738)) ([djhi](https://github.com/djhi))
+* Fix `<Admin>` calls its child function without permissions while loading them ([#7737](https://github.com/marmelab/react-admin/pull/7737)) ([djhi](https://github.com/djhi))
+* Fix `useConfigureAdminRouterFromChildren` when child function return null ([#7731](https://github.com/marmelab/react-admin/pull/7731)) ([djhi](https://github.com/djhi))
+* Fix `<TabbedForm>` ignores the `sx` prop ([#7721](https://github.com/marmelab/react-admin/pull/7721)) ([slax57](https://github.com/slax57))
+* Fix `<Loading>` ignores the `sx` prop ([#7723](https://github.com/marmelab/react-admin/pull/7723)) ([slax57](https://github.com/slax57))
+* Fix `<Form>` submit cannot be prevented with `event.preventDefault` ([#7715](https://github.com/marmelab/react-admin/pull/7715)) ([slax57](https://github.com/slax57))
+* Fix `<AutocompleteInput>` tests regression ([#7714](https://github.com/marmelab/react-admin/pull/7714)) ([slax57](https://github.com/slax57))
+* [Doc] Fix typo in `useSaveContext` code snippet ([#7747](https://github.com/marmelab/react-admin/pull/7747)) ([wgiddens](https://github.com/wgiddens))
+* [Doc] Fix `<SelectArrayInput>` doc mentions non-existent prop resettable ([#7743](https://github.com/marmelab/react-admin/pull/7743)) ([djhi](https://github.com/djhi))
+* [Doc] Fix `<SaveButton>` is documented in two different chapters ([#7742](https://github.com/marmelab/react-admin/pull/7742)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix typo in custom form layout example ([#7734](https://github.com/marmelab/react-admin/pull/7734)) ([ApolloRisky](https://github.com/ApolloRisky))
+* [Doc] Fix `useGetOne` section about query aggregation ([#7732](https://github.com/marmelab/react-admin/pull/7732)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix global theme overrides example ([#7727](https://github.com/marmelab/react-admin/pull/7727)) ([mediafreakch](https://github.commediafreakch))
+* [Doc] Fix Form Validation section mentions ability to do both async validation per input and global validation ([#7726](https://github.com/marmelab/react-admin/pull/7726)) ([slax57](https://github.com/slax57))
+* [Doc] Fix `<BooleanInput>` example for overriding check icon ([#7720](https://github.com/marmelab/react-admin/pull/7720)) ([mediafreakch](https://github.commediafreakch))
+* [Doc] Fix tutorial example cannot be run in CodeSandbox ([#7713](https://github.com/marmelab/react-admin/pull/7713)) ([slax57](https://github.com/slax57))
+* [TypeScript] Fix `<Button>` component props accepts a record ([#7764](https://github.com/marmelab/react-admin/pull/7764)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix `<Button>` component props ([#7750](https://github.com/marmelab/react-admin/pull/7750)) ([djhi](https://github.com/djhi))
+* [TypeScript] Fix `<SingleFieldList>` rejects the `sx` prop ([#7735](https://github.com/marmelab/react-admin/pull/7735)) ([djhi](https://github.com/djhi))
+* [TypeScript] Fix missing `useMutation` error typing definitions ([#7722](https://github.com/marmelab/react-admin/pull/7722)) ([soullivaneuh](https://github.comsoullivaneuh))
+* [TypeScript] Fix cannot specify the error type in mutation hooks ([#7698](https://github.com/marmelab/react-admin/pull/7698)) ([soullivaneuh](https://github.comsoullivaneuh))
+
+## v4.1.0
+
+* Add `LabelPrefix` context to better guess correct input labels ([#7710](https://github.com/marmelab/react-admin/pull/7710)) ([fzaninotto](https://github.com/fzaninotto))
+* Add middlewares support to create and edit controllers ([#7701](https://github.com/marmelab/react-admin/pull/7701)) ([djhi](https://github.com/djhi))
+* Add imports to guesser output ([#7699](https://github.com/marmelab/react-admin/pull/7699)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to change icon for `<DashboardMenuItem>` ([#7577](https://github.com/marmelab/react-admin/pull/7577)) ([kristelvdakker](https://github.com/kristelvdakker))
+
+## v4.0.5
+
+* Fix `<ReferenceField>` sometimes gets stuck on loading state ([#7708](https://github.com/marmelab/react-admin/pull/7708)) ([djhi](https://github.com/djhi))
+* Fix `<ReferenceInput>` sometimes gets stuck on loading state ([#7707](https://github.com/marmelab/react-admin/pull/7707)) ([djhi](https://github.com/djhi))
+* Fix `<ReferenceArrayInput>` with `<AutocompleteArrayInput>` throws error if the array is empty ([#7694](https://github.com/marmelab/react-admin/pull/7694)) ([slax57](https://github.com/slax57))
+* Fix `<FormTab>` doesn't highlight selected tab label ([#7693](https://github.com/marmelab/react-admin/pull/7693)) ([slax57](https://github.com/slax57))
+* Fix `<Filter>` shows filter button even though there is no filter to add ([#7691](https://github.com/marmelab/react-admin/pull/7691)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<TextInput>` changes 'on' into 'false' ([#7682](https://github.com/marmelab/react-admin/pull/7682)) ([Andonyaa](https://github.com/Andonyaa))
+* [Doc] Fix "Save And Add Another" example in forms section ([#7709](https://github.com/marmelab/react-admin/pull/7709)) ([slax57](https://github.com/slax57))
+* [Doc] Fix missing doc for `<Admin queryClient>` prop ([#7704](https://github.com/marmelab/react-admin/pull/7704)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix Validation chapter misses section explaining that global and input level validation can not be combined ([#7703](https://github.com/marmelab/react-admin/pull/7703)) ([slax57](https://github.com/slax57))
+
 ## v4.0.4
 
 * Fix cannot use theme to override input `variant` ([#7636](https://github.com/marmelab/react-admin/pull/7636)) ([fzaninotto](https://github.com/fzaninotto))

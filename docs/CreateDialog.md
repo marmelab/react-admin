@@ -10,8 +10,15 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 ![CreateDialog](https://marmelab.com/ra-enterprise/modules/assets/edit-dialog.gif)
 
 ```jsx
-import * as React from 'react';
-import { List, Datagrid, SimpleForm, TextField, TextInput, DateInput, required } from 'react-admin';
+import {
+    List,
+    Datagrid,
+    SimpleForm,
+    TextInput,
+    DateInput,
+    DateField,
+    required,
+} from 'react-admin';
 import { CreateDialog } from '@react-admin/ra-form-layout';
 
 const CustomerList = () => (
@@ -21,17 +28,16 @@ const CustomerList = () => (
                 ...
             </Datagrid>
         </List>
-        <CreateDialog {...props}>
+        <CreateDialog>
             <SimpleForm>
-                <TextField source="id" />
                 <TextInput source="first_name" validate={required()} />
                 <TextInput source="last_name" validate={required()} />
-                <DateInput source="date_of_birth" label="born" validate={required()} />
+                <DateInput source="date_of_birth" />
             </SimpleForm>
         </CreateDialog>
     </>
 );
 ```
 
-Check [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/modules/ra-form-layout) for more details.
+Check [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog-editdialog--showdialog) for more details.
 

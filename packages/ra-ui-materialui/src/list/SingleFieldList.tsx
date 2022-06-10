@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import { LinearProgress, styled, SxProps } from '@mui/material';
 import {
     cloneElement,
     Children,
@@ -7,7 +7,6 @@ import {
     ComponentType,
 } from 'react';
 import PropTypes from 'prop-types';
-import LinearProgress from '@mui/material/LinearProgress';
 import {
     sanitizeListRestProps,
     useListContext,
@@ -124,6 +123,17 @@ SingleFieldList.propTypes = {
     // @ts-ignore
     linkType: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     resource: PropTypes.string,
+    sx: PropTypes.oneOfType([
+        PropTypes.arrayOf(
+            PropTypes.oneOfType([
+                PropTypes.func,
+                PropTypes.object,
+                PropTypes.bool,
+            ])
+        ),
+        PropTypes.func,
+        PropTypes.object,
+    ]),
 };
 
 export interface SingleFieldListProps<RecordType extends RaRecord = any>
@@ -137,6 +147,7 @@ export interface SingleFieldListProps<RecordType extends RaRecord = any>
     data?: RecordType[];
     total?: number;
     loaded?: boolean;
+    sx?: SxProps;
 }
 
 const PREFIX = 'RaSingleFieldList';

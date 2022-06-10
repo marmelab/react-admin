@@ -56,6 +56,55 @@ const TestedComponent = ({ role }) => {
     );
 };
 
+const TestedComponentReturningNull = ({ role }) => {
+    const history = createMemoryHistory();
+
+    return (
+        <CoreAdminContext history={history}>
+            <CoreAdminRoutes
+                layout={MyLayout}
+                catchAll={CatchAll}
+                loading={Loading}
+            >
+                <Resource name="posts" />
+                <Resource name="comments" />
+                {() =>
+                    role === 'admin'
+                        ? [<Resource name="user" />, <Resource name="admin" />]
+                        : role === 'user'
+                        ? [<Resource name="user" />]
+                        : null
+                }
+            </CoreAdminRoutes>
+        </CoreAdminContext>
+    );
+};
+
+const TestedComponentWithAuthProvider = ({ callback }) => {
+    const history = createMemoryHistory();
+    const authProvider = {
+        login: () => Promise.resolve(),
+        logout: () => Promise.resolve(),
+        checkAuth: () => Promise.resolve(),
+        checkError: () => Promise.resolve(),
+        getPermissions: () => Promise.resolve('admin'),
+    };
+
+    return (
+        <CoreAdminContext history={history} authProvider={authProvider}>
+            <CoreAdminRoutes
+                layout={MyLayout}
+                catchAll={CatchAll}
+                loading={Loading}
+            >
+                <Resource name="posts" />
+                <Resource name="comments" />
+                {callback}
+            </CoreAdminRoutes>
+        </CoreAdminContext>
+    );
+};
+
 const ResourceWithPermissions = (props: ResourceProps) => (
     <Resource {...props} />
 );
@@ -162,8 +211,24 @@ describe('useConfigureAdminRouterFromChildren', () => {
         expectResource('user').toBeNull();
         expectResource('admin').toBeNull();
     });
+    it('should not call the children function until the permissions have been retrieved', async () => {
+        const callback = jest.fn(() =>
+            Promise.resolve(resolve => setTimeout(resolve, 50))
+        );
+
+        render(<TestedComponentWithAuthProvider callback={callback} />);
+        await waitFor(() => expect(callback).toHaveBeenCalled());
+
+        expect(callback).not.toHaveBeenCalledWith(undefined);
+    });
     it('should load dynamic resource definitions', async () => {
         render(<TestedComponent role="admin" />);
+        await waitFor(() => expect(screen.queryByText('Loading')).toBeNull());
+        expectResource('user').not.toBeNull();
+        expectResource('admin').not.toBeNull();
+    });
+    it('should accept function returning null', async () => {
+        render(<TestedComponentReturningNull role="admin" />);
         await waitFor(() => expect(screen.queryByText('Loading')).toBeNull());
         expectResource('user').not.toBeNull();
         expectResource('admin').not.toBeNull();

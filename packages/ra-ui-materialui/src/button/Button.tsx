@@ -11,19 +11,8 @@ import {
     Theme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import {
-    MutationMode,
-    RaRecord,
-    RedirectionSideEffect,
-    useTranslate,
-} from 'ra-core';
+import { useTranslate } from 'ra-core';
 import { Path } from 'react-router';
-
-export type LocationDescriptor = Partial<Path> & {
-    redirect?: boolean;
-    state?: any;
-    replace?: boolean;
-};
 
 /**
  * A generic Button with side icon. Only the icon is displayed on small screens.
@@ -57,7 +46,6 @@ export const Button = (props: ButtonProps) => {
     const isXSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')
     );
-    const restProps = sanitizeButtonRestProps(rest);
 
     return isXSmall ? (
         label && !disabled ? (
@@ -66,7 +54,7 @@ export const Button = (props: ButtonProps) => {
                     aria-label={translatedLabel}
                     className={className}
                     color={color}
-                    {...restProps}
+                    {...rest}
                     {...linkParams}
                     size="large"
                 >
@@ -78,7 +66,7 @@ export const Button = (props: ButtonProps) => {
                 className={className}
                 color={color}
                 disabled={disabled}
-                {...restProps}
+                {...rest}
                 {...linkParams}
                 size="large"
             >
@@ -94,7 +82,7 @@ export const Button = (props: ButtonProps) => {
             disabled={disabled}
             startIcon={alignIcon === 'left' && children ? children : undefined}
             endIcon={alignIcon === 'right' && children ? children : undefined}
-            {...restProps}
+            {...rest}
             {...linkParams}
         >
             {translatedLabel}
@@ -112,27 +100,10 @@ interface Props {
     disabled?: boolean;
     label?: string;
     size?: 'small' | 'medium' | 'large';
-    redirect?: RedirectionSideEffect;
     variant?: string;
-    // May be injected by Toolbar
-    record?: RaRecord;
-    resource?: string;
-    mutationMode?: MutationMode;
 }
 
 export type ButtonProps = Props & MuiButtonProps;
-
-export const sanitizeButtonRestProps = ({
-    // The next props are injected by Toolbar
-    invalid,
-    pristine,
-    record,
-    redirect,
-    resource,
-    mutationMode,
-    hasCreate,
-    ...rest
-}: any) => rest;
 
 Button.propTypes = {
     alignIcon: PropTypes.oneOf(['left', 'right']),
@@ -185,4 +156,10 @@ const getLinkParams = (locationDescriptor?: LocationDescriptor | string) => {
         replace,
         state,
     };
+};
+
+export type LocationDescriptor = Partial<Path> & {
+    redirect?: boolean;
+    state?: any;
+    replace?: boolean;
 };

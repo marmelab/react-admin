@@ -202,6 +202,7 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
         const aggregatedIds = callsForResource
             .reduce((acc, { ids }) => union(acc, ids), []) // concat + unique
             .filter(v => v != null && v !== ''); // remove null values
+
         const uniqueMeta = callsForResource.reduce(
             (acc, { meta }) => meta || acc,
             undefined
@@ -215,12 +216,10 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
             return;
         }
 
-        if (
-            callsForResource.find(
-                ({ ids }) =>
-                    JSON.stringify(ids) === JSON.stringify(aggregatedIds)
-            )
-        ) {
+        const callThatHasAllAggregatedIds = callsForResource.find(
+            ({ ids }) => JSON.stringify(ids) === JSON.stringify(aggregatedIds)
+        );
+        if (callThatHasAllAggregatedIds) {
             // There is only one call (no aggregation), or one of the calls has the same ids as the sum of all calls.
             // Either way, we can't trigger a new fetchQuery with the same signature, as it's already pending.
             // Therefore, we reply with the dataProvider
@@ -229,13 +228,31 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
                 resource,
                 ids,
                 meta,
-                resolve,
-                reject,
-            } = callsForResource[0];
+            } = callThatHasAllAggregatedIds;
+
             dataProvider
                 .getMany<any>(resource, { ids, meta })
                 .then(({ data }) => data)
-                .then(resolve, reject);
+                .then(
+                    data => {
+                        // We must then resolve all the pending calls with the data they requested
+                        callsForResource.forEach(({ ids, resolve }) => {
+                            resolve(
+                                data.filter(record =>
+                                    ids
+                                        .map(id => String(id))
+                                        .includes(String(record.id))
+                                )
+                            );
+                        });
+                    },
+                    error => {
+                        // All pending calls must also receive the error
+                        callsForResource.forEach(({ reject }) => {
+                            reject(error);
+                        });
+                    }
+                );
             return;
         }
 
@@ -263,7 +280,13 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
             )
             .then(data => {
                 callsForResource.forEach(({ ids, resolve }) => {
-                    resolve(data.filter(record => ids.includes(record.id)));
+                    resolve(
+                        data.filter(record =>
+                            ids
+                                .map(id => String(id))
+                                .includes(String(record.id))
+                        )
+                    );
                 });
             })
             .catch(error =>

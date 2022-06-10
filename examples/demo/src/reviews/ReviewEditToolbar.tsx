@@ -14,7 +14,7 @@ import AcceptButton from './AcceptButton';
 import RejectButton from './RejectButton';
 import { Review } from '../types';
 
-const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
+const ReviewEditToolbar = (props: ToolbarProps) => {
     const { resource } = props;
     const redirect = useRedirect();
     const notify = useNotify();

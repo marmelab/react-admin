@@ -35,8 +35,11 @@ import {
  *     return <CreateView {...controllerProps} {...props} />;
  * }
  */
-export const useCreateController = <RecordType extends RaRecord = RaRecord>(
-    props: CreateControllerProps<RecordType> = {}
+export const useCreateController = <
+    RecordType extends RaRecord = RaRecord,
+    MutationOptionsError = unknown
+>(
+    props: CreateControllerProps<RecordType, MutationOptionsError> = {}
 ): CreateControllerResult<RecordType> => {
     const {
         disableAuthentication,
@@ -63,11 +66,10 @@ export const useCreateController = <RecordType extends RaRecord = RaRecord>(
         unregisterMutationMiddleware,
     } = useMutationMiddlewares();
 
-    const [create, { isLoading: saving }] = useCreate<RecordType>(
-        resource,
-        undefined,
-        otherMutationOptions
-    );
+    const [create, { isLoading: saving }] = useCreate<
+        RecordType,
+        MutationOptionsError
+    >(resource, undefined, otherMutationOptions);
 
     const save = useCallback(
         (
@@ -166,7 +168,10 @@ export const useCreateController = <RecordType extends RaRecord = RaRecord>(
     };
 };
 
-export interface CreateControllerProps<RecordType extends RaRecord = RaRecord> {
+export interface CreateControllerProps<
+    RecordType extends RaRecord = RaRecord,
+    MutationOptionsError = unknown
+> {
     disableAuthentication?: boolean;
     hasEdit?: boolean;
     hasShow?: boolean;
@@ -175,7 +180,7 @@ export interface CreateControllerProps<RecordType extends RaRecord = RaRecord> {
     resource?: string;
     mutationOptions?: UseMutationOptions<
         RecordType,
-        unknown,
+        MutationOptionsError,
         UseCreateMutateParams<RecordType>
     >;
     transform?: TransformData;

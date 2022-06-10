@@ -33,6 +33,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         syncWithLocation = true,
         tabs = DefaultTabs,
         toolbar = DefaultToolbar,
+        ...rest
     } = props;
     const location = useLocation();
     const resolvedPath = useResolvedPath('');
@@ -58,7 +59,10 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         );
 
     return (
-        <Root className={clsx('tabbed-form', className)}>
+        <Root
+            className={clsx('tabbed-form', className)}
+            {...sanitizeRestProps(rest)}
+        >
             {syncWithLocation ? (
                 <Routes>
                     <Route path="/*" element={renderTabHeaders()} />
@@ -94,7 +98,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                         : null;
                 })}
             </Component>
-            {toolbar}
+            {toolbar !== false ? toolbar : null}
         </Root>
     );
 };
@@ -126,7 +130,7 @@ export interface TabbedFormViewProps {
     formRootPathname?: string;
     syncWithLocation?: boolean;
     tabs?: ReactElement;
-    toolbar?: ReactElement;
+    toolbar?: ReactElement | false;
     sx?: SxProps;
 }
 
@@ -144,3 +148,5 @@ const Root = styled('div', {
         color: theme.palette.error.main,
     },
 }));
+
+const sanitizeRestProps = ({ record, resource, ...rest }: any) => rest;

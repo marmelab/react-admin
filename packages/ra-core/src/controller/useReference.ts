@@ -1,9 +1,11 @@
 import { RaRecord, Identifier } from '../types';
 import { UseGetManyHookValue, useGetManyAggregate } from '../dataProvider';
+import { UseQueryOptions } from 'react-query';
 
-interface UseReferenceProps {
+interface UseReferenceProps<RecordType extends RaRecord = any> {
     id: Identifier;
     reference: string;
+    options?: UseQueryOptions<RecordType[], Error>;
 }
 
 export interface UseReferenceResult<RecordType extends RaRecord = any> {
@@ -44,10 +46,11 @@ export interface UseReferenceResult<RecordType extends RaRecord = any> {
 export const useReference = <RecordType extends RaRecord = any>({
     reference,
     id,
-}: UseReferenceProps): UseReferenceResult<RecordType> => {
+    options,
+}: UseReferenceProps<RecordType>): UseReferenceResult<RecordType> => {
     const { data, error, isLoading, isFetching, refetch } = useGetManyAggregate<
         RecordType
-    >(reference, { ids: [id] });
+    >(reference, { ids: [id] }, options);
     return {
         referenceRecord: error ? undefined : data ? data[0] : undefined,
         refetch,

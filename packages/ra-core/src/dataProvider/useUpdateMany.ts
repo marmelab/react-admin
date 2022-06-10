@@ -66,11 +66,14 @@ import { Identifier } from '..';
  *     return <button disabled={isLoading} onClick={() => updateMany()}>Reset views</button>;
  * };
  */
-export const useUpdateMany = <RecordType extends RaRecord = any>(
+export const useUpdateMany = <
+    RecordType extends RaRecord = any,
+    MutationError = unknown
+>(
     resource?: string,
     params: Partial<UpdateManyParams<Partial<RecordType>>> = {},
-    options: UseUpdateManyOptions<RecordType> = {}
-): UseUpdateManyResult<RecordType> => {
+    options: UseUpdateManyOptions<RecordType, MutationError> = {}
+): UseUpdateManyResult<RecordType, boolean, MutationError> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const { ids, data, meta } = params;
@@ -150,7 +153,7 @@ export const useUpdateMany = <RecordType extends RaRecord = any>(
 
     const mutation = useMutation<
         Array<RecordType['id']>,
-        unknown,
+        MutationError,
         Partial<UseUpdateManyMutateParams<RecordType>>
     >(
         ({
@@ -185,7 +188,7 @@ export const useUpdateMany = <RecordType extends RaRecord = any>(
                 }
             },
             onError: (
-                error: unknown,
+                error: MutationError,
                 variables: Partial<UseUpdateManyMutateParams<RecordType>> = {},
                 context: { snapshot: Snapshot }
             ) => {
@@ -239,7 +242,7 @@ export const useUpdateMany = <RecordType extends RaRecord = any>(
             },
             onSettled: (
                 data: Array<RecordType['id']>,
-                error: unknown,
+                error: MutationError,
                 variables: Partial<UseUpdateManyMutateParams<RecordType>> = {},
                 context: { snapshot: Snapshot }
             ) => {
@@ -273,9 +276,15 @@ export const useUpdateMany = <RecordType extends RaRecord = any>(
             unknown,
             Partial<UseUpdateManyMutateParams<RecordType>>,
             unknown
-        > & { mutationMode?: MutationMode } = {}
+        > & { mutationMode?: MutationMode; returnPromise?: boolean } = {}
     ) => {
-        const { mutationMode, onSuccess, onSettled, onError } = updateOptions;
+        const {
+            mutationMode,
+            returnPromise,
+            onSuccess,
+            onSettled,
+            onError,
+        } = updateOptions;
 
         // store the hook time params *at the moment of the call*
         // because they may change afterwards, which would break the undoable mode
@@ -286,7 +295,19 @@ export const useUpdateMany = <RecordType extends RaRecord = any>(
             mode.current = mutationMode;
         }
 
+        if (returnPromise && mode.current !== 'pessimistic') {
+            console.warn(
+                'The returnPromise parameter can only be used if the mutationMode is set to pessimistic'
+            );
+        }
+
         if (mode.current === 'pessimistic') {
+            if (returnPromise) {
+                return mutation.mutateAsync(
+                    { resource: callTimeResource, ...callTimeParams },
+                    { onSuccess, onSettled, onError }
+                );
+            }
             return mutation.mutate(
                 { resource: callTimeResource, ...callTimeParams },
                 { onSuccess, onSettled, onError }
@@ -405,27 +426,32 @@ export interface UseUpdateManyMutateParams<RecordType extends RaRecord = any> {
 }
 
 export type UseUpdateManyOptions<
-    RecordType extends RaRecord = any
+    RecordType extends RaRecord = any,
+    MutationError = unknown
 > = UseMutationOptions<
     Array<RecordType['id']>,
-    unknown,
+    MutationError,
     Partial<UseUpdateManyMutateParams<RecordType>>
 > & { mutationMode?: MutationMode };
 
-export type UseUpdateManyResult<RecordType extends RaRecord = any> = [
+export type UseUpdateManyResult<
+    RecordType extends RaRecord = any,
+    TReturnPromise extends boolean = boolean,
+    MutationError = unknown
+> = [
     (
         resource?: string,
         params?: Partial<UpdateManyParams<RecordType>>,
         options?: MutateOptions<
             Array<RecordType['id']>,
-            unknown,
+            MutationError,
             Partial<UseUpdateManyMutateParams<RecordType>>,
             unknown
-        > & { mutationMode?: MutationMode }
-    ) => Promise<void>,
+        > & { mutationMode?: MutationMode; returnPromise?: TReturnPromise }
+    ) => Promise<TReturnPromise extends true ? Array<RecordType['id']> : void>,
     UseMutationResult<
         Array<RecordType['id']>,
-        unknown,
+        MutationError,
         Partial<UpdateManyParams<Partial<RecordType>> & { resource?: string }>,
         unknown
     >

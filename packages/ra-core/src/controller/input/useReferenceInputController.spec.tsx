@@ -129,6 +129,25 @@ describe('useReferenceInputController', () => {
         });
     });
 
+    it('should not fetch current value using getMany if it is empty', async () => {
+        const children = jest.fn().mockReturnValue(<p>child</p>);
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Form defaultValues={{ post_id: '' }}>
+                    <ReferenceInputController {...defaultProps}>
+                        {children}
+                    </ReferenceInputController>
+                </Form>
+            </CoreAdminContext>
+        );
+
+        await waitFor(() => {
+            expect(dataProvider.getList).toBeCalledTimes(1);
+        });
+        await new Promise(resolve => setTimeout(resolve, 100));
+        expect(dataProvider.getMany).not.toHaveBeenCalled();
+    });
+
     it('should pass possibleValues and record to child', async () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
         render(

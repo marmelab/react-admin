@@ -412,7 +412,7 @@ If you provided a React element for the optionText prop, you must also provide t
 
     const suggestions = useMemo(() => {
         if (setFilters && allChoices?.length === 0 && !oneSecondHasPassed) {
-            return currentChoices.current;
+            return currentChoices.current ?? [];
         }
         return getSuggestions(filterValue);
     }, [

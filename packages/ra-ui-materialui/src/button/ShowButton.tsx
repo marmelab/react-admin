@@ -22,10 +22,14 @@ import { Button, ButtonProps } from './Button';
  *     <ShowButton label="Show comment" record={record} />
  * );
  */
-const ShowButton = (props: ShowButtonProps) => {
+const ShowButton = <RecordType extends RaRecord = any>(
+    props: ShowButtonProps<RecordType>
+) => {
     const {
         icon = defaultIcon,
         label = 'ra.action.show',
+        record: recordProp,
+        resource: resourceProp,
         scrollToTop = true,
         ...rest
     } = props;
@@ -58,14 +62,18 @@ const defaultIcon = <ImageEye />;
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
-interface Props {
+interface Props<RecordType extends RaRecord = any> {
     icon?: ReactElement;
     label?: string;
-    record?: RaRecord;
+    record?: RecordType;
+    resource?: string;
     scrollToTop?: boolean;
 }
 
-export type ShowButtonProps = Props & ButtonProps;
+export type ShowButtonProps<RecordType extends RaRecord = any> = Props<
+    RecordType
+> &
+    ButtonProps;
 
 ShowButton.propTypes = {
     icon: PropTypes.element,

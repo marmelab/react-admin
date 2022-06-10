@@ -117,7 +117,8 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
 };
 
 export interface UseDeleteWithUndoControllerParams<
-    RecordType extends RaRecord = any
+    RecordType extends RaRecord = any,
+    MutationOptionsError = unknown
 > {
     record?: RecordType;
     redirect?: RedirectionSideEffect;
@@ -126,7 +127,7 @@ export interface UseDeleteWithUndoControllerParams<
     onClick?: ReactEventHandler<any>;
     mutationOptions?: UseMutationOptions<
         RecordType,
-        unknown,
+        MutationOptionsError,
         DeleteParams<RecordType>
     >;
 }

@@ -107,7 +107,7 @@ title: "Reference"
 * [`<RichTextField>`](./RichTextField.md)
 * [`<RichTextInput>`](./RichTextInput.md)
 * [`<RowForm>`](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid#rowform)<img class="icon" src="./img/premium.svg" />
-* `<SaveButton>`
+* [`<SaveButton>`](./SaveButton.md)
 * [`<SavedQueriesList>`](./SavedQueriesList.md)
 * [`<Search>`](https://marmelab.com/ra-enterprise/modules/ra-search#the-search-component)<img class="icon" src="./img/premium.svg" />
 * [`<SearchInput>`](./FilteringTutorial.md#searchinput)
@@ -125,7 +125,7 @@ title: "Reference"
 * [`<SimpleList>`](./SimpleList.md)
 * [`<SimpleShowLayout>`](./SimpleShowLayout.md)
 * [`<SingleFieldList>`](./SingleFieldList.md)
-* [`<SortButton>`](./Buttons.md#sortbutton)
+* [`<SortButton>`](./SortButton.md)
 * `<Tab>`
 * [`<TabbedForm>`](./TabbedForm.md)
 * [`<TabbedShowLayout>`](./TabbedShowLayout.md)
@@ -175,7 +175,7 @@ title: "Reference"
 * [`useListController`](./useListController.md)
 * `useListParams`
 * `useLoading`
-* [`useLocaleState`](./Translation.md#uselocalestate-reading-and-setting-the-locale-at-runtime)
+* [`useLocaleState`](./useLocaleState.md)
 * [`useLock`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
 * [`useLogin`](./useLogin.md)
 * [`useLogout`](./useLogout.md)
@@ -206,7 +206,7 @@ title: "Reference"
 * `useSuggestions`
 * [`useTheme`](./Theming.md#changing-the-theme-programmatically)
 * [`useTour`](https://marmelab.com/ra-enterprise/modules/ra-tour)<img class="icon" src="./img/premium.svg" />
-* [`useTranslate`](./Translation.md#usetranslate-hook)
+* [`useTranslate`](./useTranslate.md)
 * [`useUpdate`](./useUpdate.md)
 * [`useUpdateMany`](./useUpdateMany.md)
 * [`useUnselect`](./useUnselect.md)

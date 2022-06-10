@@ -22,63 +22,61 @@ import { TextInput } from '../../input';
  *     </Card>
  * );
  */
-export const FilterLiveSearch = memo(
-    (props: {
-        source?: string;
-        sx?: SxProps;
-        variant?: 'filled' | 'outlined';
-    }) => {
-        const { source = 'q', variant, ...rest } = props;
-        const { filterValues, setFilters } = useListFilterContext();
-        const translate = useTranslate();
+export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
+    const { source = 'q', variant, ...rest } = props;
+    const { filterValues, setFilters } = useListFilterContext();
+    const translate = useTranslate();
 
-        const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-            if (event.target) {
-                setFilters(
-                    { ...filterValues, [source]: event.target.value },
-                    null
-                );
-            } else {
-                const { [source]: _, ...filters } = filterValues;
-                setFilters(filters, null);
-            }
-        };
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        if (event.target) {
+            setFilters({ ...filterValues, [source]: event.target.value }, null);
+        } else {
+            const { [source]: _, ...filters } = filterValues;
+            setFilters(filters, null);
+        }
+    };
 
-        const initialValues = useMemo(
-            () => ({
-                [source]: filterValues[source],
-            }),
-            [filterValues, source]
-        );
+    const initialValues = useMemo(
+        () => ({
+            [source]: filterValues[source],
+        }),
+        [filterValues, source]
+    );
 
-        const onSubmit = () => undefined;
-        let label = translate('ra.action.search');
+    const onSubmit = () => undefined;
+    let label = translate('ra.action.search');
 
-        return (
-            <Form defaultValues={initialValues} onSubmit={onSubmit}>
-                <TextInput
-                    resettable
-                    helperText={false}
-                    source={source}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <SearchIcon color="disabled" />
-                            </InputAdornment>
-                        ),
-                    }}
-                    onChange={handleChange}
-                    size="small"
-                    {...(variant === 'outlined'
-                        ? { variant: 'outlined', label }
-                        : {
-                              placeholder: label,
-                              label: false,
-                              hiddenLabel: true,
-                          })}
-                    {...rest}
-                />
-            </Form>
-        );
-    }
-);
+    return (
+        <Form defaultValues={initialValues} onSubmit={onSubmit}>
+            <TextInput
+                resettable
+                helperText={false}
+                source={source}
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <SearchIcon color="disabled" />
+                        </InputAdornment>
+                    ),
+                }}
+                onChange={handleChange}
+                size="small"
+                {...(variant === 'outlined'
+                    ? { variant: 'outlined', label }
+                    : {
+                          placeholder: label,
+                          label: false,
+                          hiddenLabel: true,
+                      })}
+                {...rest}
+            />
+        </Form>
+    );
+});
+
+export interface FilterLiveSearchProps {
+    source?: string;
+    sx?: SxProps;
+    fullWidth?: boolean;
+    variant?: 'filled' | 'outlined';
+}

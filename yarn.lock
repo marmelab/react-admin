@@ -8659,12 +8659,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bundle-require@npm:^2.1.8":
-  version: 2.2.0
-  resolution: "bundle-require@npm:2.2.0"
+"bundle-require@npm:^3.0.2":
+  version: 3.0.4
+  resolution: "bundle-require@npm:3.0.4"
+  dependencies:
+    load-tsconfig: ^0.2.0
   peerDependencies:
     esbuild: ">=0.13"
-  checksum: bf6645dbef0a7105d4fcd2a2c1f0b0d4cfe3b798edb216fb81d7cc09ffb45ce4dff4922deabd7a8e54ac0ed4dc6adb036345c1bf91d34eb21489152ed3a1bb00
+  checksum: f66f821f61b6fb914524ce5ad8488e16006fc045837bb36fdf6bf4eabaa9bed3dc3a5618f1d4b3a96fe17780046713ac663caebd8b5a170439f9da28a5e0c8a5
   languageName: node
   linkType: hard
 
@@ -10519,7 +10521,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"data-generator-retail@^4.0.0, data-generator-retail@^4.0.4, data-generator-retail@workspace:examples/data-generator":
+"data-generator-retail@^4.0.0, data-generator-retail@^4.1.3, data-generator-retail@workspace:examples/data-generator":
   version: 0.0.0-use.local
   resolution: "data-generator-retail@workspace:examples/data-generator"
   dependencies:
@@ -10527,9 +10529,9 @@ __metadata:
     date-fns: ^2.19.0
     faker: ^4.1.0
     npm-dts: ^1.3.10
-    ra-core: ^4.0.4
+    ra-core: ^4.1.3
     rimraf: ^2.6.3
-    tsup: ^5.11.11
+    tsup: ^6.1.0
   peerDependencies:
     ra-core: ^4.0.0
   languageName: unknown
@@ -11562,6 +11564,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"esbuild-android-64@npm:0.14.43":
+  version: 0.14.43
+  resolution: "esbuild-android-64@npm:0.14.43"
+  conditions: os=android & cpu=x64
+  languageName: node
+  linkType: hard
+
 "esbuild-android-arm64@npm:0.13.15":
   version: 0.13.15
   resolution: "esbuild-android-arm64@npm:0.13.15"
@@ -11569,9 +11578,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-android-arm64@npm:0.14.11":
-  version: 0.14.11
-  resolution: "esbuild-android-arm64@npm:0.14.11"
+"esbuild-android-arm64@npm:0.14.43":
+  version: 0.14.43
+  resolution: "esbuild-android-arm64@npm:0.14.43"
   conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
@@ -11583,9 +11592,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-darwin-64@npm:0.14.11":
-  version: 0.14.11
-  resolution: "esbuild-darwin-64@npm:0.14.11"
+"esbuild-darwin-64@npm:0.14.43":
+  version: 0.14.43
+  resolution: "esbuild-darwin-64@npm:0.14.43"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
@@ -11597,9 +11606,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-darwin-arm64@npm:0.14.11":
-  version: 0.14.11
-  resolution: "esbuild-darwin-arm64@npm:0.14.11"
+"esbuild-darwin-arm64@npm:0.14.43":
+  version: 0.14.43
+  resolution: "esbuild-darwin-arm64@npm:0.14.43"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
@@ -11611,9 +11620,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-freebsd-64@npm:0.14.11":
-  version: 0.14.11
-  resolution: "esbuild-freebsd-64@npm:0.14.11"
+"esbuild-freebsd-64@npm:0.14.43":
+  version: 0.14.43
+  resolution: "esbuild-freebsd-64@npm:0.14.43"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
@@ -11625,9 +11634,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-freebsd-arm64@npm:0.14.11":
-  version: 0.14.11
-  resolution: "esbuild-freebsd-arm64@npm:0.14.11"
+"esbuild-freebsd-arm64@npm:0.14.43":
+  version: 0.14.43
+  resolution: "esbuild-freebsd-arm64@npm:0.14.43"
   conditions: os=freebsd & cpu=arm64
   languageName: node
   linkType: hard
@@ -11639,9 +11648,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-linux-32@npm:0.14.11":
-  version: 0.14.11
-  resolution: "esbuild-linux-32@npm:0.14.11"
+"esbuild-linux-32@npm:0.14.43":
+  version: 0.14.43
+  resolution: "esbuild-linux-32@npm:0.14.43"
   conditions: os=linux & cpu=ia32
   languageName: node
   linkType: hard
@@ -11653,9 +11662,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-linux-64@npm:0.14.11":
-  version: 0.14.11
-  resolution: "esbuild-linux-64@npm:0.14.11"
+"esbuild-linux-64@npm:0.14.43":
+  version: 0.14.43
+  resolution: "esbuild-linux-64@npm:0.14.43"
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
@@ -11667,9 +11676,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-linux-arm64@npm:0.14.11":
-  version: 0.14.11
-  resolution: "esbuild-linux-arm64@npm:0.14.11"
+"esbuild-linux-arm64@npm:0.14.43":
+  version: 0.14.43
+  resolution: "esbuild-linux-arm64@npm:0.14.43"
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
@@ -11681,9 +11690,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-linux-arm@npm:0.14.11":
-  version: 0.14.11
-  resolution: "esbuild-linux-arm@npm:0.14.11"
+"esbuild-linux-arm@npm:0.14.43":
+  version: 0.14.43
+  resolution: "esbuild-linux-arm@npm:0.14.43"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
@@ -11695,9 +11704,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-linux-mips64le@npm:0.14.11":
-  version: 0.14.11
-  resolution: "esbuild-linux-mips64le@npm:0.14.11"
+"esbuild-linux-mips64le@npm:0.14.43":
+  version: 0.14.43
+  resolution: "esbuild-linux-mips64le@npm:0.14.43"
   conditions: os=linux & cpu=mips64el
   languageName: node
   linkType: hard
@@ -11709,16 +11718,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-linux-ppc64le@npm:0.14.11":
-  version: 0.14.11
-  resolution: "esbuild-linux-ppc64le@npm:0.14.11"
+"esbuild-linux-ppc64le@npm:0.14.43":
+  version: 0.14.43
+  resolution: "esbuild-linux-ppc64le@npm:0.14.43"
   conditions: os=linux & cpu=ppc64
   languageName: node
   linkType: hard
 
-"esbuild-linux-s390x@npm:0.14.11":
-  version: 0.14.11
-  resolution: "esbuild-linux-s390x@npm:0.14.11"
+"esbuild-linux-riscv64@npm:0.14.43":
+  version: 0.14.43
+  resolution: "esbuild-linux-riscv64@npm:0.14.43"
+  conditions: os=linux & cpu=riscv64
+  languageName: node
+  linkType: hard
+
+"esbuild-linux-s390x@npm:0.14.43":
+  version: 0.14.43
+  resolution: "esbuild-linux-s390x@npm:0.14.43"
   conditions: os=linux & cpu=s390x
   languageName: node
   linkType: hard
@@ -11730,9 +11746,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-netbsd-64@npm:0.14.11":
-  version: 0.14.11
-  resolution: "esbuild-netbsd-64@npm:0.14.11"
+"esbuild-netbsd-64@npm:0.14.43":
+  version: 0.14.43
+  resolution: "esbuild-netbsd-64@npm:0.14.43"
   conditions: os=netbsd & cpu=x64
   languageName: node
   linkType: hard
@@ -11744,9 +11760,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-openbsd-64@npm:0.14.11":
-  version: 0.14.11
-  resolution: "esbuild-openbsd-64@npm:0.14.11"
+"esbuild-openbsd-64@npm:0.14.43":
+  version: 0.14.43
+  resolution: "esbuild-openbsd-64@npm:0.14.43"
   conditions: os=openbsd & cpu=x64
   languageName: node
   linkType: hard
@@ -11758,9 +11774,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-sunos-64@npm:0.14.11":
-  version: 0.14.11
-  resolution: "esbuild-sunos-64@npm:0.14.11"
+"esbuild-sunos-64@npm:0.14.43":
+  version: 0.14.43
+  resolution: "esbuild-sunos-64@npm:0.14.43"
   conditions: os=sunos & cpu=x64
   languageName: node
   linkType: hard
@@ -11772,9 +11788,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-windows-32@npm:0.14.11":
-  version: 0.14.11
-  resolution: "esbuild-windows-32@npm:0.14.11"
+"esbuild-windows-32@npm:0.14.43":
+  version: 0.14.43
+  resolution: "esbuild-windows-32@npm:0.14.43"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
@@ -11786,9 +11802,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-windows-64@npm:0.14.11":
-  version: 0.14.11
-  resolution: "esbuild-windows-64@npm:0.14.11"
+"esbuild-windows-64@npm:0.14.43":
+  version: 0.14.43
+  resolution: "esbuild-windows-64@npm:0.14.43"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -11800,9 +11816,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-windows-arm64@npm:0.14.11":
-  version: 0.14.11
-  resolution: "esbuild-windows-arm64@npm:0.14.11"
+"esbuild-windows-arm64@npm:0.14.43":
+  version: 0.14.43
+  resolution: "esbuild-windows-arm64@npm:0.14.43"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
@@ -11869,29 +11885,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:^0.14.2":
-  version: 0.14.11
-  resolution: "esbuild@npm:0.14.11"
+"esbuild@npm:^0.14.25":
+  version: 0.14.43
+  resolution: "esbuild@npm:0.14.43"
   dependencies:
-    esbuild-android-arm64: 0.14.11
-    esbuild-darwin-64: 0.14.11
-    esbuild-darwin-arm64: 0.14.11
-    esbuild-freebsd-64: 0.14.11
-    esbuild-freebsd-arm64: 0.14.11
-    esbuild-linux-32: 0.14.11
-    esbuild-linux-64: 0.14.11
-    esbuild-linux-arm: 0.14.11
-    esbuild-linux-arm64: 0.14.11
-    esbuild-linux-mips64le: 0.14.11
-    esbuild-linux-ppc64le: 0.14.11
-    esbuild-linux-s390x: 0.14.11
-    esbuild-netbsd-64: 0.14.11
-    esbuild-openbsd-64: 0.14.11
-    esbuild-sunos-64: 0.14.11
-    esbuild-windows-32: 0.14.11
-    esbuild-windows-64: 0.14.11
-    esbuild-windows-arm64: 0.14.11
+    esbuild-android-64: 0.14.43
+    esbuild-android-arm64: 0.14.43
+    esbuild-darwin-64: 0.14.43
+    esbuild-darwin-arm64: 0.14.43
+    esbuild-freebsd-64: 0.14.43
+    esbuild-freebsd-arm64: 0.14.43
+    esbuild-linux-32: 0.14.43
+    esbuild-linux-64: 0.14.43
+    esbuild-linux-arm: 0.14.43
+    esbuild-linux-arm64: 0.14.43
+    esbuild-linux-mips64le: 0.14.43
+    esbuild-linux-ppc64le: 0.14.43
+    esbuild-linux-riscv64: 0.14.43
+    esbuild-linux-s390x: 0.14.43
+    esbuild-netbsd-64: 0.14.43
+    esbuild-openbsd-64: 0.14.43
+    esbuild-sunos-64: 0.14.43
+    esbuild-windows-32: 0.14.43
+    esbuild-windows-64: 0.14.43
+    esbuild-windows-arm64: 0.14.43
   dependenciesMeta:
+    esbuild-android-64:
+      optional: true
     esbuild-android-arm64:
       optional: true
     esbuild-darwin-64:
@@ -11914,6 +11934,8 @@ __metadata:
       optional: true
     esbuild-linux-ppc64le:
       optional: true
+    esbuild-linux-riscv64:
+      optional: true
     esbuild-linux-s390x:
       optional: true
     esbuild-netbsd-64:
@@ -11930,7 +11952,7 @@ __metadata:
       optional: true
   bin:
     esbuild: bin/esbuild
-  checksum: 3cb7bd8a65bb6d78f46fd93204318fe667d9f1f8fd6e44dfb61da7f385c8906bf70a085d66a49b8ce5498ef564a8fb109efd6ca09b00dca1f90ab119b145dfcf
+  checksum: 7e6e4948e83d3feb798619846f8288b79ec8d9d903c1664f55d0cd604321ca3b7d1ee61fe7c7eaf436a1733317a3cda30d04782a90d79b791f6f50da513c72c3
   languageName: node
   linkType: hard
 
@@ -17488,6 +17510,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"load-tsconfig@npm:^0.2.0":
+  version: 0.2.3
+  resolution: "load-tsconfig@npm:0.2.3"
+  checksum: 82d0851020ecf8e226f328c0958cfbf5a34c8ffc7b04d396f25f53861e408c948866f2536123986a13ad9357c3cb2d2b90f51a04eb9474abbfef92399a6caa3d
+  languageName: node
+  linkType: hard
+
 "loader-runner@npm:^4.2.0":
   version: 4.2.0
   resolution: "loader-runner@npm:4.2.0"
@@ -21393,7 +21422,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ra-core@^4.0.4, ra-core@workspace:packages/ra-core":
+"ra-core@^4.1.3, ra-core@workspace:packages/ra-core":
   version: 0.0.0-use.local
   resolution: "ra-core@workspace:packages/ra-core"
   dependencies:
@@ -21419,35 +21448,35 @@ __metadata:
     query-string: ^7.1.1
     react: ^17.0.0
     react-dom: ^17.0.0
-    react-hook-form: ^7.27.0
+    react-hook-form: ^7.31.0
     react-is: ^17.0.2
     react-query: ^3.32.1
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
     react-test-renderer: ^16.9.0 || ^17.0.0
-    tsup: ^5.11.11
+    tsup: ^6.1.0
     typescript: ^4.4.0
     yup: ^0.32.11
   peerDependencies:
     history: ^5.1.0
     react: ^16.9.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.9.0 || ^17.0.0 || ^18.0.0
-    react-hook-form: ^7.27.0
+    react-hook-form: ^7.31.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
   languageName: unknown
   linkType: soft
 
-"ra-data-fakerest@^4.0.0, ra-data-fakerest@^4.0.4, ra-data-fakerest@workspace:packages/ra-data-fakerest":
+"ra-data-fakerest@^4.0.0, ra-data-fakerest@^4.1.3, ra-data-fakerest@workspace:packages/ra-data-fakerest":
   version: 0.0.0-use.local
   resolution: "ra-data-fakerest@workspace:packages/ra-data-fakerest"
   dependencies:
     cross-env: ^5.2.0
     fakerest: ^3.0.0
     npm-dts: ^1.3.10
-    ra-core: ^4.0.4
+    ra-core: ^4.1.3
     rimraf: ^2.6.3
-    tsup: ^5.11.11
+    tsup: ^6.1.0
   peerDependencies:
     ra-core: ^4.0.0
   languageName: unknown
@@ -21464,16 +21493,16 @@ __metadata:
     lodash: ~4.17.5
     npm-dts: ^1.3.10
     pluralize: ~7.0.0
-    ra-data-graphql: ^4.0.3
+    ra-data-graphql: ^4.1.3
     rimraf: ^2.6.3
-    tsup: ^5.11.11
+    tsup: ^6.1.0
   peerDependencies:
     graphql: ^15.6.0
     ra-core: ^4.0.0
   languageName: unknown
   linkType: soft
 
-"ra-data-graphql@^4.0.0-beta.2, ra-data-graphql@^4.0.3, ra-data-graphql@workspace:packages/ra-data-graphql":
+"ra-data-graphql@^4.0.0-beta.2, ra-data-graphql@^4.1.3, ra-data-graphql@workspace:packages/ra-data-graphql":
   version: 0.0.0-use.local
   resolution: "ra-data-graphql@workspace:packages/ra-data-graphql"
   dependencies:
@@ -21484,7 +21513,7 @@ __metadata:
     npm-dts: ^1.3.10
     pluralize: ~7.0.0
     rimraf: ^2.6.3
-    tsup: ^5.11.11
+    tsup: ^6.1.0
   peerDependencies:
     graphql: ^15.6.0
     ra-core: ^4.0.0
@@ -21498,22 +21527,22 @@ __metadata:
     cross-env: ^5.2.0
     npm-dts: ^1.3.10
     query-string: ^7.1.1
-    ra-core: ^4.0.4
+    ra-core: ^4.1.3
     rimraf: ^2.6.3
-    tsup: ^5.11.11
+    tsup: ^6.1.0
   languageName: unknown
   linkType: soft
 
-"ra-data-local-storage@^4.0.0, ra-data-local-storage@^4.0.4, ra-data-local-storage@workspace:packages/ra-data-localstorage":
+"ra-data-local-storage@^4.0.0, ra-data-local-storage@^4.1.3, ra-data-local-storage@workspace:packages/ra-data-localstorage":
   version: 0.0.0-use.local
   resolution: "ra-data-local-storage@workspace:packages/ra-data-localstorage"
   dependencies:
     cross-env: ^5.2.0
     lodash: ~4.17.5
     npm-dts: ^1.3.10
-    ra-data-fakerest: ^4.0.4
+    ra-data-fakerest: ^4.1.3
     rimraf: ^2.6.3
-    tsup: ^5.11.11
+    tsup: ^6.1.0
   peerDependencies:
     ra-core: "*"
   languageName: unknown
@@ -21526,28 +21555,28 @@ __metadata:
     cross-env: ^5.2.0
     npm-dts: ^1.3.10
     query-string: ^7.1.1
-    ra-core: ^4.0.4
+    ra-core: ^4.1.3
     rimraf: ^2.6.3
-    tsup: ^5.11.11
+    tsup: ^6.1.0
   peerDependencies:
     ra-core: ^4.0.0
   languageName: unknown
   linkType: soft
 
-"ra-i18n-polyglot@^4.0.0, ra-i18n-polyglot@^4.0.4, ra-i18n-polyglot@workspace:packages/ra-i18n-polyglot":
+"ra-i18n-polyglot@^4.0.0, ra-i18n-polyglot@^4.1.3, ra-i18n-polyglot@workspace:packages/ra-i18n-polyglot":
   version: 0.0.0-use.local
   resolution: "ra-i18n-polyglot@workspace:packages/ra-i18n-polyglot"
   dependencies:
     cross-env: ^5.2.0
     node-polyglot: ^2.2.2
     npm-dts: ^1.3.10
-    ra-core: ^4.0.4
+    ra-core: ^4.1.3
     rimraf: ^2.6.3
-    tsup: ^5.11.11
+    tsup: ^6.1.0
   languageName: unknown
   linkType: soft
 
-"ra-input-rich-text@^4.0.0, ra-input-rich-text@^4.0.4, ra-input-rich-text@workspace:packages/ra-input-rich-text":
+"ra-input-rich-text@^4.0.0, ra-input-rich-text@^4.1.3, ra-input-rich-text@workspace:packages/ra-input-rich-text":
   version: 0.0.0-use.local
   resolution: "ra-input-rich-text@workspace:packages/ra-input-rich-text"
   dependencies:
@@ -21561,14 +21590,14 @@ __metadata:
     "@tiptap/react": ^2.0.0-beta.63
     "@tiptap/starter-kit": ^2.0.0-beta.101
     clsx: ^1.1.1
-    data-generator-retail: ^4.0.4
-    ra-core: ^4.0.4
-    ra-data-fakerest: ^4.0.4
-    ra-ui-materialui: ^4.0.4
+    data-generator-retail: ^4.1.3
+    ra-core: ^4.1.3
+    ra-data-fakerest: ^4.1.3
+    ra-ui-materialui: ^4.1.3
     react: ^17.0.0
     react-dom: ^17.0.0
-    react-hook-form: ^7.27.0
-    tsup: ^5.11.11
+    react-hook-form: ^7.31.0
+    tsup: ^6.1.0
   peerDependencies:
     "@mui/icons-material": ^5.0.1
     "@mui/material": ^5.0.2
@@ -21579,23 +21608,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-language-english@^4.0.0, ra-language-english@^4.0.4, ra-language-english@workspace:packages/ra-language-english":
+"ra-language-english@^4.0.0, ra-language-english@^4.1.3, ra-language-english@workspace:packages/ra-language-english":
   version: 0.0.0-use.local
   resolution: "ra-language-english@workspace:packages/ra-language-english"
   dependencies:
     npm-dts: ^1.3.10
-    ra-core: ^4.0.4
-    tsup: ^5.11.11
+    ra-core: ^4.1.3
+    tsup: ^6.1.0
   languageName: unknown
   linkType: soft
 
-"ra-language-french@^4.0.0, ra-language-french@^4.0.4, ra-language-french@workspace:packages/ra-language-french":
+"ra-language-french@^4.0.0, ra-language-french@^4.1.3, ra-language-french@workspace:packages/ra-language-french":
   version: 0.0.0-use.local
   resolution: "ra-language-french@workspace:packages/ra-language-french"
   dependencies:
     npm-dts: ^1.3.10
-    ra-core: ^4.0.4
-    tsup: ^5.11.11
+    ra-core: ^4.1.3
+    tsup: ^6.1.0
   languageName: unknown
   linkType: soft
 
@@ -21615,23 +21644,23 @@ __metadata:
     npm-dts: ^1.3.10
     papaparse: ^5.3.0
     prop-types: ^15.6.1
-    ra-data-local-storage: ^4.0.4
+    ra-data-local-storage: ^4.1.3
     react: ^17.0.0
-    react-admin: ^4.0.4
+    react-admin: ^4.1.3
     react-dom: ^17.0.0
     react-dropzone: ^12.0.4
     react-query: ^3.32.1
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
     rimraf: ^2.6.3
-    tsup: ^5.11.11
+    tsup: ^6.1.0
   peerDependencies:
     react: ^16.9.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.9.0 || ^17.0.0 || ^18.0.0
   languageName: unknown
   linkType: soft
 
-"ra-ui-materialui@^4.0.4, ra-ui-materialui@workspace:packages/ra-ui-materialui":
+"ra-ui-materialui@^4.1.3, ra-ui-materialui@workspace:packages/ra-ui-materialui":
   version: 0.0.0-use.local
   resolution: "ra-ui-materialui@workspace:packages/ra-ui-materialui"
   dependencies:
@@ -21652,21 +21681,21 @@ __metadata:
     npm-dts: ^1.3.10
     prop-types: ^15.7.0
     query-string: ^7.1.1
-    ra-core: ^4.0.4
-    ra-i18n-polyglot: ^4.0.4
-    ra-language-english: ^4.0.4
+    ra-core: ^4.1.3
+    ra-i18n-polyglot: ^4.1.3
+    ra-language-english: ^4.1.3
     react: ^17.0.0
     react-dom: ^17.0.0
     react-dropzone: ^12.0.4
     react-error-boundary: ^3.1.4
-    react-hook-form: ^7.27.0
+    react-hook-form: ^7.31.0
     react-query: ^3.32.1
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
     react-test-renderer: ~16.8.6
     react-transition-group: ^4.4.1
     rimraf: ^2.6.3
-    tsup: ^5.11.11
+    tsup: ^6.1.0
   peerDependencies:
     "@mui/icons-material": ^5.0.1
     "@mui/material": ^5.0.2
@@ -21838,7 +21867,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-admin@^4.0.0, react-admin@^4.0.4, react-admin@workspace:packages/react-admin":
+"react-admin@^4.0.0, react-admin@^4.1.3, react-admin@workspace:packages/react-admin":
   version: 0.0.0-use.local
   resolution: "react-admin@workspace:packages/react-admin"
   dependencies:
@@ -21850,15 +21879,15 @@ __metadata:
     expect: ^27.4.6
     history: ^5.1.0
     npm-dts: ^1.3.10
-    ra-core: ^4.0.4
-    ra-i18n-polyglot: ^4.0.4
-    ra-language-english: ^4.0.4
-    ra-ui-materialui: ^4.0.4
-    react-hook-form: ^7.27.0
+    ra-core: ^4.1.3
+    ra-i18n-polyglot: ^4.1.3
+    ra-language-english: ^4.1.3
+    ra-ui-materialui: ^4.1.3
+    react-hook-form: ^7.31.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
     rimraf: ^2.6.3
-    tsup: ^5.11.11
+    tsup: ^6.1.0
   peerDependencies:
     react: ^16.9.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.9.0 || ^17.0.0 || ^18.0.0
@@ -22076,12 +22105,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.27.0":
-  version: 7.27.1
-  resolution: "react-hook-form@npm:7.27.1"
+"react-hook-form@npm:^7.31.0":
+  version: 7.31.3
+  resolution: "react-hook-form@npm:7.31.3"
   peerDependencies:
-    react: ^16.8.0 || ^17
-  checksum: 0a125d61080202acfba3be84dc7156fe79812a2f640658fb96b20b688555abc1d6bd5b5ff64933d3e1050bfe191271654bfcbdc32126c30a702acf003e600b0c
+    react: ^16.8.0 || ^17 || ^18
+  checksum: 41875aad648dbb9f9f0b297fc6e4601656ceae502ec4d77a7644cc66eb54f1ba0c645bac6bce7d5e099d4e52f5870c2dd9d48d6760220453412c1d5865b72738
   languageName: node
   linkType: hard
 
@@ -23334,7 +23363,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:^2.43.1, rollup@npm:^2.59.0, rollup@npm:^2.60.0":
+"rollup@npm:^2.43.1, rollup@npm:^2.59.0":
   version: 2.64.0
   resolution: "rollup@npm:2.64.0"
   dependencies:
@@ -23345,6 +23374,20 @@ __metadata:
   bin:
     rollup: dist/bin/rollup
   checksum: 22d8893e359ae9ed0eb599050276805e1b27ed22adfdcf06f6ad0f7a5d0f40e93e888a1dd6053709f1e8338f29ddbc1e6eab2fe0237c81dd1acad1f6bbb463e4
+  languageName: node
+  linkType: hard
+
+"rollup@npm:^2.74.1":
+  version: 2.75.6
+  resolution: "rollup@npm:2.75.6"
+  dependencies:
+    fsevents: ~2.3.2
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    rollup: dist/bin/rollup
+  checksum: 74cd92d5441b550646b5e26bae7c1c0cdb6b89d4b54be237920ebc320550bfc276fa2bdb3252fcc7f4c0f8cea33e7e5af1df59cf2856ea03fb3dff7d6503cebf
   languageName: node
   linkType: hard
 
@@ -23923,16 +23966,16 @@ __metadata:
     lodash: ~4.17.5
     prop-types: ^15.7.2
     proxy-polyfill: ^0.3.0
-    ra-data-fakerest: ^4.0.4
-    ra-i18n-polyglot: ^4.0.4
-    ra-input-rich-text: ^4.0.4
-    ra-language-english: ^4.0.4
-    ra-language-french: ^4.0.4
+    ra-data-fakerest: ^4.1.3
+    ra-i18n-polyglot: ^4.1.3
+    ra-input-rich-text: ^4.1.3
+    ra-language-english: ^4.1.3
+    ra-language-french: ^4.1.3
     react: ^17.0.0
-    react-admin: ^4.0.4
+    react-admin: ^4.1.3
     react-app-polyfill: ^1.0.4
     react-dom: ^17.0.0
-    react-hook-form: ^7.27.0
+    react-hook-form: ^7.31.0
     react-query: ^3.32.1
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
@@ -24222,6 +24265,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"source-map@npm:0.8.0-beta.0, source-map@npm:^0.8.0-beta.0":
+  version: 0.8.0-beta.0
+  resolution: "source-map@npm:0.8.0-beta.0"
+  dependencies:
+    whatwg-url: ^7.0.0
+  checksum: fb4d9bde9a9fdb2c29b10e5eae6c71d10e09ef467e1afb75fdec2eb7e11fa5b343a2af553f74f18b695dbc0b81f9da2e9fa3d7a317d5985e9939499ec6087835
+  languageName: node
+  linkType: hard
+
 "source-map@npm:^0.5.0, source-map@npm:^0.5.6, source-map@npm:^0.5.7":
   version: 0.5.7
   resolution: "source-map@npm:0.5.7"
@@ -24233,15 +24285,6 @@ __metadata:
   version: 0.7.3
   resolution: "source-map@npm:0.7.3"
   checksum: 7d2ddb51f3d2451847692a9ac7808da2b2b3bf7aef92ece33128919040a7e74d9a5edfde7a781f035c974deff876afaf83f2e30484faffffb86484e7408f5d7c
-  languageName: node
-  linkType: hard
-
-"source-map@npm:^0.8.0-beta.0":
-  version: 0.8.0-beta.0
-  resolution: "source-map@npm:0.8.0-beta.0"
-  dependencies:
-    whatwg-url: ^7.0.0
-  checksum: fb4d9bde9a9fdb2c29b10e5eae6c71d10e09ef467e1afb75fdec2eb7e11fa5b343a2af553f74f18b695dbc0b81f9da2e9fa3d7a317d5985e9939499ec6087835
   languageName: node
   linkType: hard
 
@@ -25602,33 +25645,39 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsup@npm:^5.11.11":
-  version: 5.11.11
-  resolution: "tsup@npm:5.11.11"
+"tsup@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "tsup@npm:6.1.0"
   dependencies:
-    bundle-require: ^2.1.8
+    bundle-require: ^3.0.2
     cac: ^6.7.12
     chokidar: ^3.5.1
     debug: ^4.3.1
-    esbuild: ^0.14.2
+    esbuild: ^0.14.25
     execa: ^5.0.0
     globby: ^11.0.3
     joycon: ^3.0.1
     postcss-load-config: ^3.0.1
     resolve-from: ^5.0.0
-    rollup: ^2.60.0
-    source-map: ^0.7.3
+    rollup: ^2.74.1
+    source-map: 0.8.0-beta.0
     sucrase: ^3.20.3
     tree-kill: ^1.2.2
   peerDependencies:
+    "@swc/core": ^1
+    postcss: ^8.4.12
     typescript: ^4.1.0
   peerDependenciesMeta:
+    "@swc/core":
+      optional: true
+    postcss:
+      optional: true
     typescript:
       optional: true
   bin:
     tsup: dist/cli-default.js
     tsup-node: dist/cli-node.js
-  checksum: 663a1a17252a593027212c2fec511b7aed113b770d61cfd6373acaca3c7e4816fbd9a567ab5c8c9a5beef4a25c5ef1e1befa50e5e6ee946f180319dbdb073aab
+  checksum: 5fcb647b892e1130b336b2bfa08c31b539265853f497cc74fe1e943cae70503b575204ae1b85d63fa4178837d668feb1f63b0da49f1e4ccd8d91e3c071aa27ae
   languageName: node
   linkType: hard
 

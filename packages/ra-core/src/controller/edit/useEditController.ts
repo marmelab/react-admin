@@ -39,8 +39,11 @@ import { SaveContextValue, useMutationMiddlewares } from '../saveContext';
  *     return <EditView {...controllerProps} {...props} />;
  * }
  */
-export const useEditController = <RecordType extends RaRecord = any>(
-    props: EditControllerProps<RecordType> = {}
+export const useEditController = <
+    RecordType extends RaRecord = any,
+    MutationOptionsError = unknown
+>(
+    props: EditControllerProps<RecordType, MutationOptionsError> = {}
 ): EditControllerResult<RecordType> => {
     const {
         disableAuthentication,
@@ -58,7 +61,7 @@ export const useEditController = <RecordType extends RaRecord = any>(
     const redirect = useRedirect();
     const refresh = useRefresh();
     const { id: routeId } = useParams<'id'>();
-    const id = propsId || decodeURIComponent(routeId);
+    const id = propsId != null ? propsId : decodeURIComponent(routeId);
     const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
     const {
         registerMutationMiddleware,
@@ -101,11 +104,10 @@ export const useEditController = <RecordType extends RaRecord = any>(
 
     const recordCached = { id, previousData: record };
 
-    const [update, { isLoading: saving }] = useUpdate<RecordType>(
-        resource,
-        recordCached,
-        { ...otherMutationOptions, mutationMode }
-    );
+    const [update, { isLoading: saving }] = useUpdate<
+        RecordType,
+        MutationOptionsError
+    >(resource, recordCached, { ...otherMutationOptions, mutationMode });
 
     const save = useCallback(
         (
@@ -211,13 +213,16 @@ export const useEditController = <RecordType extends RaRecord = any>(
     };
 };
 
-export interface EditControllerProps<RecordType extends RaRecord = any> {
+export interface EditControllerProps<
+    RecordType extends RaRecord = any,
+    MutationOptionsError = unknown
+> {
     disableAuthentication?: boolean;
     id?: RecordType['id'];
     mutationMode?: MutationMode;
     mutationOptions?: UseMutationOptions<
         RecordType,
-        unknown,
+        MutationOptionsError,
         UseUpdateMutateParams<RecordType>
     >;
     queryOptions?: UseQueryOptions<RecordType>;

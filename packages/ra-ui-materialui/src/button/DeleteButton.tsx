@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import { UseMutationOptions } from 'react-query';
 import {
     RaRecord,
-    RedirectionSideEffect,
     MutationMode,
     DeleteParams,
     useRecordContext,
     useSaveContext,
     SaveContextValue,
+    RedirectionSideEffect,
 } from 'ra-core';
 
 import { ButtonProps } from './Button';
@@ -79,24 +79,23 @@ export const DeleteButton = <RecordType extends RaRecord = any>(
     );
 };
 
-export interface DeleteButtonProps<RecordType extends RaRecord = any>
-    extends Omit<ButtonProps, 'record'>,
+export interface DeleteButtonProps<
+    RecordType extends RaRecord = any,
+    MutationOptionsError = unknown
+> extends ButtonProps,
         SaveContextValue {
-    className?: string;
     confirmTitle?: string;
     confirmContent?: string;
     icon?: ReactElement;
-    label?: string;
     mutationMode?: MutationMode;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        MutationOptionsError,
+        DeleteParams<RecordType>
+    >;
     record?: RecordType;
     redirect?: RedirectionSideEffect;
     resource?: string;
-    // May be injected by Toolbar
-    mutationOptions?: UseMutationOptions<
-        RecordType,
-        unknown,
-        DeleteParams<RecordType>
-    >;
 }
 
 DeleteButton.propTypes = {

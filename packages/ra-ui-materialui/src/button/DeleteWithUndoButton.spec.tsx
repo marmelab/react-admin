@@ -12,12 +12,9 @@ import { DeleteWithUndoButton } from './DeleteWithUndoButton';
 const theme = createTheme();
 
 const invalidButtonDomProps = {
-    invalid: false,
-    pristine: false,
     record: { id: 123, foo: 'bar' },
     redirect: 'list',
     resource: 'posts',
-    mutationMode: 'undoable' as MutationMode,
 };
 
 describe('<DeleteWithUndoButton />', () => {

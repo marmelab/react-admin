@@ -47,6 +47,10 @@ describe('Admin', () => {
             </ApplicationContext.Provider>
         );
 
+        await waitFor(() => {
+            screen.getByLabelText('CSV File');
+        });
+
         userEvents.upload(screen.getByLabelText('CSV File'), file);
 
         await screen.findByDisplayValue('customers');
