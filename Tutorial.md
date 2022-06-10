@@ -7,6 +7,10 @@ title: "My First Project Tutorial"
 
 This 30 minutes tutorial will expose how to create a new admin app based on an existing REST API.
 
+Here is an overview of the result:
+
+[![React-Admin tutorial overview](./img/tutorial_overview.gif)](./img/tutorial_overview.gif)
+
 ## Setting Up
 
 React-admin uses React. We'll use [create-react-app](https://github.com/facebookincubator/create-react-app) to create an empty React app, and install the `react-admin` package:
@@ -796,8 +800,11 @@ export const PostList = () => (
     <List>
         <SimpleList
             primaryText={record => record.title}
-            secondaryText={record => `${record.views} views`}
-            tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+            secondaryText={record => (
+                <ReferenceField label="User" source="userId" reference="users">
+                  <TextField source="name" />
+                </ReferenceField>
+            )}
         />
     </List>
 );
@@ -822,11 +829,14 @@ export const PostList = () => {
     return (
         <List>
             {isSmall ? (
-                <SimpleList
-                    primaryText={record => record.title}
-                    secondaryText={record => `${record.views} views`}
-                    tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
-                />
+                            <SimpleList
+                                primaryText={record => record.title}
+                                secondaryText={record => (
+                                    <ReferenceField label="User" source="userId" reference="users">
+                                        <TextField source="name" />
+                                    </ReferenceField>
+                                )}
+                            />
             ) : (
                 <Datagrid>
                     <TextField source="id" />

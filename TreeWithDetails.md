@@ -15,13 +15,24 @@ This component allows users to browse, edit, and rearrange trees.
 
 ```jsx
 // in src/category.js
-import * as React from 'react';
-import { Admin, Resource, TextInput } from 'react-admin';
-import { CreateNode, EditNode, SimpleForm, TreeWithDetails } from '@react-admin/ra-tree';
+import {
+    Admin,
+    Resource,
+    Create,
+    Edit,
+    SimpleForm,
+    TextInput,
+} from 'react-admin';
+import {
+    CreateNode,
+    EditNode,
+    EditNodeToolbar,
+    TreeWithDetails,
+} from '@react-admin/ra-tree';
 
 // a Create view for a tree uses <CreateNode> instead of the standard <Create>
-const CategoriesCreate = props => (
-    <CreateNode {...props}>
+const CategoriesCreate = () => (
+    <CreateNode>
         <SimpleForm>
             <TextInput source="name" />
         </SimpleForm>
@@ -29,35 +40,27 @@ const CategoriesCreate = props => (
 );
 
 // an Edit view for a tree uses <EditNode> instead of the standard <Edit>
-const CategoriesEdit = props => (
-    <EditNode {...props}>
-        <SimpleForm>
+const CategoriesEdit = () => (
+    <EditNode>
+        <SimpleForm toolbar={<EditNodeToolbar />}>
             <TextInput source="title" />
         </SimpleForm>
     </EditNode>
-)
+);
 
 // a List view for a tree uses <TreeWithDetails>
-export const CategoriesList = props => (
-    <TreeWithDetails 
-        create={CategoriesCreate}
-        edit={CategoriesEdit}
-        {...props}
-    />
+export const CategoriesList = () => (
+    <TreeWithDetails create={CategoriesCreate} edit={CategoriesEdit} />
 );
 
 // in src/App.js
 import { CategoriesList } from './category';
 
 const App = () => (
-    <Admin
-        dataProvider={dataProvider}
-        i18nProvider={i18nProvider}
-        locale="en"
-    >
+    <Admin dataProvider={dataProvider}>
         <Resource list={CategoriesList} />
     </Admin>
-)
+);
 ```
 
-Check [the `ra-tree` documentation](https://marmelab.com/ra-enterprise/modules/ra-tree) for more details.
+Check [the `ra-tree` documentation](https://marmelab.com/ra-enterprise/modules/ra-tree#treewithdetails-component) for more details.

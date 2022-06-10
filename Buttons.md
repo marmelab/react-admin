@@ -307,6 +307,16 @@ const MyEdit = () => (
 
 ### `<CloneButton>`
 
+## Performance
+
+### `disableRipple`
+
+The ripple effect can cause [performance issues](https://github.com/marmelab/react-admin/issues/5587) for large datagrids. It's possible to remove the ripple effect from within your MUI theme. The [MUI docs](https://mui.com/material-ui/getting-started/faq/#how-can-i-disable-the-ripple-effect-globally) provide instructions on how to do this.
+
+It's worth noting that removing the ripple will cause accessibility issues, including a lack of focus states during tab navigating for components like `BooleanInput` and `CheckboxGroupInput`. 
+
+Note: The `disableRipple` was set to `true` in React Admin for a time, but was reimplement due to accessibility concerns. If you'd like to reimplement the static ripple colour effect, you can use the [React Admin's previous implementation](https://github.com/marmelab/react-admin/blob/994079cbca810a2e74d85329e684811645b04ae2/packages/ra-ui-materialui/src/defaultTheme.ts#L31) as a starting point. [The MUI docs](https://mui.com/material-ui/api/button-base/#props) also gives details on how to reimplement focus styles using the `Mui-focusVisible` class.
+
 ## Miscellaneous
 
 ### `<Button>`

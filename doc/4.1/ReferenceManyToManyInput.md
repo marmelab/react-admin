@@ -19,36 +19,21 @@ In this example, `artists.id` matches `performances.artist_id`, and `performance
 └────────────┘       └──────────────┘      └────────┘
 ```
 
-The form displays the events name in a `<SelectArrayInput>`:
+The form displays the events name in a [`<SelectArrayInput>`](./SelectArrayInput.md):
 
 ```jsx
-import * as React from 'react';
-import { Edit, SelectArrayInput, SimpleForm, TextInput } from 'react-admin';
-import { ReferenceManyToManyInput, useReferenceManyToManyUpdate } from '@react-admin/ra-many-to-many';
+import {
+    Edit,
+    SelectArrayInput,
+    SimpleForm,
+    TextInput,
+    required,
+} from 'react-admin';
+import { ReferenceManyToManyInput } from '@react-admin/ra-relationships';
 
-/**
- * Decorate <SimpleForm> to override the default save function.
- * This is necessary to save changes in the associative table
- * only on submission.
- */
-const ArtistEditForm = props => {
-    const save = useReferenceManyToManyUpdate({
-        record: props.record,
-        redirect: props.redirect || 'list',
-        reference: 'events',
-        resource: props.resource,
-        source: 'id',
-        through: 'performances',
-        undoable: props.undoable,
-        using: 'artist_id,event_id',
-    });
-
-    return <SimpleForm {...props} save={save} />;
-};
-
-const ArtistEdit = () => (
+export const ArtistEdit = () => (
     <Edit>
-        <ArtistEditForm>
+        <SimpleForm>
             <TextInput disabled source="id" />
             <TextInput source="first_name" />
             <TextInput source="last_name" />
@@ -57,16 +42,18 @@ const ArtistEdit = () => (
                 reference="events"
                 through="performances"
                 using="artist_id,event_id"
-                fullWidth
-                label="Performances"
             >
-                <SelectArrayInput optionText="name" />
+                <SelectArrayInput
+                    label="Performances"
+                    // Validation must be set on this component
+                    validate={required()}
+                    optionText="name"
+                    fullWidth
+                />
             </ReferenceManyToManyInput>
-        </ArtistEditForm>
+        </SimpleForm>
     </Edit>
 );
-
-export default ArtistEdit;
 ```
 
 Check [the `ra-relationships` documentation](https://marmelab.com/ra-enterprise/modules/ra-relationships#referencemanytomanyinput) for more details.

@@ -175,7 +175,7 @@ title: "Reference"
 * [`useListController`](./useListController.md)
 * `useListParams`
 * `useLoading`
-* [`useLocaleState`](./Translation.md#uselocalestate-reading-and-setting-the-locale-at-runtime)
+* [`useLocaleState`](./useLocaleState.md)
 * [`useLock`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
 * [`useLogin`](./useLogin.md)
 * [`useLogout`](./useLogout.md)
@@ -206,7 +206,7 @@ title: "Reference"
 * `useSuggestions`
 * [`useTheme`](./Theming.md#changing-the-theme-programmatically)
 * [`useTour`](https://marmelab.com/ra-enterprise/modules/ra-tour)<img class="icon" src="./img/premium.svg" />
-* [`useTranslate`](./Translation.md#usetranslate-hook)
+* [`useTranslate`](./useTranslate.md)
 * [`useUpdate`](./useUpdate.md)
 * [`useUpdateMany`](./useUpdateMany.md)
 * [`useUnselect`](./useUnselect.md)

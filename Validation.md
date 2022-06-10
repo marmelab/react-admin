@@ -190,7 +190,7 @@ export default {
 }
 ```
 
-See the [Translation documentation](Translation.md#translation-messages) for details.
+See the [Translation documentation](TranslationTranslating.md#translating-form-validation-errors) for details.
 
 **Tip**: Make sure to define validation functions or array of functions in a variable outside your component, instead of defining them directly in JSX. This can result in a new function or array at every render, and trigger infinite rerender.
 
