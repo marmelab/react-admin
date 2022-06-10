@@ -33,20 +33,6 @@ export const PostList = () => (
 
 ![ReferenceManyFieldSingleFieldList](./img/reference-many-field-single-field-list.png)
 
-## Properties
-
-| Prop         | Required | Type               | Default                          | Description                                                                         |
-| ------------ | -------- | ------------------ | -------------------------------- | ----------------------------------------------------------------------------------- |
-| `children`   | Required | `Element`          | -                                | The Iterator element used to render the referenced records                          |
-| `reference`  | Required | `string`           | -                                | The name of the resource for the referenced records, e.g. 'books'                   |
-| `target`     | Required | string             | -                                | Target field carrying the relationship on the referenced resource, e.g. 'user_id'   |
-| `filter`     | Optional | `Object`           | -                                | Filters to use when fetching the related records, passed to `getManyReference()`    |
-| `pagination` | Optional | `Element`          | -                                | Pagination element to display pagination controls. empty by default (no pagination) |
-| `perPage`    | Optional | `number`           | 25                               | Maximum number of referenced records to fetch                                       |
-| `sort`       | Optional | `{ field, order }` | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()` |
-
-`<ReferenceManyField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
-
 ## Usage
 
 `<ReferenceManyField>` accepts a `reference` attribute, which specifies the resource to fetch for the related record. It also accepts a `source` attribute which defines the field containing the value to look for in the `target` field of the referenced resource. By default, this is the `id` of the resource (`post.id` in the previous example).
@@ -121,3 +107,18 @@ Also, you can filter the query used to populate the possible values. Use the `fi
 </ReferenceManyField>
 ```
 {% endraw %}
+
+## Props
+
+| Prop         | Required | Type               | Default                          | Description                                                                         |
+| ------------ | -------- | ------------------ | -------------------------------- | ----------------------------------------------------------------------------------- |
+| `children`   | Required | `Element`          | -                                | The Iterator element used to render the referenced records                          |
+| `reference`  | Required | `string`           | -                                | The name of the resource for the referenced records, e.g. 'books'                   |
+| `target`     | Required | string             | -                                | Target field carrying the relationship on the referenced resource, e.g. 'user_id'   |
+| `filter`     | Optional | `Object`           | -                                | Filters to use when fetching the related records, passed to `getManyReference()`    |
+| `pagination` | Optional | `Element`          | -                                | Pagination element to display pagination controls. empty by default (no pagination) |
+| `perPage`    | Optional | `number`           | 25                               | Maximum number of referenced records to fetch                                       |
+| `sort`       | Optional | `{ field, order }` | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()` |
+
+`<ReferenceManyField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
+
