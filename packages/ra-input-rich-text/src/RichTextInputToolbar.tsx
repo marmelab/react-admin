@@ -9,6 +9,8 @@ import {
     ListButtons,
     LinkButtons,
     QuoteButtons,
+    ImageButtons,
+    ColorButtons,
 } from './buttons';
 
 /**
@@ -36,8 +38,10 @@ import {
  *             <RichTextInputToolbar>
  *                 <LevelSelect size={size} />
  *                 <FormatButtons size={size} />
+ *                 <ColorButtons size={size} />
  *                 <ListButtons size={size} />
  *                 <LinkButtons size={size} />
+ *                 <ImageButtons size={size} />
  *                 <QuoteButtons size={size} />
  *                 <ClearButtons size={size} />
  *             </RichTextInputToolbar>
@@ -55,9 +59,11 @@ export const RichTextInputToolbar = (props: RichTextInputToolbarProps) => {
             <>
                 <LevelSelect size={size} />
                 <FormatButtons size={size} />
+                <ColorButtons size={size} />
                 <AlignmentButtons size={size} />
                 <ListButtons size={size} />
                 <LinkButtons size={size} />
+                <ImageButtons size={size} />
                 <QuoteButtons size={size} />
                 <ClearButtons size={size} />
             </>
