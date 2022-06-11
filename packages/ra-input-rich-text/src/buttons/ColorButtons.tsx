@@ -8,7 +8,8 @@ import {
 } from '@mui/material';
 import FormatColorTextIcon from '@mui/icons-material/FormatColorText';
 import FontDownloadIcon from '@mui/icons-material/FontDownload';
-import { useTheme, useTranslate } from 'ra-core';
+import { useTranslate } from 'ra-core';
+import { useTheme } from 'ra-ui-materialui';
 import { useTiptapEditor } from '../useTiptapEditor';
 import {
     grey,
@@ -112,10 +113,14 @@ const ColorChoiceDialog = ({
                 zIndex: 1,
             }}
         >
-            {shades.map(shade => (
-                <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
-                    {colors.map(color => (
+            {shades.map((shade, line) => (
+                <Box
+                    key={`shade-${shade}`}
+                    sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}
+                >
+                    {colors.map((color, row) => (
                         <Box
+                            key={`color-${line * colors.length + row + 1}`}
                             sx={{
                                 width: 16,
                                 height: 16,
