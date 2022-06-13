@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { FieldProps, InferenceTypes, SelectInput } from 'react-admin';
+import { InferenceTypes, SelectInput, SelectInputProps } from 'react-admin';
 
-export const FieldTypeInput = (props: FieldProps) => (
+export const FieldTypeInput = (props: SelectInputProps) => (
     <SelectInput choices={INFERENCE_TYPES} {...props} />
 );
 

@@ -257,10 +257,12 @@ const sanitizeRestProps = ({
     ...rest
 }: any) => sanitizeInputRestProps(rest);
 
-export type RadioButtonGroupInputProps = CommonInputProps &
+export type RadioButtonGroupInputProps = Omit<CommonInputProps, 'source'> &
     ChoicesProps &
     FormControlProps &
-    RadioGroupProps;
+    RadioGroupProps & {
+        source?: string;
+    };
 
 const PREFIX = 'RaRadioButtonGroupInput';
 

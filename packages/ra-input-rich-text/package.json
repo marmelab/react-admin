@@ -12,13 +12,15 @@
         "dist",
         "src"
     ],
-    "main": "dist/index",
+    "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
-    "types": "dist/index.d.ts",
+    "types": "dist/cjs/index.d.ts",
     "sideEffects": false,
     "scripts": {
-        "build": "tsup src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output",
-        "watch": "tsup src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output --watch"
+        "build": "yarn run build-cjs && yarn run build-esm",
+        "build-cjs": "rimraf ./dist/cjs && tsc --outDir dist/cjs",
+        "build-esm": "rimraf ./dist/esm && tsc --outDir dist/esm --module es2015",
+        "watch": "tsc --outDir esm --module es2015 --watch"
     },
     "dependencies": {
         "@tiptap/extension-link": "^2.0.0-beta.20",
@@ -48,6 +50,7 @@
         "react": "^17.0.0",
         "react-dom": "^17.0.0",
         "react-hook-form": "^7.31.0",
-        "tsup": "^6.1.0"
+        "rimraf": "^3.0.2",
+        "typescript": "^4.4.0"
     }
 }

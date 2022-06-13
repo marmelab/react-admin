@@ -7,9 +7,9 @@
         "dist",
         "src"
     ],
-    "main": "dist/index",
+    "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
-    "types": "dist/index.d.ts",
+    "types": "dist/cjs/index.d.ts",
     "sideEffects": false,
     "authors": [
         "François Zaninotto",
@@ -20,8 +20,10 @@
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "scripts": {
-        "build": "tsup --external react-hook-form src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output",
-        "watch": "tsup --external react-hook-form src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output --watch"
+        "build": "yarn run build-cjs && yarn run build-esm",
+        "build-cjs": "rimraf ./dist/cjs && tsc --outDir dist/cjs",
+        "build-esm": "rimraf ./dist/esm && tsc --outDir dist/esm --module es2015",
+        "watch": "tsc --outDir esm --module es2015 --watch"
     },
     "devDependencies": {
         "@mui/icons-material": "^5.0.1",
@@ -33,7 +35,6 @@
         "file-api": "~0.10.4",
         "history": "^5.1.0",
         "ignore-styles": "~5.0.1",
-        "npm-dts": "^1.3.10",
         "ra-core": "^4.1.3",
         "ra-i18n-polyglot": "^4.1.3",
         "ra-language-english": "^4.1.3",
@@ -43,8 +44,8 @@
         "react-router": "^6.1.0",
         "react-router-dom": "^6.1.0",
         "react-test-renderer": "~16.8.6",
-        "rimraf": "^2.6.3",
-        "tsup": "^6.1.0"
+        "rimraf": "^3.0.2",
+        "typescript": "^4.4.0"
     },
     "peerDependencies": {
         "@mui/icons-material": "^5.0.1",
