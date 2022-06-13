@@ -13,7 +13,7 @@
         "build": "yarn run build-cjs && yarn run build-esm",
         "build-cjs": "rimraf ./dist/cjs && tsc --outDir dist/cjs",
         "build-esm": "rimraf ./dist/esm && tsc --outDir dist/esm --module es2015",
-        "watch": "tsc --outDir esm --module es2015 --watch"
+        "watch": "tsc --outDir dist/esm --module es2015 --watch"
     },
     "dependencies": {
         "ra-core": "^4.1.3"
