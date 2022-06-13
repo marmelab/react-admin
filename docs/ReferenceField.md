@@ -126,7 +126,7 @@ For instance, if the `posts` resource has a `user_id` field, set the `reference`
 
 ## `sortBy`
 
-By default, when used in a `<Datagrid>`, and when the user clicks on the column header of a `<ReferenceField>`, react-admins sorts the list by the field `source`. To specify another field name to sort by, set the `sortBy` prop.
+By default, when used in a `<Datagrid>`, and when the user clicks on the column header of a `<ReferenceField>`, react-admin sorts the list by the field `source`. To specify another field name to sort by, set the `sortBy` prop.
 
 ```jsx
 <ReferenceField source="user_id" reference="users" sortBy="user.name">
