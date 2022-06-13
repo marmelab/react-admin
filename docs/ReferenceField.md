@@ -71,7 +71,7 @@ By default, `<SimpleShowLayout>`, `<Datagrid>` and other layout components infer
 
 ```jsx
 {/* default label is 'User Id', or the translation of 'resources.posts.fields.user_id' if it exists */}
-<ReferenceField source="user_id" reference="users" link="show">
+<ReferenceField source="user_id" reference="users">
     <TextField source="name" />
 </ReferenceField>
 ```
@@ -79,7 +79,15 @@ By default, `<SimpleShowLayout>`, `<Datagrid>` and other layout components infer
 That's why you often need to set an explicit `label` on a `<ReferenceField>`:
 
 ```jsx
-<ReferenceField label="Author name" source="user_id" reference="users" link="show">
+<ReferenceField label="Author name" source="user_id" reference="users">
+    <TextField source="name" />
+</ReferenceField>
+```
+
+React-admin uses [the i18n system](./Translation.md) to translate the label, so you can use translation keys to have one label for each language supported by the interface:
+
+```jsx
+<ReferenceField label="resources.posts.fields.author" source="user_id" reference="users">
     <TextField source="name" />
 </ReferenceField>
 ```
