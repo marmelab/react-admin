@@ -56,4 +56,4 @@ const BookShow = () => (
 | `reference`  | Required | `string`           | -                                | The name of the resource for the referenced records, e.g. 'book_details'                   |
 | `target`     | Required | string             | -                                | Target field carrying the relationship on the referenced resource, e.g. 'book_id'   |
 
-`<ReferenceManyField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
+`<ReferenceOneField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
