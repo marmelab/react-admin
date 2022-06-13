@@ -558,7 +558,6 @@ const PersonEdit = () => (
 
 You can find components for react-admin in third-party repositories.
 
-- [marmelab/ra-richtext-tiptap](https://github.com/marmelab/ra-richtext-tiptap): a rich text input based on [Tiptap](https://www.tiptap.dev/)
 - [vascofg/react-admin-color-input](https://github.com/vascofg/react-admin-color-input): a color input using [React Color](https://casesandberg.github.io/react-color/), a collection of color pickers.
 - [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs): a collection of Date Inputs, based on [material-ui-pickers](https://material-ui-pickers.firebaseapp.com/)
 - [MrHertal/react-admin-json-view](https://github.com/MrHertal/react-admin-json-view): JSON field and input for react-admin.
