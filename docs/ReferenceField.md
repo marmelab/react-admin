@@ -24,7 +24,7 @@ title: "The ReferenceField Component"
 </ReferenceField>
 ```
 
-A `<ReferenceField>` displays nothing on its own, it just fetches the data, pust it in a [`RecordContext`](./useRecordContext.md), and lets its child to render it. Usual child components for `<ReferenceField>` are other `<Field>` components (e.g. [`<TextField>`](./TextField.md)).
+A `<ReferenceField>` displays nothing on its own, it just fetches the data, puts it in a [`RecordContext`](./useRecordContext.md), and lets its children render it. Usual child components for `<ReferenceField>` are other `<Field>` components (e.g. [`<TextField>`](./TextField.md)).
 
 This component fetches a referenced record (`users` in this example) using the `dataProvider.getMany()` method, and passes it to its child. It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` for performance reasons. When using several `<ReferenceField>` in the same page (e.g. in a `<Datagrid>`), this allows to call the `dataProvider` once instead of once per row. 
 
