@@ -61,7 +61,7 @@ export const useEditController = <
     const redirect = useRedirect();
     const refresh = useRefresh();
     const { id: routeId } = useParams<'id'>();
-    const id = propsId || decodeURIComponent(routeId);
+    const id = propsId != null ? propsId : decodeURIComponent(routeId);
     const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
     const {
         registerMutationMiddleware,

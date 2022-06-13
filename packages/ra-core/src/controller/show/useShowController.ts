@@ -54,7 +54,7 @@ export const useShowController = <RecordType extends RaRecord = any>(
     const redirect = useRedirect();
     const refresh = useRefresh();
     const { id: routeId } = useParams<'id'>();
-    const id = propsId || decodeURIComponent(routeId);
+    const id = propsId != null ? propsId : decodeURIComponent(routeId);
 
     const { data: record, error, isLoading, isFetching, refetch } = useGetOne<
         RecordType

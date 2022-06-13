@@ -61,4 +61,4 @@ You can also use the `<AccordionSection>` component as a child of `<SimpleForm>`
 
 ![Accordion section](https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-section-overview.gif)
 
-Check [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/modules/ra-form-layout) for more details.
+Check [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/modules/ra-form-layout##accordionform) for more details.

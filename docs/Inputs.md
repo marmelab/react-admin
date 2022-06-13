@@ -75,7 +75,7 @@ Then you can display a text input to edit the author first name as follows:
 <TextInput source="author.firstName" />
 ```
 
-**Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.md#translating-resource-and-field-names) for details.
+**Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./TranslationTranslating.md#translating-resource-and-field-names) for details.
 
 **Tip**: For compatibility reasons, input components also accept the `defaultValue` prop - which is simply copied as the `initialValue` prop.
 

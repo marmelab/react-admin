@@ -26,7 +26,7 @@ The user interface offers everything you expect:
 
 ## Usage
 
-Use `<Calendar>` as a child of `<List>`:
+Use `<Calendar>` as a child of `<List>` to render a list of events in a calendar:
 
 ```jsx
 import { Calendar, getFilterValuesFromInterval } from '@react-admin/ra-calendar';
@@ -46,7 +46,6 @@ const EventList = () => (
 The `ra-calendar` module also offers a full replacement for the `<List>` component, complete with show and edit views for events, called `<CompleteCalendar>`:
 
 ```jsx
-import React from 'react';
 import {
     Admin,
     Resource,
@@ -68,7 +67,7 @@ const EventList = () => (
     </CompleteCalendar>
 );
 
-export const Basic = () => (
+export const App = () => (
     <Admin dataProvider={dataProvider}>
         <Resource name="events" list={EventList} />
     </Admin>

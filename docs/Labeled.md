@@ -32,7 +32,7 @@ const BookShow = () => (
 
 `<Labeled>` uses the humanized `source`, and renders it above the field value. So for the previous example, the label would be `"Title"`. 
 
-`<Labeled>` uses the i18n layer, so you can translate the label. The message key for a label is `resources.{resource}.fields.{source}` (e.g. `resources.books.fields.title` for the element above). Check [the Translation chapter](./Translation.md) for more information.
+`<Labeled>` uses the i18n layer, so you can translate the label. The message key for a label is `resources.{resource}.fields.{source}` (e.g. `resources.books.fields.title` for the element above). Check [the Translation chapter](./TranslationTranslating.md) for more information.
 
 `<Labeled>` can also use an explicit `label` prop: 
 
