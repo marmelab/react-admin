@@ -76,7 +76,7 @@ By default, `<SimpleShowLayout>`, `<Datagrid>` and other layout components infer
 </ReferenceField>
 ```
 
-That's why you often need to set an explicit `label` on a `<RefezrenceField>`:
+That's why you often need to set an explicit `label` on a `<ReferenceField>`:
 
 ```jsx
 <ReferenceField label="Author name" source="user_id" reference="users" link="show">
