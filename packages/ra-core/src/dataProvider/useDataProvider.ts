@@ -109,7 +109,7 @@ export const useDataProvider = <
                                 }
                                 return logoutIfAccessDenied(error).then(
                                     loggedOut => {
-                                        if (loggedOut) return;
+                                        if (loggedOut) return { data: {} };
                                         throw error;
                                     }
                                 );
