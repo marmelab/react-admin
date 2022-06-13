@@ -1,11 +1,10 @@
-import React, { FC, ReactElement } from 'react';
+import React, { FC, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import {
     FilterPayload,
     SortPayload,
     useReferenceManyFieldController,
     ListContextProvider,
-    ListControllerResult,
     ResourceContextProvider,
     useRecordContext,
 } from 'ra-core';
@@ -63,6 +62,7 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
         children,
         filter,
         page = 1,
+        pagination,
         perPage,
         reference,
         resource,
@@ -71,12 +71,6 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
         target,
     } = props;
     const record = useRecordContext(props);
-
-    if (React.Children.count(children) !== 1) {
-        throw new Error(
-            '<ReferenceManyField> only accepts a single child (like <Datagrid>)'
-        );
-    }
 
     const controllerProps = useReferenceManyFieldController({
         filter,
@@ -93,7 +87,10 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
     return (
         <ResourceContextProvider value={reference}>
             <ListContextProvider value={controllerProps}>
-                <ReferenceManyFieldView {...props} {...controllerProps} />
+                {children}
+                {pagination && controllerProps.total !== undefined
+                    ? pagination
+                    : null}
             </ListContextProvider>
         </ResourceContextProvider>
     );
@@ -102,7 +99,7 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
 export interface ReferenceManyFieldProps
     extends PublicFieldProps,
         InjectedFieldProps {
-    children: ReactElement;
+    children: ReactNode;
     filter?: FilterPayload;
     page?: number;
     pagination?: ReactElement;
@@ -113,7 +110,7 @@ export interface ReferenceManyFieldProps
 }
 
 ReferenceManyField.propTypes = {
-    children: PropTypes.element.isRequired,
+    children: PropTypes.node.isRequired,
     className: PropTypes.string,
     filter: PropTypes.object,
     label: fieldPropTypes.label,
@@ -136,38 +133,4 @@ ReferenceManyField.defaultProps = {
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     source: 'id',
-};
-
-export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => {
-    const { children, pagination } = props;
-
-    return (
-        <>
-            {children}
-            {pagination && props.total !== undefined ? pagination : null}
-        </>
-    );
-};
-
-export interface ReferenceManyFieldViewProps
-    extends Omit<
-            ReferenceManyFieldProps,
-            'resource' | 'page' | 'perPage' | 'sort'
-        >,
-        ListControllerResult {
-    children: ReactElement;
-}
-
-ReferenceManyFieldView.propTypes = {
-    children: PropTypes.element,
-    className: PropTypes.string,
-    sort: PropTypes.exact({
-        field: PropTypes.string,
-        order: PropTypes.string,
-    }),
-    data: PropTypes.any,
-    isLoading: PropTypes.bool,
-    pagination: PropTypes.element,
-    reference: PropTypes.string,
-    setSort: PropTypes.func,
 };

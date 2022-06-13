@@ -82,7 +82,7 @@ export const ReferenceField: FC<ReferenceFieldProps> = props => {
 };
 
 ReferenceField.propTypes = {
-    children: PropTypes.element.isRequired,
+    children: PropTypes.node.isRequired,
     className: PropTypes.string,
     cellClassName: PropTypes.string,
     headerClassName: PropTypes.string,

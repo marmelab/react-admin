@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { Typography } from '@mui/material';
 import {
@@ -85,14 +85,14 @@ export const ReferenceOneField = (props: ReferenceOneFieldProps) => {
 export interface ReferenceOneFieldProps
     extends PublicFieldProps,
         InjectedFieldProps {
-    children: ReactElement;
+    children: ReactNode;
     reference: string;
     target: string;
     link?: LinkToType;
 }
 
 ReferenceOneField.propTypes = {
-    children: PropTypes.element.isRequired,
+    children: PropTypes.node.isRequired,
     className: PropTypes.string,
     label: fieldPropTypes.label,
     record: PropTypes.any,
