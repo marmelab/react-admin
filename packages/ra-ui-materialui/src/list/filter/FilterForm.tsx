@@ -9,6 +9,7 @@ import {
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import {
+    LabelPrefixContextProvider,
     ListFilterContextValue,
     useListContext,
     useResourceContext,
@@ -118,21 +119,23 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
     );
 
     return (
-        <StyledForm
-            className={className}
-            {...sanitizeRestProps(rest)}
-            onSubmit={handleSubmit}
-        >
-            {getShownFilters().map((filterElement: JSX.Element) => (
-                <FilterFormInput
-                    key={filterElement.props.source}
-                    filterElement={filterElement}
-                    handleHide={handleHide}
-                    resource={resource}
-                />
-            ))}
-            <div className={FilterFormClasses.clearFix} />
-        </StyledForm>
+        <LabelPrefixContextProvider prefix={`resources.${resource}.fields`}>
+            <StyledForm
+                className={className}
+                {...sanitizeRestProps(rest)}
+                onSubmit={handleSubmit}
+            >
+                {getShownFilters().map((filterElement: JSX.Element) => (
+                    <FilterFormInput
+                        key={filterElement.props.source}
+                        filterElement={filterElement}
+                        handleHide={handleHide}
+                        resource={resource}
+                    />
+                ))}
+                <div className={FilterFormClasses.clearFix} />
+            </StyledForm>
+        </LabelPrefixContextProvider>
     );
 };
 
