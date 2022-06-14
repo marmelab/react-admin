@@ -29,9 +29,6 @@ const useOutsideListener = (
     onClick: () => void
 ) => {
     React.useEffect(() => {
-        /**
-         * Alert if clicked on outside of element
-         */
         const handleClickOutside = (event: MouseEvent) => {
             if (ref.current && !ref.current.contains(event.target)) {
                 onClick();
@@ -55,7 +52,7 @@ type OutsideListenerProps = {
 /**
  * Component that listens if you click outside of it
  */
-const OutsideListener: React.FC<OutsideListenerProps> = ({
+const OutsideListener = ({
     className,
     onClick,
     children,
