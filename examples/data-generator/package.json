@@ -4,12 +4,14 @@
     "homepage": "https://github.com/marmelab/react-admin/tree/master/examples/data-generator",
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
-    "main": "dist/index",
+    "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
-    "types": "dist/index.d.ts",
+    "types": "dist/cjs/index.d.ts",
     "scripts": {
-        "build": "tsup --external react-hook-form src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output",
-        "watch": "tsup --external react-hook-form src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output --watch"
+        "build": "yarn run build-cjs && yarn run build-esm",
+        "build-cjs": "rimraf ./dist/cjs && tsc --outDir dist/cjs",
+        "build-esm": "rimraf ./dist/esm && tsc --outDir dist/esm --module es2015",
+        "watch": "tsc --outDir dist/esm --module es2015 --watch"
     },
     "dependencies": {
         "date-fns": "^2.19.0",
@@ -17,10 +19,9 @@
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
-        "npm-dts": "^1.3.10",
         "ra-core": "^4.1.3",
-        "rimraf": "^2.6.3",
-        "tsup": "^6.1.0"
+        "rimraf": "^3.0.2",
+        "typescript": "^4.4.0"
     },
     "peerDependencies": {
         "ra-core": "^4.0.0"

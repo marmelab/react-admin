@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { CheckboxGroupInput, FieldProps } from 'react-admin';
+import { CheckboxGroupInput, CheckboxGroupInputProps } from 'react-admin';
 
-export const FieldViewsInput = (props: FieldProps) => (
+export const FieldViewsInput = (props: CheckboxGroupInputProps) => (
     <CheckboxGroupInput
         {...props}
         choices={VIEWS}
-        initialValue={VIEWS_INITIAL_VALUE}
+        defaultValue={VIEWS_INITIAL_VALUE}
     />
 );
 
