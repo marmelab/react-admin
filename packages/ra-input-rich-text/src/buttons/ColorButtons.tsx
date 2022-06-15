@@ -21,50 +21,59 @@ import {
     purple,
 } from '@mui/material/colors';
 
-/**
- * Hook that listens clicks outside of the passed ref
- */
-const useOutsideListener = (
-    ref: React.MutableRefObject<any>,
-    onClick: () => void
-) => {
-    React.useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (ref.current && !ref.current.contains(event.target)) {
-                onClick();
-            }
-        };
-        // Bind the event listener
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            // Unbind the event listener on clean up
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [ref, onClick]);
-};
+export const ColorButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
+    const translate = useTranslate();
+    const editor = useTiptapEditor();
+    const [showColorChoiceDialog, setShowColorChoiceDialog] = React.useState<
+        boolean
+    >(false);
+    const [colorType, setColorType] = React.useState<ColorType>(ColorType.FONT);
 
-type OutsideListenerProps = {
-    className?: string;
-    onClick: () => void;
-    children: React.ReactNode;
-};
+    const colorLabel = translate('ra.tiptap.color', { _: 'Color' });
+    const highlightLabel = translate('ra.tiptap.highlight', { _: 'Highlight' });
 
-/**
- * Component that listens if you click outside of it
- */
-const OutsideListener = ({
-    className,
-    onClick,
-    children,
-}: OutsideListenerProps) => {
-    const wrapperRef = React.useRef(null);
-    useOutsideListener(wrapperRef, onClick);
+    const displayColorChoiceDialog = (colorType: ColorType) => {
+        setShowColorChoiceDialog(true);
+        setColorType(colorType);
+    };
 
-    return (
-        <div className={className} ref={wrapperRef}>
-            {children}
-        </div>
-    );
+    return editor ? (
+        <Box sx={{ position: 'relative' }}>
+            <OutsideListener onClick={() => setShowColorChoiceDialog(false)}>
+                <ToggleButtonGroup>
+                    <ToggleButton
+                        aria-label={colorLabel}
+                        title={colorLabel}
+                        {...props}
+                        disabled={!editor?.isEditable}
+                        value="color"
+                        onClick={() => displayColorChoiceDialog(ColorType.FONT)}
+                    >
+                        <FormatColorTextIcon fontSize="inherit" />
+                    </ToggleButton>
+                    <ToggleButton
+                        aria-label={highlightLabel}
+                        title={highlightLabel}
+                        {...props}
+                        disabled={!editor?.isEditable}
+                        value="highlight"
+                        onClick={() =>
+                            displayColorChoiceDialog(ColorType.BACKGROUND)
+                        }
+                    >
+                        <FontDownloadIcon fontSize="inherit" />
+                    </ToggleButton>
+                </ToggleButtonGroup>
+                {showColorChoiceDialog && (
+                    <ColorChoiceDialog
+                        editor={editor}
+                        close={() => setShowColorChoiceDialog(false)}
+                        colorType={colorType}
+                    />
+                )}
+            </OutsideListener>
+        </Box>
+    ) : null;
 };
 
 enum ColorType {
@@ -135,57 +144,48 @@ const ColorChoiceDialog = ({
     );
 };
 
-export const ColorButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
-    const translate = useTranslate();
-    const editor = useTiptapEditor();
-    const [showColorChoiceDialog, setShowColorChoiceDialog] = React.useState<
-        boolean
-    >(false);
-    const [colorType, setColorType] = React.useState<ColorType>(ColorType.FONT);
+type OutsideListenerProps = {
+    className?: string;
+    onClick: () => void;
+    children: React.ReactNode;
+};
 
-    const colorLabel = translate('ra.tiptap.color', { _: 'Color' });
-    const highlightLabel = translate('ra.tiptap.highlight', { _: 'Highlight' });
+/**
+ * Component that listens if you click outside of it
+ */
+const OutsideListener = ({
+    className,
+    onClick,
+    children,
+}: OutsideListenerProps) => {
+    const wrapperRef = React.useRef(null);
+    useOutsideListener(wrapperRef, onClick);
 
-    const displayColorChoiceDialog = (colorType: ColorType) => {
-        setShowColorChoiceDialog(true);
-        setColorType(colorType);
-    };
+    return (
+        <div className={className} ref={wrapperRef}>
+            {children}
+        </div>
+    );
+};
 
-    return editor ? (
-        <Box sx={{ position: 'relative' }}>
-            <OutsideListener onClick={() => setShowColorChoiceDialog(false)}>
-                <ToggleButtonGroup>
-                    <ToggleButton
-                        aria-label={colorLabel}
-                        title={colorLabel}
-                        {...props}
-                        disabled={!editor?.isEditable}
-                        value="color"
-                        onClick={() => displayColorChoiceDialog(ColorType.FONT)}
-                    >
-                        <FormatColorTextIcon fontSize="inherit" />
-                    </ToggleButton>
-                    <ToggleButton
-                        aria-label={highlightLabel}
-                        title={highlightLabel}
-                        {...props}
-                        disabled={!editor?.isEditable}
-                        value="highlight"
-                        onClick={() =>
-                            displayColorChoiceDialog(ColorType.BACKGROUND)
-                        }
-                    >
-                        <FontDownloadIcon fontSize="inherit" />
-                    </ToggleButton>
-                </ToggleButtonGroup>
-                {showColorChoiceDialog && (
-                    <ColorChoiceDialog
-                        editor={editor}
-                        close={() => setShowColorChoiceDialog(false)}
-                        colorType={colorType}
-                    />
-                )}
-            </OutsideListener>
-        </Box>
-    ) : null;
+/**
+ * Hook that listens clicks outside of the passed ref
+ */
+const useOutsideListener = (
+    ref: React.MutableRefObject<any>,
+    onClick: () => void
+) => {
+    React.useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (ref.current && !ref.current.contains(event.target)) {
+                onClick();
+            }
+        };
+        // Bind the event listener
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            // Unbind the event listener on clean up
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [ref, onClick]);
 };
