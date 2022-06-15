@@ -238,7 +238,7 @@ const CreateTag = () => {
                 },                
             },
             {
-                onSuccess: ({ data }) => {
+                onSuccess: (data) => {
                     setValue('');
                     onCreate(data);
                 },
