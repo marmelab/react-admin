@@ -239,7 +239,7 @@ const CreateCategory = () => {
               },
           },
           {
-              onSuccess: ({ data }) => {
+              onSuccess: (data) => {
                   setValue('');
                   onCreate(data);
               },
