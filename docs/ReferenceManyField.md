@@ -5,7 +5,7 @@ title: "The ReferenceManyField Component"
 
 # `<ReferenceManyField>`
 
-`<ReferenceManyField>` is useful for displaying one-to-many relationships, when the foreign key is carried by the referenced resource. 
+`<ReferenceManyField>` is useful for displaying a list of related records via a one-to-many relationships, when the foreign key is carried by the referenced resource. 
 
 ![referenceManyField](./img/reference_many_field.png)
 
@@ -34,6 +34,8 @@ For instance, if an `author` has many `books`, and each book resource exposes an
 ```
 
 This component fetches a list of referenced records by a reverse lookup of the current `record.id` in the `target` field of another resource (using the `dataProvider.getManyReference()` REST method), and puts them in a [`ListContext`](./useListContext.md). Its children can then use the data from this context. The most common case is to use [`<SingleFieldList>`](./SingleFieldList.md) or [`<Datagrid>`](./Datagrid.md) as child.
+
+**Tip**: If the relationship is materialized by an array of ids in the initial record, use [the `<ReferenceArrayField>` component](./ReferenceArrayField.md) instead.
 
 ## Usage
 
@@ -100,6 +102,70 @@ export const PostList = () => (
 
 `<ReferenceManyField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
 
+## `filter`
+
+You can filter the query used to populate the possible values. Use the `filter` prop for that.
+
+{% raw %}
+```jsx
+<ReferenceManyField
+  reference="comments"
+  target="post_id"
+  filter={{ is_published: true }}
+>
+   ...
+</ReferenceManyField>
+```
+{% endraw %}
+
+## `label`
+
+By default, `<SimpleShowLayout>`, `<Datagrid>` and other layout components infer the label of a field based on its `source`. For a `<ReferenceManyField>`, the source defaults to `id`, so this may not be what you expect:
+
+```jsx
+{/* default label is 'Id', or the translation of 'resources.authors.fields.id' if it exists */}
+<ReferenceManyField reference="books" target="author_id">
+  <Datagrid>
+    <TextField source="title" />
+    <TextField source="year" />
+  </Datagrid>
+</ReferenceManyField>
+```
+
+That's why you often need to set an explicit `label` on a `<ReferenceField>`:
+
+```jsx
+<ReferenceManyField label="Books" reference="books" target="author_id">
+  <Datagrid>
+    <TextField source="title" />
+    <TextField source="year" />
+  </Datagrid>
+</ReferenceManyField>
+```
+
+React-admin uses [the i18n system](./Translation.md) to translate the label, so you can use translation keys to have one label for each language supported by the interface:
+
+```jsx
+<ReferenceManyField label="resources.authors.fields.books" reference="books" target="author_id">
+  <Datagrid>
+    <TextField source="title" />
+    <TextField source="year" />
+  </Datagrid>
+</ReferenceManyField>
+```
+
+## `pagination`
+
+If you want to allow users to paginate the list, pass a `<Pagination>` element as the `pagination` prop:
+
+```jsx
+import { Pagination } from 'react-admin';
+
+<ReferenceManyField pagination={<Pagination />} reference="comments" target="post_id">
+   ...
+</ReferenceManyField>
+```
+
 ## `perPage`
 
 By default, react-admin restricts the possible values to 25 and displays no pagination control. You can change the limit by setting the `perPage` prop:
@@ -110,15 +176,18 @@ By default, react-admin restricts the possible values to 25 and displays no pagi
 </ReferenceManyField>
 ```
 
-## `pagination`
+## `reference`
 
-And if you want to allow users to paginate the list, pass a `<Pagination>` element as the `pagination` prop:
+The name of the resource to fetch for the related records.
+
+For instance, if you want to display the `books` of a given `author`, the `reference` name should be `books`:
 
 ```jsx
-import { Pagination } from 'react-admin';
-
-<ReferenceManyField pagination={<Pagination />} reference="comments" target="post_id">
-   ...
+<ReferenceManyField label="Books" reference="books" target="author_id">
+  <Datagrid>
+    <TextField source="title" />
+    <TextField source="year" />
+  </Datagrid>
 </ReferenceManyField>
 ```
 
@@ -128,20 +197,25 @@ By default, it orders the possible values by id desc. You can change this order 
 
 {% raw %}
 ```jsx
-<ReferenceManyField sort={{ field: 'created_at', order: 'DESC' }} reference="comments" target="post_id">
+<ReferenceManyField
+  target="post_id"
+  reference="comments"
+  sort={{ field: 'created_at', order: 'DESC' }}
+>
    ...
 </ReferenceManyField>
 ```
 {% endraw %}
 
-## `filter`
+## `target`
 
-Also, you can filter the query used to populate the possible values. Use the `filter` prop for that.
+Name of the field carrying the relationship on the referenced resource. For instance, if an `author` has many `books`, and each book resource exposes an `author_id` field, the `target` would be `author_id`.
 
-{% raw %}
 ```jsx
-<ReferenceManyField filter={{ is_published: true }} reference="comments" target="post_id">
-   ...
+<ReferenceManyField label="Books" reference="books" target="author_id">
+  <Datagrid>
+    <TextField source="title" />
+    <TextField source="year" />
+  </Datagrid>
 </ReferenceManyField>
 ```
-{% endraw %}

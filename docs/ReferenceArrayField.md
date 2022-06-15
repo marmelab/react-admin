@@ -5,7 +5,7 @@ title: "The ReferenceArrayField Component"
 
 # `<ReferenceArrayField>`
 
-Use `<ReferenceArrayField>` to display a one-to-many relationship based on an array of foreign keys
+Use `<ReferenceArrayField>` to display a list of related records, via a one-to-many relationship materialized by an array of foreign keys.
 
 ![ReferenceArrayField](./img/reference-array-field.png)
 
@@ -34,6 +34,8 @@ In that case, use `<ReferenceArrayField>` to display the post tags names as foll
 ```
 
 `<ReferenceArrayField>` fetches a list of referenced records (using the `dataProvider.getMany()` method), and and puts them in a [`ListContext`](./useListContext.md). A `<ReferenceArrayField>` displays nothing on its own, it just fetches the data and expects its children to render it. The most common case is to use [`<SingleFieldList>`](./SingleFieldList.md) or [`<Datagrid>`](./Datagrid.md) as child.
+
+**Tip**: If the relationship is materialized by a foreign key on the referenced resource, use [the `<ReferenceManyField>` component](./ReferenceManyField.md) instead.
 
 ## Usage
 
