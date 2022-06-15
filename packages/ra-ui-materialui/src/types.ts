@@ -65,6 +65,7 @@ export interface ShowProps<RecordType extends RaRecord = any> {
     children: ReactNode;
     className?: string;
     component?: ElementType;
+    disableAuthentication?: boolean;
     emptyWhileLoading?: boolean;
     id?: Identifier;
     queryOptions?: UseQueryOptions<RecordType>;
