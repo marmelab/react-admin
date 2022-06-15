@@ -2,7 +2,7 @@ import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
-import { testDataProvider } from 'ra-core';
+import { testDataProvider, useListContext } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { AdminContext } from '../AdminContext';
@@ -54,6 +54,45 @@ describe('<ReferenceManyField />', () => {
         expect(links[1].textContent).toEqual('world');
         expect(links[0].getAttribute('href')).toEqual('/comments/1');
         expect(links[1].getAttribute('href')).toEqual('/comments/2');
+    });
+
+    it('should accept many children', async () => {
+        const data = [
+            { id: 1, title: 'hello' },
+            { id: 2, title: 'world' },
+        ];
+        const ListContextWatcher = () => {
+            const { data } = useListContext();
+            if (!data) return null;
+            return (
+                <ul>
+                    {data.map(record => (
+                        <li key={record.id}>comment:{record.title}</li>
+                    ))}
+                </ul>
+            );
+        };
+
+        render(
+            <AdminContext
+                dataProvider={testDataProvider({
+                    getManyReference: () => Promise.resolve({ data, total: 2 }),
+                })}
+            >
+                <ThemeProvider theme={theme}>
+                    <ReferenceManyField {...defaultProps}>
+                        <SingleFieldList>
+                            <TextField source="title" />
+                        </SingleFieldList>
+                        <ListContextWatcher />
+                    </ReferenceManyField>
+                </ThemeProvider>
+            </AdminContext>
+        );
+        await screen.findByText('hello');
+        await screen.findByText('world');
+        await screen.findByText('comment:hello');
+        await screen.findByText('comment:world');
     });
 
     it('should render nothing when there are no related records', async () => {
