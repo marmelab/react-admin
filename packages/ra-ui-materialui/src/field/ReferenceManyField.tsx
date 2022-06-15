@@ -5,6 +5,7 @@ import {
     SortPayload,
     useReferenceManyFieldController,
     ListContextProvider,
+    ListControllerResult,
     ResourceContextProvider,
     useRecordContext,
 } from 'ra-core';
@@ -133,4 +134,39 @@ ReferenceManyField.defaultProps = {
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     source: 'id',
+};
+
+// FIXME kept for backwards compatibility, unused, to be removed in v5
+export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => {
+    const { children, pagination } = props;
+
+    return (
+        <>
+            {children}
+            {pagination && props.total !== undefined ? pagination : null}
+        </>
+    );
+};
+
+export interface ReferenceManyFieldViewProps
+    extends Omit<
+            ReferenceManyFieldProps,
+            'resource' | 'page' | 'perPage' | 'sort'
+        >,
+        ListControllerResult {
+    children: ReactElement;
+}
+
+ReferenceManyFieldView.propTypes = {
+    children: PropTypes.element,
+    className: PropTypes.string,
+    sort: PropTypes.exact({
+        field: PropTypes.string,
+        order: PropTypes.string,
+    }),
+    data: PropTypes.any,
+    isLoading: PropTypes.bool,
+    pagination: PropTypes.element,
+    reference: PropTypes.string,
+    setSort: PropTypes.func,
 };
