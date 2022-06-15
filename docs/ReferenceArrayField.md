@@ -9,7 +9,7 @@ Use `<ReferenceArrayField>` to display a list of related records, via a one-to-m
 
 ![ReferenceArrayField](./img/reference-array-field.png)
 
-For instance, let's conside a model where a `post` has many `tags`, materialized to a `tags_ids` field containing an array of ids:
+For instance, let's consider a model where a `post` has many `tags`, materialized to a `tags_ids` field containing an array of ids:
 
 ```
 ┌──────────────┐       ┌────────┐
@@ -82,7 +82,7 @@ export const PostList = () => (
 
 ## `filter`
 
-`<ReferenceArrayField>` fetches all the related records, and displays them all, too. You can use the `filter` prop to filter the list of related records to dispaly (this works by filtering the records client-side, after the fetch).
+`<ReferenceArrayField>` fetches all the related records, and displays them all, too. You can use the `filter` prop to filter the list of related records to display (this works by filtering the records client-side, after the fetch).
 
 For instance, to render only tags that are 'published', you can use the following code:
 
