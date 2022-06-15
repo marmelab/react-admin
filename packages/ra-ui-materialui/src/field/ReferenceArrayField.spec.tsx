@@ -5,7 +5,9 @@ import { MemoryRouter } from 'react-router-dom';
 import {
     ListContextProvider,
     CoreAdminContext,
+    RecordContextProvider,
     useRecordContext,
+    useListContext,
 } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -15,6 +17,7 @@ import {
 } from './ReferenceArrayField';
 import { TextField } from './TextField';
 import { SingleFieldList } from '../list';
+import { AdminContext } from '../AdminContext';
 
 const theme = createTheme({});
 
@@ -248,5 +251,54 @@ describe('<ReferenceArrayField />', () => {
         await waitFor(() => {
             expect(screen.queryByText('bar1')).not.toBeNull();
         });
+    });
+
+    it('should accept more than one child', async () => {
+        const dataProvider = {
+            getMany: () =>
+                Promise.resolve({
+                    data: [
+                        { id: 4, title: 'programming' },
+                        { id: 8, title: 'management' },
+                        { id: 12, title: 'design' },
+                    ],
+                }),
+        };
+        const ListContextWatcher = () => {
+            const { data } = useListContext();
+            if (!data) return null;
+            return (
+                <ul>
+                    {data.map(record => (
+                        <li key={record.id}>tag:{record.title}</li>
+                    ))}
+                </ul>
+            );
+        };
+
+        render(
+            <AdminContext dataProvider={dataProvider}>
+                <RecordContextProvider
+                    value={{
+                        id: 123,
+                        title: 'hello, world',
+                        tag_ids: [4, 8, 12],
+                    }}
+                >
+                    <ReferenceArrayField source="tag_ids" reference="tags">
+                        <SingleFieldList>
+                            <TextField source="title" />
+                        </SingleFieldList>
+                        <ListContextWatcher />
+                    </ReferenceArrayField>
+                </RecordContextProvider>
+            </AdminContext>
+        );
+        await screen.findByText('programming');
+        await screen.findByText('management');
+        await screen.findByText('design');
+        await screen.findByText('tag:programming');
+        await screen.findByText('tag:management');
+        await screen.findByText('tag:design');
     });
 });
