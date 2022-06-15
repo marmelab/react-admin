@@ -108,6 +108,12 @@ export const NumberInput = ({
         field.onChange(newValue);
     };
 
+    const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            handleBlur(event);
+        }
+    };
+
     return (
         <TextField
             id={id}
@@ -116,6 +122,7 @@ export const NumberInput = ({
             value={value}
             onChange={handleChange}
             onBlur={handleBlur}
+            onKeyUp={handleKeyUp}
             className={clsx('ra-input', `ra-input-${source}`, className)}
             type="number"
             size="small"

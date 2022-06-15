@@ -53,7 +53,7 @@ describe('<NumberInput />', () => {
         expect(input.step).toEqual('0.1');
     });
 
-    it('should change when the user types a number', () => {
+    it('should change when the user types a number and blurs', () => {
         render(
             <AdminContext>
                 <SimpleForm defaultValues={{ views: 12 }} onSubmit={jest.fn()}>
@@ -68,6 +68,24 @@ describe('<NumberInput />', () => {
         ) as HTMLInputElement;
         fireEvent.change(input, { target: { value: '3' } });
         fireEvent.blur(input);
+        screen.getByText('views:3');
+    });
+
+    it('should change when the user types a number and presses enter', () => {
+        render(
+            <AdminContext>
+                <SimpleForm defaultValues={{ views: 12 }} onSubmit={jest.fn()}>
+                    <NumberInput {...defaultProps} />
+                    <RecordWatcher />
+                </SimpleForm>
+            </AdminContext>
+        );
+        screen.getByText('views:12');
+        const input = screen.getByLabelText(
+            'resources.posts.fields.views'
+        ) as HTMLInputElement;
+        fireEvent.change(input, { target: { value: '3' } });
+        fireEvent.keyUp(input, { key: 'Enter', code: 'Enter', keyCode: 13 });
         screen.getByText('views:3');
     });
 
