@@ -57,11 +57,12 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 
 | Prop        | Required | Type                | Default  | Description                                                                                                         |
 | ----------- | -------- | ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
-| `children`  | Required | `ReactNode`           | -        | One or more Field elements used to render the referenced record                                                              |
-| `reference` | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'posts'                                                   |
+| `source`    | Required | `string`            | -        | Name of the property to display |
+| `reference` | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'posts' |
+| `children`  | Required | `ReactNode`         | -        | One or more Field elements used to render the referenced record |
 | `label`     | Optional | `string | Function` | `resources.[resource].fields.[source]`   | Label to use for the field when rendered in layout components  |
-| `link`      | Optional | `string | Function` | `edit`   | Target of the link wrapping the rendered child. Set to `false` to disable the link.                                 |
-| `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when used in a Datagrid                                     |
+| `link`      | Optional | `string | Function` | `edit`   | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
+| `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when used in a Datagrid |
 
 `<ReferenceField>` also accepts the [common field props](./Fields.md#common-field-props).
 

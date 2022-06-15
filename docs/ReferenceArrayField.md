@@ -39,15 +39,16 @@ export const PostList = () => (
 
 ## Props
 
-| Prop         | Required | Type                | Default                          | Description                                                                                                                                |
-| ------------ | -------- | ------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `reference`  | Required | `string`            | -                                | The name of the resource for the referenced records, e.g. 'tags'                                                                           |
-| `children`   | Required | `Element`           | -                                | The Field element used to render the referenced records                                                                                    |
-| `sortBy`     | Optional | `string | Function` | `source`                         | When used in a `List`, name of the field to use for sorting when the user clicks on the column header. |
-| `filter`     | Optional | `Object`            | -                                | Filters to use when fetching the related records (the filtering is done client-side)                                                       |
-| `pagination` | Optional | `Element`           | -                                | Pagination element to display pagination controls. empty by default (no pagination)                                                        |
-| `perPage`    | Optional | `number`            | 1000                             | Maximum number of results to display                                                                                                       |
-| `sort`       | Optional | `{ field, order }`  | `{ field: 'id', order: 'DESC' }` | Sort order to use when displaying the related records (the sort is done client-side)                                                       |
+| Prop         | Required | Type                | Default  | Description                                                                                                  |
+| ------------ | -------- | ------------------- | -------- | ------------------------------------------------------------------------------------------------------------ |
+| `source`     | Required | `string`            | -        | Name of the property to display                                                                              |
+| `reference`  | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'tags'                                             |
+| `children`   | Required | `Element`           | -        | The Field element used to render the referenced records                                                      |
+| `sortBy`     | Optional | `string | Function` | `source` | When used in a `List`, name of the field to use for sorting when the user clicks on the column header.       |
+| `filter`     | Optional | `Object`            | -        | Filters to use when fetching the related records (the filtering is done client-side)                         |
+| `pagination` | Optional | `Element`           | -        | Pagination element to display pagination controls. empty by default (no pagination)                          |
+| `perPage`    | Optional | `number`            | 1000     | Maximum number of results to display                                                                         |
+| `sort`       | Optional | `{ field, order }`  | `{ field: 'id', order: 'DESC' }` | Sort order to use when displaying the related records (the sort is done client-side) |
 
 `<ReferenceArrayField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
 

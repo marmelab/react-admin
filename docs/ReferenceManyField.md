@@ -70,18 +70,18 @@ const PostShow = props => (
 
 ## Props
 
-| Prop         | Required | Type               | Default                          | Description                                                                         |
-| ------------ | -------- | ------------------ | -------------------------------- | ----------------------------------------------------------------------------------- |
-| `children`   | Required | `Element`          | -                                | One or several elements that render a list of records based on a `ListContext`|
-| `reference`  | Required | `string`           | -                                | The name of the resource for the referenced records, e.g. 'books'                   |
-| `target`     | Required | string             | -                                | Target field carrying the relationship on the referenced resource, e.g. 'user_id'   |
-| `filter`     | Optional | `Object`           | -                                | Filters to use when fetching the related records, passed to `getManyReference()`    |
-| `pagination` | Optional | `Element`          | -                                | Pagination element to display pagination controls. empty by default (no pagination) |
-| `perPage`    | Optional | `number`           | 25                               | Maximum number of referenced records to fetch                                       |
+| Prop         | Required | Type      | Default | Description                                                                         |
+| ------------ | -------- | --------- | ------- | ----------------------------------------------------------------------------------- |
+| `source`     | Required | `string`  | -       | Name of the property to display                                                     |
+| `target`     | Required | `string`  | -       | Target field carrying the relationship on the referenced resource, e.g. 'user_id'   |
+| `reference`  | Required | `string`  | -       | The name of the resource for the referenced records, e.g. 'books'                   |
+| `children`   | Required | `Element` | -       | One or several elements that render a list of records based on a `ListContext`      |
+| `filter`     | Optional | `Object`  | -       | Filters to use when fetching the related records, passed to `getManyReference()`    |
+| `pagination` | Optional | `Element` | -       | Pagination element to display pagination controls. empty by default (no pagination) |
+| `perPage`    | Optional | `number`  | 25      | Maximum number of referenced records to fetch                                       |
 | `sort`       | Optional | `{ field, order }` | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()` |
 
 `<ReferenceManyField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
-
 
 ## `perPage`
 
