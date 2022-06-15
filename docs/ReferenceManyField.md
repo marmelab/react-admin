@@ -7,7 +7,9 @@ title: "The ReferenceManyField Component"
 
 `<ReferenceManyField>` is useful for displaying one-to-many relationships, when the foreign key is carried by the referenced resource. For instance, if a `user` has many `books` and the `books` resource exposes a `user_id` field, `<ReferenceManyField>` can fetch all the books authored by a given user.
 
-This component fetches a list of referenced records by a reverse lookup of the current `record.id` in the `target` field of another resource (using the `dataProvider.getManyReference()` REST method), and passes them to its child. The child must be an iterator component (like `<SingleFieldList>` or `<Datagrid>`), which usually has one or more child `<Field>` components.
+This component fetches a list of referenced records by a reverse lookup of the current `record.id` in the `target` field of another resource (using the `dataProvider.getManyReference()` REST method), and puts them in a [`ListContext`](./useListContext.md). Its children can then use the data from this context. The most common case is to use [`<SingleFieldList>`](./SingleFieldList.md) or [`<Datagrid>`](./Datagrid.md) as child.
+
+## Usage
 
 For instance, here is how to show the authors of the comments related to each post in a list by matching `post.id` to `comment.post_id`. We're using `<SingleFieldList>` to display an inline list using only one field for each of the referenced record:
 
@@ -33,11 +35,7 @@ export const PostList = () => (
 
 ![ReferenceManyFieldSingleFieldList](./img/reference-many-field-single-field-list.png)
 
-## Usage
-
 `<ReferenceManyField>` accepts a `reference` attribute, which specifies the resource to fetch for the related record. It also accepts a `source` attribute which defines the field containing the value to look for in the `target` field of the referenced resource. By default, this is the `id` of the resource (`post.id` in the previous example).
-
-**Note**: You **must** add a `<Resource>` for the reference resource - react-admin needs it to fetch the reference data. You *can* omit the `list` prop in this reference if you want to hide it in the sidebar menu.
 
 You can use a `<Datagrid>` instead of a `<SingleFieldList>` - but not inside another `<Datagrid>`! This is useful if you want to display a read-only list of related records. For instance, if you want to show the `comments` related to a `post` in the post's `<Show>` view:
 
@@ -70,6 +68,23 @@ const PostShow = props => (
 
 ![ReferenceManyFieldDatagrid](./img/reference-many-field-datagrid.png)
 
+## Props
+
+| Prop         | Required | Type               | Default                          | Description                                                                         |
+| ------------ | -------- | ------------------ | -------------------------------- | ----------------------------------------------------------------------------------- |
+| `children`   | Required | `Element`          | -                                | One or several elements that render a list of records based on a `ListContext`|
+| `reference`  | Required | `string`           | -                                | The name of the resource for the referenced records, e.g. 'books'                   |
+| `target`     | Required | string             | -                                | Target field carrying the relationship on the referenced resource, e.g. 'user_id'   |
+| `filter`     | Optional | `Object`           | -                                | Filters to use when fetching the related records, passed to `getManyReference()`    |
+| `pagination` | Optional | `Element`          | -                                | Pagination element to display pagination controls. empty by default (no pagination) |
+| `perPage`    | Optional | `number`           | 25                               | Maximum number of referenced records to fetch                                       |
+| `sort`       | Optional | `{ field, order }` | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()` |
+
+`<ReferenceManyField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
+
+
+## `perPage`
+
 By default, react-admin restricts the possible values to 25 and displays no pagination control. You can change the limit by setting the `perPage` prop:
 
 ```jsx
@@ -77,6 +92,8 @@ By default, react-admin restricts the possible values to 25 and displays no pagi
    ...
 </ReferenceManyField>
 ```
+
+## `pagination`
 
 And if you want to allow users to paginate the list, pass a `<Pagination>` element as the `pagination` prop:
 
@@ -88,6 +105,8 @@ import { Pagination } from 'react-admin';
 </ReferenceManyField>
 ```
 
+## `sort`
+
 By default, it orders the possible values by id desc. You can change this order by setting the `sort` prop (an object with `field` and `order` properties).
 
 {% raw %}
@@ -98,6 +117,8 @@ By default, it orders the possible values by id desc. You can change this order 
 ```
 {% endraw %}
 
+## `filter`
+
 Also, you can filter the query used to populate the possible values. Use the `filter` prop for that.
 
 {% raw %}
@@ -107,18 +128,3 @@ Also, you can filter the query used to populate the possible values. Use the `fi
 </ReferenceManyField>
 ```
 {% endraw %}
-
-## Props
-
-| Prop         | Required | Type               | Default                          | Description                                                                         |
-| ------------ | -------- | ------------------ | -------------------------------- | ----------------------------------------------------------------------------------- |
-| `children`   | Required | `Element`          | -                                | The Iterator element used to render the referenced records                          |
-| `reference`  | Required | `string`           | -                                | The name of the resource for the referenced records, e.g. 'books'                   |
-| `target`     | Required | string             | -                                | Target field carrying the relationship on the referenced resource, e.g. 'user_id'   |
-| `filter`     | Optional | `Object`           | -                                | Filters to use when fetching the related records, passed to `getManyReference()`    |
-| `pagination` | Optional | `Element`          | -                                | Pagination element to display pagination controls. empty by default (no pagination) |
-| `perPage`    | Optional | `number`           | 25                               | Maximum number of referenced records to fetch                                       |
-| `sort`       | Optional | `{ field, order }` | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()` |
-
-`<ReferenceManyField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
-
