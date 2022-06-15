@@ -57,6 +57,7 @@ export const PostList = () => (
 
 For instance, to render only tags that are 'published', you can use the following code:
 
+{% raw %}
 ```jsx
 <ReferenceArrayField 
     label="Tags"
@@ -69,6 +70,7 @@ For instance, to render only tags that are 'published', you can use the followin
     </SingleFieldList>
 </ReferenceField>
 ```
+{% endraw %}
 
 ## `label`
 
@@ -158,6 +160,7 @@ By default, the related records are displayed in the order in which they appear 
 
 For instance, to sort tags by title in ascending order, you can use the following code:
 
+{% raw %}
 ```jsx
 <ReferenceArrayField 
     label="Tags"
@@ -170,6 +173,7 @@ For instance, to sort tags by title in ascending order, you can use the followin
     </SingleFieldList>
 </ReferenceField>
 ```
+{% endraw %}
 
 ## `sx`: CSS API
 
