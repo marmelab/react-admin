@@ -8,6 +8,7 @@ import { useRecordContext } from 'ra-core';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import { SxProps } from '@mui/system';
+import { Link } from '@mui/material';
 
 /**
  * Render a link to a file based on a path contained in a record field
@@ -62,16 +63,17 @@ export const FileField = (props: FileFieldProps) => {
 
                     return (
                         <li key={index}>
-                            <a
+                            <Link
                                 href={srcValue}
                                 title={fileTitleValue}
                                 target={target}
                                 download={download}
                                 ping={ping}
                                 rel={rel}
+                                variant="body2"
                             >
                                 {fileTitleValue}
-                            </a>
+                            </Link>
                         </li>
                     );
                 })}
@@ -83,16 +85,17 @@ export const FileField = (props: FileFieldProps) => {
 
     return (
         <Root className={className} {...sanitizeFieldRestProps(rest)}>
-            <a
+            <Link
                 href={sourceValue}
                 title={titleValue}
                 target={target}
                 download={download}
                 ping={ping}
                 rel={rel}
+                variant="body2"
             >
                 {titleValue}
-            </a>
+            </Link>
         </Root>
     );
 };

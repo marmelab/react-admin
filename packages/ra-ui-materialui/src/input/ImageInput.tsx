@@ -22,6 +22,8 @@ const StyledFileInput = styled(FileInput, {
 
     [`& .${FileInputClasses.dropZone}`]: {
         background: theme.palette.background.default,
+        borderRadius: theme.shape.borderRadius,
+        fontFamily: theme.typography.fontFamily,
         cursor: 'pointer',
         padding: theme.spacing(1),
         textAlign: 'center',
@@ -35,7 +37,6 @@ const StyledFileInput = styled(FileInput, {
     [`& .${FileInputClasses.removeButton}`]: {
         display: 'inline-block',
         position: 'relative',
-        float: 'left',
         '& button': {
             position: 'absolute',
             top: theme.spacing(1),
