@@ -1,15 +1,21 @@
 import * as React from 'react';
 import expect from 'expect';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { minLength } from 'ra-core';
+import {
+    ListContext,
+    minLength,
+    ResourceContextProvider,
+    testDataProvider,
+} from 'ra-core';
 
 import {
     FilterForm,
     getFilterFormValues,
     mergeInitialValuesWithDefaultValues,
 } from './FilterForm';
-import { TextInput } from '../../input';
+import { ReferenceInput, SelectInput, TextInput } from '../../input';
 import { AdminContext } from '../../AdminContext';
+import { Filter } from './Filter';
 
 describe('<FilterForm />', () => {
     const defaultProps = {
@@ -74,6 +80,68 @@ describe('<FilterForm />', () => {
     });
 
     it('should not change the filter when the user updates an input with an invalid value', async () => {
+        const filters = [
+            <TextInput
+                source="title"
+                label="Title"
+                validate={[minLength(5)]}
+            />,
+        ];
+        const displayedFilters = {
+            title: true,
+        };
+        const setFilters = jest.fn();
+
+        render(
+            <AdminContext>
+                <FilterForm
+                    {...defaultProps}
+                    filters={filters}
+                    displayedFilters={displayedFilters}
+                    setFilters={setFilters}
+                />
+            </AdminContext>
+        );
+        fireEvent.change(screen.queryByLabelText('Title') as HTMLElement, {
+            target: { value: 'foo' },
+        });
+        await waitFor(() => {
+            expect(setFilters).not.toHaveBeenCalled();
+        });
+    });
+
+    it('should provide ressource context for ReferenceInput filters', async () => {
+        const defaultProps: any = {
+            context: 'form',
+            resource: 'comments',
+            setFilters: jest.fn(),
+            hideFilter: jest.fn(),
+            showFilter: jest.fn(),
+            displayedFilters: { post_id: true },
+        };
+        const dataProvider = testDataProvider({
+            // @ts-ignore
+            getList: () => Promise.resolve({ data: [], total: 0 }),
+        });
+
+        render(
+            <AdminContext dataProvider={dataProvider}>
+                <ResourceContextProvider value="comments">
+                    <ListContext.Provider value={defaultProps}>
+                        <Filter>
+                            <ReferenceInput source="post_id" reference="posts">
+                                <SelectInput optionText="title" />
+                            </ReferenceInput>
+                        </Filter>
+                    </ListContext.Provider>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+        await waitFor(() => {
+            expect(
+                screen.getByText('resources.comments.fields.post_id')
+            ).not.toBeNull();
+        });
         const filters = [
             <TextInput
                 source="title"
