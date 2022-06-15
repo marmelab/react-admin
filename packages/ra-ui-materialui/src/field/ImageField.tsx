@@ -3,7 +3,6 @@ import { styled } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import clsx from 'clsx';
 import { useRecordContext } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
@@ -32,40 +31,39 @@ export const ImageField = (props: ImageFieldProps) => {
 
     if (Array.isArray(sourceValue)) {
         return (
-            <List
-                className={clsx(ImageFieldClasses.list, className)}
-                {...sanitizeFieldRestProps(rest)}
-            >
-                {sourceValue.map((file, index) => {
-                    const fileTitleValue = get(file, title) || title;
-                    const srcValue = get(file, src) || title;
+            <Root className={className} {...sanitizeFieldRestProps(rest)}>
+                <ul className={ImageFieldClasses.list}>
+                    {sourceValue.map((file, index) => {
+                        const fileTitleValue = get(file, title) || title;
+                        const srcValue = get(file, src) || title;
 
-                    return (
-                        <li key={index}>
-                            <img
-                                alt={fileTitleValue}
-                                title={fileTitleValue}
-                                src={srcValue}
-                                className={ImageFieldClasses.image}
-                            />
-                        </li>
-                    );
-                })}
-            </List>
+                        return (
+                            <li key={index}>
+                                <img
+                                    alt={fileTitleValue}
+                                    title={fileTitleValue}
+                                    src={srcValue}
+                                    className={ImageFieldClasses.image}
+                                />
+                            </li>
+                        );
+                    })}
+                </ul>
+            </Root>
         );
     }
 
     const titleValue = get(record, title) || title;
 
     return (
-        <Box className={className} {...sanitizeFieldRestProps(rest)}>
+        <Root className={className} {...sanitizeFieldRestProps(rest)}>
             <img
                 title={titleValue}
                 alt={titleValue}
                 src={sourceValue}
                 className={ImageFieldClasses.image}
             />
-        </Box>
+        </Root>
     );
 };
 
@@ -85,17 +83,19 @@ export const ImageFieldClasses = {
     image: `${PREFIX}-image`,
 };
 
-const List = styled('ul', {
+const Root = styled(Box, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })({
-    [`&.${ImageFieldClasses.list}`]: {
+    [`& .${ImageFieldClasses.list}`]: {
         display: 'flex',
         listStyleType: 'none',
     },
     [`& .${ImageFieldClasses.image}`]: {
-        margin: '0.5rem',
-        maxHeight: '10rem',
+        margin: '0.25rem',
+        width: 200,
+        height: 100,
+        objectFit: 'contain',
     },
 });
 
