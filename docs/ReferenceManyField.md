@@ -5,13 +5,63 @@ title: "The ReferenceManyField Component"
 
 # `<ReferenceManyField>`
 
-`<ReferenceManyField>` is useful for displaying one-to-many relationships, when the foreign key is carried by the referenced resource. For instance, if a `user` has many `books` and the `books` resource exposes a `user_id` field, `<ReferenceManyField>` can fetch all the books authored by a given user.
+`<ReferenceManyField>` is useful for displaying one-to-many relationships, when the foreign key is carried by the referenced resource. 
+
+![referenceManyField](./img/reference_many_field.png)
+
+For instance, if an `author` has many `books`, and each book resource exposes an `author_id` field:
+
+```
+┌────────────────┐       ┌──────────────┐
+│ authors        │       │ books        │
+│----------------│       │--------------│
+│ id             │───┐   │ id           │
+│ first_name     │   └──╼│ author_id    │
+│ last_name      │       │ title        │
+│ date_of_birth  │       │ published_at │
+└────────────────┘       └──────────────┘
+```
+
+`<ReferenceManyField>` can render the titles of all the books by a given author.
+
+```jsx
+<ReferenceManyField label="Books" reference="books" target="author_id">
+  <Datagrid>
+    <TextField source="title" />
+    <TextField source="year" />
+  </Datagrid>
+</ReferenceManyField>
+```
 
 This component fetches a list of referenced records by a reverse lookup of the current `record.id` in the `target` field of another resource (using the `dataProvider.getManyReference()` REST method), and puts them in a [`ListContext`](./useListContext.md). Its children can then use the data from this context. The most common case is to use [`<SingleFieldList>`](./SingleFieldList.md) or [`<Datagrid>`](./Datagrid.md) as child.
 
 ## Usage
 
-For instance, here is how to show the authors of the comments related to each post in a list by matching `post.id` to `comment.post_id`. We're using `<SingleFieldList>` to display an inline list using only one field for each of the referenced record:
+For instance, here is how to show the title of the books written by a particular author in a show view.
+
+```jsx
+import { Show, SimpleShowLayout, TextField, ReferenceManyField, Datagrid } from 'react-admin';
+
+export const AuthorShow = () => (
+  <Show>
+    <SimpleShowLayout>
+      <TextField source="first_name" />
+      <TextField source="last_name" />
+      <DateField label="Born" source="dob" />
+      <ReferenceManyField label="Books" reference="books" target="author_id">
+        <Datagrid>
+          <TextField source="title" />
+          <TextField source="year" />
+        </Datagrid>
+      </ReferenceManyField>
+    </SimpleShowLayout>
+  </Show>
+);
+```
+
+`<ReferenceManyField>` accepts a `reference` attribute, which specifies the resource to fetch for the related record. It also accepts a `source` attribute which defines the field containing the value to look for in the `target` field of the referenced resource. By default, this is the `id` of the resource (`authors.id` in the previous example).
+
+You can also use `<ReferenceManyField>` in a list, e.g. to display the authors of the comments related to each post in a list by matching `post.id` to `comment.post_id`. We're using `<SingleFieldList>` to display an inline list using only one field for each of the referenced record:
 
 ```jsx
 import * as React from "react";
@@ -35,47 +85,14 @@ export const PostList = () => (
 
 ![ReferenceManyFieldSingleFieldList](./img/reference-many-field-single-field-list.png)
 
-`<ReferenceManyField>` accepts a `reference` attribute, which specifies the resource to fetch for the related record. It also accepts a `source` attribute which defines the field containing the value to look for in the `target` field of the referenced resource. By default, this is the `id` of the resource (`post.id` in the previous example).
-
-You can use a `<Datagrid>` instead of a `<SingleFieldList>` - but not inside another `<Datagrid>`! This is useful if you want to display a read-only list of related records. For instance, if you want to show the `comments` related to a `post` in the post's `<Show>` view:
-
-```jsx
-import * as React from 'react';
-import { ReferenceManyField, Datagrid, DateField, EditButton, Show, SimpleShowLayout, TextField } from "react-admin";
-
-const PostShow = props => (
-  <Show {...props}>
-    <SimpleShowLayout>
-      <TextField source="title" />
-      <TextField source="teaser" />
-      <ReferenceManyField
-        reference="comments"
-        target="post_id"
-        label="Comments"
-      >
-        <Datagrid>
-          <DateField source="created_at" />
-          <TextField source="author.name" />
-          <TextField source="body" />
-          <EditButton />
-        </Datagrid>
-      </ReferenceManyField>
-      <DateField source="published_at" />
-    </SimpleShowLayout>
-  </Show>
-);
-```
-
-![ReferenceManyFieldDatagrid](./img/reference-many-field-datagrid.png)
-
 ## Props
 
 | Prop         | Required | Type      | Default | Description                                                                         |
 | ------------ | -------- | --------- | ------- | ----------------------------------------------------------------------------------- |
-| `source`     | Required | `string`  | -       | Name of the property to display                                                     |
 | `target`     | Required | `string`  | -       | Target field carrying the relationship on the referenced resource, e.g. 'user_id'   |
 | `reference`  | Required | `string`  | -       | The name of the resource for the referenced records, e.g. 'books'                   |
 | `children`   | Required | `Element` | -       | One or several elements that render a list of records based on a `ListContext`      |
+| `source`     | Optional | `string`  | `id`    | Name of the property to display                                                     |
 | `filter`     | Optional | `Object`  | -       | Filters to use when fetching the related records, passed to `getManyReference()`    |
 | `pagination` | Optional | `Element` | -       | Pagination element to display pagination controls. empty by default (no pagination) |
 | `perPage`    | Optional | `number`  | 25      | Maximum number of referenced records to fetch                                       |

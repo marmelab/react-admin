@@ -7,6 +7,10 @@ title: "The ReferenceField Component"
 
 `<ReferenceField>` is useful for displaying many-to-one and one-to-one relationships, e.g. the details of a user when rendering a post authored by that user. 
 
+![ReferenceField](./img/reference_field_show.png)
+
+For instance, let's consider a model where a `post` has one author from the `users` resource, referenced by a `user_id` field.
+
 ```
 ┌──────────────┐       ┌────────────────┐
 │ posts        │       │ users          │
@@ -18,6 +22,8 @@ title: "The ReferenceField Component"
 └──────────────┘
 ```
 
+In that case, use `<ReferenceField>` to display the post author's name as follows:
+
 ```jsx
 <ReferenceField source="user_id" reference="users">
     <TextField source="name" />
@@ -26,11 +32,11 @@ title: "The ReferenceField Component"
 
 A `<ReferenceField>` displays nothing on its own, it just fetches the data, puts it in a [`RecordContext`](./useRecordContext.md), and lets its children render it. Usual child components for `<ReferenceField>` are other `<Field>` components (e.g. [`<TextField>`](./TextField.md)).
 
-This component fetches a referenced record (`users` in this example) using the `dataProvider.getMany()` method, and passes it to its child. It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` for performance reasons. When using several `<ReferenceField>` in the same page (e.g. in a `<Datagrid>`), this allows to call the `dataProvider` once instead of once per row. 
+This component fetches a referenced record (`users` in this example) using the `dataProvider.getMany()` method, and passes it to its child. 
+
+It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` for performance reasons. When using several `<ReferenceField>` in the same page (e.g. in a `<Datagrid>`), this allows to call the `dataProvider` once instead of once per row. 
 
 ## Usage
-
-For instance, let's consider a model where a `post` has one author from the `users` resource, referenced by a `user_id` field.
 
 Here is how to render both a post and the `name` of its author in a show view:
 

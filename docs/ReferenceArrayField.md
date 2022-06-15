@@ -5,7 +5,35 @@ title: "The ReferenceArrayField Component"
 
 # `<ReferenceArrayField>`
 
-Use `<ReferenceArrayField>` to display a one-to-many relationship based on an array of foreign keys. This component fetches a list of referenced records (using the `dataProvider.getMany()` method), and and puts them in a [`ListContext`](./useListContext.md). A `<ReferenceArrayField>` displays nothing on its own, it just fetches the data and expects its children to render it. The most common case is to use [`<SingleFieldList>`](./SingleFieldList.md) or [`<Datagrid>`](./Datagrid.md) as child.
+Use `<ReferenceArrayField>` to display a one-to-many relationship based on an array of foreign keys
+
+![ReferenceArrayField](./img/reference-array-field.png)
+
+For instance, let's conside a model where a `post` has many `tags`, materialized to a `tags_ids` field containing an array of ids:
+
+```
+┌──────────────┐       ┌────────┐
+│ posts        │       │ tags   │
+│--------------│       │--------│
+│ id           │   ┌───│ id     │
+│ title        │   │   │ name   │
+│ body         │   │   └────────┘
+│ is_published │   │
+│ tag_ids      │╾──┘   
+└──────────────┘       
+```
+
+In that case, use `<ReferenceArrayField>` to display the post tags names as follows:
+
+```jsx
+<ReferenceArrayField label="Tags" reference="tags" source="tag_ids">
+    <SingleFieldList>
+        <ChipField source="name" />
+    </SingleFieldList>
+</ReferenceArrayField>
+```
+
+`<ReferenceArrayField>` fetches a list of referenced records (using the `dataProvider.getMany()` method), and and puts them in a [`ListContext`](./useListContext.md). A `<ReferenceArrayField>` displays nothing on its own, it just fetches the data and expects its children to render it. The most common case is to use [`<SingleFieldList>`](./SingleFieldList.md) or [`<Datagrid>`](./Datagrid.md) as child.
 
 ## Usage
 
@@ -32,8 +60,6 @@ export const PostList = () => (
     </List>
 );
 ```
-
-![ReferenceArrayField](./img/reference-array-field.png)
 
 `<ReferenceArrayField>` fetches the `tag` resources related to each `post` resource by matching `post.tag_ids` to `tag.id`. Once it receives the related resources, `<ReferenceArrayField>` passes them to its child component using the `ids` and `data` props, so the child must be an iterator component (like `<SingleFieldList>` or `<Datagrid>`). The iterator component usually has one or more child `<Field>` components.
 
