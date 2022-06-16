@@ -100,7 +100,6 @@ const PostList = () => {
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     return (
         <List
-            disableAuthentication
             filters={postFilter}
             sort={{ field: 'published_at', order: 'DESC' }}
             exporter={exporter}

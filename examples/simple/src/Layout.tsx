@@ -8,7 +8,6 @@ import {
     UserMenu,
     useLocaleState,
     useUserMenu,
-    useAuthState,
 } from 'react-admin';
 import { MenuItem, MenuItemProps, ListItemIcon } from '@mui/material';
 import Language from '@mui/icons-material/Language';

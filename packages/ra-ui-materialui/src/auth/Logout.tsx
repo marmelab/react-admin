@@ -36,7 +36,9 @@ export const Logout: FunctionComponent<
     ]);
     const { authenticated } = useAuthState();
 
-    return !authenticated ? null : (
+    if (!authenticated) return null;
+
+    return (
         <StyledMenuItem
             className={clsx('logout', className)}
             onClick={handleClick}
