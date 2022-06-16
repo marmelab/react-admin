@@ -12,7 +12,7 @@ import { MenuItemProps } from '@mui/material/MenuItem';
 
 import ExitIcon from '@mui/icons-material/PowerSettingsNew';
 import clsx from 'clsx';
-import { useTranslate, useLogout } from 'ra-core';
+import { useTranslate, useLogout, useAuthState } from 'ra-core';
 
 /**
  * Logout button component, to be passed to the Admin component
@@ -34,7 +34,9 @@ export const Logout: FunctionComponent<
         redirectTo,
         logout,
     ]);
-    return (
+    const { authenticated } = useAuthState();
+
+    return !authenticated ? null : (
         <StyledMenuItem
             className={clsx('logout', className)}
             onClick={handleClick}
