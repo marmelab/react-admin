@@ -109,29 +109,59 @@ describe('useEditController', () => {
         });
     });
 
-    it('should accept custom client query options', async () => {
-        const mock = jest.spyOn(console, 'error').mockImplementation(() => {});
-        const getOne = jest
-            .fn()
-            .mockImplementationOnce(() => Promise.reject(new Error()));
-        const onError = jest.fn();
-        const dataProvider = ({ getOne } as unknown) as DataProvider;
-        render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <EditController
-                    {...defaultProps}
-                    resource="posts"
-                    queryOptions={{ onError }}
-                >
-                    {() => <div />}
-                </EditController>
-            </CoreAdminContext>
-        );
-        await waitFor(() => {
-            expect(getOne).toHaveBeenCalled();
-            expect(onError).toHaveBeenCalled();
+    describe('queryOptions', () => {
+        it('should accept custom client query options', async () => {
+            const mock = jest
+                .spyOn(console, 'error')
+                .mockImplementation(() => {});
+            const getOne = jest
+                .fn()
+                .mockImplementationOnce(() => Promise.reject(new Error()));
+            const onError = jest.fn();
+            const dataProvider = ({ getOne } as unknown) as DataProvider;
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <EditController
+                        {...defaultProps}
+                        resource="posts"
+                        queryOptions={{ onError }}
+                    >
+                        {() => <div />}
+                    </EditController>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(getOne).toHaveBeenCalled();
+                expect(onError).toHaveBeenCalled();
+            });
+            mock.mockRestore();
         });
-        mock.mockRestore();
+
+        it('should accept a meta in query options', async () => {
+            const getOne = jest
+                .fn()
+                .mockImplementationOnce(() =>
+                    Promise.resolve({ data: { id: 0, title: 'hello' } })
+                );
+            const dataProvider = ({ getOne } as unknown) as DataProvider;
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <EditController
+                        {...defaultProps}
+                        resource="posts"
+                        queryOptions={{ meta: { foo: 'bar' } }}
+                    >
+                        {() => <div />}
+                    </EditController>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(getOne).toHaveBeenCalledWith('posts', {
+                    id: 12,
+                    meta: { foo: 'bar' },
+                });
+            });
+        });
     });
 
     it('should call the dataProvider.update() function on save', async () => {
@@ -309,117 +339,247 @@ describe('useEditController', () => {
         );
     });
 
-    it('should allow mutationOptions to override the default success side effects in pessimistic mode', async () => {
-        let saveCallback;
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12 } }),
-            update: (_, { id, data, previousData }) =>
-                Promise.resolve({ data: { id, ...previousData, ...data } }),
-        } as unknown) as DataProvider;
-        const onSuccess = jest.fn();
+    describe('mutationOptions', () => {
+        it('should allow mutationOptions to override the default success side effects in pessimistic mode', async () => {
+            let saveCallback;
+            const dataProvider = ({
+                getOne: () => Promise.resolve({ data: { id: 12 } }),
+                update: (_, { id, data, previousData }) =>
+                    Promise.resolve({ data: { id, ...previousData, ...data } }),
+            } as unknown) as DataProvider;
+            const onSuccess = jest.fn();
 
-        let notificationsSpy;
-        const Notification = () => {
-            const { notifications } = useNotificationContext();
-            React.useEffect(() => {
-                notificationsSpy = notifications;
-            }, [notifications]);
-            return null;
-        };
+            let notificationsSpy;
+            const Notification = () => {
+                const { notifications } = useNotificationContext();
+                React.useEffect(() => {
+                    notificationsSpy = notifications;
+                }, [notifications]);
+                return null;
+            };
 
-        render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <Notification />
-                <EditController
-                    {...defaultProps}
-                    mutationMode="pessimistic"
-                    mutationOptions={{ onSuccess }}
-                >
-                    {({ save }) => {
-                        saveCallback = save;
-                        return <div />;
-                    }}
-                </EditController>
-            </CoreAdminContext>
-        );
-        await act(async () => saveCallback({ foo: 'bar' }));
-        await waitFor(() => expect(onSuccess).toHaveBeenCalled());
-        expect(notificationsSpy).toEqual([]);
-    });
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Notification />
+                    <EditController
+                        {...defaultProps}
+                        mutationMode="pessimistic"
+                        mutationOptions={{ onSuccess }}
+                    >
+                        {({ save }) => {
+                            saveCallback = save;
+                            return <div />;
+                        }}
+                    </EditController>
+                </CoreAdminContext>
+            );
+            await act(async () => saveCallback({ foo: 'bar' }));
+            await waitFor(() => expect(onSuccess).toHaveBeenCalled());
+            expect(notificationsSpy).toEqual([]);
+        });
 
-    it('should allow mutationOptions to override the default success side effects in optimistic mode', async () => {
-        let saveCallback;
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12 } }),
-            update: (_, { id, data, previousData }) =>
-                Promise.resolve({ data: { id, ...previousData, ...data } }),
-        } as unknown) as DataProvider;
-        const onSuccess = jest.fn();
+        it('should allow mutationOptions to override the default success side effects in optimistic mode', async () => {
+            let saveCallback;
+            const dataProvider = ({
+                getOne: () => Promise.resolve({ data: { id: 12 } }),
+                update: (_, { id, data, previousData }) =>
+                    Promise.resolve({ data: { id, ...previousData, ...data } }),
+            } as unknown) as DataProvider;
+            const onSuccess = jest.fn();
 
-        let notificationsSpy;
-        const Notification = () => {
-            const { notifications } = useNotificationContext();
-            React.useEffect(() => {
-                notificationsSpy = notifications;
-            }, [notifications]);
-            return null;
-        };
+            let notificationsSpy;
+            const Notification = () => {
+                const { notifications } = useNotificationContext();
+                React.useEffect(() => {
+                    notificationsSpy = notifications;
+                }, [notifications]);
+                return null;
+            };
 
-        render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <Notification />
-                <EditController
-                    {...defaultProps}
-                    mutationMode="optimistic"
-                    mutationOptions={{ onSuccess }}
-                >
-                    {({ save }) => {
-                        saveCallback = save;
-                        return <div />;
-                    }}
-                </EditController>
-            </CoreAdminContext>
-        );
-        await act(async () => saveCallback({ foo: 'bar' }));
-        await waitFor(() => expect(onSuccess).toHaveBeenCalled());
-        expect(notificationsSpy).toEqual([]);
-    });
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Notification />
+                    <EditController
+                        {...defaultProps}
+                        mutationMode="optimistic"
+                        mutationOptions={{ onSuccess }}
+                    >
+                        {({ save }) => {
+                            saveCallback = save;
+                            return <div />;
+                        }}
+                    </EditController>
+                </CoreAdminContext>
+            );
+            await act(async () => saveCallback({ foo: 'bar' }));
+            await waitFor(() => expect(onSuccess).toHaveBeenCalled());
+            expect(notificationsSpy).toEqual([]);
+        });
 
-    it('should allow mutationOptions to override the default success side effects in undoable mode', async () => {
-        let saveCallback;
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12 } }),
-            update: (_, { id, data, previousData }) =>
-                Promise.resolve({ data: { id, ...previousData, ...data } }),
-        } as unknown) as DataProvider;
-        const onSuccess = jest.fn();
+        it('should allow mutationOptions to override the default success side effects in undoable mode', async () => {
+            let saveCallback;
+            const dataProvider = ({
+                getOne: () => Promise.resolve({ data: { id: 12 } }),
+                update: (_, { id, data, previousData }) =>
+                    Promise.resolve({ data: { id, ...previousData, ...data } }),
+            } as unknown) as DataProvider;
+            const onSuccess = jest.fn();
 
-        let notificationsSpy;
-        const Notification = () => {
-            const { notifications } = useNotificationContext();
-            React.useEffect(() => {
-                notificationsSpy = notifications;
-            }, [notifications]);
-            return null;
-        };
+            let notificationsSpy;
+            const Notification = () => {
+                const { notifications } = useNotificationContext();
+                React.useEffect(() => {
+                    notificationsSpy = notifications;
+                }, [notifications]);
+                return null;
+            };
 
-        render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <Notification />
-                <EditController
-                    {...defaultProps}
-                    mutationOptions={{ onSuccess }}
-                >
-                    {({ save }) => {
-                        saveCallback = save;
-                        return <div />;
-                    }}
-                </EditController>
-            </CoreAdminContext>
-        );
-        await act(async () => saveCallback({ foo: 'bar' }));
-        await waitFor(() => expect(onSuccess).toHaveBeenCalled());
-        expect(notificationsSpy).toEqual([]);
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Notification />
+                    <EditController
+                        {...defaultProps}
+                        mutationOptions={{ onSuccess }}
+                    >
+                        {({ save }) => {
+                            saveCallback = save;
+                            return <div />;
+                        }}
+                    </EditController>
+                </CoreAdminContext>
+            );
+            await act(async () => saveCallback({ foo: 'bar' }));
+            await waitFor(() => expect(onSuccess).toHaveBeenCalled());
+            expect(notificationsSpy).toEqual([]);
+        });
+
+        it('should allow mutationOptions to override the default failure side effects in pessimistic mode', async () => {
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            let saveCallback;
+            const dataProvider = ({
+                getOne: () => Promise.resolve({ data: { id: 12 } }),
+                update: () => Promise.reject({ message: 'not good' }),
+            } as unknown) as DataProvider;
+            const onError = jest.fn();
+
+            let notificationsSpy;
+            const Notification = () => {
+                const { notifications } = useNotificationContext();
+                React.useEffect(() => {
+                    notificationsSpy = notifications;
+                }, [notifications]);
+                return null;
+            };
+
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Notification />
+                    <EditController
+                        {...defaultProps}
+                        mutationMode="pessimistic"
+                        mutationOptions={{ onError }}
+                    >
+                        {({ save }) => {
+                            saveCallback = save;
+                            return <div />;
+                        }}
+                    </EditController>
+                </CoreAdminContext>
+            );
+            await act(async () => saveCallback({ foo: 'bar' }));
+            await new Promise(resolve => setTimeout(resolve, 10));
+            await waitFor(() => expect(onError).toHaveBeenCalled());
+            expect(notificationsSpy).toEqual([]);
+        });
+
+        it('should allow mutationOptions to override the default failure side effects in optimistic mode', async () => {
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            let saveCallback;
+            const dataProvider = ({
+                getOne: () => Promise.resolve({ data: { id: 12 } }),
+                update: () => Promise.reject({ message: 'not good' }),
+            } as unknown) as DataProvider;
+            const onError = jest.fn();
+
+            let notificationsSpy;
+            const Notification = () => {
+                const { notifications } = useNotificationContext();
+                React.useEffect(() => {
+                    notificationsSpy = notifications;
+                }, [notifications]);
+                return null;
+            };
+
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Notification />
+                    <EditController
+                        {...defaultProps}
+                        mutationMode="optimistic"
+                        mutationOptions={{ onError }}
+                    >
+                        {({ save }) => {
+                            saveCallback = save;
+                            return <div />;
+                        }}
+                    </EditController>
+                </CoreAdminContext>
+            );
+            await waitFor(() => expect(saveCallback).toBeDefined());
+            await act(async () => saveCallback({ foo: 'bar' }));
+            await new Promise(resolve => setTimeout(resolve, 10));
+            await waitFor(() => expect(onError).toHaveBeenCalled());
+            // we get the (optimistic) success notification but not the error notification
+            expect(notificationsSpy).toEqual([
+                {
+                    message: 'ra.notification.updated',
+                    type: 'info',
+                    notificationOptions: {
+                        messageArgs: {
+                            smart_count: 1,
+                        },
+                        undoable: false,
+                    },
+                },
+            ]);
+        });
+
+        it('should accept meta in mutationOptions', async () => {
+            let saveCallback;
+            const update = jest
+                .fn()
+                .mockImplementationOnce((_, { id, data, previousData }) =>
+                    Promise.resolve({ data: { id, ...previousData, ...data } })
+                );
+            const dataProvider = ({
+                getOne: () => Promise.resolve({ data: { id: 12 } }),
+                update,
+            } as unknown) as DataProvider;
+
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <EditController
+                        {...defaultProps}
+                        mutationMode="pessimistic"
+                        mutationOptions={{ meta: { lorem: 'ipsum' } }}
+                    >
+                        {({ save }) => {
+                            saveCallback = save;
+                            return <div />;
+                        }}
+                    </EditController>
+                </CoreAdminContext>
+            );
+            await act(async () => saveCallback({ foo: 'bar' }));
+            await waitFor(() => {
+                expect(update).toHaveBeenCalledWith('posts', {
+                    id: 12,
+                    data: { foo: 'bar' },
+                    previousData: undefined,
+                    meta: { lorem: 'ipsum' },
+                });
+            });
+        });
     });
 
     it('should allow the save onSuccess option to override the success side effects override', async () => {
@@ -504,97 +664,6 @@ describe('useEditController', () => {
                 message: 'not good',
                 type: 'warning',
                 notificationOptions: { messageArgs: { _: 'not good' } },
-            },
-        ]);
-    });
-
-    it('should allow mutationOptions to override the default failure side effects in pessimistic mode', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
-        let saveCallback;
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12 } }),
-            update: () => Promise.reject({ message: 'not good' }),
-        } as unknown) as DataProvider;
-        const onError = jest.fn();
-
-        let notificationsSpy;
-        const Notification = () => {
-            const { notifications } = useNotificationContext();
-            React.useEffect(() => {
-                notificationsSpy = notifications;
-            }, [notifications]);
-            return null;
-        };
-
-        render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <Notification />
-                <EditController
-                    {...defaultProps}
-                    mutationMode="pessimistic"
-                    mutationOptions={{ onError }}
-                >
-                    {({ save }) => {
-                        saveCallback = save;
-                        return <div />;
-                    }}
-                </EditController>
-            </CoreAdminContext>
-        );
-        await act(async () => saveCallback({ foo: 'bar' }));
-        await new Promise(resolve => setTimeout(resolve, 10));
-        await waitFor(() => expect(onError).toHaveBeenCalled());
-        expect(notificationsSpy).toEqual([]);
-    });
-
-    it('should allow mutationOptions to override the default failure side effects in optimistic mode', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
-        let saveCallback;
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12 } }),
-            update: () => Promise.reject({ message: 'not good' }),
-        } as unknown) as DataProvider;
-        const onError = jest.fn();
-
-        let notificationsSpy;
-        const Notification = () => {
-            const { notifications } = useNotificationContext();
-            React.useEffect(() => {
-                notificationsSpy = notifications;
-            }, [notifications]);
-            return null;
-        };
-
-        render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <Notification />
-                <EditController
-                    {...defaultProps}
-                    mutationMode="optimistic"
-                    mutationOptions={{ onError }}
-                >
-                    {({ save }) => {
-                        saveCallback = save;
-                        return <div />;
-                    }}
-                </EditController>
-            </CoreAdminContext>
-        );
-        await waitFor(() => expect(saveCallback).toBeDefined());
-        await act(async () => saveCallback({ foo: 'bar' }));
-        await new Promise(resolve => setTimeout(resolve, 10));
-        await waitFor(() => expect(onError).toHaveBeenCalled());
-        // we get the (optimistic) success notification but not the error notification
-        expect(notificationsSpy).toEqual([
-            {
-                message: 'ra.notification.updated',
-                type: 'info',
-                notificationOptions: {
-                    messageArgs: {
-                        smart_count: 1,
-                    },
-                    undoable: false,
-                },
             },
         ]);
     });

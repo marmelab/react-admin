@@ -163,6 +163,25 @@ const DefaultPostShow = () => (
     </Show>
 );
 
+const dataProviderWithLog = {
+    getOne: (resource, params) => {
+        console.log('getOne', resource, params);
+        return dataProvider.getOne(resource, params);
+    },
+} as any;
+
+const PostShowWithMeta = () => (
+    <Show queryOptions={{ meta: { foo: 'bar ' } }}>
+        <BookTitle />
+    </Show>
+);
+
+export const Meta = () => (
+    <Admin dataProvider={dataProviderWithLog} history={history}>
+        <Resource name="books" show={PostShowWithMeta} />
+    </Admin>
+);
+
 export const Default = () => (
     <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" show={DefaultPostShow} edit={() => <span />} />

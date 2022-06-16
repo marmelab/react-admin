@@ -142,4 +142,42 @@ describe('useShowController', () => {
         });
         mock.mockRestore();
     });
+
+    it('should accept meta in queryOptions', async () => {
+        const getOne = jest
+            .fn()
+            .mockImplementationOnce(() =>
+                Promise.resolve({ data: { id: 0, title: 'hello' } })
+            );
+
+        const dataProvider = ({ getOne } as unknown) as DataProvider;
+        render(
+            <CoreAdminContext
+                dataProvider={dataProvider}
+                history={createMemoryHistory({
+                    initialEntries: ['/posts/1'],
+                })}
+            >
+                <Routes>
+                    <Route
+                        path="posts/:id"
+                        element={
+                            <ShowController
+                                resource="posts"
+                                queryOptions={{ meta: { foo: 'bar' } }}
+                            >
+                                {() => <div />}
+                            </ShowController>
+                        }
+                    />
+                </Routes>
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(getOne).toHaveBeenCalledWith('posts', {
+                id: '1',
+                meta: { foo: 'bar' },
+            });
+        });
+    });
 });

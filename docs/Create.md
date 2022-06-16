@@ -152,7 +152,23 @@ const PostCreate = () => (
 
 ## `mutationOptions`
 
-You can customize the options you pass to react-query's `useMutation` hook, e.g. to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://react-query.tanstack.com/reference/useMutation) in the react-query website for a list of the possible options.
+You can customize the options you pass to react-query's `useMutation` hook, e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.create()` call.
+
+{% raw %}
+```jsx
+import { Create, SimpleForm } from 'react-admin';
+
+const PostCreate = () => (
+    <Create mutationOptions={{ meta: { foo: 'bar' } }}>
+        <SimpleForm>
+            ...
+        </SimpleForm>
+    </Create>
+);
+```
+{% endraw %}
+
+You can also use `mutationOptions` to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://react-query.tanstack.com/reference/useMutation) in the react-query website for a list of the possible options.
 
 Let's see an example with the success side effect. By default, when the save action succeeds, react-admin shows a notification, and redirects to the new record edit page. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
 
@@ -321,6 +337,24 @@ export const UserCreate = (props) => {
 The `transform` function can also return a `Promise`, which allows you to do all sorts of asynchronous calls (e.g. to the `dataProvider`) during the transformation.
 
 **Tip**: If you want to have different transformations based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save", and another to "save and notify other admins"), you can set the `transform` prop on [the `<SaveButton>` component](./SaveButton.md), too. 
+
+## Adding `meta` To The DataProvider Call
+
+Use [the `mutationOptions` prop](#mutationoptions) to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.create()` call.
+
+{% raw %}
+```jsx
+import { Create, SimpleForm } from 'react-admin';
+
+const PostCreate = () => (
+    <Create mutationOptions={{ meta: { foo: 'bar' } }}>
+        <SimpleForm>
+            ...
+        </SimpleForm>
+    </Create>
+);
+```
+{% endraw %}
 
 ## Changing The Notification Message
 

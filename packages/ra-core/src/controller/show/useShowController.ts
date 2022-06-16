@@ -55,12 +55,13 @@ export const useShowController = <RecordType extends RaRecord = any>(
     const refresh = useRefresh();
     const { id: routeId } = useParams<'id'>();
     const id = propsId != null ? propsId : decodeURIComponent(routeId);
+    const { meta, ...otherQueryOptions } = queryOptions;
 
     const { data: record, error, isLoading, isFetching, refetch } = useGetOne<
         RecordType
     >(
         resource,
-        { id },
+        { id, meta },
         {
             onError: () => {
                 notify('ra.notification.item_doesnt_exist', {
@@ -70,7 +71,7 @@ export const useShowController = <RecordType extends RaRecord = any>(
                 refresh();
             },
             retry: false,
-            ...queryOptions,
+            ...otherQueryOptions,
         }
     );
 
@@ -102,7 +103,7 @@ export const useShowController = <RecordType extends RaRecord = any>(
 export interface ShowControllerProps<RecordType extends RaRecord = any> {
     disableAuthentication?: boolean;
     id?: RecordType['id'];
-    queryOptions?: UseQueryOptions<RecordType>;
+    queryOptions?: UseQueryOptions<RecordType> & { meta?: any };
     resource?: string;
 }
 

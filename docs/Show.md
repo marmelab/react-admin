@@ -58,11 +58,11 @@ That's enough to display the post show view:
 * [`actions`](#actions): override the actions toolbar with a custom component
 * `className`: passed to the root component
 * [`children`](#layout): the components that render the record fields
-* [`component`](#root-component): overrides the root component
+* [`component`](#component): overrides the root component
 * [`emptyWhileLoading`](#loading-state)
-* [`queryOptions`](#client-query-options): options to pass to the react-query client
+* [`queryOptions`](#queryoptions): options to pass to the react-query client
 * [`sx`](#sx-css-api): Override the styles
-* [`title`](#page-title)
+* [`title`](#title)
 
 ## Layout
 
@@ -94,7 +94,7 @@ export const PostShow = () => (
 
 You can also pass a React element as child, to build a custom layout. Check [Building a custom Show Layout](./ShowTutorial.md#building-a-custom-layout) for more details.
 
-## Page Title
+## `title`
 
 By default, the title for the Show view is "[resource_name] #[record_id]".
 
@@ -127,7 +127,7 @@ export const PostShow = () => (
 );
 ```
 
-## Actions
+## `actions`
 
 By default, `<Show>` includes an action toolbar with an `<EditButton>` if the `<Resource>` declared an `edit` component. You can replace the list of default actions by your own component using the `actions` prop:
 
@@ -150,11 +150,27 @@ export const PostShow = () => (
 );
 ```
 
-## Client Query Options
+## `queryOptions`
 
 `<Show>` accepts a `queryOptions` prop to pass options to the react-query client. 
 
-This can be useful e.g. to override the default error side effect. By default, when the `dataProvider.getOne()` call fails at the dataProvider level, react-admin shows an error notification and refreshes the page.
+This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getOne()` call.
+
+{% raw %}
+```jsx
+import { Show } from 'react-admin';
+
+export const PostShow = () => (
+    <Show queryOptions={{ meta: { foo: 'bar' }}}>
+        ...
+    </Show>
+);
+```
+{% endraw %}
+
+With this option, react-admin will call `dataProvider.getOne()` on mount with the ` meta: { foo: 'bar' }` option.
+
+You can also use the `queryOptions` prop to override the default error side effect. By default, when the `dataProvider.getOne()` call fails at the dataProvider level, react-admin shows an error notification and refreshes the page.
 
 You can override this behavior and pass custom side effects by providing a custom `queryOptions` prop:
 
@@ -194,6 +210,61 @@ The default `onError` function is:
     refresh();
 }
 ```
+
+## `component`
+
+By default, the Show view renders the main content area inside a MUI `<Card>`. The actual layout of the record fields depends on the Show Layout component you're using (`<SimpleShowLayout>`, `<TabbedShowLayout>`, or a custom layout component).
+
+You can override the main area container by passing a `component` prop:
+
+{% raw %}
+```jsx
+import { Box } from '@mui/material';
+
+const ShowWrapper = ({ children }) => (
+    <Box sx={{ margin: 2, border: 'solid 1px grey' }}>
+        {children}
+    </Box>
+);
+
+// use a ShowWrapper as root component
+const PostShow = props => (
+    <Show component={ShowWrapper} {...props}>
+        ...
+    </Show>
+);
+```
+{% endraw %}
+
+## `sx`: CSS API
+
+The `<Show>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+
+| Rule name        | Description                                                   |
+|------------------| ------------------------------------------------------------- |
+| `& .RaShow-main` | Applied to the main container                                 |
+| `& .RaShow-card` | Applied to the `<Card>` element                               |
+
+Here's an example of how to override the default styles:
+
+{% raw %}
+```jsx
+const PostShow = () => (
+    <Show 
+        sx={{
+            backgroundColor: 'yellow',
+            '& .RaShow-main': {
+                backgroundColor: 'red',
+            },
+        }}
+    >
+            ...
+    </Show>
+);
+```
+{% endraw %}
+
+To override the style of all instances of `<Show>` using the [MUI style overrides](https://mui.com/customization/theme-components/), use the `RaShow` key.
 
 ## Loading State
 
@@ -251,61 +322,6 @@ const PostShow = () => (
     </Show>
 );
 ```
-
-## Root Component
-
-By default, the Show view renders the main content area inside a MUI `<Card>`. The actual layout of the record fields depends on the Show Layout component you're using (`<SimpleShowLayout>`, `<TabbedShowLayout>`, or a custom layout component).
-
-You can override the main area container by passing a `component` prop:
-
-{% raw %}
-```jsx
-import { Box } from '@mui/material';
-
-const ShowWrapper = ({ children }) => (
-    <Box sx={{ margin: 2, border: 'solid 1px grey' }}>
-        {children}
-    </Box>
-);
-
-// use a ShowWrapper as root component
-const PostShow = props => (
-    <Show component={ShowWrapper} {...props}>
-        ...
-    </Show>
-);
-```
-{% endraw %}
-
-## `sx`: CSS API
-
-The `<Show>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
-
-| Rule name        | Description                                                   |
-|------------------| ------------------------------------------------------------- |
-| `& .RaShow-main` | Applied to the main container                                 |
-| `& .RaShow-card` | Applied to the `<Card>` element                               |
-
-Here's an example of how to override the default styles:
-
-{% raw %}
-```jsx
-const PostShow = () => (
-    <Show 
-        sx={{
-            backgroundColor: 'yellow',
-            '& .RaShow-main': {
-                backgroundColor: 'red',
-            },
-        }}
-    >
-            ...
-    </Show>
-);
-```
-{% endraw %}
-
-To override the style of all instances of `<Show>` using the [MUI style overrides](https://mui.com/customization/theme-components/), use the `RaShow` key.
 
 ## Displaying Fields Depending On User Permissions
 
@@ -373,6 +389,22 @@ export const UserShow = () => {
 {% endraw %}
 
 For more details about permissions, check out the [authProvider documentation](./Authentication.md#authorization).
+
+## Adding `meta` To The DataProvider Call
+
+Use [the `queryOptions` prop](#queryoptions) to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getOne()` call.
+
+{% raw %}
+```jsx
+import { Show } from 'react-admin';
+
+export const PostShow = () => (
+    <Show queryOptions={{ meta: { foo: 'bar' }}}>
+        ...
+    </Show>
+);
+```
+{% endraw %}
 
 ## API
 

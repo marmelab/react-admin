@@ -62,7 +62,13 @@ export const useEditController = <
     const refresh = useRefresh();
     const { id: routeId } = useParams<'id'>();
     const id = propsId != null ? propsId : decodeURIComponent(routeId);
-    const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
+    const { meta: queryMeta, ...otherQueryOptions } = queryOptions;
+    const {
+        onSuccess,
+        onError,
+        meta: mutationMeta,
+        ...otherMutationOptions
+    } = mutationOptions;
     const {
         registerMutationMiddleware,
         getMutateWithMiddlewares,
@@ -72,7 +78,7 @@ export const useEditController = <
         RecordType
     >(
         resource,
-        { id },
+        { id, meta: queryMeta },
         {
             onError: () => {
                 notify('ra.notification.item_doesnt_exist', {
@@ -84,7 +90,7 @@ export const useEditController = <
             refetchOnReconnect: false,
             refetchOnWindowFocus: false,
             retry: false,
-            ...queryOptions,
+            ...otherQueryOptions,
         }
     );
 
@@ -132,7 +138,7 @@ export const useEditController = <
                 const mutate = getMutateWithMiddlewares(update);
                 return mutate(
                     resource,
-                    { id, data },
+                    { id, data, meta: mutationMeta },
                     {
                         onSuccess: async (data, variables, context) => {
                             if (onSuccessFromSave) {
@@ -183,6 +189,7 @@ export const useEditController = <
         [
             id,
             getMutateWithMiddlewares,
+            mutationMeta,
             mutationMode,
             notify,
             onError,
@@ -224,8 +231,8 @@ export interface EditControllerProps<
         RecordType,
         MutationOptionsError,
         UseUpdateMutateParams<RecordType>
-    >;
-    queryOptions?: UseQueryOptions<RecordType>;
+    > & { meta?: any };
+    queryOptions?: UseQueryOptions<RecordType> & { meta?: any };
     redirect?: RedirectionSideEffect;
     resource?: string;
     transform?: TransformData;
