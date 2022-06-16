@@ -22,7 +22,7 @@ export interface EditProps<
     disableAuthentication?: boolean;
     id?: Identifier;
     mutationMode?: MutationMode;
-    queryOptions?: UseQueryOptions<RecordType>;
+    queryOptions?: UseQueryOptions<RecordType> & { meta?: any };
     mutationOptions?: UseMutationOptions<
         RecordType,
         MutationOptionsError,
@@ -53,7 +53,7 @@ export interface CreateProps<
         RecordType,
         MutationOptionsError,
         UseCreateMutateParams<RecordType>
-    >;
+    > & { meta?: any };
     transform?: TransformData;
     title?: string | ReactElement;
     sx?: SxProps;
@@ -67,7 +67,7 @@ export interface ShowProps<RecordType extends RaRecord = any> {
     component?: ElementType;
     emptyWhileLoading?: boolean;
     id?: Identifier;
-    queryOptions?: UseQueryOptions<RecordType>;
+    queryOptions?: UseQueryOptions<RecordType> & { meta?: any };
     resource?: string;
     title?: string | ReactElement;
     sx?: SxProps;
