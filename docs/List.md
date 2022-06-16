@@ -602,7 +602,23 @@ export const PostList = () => (
 
 `<List>` accepts a `queryOptions` prop to pass options to the react-query client. 
 
-This can be useful e.g. to override the default error side effect. By default, when the `dataProvider.getList()` call fails, react-admin shows an error notification.
+This can be useful e.g. to pass a custom `meta` to the `dataProvider.getList()` call.
+
+{% raw %}
+```jsx
+import { List } from 'react-admin';
+
+const PostList = () => (
+    <List queryOptions={{ meta: { foo: 'bar' } }}>
+        ...
+    </List>
+);
+```
+{% endraw %}
+
+With this option, react-admin will call the `dataProvider.getList()` on mount with the ` meta: { foo: 'bar' }` option.
+
+You can also use the `queryOptions` prop to override the default error side effect. By default, when the `dataProvider.getList()` call fails, react-admin shows an error notification.
 
 You can override this behavior and pass custom side effects by providing a `queryOptions` prop:
 
