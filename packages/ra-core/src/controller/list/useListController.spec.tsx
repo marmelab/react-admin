@@ -28,25 +28,56 @@ describe('useListController', () => {
         debounce: 200,
     };
 
-    it('should accept custom client query options', async () => {
-        const mock = jest.spyOn(console, 'error').mockImplementation(() => {});
-        const getList = jest
-            .fn()
-            .mockImplementationOnce(() => Promise.reject(new Error()));
-        const onError = jest.fn();
-        const dataProvider = testDataProvider({ getList });
-        render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <ListController resource="posts" queryOptions={{ onError }}>
-                    {() => <div />}
-                </ListController>
-            </CoreAdminContext>
-        );
-        await waitFor(() => {
-            expect(getList).toHaveBeenCalled();
-            expect(onError).toHaveBeenCalled();
+    describe('queryOptions', () => {
+        it('should accept custom client query options', async () => {
+            const mock = jest
+                .spyOn(console, 'error')
+                .mockImplementation(() => {});
+            const getList = jest
+                .fn()
+                .mockImplementationOnce(() => Promise.reject(new Error()));
+            const onError = jest.fn();
+            const dataProvider = testDataProvider({ getList });
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ListController resource="posts" queryOptions={{ onError }}>
+                        {() => <div />}
+                    </ListController>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(getList).toHaveBeenCalled();
+                expect(onError).toHaveBeenCalled();
+            });
+            mock.mockRestore();
         });
-        mock.mockRestore();
+
+        it('should accept meta in queryOptions', async () => {
+            const getList = jest
+                .fn()
+                .mockImplementationOnce(() =>
+                    Promise.resolve({ data: [], total: 25 })
+                );
+            const dataProvider = testDataProvider({ getList });
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ListController
+                        resource="posts"
+                        queryOptions={{ meta: { foo: 'bar' } }}
+                    >
+                        {() => <div />}
+                    </ListController>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(getList).toHaveBeenCalledWith('posts', {
+                    filter: {},
+                    pagination: { page: 1, perPage: 10 },
+                    sort: { field: 'id', order: 'ASC' },
+                    meta: { foo: 'bar' },
+                });
+            });
+        });
     });
 
     describe('setFilters', () => {

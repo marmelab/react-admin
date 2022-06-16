@@ -41,10 +41,11 @@ export const useListController = <RecordType extends RaRecord = any>(
         filter,
         debounce = 500,
         disableSyncWithLocation,
-        queryOptions,
+        queryOptions = {},
     } = props;
     useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
+    const { meta, ...otherQueryOptions } = queryOptions;
 
     if (!resource) {
         throw new Error(
@@ -88,6 +89,7 @@ export const useListController = <RecordType extends RaRecord = any>(
             },
             sort: { field: query.sort, order: query.order },
             filter: { ...query.filter, ...filter },
+            meta,
         },
         {
             keepPreviousData: true,
@@ -99,7 +101,7 @@ export const useListController = <RecordType extends RaRecord = any>(
                         _: error?.message,
                     },
                 }),
-            ...queryOptions,
+            ...otherQueryOptions,
         }
     );
 
@@ -190,7 +192,7 @@ export interface ListControllerProps<RecordType extends RaRecord = any> {
             hasNextPage?: boolean;
             hasPreviousPage?: boolean;
         };
-    }>;
+    }> & { meta?: any };
     resource?: string;
     sort?: SortPayload;
 }
