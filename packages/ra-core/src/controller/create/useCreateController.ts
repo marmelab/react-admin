@@ -59,7 +59,12 @@ export const useCreateController = <
     const notify = useNotify();
     const redirect = useRedirect();
     const recordToUse = record ?? getRecordFromLocation(location) ?? undefined;
-    const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
+    const {
+        onSuccess,
+        onError,
+        meta,
+        ...otherMutationOptions
+    } = mutationOptions;
     const {
         registerMutationMiddleware,
         getMutateWithMiddlewares,
@@ -90,7 +95,7 @@ export const useCreateController = <
                 const mutate = getMutateWithMiddlewares(create);
                 mutate(
                     resource,
-                    { data },
+                    { data, meta },
                     {
                         onSuccess: async (data, variables, context) => {
                             if (onSuccessFromSave) {
@@ -182,7 +187,7 @@ export interface CreateControllerProps<
         RecordType,
         MutationOptionsError,
         UseCreateMutateParams<RecordType>
-    >;
+    > & { meta?: any };
     transform?: TransformData;
 }
 
