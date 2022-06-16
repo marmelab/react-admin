@@ -602,7 +602,7 @@ export const PostList = () => (
 
 `<List>` accepts a `queryOptions` prop to pass options to the react-query client. 
 
-This can be useful e.g. to pass a custom `meta` to the `dataProvider.getList()` call.
+This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getList()` call.
 
 {% raw %}
 ```jsx
@@ -616,7 +616,7 @@ const PostList = () => (
 ```
 {% endraw %}
 
-With this option, react-admin will call the `dataProvider.getList()` on mount with the ` meta: { foo: 'bar' }` option.
+With this option, react-admin will call `dataProvider.getList()` on mount with the ` meta: { foo: 'bar' }` option.
 
 You can also use the `queryOptions` prop to override the default error side effect. By default, when the `dataProvider.getList()` call fails, react-admin shows an error notification.
 
@@ -721,3 +721,19 @@ const PostList = () => (
 {% endraw %}
 
 **Tip**: The `List` component `classes` can also be customized for all instances of the component with its global css name `RaList` as [describe here](https://marmelab.com/blog/2019/12/18/react-admin-3-1.html#theme-overrides)
+
+## Adding `meta` To The DataProvider Call
+
+Use [the `queryOptions` prop](#queryoptions) to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getList()` call.
+
+{% raw %}
+```jsx
+import { List } from 'react-admin';
+
+const PostList = () => (
+    <List queryOptions={{ meta: { foo: 'bar' } }}>
+        ...
+    </List>
+);
+```
+{% endraw %}

@@ -154,7 +154,23 @@ export const PostShow = () => (
 
 `<Show>` accepts a `queryOptions` prop to pass options to the react-query client. 
 
-This can be useful e.g. to override the default error side effect. By default, when the `dataProvider.getOne()` call fails at the dataProvider level, react-admin shows an error notification and refreshes the page.
+This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getOne()` call.
+
+{% raw %}
+```jsx
+import { Show } from 'react-admin';
+
+export const PostShow = () => (
+    <Show queryOptions={{ meta: { foo: 'bar' }}}>
+        ...
+    </Show>
+);
+```
+{% endraw %}
+
+With this option, react-admin will call `dataProvider.getOne()` on mount with the ` meta: { foo: 'bar' }` option.
+
+You can also use the `queryOptions` prop to override the default error side effect. By default, when the `dataProvider.getOne()` call fails at the dataProvider level, react-admin shows an error notification and refreshes the page.
 
 You can override this behavior and pass custom side effects by providing a custom `queryOptions` prop:
 
@@ -373,6 +389,22 @@ export const UserShow = () => {
 {% endraw %}
 
 For more details about permissions, check out the [authProvider documentation](./Authentication.md#authorization).
+
+## Adding `meta` To The DataProvider Call
+
+Use [the `queryOptions` prop](#queryoptions) to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getOne()` call.
+
+{% raw %}
+```jsx
+import { Show } from 'react-admin';
+
+export const PostShow = () => (
+    <Show queryOptions={{ meta: { foo: 'bar' }}}>
+        ...
+    </Show>
+);
+```
+{% endraw %}
 
 ## API
 

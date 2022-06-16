@@ -265,7 +265,23 @@ const PostEdit = () => (
 
 ## `mutationOptions`
 
-`<Edit>` calls `dataProvider.update()` via react-query's `useMutation` hook. You can customize the options you pass to this hook, e.g. to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://react-query.tanstack.com/reference/useMutation) in the react-query website for a list of the possible options.
+`<Edit>` calls `dataProvider.update()` via react-query's `useMutation` hook. You can customize the options you pass to this hook, e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.update()` call.
+
+{% raw %}
+```jsx
+import { Edit, SimpleForm } from 'react-admin';
+
+const PostEdit = () => (
+    <Edit mutationOptions={{ meta: { foo: 'bar' } }}>
+        <SimpleForm>
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
+{% endraw %}
+
+You can also use `mutationOptions` to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://react-query.tanstack.com/reference/useMutation) in the react-query website for a list of the possible options.
 
 Let's see an example with the success side effect. By default, when the save action succeeds, react-admin shows a notification, and redirects to the list page. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
 
@@ -387,7 +403,23 @@ The default `onError` function is:
 
 `<Edit>` calls `dataProvider.getOne()` on mount via react-query's `useQuery` hook. You can customize the options you pass to this hook by setting the `queryOptions` prop.
 
-For instance, you can force a refetch on reconnect:
+This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getOne()` call.
+
+{% raw %}
+```jsx
+import { Edit, SimpleForm } from 'react-admin';
+
+export const PostShow = () => (
+    <Edit queryOptions={{ meta: { foo: 'bar' } }}>
+        <SimpleForm>
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
+{% endraw %}
+
+You can also use `queryOptions` to force a refetch on reconnect:
 
 {% raw %}
 ```jsx
@@ -506,6 +538,27 @@ export const UserEdit = (props) => {
     );
 }
 ```
+
+## Adding `meta` To The DataProvider Call
+
+You can pass a custom `meta` to the `dataProvider` call, using either `queryOptions`, or `mutationOptions`:
+
+- Use [the `queryOptions` prop](#queryoptions) to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getOne()` call.
+- Use [the `mutationOptions` prop](#mutationoptions) to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.update()` call.
+
+{% raw %}
+```jsx
+import { Edit, SimpleForm } from 'react-admin';
+
+const PostEdit = () => (
+    <Edit mutationOptions={{ meta: { foo: 'bar' } }}>
+        <SimpleForm>
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
+{% endraw %}
 
 ## Changing The Notification Message
 
