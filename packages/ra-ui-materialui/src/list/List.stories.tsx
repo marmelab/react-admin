@@ -248,6 +248,31 @@ export const SX = () => (
     </Admin>
 );
 
+const dataProviderWithLog = {
+    ...dataProvider,
+    getList: (resource, params) => {
+        console.log('getList', resource, params);
+        return dataProvider.getList(resource, params);
+    },
+} as any;
+
+const BookListWithMeta = () => (
+    <List queryOptions={{ meta: { foo: 'bar' } }}>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </List>
+);
+
+export const Meta = () => (
+    <Admin dataProvider={dataProviderWithLog} history={history}>
+        <Resource name="books" list={BookListWithMeta} />
+    </Admin>
+);
+
 const BookListWithDatagrid = () => (
     <List filters={[<SearchInput source="q" alwaysOn />]}>
         <Datagrid>
