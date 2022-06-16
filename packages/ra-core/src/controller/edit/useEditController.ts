@@ -189,6 +189,7 @@ export const useEditController = <
         [
             id,
             getMutateWithMiddlewares,
+            mutationMeta,
             mutationMode,
             notify,
             onError,

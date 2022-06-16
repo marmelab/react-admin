@@ -145,6 +145,7 @@ export const useCreateController = <
             create,
             finalRedirectTo,
             getMutateWithMiddlewares,
+            meta,
             notify,
             onError,
             onSuccess,
