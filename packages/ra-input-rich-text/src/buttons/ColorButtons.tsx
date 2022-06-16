@@ -21,6 +21,11 @@ import {
     purple,
 } from '@mui/material/colors';
 
+enum ColorType {
+    FONT = 'font',
+    BACKGROUND = 'background',
+}
+
 export const ColorButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
     const translate = useTranslate();
     const editor = useTiptapEditor();
@@ -75,11 +80,6 @@ export const ColorButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
         </Box>
     ) : null;
 };
-
-enum ColorType {
-    FONT = 'font',
-    BACKGROUND = 'background',
-}
 
 interface ColorChoiceDialogProps {
     editor: any;
