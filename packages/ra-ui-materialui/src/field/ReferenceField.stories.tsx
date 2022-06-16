@@ -87,8 +87,20 @@ export const Link = () => (
     </Wrapper>
 );
 
+export const Children = () => (
+    <Wrapper>
+        <ReferenceField
+            source="detail_id"
+            reference="book_details"
+            link={false}
+        >
+            <TextField source="ISBN" /> <TextField source="genre" />
+        </ReferenceField>
+    </Wrapper>
+);
+
 export const Multiple = () => {
-    const [calls, setCalls] = useState([]);
+    const [calls, setCalls] = useState<any>([]);
     const dataProviderWithLogging = {
         getMany: (resource, params) => {
             setCalls(calls =>

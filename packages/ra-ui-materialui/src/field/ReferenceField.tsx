@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import { FC, memo, ReactElement } from 'react';
+import { FC, memo, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { Typography } from '@mui/material';
+import { Typography, SxProps } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import ErrorIcon from '@mui/icons-material/Error';
 import {
     useReference,
@@ -20,7 +20,6 @@ import {
 import { LinearProgress } from '../layout';
 import { Link } from '../Link';
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
-import { SxProps } from '@mui/system';
 
 /**
  * Fetch reference record, and delegate rendering to child component.
@@ -83,7 +82,7 @@ export const ReferenceField: FC<ReferenceFieldProps> = props => {
 };
 
 ReferenceField.propTypes = {
-    children: PropTypes.element.isRequired,
+    children: PropTypes.node.isRequired,
     className: PropTypes.string,
     cellClassName: PropTypes.string,
     headerClassName: PropTypes.string,
@@ -110,7 +109,7 @@ ReferenceField.defaultProps = {
 export interface ReferenceFieldProps<RecordType extends RaRecord = any>
     extends PublicFieldProps,
         InjectedFieldProps<RecordType> {
-    children: ReactElement;
+    children: ReactNode;
     reference: string;
     resource?: string;
     source: string;
@@ -126,9 +125,6 @@ export interface ReferenceFieldProps<RecordType extends RaRecord = any>
 export const NonEmptyReferenceField: FC<
     Omit<ReferenceFieldProps, 'emptyText' | 'source'> & { id: Identifier }
 > = ({ children, id, record, reference, link, ...props }) => {
-    if (React.Children.count(children) !== 1) {
-        throw new Error('<ReferenceField> only accepts a single child');
-    }
     const createPath = useCreatePath();
     const resourceLinkPath =
         link === false
@@ -239,7 +235,7 @@ export interface ReferenceFieldViewProps
     resource?: string;
     translateChoice?: Function | boolean;
     resourceLinkPath?: string | false;
-    children?: ReactElement;
+    children?: ReactNode;
     sx?: SxProps;
 }
 

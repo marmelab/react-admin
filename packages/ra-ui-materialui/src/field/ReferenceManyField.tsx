@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from 'react';
+import React, { FC, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import {
     FilterPayload,
@@ -63,6 +63,7 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
         children,
         filter,
         page = 1,
+        pagination,
         perPage,
         reference,
         resource,
@@ -71,12 +72,6 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
         target,
     } = props;
     const record = useRecordContext(props);
-
-    if (React.Children.count(children) !== 1) {
-        throw new Error(
-            '<ReferenceManyField> only accepts a single child (like <Datagrid>)'
-        );
-    }
 
     const controllerProps = useReferenceManyFieldController({
         filter,
@@ -93,7 +88,10 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
     return (
         <ResourceContextProvider value={reference}>
             <ListContextProvider value={controllerProps}>
-                <ReferenceManyFieldView {...props} {...controllerProps} />
+                {children}
+                {pagination && controllerProps.total !== undefined
+                    ? pagination
+                    : null}
             </ListContextProvider>
         </ResourceContextProvider>
     );
@@ -102,7 +100,7 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
 export interface ReferenceManyFieldProps
     extends PublicFieldProps,
         InjectedFieldProps {
-    children: ReactElement;
+    children: ReactNode;
     filter?: FilterPayload;
     page?: number;
     pagination?: ReactElement;
@@ -113,7 +111,7 @@ export interface ReferenceManyFieldProps
 }
 
 ReferenceManyField.propTypes = {
-    children: PropTypes.element.isRequired,
+    children: PropTypes.node.isRequired,
     className: PropTypes.string,
     filter: PropTypes.object,
     label: fieldPropTypes.label,
@@ -138,9 +136,14 @@ ReferenceManyField.defaultProps = {
     source: 'id',
 };
 
+// FIXME kept for backwards compatibility, unused, to be removed in v5
 export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => {
     const { children, pagination } = props;
-
+    if (process.env.NODE_ENV !== 'production') {
+        console.error(
+            '<ReferenceManyFieldView> is deprecated, use <ReferenceManyField> directly'
+        );
+    }
     return (
         <>
             {children}

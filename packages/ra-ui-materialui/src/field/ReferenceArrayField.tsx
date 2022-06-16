@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, memo, ReactElement } from 'react';
+import { FC, memo, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import {
     ListContextProvider,
@@ -106,7 +106,7 @@ export const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
 ReferenceArrayField.propTypes = {
     ...fieldPropTypes,
     className: PropTypes.string,
-    children: PropTypes.element.isRequired,
+    children: PropTypes.node.isRequired,
     label: fieldPropTypes.label,
     record: PropTypes.any,
     reference: PropTypes.string.isRequired,
@@ -119,7 +119,7 @@ ReferenceArrayField.propTypes = {
 export interface ReferenceArrayFieldProps
     extends PublicFieldProps,
         InjectedFieldProps {
-    children: ReactElement;
+    children: ReactNode;
     filter?: FilterPayload;
     page?: number;
     pagination?: ReactElement;
@@ -156,7 +156,7 @@ export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props =
 
 ReferenceArrayFieldView.propTypes = {
     className: PropTypes.string,
-    children: PropTypes.element.isRequired,
+    children: PropTypes.node.isRequired,
     reference: PropTypes.string.isRequired,
 };
 
