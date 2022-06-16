@@ -71,7 +71,7 @@ export const PostList = () => (
 | ------------ | -------- | ------------------- | -------- | ------------------------------------------------------------------------------------------------------------ |
 | `source`     | Required | `string`            | -        | Name of the property to display                                                                              |
 | `reference`  | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'tags'                                             |
-| `children`   | Required | `Element`           | -        | The Field element used to render the referenced records                                                      |
+| `children`   | Required | `Element`           | -        | One or several elements that render a list of records based on a `ListContext`                               |
 | `sortBy`     | Optional | `string | Function` | `source` | When used in a `List`, name of the field to use for sorting when the user clicks on the column header.       |
 | `filter`     | Optional | `Object`            | -        | Filters to use when fetching the related records (the filtering is done client-side)                         |
 | `pagination` | Optional | `Element`           | -        | Pagination element to display pagination controls. empty by default (no pagination)                          |

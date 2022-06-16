@@ -139,7 +139,11 @@ ReferenceManyField.defaultProps = {
 // FIXME kept for backwards compatibility, unused, to be removed in v5
 export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => {
     const { children, pagination } = props;
-
+    if (process.env.NODE_ENV !== 'production') {
+        console.error(
+            '<ReferenceManyFieldView> is deprecated, use <ReferenceManyField> directly'
+        );
+    }
     return (
         <>
             {children}
