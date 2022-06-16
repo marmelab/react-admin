@@ -23,9 +23,15 @@ import { TextInput } from '../../input';
  * );
  */
 export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
-    const { source = 'q', variant, ...rest } = props;
     const { filterValues, setFilters } = useListFilterContext();
     const translate = useTranslate();
+
+    const {
+        source = 'q',
+        variant,
+        label = translate('ra.action.search'),
+        ...rest
+    } = props;
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target) {
@@ -44,8 +50,6 @@ export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
     );
 
     const onSubmit = () => undefined;
-    let label = translate('ra.action.search');
-
     return (
         <Form defaultValues={initialValues} onSubmit={onSubmit}>
             <TextInput
@@ -77,6 +81,7 @@ export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
 export interface FilterLiveSearchProps {
     source?: string;
     sx?: SxProps;
+    label?: string;
     fullWidth?: boolean;
     variant?: 'filled' | 'outlined';
 }
