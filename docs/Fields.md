@@ -122,7 +122,7 @@ All Field components accept the following props:
 | Prop                          | Required | Type                           | Default  | Description                                                                                                                                             |
 |-------------------------------| -------- |--------------------------------| -------- |---------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [`source`](#source)           | Required | `string`                       | -        | Name of the property to display                                                                                                                         |
-| [`label`](#label)             | Optional | `string` &#124; `ReactElement` | `source` | Used as a table header or an input label                                                                                                                |
+| [`label`](#label)             | Optional | `string` &#124; `ReactElement` | `source` | Used as a table header in a Show layout                                                                                                                 |
 | [`record`](#record)           | Optional | `Object`                       | -        | Object containing the properties to display, to override the record from the current `RecordContext`                                                    |
 | [`sortable`](#sortable)       | Optional | `boolean`                      | `true`   | When used in a `List`, should the list be sortable using the `source` attribute? Setting it to `false` disables the click handler on the column header. |
 | [`sortBy`](#sortby)           | Optional | `string`                       | `source` | When used in a `List`, specifies the actual `source` to be used for sorting when the user clicks the column header                                      |
@@ -322,6 +322,50 @@ Then you can render the author name like this:
 
 ```jsx
 <TextField source="author.name" />
+```
+
+## Setting A Field Label
+
+React-admin Field layout components like [`<Datagrid>`](./Datagrid.md) and [`<SimpleShowLayout>`](./SimpleShowLayout.md) inspect their children and use their `label` prop to set the table headers or the field labels.
+
+So inside these components, you can provide a `label` prop to override the default label.
+
+```jsx
+const BookList = () => (
+   <List>
+       <Datagrid>
+            <TextField source="title" label="Post title" />
+      </Datagrid>
+  </List>
+);
+```
+
+The label uses [the i18n layer](./Translation.md), so you can use a translation key, too:
+
+```jsx
+const BookList = () => (
+   <List>
+       <Datagrid>
+            <TextField source="title" label="post.title" />
+      </Datagrid>
+  </List>
+);
+```
+
+But as Field components don't render the label themselves (again, this is the responsibility of the parent layout component to render the label), this doesn't work when you use a Field inside a Form, or when the field isn't a direct child of a layout component.
+
+To render a field with a label in such situations, wrap the field in [a `<Labeled>` component](./Labeled.md):
+
+```jsx
+const BookEdit = () => (
+   <Edit>
+       <SimpleForm>
+            <Labeled label="Post title">
+                <TextField source="title" />
+            </Labeled>
+      </SimpleForm>
+  </Edit>
+);
 ```
 
 ## Conditional Formatting
