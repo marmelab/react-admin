@@ -9,7 +9,7 @@ class InferredElement {
     ) {}
 
     getElement(props = {}) {
-        if (!this.isDefined()) {
+        if (!this.type || !this.type.component) {
             return;
         }
         return this.children
@@ -34,15 +34,17 @@ class InferredElement {
     }
 
     getRepresentation() {
-        if (!this.isDefined()) {
+        if (!this.type) {
             return;
         }
         if (this.type.representation) {
             return this.type.representation(this.props, this.children);
         }
-        return `<${
-            this.type.component.displayName || this.type.component.name
-        } source="${this.props.source}" />`;
+        if (this.type.component) {
+            return `<${
+                this.type.component.displayName || this.type.component.name
+            } source="${this.props.source}" />`;
+        }
     }
 }
 
