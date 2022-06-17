@@ -1,5 +1,23 @@
 # Changelog
 
+## v4.1.4
+
+* Fix example simple codesandbox ([#7846](https://github.com/marmelab/react-admin/pull/7846)) ([slax57](https://github.com/slax57))
+* Fix `<Logout />` appears even when not logged in ([#7842](https://github.com/marmelab/react-admin/pull/7842)) ([septentrion-730n](https://github.com/septentrion-730n))
+* Fix `<Show disableAuthentication>` prop is ignored ([#7837](https://github.com/marmelab/react-admin/pull/7837)) ([septentrion-730n](https://github.com/septentrion-730n))
+* Fix `<ImageField>` style is ignored for single images ([#7836](https://github.com/marmelab/react-admin/pull/7836)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<FileInput>` and  `<ImageInput>` style don't use MUI theme ([#7835](https://github.com/marmelab/react-admin/pull/7835)) ([septentrion-730n](https://github.com/septentrion-730n))
+* Fix `<NumberInput>` seems buggy when used in a Filter Form ([#7830](https://github.com/marmelab/react-admin/pull/7830)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Datagrid expand>` expands ALL rows when used as a child of `<ArrayField>` ([#7828](https://github.com/marmelab/react-admin/pull/7828)) ([septentrion-730n](https://github.com/septentrion-730n))
+* Fix `<ReferenceInput>` generated label in Filter Form ([#7825](https://github.com/marmelab/react-admin/pull/7825)) ([septentrion-730n](https://github.com/septentrion-730n))
+* Fix `useDataProvider` returns `undefined` value when unauthorized 401 error is thrown ([#7820](https://github.com/marmelab/react-admin/pull/7820)) ([slax57](https://github.com/slax57))
+* Fix sourcemaps support with TypeScript ([#7818](https://github.com/marmelab/react-admin/pull/7818)) ([djhi](https://github.com/djhi))
+* [Doc] Fix `<AutocompleteInput>` creation props and examples ([#7844](https://github.com/marmelab/react-admin/pull/7844)) ([slax57](https://github.com/slax57))
+* [Doc] Fix tutorial about creating new choices ([#7833](https://github.com/marmelab/react-admin/pull/7833)) ([davidhenley](https://github.com/davidhenley))
+* [Doc] Remove link to third-party TipTap input component ([#7819](https://github.com/marmelab/react-admin/pull/7819)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<ReferenceOneField>` doc is missing ([#7813](https://github.com/marmelab/react-admin/pull/7813)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Update location of `ra-data-treeql` ([#7808](https://github.com/marmelab/react-admin/pull/7808)) ([nkappler](https://github.com/nkappler))
+
 ## v4.1.3
 
 * Fix `<BooleanInput>` and `<CheckboxInput>` don't have focus states (re-add ripple) ([#7772](https://github.com/marmelab/react-admin/pull/7772)) ([andrico1234](https://github.com/andrico1234))
