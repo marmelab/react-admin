@@ -50,9 +50,9 @@ export const useCreatePath = () => {
                     );
                 case 'edit': {
                     if (id == null) {
-                        throw new Error(
-                            'useCreatePath needs an id to create an edit path'
-                        );
+                        // maybe the id isn't defined yet
+                        // instead of throwing an error, fallback to list link
+                        return removeDoubleSlashes(`${basename}/${resource}`);
                     }
                     return removeDoubleSlashes(
                         `${basename}/${resource}/${encodeURIComponent(id)}`
@@ -60,9 +60,9 @@ export const useCreatePath = () => {
                 }
                 case 'show': {
                     if (id == null) {
-                        throw new Error(
-                            'useCreatePath needs an id to create an edit path'
-                        );
+                        // maybe the id isn't defined yet
+                        // instead of throwing an error, fallback to list link
+                        return removeDoubleSlashes(`${basename}/${resource}`);
                     }
                     return removeDoubleSlashes(
                         `${basename}/${resource}/${encodeURIComponent(id)}/show`
