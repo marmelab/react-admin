@@ -24,6 +24,7 @@ export const Logout: FunctionComponent<
 > = React.forwardRef(function Logout(props, ref) {
     const { className, redirectTo, icon, ...rest } = props;
 
+    const { authenticated } = useAuthState();
     const isXSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')
     );
@@ -34,7 +35,6 @@ export const Logout: FunctionComponent<
         redirectTo,
         logout,
     ]);
-    const { authenticated } = useAuthState();
 
     if (!authenticated) return null;
 
