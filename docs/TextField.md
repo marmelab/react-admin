@@ -12,7 +12,7 @@ import { TextField } from 'react-admin';
 
 <TextField source="name" />
 // renders the record { id: 1234, name: 'John Doe' } as
-<span>John Doe</span>
+// <span>John Doe</span>
 ```
 
 `<TextField>` grabs the `record` from the current [`RecordContext`](./useRecordContext.md), extracts the value of the `source` property, and displays it inside a MUI `<Typography>` component.
