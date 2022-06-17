@@ -9,7 +9,12 @@ import {
     useLocaleState,
     useUserMenu,
 } from 'react-admin';
-import { MenuItem, MenuItemProps, ListItemIcon } from '@mui/material';
+import {
+    MenuItem,
+    MenuItemProps,
+    ListItemIcon,
+    CssBaseline,
+} from '@mui/material';
 import Language from '@mui/icons-material/Language';
 
 const SwitchLanguage = forwardRef<HTMLLIElement, MenuItemProps>(
@@ -47,6 +52,7 @@ const MyAppBar = memo(props => <AppBar {...props} userMenu={<MyUserMenu />} />);
 
 export default props => (
     <>
+        <CssBaseline />
         <Layout {...props} appBar={MyAppBar} />
         <ReactQueryDevtools
             initialIsOpen={false}

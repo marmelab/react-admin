@@ -84,6 +84,7 @@ const StyledDrawer = styled(Drawer, {
     name: PREFIX,
     slot: 'Root',
     overridesResolver: (props, styles) => styles.root,
+    shouldForwardProp: () => true,
 })(({ open, theme }) => ({
     height: 'calc(100vh - 3em)',
 
