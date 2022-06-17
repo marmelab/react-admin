@@ -79,6 +79,25 @@ export const Empty = () => (
     </Wrapper>
 );
 
+const missingReferenceDataProvider = {
+    getMany: () =>
+        Promise.resolve({
+            data: [],
+        }),
+} as any;
+
+export const MissingReference = () => (
+    <Wrapper dataProvider={missingReferenceDataProvider}>
+        <ReferenceField
+            source="detail_id"
+            reference="book_details"
+            emptyText="no detail"
+        >
+            <TextField source="ISBN" />
+        </ReferenceField>
+    </Wrapper>
+);
+
 export const Link = () => (
     <Wrapper>
         <ReferenceField source="detail_id" reference="book_details" link="show">
