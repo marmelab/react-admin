@@ -77,7 +77,12 @@ export const ReferenceField: FC<ReferenceFieldProps> = props => {
             </Typography>
         ) : null
     ) : (
-        <NonEmptyReferenceField {...rest} record={record} id={id} />
+        <NonEmptyReferenceField
+            {...rest}
+            emptyText={emptyText}
+            record={record}
+            id={id}
+        />
     );
 };
 
@@ -123,7 +128,7 @@ export interface ReferenceFieldProps<RecordType extends RaRecord = any>
  * which cannot be called conditionally when get(record, source) is empty.
  */
 export const NonEmptyReferenceField: FC<
-    Omit<ReferenceFieldProps, 'emptyText' | 'source'> & { id: Identifier }
+    Omit<ReferenceFieldProps, 'source'> & { id: Identifier }
 > = ({ children, id, record, reference, link, ...props }) => {
     const createPath = useCreatePath();
     const resourceLinkPath =
@@ -162,6 +167,7 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
     const {
         children,
         className,
+        emptyText,
         error,
         isLoading,
         referenceRecord,
@@ -185,7 +191,7 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
         return <LinearProgress />;
     }
     if (!referenceRecord) {
-        return null;
+        return emptyText ? <>{emptyText}</> : null;
     }
 
     if (resourceLinkPath) {

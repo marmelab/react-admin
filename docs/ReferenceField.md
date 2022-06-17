@@ -66,11 +66,27 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 | `source`    | Required | `string`            | -        | Name of the property to display |
 | `reference` | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'posts' |
 | `children`  | Required | `ReactNode`         | -        | One or more Field elements used to render the referenced record |
+| `emptyText` | Optional | `string`            | ''       | Defines a text to be shown when the field has no value or when the reference is missing |
 | `label`     | Optional | `string | Function` | `resources.[resource].fields.[source]`   | Label to use for the field when rendered in layout components  |
 | `link`      | Optional | `string | Function` | `edit`   | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
 | `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when used in a Datagrid |
 
 `<ReferenceField>` also accepts the [common field props](./Fields.md#common-field-props).
+
+## `empytText`
+
+`<ReferenceField>` can display a custom message when the referenced record is missing, thanks to the `emptyText` prop.
+
+```jsx
+<ReferenceField source="user_id" reference="users" emptyText="Missing user">
+    <TextField source="name" />
+</ReferenceField>
+```
+
+`<ReferenceField>` renders the `emptyText`:
+
+- when the referenced record is missing (no record in the `users` table with the right `user_id`), or
+- when the field is empty (no `user_id` in the record).
 
 ## `label`
 

@@ -11,7 +11,7 @@ import { QueryClient } from 'react-query';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { ReferenceField } from './ReferenceField';
-import { Children } from './ReferenceField.stories';
+import { Children, MissingReference } from './ReferenceField.stories';
 import { TextField } from './TextField';
 
 const theme = createTheme({});
@@ -241,6 +241,11 @@ describe('<ReferenceField />', () => {
             </ThemeProvider>
         );
         expect(screen.getByText('EMPTY')).not.toBeNull();
+    });
+
+    it('should display the emptyText if there is no reference', async () => {
+        render(<MissingReference />);
+        await screen.findByText('no detail');
     });
 
     it('should use record from RecordContext', async () => {
