@@ -36,3 +36,30 @@ You can customize the `step` props (which defaults to "any"). For instance, to r
 ```jsx
 <NumberInput source="nb_views" step={1} />
 ```
+
+## Usage In Filter Form
+
+The [Filter Button/Form combo](https://marmelab.com/react-admin/FilteringTutorial.html#the-filter-buttonform-combo) changes the filter value as the user types. But, as explained earlier in this page, `<NumberInput>` converts the input value to a number on blur.
+
+This means that using `<NumberInput>` in a filter form will not work as expected. The filter will only change when the user presses the Enter key, which differs from the other input types.
+
+In a filter form, you should use a `<TextInput type="number">` instead:
+
+```jsx
+import { TextInput } from 'react-admin';
+
+const convertStringToNumber = value => {
+    const float = parseFloat(value);
+    return isNaN(float) ? null : float;
+};
+
+const productFilters = [
+    <TextInput label="Stock less than" source="stock_lte" type="number" parse={convertStringToNumber} />,
+];
+
+export const ProductList = (props) => (
+    <List {...props} filters={postFilters}>
+        ...
+    </List>
+);
+```
