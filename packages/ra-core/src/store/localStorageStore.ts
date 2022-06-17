@@ -53,11 +53,11 @@ export const localStorageStore = (version: string = '1'): Store => {
     // Whenever the local storage changes in another document, look for matching subscribers.
     // This allows to synchronize state across tabs
     const onLocalStorageChange = (event: StorageEvent): void => {
-        if (event.key.substring(0, prefixLength) !== RA_STORE) {
+        if (event.key?.substring(0, prefixLength) !== RA_STORE) {
             return;
         }
         const key = event.key.substring(prefixLength + 1);
-        const value = tryParse(event.newValue);
+        const value = event.newValue ? tryParse(event.newValue) : undefined;
         Object.keys(subscriptions).forEach(id => {
             if (!subscriptions[id]) return; // may happen if a component unmounts after a first subscriber was notified
             if (subscriptions[id].key === key) {
@@ -93,11 +93,12 @@ export const localStorageStore = (version: string = '1'): Store => {
             }
         },
         getItem<T = any>(key: string, defaultValue?: T): T {
-            const valueFromStorage = tryParse(
-                getStorage().getItem(`${RA_STORE}.${key}`)
-            );
+            const valueFromStorage = getStorage().getItem(`${RA_STORE}.${key}`);
+
             // eslint-disable-next-line eqeqeq
-            return valueFromStorage == null ? defaultValue : valueFromStorage;
+            return valueFromStorage == null
+                ? defaultValue
+                : tryParse(valueFromStorage);
         },
         setItem<T = any>(key: string, value: T): void {
             if (value === undefined) {
@@ -117,8 +118,10 @@ export const localStorageStore = (version: string = '1'): Store => {
         reset(): void {
             const storage = getStorage();
             for (let i = 0; i < storage.length; i++) {
-                if (storage.key(i).substring(0, prefixLength) === RA_STORE) {
-                    const key = storage.key(i).substring(prefixLength + 1);
+                if (storage.key(i)?.substring(0, prefixLength) === RA_STORE) {
+                    const key = storage.key(i)?.substring(prefixLength + 1);
+                    if (!key || !storage.key(i)) return;
+                    // @ts-ignore
                     storage.removeItem(storage.key(i));
                     publish(key, undefined);
                 }

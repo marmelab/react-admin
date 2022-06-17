@@ -208,6 +208,9 @@ const inferElementFromValues = (
         // we need to go deeper
         // Arbitrarily, choose the first prop of the first object
         const propName = Object.keys(values[0]).shift();
+        if (!propName) {
+            return new InferredElement(types.string, { source: name });
+        }
         const leafValues = values.map(v => v[propName]);
         return inferElementFromValues(`${name}.${propName}`, leafValues, types);
     }

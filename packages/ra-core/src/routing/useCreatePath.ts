@@ -48,14 +48,26 @@ export const useCreatePath = () => {
                     return removeDoubleSlashes(
                         `${basename}/${resource}/create`
                     );
-                case 'edit':
+                case 'edit': {
+                    if (id == null) {
+                        // maybe the id isn't defined yet
+                        // instead of throwing an error, fallback to list link
+                        return removeDoubleSlashes(`${basename}/${resource}`);
+                    }
                     return removeDoubleSlashes(
                         `${basename}/${resource}/${encodeURIComponent(id)}`
                     );
-                case 'show':
+                }
+                case 'show': {
+                    if (id == null) {
+                        // maybe the id isn't defined yet
+                        // instead of throwing an error, fallback to list link
+                        return removeDoubleSlashes(`${basename}/${resource}`);
+                    }
                     return removeDoubleSlashes(
                         `${basename}/${resource}/${encodeURIComponent(id)}/show`
                     );
+                }
                 default:
                     return type;
             }

@@ -172,6 +172,9 @@ export const inferTypeFromValues = (
     if (valuesAreObject(values)) {
         /// Arbitrarily, choose the first prop of the first object
         const propName = Object.keys(values[0]).shift();
+        if (!propName) {
+            return { type: 'object', props: { source: name } };
+        }
         const leafValues = values.map(v => v[propName]);
         return inferTypeFromValues(`${name}.${propName}`, leafValues);
     }
