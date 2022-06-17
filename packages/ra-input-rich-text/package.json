@@ -23,9 +23,13 @@
         "watch": "tsc --outDir dist/esm --module es2015 --watch"
     },
     "dependencies": {
+        "@tiptap/extension-color": "^2.0.0-beta.9",
+        "@tiptap/extension-highlight": "^2.0.0-beta.33",
+        "@tiptap/extension-image": "^2.0.0-beta.27",
         "@tiptap/extension-link": "^2.0.0-beta.20",
         "@tiptap/extension-placeholder": "^2.0.0-beta.30",
         "@tiptap/extension-text-align": "^2.0.0-beta.23",
+        "@tiptap/extension-text-style": "^2.0.0-beta.23",
         "@tiptap/extension-underline": "^2.0.0-beta.16",
         "@tiptap/react": "^2.0.0-beta.63",
         "@tiptap/starter-kit": "^2.0.0-beta.101",
