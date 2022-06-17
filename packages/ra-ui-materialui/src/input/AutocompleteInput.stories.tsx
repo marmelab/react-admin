@@ -356,7 +356,7 @@ const CreateAuthor = () => {
                 },
             },
             {
-                onSuccess: ({ data }) => {
+                onSuccess: data => {
                     setName('');
                     setLanguage('');
                     onCreate(data);
