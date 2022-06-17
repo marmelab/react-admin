@@ -12,7 +12,7 @@ import { MenuItemProps } from '@mui/material/MenuItem';
 
 import ExitIcon from '@mui/icons-material/PowerSettingsNew';
 import clsx from 'clsx';
-import { useTranslate, useLogout } from 'ra-core';
+import { useTranslate, useLogout, useAuthState } from 'ra-core';
 
 /**
  * Logout button component, to be passed to the Admin component
@@ -24,6 +24,7 @@ export const Logout: FunctionComponent<
 > = React.forwardRef(function Logout(props, ref) {
     const { className, redirectTo, icon, ...rest } = props;
 
+    const { authenticated } = useAuthState();
     const isXSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')
     );
@@ -34,6 +35,9 @@ export const Logout: FunctionComponent<
         redirectTo,
         logout,
     ]);
+
+    if (!authenticated) return null;
+
     return (
         <StyledMenuItem
             className={clsx('logout', className)}

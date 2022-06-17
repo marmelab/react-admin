@@ -242,6 +242,8 @@ const StyledLabeled = styled(Labeled, {
     width: '100%',
     [`& .${FileInputClasses.dropZone}`]: {
         background: theme.palette.background.default,
+        borderRadius: theme.shape.borderRadius,
+        fontFamily: theme.typography.fontFamily,
         cursor: 'pointer',
         padding: theme.spacing(1),
         textAlign: 'center',

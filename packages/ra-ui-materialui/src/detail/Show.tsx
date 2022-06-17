@@ -62,10 +62,12 @@ export const Show = <RecordType extends RaRecord = any>({
     id,
     resource,
     queryOptions,
+    disableAuthentication,
     ...rest
 }: ShowProps<RecordType>): ReactElement => (
     <ShowBase<RecordType>
         id={id}
+        disableAuthentication={disableAuthentication}
         queryOptions={queryOptions}
         resource={resource}
     >

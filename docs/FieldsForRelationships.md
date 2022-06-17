@@ -387,19 +387,17 @@ This field fetches a one-to-one relationship, e.g. the details of a book, when u
 Here is how to use it:
 
 ```jsx
-const AuthorShow = () => (
+const BookShow = () => (
     <Show>
         <SimpleShowLayout>
-            <TextField source="first_name" />
-            <TextField source="last_name" />
-            <DateField source="date_of_birth" />
+            <TextField source="title" />
+            <DateField source="published_at" />
             <ReferenceOneField label="Genre" reference="book_details" target="book_id">
                 <TextField source="genre" />
             </ReferenceOneField>
             <ReferenceOneField label="ISBN" reference="book_details" target="book_id">
                 <TextField source="ISBN" />
             </ReferenceOneField>
-            <EditButton />
         </SimpleShowLayout>
     </Show>
 );
