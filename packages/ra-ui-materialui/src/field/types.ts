@@ -19,6 +19,9 @@ export interface PublicFieldProps {
     className?: string;
     cellClassName?: string;
     headerClassName?: string;
+    /*
+     * @deprecated this property is not used anymore
+     */
     formClassName?: string;
     textAlign?: TextAlign;
     emptyText?: string;
