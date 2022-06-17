@@ -28,7 +28,6 @@ import { AutocompleteInput } from 'react-admin';
 |---------------------------|----------|-----------------------------------------------|-----------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `choices`                 | Required | `Object[]`                                    | `-`                                     | List of items to autosuggest                                                                                                                                                                                                                                                                                |
 | `create`                  | Optional | `Element`                                     | `-`                                     | A React Element to render when users want to create a new choice                                                                                                                                                                                                                                            |
-| `createLabel`             | Optional | `string`                                      | `ra.action.create`                      | The label for the menu item allowing users to create a new choice. Used when the filter is empty                                                                                                                                                                                                            |
 | `createItemLabel`         | Optional | `string`                                      | `ra.action.create_item`                 | The label for the menu item allowing users to create a new choice. Used when the filter is not empty                                                                                                                                                                                                        |
 | `emptyValue`              | Optional | `any`                                         | `''`                                    | The value to use for the empty element                                                                                                                                                                                                                                                                      |
 | `emptyText`               | Optional | `string`                                      | `''`                                    | The text to use for the empty element                                                                                                                                                                                                                                                                       |
@@ -156,9 +155,9 @@ const PostCreate = () => {
             <SimpleForm>
                 <TextInput source="title" />
                 <AutocompleteInput
-                    onCreate={() => {
-                        const newCategoryName = prompt('Enter a new category');
-                        const newCategory = { id: newCategoryName.toLowerCase(), name: newCategoryName };
+                    onCreate={(filter) => {
+                        const newCategoryName = window.prompt('Enter a new category', filter);
+                        const newCategory = { id: categories.length + 1, name: newCategoryName };
                         categories.push(newCategory);
                         return newCategory;
                     }}
@@ -251,6 +250,41 @@ const CreateCategory = () => {
         </Dialog>
     );
 };
+```
+{% endraw %}
+
+**Tip:** As showcased in this example, react-admin provides a convenience hook for accessing the filter the user has already input in the `<AutocompleteInput>`: `useCreateSuggestionContext`.
+
+The `Create %{item}` option will only be displayed once the user has already set a filter (by typing in some input). If you expect your users to create new items often, you can make this more user friendly by adding a placeholder text like this:
+
+{% raw %}
+```diff
+const PostCreate = () => {
+    const categories = [
+        { name: 'Tech', id: 'tech' },
+        { name: 'Lifestyle', id: 'lifestyle' },
+    ];
+    return (
+        <Create>
+            <SimpleForm>
+                <TextInput source="title" />
+                <AutocompleteInput
+                    onCreate={(filter) => {
+                        const newCategoryName = window.prompt('Enter a new category', filter);
+                        const newCategory = { id: categories.length + 1, name: newCategoryName };
+                        categories.push(newCategory);
+                        return newCategory;
+                    }}
+                    source="category"
+                    choices={categories}
++                   TextFieldProps={{
++                       placeholder: 'Start typing to create a new item',
++                   }}
+                />
+            </SimpleForm>
+        </Create>
+    );
+}
 ```
 {% endraw %}
 

@@ -235,6 +235,9 @@ const BookEditWithCreationSupport = () => (
                     }
                 }}
                 fullWidth
+                TextFieldProps={{
+                    placeholder: 'Start typing to create a new item',
+                }}
             />
         </SimpleForm>
     </Edit>
