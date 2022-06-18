@@ -1,5 +1,14 @@
 # Changelog
 
+## v4.1.5
+
+* Fix `css-mediaquery` Dependency ([#7849](https://github.com/marmelab/react-admin/pull/7849)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Sidebar>` does not forward theme substyles to its children ([#7854](https://github.com/marmelab/react-admin/pull/7854)) ([septentrion-730n](https://github.com/septentrion-730n))
+* Fix `useFormState` returns null with yarn pnp ([#7850](https://github.com/marmelab/react-admin/pull/7850)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<AutocompleteInput>` storybook does not select newly created option ([#7847](https://github.com/marmelab/react-admin/pull/7847)) ([slax57](https://github.com/slax57))
+* [Doc] Fix Inputs doc is too concise ([#7856](https://github.com/marmelab/react-admin/pull/7856)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<TextField>` doc mentions `label` field as required ([#7848](https://github.com/marmelab/react-admin/pull/7848)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v4.1.4
 
 * Fix example simple codesandbox ([#7846](https://github.com/marmelab/react-admin/pull/7846)) ([slax57](https://github.com/slax57))
