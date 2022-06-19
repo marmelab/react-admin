@@ -1,5 +1,5 @@
 {
-    "name": "ra-language-german",
+    "name": "ra-language-german-ts",
     "version": "1.0.0",
     "description": "German messages for react-admin with TS support",
     "repository": {

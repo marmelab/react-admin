@@ -61,6 +61,10 @@ build-ra-language-french:
 	@echo "Transpiling ra-language-french files...";
 	@cd ./packages/ra-language-french && yarn build
 
+build-ra-language-german-ts:
+	@echo "Transpiling ra-language-german-ts files...";
+	@cd ./packages/ra-language-german-ts && yarn build
+
 build-react-admin:
 	@echo "Transpiling react-admin files...";
 	@rm -rf ./packages/react-admin/docs
@@ -108,7 +112,7 @@ build-data-generator:
 	@echo "Transpiling data-generator files...";
 	@cd ./examples/data-generator && yarn build
 
-build: build-ra-core build-ra-ui-materialui build-ra-data-fakerest build-ra-data-json-server build-ra-data-localstorage build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphql-simple build-ra-i18n-polyglot build-ra-input-rich-text build-data-generator build-ra-language-english build-ra-language-french build-react-admin build-ra-no-code  ## compile ES6 files to JS
+build: build-ra-core build-ra-ui-materialui build-ra-data-fakerest build-ra-data-json-server build-ra-data-localstorage build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphql-simple build-ra-i18n-polyglot build-ra-input-rich-text build-data-generator build-ra-language-english build-ra-language-french build-ra-language-german-ts build-react-admin build-ra-no-code  ## compile ES6 files to JS
 
 doc: ## compile doc as html and launch doc web server
 	@yarn doc

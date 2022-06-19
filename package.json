@@ -85,5 +85,9 @@
         "webpack-virtual-modules": "^0.4.2",
         "mini-css-extract-plugin": "2.4.5"
     },
-    "packageManager": "yarn@3.1.1"
+    "packageManager": "yarn@3.1.1",
+    "dependencies": {
+        "@tiptap/starter-kit": "2.0.0-beta.185",
+        "ra-language-german": "^3.13.5"
+    }
 }
