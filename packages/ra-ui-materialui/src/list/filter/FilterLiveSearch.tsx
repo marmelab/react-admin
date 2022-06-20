@@ -5,7 +5,7 @@ import { SxProps } from '@mui/system';
 import SearchIcon from '@mui/icons-material/Search';
 import { Form, useTranslate, useListFilterContext } from 'ra-core';
 
-import { TextInput } from '../../input';
+import { TextInput, TextInputProps } from '../../input';
 
 /**
  * Form and search input for doing a full-text search filter.
@@ -78,7 +78,7 @@ export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
     );
 });
 
-export interface FilterLiveSearchProps {
+export interface FilterLiveSearchProps extends Omit<TextInputProps, 'source'> {
     source?: string;
     sx?: SxProps;
     label?: string;
