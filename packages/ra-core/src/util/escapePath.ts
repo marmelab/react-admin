@@ -5,6 +5,6 @@
  *
  * @example
  *
- * escapePath('/foo(bar)') => 'foo\(bar\)'
+ * escapePath('/foo(bar)') => '/foo\(bar\)'
  */
-export default url => url.replace(/(\(|\))/g, '\\$1');
+export default url => encodeURI(url).replace(/(\(|\))/g, '\\$1');
