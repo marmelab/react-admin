@@ -65,14 +65,18 @@ export const SaveButton = <RecordType extends RaRecord = any>(
     const translate = useTranslate();
     const form = useFormContext();
     const saveContext = useSaveContext();
-    const { isDirty, isValidating } = useFormState();
+    const { isDirty, isValidating, isSubmitting } = useFormState();
     // Use form isDirty, isValidating and form context saving to enable or disable the save button
     // if alwaysEnable is undefined
     const disabled = valueOrDefault(
         alwaysEnable === false || alwaysEnable === undefined
             ? undefined
             : !alwaysEnable,
-        disabledProp || !isDirty || isValidating || saveContext?.saving
+        disabledProp ||
+            !isDirty ||
+            isValidating ||
+            saveContext?.saving ||
+            isSubmitting
     );
 
     warning(
@@ -119,7 +123,9 @@ export const SaveButton = <RecordType extends RaRecord = any>(
 
     const displayedLabel = label && translate(label, { _: label });
     const finalSaving =
-        typeof saving !== 'undefined' ? saving : saveContext?.saving;
+        typeof saving !== 'undefined'
+            ? saving
+            : saveContext?.saving || isSubmitting;
 
     return (
         <StyledButton
