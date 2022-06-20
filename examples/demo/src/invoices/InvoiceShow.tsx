@@ -14,7 +14,7 @@ const InvoiceShow = () => {
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <Typography variant="h6" gutterBottom>
-                            Posters Galore
+                            Echtzeitkiosk
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>

@@ -24,6 +24,10 @@ const i18nProvider = polyglotI18nProvider(locale => {
         return import('./i18n/fr').then(messages => messages.default);
     }
 
+    if (locale === 'de') {
+        return import('./i18n/de').then(messages => messages.default);
+    }
+
     // Always fallback on english
     return englishMessages;
 }, 'en');

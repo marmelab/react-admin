@@ -1,0 +1,617 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 3.81
+# Copyright (C) 2006  Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.
+# There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+# This program built for i386-apple-darwin11.3.0
+
+# Make data base, printed on Sun Jun 19 14:10:14 2022
+
+# Variables
+
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# automatic
+?F = $(notdir $?)
+# environment
+VSCODE_LOG_NATIVE = false
+# environment
+NVM_INC = /Users/mert/.nvm/versions/node/v16.14.0/include/node
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# automatic
+@F = $(notdir $@)
+# makefile
+CURDIR := /Users/mert/Desktop/UNI/react-admin
+# makefile
+SHELL = /bin/sh
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en-gb","availableLanguages":{},"_languagePackSupport":true}
+# environment
+_ = /usr/bin/make
+# makefile (from `Makefile', line 1)
+MAKEFILE_LIST :=  Makefile
+# environment
+VSCODE_VERBOSE_LOGGING = true
+# environment
+__CFBundleIdentifier = com.microsoft.VSCode
+# environment
+INFOPATH = /opt/homebrew/share/info:
+# environment
+P9K_SSH = 0
+# environment
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/r8/lvsdgm4j7694__8v520fm40w0000gn/T/vscode-ipc-fe893bdb-a224-4557-854c-ba5cc6667cca.sock
+# environment
+VSCODE_CWD = /
+# environment
+PATH = /Users/mert/.nvm/versions/node/v16.14.0/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Apple/usr/bin:/Users/mert/.fig/bin:/Users/mert/.local/bin
+# environment
+LSCOLORS = Gxfxcxdxbxegedabagacad
+# environment
+NVM_BIN = /Users/mert/.nvm/versions/node/v16.14.0/bin
+# environment
+LaunchInstanceID = 9C60AD13-D87B-4B09-80A8-4AA629A19399
+# environment
+VSCODE_LOG_STACK = false
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# default
+.FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
+# environment
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.ESlv8BlMCK/Listeners
+# automatic
+%F = $(notdir $%)
+# environment
+TTY = not a tty
+# environment
+VSCODE_PIPE_LOGGING = true
+# environment
+FIG_PID = 2308
+# environment
+PWD = /Users/mert/Desktop/UNI/react-admin
+# environment
+HOMEBREW_CELLAR = /opt/homebrew/Cellar
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = undefined
+# environment
+MANPATH = /Users/mert/.nvm/versions/node/v16.14.0/share/man:/opt/homebrew/share/man::
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+HOME = /Users/mert
+# default
+MAKEFILEPATH = $(shell /usr/bin/xcode-select -print-path 2>/dev/null || echo /Developer)/Makefiles
+# environment
+VSCODE_CODE_CACHE_PATH = /Users/mert/Library/Application Support/Code/CachedData/30d9c6cd9483b2cc586687151bcbcd635f373630
+# environment
+LOGNAME = mert
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+# environment
+NVM_CD_FLAGS = -q
+# environment
+ZSH = /Users/mert/.oh-my-zsh
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+XPC_FLAGS = 0x0
+# default
+MAKE = $(MAKE_COMMAND)
+# default
+MAKECMDGOALS := all
+# environment
+SHLVL = 1
+# default
+MAKE_VERSION := 3.81
+# environment
+USER = mert
+# makefile
+.DEFAULT_GOAL := help
+# environment
+LESS = -R
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# default
+MAKE_COMMAND := /Library/Developer/CommandLineTools/usr/bin/make
+# default
+.VARIABLES := 
+# environment
+TMPDIR = /var/folders/r8/lvsdgm4j7694__8v520fm40w0000gn/T/
+# automatic
+*F = $(notdir $*)
+# environment
+VSCODE_IPC_HOOK = /Users/mert/Library/Application Support/Code/1.68.1-main.sock
+# makefile
+MAKEFLAGS = Rrqp
+# environment
+MFLAGS = -Rrqp
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+NVM_DIR = /Users/mert/.nvm
+# environment
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.24270169.24270175
+# environment
+HOMEBREW_PREFIX = /opt/homebrew
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# automatic
++F = $(notdir $+)
+# environment
+HOMEBREW_REPOSITORY = /opt/homebrew
+# environment
+__CF_USER_TEXT_ENCODING = 0x1F5:0x0:0x0
+# environment
+COMMAND_MODE = unix2003
+# default
+MAKEFILES := 
+# automatic
+<F = $(notdir $<)
+# environment
+PAGER = less
+# environment
+LC_ALL = C
+# environment
+SECURITYSESSIONID = 186b2
+# automatic
+^F = $(notdir $^)
+# default
+SUFFIXES := 
+# default
+.INCLUDE_DIRS = /usr/local/include
+# environment
+MAKELEVEL := 0
+# environment
+LANG = C
+# environment
+VSCODE_PID = 2300
+# variable set hash-table stats:
+# Load=80/1024=8%, Rehash=0, Collisions=1/104=1%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# . (device 16777231, inode 24344355): 36 files, no impossibilities.
+
+# 36 files, no impossibilities in 1 directories.
+
+# Implicit Rules
+
+# No implicit rules.
+
+# Files
+
+run-graphql-demo:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 37):
+	@yarn run-graphql-demo
+	
+
+build-ra-data-simple-rest:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 84):
+	@echo "Transpiling ra-data-simple-rest files...";
+	@cd ./packages/ra-data-simple-rest && yarn build
+	
+
+run-graphql-demo-watch:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 40):
+	@yarn run-graphql-demo-watch
+	
+
+build-ra-data-localstorage:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 80):
+	@echo "Transpiling ra-data-localstorage files...";
+	@cd ./packages/ra-data-localstorage && yarn build
+	
+
+build-ra-core:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 49):
+	@echo "Transpiling ra-core files...";
+	@cd ./packages/ra-core && yarn build
+	
+
+build-crm:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 46):
+	@yarn build-crm
+	
+
+# Not a target:
+all:
+#  Command-line target.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has not been updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+.PHONY: build help
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+prettier:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 130):
+	@echo "Running prettier..."
+	@yarn prettier
+	
+
+build-demo:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 34):
+	@yarn build-demo
+	
+
+build-ra-language-english:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 57):
+	@echo "Transpiling ra-language-english files...";
+	@cd ./packages/ra-language-english && yarn build
+	
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+build-ra-data-graphql-simple:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 92):
+	@echo "Transpiling ra-data-graphql-simple files...";
+	@cd ./packages/ra-data-graphql-simple && yarn build
+	
+
+docker-doc:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 117):
+	@docker run -it --rm \
+	-p 4000:4000 \
+	-v="${PWD}/docs:/site" \
+	bretfisher/jekyll \
+	serve -H 0.0.0.0
+	
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2022-06-19 13:26:50
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+ 
+make: *** No rule to make target `all'.  Stop.
+
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+build-ra-data-fakerest:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 72):
+	@echo "Transpiling ra-data-fakerest files...";
+	@cd ./packages/ra-data-fakerest && yarn build
+	
+
+test: build test-unit lint test-e2e
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+build: build-ra-core build-ra-ui-materialui build-ra-data-fakerest build-ra-data-json-server build-ra-data-localstorage build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphql-simple build-ra-i18n-polyglot build-ra-input-rich-text build-data-generator build-ra-language-english build-ra-language-french build-react-admin build-ra-no-code
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+test-unit:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 136):
+	@if [ "$(CI)" != "true" ]; then \
+	echo "Running unit tests..."; \
+	yarn test-unit; \
+	fi
+	@if [ "$(CI)" = "true" ]; then \
+	echo "Running unit tests in CI..."; \
+	yarn test-unit-ci; \
+	fi
+	
+
+test-unit-watch:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 146):
+	echo "Running unit tests..."; \
+	yarn test-unit --watch; \
+	
+
+run-crm:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 43):
+	@yarn run-crm
+	
+
+build-storybook:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 167):
+	@echo "Building storybook..."
+	@yarn build-storybook
+	
+
+run-tutorial:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 25):
+	@yarn run-tutorial
+	
+
+help:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 4):
+	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	
+
+build-ra-ui-materialui:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 53):
+	@echo "Transpiling ra-ui-materialui files...";
+	@cd ./packages/ra-ui-materialui && yarn build
+	
+
+run-demo:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 28):
+	@yarn run-demo
+	
+
+# Not a target:
+package.json:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+run-demo-watch:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 31):
+	@yarn run-demo-watch
+	
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+build-ra-i18n-polyglot:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 96):
+	@echo "Transpiling ra-i18n-polyglot files...";
+	@cd ./packages/ra-i18n-polyglot && yarn build
+	
+
+run: run-simple
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+test-e2e:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 150):
+	@if [ "$(build)" != "false" ]; then \
+	echo 'Building example code (call "make build=false test-e2e" to skip the build)...'; \
+	cd examples/simple && BABEL_ENV=cjs yarn build; \
+	fi
+	@NODE_ENV=test cd cypress && yarn test
+	
+
+build-react-admin:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 65):
+	@echo "Transpiling react-admin files...";
+	@rm -rf ./packages/react-admin/docs
+	@cd ./packages/react-admin && yarn build
+	@mkdir packages/react-admin/docs
+	@cp docs/*.md packages/react-admin/docs
+	
+
+test-e2e-local:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 159):
+	@echo 'Starting e2e tests environment. Ensure you started the simple example first (make run-simple)'
+	@cd cypress && yarn start
+	
+
+build-ra-data-json-server:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 76):
+	@echo "Transpiling ra-data-json-server files...";
+	@cd ./packages/ra-data-json-server && yarn build
+	
+
+serve-github-pages: docker-doc
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+storybook:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 163):
+	@echo "Running storybook..."
+	@ONLY=${ONLY} yarn storybook
+	
+
+lint:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 126):
+	@echo "Running linter..."
+	@yarn lint
+	
+
+build-data-generator:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 108):
+	@echo "Transpiling data-generator files...";
+	@cd ./examples/data-generator && yarn build
+	
+
+run-no-code:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 22):
+	@yarn run-no-code
+	
+
+build-ra-language-french:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 61):
+	@echo "Transpiling ra-language-french files...";
+	@cd ./packages/ra-language-french && yarn build
+	
+
+build-ra-input-rich-text:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 100):
+	@echo "Transpiling ra-input-rich-text files...";
+	@cd ./packages/ra-input-rich-text && yarn build
+	
+
+build-ra-data-graphql:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 88):
+	@echo "Transpiling ra-data-graphql files...";
+	@cd ./packages/ra-data-graphql && yarn build
+	
+
+build-ra-no-code:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 104):
+	@echo "Transpiling ra-no-code files...";
+	@cd ./packages/ra-no-code && yarn build
+	
+
+doc:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 114):
+	@yarn doc
+	
+
+install: package.json
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 7):
+	@if [ "$(CI)" != "true" ]; then \
+	echo "Full install..."; \
+	yarn; \
+	fi
+	@if [ "$(CI)" = "true" ]; then \
+	echo "Frozen install..."; \
+	yarn --frozen-lockfile; \
+	fi
+	
+
+run-simple:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 19):
+	@yarn run-simple
+	
+
+ 
+# files hash-table stats:
+# Load=47/1024=5%, Rehash=0, Collisions=4/83=5%
+# VPATH Search Paths
+
+# No `vpath' search paths.
+
+# No general (`VPATH' variable) search path.
+
+# # of strings in strcache: 1
+# # of strcache buffers: 1
+# strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
+# strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
+
+# Finished Make data base on Sun Jun 19 14:10:14 2022
+
+ 

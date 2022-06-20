@@ -4931,16 +4931,14 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@>=16.9.0":
-  version "16.14.28"
-  resolved "https://repo.huaweicloud.com/repository/npm/@types/react/-/react-16.14.28.tgz#073258f3fe7bb80c748842c1f93aeaafe16dffad"
-  integrity sha512-83zBE6+XUVXsdL3iFzOyUewdauaU+KviKCHEGOgSW52coAuqW7tEKQM0E9+ZC0Zk6TELQ2/JgogPvp7FavzFwg==
+"@types/react-world-flags@^1.4.2":
+  version "1.4.2"
+  resolved "https://repo.huaweicloud.com/repository/npm/@types/react-world-flags/-/react-world-flags-1.4.2.tgz#922c8638ce1ef619c28a5f062828981bfef45d68"
+  integrity sha512-Fk4IVoLqDf/nWUlxjOaklF+ZBzZFSuS1G2L2+o+R3c+TWCkwW3H5rWEXIk5kLHONZuSzCSu8m4S/nuLgosSqKw==
   dependencies:
-    "@types/prop-types" "*"
-    "@types/scheduler" "*"
-    csstype "^3.0.2"
+    "@types/react" "*"
 
-"@types/react@^17", "@types/react@^17.0.20":
+"@types/react@*", "@types/react@>=16.9.0", "@types/react@^17", "@types/react@^17.0.20":
   version "17.0.47"
   resolved "https://repo.huaweicloud.com/repository/npm/@types/react/-/react-17.0.47.tgz#4ee71aaf4c5a9e290e03aa4d0d313c5d666b3b78"
   integrity sha512-mk0BL8zBinf2ozNr3qPnlu1oyVTYq+4V7WA76RgxUAtf0Em/Wbid38KN6n4abEkvO4xMTBWmnP1FtQzgkEiJoA==
@@ -16528,6 +16526,15 @@ react-transition-group@^4.4.1, react-transition-group@^4.4.2:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
+react-world-flags@^1.5.0:
+  version "1.5.0"
+  resolved "https://repo.huaweicloud.com/repository/npm/react-world-flags/-/react-world-flags-1.5.0.tgz#008dbad5d41fa5583c84f92bae18012aba98e15c"
+  integrity sha512-WZ9WnPJbwAECu9uJkMIUHGNU9QbUZC45RIciFtV4tIKq4BVhlBmhEvTA9TTsjMEff2Vc7O3Rn1z+BYSKk4JQaQ==
+  dependencies:
+    svg-country-flags "^1.2.10"
+    svgo "^2.8.0"
+    world-countries "^4.0.0"
+
 react@^17.0.0:
   version "17.0.2"
   resolved "https://repo.huaweicloud.com/repository/npm/react/-/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"
@@ -18303,6 +18310,11 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://repo.huaweicloud.com/repository/npm/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
+svg-country-flags@^1.2.10:
+  version "1.2.10"
+  resolved "https://repo.huaweicloud.com/repository/npm/svg-country-flags/-/svg-country-flags-1.2.10.tgz#b1b94e9f08f065d7b3d0ff9ab359898edd4dd3b0"
+  integrity sha512-xrqwo0TYf/h2cfPvGpjdSuSguUbri4vNNizBnwzoZnX0xGo3O5nGJMlbYEp7NOYcnPGBm6LE2axqDWSB847bLw==
+
 svg-parser@^2.0.2:
   version "2.0.4"
   resolved "https://repo.huaweicloud.com/repository/npm/svg-parser/-/svg-parser-2.0.4.tgz#fdc2e29e13951736140b76cb122c8ee6630eb6b5"
@@ -18327,7 +18339,7 @@ svgo@^1.2.2:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-svgo@^2.7.0:
+svgo@^2.7.0, svgo@^2.8.0:
   version "2.8.0"
   resolved "https://repo.huaweicloud.com/repository/npm/svgo/-/svgo-2.8.0.tgz#4ff80cce6710dc2795f0c7c74101e6764cfccd24"
   integrity sha512-+N/Q9kV1+F+UeWYoSiULYo4xYSDQlTgb+ayMobAXPwMnLvop7oxKMo9OzIrX5x3eS4L4f2UHhc9axXwY8DpChg==
@@ -19897,6 +19909,11 @@ worker-rpc@^0.1.0:
   integrity sha512-P1WjMrUB3qgJNI9jfmpZ/htmBEjFh//6l/5y8SD9hg1Ef5zTTVVoRjTrTEzPrNBQvmhMxkoTsjOXN10GWU7aCg==
   dependencies:
     microevent.ts "~0.1.1"
+
+world-countries@^4.0.0:
+  version "4.0.0"
+  resolved "https://repo.huaweicloud.com/repository/npm/world-countries/-/world-countries-4.0.0.tgz#a14757e2240d8c16249e3c6e6cdcd61d119a042d"
+  integrity sha512-LsFFYmggquj0U+i7VUaJOZYz5F4QNu+oceGw8odnyVHMT2LxYSdVncqdouOEnq1esr7yCakp9+3BZTztuSw1Pg==
 
 wrap-ansi@^3.0.1:
   version "3.0.1"
