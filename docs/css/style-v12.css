@@ -413,6 +413,56 @@ ul.sidenav code {
     margin-right: -4px;
 }
 
+.docBlocks {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-column-gap: 1em;
+    grid-row-gap: 1em;
+    grid-auto-rows: 1fr;
+    margin: 1em;
+}
+
+.docBlocks a {
+    color: inherit;
+    border: solid 1px lightgrey;
+    border-radius: 5px;
+    padding: 1em;
+}
+
+.docBlocks a:hover {
+    border-color: black;
+}
+
+.docBlock h2 {
+    margin: 0 0 0.5em 0;
+    font-size: 1.5em;
+    line-height: 1.2;
+}
+
+@media only screen and (max-width: 992px) {
+    .docBlocks {
+        grid-template-columns: 1fr 1fr 1fr;
+        margin: 0;
+        padding-top: 5em;
+    }
+}
+
+@media only screen and (max-width: 735px) {
+    .docBlocks {
+        display: block;
+        margin: 0;
+        padding-top: 5em;
+    }
+    .docBlocks a {
+        padding: 0.5em;
+        margin-bottom: 1em;
+        display: block;
+    }
+    .docBlock h2 {
+        margin: 0 0 0.2em 0;
+    }
+}
+
 /* Prism overrides */
 /* Added the container selector to have a greater specificity */
 .container .token.operator,

@@ -1,0 +1,198 @@
+---
+---
+
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>React-admin - Documentation</title>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+        <meta name="description" content="React-admin Documentation index" />
+        <meta name="HandheldFriendly" content="true" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <link
+            rel="stylesheet"
+            href="{{ '/css/materialize.min.css' | relative_url }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ '/css/style-v12.css' | relative_url }}"
+        />
+        <link rel="stylesheet" href="{{ '/css/syntax.css' | relative_url }}" />
+        <link rel="stylesheet" href="{{ '/css/prism.css' | relative_url }}" />
+        <link rel="stylesheet" href="{{ '/css/tocbot.css' | relative_url }}" />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@docsearch/css@1.0.0-alpha.28"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.css"
+        />
+        <link rel="stylesheet" href="css/docsearch.css" />
+    </head>
+
+    <body>
+        {% include nav.html %}
+
+        <div class="container">
+            <div class="row nav_root">
+                <div class="docBlocks">
+                    <a href="./Tutorial.html">
+                        <div class="docBlock">
+                            <h2>Tutorial</h2>
+                            Get the basics in 30 mins
+                        </div>
+                    </a>
+
+                    <a href="./Admin.html">
+                        <div class="docBlock">
+                            <h2>App configuration</h2>
+                            <code>&lt;Admin&gt;</code>,
+                            <code>&lt;Resource&gt;</code> and
+                            <code>&lt;CustomRoutes&gt;</code> explained.
+                        </div>
+                    </a>
+
+                    <a href="./DataProviderIntroduction.html">
+                        <div class="docBlock">
+                            <h2>Data Provider</h2>
+                            Plugging in a REST or GraphQL API
+                        </div>
+                    </a>
+
+                    <a href="./Authentication.html">
+                        <div class="docBlock">
+                            <h2>Auth Provider</h2>
+                            Securing the app with authentication and permissions
+                        </div>
+                    </a>
+
+                    <a href="./ListTutorial.html">
+                        <div class="docBlock">
+                            <h2>List pages</h2>
+                            <code>&lt;List&gt;</code>,
+                            <code>&lt;Datagrid&gt;</code>, filters, sorting,
+                            etc.
+                        </div>
+                    </a>
+
+                    <a href="./EditTutorial.html">
+                        <div class="docBlock">
+                            <h2>Edition pages</h2>
+                            <code>&lt;Edit&gt;</code>,
+                            <code>&lt;Create&gt;</code>,
+                            <code>&lt;Form&gt;</code>, validation, etc.
+                        </div>
+                    </a>
+
+                    <a href="./Show.html">
+                        <div class="docBlock">
+                            <h2>Show pages</h2>
+                            <code>&lt;Show&gt;</code>,
+                            <code>&lt;SimpleShowLayout&gt;</code>, etc.
+                        </div>
+                    </a>
+
+                    <a href="./useRecordContext.html">
+                        <div class="docBlock">
+                            <h2>Common Hooks</h2>
+                            <code>useRecordContext</code>,
+                            <code>useNotify</code>, <code>useRedirect</code>,
+                            etc.
+                        </div>
+                    </a>
+
+                    <a href="./Fields.html">
+                        <div class="docBlock">
+                            <h2>Fields</h2>
+                            <code>&lt;TextField&gt;</code>,
+                            <code>&lt;SelectField&gt;</code>,
+                            <code>&lt;ReferenceField&gt;</code>, etc.
+                        </div></a
+                    >
+
+                    <a href="./Inputs.html">
+                        <div class="docBlock">
+                            <h2>Inputs</h2>
+                            <code>&lt;TextInput&gt;</code>,
+                            <code>&lt;AutocompleteInput&gt;</code>, etc.
+                        </div>
+                    </a>
+
+                    <a href="./Store.html">
+                        <div class="docBlock">
+                            <h2>The Store</h2>
+                            Persisting user preferences with
+                            <code>useStore</code>
+                        </div>
+                    </a>
+
+                    <a href="./Translation.html">
+                        <div class="docBlock">
+                            <h2>I18N</h2>
+                            Translating the interface
+                        </div>
+                    </a>
+
+                    <a href="./Buttons.html">
+                        <div class="docBlock">
+                            <h2>UI components</h2>
+                            App building blocks: <code>&lt;Menu&gt;</code>,
+                            <code>&lt;AppBar&gt;</code>,
+                            <code>&lt;Button&gt;</code>, etc.
+                        </div>
+                    </a>
+
+                    <a href="./Theming.html">
+                        <div class="docBlock">
+                            <h2>Theming</h2>
+                            Customizing the look and feel
+                        </div>
+                    </a>
+
+                    <a href="./Caching.html">
+                        <div class="docBlock">
+                            <h2>Recipes</h2>
+                            For advanced configuration
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <script src="js/materialize.min.js"></script>
+        <script></script>
+        <script
+            type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/@docsearch/js@1.0.0-alpha.28"
+        ></script>
+        <script type="text/javascript">
+            docsearch({
+                container: '#docsearch',
+                appId: 'QY9T9CVM2N',
+                indexName: 'marmelab-react-admin',
+                apiKey: '75332227370be3dc35777cee6244881a',
+            });
+        </script>
+        <!--
+        React-admin protects your privacy!
+        We use our own self-hosted tracking solution to collect some raw metrics,
+        like page views, device type (mobile, desktop, etc.) or country.
+        We don't track any personal information about our visitors.
+    -->
+        <script
+            async
+            defer
+            data-website-id="ef7f8242-2808-4cbf-9dff-564daa515bbd"
+            src="https://analytics.marmelab.com/umami.js"
+        ></script>
+    </body>
+</html>
