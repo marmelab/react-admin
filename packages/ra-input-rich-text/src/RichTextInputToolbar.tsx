@@ -85,10 +85,11 @@ const classes = {
 const Root = styled('div')(({ theme }) => ({
     [`&.${classes.root}`]: {
         display: 'flex',
-        marginBottom: theme.spacing(1),
+        flexWrap: 'wrap',
         alignItems: 'center',
         '& > *': {
             marginRight: theme.spacing(1),
+            marginBottom: theme.spacing(1),
         },
         '& > *:last-child': {
             marginRight: 0,
