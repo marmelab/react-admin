@@ -548,6 +548,32 @@ const App = () => (
 );
 ```
 
+**Tip**: If you are a TypeScript user you may want to set the string values in the previous example `as const` to avoid TypeScript complaining about it:
+
+```tsx
+import { defaultTheme } from 'react-admin';
+
+const theme = {
+    ...defaultTheme,
+    components: {
+        ...defaultTheme.components,
+        MuiTextField: {
+            defaultProps: {
+                variant: 'outlined' as const,
+            },
+        },
+        MuiFormControl: {
+            defaultProps: {
+                variant: 'outlined' as const,
+            },
+        },
+    }
+};
+
+// ...
+```
+
+
 ## Writing Your Own Input Component
 
 If you need a more specific input type, you can write it directly in React. You'll have to rely on react-hook-form's [useController](https://react-hook-form.com/api/usecontroller) hook, to handle the value update cycle.
