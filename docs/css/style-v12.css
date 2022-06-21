@@ -459,6 +459,7 @@ ul.sidenav code {
     position: relative;
     padding: 1em 1.5em 1.5em 1em;
     overflow: hidden;
+    background: #efefef;
     border-width: 1px;
     border-style: solid;
     border-radius: 5px;
@@ -499,6 +500,7 @@ ul.sidenav code {
     margin: 0 0 0.5em 0;
     color: var(--docsearch-primary-color);
     font-size: 1.5em;
+    font-weight: 700;
     line-height: 1.2;
 }
 
