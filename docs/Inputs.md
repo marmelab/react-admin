@@ -530,6 +530,35 @@ const theme = {
         ...defaultTheme.components,
         MuiTextField: {
             defaultProps: {
+                variant: 'outlined',
+            },
+        },
+        MuiFormControl: {
+            defaultProps: {
+                variant: 'outlined',
+            },
+        },
+    }
+};
+
+const App = () => (
+    <Admin theme={theme}>
+        // ...
+    </Admin>
+);
+```
+
+**Tip**: If you are a TypeScript user you may want to set the string values in the previous example `as const` to avoid TypeScript complaining about it:
+
+```tsx
+import { defaultTheme } from 'react-admin';
+
+const theme = {
+    ...defaultTheme,
+    components: {
+        ...defaultTheme.components,
+        MuiTextField: {
+            defaultProps: {
                 variant: 'outlined' as const,
             },
         },
@@ -541,11 +570,7 @@ const theme = {
     }
 };
 
-const App = () => (
-    <Admin theme={theme}>
-        // ...
-    </Admin>
-);
+// ...
 ```
 
 ## Writing Your Own Input Component
