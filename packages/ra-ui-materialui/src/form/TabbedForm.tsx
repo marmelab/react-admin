@@ -87,7 +87,10 @@ export const TabbedForm = (props: TabbedFormProps) => {
 
     return (
         <Form formRootPathname={formRootPathname} {...props}>
-            <TabbedFormView formRootPathname={formRootPathname} {...props} />
+            <TabbedFormView
+                formRootPathname={formRootPathname}
+                {...sanitizeRestProps(props)}
+            />
         </Form>
     );
 };
@@ -153,3 +156,12 @@ export const findTabsWithErrors = (children, errors) => {
         return acc;
     }, []);
 };
+
+const sanitizeRestProps = ({
+    record,
+    resource,
+    warnWhenUnsavedChanges,
+    defaultChecked,
+    defaultValues,
+    ...rest
+}: TabbedFormProps) => rest;

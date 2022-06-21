@@ -149,4 +149,4 @@ const Root = styled('div', {
     },
 }));
 
-const sanitizeRestProps = ({ record, resource, ...rest }: any) => rest;
+const sanitizeRestProps = ({ resource, ...rest }: TabbedFormViewProps) => rest;
