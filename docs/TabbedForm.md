@@ -685,7 +685,7 @@ const UserEdit = () => {
                     </FormTab>
                 }
             </TabbedForm>
-        </Edit>;
+        </Edit>
     );
 };
 ```

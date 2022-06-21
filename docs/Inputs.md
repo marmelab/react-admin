@@ -530,12 +530,12 @@ const theme = {
         ...defaultTheme.components,
         MuiTextField: {
             defaultProps: {
-                variant: 'outlined' as const,
+                variant: 'outlined',
             },
         },
         MuiFormControl: {
             defaultProps: {
-                variant: 'outlined' as const,
+                variant: 'outlined',
             },
         },
     }

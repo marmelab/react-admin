@@ -23,7 +23,7 @@ const BookShow = () => (
                <TextField source="title" />
             </Labeled>
          </Stack>
-     </Car>
+     </Card>
   </Show>
 );
 ```
@@ -48,7 +48,7 @@ const BookShow = () => (
                <TextField source="title" />
             </Labeled>
          </Stack>
-     </Car>
+     </Card>
   </Show>
 );
 ```
