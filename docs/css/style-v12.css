@@ -6,6 +6,10 @@ footer {
     padding-left: 300px;
 }
 
+.header-navigation {
+    z-index: 400;
+}
+
 @media only screen and (max-width: 1100px) {
     header,
     main,
