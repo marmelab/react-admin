@@ -186,7 +186,7 @@ const PostShow = () => (
                 <TextField source="title" />
                 <TextField source="body" />
             </Stack>
-            <TextFieled source="author" />
+            <TextField source="author" />
         </SimpleShowLayout>
     </Show>
 );
