@@ -43,7 +43,7 @@ input[type='search']:not(.browser-default):focus:not([readonly]) {
     }
 }
 
-@media only screen and (max-width: 992px) {
+@media only screen and (max-width: 1100px) {
     #docsearch .DocSearch-Button {
         width: 200px;
     }

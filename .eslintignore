@@ -3,3 +3,4 @@ build
 lib
 esm
 prism.js
+**/*.min.js

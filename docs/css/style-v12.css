@@ -6,7 +6,7 @@ footer {
     padding-left: 300px;
 }
 
-@media only screen and (max-width: 992px) {
+@media only screen and (max-width: 1100px) {
     header,
     main,
     footer {
@@ -229,7 +229,7 @@ ul.sidenav code {
     text-decoration: underline;
 }
 
-@media only screen and (max-width: 992px) {
+@media only screen and (max-width: 1100px) {
     img {
         width: 100%;
         box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.22);
@@ -470,7 +470,7 @@ ul.sidenav code {
     transform: scale(7) rotate(40deg);
 }
 
-@media only screen and (max-width: 992px) {
+@media only screen and (max-width: 1100px) {
     .docBlocks {
         grid-template-columns: 1fr 1fr;
     }
