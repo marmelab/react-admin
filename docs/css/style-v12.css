@@ -470,12 +470,6 @@ ul.sidenav code {
     transform: scale(7) rotate(40deg);
 }
 
-@media only screen and (max-width: 1400px) {
-    .docBlocks {
-        grid-template-columns: 1fr 1fr 1fr;
-    }
-}
-
 @media only screen and (max-width: 992px) {
     .docBlocks {
         grid-template-columns: 1fr 1fr;
