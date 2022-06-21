@@ -17,6 +17,7 @@ footer {
     }
     nav {
         position: fixed;
+        top: 0;
     }
 }
 
@@ -420,46 +421,90 @@ ul.sidenav code {
     grid-row-gap: 1em;
     grid-auto-rows: 1fr;
     margin: 1em;
+    padding-top: 5em;
 }
 
 .docBlocks a {
+    position: relative;
     color: inherit;
-    border: solid 1px lightgrey;
+    background: #efefef;
     border-radius: 5px;
-    padding: 1em;
+    padding: 1em 1.5em 1.5em 1em;
+    overflow: hidden;
+    border: #d7d7d7 1px solid;
+    box-shadow: 0 0px 0px 0px rgba(0, 0, 0, 0);
+    transition: box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
 }
 
 .docBlocks a:hover {
-    border-color: black;
+    border: #c0c0c0 1px solid;
+    box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);
 }
 
-.docBlock h2 {
+.docBlocks a .docBlock {
+    position: relative;
+    z-index: 10;
+}
+
+.docBlocks a h2 {
+    color: var(--docsearch-primary-color);
     margin: 0 0 0.5em 0;
     font-size: 1.5em;
     line-height: 1.2;
 }
 
-@media only screen and (max-width: 992px) {
+.docBlocks a .material-icons {
+    position: absolute;
+    z-index: 1;
+    font-size: 36px;
+    opacity: 0.06;
+    top: 70%;
+    left: 80%;
+    transform: translate(-50%, -50%) scale(3) rotate(30deg);
+    transition: transform 0.2s ease-in-out, right 0.2s ease-in-out,
+        top 0.2s ease-in-out, left 0.2s ease-in-out;
+}
+.docBlocks a:hover .material-icons {
+    top: 60%;
+    left: 60%;
+    transform: scale(7) rotate(40deg);
+}
+
+@media only screen and (max-width: 1400px) {
     .docBlocks {
         grid-template-columns: 1fr 1fr 1fr;
-        margin: 0;
-        padding-top: 5em;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .docBlocks {
+        grid-template-columns: 1fr 1fr;
     }
 }
 
 @media only screen and (max-width: 735px) {
     .docBlocks {
         display: block;
-        margin: 0;
-        padding-top: 5em;
     }
     .docBlocks a {
+        display: block;
         padding: 0.5em;
         margin-bottom: 1em;
-        display: block;
     }
     .docBlock h2 {
         margin: 0 0 0.2em 0;
+    }
+    .docBlocks a .material-icons {
+        left: auto;
+        top: 50%;
+        right: -16px;
+        transform: translate(-50%, -50%) scale(3.5) rotate(30deg);
+    }
+    .docBlocks a:hover .material-icons {
+        left: auto;
+        top: 50%;
+        right: 16px;
+        transform: translate(-50%, -50%) scale(2) rotate(0deg);
     }
 }
 
