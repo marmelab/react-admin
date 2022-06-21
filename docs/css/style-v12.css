@@ -1,22 +1,20 @@
 /* Layout */
 
-header,
-main,
-footer {
-    padding-left: 300px;
+main > .container {
+    padding-top: 30px;
 }
-
+@media only screen and (min-width: 992px) {
+    body:not(.no-sidebar) header,
+    body:not(.no-sidebar) main,
+    body:not(.no-sidebar) footer {
+        padding-left: 300px;
+    }
+}
 @media only screen and (max-width: 992px) {
-    header,
-    main,
-    footer {
+    body header,
+    body main,
+    body footer {
         padding-left: 0;
-    }
-    main > .container {
-        padding-top: 70px;
-    }
-    nav {
-        position: fixed;
     }
 }
 
@@ -26,10 +24,21 @@ footer {
         font-size: 16px;
         -webkit-font-smoothing: antialiased;
     }
-    main > .container {
-        padding-top: 50px;
-        width: 100%;
-    }
+}
+
+/* TOC */
+
+.sticker-container {
+    position: relative;
+}
+.toc-container {
+    position: sticky;
+    align-self: start;
+    top: 20px;
+    padding-left: 1em;
+}
+.toc.is-position-fixed {
+    position: static !important;
 }
 
 /* Navigation */
@@ -88,6 +97,7 @@ nav ul#nav-mobile a {
 .sidenav ul {
     padding: 0.5em 0 0.5em 1em;
 }
+
 .sidenav ul div {
     text-transform: uppercase;
     font-weight: bold;
@@ -156,19 +166,24 @@ ul.sidenav code {
     -webkit-text-size-adjust: 100%;
     -moz-text-size-adjust: 100%;
 }
+
 .markdown-section * {
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
+
 .markdown-section *:focus {
     outline: none;
 }
+
 .markdown-section > :first-child {
     margin-top: 0 !important;
 }
+
 .markdown-section > :last-child {
     margin-bottom: 0 !important;
 }
+
 .markdown-section blockquote,
 .markdown-section code,
 .markdown-section figure,
@@ -178,6 +193,7 @@ ul.sidenav code {
 .markdown-section tr {
     page-break-inside: avoid;
 }
+
 .markdown-section h2,
 .markdown-section h3,
 .markdown-section h4,
@@ -186,6 +202,7 @@ ul.sidenav code {
     orphans: 3;
     widows: 3;
 }
+
 .markdown-section h1,
 .markdown-section h2,
 .markdown-section h3,
@@ -193,13 +210,16 @@ ul.sidenav code {
 .markdown-section h5 {
     page-break-after: avoid;
 }
+
 .markdown-section b,
 .markdown-section strong {
     font-weight: 700;
 }
+
 .markdown-section em {
     font-style: italic;
 }
+
 .markdown-section blockquote,
 .markdown-section dl,
 .markdown-section ol,
@@ -217,11 +237,13 @@ ul.sidenav code {
 .markdown-section ul > li {
     list-style-type: disc;
 }
+
 .markdown-section a {
     color: #4183c4;
     text-decoration: none;
     background: 0 0;
 }
+
 .markdown-section a:active,
 .markdown-section a:focus,
 .markdown-section a:hover {
@@ -229,7 +251,7 @@ ul.sidenav code {
 }
 
 @media only screen and (max-width: 992px) {
-    img {
+    img:not(.no-shadow) {
         width: 100%;
         box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.22);
     }
@@ -252,14 +274,17 @@ ul.sidenav code {
     background-color: #e7e7e7;
     border: none;
 }
+
 .markdown-section hr:after,
 .markdown-section hr:before {
     display: table;
     content: ' ';
 }
+
 .markdown-section hr:after {
     clear: both;
 }
+
 .markdown-section h1,
 .markdown-section h2,
 .markdown-section h3 {
@@ -267,9 +292,11 @@ ul.sidenav code {
     margin-bottom: 0.85em;
     font-weight: 700;
 }
+
 .markdown-section h1 {
     font-size: 2.5em;
 }
+
 .markdown-section h2 {
     font-size: 1.75em;
 }
@@ -277,11 +304,13 @@ ul.sidenav code {
     margin-top: 1.5em;
     font-size: 1.25em;
 }
+
 .markdown-section h4 {
     margin-top: 1.25em;
     font-size: 1em;
     font-weight: bold;
 }
+
 .markdown-section code,
 .markdown-section pre {
     font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
@@ -291,6 +320,7 @@ ul.sidenav code {
     border: none;
     color: inherit;
 }
+
 .markdown-section pre {
     overflow: auto;
     word-wrap: normal;
@@ -423,27 +453,55 @@ ul.sidenav code {
 }
 
 .docBlocks a {
-    color: inherit;
-    border: solid 1px lightgrey;
+    position: relative;
+    padding: 1em 1.5em 1.5em 1em;
+    overflow: hidden;
+    border-width: 1px;
+    border-style: solid;
     border-radius: 5px;
-    padding: 1em;
+    border-color: #d7d7d7;
+    box-shadow: 0 0px 0px 0px rgba(0, 0, 0, 0);
+    color: inherit;
+    transition: box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
 }
 
 .docBlocks a:hover {
-    border-color: black;
+    border: #c0c0c0 1px solid;
+    box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);
+}
+
+.docBlocks a .docBlock {
+    position: relative;
+    z-index: 10;
+}
+
+.docBlocks a .material-icons {
+    position: absolute;
+    z-index: 1;
+    font-size: 36px;
+    opacity: 0.06;
+    top: 70%;
+    left: 80%;
+    transform: translate(-50%, -50%) scale(3) rotate(30deg);
+    transition: transform 0.2s ease-in-out, right 0.2s ease-in-out,
+        top 0.2s ease-in-out, left 0.2s ease-in-out;
+}
+.docBlocks a:hover .material-icons {
+    top: 60%;
+    left: 60%;
+    transform: scale(7) rotate(40deg);
 }
 
 .docBlock h2 {
     margin: 0 0 0.5em 0;
+    color: var(--docsearch-primary-color);
     font-size: 1.5em;
     line-height: 1.2;
 }
 
-@media only screen and (max-width: 992px) {
+@media only screen and (max-width: 1100px) {
     .docBlocks {
-        grid-template-columns: 1fr 1fr 1fr;
-        margin: 0;
-        padding-top: 5em;
+        grid-template-columns: 1fr 1fr;
     }
 }
 
@@ -451,15 +509,25 @@ ul.sidenav code {
     .docBlocks {
         display: block;
         margin: 0;
-        padding-top: 5em;
     }
     .docBlocks a {
-        padding: 0.5em;
-        margin-bottom: 1em;
         display: block;
+        margin-bottom: 1em;
     }
     .docBlock h2 {
         margin: 0 0 0.2em 0;
+    }
+    .docBlocks a .material-icons {
+        left: auto;
+        top: 50%;
+        right: -16px;
+        transform: translate(-50%, -50%) scale(3.5) rotate(30deg);
+    }
+    .docBlocks a:hover .material-icons {
+        left: auto;
+        top: 50%;
+        right: 16px;
+        transform: translate(-50%, -50%) scale(2) rotate(0deg);
     }
 }
 
