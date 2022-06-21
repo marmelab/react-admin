@@ -7,7 +7,21 @@ footer {
 }
 
 .header-navigation {
+    display: block;
     z-index: 400;
+}
+
+.documentation-wrapper .sidenav-trigger {
+    display: none;
+}
+.documentation-wrapper .header-navigation {
+    border: red 1px solid;
+}
+
+.react-admin-logo {
+    vertical-align: baseline;
+    width: 44px;
+    height: 44px;
 }
 
 @media only screen and (max-width: 1100px) {
@@ -234,7 +248,7 @@ ul.sidenav code {
 }
 
 @media only screen and (max-width: 1100px) {
-    img {
+    img:not(.no-shadow) {
         width: 100%;
         box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.22);
     }

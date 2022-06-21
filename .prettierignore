@@ -1,2 +1,3 @@
 *.md
 **/*.min.js
+**/*.min.css

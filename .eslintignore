@@ -4,3 +4,4 @@ lib
 esm
 prism.js
 **/*.min.js
+**/*.min.css

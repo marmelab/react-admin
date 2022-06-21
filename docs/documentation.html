@@ -43,7 +43,7 @@
 
 <body>
 
-	{% include nav.html %}
+	<div class="documentation-summary-wrapper">{% include nav.html %}</div>
 
 	<div class="container">
 		<div class="row nav_root">
@@ -187,7 +187,12 @@
 	</div>
 
 	<script src="js/materialize.min.js"></script>
-	<script></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			console.log('DOMContentLoaded')
+			M.Sidenav.init(document.querySelectorAll('.sidenav'));
+		});
+	</script>
 	<script type="text/javascript"
 		src="https://cdn.jsdelivr.net/npm/@docsearch/js@1.0.0-alpha.28"></script>
 	<script type="text/javascript">
