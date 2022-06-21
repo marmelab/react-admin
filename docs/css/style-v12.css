@@ -26,7 +26,7 @@ main > .container {
     }
 }
 
-/* TOC */
+/* Sticky TOC */
 
 .sticker-container {
     position: relative;
@@ -43,6 +43,9 @@ main > .container {
 
 /* Navigation */
 
+.nav-wrapper {
+    background: linear-gradient(145deg, #027be3 11%, #1a237e 75%);
+}
 nav ul#nav-mobile a {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
@@ -529,6 +532,32 @@ ul.sidenav code {
         right: 16px;
         transform: translate(-50%, -50%) scale(2) rotate(0deg);
     }
+}
+
+/* Documentation summary navigation tweaks */
+
+.react-admin-logo {
+    margin: 0 0.5em 0 1em;
+    display: none;
+    padding: 0.5em 0;
+    height: 100%;
+}
+body.no-sidebar .react-admin-logo {
+    display: block;
+}
+.react-admin-logo svg {
+    height: 100%;
+    width: auto;
+    aspect-ratio: 1;
+}
+.react-admin-logo:hover svg {
+    opacity: 1;
+}
+body.no-sidebar .react-admin-logo {
+    display: block;
+}
+body.no-sidebar .sidenav-trigger {
+    display: none;
 }
 
 /* Prism overrides */
