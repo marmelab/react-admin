@@ -573,7 +573,6 @@ const theme = {
 // ...
 ```
 
-
 ## Writing Your Own Input Component
 
 If you need a more specific input type, you can write it directly in React. You'll have to rely on react-hook-form's [useController](https://react-hook-form.com/api/usecontroller) hook, to handle the value update cycle.
