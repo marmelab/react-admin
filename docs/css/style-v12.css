@@ -541,7 +541,7 @@ ul.sidenav code {
 .react-admin-logo {
     margin: 0 0.5em 0 1em;
     display: none;
-    padding: 0.5em 0;
+    padding: 0.75em 0;
     height: 100%;
 }
 body.no-sidebar .react-admin-logo {
