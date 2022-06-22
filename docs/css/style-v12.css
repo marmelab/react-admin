@@ -1,7 +1,11 @@
 /* Layout */
 
 main > .container {
-    padding-top: 30px;
+    padding-top: 50px;
+}
+main > .container .markdown-section {
+    max-width: 700px;
+    margin: 0 auto;
 }
 @media only screen and (min-width: 992px) {
     body:not(.no-sidebar) header,
@@ -24,9 +28,13 @@ main > .container {
         font-size: 16px;
         -webkit-font-smoothing: antialiased;
     }
+    main .markdown-section {
+        padding-left: 2em;
+    }
     main > .container {
         width: 100%;
-        padding: 1em;
+        padding-left: 1em;
+        padding-right: 1em;
     }
 }
 
@@ -47,7 +55,7 @@ main > .container {
 
 /* Navigation */
 
-.nav-wrapper {
+nav {
     background: linear-gradient(145deg, #027be3 11%, #1a237e 75%);
 }
 nav ul#nav-mobile a {
