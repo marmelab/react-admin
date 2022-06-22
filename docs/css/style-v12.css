@@ -4,7 +4,7 @@ main > .container {
     padding-top: 50px;
 }
 main > .container .markdown-section {
-    max-width: 700px;
+    max-width: 750px;
     margin: 0 auto;
 }
 @media only screen and (min-width: 992px) {
