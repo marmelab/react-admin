@@ -24,6 +24,10 @@ main > .container {
         font-size: 16px;
         -webkit-font-smoothing: antialiased;
     }
+    main > .container {
+        width: 100%;
+        padding: 1em;
+    }
 }
 
 /* Sticky TOC */
