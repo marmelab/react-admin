@@ -156,6 +156,7 @@ export const AutocompleteInput = <
         optionText = 'name',
         optionValue = 'id',
         parse,
+        perPage: perPageProp,
         resource: resourceProp,
         shouldRenderSuggestions,
         setFilter,
@@ -168,6 +169,7 @@ export const AutocompleteInput = <
         variant,
         ...rest
     } = props;
+    console.log({ perPageProp });
 
     const {
         allChoices,
@@ -179,7 +181,7 @@ export const AutocompleteInput = <
         choices: choicesProp,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
-        perPage: Number.MAX_VALUE,
+        perPage: perPageProp,
         resource: resourceProp,
         source: sourceProp,
     });
@@ -565,6 +567,7 @@ export interface AutocompleteInputProps<
     debounce?: number;
     filterToQuery?: (searchText: string) => any;
     inputText?: (option: any) => string;
+    perPage?: number;
     setFilter?: (value: string) => void;
     shouldRenderSuggestions?: any;
     // Source is optional as AutocompleteInput can be used inside a ReferenceInput that already defines the source

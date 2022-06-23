@@ -12,7 +12,10 @@ import { SimpleForm } from '../form';
 
 import { AutocompleteInput } from './AutocompleteInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
-import { InsideReferenceInput } from './AutocompleteInput.stories';
+import {
+    InsideReferenceInput,
+    VeryLargeOptionsNumber,
+} from './AutocompleteInput.stories';
 import { act } from '@testing-library/react-hooks';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
@@ -934,5 +937,15 @@ describe('<AutocompleteInput />', () => {
         await waitFor(() => {
             screen.getByText('No options');
         });
+    });
+
+    it('should display "Dalmatian #1001" when given no `perPage` parameters and a list of 1001 dalmatians', async () => {
+        render(<VeryLargeOptionsNumber />);
+        expect(screen.queryByDisplayValue('Dalmatian #1001')).not.toBeNull();
+    });
+
+    it('should not display "Dalmatian #102" when given `perPage={101}` parameters and a list of 1001 dalmatians', async () => {
+        render(<VeryLargeOptionsNumber perPage={101} />);
+        expect(screen.queryByDisplayValue('Dalmatian #102')).toBeNull();
     });
 });

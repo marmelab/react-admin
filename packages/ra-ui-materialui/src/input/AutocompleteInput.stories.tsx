@@ -422,8 +422,8 @@ export const InsideReferenceInputWithCreationSupport = () => (
 const historyDalmatians = createMemoryHistory({
     initialEntries: ['/dalmatians/1'],
 });
-const DalmatianEdit = () => {
-    const choices = [...Array(1001).keys()].map(index => {
+const DalmatianEdit = (props: { perPage?: number }) => {
+    const choices = [...Array(1111).keys()].map(index => {
         return {
             id: index + 1,
             name: `Dalmatian #${index + 1}`,
@@ -435,6 +435,7 @@ const DalmatianEdit = () => {
                 <AutocompleteInput
                     source="dalmatians"
                     choices={choices}
+                    perPage={props.perPage}
                     validate={required()}
                     fullWidth
                 />
@@ -443,10 +444,13 @@ const DalmatianEdit = () => {
     );
 };
 
-export const VeryLargeOptionsNumber = () => {
+export const VeryLargeOptionsNumber = (props: { perPage?: number }) => {
     return (
         <Admin dataProvider={dataProvider} history={historyDalmatians}>
-            <Resource name="dalmatians" edit={DalmatianEdit} />
+            <Resource
+                name="dalmatians"
+                edit={<DalmatianEdit perPage={props.perPage} />}
+            />
         </Admin>
     );
 };
