@@ -9,6 +9,7 @@ import {
     DialogActions,
     Button,
     Stack,
+    Typography,
 } from '@mui/material';
 
 import { Edit } from '../detail';
@@ -427,11 +428,15 @@ const DalmatianEdit = (props: { perPage?: number }) => {
         return {
             id: index + 1,
             name: `Dalmatian #${index + 1}`,
+            altData: `altData  #${index + 1}`,
         };
     });
     return (
         <Edit>
             <SimpleForm>
+                <Typography variant="body2">
+                    choices: {choices.length}
+                </Typography>
                 <AutocompleteInput
                     source="dalmatians"
                     choices={choices}

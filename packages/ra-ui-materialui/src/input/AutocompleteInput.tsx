@@ -169,7 +169,6 @@ export const AutocompleteInput = <
         variant,
         ...rest
     } = props;
-    console.log({ perPageProp });
 
     const {
         allChoices,
@@ -279,11 +278,6 @@ If you provided a React element for the optionText prop, you must also provide t
             if (setFilter) {
                 return setFilter(filter);
             }
-
-            if (choicesProp) {
-                return;
-            }
-
             setFilters(filterToQuery(filter), undefined, true);
         }, debounceDelay),
         [debounceDelay, setFilters, setFilter]

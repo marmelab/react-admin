@@ -154,12 +154,30 @@ export const useList = <RecordType extends RaRecord = any>(
     useEffect(
         () => {
             if (isLoading || !data) return;
-            console.log({ data });
             // 1. filter
             let tempData = data.filter(record =>
                 Object.entries(filterValues).every(
                     ([filterName, filterValue]) => {
                         const recordValue = get(record, filterName);
+
+                        if (!recordValue) {
+                            return Object.keys(record).some((key: string) => {
+                                const keyType = typeof record[key];
+                                const isScalar =
+                                    keyType === 'string' ||
+                                    keyType === 'number';
+                                return (
+                                    isScalar &&
+                                    record[key]
+                                        .toString()
+                                        .toLowerCase()
+                                        .indexOf(
+                                            filterValue.toString().toLowerCase()
+                                        ) >= 0
+                                );
+                            });
+                        }
+
                         const result = Array.isArray(recordValue)
                             ? Array.isArray(filterValue)
                                 ? recordValue.some(item =>
@@ -173,7 +191,6 @@ export const useList = <RecordType extends RaRecord = any>(
                     }
                 )
             );
-            console.log({ tempData });
             const filteredLength = tempData.length;
 
             // 2. sort
@@ -209,8 +226,6 @@ export const useList = <RecordType extends RaRecord = any>(
             sort.order,
         ]
     );
-
-    console.log({ filterValues });
 
     useEffect(() => {
         if (isFetching !== fetchingState) {
