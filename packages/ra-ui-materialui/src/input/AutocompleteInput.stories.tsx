@@ -418,3 +418,35 @@ export const InsideReferenceInputWithCreationSupport = () => (
         <Resource name="books" edit={BookEditWithReferenceAndCreationSupport} />
     </Admin>
 );
+
+const historyDalmatians = createMemoryHistory({
+    initialEntries: ['/dalmatians/1'],
+});
+const DalmatianEdit = () => {
+    const choices = [...Array(1001).keys()].map(index => {
+        return {
+            id: index + 1,
+            name: `Dalmatian #${index + 1}`,
+        };
+    });
+    return (
+        <Edit>
+            <SimpleForm>
+                <AutocompleteInput
+                    source="dalmatians"
+                    choices={choices}
+                    validate={required()}
+                    fullWidth
+                />
+            </SimpleForm>
+        </Edit>
+    );
+};
+
+export const VeryLargeOptionsNumber = () => {
+    return (
+        <Admin dataProvider={dataProvider} history={historyDalmatians}>
+            <Resource name="dalmatians" edit={DalmatianEdit} />
+        </Admin>
+    );
+};
