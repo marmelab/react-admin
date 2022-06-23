@@ -179,6 +179,7 @@ export const AutocompleteInput = <
         choices: choicesProp,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
+        perPage: Number.MAX_VALUE,
         resource: resourceProp,
         source: sourceProp,
     });

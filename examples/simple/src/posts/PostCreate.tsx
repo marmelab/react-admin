@@ -116,6 +116,15 @@ const PostCreate = () => {
                     source="title"
                     validate={required('Required field')}
                 />
+                <AutocompleteInput
+                    source="title"
+                    choices={[...Array(100).keys()].map(index => {
+                        return {
+                            id: index,
+                            name: index.toString(),
+                        };
+                    })}
+                />
                 <TextInput
                     source="teaser"
                     fullWidth
