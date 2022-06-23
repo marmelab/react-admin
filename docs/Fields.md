@@ -597,3 +597,4 @@ You can find components for react-admin in third-party repositories.
 
 - [OoDeLally/react-admin-clipboard-list-field](https://github.com/OoDeLally/react-admin-clipboard-list-field): a quick and customizable copy-to-clipboard field.
 - [MrHertal/react-admin-json-view](https://github.com/MrHertal/react-admin-json-view): JSON field and input for react-admin.
+- [alexgschwend/react-admin-color-picker](https://github.com/alexgschwend/react-admin-color-picker): a color field
