@@ -154,6 +154,7 @@ export const useList = <RecordType extends RaRecord = any>(
     useEffect(
         () => {
             if (isLoading || !data) return;
+
             // 1. filter
             let tempData = data.filter(record =>
                 Object.entries(filterValues).every(
@@ -191,6 +192,7 @@ export const useList = <RecordType extends RaRecord = any>(
                     }
                 )
             );
+
             const filteredLength = tempData.length;
 
             // 2. sort

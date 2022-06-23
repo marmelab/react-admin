@@ -948,4 +948,15 @@ describe('<AutocompleteInput />', () => {
         render(<VeryLargeOptionsNumber perPage={101} />);
         expect(screen.queryByDisplayValue('Dalmatian #102')).toBeNull();
     });
+
+    it('should display "Dalmatian #1001" when searching `1001` even if `perPage=101`', async () => {
+        render(<VeryLargeOptionsNumber perPage={101} />);
+
+        const input = screen.getByLabelText('Id', {
+            selector: 'input',
+        }) as HTMLInputElement;
+        fireEvent.focus(input);
+        userEvent.type(input, '1001');
+        expect(screen.queryByDisplayValue('Dalmatian #1001')).not.toBeNull();
+    });
 });
