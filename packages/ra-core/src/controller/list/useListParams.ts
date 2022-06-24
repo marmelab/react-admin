@@ -128,45 +128,50 @@ export const useListParams = ({
         }
     }, [location.search]); // eslint-disable-line
 
-    const changeParams = useCallback(action => {
-        // do not change params if the component is already unmounted
-        // this is necessary because changeParams can be debounced, and therefore
-        // executed after the component is unmounted
-        if (!isMounted.current) return;
+    const changeParams = useCallback(
+        action => {
+            // do not change params if the component is already unmounted
+            // this is necessary because changeParams can be debounced, and therefore
+            // executed after the component is unmounted
+            if (!isMounted.current) return;
 
-        if (!tempParams.current) {
-            // no other changeParams action dispatched this tick
-            tempParams.current = queryReducer(query, action);
-            // schedule side effects for next tick
-            setTimeout(() => {
-                if (disableSyncWithLocation) {
-                    setLocalParams(tempParams.current);
-                } else {
-                    // the useEffect above will apply the changes to the params in the store
-                    navigate(
-                        {
-                            search: `?${stringify({
-                                ...tempParams.current,
-                                filter: JSON.stringify(
-                                    tempParams.current.filter
-                                ),
-                                displayedFilters: JSON.stringify(
-                                    tempParams.current.displayedFilters
-                                ),
-                            })}`,
-                        },
-                        {
-                            state: { _scrollToTop: action.type === SET_PAGE },
-                        }
-                    );
-                }
-                tempParams.current = undefined;
-            }, 0);
-        } else {
-            // side effects already scheduled, just change the params
-            tempParams.current = queryReducer(tempParams.current, action);
-        }
-    }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
+            if (!tempParams.current) {
+                // no other changeParams action dispatched this tick
+                tempParams.current = queryReducer(query, action);
+                // schedule side effects for next tick
+                setTimeout(() => {
+                    if (disableSyncWithLocation) {
+                        setLocalParams(tempParams.current);
+                    } else {
+                        // the useEffect above will apply the changes to the params in the store
+                        navigate(
+                            {
+                                search: `?${stringify({
+                                    ...tempParams.current,
+                                    filter: JSON.stringify(
+                                        tempParams.current.filter
+                                    ),
+                                    displayedFilters: JSON.stringify(
+                                        tempParams.current.displayedFilters
+                                    ),
+                                })}`,
+                            },
+                            {
+                                state: {
+                                    _scrollToTop: action.type === SET_PAGE,
+                                },
+                            }
+                        );
+                    }
+                    tempParams.current = undefined;
+                }, 0);
+            } else {
+                // side effects already scheduled, just change the params
+                tempParams.current = queryReducer(tempParams.current, action);
+            }
+        },
+        [...requestSignature, navigate] // eslint-disable-line react-hooks/exhaustive-deps
+    );
 
     const setSort = useCallback(
         (sort: SortPayload) =>
@@ -174,18 +179,18 @@ export const useListParams = ({
                 type: SET_SORT,
                 payload: sort,
             }),
-        requestSignature // eslint-disable-line react-hooks/exhaustive-deps
+        [changeParams]
     );
 
     const setPage = useCallback(
         (newPage: number) => changeParams({ type: SET_PAGE, payload: newPage }),
-        requestSignature // eslint-disable-line react-hooks/exhaustive-deps
+        [changeParams]
     );
 
     const setPerPage = useCallback(
         (newPerPage: number) =>
             changeParams({ type: SET_PER_PAGE, payload: newPerPage }),
-        requestSignature // eslint-disable-line react-hooks/exhaustive-deps
+        [changeParams]
     );
 
     const filterValues = query.filter || emptyObject;
@@ -212,25 +217,31 @@ export const useListParams = ({
                           displayedFilters,
                       },
                   }),
-        requestSignature // eslint-disable-line react-hooks/exhaustive-deps
+        [changeParams] // eslint-disable-line react-hooks/exhaustive-deps
     );
 
-    const hideFilter = useCallback((filterName: string) => {
-        changeParams({
-            type: HIDE_FILTER,
-            payload: filterName,
-        });
-    }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
+    const hideFilter = useCallback(
+        (filterName: string) => {
+            changeParams({
+                type: HIDE_FILTER,
+                payload: filterName,
+            });
+        },
+        [changeParams]
+    );
 
-    const showFilter = useCallback((filterName: string, defaultValue: any) => {
-        changeParams({
-            type: SHOW_FILTER,
-            payload: {
-                filterName,
-                defaultValue,
-            },
-        });
-    }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
+    const showFilter = useCallback(
+        (filterName: string, defaultValue: any) => {
+            changeParams({
+                type: SHOW_FILTER,
+                payload: {
+                    filterName,
+                    defaultValue,
+                },
+            });
+        },
+        [changeParams]
+    );
 
     return [
         {
