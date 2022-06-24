@@ -87,10 +87,35 @@ export const TabbedForm = (props: TabbedFormProps) => {
 
     return (
         <Form formRootPathname={formRootPathname} {...props}>
-            <TabbedFormView formRootPathname={formRootPathname} {...props} />
+            <TabbedFormView
+                formRootPathname={formRootPathname}
+                {...sanitizeRestProps(props)}
+            />
         </Form>
     );
 };
+
+const sanitizeRestProps = ({
+    criteriaMode,
+    defaultValues,
+    delayError,
+    formRootPathname,
+    mode,
+    noValidate,
+    onSubmit,
+    record,
+    resolver,
+    resource,
+    reValidateMode,
+    shouldFocusError,
+    shouldUnregister,
+    shouldUseNativeValidation,
+    validate,
+    warnWhenUnsavedChanges,
+    ...rest
+}: TabbedFormProps) => ({
+    ...rest,
+});
 
 TabbedForm.propTypes = {
     children: PropTypes.node,
