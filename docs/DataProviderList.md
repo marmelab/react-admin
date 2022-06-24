@@ -42,7 +42,6 @@ If you can't find a Data Provider for your backend below, no worries! [Writing a
 * **[OpenCRUD](https://www.opencrud.org/)**: [weakky/ra-data-opencrud](https://github.com/Weakky/ra-data-opencrud)
 * **[Parse](https://parseplatform.org/)**: [almahdi/ra-data-parse](https://github.com/almahdi/ra-data-parse)
 * **[PostGraphile](https://www.graphile.org/postgraphile/)**: [bowlingx/ra-postgraphile](https://github.com/BowlingX/ra-postgraphile)
-* **[PostgREST](https://postgrest.org/)** react-admin v3.x: [raphiniert-com/ra-data-postgrest](https://github.com/raphiniert-com/ra-data-postgrest)
 * **[PostgREST](https://postgrest.org/)** react-admin v4.x: [promitheus7/ra-data-postgrest](https://github.com/promitheus7/ra-data-postgrest)
 * **[Prisma v1](https://v1.prisma.io/docs/1.34)**: [weakky/ra-data-prisma](https://github.com/weakky/ra-data-prisma)
 * **[Prisma v2 (GraphQL)](https://www.prisma.io/)**: [panter/ra-data-prisma](https://github.com/panter/ra-data-prisma)
