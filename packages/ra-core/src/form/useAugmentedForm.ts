@@ -98,7 +98,7 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
 
     // warn when unsaved change
     useWarnWhenUnsavedChanges(
-        warnWhenUnsavedChanges,
+        Boolean(warnWhenUnsavedChanges),
         formRootPathname,
         form.control
     );
