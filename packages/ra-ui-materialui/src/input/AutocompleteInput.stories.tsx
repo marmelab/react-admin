@@ -424,7 +424,7 @@ const historyDalmatians = createMemoryHistory({
     initialEntries: ['/dalmatians/1'],
 });
 const DalmatianEdit = (props: { perPage?: number }) => {
-    const choices = [...Array(1111).keys()].map(index => {
+    const choices = [...Array(1001).keys()].map(index => {
         return {
             id: index + 1,
             name: `Dalmatian #${index + 1}`,
@@ -432,7 +432,14 @@ const DalmatianEdit = (props: { perPage?: number }) => {
         };
     });
     return (
-        <Edit>
+        <Edit
+            mutationMode="pessimistic"
+            mutationOptions={{
+                onSuccess: data => {
+                    console.log(data);
+                },
+            }}
+        >
             <SimpleForm>
                 <Typography variant="body2">
                     choices: {choices.length}
@@ -449,7 +456,11 @@ const DalmatianEdit = (props: { perPage?: number }) => {
     );
 };
 
-export const VeryLargeOptionsNumber = (props: { perPage?: number }) => {
+export const VeryLargeOptionsNumber = (props: {
+    perPage?: number;
+    includeAdmin?: boolean;
+}) => {
+    if (props.perPage === undefined) props.perPage = 100;
     return (
         <Admin dataProvider={dataProvider} history={historyDalmatians}>
             <Resource

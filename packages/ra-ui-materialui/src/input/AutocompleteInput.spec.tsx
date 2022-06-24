@@ -939,20 +939,30 @@ describe('<AutocompleteInput />', () => {
         });
     });
 
-    it('should display "Dalmatian #1001" when given no `perPage` parameters and a list of 1001 dalmatians', async () => {
-        render(<VeryLargeOptionsNumber />);
-        expect(screen.queryByDisplayValue('Dalmatian #1001')).not.toBeNull();
+    it('should not display "Dalmatian #1001" when given no `perPage` parameters and a list of 1001 dalmatians', async () => {
+        render(<VeryLargeOptionsNumber includeAdmin={false} />);
+
+        const input = screen.getByLabelText('Dalmatians', {
+            selector: 'input',
+        }) as HTMLInputElement;
+        fireEvent.focus(input);
+        expect(screen.queryByText('Dalmatian #1001')).toBeNull();
     });
 
-    it('should not display "Dalmatian #102" when given `perPage={101}` parameters and a list of 1001 dalmatians', async () => {
-        render(<VeryLargeOptionsNumber perPage={101} />);
-        expect(screen.queryByDisplayValue('Dalmatian #102')).toBeNull();
+    it('should display "Dalmatian #1001" when given `perPage=1001` parameters and a list of 1001 dalmatians', async () => {
+        render(<VeryLargeOptionsNumber includeAdmin={false} perPage={1001} />);
+
+        const input = screen.getByLabelText('Dalmatians', {
+            selector: 'input',
+        }) as HTMLInputElement;
+        fireEvent.focus(input);
+        expect(screen.queryByText('Dalmatian #1001')).not.toBeNull();
     });
 
-    it('should display "Dalmatian #1001" when searching `1001` even if `perPage=101`', async () => {
-        render(<VeryLargeOptionsNumber perPage={101} />);
+    it('should display "Dalmatian #1001" when searching `1001` if `perPage=101`', async () => {
+        render(<VeryLargeOptionsNumber includeAdmin={false} perPage={101} />);
 
-        const input = screen.getByLabelText('Id', {
+        const input = screen.getByLabelText('Dalmatians', {
             selector: 'input',
         }) as HTMLInputElement;
         fireEvent.focus(input);
