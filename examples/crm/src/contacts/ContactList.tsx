@@ -54,10 +54,9 @@ const ContactListContent = () => {
             </BulkActionsToolbar>
             <List>
                 {contacts.map(contact => (
-                    <RecordContextProvider value={contact}>
+                    <RecordContextProvider key={contact.id} value={contact}>
                         <ListItem
                             button
-                            key={contact.id}
                             component={Link}
                             to={`/contacts/${contact.id}/show`}
                         >
