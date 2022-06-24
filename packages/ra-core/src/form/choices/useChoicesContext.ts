@@ -9,7 +9,11 @@ export const useChoicesContext = <ChoicesType extends RaRecord = RaRecord>(
     const context = useContext(ChoicesContext) as ChoicesContextValue<
         ChoicesType
     >;
-    const { data, ...list } = useList<ChoicesType>({ data: options.choices });
+    const { data, ...list } = useList<ChoicesType>({
+        data: options.choices,
+        // When not in a ChoicesContext, paginating does not make sense (e.g. AutocompleteInput).
+        perPage: Infinity,
+    });
     const result = useMemo(
         () => ({
             allChoices: context?.allChoices ?? data,
