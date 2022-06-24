@@ -498,33 +498,6 @@ describe('Form', () => {
             });
         });
     });
-    it("should not ignore defaultValues when it's not of the same type", async () => {
-        const initialValues = { foo: 'foobar' };
-        const values = { foo: { hello: 'world' } };
-
-        const onSubmit = jest.fn();
-        render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form defaultValues={initialValues} onSubmit={onSubmit}>
-                    <Input
-                        source="foo"
-                        parse={() => values.foo}
-                        format={() => 'obj'}
-                    />
-                    <button type="submit">Submit</button>
-                </Form>
-            </CoreAdminContext>
-        );
-
-        fireEvent.change(screen.getByLabelText('name'), {
-            target: { value: '' },
-        });
-        fireEvent.click(screen.getByText('Submit'));
-
-        await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith(values);
-        });
-    });
 
     it('should accept react-hook-form resolvers', async () => {
         const onSubmit = jest.fn();
