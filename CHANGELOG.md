@@ -1,5 +1,47 @@
 # Changelog
 
+## v4.1.6
+
+* Fix `useListParams` might navigate to an old pathname ([#7882](https://github.com/marmelab/react-admin/pull/7882)) ([djhi](https://github.com/djhi))
+* Fix `<AutocompleteInput>` paginates passed choices ([#7889](https://github.com/marmelab/react-admin/pull/7889)) ([djhi](https://github.com/djhi))
+* Fix `<Form>` throws error when passed a `defaultValues` function ([#7888](https://github.com/marmelab/react-admin/pull/7888)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<FileInput>` propTypes for `label` prop ([#7869](https://github.com/marmelab/react-admin/pull/7869)) ([slax57](https://github.com/slax57))
+* Fix `<SaveButton>` loading state ([#7860](https://github.com/marmelab/react-admin/pull/7860)) ([septentrion-730n](https://github.com/septentrion-730n))
+* [TypeScript] Fix `FilterLiveSearchProps` should extend `TextInputProps` ([#7859](https://github.com/marmelab/react-admin/pull/7859)) ([septentrion-730n](https://github.com/septentrion-730n))
+* [Doc] Fix link to outdated third party color input / field ([#7886](https://github.com/marmelab/react-admin/pull/7886)) ([alexgschwend](https://github.com/alexgschwend))
+* [Doc] Fix documentation summary design ([#7876](https://github.com/marmelab/react-admin/pull/7876)) ([septentrion-730n](https://github.com/septentrion-730n))
+* [Doc] Fix `<NumberInput>` example ([#7875](https://github.com/marmelab/react-admin/pull/7875)) ([afilp](https://github.com/afilp))
+* [Doc] Fix syntax error in code examples ([#7870](https://github.com/marmelab/react-admin/pull/7870)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix link to `ra-data-postgrest` for v4 ([#7867](https://github.com/marmelab/react-admin/pull/7867)) ([septentrion-730n](https://github.com/septentrion-730n))
+* [Doc] Document `<LongForm>` component ([#7862](https://github.com/marmelab/react-admin/pull/7862)) ([fzaninotto](https://github.com/fzaninotto))
+
+## v4.1.5
+
+* Fix `css-mediaquery` Dependency ([#7849](https://github.com/marmelab/react-admin/pull/7849)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Sidebar>` does not forward theme substyles to its children ([#7854](https://github.com/marmelab/react-admin/pull/7854)) ([septentrion-730n](https://github.com/septentrion-730n))
+* Fix `useFormState` returns null with yarn pnp ([#7850](https://github.com/marmelab/react-admin/pull/7850)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<AutocompleteInput>` storybook does not select newly created option ([#7847](https://github.com/marmelab/react-admin/pull/7847)) ([slax57](https://github.com/slax57))
+* [Doc] Fix Inputs doc is too concise ([#7856](https://github.com/marmelab/react-admin/pull/7856)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<TextField>` doc mentions `label` field as required ([#7848](https://github.com/marmelab/react-admin/pull/7848)) ([fzaninotto](https://github.com/fzaninotto))
+
+## v4.1.4
+
+* Fix example simple codesandbox ([#7846](https://github.com/marmelab/react-admin/pull/7846)) ([slax57](https://github.com/slax57))
+* Fix `<Logout />` appears even when not logged in ([#7842](https://github.com/marmelab/react-admin/pull/7842)) ([septentrion-730n](https://github.com/septentrion-730n))
+* Fix `<Show disableAuthentication>` prop is ignored ([#7837](https://github.com/marmelab/react-admin/pull/7837)) ([septentrion-730n](https://github.com/septentrion-730n))
+* Fix `<ImageField>` style is ignored for single images ([#7836](https://github.com/marmelab/react-admin/pull/7836)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<FileInput>` and  `<ImageInput>` style don't use MUI theme ([#7835](https://github.com/marmelab/react-admin/pull/7835)) ([septentrion-730n](https://github.com/septentrion-730n))
+* Fix `<NumberInput>` seems buggy when used in a Filter Form ([#7830](https://github.com/marmelab/react-admin/pull/7830)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Datagrid expand>` expands ALL rows when used as a child of `<ArrayField>` ([#7828](https://github.com/marmelab/react-admin/pull/7828)) ([septentrion-730n](https://github.com/septentrion-730n))
+* Fix `<ReferenceInput>` generated label in Filter Form ([#7825](https://github.com/marmelab/react-admin/pull/7825)) ([septentrion-730n](https://github.com/septentrion-730n))
+* Fix `useDataProvider` returns `undefined` value when unauthorized 401 error is thrown ([#7820](https://github.com/marmelab/react-admin/pull/7820)) ([slax57](https://github.com/slax57))
+* Fix sourcemaps support with TypeScript ([#7818](https://github.com/marmelab/react-admin/pull/7818)) ([djhi](https://github.com/djhi))
+* [Doc] Fix `<AutocompleteInput>` creation props and examples ([#7844](https://github.com/marmelab/react-admin/pull/7844)) ([slax57](https://github.com/slax57))
+* [Doc] Fix tutorial about creating new choices ([#7833](https://github.com/marmelab/react-admin/pull/7833)) ([davidhenley](https://github.com/davidhenley))
+* [Doc] Remove link to third-party TipTap input component ([#7819](https://github.com/marmelab/react-admin/pull/7819)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<ReferenceOneField>` doc is missing ([#7813](https://github.com/marmelab/react-admin/pull/7813)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Update location of `ra-data-treeql` ([#7808](https://github.com/marmelab/react-admin/pull/7808)) ([nkappler](https://github.com/nkappler))
+
 ## v4.1.3
 
 * Fix `<BooleanInput>` and `<CheckboxInput>` don't have focus states (re-add ripple) ([#7772](https://github.com/marmelab/react-admin/pull/7772)) ([andrico1234](https://github.com/andrico1234))

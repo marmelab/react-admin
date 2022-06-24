@@ -5,7 +5,7 @@ import { SxProps } from '@mui/system';
 import SearchIcon from '@mui/icons-material/Search';
 import { Form, useTranslate, useListFilterContext } from 'ra-core';
 
-import { TextInput } from '../../input';
+import { TextInput, TextInputProps } from '../../input';
 
 /**
  * Form and search input for doing a full-text search filter.
@@ -23,9 +23,15 @@ import { TextInput } from '../../input';
  * );
  */
 export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
-    const { source = 'q', variant, ...rest } = props;
     const { filterValues, setFilters } = useListFilterContext();
     const translate = useTranslate();
+
+    const {
+        source = 'q',
+        variant,
+        label = translate('ra.action.search'),
+        ...rest
+    } = props;
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target) {
@@ -44,8 +50,6 @@ export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
     );
 
     const onSubmit = () => undefined;
-    let label = translate('ra.action.search');
-
     return (
         <Form defaultValues={initialValues} onSubmit={onSubmit}>
             <TextInput
@@ -74,9 +78,10 @@ export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
     );
 });
 
-export interface FilterLiveSearchProps {
+export interface FilterLiveSearchProps extends Omit<TextInputProps, 'source'> {
     source?: string;
     sx?: SxProps;
+    label?: string;
     fullWidth?: boolean;
     variant?: 'filled' | 'outlined';
 }

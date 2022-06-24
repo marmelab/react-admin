@@ -9,6 +9,7 @@ import {
     DialogActions,
     Button,
     Stack,
+    Typography,
 } from '@mui/material';
 
 import { Edit } from '../detail';
@@ -235,6 +236,9 @@ const BookEditWithCreationSupport = () => (
                     }
                 }}
                 fullWidth
+                TextFieldProps={{
+                    placeholder: 'Start typing to create a new item',
+                }}
             />
         </SimpleForm>
     </Edit>
@@ -353,7 +357,7 @@ const CreateAuthor = () => {
                 },
             },
             {
-                onSuccess: ({ data }) => {
+                onSuccess: data => {
                     setName('');
                     setLanguage('');
                     onCreate(data);
@@ -415,3 +419,42 @@ export const InsideReferenceInputWithCreationSupport = () => (
         <Resource name="books" edit={BookEditWithReferenceAndCreationSupport} />
     </Admin>
 );
+
+const DalmatianEdit = () => {
+    const dalmatians: any[] = [];
+    for (let index = 0; index < 1100; index++) {
+        dalmatians.push({
+            id: index + 1,
+            name: `Dalmatian #${index + 1}`,
+            altData: `altData  #${index + 1}`,
+        });
+    }
+
+    return (
+        <Edit mutationMode="pessimistic">
+            <SimpleForm>
+                <Typography aria-label="count" variant="body2">
+                    choices: {dalmatians.length}
+                </Typography>
+                <AutocompleteInput
+                    source="dalmatians"
+                    choices={dalmatians}
+                    fullWidth
+                />
+            </SimpleForm>
+        </Edit>
+    );
+};
+
+export const VeryLargeOptionsNumber = () => {
+    return (
+        <Admin
+            dataProvider={dataProvider}
+            history={createMemoryHistory({
+                initialEntries: ['/dalmatians/1'],
+            })}
+        >
+            <Resource name="dalmatians" edit={<DalmatianEdit />} />
+        </Admin>
+    );
+};

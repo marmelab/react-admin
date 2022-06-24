@@ -214,7 +214,7 @@ FileInput.propTypes = {
     className: PropTypes.string,
     id: PropTypes.string,
     isRequired: PropTypes.bool,
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     labelMultiple: PropTypes.string,
     labelSingle: PropTypes.string,
     maxSize: PropTypes.number,

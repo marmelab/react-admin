@@ -7,16 +7,6 @@ title: "The ChipField Component"
 
 Displays a value inside a ["Chip"](https://mui.com/components/chips), which is MUI's term for a label.
 
-## `sx`: CSS API
-
-The `<ChipField>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
-
-| Rule name            | Description                                              |
-|----------------------|----------------------------------------------------------|
-| `&.RaChipField-chip` | Applied to the underlying MUI's `Chip` component |
-
-To override the style of all instances of `<ChipField>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaChipField` key.
-
 ## Usage
 
 ```jsx
@@ -39,4 +29,14 @@ import { ChipField, SingleFieldList, ReferenceManyField } from 'react-admin';
 </ReferenceManyField>
 ```
 
-Any additional props are passed to MUI's `<Chip>` element. Check [The MUI `<Chip>` documentation](https://mui.com/api/chip/) for details.
+Additional props are passed down to MUI's `<Chip>` element. Check [The MUI `<Chip>` documentation](https://mui.com/api/chip/) for details.
+
+## `sx`: CSS API
+
+The `<ChipField>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+
+| Rule name            | Description                                              |
+|----------------------|----------------------------------------------------------|
+| `&.RaChipField-chip` | Applied to the underlying MUI's `Chip` component |
+
+To override the style of all instances of `<ChipField>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaChipField` key.
