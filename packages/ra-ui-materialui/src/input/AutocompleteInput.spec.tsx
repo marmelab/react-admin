@@ -12,7 +12,10 @@ import { SimpleForm } from '../form';
 
 import { AutocompleteInput } from './AutocompleteInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
-import { InsideReferenceInput } from './AutocompleteInput.stories';
+import {
+    InsideReferenceInput,
+    VeryLargeOptionsNumber,
+} from './AutocompleteInput.stories';
 import { act } from '@testing-library/react-hooks';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
@@ -933,6 +936,19 @@ describe('<AutocompleteInput />', () => {
         fireEvent.click(screen.getByText('resources.undefined.fields.tags'));
         await waitFor(() => {
             screen.getByText('No options');
+        });
+    });
+
+    it('should allow a very large number of choices', async () => {
+        render(<VeryLargeOptionsNumber />);
+        await waitFor(() => {
+            expect(screen.getByRole('textbox'));
+        });
+
+        screen.getByRole('textbox').click();
+        userEvent.type(screen.getByRole('textbox'), '1050');
+        await waitFor(() => {
+            screen.getByText(/Dalmatian #1050/);
         });
     });
 });
