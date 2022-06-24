@@ -105,7 +105,6 @@ const sanitizeRestProps = ({
     onSubmit,
     record,
     resolver,
-    resource,
     reValidateMode,
     shouldFocusError,
     shouldUnregister,
