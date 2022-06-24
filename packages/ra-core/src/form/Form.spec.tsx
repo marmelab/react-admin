@@ -168,7 +168,7 @@ describe('Form', () => {
         const onSubmit = jest.fn();
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form defaultValues={{ foo: 23 }} onSubmit={onSubmit}>
+                <Form onSubmit={onSubmit}>
                     <Input
                         source="foo"
                         parse={() => null}
@@ -193,7 +193,7 @@ describe('Form', () => {
         const onSubmit = jest.fn();
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form defaultValues={{ foo: { bar: 23 } }} onSubmit={onSubmit}>
+                <Form onSubmit={onSubmit}>
                     <Input
                         source="foo.bar"
                         parse={() => null}
@@ -219,7 +219,7 @@ describe('Form', () => {
         const onSubmit = jest.fn();
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form defaultValues={{ foo: null }} onSubmit={onSubmit}>
+                <Form onSubmit={onSubmit}>
                     <Input source="foo" parse={() => str} format={() => str} />
                     <button type="submit">Submit</button>
                 </Form>
@@ -241,7 +241,7 @@ describe('Form', () => {
         const onSubmit = jest.fn();
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form defaultValues={{ foo: null }} onSubmit={onSubmit}>
+                <Form onSubmit={onSubmit}>
                     <Input
                         source="foo"
                         parse={() => date}
@@ -268,7 +268,7 @@ describe('Form', () => {
         const onSubmit = jest.fn();
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form defaultValues={{ foo: null }} onSubmit={onSubmit}>
+                <Form onSubmit={onSubmit}>
                     <Input
                         source="foo"
                         parse={() => arr}
@@ -295,7 +295,7 @@ describe('Form', () => {
         const onSubmit = jest.fn();
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form defaultValues={{ foo: null }} onSubmit={onSubmit}>
+                <Form onSubmit={onSubmit}>
                     <Input
                         source="foo"
                         parse={() => obj}
@@ -321,10 +321,7 @@ describe('Form', () => {
         const onSubmit = jest.fn();
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    defaultValues={{ foo: { bar: null } }}
-                    onSubmit={onSubmit}
-                >
+                <Form onSubmit={onSubmit}>
                     <Input
                         source="foo"
                         parse={() => obj}
@@ -350,10 +347,7 @@ describe('Form', () => {
         const onSubmit = jest.fn();
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    defaultValues={{ foo: [{ foo: 1 }, {}] }}
-                    onSubmit={onSubmit}
-                >
+                <Form onSubmit={onSubmit}>
                     <Input
                         source="foo"
                         parse={() => obj}
@@ -433,7 +427,78 @@ describe('Form', () => {
             expect(onSubmit).toHaveBeenCalledWith({ foo: obj });
         });
     });
-    it("should not ignore initial value when it's not of the same type", async () => {
+    describe('defaultValues', () => {
+        it('should use defaultValues when the record has no value for the field', () => {
+            render(
+                <CoreAdminContext>
+                    <Form defaultValues={{ foo: 'bar' }} record={{ id: 1 }}>
+                        <Input source="foo" />
+                    </Form>
+                </CoreAdminContext>
+            );
+            expect(
+                (screen.getByLabelText('name') as HTMLInputElement).value
+            ).toBe('bar');
+        });
+        it('should not use defaultValues when the record has a value for the field', () => {
+            render(
+                <CoreAdminContext>
+                    <Form
+                        defaultValues={{ foo: 'bar' }}
+                        record={{ id: 1, foo: 'hello' }}
+                    >
+                        <Input source="foo" />
+                    </Form>
+                </CoreAdminContext>
+            );
+            expect(
+                (screen.getByLabelText('name') as HTMLInputElement).value
+            ).toBe('hello');
+        });
+        it('should accept a function as defaultValues', () => {
+            render(
+                <CoreAdminContext>
+                    <Form
+                        defaultValues={() => ({ foo: 'bar' })}
+                        record={{ id: 1 }}
+                    >
+                        <Input source="foo" />
+                    </Form>
+                </CoreAdminContext>
+            );
+            expect(
+                (screen.getByLabelText('name') as HTMLInputElement).value
+            ).toBe('bar');
+        });
+        it("should not ignore defaultValues when it's not of the same type", async () => {
+            const defaultValues = { foo: 'foobar' };
+            const values = { foo: { hello: 'world' } };
+
+            const onSubmit = jest.fn();
+            render(
+                <CoreAdminContext dataProvider={testDataProvider()}>
+                    <Form defaultValues={defaultValues} onSubmit={onSubmit}>
+                        <Input
+                            source="foo"
+                            parse={() => values.foo}
+                            format={() => 'obj'}
+                        />
+                        <button type="submit">Submit</button>
+                    </Form>
+                </CoreAdminContext>
+            );
+
+            fireEvent.change(screen.getByLabelText('name'), {
+                target: { value: '' },
+            });
+            fireEvent.click(screen.getByText('Submit'));
+
+            await waitFor(() => {
+                expect(onSubmit).toHaveBeenCalledWith(values);
+            });
+        });
+    });
+    it("should not ignore defaultValues when it's not of the same type", async () => {
         const initialValues = { foo: 'foobar' };
         const values = { foo: { hello: 'world' } };
 

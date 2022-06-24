@@ -46,7 +46,7 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
 
     const defaultValuesIncludingRecord = useMemo(
         () => getFormInitialValues(defaultValues, record),
-        [JSON.stringify({ defaultValues, record })] // eslint-disable-line
+        [JSON.stringify({ defaultValues: typeof defaultValues === 'function' ? 'function' : defaultValues, record })] // eslint-disable-line
     );
 
     const finalResolver = resolver
@@ -69,13 +69,23 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
     });
 
     // initialize form with record
+    /* eslint-disable react-hooks/exhaustive-deps */
     useEffect(() => {
         if (!record) {
             return;
         }
         const initialValues = getFormInitialValues(defaultValues, record);
         form.reset(initialValues);
-    }, [form.reset, JSON.stringify(record, defaultValues)]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [
+        JSON.stringify({
+            defaultValues:
+                typeof defaultValues === 'function'
+                    ? 'function'
+                    : defaultValues,
+            record,
+        }),
+    ]);
+    /* eslint-enable react-hooks/exhaustive-deps */
 
     // notify on invalid form
     const isInvalid = useIsFormInvalid(form.control);
