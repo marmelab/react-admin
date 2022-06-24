@@ -58,7 +58,7 @@ const productFilters = [
 ];
 
 export const ProductList = (props) => (
-    <List {...props} filters={postFilters}>
+    <List {...props} filters={productFilters}>
         ...
     </List>
 );
