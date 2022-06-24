@@ -2,12 +2,12 @@
 
 ## 4.2.0
 
-* Add ability to set `meta` in page components ([#7841](https://github.com/marmelab/react-admin/7841)) ([fzaninotto](https://gihub.com/fzaninotto))
-* Add ability to accept more than one child in `<Reference>` Fields ([#7812](https://github.com/marmelab/react-admin/7812)) ([fzaninotto](https://gihub.com/fzaninotto))
-* Add support for `<ReferenceField emptyText>` when the reference is missing ([#7851](https://github.com/marmelab/react-admin/7851)) ([fzaninotto](https://gihub.com/fzaninotto))
-* Add ability to specify available locales on the `i18nProvider` ([#7758](https://github.com/marmelab/react-admin/7758)) ([djhi](https://gihub.com/djhi))
-* Add support for custom toolbar buttons in `<RichTextInput>` ([#7816](https://github.com/marmelab/react-admin/7816)) ([bladx](https://gihub.com/bladx))
-* Add responsiveness to the `<RichTextInput>` toolbar ([#7863](https://github.com/marmelab/react-admin/7863)) ([bladx](https://gihub.com/bladx))
+* Add ability to set `meta` in page components ([#7841](https://github.com/marmelab/react-admin/pull/7841)) ([fzaninotto](https://gihub.com/fzaninotto))
+* Add ability to accept more than one child in `<Reference>` Fields ([#7812](https://github.com/marmelab/react-admin/pull/7812)) ([fzaninotto](https://gihub.com/fzaninotto))
+* Add support for `<ReferenceField emptyText>` when the reference is missing ([#7851](https://github.com/marmelab/react-admin/pull/7851)) ([fzaninotto](https://gihub.com/fzaninotto))
+* Add ability to specify available locales on the `i18nProvider` ([#7758](https://github.com/marmelab/react-admin/pull/7758)) ([djhi](https://gihub.com/djhi))
+* Add support for custom toolbar buttons in `<RichTextInput>` ([#7816](https://github.com/marmelab/react-admin/pull/7816)) ([bladx](https://gihub.com/bladx))
+* Add responsiveness to the `<RichTextInput>` toolbar ([#7863](https://github.com/marmelab/react-admin/pull/7863)) ([bladx](https://gihub.com/bladx))
 
 ## v4.1.6
 
