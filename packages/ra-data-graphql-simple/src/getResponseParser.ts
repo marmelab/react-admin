@@ -37,7 +37,12 @@ const sanitizeResource = (data: any) => {
         }
 
         if (Array.isArray(dataForKey)) {
-            if (typeof dataForKey[0] === 'object' && dataForKey[0] !== null) {
+            if (
+                typeof dataForKey[0] === 'object' &&
+                dataForKey[0] != null &&
+                // If there is no id, it's not a reference but an embedded array
+                dataForKey[0].id != null
+            ) {
                 return {
                     ...acc,
                     [key]: dataForKey.map(sanitizeResource),
@@ -48,7 +53,12 @@ const sanitizeResource = (data: any) => {
             }
         }
 
-        if (typeof dataForKey === 'object' && dataForKey !== null) {
+        if (
+            typeof dataForKey === 'object' &&
+            dataForKey != null &&
+            // If there is no id, it's not a reference but an embedded object
+            dataForKey.id != null
+        ) {
             return {
                 ...acc,
                 ...(dataForKey &&
