@@ -1,5 +1,20 @@
 # Changelog
 
+## v4.1.6
+
+* Fix `useListParams` might navigate to an old pathname ([#7882](https://github.com/marmelab/react-admin/pull/7882)) ([djhi](https://github.com/djhi))
+* Fix `<AutocompleteInput>` paginates passed choices ([#7889](https://github.com/marmelab/react-admin/pull/7889)) ([djhi](https://github.com/djhi))
+* Fix `<Form>` throws error when passed a `defaultValues` function ([#7888](https://github.com/marmelab/react-admin/pull/7888)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<FileInput>` propTypes for `label` prop ([#7869](https://github.com/marmelab/react-admin/pull/7869)) ([slax57](https://github.com/slax57))
+* Fix `<SaveButton>` loading state ([#7860](https://github.com/marmelab/react-admin/pull/7860)) ([septentrion-730n](https://github.com/septentrion-730n))
+* [TypeScript] Fix `FilterLiveSearchProps` should extend `TextInputProps` ([#7859](https://github.com/marmelab/react-admin/pull/7859)) ([septentrion-730n](https://github.com/septentrion-730n))
+* [Doc] Fix link to outdated third party color input / field ([#7886](https://github.com/marmelab/react-admin/pull/7886)) ([alexgschwend](https://github.com/alexgschwend))
+* [Doc] Fix documentation summary design ([#7876](https://github.com/marmelab/react-admin/pull/7876)) ([septentrion-730n](https://github.com/septentrion-730n))
+* [Doc] Fix `<NumberInput>` example ([#7875](https://github.com/marmelab/react-admin/pull/7875)) ([afilp](https://github.com/afilp))
+* [Doc] Fix syntax error in code examples ([#7870](https://github.com/marmelab/react-admin/pull/7870)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix link to `ra-data-postgrest` for v4 ([#7867](https://github.com/marmelab/react-admin/pull/7867)) ([septentrion-730n](https://github.com/septentrion-730n))
+* [Doc] Document `<LongForm>` component ([#7862](https://github.com/marmelab/react-admin/pull/7862)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v4.1.5
 
 * Fix `css-mediaquery` Dependency ([#7849](https://github.com/marmelab/react-admin/pull/7849)) ([fzaninotto](https://github.com/fzaninotto))
