@@ -113,9 +113,7 @@ const sanitizeRestProps = ({
     validate,
     warnWhenUnsavedChanges,
     ...rest
-}: TabbedFormProps) => ({
-    ...rest,
-});
+}: TabbedFormProps) => rest;
 
 TabbedForm.propTypes = {
     children: PropTypes.node,
