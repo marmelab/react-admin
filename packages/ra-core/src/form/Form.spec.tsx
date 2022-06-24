@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { CoreAdminContext } from '../core';
-import { testDataProvider } from '../dataProvider';
+
 import { Form } from './Form';
 import { useNotificationContext } from '../notification';
 import { useInput } from './useInput';
@@ -35,7 +35,7 @@ describe('Form', () => {
 
     it('Does not make the form dirty when reinitialized from a record', () => {
         const { rerender } = render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext>
                 <Form onSubmit={jest.fn()}>
                     <Input source="name" defaultValue="Bar" />
                     <IsDirty />
@@ -47,7 +47,7 @@ describe('Form', () => {
         expect(screen.getByText('isDirty: false')).not.toBeNull();
 
         rerender(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext>
                 <Form onSubmit={jest.fn()} record={{ id: 1, name: 'Foo' }}>
                     <Input source="name" defaultValue="Bar" />
                     <IsDirty />
@@ -61,7 +61,7 @@ describe('Form', () => {
 
     it('Does not make the form dirty when initialized from a record with a missing field and this field has an defaultValue', () => {
         render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext>
                 <Form onSubmit={jest.fn()} record={{ id: 1 }}>
                     <Input source="name" defaultValue="Bar" />
                     <IsDirty />
@@ -75,7 +75,7 @@ describe('Form', () => {
 
     it('Does not make the form dirty when reinitialized from a different record', () => {
         const { rerender } = render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext>
                 <Form onSubmit={jest.fn()} record={{ id: 1, name: 'Foo' }}>
                     <Input source="name" defaultValue="Bar" />
                     <IsDirty />
@@ -87,7 +87,7 @@ describe('Form', () => {
         expect(screen.getByText('isDirty: false')).not.toBeNull();
 
         rerender(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext>
                 <Form
                     onSubmit={jest.fn()}
                     record={{
@@ -115,7 +115,7 @@ describe('Form', () => {
         };
 
         render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext>
                 <>
                     <Form onSubmit={jest.fn()}>
                         <Input source="name" validate={required()} />
@@ -147,7 +147,7 @@ describe('Form', () => {
         );
 
         render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext>
                 <>
                     <Form onSubmit={onSubmit}>
                         <Input source="name" />
@@ -167,7 +167,7 @@ describe('Form', () => {
     it('should set null or undefined values to null', async () => {
         const onSubmit = jest.fn();
         render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext>
                 <Form onSubmit={onSubmit}>
                     <Input
                         source="foo"
@@ -192,7 +192,7 @@ describe('Form', () => {
     it('should set null or undefined deep values to null', async () => {
         const onSubmit = jest.fn();
         render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext>
                 <Form onSubmit={onSubmit}>
                     <Input
                         source="foo.bar"
@@ -218,7 +218,7 @@ describe('Form', () => {
         const str = 'hello';
         const onSubmit = jest.fn();
         render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext>
                 <Form onSubmit={onSubmit}>
                     <Input source="foo" parse={() => str} format={() => str} />
                     <button type="submit">Submit</button>
@@ -240,7 +240,7 @@ describe('Form', () => {
 
         const onSubmit = jest.fn();
         render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext>
                 <Form onSubmit={onSubmit}>
                     <Input
                         source="foo"
@@ -267,7 +267,7 @@ describe('Form', () => {
 
         const onSubmit = jest.fn();
         render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext>
                 <Form onSubmit={onSubmit}>
                     <Input
                         source="foo"
@@ -294,7 +294,7 @@ describe('Form', () => {
 
         const onSubmit = jest.fn();
         render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext>
                 <Form onSubmit={onSubmit}>
                     <Input
                         source="foo"
@@ -320,7 +320,7 @@ describe('Form', () => {
 
         const onSubmit = jest.fn();
         render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext>
                 <Form onSubmit={onSubmit}>
                     <Input
                         source="foo"
@@ -346,7 +346,7 @@ describe('Form', () => {
 
         const onSubmit = jest.fn();
         render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext>
                 <Form onSubmit={onSubmit}>
                     <Input
                         source="foo"
@@ -372,7 +372,7 @@ describe('Form', () => {
 
         const onSubmit = jest.fn();
         render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext>
                 <Form
                     defaultValues={{ foo: [{ foo: 1 }, { foo: 4 }] }}
                     onSubmit={onSubmit}
@@ -401,7 +401,7 @@ describe('Form', () => {
 
         const onSubmit = jest.fn();
         render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext>
                 <Form
                     defaultValues={{
                         foo: [{ foo: 1, foo2: 2 }, { foo: 3 }, { foo: 4 }],
@@ -476,7 +476,7 @@ describe('Form', () => {
 
             const onSubmit = jest.fn();
             render(
-                <CoreAdminContext dataProvider={testDataProvider()}>
+                <CoreAdminContext>
                     <Form defaultValues={defaultValues} onSubmit={onSubmit}>
                         <Input
                             source="foo"
@@ -509,7 +509,7 @@ describe('Form', () => {
             .required();
 
         render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <CoreAdminContext>
                 <Form onSubmit={onSubmit} resolver={yupResolver(schema)}>
                     <Input source="title" />
                     <Input
