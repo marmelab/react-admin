@@ -6,7 +6,9 @@ import { FilterPayload, RaRecord, SortPayload } from '../../types';
  *
  * Use the useChoicesContext() hook to read the context.
  */
-export const ChoicesContext = createContext<ChoicesContextValue>(undefined);
+export const ChoicesContext = createContext<ChoicesContextValue | undefined>(
+    undefined
+);
 
 export type ChoicesContextValue<RecordType extends RaRecord = any> = {
     allChoices: RecordType[];

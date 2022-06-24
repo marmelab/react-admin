@@ -39,7 +39,7 @@ export const setSubmissionErrors = (
             });
         });
     };
-    const setErrorFromObject = (errors: any, rootPath: string) => {
+    const setErrorFromObject = (errors: FieldValues, rootPath: string) => {
         Object.entries(errors).forEach(([name, error]) => {
             if (typeof error === 'object') {
                 setErrorFromObject(error, `${rootPath}${name}.`);

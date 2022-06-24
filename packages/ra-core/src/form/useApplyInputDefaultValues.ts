@@ -8,7 +8,9 @@ import { InputProps } from './useInput';
  * This hook updates the input default value whenever the record changes
  * It applies either the record value if it has one or the defaultValue if it was specified
  */
-export const useApplyInputDefaultValues = (props: Partial<InputProps>) => {
+export const useApplyInputDefaultValues = (
+    props: Partial<InputProps> & { source: string }
+) => {
     const { defaultValue, source } = props;
     const record = useRecordContext(props);
     const { getValues, resetField } = useFormContext();

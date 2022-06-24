@@ -4,7 +4,7 @@ import { ValidationErrorMessageWithArgs } from './validate';
 
 // Flattening an object into path keys:
 // https://github.com/lodash/lodash/issues/2240#issuecomment-418820848
-export const flattenErrors = (obj, path = []) =>
+export const flattenErrors = (obj, path: string[] = []) =>
     !_.isObject(obj)
         ? { [path.join('.')]: obj }
         : _.reduce(

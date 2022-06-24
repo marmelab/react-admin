@@ -56,7 +56,7 @@ export const FormDataConsumerView = (props: Props) => {
     let ret;
 
     // If we have an index, we are in an iterator like component (such as the SimpleFormIterator)
-    if (typeof index !== 'undefined') {
+    if (typeof index !== 'undefined' && source) {
         scopedFormData = get(formData, source);
         getSource = (scopedSource: string) => {
             getSourceHasBeenCalled = true;

@@ -13,7 +13,7 @@ type FieldState = {
 };
 
 type FormGroupState = {
-    errors: object;
+    errors?: object;
     isDirty: boolean;
     isTouched: boolean;
     isValid: boolean;
@@ -128,7 +128,7 @@ export const useFormGroup = (name: string): FormGroupState => {
 export const getFormGroupState = (
     fieldStates: FieldState[]
 ): FormGroupState => {
-    return fieldStates.reduce(
+    return fieldStates.reduce<FormGroupState>(
         (acc, fieldState) => {
             let errors = acc.errors || {};
 

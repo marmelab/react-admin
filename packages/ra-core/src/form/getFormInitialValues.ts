@@ -3,7 +3,7 @@ import { RaRecord } from '../types';
 
 export default function getFormInitialValues(
     defaultValues: DefaultValue,
-    record: Partial<RaRecord>
+    record?: Partial<RaRecord>
 ) {
     const finalInitialValues = merge(
         {},
