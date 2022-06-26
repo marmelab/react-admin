@@ -56,7 +56,8 @@ export const useReferenceArrayFieldController = (
         source,
     } = props;
     const notify = useNotify();
-    const ids = get(record, source) || emptyArray;
+    const value = get(record, source);
+    const ids = Array.isArray(value) ? value : emptyArray;
     const { data, error, isLoading, isFetching, refetch } = useGetManyAggregate(
         reference,
         { ids },
