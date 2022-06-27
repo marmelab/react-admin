@@ -236,7 +236,7 @@ This property accepts the following subclasses:
 
 To override the style of `<Layout>` using the [MUI style overrides](https://mui.com/customization/theme-components/), use the `RaLayout` key.
 
-**Tip**: If you need to override global styles (like the default font size or family), you should [write a custom theme](./Theming.md#theming) rather than override the `<Layiyt sx>` prop. And you you need to tweak the default layout to add a right column or move the menu to the top, you're probably better off [writing your own layout component](./Theming.md#layout-from-scratch). 
+**Tip**: If you need to override global styles (like the default font size or family), you should [write a custom theme](./Theming.md#theming) rather than override the `<Layiyt sx>` prop. And if you need to tweak the default layout to add a right column or move the menu to the top, you're probably better off [writing your own layout component](./Theming.md#layout-from-scratch). 
 
 ## Adding A Custom Context
 
@@ -262,9 +262,9 @@ export const MyLayout = (props) => (
 );
 ```
 
-## Adding Debug Tools
+## Adding Developer Tools
 
-A custom layout is also the ideal place to add debug tools, e.g. [react-query devtools](https://react-query.tanstack.com/devtools) or [react-hook-form devtools](https://react-hook-form.com/dev-tools):
+A custom layout is also the ideal place to add debug tools, e.g. [react-query devtools](https://react-query.tanstack.com/devtools):
 
 ```jsx
 // in src/MyLayout.js
@@ -278,3 +278,5 @@ export const MyLayout = (props) => (
     </>
 );
 ```
+
+![React-Query DevTools](./img/react-query-devtools.png)
