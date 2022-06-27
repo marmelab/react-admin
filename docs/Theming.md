@@ -961,7 +961,7 @@ By default, React-admin uses the list of `<Resource>` components passed as child
 You can create a custom menu component using the `<DashboardMenuItem>` and `<MenuItemLink>` components:
 
 ```jsx
-// in src/Menu.js
+// in src/MyMenu.js
 import * as React from 'react';
 import { DashboardMenuItem, Menu, MenuItemLink } from 'react-admin';
 import BookIcon from '@mui/icons-material/Book';
@@ -969,7 +969,7 @@ import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import PeopleIcon from '@mui/icons-material/People';
 import LabelIcon from '@mui/icons-material/Label';
 
-export const Menu = (props) => (
+export const MyMenu = (props) => (
     <Menu {...props}>
         <DashboardMenuItem />
         <MenuItemLink to="/posts" primaryText="Posts" leftIcon={<BookIcon />}/>
@@ -985,9 +985,9 @@ To use this custom menu component, pass it to a custom Layout, as explained abov
 ```jsx
 // in src/Layout.js
 import { Layout } from 'react-admin';
-import { Menu } from './Menu';
+import { MyMenu } from './MyMenu';
 
-export const Layout = (props) => <Layout {...props} menu={Menu} />;
+export const Layout = (props) => <Layout {...props} menu={MyMenu} />;
 ```
 
 Then, use this layout in the `<Admin>` `layout` prop:
@@ -1061,7 +1061,7 @@ import Badge from '@mui/material/Badge';
         Notifications
     </Badge>
 } />
-```
+``` 
 
 The `letfIcon` prop allows to set the menu left icon.
 
@@ -1074,13 +1074,19 @@ export const theme = {
     palette: {
         // ...
     },
-    overrides: {
-        RaMenuItemLink: {
-            active: {
-                borderLeft: '3px solid #4f3cc9',
-            },
+  components: {
+    // ... 
+    RaMenuItemLink: {
+        styleOverrides: {
             root: {
-                borderLeft: '3px solid #fff', // invisible menu when not active, to avoid scrolling the text when selecting the menu
+                // invisible border when not active, to avoid position flashs
+                borderLeft: '3px solid transparent', 
+                '&.RaMenuItemLink-active': {
+                    borderLeft: '10px solid #4f3cc9',
+                },
+                '& .RaMenuItemLink-icon': {
+                    color: '#EFC44F',
+                },
             },
         },
     },
