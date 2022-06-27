@@ -236,4 +236,45 @@ This property accepts the following subclasses:
 
 To override the style of `<Layout>` using the [MUI style overrides](https://mui.com/customization/theme-components/), use the `RaLayout` key.
 
-**Tip**: If you find yourself tweaking the `<Layout sx>` prop, you're probably better off [writing your own layout component](./Theming.md#layout-from-scratch). 
+**Tip**: If you need to override global styles (like the default font size or family), you should [write a custom theme](./Theming.md#theming) rather than override the `<Layiyt sx>` prop. And you you need to tweak the default layout to add a right column or move the menu to the top, you're probably better off [writing your own layout component](./Theming.md#layout-from-scratch). 
+
+## Adding A Custom Context
+
+A custom Layout is the ideal place to add an application-wide context. 
+
+For instance, in a multi-tenant application, you may want to add a `tenant` context to your layout.
+
+```jsx
+// in src/MyLayout.js
+import { Layout } from 'react-admin';
+
+import { TenantContext } from './TenantContext';
+
+const getCookie = (name) => document.cookie
+  .split('; ')
+  .find(row => row.startsWith(`${name}=`))
+  ?.split('=')[1];
+
+export const MyLayout = (props) => (
+    <TenantContext.Provider value={getCookie('tenant')}>
+        <Layout {...props} />
+    </TenantContext.Provider>
+);
+```
+
+## Adding Debug Tools
+
+A custom layout is also the ideal place to add debug tools, e.g. [react-query devtools](https://react-query.tanstack.com/devtools) or [react-hook-form devtools](https://react-hook-form.com/dev-tools):
+
+```jsx
+// in src/MyLayout.js
+import { Layout } from 'react-admin';
+import { ReactQueryDevtools } from 'react-query/devtools'
+
+export const MyLayout = (props) => (
+    <>
+        <Layout {...props} />
+        <ReactQueryDevtools />
+    </>
+);
+```
