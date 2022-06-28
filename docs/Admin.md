@@ -378,7 +378,7 @@ import { defaultTheme } from 'react-admin';
 const theme = {
     ...defaultTheme,
     palette: {
-        type: 'dark', // Switching the dark mode on is a single property value change.
+        mode: 'dark', // Switching the dark mode on is a single property value change.
     },
 };
 
