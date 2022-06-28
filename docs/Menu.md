@@ -66,11 +66,11 @@ const App = () => (
 | `children`  | Optional | `ReactNode` | -        | The Menu Item Links to be rendered. If not provided, defaults to the Resource names. |
 | `sx`        | Optional | `SxProps`   | -        | Style overrides, powered by MUI System                                               |
 
-Addtional props are passed down to the root component (the MUI [`<MenuList>`](https://mui.com/material-ui/api/menu-list/) component)
+Additional props are passed down to the root component (the MUI [`<MenuList>`](https://mui.com/material-ui/api/menu-list/) component)
 
 ## `children`
 
-`<Menu>` without children renders one menu item per resource, in the same order as they are declared in `<Admin>`, using the `<Resource icon>` prop as menu icon. The menu target is the `list` route of the resource. If you define a `<Admin dashboard>` commponent, react-admin adds a dashboard menu item at the top of the menu.
+`<Menu>` without children renders one menu item per resource, in the same order as they are declared in `<Admin>`, using the `<Resource icon>` prop as menu icon. The menu target is the `list` route of the resource. If you define a `<Admin dashboard>` component, react-admin adds a dashboard menu item at the top of the menu.
 
 ```jsx
 import { Admin, Resource, Layout, Menu } from 'react-admin';
@@ -161,7 +161,7 @@ import Badge from '@mui/material/Badge';
 } />
 ``` 
 
-The `letfIcon` prop allows to set the menu left icon.
+The `letfIcon` prop allows setting the menu left icon.
 
 Additional props are passed down to [the underling MUI `<MenuItem>` component](https://mui.com/api/menu-item/#menuitem-api).
 
