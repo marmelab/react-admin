@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { useWatch } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 import { FilterPayload, RaRecord, SortPayload } from '../../types';
 import { useGetList, useGetManyAggregate } from '../../dataProvider';
@@ -45,7 +45,10 @@ export const useReferenceArrayInputController = <
         reference,
         source,
     } = props;
-    const value = useWatch({ name: source });
+    const { getValues } = useFormContext();
+    // When we change the defaultValue of the child input using react-hook-form resetField function,
+    // useWatch does not seem to get the new value. We fallback to getValues to get it.
+    const value = useWatch({ name: source }) ?? getValues(source);
 
     /**
      * Get the records related to the current value (with getMany)

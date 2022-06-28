@@ -6,7 +6,7 @@ import {
     within,
     fireEvent,
 } from '@testing-library/react';
-import { testDataProvider, useChoicesContext } from 'ra-core';
+import { testDataProvider, useChoicesContext, useInput } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
@@ -91,6 +91,37 @@ describe('<ReferenceArrayInput />', () => {
         );
         await waitFor(() => {
             expect(screen.getByLabelText('total').innerHTML).toEqual('2');
+        });
+    });
+
+    it('should apply default values', async () => {
+        const MyComponent = () => {
+            useInput({ source: 'tag_ids', defaultValue: [1, 2] });
+            const { allChoices } = useChoicesContext();
+            return <div>{allChoices?.map(item => item.id).join()}</div>;
+        };
+        const dataProvider = testDataProvider({
+            getMany: jest
+                .fn()
+                .mockResolvedValue({ data: [{ id: 1 }, { id: 2 }] }),
+        });
+
+        render(
+            <AdminContext dataProvider={dataProvider}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <ReferenceArrayInput {...defaultProps}>
+                        <MyComponent />
+                    </ReferenceArrayInput>
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        await waitFor(() => {
+            expect(dataProvider.getMany).toHaveBeenCalled();
+        });
+
+        await waitFor(() => {
+            expect(screen.queryByText('1,2')).not.toBeNull();
         });
     });
 
