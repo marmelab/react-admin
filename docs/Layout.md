@@ -221,7 +221,7 @@ import { MyMenu } from './MyMenu';
 export const Layout = (props) => <Layout {...props} menu={MyMenu} />;
 ```
 
-You can create a custom menu component using react-admin's `<Menu>` and `<MenuItemLink>` components:
+You can create a custom menu component using [react-admin's `<Menu>` component](./Menu.md):
 
 ```jsx
 // in src/MyMenu.js
@@ -234,11 +234,11 @@ import LabelIcon from '@mui/icons-material/Label';
 
 export const MyMenu = () => (
     <Menu>
-        <DashboardMenuItem />
-        <MenuItemLink to="/posts" primaryText="Posts" leftIcon={<BookIcon />}/>
-        <MenuItemLink to="/comments" primaryText="Comments" leftIcon={<ChatBubbleIcon />}/>
-        <MenuItemLink to="/users" primaryText="Users" leftIcon={<PeopleIcon />}/>
-        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
+        <Menu.DashboardItem />
+        <Menu.Item to="/posts" primaryText="Posts" leftIcon={<BookIcon />}/>
+        <Menu.Item to="/comments" primaryText="Comments" leftIcon={<ChatBubbleIcon />}/>
+        <Menu.Item to="/users" primaryText="Users" leftIcon={<PeopleIcon />}/>
+        <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
     </Menu>
 );
 ```
@@ -248,3 +248,70 @@ But you don't have to use react-admin-s `<Menu>` component. In fact, the `<Layou
 **Tip**: If you need a multi-level menu, or a Mega Menu opening panels with custom content, check out [the `ra-navigation`<img class="icon" src="./img/premium.svg" /> module](https://marmelab.com/ra-enterprise/modules/ra-navigation) (part of the [Enterprise Edition](https://marmelab.com/ra-enterprise))
 
 ![MegaMenu and Breadcrumb](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.gif)
+
+## `sx`: CSS API
+
+Pass an `sx` prop to customize the style of the main component and the underlying elements.
+
+{% raw %}
+```jsx
+export const MyLayout = (props) => (
+    <Layout sx={{ '& .RaLayout-appFrame': { marginTop: 55 } }} {...props}>
+);
+```
+{% endraw %}
+
+This property accepts the following subclasses:
+
+| Rule name                        | Description                                                                               |
+|----------------------------------|------------------------------------------------------------------------------------------ |
+| `& .RaLayout-appFrame`           | Applied to the application frame containing the appBar, the sidebar, and the main content |
+| `& .RaLayout-contentWithSidebar` | Applied to the main part containing the sidebar and the content                           |
+| `& .RaLayout-content`            | Applied to the content area                                                               |
+
+To override the style of `<Layout>` using the [MUI style overrides](https://mui.com/customization/theme-components/), use the `RaLayout` key.
+
+**Tip**: If you need to override global styles (like the default font size or family), you should [write a custom theme](./Theming.md#theming) rather than override the `<Layout sx>` prop. And if you need to tweak the default layout to add a right column or move the menu to the top, you're probably better off [writing your own layout component](./Theming.md#layout-from-scratch). 
+
+## Adding A Custom Context
+
+A custom Layout is the ideal place to add an application-wide context. 
+
+For instance, in a multi-tenant application, you may want to add a `tenant` context to your layout.
+
+```jsx
+// in src/MyLayout.js
+import { Layout } from 'react-admin';
+
+import { TenantContext } from './TenantContext';
+
+const getCookie = (name) => document.cookie
+  .split('; ')
+  .find(row => row.startsWith(`${name}=`))
+  ?.split('=')[1];
+
+export const MyLayout = (props) => (
+    <TenantContext.Provider value={getCookie('tenant')}>
+        <Layout {...props} />
+    </TenantContext.Provider>
+);
+```
+
+## Adding Developer Tools
+
+A custom layout is also the ideal place to add debug tools, e.g. [react-query devtools](https://react-query.tanstack.com/devtools):
+
+```jsx
+// in src/MyLayout.js
+import { Layout } from 'react-admin';
+import { ReactQueryDevtools } from 'react-query/devtools'
+
+export const MyLayout = (props) => (
+    <>
+        <Layout {...props} />
+        <ReactQueryDevtools />
+    </>
+);
+```
+
+![React-Query DevTools](./img/react-query-devtools.png)
