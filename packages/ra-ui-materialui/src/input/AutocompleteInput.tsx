@@ -319,9 +319,14 @@ If you provided a React element for the optionText prop, you must also provide t
             if (option == undefined) {
                 return '';
             }
+
             // Value selected with enter, right from the input
             if (typeof option === 'string') {
                 return option;
+            }
+
+            if (option?.id === '@@ra-create') {
+                return option?.name;
             }
 
             // eslint-disable-next-line eqeqeq
@@ -527,7 +532,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 onBlur={field.onBlur}
                 onInputChange={handleInputChange}
                 renderOption={(props, record) => (
-                    <li {...props}>{getChoiceText(record)}</li>
+                    <li {...props}>{getOptionLabel(record)}</li>
                 )}
             />
             {createElement}

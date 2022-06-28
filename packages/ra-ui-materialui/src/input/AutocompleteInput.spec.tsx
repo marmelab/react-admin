@@ -169,6 +169,41 @@ describe('<AutocompleteInput />', () => {
         });
     });
 
+    it('should not use optionText defined with a function value on the "create new item" option', async () => {
+        const choices = [
+            { id: 'ang', fullname: 'Angular' },
+            { id: 'rea', fullname: 'React' },
+        ];
+        const optionText = jest.fn(choice => choice.fullname);
+
+        const handleCreate = filter => ({
+            id: 'newid',
+            fullname: filter,
+        });
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm mode="onBlur" onSubmit={jest.fn()}>
+                    <AutocompleteInput
+                        source="language"
+                        resource="posts"
+                        choices={choices}
+                        optionText={optionText}
+                        onCreate={handleCreate}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        const input = screen.getByLabelText(
+            'resources.posts.fields.language'
+        ) as HTMLInputElement;
+        input.focus();
+        fireEvent.change(input, { target: { value: 'Vue' } });
+        await new Promise(resolve => setTimeout(resolve));
+        expect(screen.getByText('ra.action.create_item')).not.toBeNull();
+    });
+
     it('should translate the value by default', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
