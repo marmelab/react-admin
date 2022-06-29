@@ -7,7 +7,11 @@ title: "The Layout Component"
 
 The default react-admin layout renders a horizontal app bar at the top, a navigation menu on the side, and the main content in the center.
 
-![standard layout](./img/layout-component.webp)
+![standard layout](./img/layout-component.gif)
+
+In addition, the layout renders the menu as a dropdown on mobile.
+
+![layout responsive](./img/layout-responsive.gif)
 
 React-admin lets you override the app layout using [the `<Admin layout>` prop](./Admin.md#layout). You can use any component you want as layout ; but if you just need to tweak the default layout, you can use the `<Layout>` component.
 
@@ -20,9 +24,8 @@ Create a custom layout overriding some of the components of the default layout:
 import { Layout } from 'react-admin';
 
 import { MyAppBar } from './MyAppBar';
-import { MySidebar } from './MySidebar';
 
-export const MyLayout = props => <Layout {...props} appBar={MyAppBar} sidebar={MySidebar} />;
+export const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 ```
 
 Then pass this custom layout to the `<Admin>` component:
@@ -47,17 +50,25 @@ const App = () => (
 | `appBar`    | Optional | `Component` | -        | A React component rendered at the top of the layout                   |
 | `className` | Optional | `string`    | -        | Passed to the root `<div>` component                                  |
 | `error`     | Optional | `Component` | -        | A React component rendered in the content area in case of error       |
-| `sidebar`   | Optional | `Component` | -        | A React component rendered at the side of the screen                  |
+| `menu`      | Optional | `Component` | -        | A React component rendered at the side of the screen                  |
 | `sx`        | Optional | `SxProps`   | -        | Style overrides, powered by MUI System                                |
 
-`<Layout>` accepts 4 more props, but react-admin sets them at runtime based on the `<Admin>` props:
+React-admin injects more props at runtime based on the `<Admin>` props:
 
 * `dashboard`: The dashboard component. Used to enable the dahboard link in the menu
-* `menu`: A React component rendered as the sidebar content
 * `title`: The default page tile, enreder in the AppBar
 * `children`: The main content of the page
 
-Any value set for these props in a custom layout will be ignored.
+Any value set for these props in a custom layout will be ignored. That's why you're supposed to pass down the props when creating a layout based on `<Layout>`:
+
+```jsx
+// in src/MyLayout.js
+import { Layout } from 'react-admin';
+
+import { MyAppBar } from './MyAppBar';
+
+export const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
+```
 
 ## `appBar`
 
@@ -197,22 +208,46 @@ export const MyError = ({
 };
 ```
 
-## `sidebar`
+## `menu`
 
-Lets you override the sidebar.
-
+Lets you override the menu.
 
 ```jsx
-// in src/MyLayout.js
-import * as React from 'react';
+// in src/Layout.js
 import { Layout } from 'react-admin';
 
-import { MySidebar } from './MySidebar';
+import { MyMenu } from './MyMenu';
 
-const MyLayout = (props) => <Layout {...props} sidebar={MySidebar} />;
-
-export default MyLayout;
+export const Layout = (props) => <Layout {...props} menu={MyMenu} />;
 ```
+
+You can create a custom menu component using [react-admin's `<Menu>` component](./Menu.md):
+
+```jsx
+// in src/MyMenu.js
+import * as React from 'react';
+import { Menu } from 'react-admin';
+import BookIcon from '@mui/icons-material/Book';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import PeopleIcon from '@mui/icons-material/People';
+import LabelIcon from '@mui/icons-material/Label';
+
+export const MyMenu = () => (
+    <Menu>
+        <Menu.DashboardItem />
+        <Menu.Item to="/posts" primaryText="Posts" leftIcon={<BookIcon />}/>
+        <Menu.Item to="/comments" primaryText="Comments" leftIcon={<ChatBubbleIcon />}/>
+        <Menu.Item to="/users" primaryText="Users" leftIcon={<PeopleIcon />}/>
+        <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
+    </Menu>
+);
+```
+
+But you don't have to use react-admin's `<Menu>` component. In fact, the `<Layout menu>` component can render anything you like, e.g. using [MUI's `<Menu>` component](https://mui.com/material-ui/react-menu/).
+
+**Tip**: If you need a multi-level menu, or a Mega Menu opening panels with custom content, check out [the `ra-navigation`<img class="icon" src="./img/premium.svg" /> module](https://marmelab.com/ra-enterprise/modules/ra-navigation) (part of the [Enterprise Edition](https://marmelab.com/ra-enterprise))
+
+![MegaMenu and Breadcrumb](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.gif)
 
 ## `sx`: CSS API
 
@@ -236,7 +271,7 @@ This property accepts the following subclasses:
 
 To override the style of `<Layout>` using the [MUI style overrides](https://mui.com/customization/theme-components/), use the `RaLayout` key.
 
-**Tip**: If you need to override global styles (like the default font size or family), you should [write a custom theme](./Theming.md#theming) rather than override the `<Layiyt sx>` prop. And if you need to tweak the default layout to add a right column or move the menu to the top, you're probably better off [writing your own layout component](./Theming.md#layout-from-scratch). 
+**Tip**: If you need to override global styles (like the default font size or family), you should [write a custom theme](./Theming.md#theming) rather than override the `<Layout sx>` prop. And if you need to tweak the default layout to add a right column or move the menu to the top, you're probably better off [writing your own layout component](./Theming.md#layout-from-scratch). 
 
 ## Adding A Custom Context
 

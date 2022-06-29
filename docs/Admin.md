@@ -313,54 +313,43 @@ React-admin uses the list of `<Resource>` components passed as children of `<Adm
 If you want to add or remove menu items, for instance to link to non-resources pages, you can create your own menu component:
 
 ```jsx
-// in src/Menu.js
+// in src/MyMenu.js
 import * as React from 'react';
 import { createElement } from 'react';
 import { useMediaQuery } from '@mui/material';
-import { MenuItemLink, useResourceDefinitions, useSidebarState } from 'react-admin';
+import { Menu, useResourceDefinitions } from 'react-admin';
 import LabelIcon from '@mui/icons-material/Label';
 
-const Menu = ({ onMenuClick }) => {
+export const MyMenu = () => {
     const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
-    const [open] = useSidebarState();
     const resources = useResourceDefinitions();
     
     return (
-        <div>
+        <Menu>
             {Object.keys(resources).map(name => (
-                <MenuItemLink
+                <Menu.Item
                     key={name}
                     to={`/${name}`}
                     primaryText={resources[name].options && resources[name].options.label || name}
                     leftIcon={createElement(resources[name].icon)}
-                    onClick={onMenuClick}
-                    sidebarIsOpen={open}
                 />
             ))}
-            <MenuItemLink
-                to="/custom-route"
-                primaryText="Miscellaneous"
-                leftIcon={<LabelIcon />}
-                onClick={onMenuClick}
-                sidebarIsOpen={open}
-            />
-        </div>
+            <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />} />
+        </Menu>
     );
-}
-
-export default Menu;
+};
 ```
 
-**Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views. It supports a custom text and icon (which must be a MUI `<SvgIcon>`).
+**Tip**: `<Menu.Item>` must be used to avoid unwanted side effects in mobile views. It supports a custom text and icon (which must be a MUI `<SvgIcon>`).
 
 Then, pass it to the `<Admin>` component as the `menu` prop:
 
 ```jsx
 // in src/App.js
-import Menu from './Menu';
+import { MyMenu } from './Menu';
 
 const App = () => (
-    <Admin menu={Menu} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin menu={MyMenu} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -410,7 +399,7 @@ const App = () => (
 );
 ```
 
-Your custom layout can simply extend the default `<Layout>` component if you only want to override the appBar, the menu, the notification component, or the error page. For instance:
+Your custom layout can simply extend [the default `<Layout>` component](./Layout.md) if you only want to override the appBar, the menu, the notification component, or the error page. For instance:
 
 ```jsx
 // in src/MyLayout.js
