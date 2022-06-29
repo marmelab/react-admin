@@ -226,7 +226,7 @@ You can create a custom menu component using [react-admin's `<Menu>` component](
 ```jsx
 // in src/MyMenu.js
 import * as React from 'react';
-import { DashboardMenuItem, Menu, MenuItemLink } from 'react-admin';
+import { Menu } from 'react-admin';
 import BookIcon from '@mui/icons-material/Book';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import PeopleIcon from '@mui/icons-material/People';
@@ -243,7 +243,7 @@ export const MyMenu = () => (
 );
 ```
 
-But you don't have to use react-admin-s `<Menu>` component. In fact, the `<Layout menu>` component can render anything you like, e.g. using [MUI's `<Menu>` component](https://mui.com/material-ui/react-menu/).
+But you don't have to use react-admin's `<Menu>` component. In fact, the `<Layout menu>` component can render anything you like, e.g. using [MUI's `<Menu>` component](https://mui.com/material-ui/react-menu/).
 
 **Tip**: If you need a multi-level menu, or a Mega Menu opening panels with custom content, check out [the `ra-navigation`<img class="icon" src="./img/premium.svg" /> module](https://marmelab.com/ra-enterprise/modules/ra-navigation) (part of the [Enterprise Edition](https://marmelab.com/ra-enterprise))
 

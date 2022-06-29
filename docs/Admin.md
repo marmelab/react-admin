@@ -349,7 +349,7 @@ Then, pass it to the `<Admin>` component as the `menu` prop:
 import { MyMenu } from './Menu';
 
 const App = () => (
-    <Admin menu={Menu} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin menu={MyMenu} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );

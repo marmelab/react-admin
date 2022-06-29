@@ -11,7 +11,7 @@ This component renders a menu, with one menu item per resource by default. You c
 
 ## Usage
 
-You can create a custom menu component using react-admin's `<Menu>` and `<MenuItemLink>` components:
+You can create a custom menu component using react-admin's `<Menu>` and `<Menu.Item>` components:
 
 ```jsx
 // in src/MyMenu.js
@@ -117,7 +117,7 @@ export const MyMenu = () => (
 );
 ```
 
-Chech [the `<Menu.Item>` section](#menuitem) for more information.
+Check [the `<Menu.Item>` section](#menuitem) for more information.
 
 ## `sx`: CSS API
 
