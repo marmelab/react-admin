@@ -71,6 +71,21 @@ describe('<DateField />', () => {
         expect(queryByText(date)).not.toBeNull();
     });
 
+    it('should render only a time when the showtime prop is true and showdate is false', () => {
+        const { queryByText } = render(
+            <DateField
+                record={{ id: 123, foo: new Date('2017-04-23 23:05') }}
+                showTime
+                showDate={false}
+                source="foo"
+                locales="en-US"
+            />
+        );
+
+        const date = new Date('2017-04-23 23:05').toLocaleTimeString('en-US');
+        expect(queryByText(date)).not.toBeNull();
+    });
+
     it('should pass the options prop to toLocaleString', () => {
         const date = new Date('2017-04-23');
         const options = {
