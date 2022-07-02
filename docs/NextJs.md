@@ -69,7 +69,7 @@ const Home: NextPage = () => {
 export default Home;
 ```
 
-**Tip**: Why the dynamic import? React-admin is designed as a Single-Page Application, rendered on the client side. It comes with its own [routing sytem](./Routing.md), which conflicts with the Next.js routing system. So we must prevent Next.js from rendering the react-admin component on the server-side. Using `dynamic` allows to disable Server-Side Rendering for the `<App>` component.
+**Tip**: Why the dynamic import? React-admin is designed as a Single-Page Application, rendered on the client-side. It comes with its own [routing sytem](./Routing.md), which conflicts with the Next.js routing system. So we must prevent Next.js from rendering the react-admin component on the server-side. Using `dynamic` allows disabling Server-Side Rendering for the `<App>` component.
 
 Now, start the server with `yarn dev`, browse to `http://localhost:3000/`, and you should see the working admin:
 
@@ -99,11 +99,11 @@ Now the admin renders at `http://localhost:3000/admin`, and you can use the Next
 
 ## Adding an API
 
-[Next.js allows to serve an API](https://nextjs.org/docs/api-routes/introduction) from the same server. You *could* use this to build a CRUD API by hand. However, we consider that building a CRUD API on top of a relational database is a solved problem, and that developers shouldn't spend time reimplemeting it. 
+[Next.js allows to serve an API](https://nextjs.org/docs/api-routes/introduction) from the same server. You *could* use this to build a CRUD API by hand. However, we consider that building a CRUD API on top of a relational database is a solved problem and that developers shouldn't spend time reimplementing it. 
 
 For instance, if you store your data in a [PostgreSQL](https://www.postgresql.org/) database, you can use [PostgREST](https://postgrest.org/en/stable/) to expose the data as a REST API with zero configuration. Even better, you can use a Software-as-a-Service like [Supabase](https://supabase.com/) to do that for you. 
 
-In such cases, the Next.js API can only serve as a Proxy to authenticate client queries, and pass them down to Supabase. 
+In such cases, the Next.js API can only serve as a Proxy to authenticate client queries and pass them down to Supabase. 
 
 Let's see an example in practice. 
 
@@ -122,9 +122,9 @@ SUPABASE_URL="https://MY_INSTANCE.supabase.co"
 SUPABASE_SERVICE_ROLE="MY_SERVICE_ROLE_KEY"
 ```
 
-**Tip**: This example uses the **service role key** here and not the anonymous role. This allows write operations without dealing with authorization. **You shouldn't do this in production**, but use the [Supabase authorization](https://supabase.com/docs/guides/auth) feature instead.
+**Tip**: This example uses the **service role key** here and not the anonymous role. This allows mutations without dealing with authorization. **You shouldn't do this in production**, but use the [Supabase authorization](https://supabase.com/docs/guides/auth) feature instead.
 
-Create [a "catch all" API route](https://nextjs.org/docs/api-routes/dynamic-api-routes#optional-catch-all-api-routes) in the Next.js app by adding a `pages/api/admin/[[...slug]].ts` file. This API route redirects all calls from the react-admin app to the Supabase CRUD API:
+Create [a "catch-all" API route](https://nextjs.org/docs/api-routes/dynamic-api-routes#optional-catch-all-api-routes) in the Next.js app by adding a `pages/api/admin/[[...slug]].ts` file. This API route redirects all calls from the react-admin app to the Supabase CRUD API:
 
 ```jsx
 // in pages/api/admin/[[...slug]].ts
