@@ -5,7 +5,7 @@ title: "Remix Integration"
 
 # Remix Integration
 
-React-admin runs seamlessly on [Remix](https://remix.run/).
+[Remix](https://remix.run/) is a Node.js framework for server-side-rendered React apps. But even if react-admin is designed to build Single-Page Applications, Remix and react-admin integrate seamlessly. 
 
 ## Setting Up Remix
 
