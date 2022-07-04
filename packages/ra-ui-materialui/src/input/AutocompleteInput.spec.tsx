@@ -431,6 +431,35 @@ describe('<AutocompleteInput />', () => {
         ).not.toBeNull();
     });
 
+    it('should allow customized rendering of option items', () => {
+        const OptionItem = props => {
+            const record = useRecordContext();
+            return <div {...props} aria-label={record && record.name} />;
+        };
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: 2 }}>
+                    <AutocompleteInput
+                        {...defaultProps}
+                        optionText={<OptionItem />}
+                        matchSuggestion={() => true}
+                        inputText={record => record?.name}
+                        choices={[
+                            { id: 1, name: 'bar' },
+                            { id: 2, name: 'foo' },
+                        ]}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        const input = screen.getByLabelText('resources.users.fields.role');
+        fireEvent.focus(input);
+
+        expect(screen.queryByLabelText('bar')).not.toBeNull();
+    });
+
     it('should reset filter when input value changed', async () => {
         const setFilter = jest.fn();
         const { rerender } = render(

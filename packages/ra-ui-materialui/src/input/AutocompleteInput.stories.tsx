@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Admin } from 'react-admin';
+import { Admin, AdminContext } from 'react-admin';
 import { Resource, required, useCreate, useRecordContext } from 'ra-core';
 import { createMemoryHistory } from 'history';
 import {
@@ -419,6 +419,36 @@ export const InsideReferenceInputWithCreationSupport = () => (
         <Resource name="books" edit={BookEditWithReferenceAndCreationSupport} />
     </Admin>
 );
+
+const OptionItem = props => {
+    const record = useRecordContext();
+    return (
+        <div {...props} aria-label={record && record.name}>
+            {`from optionText: ${record && record.name}`}
+        </div>
+    );
+};
+
+export const CustomizedItemRendering = () => {
+    return (
+        <AdminContext dataProvider={dataProviderWithAuthors}>
+            <SimpleForm onSubmit={() => {}} defaultValues={{ role: 2 }}>
+                <AutocompleteInput
+                    fullWidth
+                    source="role"
+                    resource="users"
+                    optionText={<OptionItem />}
+                    inputText={record => `from inputText ${record?.name}`}
+                    matchSuggestion={() => true}
+                    choices={[
+                        { id: 1, name: 'bar' },
+                        { id: 2, name: 'foo' },
+                    ]}
+                />
+            </SimpleForm>
+        </AdminContext>
+    );
+};
 
 const DalmatianEdit = () => {
     const dalmatians: any[] = [];
