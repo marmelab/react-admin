@@ -699,12 +699,14 @@ By default, react-admin displays the list page of the first `Resource` element a
 import * as React from "react";
 import { Card, CardContent, CardHeader } from '@mui/material';
 
-export default () => (
+const Dashboard = () => (
     <Card>
         <CardHeader title="Welcome to the administration" />
         <CardContent>Lorem ipsum sic dolor amet...</CardContent>
     </Card>
 );
+
+export default Dashboard;
 ```
 
 ```jsx
@@ -732,7 +734,7 @@ The `authProvider` must expose 5 methods, each returning a `Promise`:
 
 ```jsx
 // in src/authProvider.js
-export default {
+const authProvider = {
     // called when the user attempts to log in
     login: ({ username }) => {
         localStorage.setItem('username', username);
@@ -761,6 +763,8 @@ export default {
     // called when the user navigates to a new location, to check for permissions / roles
     getPermissions: () => Promise.resolve(),
 };
+
+export default authProvider;
 ```
 
 **Tip**: As the `authProvider` calls are asynchronous, you can easily fetch an authentication server in there.
@@ -889,7 +893,7 @@ import { stringify } from 'query-string';
 const apiUrl = 'https://my.api.com/';
 const httpClient = fetchUtils.fetchJson;
 
-export default {
+const dataProvider= {
     getList: (resource, params) => {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
@@ -976,6 +980,8 @@ export default {
         }).then(({ json }) => ({ data: json }));
     }
 };
+
+export default dataProvider;
 ```
 
 **Tip**: `fetchUtils.fetchJson()` is just a shortcut for `fetch().then(r => r.json())`, plus a control of the HTTP response code to throw an `HTTPError` in case of 4xx or 5xx response. Feel free to use `fetch()` directly if it doesn't suit your needs.
