@@ -44,7 +44,7 @@ export const Layout = (props: LayoutProps) => {
             <SkipNavigationButton />
             <div
                 className={clsx(LayoutClasses.appFrame, {
-                    'appbar-is-collapsed': trigger,
+                    [LayoutClasses.appbarCollapsed]: trigger,
                 })}
             >
                 <AppBar open={open} title={title} />
@@ -94,6 +94,7 @@ const PREFIX = 'RaLayout';
 export const LayoutClasses = {
     appFrame: `${PREFIX}-appFrame`,
     contentWithSidebar: `${PREFIX}-contentWithSidebar`,
+    appbarCollapsed: `${PREFIX}-appbarCollapsed`,
     content: `${PREFIX}-content`,
 };
 
@@ -116,13 +117,14 @@ const StyledLayout = styled('div', {
         flexDirection: 'column',
         flexGrow: 1,
         marginTop: theme.spacing(6),
-        transition: 'margin 0.25s ease-in-out',
+        transition: `margin ${theme.transitions.easing.easeOut} ${theme.transitions.duration.shortest}ms`,
         [theme.breakpoints.down('sm')]: {
             marginTop: theme.spacing(7),
         },
     },
-    [`& .${LayoutClasses.appFrame}.appbar-is-collapsed`]: {
+    [`& .${LayoutClasses.appbarCollapsed}`]: {
         marginTop: 0,
+        transition: `margin ${theme.transitions.easing.sharp} ${theme.transitions.duration.shorter}ms`,
     },
     [`& .${LayoutClasses.contentWithSidebar}`]: {
         display: 'flex',
