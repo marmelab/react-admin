@@ -352,11 +352,13 @@ If you provided a React element for the optionText prop, you must also provide t
         newInputValue: string,
         reason: string
     ) => {
-        setFilterValue(newInputValue);
-        debouncedSetFilter(newInputValue);
+        if (!doesQueryMatchSelection(newInputValue)) {
+            setFilterValue(newInputValue);
+            debouncedSetFilter(newInputValue);
+        }
     };
 
-    const doesQueryMatchSuggestion = useCallback(
+    const doesQueryMatchSelection = useCallback(
         filter => {
             let selectedItemTexts = [];
 
@@ -368,13 +370,19 @@ If you provided a React element for the optionText prop, you must also provide t
                 selectedItemTexts = [getOptionLabel(selectedChoice)];
             }
 
+            return selectedItemTexts.includes(filter);
+        },
+        [getOptionLabel, multiple, selectedChoice]
+    );
+    const doesQueryMatchSuggestion = useCallback(
+        filter => {
             const hasOption = !!allChoices
                 ? allChoices.some(choice => getOptionLabel(choice) === filter)
                 : false;
 
-            return selectedItemTexts.includes(filter) || hasOption;
+            return doesQueryMatchSelection(filter) || hasOption;
         },
-        [allChoices, getOptionLabel, multiple, selectedChoice]
+        [allChoices, getOptionLabel, doesQueryMatchSelection]
     );
 
     const filterOptions = (options, params) => {

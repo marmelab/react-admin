@@ -439,6 +439,40 @@ describe('<AutocompleteInput />', () => {
         expect(setFilter).toHaveBeenCalledWith('');
     });
 
+    it('should reset filter when users selected a value', async () => {
+        const setFilter = jest.fn();
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <AutocompleteInput
+                        {...defaultProps}
+                        setFilter={setFilter}
+                        choices={[
+                            { id: 1, name: 'bar' },
+                            { id: 2, name: 'foo' },
+                        ]}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+        const input = screen.getByLabelText('resources.users.fields.role');
+        userEvent.type(input, 'ba');
+        await waitFor(() => {
+            expect(setFilter).toHaveBeenCalledTimes(1);
+        });
+        await waitFor(() => {
+            expect(setFilter).toHaveBeenCalledWith('ba');
+        });
+        await waitFor(() => {
+            screen.getByText('bar');
+        });
+        fireEvent.click(screen.getByText('bar'));
+        await waitFor(() => {
+            expect(setFilter).toHaveBeenCalledTimes(2);
+        });
+        expect(setFilter).toHaveBeenCalledWith('');
+    });
+
     it('should allow customized rendering of suggesting item', () => {
         const SuggestionItem = props => {
             const record = useRecordContext();
@@ -585,16 +619,14 @@ describe('<AutocompleteInput />', () => {
             </AdminContext>
         );
         const input = screen.getByLabelText('resources.users.fields.role');
-
         fireEvent.change(input, { target: { value: 'a' } });
         await waitFor(() => {
-            expect(screen.queryAllByRole('option').length).toEqual(3);
+            expect(screen.queryAllByRole('option').length).toEqual(2);
         });
         fireEvent.blur(input);
-
-        fireEvent.change(input, { target: { value: 'a' } });
+        fireEvent.focus(input);
         await waitFor(() => {
-            expect(screen.queryAllByRole('option').length).toEqual(3);
+            expect(screen.queryAllByRole('option').length).toEqual(2);
         });
     });
 
@@ -614,10 +646,9 @@ describe('<AutocompleteInput />', () => {
             </AdminContext>
         );
         const input = screen.getByLabelText('resources.users.fields.role');
-        fireEvent.focus(input);
-        fireEvent.change(input, { target: { value: 'abc' } });
+        fireEvent.change(input, { target: { value: 'ab' } });
         await waitFor(() =>
-            expect(screen.queryAllByRole('option').length).toEqual(1)
+            expect(screen.queryAllByRole('option').length).toEqual(2)
         );
     });
 

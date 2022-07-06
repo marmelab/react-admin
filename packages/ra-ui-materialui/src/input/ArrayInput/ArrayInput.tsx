@@ -165,7 +165,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
     return (
         <FormControl
             fullWidth
-            margin="normal"
+            margin={margin}
             className={clsx('ra-input', `ra-input-${source}`, className)}
             error={(isDirty || isSubmitted) && invalid}
             {...sanitizeInputRestProps(rest)}
