@@ -1,5 +1,5 @@
 import get from 'lodash/get';
-
+import { useMemo } from 'react';
 import { RaRecord, SortPayload } from '../../types';
 import { useGetManyAggregate } from '../../dataProvider';
 import { ListControllerResult, useList } from '../list';
@@ -57,7 +57,15 @@ export const useReferenceArrayFieldController = (
     } = props;
     const notify = useNotify();
     const value = get(record, source);
-    const ids = Array.isArray(value) ? value : emptyArray;
+
+    const ids = useMemo(() => {
+        if (Array.isArray(value)) return value;
+        console.warn(
+            `Value of field '${source}' is not an Array type. No records will be matched.`
+        );
+        return [];
+    }, [value]);
+
     const { data, error, isLoading, isFetching, refetch } = useGetManyAggregate(
         reference,
         { ids },
