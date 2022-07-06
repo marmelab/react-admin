@@ -1,5 +1,28 @@
 # Changelog
 
+## 4.2.1
+
+- Fix warnings in `<Menu>` ([#7931](https://github.com/marmelab/react-admin/pull/7931)) ([djhi](https://github.com/djhi))
+- Fix Stick menu to top when `<AppBar>` is collapsed ([#7930](https://github.com/marmelab/react-admin/pull/7930)) ([septentrion-730n](https://github.com/septentrion-730n))
+- Fix `ra-data-simple-rest` `create` does not return server data ([#7925](https://github.com/marmelab/react-admin/pull/7925)) ([dylanlt](https://github.com/dylanlt))
+- Fix `<AutocompleteInput>` should show options after selection ([#7909](https://github.com/marmelab/react-admin/pull/7909)) ([djhi](https://github.com/djhi))
+- Fix `<AutocompleteInput>` create text is undefined when using a function as `optionText` ([#7908](https://github.com/marmelab/react-admin/pull/7908)) ([septentrion-730n](https://github.com/septentrion-730n))
+- Fix `<ArrayInput>` does not apply the margin prop ([#7905](https://github.com/marmelab/react-admin/pull/7905)) ([djhi](https://github.com/djhi))
+- Fix `<ReferenceArrayInput>` does not fetch defaultValues applied on its child ([#7904](https://github.com/marmelab/react-admin/pull/7904)) ([djhi](https://github.com/djhi))
+- Fix test files are in JS instead of TSX ([#7893](https://github.com/marmelab/react-admin/pull/7893)) ([fzaninotto](https://github.com/fzaninotto))
+- Fix `<ReferenceArrayField>` throw error when its value is not an array ([#7899](https://github.com/marmelab/react-admin/pull/7899)) ([shreyas-jadhav](https://github.com/shreyas-jadhav))
+- Fix `ra-data-graphql-simple` response parser for embedded arrays and objects ([#7895](https://github.com/marmelab/react-admin/pull/7895)) ([djhi](https://github.com/djhi))
+- Fix `<TabbedForm>` ignores custom `resource` prop ([#7891](https://github.com/marmelab/react-admin/pull/7891)) ([fzaninotto](https://github.com/fzaninotto))
+- [TypeScript] Fix missing null checks in form helpers ([#7894](https://github.com/marmelab/react-admin/pull/7894)) ([fzaninotto](https://github.com/fzaninotto))
+- [Doc] Fix `useAuthProvider` documentation ([#7927](https://github.com/marmelab/react-admin/pull/7927)) ([sunil-sharma-999](https://github.com/sunil-sharma-999))
+- [Doc] Assign variable before export default in examples ([#7926](https://github.com/marmelab/react-admin/pull/7926)) ([sunil-sharma-999](https://github.com/sunil-sharma-999))
+- [Doc] Add installation instructions for CRA, Next.js and Remix ([#7921](https://github.com/marmelab/react-admin/pull/7921)) ([fzaninotto](https://github.com/fzaninotto))
+- [Doc] Add documentation for the `<Menu>` component ([#7907](https://github.com/marmelab/react-admin/pull/7907)) ([fzaninotto](https://github.com/fzaninotto))
+- [Doc] Fix examples using wrong key for setting the theme mode ([#7906](https://github.com/marmelab/react-admin/pull/7906)) ([pibouu](https://github.com/pibouu))
+- [Doc] Correct `<MenuItemLink>` active state configuration ([#7901](https://github.com/marmelab/react-admin/pull/7901)) ([septentrion-730n](https://github.com/septentrion-730n))
+- [Doc] Add documentation for the `<Layout>` component ([#7900](https://github.com/marmelab/react-admin/pull/7900)) ([fzaninotto](https://github.com/fzaninotto))
+- [Doc] Add Next.js integration tutorial ([#7879](https://github.com/marmelab/react-admin/pull/7879)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## 4.2.0
 
 * Add ability to set `meta` in page components ([#7841](https://github.com/marmelab/react-admin/pull/7841)) ([fzaninotto](https://gihub.com/fzaninotto))
