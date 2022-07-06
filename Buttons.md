@@ -429,7 +429,7 @@ See [The theming documentation](./Theming.md#menuitemlink) for more details.
 
 | Rule name                   | Description                                                         |
 |-----------------------------|---------------------------------------------------------------------|
-| `& .RaMenuItemLink-active`  | Applied to the underlying `MuiMenuItem`'s `activeClassName` prop    |
+| `&.RaMenuItemLink-active`  | Applied to the underlying `MuiMenuItem`'s `activeClassName` prop    |
 | `& .RaMenuItemLink-icon`    | Applied to the `ListItemIcon` component when `leftIcon` prop is set |
 
 To override the style of all instances of `<MenuItemLink>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaMenuItemLink` key.

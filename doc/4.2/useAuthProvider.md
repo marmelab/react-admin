@@ -21,7 +21,7 @@ const UserName = ({ userId }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState();
     useEffect(() => {
-        useAuthProvider.getIdentity()
+        authProvider.getIdentity()
             .then(({ data }) => {
                 setIdentity(data);
                 setLoading(false);
@@ -30,7 +30,7 @@ const UserName = ({ userId }) => {
                 setError(error);
                 setLoading(false);
             })
-    }, []);
+    }, [authProvider]);
 
     if (loading) return <Loading />;
     if (error) return <Error />;
