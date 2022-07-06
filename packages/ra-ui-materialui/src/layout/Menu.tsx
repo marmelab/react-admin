@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactNode, createElement } from 'react';
-import { MenuList, MenuListProps } from '@mui/material';
+import { MenuList } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import DefaultIcon from '@mui/icons-material/ViewList';
 import PropTypes from 'prop-types';
@@ -90,11 +90,13 @@ export const Menu = (props: MenuProps) => {
     );
 };
 
-export interface MenuProps extends MenuListProps {
+// NOTE: We don't extends MenuListProps here to avoid breaking changes
+export interface MenuProps {
     children?: ReactNode;
     className?: string;
     dense?: boolean;
     hasDashboard?: boolean;
+    [key: string]: any;
 }
 
 Menu.propTypes = {
