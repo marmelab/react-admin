@@ -63,7 +63,7 @@ export const useReferenceArrayFieldController = (
         console.warn(
             `Value of field '${source}' is not an Array type. No records will be matched.`
         );
-        return [];
+        return emptyArray;
     }, [value]);
 
     const { data, error, isLoading, isFetching, refetch } = useGetManyAggregate(
