@@ -16,6 +16,7 @@ import { Menu as DefaultMenu, MenuProps } from './Menu';
 import { Error, ErrorProps } from './Error';
 import { SkipNavigationButton } from '../button';
 import { useSidebarState } from './useSidebarState';
+import { useScrollTrigger } from '@mui/material';
 
 export const Layout = (props: LayoutProps) => {
     const {
@@ -32,6 +33,7 @@ export const Layout = (props: LayoutProps) => {
 
     const [open] = useSidebarState();
     const [errorInfo, setErrorInfo] = useState<ErrorInfo>(null);
+    let trigger = useScrollTrigger();
 
     const handleError = (error: Error, info: ErrorInfo) => {
         setErrorInfo(info);
@@ -40,7 +42,11 @@ export const Layout = (props: LayoutProps) => {
     return (
         <StyledLayout className={clsx('layout', className)} {...rest}>
             <SkipNavigationButton />
-            <div className={LayoutClasses.appFrame}>
+            <div
+                className={clsx(LayoutClasses.appFrame, {
+                    'appbar-is-collapsed': trigger,
+                })}
+            >
                 <AppBar open={open} title={title} />
                 <main className={LayoutClasses.contentWithSidebar}>
                     <Sidebar>
@@ -109,12 +115,14 @@ const StyledLayout = styled('div', {
         display: 'flex',
         flexDirection: 'column',
         flexGrow: 1,
-        [theme.breakpoints.up('xs')]: {
-            marginTop: theme.spacing(6),
-        },
+        marginTop: theme.spacing(6),
+        transition: 'margin 0.25s ease-in-out',
         [theme.breakpoints.down('sm')]: {
             marginTop: theme.spacing(7),
         },
+    },
+    [`& .${LayoutClasses.appFrame}.appbar-is-collapsed`]: {
+        marginTop: 0,
     },
     [`& .${LayoutClasses.contentWithSidebar}`]: {
         display: 'flex',
@@ -127,12 +135,10 @@ const StyledLayout = styled('div', {
         flexDirection: 'column',
         flexGrow: 1,
         flexBasis: 0,
+        padding: 0,
         [theme.breakpoints.up('xs')]: {
             paddingRight: theme.spacing(2),
             paddingLeft: theme.spacing(1),
-        },
-        [theme.breakpoints.down('md')]: {
-            padding: 0,
         },
     },
 }));
