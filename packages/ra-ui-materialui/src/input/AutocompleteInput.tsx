@@ -302,6 +302,7 @@ If you provided a React element for the optionText prop, you must also provide t
         getCreateItem,
         handleChange: handleChangeWithCreateSupport,
         createElement,
+        createId,
     } = useSupportCreateSuggestion({
         create,
         createLabel,
@@ -314,24 +315,28 @@ If you provided a React element for the optionText prop, you must also provide t
     });
 
     const getOptionLabel = useCallback(
-        (option: any) => {
+        (option: any, isListItem: boolean = false) => {
             // eslint-disable-next-line eqeqeq
             if (option == undefined) {
                 return '';
             }
+
             // Value selected with enter, right from the input
             if (typeof option === 'string') {
                 return option;
             }
 
-            // eslint-disable-next-line eqeqeq
-            if (inputText != undefined) {
+            if (option?.id === createId) {
+                return option?.name;
+            }
+
+            if (!isListItem && inputText !== undefined) {
                 return inputText(option);
             }
 
             return getChoiceText(option);
         },
-        [getChoiceText, inputText]
+        [getChoiceText, inputText, createId]
     );
 
     useEffect(() => {
@@ -527,7 +532,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 onBlur={field.onBlur}
                 onInputChange={handleInputChange}
                 renderOption={(props, record) => (
-                    <li {...props}>{getChoiceText(record)}</li>
+                    <li {...props}>{getOptionLabel(record, true)}</li>
                 )}
             />
             {createElement}

@@ -64,6 +64,7 @@ export const useSupportCreateSuggestion = (
     );
 
     return {
+        createId: createValue,
         getCreateItem: () => {
             if (typeof optionText !== 'string') {
                 return {
@@ -129,6 +130,7 @@ export interface SupportCreateSuggestionOptions {
 }
 
 export interface UseSupportCreateValue {
+    createId: string;
     getCreateItem: (
         filterValue?: string
     ) => { id: Identifier; [key: string]: any };

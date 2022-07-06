@@ -828,7 +828,7 @@ describe('<AutocompleteArrayInput />', () => {
                         resource="posts"
                         choices={choices}
                         onCreate={handleCreate}
-                        optionText={choice => `Choice is ${choice.name}`}
+                        optionText={choice => `Choice is not displayed`}
                     />
                 </SimpleForm>
             </AdminContext>
@@ -839,7 +839,7 @@ describe('<AutocompleteArrayInput />', () => {
         }) as HTMLInputElement;
         input.focus();
         fireEvent.change(input, { target: { value: 'New Kid On The Block' } });
-        fireEvent.click(screen.getByText('Choice is ra.action.create_item'));
+        fireEvent.click(screen.getByText('ra.action.create_item'));
         await new Promise(resolve => setTimeout(resolve));
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
