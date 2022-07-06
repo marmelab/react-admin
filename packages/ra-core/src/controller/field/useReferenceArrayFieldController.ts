@@ -60,11 +60,9 @@ export const useReferenceArrayFieldController = (
 
     const ids = useMemo(() => {
         if (Array.isArray(value)) return value;
-        console.warn(
-            `Value of field '${source}' is not an array.`
-        );
+        console.warn(`Value of field '${source}' is not an array.`);
         return emptyArray;
-    }, [value]);
+    }, [value, source]);
 
     const { data, error, isLoading, isFetching, refetch } = useGetManyAggregate(
         reference,
