@@ -45,31 +45,29 @@ export const Menu = (props: MenuProps) => {
     const createPath = useCreatePath();
     const {
         hasDashboard,
-        children = (
-            <>
-                {hasDashboard && <DashboardMenuItem />}
-                {Object.keys(resources)
-                    .filter(name => resources[name].hasList)
-                    .map(name => (
-                        <MenuItemLink
-                            key={name}
-                            to={createPath({
-                                resource: name,
-                                type: 'list',
-                            })}
-                            state={{ _scrollToTop: true }}
-                            primaryText={getResourceLabel(name, 2)}
-                            leftIcon={
-                                resources[name].icon ? (
-                                    createElement(resources[name].icon)
-                                ) : (
-                                    <DefaultIcon />
-                                )
-                            }
-                        />
-                    ))}
-            </>
-        ),
+        children = [
+            hasDashboard ? <DashboardMenuItem /> : null,
+            ...Object.keys(resources)
+                .filter(name => resources[name].hasList)
+                .map(name => (
+                    <MenuItemLink
+                        key={name}
+                        to={createPath({
+                            resource: name,
+                            type: 'list',
+                        })}
+                        state={{ _scrollToTop: true }}
+                        primaryText={getResourceLabel(name, 2)}
+                        leftIcon={
+                            resources[name].icon ? (
+                                createElement(resources[name].icon)
+                            ) : (
+                                <DefaultIcon />
+                            )
+                        }
+                    />
+                )),
+        ],
         className,
         ...rest
     } = props;
