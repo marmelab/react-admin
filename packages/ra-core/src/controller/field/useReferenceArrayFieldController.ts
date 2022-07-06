@@ -61,7 +61,7 @@ export const useReferenceArrayFieldController = (
     const ids = useMemo(() => {
         if (Array.isArray(value)) return value;
         console.warn(
-            `Value of field '${source}' is not an Array type. No records will be matched.`
+            `Value of field '${source}' is not an array.`
         );
         return [];
     }, [value]);
