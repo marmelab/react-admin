@@ -1,5 +1,5 @@
 import fakeRestProvider from 'ra-data-fakerest';
-import { DataProvider, withLifecycleCallbacks } from 'react-admin';
+import { DataProvider, withLifecycleCallbacks, HttpError } from 'react-admin';
 import get from 'lodash/get';
 import data from './data';
 import addUploadFeature from './addUploadFeature';
@@ -96,7 +96,13 @@ const sometimesFailsDataProvider = new Proxy(uploadCapableDataProvider, {
             params.data &&
             params.data.title === 'f00bar'
         ) {
-            return Promise.reject(new Error('this title cannot be used'));
+            return Promise.reject(
+                new HttpError('The form is invalid', 404, {
+                    errors: {
+                        title: 'this title cannot be used',
+                    },
+                })
+            );
         }
         return uploadCapableDataProvider[name](resource, params);
     },

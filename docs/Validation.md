@@ -362,52 +362,46 @@ const CustomerCreate = () => (
 
 ## Server-Side Validation
 
-You can use the errors returned by the dataProvider mutation as a source for the validation. In order to display the validation errors, a custom `save` function needs to be used:
+Server-side validation is supported out of the box. It requires that the dataProvider throws an error with the following shape:
 
-{% raw %}
-```jsx
-import * as React from 'react';
-import { useCallback } from 'react';
-import { Create, SimpleForm, TextInput, useCreate, useRedirect, useNotify } from 'react-admin';
-
-export const UserCreate = () => {
-    const redirect = useRedirect();
-    const notify = useNotify();
-
-    const [create] = useCreate();
-    const save = useCallback(
-        async values => {
-            try {
-                await create(
-                    'users',
-                    { data: values },
-                    { returnPromise: true }
-                );
-                notify('ra.notification.created', {
-                    type: 'info',
-                    messageArgs: { smart_count: 1 },
-                });
-                redirect('list');
-            } catch (error) {
-                if (error.body.errors) {
-                    // The shape of the returned validation errors must match the shape of the form
-                    return error.body.errors;
-                }
-            }
-        },
-        [create, notify, redirect]
-    );
-
-    return (
-        <Create>
-            <SimpleForm onSubmit={save}>
-                <TextInput label="First Name" source="firstName" />
-                <TextInput label="Age" source="age" />
-            </SimpleForm>
-        </Create>
-    );
-};
 ```
-{% endraw %}
+{
+    body: {
+        errors: {
+            source: 'error message',
+        }
+    }
+}
+```
 
-**Tip**: The shape of the returned validation errors must correspond to the form: a key needs to match a `source` prop.
+**Tip**: The shape of the returned validation errors must match the form shape: each key needs to match a `source` prop.
+
+**Tip**: The returned validation errors might have any validation format we support (simple strings or object with message and args) for each key.
+
+**Tip**: If your data provider leverages our [`httpClient`](https://marmelab.com/react-admin/DataProviderWriting.html#example-rest-implementation), this will be handled automatically when your server returns an invalid response with a json body contains the `errors` key.
+
+Here's an example of a dataProvider not using our `httpClient`:
+
+```js
+const myDataProvider = {
+    create: async (resource, { data }) => {
+        const response = await fetch(`${process.env.API_URL}/${resource}`, {
+            method: 'POST',
+            body: JSON.stringify(data),
+        });
+
+        const body = response.json();
+
+        if (status < 200 || status >= 300) {
+            // Here, we expect the body to contains an `errors` key
+            throw new HttpError(
+                (body && body.message) || statusText,
+                status,
+                body
+            );
+        }
+
+        return body;
+    }
+}
+```
