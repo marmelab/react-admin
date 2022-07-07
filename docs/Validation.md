@@ -378,7 +378,7 @@ Server-side validation is supported out of the box. It requires that the dataPro
 
 **Tip**: The returned validation errors might have any validation format we support (simple strings or object with message and args) for each key.
 
-**Tip**: If your data provider leverages our [`httpClient`](https://marmelab.com/react-admin/DataProviderWriting.html#example-rest-implementation), this will be handled automatically when your server returns an invalid response with a json body contains the `errors` key.
+**Tip**: If your data provider leverages our [`httpClient`](https://marmelab.com/react-admin/DataProviderWriting.html#example-rest-implementation), this will be handled automatically when your server returns an invalid response with a json body containing the `errors` key.
 
 Here's an example of a dataProvider not using our `httpClient`:
 

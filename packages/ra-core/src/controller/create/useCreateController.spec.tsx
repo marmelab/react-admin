@@ -1,6 +1,6 @@
 import React from 'react';
 import expect from 'expect';
-import { render, act, screen } from '@testing-library/react';
+import { render, act } from '@testing-library/react';
 import { Location } from 'react-router-dom';
 
 import { getRecordFromLocation } from './useCreateController';

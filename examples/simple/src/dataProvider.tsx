@@ -97,7 +97,7 @@ const sometimesFailsDataProvider = new Proxy(uploadCapableDataProvider, {
             params.data.title === 'f00bar'
         ) {
             return Promise.reject(
-                new HttpError('The form is invalid', 404, {
+                new HttpError('The form is invalid', 400, {
                     errors: {
                         title: 'this title cannot be used',
                     },
