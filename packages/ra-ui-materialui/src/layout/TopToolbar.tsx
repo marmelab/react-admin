@@ -30,6 +30,7 @@ const StyledToolbar = styled(Toolbar, {
         paddingRight: 0,
     },
     [theme.breakpoints.down('md')]: {
+        flex: '0 1 100%',
         paddingRight: theme.spacing(2),
     },
     [theme.breakpoints.down('sm')]: {

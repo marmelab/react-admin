@@ -206,14 +206,17 @@ const StyledForm = styled('form', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    marginTop: theme.spacing(-0.5),
-    marginBottom: theme.spacing(0.5),
-    minHeight: theme.spacing(8),
     display: 'flex',
     alignItems: 'flex-end',
     flexWrap: 'wrap',
+    marginTop: theme.spacing(0.5),
+    marginBottom: theme.spacing(0.5),
+    minHeight: theme.spacing(8),
     pointerEvents: 'none',
-
+    [theme.breakpoints.down('md')]: {
+        flex: '0 1 100%',
+        padding: `${theme.spacing(1)} 0`,
+    },
     [`& .${FilterFormClasses.clearFix}`]: { clear: 'right' },
     '& .MuiFormHelperText-root': { display: 'none' },
 }));

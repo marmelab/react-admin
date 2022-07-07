@@ -80,4 +80,11 @@ const Root = styled(Toolbar, {
         paddingLeft: theme.spacing(2),
         backgroundColor: theme.palette.background.paper,
     },
+    [theme.breakpoints.down('md')]: {
+        width: '100%',
+        position: 'relative',
+        margin: 0,
+        padding: 0,
+        flexWrap: 'wrap',
+    },
 }));
