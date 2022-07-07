@@ -910,7 +910,7 @@ describe('useEditController', () => {
     it('The save function should return errors from the update call in pessimistic mode', async () => {
         let post = { id: 12 };
         const update = jest.fn().mockImplementationOnce(() => {
-            return Promise.reject({ errors: { foo: 'invalid' } });
+            return Promise.reject({ body: { errors: { foo: 'invalid' } } });
         });
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: post }),
