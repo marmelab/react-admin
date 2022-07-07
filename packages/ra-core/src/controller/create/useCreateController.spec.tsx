@@ -506,7 +506,7 @@ describe('useCreateController', () => {
 
     it('The save function should return errors from the create call', async () => {
         const create = jest.fn().mockImplementationOnce(() => {
-            return Promise.reject({ errors: { foo: 'invalid' } });
+            return Promise.reject({ body: { errors: { foo: 'invalid' } } });
         });
         const dataProvider = ({
             create,

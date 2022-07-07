@@ -194,7 +194,7 @@ export const useEditController = <
                         }
                     );
                 } catch (error) {
-                    if ((error as HttpError).body.errors != null) {
+                    if ((error as HttpError).body?.errors != null) {
                         return (error as HttpError).body.errors;
                     }
                 }
