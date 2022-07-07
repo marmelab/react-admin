@@ -61,6 +61,8 @@ If you want a custom route to render without the layout (without the menu and th
 // in src/App.js
 import * as React from "react";
 import { Admin, CustomRoutes } from 'react-admin';
+import { Route } from "react-router-dom";
+
 import Settings from './Settings';
 import Register from './register';
 
