@@ -127,7 +127,10 @@ export const useCreate = <
             unknown
         > & { returnPromise?: boolean } = {}
     ) => {
-        const { returnPromise, ...reactCreateOptions } = createOptions;
+        const {
+            returnPromise = options.returnPromise,
+            ...reactCreateOptions
+        } = createOptions;
         if (returnPromise) {
             return mutation.mutateAsync(
                 { resource: callTimeResource, ...callTimeParams },
@@ -156,7 +159,7 @@ export type UseCreateOptions<
     RecordType,
     MutationError,
     Partial<UseCreateMutateParams<RecordType>>
->;
+> & { returnPromise?: boolean };
 
 export type UseCreateResult<
     RecordType extends RaRecord = any,
