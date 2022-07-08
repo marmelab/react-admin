@@ -207,12 +207,15 @@ const StyledForm = styled('form', {
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     display: 'flex',
+    flex: '0 1 auto',
     alignItems: 'flex-end',
     flexWrap: 'wrap',
-    padding: `${theme.spacing(0.5)} !important`,
-    paddingTop: theme.spacing(1),
     minHeight: theme.spacing(9),
     pointerEvents: 'none',
+    [theme.breakpoints.up('md')]: {
+        padding: `${theme.spacing(0.5)}`,
+        paddingTop: theme.spacing(1),
+    },
     [theme.breakpoints.down('md')]: {
         flex: '0 1 100%',
         padding: `${theme.spacing(1)} 0 0 0`,
