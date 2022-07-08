@@ -22,14 +22,12 @@ const StyledToolbar = styled(Toolbar, {
     alignItems: 'flex-end',
     gap: theme.spacing(1),
     flex: '0 1 auto',
-    padding: theme.spacing(0.5),
-    minHeight: theme.spacing(6),
+    minHeight: 'unset !important',
+    padding: `${theme.spacing(0.5)} !important`,
     [theme.breakpoints.down('md')]: {
         flex: '0 1 100%',
-        padding: `${theme.spacing(0.5)} ${theme.spacing(0.5)} ${theme.spacing(
-            1
-        )} ${theme.spacing(0.5)}`,
-        minHeight: 'unset',
+        padding: theme.spacing(0.5),
+        paddingBottom: theme.spacing(1),
     },
     [theme.breakpoints.down('sm')]: {
         backgroundColor: theme.palette.background.paper,

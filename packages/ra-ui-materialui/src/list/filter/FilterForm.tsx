@@ -209,8 +209,9 @@ const StyledForm = styled('form', {
     display: 'flex',
     alignItems: 'flex-end',
     flexWrap: 'wrap',
-    padding: `${theme.spacing(1)} 0 ${theme.spacing(0.5)} 0`,
-    minHeight: theme.spacing(8),
+    padding: `${theme.spacing(0.5)} !important`,
+    paddingTop: theme.spacing(1),
+    minHeight: theme.spacing(9),
     pointerEvents: 'none',
     [theme.breakpoints.down('md')]: {
         flex: '0 1 100%',
