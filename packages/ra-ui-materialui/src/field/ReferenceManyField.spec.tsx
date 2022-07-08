@@ -21,6 +21,7 @@ describe('<ReferenceManyField />', () => {
         page: 1,
         perPage: 10,
         target: 'post_id',
+        record: { id: 1 },
     };
 
     it('should render a list of the child component', async () => {
