@@ -375,7 +375,11 @@ If you provided a React element for the optionText prop, you must also provide t
                 selectedItemTexts = [getOptionLabel(selectedChoice)];
             }
 
-            return selectedItemTexts.includes(filter);
+            return (
+                filter !== '' &&
+                selectedChoice &&
+                selectedItemTexts.includes(filter)
+            );
         },
         [getOptionLabel, multiple, selectedChoice]
     );
