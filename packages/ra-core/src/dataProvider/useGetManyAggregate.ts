@@ -85,7 +85,7 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
         if (records.some(record => record === undefined)) {
             return undefined;
         } else {
-            return records;
+            return records as RecordType[];
         }
     }, [ids, queryCache, resource, meta]);
 
@@ -138,9 +138,9 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
  * // and sum will be equal to 10
  */
 const batch = fn => {
-    let capturedArgs = [];
-    let timeout = null;
-    return arg => {
+    let capturedArgs: any[] = [];
+    let timeout: ReturnType<typeof setTimeout> | null = null;
+    return (arg: any) => {
         capturedArgs.push(arg);
         if (timeout) clearTimeout(timeout);
         timeout = setTimeout(() => {

@@ -109,7 +109,7 @@ export const useListController = <RecordType extends RaRecord = any>(
     useEffect(() => {
         if (
             query.page <= 0 ||
-            (!isFetching && query.page > 1 && data.length === 0)
+            (!isFetching && query.page > 1 && data?.length === 0)
         ) {
             // Query for a page that doesn't exist, set page to 1
             queryModifiers.setPage(1);
@@ -204,7 +204,7 @@ const defaultSort = {
 
 export interface ListControllerResult<RecordType extends RaRecord = any> {
     sort: SortPayload;
-    data: RecordType[];
+    data?: RecordType[];
     defaultTitle?: string;
     displayedFilters: any;
     error?: any;
@@ -231,9 +231,9 @@ export interface ListControllerResult<RecordType extends RaRecord = any> {
     setPerPage: (page: number) => void;
     setSort: (sort: SortPayload) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
-    total: number;
-    hasNextPage: boolean;
-    hasPreviousPage: boolean;
+    total?: number;
+    hasNextPage?: boolean;
+    hasPreviousPage?: boolean;
 }
 
 export const injectedProps = [

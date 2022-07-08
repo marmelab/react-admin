@@ -60,7 +60,14 @@ export const useGetMany = <RecordType extends RaRecord = any>(
     const queryCache = queryClient.getQueryCache();
 
     return useQuery<RecordType[], Error, RecordType[]>(
-        [resource, 'getMany', { ids: ids.map(id => String(id)), meta }],
+        [
+            resource,
+            'getMany',
+            {
+                ids: !ids || ids.length === 0 ? [] : ids.map(id => String(id)),
+                meta,
+            },
+        ],
         () => {
             if (!ids || ids.length === 0) {
                 // no need to call the dataProvider
@@ -72,18 +79,22 @@ export const useGetMany = <RecordType extends RaRecord = any>(
         },
         {
             placeholderData: () => {
-                const records = ids.map(id => {
-                    const queryHash = hashQueryKey([
-                        resource,
-                        'getOne',
-                        { id: String(id), meta },
-                    ]);
-                    return queryCache.get<RecordType>(queryHash)?.state?.data;
-                });
+                const records =
+                    !ids || ids.length === 0
+                        ? []
+                        : ids.map(id => {
+                              const queryHash = hashQueryKey([
+                                  resource,
+                                  'getOne',
+                                  { id: String(id), meta },
+                              ]);
+                              return queryCache.get<RecordType>(queryHash)
+                                  ?.state?.data;
+                          });
                 if (records.some(record => record === undefined)) {
                     return undefined;
                 } else {
-                    return records;
+                    return records as RecordType[];
                 }
             },
             onSuccess: data => {
