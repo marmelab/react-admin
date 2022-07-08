@@ -32,7 +32,7 @@ const CategoryGrid = () => {
     }
     return (
         <Grid container spacing={2} sx={{ marginTop: '1em' }}>
-            {data?.map(record => (
+            {data.map(record => (
                 <Grid key={record.id} xs={12} sm={6} md={4} lg={3} xl={2} item>
                     <Card>
                         <CardMedia
