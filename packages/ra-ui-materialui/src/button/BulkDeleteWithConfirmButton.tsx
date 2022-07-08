@@ -48,6 +48,7 @@ export const BulkDeleteWithConfirmButton = (
                 notify('ra.notification.deleted', {
                     type: 'info',
                     messageArgs: { smart_count: selectedIds.length },
+                    undoable: mutationMode === 'undoable',
                 });
                 unselectAll();
                 setOpen(false);
