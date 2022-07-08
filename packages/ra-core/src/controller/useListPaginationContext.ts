@@ -1,4 +1,5 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
+import defaults from 'lodash/defaults';
 
 import ListPaginationContext, {
     ListPaginationContextValue,
@@ -43,23 +44,19 @@ const useListPaginationContext = (props?: any): ListPaginationContextValue => {
  * @returns {ListControllerResult} List controller props
  */
 const extractListPaginationContextProps = ({
-    isLoading,
+    loading,
     page,
     perPage,
     setPage,
     setPerPage,
-    hasPreviousPage,
-    hasNextPage,
     total,
     resource,
 }) => ({
-    isLoading,
+    loading,
     page,
     perPage,
     setPage,
     setPerPage,
-    hasPreviousPage,
-    hasNextPage,
     total,
     resource,
 });

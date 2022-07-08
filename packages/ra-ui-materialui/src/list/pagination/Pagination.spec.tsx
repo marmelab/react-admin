@@ -207,33 +207,21 @@ describe('<Pagination />', () => {
             ).not.toBeNull();
         });
     });
-    
+
     it('should work outside of a ListContext', () => {
-        render(
+        const { queryByText } = render(
             <ThemeProvider theme={theme}>
                 <Pagination
                     resource="posts"
                     setPage={() => null}
-                    isLoading={false}
+                    loading={false}
                     setPerPage={() => {}}
-                    hasNextPage={undefined}
-                    hasPreviousPage={undefined}
                     perPage={1}
                     total={2}
                     page={1}
-                    rowsPerPageOptions={[1]}
                 />
             </ThemeProvider>
         );
-        const nextButton = screen.queryByLabelText(
-            'ra.navigation.next'
-        ) as HTMLButtonElement;
-        expect(nextButton).not.toBeNull();
-        expect(nextButton.disabled).toBe(false);
-        const prevButton = screen.queryByLabelText(
-            'ra.navigation.previous'
-        ) as HTMLButtonElement;
-        expect(prevButton).not.toBeNull();
-        expect(prevButton.disabled).toBe(true);
+        expect(queryByText('ra.navigation.page_rows_per_page')).not.toBeNull();
     });
 });

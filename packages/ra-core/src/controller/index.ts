@@ -1,7 +1,9 @@
 import ListController from './ListController';
 import ListContext from './ListContext';
 import ListFilterContext from './ListFilterContext';
-import ListPaginationContext from './ListPaginationContext';
+import ListPaginationContext, {
+    ListPaginationContextValue,
+} from './ListPaginationContext';
 import ListSortContext from './ListSortContext';
 import ListBase from './ListBase';
 import useRecordSelection from './useRecordSelection';
@@ -40,6 +42,7 @@ export {
     ListContext,
     ListFilterContext,
     ListPaginationContext,
+    ListPaginationContextValue,
     ListSortContext,
     ListContextProvider,
     useCheckMinimumRequiredProps,
