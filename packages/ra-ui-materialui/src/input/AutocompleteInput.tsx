@@ -357,14 +357,14 @@ If you provided a React element for the optionText prop, you must also provide t
         newInputValue: string,
         reason: string
     ) => {
-        if (!doesQueryMatchSelection(newInputValue)) {
+        if (!doesQueryMatchSelection(newInputValue, event?.type)) {
             setFilterValue(newInputValue);
             debouncedSetFilter(newInputValue);
         }
     };
 
     const doesQueryMatchSelection = useCallback(
-        filter => {
+        (filter: string, eventType?: string) => {
             let selectedItemTexts = [];
 
             if (multiple) {
@@ -375,11 +375,9 @@ If you provided a React element for the optionText prop, you must also provide t
                 selectedItemTexts = [getOptionLabel(selectedChoice)];
             }
 
-            return (
-                filter !== '' &&
-                selectedChoice &&
-                selectedItemTexts.includes(filter)
-            );
+            return eventType && eventType === 'change'
+                ? selectedItemTexts.includes(filter) && selectedChoice
+                : selectedItemTexts.includes(filter);
         },
         [getOptionLabel, multiple, selectedChoice]
     );
