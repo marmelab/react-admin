@@ -21,7 +21,6 @@ import {
     TextInput,
     Title,
     minLength,
-    RaRecord,
     ShowButton,
     TopToolbar,
     useCreateSuggestionContext,
@@ -30,7 +29,8 @@ import {
     useRecordContext,
 } from 'react-admin';
 
-const LinkToRelatedPost = ({ record }: { record?: RaRecord }) => {
+const LinkToRelatedPost = () => {
+    const record = useRecordContext();
     const createPath = useCreatePath();
     return (
         <RaLink
