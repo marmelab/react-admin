@@ -2,7 +2,13 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { Drawer, DrawerProps, useMediaQuery, Theme } from '@mui/material';
+import {
+    Drawer,
+    DrawerProps,
+    useMediaQuery,
+    Theme,
+    useScrollTrigger,
+} from '@mui/material';
 import lodashGet from 'lodash/get';
 import { useLocale } from 'ra-core';
 
@@ -13,9 +19,9 @@ export const Sidebar = (props: SidebarProps) => {
     const isXSmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('sm')
     );
-    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     const [open, setOpen] = useSidebarState();
     useLocale(); // force redraw on locale change
+    const trigger = useScrollTrigger();
 
     const toggleSidebar = () => setOpen(!open);
 
@@ -29,22 +35,13 @@ export const Sidebar = (props: SidebarProps) => {
         >
             {children}
         </StyledDrawer>
-    ) : isSmall ? (
-        <StyledDrawer
-            variant="permanent"
-            open={open}
-            onClose={toggleSidebar}
-            classes={SidebarClasses}
-            {...rest}
-        >
-            <div className={SidebarClasses.fixed}>{children}</div>
-        </StyledDrawer>
     ) : (
         <StyledDrawer
             variant="permanent"
             open={open}
             onClose={toggleSidebar}
             classes={SidebarClasses}
+            className={trigger ? SidebarClasses.appBarCollapsed : ''}
             {...rest}
         >
             <div className={SidebarClasses.fixed}>{children}</div>
@@ -78,6 +75,7 @@ export const SidebarClasses = {
     paperAnchorDockedBottom: `${PREFIX}-paperAnchorDockedBottom`,
     modal: `${PREFIX}-modal`,
     fixed: `${PREFIX}-fixed`,
+    appBarCollapsed: `${PREFIX}-appBarCollapsed`,
 };
 
 const StyledDrawer = styled(Drawer, {
@@ -87,7 +85,24 @@ const StyledDrawer = styled(Drawer, {
     shouldForwardProp: () => true,
 })(({ open, theme }) => ({
     height: 'calc(100vh - 3em)',
-
+    marginTop: 0,
+    transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+    }),
+    [`&.${SidebarClasses.appBarCollapsed}`]: {
+        // compensate the margin of the Layout appFrame instead of removing it in the Layout
+        // because otherwise, the appFrame content without margin may revert the scrollTrigger,
+        // leading to a visual jiggle
+        marginTop: theme.spacing(-6),
+        [theme.breakpoints.down('sm')]: {
+            marginTop: theme.spacing(-7),
+        },
+        transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+    },
     [`& .${SidebarClasses.docked}`]: {},
     [`& .${SidebarClasses.paper}`]: {},
     [`& .${SidebarClasses.paperAnchorLeft}`]: {},

@@ -16,7 +16,6 @@ import { Menu as DefaultMenu, MenuProps } from './Menu';
 import { Error, ErrorProps } from './Error';
 import { SkipNavigationButton } from '../button';
 import { useSidebarState } from './useSidebarState';
-import { useScrollTrigger } from '@mui/material';
 
 export const Layout = (props: LayoutProps) => {
     const {
@@ -33,7 +32,6 @@ export const Layout = (props: LayoutProps) => {
 
     const [open] = useSidebarState();
     const [errorInfo, setErrorInfo] = useState<ErrorInfo>(null);
-    let trigger = useScrollTrigger();
 
     const handleError = (error: Error, info: ErrorInfo) => {
         setErrorInfo(info);
@@ -42,11 +40,7 @@ export const Layout = (props: LayoutProps) => {
     return (
         <StyledLayout className={clsx('layout', className)} {...rest}>
             <SkipNavigationButton />
-            <div
-                className={clsx(LayoutClasses.appFrame, {
-                    [LayoutClasses.appbarCollapsed]: trigger,
-                })}
-            >
+            <div className={LayoutClasses.appFrame}>
                 <AppBar open={open} title={title} />
                 <main className={LayoutClasses.contentWithSidebar}>
                     <Sidebar>
@@ -94,7 +88,6 @@ const PREFIX = 'RaLayout';
 export const LayoutClasses = {
     appFrame: `${PREFIX}-appFrame`,
     contentWithSidebar: `${PREFIX}-contentWithSidebar`,
-    appbarCollapsed: `${PREFIX}-appbarCollapsed`,
     content: `${PREFIX}-content`,
 };
 
@@ -117,18 +110,17 @@ const StyledLayout = styled('div', {
         flexDirection: 'column',
         flexGrow: 1,
         marginTop: theme.spacing(6),
-        transition: `margin ${theme.transitions.easing.easeOut} ${theme.transitions.duration.shortest}ms`,
         [theme.breakpoints.down('sm')]: {
             marginTop: theme.spacing(7),
         },
     },
-    [`& .${LayoutClasses.appbarCollapsed}`]: {
-        marginTop: 0,
-        transition: `margin ${theme.transitions.easing.sharp} ${theme.transitions.duration.shorter}ms`,
-    },
     [`& .${LayoutClasses.contentWithSidebar}`]: {
         display: 'flex',
         flexGrow: 1,
+        transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
     },
     [`& .${LayoutClasses.content}`]: {
         backgroundColor: theme.palette.background.default,
