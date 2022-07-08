@@ -1,5 +1,14 @@
 # Changelog
 
+## v4.2.2
+
+* Fix `<AppBar>` jiggles when scrolling down rapidly ([#7947](https://github.com/marmelab/react-admin/pull/7947)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<BulkDeleteWithConfirmButton>` does not work when `mutationMode` is `undoable` ([#7948](https://github.com/marmelab/react-admin/pull/7948)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<EditBase>` and `useEditController` unsupported `record` prop ([#7950](https://github.com/marmelab/react-admin/pull/7950)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<AutocompleteInput>` `choices` description ([#7949](https://github.com/marmelab/react-admin/pull/7949)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix Upgrade guide mentions incorrect import in "Removed connected-react-router" section ([#7945](https://github.com/marmelab/react-admin/pull/7945)) ([Matra-Master](https://github.com/Matra-Master))
+* [Doc] Missing import in custom routes documentation  ([#7941](https://github.com/marmelab/react-admin/pull/7941)) ([septentrion-730n](https://github.com/septentrion-730n))
+
 ## 4.2.1
 
 - Fix warnings in `<Menu>` ([#7931](https://github.com/marmelab/react-admin/pull/7931)) ([djhi](https://github.com/djhi))
