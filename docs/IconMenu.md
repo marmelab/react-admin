@@ -140,7 +140,7 @@ It requires the following props:
 
 It accepts optional props:
 
-- `children`: Content of a sliding panel dislayed when the menu is clicked (see [Adding sub menus](#adding-sub-menus) below)
+- `children`: Content of a sliding panel displayed when the menu is clicked (see [Adding sub menus](#adding-sub-menus) below)
 - `sx`: Style overrides, powered by MUI System
 
 Additional props are passed down to [the underling MUI `<listItem>` component](https://mui.com/api/list-item/#listitem-api).
