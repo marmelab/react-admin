@@ -51,7 +51,7 @@
         "jest-circus": "26.6.0",
         "jest-resolve": "26.6.0",
         "jest-watch-typeahead": "0.6.1",
-        "lerna": "~4.0.0",
+        "lerna": "~5.1.8",
         "lint-staged": "^8.1.7",
         "lolex": "~2.3.2",
         "prettier": "~2.1.1",
