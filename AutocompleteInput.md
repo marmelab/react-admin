@@ -10,7 +10,7 @@ It renders using MUI [Autocomplete](https://mui.com/components/autocomplete/).
 
 ![AutocompleteInput](./img/autocomplete-input.gif)
 
-Set the `choices` attribute to determine the options list (with `id`, `name` tuples).
+Set the `choices` attribute to determine the options list. The value must be an array of objects exposing the `id` and `name` for each choice.
 
 ```jsx
 import { AutocompleteInput } from 'react-admin';

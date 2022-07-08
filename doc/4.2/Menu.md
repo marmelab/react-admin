@@ -227,12 +227,10 @@ If you want to render a custom menu item and the default resource menu items, us
 // in src/MyMenu.js
 import * as React from 'react';
 import { createElement } from 'react';
-import { useMediaQuery } from '@mui/material';
 import { Menu, useResourceDefinitions } from 'react-admin';
 import LabelIcon from '@mui/icons-material/Label';
 
 export const MyMenu = () => {
-    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
     const resources = useResourceDefinitions();
     
     return (

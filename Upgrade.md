@@ -343,7 +343,7 @@ If you were dispatching `connected-react-router` actions to navigate, you'll now
 ```diff
 -import { useDispatch } from 'react-redux';
 -import { push } from 'connected-react-router';
-+import { useNavigate } from 'react-router';
++import { useNavigate } from 'react-router-dom';
 
 const MyComponent = () => {
 -    const dispatch = useDispatch();
