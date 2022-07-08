@@ -83,8 +83,12 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
             'getManyReference',
             { target, id, pagination, sort, filter, meta },
         ],
-        () =>
-            dataProvider
+        () => {
+            if (!target || id == null) {
+                // check at runtime to support partial parameters with the enabled option
+                return Promise.reject(new Error('target and id are required'));
+            }
+            return dataProvider
                 .getManyReference<RecordType>(resource, {
                     target,
                     id,
@@ -97,7 +101,8 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
                     data,
                     total,
                     pageInfo,
-                })),
+                }));
+        },
         {
             onSuccess: ({ data }) => {
                 // optimistically populate the getOne cache
