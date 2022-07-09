@@ -13,6 +13,7 @@ import {
     useListPaginationContext,
     sanitizeListRestProps,
     ComponentPropType,
+    ListPaginationContextValue,
 } from 'ra-core';
 
 import { PaginationActions } from './PaginationActions';
@@ -152,7 +153,9 @@ const DefaultLimit = <PaginationLimit />;
 const DefaultRowsPerPageOptions = [5, 10, 25];
 const emptyArray = [];
 
-export interface PaginationProps extends TablePaginationBaseProps {
+export interface PaginationProps
+    extends TablePaginationBaseProps,
+        Partial<ListPaginationContextValue> {
     rowsPerPageOptions?: number[];
     actions?: FC;
     limit?: ReactElement;
