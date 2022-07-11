@@ -1,13 +1,15 @@
 import { FieldValues } from 'react-hook-form';
-import _ from 'lodash';
+import isObject from 'lodash/isObject';
+import merge from 'lodash/merge';
+import reduce from 'lodash/reduce';
 import { ValidationErrorMessageWithArgs } from './validate';
 
 // Flattening an object into path keys:
 // https://github.com/lodash/lodash/issues/2240#issuecomment-418820848
 export const flattenErrors = (obj, path: string[] = []) =>
-    !_.isObject(obj)
+    !isObject(obj)
         ? { [path.join('.')]: obj }
-        : _.reduce(
+        : reduce(
               obj,
               (cum, next, key) => {
                   if (
@@ -15,9 +17,9 @@ export const flattenErrors = (obj, path: string[] = []) =>
                           null &&
                       (obj[key] as ValidationErrorMessageWithArgs).args != null
                   ) {
-                      return _.merge(cum, { [key]: obj[key] });
+                      return merge(cum, { [key]: obj[key] });
                   }
-                  return _.merge(cum, flattenErrors(next, [...path, key]));
+                  return merge(cum, flattenErrors(next, [...path, key]));
               },
               {}
           );
