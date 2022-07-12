@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { FormProvider, FieldValues, UseFormProps } from 'react-hook-form';
 
 import { FormGroupsProvider } from './FormGroupsProvider';
-import { RaRecord } from '../types';
+import { RaRecord, Identifier } from '../types';
 import { useRecordContext, OptionalRecordContextProvider } from '../controller';
 import { useResourceContext } from '../core';
 import { LabelPrefixContextProvider } from '../util';
@@ -74,7 +74,7 @@ export interface FormOwnProps {
     className?: string;
     defaultValues?: any;
     formRootPathname?: string;
-    id?: string;
+    id?: Identifier;
     record?: Partial<RaRecord>;
     resource?: string;
     onSubmit?: (data: FieldValues) => any | Promise<any>;
