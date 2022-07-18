@@ -189,14 +189,13 @@ export const FilterListItem = memo((props: FilterListItemProps) => {
                     data-selected={isSelected ? 'true' : 'false'}
                 />
                 {isSelected && (
-                    <ListItemSecondaryAction>
-                        <IconButton
-                            size="small"
-                            onClick={event => {
-                                event.stopPropagation();
-                                toggleFilter();
-                            }}
-                        >
+                    <ListItemSecondaryAction
+                        onClick={event => {
+                            event.stopPropagation();
+                            toggleFilter();
+                        }}
+                    >
+                        <IconButton size="small">
                             <CancelIcon />
                         </IconButton>
                     </ListItemSecondaryAction>
