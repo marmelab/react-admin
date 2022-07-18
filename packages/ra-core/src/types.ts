@@ -278,7 +278,11 @@ export type Dispatch<T> = T extends (...args: infer A) => any
 export type ResourceElement = ReactElement<ResourceProps>;
 export type RenderResourcesFunction = (
     permissions: any
-) => ResourceElement[] | Promise<ResourceElement[]>;
+) =>
+    | ReactNode // (permissions) => <><Resource /><Resource /><Resource /></>
+    | Promise<ReactNode> // (permissions) => fetch().then(() => <><Resource /><Resource /><Resource /></>)
+    | ResourceElement[] // // (permissions) => [<Resource />, <Resource />, <Resource />]
+    | Promise<ResourceElement[]>; // (permissions) => fetch().then(() => [<Resource />, <Resource />, <Resource />])
 export type AdminChildren = RenderResourcesFunction | ReactNode;
 
 export type TitleComponent = string | ReactElement<any>;
