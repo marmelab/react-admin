@@ -535,6 +535,7 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import SettingsIcon from '@mui/icons-material/Settings';
+import LanguageIcon from '@mui/icons-material/Language';
 
 // It's important to pass the ref to allow MUI to manage the keyboard navigation
 const ConfigurationMenu = React.forwardRef((props, ref) => {
@@ -574,7 +575,7 @@ const SwitchLanguage = forwardRef((props, ref) => {
             }}
         >
             <ListItemIcon sx={{ minWidth: 5 }}>
-                <Language />
+                <LanguageIcon />
             </ListItemIcon>
             <ListItemText>
                 Switch Language
