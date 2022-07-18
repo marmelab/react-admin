@@ -1,5 +1,16 @@
 # Changelog
 
+## v4.2.3
+
+- Fix: Can't un-toggle filter through secondary action button in aside list ([#7982](https://github.com/marmelab/react-admin/pull/7982)) ([septentrion-730n](https://github.com/septentrion-730n))
+- Fix: `useChoicesContext` props should take precedence over context ([#7967](https://github.com/marmelab/react-admin/pull/7967)) ([djhi](https://github.com/djhi))
+- Fix: individually import lodash modules to reduce bundle size ([#7962](https://github.com/marmelab/react-admin/pull/7962)) ([Jkker](https://github.com/Jkker))
+- Fix: `<Pagination>` cannot be used outside a `ListContext` ([#7956](https://github.com/marmelab/react-admin/pull/7956)) ([fzaninotto](https://github.com/fzaninotto))
+- Fix: security alerts on development packages ([#7953](https://github.com/marmelab/react-admin/pull/7953)) ([fzaninotto](https://github.com/fzaninotto))
+- [TypeScript] Fix <Admin> used with function child and fragment does not compile ([#7981](https://github.com/marmelab/react-admin/pull/7981)) ([fzaninotto](https://github.com/fzaninotto))
+- [doc] Fix UserMenu customization documentation ([#7979](https://github.com/marmelab/react-admin/pull/7979)) ([ApolloRisky](https://github.com/ApolloRisky))
+- [chore] Update lerna ([#7951](https://github.com/marmelab/react-admin/pull/7951)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v4.2.2
 
 * Fix `<AppBar>` jiggles when scrolling down rapidly ([#7947](https://github.com/marmelab/react-admin/pull/7947)) ([fzaninotto](https://github.com/fzaninotto))
