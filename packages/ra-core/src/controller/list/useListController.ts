@@ -109,6 +109,7 @@ export const useListController = <RecordType extends RaRecord = any>(
     useEffect(() => {
         if (
             query.page <= 0 ||
+            data == null ||
             (!isFetching && query.page > 1 && data?.length === 0)
         ) {
             // Query for a page that doesn't exist, set page to 1
