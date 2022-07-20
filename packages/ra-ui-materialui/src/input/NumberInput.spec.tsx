@@ -112,6 +112,70 @@ describe('<NumberInput />', () => {
         screen.getByText('views:45');
     });
 
+    describe('field state', () => {
+        const FieldState = ({ name = 'views' }) => {
+            const formContext = useFormContext();
+            return (
+                <code>
+                    {name}:{JSON.stringify(formContext.getFieldState(name))}
+                </code>
+            );
+        };
+        it('should return correct state when the field is pristine', () => {
+            render(
+                <AdminContext>
+                    <SimpleForm>
+                        <NumberInput {...defaultProps} />
+                        <FieldState />
+                    </SimpleForm>
+                </AdminContext>
+            );
+            screen.getByText(
+                'views:{"invalid":false,"isDirty":false,"isTouched":false}'
+            );
+        });
+        it('should return correct state when the field is touched', () => {
+            render(
+                <AdminContext>
+                    <SimpleForm>
+                        <NumberInput {...defaultProps} />
+                        <FieldState />
+                    </SimpleForm>
+                </AdminContext>
+            );
+            const input = screen.getByLabelText(
+                'resources.posts.fields.views'
+            ) as HTMLInputElement;
+            fireEvent.change(input, { target: { value: '3' } });
+            fireEvent.blur(input);
+            screen.getByText(
+                'views:{"invalid":false,"isDirty":true,"isTouched":true}'
+            );
+        });
+        it('should return correct state when the field is invalid', async () => {
+            render(
+                <AdminContext>
+                    <SimpleForm>
+                        <NumberInput
+                            {...defaultProps}
+                            validate={() => 'error'}
+                        />
+                        <FieldState />
+                    </SimpleForm>
+                </AdminContext>
+            );
+            const input = screen.getByLabelText(
+                'resources.posts.fields.views'
+            ) as HTMLInputElement;
+            fireEvent.change(input, { target: { value: '3' } });
+            fireEvent.blur(input);
+            fireEvent.click(screen.getByText('ra.action.save'));
+            await screen.findByText(
+                'views:{"invalid":true,"isDirty":true,"isTouched":true,"error":{"type":"validate","message":"error","ref":{}}}'
+            );
+        });
+    });
+
     describe('format and parse', () => {
         it('should get the same value as injected value ', async () => {
             const onSubmit = jest.fn();
