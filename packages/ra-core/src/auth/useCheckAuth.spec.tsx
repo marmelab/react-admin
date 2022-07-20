@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import expect from 'expect';
 import { screen, render, waitFor } from '@testing-library/react';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
+import { QueryClientProvider, QueryClient } from 'react-query';
 import { createMemoryHistory } from 'history';
 
 import { useCheckAuth } from './useCheckAuth';
@@ -53,6 +54,8 @@ const authProvider: AuthProvider = {
     getPermissions: () => Promise.reject('not authenticated'),
 };
 
+const queryClient = new QueryClient();
+
 describe('useCheckAuth', () => {
     afterEach(() => {
         notify.mockClear();
@@ -63,7 +66,9 @@ describe('useCheckAuth', () => {
         render(
             <HistoryRouter history={history}>
                 <AuthContext.Provider value={authProvider}>
-                    <TestComponent params={{ token: true }} />
+                    <QueryClientProvider client={queryClient}>
+                        <TestComponent params={{ token: true }} />
+                    </QueryClientProvider>
                 </AuthContext.Provider>
             </HistoryRouter>
         );
@@ -79,7 +84,9 @@ describe('useCheckAuth', () => {
         render(
             <HistoryRouter history={history}>
                 <AuthContext.Provider value={authProvider}>
-                    <TestComponent params={{ token: false }} />
+                    <QueryClientProvider client={queryClient}>
+                        <TestComponent params={{ token: false }} />
+                    </QueryClientProvider>
                 </AuthContext.Provider>
             </HistoryRouter>
         );
@@ -95,10 +102,12 @@ describe('useCheckAuth', () => {
         render(
             <HistoryRouter history={history}>
                 <AuthContext.Provider value={authProvider}>
-                    <TestComponent
-                        params={{ token: false }}
-                        logoutOnFailure={false}
-                    />
+                    <QueryClientProvider client={queryClient}>
+                        <TestComponent
+                            params={{ token: false }}
+                            logoutOnFailure={false}
+                        />
+                    </QueryClientProvider>
                 </AuthContext.Provider>
             </HistoryRouter>
         );
@@ -114,10 +123,12 @@ describe('useCheckAuth', () => {
         render(
             <HistoryRouter history={history}>
                 <AuthContext.Provider value={authProvider}>
-                    <TestComponent
-                        params={{ token: false }}
-                        disableNotification
-                    />
+                    <QueryClientProvider client={queryClient}>
+                        <TestComponent
+                            params={{ token: false }}
+                            disableNotification
+                        />
+                    </QueryClientProvider>
                 </AuthContext.Provider>
             </HistoryRouter>
         );
@@ -138,7 +149,9 @@ describe('useCheckAuth', () => {
                         checkAuth: () => Promise.reject({ message: false }),
                     }}
                 >
-                    <TestComponent />
+                    <QueryClientProvider client={queryClient}>
+                        <TestComponent />
+                    </QueryClientProvider>
                 </AuthContext.Provider>
             </HistoryRouter>
         );
@@ -155,7 +168,9 @@ describe('useCheckAuth', () => {
             <HistoryRouter history={history}>
                 <BasenameContextProvider basename="/foo">
                     <AuthContext.Provider value={authProvider}>
-                        <TestComponent params={{ token: false }} />
+                        <QueryClientProvider client={queryClient}>
+                            <TestComponent params={{ token: false }} />
+                        </QueryClientProvider>
                     </AuthContext.Provider>
                 </BasenameContextProvider>
             </HistoryRouter>
