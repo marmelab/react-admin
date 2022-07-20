@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { useLocation, useNavigate, Path } from 'react-router-dom';
+import { useQueryClient } from 'react-query';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import { useResetStore } from '../store';
@@ -26,6 +27,7 @@ import { removeDoubleSlashes } from '../routing/useCreatePath';
  */
 const useLogout = (): Logout => {
     const authProvider = useAuthProvider();
+    const queryClient = useQueryClient();
     const resetStore = useResetStore();
     const navigate = useNavigate();
     // useNavigate forces rerenders on every navigation, even if we don't use the result
@@ -64,6 +66,7 @@ const useLogout = (): Logout => {
             authProvider.logout(params).then(redirectToFromProvider => {
                 if (redirectToFromProvider === false) {
                     resetStore();
+                    queryClient.clear();
                     // do not redirect
                     return;
                 }
@@ -94,10 +97,11 @@ const useLogout = (): Logout => {
                 }
                 navigateRef.current(newLocation, newLocationOptions);
                 resetStore();
+                queryClient.clear();
 
                 return redirectToFromProvider;
             }),
-        [authProvider, resetStore, loginUrl]
+        [authProvider, resetStore, loginUrl, queryClient]
     );
 
     const logoutWithoutProvider = useCallback(
@@ -113,9 +117,10 @@ const useLogout = (): Logout => {
                 }
             );
             resetStore();
+            queryClient.clear();
             return Promise.resolve();
         },
-        [resetStore, location, navigate, loginUrl]
+        [resetStore, location, navigate, loginUrl, queryClient]
     );
 
     return authProvider ? logout : logoutWithoutProvider;
