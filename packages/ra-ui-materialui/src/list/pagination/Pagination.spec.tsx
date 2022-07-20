@@ -207,4 +207,21 @@ describe('<Pagination />', () => {
             ).not.toBeNull();
         });
     });
+
+    it('should work outside of a ListContext', () => {
+        const { queryByText } = render(
+            <ThemeProvider theme={theme}>
+                <Pagination
+                    resource="posts"
+                    setPage={() => null}
+                    loading={false}
+                    setPerPage={() => {}}
+                    perPage={1}
+                    total={2}
+                    page={1}
+                />
+            </ThemeProvider>
+        );
+        expect(queryByText('ra.navigation.page_rows_per_page')).not.toBeNull();
+    });
 });
