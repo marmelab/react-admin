@@ -78,6 +78,34 @@ describe('useListController', () => {
                 });
             });
         });
+
+        it('should reset page when enabled is set to false', async () => {
+            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const dataProvider = testDataProvider();
+            const props = { ...defaultProps, children };
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ListController
+                        resource="posts"
+                        queryOptions={{ enabled: false }}
+                        {...props}
+                    />
+                </CoreAdminContext>
+            );
+
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].setPage(3);
+            });
+
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        page: 1,
+                    })
+                );
+            });
+        });
     });
 
     describe('setFilters', () => {
