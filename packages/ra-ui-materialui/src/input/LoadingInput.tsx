@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CircularProgress } from '@mui/material';
 import { styled, SxProps } from '@mui/material/styles';
-import { useInput, FieldTitle, useTimeout } from 'ra-core';
+import { useTimeout } from 'ra-core';
 
 import { ResettableTextField } from './ResettableTextField';
 
@@ -12,34 +12,17 @@ import { ResettableTextField } from './ResettableTextField';
  */
 export const LoadingInput = ({
     label,
-    resource,
-    source,
-    timeout = 1000,
-    validate,
+    helperText,
     sx,
+    timeout = 1000,
 }: LoadingInputProps) => {
     const oneSecondHasPassed = useTimeout(timeout);
-
-    const { isRequired } = useInput({
-        resource,
-        source,
-        validate,
-    });
 
     return (
         <StyledResettableTextField
             sx={sx}
-            label={
-                label !== '' &&
-                label !== false && (
-                    <FieldTitle
-                        label={label}
-                        source={source}
-                        resource={resource}
-                        isRequired={isRequired}
-                    />
-                )
-            }
+            label={label}
+            helperText={helperText}
             disabled
             onChange={() => {}}
             InputProps={{
@@ -78,9 +61,7 @@ const StyledResettableTextField = styled(ResettableTextField, {
 
 export interface LoadingInputProps {
     label?: string | React.ReactElement | false;
-    resource?: string;
-    source?: string;
     timeout?: number;
-    validate?: any;
     sx?: SxProps;
+    helperText?: React.ReactNode;
 }

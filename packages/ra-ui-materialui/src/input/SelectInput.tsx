@@ -234,10 +234,25 @@ export const SelectInput = (props: SelectInputProps) => {
     if (isLoading) {
         return (
             <LoadingInput
-                label={label}
-                resource={resource}
-                source={source}
+                label={
+                    label !== '' &&
+                    label !== false && (
+                        <FieldTitle
+                            label={label}
+                            source={source}
+                            resource={resourceProp}
+                            isRequired={isRequired}
+                        />
+                    )
+                }
                 sx={props.sx}
+                helperText={
+                    <InputHelperText
+                        touched={isTouched || isSubmitted}
+                        error={error?.message}
+                        helperText={helperText}
+                    />
+                }
             />
         );
     }
