@@ -213,7 +213,7 @@ const StyledForm = styled('form', {
     minHeight: theme.spacing(9),
     pointerEvents: 'none',
     [theme.breakpoints.up('md')]: {
-        padding: `${theme.spacing(0.5)}`,
+        padding: theme.spacing(0.5),
         paddingTop: theme.spacing(1),
     },
     [theme.breakpoints.down('md')]: {
