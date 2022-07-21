@@ -28,6 +28,8 @@ const emptyParams = {};
  * @see useAuthenticated()
  *
  * @param {Object} params Any params you want to pass to the authProvider
+ * 
+ * @param {Boolean} logoutOnFailure: Optional. Whether the user should be logged out if the authProvider fails to authenticate them. False by default.
  *
  * @returns The current auth check state. Destructure as { authenticated, error, isLoading }.
  *
