@@ -12,17 +12,17 @@ import { useCheckAuth } from './useCheckAuth';
  * requires it.
  *
  * @example
- *     import { useAuthenticated } from 'react-admin';
+ *     import { Admin, CustomRoutes, useAuthenticated } from 'react-admin';
  *     const FooPage = () => {
  *         useAuthenticated();
  *         return <Foo />;
  *     }
- *     const CustomRoutes = [
- *         <Route path="/foo" render={() => <FooPage />} />
+ *     const customRoutes = [
+ *         <Route path="/foo" element={<FooPage />} />
  *     ];
  *     const App = () => (
- *         <Admin customRoutes={customRoutes}>
- *             ...
+ *         <Admin>
+ *             <CustomRoutes>{customRoutes}</CustomRoutes>
  *         </Admin>
  *     );
  */
