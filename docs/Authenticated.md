@@ -5,7 +5,7 @@ title: "The Authenticated Component"
 
 # `<Authenticated>`
 
-The `<Authenticated>` component calls [the `useAuthenticated()` hook](./useAuthenticated.md), and renders its child component - unless the authentication check fails. Use it as an alternative to the `useAuthenticated()` hook when you can't use a hook, e.g. inside a `<Route element>` commponent:
+The `<Authenticated>` component calls [the `useAuthState()` hook](./useAuthState.md), and renders its child component - unless the authentication check fails. Use it as an alternative to the `useAuthenticated()` hook when you can't use a hook, e.g. inside a `<Route element>` commponent:
 
 ```jsx
 import { Admin, CustomRoutes, Authenticated } from 'react-admin';
