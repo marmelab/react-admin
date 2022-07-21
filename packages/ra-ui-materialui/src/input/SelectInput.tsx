@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ReactElement, useCallback, ChangeEvent } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { MenuItem, CircularProgress, TextFieldProps } from '@mui/material';
+import { MenuItem, TextFieldProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import {
     useChoicesContext,
