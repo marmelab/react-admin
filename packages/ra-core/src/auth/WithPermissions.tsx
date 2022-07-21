@@ -38,7 +38,7 @@ const isEmptyChildren = children => Children.count(children) === 0;
  * requires it.
  *
  * @example
- *     import { WithPermissions } from 'react-admin';
+ *     import { Admin, CustomRoutes, WithPermissions } from 'react-admin';
  *
  *     const Foo = ({ permissions }) => (
  *         {permissions === 'admin' ? <p>Sensitive data</p> : null}
@@ -46,7 +46,7 @@ const isEmptyChildren = children => Children.count(children) === 0;
  *     );
  *
  *     const customRoutes = [
- *         <Route path="/foo" render={() =>
+ *         <Route path="/foo" element={
  *             <WithPermissions
  *                  authParams={{ foo: 'bar' }}
  *                  render={({ permissions, ...props }) => <Foo permissions={permissions} {...props} />}
@@ -54,8 +54,8 @@ const isEmptyChildren = children => Children.count(children) === 0;
  *         } />
  *     ];
  *     const App = () => (
- *         <Admin customRoutes={customRoutes}>
- *             ...
+ *         <Admin>
+ *             <CustomRoutes>{customRoutes}</CustomRoutes>
  *         </Admin>
  *     );
  */
