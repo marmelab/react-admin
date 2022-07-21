@@ -12,7 +12,7 @@ import useAuthState from './useAuthState';
  *
  * By default this component is optimistic: it does not block
  * rendering children when checking authentication, but this mode
- * can be turned off by setting `pessimistic` to true.
+ * can be turned off by setting `requireAuth` to true.
  *
  * You can set additional `authParams` at will if your authProvider
  * requires it.
@@ -39,13 +39,13 @@ import useAuthState from './useAuthState';
  *     );
  */
 export const Authenticated = (props: AuthenticatedProps) => {
-    const { authParams, children, pessimistic = false } = props;
+    const { authParams, children, requireAuth = false } = props;
 
     // this hook will log out if the authProvider doesn't validate that the user is authenticated
     const { isLoading, authenticated } = useAuthState(authParams, true);
 
     // in pessimistic mode don't render the children until authenticated
-    if ((pessimistic && isLoading) || !authenticated) {
+    if ((requireAuth && isLoading) || !authenticated) {
         return null;
     }
 
@@ -56,5 +56,5 @@ export const Authenticated = (props: AuthenticatedProps) => {
 export interface AuthenticatedProps {
     children: ReactNode;
     authParams?: object;
-    pessimistic?: boolean;
+    requireAuth?: boolean;
 }
