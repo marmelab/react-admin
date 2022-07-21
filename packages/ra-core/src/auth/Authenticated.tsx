@@ -16,18 +16,21 @@ import { useAuthState } from './useAuthState';
  * @see useAuthState
  *
  * @example
- *     import { Authenticated } from 'react-admin';
+ *     import { Admin, CustomRoutes, Authenticated } from 'react-admin';
  *
- *     const CustomRoutes = [
- *         <Route path="/foo" element={
- *             <Authenticated authParams={{ foo: 'bar' }}>
- *                 <Foo />
- *             </Authenticated>
- *         } />
+ *     const customRoutes = [
+ *         <Route
+ *             path="/foo"
+ *             element={
+ *                 <Authenticated authParams={{ foo: 'bar' }}>
+ *                     <Foo />
+ *                 </Authenticated>
+ *             }
+ *         />
  *     ];
  *     const App = () => (
  *         <Admin>
- *             {CustomRoutes}
+ *             <CustomRoutes>{customRoutes}</CustomRoutes>
  *         </Admin>
  *     );
  */
