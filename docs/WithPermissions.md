@@ -5,7 +5,7 @@ title: "WithPermissions"
 
 # `<WithPermissions>`
 
-The `<WithPermissions>` component calls `useAuthenticated()` and `useGetPermissions()` hooks, which relies on the `authProvider.getPermissions()` to retrieves the user's permissions, and injects `permissions` to its child component. Use it as an alternative to the `usePermissions()` hook when you can’t use a hook, e.g. inside a <Route element> commponent:
+The `<WithPermissions>` component calls `useAuthenticated()` and `useGetPermissions()` hooks, which relies on the `authProvider.getPermissions()` to retrieve the user's permissions, and injects `permissions` to its child component. Use it as an alternative to the `usePermissions()` hook when you can’t use a hook, e.g. inside a <Route element> commponent:
 
 ```jsx
 import { Admin, CustomRoutes, WithPermissions } from "react-admin";

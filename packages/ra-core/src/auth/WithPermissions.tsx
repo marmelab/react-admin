@@ -49,7 +49,7 @@ const isEmptyChildren = children => Children.count(children) === 0;
  *         <Route path="/foo" element={
  *             <WithPermissions
  *                  authParams={{ foo: 'bar' }}
- *                  render={({ permissions, ...props }) => <Foo permissions={permissions} {...props} />}
+ *                  component={({ permissions, ...props }) => <Foo permissions={permissions} {...props} />}
  *              />
  *         } />
  *     ];
