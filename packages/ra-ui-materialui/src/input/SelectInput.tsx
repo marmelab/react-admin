@@ -368,6 +368,7 @@ const StyledResettableTextField = styled(ResettableTextField, {
 })(({ theme }) => ({
     ...ResettableTextFieldStyles,
     minWidth: theme.spacing(20),
+    '& .MuiFilledInput-root': { paddingRight: 0 },
 }));
 
 export type SelectInputProps = Omit<CommonInputProps, 'source'> &
