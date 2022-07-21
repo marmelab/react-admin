@@ -143,7 +143,7 @@ export const useReferenceParams = ({
             // eslint-disable-next-line react-hooks/exhaustive-deps
             debouncedSetFilters.current.cancel();
         };
-    });
+    }, []);
 
     const setFilters = useCallback(
         (filter, displayedFilters, debounce = true) => {
