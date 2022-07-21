@@ -21,6 +21,7 @@ const StyledToolbar = styled(Toolbar, {
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
     gap: theme.spacing(1),
+    whiteSpace: 'nowrap',
     flex: '0 1 auto',
     [theme.breakpoints.up('md')]: {
         minHeight: 'unset',

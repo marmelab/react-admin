@@ -131,6 +131,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
                         filterElement={filterElement}
                         handleHide={handleHide}
                         resource={resource}
+                        className={FilterFormClasses.filterFormInput}
                     />
                 ))}
                 <div className={FilterFormClasses.clearFix} />
@@ -200,28 +201,30 @@ const PREFIX = 'RaFilterForm';
 
 export const FilterFormClasses = {
     clearFix: `${PREFIX}-clearFix`,
+    filterFormInput: `${PREFIX}-filterFormInput`,
 };
 
 const StyledForm = styled('form', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    display: 'flex',
-    flex: '0 1 auto',
-    alignItems: 'flex-end',
-    flexWrap: 'wrap',
-    minHeight: theme.spacing(9),
-    pointerEvents: 'none',
-    [theme.breakpoints.up('md')]: {
-        padding: theme.spacing(0.5),
-        paddingTop: theme.spacing(1),
+    '&': {
+        display: 'flex',
+        flex: '0 1 auto',
+        [theme.breakpoints.up('md')]: {
+            flex: '0 1 100%',
+        },
+        flexWrap: 'wrap',
+        alignItems: 'flex-end',
+        minHeight: theme.spacing(8),
+        pointerEvents: 'none',
+        padding: `0 0 ${theme.spacing(0.5)} 0`,
     },
-    [theme.breakpoints.down('md')]: {
-        flex: '0 1 100%',
-        padding: `${theme.spacing(1)} 0 0 0`,
-    },
-    [`& .${FilterFormClasses.clearFix}`]: { clear: 'right' },
     '& .MuiFormHelperText-root': { display: 'none' },
+    [`& .${FilterFormClasses.clearFix}`]: { clear: 'right' },
+    [`& .${FilterFormClasses.filterFormInput} .MuiFormControl-root`]: {
+        marginTop: `${theme.spacing(1)}`,
+    },
 }));
 
 /**
