@@ -243,11 +243,16 @@ export const MyMenu = () => (
 );
 ```
 
-But you don't have to use react-admin's `<Menu>` component. In fact, the `<Layout menu>` component can render anything you like, e.g. using [MUI's `<Menu>` component](https://mui.com/material-ui/react-menu/).
+The `<Layout menu>` component can render any component you like - not just a component based on `<Menu>`.
 
-**Tip**: If you need a multi-level menu, or a Mega Menu opening panels with custom content, check out [the `ra-navigation`<img class="icon" src="./img/premium.svg" /> module](https://marmelab.com/ra-enterprise/modules/ra-navigation) (part of the [Enterprise Edition](https://marmelab.com/ra-enterprise))
+React-admin provides alternative menu layouts that you can use as a base for your own menu:
+
+- [`<MultiLevelMenu>`](./MultiLevelMenu.md) to render nested menus
+- [`<IconMenu>`](./IconMenu.md) for a narrow icon bar with dropdown menus
 
 ![MegaMenu and Breadcrumb](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.gif)
+
+And you can build a totally custom menu using [MUI's `<Menu>` component](https://mui.com/material-ui/react-menu/).
 
 ## `sx`: CSS API
 
