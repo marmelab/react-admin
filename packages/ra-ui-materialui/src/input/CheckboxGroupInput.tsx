@@ -128,7 +128,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
     );
 
     warning(
-        allChoices === undefined,
+        !isLoading && allChoices === undefined,
         `If you're not wrapping the CheckboxGroupInput inside a ReferenceArrayInput, you must provide the choices prop`
     );
 
