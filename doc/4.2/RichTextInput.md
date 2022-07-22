@@ -115,7 +115,7 @@ const MyRichTextInput = ({ size, ...props }) => (
 			<RichTextInputToolbar>
 				<LevelSelect size={size} />
 				<FormatButtons size={size} />
-				<AlignmentButtons {size} />
+				<AlignmentButtons size={size} />
 				<ListButtons size={size} />
 				<LinkButtons size={size} />
 				<QuoteButtons size={size} />
