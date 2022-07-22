@@ -72,6 +72,7 @@ const Root = styled(Toolbar, {
     alignItems: 'flex-end',
     width: '100%',
     padding: '0 !important',
+    minHeight: theme.spacing(8),
     [theme.breakpoints.down('sm')]: {
         backgroundColor: theme.palette.background.paper,
     },

@@ -23,7 +23,7 @@ const StyledToolbar = styled(Toolbar, {
     gap: theme.spacing(1),
     whiteSpace: 'nowrap',
     flex: '0 1 auto',
-    minHeight: 'unset !important',
+    minHeight: theme.spacing(8),
     [theme.breakpoints.up('md')]: {
         padding: theme.spacing(0.5),
         paddingTop: theme.spacing(1),
