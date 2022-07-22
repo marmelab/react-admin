@@ -419,6 +419,7 @@ If you provided a React element for the optionText prop, you must also provide t
     // we store the last choices in a ref. We'll display those last choices until
     // a second has passed.
     const currentChoices = useRef(allChoices);
+
     useEffect(() => {
         if (allChoices && (allChoices.length > 0 || oneSecondHasPassed)) {
             currentChoices.current = allChoices;
@@ -533,9 +534,14 @@ If you provided a React element for the optionText prop, you must also provide t
                 onChange={handleAutocompleteChange}
                 onBlur={field.onBlur}
                 onInputChange={handleInputChange}
-                renderOption={(props, record) => (
-                    <li {...props}>{getOptionLabel(record, true)}</li>
-                )}
+                renderOption={(props, record: RaRecord) => {
+                    (props as { key: string }).key = record.id.toString();
+                    return (
+                        <li key={record.id} {...props}>
+                            {getOptionLabel(record, true)}
+                        </li>
+                    );
+                }}
             />
             {createElement}
         </>
