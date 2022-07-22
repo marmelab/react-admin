@@ -13,6 +13,7 @@ import { ResettableTextField } from './ResettableTextField';
 export const LoadingInput = ({
     label,
     helperText,
+    margin,
     size,
     sx,
     timeout = 1000,
@@ -26,6 +27,7 @@ export const LoadingInput = ({
             label={label}
             helperText={helperText}
             variant={variant}
+            margin={margin}
             size={size}
             disabled
             onChange={() => {}}
@@ -65,6 +67,7 @@ const StyledResettableTextField = styled(ResettableTextField, {
 
 export interface LoadingInputProps {
     helperText?: React.ReactNode;
+    margin?: 'normal' | 'none' | 'dense';
     label?: string | React.ReactElement | false;
     sx?: SxProps;
     size?: 'medium' | 'small';

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Form, testDataProvider } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { Stack, Divider } from '@mui/material';
+import { Stack, Divider, Typography } from '@mui/material';
 
 import { AdminContext } from '../AdminContext';
 import { SelectInput, TextInput } from '../input';
@@ -42,6 +42,22 @@ export const Loading = () => (
     <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
         <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
             <Stack direction="row" spacing={2}>
+                <Typography gutterBottom sx={{ width: 200 }}></Typography>
+                <Typography gutterBottom sx={{ width: 200 }}>
+                    Variant Default
+                </Typography>
+                <Typography gutterBottom sx={{ width: 200 }}>
+                    Variant Standard
+                </Typography>
+                <Typography gutterBottom sx={{ width: 200 }}>
+                    Variant Outlined
+                </Typography>
+            </Stack>
+            <Divider />
+            <Stack direction="row" spacing={2}>
+                <Typography gutterBottom sx={{ width: 200 }}>
+                    Default
+                </Typography>
                 <Stack sx={{ width: 200 }}>
                     <ReferenceInput
                         reference="tags"
@@ -75,6 +91,9 @@ export const Loading = () => (
             </Stack>
             <Divider />
             <Stack direction="row" spacing={2}>
+                <Typography gutterBottom sx={{ width: 200 }}>
+                    size
+                </Typography>
                 <Stack sx={{ width: 200 }}>
                     <ReferenceInput
                         reference="tags"
@@ -112,6 +131,58 @@ export const Loading = () => (
                         />
                     </ReferenceInput>
                     <TextInput source="foo" variant="outlined" size="medium" />
+                </Stack>
+            </Stack>
+            <Divider />
+            <Stack direction="row" spacing={2}>
+                <Typography gutterBottom sx={{ width: 200 }}>
+                    margin
+                </Typography>
+                <Stack sx={{ width: 200 }}>
+                    <ReferenceInput
+                        reference="tags"
+                        resource="posts"
+                        source="tag_ids"
+                    >
+                        <SelectInput optionText="name" margin="normal" />
+                    </ReferenceInput>
+                    <TextInput source="foo" margin="normal" />
+                </Stack>
+                <Stack sx={{ width: 200 }}>
+                    <ReferenceInput
+                        reference="tags"
+                        resource="posts"
+                        source="tag_ids"
+                    >
+                        <SelectInput
+                            optionText="name"
+                            variant="standard"
+                            margin="normal"
+                        />
+                    </ReferenceInput>
+                    <TextInput
+                        source="foo"
+                        variant="standard"
+                        margin="normal"
+                    />
+                </Stack>
+                <Stack sx={{ width: 200 }}>
+                    <ReferenceInput
+                        reference="tags"
+                        resource="posts"
+                        source="tag_ids"
+                    >
+                        <SelectInput
+                            optionText="name"
+                            variant="outlined"
+                            margin="normal"
+                        />
+                    </ReferenceInput>
+                    <TextInput
+                        source="foo"
+                        variant="outlined"
+                        margin="normal"
+                    />
                 </Stack>
             </Stack>
         </Form>

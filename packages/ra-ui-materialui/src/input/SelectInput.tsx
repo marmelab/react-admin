@@ -255,6 +255,7 @@ export const SelectInput = (props: SelectInputProps) => {
                 }
                 variant={props.variant}
                 size={props.size}
+                margin={props.margin}
             />
         );
     }
