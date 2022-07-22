@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Form, testDataProvider } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { Stack } from '@mui/material';
+import { Stack, Divider } from '@mui/material';
 
 import { AdminContext } from '../AdminContext';
 import { SelectInput, TextInput } from '../input';
@@ -71,6 +71,47 @@ export const Loading = () => (
                         <SelectInput optionText="name" variant="outlined" />
                     </ReferenceInput>
                     <TextInput source="foo" variant="outlined" />
+                </Stack>
+            </Stack>
+            <Divider />
+            <Stack direction="row" spacing={2}>
+                <Stack sx={{ width: 200 }}>
+                    <ReferenceInput
+                        reference="tags"
+                        resource="posts"
+                        source="tag_ids"
+                    >
+                        <SelectInput optionText="name" size="medium" />
+                    </ReferenceInput>
+                    <TextInput source="foo" size="medium" />
+                </Stack>
+                <Stack sx={{ width: 200 }}>
+                    <ReferenceInput
+                        reference="tags"
+                        resource="posts"
+                        source="tag_ids"
+                    >
+                        <SelectInput
+                            optionText="name"
+                            variant="standard"
+                            size="medium"
+                        />
+                    </ReferenceInput>
+                    <TextInput source="foo" variant="standard" size="medium" />
+                </Stack>
+                <Stack sx={{ width: 200 }}>
+                    <ReferenceInput
+                        reference="tags"
+                        resource="posts"
+                        source="tag_ids"
+                    >
+                        <SelectInput
+                            optionText="name"
+                            variant="outlined"
+                            size="medium"
+                        />
+                    </ReferenceInput>
+                    <TextInput source="foo" variant="outlined" size="medium" />
                 </Stack>
             </Stack>
         </Form>
