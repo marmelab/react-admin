@@ -123,6 +123,32 @@ Once the promise resolves, the login form redirects to the previous page, or to 
 
 **Tip**: It's a good idea to store credentials in `localStorage`, as in this example, to avoid reconnection when opening a new browser tab. But this makes your application [open to XSS attacks](https://www.redotheweb.com/2015/11/09/api-security.html), so you'd better double down on security, and add an `httpOnly` cookie on the server side, too.
 
+After login, react-admin redirects the user to the location returned by `authProvider.login()` - or to the previous page if the method returns nothing. You can customize the redirection url by returning an object with a `redirectTo` key containing a string or false to disable redirection after login.
+
+```js
+// in src/authProvider.js
+const authProvider = {
+    login: ({ username, password }) =>  {
+        const request = new Request('https://mydomain.com/authenticate', {
+            method: 'POST',
+            body: JSON.stringify({ username, password }),
+            headers: new Headers({ 'Content-Type': 'application/json' }),
+        });
+        return fetch(request)
+            .then(response => {
+                // ...
+                return { redirectTo: false };
+            })
+            .catch(() => {
+                throw new Error('Network error')
+            });
+    },
+    checkAuth: () => { /* ... */ },
+    getPermissions: () => { /* ... */ },
+    // ...
+};
+
+```
 If the login fails, `authProvider.login()` should return a rejected Promise with an Error object. React-admin displays the Error message to the user in a notification.
 
 ### `checkError`
@@ -388,7 +414,7 @@ React-admin calls the `authProvider` methods with the following params:
 
 | Method           | Resolve if                        | Response format |
 | ---------------- | --------------------------------- | --------------- |
-| `login`          | Login credentials were accepted   | `void`          |
+| `login`          | Login credentials were accepted   | `void | { redirectTo?: string | boolean  }` route to redirect to after login |
 | `checkError`     | Error is not an auth error        | `void`          |
 | `checkAuth`      | User is authenticated             | `void`          |
 | `logout`         | Auth backend acknowledged logout  | `string | false | void` route to redirect to after logout, defaults to `/login` |
