@@ -1,4 +1,17 @@
 # Changelog
+ 
+## v4.2.4
+
+- Fix `<SelectInput>` loading UI to avoid visual jump ([#7998](https://github.com/marmelab/react-admin/pull/7998)) by ([fzaninotto](https://github.com/fzaninotto))
+- Fix `<SelectInput>` resettable background color glitch ([#7997](https://github.com/marmelab/react-admin/pull/7997)) by ([fzaninotto](https://github.com/fzaninotto))
+- Fix console error when using `<ReferenceArrayInput>` in list filter ([#7995](https://github.com/marmelab/react-admin/pull/7995)) by ([septentrion-730n](https://github.com/septentrion-730n))
+- Fix `<NumberInput>` field state `isTouched` is always false ([#7992](https://github.com/marmelab/react-admin/pull/7992)) by ([fzaninotto](https://github.com/fzaninotto))
+- Fix error after being logged out and logging in again ([#7991](https://github.com/marmelab/react-admin/pull/7991)) by ([fzaninotto](https://github.com/fzaninotto))
+- Fix `useTheme` returns undefined as value ([#7960](https://github.com/marmelab/react-admin/pull/7960)) by ([septentrion-730n](https://github.com/septentrion-730n))
+- Fix leading character in `<AutocompleteInput>` can not be deleted ([#7954](https://github.com/marmelab/react-admin/pull/7954)) by ([septentrion-730n](https://github.com/septentrion-730n))
+- [Doc] Fix typo in `<RichTextInput>` documentation ([#7990](https://github.com/marmelab/react-admin/pull/7990)) by ([uzegonemad](https://github.com/uzegonemad))
+- [Doc]: Fix `<WithPermissions />` and `<IfCanAccess />` doc ([#7994](https://github.com/marmelab/react-admin/pull/7994)) by ([smeng9](https://github.com/smeng9))
+- [Doc] Add entry for `<MultiLevelMenu>` ([#7983](https://github.com/marmelab/react-admin/pull/7983)) by ([fzaninotto](https://github.com/fzaninotto))
 
 ## v4.2.3
 
