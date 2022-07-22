@@ -208,18 +208,15 @@ const StyledForm = styled('form', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    '&': {
-        display: 'flex',
-        flex: '0 1 auto',
-        [theme.breakpoints.up('md')]: {
-            flex: '0 1 100%',
-        },
-        flexWrap: 'wrap',
-        alignItems: 'flex-end',
-        minHeight: theme.spacing(8),
-        pointerEvents: 'none',
-        padding: `0 0 ${theme.spacing(0.5)} 0`,
+    display: 'flex',
+    flex: '0 1 auto',
+    [theme.breakpoints.up('md')]: {
+        flex: '0 1 100%',
     },
+    flexWrap: 'wrap',
+    alignItems: 'flex-end',
+    pointerEvents: 'none',
+    padding: `0 0 ${theme.spacing(0.5)} 0`,
     '& .MuiFormHelperText-root': { display: 'none' },
     [`& .${FilterFormClasses.clearFix}`]: { clear: 'right' },
     [`& .${FilterFormClasses.filterFormInput} .MuiFormControl-root`]: {
