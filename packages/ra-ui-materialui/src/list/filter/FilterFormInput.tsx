@@ -47,6 +47,7 @@ FilterFormInput.propTypes = {
     filterElement: PropTypes.node,
     handleHide: PropTypes.func,
     resource: PropTypes.string,
+    className: PropTypes.string,
 };
 
 const PREFIX = 'RaFilterFormInput';
