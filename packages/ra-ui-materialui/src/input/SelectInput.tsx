@@ -253,6 +253,7 @@ export const SelectInput = (props: SelectInputProps) => {
                         helperText={helperText}
                     />
                 }
+                variant={props.variant}
             />
         );
     }

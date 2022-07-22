@@ -41,15 +41,37 @@ const i18nProvider = polyglotI18nProvider(() => englishMessages);
 export const Loading = () => (
     <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
         <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
-            <Stack sx={{ width: 200 }}>
-                <ReferenceInput
-                    reference="tags"
-                    resource="posts"
-                    source="tag_ids"
-                >
-                    <SelectInput optionText="name" />
-                </ReferenceInput>
-                <TextInput source="foo" />
+            <Stack direction="row" spacing={2}>
+                <Stack sx={{ width: 200 }}>
+                    <ReferenceInput
+                        reference="tags"
+                        resource="posts"
+                        source="tag_ids"
+                    >
+                        <SelectInput optionText="name" />
+                    </ReferenceInput>
+                    <TextInput source="foo" />
+                </Stack>
+                <Stack sx={{ width: 200 }}>
+                    <ReferenceInput
+                        reference="tags"
+                        resource="posts"
+                        source="tag_ids"
+                    >
+                        <SelectInput optionText="name" variant="standard" />
+                    </ReferenceInput>
+                    <TextInput source="foo" variant="standard" />
+                </Stack>
+                <Stack sx={{ width: 200 }}>
+                    <ReferenceInput
+                        reference="tags"
+                        resource="posts"
+                        source="tag_ids"
+                    >
+                        <SelectInput optionText="name" variant="outlined" />
+                    </ReferenceInput>
+                    <TextInput source="foo" variant="outlined" />
+                </Stack>
             </Stack>
         </Form>
     </AdminContext>

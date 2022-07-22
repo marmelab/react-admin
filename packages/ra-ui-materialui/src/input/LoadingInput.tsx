@@ -15,6 +15,7 @@ export const LoadingInput = ({
     helperText,
     sx,
     timeout = 1000,
+    variant,
 }: LoadingInputProps) => {
     const oneSecondHasPassed = useTimeout(timeout);
 
@@ -23,6 +24,7 @@ export const LoadingInput = ({
             sx={sx}
             label={label}
             helperText={helperText}
+            variant={variant}
             disabled
             onChange={() => {}}
             InputProps={{
@@ -64,4 +66,5 @@ export interface LoadingInputProps {
     timeout?: number;
     sx?: SxProps;
     helperText?: React.ReactNode;
+    variant?: 'standard' | 'filled' | 'outlined';
 }
