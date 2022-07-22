@@ -2,8 +2,7 @@ import * as React from 'react';
 import { ReactElement, useCallback, ChangeEvent } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import MenuItem from '@mui/material/MenuItem';
-import { TextFieldProps } from '@mui/material/TextField';
+import { MenuItem, TextFieldProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import {
     useChoicesContext,
@@ -22,12 +21,11 @@ import {
 } from './ResettableTextField';
 import { InputHelperText } from './InputHelperText';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
-import { Labeled } from '../Labeled';
-import { LinearProgress } from '../layout';
 import {
     useSupportCreateSuggestion,
     SupportCreateSuggestionOptions,
 } from './useSupportCreateSuggestion';
+import { LoadingInput } from './LoadingInput';
 
 /**
  * An Input component for a select box, using an array of objects for the options
@@ -235,15 +233,30 @@ export const SelectInput = (props: SelectInputProps) => {
 
     if (isLoading) {
         return (
-            <Labeled
-                label={label}
-                source={source}
-                resource={resourceProp}
-                className={clsx('ra-input', `ra-input-${source}`, className)}
-                isRequired={isRequired}
-            >
-                <LinearProgress />
-            </Labeled>
+            <LoadingInput
+                label={
+                    label !== '' &&
+                    label !== false && (
+                        <FieldTitle
+                            label={label}
+                            source={source}
+                            resource={resourceProp}
+                            isRequired={isRequired}
+                        />
+                    )
+                }
+                sx={props.sx}
+                helperText={
+                    <InputHelperText
+                        touched={isTouched || isSubmitted}
+                        error={error?.message}
+                        helperText={helperText}
+                    />
+                }
+                variant={props.variant}
+                size={props.size}
+                margin={props.margin}
+            />
         );
     }
 
