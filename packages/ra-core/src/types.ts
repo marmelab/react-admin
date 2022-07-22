@@ -59,7 +59,9 @@ export interface UserIdentity {
  * authProvider types
  */
 export type AuthProvider = {
-    login: (params: any) => Promise<any>;
+    login: (
+        params: any
+    ) => Promise<{ redirectTo?: string | boolean } | void | any>;
     logout: (params: any) => Promise<void | false | string>;
     checkAuth: (params: any) => Promise<void>;
     checkError: (error: any) => Promise<void>;
