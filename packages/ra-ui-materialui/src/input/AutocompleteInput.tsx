@@ -535,12 +535,10 @@ If you provided a React element for the optionText prop, you must also provide t
                 onBlur={field.onBlur}
                 onInputChange={handleInputChange}
                 renderOption={(props, record: RaRecord) => {
-                    (props as { key: string }).key = record.id.toString();
-                    return (
-                        <li key={record.id} {...props}>
-                            {getOptionLabel(record, true)}
-                        </li>
-                    );
+                    (props as {
+                        key: string;
+                    }).key = record[optionValue];
+                    return <li {...props}>{getOptionLabel(record, true)}</li>;
                 }}
             />
             {createElement}
