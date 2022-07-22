@@ -158,12 +158,10 @@ const StyledAppBar = styled(MuiAppBar, {
             minHeight: theme.spacing(6),
         },
     },
-
     [`& .${AppBarClasses.menuButton}`]: {
         marginLeft: '0.2em',
         marginRight: '0.2em',
     },
-
     [`& .${AppBarClasses.title}`]: {
         flex: 1,
         textOverflow: 'ellipsis',
