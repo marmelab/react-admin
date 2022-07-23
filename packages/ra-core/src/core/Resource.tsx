@@ -50,6 +50,7 @@ Resource.registerResource = ({
     name,
     options,
     show,
+    recordRepresentation,
 }: ResourceProps) => ({
     name,
     options,
@@ -58,4 +59,5 @@ Resource.registerResource = ({
     hasEdit: !!edit,
     hasShow: !!show,
     icon,
+    recordRepresentation,
 });
