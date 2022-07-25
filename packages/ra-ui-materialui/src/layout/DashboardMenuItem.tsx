@@ -1,29 +1,32 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import { useTranslate, useBasename } from 'ra-core';
+import { useBasename } from 'ra-core';
 
-import { MenuItemLink } from './MenuItemLink';
+import { MenuItemLink, MenuItemLinkProps } from './MenuItemLink';
+import { To } from 'history';
 
 export const DashboardMenuItem = (props: DashboardMenuItemProps) => {
-    const { locale, leftIcon = <DashboardIcon />, ...rest } = props;
-    const translate = useTranslate();
     const basename = useBasename();
+    const {
+        leftIcon = <DashboardIcon />,
+        to = `${basename}/`,
+        primaryText = 'ra.page.dashboard',
+        ...rest
+    } = props;
+
     return (
         <MenuItemLink
-            to={`${basename}/`}
-            primaryText={translate('ra.page.dashboard')}
             leftIcon={leftIcon}
+            to={to}
+            primaryText={primaryText}
             {...rest}
         />
     );
 };
 
-export interface DashboardMenuItemProps {
-    leftIcon?: ReactElement;
-    locale?: string;
-    onClick?: () => void;
-    dense?: boolean;
+export interface DashboardMenuItemProps extends Omit<MenuItemLinkProps, 'to'> {
+    to?: To;
     /**
      * @deprecated
      */
