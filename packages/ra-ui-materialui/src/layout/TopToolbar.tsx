@@ -20,20 +20,20 @@ const StyledToolbar = styled(Toolbar, {
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
-    paddingBottom: theme.spacing(1),
     gap: theme.spacing(1),
-    [theme.breakpoints.up('sm')]: {
-        minHeight: theme.spacing(6),
-    },
-    [theme.breakpoints.up('xs')]: {
-        paddingLeft: 0,
-        paddingRight: 0,
+    whiteSpace: 'nowrap',
+    flex: '0 1 auto',
+    minHeight: theme.spacing(8),
+    [theme.breakpoints.up('md')]: {
+        padding: theme.spacing(0.5),
+        paddingTop: theme.spacing(1),
     },
     [theme.breakpoints.down('md')]: {
-        paddingRight: theme.spacing(2),
+        flex: '0 1 100%',
+        padding: theme.spacing(0.5),
+        paddingBottom: theme.spacing(1),
     },
     [theme.breakpoints.down('sm')]: {
-        padding: theme.spacing(1),
         backgroundColor: theme.palette.background.paper,
     },
 }));

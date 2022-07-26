@@ -31,20 +31,16 @@ const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 export const WithDatagridChild = () => (
     <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
-        <Form
-            onSubmit={() => {}}
-            defaultValues={{ tag_ids: [5] }}
-            render={() => (
-                <ReferenceArrayInput
-                    reference="tags"
-                    resource="posts"
-                    source="tag_ids"
-                >
-                    <DatagridInput rowClick="toggleSelection" sx={{ mt: 6 }}>
-                        <TextField source="name" />
-                    </DatagridInput>
-                </ReferenceArrayInput>
-            )}
-        />
+        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
+            <ReferenceArrayInput
+                reference="tags"
+                resource="posts"
+                source="tag_ids"
+            >
+                <DatagridInput rowClick="toggleSelection" sx={{ mt: 6 }}>
+                    <TextField source="name" />
+                </DatagridInput>
+            </ReferenceArrayInput>
+        </Form>
     </AdminContext>
 );

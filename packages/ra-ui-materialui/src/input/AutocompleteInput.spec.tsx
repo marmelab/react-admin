@@ -124,6 +124,39 @@ describe('<AutocompleteInput />', () => {
         });
     });
 
+    it('should allow to clear the first character', async () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: 2 }}>
+                    <AutocompleteInput
+                        {...defaultProps}
+                        optionText="foobar"
+                        choices={[
+                            { id: 2, foobar: 'foo' },
+                            { id: 3, foobar: 'bar' },
+                        ]}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        const input = screen.getByLabelText(
+            'resources.users.fields.role'
+        ) as HTMLInputElement;
+
+        fireEvent.focus(input);
+
+        userEvent.type(input, 'f');
+        await waitFor(() => {
+            expect(input.value).toEqual('f');
+        });
+
+        userEvent.type(input, '{backspace}');
+        await waitFor(() => {
+            expect(input.value).toEqual('');
+        });
+    });
+
     it('should use optionText with a string value including "." as text identifier', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>

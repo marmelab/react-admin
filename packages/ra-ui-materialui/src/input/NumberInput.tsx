@@ -106,6 +106,7 @@ export const NumberInput = ({
             ? parse(target.value)
             : convertStringToNumber(target.value);
         field.onChange(newValue);
+        field.onBlur();
     };
 
     const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {

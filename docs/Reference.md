@@ -65,6 +65,7 @@ title: "Reference"
 * [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs)
 * [`<FormTab>`](./TabbedForm.md)
 * [`<FunctionField>`](./FunctionField.md)
+* [`<IfCanAccess>`](./IfCanAccess.md)<img class="icon" src="./img/premium.svg" />
 * [`<ImageField>`](./ImageField.md)
 * [`<ImageInput>`](./ImageInput.md)
 * [`<ImageInputPreview>`](./ImageInput.md#imageinput)
@@ -142,7 +143,7 @@ title: "Reference"
 * `<TopToolbar>`
 * [`<UrlField>`](./UrlField.md)
 * [`<UserMenu>`](./Theming.md#usermenu-customization)
-* [`<WithPermissions>`](./WithPermissions.md)<img class="icon" src="./img/premium.svg" />
+* [`<WithPermissions>`](./WithPermissions.md)
 * [`<WithRecord>`](./WithRecord.md)
 * [`<WizardForm>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#wizardform)<img class="icon" src="./img/premium.svg" />
 * [`useAppLocationState`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useapplocationstate-retrieve-and-define-app-location)<img class="icon" src="./img/premium.svg" />

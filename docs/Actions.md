@@ -152,8 +152,8 @@ const UserProfile = ({ userId }) => {
 
     return (
         <ul>
-            <li>Name: {data.name}</li>
-            <li>Email: {data.email}</li>
+            <li>Name: {data.data.name}</li>
+            <li>Email: {data.data.email}</li>
         </ul>
     )
 };

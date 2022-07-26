@@ -1,4 +1,28 @@
 # Changelog
+ 
+## v4.2.4
+
+- Fix `<SelectInput>` loading UI to avoid visual jump ([#7998](https://github.com/marmelab/react-admin/pull/7998)) by ([fzaninotto](https://github.com/fzaninotto))
+- Fix `<SelectInput>` resettable background color glitch ([#7997](https://github.com/marmelab/react-admin/pull/7997)) by ([fzaninotto](https://github.com/fzaninotto))
+- Fix console error when using `<ReferenceArrayInput>` in list filter ([#7995](https://github.com/marmelab/react-admin/pull/7995)) by ([septentrion-730n](https://github.com/septentrion-730n))
+- Fix `<NumberInput>` field state `isTouched` is always false ([#7992](https://github.com/marmelab/react-admin/pull/7992)) by ([fzaninotto](https://github.com/fzaninotto))
+- Fix error after being logged out and logging in again ([#7991](https://github.com/marmelab/react-admin/pull/7991)) by ([fzaninotto](https://github.com/fzaninotto))
+- Fix `useTheme` returns undefined as value ([#7960](https://github.com/marmelab/react-admin/pull/7960)) by ([septentrion-730n](https://github.com/septentrion-730n))
+- Fix leading character in `<AutocompleteInput>` can not be deleted ([#7954](https://github.com/marmelab/react-admin/pull/7954)) by ([septentrion-730n](https://github.com/septentrion-730n))
+- [Doc] Fix typo in `<RichTextInput>` documentation ([#7990](https://github.com/marmelab/react-admin/pull/7990)) by ([uzegonemad](https://github.com/uzegonemad))
+- [Doc]: Fix `<WithPermissions />` and `<IfCanAccess />` doc ([#7994](https://github.com/marmelab/react-admin/pull/7994)) by ([smeng9](https://github.com/smeng9))
+- [Doc] Add entry for `<MultiLevelMenu>` ([#7983](https://github.com/marmelab/react-admin/pull/7983)) by ([fzaninotto](https://github.com/fzaninotto))
+
+## v4.2.3
+
+- Fix: Can't un-toggle filter through secondary action button in aside list ([#7982](https://github.com/marmelab/react-admin/pull/7982)) ([septentrion-730n](https://github.com/septentrion-730n))
+- Fix: `useChoicesContext` props should take precedence over context ([#7967](https://github.com/marmelab/react-admin/pull/7967)) ([djhi](https://github.com/djhi))
+- Fix: individually import lodash modules to reduce bundle size ([#7962](https://github.com/marmelab/react-admin/pull/7962)) ([Jkker](https://github.com/Jkker))
+- Fix: `<Pagination>` cannot be used outside a `ListContext` ([#7956](https://github.com/marmelab/react-admin/pull/7956)) ([fzaninotto](https://github.com/fzaninotto))
+- Fix: security alerts on development packages ([#7953](https://github.com/marmelab/react-admin/pull/7953)) ([fzaninotto](https://github.com/fzaninotto))
+- [TypeScript] Fix <Admin> used with function child and fragment does not compile ([#7981](https://github.com/marmelab/react-admin/pull/7981)) ([fzaninotto](https://github.com/fzaninotto))
+- [doc] Fix UserMenu customization documentation ([#7979](https://github.com/marmelab/react-admin/pull/7979)) ([ApolloRisky](https://github.com/ApolloRisky))
+- [chore] Update lerna ([#7951](https://github.com/marmelab/react-admin/pull/7951)) ([fzaninotto](https://github.com/fzaninotto))
 
 ## v4.2.2
 
