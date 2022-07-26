@@ -22,11 +22,23 @@ import { AutocompleteInput } from 'react-admin';
 ]} />
 ```
 
+**Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteInput>` with [`<ReferenceInput>`](./ReferenceInput.md), and leave the `choices` empty:
+
+```jsx
+import { AutocompleteInput, ReferenceInput } from 'react-admin';
+
+<ReferenceInput label="Post" source="post_id" reference="posts">
+    <AutocompleteInput />
+</ReferenceInput>
+```
+
+**Tip**: `<AutocompleteInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceInput>`](./ReferenceInput.md) doesn't cover your need), you'll have to [write your own Input component](./Inputs.md#writing-your-own-input-component) based on MUI `<AutoComplete>` component.
+
 ## Properties
 
 | Prop                      | Required | Type                                          | Default                                 | Description                                                                                                                                                                                                                                                                                                 |
 |---------------------------|----------|-----------------------------------------------|-----------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `choices`                 | Required | `Object[]`                                    | `-`                                     | List of items to autosuggest                                                                                                                                                                                                                                                                                |
+| `choices`                 | Optional | `Object[]`                                    | `-`                                     | List of items to autosuggest. Required if not inside a ReferenceInput.                                                                                                                                                                                                                                      |
 | `create`                  | Optional | `Element`                                     | `-`                                     | A React Element to render when users want to create a new choice                                                                                                                                                                                                                                            |
 | `createItemLabel`         | Optional | `string`                                      | `ra.action.create_item`                 | The label for the menu item allowing users to create a new choice. Used when the filter is not empty                                                                                                                                                                                                        |
 | `emptyValue`              | Optional | `any`                                         | `''`                                    | The value to use for the empty element                                                                                                                                                                                                                                                                      |
@@ -43,7 +55,7 @@ import { AutocompleteInput } from 'react-admin';
 
 `<AutocompleteInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
-## Usage
+## `optionText`
 
 You can customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
 
@@ -96,6 +108,8 @@ const matchSuggestion = (filter, choice) => {
 />
 ```
 
+## `translateChoice`
+
 The choices are translated by default, so you can use translation identifiers as choices:
 
 ```jsx
@@ -112,8 +126,16 @@ In that case, set the `translateChoice` prop to `false`.
 <AutocompleteInput source="gender" choices={choices} translateChoice={false}/>
 ```
 
+## `shouldRenderSuggestions`
+
 When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set).
 Ex. `<AutocompleteInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character has been entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
+
+## `sx`: CSS API
+
+This component doesn't apply any custom styles on top of [MUI `<Autocomplete>` component](https://mui.com/components/autocomplete/). Refer to their documentation to know its CSS API.
+
+## Additonal Props
 
 `<AutocompleteInput>` renders a [MUI `<Autocomplete>` component](https://mui.com/components/autocomplete/) and it accepts the `<Autocomplete>` props:
 
@@ -122,18 +144,6 @@ Ex. `<AutocompleteInput shouldRenderSuggestions={(val) => { return val.trim().le
 <AutocompleteInput source="category" size="large" />
 ```
 {% endraw %}
-
-**Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteInput>` with [`<ReferenceInput>`](./ReferenceInput.md), and leave the `choices` empty:
-
-```jsx
-import { AutocompleteInput, ReferenceInput } from 'react-admin';
-
-<ReferenceInput label="Post" source="post_id" reference="posts">
-    <AutocompleteInput optionText="title" />
-</ReferenceInput>
-```
-
-**Tip**: `<AutocompleteInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceInput>`](./ReferenceInput.md) doesn't cover your need), you'll have to [write your own Input component](./Inputs.md#writing-your-own-input-component) based on MUI `<AutoComplete>` component.
 
 ## Creating New Choices
 
@@ -288,6 +298,3 @@ const PostCreate = () => {
 ```
 {% endraw %}
 
-## `sx`: CSS API
-
-This component doesn't apply any custom styles on top of [MUI `<Autocomplete>` component](https://mui.com/components/autocomplete/). Refer to their documentation to know its CSS API.

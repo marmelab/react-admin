@@ -118,7 +118,7 @@ const BookEditWithReference = () => (
     >
         <SimpleForm>
             <ReferenceInput reference="authors" source="author">
-                <SelectInput fullWidth />
+                <SelectInput />
             </ReferenceInput>
         </SimpleForm>
     </Edit>
