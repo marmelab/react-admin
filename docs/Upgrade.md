@@ -19,7 +19,7 @@ React-admin v4 uses MUI (Material-UI) v5. The MUI team has written an upgrade gu
 
 ## Redux Is Gone
 
-React-admin no longer relies on Redux. Instead, it relies on [React context](https://reactjs.org/docs/context.html) and third-party libraries (e.g. [react-query](https://react-query.tanstack.com/)). 
+React-admin no longer relies on Redux. Instead, it relies on [React context](https://reactjs.org/docs/context.html) and third-party libraries (e.g. [react-query](https://react-query-v3.tanstack.com/)). 
 
 You will need to update your code if it contains any of the following keywords:
 
@@ -665,7 +665,7 @@ To upgrade, check every instance of your code of the following hooks:
 
 And update the calls. If you're using TypeScript, your code won't compile until you properly upgrade the calls. 
 
-These hooks are now powered by react-query, so the state argument contains way more than just `isLoading` (`reset`, `status`, `refetch`, etc.). Check the [`useQuery`](https://react-query.tanstack.com/reference/useQuery) and the [`useMutation`](https://react-query.tanstack.com/reference/useMutation) documentation on the react-query website for more details. 
+These hooks are now powered by react-query, so the state argument contains way more than just `isLoading` (`reset`, `status`, `refetch`, etc.). Check the [`useQuery`](https://react-query-v3.tanstack.com/reference/useQuery) and the [`useMutation`](https://react-query-v3.tanstack.com/reference/useMutation) documentation on the react-query website for more details. 
 
 ### `useQuery`, `useMutation`, and `useQueryWithStore` Have Been Removed
 
@@ -738,7 +738,7 @@ const BanUserButton = ({ userId }) => {
 };
 ```
 
-Refer to [the react-query documentation](https://react-query.tanstack.com/overview) for more information.
+Refer to [the react-query documentation](https://react-query-v3.tanstack.com/overview) for more information.
 
 ### `<Query>` and `<Mutation>` Have Been Removed
 
@@ -804,7 +804,7 @@ const BanUserButton = ({ userId }) => {
 };
 ```
 
-Refer to [the react-query documentation](https://react-query.tanstack.com/overview) for more information.
+Refer to [the react-query documentation](https://react-query-v3.tanstack.com/overview) for more information.
 
 
 ### Application Cache No Longer Uses `validUntil`
@@ -981,7 +981,7 @@ const BookDetail = ({ id }) => {
 
 In general, you should use `isLoading`. It's false as long as the data has never been loaded (whether from the dataProvider or from the cache).
 
-The new props are actually returned by react-query's `useQuery` hook. Check [their documentation](https://react-query.tanstack.com/reference/useQuery) for more information.
+The new props are actually returned by react-query's `useQuery` hook. Check [their documentation](https://react-query-v3.tanstack.com/reference/useQuery) for more information.
 
 
 ## Auth Provider
@@ -1612,7 +1612,7 @@ export const PostList = () => (
 
 ### `useGetMainList` Was Removed
 
-`useGetMainList` was a modified version of `useGetList` designed to keep previous data on screen upon navigation. As [this is now supported natively by react-query](https://react-query.tanstack.com/guides/paginated-queries#better-paginated-queries-with-keeppreviousdata), this hook is no longer necessary and has been removed. Use `useGetList()` instead.
+`useGetMainList` was a modified version of `useGetList` designed to keep previous data on screen upon navigation. As [this is now supported natively by react-query](https://react-query-v3.tanstack.com/guides/paginated-queries#better-paginated-queries-with-keeppreviousdata), this hook is no longer necessary and has been removed. Use `useGetList()` instead.
 
 ### `useUnselectAll` Syntax Changed
 

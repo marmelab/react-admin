@@ -304,7 +304,7 @@ export const MyLayout = (props) => (
 
 ## Adding Developer Tools
 
-A custom layout is also the ideal place to add debug tools, e.g. [react-query devtools](https://react-query.tanstack.com/devtools):
+A custom layout is also the ideal place to add debug tools, e.g. [react-query devtools](https://react-query-v3.tanstack.com/devtools):
 
 ```jsx
 // in src/MyLayout.js
