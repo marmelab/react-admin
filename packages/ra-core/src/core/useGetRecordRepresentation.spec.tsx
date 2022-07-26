@@ -14,7 +14,7 @@ describe('useRecordRepresentation', () => {
         render(
             <UseRecordRepresentation resource="users" record={{ id: 123 }} />
         );
-        screen.getByText('User #123');
+        screen.getByText('#123');
     });
     it('should return a record field if the recordRepresentation is a string', () => {
         render(
@@ -33,6 +33,28 @@ describe('useRecordRepresentation', () => {
                 <UseRecordRepresentation
                     resource="users"
                     record={{ id: 123, first_name: 'John', last_name: 'Doe' }}
+                />
+            </ResourceDefinitionContext.Provider>
+        );
+        screen.getByText('Doe');
+    });
+    it('should return a deep record field if the recordRepresentation is a string with a dot', () => {
+        render(
+            <ResourceDefinitionContext.Provider
+                value={{
+                    definitions: {
+                        users: {
+                            name: 'users',
+                            recordRepresentation: 'name.last',
+                        },
+                    },
+                    register: () => {},
+                    unregister: () => {},
+                }}
+            >
+                <UseRecordRepresentation
+                    resource="users"
+                    record={{ id: 123, name: { first: 'John', last: 'Doe' } }}
                 />
             </ResourceDefinitionContext.Provider>
         );

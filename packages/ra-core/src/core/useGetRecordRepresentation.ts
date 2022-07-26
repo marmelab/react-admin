@@ -1,15 +1,19 @@
 import * as React from 'react';
 import { useCallback, ReactNode } from 'react';
-import inflection from 'inflection';
+import get from 'lodash/get';
 
 import { useResourceDefinition } from './useResourceDefinition';
 
 /**
  * Get default string representation of a record
  *
- * @example
+ * @example // No customization
  * const getRecordRepresentation = useGetRecordRepresentation('posts');
- * getRecordRepresentation({ id: 1, title: 'Hello' }); // => "Post #1"
+ * getRecordRepresentation({ id: 1, title: 'Hello' }); // => "#1"
+ *
+ * @example // With <Resource name="posts" recordRepresentation="title" />
+ * const getRecordRepresentation = useGetRecordRepresentation('posts');
+ * getRecordRepresentation({ id: 1, title: 'Hello' }); // => "Hello"
  */
 export const useGetRecordRepresentation = (
     resource: string
@@ -22,15 +26,13 @@ export const useGetRecordRepresentation = (
                 return recordRepresentation(record);
             }
             if (typeof recordRepresentation === 'string') {
-                return record[recordRepresentation];
+                return get(record, recordRepresentation);
             }
             if (React.isValidElement(recordRepresentation)) {
                 return React.cloneElement(recordRepresentation);
             }
-            return `${inflection.humanize(inflection.singularize(resource))} #${
-                record.id
-            }`;
+            return `#${record.id}`;
         },
-        [recordRepresentation, resource]
+        [recordRepresentation]
     );
 };

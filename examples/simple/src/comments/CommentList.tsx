@@ -121,9 +121,7 @@ const CommentGrid = () => {
                                 record={record}
                                 source="post_id"
                                 reference="posts"
-                            >
-                                <TextField source="title" />
-                            </ReferenceField>
+                            />
                         </CardContent>
                         <CardActions sx={{ justifyContent: 'flex-end' }}>
                             <EditButton record={record} />
