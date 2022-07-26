@@ -386,7 +386,7 @@ const App = () => (
 );
 ```
 
-When displaying the posts list, the app displays the `id` of the post author as a `<TextField>`. This `id` field doesn't mean much, let's use the user `name` instead. For that purpose, set the `recordRepresentation` prop of the users Resource:
+When displaying the posts list, the app displays the `id` of the post author. This doesn't mean much, let's use the user `name` instead. For that purpose, set the `recordRepresentation` prop of the "users" Resource:
 
 ```diff
 // in src/App.js
