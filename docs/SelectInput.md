@@ -46,7 +46,7 @@ If, instead of showing choices as a dropdown list, you prefer to display them as
 
 ## `choices`
 
-An array of objects representing the choices to show in the dropdown. The objects must have at least two fields: one to use for the option name, and the other to use for the option value. By default, `<SelectInput>` will use the `id` and `name` fields.
+An array of objects that represents the choices to show in the dropdown. The objects must have at least two fields: one to use for the option name, and the other to use for the option value. By default, `<SelectInput>` will use the `id` and `name` fields.
 
 ```jsx
 const choices = [
@@ -216,7 +216,7 @@ import { SelectInput, ReferenceInput } from 'react-admin';
 </ReferenceInput>
 ```
 
-In that case, `<SelectInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to render each choice from the list of possible records. You can oferride this behavior by setting the `optionText` prop:
+In that case, `<SelectInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to render each choice from the list of possible records. You can override this behavior by setting the `optionText` prop:
 
 ```jsx
 import { SelectInput, ReferenceInput } from 'react-admin';
@@ -262,7 +262,7 @@ const PostCreate = () => {
 ```
 {% endraw %}
 
-Use the `create` prop when you want a more polished or complex UI. For example a MUI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
+Use the `create` prop when you want a more polished or complex UI. For example an MUI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
 
 {% raw %}
 ```jsx

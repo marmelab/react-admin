@@ -38,7 +38,7 @@ You can tweak how this component fetches the possible values using the `page`, `
 | `sort`             | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }` | How to order the list of suggestions                                                     |
 | `enableGetChoices` | Optional | `({q: string}) => boolean`                  | `() => true`                     | Function taking the `filterValues` and returning a boolean to enable the `getList` call. |
 
-**Note**: `<ReferenceInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) (like `label`) ; it is the responsability of the child component to apply them.
+**Note**: `<ReferenceInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) (like `label`) ; it is the responsibility of the child component to apply them.
 
 ## `children`
 
@@ -66,7 +66,7 @@ import { ReferenceInput, SelectInput } from 'react-admin';
 </ReferenceInput>
 ```
 
-You can even use a component of your own as child, provided its detects a `ChoicesContext` is available and gets their choices from it.
+You can even use a component of your own as child, provided it detects a `ChoicesContext` is available and gets their choices from it.
 
 The choices context value can be accessed with the [`useChoicesContext`](./useChoicesContext.md) hook.
 
@@ -101,7 +101,7 @@ By default, `<ReferenceInput>` fetches only the first 25 values. You can extend 
 
 ## `reference`
 
-The name of the reference resource. For instance, in a Post form, if you wanrt to edit the post author, the reference should be "authors".
+The name of the reference resource. For instance, in a Post form, if you want to edit the post author, the reference should be "authors".
 
 ```jsx
 <ReferenceInput source="author_id" reference="authors" />
