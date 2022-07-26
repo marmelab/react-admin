@@ -48,11 +48,21 @@ const Wrapper = ({ children }) => (
 );
 
 const authors = [
-    { id: 1, name: 'Leo Tolstoy', language: 'Russian' },
-    { id: 2, name: 'Victor Hugo', language: 'French' },
-    { id: 3, name: 'William Shakespeare', language: 'English' },
-    { id: 4, name: 'Charles Baudelaire', language: 'French' },
-    { id: 5, name: 'Marcel Proust', language: 'French' },
+    { id: 1, first_name: 'Leo', last_name: 'Tolstoy', language: 'Russian' },
+    { id: 2, first_name: 'Victor', last_name: 'Hugo', language: 'French' },
+    {
+        id: 3,
+        first_name: 'William',
+        last_name: 'Shakespeare',
+        language: 'English',
+    },
+    {
+        id: 4,
+        first_name: 'Charles',
+        last_name: 'Baudelaire',
+        language: 'French',
+    },
+    { id: 5, first_name: 'Marcel', last_name: 'Proust', language: 'French' },
 ];
 
 const dataProviderWithAuthors = {
@@ -74,38 +84,22 @@ const dataProviderWithAuthors = {
     getList: (resource, params) =>
         new Promise(resolve => {
             // eslint-disable-next-line eqeqeq
-            if (params.filter.q == undefined) {
-                setTimeout(
-                    () =>
-                        resolve({
-                            data: authors,
-                            total: authors.length,
-                        }),
-                    500
-                );
-                return;
-            }
-
-            const filteredAuthors = authors.filter(author =>
-                author.name
-                    .toLowerCase()
-                    .includes(params.filter.q.toLowerCase())
-            );
-
             setTimeout(
                 () =>
                     resolve({
-                        data: filteredAuthors,
-                        total: filteredAuthors.length,
+                        data: authors,
+                        total: authors.length,
                     }),
                 500
             );
+            return;
         }),
     update: (resource, params) => Promise.resolve(params),
     create: (resource, params) => {
         const newAuthor = {
             id: authors.length + 1,
-            name: params.data.name,
+            first_name: params.data.first_name,
+            last_name: params.data.last_name,
             language: params.data.language,
         };
         authors.push(newAuthor);
@@ -134,7 +128,12 @@ const history = createMemoryHistory({ initialEntries: ['/books/1'] });
 
 export const InsideReferenceInput = () => (
     <Admin dataProvider={dataProviderWithAuthors} history={history}>
-        <Resource name="authors" />
+        <Resource
+            name="authors"
+            recordRepresentation={record =>
+                `${record.first_name} ${record.last_name}`
+            }
+        />
         <Resource name="books" edit={BookEditWithReference} />
     </Admin>
 );

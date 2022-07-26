@@ -9,6 +9,8 @@ To let users choose a value in a list using a dropdown, use `<SelectInput>`. It 
 
 ![SelectInput](./img/select-input.gif)
 
+## Usage
+
 Set the `choices` attribute to determine the options (with `id`, `name` tuples):
 
 ```jsx
@@ -21,11 +23,13 @@ import { SelectInput } from 'react-admin';
 ]} />
 ```
 
+If, instead of showing choices as a dropdown list, you prefer to display them as a list of radio buttons, try the [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md). And if the list is too big, prefer the [`<AutocompleteInput>`](./AutocompleteInput.md).
+
 ## Properties
 
 | Prop              | Required | Type                       | Default            | Description                                                                                                                            |
 |-------------------|----------|----------------------------|--------------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| `choices`         | Required | `Object[]`                 | -                  | List of items to show as options                                                                                                       |
+| `choices`         | Optional | `Object[]`                 | -                  | List of items to show as options. Required if not inside a ReferenceInput.                                                             |
 | `create`          | Optional | `Element`                  | `-`                | A React Element to render when users want to create a new choice                                                                       |
 | `createLabel`     | Optional | `string`                   | `ra.action.create` | The label for the menu item allowing users to create a new choice. Used when the filter is empty                                       |
 | `disableValue`    | Optional | `string`                   | 'disabled'         | The custom field name used in `choices` to disable some choices                                                                        |
@@ -40,7 +44,87 @@ import { SelectInput } from 'react-admin';
 
 `<SelectInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
-## Usage
+## `choices`
+
+An array of objects representing the choices to show in the dropdown. The objects must have at least two fields: one to use for the option name, and the other to use for the option value. By default, `<SelectInput>` will use the `id` and `name` fields.
+
+```jsx
+const choices = [
+    { id: 'programming', name: 'Programming' },
+    { id: 'lifestyle', name: 'Lifestyle' },
+    { id: 'photography', name: 'Photography' },
+];
+
+<SelectInput source="category" choices={choices} />
+```
+
+If the choices have different keys, you can use [`optionText`](#optiontext) and [`optionValue`](#optionvalue) to specify which fields to use for the name and value.
+
+```jsx
+const choices = [
+    { name: 'programming', label: 'Programming' },
+    { name: 'lifestyle', label: 'Lifestyle' },
+    { name: 'photography', label: 'Photography' },
+];
+
+<SelectInput
+    source="category"
+    optionValue="name"
+    optionText="label"
+    choices={choices}
+/>
+```
+
+When used inside a `<ReferenceInput>`, `<SelectInput>` doesn't need a `choices` prop. Instead, it will use the records fetched by `<ReferenceInput>` as choices, via the `ChoicesContext`.
+
+```jsx
+<ReferenceInput label="Author" source="author_id" reference="authors">
+    <SelectInput />
+</ReferenceInput>
+```
+
+See [Using in a `ReferenceInput>`](#using-in-a-referenceinput) below for more information.
+
+## `disableValue`
+
+You can use a custom field name by setting `disableValue` prop:
+
+```jsx
+const choices = [
+    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
+    { _id: 987, full_name: 'Jack Harden', sex: 'M', not_available: true },
+];
+<SelectInput source="contact_id" choices={choices} optionText="full_name" optionValue="_id" disableValue="not_available" />
+```
+
+## `emptyValue`
+
+An empty choice is always added (with a default `''` value, which you can overwrite with the `emptyValue` prop) on top of the options. You can furthermore customize the `MenuItem` for the empty choice by using the `emptyText` prop, which can receive either a string or a React Element, which doesn't receive any props.
+
+```jsx
+<SelectInput source="category" emptyValue={null} choices={[
+    { id: 'programming', name: 'Programming' },
+    { id: 'lifestyle', name: 'Lifestyle' },
+    { id: 'photography', name: 'Photography' },
+]} />
+```
+
+## `options`
+
+Use the `options` attribute if you want to override any of MUI's `<SelectField>` attributes:
+
+{% raw %}
+```jsx
+<SelectInput source="category" options={{
+    maxHeight: 200
+}} />
+```
+{% endraw %}
+
+Refer to [MUI Select documentation](https://mui.com/api/select) for more details.
+
+## `optionText`
 
 You can customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
 
@@ -74,15 +158,34 @@ const FullNameField = ({ record }) => <span>{record.first_name} {record.last_nam
 <SelectInput source="gender" choices={choices} optionText={<FullNameField />}/>
 ```
 
-An empty choice is always added (with a default `''` value, which you can overwrite with the `emptyValue` prop) on top of the options. You can furthermore customize the `MenuItem` for the empty choice by using the `emptyText` prop, which can receive either a string or a React Element, which doesn't receive any props.
+## `resettable`
+
+You can make the `SelectInput` component resettable using the `resettable` prop. This will add a reset button which will be displayed only when the field has a value.
+
+![resettable SelectInput](./img/resettable-select-input.png)
+
+You can set disabled values by setting the `disabled` property of one item:
 
 ```jsx
-<SelectInput source="category" emptyValue={null} choices={[
-    { id: 'programming', name: 'Programming' },
-    { id: 'lifestyle', name: 'Lifestyle' },
-    { id: 'photography', name: 'Photography' },
-]} />
+const choices = [
+    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
+    { _id: 1, full_name: 'System Administrator', sex: 'F', disabled: true },
+];
+<SelectInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
 ```
+
+## `sx`: CSS API
+
+The `<SelectInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+
+| Rule name                | Description                                               |
+|--------------------------|-----------------------------------------------------------|
+| `& .RaSelectInput-input` | Applied to the underlying `ResettableTextField` component |
+
+To override the style of all instances of `<SelectInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaSelectInput` key.
+
+## `translateChoice`
 
 The choices are translated by default, so you can use translation identifiers as choices:
 
@@ -101,19 +204,19 @@ However, in some cases, you may not want the choice to be translated. In that ca
 
 Note that `translateChoice` is set to `false` when `<SelectInput>` is a child of `<ReferenceInput>`.
 
-Lastly, use the `options` attribute if you want to override any of MUI's `<SelectField>` attributes:
+## Using In A ReferenceInput
 
-{% raw %}
+If you want to populate the `choices` attribute with a list of related records, you should decorate `<SelectInput>` with [`<ReferenceInput>`](./ReferenceInput.md), and leave the `choices` empty:
+
 ```jsx
-<SelectInput source="category" options={{
-    maxHeight: 200
-}} />
+import { SelectInput, ReferenceInput } from 'react-admin';
+
+<ReferenceInput label="Author" source="author_id" reference="authors">
+    <SelectInput />
+</ReferenceInput>
 ```
-{% endraw %}
 
-Refer to [MUI Select documentation](https://mui.com/api/select) for more details.
-
-**Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<SelectInput>` with [`<ReferenceInput>`](./ReferenceInput.md), and leave the `choices` empty:
+In that case, `<SelectInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to render each choice from the list of possible records. You can oferride this behavior by setting the `optionText` prop:
 
 ```jsx
 import { SelectInput, ReferenceInput } from 'react-admin';
@@ -121,34 +224,6 @@ import { SelectInput, ReferenceInput } from 'react-admin';
 <ReferenceInput label="Author" source="author_id" reference="authors">
     <SelectInput optionText="last_name" />
 </ReferenceInput>
-```
-
-If, instead of showing choices as a dropdown list, you prefer to display them as a list of radio buttons, try the [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md). And if the list is too big, prefer the [`<AutocompleteInput>`](./AutocompleteInput.md).
-
-You can make the `SelectInput` component resettable using the `resettable` prop. This will add a reset button which will be displayed only when the field has a value.
-
-![resettable SelectInput](./img/resettable-select-input.png)
-
-You can set disabled values by setting the `disabled` property of one item:
-
-```jsx
-const choices = [
-    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
-    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
-    { _id: 1, full_name: 'System Administrator', sex: 'F', disabled: true },
-];
-<SelectInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
-```
-
-You can use a custom field name by setting `disableValue` prop:
-
-```jsx
-const choices = [
-    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
-    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
-    { _id: 987, full_name: 'Jack Harden', sex: 'M', not_available: true },
-];
-<SelectInput source="contact_id" choices={choices} optionText="full_name" optionValue="_id" disableValue="not_available" />
 ```
 
 ## Creating New Choices
@@ -268,13 +343,3 @@ const CreateCategory = () => {
 };
 ```
 {% endraw %}
-
-## `sx`: CSS API
-
-The `<SelectInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
-
-| Rule name                | Description                                               |
-|--------------------------|-----------------------------------------------------------|
-| `& .RaSelectInput-input` | Applied to the underlying `ResettableTextField` component |
-
-To override the style of all instances of `<SelectInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaSelectInput` key.
