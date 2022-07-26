@@ -356,8 +356,7 @@ describe('buildGqlQuery', () => {
   total: _allCommandMeta(foo: $foo) {
     count
   }
-}
-`
+}`
         );
     });
     it('returns the correct query for GET_MANY', () => {
@@ -384,8 +383,7 @@ describe('buildGqlQuery', () => {
   total: _allCommandMeta(foo: $foo) {
     count
   }
-}
-`
+}`
         );
     });
     it('returns the correct query for GET_MANY_REFERENCE', () => {
@@ -412,8 +410,7 @@ describe('buildGqlQuery', () => {
   total: _allCommandMeta(foo: $foo) {
     count
   }
-}
-`
+}`
         );
     });
     it('returns the correct query for GET_ONE', () => {
@@ -437,8 +434,7 @@ describe('buildGqlQuery', () => {
       id
     }
   }
-}
-`
+}`
         );
     });
     it('returns the correct query for UPDATE', () => {
@@ -462,8 +458,7 @@ describe('buildGqlQuery', () => {
       id
     }
   }
-}
-`
+}`
         );
     });
     it('returns the correct query for CREATE', () => {
@@ -487,8 +482,7 @@ describe('buildGqlQuery', () => {
       id
     }
   }
-}
-`
+}`
         );
     });
     it('returns the correct query for DELETE', () => {
@@ -512,8 +506,7 @@ describe('buildGqlQuery', () => {
       id
     }
   }
-}
-`
+}`
         );
     });
 });

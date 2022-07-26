@@ -33,17 +33,17 @@
         "watch": "tsc --outDir dist/esm --module es2015 --watch"
     },
     "dependencies": {
-        "@apollo/client": "^3.3.19",
-        "lodash": "~4.17.5",
-        "pluralize": "~7.0.0"
+        "@apollo/client": "^3.6.9",
+        "lodash": "^4.17.21",
+        "pluralize": "^8.0.0"
     },
     "peerDependencies": {
-        "graphql": "^15.6.0",
-        "ra-core": "^4.0.0"
+        "graphql": "^15 || ^16",
+        "ra-core": "^4"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
-        "graphql": "^15.6.0",
+        "graphql": "^16.5.0",
         "rimraf": "^3.0.2",
         "typescript": "^4.4.0"
     }
