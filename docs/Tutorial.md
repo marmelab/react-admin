@@ -361,9 +361,7 @@ import { List, Datagrid, TextField, ReferenceField } from 'react-admin';
 export const PostList = () => (
     <List>
         <Datagrid rowClick="edit">
-            <ReferenceField source="userId" reference="users">
-                <TextField source="id" />
-            </ReferenceField>
+            <ReferenceField source="userId" reference="users" />
             <TextField source="id" />
             <TextField source="title" />
             <TextField source="body" />
@@ -388,22 +386,16 @@ const App = () => (
 );
 ```
 
-When displaying the posts list, the app displays the `id` of the post author as a `<TextField>`. This `id` field doesn't mean much, let's use the user `name` instead:
+When displaying the posts list, the app displays the `id` of the post author as a `<TextField>`. This `id` field doesn't mean much, let's use the user `name` instead. For that purpose, set the `recordRepresentation` prop of the users Resource:
 
 ```diff
-// in src/posts.js
-export const PostList = () => (
-    <List>
-        <Datagrid rowClick="edit">
-            <ReferenceField source="userId" reference="users">
--               <TextField source="id" />
-+               <TextField source="name" />
-            </ReferenceField>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="body" />
-        </Datagrid>
-    </List>
+// in src/App.js
+const App = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource name="posts" list={PostList} />
+-       <Resource name="users" list={UserList} />
++       <Resource name="users" list={UserList} recordRepresentation="name" />
+    </Admin>
 );
 ```
 
@@ -411,7 +403,7 @@ The post list now displays the user names on each line.
 
 [![Post List With User Names](./img/tutorial_list_user_name.png)](./img/tutorial_list_user_name.png)
 
-The `<ReferenceField>` component alone doesn't display anything. It just fetches the reference data, creates a `RecordContext` with the result, and renders its children (a `<TextField>` in this case).
+The `<ReferenceField>` component fetches the reference data, creates a `RecordContext` with the result, and renders the record representation (or its its children).
 
 **Tip**: Look at the network tab of your browser again: react-admin deduplicates requests for users, and aggregates them in order to make only *one* HTTP request to the `/users` endpoint for the whole Datagrid. That's one of many optimizations that keep the UI fast and responsive.
 
@@ -428,9 +420,7 @@ export const PostList = () => (
 -       <Datagrid rowClick="edit">
 +       <Datagrid>
 +           <TextField source="id" />
-            <ReferenceField source="userId" reference="users">
-                <TextField source="name" />
-            </ReferenceField>
+            <ReferenceField source="userId" reference="users" />
 -           <TextField source="id" />
             <TextField source="title" />
 -           <TextField source="body" />
@@ -457,7 +447,7 @@ const App = () => (
     <Admin dataProvider={dataProvider}>
 -       <Resource name="posts" list={PostList} />
 +       <Resource name="posts" list={PostList} edit={EditGuesser} />
-        <Resource name="users" list={UserList} />
+        <Resource name="users" list={UserList} recordRepresentation="name" />
     </Admin>
 );
 ```
@@ -585,7 +575,7 @@ const App = () => (
     <Admin dataProvider={dataProvider}>
 -       <Resource name="posts" list={PostList} edit={EditGuesser} />
 +       <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} />
-        <Resource name="users" list={UserList} />
+        <Resource name="users" list={UserList} recordRepresentation="name" />
     </Admin>
 );
 ```
@@ -614,7 +604,7 @@ Optimistic updates and undo require no specific code on the API side - react-adm
 
 ## Customizing The Page Title
 
-The post editing page has a slight problem: it uses the post id as main title (the text displayed in the top bar). 
+The post editing page has a slight problem: it uses the post id as main title (the text displayed in the top bar). We could set a custom `recordRepresentation` in the `<Resource name="posts">` component, but it's limited to rendering a string.
 
 Let's customize the view title with a custom title component:
 
@@ -683,7 +673,7 @@ import UserIcon from '@mui/icons-material/Group';
 const App = () => (
     <Admin dataProvider={dataProvider}>
         <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon} />
-        <Resource name="users" list={UserList} icon={UserIcon} />
+        <Resource name="users" list={UserList} icon={UserIcon} recordRepresentation="name" />
     </Admin>
 );
 ```
@@ -805,9 +795,7 @@ export const PostList = () => (
         <SimpleList
             primaryText={record => record.title}
             secondaryText={record => (
-                <ReferenceField label="User" source="userId" reference="users">
-                  <TextField source="name" />
-                </ReferenceField>
+                <ReferenceField label="User" source="userId" reference="users" />
             )}
         />
     </List>
@@ -833,20 +821,16 @@ export const PostList = () => {
     return (
         <List>
             {isSmall ? (
-                            <SimpleList
-                                primaryText={record => record.title}
-                                secondaryText={record => (
-                                    <ReferenceField label="User" source="userId" reference="users">
-                                        <TextField source="name" />
-                                    </ReferenceField>
-                                )}
-                            />
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => (
+                        <ReferenceField label="User" source="userId" reference="users" />
+                    )}
+                />
             ) : (
                 <Datagrid>
                     <TextField source="id" />
-                    <ReferenceField label="User" source="userId" reference="users">
-                        <TextField source="name" />
-                    </ReferenceField>
+                    <ReferenceField label="User" source="userId" reference="users" />
                     <TextField source="title" />
                     <TextField source="body" />
                     <EditButton />

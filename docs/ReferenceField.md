@@ -22,7 +22,21 @@ For instance, let's consider a model where a `post` has one author from the `use
 └──────────────┘
 ```
 
-In that case, use `<ReferenceField>` to display the post author's name as follows:
+In that case, use `<ReferenceField>` to display the post author's id as follows:
+
+```jsx
+<ReferenceField source="user_id" reference="users" />
+```
+
+`<ReferenceField>` fetches the data, puts it in a [`RecordContext`](./useRecordContext.md), and renders the [`recordRepresentation`](./Resource.md#recordrepresentation) (the record `id` field by default). 
+
+So it's a good idea to configure the `<Resource recordRepresentation>` to render related records in a meaningul way. For instance, for the `users` resource, if you want the `<ReferenceField>` to display the full name of the author:
+
+```jsx
+<Resource name="users" list={UserList} recordRepresentation={(record) => `${record.first_name} ${record.last_name}`} />
+```
+
+Alternately, if you pass a child component, `ReferenceField>` will render it instead of the `recordRepresentation`. Usual child components for `<ReferenceField>` are other `<Field>` components (e.g. [`<TextField>`](./TextField.md)).
 
 ```jsx
 <ReferenceField source="user_id" reference="users">
@@ -30,15 +44,13 @@ In that case, use `<ReferenceField>` to display the post author's name as follow
 </ReferenceField>
 ```
 
-A `<ReferenceField>` displays nothing on its own, it just fetches the data, puts it in a [`RecordContext`](./useRecordContext.md), and lets its children render it. Usual child components for `<ReferenceField>` are other `<Field>` components (e.g. [`<TextField>`](./TextField.md)).
-
 This component fetches a referenced record (`users` in this example) using the `dataProvider.getMany()` method, and passes it to its child. 
 
-It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` for performance reasons. When using several `<ReferenceField>` in the same page (e.g. in a `<Datagrid>`), this allows to call the `dataProvider` once instead of once per row. 
+It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for performance reasons](#performance). When using several `<ReferenceField>` in the same page (e.g. in a `<Datagrid>`), this allows to call the `dataProvider` once instead of once per row. 
 
 ## Usage
 
-Here is how to render both a post and the `name` of its author in a show view:
+Here is how to render both a post and the author name in a show view:
 
 ```jsx
 import { Show, SimpleShowLayout, ReferenceField, TextField, DateField } from 'react-admin';
@@ -49,9 +61,7 @@ export const PostShow = () => (
             <TextField source="id" />
             <TextField source="title" />
             <DateField source="published_at" />
-            <ReferenceField label="Author" source="user_id" reference="users">
-                <TextField source="name" />
-            </ReferenceField>
+            <ReferenceField label="Author" source="user_id" reference="users" />
         </SimpleShowLayout>
     </Show>
 );
@@ -65,7 +75,7 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 | ----------- | -------- | ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
 | `source`    | Required | `string`            | -        | Name of the property to display |
 | `reference` | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'posts' |
-| `children`  | Required | `ReactNode`         | -        | One or more Field elements used to render the referenced record |
+| `children`  | Optional | `ReactNode`         | -        | One or more Field elements used to render the referenced record |
 | `emptyText` | Optional | `string`            | ''       | Defines a text to be shown when the field has no value or when the reference is missing |
 | `label`     | Optional | `string | Function` | `resources.[resource].fields.[source]`   | Label to use for the field when rendered in layout components  |
 | `link`      | Optional | `string | Function` | `edit`   | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
@@ -78,9 +88,7 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 `<ReferenceField>` can display a custom message when the referenced record is missing, thanks to the `emptyText` prop.
 
 ```jsx
-<ReferenceField source="user_id" reference="users" emptyText="Missing user">
-    <TextField source="name" />
-</ReferenceField>
+<ReferenceField source="user_id" reference="users" emptyText="Missing user" />
 ```
 
 `<ReferenceField>` renders the `emptyText`:
@@ -94,25 +102,19 @@ By default, `<SimpleShowLayout>`, `<Datagrid>` and other layout components infer
 
 ```jsx
 {/* default label is 'User Id', or the translation of 'resources.posts.fields.user_id' if it exists */}
-<ReferenceField source="user_id" reference="users">
-    <TextField source="name" />
-</ReferenceField>
+<ReferenceField source="user_id" reference="users" />
 ```
 
 That's why you often need to set an explicit `label` on a `<ReferenceField>`:
 
 ```jsx
-<ReferenceField label="Author name" source="user_id" reference="users">
-    <TextField source="name" />
-</ReferenceField>
+<ReferenceField label="Author name" source="user_id" reference="users" />
 ```
 
 React-admin uses [the i18n system](./Translation.md) to translate the label, so you can use translation keys to have one label for each language supported by the interface:
 
 ```jsx
-<ReferenceField label="resources.posts.fields.author" source="user_id" reference="users">
-    <TextField source="name" />
-</ReferenceField>
+<ReferenceField label="resources.posts.fields.author" source="user_id" reference="users" />
 ```
 
 ## `link`
@@ -120,27 +122,25 @@ React-admin uses [the i18n system](./Translation.md) to translate the label, so 
 To change the link from the `<Edit>` page to the `<Show>` page, set the `link` prop to "show".
 
 ```jsx
-<ReferenceField source="user_id" reference="users" link="show">
-    <TextField source="name" />
-</ReferenceField>
+<ReferenceField source="user_id" reference="users" link="show" />
 ```
 
 You can also prevent `<ReferenceField>` from adding a link to children by setting `link` to `false`.
 
 ```jsx
 // No link
-<ReferenceField source="user_id" reference="users" link={false}>
-    <TextField source="name" />
-</ReferenceField>
+<ReferenceField source="user_id" reference="users" link={false} />
 ```
 
 You can also use a custom `link` function to get a custom path for the children. This function must accept `record` and `reference` as arguments.
 
 ```jsx
 // Custom path
-<ReferenceField source="user_id" reference="users" link={(record, reference) => `/my/path/to/${reference}/${record.id}`}>
-    <TextField source="name" />
-</ReferenceField>
+<ReferenceField 
+    source="user_id"
+    reference="users"
+    link={(record, reference) => `/my/path/to/${reference}/${record.id}`}
+/>
 ```
 
 ## `reference`
@@ -150,9 +150,7 @@ The resource to fetch for the related record.
 For instance, if the `posts` resource has a `user_id` field, set the `reference` to `users` to fetch the user related to each post.
 
 ```jsx
-<ReferenceField source="user_id" reference="users">
-    <TextField source="name" />
-</ReferenceField>
+<ReferenceField source="user_id" reference="users" />
 ```
 
 ## `sortBy`
@@ -160,9 +158,7 @@ For instance, if the `posts` resource has a `user_id` field, set the `reference`
 By default, when used in a `<Datagrid>`, and when the user clicks on the column header of a `<ReferenceField>`, react-admin sorts the list by the field `source`. To specify another field name to sort by, set the `sortBy` prop.
 
 ```jsx
-<ReferenceField source="user_id" reference="users" sortBy="user.name">
-    <TextField source="name" />
-</ReferenceField>
+<ReferenceField source="user_id" reference="users" sortBy="user.name" />
 ```
 
 ## `sx`: CSS API
@@ -255,9 +251,7 @@ export const PostList = () => (
     <List>
         <Datagrid>
             <TextField source="id" />
-            <ReferenceField label="User" source="user_id" reference="users">
-                <TextField source="name" />
-            </ReferenceField>
+            <ReferenceField label="User" source="user_id" reference="users" />
             <TextField source="title" />
             <EditButton />
         </Datagrid>
