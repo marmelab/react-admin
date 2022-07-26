@@ -25,7 +25,7 @@ import { SelectInput } from 'react-admin';
 
 If, instead of showing choices as a dropdown list, you prefer to display them as a list of radio buttons, try the [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md). And if the list is too big, prefer the [`<AutocompleteInput>`](./AutocompleteInput.md).
 
-## Properties
+## Props
 
 | Prop              | Required | Type                       | Default            | Description                                                                                                                            |
 |-------------------|----------|----------------------------|--------------------|----------------------------------------------------------------------------------------------------------------------------------------|

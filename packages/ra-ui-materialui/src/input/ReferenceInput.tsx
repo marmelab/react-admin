@@ -17,7 +17,7 @@ import { AutocompleteInput } from './AutocompleteInput';
  * (using `dataProvider.getList()`), then renders an `<AutocompleteInput>`,
  * to which it passes the possible choices via a `ChoicesContext`.
  *
- * You can pas a child select component to customize the way the reference
+ * You can pass a child select component to customize the way the reference
  * selector is displayed (e.g. using `<SelectInput>` or `<RadioButtonGroupInput>`
  * instead of `<AutocompleteInput>`).
  *

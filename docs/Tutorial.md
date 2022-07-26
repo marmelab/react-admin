@@ -454,7 +454,7 @@ const App = () => (
 
 [![Post Edit Guesser](./img/tutorial_edit_guesser.gif)](./img/tutorial_edit_guesser.gif)
 
-Users can display the edit page just by clicking on the Edit button. The form is already functional; it issues `PUT` requests to the REST API upon submission.
+Users can display the edit page just by clicking on the Edit button. The form is already functional; it issues `PUT` requests to the REST API upon submission. And thanks to the `recordRepresentation` of the "users" Resource, the user name is displayed foir the post author.
 
 Copy the `<PostEdit>` code dumped by the guesser in the console to the `posts.js` file so that you can customize the view. Don't forget to `import` the new components from react-admin:
 
@@ -470,7 +470,6 @@ import {
     Edit,
     SimpleForm,
     ReferenceInput,
-    SelectInput,
     TextInput,
 } from 'react-admin';
 
@@ -481,9 +480,7 @@ export const PostList = props => (
 export const PostEdit = () => (
     <Edit>
         <SimpleForm>
-            <ReferenceInput source="userId" reference="users">
-                <SelectInput optionText="id" />
-            </ReferenceInput>
+            <ReferenceInput source="userId" reference="users" />
             <TextInput source="id" />
             <TextInput source="title" />
             <TextInput source="body" />
@@ -492,7 +489,7 @@ export const PostEdit = () => (
 );
 ```
 
-You can now adjust the `<PostEdit>` component to disable the edition of the primary key (`id`), place it first, use the user `name` instead of the user `id` in the reference, and use a longer text input for the `body` field, as follows:
+You can now adjust the `<PostEdit>` component to disable the edition of the primary key (`id`), place it first, and use a longer text input for the `body` field, as follows:
 
 ```diff
 // in src/posts.js
@@ -500,10 +497,7 @@ export const PostEdit = () => (
     <Edit>
         <SimpleForm>
 +           <TextInput disabled source="id" />
-            <ReferenceInput source="userId" reference="users">
--               <SelectInput optionText="id" />
-+               <SelectInput optionText="name" />
-            </ReferenceInput>
+            <ReferenceInput source="userId" reference="users" />
 -           <TextInput source="id" />
             <TextInput source="title" />
 -           <TextInput source="body" />
@@ -513,9 +507,9 @@ export const PostEdit = () => (
 );
 ```
 
-If you've understood the `<List>` component, the `<Edit>` component will be no surprise. It's responsible for fetching the record, and displaying the page title. It passes the record down to the `<SimpleForm>` component, which is responsible for the form layout, default values, and validation. Just like `<Datagrid>`, `<SimpleForm>` uses its children to determine the form inputs to display. It expects *input components* as children. `<TextInput>`, `<ReferenceInput>`, and `<SelectInput>` are such inputs.
+If you've understood the `<List>` component, the `<Edit>` component will be no surprise. It's responsible for fetching the record, and displaying the page title. It passes the record down to the `<SimpleForm>` component, which is responsible for the form layout, default values, and validation. Just like `<Datagrid>`, `<SimpleForm>` uses its children to determine the form inputs to display. It expects *input components* as children. `<TextInput>` and `<ReferenceInput>` are such inputs.
 
-The `<ReferenceInput>` takes the same props as the `<ReferenceField>` (used earlier in the `<PostList>` page). `<ReferenceInput>` uses these props to fetch the API for possible references related to the current record (in this case, possible `users` for the current `post`). It then creates a context with the possible choices and renders its children (`<SelectInput>` in this case), which are responsible for displaying the choices (via their `name` in that case), and letting the user select one. `<SelectInput>` renders as a `<select>` tag in HTML.
+The `<ReferenceInput>` takes the same props as the `<ReferenceField>` (used earlier in the `<PostList>` page). `<ReferenceInput>` uses these props to fetch the API for possible references related to the current record (in this case, possible `users` for the current `post`). It then creates a context with the possible choices and renders an `<AutocompleteInput>`, which is responsible for displaying the choices, and letting the user select one.
 
 ## Adding Creation Capabilities
 
@@ -534,7 +528,6 @@ import {
 +   Create,
     SimpleForm,
     ReferenceInput,
-    SelectInput,
     TextInput,
 } from 'react-admin';
 
@@ -549,9 +542,7 @@ export const PostEdit = props => (
 +export const PostCreate = props => (
 +    <Create {...props}>
 +        <SimpleForm>
-+            <ReferenceInput source="userId" reference="users">
-+                <SelectInput optionText="name" />
-+            </ReferenceInput>
++            <ReferenceInput source="userId" reference="users" />
 +            <TextInput source="title" />
 +            <TextInput multiline source="body" />
 +        </SimpleForm>
@@ -637,13 +628,11 @@ React-admin can use Input components to create a multi-criteria search engine in
 
 ```jsx
 // in src/posts.js
-import { ReferenceInput, SelectInput, TextInput, List } from 'react-admin';
+import { ReferenceInput, TextInput, List } from 'react-admin';
 
 const postFilters = [
     <TextInput source="q" label="Search" alwaysOn />,
-    <ReferenceInput source="userId" label="User" reference="users">
-        <SelectInput optionText="name" />
-    </ReferenceInput>,
+    <ReferenceInput source="userId" label="User" reference="users" />,
 ];
 
 export const PostList = () => (

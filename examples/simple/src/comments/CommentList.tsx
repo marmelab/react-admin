@@ -22,7 +22,6 @@ import {
     ReferenceField,
     ReferenceInput,
     SearchInput,
-    SelectInput,
     ShowButton,
     SimpleList,
     TextField,
@@ -34,9 +33,7 @@ import {
 
 const commentFilters = [
     <SearchInput source="q" alwaysOn />,
-    <ReferenceInput source="post_id" reference="posts">
-        <SelectInput optionText="title" />
-    </ReferenceInput>,
+    <ReferenceInput source="post_id" reference="posts" />,
 ];
 
 const exporter = (records, fetchRelatedRecords) =>
