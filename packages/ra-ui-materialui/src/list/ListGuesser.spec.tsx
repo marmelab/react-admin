@@ -45,7 +45,7 @@ export const CommentList = () => (
         <Datagrid rowClick="edit">
             <TextField source="id" />
             <TextField source="author" />
-            <ReferenceField source="post_id" reference="posts"><TextField source="id" /></ReferenceField>
+            <ReferenceField source="post_id" reference="posts" />
             <NumberField source="score" />
             <TextField source="body" />
             <DateField source="created_at" />
