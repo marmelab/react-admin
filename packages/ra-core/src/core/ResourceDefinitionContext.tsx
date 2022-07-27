@@ -46,7 +46,7 @@ export const ResourceDefinitionContextProvider = ({
     definitions: defaultDefinitions = {},
     children,
 }: {
-    definitions: ResourceDefinitions;
+    definitions?: ResourceDefinitions;
     children: React.ReactNode;
 }) => {
     const [definitions, setState] = useState<ResourceDefinitions>(
