@@ -19,6 +19,7 @@ const englishMessages: TranslationMessages = {
             list: 'List',
             refresh: 'Refresh',
             remove_filter: 'Remove this filter',
+            remove_all_filters: 'Remove all filters',
             remove: 'Remove',
             save: 'Save',
             search: 'Search',

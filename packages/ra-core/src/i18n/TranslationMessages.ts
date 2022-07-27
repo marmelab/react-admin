@@ -23,6 +23,7 @@ export interface TranslationMessages extends StringMap {
             list: string;
             refresh: string;
             remove_filter: string;
+            remove_all_filters: string;
             remove: string;
             save: string;
             search: string;
