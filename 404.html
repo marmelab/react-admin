@@ -16,6 +16,21 @@ d88   888  888    888 d88   888
 
 <p>You know the deal: it's the "<strong>Page not found</strong>" page.</p>
 
+<div id="doc-version" style="display: none">
+  <p>
+    The page you requested does not exist in version
+    <span class="doc-version-number">XX</span>. The organization of the
+    react-admin documentation changes across versions.
+  </p>
+
+  <p>
+    <a href="#" onClick="document.location.pathname = docPageRoot"
+      >Go to the <span class="doc-version-number">XX</span> documentation home
+      page</a
+    >.
+  </p>
+</div>
+
 <p>
   If you come from another page in this website, please
   <a href="https://github.com/marmelab/react-admin"
@@ -25,16 +40,24 @@ d88   888  888    888 d88   888
 
 <p>If you come from another website, please report the broken link to them!</p>
 
-<p><a href="##" onClick="history.go(-1); return false;">Go back</a></p>
+<p><a href="#" onClick="history.go(-1); return false;">Go back</a></p>
 
 <script>
-  const docPageRegexp = /(\/doc\/\d+\.\d+\/).*/;
+  let docPageRoot;
+  const docPageRegexp = /(.*\/doc\/\d+\.\d+\/).*/;
+  const versionRegexp = /.*\/doc\/(\d+\.\d+)\/.*/;
   const match = docPageRegexp.test(document.location.pathname);
   if (match) {
     // the user was on a doc page and changed the version
     // but this page doesn't exist in the new version
     // so we redirect them to the root of the doc page
-    const docPageRoot = document.location.pathname.match(docPageRegexp)[1];
-    window.location.href = docPageRoot + "Readme.html";
+    docPageRoot =
+      document.location.pathname.match(docPageRegexp)[1] + "Readme.html";
+    const version = document.location.pathname.match(versionRegexp)[1];
+    document.getElementsByClassName("doc-version-number")[0].innerText =
+      version;
+    document.getElementsByClassName("doc-version-number")[1].innerText =
+      version;
+    document.getElementById("doc-version").style.display = "block";
   }
 </script>
