@@ -102,7 +102,7 @@ export const Link = () => (
 );
 
 export const Multiple = () => {
-    const [calls, setCalls] = useState([]);
+    const [calls, setCalls] = useState<any>([]);
     const dataProviderWithLogging = {
         getManyReference: (resource, params) => {
             setCalls(calls =>
@@ -205,6 +205,7 @@ const BookDetailsRepresentation = () => {
         </>
     );
 };
+
 export const RecordRepresentation = () => (
     <CoreAdminContext dataProvider={defaultDataProvider} history={history}>
         <ResourceContextProvider value="books">
