@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Admin } from 'react-admin';
+import { Admin, AutocompleteInput } from 'react-admin';
 import { Resource, useListContext } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { createMemoryHistory } from 'history';
@@ -8,7 +8,7 @@ import { Box, Card, Stack, Typography } from '@mui/material';
 import { List } from './List';
 import { Datagrid } from './datagrid';
 import { TextField } from '../field';
-import { SearchInput, TextInput } from '../input';
+import { ReferenceInput, SearchInput, SelectInput, TextInput } from '../input';
 
 export default { title: 'ra-ui-materialui/list/List' };
 
@@ -80,6 +80,18 @@ const dataProvider = fakeRestDataProvider({
             author: 'James Joyce',
             year: 1922,
         },
+        {
+            id: 12,
+            title: 'One Hundred Years of Solitude',
+            author: 'Gabriel García Márquez',
+            year: 1967,
+        },
+        {
+            id: 13,
+            title: 'Snow Country',
+            author: 'Yasunari Kawabata',
+            year: 1956,
+        },
     ],
     authors: [],
 });
@@ -130,7 +142,13 @@ const BookListWithFilters = () => (
     <List
         filters={[
             <SearchInput source="q" alwaysOn />,
-            <TextInput source="title" />,
+            <ReferenceInput label="title" source="title" reference="books">
+                <SelectInput optionText="title" optionValue="title" />
+            </ReferenceInput>,
+            <ReferenceInput source="author" reference="books">
+                <AutocompleteInput optionValue="author" optionText="author" />
+            </ReferenceInput>,
+            <TextInput source="year" />,
         ]}
     >
         <BookList />
