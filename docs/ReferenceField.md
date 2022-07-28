@@ -36,7 +36,7 @@ So it's a good idea to configure the `<Resource recordRepresentation>` to render
 <Resource name="users" list={UserList} recordRepresentation={(record) => `${record.first_name} ${record.last_name}`} />
 ```
 
-Alternately, if you pass a child component, `ReferenceField>` will render it instead of the `recordRepresentation`. Usual child components for `<ReferenceField>` are other `<Field>` components (e.g. [`<TextField>`](./TextField.md)).
+Alternately, if you pass a child component, `<ReferenceField>` will render it instead of the `recordRepresentation`. Usual child components for `<ReferenceField>` are other `<Field>` components (e.g. [`<TextField>`](./TextField.md)).
 
 ```jsx
 <ReferenceField source="user_id" reference="users">
