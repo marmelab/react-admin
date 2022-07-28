@@ -454,7 +454,7 @@ const App = () => (
 
 [![Post Edit Guesser](./img/tutorial_edit_guesser.gif)](./img/tutorial_edit_guesser.gif)
 
-Users can display the edit page just by clicking on the Edit button. The form is already functional; it issues `PUT` requests to the REST API upon submission. And thanks to the `recordRepresentation` of the "users" Resource, the user name is displayed foir the post author.
+Users can display the edit page just by clicking on the Edit button. The form is already functional; it issues `PUT` requests to the REST API upon submission. And thanks to the `recordRepresentation` of the "users" Resource, the user name is displayed for the post author.
 
 Copy the `<PostEdit>` code dumped by the guesser in the console to the `posts.js` file so that you can customize the view. Don't forget to `import` the new components from react-admin:
 
