@@ -34,7 +34,7 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
         displayedFilters = {},
         filterValues,
         perPage,
-        hideFilter,
+        setFilters,
         showFilter,
         sort,
     } = useListContext(props);
@@ -63,14 +63,6 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
             typeof lodashGet(filterValues, filterElement.props.source) ===
                 'undefined'
     );
-
-    const clearAllFilters = useCallback(() => {
-        console.log({ hideFilter });
-        if (!!hideFilter)
-            Object.keys(displayedFilters).map(filterProp =>
-                hideFilter(filterProp)
-            );
-    }, [hideFilter, displayedFilters]);
 
     const handleClickButton = useCallback(
         event => {
@@ -122,7 +114,6 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
     if (
         hiddenFilters.length === 0 &&
         validSavedQueries.length === 0 &&
-        !hasDisplayedFilters &&
         !hasFilterValues
     ) {
         return null;
@@ -203,7 +194,7 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
                     </MenuItem>
                 )}
                 {hasDisplayedFilters && (
-                    <MenuItem onClick={clearAllFilters}>
+                    <MenuItem onClick={() => setFilters({}, {}, false)}>
                         {translate('ra.action.remove_all_filters', {
                             _: 'Remove all filters',
                         })}

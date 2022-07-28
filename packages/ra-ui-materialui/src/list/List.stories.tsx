@@ -8,11 +8,11 @@ import { Box, Card, Stack, Typography } from '@mui/material';
 import { List } from './List';
 import { Datagrid } from './datagrid';
 import { TextField } from '../field';
-import { ReferenceInput, SearchInput, SelectInput, TextInput } from '../input';
+import { SearchInput, TextInput } from '../input';
 
 export default { title: 'ra-ui-materialui/list/List' };
 
-const dataProvider = fakeRestDataProvider({
+const data = {
     books: [
         {
             id: 1,
@@ -94,7 +94,8 @@ const dataProvider = fakeRestDataProvider({
         },
     ],
     authors: [],
-});
+};
+const dataProvider = fakeRestDataProvider(data);
 
 const history = createMemoryHistory({ initialEntries: ['/books'] });
 
@@ -142,12 +143,18 @@ const BookListWithFilters = () => (
     <List
         filters={[
             <SearchInput source="q" alwaysOn />,
-            <ReferenceInput label="title" source="title" reference="books">
-                <SelectInput optionText="title" optionValue="title" />
-            </ReferenceInput>,
-            <ReferenceInput source="author" reference="books">
-                <AutocompleteInput optionValue="author" optionText="author" />
-            </ReferenceInput>,
+            <AutocompleteInput
+                source="title"
+                optionValue="title"
+                optionText="title"
+                choices={data.books}
+            />,
+            <AutocompleteInput
+                source="author"
+                optionValue="author"
+                optionText="author"
+                choices={data.books}
+            />,
             <TextInput source="year" />,
         ]}
     >
