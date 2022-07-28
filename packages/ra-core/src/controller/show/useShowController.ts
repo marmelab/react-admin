@@ -7,7 +7,11 @@ import { useGetOne, useRefresh, UseGetOneHookValue } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import { useRedirect } from '../../routing';
 import { useNotify } from '../../notification';
-import { useResourceContext, useGetResourceLabel } from '../../core';
+import {
+    useResourceContext,
+    useGetResourceLabel,
+    useGetRecordRepresentation,
+} from '../../core';
 
 /**
  * Prepare data for the Show view.
@@ -45,10 +49,9 @@ export const useShowController = <RecordType extends RaRecord = any>(
     props: ShowControllerProps<RecordType> = {}
 ): ShowControllerResult<RecordType> => {
     const { disableAuthentication, id: propsId, queryOptions = {} } = props;
-
     useAuthenticated({ enabled: !disableAuthentication });
-
     const resource = useResourceContext(props);
+    const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
@@ -83,10 +86,15 @@ export const useShowController = <RecordType extends RaRecord = any>(
     }
 
     const getResourceLabel = useGetResourceLabel();
+    const recordRepresentation = getRecordRepresentation(record);
     const defaultTitle = translate('ra.page.show', {
         name: getResourceLabel(resource, 1),
         id,
         record,
+        recordRepresentation:
+            typeof recordRepresentation === 'string'
+                ? recordRepresentation
+                : '',
     });
 
     return {

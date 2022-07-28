@@ -6,6 +6,7 @@ import {
     useMemo,
     useRef,
     useState,
+    ReactNode,
 } from 'react';
 import debounce from 'lodash/debounce';
 import get from 'lodash/get';
@@ -30,6 +31,7 @@ import {
     useTimeout,
     useTranslate,
     warning,
+    useGetRecordRepresentation,
 } from 'ra-core';
 import {
     SupportCreateSuggestionOptions,
@@ -153,8 +155,8 @@ export const AutocompleteInput = <
         onChange,
         onCreate,
         openText = 'ra.action.open',
-        optionText = 'name',
-        optionValue = 'id',
+        optionText,
+        optionValue,
         parse,
         resource: resourceProp,
         shouldRenderSuggestions,
@@ -175,6 +177,7 @@ export const AutocompleteInput = <
         resource,
         source,
         setFilters,
+        isFromReference,
     } = useChoicesContext({
         choices: choicesProp,
         isFetching: isFetchingProp,
@@ -240,13 +243,16 @@ If you provided a React element for the optionText prop, you must also provide t
         /* eslint-enable eqeqeq */
     }, [shouldRenderSuggestions, noOptionsText]);
 
+    const getRecordRepresentation = useGetRecordRepresentation(resource);
     const { getChoiceText, getChoiceValue, getSuggestions } = useSuggestions({
         choices: allChoices,
         emptyText,
         emptyValue,
         limitChoicesToValue,
         matchSuggestion,
-        optionText,
+        optionText:
+            optionText ??
+            (isFromReference ? getRecordRepresentation : undefined),
         optionValue,
         selectedItem: selectedChoice,
         suggestionLimit,
@@ -576,6 +582,7 @@ export interface AutocompleteInputProps<
             >,
             'onChange' | 'options' | 'renderInput'
         > {
+    children?: ReactNode;
     debounce?: number;
     filterToQuery?: (searchText: string) => any;
     inputText?: (option: any) => string;

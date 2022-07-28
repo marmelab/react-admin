@@ -4,10 +4,12 @@ import {
     CoreAdminContext,
     RecordContextProvider,
     ResourceContextProvider,
+    ResourceDefinitionContextProvider,
     ListContextProvider,
+    useRecordContext,
 } from 'ra-core';
 import { createMemoryHistory } from 'history';
-import { ThemeProvider } from '@mui/material';
+import { ThemeProvider, Stack } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 
 import { TextField } from '../field';
@@ -100,7 +102,7 @@ export const Link = () => (
 );
 
 export const Multiple = () => {
-    const [calls, setCalls] = useState([]);
+    const [calls, setCalls] = useState<any>([]);
     const dataProviderWithLogging = {
         getManyReference: (resource, params) => {
             setCalls(calls =>
@@ -192,4 +194,83 @@ export const InDatagrid = () => (
             </ReferenceOneField>
         </Datagrid>
     </ListWrapper>
+);
+
+const BookDetailsRepresentation = () => {
+    const record = useRecordContext();
+    return (
+        <>
+            <strong>Genre</strong>: {record.genre}, <strong>ISBN</strong>:{' '}
+            {record.ISBN}
+        </>
+    );
+};
+
+export const RecordRepresentation = () => (
+    <CoreAdminContext dataProvider={defaultDataProvider} history={history}>
+        <ResourceContextProvider value="books">
+            <RecordContextProvider value={{ id: 1, title: 'War and Peace' }}>
+                <Stack spacing={4} direction="row" sx={{ ml: 2 }}>
+                    <div>
+                        <h3>Default</h3>
+                        <ReferenceOneField
+                            reference="book_details"
+                            target="book_id"
+                        />
+                    </div>
+                    <div>
+                        <ResourceDefinitionContextProvider
+                            definitions={{
+                                book_details: {
+                                    name: 'book_details',
+                                    recordRepresentation: 'ISBN',
+                                },
+                            }}
+                        >
+                            <h3>String</h3>
+                            <ReferenceOneField
+                                reference="book_details"
+                                target="book_id"
+                            />
+                        </ResourceDefinitionContextProvider>
+                    </div>
+                    <div>
+                        <ResourceDefinitionContextProvider
+                            definitions={{
+                                book_details: {
+                                    name: 'book_details',
+                                    recordRepresentation: record =>
+                                        `Genre: ${record.genre}, ISBN: ${record.ISBN}`,
+                                },
+                            }}
+                        >
+                            <h3>Function</h3>
+                            <ReferenceOneField
+                                reference="book_details"
+                                target="book_id"
+                            />
+                        </ResourceDefinitionContextProvider>
+                    </div>
+                    <div>
+                        <ResourceDefinitionContextProvider
+                            definitions={{
+                                book_details: {
+                                    name: 'book_details',
+                                    recordRepresentation: (
+                                        <BookDetailsRepresentation />
+                                    ),
+                                },
+                            }}
+                        >
+                            <h3>Element</h3>
+                            <ReferenceOneField
+                                reference="book_details"
+                                target="book_id"
+                            />
+                        </ResourceDefinitionContextProvider>
+                    </div>
+                </Stack>
+            </RecordContextProvider>
+        </ResourceContextProvider>
+    </CoreAdminContext>
 );

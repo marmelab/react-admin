@@ -14,7 +14,11 @@ import {
     UseUpdateMutateParams,
 } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
-import { useResourceContext, useGetResourceLabel } from '../../core';
+import {
+    useResourceContext,
+    useGetResourceLabel,
+    useGetRecordRepresentation,
+} from '../../core';
 import { SaveContextValue, useMutationMiddlewares } from '../saveContext';
 
 /**
@@ -56,6 +60,7 @@ export const useEditController = <
     } = props;
     useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
+    const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
@@ -102,10 +107,15 @@ export const useEditController = <
     }
 
     const getResourceLabel = useGetResourceLabel();
+    const recordRepresentation = getRecordRepresentation(record);
     const defaultTitle = translate('ra.page.edit', {
         name: getResourceLabel(resource, 1),
         id,
         record,
+        recordRepresentation:
+            typeof recordRepresentation === 'string'
+                ? recordRepresentation
+                : '',
     });
 
     const recordCached = { id, previousData: record };

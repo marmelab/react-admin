@@ -62,7 +62,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
     reference: {
         component: ReferenceField,
         representation: props =>
-            `<ReferenceField source="${props.source}" reference="${props.reference}"><TextField source="id" /></ReferenceField>`,
+            `<ReferenceField source="${props.source}" reference="${props.reference}" />`,
     },
     referenceChild: {
         component: props => <TextField source="id" {...props} />, // eslint-disable-line react/display-name

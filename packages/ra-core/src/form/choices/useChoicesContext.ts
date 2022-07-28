@@ -44,6 +44,7 @@ export const useChoicesContext = <ChoicesType extends RaRecord = RaRecord>(
                 sort: options.sort ?? list.sort,
                 source: options.source,
                 total: options.total ?? list.total,
+                isFromReference: false,
             };
         }
         return context;

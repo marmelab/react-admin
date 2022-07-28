@@ -4,11 +4,16 @@ import {
     CoreAdminContext,
     ResourceContextProvider,
     useRecordContext,
+    useShowContext,
+    ResourceDefinitionContextProvider,
 } from 'ra-core';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
 import { createMemoryHistory } from 'history';
 import { Route, Routes } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 
+import { AdminContext } from '../AdminContext';
 import { Default, Actions, Basic, Component } from './Show.stories';
 import { Show } from './Show';
 
@@ -118,5 +123,60 @@ describe('<Show />', () => {
     it('should allow to override the root component', () => {
         render(<Component />);
         expect(screen.getByTestId('custom-component')).toBeDefined();
+    });
+
+    describe('defaultTitle', () => {
+        const defaultShowProps = {
+            id: '123',
+            resource: 'foo',
+        };
+        it('should use the record id by default', async () => {
+            const dataProvider = {
+                getOne: () =>
+                    Promise.resolve({ data: { id: 123, title: 'lorem' } }),
+            } as any;
+            const Title = () => {
+                const { defaultTitle } = useShowContext();
+                return <>{defaultTitle}</>;
+            };
+            const i18nProvider = polyglotI18nProvider(() => englishMessages);
+            render(
+                <AdminContext
+                    dataProvider={dataProvider}
+                    i18nProvider={i18nProvider}
+                >
+                    <Show {...defaultShowProps}>
+                        <Title />
+                    </Show>
+                </AdminContext>
+            );
+            await screen.findByText('Foo #123');
+        });
+        it('should use the recordRepresentation when defined', async () => {
+            const dataProvider = {
+                getOne: () =>
+                    Promise.resolve({ data: { id: 123, title: 'lorem' } }),
+            } as any;
+            const Title = () => {
+                const { defaultTitle } = useShowContext();
+                return <>{defaultTitle}</>;
+            };
+            const i18nProvider = polyglotI18nProvider(() => englishMessages);
+            render(
+                <AdminContext
+                    dataProvider={dataProvider}
+                    i18nProvider={i18nProvider}
+                >
+                    <ResourceDefinitionContextProvider
+                        definitions={{ foo: { recordRepresentation: 'title' } }}
+                    >
+                        <Show {...defaultShowProps}>
+                            <Title />
+                        </Show>
+                    </ResourceDefinitionContextProvider>
+                </AdminContext>
+            );
+            await screen.findByText('Foo lorem');
+        });
     });
 });

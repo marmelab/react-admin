@@ -12,6 +12,7 @@ import {
     ChoicesProps,
     useChoices,
     RaRecord,
+    useGetRecordRepresentation,
 } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
@@ -135,7 +136,13 @@ export const SelectInput = (props: SelectInputProps) => {
         ...rest
     } = props;
     const translate = useTranslate();
-    const { allChoices, isLoading, source, resource } = useChoicesContext({
+    const {
+        allChoices,
+        isLoading,
+        source,
+        resource,
+        isFromReference,
+    } = useChoicesContext({
         choices: choicesProp,
         isLoading: isLoadingProp,
         isFetching: isFetchingProp,
@@ -143,8 +150,11 @@ export const SelectInput = (props: SelectInputProps) => {
         source: sourceProp,
     });
 
+    const getRecordRepresentation = useGetRecordRepresentation(resource);
     const { getChoiceText, getChoiceValue, getDisableValue } = useChoices({
-        optionText,
+        optionText:
+            optionText ??
+            (isFromReference ? getRecordRepresentation : undefined),
         optionValue,
         disableValue,
         translateChoice,
@@ -256,6 +266,7 @@ export const SelectInput = (props: SelectInputProps) => {
                 variant={props.variant}
                 size={props.size}
                 margin={props.margin}
+                fullWidth={props.fullWidth}
             />
         );
     }
@@ -317,8 +328,8 @@ SelectInput.propTypes = {
         PropTypes.string,
         PropTypes.func,
         PropTypes.element,
-    ]).isRequired,
-    optionValue: PropTypes.string.isRequired,
+    ]),
+    optionValue: PropTypes.string,
     disableValue: PropTypes.string,
     resettable: PropTypes.bool,
     resource: PropTypes.string,
@@ -330,8 +341,6 @@ SelectInput.defaultProps = {
     emptyText: '',
     emptyValue: '',
     options: {},
-    optionText: 'name',
-    optionValue: 'id',
     translateChoice: true,
     disableValue: 'disabled',
 };

@@ -85,14 +85,14 @@ export const ReferenceOneField = (props: ReferenceOneFieldProps) => {
 export interface ReferenceOneFieldProps
     extends PublicFieldProps,
         InjectedFieldProps {
-    children: ReactNode;
+    children?: ReactNode;
     reference: string;
     target: string;
     link?: LinkToType;
 }
 
 ReferenceOneField.propTypes = {
-    children: PropTypes.node.isRequired,
+    children: PropTypes.node,
     className: PropTypes.string,
     label: fieldPropTypes.label,
     record: PropTypes.any,

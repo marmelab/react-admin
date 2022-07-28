@@ -6,6 +6,7 @@ import {
     CoreAdminContext,
     testDataProvider,
     useGetMany,
+    ResourceDefinitionContextProvider,
 } from 'ra-core';
 import { QueryClient } from 'react-query';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -262,6 +263,70 @@ describe('<ReferenceField />', () => {
                             resource="comments"
                             source="postId"
                             reference="posts"
+                        />
+                    </RecordContextProvider>
+                </CoreAdminContext>
+            </ThemeProvider>
+        );
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(screen.queryByRole('progressbar')).toBeNull();
+        expect(screen.getByText('#123')).not.toBeNull();
+        expect(screen.queryAllByRole('link')).toHaveLength(1);
+        expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
+            '#/posts/123'
+        );
+    });
+
+    it('should use recordRepresentation to render the related record', async () => {
+        const dataProvider = testDataProvider({
+            getMany: jest.fn().mockResolvedValue({
+                data: [{ id: 123, title: 'foo' }],
+            }),
+        });
+        render(
+            <ThemeProvider theme={theme}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: {
+                                recordRepresentation: 'title',
+                            },
+                        }}
+                    >
+                        <RecordContextProvider value={record}>
+                            <ReferenceField
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                            />
+                        </RecordContextProvider>
+                    </ResourceDefinitionContextProvider>
+                </CoreAdminContext>
+            </ThemeProvider>
+        );
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(screen.queryByRole('progressbar')).toBeNull();
+        expect(screen.getByText('foo')).not.toBeNull();
+        expect(screen.queryAllByRole('link')).toHaveLength(1);
+        expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
+            '#/posts/123'
+        );
+    });
+
+    it('should render its child component when given', async () => {
+        const dataProvider = testDataProvider({
+            getMany: jest.fn().mockResolvedValue({
+                data: [{ id: 123, title: 'foo' }],
+            }),
+        });
+        render(
+            <ThemeProvider theme={theme}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <RecordContextProvider value={record}>
+                        <ReferenceField
+                            resource="comments"
+                            source="postId"
+                            reference="posts"
                         >
                             <TextField source="title" />
                         </ReferenceField>
@@ -273,7 +338,7 @@ describe('<ReferenceField />', () => {
         expect(screen.queryByRole('progressbar')).toBeNull();
         expect(screen.getByText('foo')).not.toBeNull();
         expect(screen.queryAllByRole('link')).toHaveLength(1);
-        expect(screen.queryByRole('link').getAttribute('href')).toBe(
+        expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
             '#/posts/123'
         );
     });
@@ -328,7 +393,7 @@ describe('<ReferenceField />', () => {
             hidden: true,
         });
         expect(ErrorIcon).not.toBeNull();
-        expect(ErrorIcon.getAttribute('aria-errormessage')).toBe('boo');
+        expect(ErrorIcon?.getAttribute('aria-errormessage')).toBe('boo');
     });
 
     it('should render a link to specified link type', async () => {
@@ -355,7 +420,7 @@ describe('<ReferenceField />', () => {
         await waitFor(() =>
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
         );
-        expect(screen.queryByRole('link').getAttribute('href')).toBe(
+        expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
             '#/posts/123/show'
         );
     });

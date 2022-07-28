@@ -22,11 +22,23 @@ import { AutocompleteInput } from 'react-admin';
 ]} />
 ```
 
+**Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteInput>` with [`<ReferenceInput>`](./ReferenceInput.md), and leave the `choices` empty:
+
+```jsx
+import { AutocompleteInput, ReferenceInput } from 'react-admin';
+
+<ReferenceInput label="Post" source="post_id" reference="posts">
+    <AutocompleteInput />
+</ReferenceInput>
+```
+
+**Tip**: `<AutocompleteInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceInput>`](./ReferenceInput.md) doesn't cover your need), you'll have to [write your own Input component](./Inputs.md#writing-your-own-input-component) based on MUI `<AutoComplete>` component.
+
 ## Properties
 
 | Prop                      | Required | Type                                          | Default                                 | Description                                                                                                                                                                                                                                                                                                 |
 |---------------------------|----------|-----------------------------------------------|-----------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `choices`                 | Required | `Object[]`                                    | `-`                                     | List of items to autosuggest                                                                                                                                                                                                                                                                                |
+| `choices`                 | Optional | `Object[]`                                    | `-`                                     | List of items to autosuggest. Required if not inside a ReferenceInput.                                                                                                                                                                                                                                      |
 | `create`                  | Optional | `Element`                                     | `-`                                     | A React Element to render when users want to create a new choice                                                                                                                                                                                                                                            |
 | `createItemLabel`         | Optional | `string`                                      | `ra.action.create_item`                 | The label for the menu item allowing users to create a new choice. Used when the filter is not empty                                                                                                                                                                                                        |
 | `emptyValue`              | Optional | `any`                                         | `''`                                    | The value to use for the empty element                                                                                                                                                                                                                                                                      |
@@ -37,13 +49,13 @@ import { AutocompleteInput } from 'react-admin';
 | `optionValue`             | Optional | `string`                                      | `id`                                    | Field name of record containing the value to use as input value                                                                                                                                                                                                                                             |
 | `inputText`               | Optional | `Function`                                    | `-`                                     | Required if `optionText` is a custom Component, this function must return the text displayed for the current selection.                                                                                                                                                                                     |
 | `filterToQuery`           | Optional | `string` => `Object`                          | `searchText => ({ q: [searchText] })`   | How to transform the searchText into a parameter for the data provider                                                                                                                                                                                                                                      |
-| `setFilter`               | Optional | `Function`                                    | `null`                                  | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.                                                                                          |
+| `setFilter`               | Optional | `Function`                                    | `null`                                  | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically set up when using `ReferenceInput`.                                                                                          |
 | `shouldRenderSuggestions` | Optional | `Function`                                    | `() => true`                            | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim().length > 2` |
 | `suggestionLimit`         | Optional | `number`                                      | `null`                                  | Limits the numbers of suggestions that are shown in the dropdown list                                                                                                                                                                                                                                       |
 
 `<AutocompleteInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
-## Usage
+## `optionText`
 
 You can customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
 
@@ -66,7 +78,7 @@ const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 <AutocompleteInput source="author_id" choices={choices} optionText={optionRenderer} />
 ```
 
-`optionText` also accepts a custom Component. However, as the underlying Autocomplete component requires that the current selection is a string, if you opt for a Component, you must pass a function as the `inputText` prop. This function should return text representation of the current selection:
+`optionText` also accepts a custom Component. However, as the underlying Autocomplete component requires that the current selection is a string, if you opt for a Component, you must pass a function as the `inputText` prop. This function should return a text representation of the current selection:
 
 ```jsx
 const choices = [
@@ -96,6 +108,8 @@ const matchSuggestion = (filter, choice) => {
 />
 ```
 
+## `translateChoice`
+
 The choices are translated by default, so you can use translation identifiers as choices:
 
 ```jsx
@@ -112,8 +126,16 @@ In that case, set the `translateChoice` prop to `false`.
 <AutocompleteInput source="gender" choices={choices} translateChoice={false}/>
 ```
 
-When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set).
+## `shouldRenderSuggestions`
+
+When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly and might be all you need (depending on your data set).
 Ex. `<AutocompleteInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character has been entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
+
+## `sx`: CSS API
+
+This component doesn't apply any custom styles on top of [MUI `<Autocomplete>` component](https://mui.com/components/autocomplete/). Refer to their documentation to know its CSS API.
+
+## Additional Props
 
 `<AutocompleteInput>` renders a [MUI `<Autocomplete>` component](https://mui.com/components/autocomplete/) and it accepts the `<Autocomplete>` props:
 
@@ -122,18 +144,6 @@ Ex. `<AutocompleteInput shouldRenderSuggestions={(val) => { return val.trim().le
 <AutocompleteInput source="category" size="large" />
 ```
 {% endraw %}
-
-**Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteInput>` with [`<ReferenceInput>`](./ReferenceInput.md), and leave the `choices` empty:
-
-```jsx
-import { AutocompleteInput, ReferenceInput } from 'react-admin';
-
-<ReferenceInput label="Post" source="post_id" reference="posts">
-    <AutocompleteInput optionText="title" />
-</ReferenceInput>
-```
-
-**Tip**: `<AutocompleteInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceInput>`](./ReferenceInput.md) doesn't cover your need), you'll have to [write your own Input component](./Inputs.md#writing-your-own-input-component) based on MUI `<AutoComplete>` component.
 
 ## Creating New Choices
 
@@ -171,7 +181,7 @@ const PostCreate = () => {
 ```
 {% endraw %}
 
-Use the `create` prop when you want a more polished or complex UI. For example a MUI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
+Use the `create` prop when you want a more polished or complex UI. For example an MUI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
 
 {% raw %}
 ```js
@@ -253,9 +263,9 @@ const CreateCategory = () => {
 ```
 {% endraw %}
 
-**Tip:** As showcased in this example, react-admin provides a convenience hook for accessing the filter the user has already input in the `<AutocompleteInput>`: `useCreateSuggestionContext`.
+**Tip:** As showcased in this example, react-admin provides a convenient hook for accessing the filter the user has already input in the `<AutocompleteInput>`: `useCreateSuggestionContext`.
 
-The `Create %{item}` option will only be displayed once the user has already set a filter (by typing in some input). If you expect your users to create new items often, you can make this more user friendly by adding a placeholder text like this:
+The `Create %{item}` option will only be displayed once the user has already set a filter (by typing in some input). If you expect your users to create new items often, you can make this more user-friendly by adding a placeholder text like this:
 
 {% raw %}
 ```diff
@@ -287,7 +297,3 @@ const PostCreate = () => {
 }
 ```
 {% endraw %}
-
-## `sx`: CSS API
-
-This component doesn't apply any custom styles on top of [MUI `<Autocomplete>` component](https://mui.com/components/autocomplete/). Refer to their documentation to know its CSS API.

@@ -8,4 +8,5 @@ export default {
     edit: TagEdit,
     list: TagList,
     show: TagShow,
+    recordRepresentation: 'name.en',
 };

@@ -11,6 +11,7 @@ import { ResettableTextField } from './ResettableTextField';
  * Avoids visual jumps when replaced by a form input
  */
 export const LoadingInput = ({
+    fullWidth,
     label,
     helperText,
     margin,
@@ -26,6 +27,7 @@ export const LoadingInput = ({
             sx={sx}
             label={label}
             helperText={helperText}
+            fullWidth={fullWidth}
             variant={variant}
             margin={margin}
             size={size}
@@ -66,6 +68,7 @@ const StyledResettableTextField = styled(ResettableTextField, {
 }));
 
 export interface LoadingInputProps {
+    fullWidth?: boolean;
     helperText?: React.ReactNode;
     margin?: 'normal' | 'none' | 'dense';
     label?: string | React.ReactElement | false;

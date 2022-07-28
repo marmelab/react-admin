@@ -83,8 +83,5 @@ export default {
             summary: 'Résumé',
             security: 'Sécurité',
         },
-        edit: {
-            title: 'Utilisateur "%{title}"',
-        },
     },
 };

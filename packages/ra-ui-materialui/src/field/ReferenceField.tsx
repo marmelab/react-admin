@@ -15,6 +15,7 @@ import {
     useRecordContext,
     useCreatePath,
     Identifier,
+    useGetRecordRepresentation,
 } from 'ra-core';
 
 import { LinearProgress } from '../layout';
@@ -22,44 +23,31 @@ import { Link } from '../Link';
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
 
 /**
- * Fetch reference record, and delegate rendering to child component.
+ * Fetch reference record, and render its representation, or delegate rendering to child component.
  *
  * The reference prop should be the name of one of the <Resource> components
  * added as <Admin> child.
  *
- * @example
+ * @example // using recordRepresentation
+ * <ReferenceField label="User" source="userId" reference="users" />
+ *
+ * @example // using a Field component to represent the record
  * <ReferenceField label="User" source="userId" reference="users">
  *     <TextField source="name" />
  * </ReferenceField>
  *
- * @default
- * By default, includes a link to the <Edit> page of the related record
- * (`/users/:userId` in the previous example).
+ * @example // By default, includes a link to the <Edit> page of the related record
+ * // (`/users/:userId` in the previous example).
+ * // Set the `link` prop to "show" to link to the <Show> page instead.
+ * <ReferenceField label="User" source="userId" reference="users" link="show" />
  *
- * Set the `link` prop to "show" to link to the <Show> page instead.
+ * @example // You can also prevent `<ReferenceField>` from adding link to children
+ * // by setting `link` to false.
+ * <ReferenceField label="User" source="userId" reference="users" link={false} />
  *
- * @example
- * <ReferenceField label="User" source="userId" reference="users" link="show">
- *     <TextField source="name" />
- * </ReferenceField>
- *
- * @default
- * You can also prevent `<ReferenceField>` from adding link to children by setting
- * `link` to false.
- *
- * @example
- * <ReferenceField label="User" source="userId" reference="users" link={false}>
- *     <TextField source="name" />
- * </ReferenceField>
- *
- * @default
- * Alternatively, you can also pass a custom function to `link`. It must take reference and record
- * as arguments and return a string
- *
- * @example
- * <ReferenceField label="User" source="userId" reference="users" link={(record, reference) => "/path/to/${reference}/${record}"}>
- *     <TextField source="name" />
- * </ReferenceField>
+ * @example // Alternatively, you can also pass a custom function to `link`.
+ * // It must take reference and record as arguments and return a string
+ * <ReferenceField label="User" source="userId" reference="users" link={(record, reference) => "/path/to/${reference}/${record}"} />
  *
  * @default
  * In previous versions of React-Admin, the prop `linkType` was used. It is now deprecated and replaced with `link`. However
@@ -87,7 +75,7 @@ export const ReferenceField: FC<ReferenceFieldProps> = props => {
 };
 
 ReferenceField.propTypes = {
-    children: PropTypes.node.isRequired,
+    children: PropTypes.node,
     className: PropTypes.string,
     cellClassName: PropTypes.string,
     headerClassName: PropTypes.string,
@@ -114,7 +102,7 @@ ReferenceField.defaultProps = {
 export interface ReferenceFieldProps<RecordType extends RaRecord = any>
     extends PublicFieldProps,
         InjectedFieldProps<RecordType> {
-    children: ReactNode;
+    children?: ReactNode;
     reference: string;
     resource?: string;
     source: string;
@@ -170,10 +158,12 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
         emptyText,
         error,
         isLoading,
+        reference,
         referenceRecord,
         resourceLinkPath,
         sx,
     } = props;
+    const getRecordRepresentation = useGetRecordRepresentation(reference);
 
     if (error) {
         return (
@@ -194,25 +184,27 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
         return emptyText ? <>{emptyText}</> : null;
     }
 
-    if (resourceLinkPath) {
-        return (
-            <Root className={className} sx={sx}>
-                <RecordContextProvider value={referenceRecord}>
-                    <Link
-                        to={resourceLinkPath as string}
-                        className={ReferenceFieldClasses.link}
-                        onClick={stopPropagation}
-                    >
-                        {children}
-                    </Link>
-                </RecordContextProvider>
-            </Root>
-        );
-    }
+    let child = children || (
+        <Typography component="span" variant="body2">
+            {getRecordRepresentation(referenceRecord)}
+        </Typography>
+    );
 
-    return (
+    return resourceLinkPath ? (
+        <Root className={className} sx={sx}>
+            <RecordContextProvider value={referenceRecord}>
+                <Link
+                    to={resourceLinkPath as string}
+                    className={ReferenceFieldClasses.link}
+                    onClick={stopPropagation}
+                >
+                    {child}
+                </Link>
+            </RecordContextProvider>
+        </Root>
+    ) : (
         <RecordContextProvider value={referenceRecord}>
-            {children}
+            {child}
         </RecordContextProvider>
     );
 };

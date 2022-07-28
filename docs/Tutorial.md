@@ -361,9 +361,7 @@ import { List, Datagrid, TextField, ReferenceField } from 'react-admin';
 export const PostList = () => (
     <List>
         <Datagrid rowClick="edit">
-            <ReferenceField source="userId" reference="users">
-                <TextField source="id" />
-            </ReferenceField>
+            <ReferenceField source="userId" reference="users" />
             <TextField source="id" />
             <TextField source="title" />
             <TextField source="body" />
@@ -388,22 +386,16 @@ const App = () => (
 );
 ```
 
-When displaying the posts list, the app displays the `id` of the post author as a `<TextField>`. This `id` field doesn't mean much, let's use the user `name` instead:
+When displaying the posts list, the app displays the `id` of the post author. This doesn't mean much, let's use the user `name` instead. For that purpose, set the `recordRepresentation` prop of the "users" Resource:
 
 ```diff
-// in src/posts.js
-export const PostList = () => (
-    <List>
-        <Datagrid rowClick="edit">
-            <ReferenceField source="userId" reference="users">
--               <TextField source="id" />
-+               <TextField source="name" />
-            </ReferenceField>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="body" />
-        </Datagrid>
-    </List>
+// in src/App.js
+const App = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource name="posts" list={PostList} />
+-       <Resource name="users" list={UserList} />
++       <Resource name="users" list={UserList} recordRepresentation="name" />
+    </Admin>
 );
 ```
 
@@ -411,7 +403,7 @@ The post list now displays the user names on each line.
 
 [![Post List With User Names](./img/tutorial_list_user_name.png)](./img/tutorial_list_user_name.png)
 
-The `<ReferenceField>` component alone doesn't display anything. It just fetches the reference data, creates a `RecordContext` with the result, and renders its children (a `<TextField>` in this case).
+The `<ReferenceField>` component fetches the reference data, creates a `RecordContext` with the result, and renders the record representation (or its its children).
 
 **Tip**: Look at the network tab of your browser again: react-admin deduplicates requests for users, and aggregates them in order to make only *one* HTTP request to the `/users` endpoint for the whole Datagrid. That's one of many optimizations that keep the UI fast and responsive.
 
@@ -428,9 +420,7 @@ export const PostList = () => (
 -       <Datagrid rowClick="edit">
 +       <Datagrid>
 +           <TextField source="id" />
-            <ReferenceField source="userId" reference="users">
-                <TextField source="name" />
-            </ReferenceField>
+            <ReferenceField source="userId" reference="users" />
 -           <TextField source="id" />
             <TextField source="title" />
 -           <TextField source="body" />
@@ -457,14 +447,14 @@ const App = () => (
     <Admin dataProvider={dataProvider}>
 -       <Resource name="posts" list={PostList} />
 +       <Resource name="posts" list={PostList} edit={EditGuesser} />
-        <Resource name="users" list={UserList} />
+        <Resource name="users" list={UserList} recordRepresentation="name" />
     </Admin>
 );
 ```
 
 [![Post Edit Guesser](./img/tutorial_edit_guesser.gif)](./img/tutorial_edit_guesser.gif)
 
-Users can display the edit page just by clicking on the Edit button. The form is already functional; it issues `PUT` requests to the REST API upon submission.
+Users can display the edit page just by clicking on the Edit button. The form is already functional; it issues `PUT` requests to the REST API upon submission. And thanks to the `recordRepresentation` of the "users" Resource, the user name is displayed for the post author.
 
 Copy the `<PostEdit>` code dumped by the guesser in the console to the `posts.js` file so that you can customize the view. Don't forget to `import` the new components from react-admin:
 
@@ -480,7 +470,6 @@ import {
     Edit,
     SimpleForm,
     ReferenceInput,
-    SelectInput,
     TextInput,
 } from 'react-admin';
 
@@ -491,9 +480,7 @@ export const PostList = props => (
 export const PostEdit = () => (
     <Edit>
         <SimpleForm>
-            <ReferenceInput source="userId" reference="users">
-                <SelectInput optionText="id" />
-            </ReferenceInput>
+            <ReferenceInput source="userId" reference="users" />
             <TextInput source="id" />
             <TextInput source="title" />
             <TextInput source="body" />
@@ -502,7 +489,7 @@ export const PostEdit = () => (
 );
 ```
 
-You can now adjust the `<PostEdit>` component to disable the edition of the primary key (`id`), place it first, use the user `name` instead of the user `id` in the reference, and use a longer text input for the `body` field, as follows:
+You can now adjust the `<PostEdit>` component to disable the edition of the primary key (`id`), place it first, and use a longer text input for the `body` field, as follows:
 
 ```diff
 // in src/posts.js
@@ -510,10 +497,7 @@ export const PostEdit = () => (
     <Edit>
         <SimpleForm>
 +           <TextInput disabled source="id" />
-            <ReferenceInput source="userId" reference="users">
--               <SelectInput optionText="id" />
-+               <SelectInput optionText="name" />
-            </ReferenceInput>
+            <ReferenceInput source="userId" reference="users" />
 -           <TextInput source="id" />
             <TextInput source="title" />
 -           <TextInput source="body" />
@@ -523,9 +507,9 @@ export const PostEdit = () => (
 );
 ```
 
-If you've understood the `<List>` component, the `<Edit>` component will be no surprise. It's responsible for fetching the record, and displaying the page title. It passes the record down to the `<SimpleForm>` component, which is responsible for the form layout, default values, and validation. Just like `<Datagrid>`, `<SimpleForm>` uses its children to determine the form inputs to display. It expects *input components* as children. `<TextInput>`, `<ReferenceInput>`, and `<SelectInput>` are such inputs.
+If you've understood the `<List>` component, the `<Edit>` component will be no surprise. It's responsible for fetching the record, and displaying the page title. It passes the record down to the `<SimpleForm>` component, which is responsible for the form layout, default values, and validation. Just like `<Datagrid>`, `<SimpleForm>` uses its children to determine the form inputs to display. It expects *input components* as children. `<TextInput>` and `<ReferenceInput>` are such inputs.
 
-The `<ReferenceInput>` takes the same props as the `<ReferenceField>` (used earlier in the `<PostList>` page). `<ReferenceInput>` uses these props to fetch the API for possible references related to the current record (in this case, possible `users` for the current `post`). It then creates a context with the possible choices and renders its children (`<SelectInput>` in this case), which are responsible for displaying the choices (via their `name` in that case), and letting the user select one. `<SelectInput>` renders as a `<select>` tag in HTML.
+The `<ReferenceInput>` takes the same props as the `<ReferenceField>` (used earlier in the `<PostList>` page). `<ReferenceInput>` uses these props to fetch the API for possible references related to the current record (in this case, possible `users` for the current `post`). It then creates a context with the possible choices and renders an `<AutocompleteInput>`, which is responsible for displaying the choices, and letting the user select one.
 
 ## Adding Creation Capabilities
 
@@ -544,7 +528,6 @@ import {
 +   Create,
     SimpleForm,
     ReferenceInput,
-    SelectInput,
     TextInput,
 } from 'react-admin';
 
@@ -559,9 +542,7 @@ export const PostEdit = props => (
 +export const PostCreate = props => (
 +    <Create {...props}>
 +        <SimpleForm>
-+            <ReferenceInput source="userId" reference="users">
-+                <SelectInput optionText="name" />
-+            </ReferenceInput>
++            <ReferenceInput source="userId" reference="users" />
 +            <TextInput source="title" />
 +            <TextInput multiline source="body" />
 +        </SimpleForm>
@@ -585,7 +566,7 @@ const App = () => (
     <Admin dataProvider={dataProvider}>
 -       <Resource name="posts" list={PostList} edit={EditGuesser} />
 +       <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} />
-        <Resource name="users" list={UserList} />
+        <Resource name="users" list={UserList} recordRepresentation="name" />
     </Admin>
 );
 ```
@@ -614,7 +595,7 @@ Optimistic updates and undo require no specific code on the API side - react-adm
 
 ## Customizing The Page Title
 
-The post editing page has a slight problem: it uses the post id as main title (the text displayed in the top bar). 
+The post editing page has a slight problem: it uses the post id as main title (the text displayed in the top bar). We could set a custom `recordRepresentation` in the `<Resource name="posts">` component, but it's limited to rendering a string.
 
 Let's customize the view title with a custom title component:
 
@@ -647,13 +628,11 @@ React-admin can use Input components to create a multi-criteria search engine in
 
 ```jsx
 // in src/posts.js
-import { ReferenceInput, SelectInput, TextInput, List } from 'react-admin';
+import { ReferenceInput, TextInput, List } from 'react-admin';
 
 const postFilters = [
     <TextInput source="q" label="Search" alwaysOn />,
-    <ReferenceInput source="userId" label="User" reference="users">
-        <SelectInput optionText="name" />
-    </ReferenceInput>,
+    <ReferenceInput source="userId" label="User" reference="users" />,
 ];
 
 export const PostList = () => (
@@ -683,7 +662,7 @@ import UserIcon from '@mui/icons-material/Group';
 const App = () => (
     <Admin dataProvider={dataProvider}>
         <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon} />
-        <Resource name="users" list={UserList} icon={UserIcon} />
+        <Resource name="users" list={UserList} icon={UserIcon} recordRepresentation="name" />
     </Admin>
 );
 ```
@@ -805,9 +784,7 @@ export const PostList = () => (
         <SimpleList
             primaryText={record => record.title}
             secondaryText={record => (
-                <ReferenceField label="User" source="userId" reference="users">
-                  <TextField source="name" />
-                </ReferenceField>
+                <ReferenceField label="User" source="userId" reference="users" />
             )}
         />
     </List>
@@ -833,20 +810,16 @@ export const PostList = () => {
     return (
         <List>
             {isSmall ? (
-                            <SimpleList
-                                primaryText={record => record.title}
-                                secondaryText={record => (
-                                    <ReferenceField label="User" source="userId" reference="users">
-                                        <TextField source="name" />
-                                    </ReferenceField>
-                                )}
-                            />
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => (
+                        <ReferenceField label="User" source="userId" reference="users" />
+                    )}
+                />
             ) : (
                 <Datagrid>
                     <TextField source="id" />
-                    <ReferenceField label="User" source="userId" reference="users">
-                        <TextField source="name" />
-                    </ReferenceField>
+                    <ReferenceField label="User" source="userId" reference="users" />
                     <TextField source="title" />
                     <TextField source="body" />
                     <EditButton />

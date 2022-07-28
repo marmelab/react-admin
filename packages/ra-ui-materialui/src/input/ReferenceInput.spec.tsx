@@ -1,11 +1,13 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
+import { QueryClient } from 'react-query';
+import { testDataProvider, useChoicesContext } from 'ra-core';
+
 import { ReferenceInput } from './ReferenceInput';
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
-import { testDataProvider, useChoicesContext } from 'ra-core';
-import { QueryClient } from 'react-query';
+import { Basic } from './ReferenceInput.stories';
 
 describe('<ReferenceInput />', () => {
     const defaultProps = {
@@ -42,12 +44,18 @@ describe('<ReferenceInput />', () => {
         });
     });
 
+    it('should render an AutocompleteInput using recordRepresentation by default', async () => {
+        render(<Basic />);
+        await screen.findByDisplayValue('Leo Tolstoy');
+    });
+
     it('should pass the correct resource down to child component', async () => {
         const MyComponent = () => {
             const { resource } = useChoicesContext();
             return <div>{resource}</div>;
         };
         const dataProvider = testDataProvider({
+            // @ts-ignore
             getList: () =>
                 Promise.resolve({ data: [{ id: 1 }, { id: 2 }], total: 2 }),
         });
@@ -71,6 +79,7 @@ describe('<ReferenceInput />', () => {
             return <div aria-label="total">{total}</div>;
         };
         const dataProvider = testDataProvider({
+            // @ts-ignore
             getList: () =>
                 Promise.resolve({ data: [{ id: 1 }, { id: 2 }], total: 2 }),
         });

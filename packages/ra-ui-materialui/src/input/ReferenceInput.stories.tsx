@@ -1,14 +1,95 @@
 import * as React from 'react';
-import { Form, testDataProvider } from 'ra-core';
+import { createMemoryHistory } from 'history';
+import { Admin, AdminContext } from 'react-admin';
+import { Resource, Form, testDataProvider } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { Stack, Divider, Typography } from '@mui/material';
 
-import { AdminContext } from '../AdminContext';
+import { Edit } from '../detail';
+import { SimpleForm } from '../form';
 import { SelectInput, TextInput } from '../input';
 import { ReferenceInput } from './ReferenceInput';
 
 export default { title: 'ra-ui-materialui/input/ReferenceInput' };
+
+const authors = [
+    { id: 1, first_name: 'Leo', last_name: 'Tolstoy', language: 'Russian' },
+    { id: 2, first_name: 'Victor', last_name: 'Hugo', language: 'French' },
+    {
+        id: 3,
+        first_name: 'William',
+        last_name: 'Shakespeare',
+        language: 'English',
+    },
+    {
+        id: 4,
+        first_name: 'Charles',
+        last_name: 'Baudelaire',
+        language: 'French',
+    },
+    { id: 5, first_name: 'Marcel', last_name: 'Proust', language: 'French' },
+];
+
+const dataProviderWithAuthors = {
+    getOne: (resource, params) =>
+        Promise.resolve({
+            data: {
+                id: 1,
+                title: 'War and Peace',
+                author: 1,
+                summary:
+                    "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                year: 1869,
+            },
+        }),
+    getMany: (resource, params) =>
+        Promise.resolve({
+            data: authors.filter(author => params.ids.includes(author.id)),
+        }),
+    getList: (resource, params) =>
+        new Promise(resolve => {
+            // eslint-disable-next-line eqeqeq
+            setTimeout(
+                () =>
+                    resolve({
+                        data: authors,
+                        total: authors.length,
+                    }),
+                500
+            );
+            return;
+        }),
+} as any;
+
+const BookEdit = () => (
+    <Edit
+        mutationMode="pessimistic"
+        mutationOptions={{
+            onSuccess: data => {
+                console.log(data);
+            },
+        }}
+    >
+        <SimpleForm>
+            <ReferenceInput reference="authors" source="author" />
+        </SimpleForm>
+    </Edit>
+);
+
+const history = createMemoryHistory({ initialEntries: ['/books/1'] });
+
+export const Basic = () => (
+    <Admin dataProvider={dataProviderWithAuthors} history={history}>
+        <Resource
+            name="authors"
+            recordRepresentation={record =>
+                `${record.first_name} ${record.last_name}`
+            }
+        />
+        <Resource name="books" edit={BookEdit} />
+    </Admin>
+);
 
 const tags = [
     { id: 5, name: 'lorem' },
