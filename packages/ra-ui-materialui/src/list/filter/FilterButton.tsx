@@ -64,9 +64,13 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
                 'undefined'
     );
 
-    const clearAllFilters = (): void => {
-        Object.keys(displayedFilters).map(filterProp => hideFilter(filterProp));
-    };
+    const clearAllFilters = useCallback(() => {
+        console.log({ hideFilter });
+        if (!!hideFilter)
+            Object.keys(displayedFilters).map(filterProp =>
+                hideFilter(filterProp)
+            );
+    }, [hideFilter, displayedFilters]);
 
     const handleClickButton = useCallback(
         event => {

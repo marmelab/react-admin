@@ -44,25 +44,6 @@ describe('<FilterButton />', () => {
             expect(queryByText('Name')).toBeNull();
         });
 
-        it('should not display the filter button if all filters are shown and there is no filter value', () => {
-            render(
-                <AdminContext theme={theme}>
-                    <FilterButton
-                        {...defaultProps}
-                        filters={[
-                            <TextInput source="title" label="Title" />,
-                            <TextInput source="customer.name" label="Name" />,
-                        ]}
-                        displayedFilters={{
-                            title: true,
-                            'customer.name': true,
-                        }}
-                    />
-                </AdminContext>
-            );
-            expect(screen.queryByLabelText('ra.action.add_filter')).toBeNull();
-        });
-
         it('should display the filter button if all filters are shown and there is a filter value', () => {
             render(
                 <AdminContext theme={theme}>
@@ -91,7 +72,7 @@ describe('<FilterButton />', () => {
             const hiddenFilter = (
                 <TextInput source="Returned" label="Returned" disabled={true} />
             );
-            const { getByRole, getByLabelText } = render(
+            const { getByLabelText, queryByText } = render(
                 <AdminContext theme={theme}>
                     <FilterButton
                         {...defaultProps}
@@ -102,12 +83,34 @@ describe('<FilterButton />', () => {
 
             fireEvent.click(getByLabelText('ra.action.add_filter'));
 
-            const disabledFilter = getByRole('menuitem');
+            const disabledFilter = queryByText('Returned')?.closest('li');
 
             expect(disabledFilter).not.toBeNull();
-            expect(disabledFilter.getAttribute('aria-disabled')).toEqual(
+            expect(disabledFilter?.getAttribute('aria-disabled')).toEqual(
                 'true'
             );
+        });
+
+        it('should display the "Clear all filters" button if any filter is set', () => {
+            const { getByLabelText, queryByText } = render(
+                <AdminContext theme={theme}>
+                    <FilterButton {...defaultProps} />
+                </AdminContext>
+            );
+
+            fireEvent.click(getByLabelText('ra.action.add_filter'));
+            expect(queryByText('ra.action.remove_all_filters')).not.toBeNull();
+        });
+
+        it('should not display the "Clear all filters" button if no filter is set', () => {
+            const { getByLabelText, queryByText } = render(
+                <AdminContext theme={theme}>
+                    <FilterButton {...defaultProps} displayedFilters={{}} />
+                </AdminContext>
+            );
+
+            fireEvent.click(getByLabelText('ra.action.add_filter'));
+            expect(queryByText('ra.action.remove_all_filters')).toBeNull();
         });
     });
 });

@@ -100,10 +100,7 @@ const data = {
         },
     ],
 };
-const postFilters = [
-    <TextInput label="Search" source="q" alwaysOn />,
-    <TextInput label="Title" source="title" defaultValue="Hello, World!" />,
-];
+let postFilters: React.ReactElement[] = [];
 
 const ListToolbar = () => (
     <Stack direction="row" justifyContent="space-between">
@@ -127,8 +124,23 @@ const PostList = () => (
     </ListBase>
 );
 
-export const Basic = () => (
-    <Admin dataProvider={fakerestDataProvider(data)}>
-        <Resource name="posts" list={PostList} />
-    </Admin>
-);
+export const Basic = () => {
+    postFilters = [
+        <TextInput label="Search" source="q" alwaysOn />,
+        <TextInput label="Title" source="title" defaultValue="Hello, World!" />,
+    ];
+    return (
+        <Admin dataProvider={fakerestDataProvider(data)}>
+            <Resource name="posts" list={PostList} />
+        </Admin>
+    );
+};
+
+export const DisabledFilters = () => {
+    postFilters = [<TextInput label="Title" source="title" disabled={true} />];
+    return (
+        <Admin dataProvider={fakerestDataProvider(data)}>
+            <Resource name="posts" list={PostList} />
+        </Admin>
+    );
+};
