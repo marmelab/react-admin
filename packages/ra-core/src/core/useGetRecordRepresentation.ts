@@ -29,7 +29,7 @@ export const useGetRecordRepresentation = (
                 return get(record, recordRepresentation);
             }
             if (React.isValidElement(recordRepresentation)) {
-                return React.cloneElement(recordRepresentation);
+                return recordRepresentation;
             }
             return `#${record.id}`;
         },
