@@ -89,7 +89,7 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
 };
 
 NullableBooleanInput.propTypes = {
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.element]),
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
