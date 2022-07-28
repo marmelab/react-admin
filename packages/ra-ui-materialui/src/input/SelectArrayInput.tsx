@@ -302,7 +302,11 @@ SelectArrayInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
     className: PropTypes.string,
     children: PropTypes.node,
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.element]),
+    label: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.element,
+    ]),
     options: PropTypes.object,
     optionText: PropTypes.oneOfType([
         PropTypes.string,

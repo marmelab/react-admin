@@ -83,7 +83,11 @@ export const DateTimeInput = ({
 };
 
 DateTimeInput.propTypes = {
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.element]),
+    label: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.element,
+    ]),
     resource: PropTypes.string,
     source: PropTypes.string,
 };

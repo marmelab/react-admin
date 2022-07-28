@@ -10,7 +10,7 @@ import {
 } from 'ra-core';
 import { CommonInputProps } from './CommonInputProps';
 import { InputHelperText } from './InputHelperText';
-import {SupportCreateSuggestionOptions} from "./useSupportCreateSuggestion";
+import { SupportCreateSuggestionOptions } from './useSupportCreateSuggestion';
 import { Datagrid, DatagridProps } from '../list/datagrid';
 import { FilterButton, FilterForm } from '../list/filter';
 import { FilterContext } from '../list/FilterContext';
