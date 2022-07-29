@@ -6,7 +6,6 @@ import { createTheme } from '@mui/material/styles';
 import { AdminContext } from '../../AdminContext';
 import { FilterButton } from './FilterButton';
 import { TextInput } from '../../input';
-import { List } from '../List';
 import { Basic } from './FilterButton.stories';
 
 const theme = createTheme();
