@@ -633,6 +633,34 @@ describe('<AutocompleteInput />', () => {
         mock.mockRestore();
     });
 
+    it('should display options properly when labels are identical', () => {
+        let errMessage = undefined;
+        jest.spyOn(console, 'error').mockImplementation(
+            message => (errMessage = message)
+        );
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: 2 }}>
+                    <AutocompleteInput
+                        {...defaultProps}
+                        getOptionLabel={option => option.name}
+                        choices={[
+                            { id: 1, name: 'identical' },
+                            { id: 2, name: 'identical' },
+                            { id: 3, name: 'identical' },
+                            { id: 4, name: 'different' },
+                        ]}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+        const input = screen.getByLabelText('resources.users.fields.role');
+        fireEvent.focus(input);
+        fireEvent.change(input, { target: { value: 'identical' } });
+
+        expect(errMessage).toEqual(undefined);
+    });
+
     it('should display helperText if specified', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
