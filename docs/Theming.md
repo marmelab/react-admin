@@ -343,7 +343,7 @@ const App = () => (
 );
 ```
 
-## Light and Dark Themes
+## Using A Dark Theme
 
 MUI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark theme, create a custom theme object with a `mode: 'dark'` palette, and pass it as the `<Admin theme>` prop:
 
@@ -365,35 +365,36 @@ const App = () => (
 
 ![Dark theme](./img/dark-theme.png)
 
-If you want to let users choose between the light and dark themes, check the next section.
+## Letting Users Choose The Theme
 
-## Changing the Theme Programmatically
+The `<ToggleThemeButton>` component lets users switch from light to dark mode, and persists that choice by leveraging the [store](./Store.md).
 
-You can define several themes (usually a light and a dark theme), and let the user choose between them.
+![Dark Mode support](./img/ToggleThemeButton.gif)
 
-React-admin provides the `useTheme` hook to read and update the theme programmatically. It uses the same syntax as `useState`:
+You can add the `<ToggleThemeButton>` to a custom App Bar:
 
 ```jsx
-import { defaultTheme, useTheme } from 'react-admin';
-import { Button } from '@mui/material';
+import * as React from 'react';
+import { defaultTheme, Layout, AppBar, ToggleThemeButton } from 'react-admin';
+import { createTheme, Box, Typography } from '@mui/material';
 
-const lightTheme = defaultTheme;
-const darkTheme = {
-    ...defaultTheme,
-    palette: {
-        mode: 'dark',
-    },
-};
+const darkTheme = createTheme({
+    palette: { mode: 'dark' },
+});
 
-const ThemeToggler = () => {
-    const [theme, setTheme] = useTheme();
+const MyAppBar = props => (
+    <AppBar {...props}>
+        <Box flex="1">
+            <Typography variant="h6" id="react-admin-title"></Typography>
+        </Box>
+        <ToggleThemeButton
+            lightTheme={defaultTheme}
+            darkTheme={darkTheme}
+        />
+    </AppBar>
+);
 
-    return (
-        <Button onClick={() => setTheme(theme.palette.mode === 'dark' ? lightTheme : darkTheme)}>
-            {theme.palette.mode === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
-        </Button>
-    );
-}
+const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 ```
 
 ## Conditional Formatting
@@ -760,50 +761,6 @@ export default MyLayout;
 ```
 {% endraw %}
 
-## Adding a Breadcrumb
-
-The `<Breadcrumb>` component is part of `ra-navigation`, an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> module. It displays a breadcrumb based on a site structure that you can override at will.
-
-```jsx
-import * as React from 'react';
-import {
-    AppLocationContext,
-    Breadcrumb,
-    ResourceBreadcrumbItems,
-} from '@react-admin/ra-navigation';
-import { Admin, Resource, Layout } from 'react-admin';
-
-import PostList from './PostList';
-import PostEdit from './PostEdit';
-import PostShow from './PostShow';
-import PostCreate from './PostCreate';
-
-const MyLayout = ({ children, ...props }) => (
-    <AppLocationContext>
-        <Layout {...props}>
-            <Breadcrumb {...props}>
-                <ResourceBreadcrumbItems />
-            </Breadcrumb>
-            {children}
-        </Layout>
-    </AppLocationContext>
-);
-
-const App = () => (
-    <Admin dataProvider={dataProvider} layout={MyLayout}>
-        <Resource
-            name="posts"
-            list={PostList}
-            edit={PostEdit}
-            show={PostShow}
-            create={PostCreate}
-        />
-    </Admin>
-);
-```
-
-Check [the `ra-navigation` documentation](https://marmelab.com/ra-enterprise/modules/ra-navigation) for more details.
-
 ## Customizing the AppBar Content
 
 By default, the react-admin `<AppBar>` component displays the page title. You can override this default by passing children to `<AppBar>` - they will replace the default title. And if you still want to include the page title, make sure you include an element with id `react-admin-title` in the top bar (this uses [React Portals](https://reactjs.org/docs/portals.html)).
@@ -920,38 +877,6 @@ To make it easier to customize, we export some components and hooks used by the 
 - `<LoadingIndicator>`: A `CircularProgress` bound to the dataProvider activity.
 - `<SidebarToggleButton>`: An `IconButton` used to toggle the `<Sidebar>`.
 - `useSidebarState`: A hook that returns the sidebar open state and a function to toggle it. Used internally by `<SidebarToggleButton>`.
-
-## Adding Dark Mode Support
-
-The `<ToggleThemeButton>` component lets users switch from light to dark mode, and persists that choice by leveraging the [store](./Store.md).
-
-![Dark Mode support](./img/ToggleThemeButton.gif)
-
-You can add the `<ToggleThemeButton>` to a custom App Bar:
-
-```jsx
-import * as React from 'react';
-import { defaultTheme, Layout, AppBar, ToggleThemeButton } from 'react-admin';
-import { createTheme, Box, Typography } from '@mui/material';
-
-const darkTheme = createTheme({
-    palette: { mode: 'dark' },
-});
-
-const MyAppBar = props => (
-    <AppBar {...props}>
-        <Box flex="1">
-            <Typography variant="h6" id="react-admin-title"></Typography>
-        </Box>
-        <ToggleThemeButton
-            lightTheme={defaultTheme}
-            darkTheme={darkTheme}
-        />
-    </AppBar>
-);
-
-const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
-```
 
 ## Using a Custom Menu
 
