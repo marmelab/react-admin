@@ -7,6 +7,7 @@ import { AdminContext } from '../../AdminContext';
 import { FilterButton } from './FilterButton';
 import { TextInput } from '../../input';
 import { List } from '../List';
+import { Basic } from './FilterButton.stories';
 
 const theme = createTheme();
 
@@ -92,52 +93,34 @@ describe('<FilterButton />', () => {
             );
         });
 
-        it('should display the "Clear all filters" button if any filter is set', () => {
-            const { getByLabelText, queryByText } = render(
-                <AdminContext theme={theme}>
-                    <FilterButton {...defaultProps} />
-                </AdminContext>
-            );
+        it('should remove all filters when the "Clear all filters" button is clicked', async () => {
+            render(<Basic />);
 
-            fireEvent.click(getByLabelText('ra.action.add_filter'));
-            expect(queryByText('ra.action.remove_all_filters')).not.toBeNull();
-        });
-
-        it('should not display the "Clear all filters" button if no filter is set', () => {
-            const { getByLabelText, queryByText } = render(
-                <AdminContext theme={theme}>
-                    <FilterButton {...defaultProps} displayedFilters={{}} />
-                </AdminContext>
-            );
-
-            fireEvent.click(getByLabelText('ra.action.add_filter'));
-            expect(queryByText('ra.action.remove_all_filters')).toBeNull();
-        });
-
-        it.only('should remove all filters when the "Clear all filters" button is clicked', async () => {
-            render(
-                <AdminContext theme={theme}>
-                    <List resource="posts" filters={defaultProps.filters}>
-                        <></>
-                    </List>
-                </AdminContext>
-            );
-            await screen.findByText('ra.action.add_filter');
-            fireEvent.click(screen.getByText('ra.action.add_filter'));
-
-            await screen.findByText('Title');
-            fireEvent.click(screen.getByText('Title'));
-
-            fireEvent.click(screen.getByText('ra.action.add_filter'));
-            await screen.findByText('ra.action.remove_all_filters');
-            fireEvent.click(screen.getByText('ra.action.remove_all_filters'));
+            // First, check we don't have a clear filters option yet
+            await screen.findByText('Add filter');
+            fireEvent.click(screen.getByText('Add filter'));
 
             await waitFor(() => {
                 expect(
-                    (screen.getByLabelText(
-                        'Title'
-                    ) as Element).nodeName.toLowerCase()
-                ).toBe('span');
+                    screen.queryByDisplayValue('Remove all filters')
+                ).toBeNull();
+            });
+
+            // Then we apply a filter
+            await screen.findByText('Title', { selector: 'li > span' });
+            fireEvent.click(
+                screen.getByText('Title', { selector: 'li > span' })
+            );
+            await screen.findByDisplayValue('Hello, World!');
+
+            // Then we clear all filters
+            fireEvent.click(screen.getByText('Add filter'));
+            await screen.findByText('Remove all filters');
+            fireEvent.click(screen.getByText('Remove all filters'));
+
+            // We check that the previously applied filter has been removed
+            await waitFor(() => {
+                expect(screen.queryByDisplayValue('Hello, World!')).toBeNull();
             });
         });
     });
