@@ -281,3 +281,9 @@ Just use an empty `filter` query parameter to force empty filters:
     leftIcon={<BookIcon />}
 />
 ```
+
+## Nested Menu Items
+
+If you need to display a menu item with a submenu, you should use [the `<MultiLevelMenu>` component](./MultiLevelMenu.md) instead of `<Menu>`.
+
+![multilevel menu](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.gif)

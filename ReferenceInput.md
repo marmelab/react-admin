@@ -14,8 +14,8 @@ The component expects a `source` and a `reference` attributes. For instance, to 
 ```jsx
 import { ReferenceInput, SelectInput } from 'react-admin';
 
-<ReferenceInput label="Post" source="post_id" reference="posts">
-    <SelectInput optionText="title" />
+<ReferenceInput source="post_id" reference="posts">
+    <SelectInput label="Post" optionText="title" />
 </ReferenceInput>
 ```
 

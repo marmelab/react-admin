@@ -5,7 +5,7 @@ title: "The ReferenceManyField Component"
 
 # `<ReferenceManyField>`
 
-`<ReferenceManyField>` is useful for displaying a list of related records via a one-to-many relationships, when the foreign key is carried by the referenced resource. 
+`<ReferenceManyField>` is useful for displaying a list of related records via a one-to-many relationship, when the foreign key is carried by the referenced resource. 
 
 ![referenceManyField](./img/reference_many_field.png)
 
@@ -25,12 +25,20 @@ For instance, if an `author` has many `books`, and each book resource exposes an
 `<ReferenceManyField>` can render the titles of all the books by a given author.
 
 ```jsx
-<ReferenceManyField label="Books" reference="books" target="author_id">
-  <Datagrid>
-    <TextField source="title" />
-    <TextField source="year" />
-  </Datagrid>
-</ReferenceManyField>
+const AuthorShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <TextField source="first_name" />
+            <TextField source="last_name" />
+            <ReferenceManyField label="Books" reference="books" target="author_id">
+              <Datagrid>
+                <TextField source="title" />
+                <TextField source="year" />
+              </Datagrid>
+            </ReferenceManyField>
+        </SimpleShowLayout>
+    </Show>
+);
 ```
 
 This component fetches a list of referenced records by a reverse lookup of the current `record.id` in the `target` field of another resource (using the `dataProvider.getManyReference()` REST method), and puts them in a [`ListContext`](./useListContext.md). Its children can then use the data from this context. The most common case is to use [`<SingleFieldList>`](./SingleFieldList.md) or [`<Datagrid>`](./Datagrid.md) as child.

@@ -19,7 +19,7 @@ const { data, isLoading, error, refetch } = useGetOne(
 
 The `meta` argument is optional. It can be anything you want to pass to the data provider, e.g. a list of fields to show in the result.
 
-The `options` parameter is optional, and is passed to [react-query's `useQuery` hook](https://react-query.tanstack.com/reference/useQuery). It may contain the following options:
+The `options` parameter is optional, and is passed to [react-query's `useQuery` hook](https://react-query-v3.tanstack.com/reference/useQuery). It may contain the following options:
 
 * `cacheTime`
 * `enabled`
@@ -49,9 +49,9 @@ The `options` parameter is optional, and is passed to [react-query's `useQuery` 
 * `suspense`
 * `useErrorBoundary`
 
-Check [react-query's `useQuery` hook documentation](https://react-query.tanstack.com/reference/useQuery) for details on each of these options.
+Check [react-query's `useQuery` hook documentation](https://react-query-v3.tanstack.com/reference/useQuery) for details on each of these options.
 
-The react-query [query key](https://react-query.tanstack.com/guides/query-keys) for this hook is `[resource, 'getOne', { id: String(id), meta }]`.
+The react-query [query key](https://react-query-v3.tanstack.com/guides/query-keys) for this hook is `[resource, 'getOne', { id: String(id), meta }]`.
 
 ## Usage
 
