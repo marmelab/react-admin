@@ -907,7 +907,7 @@ describe('useEditController', () => {
         );
     });
 
-    it('The save function should return errors from the update call in pessimistic mode', async () => {
+    it('should return errors from the update call in pessimistic mode', async () => {
         let post = { id: 12 };
         const update = jest.fn().mockImplementationOnce(() => {
             return Promise.reject({ body: { errors: { foo: 'invalid' } } });
@@ -927,14 +927,12 @@ describe('useEditController', () => {
                 </EditController>
             </CoreAdminContext>
         );
-        await new Promise(resolve => setTimeout(resolve, 10));
-        screen.getByText('{"id":12}');
+        await screen.findByText('{"id":12}');
         let errors;
         await act(async () => {
             errors = await saveCallback({ foo: 'bar' });
         });
         expect(errors).toEqual({ foo: 'invalid' });
-        await new Promise(resolve => setTimeout(resolve, 10));
         screen.getByText('{"id":12}');
         expect(update).toHaveBeenCalledWith('posts', {
             id: 12,

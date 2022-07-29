@@ -504,7 +504,7 @@ describe('useCreateController', () => {
         );
     });
 
-    it('The save function should return errors from the create call', async () => {
+    it('should return errors from the create call', async () => {
         const create = jest.fn().mockImplementationOnce(() => {
             return Promise.reject({ body: { errors: { foo: 'invalid' } } });
         });
@@ -528,7 +528,6 @@ describe('useCreateController', () => {
             errors = await saveCallback({ foo: 'bar' });
         });
         expect(errors).toEqual({ foo: 'invalid' });
-        await new Promise(resolve => setTimeout(resolve, 10));
         expect(create).toHaveBeenCalledWith('posts', {
             data: { foo: 'bar' },
         });
