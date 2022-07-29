@@ -11,10 +11,13 @@ import {
     useUnselectAll,
     useResourceContext,
     useListContext,
+    RaRecord,
+    DeleteManyParams,
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
+import { UseMutationOptions } from 'react-query';
 
 export const BulkDeleteWithUndoButton = (
     props: BulkDeleteWithUndoButtonProps
@@ -23,6 +26,7 @@ export const BulkDeleteWithUndoButton = (
         label = 'ra.action.delete',
         icon = defaultIcon,
         onClick,
+        mutationOptions = null,
         ...rest
     } = props;
     const { selectedIds } = useListContext(props);
@@ -36,7 +40,7 @@ export const BulkDeleteWithUndoButton = (
     const handleClick = e => {
         deleteMany(
             resource,
-            { ids: selectedIds },
+            { ids: selectedIds, meta: mutationOptions?.meta },
             {
                 onSuccess: () => {
                     notify('ra.notification.deleted', {
@@ -95,10 +99,17 @@ const sanitizeRestProps = ({
     ...rest
 }: Omit<BulkDeleteWithUndoButtonProps, 'resource' | 'icon'>) => rest;
 
-export interface BulkDeleteWithUndoButtonProps
-    extends BulkActionProps,
+export interface BulkDeleteWithUndoButtonProps<
+    RecordType extends RaRecord = any,
+    MutationOptionsError = unknown
+> extends BulkActionProps,
         ButtonProps {
     icon?: ReactElement;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        MutationOptionsError,
+        DeleteManyParams<RecordType>
+    >;
 }
 
 const PREFIX = 'RaBulkDeleteWithUndoButton';

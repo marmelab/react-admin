@@ -14,11 +14,14 @@ import {
     useTranslate,
     useUnselectAll,
     useSafeSetState,
+    RaRecord,
+    DeleteManyParams,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
+import { UseMutationOptions } from 'react-query';
 
 export const BulkDeleteWithConfirmButton = (
     props: BulkDeleteWithConfirmButtonProps
@@ -29,6 +32,7 @@ export const BulkDeleteWithConfirmButton = (
         icon = defaultIcon,
         label = 'ra.action.delete',
         mutationMode = 'pessimistic',
+        mutationOptions = null,
         onClick,
         ...rest
     } = props;
@@ -41,7 +45,7 @@ export const BulkDeleteWithConfirmButton = (
     const translate = useTranslate();
     const [deleteMany, { isLoading }] = useDeleteMany(
         resource,
-        { ids: selectedIds },
+        { ids: selectedIds, meta: mutationOptions?.meta },
         {
             onSuccess: () => {
                 refresh();
@@ -141,13 +145,20 @@ const sanitizeRestProps = ({
     'resource' | 'icon' | 'mutationMode'
 >) => rest;
 
-export interface BulkDeleteWithConfirmButtonProps
-    extends BulkActionProps,
+export interface BulkDeleteWithConfirmButtonProps<
+    RecordType extends RaRecord = any,
+    MutationOptionsError = unknown
+> extends BulkActionProps,
         ButtonProps {
     confirmContent?: React.ReactNode;
     confirmTitle?: string;
     icon?: ReactElement;
     mutationMode: MutationMode;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        MutationOptionsError,
+        DeleteManyParams<RecordType>
+    >;
 }
 
 const PREFIX = 'RaBulkDeleteWithConfirmButton';
