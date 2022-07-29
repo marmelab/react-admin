@@ -170,7 +170,10 @@ const TabbedDatagrid = () => {
                 <>
                     {filterValues.status === 'ordered' && (
                         <ListContextProvider
-                            value={{ ...listContext, ids: ordered }}
+                            value={{
+                                ...listContext,
+                                data: ordered,
+                            }}
                         >
                             <Datagrid optimized rowClick="edit">
                                 <DateField source="date" showTime />
@@ -198,7 +201,7 @@ const TabbedDatagrid = () => {
                     )}
                     {filterValues.status === 'delivered' && (
                         <ListContextProvider
-                            value={{ ...listContext, ids: delivered }}
+                            value={{ ...listContext, data: delivered }}
                         >
                             <Datagrid rowClick="edit">
                                 <DateField source="date" showTime />
@@ -230,7 +233,10 @@ const TabbedDatagrid = () => {
                     )}
                     {filterValues.status === 'cancelled' && (
                         <ListContextProvider
-                            value={{ ...listContext, ids: cancelled }}
+                            value={{
+                                ...listContext,
+                                data: cancelled,
+                            }}
                         >
                             <Datagrid rowClick="edit">
                                 <DateField source="date" showTime />
