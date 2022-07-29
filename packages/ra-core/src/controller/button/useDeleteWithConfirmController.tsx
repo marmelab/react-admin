@@ -98,7 +98,7 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
                 {
                     id: record.id,
                     previousData: record,
-                    meta: mutationOptions.meta,
+                    meta: mutationOptions?.meta,
                 },
                 {
                     onSuccess: () => {
