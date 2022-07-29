@@ -1,11 +1,12 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import { createTheme } from '@mui/material/styles';
 
 import { AdminContext } from '../../AdminContext';
 import { FilterButton } from './FilterButton';
 import { TextInput } from '../../input';
+import { List } from '../List';
 
 const theme = createTheme();
 
@@ -111,6 +112,33 @@ describe('<FilterButton />', () => {
 
             fireEvent.click(getByLabelText('ra.action.add_filter'));
             expect(queryByText('ra.action.remove_all_filters')).toBeNull();
+        });
+
+        it.only('should remove all filters when the "Clear all filters" button is clicked', async () => {
+            render(
+                <AdminContext theme={theme}>
+                    <List resource="posts" filters={defaultProps.filters}>
+                        <></>
+                    </List>
+                </AdminContext>
+            );
+            await screen.findByText('ra.action.add_filter');
+            fireEvent.click(screen.getByText('ra.action.add_filter'));
+
+            await screen.findByText('Title');
+            fireEvent.click(screen.getByText('Title'));
+
+            fireEvent.click(screen.getByText('ra.action.add_filter'));
+            await screen.findByText('ra.action.remove_all_filters');
+            fireEvent.click(screen.getByText('ra.action.remove_all_filters'));
+
+            await waitFor(() => {
+                expect(
+                    (screen.getByLabelText(
+                        'Title'
+                    ) as Element).nodeName.toLowerCase()
+                ).toBe('span');
+            });
         });
     });
 });
