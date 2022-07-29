@@ -100,21 +100,21 @@ const data = {
         },
     ],
 };
-let postFilters: React.ReactElement[] = [];
 
-const ListToolbar = () => (
-    <Stack direction="row" justifyContent="space-between">
-        <FilterForm filters={postFilters} />
-        <div>
-            <FilterButton filters={postFilters} />
-            <CreateButton />
-        </div>
-    </Stack>
-);
-
-const PostList = () => (
+const ListToolbar = (props: { postFilters: React.ReactElement[] }) => {
+    return (
+        <Stack direction="row" justifyContent="space-between">
+            <FilterForm filters={props.postFilters} />
+            <div>
+                <FilterButton filters={props.postFilters} />
+                <CreateButton />
+            </div>
+        </Stack>
+    );
+};
+const PostList = (props: { postFilters: React.ReactElement[] }) => (
     <ListBase>
-        <ListToolbar />
+        <ListToolbar postFilters={props.postFilters} />
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" />
@@ -125,22 +125,30 @@ const PostList = () => (
 );
 
 export const Basic = () => {
-    postFilters = [
+    const postFilters: React.ReactElement[] = [
         <TextInput label="Search" source="q" alwaysOn />,
         <TextInput label="Title" source="title" defaultValue="Hello, World!" />,
     ];
     return (
         <Admin dataProvider={fakerestDataProvider(data)}>
-            <Resource name="posts" list={PostList} />
+            <Resource
+                name="posts"
+                list={<PostList postFilters={postFilters} />}
+            />
         </Admin>
     );
 };
 
 export const DisabledFilters = () => {
-    postFilters = [<TextInput label="Title" source="title" disabled={true} />];
+    const postFilters: React.ReactElement[] = [
+        <TextInput label="Title" source="title" disabled={true} />,
+    ];
     return (
         <Admin dataProvider={fakerestDataProvider(data)}>
-            <Resource name="posts" list={PostList} />
+            <Resource
+                name="posts"
+                list={<PostList postFilters={postFilters} />}
+            />
         </Admin>
     );
 };
