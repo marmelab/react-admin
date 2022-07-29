@@ -63,7 +63,11 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
             event.stopPropagation();
             deleteOne(
                 resource,
-                { id: record.id, previousData: record },
+                {
+                    id: record.id,
+                    previousData: record,
+                    meta: mutationOptions.meta,
+                },
                 {
                     onSuccess: () => {
                         notify('ra.notification.deleted', {
