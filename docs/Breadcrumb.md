@@ -210,7 +210,7 @@ It accepts the following optional props:
 
 -   `to`: Optional. The react-router path to redirect to. Can be a string, or a function that returns a string based on the location context.
 
-```tsx
+```jsx
 import { useCreatePath } from 'react-admin';
 import {
     Breadcrumb,
@@ -262,7 +262,7 @@ const MyBreadcrumb = ({ children, ...props }) => {
 
 If the app has a home page, you can automatically set the root of the Breadcrumb to this page by passing a `hasDashboard` prop to the `<Breadcrumb>` component:
 
-```tsx
+```jsx
 const MyBreadcrumb = () => (
     <Breadcrumb hasDashboard>
         <ResourceBreadcrumbItems />
