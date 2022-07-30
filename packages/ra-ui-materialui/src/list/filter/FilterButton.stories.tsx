@@ -10,8 +10,8 @@ import {
     Pagination,
     TextField,
     TextInput,
+    TopToolbar,
 } from 'react-admin';
-import { Stack } from '@mui/material';
 import fakerestDataProvider from 'ra-data-fakerest';
 
 export default { title: 'ra-ui-materialui/list/filter/FilterButton' };
@@ -103,13 +103,13 @@ const data = {
 
 const ListToolbar = (props: { postFilters: React.ReactElement[] }) => {
     return (
-        <Stack direction="row" justifyContent="space-between">
+        <TopToolbar>
             <FilterForm filters={props.postFilters} />
             <div>
                 <FilterButton filters={props.postFilters} />
                 <CreateButton />
             </div>
-        </Stack>
+        </TopToolbar>
     );
 };
 const PostList = (props: { postFilters: React.ReactElement[] }) => (
@@ -127,7 +127,11 @@ const PostList = (props: { postFilters: React.ReactElement[] }) => (
 export const Basic = () => {
     const postFilters: React.ReactElement[] = [
         <TextInput label="Search" source="q" alwaysOn />,
-        <TextInput label="Title" source="title" defaultValue="Hello, World!" />,
+        <TextInput
+            label="Title"
+            source="title"
+            defaultValue="Accusantium qui nihil voluptatum quia voluptas maxime ab similique"
+        />,
     ];
     return (
         <Admin dataProvider={fakerestDataProvider(data)}>
