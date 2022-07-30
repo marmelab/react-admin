@@ -9,7 +9,7 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 ![ra-search](https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.gif)
 
-`<Search>` renders a global search input. It's designed to be integrated into the top `<AppBar>`. 
+`<Search>` renders a global search input. It's designed to be integrated into the top `<AppBar>`.
 
 It relies on the `dataProvider` to provide a `search()` method, so you can use it with any search engine (Lucene, ElasticSearch, Solr, Algolia, Google Cloud Search, and many others). And if you don't have a search engine, no problem! `<Search>` can also do the search across several resources via parallel `dataProvider.getList()` queries.
 
@@ -53,7 +53,7 @@ import { MyAppbar } from "./MyAppBar";
 export const MyLayout = (props) => <Layout {...props} appBar={MyAppbar} />;
 ```
 
-Finally, include that custom layout in the `<Admin>`. You'll also need to setup the ì18nProvider`, as the `ra-search` package comes with some new translations. 
+Finally, include that custom layout in the `<Admin>`. You'll also need to setup the `i18nProvider`, as the `ra-search` package comes with some new translations.
 
 ```jsx
 // in src/Admin.ts
@@ -72,7 +72,7 @@ export const App = () => (
 );
 ```
 
-Your `dataProvider` should support the `search()` method. Check [the `ra-search` documentation](https://marmelab.com/ra-enterprise/modules/ra-search) to learn its i,nput and output interface, as well as tricks to use `dataProvider.search()` without a search engine.
+Your `dataProvider` should support the `search()` method. Check [the `ra-search` documentation](https://marmelab.com/ra-enterprise/modules/ra-search) to learn its input and output interface, as well as tricks to use `dataProvider.search()` without a search engine.
 
 ## Props
 
