@@ -32,10 +32,11 @@ export const BulkDeleteWithConfirmButton = (
         icon = defaultIcon,
         label = 'ra.action.delete',
         mutationMode = 'pessimistic',
-        mutationOptions = null,
+        mutationOptions = {},
         onClick,
         ...rest
     } = props;
+    const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
     const { selectedIds } = useListContext(props);
     const [isOpen, setOpen] = useSafeSetState(false);
     const notify = useNotify();
@@ -45,7 +46,7 @@ export const BulkDeleteWithConfirmButton = (
     const translate = useTranslate();
     const [deleteMany, { isLoading }] = useDeleteMany(
         resource,
-        { ids: selectedIds, meta: mutationOptions?.meta },
+        { ids: selectedIds, meta: mutationMeta },
         {
             onSuccess: () => {
                 refresh();
@@ -77,6 +78,7 @@ export const BulkDeleteWithConfirmButton = (
                 setOpen(false);
             },
             mutationMode,
+            ...otherMutationOptions,
         }
     );
 
@@ -158,7 +160,7 @@ export interface BulkDeleteWithConfirmButtonProps<
         RecordType,
         MutationOptionsError,
         DeleteManyParams<RecordType>
-    >;
+    > & { meta?: any };
 }
 
 const PREFIX = 'RaBulkDeleteWithConfirmButton';

@@ -71,8 +71,9 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
         redirect: redirectTo,
         mutationMode,
         onClick,
-        mutationOptions,
+        mutationOptions = {},
     } = props;
+    const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
     const resource = useResourceContext(props);
     const [open, setOpen] = useState(false);
     const notify = useNotify();
@@ -98,7 +99,7 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
                 {
                     id: record.id,
                     previousData: record,
-                    meta: mutationOptions?.meta,
+                    meta: mutationMeta,
                 },
                 {
                     onSuccess: () => {
@@ -132,7 +133,7 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
                         );
                     },
                     mutationMode,
-                    ...mutationOptions,
+                    ...otherMutationOptions,
                 }
             );
             if (typeof onClick === 'function') {
@@ -141,8 +142,9 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
         },
         [
             deleteOne,
+            mutationMeta,
             mutationMode,
-            mutationOptions,
+            otherMutationOptions,
             notify,
             onClick,
             record,

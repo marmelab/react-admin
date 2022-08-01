@@ -50,8 +50,9 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
         record,
         redirect: redirectTo = 'list',
         onClick,
-        mutationOptions,
+        mutationOptions = {},
     } = props;
+    const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
     const resource = useResourceContext(props);
     const notify = useNotify();
     const unselect = useUnselect(resource);
@@ -66,7 +67,7 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
                 {
                     id: record.id,
                     previousData: record,
-                    meta: mutationOptions?.meta,
+                    meta: mutationMeta,
                 },
                 {
                     onSuccess: () => {
@@ -97,7 +98,7 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
                         );
                     },
                     mutationMode: 'undoable',
-                    ...mutationOptions,
+                    ...otherMutationOptions,
                 }
             );
             if (typeof onClick === 'function') {
@@ -106,7 +107,8 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
         },
         [
             deleteOne,
-            mutationOptions,
+            mutationMeta,
+            otherMutationOptions,
             notify,
             onClick,
             record,
