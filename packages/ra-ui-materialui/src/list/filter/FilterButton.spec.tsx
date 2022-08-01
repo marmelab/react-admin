@@ -99,18 +99,16 @@ describe('<FilterButton />', () => {
             await screen.findByText('Add filter');
             fireEvent.click(screen.getByText('Add filter'));
 
-            await waitFor(() => {
-                expect(
-                    screen.queryByDisplayValue('Remove all filters')
-                ).toBeNull();
-            });
+            await screen.findByText('Title', { selector: 'li > span' });
+            expect(screen.queryByDisplayValue('Remove all filters')).toBeNull();
 
             // Then we apply a filter
-            await screen.findByText('Title', { selector: 'li > span' });
             fireEvent.click(
                 screen.getByText('Title', { selector: 'li > span' })
             );
-            await screen.findByDisplayValue('Hello, World!');
+            await screen.findByDisplayValue(
+                'Accusantium qui nihil voluptatum quia voluptas maxime ab similique'
+            );
 
             // Then we clear all filters
             fireEvent.click(screen.getByText('Add filter'));
@@ -119,7 +117,11 @@ describe('<FilterButton />', () => {
 
             // We check that the previously applied filter has been removed
             await waitFor(() => {
-                expect(screen.queryByDisplayValue('Hello, World!')).toBeNull();
+                expect(
+                    screen.queryByDisplayValue(
+                        'Accusantium qui nihil voluptatum quia voluptas maxime ab similique'
+                    )
+                ).toBeNull();
             });
         });
     });
