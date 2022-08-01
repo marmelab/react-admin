@@ -224,6 +224,7 @@
 <script>
 var allMenus = Array.from(document.querySelectorAll(`.sidenav a.nav-link`));
 var navLinks = allMenus.filter(link => !link.classList.contains('external')).map(link => link.href);
+var versionsLinks = Array.from(document.querySelectorAll('#versions > li > a'));
 
 function replaceContent(text) {
     var tmpElement = document.createElement('div');
@@ -262,6 +263,11 @@ function catchNavigation() {
         // now we're sure it's an internal navigation link
         // transform it to an AJAX call
         event.preventDefault();
+				// update versions links
+        var currentPage = href.split('/').pop();
+        versionsLinks.forEach(link => {
+            link.href = link.href.substr(0, link.href.lastIndexOf('/') + 1) + currentPage;
+        });
         // fetch the new content
         fetch(href)
             .then(res => res.text())
