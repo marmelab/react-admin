@@ -202,6 +202,7 @@
   <li {% if page.path == 'MultiLevelMenu.md' %} class="active" {% endif %}><a class="nav-link" href="./MultiLevelMenu.html"><code>&lt;MultiLevelMenu&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
   <li {% if page.path == 'IconMenu.md' %} class="active" {% endif %}><a class="nav-link" href="./IconMenu.html"><code>&lt;IconMenu&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
   <li {% if page.path == 'Breadcrumb.md' %} class="active" {% endif %}><a class="nav-link" href="./Breadcrumb.html"><code>&lt;Breadcrumb&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'Search.md' %} class="active" {% endif %}><a class="nav-link" href="./Search.html"><code>&lt;Search&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
   <li {% if page.path == 'Buttons.md' %} class="active" {% endif %}><a class="nav-link" href="./Buttons.html">Buttons</a></li>
   <li {% if page.path == 'Confirm.md' %} class="active" {% endif %}><a class="nav-link" href="./Confirm.html">Confirm</a></li>
 </ul>
@@ -223,6 +224,7 @@
 <script>
 var allMenus = Array.from(document.querySelectorAll(`.sidenav a.nav-link`));
 var navLinks = allMenus.filter(link => !link.classList.contains('external')).map(link => link.href);
+var versionsLinks = Array.from(document.querySelectorAll('#versions > li > a'));
 
 function replaceContent(text) {
     var tmpElement = document.createElement('div');
@@ -261,6 +263,11 @@ function catchNavigation() {
         // now we're sure it's an internal navigation link
         // transform it to an AJAX call
         event.preventDefault();
+	// update versions links
+        var currentPage = href.split('/').pop();
+        versionsLinks.forEach(link => {
+            link.href = link.href.substr(0, link.href.lastIndexOf('/') + 1) + currentPage;
+        });
         // fetch the new content
         fetch(href)
             .then(res => res.text())
