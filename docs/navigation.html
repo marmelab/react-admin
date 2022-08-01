@@ -263,7 +263,7 @@ function catchNavigation() {
         // now we're sure it's an internal navigation link
         // transform it to an AJAX call
         event.preventDefault();
-				// update versions links
+	// update versions links
         var currentPage = href.split('/').pop();
         versionsLinks.forEach(link => {
             link.href = link.href.substr(0, link.href.lastIndexOf('/') + 1) + currentPage;
