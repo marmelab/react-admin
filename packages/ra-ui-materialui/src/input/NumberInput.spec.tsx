@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { useFormContext, useWatch, useFormState } from 'react-hook-form';
 
 import { NumberInput } from './NumberInput';
 import { AdminContext } from '../AdminContext';
 import { SaveButton } from '../button';
 import { SimpleForm, Toolbar } from '../form';
-import { useFormContext, useWatch } from 'react-hook-form';
 
 describe('<NumberInput />', () => {
     const defaultProps = {
@@ -152,22 +152,26 @@ describe('<NumberInput />', () => {
             );
         });
         it('should return correct state when the field is touched', () => {
+            // FIXME: cannot use FieldState for isTouched due to react-hook-form bug https://github.com/react-hook-form/react-hook-form/issues/8786
+            const FieldStateForTouched = () => {
+                const { touchedFields } = useFormState();
+                return touchedFields.views ? <>Touched</> : <>Untouched</>;
+            };
             render(
                 <AdminContext>
                     <SimpleForm>
                         <NumberInput {...defaultProps} />
-                        <FieldState />
+                        <FieldStateForTouched />
                     </SimpleForm>
                 </AdminContext>
             );
+            screen.getByText('Untouched');
             const input = screen.getByLabelText(
                 'resources.posts.fields.views'
             ) as HTMLInputElement;
             fireEvent.click(input);
             fireEvent.blur(input);
-            screen.getByText(
-                'views:{"invalid":false,"isDirty":false,"isTouched":true}'
-            );
+            screen.getByText('Touched');
         });
         it('should return correct state when the field is invalid', async () => {
             render(
