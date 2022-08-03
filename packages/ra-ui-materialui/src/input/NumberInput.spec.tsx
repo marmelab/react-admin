@@ -117,7 +117,10 @@ describe('<NumberInput />', () => {
             const formContext = useFormContext();
             return (
                 <code>
-                    {name}:{JSON.stringify(formContext.getFieldState(name))}
+                    {name}:
+                    {JSON.stringify(
+                        formContext.getFieldState(name, formContext.formState)
+                    )}
                 </code>
             );
         };
@@ -152,26 +155,22 @@ describe('<NumberInput />', () => {
             );
         });
         it('should return correct state when the field is touched', () => {
-            // FIXME: cannot use FieldState for isTouched due to react-hook-form bug https://github.com/react-hook-form/react-hook-form/issues/8786
-            const FieldStateForTouched = () => {
-                const { touchedFields } = useFormState();
-                return touchedFields.views ? <>Touched</> : <>Untouched</>;
-            };
             render(
                 <AdminContext>
                     <SimpleForm>
                         <NumberInput {...defaultProps} />
-                        <FieldStateForTouched />
+                        <FieldState />
                     </SimpleForm>
                 </AdminContext>
             );
-            screen.getByText('Untouched');
             const input = screen.getByLabelText(
                 'resources.posts.fields.views'
             ) as HTMLInputElement;
             fireEvent.click(input);
             fireEvent.blur(input);
-            screen.getByText('Touched');
+            screen.getByText(
+                'views:{"invalid":false,"isDirty":false,"isTouched":true}'
+            );
         });
         it('should return correct state when the field is invalid', async () => {
             render(

@@ -301,7 +301,9 @@ const FieldStateInspector = ({ name = 'views' }) => {
         <div>
             {name}:
             <code style={{ backgroundColor: 'lightgrey' }}>
-                {JSON.stringify(formContext.getFieldState(name))}
+                {JSON.stringify(
+                    formContext.getFieldState(name, formContext.formState)
+                )}
             </code>
         </div>
     );
