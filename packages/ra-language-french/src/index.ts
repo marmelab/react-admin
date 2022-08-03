@@ -20,6 +20,7 @@ const frenchMessages: TranslationMessages = {
             list: 'Liste',
             refresh: 'Actualiser',
             remove_filter: 'Supprimer ce filtre',
+            remove_all_filters: 'Supprimer tous les filtres',
             remove: 'Supprimer',
             save: 'Enregistrer',
             select_all: 'Tout sélectionner',

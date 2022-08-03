@@ -10,8 +10,8 @@ import {
     Pagination,
     TextField,
     TextInput,
+    TopToolbar,
 } from 'react-admin';
-import { Stack } from '@mui/material';
 import fakerestDataProvider from 'ra-data-fakerest';
 
 export default { title: 'ra-ui-materialui/list/filter/FilterButton' };
@@ -100,24 +100,21 @@ const data = {
         },
     ],
 };
-const postFilters = [
-    <TextInput label="Search" source="q" alwaysOn />,
-    <TextInput label="Title" source="title" defaultValue="Hello, World!" />,
-];
 
-const ListToolbar = () => (
-    <Stack direction="row" justifyContent="space-between">
-        <FilterForm filters={postFilters} />
-        <div>
-            <FilterButton filters={postFilters} />
-            <CreateButton />
-        </div>
-    </Stack>
-);
-
-const PostList = () => (
+const ListToolbar = (props: { postFilters: React.ReactElement[] }) => {
+    return (
+        <TopToolbar>
+            <FilterForm filters={props.postFilters} />
+            <div>
+                <FilterButton filters={props.postFilters} />
+                <CreateButton />
+            </div>
+        </TopToolbar>
+    );
+};
+const PostList = (props: { postFilters: React.ReactElement[] }) => (
     <ListBase>
-        <ListToolbar />
+        <ListToolbar postFilters={props.postFilters} />
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" />
@@ -127,8 +124,35 @@ const PostList = () => (
     </ListBase>
 );
 
-export const Basic = () => (
-    <Admin dataProvider={fakerestDataProvider(data)}>
-        <Resource name="posts" list={PostList} />
-    </Admin>
-);
+export const Basic = () => {
+    const postFilters: React.ReactElement[] = [
+        <TextInput label="Search" source="q" alwaysOn />,
+        <TextInput
+            label="Title"
+            source="title"
+            defaultValue="Accusantium qui nihil voluptatum quia voluptas maxime ab similique"
+        />,
+    ];
+    return (
+        <Admin dataProvider={fakerestDataProvider(data)}>
+            <Resource
+                name="posts"
+                list={<PostList postFilters={postFilters} />}
+            />
+        </Admin>
+    );
+};
+
+export const DisabledFilters = () => {
+    const postFilters: React.ReactElement[] = [
+        <TextInput label="Title" source="title" disabled={true} />,
+    ];
+    return (
+        <Admin dataProvider={fakerestDataProvider(data)}>
+            <Resource
+                name="posts"
+                list={<PostList postFilters={postFilters} />}
+            />
+        </Admin>
+    );
+};
