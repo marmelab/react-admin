@@ -348,6 +348,58 @@ describe('<SimpleFormIterator />', () => {
         expect(screen.queryAllByText('ra.action.remove').length).toBe(1);
     });
 
+    it('should add correct children with default value after removing one', async () => {
+        render(
+            <Wrapper>
+                <SimpleForm>
+                    <ArrayInput
+                        source="emails"
+                        defaultValue={[{ email: 'test@marmelab.com' }]}
+                    >
+                        <SimpleFormIterator>
+                            <TextInput
+                                source="email"
+                                label="CustomLabel"
+                                defaultValue="default@marmelab.com"
+                            />
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </Wrapper>
+        );
+
+        const removeFirstButton = getByText(
+            (screen.queryAllByLabelText(
+                'CustomLabel'
+            )[0] as HTMLElement).closest('li'),
+            'ra.action.remove'
+        ).closest('button');
+
+        fireEvent.click(removeFirstButton);
+        await waitFor(() => {
+            expect(screen.queryAllByLabelText('CustomLabel').length).toEqual(0);
+        });
+
+        const addItemElement = screen
+            .getByText('ra.action.add')
+            .closest('button');
+
+        fireEvent.click(addItemElement);
+        await waitFor(() => {
+            const inputElements = screen.queryAllByLabelText('CustomLabel');
+
+            expect(inputElements.length).toBe(1);
+        });
+
+        expect(
+            screen
+                .queryAllByLabelText('CustomLabel')
+                .map(inputElement => inputElement.value)
+        ).toEqual(['default@marmelab.com']);
+
+        expect(screen.queryAllByText('ra.action.remove').length).toBe(1);
+    });
+
     it('should remove children row on remove button click', async () => {
         const emails = [{ email: 'foo@bar.com' }, { email: 'bar@foo.com' }];
 

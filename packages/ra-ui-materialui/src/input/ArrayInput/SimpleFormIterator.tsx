@@ -1,8 +1,7 @@
 import * as React from 'react';
 import {
+    Children,
     cloneElement,
-    MouseEvent,
-    MouseEventHandler,
     ReactElement,
     ReactNode,
     useCallback,
@@ -56,20 +55,20 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
 
     const addField = useCallback(
         (item: any = undefined) => {
-            append(item);
+            let defaultValue = item;
+            if (item == null) {
+                defaultValue = {} as Record<string, unknown>;
+                Children.forEach(children, input => {
+                    if (React.isValidElement(input)) {
+                        defaultValue[input.props.source] =
+                            input.props.defaultValue ?? '';
+                    }
+                });
+            }
+            append(defaultValue);
         },
-        [append]
+        [append, children]
     );
-
-    // add field and call the onClick event of the button passed as addButton prop
-    const handleAddButtonClick = (
-        originalOnClickHandler: MouseEventHandler
-    ) => (event: MouseEvent) => {
-        addField();
-        if (originalOnClickHandler) {
-            originalOnClickHandler(event);
-        }
-    };
 
     const handleReorder = useCallback(
         (origin: number, destination: number) => {
@@ -118,9 +117,6 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                     <li className={SimpleFormIteratorClasses.line}>
                         <span className={SimpleFormIteratorClasses.action}>
                             {cloneElement(addButton, {
-                                onClick: handleAddButtonClick(
-                                    addButton.props.onClick
-                                ),
                                 className: clsx(
                                     'button-add',
                                     `button-add-${source}`
