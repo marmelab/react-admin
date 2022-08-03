@@ -354,14 +354,17 @@ describe('<SimpleFormIterator />', () => {
                 <SimpleForm>
                     <ArrayInput
                         source="emails"
-                        defaultValue={[{ email: 'test@marmelab.com' }]}
+                        defaultValue={[
+                            { email: 'test@marmelab.com', name: 'test' },
+                        ]}
                     >
                         <SimpleFormIterator>
                             <TextInput
                                 source="email"
-                                label="CustomLabel"
+                                label="Email"
                                 defaultValue="default@marmelab.com"
                             />
+                            <TextInput source="name" label="Name" />
                         </SimpleFormIterator>
                     </ArrayInput>
                 </SimpleForm>
@@ -369,15 +372,15 @@ describe('<SimpleFormIterator />', () => {
         );
 
         const removeFirstButton = getByText(
-            (screen.queryAllByLabelText(
-                'CustomLabel'
-            )[0] as HTMLElement).closest('li'),
+            (screen.queryAllByLabelText('Email')[0] as HTMLElement).closest(
+                'li'
+            ),
             'ra.action.remove'
         ).closest('button');
 
         fireEvent.click(removeFirstButton);
         await waitFor(() => {
-            expect(screen.queryAllByLabelText('CustomLabel').length).toEqual(0);
+            expect(screen.queryAllByLabelText('Email').length).toEqual(0);
         });
 
         const addItemElement = screen
@@ -386,16 +389,20 @@ describe('<SimpleFormIterator />', () => {
 
         fireEvent.click(addItemElement);
         await waitFor(() => {
-            const inputElements = screen.queryAllByLabelText('CustomLabel');
-
+            const inputElements = screen.queryAllByLabelText('Email');
             expect(inputElements.length).toBe(1);
         });
 
         expect(
             screen
-                .queryAllByLabelText('CustomLabel')
+                .queryAllByLabelText('Email')
                 .map(inputElement => inputElement.value)
         ).toEqual(['default@marmelab.com']);
+        expect(
+            screen
+                .queryAllByLabelText('Name')
+                .map(inputElement => inputElement.value)
+        ).toEqual(['']);
 
         expect(screen.queryAllByText('ra.action.remove').length).toBe(1);
     });
