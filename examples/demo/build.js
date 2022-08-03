@@ -2,7 +2,6 @@
  * Rewrite Webpack config without ejecting CRA thanks to rewire
  * @link https://stackoverflow.com/questions/55165466/how-to-build-a-production-version-of-react-without-minification
  */
-const { exit } = require('process');
 const rewire = require('rewire');
 const defaults = rewire('react-scripts/scripts/build.js');
 const config = defaults.__get__('config');
