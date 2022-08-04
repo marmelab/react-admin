@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 import { NumberInput } from './NumberInput';
 import { AdminContext } from '../AdminContext';
 import { SaveButton } from '../button';
 import { SimpleForm, Toolbar } from '../form';
-import { useFormContext, useWatch } from 'react-hook-form';
 
 describe('<NumberInput />', () => {
     const defaultProps = {
@@ -117,7 +117,10 @@ describe('<NumberInput />', () => {
             const formContext = useFormContext();
             return (
                 <code>
-                    {name}:{JSON.stringify(formContext.getFieldState(name))}
+                    {name}:
+                    {JSON.stringify(
+                        formContext.getFieldState(name, formContext.formState)
+                    )}
                 </code>
             );
         };
@@ -134,7 +137,7 @@ describe('<NumberInput />', () => {
                 'views:{"invalid":false,"isDirty":false,"isTouched":false}'
             );
         });
-        it('should return correct state when the field is touched', () => {
+        it('should return correct state when the field is dirty', () => {
             render(
                 <AdminContext>
                     <SimpleForm>
@@ -147,9 +150,26 @@ describe('<NumberInput />', () => {
                 'resources.posts.fields.views'
             ) as HTMLInputElement;
             fireEvent.change(input, { target: { value: '3' } });
+            screen.getByText(
+                'views:{"invalid":false,"isDirty":true,"isTouched":false}'
+            );
+        });
+        it('should return correct state when the field is touched', () => {
+            render(
+                <AdminContext>
+                    <SimpleForm>
+                        <NumberInput {...defaultProps} />
+                        <FieldState />
+                    </SimpleForm>
+                </AdminContext>
+            );
+            const input = screen.getByLabelText(
+                'resources.posts.fields.views'
+            ) as HTMLInputElement;
+            fireEvent.click(input);
             fireEvent.blur(input);
             screen.getByText(
-                'views:{"invalid":false,"isDirty":true,"isTouched":true}'
+                'views:{"invalid":false,"isDirty":false,"isTouched":true}'
             );
         });
         it('should return correct state when the field is invalid', async () => {
@@ -229,7 +249,6 @@ describe('<NumberInput />', () => {
             );
             const input = screen.getByLabelText('resources.posts.fields.views');
             fireEvent.change(input, { target: { value: '3' } });
-            fireEvent.blur(input);
             fireEvent.click(screen.getByText('ra.action.save'));
             await waitFor(() => {
                 expect(onSubmit).toHaveBeenCalledWith({ views: 3 });
@@ -252,7 +271,6 @@ describe('<NumberInput />', () => {
             );
             const input = screen.getByLabelText('resources.posts.fields.views');
             fireEvent.change(input, { target: { value: '' } });
-            fireEvent.blur(input);
             fireEvent.click(screen.getByText('ra.action.save'));
             await waitFor(() => {
                 expect(onSubmit).toHaveBeenCalledWith({ views: null });
@@ -280,7 +298,6 @@ describe('<NumberInput />', () => {
             );
             const input = screen.getByLabelText('resources.posts.fields.views');
             fireEvent.change(input, { target: { value: '3' } });
-            fireEvent.blur(input);
             await waitFor(() => {
                 expect(value).toEqual('3');
             });
@@ -304,7 +321,6 @@ describe('<NumberInput />', () => {
             );
             const input = screen.getByLabelText('resources.posts.fields.views');
             fireEvent.change(input, { target: { value: '3' } });
-            fireEvent.blur(input);
             expect(value).toEqual('3');
             fireEvent.click(screen.getByText('ra.action.save'));
             await waitFor(() => {
@@ -391,7 +407,6 @@ describe('<NumberInput />', () => {
             );
             const input = screen.getByLabelText('resources.posts.fields.views');
             fireEvent.change(input, { target: { value: '3' } });
-            fireEvent.blur(input);
 
             fireEvent.click(screen.getByText('ra.action.save'));
 
@@ -416,7 +431,6 @@ describe('<NumberInput />', () => {
             );
             const input = screen.getByLabelText('resources.posts.fields.views');
             fireEvent.change(input, { target: { value: '3' } });
-            fireEvent.blur(input);
 
             fireEvent.click(screen.getByText('ra.action.save'));
 
