@@ -518,7 +518,9 @@ If you provided a React element for the optionText prop, you must also provide t
                 getOptionLabel={getOptionLabel}
                 inputValue={filterValue}
                 loading={
-                    isLoading && allChoices.length === 0 && oneSecondHasPassed
+                    isLoading &&
+                    (!allChoices || allChoices.length === 0) &&
+                    oneSecondHasPassed
                 }
                 value={selectedChoice}
                 onChange={handleAutocompleteChange}
