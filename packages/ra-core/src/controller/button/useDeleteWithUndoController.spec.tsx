@@ -15,7 +15,6 @@ describe('useDeleteWithUndoController', () => {
         const dataProvider = testDataProvider({
             delete: jest.fn((ressource, params) => {
                 receivedMeta = params?.meta?.key;
-                console.log(receivedMeta);
                 return Promise.resolve({ data: params?.meta?.key });
             }),
         });
@@ -40,8 +39,8 @@ describe('useDeleteWithUndoController', () => {
             </MemoryRouter>
         );
 
-        await screen.getByText('Delete');
-        fireEvent.click(screen.getByText('Delete'));
+        const button = await screen.findByText('Delete');
+        fireEvent.click(button);
         waitFor(() => expect(receivedMeta).toEqual('metadata'), {
             timeout: 1000,
         });
