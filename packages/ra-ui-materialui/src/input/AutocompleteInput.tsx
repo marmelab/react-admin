@@ -3,7 +3,6 @@ import {
     isValidElement,
     useCallback,
     useEffect,
-    useMemo,
     useRef,
     useState,
     ReactNode,
@@ -18,6 +17,7 @@ import {
     Chip,
     TextField,
     TextFieldProps,
+    createFilterOptions,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import {
@@ -40,6 +40,8 @@ import {
 import { CommonInputProps } from './CommonInputProps';
 import { InputHelperText } from './InputHelperText';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
+
+const defaultFilterOptions = createFilterOptions();
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
@@ -244,7 +246,7 @@ If you provided a React element for the optionText prop, you must also provide t
     }, [shouldRenderSuggestions, noOptionsText]);
 
     const getRecordRepresentation = useGetRecordRepresentation(resource);
-    const { getChoiceText, getChoiceValue, getSuggestions } = useSuggestions({
+    const { getChoiceText, getChoiceValue } = useSuggestions({
         choices: allChoices,
         emptyText,
         emptyValue,
@@ -399,16 +401,22 @@ If you provided a React element for the optionText prop, you must also provide t
     );
 
     const filterOptions = (options, params) => {
+        // When used inside a reference, AutocompleteInput shouldn't do the filtering as it's done by the reference input
+        let filteredOptions = isFromReference
+            ? options
+            : defaultFilterOptions(options, params);
+
+        // add create option if necessary
         const { inputValue } = params;
         if (
             (onCreate || create) &&
             inputValue !== '' &&
             !doesQueryMatchSuggestion(filterValue)
         ) {
-            return options.concat(getCreateItem(inputValue));
+            filteredOptions = filteredOptions.concat(getCreateItem(inputValue));
         }
 
-        return options;
+        return filteredOptions;
     };
 
     const handleAutocompleteChange = (
@@ -420,30 +428,6 @@ If you provided a React element for the optionText prop, you must also provide t
     };
 
     const oneSecondHasPassed = useTimeout(1000, filterValue);
-
-    // To avoid displaying an empty list of choices while a search is in progress,
-    // we store the last choices in a ref. We'll display those last choices until
-    // a second has passed.
-    const currentChoices = useRef(allChoices);
-
-    useEffect(() => {
-        if (allChoices && (allChoices.length > 0 || oneSecondHasPassed)) {
-            currentChoices.current = allChoices;
-        }
-    }, [allChoices, oneSecondHasPassed]);
-
-    const suggestions = useMemo(() => {
-        if (setFilters && allChoices?.length === 0 && !oneSecondHasPassed) {
-            return currentChoices.current ?? [];
-        }
-        return getSuggestions(filterValue);
-    }, [
-        allChoices,
-        filterValue,
-        getSuggestions,
-        oneSecondHasPassed,
-        setFilters,
-    ]);
 
     const isOptionEqualToValue = (option, value) => {
         // eslint-disable-next-line eqeqeq
@@ -528,13 +512,13 @@ If you provided a React element for the optionText prop, you must also provide t
                 options={
                     shouldRenderSuggestions == undefined || // eslint-disable-line eqeqeq
                     shouldRenderSuggestions(filterValue)
-                        ? suggestions
+                        ? allChoices
                         : []
                 }
                 getOptionLabel={getOptionLabel}
                 inputValue={filterValue}
                 loading={
-                    isLoading && suggestions.length === 0 && oneSecondHasPassed
+                    isLoading && allChoices.length === 0 && oneSecondHasPassed
                 }
                 value={selectedChoice}
                 onChange={handleAutocompleteChange}

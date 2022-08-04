@@ -5,24 +5,24 @@ import {
     DateInput,
     TextInput,
     SimpleForm,
-    required,
+    ReferenceInput,
+    AutocompleteInput,
     minLength,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
-import PostReferenceInput from './PostReferenceInput';
 
 const now = new Date();
 const defaultSort = { field: 'title', order: 'ASC' };
-
 const CommentCreate = () => (
     <Create redirect={false}>
         <SimpleForm>
-            <PostReferenceInput
+            <ReferenceInput
                 source="post_id"
                 reference="posts"
-                validate={required()}
-                perPage={10000}
                 sort={defaultSort}
-            />
+                perPage={5}
+            >
+                <AutocompleteInput optionText="title" optionValue="id" />
+            </ReferenceInput>
             <TextInput source="author.name" validate={minLength(10)} />
             <DateInput source="created_at" defaultValue={now} />
             <TextInput fullWidth source="body" multiline />

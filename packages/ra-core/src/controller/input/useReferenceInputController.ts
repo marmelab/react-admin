@@ -97,6 +97,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         },
         {
             enabled: isGetMatchingEnabled,
+            keepPreviousData: true,
             ...queryOptions,
         }
     );
