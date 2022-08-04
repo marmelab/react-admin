@@ -165,7 +165,7 @@ export const AutocompleteInput = <
         setFilter,
         size,
         source: sourceProp,
-        suggestionLimit,
+        suggestionLimit = Infinity,
         TextFieldProps,
         translateChoice,
         validate,
@@ -246,6 +246,7 @@ If you provided a React element for the optionText prop, you must also provide t
     }, [shouldRenderSuggestions, noOptionsText]);
 
     const getRecordRepresentation = useGetRecordRepresentation(resource);
+
     const { getChoiceText, getChoiceValue } = useSuggestions({
         choices: allChoices,
         emptyText,
@@ -512,7 +513,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 options={
                     shouldRenderSuggestions == undefined || // eslint-disable-line eqeqeq
                     shouldRenderSuggestions(filterValue)
-                        ? allChoices || []
+                        ? allChoices?.slice(0, suggestionLimit) || []
                         : []
                 }
                 getOptionLabel={getOptionLabel}
