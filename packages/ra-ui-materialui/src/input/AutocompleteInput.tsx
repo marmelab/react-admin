@@ -512,7 +512,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 options={
                     shouldRenderSuggestions == undefined || // eslint-disable-line eqeqeq
                     shouldRenderSuggestions(filterValue)
-                        ? allChoices
+                        ? allChoices || []
                         : []
                 }
                 getOptionLabel={getOptionLabel}
@@ -529,7 +529,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 renderOption={(props, record: RaRecord) => {
                     (props as {
                         key: string;
-                    }).key = record[optionValue];
+                    }).key = getChoiceValue(record);
                     return <li {...props}>{getOptionLabel(record, true)}</li>;
                 }}
             />

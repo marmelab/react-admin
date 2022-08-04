@@ -995,14 +995,17 @@ describe('<AutocompleteInput />', () => {
         screen.getByRole('textbox').focus();
         fireEvent.click(screen.getByLabelText('Clear value'));
         await waitFor(() => {
-            expect(screen.getByText('Victor Hugo'));
+            expect(screen.getByRole('listbox').children).toHaveLength(5);
         });
         fireEvent.change(screen.getByRole('textbox'), {
             target: { value: 'Vic' },
         });
-        await waitFor(() => {
-            expect(screen.getByText('Victor Hugo'));
-        });
+        await waitFor(
+            () => {
+                expect(screen.getByRole('listbox').children).toHaveLength(1);
+            },
+            { timeout: 2000 }
+        );
         expect(screen.queryByText('Leo Tolstoy')).toBeNull();
     });
 
