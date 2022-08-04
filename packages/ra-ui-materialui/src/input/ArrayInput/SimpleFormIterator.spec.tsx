@@ -348,6 +348,65 @@ describe('<SimpleFormIterator />', () => {
         expect(screen.queryAllByText('ra.action.remove').length).toBe(1);
     });
 
+    it('should add correct children with default value after removing one', async () => {
+        render(
+            <Wrapper>
+                <SimpleForm>
+                    <ArrayInput
+                        source="emails"
+                        defaultValue={[
+                            { email: 'test@marmelab.com', name: 'test' },
+                        ]}
+                    >
+                        <SimpleFormIterator>
+                            <TextInput
+                                source="email"
+                                label="Email"
+                                defaultValue="default@marmelab.com"
+                            />
+                            <TextInput source="name" label="Name" />
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </Wrapper>
+        );
+
+        const removeFirstButton = getByText(
+            (screen.queryAllByLabelText('Email')[0] as HTMLElement).closest(
+                'li'
+            ),
+            'ra.action.remove'
+        ).closest('button');
+
+        fireEvent.click(removeFirstButton);
+        await waitFor(() => {
+            expect(screen.queryAllByLabelText('Email').length).toEqual(0);
+        });
+
+        const addItemElement = screen
+            .getByText('ra.action.add')
+            .closest('button');
+
+        fireEvent.click(addItemElement);
+        await waitFor(() => {
+            const inputElements = screen.queryAllByLabelText('Email');
+            expect(inputElements.length).toBe(1);
+        });
+
+        expect(
+            screen
+                .queryAllByLabelText('Email')
+                .map(inputElement => inputElement.value)
+        ).toEqual(['default@marmelab.com']);
+        expect(
+            screen
+                .queryAllByLabelText('Name')
+                .map(inputElement => inputElement.value)
+        ).toEqual(['']);
+
+        expect(screen.queryAllByText('ra.action.remove').length).toBe(1);
+    });
+
     it('should remove children row on remove button click', async () => {
         const emails = [{ email: 'foo@bar.com' }, { email: 'bar@foo.com' }];
 
