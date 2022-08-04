@@ -6,7 +6,6 @@ type Subscription = {
 };
 
 const RA_STORE = 'RaStore';
-const prefixLength = RA_STORE.length;
 
 // localStorage isn't available in incognito mode. We need to detect it
 const testLocalStorage = () => {
@@ -39,7 +38,12 @@ let localStorageAvailable = testLocalStorage();
  *   </Admin>
  * );
  */
-export const localStorageStore = (version: string = '1'): Store => {
+export const localStorageStore = (
+    version: string = '1',
+    appKey: string = ''
+): Store => {
+    const prefix = `${RA_STORE}${appKey}`;
+    const prefixLength = prefix.length;
     const subscriptions: { [key: string]: Subscription } = {};
     const publish = (key: string, value: any) => {
         Object.keys(subscriptions).forEach(id => {
@@ -53,7 +57,7 @@ export const localStorageStore = (version: string = '1'): Store => {
     // Whenever the local storage changes in another document, look for matching subscribers.
     // This allows to synchronize state across tabs
     const onLocalStorageChange = (event: StorageEvent): void => {
-        if (event.key?.substring(0, prefixLength) !== RA_STORE) {
+        if (event.key?.substring(0, prefixLength) !== prefix) {
             return;
         }
         const key = event.key.substring(prefixLength + 1);
@@ -77,13 +81,11 @@ export const localStorageStore = (version: string = '1'): Store => {
     return {
         setup: () => {
             if (localStorageAvailable) {
-                const storedVersion = getStorage().getItem(
-                    `${RA_STORE}.version`
-                );
+                const storedVersion = getStorage().getItem(`${prefix}.version`);
                 if (storedVersion && storedVersion !== version) {
                     getStorage().clear();
                 }
-                getStorage().setItem(`${RA_STORE}.version`, version);
+                getStorage().setItem(`${prefix}.version`, version);
                 window.addEventListener('storage', onLocalStorageChange);
             }
         },
@@ -93,7 +95,7 @@ export const localStorageStore = (version: string = '1'): Store => {
             }
         },
         getItem<T = any>(key: string, defaultValue?: T): T {
-            const valueFromStorage = getStorage().getItem(`${RA_STORE}.${key}`);
+            const valueFromStorage = getStorage().getItem(`${prefix}.${key}`);
 
             // eslint-disable-next-line eqeqeq
             return valueFromStorage == null
@@ -102,23 +104,20 @@ export const localStorageStore = (version: string = '1'): Store => {
         },
         setItem<T = any>(key: string, value: T): void {
             if (value === undefined) {
-                getStorage().removeItem(`${RA_STORE}.${key}`);
+                getStorage().removeItem(`${prefix}.${key}`);
             } else {
-                getStorage().setItem(
-                    `${RA_STORE}.${key}`,
-                    JSON.stringify(value)
-                );
+                getStorage().setItem(`${prefix}.${key}`, JSON.stringify(value));
             }
             publish(key, value);
         },
         removeItem(key: string): void {
-            getStorage().removeItem(`${RA_STORE}.${key}`);
+            getStorage().removeItem(`${prefix}.${key}`);
             publish(key, undefined);
         },
         reset(): void {
             const storage = getStorage();
             for (let i = 0; i < storage.length; i++) {
-                if (storage.key(i)?.substring(0, prefixLength) === RA_STORE) {
+                if (storage.key(i)?.substring(0, prefixLength) === prefix) {
                     const key = storage.key(i)?.substring(prefixLength + 1);
                     if (!key || !storage.key(i)) return;
                     // @ts-ignore
