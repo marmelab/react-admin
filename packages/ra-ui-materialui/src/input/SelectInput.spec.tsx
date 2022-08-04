@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-    findByText,
-    fireEvent,
-    render,
-    screen,
-    waitFor,
-} from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     required,
     testDataProvider,
@@ -73,7 +67,7 @@ describe('<SelectInput />', () => {
             ).toEqual('rea');
         });
 
-        it('should render disable choices marked so', () => {
+        it('should render disabled choices marked so', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <SimpleForm onSubmit={jest.fn()}>
@@ -97,6 +91,34 @@ describe('<SelectInput />', () => {
             expect(
                 screen.getByText('React').getAttribute('aria-disabled')
             ).toEqual('true');
+        });
+
+        it('should include an empty option by default', () => {
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <SelectInput {...defaultProps} />
+                    </SimpleForm>
+                </AdminContext>
+            );
+            fireEvent.mouseDown(
+                screen.getByLabelText('resources.posts.fields.language')
+            );
+            expect(screen.queryAllByRole('option')).toHaveLength(3);
+        });
+
+        it('should not include an empty option if the field is required', () => {
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <SelectInput {...defaultProps} validate={required()} />
+                    </SimpleForm>
+                </AdminContext>
+            );
+            fireEvent.mouseDown(
+                screen.getByLabelText('resources.posts.fields.language *')
+            );
+            expect(screen.queryAllByRole('option')).toHaveLength(2);
         });
     });
 
@@ -375,12 +397,16 @@ describe('<SelectInput />', () => {
                         defaultValues={{ language: 'ang' }}
                         onSubmit={jest.fn()}
                     >
-                        <SelectInput {...defaultProps} validate={required()} />
+                        <SelectInput
+                            {...defaultProps}
+                            helperText="helperText"
+                            validate={() => 'error'}
+                        />
                     </SimpleForm>
                 </AdminContext>
             );
-            const error = screen.queryAllByText('ra.validation.required');
-            expect(error.length).toEqual(0);
+            screen.getByText('helperText');
+            expect(screen.queryAllByText('error')).toHaveLength(0);
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
@@ -391,18 +417,21 @@ describe('<SelectInput />', () => {
                         mode="onBlur"
                         onSubmit={jest.fn()}
                     >
-                        <SelectInput {...defaultProps} validate={required()} />
+                        <SelectInput
+                            {...defaultProps}
+                            helperText="helperText"
+                            validate={() => undefined}
+                        />
                     </SimpleForm>
                 </AdminContext>
             );
             const input = screen.getByLabelText(
-                'resources.posts.fields.language *'
+                'resources.posts.fields.language'
             );
             input.focus();
             input.blur();
 
-            const error = screen.queryAllByText('ra.validation.required');
-            expect(error.length).toEqual(0);
+            screen.getByText('helperText');
         });
 
         it('should be displayed if field has been touched and is invalid', async () => {
@@ -411,27 +440,25 @@ describe('<SelectInput />', () => {
                     <SimpleForm mode="onChange" onSubmit={jest.fn()}>
                         <SelectInput
                             {...defaultProps}
+                            helperText="helperText"
                             emptyText="Empty"
-                            validate={required()}
+                            validate={() => 'error'}
                         />
                     </SimpleForm>
                 </AdminContext>
             );
 
             const select = screen.getByLabelText(
-                'resources.posts.fields.language *'
+                'resources.posts.fields.language'
             );
             fireEvent.mouseDown(select);
 
             const optionAngular = screen.getByText('Angular');
             fireEvent.click(optionAngular);
+            select.blur();
 
-            const optionEmpty = screen.getByText('Empty');
-            fireEvent.click(optionEmpty);
-
-            await waitFor(() => {
-                expect(screen.queryByText('ra.validation.required'));
-            });
+            await screen.findByText('error');
+            expect(screen.queryAllByText('helperText')).toHaveLength(0);
         });
     });
 

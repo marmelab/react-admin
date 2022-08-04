@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createMemoryHistory } from 'history';
 import { Admin, AdminContext } from 'react-admin';
-import { Resource } from 'ra-core';
+import { Resource, required } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 
@@ -24,6 +24,42 @@ export const Basic = () => (
     </Wrapper>
 );
 
+export const DefaultValue = () => (
+    <Wrapper>
+        <SelectInput
+            source="gender"
+            choices={[
+                { id: 'M', name: 'Male ' },
+                { id: 'F', name: 'Female' },
+            ]}
+            defaultValue="F"
+        />
+    </Wrapper>
+);
+
+export const InitialValue = () => (
+    <AdminContext
+        i18nProvider={i18nProvider}
+        dataProvider={
+            {
+                getOne: () => Promise.resolve({ data: { id: 1, gender: 'F' } }),
+            } as any
+        }
+    >
+        <Edit resource="posts" id="1">
+            <SimpleForm>
+                <SelectInput
+                    source="gender"
+                    choices={[
+                        { id: 'M', name: 'Male ' },
+                        { id: 'F', name: 'Female' },
+                    ]}
+                />
+            </SimpleForm>
+        </Edit>
+    </AdminContext>
+);
+
 export const Disabled = () => (
     <Wrapper>
         <SelectInput
@@ -33,6 +69,45 @@ export const Disabled = () => (
                 { id: 'F', name: 'Female' },
             ]}
             disabled
+        />
+    </Wrapper>
+);
+
+export const Validate = () => (
+    <Wrapper>
+        <SelectInput
+            source="gender"
+            choices={[
+                { id: 'M', name: 'Male ' },
+                { id: 'F', name: 'Female' },
+            ]}
+            validate={() => 'error'}
+        />
+    </Wrapper>
+);
+
+export const Required = () => (
+    <Wrapper>
+        <SelectInput
+            source="gender"
+            choices={[
+                { id: 'M', name: 'Male ' },
+                { id: 'F', name: 'Female' },
+            ]}
+            validate={required()}
+        />
+    </Wrapper>
+);
+
+export const EmptyText = () => (
+    <Wrapper>
+        <SelectInput
+            source="gender"
+            choices={[
+                { id: 'M', name: 'Male ' },
+                { id: 'F', name: 'Female' },
+            ]}
+            emptyText="None"
         />
     </Wrapper>
 );
