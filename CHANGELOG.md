@@ -1,5 +1,20 @@
 # Changelog
- 
+
+## v4.2.5
+
+- Fix Input label proptypes and `<DatagridInput>` imports ([#8019](https://github.com/marmelab/react-admin/pull/8019)) by ([megantaylor](https://github.com/megantaylor))
+- Fix `<DashboardMenuItem>` Types ([#8007](https://github.com/marmelab/react-admin/pull/8007)) by ([djhi](https://github.com/djhi))
+- Fix `<Admin dashboard>` causes a console warning due to missing key in the `<Menu>` ([#8005](https://github.com/marmelab/react-admin/pull/8005)) by ([DerYeger](https://github.com/DerYeger))
+- Fix `<AutocompleteInput>` generates warning for identical label ([#8002](https://github.com/marmelab/react-admin/pull/8002)) by ([septentrion-730n](https://github.com/septentrion-730n))
+- Fix usage warning trigger in `<CheckboxGroupInput>` ([#8001](https://github.com/marmelab/react-admin/pull/8001)) by ([septentrion-730n](https://github.com/septentrion-730n))
+- Fix `<FilterForm>` overflow on mobile ([#7940](https://github.com/marmelab/react-admin/pull/7940)) by ([septentrion-730n](https://github.com/septentrion-730n))
+- [Typescript] Fix `<ListContextProvider>` types ([#8020](https://github.com/marmelab/react-admin/pull/8020)) by ([septentrion-730n](https://github.com/septentrion-730n))
+- [Doc] Fix typo in `ra-data-graphql-simple` docs ([#8012](https://github.com/marmelab/react-admin/pull/8012)) by ([mattleff](https://github.com/mattleff))
+- [Doc] Fix `react-query` links in documentation ([#8010](https://github.com/marmelab/react-admin/pull/8010)) by ([septentrion-730n](https://github.com/septentrion-730n))
+- [Doc] Fix `useQuery` example snippet ([#8009](https://github.com/marmelab/react-admin/pull/8009)) by ([fzaninotto](https://github.com/fzaninotto))
+- [Doc] Fix Custom `<ReferenceInput>` label must be carried by the child component ([#8004](https://github.com/marmelab/react-admin/pull/8004)) by ([ApolloRisky](https://github.com/ApolloRisky))
+- [Doc] Add `<Breadcrumb>` documentation ([#8000](https://github.com/marmelab/react-admin/pull/8000)) by ([fzaninotto](https://github.com/fzaninotto))
+
 ## v4.2.4
 
 - Fix `<SelectInput>` loading UI to avoid visual jump ([#7998](https://github.com/marmelab/react-admin/pull/7998)) by ([fzaninotto](https://github.com/fzaninotto))

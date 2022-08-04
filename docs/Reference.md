@@ -17,8 +17,8 @@ title: "Reference"
 * [`<Authenticated>`](./Authenticated.md)
 * [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md)
 * [`<AutocompleteInput>`](./AutocompleteInput.md)
-* [`<Breadcrumb>`](https://marmelab.com/ra-enterprise/modules/ra-navigation#breadcrumb-adding-a-breadcrumb-path-to-every-page)<img class="icon" src="./img/premium.svg" />
-* [`<BreadcrumbItem>`](https://marmelab.com/ra-enterprise/modules/ra-navigation#the-breadcrumbitem-component)<img class="icon" src="./img/premium.svg" />
+* [`<Breadcrumb>`](./Breadcrumb.md)<img class="icon" src="./img/premium.svg" />
+* [`<BreadcrumbItem>`](./Breadcrumb.md#breadcrumbitem)<img class="icon" src="./img/premium.svg" />
 * [`<BooleanField>`](./BooleanField.md)
 * [`<BooleanInput>`](./BooleanInput.md)
 * [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton)

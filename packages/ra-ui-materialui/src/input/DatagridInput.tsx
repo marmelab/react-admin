@@ -8,11 +8,9 @@ import {
     useChoicesContext,
     useInput,
 } from 'ra-core';
-import {
-    CommonInputProps,
-    InputHelperText,
-    SupportCreateSuggestionOptions,
-} from '.';
+import { CommonInputProps } from './CommonInputProps';
+import { InputHelperText } from './InputHelperText';
+import { SupportCreateSuggestionOptions } from './useSupportCreateSuggestion';
 import { Datagrid, DatagridProps } from '../list/datagrid';
 import { FilterButton, FilterForm } from '../list/filter';
 import { FilterContext } from '../list/FilterContext';

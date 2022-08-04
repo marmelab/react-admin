@@ -22,7 +22,7 @@ A frontend Framework for building data-driven applications running in the browse
 
 * ☂️ **Opt-In Types**: Develop either in TypeScript or JavaScript
 
-* 👨‍👩‍👧‍👦 Powered by [MUI](https://mui.com/), [react-hook-form](https://react-hook-form.com), [react-router](https://reacttraining.com/react-router/), [react-query](https://react-query.tanstack.com/), [TypeScript](https://www.typescriptlang.org/) and a few more
+* 👨‍👩‍👧‍👦 Powered by [MUI](https://mui.com/), [react-hook-form](https://react-hook-form.com), [react-router](https://reacttraining.com/react-router/), [react-query](https://react-query-v3.tanstack.com/), [TypeScript](https://www.typescriptlang.org/) and a few more
 
 ## Installation
 
@@ -130,7 +130,7 @@ React-admin is designed as a library of loosely coupled React components and hoo
 
 There are several examples inside the `examples` folder:
 
-* `simple` ([CodeSandbox](https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/simple)): a simple blog with posts, comments and users that we use for our e2e tests.
+* `simple` ([CodeSandbox](https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/simple), [StackBlitz](https://stackblitz.com/github/marmelab/react-admin/tree/master/examples/simple?file=src%2Findex.tsx)): a simple blog with posts, comments and users that we use for our e2e tests.
 * `e-commerce`: ([demo](https://marmelab.com/react-admin-demo/), [source](https://github.com/marmelab/react-admin/tree/master/examples/demo)) A fictional poster shop admin, serving as the official react-admin demo.
 * `CRM`: ([demo](https://marmelab.com/react-admin-crm/), [source](https://github.com/marmelab/react-admin/tree/master/examples/crm)) A customer relationship management application
 * `tutorial` ([CodeSandbox](https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/tutorial)): the application built while following the [tutorial](https://marmelab.com/react-admin/Tutorial.html).

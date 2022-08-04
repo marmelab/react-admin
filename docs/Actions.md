@@ -5,7 +5,7 @@ title: "Querying the API"
 
 # Querying the API
 
-React-admin provides special hooks to emit read and write queries to the [`dataProvider`](./DataProviders.md), which in turn sends requests to your API. Under the hood, it uses [react-query](https://react-query.tanstack.com/) to call the `dataProvider` and cache the results.
+React-admin provides special hooks to emit read and write queries to the [`dataProvider`](./DataProviders.md), which in turn sends requests to your API. Under the hood, it uses [react-query](https://react-query-v3.tanstack.com/) to call the `dataProvider` and cache the results.
 
 ## Getting The `dataProvider` Instance
 
@@ -118,7 +118,7 @@ It's up to the Data Provider to interpret this parameter.
 
 ## `useQuery` and `useMutation`
 
-Internally, react-admin uses [react-query](https://react-query.tanstack.com/) to call the dataProvider. When fetching data from the dataProvider in your components, if you can't use any of the dataProvider method hooks, you should use that library, too. It brings several benefits:
+Internally, react-admin uses [react-query](https://react-query-v3.tanstack.com/) to call the dataProvider. When fetching data from the dataProvider in your components, if you can't use any of the dataProvider method hooks, you should use that library, too. It brings several benefits:
 
 1. It triggers the loader in the AppBar when the query is running.
 2. It reduces the boilerplate code since you don't need to use `useState`.
@@ -127,8 +127,8 @@ Internally, react-admin uses [react-query](https://react-query.tanstack.com/) to
 
 React-query offers 2 main hooks to interact with the dataProvider:
 
-* [`useQuery`](https://react-query.tanstack.com/reference/useQuery): fetches the dataProvider on mount. This is for *read* queries.
-* [`useMutation`](https://react-query.tanstack.com/reference/useMutation): fetches the dataProvider when you call a callback. This is for *write* queries, and *read* queries that execute on user interaction.
+* [`useQuery`](https://react-query-v3.tanstack.com/reference/useQuery): fetches the dataProvider on mount. This is for *read* queries.
+* [`useMutation`](https://react-query-v3.tanstack.com/reference/useMutation): fetches the dataProvider when you call a callback. This is for *write* queries, and *read* queries that execute on user interaction.
 
 Both these hooks accept a query *key* (identifying the query in the cache), and a query *function* (executing the query and returning a Promise). Internally, react-admin uses an array of arguments as the query key.
 
@@ -176,7 +176,7 @@ const ApproveButton = ({ record }) => {
 };
 ```
 
-If you want to go beyond data provider method hooks, we recommend that you read [the react-query documentation](https://react-query.tanstack.com/overview).
+If you want to go beyond data provider method hooks, we recommend that you read [the react-query documentation](https://react-query-v3.tanstack.com/overview).
 
 ## `isLoading` vs `isFetching`
 
@@ -184,7 +184,7 @@ Data fetching hooks return two loading state variables: `isLoading` and `isFetch
 
 The short answer is: use `isLoading`. Read on to understand why.
 
-The source of these two variables is [react-query](https://react-query.tanstack.com/guides/queries#query-basics). Here is how they defined these two variables:
+The source of these two variables is [react-query](https://react-query-v3.tanstack.com/guides/queries#query-basics). Here is how they defined these two variables:
 
 - `isLoading`:  The query has no data and is currently fetching
 - `isFetching`: In any state, if the query is fetching at any time (including background refetching) isFetching will be true.
@@ -253,7 +253,7 @@ const BanUserButton = ({ userId }) => {
 
 ## Query Options
 
-The data provider method hooks (like `useGetOne`) and react-query's hooks (like `useQuery`) accept a query options object as the last argument. This object can be used to modify the way the query is executed. There are many options, all documented [in the react-query documentation](https://react-query.tanstack.com/reference/useQuery):
+The data provider method hooks (like `useGetOne`) and react-query's hooks (like `useQuery`) accept a query options object as the last argument. This object can be used to modify the way the query is executed. There are many options, all documented [in the react-query documentation](https://react-query-v3.tanstack.com/reference/useQuery):
 
 - `cacheTime`
 - `enabled`

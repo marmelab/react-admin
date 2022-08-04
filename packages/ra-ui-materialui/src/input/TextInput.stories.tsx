@@ -2,14 +2,14 @@ import * as React from 'react';
 import { required } from 'ra-core';
 import { useFormState, useWatch, useFormContext } from 'react-hook-form';
 
-import { NumberInput } from './NumberInput';
+import { TextInput } from './TextInput';
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
 import { SimpleForm } from '../form';
 
-export default { title: 'ra-ui-materialui/input/NumberInput' };
+export default { title: 'ra-ui-materialui/input/TextInput' };
 
-const FormInspector = ({ name = 'views' }) => {
+const FormInspector = ({ name = 'title' }) => {
     const value = useWatch({ name });
     return (
         <div style={{ backgroundColor: 'lightgrey' }}>
@@ -25,29 +25,12 @@ export const Basic = () => (
     <AdminContext>
         <Create
             resource="posts"
-            record={{ id: 123, views: 23 }}
+            record={{ id: 123, title: 'Lorem ipsum' }}
             sx={{ width: 600 }}
         >
             <SimpleForm>
-                <NumberInput source="views" />
+                <TextInput source="title" />
                 <FormInspector />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
-);
-
-export const Float = () => (
-    <AdminContext>
-        <Create
-            resource="poi"
-            record={{ id: 123, lat: 48.692054, long: 6.184417 }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <NumberInput source="lat" />
-                <NumberInput source="long" />
-                <FormInspector name="lat" />
-                <FormInspector name="long" />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -57,26 +40,26 @@ export const DefaultValue = () => (
     <AdminContext>
         <Create
             resource="posts"
-            record={{ id: 123, views: 23 }}
+            record={{ id: 123, title: 'Lorem ipsum' }}
             sx={{ width: 600 }}
         >
             <SimpleForm>
-                <NumberInput source="views" defaultValue={26} />
-                <NumberInput
-                    source="views1"
-                    label="Default 6"
-                    defaultValue={6}
+                <TextInput source="title" defaultValue="hello" />
+                <TextInput
+                    source="title1"
+                    label="Default john"
+                    defaultValue="john"
                 />
-                <NumberInput
-                    source="views2"
-                    label="Default 0"
-                    defaultValue={0}
+                <TextInput
+                    source="title2"
+                    label="Default empty string"
+                    defaultValue=""
                 />
-                <NumberInput source="views3" label="Default undefined" />
-                <FormInspector name="views" />
-                <FormInspector name="views1" />
-                <FormInspector name="views2" />
-                <FormInspector name="views3" />
+                <TextInput source="title3" label="Default undefined" />
+                <FormInspector name="title" />
+                <FormInspector name="title1" />
+                <FormInspector name="title2" />
+                <FormInspector name="title3" />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -86,14 +69,14 @@ export const HelperText = () => (
     <AdminContext>
         <Create
             resource="posts"
-            record={{ id: 123, views: 23 }}
+            record={{ id: 123, title: 'Lorem ipsum' }}
             sx={{ width: 600 }}
         >
             <SimpleForm>
-                <NumberInput source="views" />
-                <NumberInput source="views" helperText={false} />
-                <NumberInput
-                    source="views"
+                <TextInput source="title" />
+                <TextInput source="title" helperText={false} />
+                <TextInput
+                    source="title"
                     helperText="Number of times the post was read"
                 />
             </SimpleForm>
@@ -105,13 +88,13 @@ export const Label = () => (
     <AdminContext>
         <Create
             resource="posts"
-            record={{ id: 123, views: 23 }}
+            record={{ id: 123, title: 'Lorem ipsum' }}
             sx={{ width: 600 }}
         >
             <SimpleForm>
-                <NumberInput source="views" />
-                <NumberInput source="views" label={false} />
-                <NumberInput source="views" label="Number of views" />
+                <TextInput source="title" />
+                <TextInput source="title" label={false} />
+                <TextInput source="title" label="label of title" />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -121,12 +104,12 @@ export const FullWidth = () => (
     <AdminContext>
         <Create
             resource="posts"
-            record={{ id: 123, views: 23 }}
+            record={{ id: 123, title: 'Lorem ipsum' }}
             sx={{ width: 600 }}
         >
             <SimpleForm>
-                <NumberInput source="views" label="default" />
-                <NumberInput source="views" label="Full Width" fullWidth />
+                <TextInput source="title" label="default" />
+                <TextInput source="title" label="Full Width" fullWidth />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -136,13 +119,13 @@ export const Margin = () => (
     <AdminContext>
         <Create
             resource="posts"
-            record={{ id: 123, views: 23 }}
+            record={{ id: 123, title: 'Lorem ipsum' }}
             sx={{ width: 600 }}
         >
             <SimpleForm>
-                <NumberInput source="views" label="default (dense)" />
-                <NumberInput source="views" label="none" margin="none" />
-                <NumberInput source="views" label="normal" margin="normal" />
+                <TextInput source="title" label="default (dense)" />
+                <TextInput source="title" label="none" margin="none" />
+                <TextInput source="title" label="normal" margin="normal" />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -152,58 +135,13 @@ export const Variant = () => (
     <AdminContext>
         <Create
             resource="posts"
-            record={{ id: 123, views: 23 }}
+            record={{ id: 123, title: 'Lorem ipsum' }}
             sx={{ width: 600 }}
         >
             <SimpleForm>
-                <NumberInput source="views" label="default (filled)" />
-                <NumberInput
-                    source="views"
-                    label="outlined"
-                    variant="outlined"
-                />
-                <NumberInput
-                    source="views"
-                    label="standard"
-                    variant="standard"
-                />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
-);
-
-export const Step = () => (
-    <AdminContext>
-        <Create
-            resource="posts"
-            record={{ id: 123, views: 23 }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <NumberInput source="views" label="No step" />
-                <NumberInput source="views" label="Step 0.1" step={0.1} />
-                <NumberInput source="views" label="Step 10" step={10} />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
-);
-
-export const MinMax = () => (
-    <AdminContext>
-        <Create
-            resource="posts"
-            record={{ id: 123, views: 23 }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <NumberInput source="views" label="No min or max" />
-                <NumberInput
-                    source="views"
-                    label="Min 20, max 30"
-                    min={20}
-                    max={30}
-                />
-                <NumberInput source="views" label="Min 50" min={50} />
+                <TextInput source="title" label="default (filled)" />
+                <TextInput source="title" label="outlined" variant="outlined" />
+                <TextInput source="title" label="standard" variant="standard" />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -213,14 +151,14 @@ export const Required = () => (
     <AdminContext>
         <Create
             resource="posts"
-            record={{ id: 123, views: 23 }}
+            record={{ id: 123, title: 'Lorem ipsum' }}
             sx={{ width: 600 }}
         >
             <SimpleForm>
-                <NumberInput source="views" />
-                <NumberInput source="views" required />
-                <NumberInput source="views" validate={required()} />
-                <NumberInput source="views" validate={[required()]} />
+                <TextInput source="title" />
+                <TextInput source="title" required />
+                <TextInput source="title" validate={required()} />
+                <TextInput source="title" validate={[required()]} />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -230,21 +168,21 @@ export const Error = () => (
     <AdminContext>
         <Create
             resource="posts"
-            record={{ id: 123, views: 23 }}
+            record={{ id: 123, title: 'Lorem ipsum' }}
             sx={{ width: 600 }}
         >
             <SimpleForm
                 resolver={() => ({
                     values: {},
                     errors: {
-                        views: {
+                        title: {
                             type: 'custom',
                             message: 'Special error message',
                         },
                     },
                 })}
             >
-                <NumberInput source="views" />
+                <TextInput source="title" />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -254,12 +192,12 @@ export const Sx = () => (
     <AdminContext>
         <Create
             resource="posts"
-            record={{ id: 123, views: 23 }}
+            record={{ id: 123, title: 'Lorem ipsum' }}
             sx={{ width: 600 }}
         >
             <SimpleForm>
-                <NumberInput
-                    source="views"
+                <TextInput
+                    source="title"
                     sx={{
                         border: 'solid 1px red',
                         borderRadius: '5px',
@@ -295,7 +233,7 @@ const FormStateInspector = () => {
     );
 };
 
-const FieldStateInspector = ({ name = 'views' }) => {
+const FieldStateInspector = ({ name = 'title' }) => {
     const formContext = useFormContext();
     return (
         <div>
@@ -313,11 +251,11 @@ export const FieldState = () => (
     <AdminContext>
         <Create
             resource="posts"
-            record={{ id: 123, views: 23 }}
+            record={{ id: 123, title: 'Lorem ipsum' }}
             sx={{ width: 600 }}
         >
             <SimpleForm>
-                <NumberInput source="views" />
+                <TextInput source="title" />
                 <FormStateInspector />
                 <FieldStateInspector />
             </SimpleForm>

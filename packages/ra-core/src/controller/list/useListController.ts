@@ -219,7 +219,7 @@ export interface ListControllerResult<RecordType extends RaRecord = any> {
     onUnselectItems: () => void;
     page: number;
     perPage: number;
-    refetch: UseGetListHookValue<RecordType>['refetch'];
+    refetch: (() => void) | UseGetListHookValue<RecordType>['refetch'];
     resource: string;
     selectedIds: RecordType['id'][];
     setFilters: (
