@@ -244,11 +244,11 @@ export const PostList = () => (
 
 ![Bulk Delete button](./img/bulk-delete-button.png)
 
-| Prop         | Required | Type            | Default            | Description                         |
-| ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
-| `label`      | Optional | `string`        | 'ra.action.delete' | label or translation message to use |
-| `icon`       | Optional | `ReactElement`  | `<DeleteIcon>`     | iconElement, e.g. `<CommentIcon />` |
-| `exporter`   | Optional | `Function`      | -                  | Override the List exporter function |
+| Prop                | Required | Type            | Default            | Description                                        |
+| --------------------| -------- | --------------- | ------------------ | ---------------------------------------------------|
+| `label`             | Optional | `string`        | 'ra.action.delete' | label or translation message to use                |
+| `icon`              | Optional | `ReactElement`  | `<DeleteIcon>`     | iconElement, e.g. `<CommentIcon />`                |
+| `mutationOptions`   | Optional | `object`        | null               | options for react-query `useMutation` hook         |
 
 ### `<FilterButton>`
 
@@ -277,6 +277,7 @@ Delete the current record after a confirm dialog has been accepted. To be used i
 | `confirmContent`                                           | Optional | `ReactNode`                      | 'ra.message.delete_content' | Message or React component to be used as the body of the confirm dialog |
 | `redirect`                                                 | Optional | `string | false | Function`      | 'list'                      | Custom redirection after success side effect                            |
 | `translateOptions`                                         | Optional | `{ id?: string, name?: string }` | {}                          | Custom id and name to be used in the confirm dialog's title             |
+| `mutationOptions`                                          | Optional |                                  | null                        | options for react-query `useMutation` hook                              |
 
 {% raw %}
 ```jsx

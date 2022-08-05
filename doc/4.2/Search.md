@@ -18,7 +18,6 @@ It relies on the `dataProvider` to provide a `search()` method, so you can use i
 Include the `<Search>` component inside a custom `<AppBar>` component:
 
 {% raw %}
-
 ```jsx
 // in src/MyAppBar.jsx
 import { AppBar } from "react-admin";
@@ -42,7 +41,6 @@ export const MyAppbar = (props) => (
   </AppBar>
 );
 ```
-
 {% endraw %}
 
 Include that AppBar in [a custom layout component](./Layout.md):
@@ -78,18 +76,19 @@ Your `dataProvider` should support the `search()` method. Check [the `ra-search`
 
 ## Props
 
-| Prop       | Required | Type        | Default                | Description                                                        |
-| ---------- | -------- | ----------- | ---------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------- |
-| `children` | Optional | `ReactNode` | `<SearchResultsPanel>` | The search result renderer                                         |
-| `options`  | Optional | `object`    | -                      | The search options (see details below)                             |
-| `wait`     | Optional | `number`    | 500                    | The delay of debounce for the search to launch after typing in ms. |
-| `color`    | Optional | `'light'    | 'dark'`                | 'light'                                                            | The color mode for the input, applying light or dark background. |
+
+| Prop        | Required | Type               | Default  | Description                                                        |
+| ----------- | -------- | ------------------ | -------- | ------------------------------------------------------------------ |
+| `children`  | Optional | `ReactNode`        | `<SearchResultsPanel>` | The search result renderer                           |
+| `options`   | Optional | `object`           | -        | The search options (see details below)                             |
+| `wait`      | Optional | `number`           | 500      | The delay of debounce for the search to launch after typing in ms. |
+| `color`     | Optional | `'light' | 'dark'` | 'light'  | The color mode for the input, applying light or dark background.   |
 
 The `options` object can contain the following keys:
 
-- `targets`: `string[]` An array of the indices on which to perform the search. Defaults to an empty array.
-- `historySize`: `number` The max number of search texts kept in the history. Default is 5.
-- `{any}`: `{any}` Any custom option to pass to the search engine.
+-   `targets`: `string[]` An array of the indices on which to perform the search. Defaults to an empty array.
+-   `historySize`: `number` The max number of search texts kept in the history. Default is 5.
+-   `{any}`: `{any}` Any custom option to pass to the search engine.
 
 ## Customizing The Result Items
 
@@ -97,11 +96,11 @@ By default, `<Search>` displays the results in `<SearchResultsPanel>`, which dis
 
 ```jsx
 const MySearch = () => (
-  <Search>
-    <SearchResultsPanel>
-      <SearchResultItem />
-    </SearchResultsPanel>
-  </Search>
+    <Search>
+        <SearchResultsPanel>
+            <SearchResultItem />
+        </SearchResultsPanel>
+    </Search>
 );
 ```
 
@@ -111,47 +110,51 @@ For instance:
 
 ```jsx
 import {
-  Search,
-  SearchResultsPanel,
-  SearchResultItem,
-} from "@react-admin/ra-search";
+    Search,
+    SearchResultsPanel,
+    SearchResultItem,
+} from '@react-admin/ra-search';
 
 const MySearch = () => (
-  <Search>
-    <SearchResultsPanel>
-      <SearchResultItem
-        label={(record) => (
-          <>
-            {record.type === "artists" ? <PersonIcon /> : <MusicIcon />}
-            <span>{record.content.label}</span>
-          </>
-        )}
-      />
-    </SearchResultsPanel>
-  </Search>
+    <Search>
+        <SearchResultsPanel>
+            <SearchResultItem
+                label={record => (
+                    <>
+                        {record.type === 'artists' ? (
+                            <PersonIcon />
+                        ) : (
+                            <MusicIcon />
+                        )}
+                        <span>{record.content.label}</span>
+                    </>
+                )}
+            />
+        </SearchResultsPanel>
+    </Search>
 );
 ```
 
 You can also completely replace the search result item component:
 
 ```jsx
-import { Search, SearchResultsPanel } from "@react-admin/ra-search";
+import { Search, SearchResultsPanel } from '@react-admin/ra-search';
 
 const MySearchResultItem = ({ data, onClose }) => (
-  <li key={data.id}>
-    <Link to={data.url} onClick={onClose}>
-      <strong>{data.content.label}</strong>
-    </Link>
-    <p>{data.content.description}</p>
-  </li>
+    <li key={data.id}>
+        <Link to={data.url} onClick={onClose}>
+            <strong>{data.content.label}</strong>
+        </Link>
+        <p>{data.content.description}</p>
+    </li>
 );
 
 const MySearch = () => (
-  <Search>
-    <SearchResultsPanel>
-      <MySearchResultItem />
-    </SearchResultsPanel>
-  </Search>
+    <Search>
+        <SearchResultsPanel>
+            <MySearchResultItem />
+        </SearchResultsPanel>
+    </Search>
 );
 ```
 
@@ -162,28 +165,28 @@ Pass a custom React element as a child of `<Search>` to customize the appearance
 `ra-search` renders the `<Search>` inside a `SearchContext`. You can use the `useSearchResultContext` hook to read the search results, as follows:
 
 ```jsx
-import { Search, useSearchResult } from "@react-admin/ra-search";
+import { Search, useSearchResult } from '@react-admin/ra-search';
 
-const MySearch = (props) => (
-  <Search>
-    <CustomSearchResultsPanel />
-  </Search>
+const MySearch = props => (
+    <Search>
+        <CustomSearchResultsPanel />
+    </Search>
 );
 
 const CustomSearchResultsPanel = () => {
-  const { data, onClose } = useSearchResult();
+    const { data, onClose } = useSearchResult();
 
-  return (
-    <ul>
-      {data.map((searchResult) => (
-        <li key={searchResult.id}>
-          <Link to={searchResult.url} onClick={onClose}>
-            <strong>{searchResult.content.label}</strong>
-          </Link>
-          <p>{searchResult.content.description}</p>
-        </li>
-      ))}
-    </ul>
-  );
+    return (
+        <ul>
+            {data.map(searchResult => (
+                <li key={searchResult.id}>
+                    <Link to={searchResult.url} onClick={onClose}>
+                        <strong>{searchResult.content.label}</strong>
+                    </Link>
+                    <p>{searchResult.content.description}</p>
+                </li>
+            ))}
+        </ul>
+    );
 };
 ```
