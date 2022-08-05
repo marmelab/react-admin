@@ -219,8 +219,10 @@ export const SelectInput = (props: SelectInputProps) => {
     });
 
     const createItem = create || onCreate ? getCreateItem() : null;
-    const finalChoices =
-        create || onCreate ? [...allChoices, createItem] : allChoices;
+    let finalChoices = allChoices;
+    if (create || onCreate) {
+        finalChoices = [...finalChoices, createItem];
+    }
 
     const renderMenuItem = useCallback(
         choice => {
@@ -302,14 +304,16 @@ export const SelectInput = (props: SelectInputProps) => {
                 margin={margin}
                 {...sanitizeRestProps(rest)}
             >
-                <MenuItem
-                    value={emptyValue}
-                    key="null"
-                    aria-label={translate('ra.action.clear_input_value')}
-                    title={translate('ra.action.clear_input_value')}
-                >
-                    {renderEmptyItemOption()}
-                </MenuItem>
+                {!isRequired && (
+                    <MenuItem
+                        value={emptyValue}
+                        key="null"
+                        aria-label={translate('ra.action.clear_input_value')}
+                        title={translate('ra.action.clear_input_value')}
+                    >
+                        {renderEmptyItemOption()}
+                    </MenuItem>
+                )}
                 {finalChoices.map(renderMenuItem)}
             </StyledResettableTextField>
             {createElement}
