@@ -75,6 +75,14 @@ const choices = [
 />
 ```
 
+`<SelectInput>` adds an empty option by default, to let users enter an empty value. You can disable this behavior by marking the input as required using the `validate` prop:
+
+```jsx
+import { SelectInput, required } from 'react-admin';
+
+<SelectInput source="category" choices={choices} validate={required()} />
+```
+
 When used inside a `<ReferenceInput>`, `<SelectInput>` doesn't need a `choices` prop. Instead, it will use the records fetched by `<ReferenceInput>` as choices, via the `ChoicesContext`.
 
 ```jsx
