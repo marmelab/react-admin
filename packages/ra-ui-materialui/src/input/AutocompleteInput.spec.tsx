@@ -302,6 +302,125 @@ describe('<AutocompleteInput />', () => {
         });
     });
 
+    describe('matchSuggestion', () => {
+        it('should take over the default matching function when provided', async () => {
+            const choices = [
+                { id: 'ang', name: 'Angular' },
+                { id: 'rea', name: 'React' },
+            ];
+
+            render(
+                <AdminContext>
+                    <SimpleForm mode="onBlur" onSubmit={jest.fn()}>
+                        <AutocompleteInput
+                            source="language"
+                            resource="posts"
+                            choices={choices}
+                            matchSuggestion={(filter, choice) => {
+                                if (!filter) return true;
+                                if (
+                                    filter === 'gugu' &&
+                                    choice.name === 'Angular'
+                                ) {
+                                    return true;
+                                }
+                                if (
+                                    filter === 'rere' &&
+                                    choice.name === 'React'
+                                ) {
+                                    return true;
+                                }
+                                return false;
+                            }}
+                        />
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            const input = screen.getByLabelText(
+                'resources.posts.fields.language'
+            ) as HTMLInputElement;
+            input.focus();
+            await screen.findByText('Angular');
+            await screen.findByText('React');
+            fireEvent.change(input, { target: { value: 'Angular' } });
+            // no option match
+            await waitFor(() => {
+                expect(screen.queryByText('Angular')).toBeNull();
+                expect(screen.queryByText('React')).toBeNull();
+            });
+            fireEvent.change(input, { target: { value: 'gugu' } });
+            // only Angular option matches
+            await waitFor(() => {
+                expect(screen.queryByText('React')).toBeNull();
+            });
+            screen.getByText('Angular');
+            // don't forget to close the dropdown, otherwise following tests will fail
+            fireEvent.click(screen.getByText('Angular'));
+        });
+
+        it('should allow matching element optionText', async () => {
+            const choices = [
+                { id: 'ang', name: 'Angular' },
+                { id: 'rea', name: 'React' },
+            ];
+            const OptionText = () => {
+                const record = useRecordContext();
+                return <span>option:{record.name}</span>;
+            };
+            render(
+                <AdminContext>
+                    <SimpleForm mode="onBlur" onSubmit={jest.fn()}>
+                        <AutocompleteInput
+                            source="language"
+                            resource="posts"
+                            choices={choices}
+                            matchSuggestion={(filter, choice) => {
+                                if (!filter) return true;
+                                if (
+                                    filter === 'gugu' &&
+                                    choice.name === 'Angular'
+                                ) {
+                                    return true;
+                                }
+                                if (
+                                    filter === 'rere' &&
+                                    choice.name === 'React'
+                                ) {
+                                    return true;
+                                }
+                                return false;
+                            }}
+                            optionText={<OptionText />}
+                            inputText={option => option.name}
+                        />
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            const input = screen.getByLabelText(
+                'resources.posts.fields.language'
+            ) as HTMLInputElement;
+            input.focus();
+            await screen.findByText('option:Angular');
+            await screen.findByText('option:React');
+            fireEvent.change(input, { target: { value: 'Angular' } });
+            // no option match
+            await waitFor(() => {
+                expect(screen.queryByText('option:Angular')).toBeNull();
+                expect(screen.queryByText('option:React')).toBeNull();
+            });
+            fireEvent.change(input, { target: { value: 'gugu' } });
+            // only Angular option matches
+            await waitFor(() => {
+                expect(screen.queryByText('option:React')).toBeNull();
+            });
+            screen.getByText('option:Angular');
+            // don't forget to close the dropdown, otherwise following tests will fail
+            fireEvent.click(screen.getByText('option:Angular'));
+        });
+    });
+
     it('should allow to clear the first character', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
@@ -317,7 +436,6 @@ describe('<AutocompleteInput />', () => {
                 </SimpleForm>
             </AdminContext>
         );
-
         const input = screen.getByLabelText(
             'resources.users.fields.role'
         ) as HTMLInputElement;

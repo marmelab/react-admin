@@ -3,6 +3,7 @@ import {
     isValidElement,
     useCallback,
     useEffect,
+    useMemo,
     useRef,
     useState,
     ReactNode,
@@ -189,6 +190,7 @@ export const AutocompleteInput = <
     });
 
     const translate = useTranslate();
+
     const {
         id,
         field,
@@ -247,7 +249,7 @@ If you provided a React element for the optionText prop, you must also provide t
 
     const getRecordRepresentation = useGetRecordRepresentation(resource);
 
-    const { getChoiceText, getChoiceValue } = useSuggestions({
+    const { getChoiceText, getChoiceValue, getSuggestions } = useSuggestions({
         choices: allChoices,
         emptyText,
         emptyValue,
@@ -403,9 +405,10 @@ If you provided a React element for the optionText prop, you must also provide t
 
     const filterOptions = (options, params) => {
         // When used inside a reference, AutocompleteInput shouldn't do the filtering as it's done by the reference input
-        let filteredOptions = isFromReference
-            ? options
-            : defaultFilterOptions(options, params);
+        let filteredOptions =
+            isFromReference || matchSuggestion || limitChoicesToValue
+                ? options
+                : defaultFilterOptions(options, params);
 
         // add create option if necessary
         const { inputValue } = params;
@@ -429,6 +432,20 @@ If you provided a React element for the optionText prop, you must also provide t
     };
 
     const oneSecondHasPassed = useTimeout(1000, filterValue);
+
+    const suggestions = useMemo(() => {
+        if (matchSuggestion || limitChoicesToValue) {
+            return getSuggestions(filterValue);
+        }
+        return allChoices?.slice(0, suggestionLimit) || [];
+    }, [
+        allChoices,
+        filterValue,
+        getSuggestions,
+        limitChoicesToValue,
+        matchSuggestion,
+        suggestionLimit,
+    ]);
 
     const isOptionEqualToValue = (option, value) => {
         // eslint-disable-next-line eqeqeq
@@ -513,7 +530,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 options={
                     shouldRenderSuggestions == undefined || // eslint-disable-line eqeqeq
                     shouldRenderSuggestions(filterValue)
-                        ? allChoices?.slice(0, suggestionLimit) || []
+                        ? suggestions
                         : []
                 }
                 getOptionLabel={getOptionLabel}
