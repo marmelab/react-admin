@@ -126,14 +126,15 @@ Refer to [MUI Select documentation](https://mui.com/api/select) for more details
 
 ## `optionText`
 
-You can customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
+You can customize the choice field to use for the option name, thanks to the `optionText` attribute:
 
 ```jsx
+// no 'name' field in the choices
 const choices = [
-    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
-    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
+    { id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+    { id: 456, full_name: 'Jane Austen', sex: 'F' },
 ];
-<SelectInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
+<SelectInput source="author_id" choices={choices} optionText="full_name" />
 ```
 
 `optionText` also accepts a function, so you can shape the option text at will:
@@ -156,6 +157,19 @@ const choices = [
 ];
 const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
 <SelectInput source="gender" choices={choices} optionText={<FullNameField />}/>
+```
+
+## `optionValue`
+
+You can customize the choice field to use for the option value, thanks to the `optionValue` attribute:
+
+```jsx
+// no 'id' field in the choices
+const choices = [
+    { _id: 123, name: 'Leo Tolstoi' },
+    { _id: 456, name: 'Jane Austen' },
+];
+<SelectInput source="author_id" choices={choices} optionValue="_id" />
 ```
 
 ## `resettable`

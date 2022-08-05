@@ -55,16 +55,59 @@ import { AutocompleteInput, ReferenceInput } from 'react-admin';
 
 `<AutocompleteInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
-## `optionText`
+## `choices`
 
-You can customize the properties to use for the option name and value, thanks to the `optionText` and `optionValue` attributes:
+An array of objects that represents the possible suggestions. The objects must have at least two fields: one to use for the name, and the other to use for the value. By default, `<AutocompleteInput>` will use the `id` and `name` fields.
 
 ```jsx
 const choices = [
-    { _id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
-    { _id: 456, full_name: 'Jane Austen', sex: 'F' },
+    { id: 'programming', name: 'Programming' },
+    { id: 'lifestyle', name: 'Lifestyle' },
+    { id: 'photography', name: 'Photography' },
 ];
-<AutocompleteInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
+
+<AutocompleteInput source="category" choices={choices} />
+```
+
+If the choices have different keys, you can use [`optionText`](#optiontext) and [`optionValue`](#optionvalue) to specify which fields to use for the name and value.
+
+```jsx
+const choices = [
+    { name: 'programming', label: 'Programming' },
+    { name: 'lifestyle', label: 'Lifestyle' },
+    { name: 'photography', label: 'Photography' },
+];
+
+<AutocompleteInput
+    source="category"
+    optionValue="name"
+    optionText="label"
+    choices={choices}
+/>
+```
+
+When used inside a `<ReferenceInput>`, `<AutocompleteInput>` doesn't need a `choices` prop. Instead, it will use the records fetched by `<ReferenceInput>` as choices, via the `ChoicesContext`.
+
+```jsx
+<ReferenceInput label="Author" source="author_id" reference="authors">
+    <AutocompleteInput />
+</ReferenceInput>
+```
+
+See [Using in a `ReferenceInput>`](#using-in-a-referenceinput) below for more information.
+
+
+## `optionText`
+
+You can customize the choice field to use for the option name, thanks to the `optionText` attribute:
+
+```jsx
+// no 'name' field in the choices
+const choices = [
+    { id: 123, full_name: 'Leo Tolstoi', sex: 'M' },
+    { id: 456, full_name: 'Jane Austen', sex: 'F' },
+];
+<AutocompleteInput source="author_id" choices={choices} optionText="full_name" />
 ```
 
 `optionText` also accepts a function, so you can shape the option text at will:
@@ -108,6 +151,19 @@ const matchSuggestion = (filter, choice) => {
 />
 ```
 
+## `optionValue`
+
+You can customize the choice field to use for the option value, thanks to the `optionValue` attribute:
+
+```jsx
+// no 'id' field in the choices
+const choices = [
+    { _id: 123, name: 'Leo Tolstoi' },
+    { _id: 456, name: 'Jane Austen' },
+];
+<AutocompleteInput source="author_id" choices={choices} optionValue="_id" />
+```
+
 ## `translateChoice`
 
 The choices are translated by default, so you can use translation identifiers as choices:
@@ -144,6 +200,28 @@ This component doesn't apply any custom styles on top of [MUI `<Autocomplete>` c
 <AutocompleteInput source="category" size="large" />
 ```
 {% endraw %}
+
+## Using In A ReferenceInput
+
+If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteInput>` with [`<ReferenceInput>`](./ReferenceInput.md), and leave the `choices` empty:
+
+```jsx
+import { AutocompleteInput, ReferenceInput } from 'react-admin';
+
+<ReferenceInput label="Author" source="author_id" reference="authors">
+    <AutocompleteInput />
+</ReferenceInput>
+```
+
+In that case, `<AutocompleteInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to render each choice from the list of possible records. You can override this behavior by setting the `optionText` prop:
+
+```jsx
+import { AutocompleteInput, ReferenceInput } from 'react-admin';
+
+<ReferenceInput label="Author" source="author_id" reference="authors">
+    <AutocompleteInput optionText="last_name" />
+</ReferenceInput>
+```
 
 ## Creating New Choices
 
