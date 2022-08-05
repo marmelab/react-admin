@@ -90,9 +90,15 @@ const MyList = ({
 };
 ```
 
+<<<<<<< HEAD
 ## `storeKey`
 
 To display multiple lists of the same resource and keep distinct store states for each of them (filters, pagination, selection), specify unique keys with the `storeKey` property.
+=======
+## `customStoreKey`
+
+To display multiple lists of the same resource and keep distinct store states for each of them (filters, pagination, selection), specify unique keys with the `customStoreKey` property.
+>>>>>>> d379cbaeb (Add feature documentation)
 
 ## Return Value
 
