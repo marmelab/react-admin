@@ -77,17 +77,18 @@ export interface ListParams {
  * } = listParamsActions;
  */
 export const useListParams = ({
-    resource,
-    filterDefaultValues,
-    sort = defaultSort,
-    perPage = 10,
+    customStoreKey = '',
     debounce = 500,
     disableSyncWithLocation = false,
+    filterDefaultValues,
+    perPage = 10,
+    resource,
+    sort = defaultSort,
 }: ListParamsOptions): [Parameters, Modifiers] => {
     const location = useLocation();
     const navigate = useNavigate();
     const [localParams, setLocalParams] = useState(defaultParams);
-    const storeKey = `${resource}.listParams`;
+    const storeKey = `${resource}${customStoreKey}.listParams`;
     const [params, setParams] = useStore(storeKey, defaultParams);
     const tempParams = useRef<ListParams>();
     const isMounted = useIsMounted();
@@ -367,15 +368,16 @@ export const getNumberOrDefault = (
 };
 
 export interface ListParamsOptions {
-    resource: string;
-    perPage?: number;
-    sort?: SortPayload;
-    // default value for a filter when displayed but not yet set
-    filterDefaultValues?: FilterPayload;
+    customStoreKey?: string;
     debounce?: number;
     // Whether to disable the synchronization of the list parameters with
     // the current location (URL search parameters)
     disableSyncWithLocation?: boolean;
+    // default value for a filter when displayed but not yet set
+    filterDefaultValues?: FilterPayload;
+    perPage?: number;
+    resource: string;
+    sort?: SortPayload;
 }
 
 interface Parameters extends ListParams {
