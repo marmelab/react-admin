@@ -404,11 +404,12 @@ If you provided a React element for the optionText prop, you must also provide t
     );
 
     const filterOptions = (options, params) => {
-        // When used inside a reference, AutocompleteInput shouldn't do the filtering as it's done by the reference input
         let filteredOptions =
-            isFromReference || matchSuggestion || limitChoicesToValue
+            isFromReference || // When used inside a reference, AutocompleteInput shouldn't do the filtering as it's done by the reference input
+            matchSuggestion || // When using element as optionText (and matchSuggestion), options are filtered by getSuggestions, so they shouldn't be filtered here
+            limitChoicesToValue // When limiting choices to values (why? it's legacy!), options are also filtered by getSuggestions, so they shouldn't be filtered here
                 ? options
-                : defaultFilterOptions(options, params);
+                : defaultFilterOptions(options, params); // Otherwise we let MUI's Autocomplete do the filtering
 
         // add create option if necessary
         const { inputValue } = params;
