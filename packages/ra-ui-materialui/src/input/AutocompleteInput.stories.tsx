@@ -556,7 +556,9 @@ export const CustomizedItemRendering = () => {
                     resource="users"
                     optionText={<OptionItem />}
                     inputText={record => `from inputText ${record?.name}`}
-                    matchSuggestion={() => true}
+                    matchSuggestion={(filter, option) =>
+                        option.name.includes(filter)
+                    }
                     choices={[
                         { id: 1, name: 'bar' },
                         { id: 2, name: 'foo' },
