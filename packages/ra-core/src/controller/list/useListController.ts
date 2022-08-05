@@ -33,7 +33,7 @@ export const useListController = <RecordType extends RaRecord = any>(
     props: ListControllerProps<RecordType> = {}
 ): ListControllerResult<RecordType> => {
     const {
-        customStoreKey,
+        customStoreKey = '',
         disableAuthentication,
         exporter = defaultExporter,
         filterDefaultValues,
