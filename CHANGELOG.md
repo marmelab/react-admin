@@ -1,5 +1,16 @@
 # Changelog
 
+## v4.2.6
+
+* Fix `<DeleteButton mutationOptions>` ignores `meta` parameter ([#8023](https://github.com/marmelab/react-admin/pull/8023)) ([septentrion-730n](https://github.com/septentrion-730n))
+* Fix `<NumberInput>` state only changes on blur ([#8033](https://github.com/marmelab/react-admin/pull/8033)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ArrayInput>` adds previously removed item ([#8029](https://github.com/marmelab/react-admin/pull/8029)) ([djhi](https://github.com/djhi))
+* [TypeScript] Fix `<MenuItemLink>` prop type isn't exported ([#8040](https://github.com/marmelab/react-admin/pull/8040)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add Search component ([#8021](https://github.com/marmelab/react-admin/pull/8021)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix typos in Search documentation ([#8024](https://github.com/marmelab/react-admin/pull/8024)) ([septentrion-730n](https://github.com/septentrion-730n))
+* [Demo] Fix Pending reviews link on Dashboard ([#8036](https://github.com/marmelab/react-admin/pull/8036)) ([arimet](https://github.com/arimet))
+* [Demo] Fix Category List does not use RecordContext ([#8035](https://github.com/marmelab/react-admin/pull/8035)) ([arimet](https://github.com/arimet))
+
 ## v4.2.5
 
 - Fix Input label proptypes and `<DatagridInput>` imports ([#8019](https://github.com/marmelab/react-admin/pull/8019)) by ([megantaylor](https://github.com/megantaylor))
