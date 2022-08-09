@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useFormState, Control } from 'react-hook-form';
+import { useNotify } from '../notification';
 
 /**
  * This hook returns a boolean indicating whether the form is invalid.
@@ -9,12 +10,12 @@ import { useFormState, Control } from 'react-hook-form';
  * as the form state may not have been updated yet when onSubmit validation mode is enabled
  * or when the form hasn't been touched at all.
  */
-export const useIsFormInvalid = (control?: Control) => {
-    const [isInvalid, setIsInvalid] = useState(false);
+export const useNotifyIsFormInvalid = (control?: Control) => {
     const { submitCount, errors } = useFormState(
         control ? { control } : undefined
     );
     const submitCountRef = useRef(submitCount);
+    const notify = useNotify();
 
     useEffect(() => {
         // Checking the submit count allows us to only display the notification after users
@@ -23,12 +24,8 @@ export const useIsFormInvalid = (control?: Control) => {
             submitCountRef.current = submitCount;
 
             if (Object.keys(errors).length > 0) {
-                setIsInvalid(true);
-            } else {
-                setIsInvalid(false);
+                notify('ra.message.invalid_form', { type: 'warning' });
             }
         }
-    }, [errors, submitCount]);
-
-    return isInvalid;
+    }, [errors, submitCount, notify]);
 };
