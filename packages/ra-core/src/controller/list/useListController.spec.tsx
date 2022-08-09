@@ -12,7 +12,10 @@ import { memoryStore } from '../../store';
 import { ListController } from './ListController';
 import {
     getListControllerProps,
+    ListControllerProps,
+    ListControllerResult,
     sanitizeListRestProps,
+    useListController,
 } from './useListController';
 import { CoreAdminContext } from '../../core';
 import { ListsUsingSameResource } from './useListController.stories';
