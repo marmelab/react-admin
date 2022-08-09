@@ -77,7 +77,7 @@ export interface ListParams {
  * } = listParamsActions;
  */
 export const useListParams = ({
-    customStoreKey = '',
+    storeKey,
     debounce = 500,
     disableSyncWithLocation = false,
     filterDefaultValues,
@@ -88,8 +88,8 @@ export const useListParams = ({
     const location = useLocation();
     const navigate = useNavigate();
     const [localParams, setLocalParams] = useState(defaultParams);
-    const storeKey = `${resource}${customStoreKey}.listParams`;
-    const [params, setParams] = useStore(storeKey, defaultParams);
+    const completeStoreKey = storeKey ?? `${resource}.listParams`;
+    const [params, setParams] = useStore(completeStoreKey, defaultParams);
     const tempParams = useRef<ListParams>();
     const isMounted = useIsMounted();
 
@@ -368,7 +368,7 @@ export const getNumberOrDefault = (
 };
 
 export interface ListParamsOptions {
-    customStoreKey?: string;
+    storeKey?: string;
     debounce?: number;
     // Whether to disable the synchronization of the list parameters with
     // the current location (URL search parameters)

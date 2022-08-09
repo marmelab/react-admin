@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { screen, render, fireEvent, waitFor } from '@testing-library/react';
-import { act, renderHook } from '@testing-library/react-hooks';
+import { act } from '@testing-library/react-hooks';
 import lolex from 'lolex';
 // TODO: we shouldn't import mui components in ra-core
 import { TextField } from '@mui/material';
@@ -15,7 +15,6 @@ import {
     ListControllerProps,
     ListControllerResult,
     sanitizeListRestProps,
-    useListController,
 } from './useListController';
 import { CoreAdminContext } from '../../core';
 
@@ -195,7 +194,7 @@ describe('useListController', () => {
                 <CoreAdminContext dataProvider={dataProvider} history={history}>
                     <ListController
                         {...descriptionDefaultProps}
-                        customStoreKey="list1"
+                        storeKey="list1"
                         children={(params: ListControllerResult) => (
                             <section
                                 aria-label="list1"
@@ -210,7 +209,7 @@ describe('useListController', () => {
                     />
                     <ListController
                         {...descriptionDefaultProps}
-                        customStoreKey="list2"
+                        storeKey="list2"
                         children={(params: ListControllerResult) => (
                             <section
                                 aria-label="list2"
@@ -242,7 +241,7 @@ describe('useListController', () => {
                 <CoreAdminContext dataProvider={dataProvider} history={history}>
                     <ListController
                         {...rest}
-                        customStoreKey="list1"
+                        storeKey="list1"
                         children={(params: ListControllerResult) => (
                             <section
                                 aria-label="list1"
@@ -252,7 +251,7 @@ describe('useListController', () => {
                     />
                     <ListController
                         {...rest}
-                        customStoreKey="list2"
+                        storeKey="list2"
                         children={(params: ListControllerResult) => (
                             <section
                                 aria-label="list2"
