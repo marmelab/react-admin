@@ -45,15 +45,7 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
 
     const defaultValuesIncludingRecord = useMemo(
         () => getFormInitialValues(defaultValues, record),
-        [
-            JSON.stringify({
-                defaultValues:
-                    typeof defaultValues === 'function'
-                        ? 'function'
-                        : defaultValues,
-                record,
-            }),
-        ] // eslint-disable-line
+        [JSON.stringify({ defaultValues: typeof defaultValues === 'function' ? 'function' : defaultValues, record })] // eslint-disable-line
     );
 
     const finalResolver = resolver
