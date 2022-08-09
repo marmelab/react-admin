@@ -85,6 +85,13 @@ describe('useListController', () => {
             perPage: 5,
             disableSyncWithLocation: true,
         };
+        const getList = jest
+            .fn()
+            .mockImplementation(() => Promise.resolve({ data: [], total: 0 }));
+        const dataProvider = testDataProvider({ getList });
+        const history = createMemoryHistory({
+            initialEntries: [`/posts`],
+        });
 
         let clock;
 
@@ -96,92 +103,7 @@ describe('useListController', () => {
             clock.uninstall();
         });
 
-        /*
-        const useDoubleLists = (props: {
-            customStoreKey1: string | undefined;
-            customStoreKey2: string | undefined;
-        }) => {
-            const l1: ListControllerResult = useListController({
-                customStoreKey: 'list1',
-                disableSyncWithLocation: true,
-                perPage: 5,
-                resource: 'posts',
-            });
-            const l2: ListControllerResult = useListController({
-                customStoreKey: 'list1',
-                disableSyncWithLocation: true,
-                perPage: 5,
-                resource: 'posts',
-            });
-            return { l1, l2 };
-        };
-
-        
-        it('should unsynchronize two lists of the same resource given different keys', async () => {
-            const { result } = renderHook(
-                () =>
-                    useDoubleLists({
-                        customStoreKey1: 'list1',
-                        customStoreKey2: 'list2',
-                    }),
-                {
-                    wrapper: ({ children }) => (
-                        <CoreAdminContext>{children}</CoreAdminContext>
-                    ),
-                }
-            );
-
-            expect(result.current.l1.perPage).toEqual(5);
-            expect(result.current.l2.perPage).toEqual(5);
-
-            result.current.l1.setPerPage(10);
-            result.current.l1.refetch();
-            result.current.l2.refetch();
-            clock.tick(210);
-
-            expect(result.current.l1.perPage).toEqual(10);
-            expect(result.current.l2.perPage).toEqual(5);
-        });
-
-        it('should keep synched two lists of the same resource if no custom key is defined', async () => {
-            const { result } = renderHook(
-                () =>
-                    useDoubleLists({
-                        customStoreKey1: undefined,
-                        customStoreKey2: undefined,
-                    }),
-                {
-                    wrapper: ({ children }) => (
-                        <CoreAdminContext>{children}</CoreAdminContext>
-                    ),
-                }
-            );
-
-            expect(result.current.l1.perPage).toEqual(5);
-            expect(result.current.l2.perPage).toEqual(5);
-
-            result.current.l1.setPerPage(10);
-            result.current.l1.refetch();
-            result.current.l2.refetch();
-            clock.tick(210);
-
-            expect(result.current.l1.perPage).toEqual(10);
-            expect(result.current.l2.perPage).toEqual(10);
-        });
-				*/
-
-        it.only('[v2] should keep synched two lists of the same resource if no custom key is defined', () => {
-            const getList = jest
-                .fn()
-                .mockImplementation(() =>
-                    Promise.resolve({ data: [], total: 0 })
-                );
-            const dataProvider = testDataProvider({ getList });
-            const history = createMemoryHistory({
-                initialEntries: [`/posts`],
-            });
-            //const childFunction = ({ setPerPage }) => <span>caca</span>;
-
+        it('should keep synched two lists of the same resource if no custom key is defined', () => {
             const { rerender } = render(
                 <CoreAdminContext dataProvider={dataProvider} history={history}>
                     <ListController
@@ -257,7 +179,7 @@ describe('useListController', () => {
             ).toEqual('10');
         });
 
-        it.only('[v2] should unsynchronize two lists of the same resource given different keys', () => {
+        it('should unsynchronize two lists of the same resource given different keys', () => {
             const getList = jest
                 .fn()
                 .mockImplementation(() =>
@@ -313,7 +235,7 @@ describe('useListController', () => {
 
             fireEvent.click(screen.getByLabelText('setPerPage1'));
             fireEvent.click(screen.getByLabelText('setPerPage2'));
-            clock.tick(210);
+            clock.tick(300);
 
             const { perPage, ...rest } = descriptionDefaultProps;
             rerender(
