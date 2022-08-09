@@ -11,7 +11,7 @@ import { useFormState, Control } from 'react-hook-form';
  */
 export const useIsFormInvalid = (control?: Control) => {
     const [isInvalid, setIsInvalid] = useState(false);
-    const { isValid, submitCount, errors } = useFormState(
+    const { submitCount, errors } = useFormState(
         control ? { control } : undefined
     );
     const submitCountRef = useRef(submitCount);
@@ -22,15 +22,13 @@ export const useIsFormInvalid = (control?: Control) => {
         if (submitCount > submitCountRef.current) {
             submitCountRef.current = submitCount;
 
-            // For some reason, the validation state might not be sync yet on first submit
-            // so we need to check if there are actually some errors even though the isValid is false
-            if (Object.keys(errors).length > 0 && !isValid) {
+            if (Object.keys(errors).length > 0) {
                 setIsInvalid(true);
             } else {
                 setIsInvalid(false);
             }
         }
-    }, [errors, isValid, submitCount]);
+    }, [errors, submitCount]);
 
     return isInvalid;
 };
