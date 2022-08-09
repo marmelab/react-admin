@@ -21,18 +21,12 @@ We recommend using the TypeScript template:
 yarn create vite my-admin --template react-ts
 ```
 
-Install dependencies:
-
-```sh
-cd my-admin
-yarn
-```
-
 ## Setting Up React-Admin
 
 Add the `react-admin` package, as well as a data provider package. In this example, we'll use `ra-data-json-server` to connect to a test API provided by [JSONPlaceholder](https://jsonplaceholder.typicode.com).
 
 ```sh
+cd my-admin
 yarn add react-admin ra-data-json-server
 ```
 
