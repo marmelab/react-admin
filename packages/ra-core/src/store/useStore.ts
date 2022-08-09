@@ -53,11 +53,12 @@ export const useStore = <T = any>(
 
     // subscribe to changes on this key, and change the state when they happen
     useEffect(() => {
+        setValue(getItem(key, defaultValue));
         const unsubscribe = subscribe(key, newValue => {
             setValue(typeof newValue === 'undefined' ? defaultValue : newValue);
         });
         return () => unsubscribe();
-    }, [key, subscribe, defaultValue]);
+    }, [key, subscribe, defaultValue, getItem]);
 
     const set = useEventCallback(
         (valueParam: T, runtimeDefaultValue: T) => {
