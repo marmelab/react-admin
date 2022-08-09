@@ -1,12 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
-import {
-    render,
-    fireEvent,
-    waitFor,
-    screen,
-    act,
-} from '@testing-library/react';
+import { screen, render, fireEvent, waitFor } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react-hooks';
 import lolex from 'lolex';
 // TODO: we shouldn't import mui components in ra-core
 import { TextField } from '@mui/material';
@@ -17,7 +12,10 @@ import { memoryStore } from '../../store';
 import { ListController } from './ListController';
 import {
     getListControllerProps,
+    ListControllerProps,
+    ListControllerResult,
     sanitizeListRestProps,
+    useListController,
 } from './useListController';
 import { CoreAdminContext } from '../../core';
 
@@ -77,6 +75,278 @@ describe('useListController', () => {
                     meta: { foo: 'bar' },
                 });
             });
+        });
+    });
+
+    describe('customStoreKey', () => {
+        const descriptionDefaultProps: ListControllerProps = {
+            ...defaultProps,
+            resource: 'posts',
+            perPage: 5,
+            disableSyncWithLocation: true,
+        };
+
+        let clock;
+
+        beforeEach(() => {
+            clock = lolex.install();
+        });
+
+        afterEach(() => {
+            clock.uninstall();
+        });
+
+        /*
+        const useDoubleLists = (props: {
+            customStoreKey1: string | undefined;
+            customStoreKey2: string | undefined;
+        }) => {
+            const l1: ListControllerResult = useListController({
+                customStoreKey: 'list1',
+                disableSyncWithLocation: true,
+                perPage: 5,
+                resource: 'posts',
+            });
+            const l2: ListControllerResult = useListController({
+                customStoreKey: 'list1',
+                disableSyncWithLocation: true,
+                perPage: 5,
+                resource: 'posts',
+            });
+            return { l1, l2 };
+        };
+
+        
+        it('should unsynchronize two lists of the same resource given different keys', async () => {
+            const { result } = renderHook(
+                () =>
+                    useDoubleLists({
+                        customStoreKey1: 'list1',
+                        customStoreKey2: 'list2',
+                    }),
+                {
+                    wrapper: ({ children }) => (
+                        <CoreAdminContext>{children}</CoreAdminContext>
+                    ),
+                }
+            );
+
+            expect(result.current.l1.perPage).toEqual(5);
+            expect(result.current.l2.perPage).toEqual(5);
+
+            result.current.l1.setPerPage(10);
+            result.current.l1.refetch();
+            result.current.l2.refetch();
+            clock.tick(210);
+
+            expect(result.current.l1.perPage).toEqual(10);
+            expect(result.current.l2.perPage).toEqual(5);
+        });
+
+        it('should keep synched two lists of the same resource if no custom key is defined', async () => {
+            const { result } = renderHook(
+                () =>
+                    useDoubleLists({
+                        customStoreKey1: undefined,
+                        customStoreKey2: undefined,
+                    }),
+                {
+                    wrapper: ({ children }) => (
+                        <CoreAdminContext>{children}</CoreAdminContext>
+                    ),
+                }
+            );
+
+            expect(result.current.l1.perPage).toEqual(5);
+            expect(result.current.l2.perPage).toEqual(5);
+
+            result.current.l1.setPerPage(10);
+            result.current.l1.refetch();
+            result.current.l2.refetch();
+            clock.tick(210);
+
+            expect(result.current.l1.perPage).toEqual(10);
+            expect(result.current.l2.perPage).toEqual(10);
+        });
+				*/
+
+        it.only('[v2] should keep synched two lists of the same resource if no custom key is defined', () => {
+            const getList = jest
+                .fn()
+                .mockImplementation(() =>
+                    Promise.resolve({ data: [], total: 0 })
+                );
+            const dataProvider = testDataProvider({ getList });
+            const history = createMemoryHistory({
+                initialEntries: [`/posts`],
+            });
+            //const childFunction = ({ setPerPage }) => <span>caca</span>;
+
+            const { rerender } = render(
+                <CoreAdminContext dataProvider={dataProvider} history={history}>
+                    <ListController
+                        {...descriptionDefaultProps}
+                        children={(params: ListControllerResult) => (
+                            <section
+                                aria-label="list1"
+                                data-perpage={params.perPage}
+                            >
+                                <button
+                                    aria-label="setPerPage"
+                                    onClick={() => params.setPerPage(10)}
+                                />
+                            </section>
+                        )}
+                    />
+                    <ListController
+                        {...descriptionDefaultProps}
+                        children={(params: ListControllerResult) => (
+                            <section
+                                aria-label="list2"
+                                data-perpage={params.perPage}
+                            />
+                        )}
+                    />
+                </CoreAdminContext>
+            );
+
+            expect(
+                screen.getByLabelText('list1').getAttribute('data-perpage')
+            ).toEqual('5');
+            expect(
+                screen.getByLabelText('list2').getAttribute('data-perpage')
+            ).toEqual('5');
+
+            fireEvent.click(screen.getByLabelText('setPerPage'));
+            clock.tick(210);
+
+            const { perPage, ...rest } = descriptionDefaultProps;
+
+            rerender(
+                <CoreAdminContext dataProvider={dataProvider} history={history}>
+                    <ListController
+                        {...rest}
+                        children={(params: ListControllerResult) => (
+                            <section
+                                aria-label="list1"
+                                data-perpage={params.perPage}
+                            >
+                                <button
+                                    aria-label="setPerPage"
+                                    onClick={() => params.setPerPage(10)}
+                                />
+                            </section>
+                        )}
+                    />
+                    <ListController
+                        {...rest}
+                        children={(params: ListControllerResult) => (
+                            <section
+                                aria-label="list2"
+                                data-perpage={params.perPage}
+                            />
+                        )}
+                    />
+                </CoreAdminContext>
+            );
+            expect(
+                screen.getByLabelText('list1').getAttribute('data-perpage')
+            ).toEqual('10');
+            expect(
+                screen.getByLabelText('list2').getAttribute('data-perpage')
+            ).toEqual('10');
+        });
+
+        it.only('[v2] should unsynchronize two lists of the same resource given different keys', () => {
+            const getList = jest
+                .fn()
+                .mockImplementation(() =>
+                    Promise.resolve({ data: [], total: 0 })
+                );
+            const dataProvider = testDataProvider({ getList });
+            const history = createMemoryHistory({
+                initialEntries: [`/posts`],
+            });
+            //const childFunction = ({ setPerPage }) => <span>caca</span>;
+
+            const { rerender } = render(
+                <CoreAdminContext dataProvider={dataProvider} history={history}>
+                    <ListController
+                        {...descriptionDefaultProps}
+                        customStoreKey="list1"
+                        children={(params: ListControllerResult) => (
+                            <section
+                                aria-label="list1"
+                                data-perpage={params.perPage}
+                            >
+                                <button
+                                    aria-label="setPerPage1"
+                                    onClick={() => params.setPerPage(10)}
+                                />
+                            </section>
+                        )}
+                    />
+                    <ListController
+                        {...descriptionDefaultProps}
+                        customStoreKey="list2"
+                        children={(params: ListControllerResult) => (
+                            <section
+                                aria-label="list2"
+                                data-perpage={params.perPage}
+                            >
+                                <button
+                                    aria-label="setPerPage2"
+                                    onClick={() => params.setPerPage(20)}
+                                />
+                            </section>
+                        )}
+                    />
+                </CoreAdminContext>
+            );
+
+            expect(
+                screen.getByLabelText('list1').getAttribute('data-perpage')
+            ).toEqual('5');
+            expect(
+                screen.getByLabelText('list2').getAttribute('data-perpage')
+            ).toEqual('5');
+
+            fireEvent.click(screen.getByLabelText('setPerPage1'));
+            fireEvent.click(screen.getByLabelText('setPerPage2'));
+            clock.tick(210);
+
+            const { perPage, ...rest } = descriptionDefaultProps;
+            rerender(
+                <CoreAdminContext dataProvider={dataProvider} history={history}>
+                    <ListController
+                        {...rest}
+                        customStoreKey="list1"
+                        children={(params: ListControllerResult) => (
+                            <section
+                                aria-label="list1"
+                                data-perpage={params.perPage}
+                            />
+                        )}
+                    />
+                    <ListController
+                        {...rest}
+                        customStoreKey="list2"
+                        children={(params: ListControllerResult) => (
+                            <section
+                                aria-label="list2"
+                                data-perpage={params.perPage}
+                            />
+                        )}
+                    />
+                </CoreAdminContext>
+            );
+
+            expect(
+                screen.getByLabelText('list1').getAttribute('data-perpage')
+            ).toEqual('10');
+            expect(
+                screen.getByLabelText('list2').getAttribute('data-perpage')
+            ).toEqual('20');
         });
     });
 
