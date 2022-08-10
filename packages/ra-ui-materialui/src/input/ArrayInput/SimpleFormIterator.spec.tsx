@@ -7,7 +7,7 @@ import {
     waitFor,
 } from '@testing-library/react';
 import expect from 'expect';
-import { testDataProvider } from 'ra-core';
+import { FormDataConsumer, testDataProvider } from 'ra-core';
 
 import { AdminContext } from '../../AdminContext';
 import { SimpleForm } from '../../form';
@@ -703,5 +703,43 @@ describe('<SimpleFormIterator />', () => {
         expect(
             screen.queryAllByText('Custom Remove Button').length
         ).toBeGreaterThan(0);
+    });
+
+    it('should not add an empty property when using FormDataConsumer as child', async () => {
+        const save = jest.fn();
+        render(
+            <AdminContext>
+                <SimpleForm onSubmit={save}>
+                    <ArrayInput source="emails">
+                        <SimpleFormIterator>
+                            <TextInput source="email" />
+                            <FormDataConsumer>
+                                {({ scopedFormData, getSource }) =>
+                                    scopedFormData && scopedFormData.name ? (
+                                        <TextInput
+                                            source={(getSource as (
+                                                arg: string
+                                            ) => string)('role')}
+                                        />
+                                    ) : null
+                                }
+                            </FormDataConsumer>
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        const addItemElement = screen
+            .getByText('ra.action.add')
+            .closest('button') as HTMLButtonElement;
+
+        fireEvent.click(addItemElement);
+        fireEvent.click(screen.getByText('ra.action.save'));
+        await waitFor(() => {
+            expect(save).toHaveBeenCalledWith({
+                emails: [{ email: '' }],
+            });
+        });
     });
 });
