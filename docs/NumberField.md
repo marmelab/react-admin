@@ -5,30 +5,52 @@ title: "The NumberField Component"
 
 # `<NumberField>`
 
-Displays a number formatted according to the browser locale, right aligned.
+Displays a number formatted according to the browser locale, right aligned. Ideal for floats, currencies, percentages, units, etc.
+
+![NumberField](./img/number-field.webp)
+
+## Usage
 
 ```jsx
 import { NumberField }  from 'react-admin';
 
-<NumberField source="score" />
-// renders the record { id: 1234, score: 567 } as
-<span>567</span>
+<NumberField source="views" />
+// renders the record { id: 1234, views: 2108 } as
+<span>2 108</span>
 ```
-
-## Properties
-
-| Prop      | Required | Type   | Default | Description                                                                                              |
-| --------- | -------- | ------ | ------- | -------------------------------------------------------------------------------------------------------- |
-| `locales` | Optional | string | ''      | Override the browser locale in the date formatting. Passed as first argument to `Intl.NumberFormat()`.   |
-| `options` | Optional | Object | -       | Number formatting options. Passed as second argument to `Intl.NumberFormat()`.                           |
-
-`<NumberField>` also accepts the [common field props](./Fields.md#common-field-props).
-
-## Usage
 
 `<NumberField>` uses `Intl.NumberFormat()` if available, passing the `locales` and `options` props as arguments. This allows a perfect display of decimals, currencies, percentages, etc. See [Intl.NumberFormat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) for the `options` prop syntax.
 
 If Intl is not available, `<NumberField>` outputs numbers as is (and ignores the `locales` and `options` props).
+
+## Props
+
+| Prop        | Required | Type               | Default | Description                                                                      |
+| ----------- | -------- | ------------------ | ------- | -------------------------------------------------------------------------------- |
+| `locales`   | Optional | string             | ''      | Locale to use for formatting. Passed as first argument to `Intl.NumberFormat()`. |
+| `options`   | Optional | Object             | -       | Number formatting options. Passed as second argument to `Intl.NumberFormat()`.   |
+| `textAlign` | Optional | `'left' | 'right'` | `right` | Text alignment in a Datagrid                                                     |
+
+
+`<NumberField>` also accepts the [common field props](./Fields.md#common-field-props).
+
+## `locales`
+
+Override the browser locale in the number formatting. Passed as first argument to `Intl.NumberFormat()`.
+
+{% raw %}
+```jsx
+import { NumberField }  from 'react-admin';
+
+<NumberField source="price" locales="fr-FR" options={{ style: 'currency', currency: 'USD' }} />
+// renders the record { id: 1234, price: 25.99 } as
+<span>25,99 $US</span>
+```
+{% endraw %}
+
+## `options`
+
+Options passed to `Intl.NumberFormat()`. See [the Intl.NumberFormat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) for the `options` prop syntax.
 
 {% raw %}
 ```jsx
@@ -46,15 +68,17 @@ import { NumberField }  from 'react-admin';
 // renders the record { id: 1234, price: 25.99 } as
 <span>$25.99</span>
 
-<NumberField source="price" locales="fr-FR" options={{ style: 'currency', currency: 'USD' }} />
-// renders the record { id: 1234, price: 25.99 } as
-<span>25,99 $US</span>
+<NumberField source="volume" options={{ style: 'unit', unit: 'liter' }} />
+// renders the record { id: 1234, volume: 3500 } as
+<span>3,500 L</span>
 ```
 {% endraw %}
 
-**Tip**: If you need more formatting options than what `Intl.NumberFormat` can provide, build your own field component leveraging a third-party library like [numeral.js](http://numeraljs.com/).
+**Tip**: If you need more formatting options than what `Intl.NumberFormat()` can provide, build your own field component leveraging a third-party library like [numeral.js](http://numeraljs.com/).
 
-**Tip**: When used in a `Show` view, the right alignment may look weird. Disable it by setting the `textAlign` attribute to "left":
+## `textAlign`
+
+By default, `<NumberField>` is right-aligned in a [`<Datagrid>`](./Datagrid.md). Change it by setting the `textAlign` prop to "left":
 
 ```jsx
 import { NumberField }  from 'react-admin';
