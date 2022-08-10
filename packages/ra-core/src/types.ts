@@ -143,9 +143,9 @@ export interface GetListResult<RecordType extends RaRecord = any> {
 
 export interface GetInfiniteListResult<RecordType extends RaRecord = any> {
     data: RecordType[];
-    pagination: PaginationPayload;
+    total?: number;
+    pageParam?: number;
 }
-
 export interface GetOneParams<RecordType extends RaRecord = any> {
     id: RecordType['id'];
     meta?: any;
