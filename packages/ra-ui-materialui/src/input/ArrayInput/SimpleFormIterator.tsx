@@ -13,7 +13,7 @@ import { styled } from '@mui/material';
 import clsx from 'clsx';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
-import { RaRecord, useRecordContext } from 'ra-core';
+import { FormDataConsumer, RaRecord, useRecordContext } from 'ra-core';
 import { UseFieldArrayReturn } from 'react-hook-form';
 
 import { useArrayInput } from './useArrayInput';
@@ -61,7 +61,10 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
             if (item == null) {
                 defaultValue = {} as Record<string, unknown>;
                 Children.forEach(children, input => {
-                    if (React.isValidElement(input)) {
+                    if (
+                        React.isValidElement(input) &&
+                        input.type !== FormDataConsumer
+                    ) {
                         defaultValue[input.props.source] =
                             input.props.defaultValue ?? '';
                     }
