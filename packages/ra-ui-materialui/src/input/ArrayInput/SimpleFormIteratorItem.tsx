@@ -30,6 +30,7 @@ export const SimpleFormIteratorItem = React.forwardRef(
             disableRemove,
             getItemLabel,
             index,
+            inline = false,
             member,
             record,
             removeButton,
@@ -97,7 +98,12 @@ export const SimpleFormIteratorItem = React.forwardRef(
                                 })}
                         </div>
                     </div>
-                    <section className={SimpleFormIteratorClasses.form}>
+                    <section
+                        className={clsx(
+                            SimpleFormIteratorClasses.form,
+                            inline && SimpleFormIteratorClasses.inline
+                        )}
+                    >
                         {Children.map(
                             children,
                             (input: ReactElement, index2) => {
@@ -146,6 +152,7 @@ export type SimpleFormIteratorItemProps = Partial<ArrayInputContextValue> & {
     disableReordering?: boolean;
     getItemLabel?: (index: number) => string;
     index: number;
+    inline?: boolean;
     member: string;
     onRemoveField: (index: number) => void;
     onReorder: (origin: number, destination: number) => void;
