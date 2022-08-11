@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import isEqual from 'lodash/isEqual';
 
 import { useEventCallback } from '../util';
 import { useStoreContext } from './useStoreContext';
@@ -53,11 +54,15 @@ export const useStore = <T = any>(
 
     // subscribe to changes on this key, and change the state when they happen
     useEffect(() => {
+        const storedValue = getItem(key, defaultValue);
+        if (!isEqual(value, storedValue)) {
+            setValue(storedValue);
+        }
         const unsubscribe = subscribe(key, newValue => {
             setValue(typeof newValue === 'undefined' ? defaultValue : newValue);
         });
         return () => unsubscribe();
-    }, [key, subscribe, defaultValue]);
+    }, [key, subscribe, defaultValue, getItem, value]);
 
     const set = useEventCallback(
         (valueParam: T, runtimeDefaultValue: T) => {

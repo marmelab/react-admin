@@ -1,6 +1,5 @@
 import React, {
     Children,
-    cloneElement,
     isValidElement,
     ReactElement,
     ReactNode,
@@ -10,7 +9,12 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { useDropzone, DropzoneOptions } from 'react-dropzone';
 import FormHelperText from '@mui/material/FormHelperText';
-import { useInput, useTranslate, shallowEqual } from 'ra-core';
+import {
+    useInput,
+    useTranslate,
+    shallowEqual,
+    RecordContextProvider,
+} from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
 import { Labeled } from '../Labeled';
@@ -52,19 +56,12 @@ export const FileInput = (props: FileInputProps) => {
             return file;
         }
 
-        const { source, title } = (Children.only(children) as ReactElement<
-            any
-        >).props;
-
         const preview = URL.createObjectURL(file);
         const transformedFile = {
             rawFile: file,
-            [source]: preview,
+            src: preview,
+            title: file.name,
         };
-
-        if (title) {
-            transformedFile[title] = file.name;
-        }
 
         return transformedFile;
     };
@@ -195,10 +192,9 @@ export const FileInput = (props: FileInputProps) => {
                                 onRemove={onRemove(file)}
                                 className={FileInputClasses.removeButton}
                             >
-                                {cloneElement(childrenElement as ReactElement, {
-                                    record: file,
-                                    className: FileInputClasses.preview,
-                                })}
+                                <RecordContextProvider value={file}>
+                                    {childrenElement}
+                                </RecordContextProvider>
                             </FileInputPreview>
                         ))}
                     </div>

@@ -15,7 +15,7 @@ export const ProductEditDetails = () => (
         </Grid>
         <Grid item xs={12} sm={4}>
             <ReferenceInput source="category_id" reference="categories">
-                <SelectInput source="name" validate={req} fullWidth />
+                <SelectInput optionText="name" validate={req} fullWidth />
             </ReferenceInput>
         </Grid>
         <Grid item xs={12} sm={4}>

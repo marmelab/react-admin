@@ -10,8 +10,7 @@ import {
     ValidateForm,
 } from './getSimpleValidationResolver';
 import { setSubmissionErrors } from './setSubmissionErrors';
-import { useNotify } from '../notification';
-import { useIsFormInvalid } from './useIsFormInvalid';
+import { useNotifyIsFormInvalid } from './useNotifyIsFormInvalid';
 import { useWarnWhenUnsavedChanges } from './useWarnWhenUnsavedChanges';
 
 /**
@@ -88,13 +87,7 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
     /* eslint-enable react-hooks/exhaustive-deps */
 
     // notify on invalid form
-    const isInvalid = useIsFormInvalid(form.control);
-    const notify = useNotify();
-    useEffect(() => {
-        if (isInvalid) {
-            notify('ra.message.invalid_form', { type: 'warning' });
-        }
-    }, [isInvalid, notify]);
+    useNotifyIsFormInvalid(form.control);
 
     // warn when unsaved change
     useWarnWhenUnsavedChanges(
@@ -137,7 +130,6 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
         form,
         handleSubmit,
         formHandleSubmit,
-        isInvalid,
     };
 };
 

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {
+    Children,
     cloneElement,
     MouseEvent,
     MouseEventHandler,
@@ -12,7 +13,7 @@ import { styled } from '@mui/material';
 import clsx from 'clsx';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
-import { RaRecord, useRecordContext } from 'ra-core';
+import { FormDataConsumer, RaRecord, useRecordContext } from 'ra-core';
 import { UseFieldArrayReturn } from 'react-hook-form';
 
 import { useArrayInput } from './useArrayInput';
@@ -56,9 +57,22 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
 
     const addField = useCallback(
         (item: any = undefined) => {
-            append(item);
+            let defaultValue = item;
+            if (item == null) {
+                defaultValue = {} as Record<string, unknown>;
+                Children.forEach(children, input => {
+                    if (
+                        React.isValidElement(input) &&
+                        input.type !== FormDataConsumer
+                    ) {
+                        defaultValue[input.props.source] =
+                            input.props.defaultValue ?? '';
+                    }
+                });
+            }
+            append(defaultValue);
         },
-        [append]
+        [append, children]
     );
 
     // add field and call the onClick event of the button passed as addButton prop
@@ -118,12 +132,12 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                     <li className={SimpleFormIteratorClasses.line}>
                         <span className={SimpleFormIteratorClasses.action}>
                             {cloneElement(addButton, {
-                                onClick: handleAddButtonClick(
-                                    addButton.props.onClick
-                                ),
                                 className: clsx(
                                     'button-add',
                                     `button-add-${source}`
+                                ),
+                                onClick: handleAddButtonClick(
+                                    addButton.props.onClick
                                 ),
                             })}
                         </span>

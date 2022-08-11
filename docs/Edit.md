@@ -523,7 +523,7 @@ The `transform` function can also return a `Promise`, which allows you to do all
 
 **Tip**: If you want to have different transformations based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save", and another to "save and notify other admins"), you can set the `transform` prop on [the `<SaveButton>` component](./SaveButton.md), too.
 
-**Tip**: `<Edit>`’s transform prop function also get the `previousData` in its second argument:
+**Tip**: The `transform` function also get the `previousData` in its second argument:
 
 ```jsx
 export const UserEdit = (props) => {
@@ -531,6 +531,26 @@ export const UserEdit = (props) => {
         ...data,
         avoidChangeField: previousData.avoidChangeField
     });
+    return (
+        <Edit {...props} transform={transform}>
+            ...
+        </Edit>
+    );
+}
+```
+
+**Tip**: A frequent usage of the `transform` function is to stripe empty string values returned by the form.
+
+```jsx
+export const UserEdit = (props) => {
+    const transform = (data) => {
+        const sanitizedData = {};
+        for (const key in data) {
+            if (typeof data[key] === "string" && data[key].trim().length === 0) continue;
+            sanitizedData[key] = data[key]; 
+        }
+        return sanitizedData;
+    };
     return (
         <Edit {...props} transform={transform}>
             ...
