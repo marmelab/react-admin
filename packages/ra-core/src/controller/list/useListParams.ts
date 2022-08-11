@@ -96,6 +96,7 @@ export const useListParams = ({
     const requestSignature = [
         location.search,
         resource,
+        completeStoreKey,
         JSON.stringify(disableSyncWithLocation ? localParams : params),
         JSON.stringify(filterDefaultValues),
         JSON.stringify(sort),

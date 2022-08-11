@@ -12,11 +12,10 @@ import { memoryStore } from '../../store';
 import { ListController } from './ListController';
 import {
     getListControllerProps,
-    ListControllerProps,
-    ListControllerResult,
     sanitizeListRestProps,
 } from './useListController';
 import { CoreAdminContext } from '../../core';
+import { ListsUsingSameResource } from './useListController.stories';
 
 describe('useListController', () => {
     const defaultProps = {
@@ -78,196 +77,41 @@ describe('useListController', () => {
     });
 
     describe('customStoreKey', () => {
-        const descriptionDefaultProps: ListControllerProps = {
-            ...defaultProps,
-            resource: 'posts',
-            perPage: 5,
-            disableSyncWithLocation: true,
-        };
-        const getList = jest
-            .fn()
-            .mockImplementation(() => Promise.resolve({ data: [], total: 0 }));
-        const dataProvider = testDataProvider({ getList });
-        const history = createMemoryHistory({
-            initialEntries: [`/posts`],
-        });
-
         let clock;
-
         beforeEach(() => {
             clock = lolex.install();
         });
-
         afterEach(() => {
             clock.uninstall();
         });
 
-        it('should keep synched two lists of the same resource if no custom key is defined', () => {
-            const { rerender } = render(
-                <CoreAdminContext dataProvider={dataProvider} history={history}>
-                    <ListController
-                        {...descriptionDefaultProps}
-                        children={(params: ListControllerResult) => (
-                            <section
-                                aria-label="list1"
-                                data-perpage={params.perPage}
-                            >
-                                <button
-                                    aria-label="setPerPage"
-                                    onClick={() => params.setPerPage(10)}
-                                />
-                            </section>
-                        )}
-                    />
-                    <ListController
-                        {...descriptionDefaultProps}
-                        children={(params: ListControllerResult) => (
-                            <section
-                                aria-label="list2"
-                                data-perpage={params.perPage}
-                            />
-                        )}
-                    />
-                </CoreAdminContext>
-            );
+        it('should keep distinct two lists of the same resource given different keys', () => {
+            render(<ListsUsingSameResource />);
 
             expect(
                 screen.getByLabelText('list1').getAttribute('data-perpage')
-            ).toEqual('5');
-            expect(
-                screen.getByLabelText('list2').getAttribute('data-perpage')
-            ).toEqual('5');
+            ).toEqual('23');
 
             fireEvent.click(screen.getByLabelText('setPerPage'));
             clock.tick(210);
 
-            const { perPage, ...rest } = descriptionDefaultProps;
-
-            rerender(
-                <CoreAdminContext dataProvider={dataProvider} history={history}>
-                    <ListController
-                        {...rest}
-                        children={(params: ListControllerResult) => (
-                            <section
-                                aria-label="list1"
-                                data-perpage={params.perPage}
-                            >
-                                <button
-                                    aria-label="setPerPage"
-                                    onClick={() => params.setPerPage(10)}
-                                />
-                            </section>
-                        )}
-                    />
-                    <ListController
-                        {...rest}
-                        children={(params: ListControllerResult) => (
-                            <section
-                                aria-label="list2"
-                                data-perpage={params.perPage}
-                            />
-                        )}
-                    />
-                </CoreAdminContext>
-            );
             expect(
                 screen.getByLabelText('list1').getAttribute('data-perpage')
-            ).toEqual('10');
+            ).toEqual('51');
+
+            fireEvent.click(screen.getByLabelText('toggleList'));
+            clock.tick(210);
+
             expect(
                 screen.getByLabelText('list2').getAttribute('data-perpage')
-            ).toEqual('10');
-        });
+            ).toEqual('23');
 
-        it('should unsynchronize two lists of the same resource given different keys', () => {
-            const getList = jest
-                .fn()
-                .mockImplementation(() =>
-                    Promise.resolve({ data: [], total: 0 })
-                );
-            const dataProvider = testDataProvider({ getList });
-            const history = createMemoryHistory({
-                initialEntries: [`/posts`],
-            });
-            //const childFunction = ({ setPerPage }) => <span>caca</span>;
+            fireEvent.click(screen.getByLabelText('setPerPage'));
+            clock.tick(210);
 
-            const { rerender } = render(
-                <CoreAdminContext dataProvider={dataProvider} history={history}>
-                    <ListController
-                        {...descriptionDefaultProps}
-                        storeKey="list1"
-                        children={(params: ListControllerResult) => (
-                            <section
-                                aria-label="list1"
-                                data-perpage={params.perPage}
-                            >
-                                <button
-                                    aria-label="setPerPage1"
-                                    onClick={() => params.setPerPage(10)}
-                                />
-                            </section>
-                        )}
-                    />
-                    <ListController
-                        {...descriptionDefaultProps}
-                        storeKey="list2"
-                        children={(params: ListControllerResult) => (
-                            <section
-                                aria-label="list2"
-                                data-perpage={params.perPage}
-                            >
-                                <button
-                                    aria-label="setPerPage2"
-                                    onClick={() => params.setPerPage(20)}
-                                />
-                            </section>
-                        )}
-                    />
-                </CoreAdminContext>
-            );
-
-            expect(
-                screen.getByLabelText('list1').getAttribute('data-perpage')
-            ).toEqual('5');
             expect(
                 screen.getByLabelText('list2').getAttribute('data-perpage')
-            ).toEqual('5');
-
-            fireEvent.click(screen.getByLabelText('setPerPage1'));
-            fireEvent.click(screen.getByLabelText('setPerPage2'));
-            clock.tick(300);
-
-            const { perPage, ...rest } = descriptionDefaultProps;
-            rerender(
-                <CoreAdminContext dataProvider={dataProvider} history={history}>
-                    <ListController
-                        {...rest}
-                        storeKey="list1"
-                        children={(params: ListControllerResult) => (
-                            <section
-                                aria-label="list1"
-                                data-perpage={params.perPage}
-                            />
-                        )}
-                    />
-                    <ListController
-                        {...rest}
-                        storeKey="list2"
-                        children={(params: ListControllerResult) => (
-                            <section
-                                aria-label="list2"
-                                data-perpage={params.perPage}
-                            />
-                        )}
-                    />
-                </CoreAdminContext>
-            );
-
-            expect(
-                screen.getByLabelText('list1').getAttribute('data-perpage')
-            ).toEqual('10');
-            expect(
-                screen.getByLabelText('list2').getAttribute('data-perpage')
-            ).toEqual('20');
+            ).toEqual('41');
         });
     });
 
