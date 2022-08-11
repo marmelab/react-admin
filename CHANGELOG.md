@@ -1,5 +1,18 @@
 # Changelog
 
+## v4.2.7
+
+* Fix `<FormDataConsumer>` inside `<SimpleFormIterator>` adds empty value ([#8061](https://github.com/marmelab/react-admin/pull/8061)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `useStore` internal state reset when key changes ([#8058](https://github.com/marmelab/react-admin/pull/8058)) ([slax57](https://github.com/slax57))
+* Fix notification for validation errors doesn't show on `<Edit>` pages ([#8055](https://github.com/marmelab/react-admin/pull/8055)) ([arimet](https://github.com/arimet))
+* Fix `<Form>` does not display notification after the first invalid submit ([#8057](https://github.com/marmelab/react-admin/pull/8057)) ([arimet](https://github.com/arimet))
+* Fix `<FileInput>` and `<ImageInput>` clone their child ([#8052](https://github.com/marmelab/react-admin/pull/8052)) ([thibault-barrat](https://github.com/thibault-barrat))
+* [Doc] Document how to sanitize form values ([#8048](https://github.com/marmelab/react-admin/pull/8048)) ([septentrion-730n](https://github.com/septentrion-730n))
+* [Doc] Improve `<ImageField>`, `<NumberField>` and `<SelectField>` docs ([#8045](https://github.com/marmelab/react-admin/pull/8045)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add Vite integration doc ([#8054](https://github.com/marmelab/react-admin/pull/8054)) ([thibault-barrat](https://github.com/thibault-barrat))
+* [Doc] Add `useGetTree` doc ([#8065](https://github.com/marmelab/react-admin/pull/8065)) ([thibault-barrat](https://github.com/thibault-barrat))
+* [Doc] Add `<JsonSchemaForm>` doc ([#8056](https://github.com/marmelab/react-admin/pull/8056)) ([thibault-barrat](https://github.com/thibault-barrat))
+
 ## v4.2.6
 
 * Fix `<DeleteButton mutationOptions>` ignores `meta` parameter ([#8023](https://github.com/marmelab/react-admin/pull/8023)) ([septentrion-730n](https://github.com/septentrion-730n))
