@@ -376,6 +376,23 @@ const dateParser = value => {
 <DateInput source="isodate" format={dateFormatter} parse={dateParser} defaultValue={new Date()} />
 ```
 
+**Tip:** To spread a conversion behaviour to your whole application, you can import a `react-admin`component then re-export them with their `transform` and/or `parse` props set.
+
+```jsx
+import * as React from 'react';
+import { TextInput } from 'react-admin';
+
+const FilledOrNullTextInput = props => {
+    return (
+        <TextInput
+            {...props}
+            transform={ v => typeof v === 'string' && v.length === 0 ? null : v }
+            />
+    );
+};
+export default FilledOrNullTextInput;
+```
+
 ## Linking Two Inputs
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
@@ -513,7 +530,7 @@ import { FormDataConsumer } from 'react-admin';
 
 MUI offers [3 variants for text fields](https://mui.com/material-ui/react-text-field/#basic-textfield): `outlined`, `filled`, and `standard`. The default react-admin theme uses the `filled` variant.
 
-Most Input components pass their additional props down to the root component, which is often an MUI Field component. This means you can pass a `variant` prop to override the varaint of a single input:
+Most Input components pass their additional props down to the root component, which is often an MUI Field component. This means you can pass a `variant` prop to override the variant of a single input:
 
 ```jsx
 <TextInput source="name" variant="outlined" />

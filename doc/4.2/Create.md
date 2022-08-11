@@ -336,7 +336,27 @@ export const UserCreate = (props) => {
 
 The `transform` function can also return a `Promise`, which allows you to do all sorts of asynchronous calls (e.g. to the `dataProvider`) during the transformation.
 
-**Tip**: If you want to have different transformations based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save", and another to "save and notify other admins"), you can set the `transform` prop on [the `<SaveButton>` component](./SaveButton.md), too. 
+**Tip**: If you want to have different transformations based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save", and another to "save and notify other admins"), you can set the `transform` prop on [the `<SaveButton>` component](./SaveButton.md), too.
+
+**Tip**: A frequent usage of the `transform` function is to stripe empty string values returned by the form.
+
+```jsx
+export const UserCreate = (props) => {
+    const transform = (data) => {
+        const sanitizedData = {};
+        for (const key in data) {
+            if (typeof data[key] === "string" && data[key].length === 0) continue;
+            sanitizedData[key] = data[key]; 
+        }
+        return sanitizedData;
+    };
+    return (
+        <Create {...props} transform={transform}>
+            ...
+        </Create>
+    );
+}
+```
 
 ## Adding `meta` To The DataProvider Call
 
