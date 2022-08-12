@@ -2709,6 +2709,8 @@ const UserInput = [
 ]
 ```
 
+**Note**: `<ReferenceInput>` and `<ReferenceArrayInput>` still accepts `label` prop only when they are used in a Filter array.
+
 #### `<ReferenceArrayInput>` No Longer Provides a `ListContext`
 
 As the `ChoicesContext` now provide an API very similar to the `ListContext`, it no longer sets up a `ListContext`. If you used this to display a `<Datagrid>`, we will soon provide the `<DatagridInput>` for this purpose.

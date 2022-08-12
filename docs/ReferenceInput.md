@@ -31,6 +31,7 @@ import { ReferenceInput, SelectInput } from 'react-admin';
 | `reference`        | Required | `string`                                    | ''                               | Name of the reference resource, e.g. 'posts'.                                                                     |
 | `sort`             | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }` | How to order the list of suggestions                                                                              |
 | `enableGetChoices` | Optional | `({q: string}) => boolean`                  | `() => true`                     | Function taking the `filterValues` and returning a boolean to enable the `getList` call.                          |
+| `label`            | Optional | `string`                                    | -                                | A custom label can be used when `ReferenceInput` is in a Filter array.                         |
 
 
 **Note**: `<ReferenceInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) ; it is the responsability of children to apply them.
