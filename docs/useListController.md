@@ -33,6 +33,7 @@ const MyList = () => {
 
 `useListController` expects one object as parameter. All keys are optional.
 
+* [`storeKey`](#storeKey): additional key used to differenciate the list from another of the same resource
 * [`debounce`](./List.md#debounce): debounce time in ms for the setFilters callbacks
 * [`disableAuthentication`](./List.md#disableauthentication): set to true to allow anonymous access to the list
 * [`disableSyncWithLocation`](./List.md#disablesyncwithlocation): set to true to have more than one list per page
@@ -55,6 +56,7 @@ import {
 } from 'react-admin';
 
 const MyList = ({
+    customStoreKey = '',
     debounce = 500,
     disableAuthentication = false,
     disableSyncWithLocation = false,
@@ -90,7 +92,7 @@ const MyList = ({
 
 ## `storeKey`
 
-To display multiple lists of the same resource and keep distinct store states for each of them (filters, pagination, selection), specify unique keys with the `customStoreKey` property.
+To display multiple lists of the same resource and keep distinct store states for each of them (filters, pagination, selection), specify unique keys with the `storeKey` property.
 
 ## Return Value
 
