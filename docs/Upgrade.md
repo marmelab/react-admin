@@ -2709,7 +2709,7 @@ const UserInput = [
 ]
 ```
 
-**Note**: `<ReferenceInput>` and `<ReferenceArrayInput>` still accepts `label` prop only when they are used in a Filter array.
+**Note**: `<ReferenceInput>` and `<ReferenceArrayInput>` still accept the `label` prop, which is used as the Filter label when they are used in a Filter array.
 
 #### `<ReferenceArrayInput>` No Longer Provides a `ListContext`
 
