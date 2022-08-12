@@ -29,11 +29,6 @@ const StyledFileInput = styled(FileInput, {
         textAlign: 'center',
         color: theme.palette.getContrastText(theme.palette.background.default),
     },
-
-    [`& .${FileInputClasses.preview}`]: {
-        display: 'inline-block',
-    },
-
     [`& .${FileInputClasses.removeButton}`]: {
         display: 'inline-block',
         position: 'relative',
