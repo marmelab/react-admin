@@ -33,15 +33,16 @@ export const useListController = <RecordType extends RaRecord = any>(
     props: ListControllerProps<RecordType> = {}
 ): ListControllerResult<RecordType> => {
     const {
-        disableAuthentication,
-        exporter = defaultExporter,
-        filterDefaultValues,
-        sort = defaultSort,
-        perPage = 10,
-        filter,
         debounce = 500,
+        disableAuthentication,
         disableSyncWithLocation,
+        exporter = defaultExporter,
+        filter,
+        filterDefaultValues,
+        perPage = 10,
         queryOptions = {},
+        sort = defaultSort,
+        storeKey,
     } = props;
     useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
@@ -62,12 +63,13 @@ export const useListController = <RecordType extends RaRecord = any>(
     const notify = useNotify();
 
     const [query, queryModifiers] = useListParams({
-        resource,
-        filterDefaultValues,
-        sort,
-        perPage,
         debounce,
         disableSyncWithLocation,
+        filterDefaultValues,
+        perPage,
+        resource,
+        sort,
+        storeKey,
     });
 
     const [selectedIds, selectionModifiers] = useRecordSelection(resource);
@@ -195,6 +197,7 @@ export interface ListControllerProps<RecordType extends RaRecord = any> {
     }> & { meta?: any };
     resource?: string;
     sort?: SortPayload;
+    storeKey?: string;
 }
 
 const defaultSort = {
