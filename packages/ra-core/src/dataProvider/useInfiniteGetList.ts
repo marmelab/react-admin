@@ -1,6 +1,5 @@
 import {
     useInfiniteQuery,
-    UseInfiniteQueryOptions,
     UseInfiniteQueryResult,
     useQueryClient,
 } from 'react-query';
@@ -63,7 +62,7 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
     resource: string,
     params: Partial<GetListParams> = {},
     options?: any
-) => {
+): UseInfiniteQueryResult<GetInfiniteListResult> => {
     const {
         pagination = { page: 1, perPage: 25 },
         sort = { field: 'id', order: 'DESC' },
@@ -73,7 +72,7 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
 
-    const result = useInfiniteQuery(
+    return useInfiniteQuery(
         [resource, 'getList', { pagination, sort, filter, meta }],
         ({ pageParam = pagination.page }) =>
             dataProvider
@@ -86,20 +85,38 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
                     filter,
                     meta,
                 })
-                .then(({ data, total }) => ({
+                .then(({ data, pageInfo, total }) => ({
                     data,
                     total,
                     pageParam,
+                    pageInfo,
                 })),
         {
-            getNextPageParam: lastPage => {
+            ...options,
+            getNextPageParam: lastLoadedPage => {
+                if (lastLoadedPage.pageInfo) {
+                    return lastLoadedPage.pageInfo.hasNextPage
+                        ? lastLoadedPage.pageParam + 1
+                        : undefined;
+                }
                 const totalPages = Math.ceil(
-                    (lastPage.total || 0) / pagination.perPage
+                    (lastLoadedPage.total || 0) / pagination.perPage
                 );
 
-                return lastPage.pageParam < totalPages
-                    ? Number(lastPage.pageParam) + 1
+                return lastLoadedPage.pageParam < totalPages
+                    ? Number(lastLoadedPage.pageParam) + 1
                     : undefined;
+            },
+            getPreviousPageParam: lastLoadedPage => {
+                if (lastLoadedPage.pageInfo) {
+                    return lastLoadedPage.pageInfo.hasPreviousPage
+                        ? lastLoadedPage.pageParam - 1
+                        : undefined;
+                }
+
+                return lastLoadedPage.pageParam === 1
+                    ? undefined
+                    : lastLoadedPage.pageParam - 1;
             },
             onSuccess: data => {
                 // optimistically populate the getOne cache
@@ -116,17 +133,6 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
                     });
                 });
             },
-            ...options,
         }
     );
-
-    return {
-        ...result,
-        data: result.data,
-        fetchNextPage: () => result.fetchNextPage(),
-        isLoading: result.isLoading,
-        isSuccess: result.isSuccess,
-        error: result.error,
-        hasNextPage: result.hasNextPage,
-    };
 };

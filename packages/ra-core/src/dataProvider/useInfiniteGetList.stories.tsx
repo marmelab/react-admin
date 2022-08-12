@@ -1,46 +1,41 @@
 import * as React from 'react';
-import { QueryClient } from 'react-query';
 import { useInfiniteGetList } from '..';
 
 import { CoreAdminContext } from '../core';
+import { countries } from '../storybook/data';
 
 export default { title: 'ra-core/dataProvider/useInfiniteGetList' };
 
-export const UseInfiniteListCore = () => {
-    const posts = [
-        { id: 1, title: 'Hello' },
-        { id: 2, title: 'World' },
-        { id: 3, title: 'How' },
-        { id: 4, title: 'are' },
-        { id: 5, title: 'you' },
-        { id: 6, title: 'today' },
-        { id: 7, title: '?' },
-    ];
-    const dataProvider = {
-        getList: (resource, params) => {
-            return Promise.resolve({
-                data: posts.slice(
-                    (params.pagination.page - 1) * params.pagination.perPage,
-                    (params.pagination.page - 1) * params.pagination.perPage +
-                        params.pagination.perPage
-                ),
-                total: posts.length,
-            });
-        },
-    } as any;
+export const UseInfiniteListCore = props => {
+    let { dataProvider, ...rest } = props;
+
+    if (!dataProvider) {
+        dataProvider = {
+            getList: (resource, params) => {
+                return Promise.resolve({
+                    data: countries.slice(
+                        (params.pagination.page - 1) *
+                            params.pagination.perPage,
+                        (params.pagination.page - 1) *
+                            params.pagination.perPage +
+                            params.pagination.perPage
+                    ),
+                    total: countries.length,
+                });
+            },
+        } as any;
+    }
+
     return (
-        <CoreAdminContext
-            queryClient={new QueryClient()}
-            dataProvider={dataProvider}
-        >
-            <UseInfiniteComponent />
+        <CoreAdminContext dataProvider={dataProvider}>
+            <UseInfiniteComponent {...rest} />
         </CoreAdminContext>
     );
 };
 
-export const UseInfiniteComponent = ({
-    resource = 'posts',
-    pagination = { page: 1, perPage: 1 },
+const UseInfiniteComponent = ({
+    resource = 'countries',
+    pagination = { page: 1, perPage: 20 },
     sort = { field: 'id', order: 'DESC' },
     filter = {},
     options = {},
@@ -58,13 +53,19 @@ export const UseInfiniteComponent = ({
         <>
             <ul>
                 {data?.pages.map(page => {
-                    return page.data.map(post => (
-                        <li key={post.id}>{post.title}</li>
+                    return page.data.map(country => (
+                        <li aria-label="country" key={country.code}>
+                            {country.name} -- {country.code}
+                        </li>
                     ));
                 })}
             </ul>
             <div>
-                <button disabled={!hasNextPage} onClick={() => fetchNextPage()}>
+                <button
+                    aria-label="refetch-button"
+                    disabled={!hasNextPage}
+                    onClick={() => fetchNextPage()}
+                >
                     Refetch
                 </button>
             </div>

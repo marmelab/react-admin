@@ -1,31 +1,30 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, waitFor } from '@testing-library/react';
-import { QueryClient } from 'react-query';
-import { UseInfiniteComponent } from './useInfiniteGetList.stories';
-import { CoreAdminContext } from '../core';
+import { screen, render, waitFor } from '@testing-library/react';
+import { UseInfiniteListCore } from './useInfiniteGetList.stories';
 
 describe('useInfiniteGetList', () => {
     it('should call dataProvider.getList() on mount', async () => {
         const dataProvider = {
             getList: jest.fn(() =>
                 Promise.resolve({
-                    data: [{ id: 1, title: 'Bruce' }],
+                    data: [{ id: 73, name: 'France', code: 'FR' }],
                     total: 1,
                 })
             ),
         } as any;
 
         render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <UseInfiniteComponent />
-            </CoreAdminContext>
+            <UseInfiniteListCore
+                dataProvider={dataProvider}
+                resource="heroes"
+            />
         );
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(1);
-            expect(dataProvider.getList).toBeCalledWith('posts', {
+            expect(dataProvider.getList).toBeCalledWith('heroes', {
                 filter: {},
-                pagination: { page: 1, perPage: 1 },
+                pagination: { page: 1, perPage: 20 },
                 sort: { field: 'id', order: 'DESC' },
             });
         });
@@ -35,24 +34,18 @@ describe('useInfiniteGetList', () => {
         const dataProvider = {
             getList: jest.fn(() =>
                 Promise.resolve({
-                    data: [{ id: 1, title: 'Bruce' }],
+                    data: [{ id: 73, name: 'France', code: 'FR' }],
                     total: 1,
                 })
             ),
         } as any;
         const { rerender } = render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <UseInfiniteComponent />
-            </CoreAdminContext>
+            <UseInfiniteListCore dataProvider={dataProvider} />
         );
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(1);
         });
-        rerender(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <UseInfiniteComponent />
-            </CoreAdminContext>
-        );
+        rerender(<UseInfiniteListCore dataProvider={dataProvider} />);
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(1);
         });
@@ -62,24 +55,21 @@ describe('useInfiniteGetList', () => {
         const dataProvider = {
             getList: jest.fn(() =>
                 Promise.resolve({
-                    data: [{ id: 1, title: 'Bruce' }],
+                    data: [{ id: 73, name: 'France', code: 'FR' }],
                     total: 1,
                 })
             ),
         } as any;
         const { rerender } = render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <UseInfiniteComponent />
-            </CoreAdminContext>
+            <UseInfiniteListCore
+                dataProvider={dataProvider}
+                resource="heroes"
+            />
         );
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(1);
         });
-        rerender(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <UseInfiniteComponent resource="comments" />
-            </CoreAdminContext>
-        );
+        rerender(<UseInfiniteListCore dataProvider={dataProvider} />);
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(2);
         });
@@ -89,21 +79,21 @@ describe('useInfiniteGetList', () => {
         const dataProvider = {
             getList: jest.fn(() =>
                 Promise.resolve({
-                    data: [{ id: 1, title: 'Bruce' }],
+                    data: [{ id: 73, name: 'France', code: 'FR' }],
                     total: 1,
                 })
             ),
         } as any;
         render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <UseInfiniteComponent
-                    pagination={{ page: 1, perPage: 20 }}
-                    meta={{ hello: 'world' }}
-                />
-            </CoreAdminContext>
+            <UseInfiniteListCore
+                dataProvider={dataProvider}
+                pagination={{ page: 1, perPage: 20 }}
+                meta={{ hello: 'world' }}
+                resource="heroes"
+            />
         );
         await waitFor(() => {
-            expect(dataProvider.getList).toBeCalledWith('posts', {
+            expect(dataProvider.getList).toBeCalledWith('heroes', {
                 filter: {},
                 pagination: { page: 1, perPage: 20 },
                 sort: { field: 'id', order: 'DESC' },
@@ -113,33 +103,38 @@ describe('useInfiniteGetList', () => {
     });
 
     it('should execute success side effects on success', async () => {
-        const onSuccess = jest.fn();
+        const countries = [
+            { id: 73, name: 'France', code: 'FR' },
+            { id: 74, name: 'Italia', code: 'IT' },
+        ];
         const dataProvider = {
-            getList: jest
-                .fn()
-                .mockReturnValueOnce(
-                    Promise.resolve({
-                        data: [{ id: 1, title: 'Bruce' }],
-                        total: 2,
-                    })
-                )
-                .mockReturnValueOnce(
-                    Promise.resolve({
-                        data: [{ id: 3, foo: 'Wayne' }],
-                        total: 2,
-                    })
-                ),
+            getList: (resource, params) => {
+                return Promise.resolve({
+                    data: countries.slice(
+                        (params.pagination.page - 1) *
+                            params.pagination.perPage,
+                        (params.pagination.page - 1) *
+                            params.pagination.perPage +
+                            params.pagination.perPage
+                    ),
+                    total: countries.length,
+                });
+            },
         };
+
         render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <UseInfiniteComponent options={{ onSuccess }} />
-            </CoreAdminContext>
+            <UseInfiniteListCore
+                dataProvider={dataProvider}
+                pagination={{ page: 1, perPage: 1 }}
+            />
         );
-        await waitFor(() => {
-            expect(onSuccess).toBeCalledTimes(1);
-            expect(onSuccess.mock.calls.pop()[0]).toEqual({
-                data: [{ id: 1, title: 'Bruce' }],
-                total: 2,
+        await waitFor(async () => {
+            expect(screen.getByLabelText('country').innerHTML).toContain(
+                'France'
+            );
+            screen.getByLabelText('refetch-button').click();
+            await waitFor(async () => {
+                expect(screen.queryAllByLabelText('country')).toHaveLength(2);
             });
         });
     });
