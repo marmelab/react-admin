@@ -41,11 +41,11 @@
         "@mui/icons-material": "^5.0.1",
         "@mui/material": "^5.0.2",
         "history": "^5.1.0",
-        "ra-core": "^4.2.6",
-        "ra-i18n-polyglot": "^4.2.6",
-        "ra-language-english": "^4.2.6",
-        "ra-ui-materialui": "^4.2.6",
-        "react-hook-form": "^7.31.0",
+        "ra-core": "^4.2.7",
+        "ra-i18n-polyglot": "^4.2.7",
+        "ra-language-english": "^4.2.7",
+        "ra-ui-materialui": "^4.2.7",
+        "react-hook-form": "^7.34.2",
         "react-router": "^6.1.0",
         "react-router-dom": "^6.1.0"
     }

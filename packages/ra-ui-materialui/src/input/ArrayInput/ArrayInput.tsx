@@ -84,14 +84,15 @@ export const ArrayInput = (props: ArrayInputProps) => {
         margin = 'dense',
         ...rest
     } = props;
+
+    if (source === 'backlinks') {
+        console.log('ArrayInput', props);
+    }
+
     const sanitizedValidate = Array.isArray(validate)
         ? composeSyncValidators(validate)
         : validate;
     const getValidationErrorMessage = useGetValidationErrorMessage();
-
-    const fieldProps = useFieldArray({
-        name: source,
-    });
 
     const {
         getFieldState,
@@ -102,6 +103,23 @@ export const ArrayInput = (props: ArrayInputProps) => {
         setError,
         unregister,
     } = useFormContext();
+
+    const fieldProps = useFieldArray({
+        name: source,
+        rules: {
+            validate: async value => {
+                if (!sanitizedValidate) return true;
+                const error = await sanitizedValidate(
+                    value,
+                    getValues(),
+                    props
+                );
+
+                if (!error) return true;
+                return getValidationErrorMessage(error);
+            },
+        },
+    });
 
     const { isSubmitted } = formState;
 
@@ -119,40 +137,45 @@ export const ArrayInput = (props: ArrayInputProps) => {
     const value = useWatch({ name: source });
     const { isDirty, invalid, error } = getFieldState(source, formState);
 
-    // As react-hook-form does not handle validation on the array itself,
-    // we need to do it manually
-    const errorRef = useRef(null);
-    useEffect(() => {
-        const applyValidation = async () => {
-            const newError = await sanitizedValidate(value, getValues(), props);
-            if (newError && !isEqual(errorRef.current, newError)) {
-                errorRef.current = newError;
-                setError(source, {
-                    type: 'manual',
-                    message: getValidationErrorMessage(newError),
-                });
-            }
+    if (source === 'backlinks') {
+        console.log('ERROR', error);
+    }
 
-            if (!newError && error) {
-                errorRef.current = null;
-                clearErrors(source);
-            }
-        };
+    // // As react-hook-form does not handle validation on the array itself,
+    // // we need to do it manually
+    // const errorRef = useRef(null);
+    // useEffect(() => {
+    //     const applyValidation = async () => {
+    //         const newError = await sanitizedValidate(value, getValues(), props);
+    //         console.log('COUCOU', newError);
+    //         if (newError && !isEqual(errorRef.current, newError)) {
+    //             errorRef.current = newError;
+    //             setError(source, {
+    //                 type: 'manual',
+    //                 message: getValidationErrorMessage(newError),
+    //             });
+    //         }
 
-        if (sanitizedValidate) {
-            applyValidation();
-        }
-    }, [
-        clearErrors,
-        error,
-        sanitizedValidate,
-        value,
-        getValues,
-        props,
-        setError,
-        source,
-        getValidationErrorMessage,
-    ]);
+    //         if (!newError && error) {
+    //             errorRef.current = null;
+    //             clearErrors(source);
+    //         }
+    //     };
+
+    //     if (sanitizedValidate) {
+    //         applyValidation();
+    //     }
+    // }, [
+    //     clearErrors,
+    //     error,
+    //     sanitizedValidate,
+    //     value,
+    //     getValues,
+    //     props,
+    //     setError,
+    //     source,
+    //     getValidationErrorMessage,
+    // ]);
 
     if (isLoading) {
         return (
