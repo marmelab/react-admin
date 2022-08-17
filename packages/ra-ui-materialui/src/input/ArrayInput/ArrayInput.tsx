@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cloneElement, Children, ReactElement, useEffect, useRef } from 'react';
+import { cloneElement, Children, ReactElement, useEffect } from 'react';
 import clsx from 'clsx';
 import {
     isRequired,
@@ -9,14 +9,13 @@ import {
     useApplyInputDefaultValues,
     useGetValidationErrorMessage,
 } from 'ra-core';
-import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 import {
     InputLabel,
     FormControl,
     FormHelperText,
     FormControlProps,
 } from '@mui/material';
-import isEqual from 'lodash/isEqual';
 
 import { LinearProgress } from '../../layout';
 import { CommonInputProps } from '../CommonInputProps';
@@ -85,10 +84,6 @@ export const ArrayInput = (props: ArrayInputProps) => {
         ...rest
     } = props;
 
-    if (source === 'backlinks') {
-        console.log('ArrayInput', props);
-    }
-
     const sanitizedValidate = Array.isArray(validate)
         ? composeSyncValidators(validate)
         : validate;
@@ -96,11 +91,9 @@ export const ArrayInput = (props: ArrayInputProps) => {
 
     const {
         getFieldState,
-        clearErrors,
         formState,
         getValues,
         register,
-        setError,
         unregister,
     } = useFormContext();
 
@@ -134,48 +127,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
 
     useApplyInputDefaultValues(props);
 
-    const value = useWatch({ name: source });
-    const { isDirty, invalid, error } = getFieldState(source, formState);
-
-    if (source === 'backlinks') {
-        console.log('ERROR', error);
-    }
-
-    // // As react-hook-form does not handle validation on the array itself,
-    // // we need to do it manually
-    // const errorRef = useRef(null);
-    // useEffect(() => {
-    //     const applyValidation = async () => {
-    //         const newError = await sanitizedValidate(value, getValues(), props);
-    //         console.log('COUCOU', newError);
-    //         if (newError && !isEqual(errorRef.current, newError)) {
-    //             errorRef.current = newError;
-    //             setError(source, {
-    //                 type: 'manual',
-    //                 message: getValidationErrorMessage(newError),
-    //             });
-    //         }
-
-    //         if (!newError && error) {
-    //             errorRef.current = null;
-    //             clearErrors(source);
-    //         }
-    //     };
-
-    //     if (sanitizedValidate) {
-    //         applyValidation();
-    //     }
-    // }, [
-    //     clearErrors,
-    //     error,
-    //     sanitizedValidate,
-    //     value,
-    //     getValues,
-    //     props,
-    //     setError,
-    //     source,
-    //     getValidationErrorMessage,
-    // ]);
+    const { isDirty, error } = getFieldState(source, formState);
 
     if (isLoading) {
         return (
@@ -190,13 +142,13 @@ export const ArrayInput = (props: ArrayInputProps) => {
             fullWidth
             margin={margin}
             className={clsx('ra-input', `ra-input-${source}`, className)}
-            error={(isDirty || isSubmitted) && invalid}
+            error={(isDirty || isSubmitted) && !!error}
             {...sanitizeInputRestProps(rest)}
         >
             <InputLabel
                 htmlFor={source}
                 shrink
-                error={(isDirty || isSubmitted) && invalid}
+                error={(isDirty || isSubmitted) && !!error}
             >
                 <FieldTitle
                     label={label}
@@ -216,11 +168,11 @@ export const ArrayInput = (props: ArrayInputProps) => {
                     disabled,
                 })}
             </ArrayInputContext.Provider>
-            {!!((isDirty || isSubmitted) && invalid) || helperText ? (
-                <FormHelperText error={(isDirty || isSubmitted) && invalid}>
+            {!!((isDirty || isSubmitted) && !!error) || helperText ? (
+                <FormHelperText error={(isDirty || isSubmitted) && !!error}>
                     <InputHelperText
                         touched={isDirty || isSubmitted}
-                        error={error?.message}
+                        error={error?.root?.message}
                         helperText={helperText}
                     />
                 </FormHelperText>

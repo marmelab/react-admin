@@ -21012,7 +21012,7 @@ __metadata:
     query-string: ^7.1.1
     react: ^17.0.0
     react-dom: ^17.0.0
-    react-hook-form: ^7.31.0
+    react-hook-form: ^7.34.2
     react-is: ^17.0.2
     react-query: ^3.32.1
     react-router: ^6.1.0
@@ -21025,7 +21025,7 @@ __metadata:
     history: ^5.1.0
     react: ^16.9.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.9.0 || ^17.0.0 || ^18.0.0
-    react-hook-form: ^7.31.0
+    react-hook-form: ^7.34.2
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
   languageName: unknown
@@ -21662,15 +21662,6 @@ __metadata:
     react: ^16.6.0 || ^17.0.0
     react-dom: ^16.6.0 || ^17.0.0
   checksum: 29cfa2f521b12d2f899a4f09dcba3106168f676a92ac2c9fc1a3acef19452896961e9b30b432195d9c7a59589fcbcef32afc136642affe82d014b8f31b442c1e
-  languageName: node
-  linkType: hard
-
-"react-hook-form@npm:^7.31.0":
-  version: 7.31.3
-  resolution: "react-hook-form@npm:7.31.3"
-  peerDependencies:
-    react: ^16.8.0 || ^17 || ^18
-  checksum: 41875aad648dbb9f9f0b297fc6e4601656ceae502ec4d77a7644cc66eb54f1ba0c645bac6bce7d5e099d4e52f5870c2dd9d48d6760220453412c1d5865b72738
   languageName: node
   linkType: hard
 
