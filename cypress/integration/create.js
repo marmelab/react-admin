@@ -60,6 +60,7 @@ describe('Create Page', () => {
                 value: 'foo',
             },
         ]);
+        CreatePage.submit();
         cy.get('.ra-input-backlinks').contains('Required');
     });
 
