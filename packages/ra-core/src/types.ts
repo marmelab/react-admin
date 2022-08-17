@@ -339,6 +339,7 @@ export interface ResourceProps {
     icon?: ComponentType<any>;
     recordRepresentation?: ReactElement | RecordToStringFunction | string;
     options?: ResourceOptions;
+    children?: ReactNode; 
 }
 
 export type Exporter = (
