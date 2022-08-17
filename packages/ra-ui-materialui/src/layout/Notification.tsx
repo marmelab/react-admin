@@ -92,7 +92,7 @@ export const Notification = (props: NotificationProps) => {
             ContentProps={{
                 className: clsx(NotificationClasses[messageInfo.type || type], {
                     [NotificationClasses.multiLine]:
-                        messageInfo.multiLine || multiLine,
+                        messageInfo.notificationOptions.multiLine || multiLine,
                 }),
             }}
             action={
