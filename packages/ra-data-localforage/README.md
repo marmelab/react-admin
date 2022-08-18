@@ -1,8 +1,8 @@
 # ra-data-localForage
 
-A data provider for [react-admin](https://github.com/marmelab/react-admin) that uses a [localForage](https://localforage.github.io/localForage/). It uses asynchronous storage (IndexedDB or WebSQL) with a simple, localStorage-like API. It fallback to localStorage in browsers with no IndexedDB or WebSQL support.
+A data provider for [react-admin](https://github.com/marmelab/react-admin) that uses [localForage](https://localforage.github.io/localForage/). It uses asynchronous storage (IndexedDB or WebSQL) with a simple, localStorage-like API. It fallback to localStorage in browsers with no IndexedDB or WebSQL support.
 
-The provider issues no HTTP requests, every operation happens locally in the browser. User editions are persisted across refreshes and between sessions. This allows local-first apps and can be useful in tests.
+The provider issues no HTTP requests, every operation happen locally in the browser. User editions are persisted across refreshes and between sessions. This allows local-first apps and can be useful in tests.
 
 ## Installation
 

@@ -1,6 +1,6 @@
 {
     "name": "ra-data-local-forage",
-    "version": "4.2.2",
+    "version": "4.2.3",
     "description": "LocalForage data provider for react-admin",
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
@@ -42,7 +42,7 @@
     "dependencies": {
         "localforage": "^1.7.1",
         "lodash": "~4.17.5",
-        "ra-data-fakerest": "^4.2.1"
+        "ra-data-fakerest": "^4.2.3"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
