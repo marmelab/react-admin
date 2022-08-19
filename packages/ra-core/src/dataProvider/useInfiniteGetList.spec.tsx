@@ -102,7 +102,9 @@ describe('useInfiniteGetList', () => {
         });
     });
 
-    it('should execute success side effects on success', async () => {
+    it('should call success side effects on success', async () => {
+        const onSuccess1 = jest.fn();
+
         const countries = [
             { id: 73, name: 'France', code: 'FR' },
             { id: 74, name: 'Italia', code: 'IT' },
@@ -126,14 +128,19 @@ describe('useInfiniteGetList', () => {
             <UseInfiniteListCore
                 dataProvider={dataProvider}
                 pagination={{ page: 1, perPage: 1 }}
+                options={{ onSuccess: onSuccess1 }}
             />
         );
         await waitFor(async () => {
+            expect(onSuccess1).toBeCalledTimes(1);
             expect(screen.getByLabelText('country').innerHTML).toContain(
                 'France'
             );
+
             screen.getByLabelText('refetch-button').click();
+
             await waitFor(async () => {
+                expect(onSuccess1).toBeCalledTimes(2);
                 expect(screen.queryAllByLabelText('country')).toHaveLength(2);
             });
         });

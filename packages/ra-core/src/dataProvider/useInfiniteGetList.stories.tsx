@@ -40,7 +40,6 @@ const UseInfiniteComponent = ({
     filter = {},
     options = {},
     meta = undefined,
-    callback = null,
     ...rest
 }) => {
     const { data, fetchNextPage, hasNextPage } = useInfiniteGetList(
@@ -66,7 +65,7 @@ const UseInfiniteComponent = ({
                     disabled={!hasNextPage}
                     onClick={() => fetchNextPage()}
                 >
-                    Refetch
+                    Fetch next page
                 </button>
             </div>
         </>

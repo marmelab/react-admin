@@ -1,7 +1,9 @@
 import {
     useInfiniteQuery,
+    UseInfiniteQueryOptions,
     UseInfiniteQueryResult,
     useQueryClient,
+    UseQueryOptions,
 } from 'react-query';
 
 import { RaRecord, GetListParams, GetInfiniteListResult } from '../types';
@@ -50,7 +52,7 @@ import { useDataProvider } from './useDataProvider';
  *            </ul>
  *            <div>
  *                <button disabled={!hasNextPage} onClick={() => fetchNextPage()}>
- *                    Refetch
+ *                    Fetch next page
  *                </button>
  *            </div>
  *        </>
@@ -61,8 +63,8 @@ import { useDataProvider } from './useDataProvider';
 export const useInfiniteGetList = <RecordType extends RaRecord = any>(
     resource: string,
     params: Partial<GetListParams> = {},
-    options?: any
-): UseInfiniteQueryResult<GetInfiniteListResult> => {
+    options?: UseInfiniteQueryOptions<GetInfiniteListResult<RecordType>, Error>
+): UseInfiniteGetListHookValue<RecordType> => {
     const {
         pagination = { page: 1, perPage: 25 },
         sort = { field: 'id', order: 'DESC' },
@@ -72,7 +74,11 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
 
-    return useInfiniteQuery(
+    const result = useInfiniteQuery<
+        GetInfiniteListResult<RecordType>,
+        Error,
+        GetInfiniteListResult<RecordType>
+    >(
         [resource, 'getList', { pagination, sort, filter, meta }],
         ({ pageParam = pagination.page }) =>
             dataProvider
@@ -92,6 +98,21 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
                     pageInfo,
                 })),
         {
+            onSuccess: data => {
+                // optimistically populate the getOne cache
+                data.pages.forEach(page => {
+                    page.data.forEach(record => {
+                        queryClient.setQueryData(
+                            [
+                                resource,
+                                'getOne',
+                                { id: String(record.id), meta },
+                            ],
+                            oldRecord => oldRecord ?? record
+                        );
+                    });
+                });
+            },
             ...options,
             getNextPageParam: lastLoadedPage => {
                 if (lastLoadedPage.pageInfo) {
@@ -118,21 +139,26 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
                     ? undefined
                     : lastLoadedPage.pageParam - 1;
             },
-            onSuccess: data => {
-                // optimistically populate the getOne cache
-                data.pages.forEach(page => {
-                    page.data.forEach(record => {
-                        queryClient.setQueryData(
-                            [
-                                resource,
-                                'getOne',
-                                { id: String(record.id), meta },
-                            ],
-                            oldRecord => oldRecord ?? record
-                        );
-                    });
-                });
-            },
         }
     );
+
+    return (result.data
+        ? {
+              ...result,
+              data: result.data,
+              total: result.data?.pages[0]?.total || 0,
+          }
+        : result) as UseInfiniteQueryResult<
+        GetInfiniteListResult<RecordType>,
+        Error
+    > & {
+        total?: number;
+    };
+};
+
+export type UseInfiniteGetListHookValue<
+    RecordType extends RaRecord = any
+> = UseInfiniteQueryResult<GetInfiniteListResult<RecordType>, Error> & {
+    total?: number;
+    pageParam?: number;
 };

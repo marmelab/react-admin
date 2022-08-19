@@ -141,9 +141,8 @@ export interface GetListResult<RecordType extends RaRecord = any> {
     };
 }
 
-export interface GetInfiniteListResult<RecordType extends RaRecord = any> {
-    data: RecordType[];
-    total?: number;
+export interface GetInfiniteListResult<RecordType extends RaRecord = any>
+    extends GetListResult<RecordType> {
     pageParam?: number;
 }
 export interface GetOneParams<RecordType extends RaRecord = any> {
