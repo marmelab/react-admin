@@ -3,7 +3,6 @@ import {
     UseInfiniteQueryOptions,
     UseInfiniteQueryResult,
     useQueryClient,
-    UseQueryOptions,
 } from 'react-query';
 
 import { RaRecord, GetListParams, GetInfiniteListResult } from '../types';
@@ -11,7 +10,9 @@ import { useDataProvider } from './useDataProvider';
 
 /**
  * Call the dataProvider.getList() method and return the resolved result
- * as well as the loading state.
+ * as well as the loading state. The return from useInfiniteGetList is equivalent to the return from react-hook form useInfiniteQuery.
+ *
+ * @see https://react-query-v3.tanstack.com/reference/useInfiniteQuery
  *
  *
  * This hook will return the cached result when called a second time
