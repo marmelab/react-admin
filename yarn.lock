@@ -21031,6 +21031,31 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"ra-core@npm:^4.2.7":
+  version: 4.2.7
+  resolution: "ra-core@npm:4.2.7"
+  dependencies:
+    clsx: ^1.1.1
+    date-fns: ^2.19.0
+    eventemitter3: ^4.0.7
+    inflection: ~1.12.0
+    jsonexport: ^3.2.0
+    lodash: ~4.17.5
+    prop-types: ^15.6.1
+    query-string: ^7.1.1
+    react-is: ^17.0.2
+    react-query: ^3.32.1
+  peerDependencies:
+    history: ^5.1.0
+    react: ^16.9.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.9.0 || ^17.0.0 || ^18.0.0
+    react-hook-form: ^7.31.0
+    react-router: ^6.1.0
+    react-router-dom: ^6.1.0
+  checksum: 9247197be7b18f4b5e1114c91721f446d41c0e849179ad02a4eb2f69645990b44bb8b60119bb638bc5697e96d31c8c62196beb17c191a4ac38693f86451dcc21
+  languageName: node
+  linkType: hard
+
 "ra-data-fakerest@^4.0.0, ra-data-fakerest@^4.2.6, ra-data-fakerest@workspace:packages/ra-data-fakerest":
   version: 0.0.0-use.local
   resolution: "ra-data-fakerest@workspace:packages/ra-data-fakerest"
@@ -21133,6 +21158,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"ra-i18n-polyglot@npm:^4.2.7":
+  version: 4.2.7
+  resolution: "ra-i18n-polyglot@npm:4.2.7"
+  dependencies:
+    node-polyglot: ^2.2.2
+    ra-core: ^4.2.7
+  checksum: 346b058be2457731a65dc296b6c8123f07d137a80aca55486dc37862b73113812d3f1e23485796371b84fbca603886b2e9c9eb2f7caee4a089928e762689b868
+  languageName: node
+  linkType: hard
+
 "ra-input-rich-text@^4.0.0, ra-input-rich-text@^4.2.6, ra-input-rich-text@workspace:packages/ra-input-rich-text":
   version: 0.0.0-use.local
   resolution: "ra-input-rich-text@workspace:packages/ra-input-rich-text"
@@ -21179,6 +21214,15 @@ __metadata:
     typescript: ^4.4.0
   languageName: unknown
   linkType: soft
+
+"ra-language-english@npm:^4.2.7":
+  version: 4.2.7
+  resolution: "ra-language-english@npm:4.2.7"
+  dependencies:
+    ra-core: ^4.2.7
+  checksum: 94f6d4c973fed9ca6ca8ca5ae91aa51f8f1c4a483afc81e4aa96b811d398eedd4178523e91fef6e070bf82fea12891bae81d1330e0c9d20b4c36f0ca03b029d6
+  languageName: node
+  linkType: hard
 
 "ra-language-french@^4.0.0, ra-language-french@^4.2.6, ra-language-french@workspace:packages/ra-language-french":
   version: 0.0.0-use.local
@@ -21267,6 +21311,35 @@ __metadata:
     react-router-dom: ^6.1.0
   languageName: unknown
   linkType: soft
+
+"ra-ui-materialui@npm:^4.2.7":
+  version: 4.2.7
+  resolution: "ra-ui-materialui@npm:4.2.7"
+  dependencies:
+    autosuggest-highlight: ^3.1.1
+    clsx: ^1.1.1
+    css-mediaquery: ^0.1.2
+    inflection: ~1.12.0
+    jsonexport: ^3.2.0
+    lodash: ~4.17.5
+    prop-types: ^15.7.0
+    query-string: ^7.1.1
+    react-dropzone: ^12.0.4
+    react-error-boundary: ^3.1.4
+    react-query: ^3.32.1
+    react-transition-group: ^4.4.1
+  peerDependencies:
+    "@mui/icons-material": ^5.0.1
+    "@mui/material": ^5.0.2
+    ra-core: ^4.0.0
+    react: ^16.9.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.9.0 || ^17.0.0 || ^18.0.0
+    react-hook-form: "*"
+    react-router: ^6.1.0
+    react-router-dom: ^6.1.0
+  checksum: d54b95c246177a859b45c574c536a04795b19fc09d1482959cddc2ce7e91e738ea937ac7246e579d58339989d3769f3a04a07fd551b1e69b784f1e7d832f641c
+  languageName: node
+  linkType: hard
 
 "raf-schd@npm:^4.0.2":
   version: 4.0.3
