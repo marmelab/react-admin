@@ -97,7 +97,7 @@ For instance, to render only tags that are 'published', you can use the followin
     <SingleFieldList>
         <ChipField source="name" />
     </SingleFieldList>
-</ReferenceField>
+</ReferenceArrayField>
 ```
 {% endraw %}
 
@@ -111,7 +111,7 @@ By default, `<SimpleShowLayout>`, `<Datagrid>` and other layout components infer
     <SingleFieldList>
         <ChipField source="name" />
     </SingleFieldList>
-</ReferenceField>
+</ReferenceArrayField>
 ```
 
 That's why you often need to set an explicit `label` on a `<ReferenceField>`:
@@ -121,7 +121,7 @@ That's why you often need to set an explicit `label` on a `<ReferenceField>`:
     <SingleFieldList>
         <ChipField source="name" />
     </SingleFieldList>
-</ReferenceField>
+</ReferenceArrayField>
 ```
 
 React-admin uses [the i18n system](./Translation.md) to translate the label, so you can use translation keys to have one label for each language supported by the interface:
@@ -131,7 +131,7 @@ React-admin uses [the i18n system](./Translation.md) to translate the label, so 
     <SingleFieldList>
         <ChipField source="name" />
     </SingleFieldList>
-</ReferenceField>
+</ReferenceArrayField>
 ```
 
 ## `pagination`
@@ -178,7 +178,7 @@ For instance, if the `posts` resource has a `tag_ids` field, set the `reference`
     <SingleFieldList>
         <ChipField source="name" />
     </SingleFieldList>
-</ReferenceField>
+</ReferenceArrayField>
 ```
 
 ## `sort`
@@ -200,7 +200,7 @@ For instance, to sort tags by title in ascending order, you can use the followin
     <SingleFieldList>
         <ChipField source="name" />
     </SingleFieldList>
-</ReferenceField>
+</ReferenceArrayField>
 ```
 {% endraw %}
 
