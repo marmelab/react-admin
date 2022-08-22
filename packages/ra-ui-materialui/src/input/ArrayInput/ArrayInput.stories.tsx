@@ -98,30 +98,33 @@ export const AutocompleteFirst = () => (
     </Admin>
 );
 
-const BookTagsEdit = () => {
-    return (
-        <Edit
-            mutationMode="pessimistic"
-            mutationOptions={{
-                onSuccess: data => {
-                    console.log(data);
-                },
-            }}
-        >
-            <SimpleForm>
-                <TextInput source="title" />
-                <ArrayInput source="tags" fullWidth>
-                    <SimpleFormIterator disableReordering>
-                        <TextInput source="" label="tag" helperText={false} />
-                    </SimpleFormIterator>
-                </ArrayInput>
-            </SimpleForm>
-        </Edit>
-    );
-};
-
 export const Scalar = () => (
     <Admin dataProvider={dataProvider} history={history}>
-        <Resource name="books" edit={BookTagsEdit} />
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                >
+                    <SimpleForm>
+                        <TextInput source="title" />
+                        <ArrayInput source="tags" fullWidth>
+                            <SimpleFormIterator disableReordering>
+                                <TextInput
+                                    source=""
+                                    label="tag"
+                                    helperText={false}
+                                />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
     </Admin>
 );
