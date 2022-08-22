@@ -231,7 +231,6 @@ const PREFIX = 'RaFileInput';
 
 export const FileInputClasses = {
     dropZone: `${PREFIX}-dropZone`,
-    preview: `${PREFIX}-preview`,
     removeButton: `${PREFIX}-removeButton`,
 };
 
@@ -249,7 +248,6 @@ const StyledLabeled = styled(Labeled, {
         textAlign: 'center',
         color: theme.palette.getContrastText(theme.palette.background.default),
     },
-    [`& .${FileInputClasses.preview}`]: {},
     [`& .${FileInputClasses.removeButton}`]: {},
 }));
 

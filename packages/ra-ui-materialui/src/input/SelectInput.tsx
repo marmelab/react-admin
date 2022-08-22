@@ -408,6 +408,7 @@ export type SelectInputProps = Omit<CommonInputProps, 'source'> &
         disableValue?: string;
         emptyText?: string | ReactElement;
         emptyValue?: any;
+        resettable?: boolean;
         // Source is optional as AutocompleteInput can be used inside a ReferenceInput that already defines the source
         source?: string;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;

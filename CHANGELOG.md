@@ -1,5 +1,33 @@
 # Changelog
 
+## v4.2.8
+
+* Fix `<ArrayInput>` doesn't support scalar values ([#8090](https://github.com/marmelab/react-admin/pull/8090)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<CoreAdmin store>` prop is ignored ([#8088](https://github.com/marmelab/react-admin/pull/8088)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Notification multiLine>` prop is ignored ([#8078](https://github.com/marmelab/react-admin/pull/8078)) ([arimet](https://github.com/arimet))
+* Fix `<ImageInput>` includes useless class names ([#8066](https://github.com/marmelab/react-admin/pull/8066)) ([thibault-barrat](https://github.com/thibault-barrat))
+* [TypeScript] Add `resettable` prop to `SelectInputProps` ([#8071](https://github.com/marmelab/react-admin/pull/8071)) ([thibault-barrat](https://github.com/thibault-barrat))
+* [Doc] Fix upgrade guide still mentioning `<TextInput transform>` pop ([#8089](https://github.com/marmelab/react-admin/pull/8089)) ([Cimanel](https://github.com/Cimanel))
+* [Doc] Fix typos in `<ReferenceArrayField>` doc ([#8087](https://github.com/marmelab/react-admin/pull/8087)) ([zackha](https://github.com/zackha))
+* [Doc] Fix typos in migration to v4 guide ([#8084](https://github.com/marmelab/react-admin/pull/8084)) ([Cimanel](https://github.com/Cimanel))
+* [Doc] Add WooCommerce in available DataProvider list ([#8081](https://github.com/marmelab/react-admin/pull/8081)) ([zackha](https://github.com/zackha))
+* [Doc] Add Express & Mongoose in available DataProvider list ([#8076](https://github.com/marmelab/react-admin/pull/8076)) ([NathanAdhitya](https://github.com/NathanAdhitya))
+* [Doc] Fix installation instructions in tutorial project ([#8074](https://github.com/marmelab/react-admin/pull/8074)) ([zackha](https://github.com/zackha))
+* [Doc] Fix missing `label` prop in `<ReferenceInput>` and `<ReferenceArrayInput>` docs ([#8068](https://github.com/marmelab/react-admin/pull/8068)) ([thibault-barrat](https://github.com/thibault-barrat))
+
+## v4.2.7
+
+* Fix `<FormDataConsumer>` inside `<SimpleFormIterator>` adds empty value ([#8061](https://github.com/marmelab/react-admin/pull/8061)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `useStore` internal state reset when key changes ([#8058](https://github.com/marmelab/react-admin/pull/8058)) ([slax57](https://github.com/slax57))
+* Fix notification for validation errors doesn't show on `<Edit>` pages ([#8055](https://github.com/marmelab/react-admin/pull/8055)) ([arimet](https://github.com/arimet))
+* Fix `<Form>` does not display notification after the first invalid submit ([#8057](https://github.com/marmelab/react-admin/pull/8057)) ([arimet](https://github.com/arimet))
+* Fix `<FileInput>` and `<ImageInput>` clone their child ([#8052](https://github.com/marmelab/react-admin/pull/8052)) ([thibault-barrat](https://github.com/thibault-barrat))
+* [Doc] Document how to sanitize form values ([#8048](https://github.com/marmelab/react-admin/pull/8048)) ([septentrion-730n](https://github.com/septentrion-730n))
+* [Doc] Improve `<ImageField>`, `<NumberField>` and `<SelectField>` docs ([#8045](https://github.com/marmelab/react-admin/pull/8045)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add Vite integration doc ([#8054](https://github.com/marmelab/react-admin/pull/8054)) ([thibault-barrat](https://github.com/thibault-barrat))
+* [Doc] Add `useGetTree` doc ([#8065](https://github.com/marmelab/react-admin/pull/8065)) ([thibault-barrat](https://github.com/thibault-barrat))
+* [Doc] Add `<JsonSchemaForm>` doc ([#8056](https://github.com/marmelab/react-admin/pull/8056)) ([thibault-barrat](https://github.com/thibault-barrat))
+
 ## v4.2.6
 
 * Fix `<DeleteButton mutationOptions>` ignores `meta` parameter ([#8023](https://github.com/marmelab/react-admin/pull/8023)) ([septentrion-730n](https://github.com/septentrion-730n))

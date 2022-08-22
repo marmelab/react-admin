@@ -1096,7 +1096,7 @@ Page components (`<List>`, `<Show>`, etc.) used to expect to receive props (rout
 If you need to access the permissions previously passed as props, you need to call the `usePermissions` hook instead.
 
 ```diff
-+const { usePermissions } from 'react-admin';
++import { usePermissions } from 'react-admin';
 
 -const PostShow = ({ permissions, ...props }) => {
 +const PostShow = () => {
@@ -1136,7 +1136,7 @@ If you need to access the `hasList` and other flags related to resource configur
 If you need to access a route parameter, use react-router's `useParams` hook instead.
 
 ```diff
-+const { useParams } from 'react-router-dom';
++import { useParams } from 'react-router-dom';
 
 -const PostShow = ({ id, ...props }) => {
 +const PostShow = () => {
@@ -2708,6 +2708,8 @@ const UserInput = [
     </ReferenceInput>
 ]
 ```
+
+**Note**: `<ReferenceInput>` and `<ReferenceArrayInput>` still accept the `label` prop, which is used as the Filter label when they are used in a Filter array.
 
 #### `<ReferenceArrayInput>` No Longer Provides a `ListContext`
 

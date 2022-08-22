@@ -61,16 +61,29 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         (item: any = undefined) => {
             let defaultValue = item;
             if (item == null) {
-                defaultValue = {} as Record<string, unknown>;
-                Children.forEach(children, input => {
-                    if (
-                        React.isValidElement(input) &&
-                        input.type !== FormDataConsumer
-                    ) {
-                        defaultValue[input.props.source] =
-                            input.props.defaultValue ?? '';
-                    }
-                });
+                if (
+                    Children.count(children) === 1 &&
+                    React.isValidElement(Children.only(children)) &&
+                    // @ts-ignore
+                    !Children.only(children).props.source
+                ) {
+                    // ArrayInput used for an array of scalar values
+                    // (e.g. tags: ['foo', 'bar'])
+                    defaultValue = '';
+                } else {
+                    // ArrayInput used for an array of objects
+                    // (e.g. authors: [{ firstName: 'John', lastName: 'Doe' }, { firstName: 'Jane', lastName: 'Doe' }])
+                    defaultValue = {} as Record<string, unknown>;
+                    Children.forEach(children, input => {
+                        if (
+                            React.isValidElement(input) &&
+                            input.type !== FormDataConsumer
+                        ) {
+                            defaultValue[input.props.source] =
+                                input.props.defaultValue ?? '';
+                        }
+                    });
+                }
             }
             append(defaultValue);
         },
