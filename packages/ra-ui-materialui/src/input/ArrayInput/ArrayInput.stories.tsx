@@ -28,6 +28,7 @@ const dataProvider = {
                         role: 'co_writer',
                     },
                 ],
+                tags: ['novel', 'war', 'classic'],
             },
         }),
     update: (resource, params) => Promise.resolve(params),
@@ -94,5 +95,36 @@ const BookEditWithAutocomplete = () => {
 export const AutocompleteFirst = () => (
     <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" edit={BookEditWithAutocomplete} />
+    </Admin>
+);
+
+export const Scalar = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                >
+                    <SimpleForm>
+                        <TextInput source="title" />
+                        <ArrayInput source="tags" fullWidth>
+                            <SimpleFormIterator disableReordering>
+                                <TextInput
+                                    source=""
+                                    label="tag"
+                                    helperText={false}
+                                />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
     </Admin>
 );
