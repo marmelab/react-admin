@@ -1,5 +1,20 @@
 # Changelog
 
+## v4.2.8
+
+* Fix `<ArrayInput>` doesn't support scalar values ([#8090](https://github.com/marmelab/react-admin/pull/8090)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<CoreAdmin store>` prop is ignored ([#8088](https://github.com/marmelab/react-admin/pull/8088)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Notification multiLine>` prop is ignored ([#8078](https://github.com/marmelab/react-admin/pull/8078)) ([arimet](https://github.com/arimet))
+* Fix `<ImageInput>` includes useless class names ([#8066](https://github.com/marmelab/react-admin/pull/8066)) ([thibault-barrat](https://github.com/thibault-barrat))
+* [TypeScript] Add `resettable` prop to `SelectInputProps` ([#8071](https://github.com/marmelab/react-admin/pull/8071)) ([thibault-barrat](https://github.com/thibault-barrat))
+* [Doc] Fix upgrade guide still mentioning `<TextInput transform>` pop ([#8089](https://github.com/marmelab/react-admin/pull/8089)) ([Cimanel](https://github.com/Cimanel))
+* [Doc] Fix typos in `<ReferenceArrayField>` doc ([#8087](https://github.com/marmelab/react-admin/pull/8087)) ([zackha](https://github.com/zackha))
+* [Doc] Fix typos in migration to v4 guide ([#8084](https://github.com/marmelab/react-admin/pull/8084)) ([Cimanel](https://github.com/Cimanel))
+* [Doc] Add WooCommerce in available DataProvider list ([#8081](https://github.com/marmelab/react-admin/pull/8081)) ([zackha](https://github.com/zackha))
+* [Doc] Add Express & Mongoose in available DataProvider list ([#8076](https://github.com/marmelab/react-admin/pull/8076)) ([NathanAdhitya](https://github.com/NathanAdhitya))
+* [Doc] Fix installation instructions in tutorial project ([#8074](https://github.com/marmelab/react-admin/pull/8074)) ([zackha](https://github.com/zackha))
+* [Doc] Fix missing `label` prop in `<ReferenceInput>` and `<ReferenceArrayInput>` docs ([#8068](https://github.com/marmelab/react-admin/pull/8068)) ([thibault-barrat](https://github.com/thibault-barrat))
+
 ## v4.2.7
 
 * Fix `<FormDataConsumer>` inside `<SimpleFormIterator>` adds empty value ([#8061](https://github.com/marmelab/react-admin/pull/8061)) ([fzaninotto](https://github.com/fzaninotto))
