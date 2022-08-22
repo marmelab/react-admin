@@ -376,7 +376,7 @@ const dateParser = value => {
 <DateInput source="isodate" format={dateFormatter} parse={dateParser} defaultValue={new Date()} />
 ```
 
-**Tip:** To spread a conversion behaviour to your whole application, you can import a `react-admin`component then re-export them with their `transform` and/or `parse` props set.
+**Tip:** To spread a conversion behaviour to your whole application, you can import a `react-admin`component then re-export them with their `format` and/or `parse` props set.
 
 ```jsx
 import * as React from 'react';
@@ -386,7 +386,7 @@ const FilledOrNullTextInput = props => {
     return (
         <TextInput
             {...props}
-            transform={ v => typeof v === 'string' && v.length === 0 ? null : v }
+            format={ v => typeof v === 'string' && v.length === 0 ? null : v }
             />
     );
 };
