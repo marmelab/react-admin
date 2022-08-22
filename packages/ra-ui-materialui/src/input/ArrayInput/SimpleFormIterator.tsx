@@ -9,7 +9,7 @@ import {
     useCallback,
     useMemo,
 } from 'react';
-import { styled } from '@mui/material';
+import { styled, SxProps } from '@mui/material';
 import clsx from 'clsx';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
@@ -43,7 +43,9 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         disableAdd,
         disableRemove,
         disableReordering,
+        inline,
         getItemLabel = DefaultLabelFn,
+        sx,
     } = props;
     const { append, fields, move, remove } = useArrayInput(props);
     const record = useRecordContext(props);
@@ -106,7 +108,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     );
     return fields ? (
         <SimpleFormIteratorContext.Provider value={context}>
-            <Root className={className}>
+            <Root className={className} sx={sx}>
                 {fields.map((member, index) => (
                     <SimpleFormIteratorItem
                         key={member.id}
@@ -124,6 +126,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                         reOrderButtons={reOrderButtons}
                         resource={resource}
                         source={source}
+                        inline={inline}
                     >
                         {children}
                     </SimpleFormIteratorItem>
@@ -163,6 +166,7 @@ SimpleFormIterator.propTypes = {
     fields: PropTypes.array,
     fieldState: PropTypes.object,
     formState: PropTypes.object,
+    inline: PropTypes.bool,
     record: PropTypes.object,
     source: PropTypes.string,
     resource: PropTypes.string,
@@ -182,6 +186,7 @@ export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
     disableRemove?: boolean | DisableRemoveFunction;
     disableReordering?: boolean;
     getItemLabel?: (index: number) => string;
+    inline?: boolean;
     meta?: {
         // the type defined in FieldArrayRenderProps says error is boolean, which is wrong.
         error?: any;
@@ -192,6 +197,7 @@ export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
     reOrderButtons?: ReactElement;
     resource?: string;
     source?: string;
+    sx?: SxProps;
 }
 
 const Root = styled('ul', {
@@ -224,6 +230,10 @@ const Root = styled('ul', {
         display: 'flex',
         flexDirection: 'column',
         flex: 2,
+    },
+    [`& .${SimpleFormIteratorClasses.inline}`]: {
+        flexDirection: 'row',
+        gap: '1em',
     },
     [`& .${SimpleFormIteratorClasses.action}`]: {
         paddingTop: '0.5em',
