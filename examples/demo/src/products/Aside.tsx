@@ -8,6 +8,7 @@ import {
     FilterList,
     FilterListItem,
     FilterLiveSearch,
+    SavedQueriesList,
     useGetList,
 } from 'react-admin';
 
@@ -31,6 +32,8 @@ const Aside = () => {
         >
             <CardContent sx={{ pt: 1 }}>
                 <FilterLiveSearch />
+
+                <SavedQueriesList />
 
                 <FilterList
                     label="resources.products.filters.sales"
