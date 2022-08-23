@@ -7,6 +7,7 @@ export * from './CommonInputProps';
 export * from './DatagridInput';
 export * from './DateInput';
 export * from './DateTimeInput';
+export * from './TimeInput';
 export * from './FileInput';
 export * from './ImageInput';
 export * from './InputHelperText';

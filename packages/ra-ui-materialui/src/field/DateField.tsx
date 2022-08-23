@@ -39,9 +39,17 @@ export const DateField: FC<DateFieldProps> = memo(props => {
         locales,
         options,
         showTime = false,
+        showDate = true,
         source,
         ...rest
     } = props;
+
+    if (!showTime && !showDate) {
+        throw new Error(
+            '<DateField> cannot have showTime and showDate false at the same time'
+        );
+    }
+
     const record = useRecordContext(props);
     if (!record) {
         return null;
@@ -73,13 +81,20 @@ export const DateField: FC<DateFieldProps> = memo(props => {
         // who may see a different date when calling toLocaleDateString().
         dateOptions = { timeZone: 'UTC' };
     }
-    const dateString = showTime
-        ? toLocaleStringSupportsLocales
+    let dateString = '';
+    if (showTime && showDate) {
+        dateString = toLocaleStringSupportsLocales
             ? date.toLocaleString(locales, options)
-            : date.toLocaleString()
-        : toLocaleStringSupportsLocales
-        ? date.toLocaleDateString(locales, dateOptions)
-        : date.toLocaleDateString();
+            : date.toLocaleString();
+    } else if (showDate) {
+        dateString = toLocaleStringSupportsLocales
+            ? date.toLocaleDateString(locales, dateOptions)
+            : date.toLocaleDateString();
+    } else if (showTime) {
+        dateString = toLocaleStringSupportsLocales
+            ? date.toLocaleTimeString(locales, options)
+            : date.toLocaleTimeString();
+    }
 
     return (
         <Typography
@@ -103,6 +118,7 @@ DateField.propTypes = {
     ]),
     options: PropTypes.object,
     showTime: PropTypes.bool,
+    showDate: PropTypes.bool,
 };
 
 DateField.displayName = 'DateField';
@@ -114,6 +130,7 @@ export interface DateFieldProps
     locales?: string | string[];
     options?: object;
     showTime?: boolean;
+    showDate?: boolean;
 }
 
 const toLocaleStringSupportsLocales = (() => {
