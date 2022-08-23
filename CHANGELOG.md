@@ -1,5 +1,20 @@
 # Changelog
 
+## v4.3.0
+
+* Add default Record representation ([#8011](https://github.com/marmelab/react-admin/pull/8011)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to remove empty option in `<SelectInput>` for required fields ([#8039](https://github.com/marmelab/react-admin/pull/8039)) ([fzaninotto](https://github.com/fzaninotto))
+* Add a "Clear all filters" button ([#8017](https://github.com/marmelab/react-admin/pull/8017)) ([septentrion-730n](https://github.com/septentrion-730n))
+* Add support for `<SimpleFormIterator>` `inline` and `sx` props ([#8067](https://github.com/marmelab/react-admin/pull/8067)) ([fzaninotto](https://github.com/fzaninotto))
+* Add support for custom login redirection ([#7999](https://github.com/marmelab/react-admin/pull/7999)) ([fzaninotto](https://github.com/fzaninotto))
+* Add abiliy to have two react-admin apps under the same domain ([#8031](https://github.com/marmelab/react-admin/pull/8031)) ([septentrion-730n](https://github.com/septentrion-730n))
+* Add `<TimeInput>` ([#7917](https://github.com/marmelab/react-admin/pull/7917)) ([arnaudvergnet](https://github.com/arnaudvergnet))
+* Add ability to make `<Authenticated />` pessimistic and require authentication ([#7993](https://github.com/marmelab/react-admin/pull/7993)) ([smeng9](https://github.com/smeng9))
+* Fix sourcemaps are missing from build ([#8095](https://github.com/marmelab/react-admin/pull/8095)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ArrayInput>` validation does not prevent submission ([#8080](https://github.com/marmelab/react-admin/pull/8080)) ([arimet](https://github.com/arimet))
+* Fix `<AutocompleteInput>` suggestions flicker when used inside `<ReferenceInput>` ([#8037](https://github.com/marmelab/react-admin/pull/8037)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix some strict null checks in `ra-core` ([#7952](https://github.com/marmelab/react-admin/pull/7952)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v4.2.8
 
 * Fix `<ArrayInput>` doesn't support scalar values ([#8090](https://github.com/marmelab/react-admin/pull/8090)) ([fzaninotto](https://github.com/fzaninotto))
