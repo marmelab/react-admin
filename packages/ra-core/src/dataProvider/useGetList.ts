@@ -83,6 +83,7 @@ export const useGetList = <RecordType extends RaRecord = any>(
                     pageInfo,
                 })),
         {
+            ...options,
             onSuccess: ({ data }) => {
                 // optimistically populate the getOne cache
                 data.forEach(record => {
@@ -91,8 +92,11 @@ export const useGetList = <RecordType extends RaRecord = any>(
                         oldRecord => oldRecord ?? record
                     );
                 });
+                // execute call-time onSuccess if provided
+                if (options?.onSuccess) {
+                    options.onSuccess({ data });
+                }
             },
-            ...options,
         }
     );
 
