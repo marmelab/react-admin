@@ -10,12 +10,15 @@ import {
     FilterPayload,
     ResourceContextProvider,
     useRecordContext,
+    useResourceDefinition,
 } from 'ra-core';
+import { styled } from '@mui/material/styles';
+import { SxProps } from '@mui/system';
 
 import { fieldPropTypes, PublicFieldProps, InjectedFieldProps } from './types';
 import { LinearProgress } from '../layout';
-import { styled } from '@mui/material/styles';
-import { SxProps } from '@mui/system';
+import { SingleFieldList } from '../list/SingleFieldList';
+import { ChipField } from './ChipField';
 
 /**
  * A container component that fetches records from another resource specified
@@ -106,7 +109,7 @@ export const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
 ReferenceArrayField.propTypes = {
     ...fieldPropTypes,
     className: PropTypes.string,
-    children: PropTypes.node.isRequired,
+    children: PropTypes.node,
     label: fieldPropTypes.label,
     record: PropTypes.any,
     reference: PropTypes.string.isRequired,
@@ -119,7 +122,7 @@ ReferenceArrayField.propTypes = {
 export interface ReferenceArrayFieldProps
     extends PublicFieldProps,
         InjectedFieldProps {
-    children: ReactNode;
+    children?: ReactNode;
     filter?: FilterPayload;
     page?: number;
     pagination?: ReactElement;
@@ -135,8 +138,24 @@ export interface ReferenceArrayFieldViewProps
         ListControllerProps {}
 
 export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props => {
-    const { children, pagination, className, sx } = props;
+    const { children, pagination, reference, className, sx } = props;
     const { isLoading, total } = useListContext(props);
+
+    const { recordRepresentation } = useResourceDefinition({
+        resource: reference,
+    });
+    let child =
+        typeof recordRepresentation === 'string' ? (
+            <SingleFieldList>
+                <ChipField source={recordRepresentation} size="small" />
+            </SingleFieldList>
+        ) : recordRepresentation == null ? (
+            <SingleFieldList>
+                <ChipField source="id" size="small" />
+            </SingleFieldList>
+        ) : (
+            children
+        );
 
     return (
         <Root className={className} sx={sx}>
@@ -146,7 +165,7 @@ export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props =
                 />
             ) : (
                 <span>
-                    {children}
+                    {child}
                     {pagination && total !== undefined ? pagination : null}
                 </span>
             )}
