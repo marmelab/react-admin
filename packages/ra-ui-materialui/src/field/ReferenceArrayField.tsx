@@ -144,18 +144,20 @@ export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props =
     const { recordRepresentation } = useResourceDefinition({
         resource: reference,
     });
-    let child =
-        typeof recordRepresentation === 'string' ? (
-            <SingleFieldList>
-                <ChipField source={recordRepresentation} size="small" />
-            </SingleFieldList>
-        ) : recordRepresentation == null ? (
-            <SingleFieldList>
-                <ChipField source="id" size="small" />
-            </SingleFieldList>
-        ) : (
-            children
-        );
+    let child = children ? (
+        children
+    ) : (
+        <SingleFieldList>
+            <ChipField
+                source={
+                    typeof recordRepresentation === 'string'
+                        ? recordRepresentation
+                        : 'id'
+                }
+                size="small"
+            />
+        </SingleFieldList>
+    );
 
     return (
         <Root className={className} sx={sx}>
