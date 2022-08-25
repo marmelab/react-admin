@@ -175,7 +175,7 @@ export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props =
 
 ReferenceArrayFieldView.propTypes = {
     className: PropTypes.string,
-    children: PropTypes.node.isRequired,
+    children: PropTypes.node,
     reference: PropTypes.string.isRequired,
 };
 
