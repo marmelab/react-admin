@@ -6,7 +6,11 @@ class InferredElement {
         private type?: InferredType,
         private props?: any,
         private children?: any
-    ) {}
+    ) {
+        this.type = type;
+        this.props = props;
+        this.children = children;
+    }
 
     getElement(props = {}) {
         if (!this.type || !this.type.component) {

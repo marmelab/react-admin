@@ -18,6 +18,7 @@ export * from './NumberInput';
 export * from './PasswordInput';
 export * from './RadioButtonGroupInput';
 export * from './ReferenceArrayInput';
+export * from './ReferenceError';
 export * from './ReferenceInput';
 export * from './ResettableTextField';
 export * from './sanitizeInputRestProps';
