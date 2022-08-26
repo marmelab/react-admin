@@ -10,7 +10,12 @@ import {
 
 import { useDataProvider } from './useDataProvider';
 import undoableEventEmitter from './undoableEventEmitter';
-import { RaRecord, UpdateParams, MutationMode } from '../types';
+import {
+    RaRecord,
+    UpdateParams,
+    MutationMode,
+    GetListResult as OriginalGetListResult,
+} from '../types';
 
 /**
  * Get a callback to call the dataProvider.update() method, the result and the loading state.
@@ -110,13 +115,8 @@ export const useUpdate = <
             ];
         };
 
-        type GetListResult = {
+        type GetListResult = Omit<OriginalGetListResult, 'data'> & {
             data?: RecordType[];
-            total?: number;
-            pageInfo?: {
-                hasNextPage?: boolean;
-                hasPreviousPage?: boolean;
-            };
         };
 
         queryClient.setQueryData(

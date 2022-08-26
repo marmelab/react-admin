@@ -222,100 +222,6 @@ describe('useUpdate', () => {
                 expect(screen.queryByText('mutating')).toBeNull();
             });
         });
-        it('when pessimistic, updates getList query cache when dataProvider promise resolves', async () => {
-            const queryClient = new QueryClient();
-            queryClient.setQueryData(['foo', 'getList'], {
-                data: [{ id: 1, bar: 'bar' }],
-                total: 1,
-            });
-            const dataProvider = {
-                update: jest.fn(() =>
-                    Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
-                ),
-            } as any;
-            let localUpdate;
-            const Dummy = () => {
-                const [update] = useUpdate();
-                localUpdate = update;
-                return <span />;
-            };
-            render(
-                <CoreAdminContext
-                    dataProvider={dataProvider}
-                    queryClient={queryClient}
-                >
-                    <Dummy />
-                </CoreAdminContext>
-            );
-            localUpdate('foo', {
-                id: 1,
-                data: { bar: 'baz' },
-                previousData: { id: 1, bar: 'bar' },
-            });
-            await waitFor(() => {
-                expect(dataProvider.update).toHaveBeenCalledWith('foo', {
-                    id: 1,
-                    data: { bar: 'baz' },
-                    previousData: { id: 1, bar: 'bar' },
-                });
-            });
-            await waitFor(() => {
-                expect(queryClient.getQueryData(['foo', 'getList'])).toEqual({
-                    data: [{ id: 1, bar: 'baz' }],
-                    total: 1,
-                });
-            });
-        });
-        it('when pessimistic, updates getList query cache with pageInfo when dataProvider promise resolves', async () => {
-            const queryClient = new QueryClient();
-            queryClient.setQueryData(['foo', 'getList'], {
-                data: [{ id: 1, bar: 'bar' }],
-                pageInfo: {
-                    hasPreviousPage: false,
-                    hasNextPage: true,
-                },
-            });
-            const dataProvider = {
-                update: jest.fn(() =>
-                    Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
-                ),
-            } as any;
-            let localUpdate;
-            const Dummy = () => {
-                const [update] = useUpdate();
-                localUpdate = update;
-                return <span />;
-            };
-            render(
-                <CoreAdminContext
-                    dataProvider={dataProvider}
-                    queryClient={queryClient}
-                >
-                    <Dummy />
-                </CoreAdminContext>
-            );
-            localUpdate('foo', {
-                id: 1,
-                data: { bar: 'baz' },
-                previousData: { id: 1, bar: 'bar' },
-            });
-            await waitFor(() => {
-                expect(dataProvider.update).toHaveBeenCalledWith('foo', {
-                    id: 1,
-                    data: { bar: 'baz' },
-                    previousData: { id: 1, bar: 'bar' },
-                });
-            });
-            await waitFor(() => {
-                expect(queryClient.getQueryData(['foo', 'getList'])).toEqual({
-                    data: [{ id: 1, bar: 'baz' }],
-                    pageInfo: {
-                        hasPreviousPage: false,
-                        hasNextPage: true,
-                    },
-                });
-            });
-        });
         it('when optimistic, displays result and success side effects right away', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
             render(<SuccessCaseOptimistic />);
@@ -406,6 +312,102 @@ describe('useUpdate', () => {
                 expect(screen.queryByText('success')).toBeNull();
                 expect(screen.queryByText('Hello World')).toBeNull();
                 expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+    });
+    describe('query cache', () => {
+        it('updates getList query cache when dataProvider promise resolves', async () => {
+            const queryClient = new QueryClient();
+            queryClient.setQueryData(['foo', 'getList'], {
+                data: [{ id: 1, bar: 'bar' }],
+                total: 1,
+            });
+            const dataProvider = {
+                update: jest.fn(() =>
+                    Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
+                ),
+            } as any;
+            let localUpdate;
+            const Dummy = () => {
+                const [update] = useUpdate();
+                localUpdate = update;
+                return <span />;
+            };
+            render(
+                <CoreAdminContext
+                    dataProvider={dataProvider}
+                    queryClient={queryClient}
+                >
+                    <Dummy />
+                </CoreAdminContext>
+            );
+            localUpdate('foo', {
+                id: 1,
+                data: { bar: 'baz' },
+                previousData: { id: 1, bar: 'bar' },
+            });
+            await waitFor(() => {
+                expect(dataProvider.update).toHaveBeenCalledWith('foo', {
+                    id: 1,
+                    data: { bar: 'baz' },
+                    previousData: { id: 1, bar: 'bar' },
+                });
+            });
+            await waitFor(() => {
+                expect(queryClient.getQueryData(['foo', 'getList'])).toEqual({
+                    data: [{ id: 1, bar: 'baz' }],
+                    total: 1,
+                });
+            });
+        });
+        it('updates getList query cache with pageInfo when dataProvider promise resolves', async () => {
+            const queryClient = new QueryClient();
+            queryClient.setQueryData(['foo', 'getList'], {
+                data: [{ id: 1, bar: 'bar' }],
+                pageInfo: {
+                    hasPreviousPage: false,
+                    hasNextPage: true,
+                },
+            });
+            const dataProvider = {
+                update: jest.fn(() =>
+                    Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
+                ),
+            } as any;
+            let localUpdate;
+            const Dummy = () => {
+                const [update] = useUpdate();
+                localUpdate = update;
+                return <span />;
+            };
+            render(
+                <CoreAdminContext
+                    dataProvider={dataProvider}
+                    queryClient={queryClient}
+                >
+                    <Dummy />
+                </CoreAdminContext>
+            );
+            localUpdate('foo', {
+                id: 1,
+                data: { bar: 'baz' },
+                previousData: { id: 1, bar: 'bar' },
+            });
+            await waitFor(() => {
+                expect(dataProvider.update).toHaveBeenCalledWith('foo', {
+                    id: 1,
+                    data: { bar: 'baz' },
+                    previousData: { id: 1, bar: 'bar' },
+                });
+            });
+            await waitFor(() => {
+                expect(queryClient.getQueryData(['foo', 'getList'])).toEqual({
+                    data: [{ id: 1, bar: 'baz' }],
+                    pageInfo: {
+                        hasPreviousPage: false,
+                        hasNextPage: true,
+                    },
+                });
             });
         });
     });
