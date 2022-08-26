@@ -84,7 +84,8 @@ export const useGetList = <RecordType extends RaRecord = any>(
                 })),
         {
             ...options,
-            onSuccess: ({ data }) => {
+            onSuccess: value => {
+                const { data } = value;
                 // optimistically populate the getOne cache
                 data.forEach(record => {
                     queryClient.setQueryData(
@@ -94,7 +95,7 @@ export const useGetList = <RecordType extends RaRecord = any>(
                 });
                 // execute call-time onSuccess if provided
                 if (options?.onSuccess) {
-                    options.onSuccess({ data });
+                    options.onSuccess(value);
                 }
             },
         }
