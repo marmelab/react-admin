@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ReactElement, memo } from 'react';
 
 import { useTranslateLabel } from '../i18n';
+import { useResourceContext } from '../core';
 
 export interface FieldTitleProps {
     isRequired?: boolean;
@@ -11,7 +12,8 @@ export interface FieldTitleProps {
 }
 
 export const FieldTitle = (props: FieldTitleProps) => {
-    const { source, label, resource, isRequired } = props;
+    const { source, label, isRequired } = props;
+    const resource = useResourceContext(props);
     const translateLabel = useTranslateLabel();
 
     if (label === true) {
