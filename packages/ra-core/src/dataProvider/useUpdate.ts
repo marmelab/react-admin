@@ -110,7 +110,14 @@ export const useUpdate = <
             ];
         };
 
-        type GetListResult = { data?: RecordType[]; total?: number };
+        type GetListResult = {
+            data?: RecordType[];
+            total?: number;
+            pageInfo?: {
+                hasNextPage?: boolean;
+                hasPreviousPage?: boolean;
+            };
+        };
 
         queryClient.setQueryData(
             [resource, 'getOne', { id: String(id), meta }],
@@ -120,9 +127,7 @@ export const useUpdate = <
         queryClient.setQueriesData(
             [resource, 'getList'],
             (res: GetListResult) =>
-                res && res.data
-                    ? { data: updateColl(res.data), total: res.total }
-                    : res,
+                res && res.data ? { ...res, data: updateColl(res.data) } : res,
             { updatedAt }
         );
         queryClient.setQueriesData(
