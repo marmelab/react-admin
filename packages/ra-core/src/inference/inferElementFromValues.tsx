@@ -89,28 +89,20 @@ const inferElementFromValues = (
         const reference = inflection.pluralize(name.substr(0, name.length - 3));
         return (
             types.reference &&
-            new InferredElement(
-                types.reference,
-                {
-                    source: name,
-                    reference,
-                },
-                new InferredElement(types.referenceChild)
-            )
+            new InferredElement(types.reference, {
+                source: name,
+                reference,
+            })
         );
     }
     if (name.substr(name.length - 2) === 'Id' && hasType('reference', types)) {
         const reference = inflection.pluralize(name.substr(0, name.length - 2));
         return (
             types.reference &&
-            new InferredElement(
-                types.reference,
-                {
-                    source: name,
-                    reference,
-                },
-                new InferredElement(types.referenceChild)
-            )
+            new InferredElement(types.reference, {
+                source: name,
+                reference,
+            })
         );
     }
     if (
@@ -120,14 +112,10 @@ const inferElementFromValues = (
         const reference = inflection.pluralize(name.substr(0, name.length - 4));
         return (
             types.referenceArray &&
-            new InferredElement(
-                types.referenceArray,
-                {
-                    source: name,
-                    reference,
-                },
-                new InferredElement(types.referenceArrayChild)
-            )
+            new InferredElement(types.referenceArray, {
+                source: name,
+                reference,
+            })
         );
     }
     if (
@@ -137,14 +125,10 @@ const inferElementFromValues = (
         const reference = inflection.pluralize(name.substr(0, name.length - 3));
         return (
             types.referenceArray &&
-            new InferredElement(
-                types.referenceArray,
-                {
-                    source: name,
-                    reference,
-                },
-                new InferredElement(types.referenceArrayChild)
-            )
+            new InferredElement(types.referenceArray, {
+                source: name,
+                reference,
+            })
         );
     }
     if (values.length === 0) {
