@@ -10,7 +10,12 @@ import {
 
 import { useDataProvider } from './useDataProvider';
 import undoableEventEmitter from './undoableEventEmitter';
-import { RaRecord, DeleteManyParams, MutationMode } from '../types';
+import {
+    RaRecord,
+    DeleteManyParams,
+    MutationMode,
+    GetListResult as OriginalGetListResult,
+} from '../types';
 
 /**
  * Get a callback to call the dataProvider.delete() method, the result and the loading state.
@@ -111,7 +116,9 @@ export const useDeleteMany = <
             return newCollection;
         };
 
-        type GetListResult = { data?: RecordType[]; total?: number };
+        type GetListResult = Omit<OriginalGetListResult, 'data'> & {
+            data?: RecordType[];
+        };
 
         queryClient.setQueriesData(
             [resource, 'getList'],
@@ -122,9 +129,11 @@ export const useDeleteMany = <
                 return recordWasFound
                     ? {
                           data: newCollection,
-                          total:
-                              res.total -
-                              (res.data.length - newCollection.length),
+                          total: res.total
+                              ? res.total -
+                                (res.data.length - newCollection.length)
+                              : undefined,
+                          pageInfo: res.pageInfo,
                       }
                     : res;
             },
