@@ -83,7 +83,7 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 
 `<ReferenceField>` also accepts the [common field props](./Fields.md#common-field-props).
 
-## `empytText`
+## `emptyText`
 
 `<ReferenceField>` can display a custom message when the referenced record is missing, thanks to the `emptyText` prop.
 
