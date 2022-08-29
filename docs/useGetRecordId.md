@@ -5,12 +5,19 @@ title: "useGetRecordId"
 
 # `useGetRecordId`
 
-This hook returns the current `recordId`. `recordId` is obtained from parameters if passed as a parameter, or from the `RecordContext` if there is one, or, lastly, from the react-router URL.
+Accessing the current `recordId` can sometimes be tricky, because it depends on the context in which your component is used.
 
-`useGetRecordId` takes an optional `recordId` argument if used inside a `RecordContextProvider` or if `recordId` can be guessed from the URL
+This hook makes it easier to get current `recordId`. 
+
+It will try to obtain it from these 3 sources, in this order:
+1. from the `recordId` parameter provided directly to the hook
+2. from the current `RecordContext`
+3. from the react-router location
+
+This hook accepts a single parameter, `recordId`, which is optional if used inside a `RecordContextProvider` or if `recordId` can be guessed from the URL.
 
 ```jsx
-import { useListContext, useUnselect } from 'react-admin';
+import { useGetRecordId } from 'react-admin';
 
 const DisplayRecordCurrentId = () => {
     const recordId = useGetRecordId();
