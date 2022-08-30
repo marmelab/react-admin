@@ -50,7 +50,7 @@ export const Basic = props => {
 
 const UseInfiniteComponent = ({
     resource = 'countries',
-    pagination = { page: 1, perPage: 10 },
+    pagination = { page: 1, perPage: 20 },
     sort = { field: 'id', order: 'DESC' },
     filter = {},
     options = {},
