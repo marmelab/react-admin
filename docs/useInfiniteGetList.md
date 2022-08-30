@@ -196,11 +196,11 @@ const LatestNews = () => {
     const handleObserver = useCallback(
         entries => {
             const [target] = entries;
-            if (target.isIntersecting) {
+            if (target.isIntersecting && hasNextPage) {
                 fetchNextPage();
             }
         },
-        [fetchNextPage]
+        [fetchNextPage, hasNextPage]
     );
     useEffect(() => {
         const element = observerElem.current;
