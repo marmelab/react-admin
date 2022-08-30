@@ -128,3 +128,48 @@ export const Scalar = () => (
         />
     </Admin>
 );
+
+const globalValidator = values => {
+    const errors: any = {};
+    if (!values.authors || !values.authors.length) {
+        errors.authors = 'ra.validation.required';
+    } else {
+        errors.authors = values.authors.map(author => {
+            const authorErrors: any = {};
+            if (!author.name) {
+                authorErrors.name = 'A name is required';
+            }
+            if (!author.role) {
+                authorErrors.role = 'ra.validation.required';
+            }
+            return authorErrors;
+        });
+    }
+    return errors;
+};
+const BookEditGlobalValidation = () => {
+    return (
+        <Edit
+            mutationMode="pessimistic"
+            mutationOptions={{
+                onSuccess: data => {
+                    console.log(data);
+                },
+            }}
+        >
+            <SimpleForm validate={globalValidator}>
+                <ArrayInput source="authors" fullWidth>
+                    <SimpleFormIterator>
+                        <TextInput source="name" />
+                        <TextInput source="role" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        </Edit>
+    );
+};
+export const GlobalValidation = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource name="books" edit={BookEditGlobalValidation} />
+    </Admin>
+);

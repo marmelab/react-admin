@@ -50,25 +50,79 @@ export const getSimpleValidationResolver = (validate: ValidateForm) => async (
 ) => {
     const errors = await validate(data);
 
-    if (!errors || Object.getOwnPropertyNames(errors).length === 0) {
+    // If there are no errors, early return the form values
+    if (!errors || isEmptyObject(errors)) {
         return { values: data, errors: {} };
     }
-    const flattenedErrors = flattenErrors(errors);
 
+    // Else, we return an error object shaped liked errors but having for each leaf
+    // `type: 'manual'` and a `message` prop like react-hook-form expects it
+    const transformedErrors = transformErrorFields(errors);
+
+    // If, after transformation, there are no errors, return the form values
+    if (!transformedErrors || isEmptyObject(transformedErrors)) {
+        return { values: data, errors: {} };
+    }
+
+    // Else return the errors and no value
     return {
         values: {},
-        errors: Object.keys(flattenedErrors).reduce(
-            (acc, field) => ({
-                ...acc,
-                [field]: {
-                    type: 'manual',
-                    message: flattenedErrors[field],
-                },
-            }),
-            {} as FieldValues
-        ),
+        errors: transformedErrors,
     };
 };
+
+const transformErrorFields = (error: object) => {
+    return Object.keys(error).reduce((acc, field) => {
+        // Handle arrays
+        if (Array.isArray(error[field])) {
+            let arrayHasErrors = false;
+            const transformedArrayErrors = error[field].map(item => {
+                if (!isEmptyObject(item)) {
+                    arrayHasErrors = true;
+                }
+                return transformErrorFields(item);
+            });
+            if (!arrayHasErrors) {
+                return acc;
+            }
+            return {
+                ...acc,
+                [field]: transformedArrayErrors,
+            };
+        }
+
+        // Handle objects
+        if (isEmptyObject(error[field])) {
+            return acc;
+        }
+        if (
+            typeof error[field] === 'object' &&
+            !isRaTranslationObj(error[field])
+        ) {
+            return {
+                ...acc,
+                [field]: transformErrorFields(error[field]),
+            };
+        }
+
+        // Handle leaf (primary type or RaTranslationObj)
+        return {
+            ...acc,
+            [field]: addTypeAndMessage(error[field]),
+        };
+    }, {} as FieldValues);
+};
+
+const addTypeAndMessage = (error: object) => ({
+    type: 'manual',
+    message: error,
+});
+
+const isRaTranslationObj = (obj: object) =>
+    Object.keys(obj).includes('message') && Object.keys(obj).includes('args');
+
+const isEmptyObject = (obj: object) =>
+    Object.getOwnPropertyNames(obj).length === 0;
 
 export type ValidateForm = (
     data: FieldValues

@@ -4,130 +4,158 @@ import {
 } from './getSimpleValidationResolver';
 
 describe('getSimpleValidationResolver', () => {
-    const validator = getSimpleValidationResolver(values => values);
-
-    it('should return a flattened object', async () => {
-        const result = flattenErrors({
-            title: 'title too short',
-            backlinks: [
-                { url: 'url too short', id: 'missing id' },
-                { url: 'url too short', id: 'missing id' },
-            ],
+    describe('flattenErrors', () => {
+        it('should return a flattened object', async () => {
+            const result = flattenErrors({
+                title: 'title too short',
+                backlinks: [
+                    { url: 'url too short', id: 'missing id' },
+                    { url: 'url too short', id: 'missing id' },
+                ],
+            });
+            expect(result).toEqual({
+                title: 'title too short',
+                'backlinks.0.url': 'url too short',
+                'backlinks.0.id': 'missing id',
+                'backlinks.1.url': 'url too short',
+                'backlinks.1.id': 'missing id',
+            });
         });
-        expect(result).toEqual({
-            title: 'title too short',
-            'backlinks.0.url': 'url too short',
-            'backlinks.0.id': 'missing id',
-            'backlinks.1.url': 'url too short',
-            'backlinks.1.id': 'missing id',
+
+        it('should support complex translation messages', async () => {
+            const result = flattenErrors({
+                title: 'title too short',
+                body: {
+                    message: 'Not good for %{variable}',
+                    args: {
+                        variable: 'you',
+                    },
+                },
+                backlinks: [
+                    { url: 'url too short', id: 'missing id' },
+                    { url: 'url too short', id: 'missing id' },
+                ],
+            });
+            expect(result).toEqual({
+                title: 'title too short',
+                body: {
+                    message: 'Not good for %{variable}',
+                    args: {
+                        variable: 'you',
+                    },
+                },
+                'backlinks.0.url': 'url too short',
+                'backlinks.0.id': 'missing id',
+                'backlinks.1.url': 'url too short',
+                'backlinks.1.id': 'missing id',
+            });
         });
     });
 
-    it('should support complex translation messages', async () => {
-        const result = flattenErrors({
-            title: 'title too short',
-            body: {
-                message: 'Not good for %{variable}',
-                args: {
-                    variable: 'you',
+    describe('validator', () => {
+        const validator = getSimpleValidationResolver(values => values);
+
+        it('should resolve array values as nested keys', async () => {
+            const result = await validator({
+                title: 'title too short',
+                backlinks: [
+                    { url: 'url too short', id: 'missing id' },
+                    { url: 'url too short', id: 'missing id' },
+                ],
+            });
+
+            expect(result).toEqual({
+                values: {},
+                errors: {
+                    title: { type: 'manual', message: 'title too short' },
+                    backlinks: [
+                        {
+                            url: {
+                                type: 'manual',
+                                message: 'url too short',
+                            },
+                            id: {
+                                type: 'manual',
+                                message: 'missing id',
+                            },
+                        },
+                        {
+                            url: {
+                                type: 'manual',
+                                message: 'url too short',
+                            },
+                            id: {
+                                type: 'manual',
+                                message: 'missing id',
+                            },
+                        },
+                    ],
                 },
-            },
-            backlinks: [
-                { url: 'url too short', id: 'missing id' },
-                { url: 'url too short', id: 'missing id' },
-            ],
+            });
         });
-        expect(result).toEqual({
-            title: 'title too short',
-            body: {
-                message: 'Not good for %{variable}',
-                args: {
-                    variable: 'you',
+
+        it('should treat an empty array value as no error', async () => {
+            const result = await validator({
+                title: 'title too short',
+                backlinks: [],
+            });
+
+            expect(result).toEqual({
+                values: {},
+                errors: {
+                    title: { type: 'manual', message: 'title too short' },
                 },
-            },
-            'backlinks.0.url': 'url too short',
-            'backlinks.0.id': 'missing id',
-            'backlinks.1.url': 'url too short',
-            'backlinks.1.id': 'missing id',
-        });
-    });
-
-    it('should resolve array values as nested keys', async () => {
-        const result = await validator({
-            title: 'title too short',
-            backlinks: [
-                { url: 'url too short', id: 'missing id' },
-                { url: 'url too short', id: 'missing id' },
-            ],
+            });
         });
 
-        expect(result).toEqual({
-            values: {},
-            errors: {
-                title: { type: 'manual', message: 'title too short' },
-                'backlinks.0.url': {
-                    type: 'manual',
-                    message: 'url too short',
+        it('should treat an array with emmpty objects as no error', async () => {
+            const result = await validator({
+                title: 'title too short',
+                backlinks: [{}, {}],
+            });
+
+            expect(result).toEqual({
+                values: {},
+                errors: {
+                    title: { type: 'manual', message: 'title too short' },
                 },
-                'backlinks.0.id': {
-                    type: 'manual',
-                    message: 'missing id',
+            });
+        });
+
+        it('should treat an empty object value as no error', async () => {
+            const result = await validator({
+                title: 'title too short',
+                backlinks: {},
+            });
+
+            expect(result).toEqual({
+                values: {},
+                errors: {
+                    title: { type: 'manual', message: 'title too short' },
                 },
-                'backlinks.1.url': {
-                    type: 'manual',
-                    message: 'url too short',
+            });
+        });
+
+        it('should resolve nested error objects', async () => {
+            const result = await validator({
+                title: 'title too short',
+                comment: {
+                    author: 'author is required',
                 },
-                'backlinks.1.id': {
-                    type: 'manual',
-                    message: 'missing id',
+            });
+
+            expect(result).toEqual({
+                values: {},
+                errors: {
+                    title: { type: 'manual', message: 'title too short' },
+                    comment: {
+                        author: {
+                            type: 'manual',
+                            message: 'author is required',
+                        },
+                    },
                 },
-            },
-        });
-    });
-
-    it('should treat an empty array value as no error', async () => {
-        const result = await validator({
-            title: 'title too short',
-            backlinks: [],
-        });
-
-        expect(result).toEqual({
-            values: {},
-            errors: {
-                title: { type: 'manual', message: 'title too short' },
-            },
-        });
-    });
-
-    it('should treat an empty object value as no error', async () => {
-        const result = await validator({
-            title: 'title too short',
-            backlinks: {},
-        });
-
-        expect(result).toEqual({
-            values: {},
-            errors: {
-                title: { type: 'manual', message: 'title too short' },
-            },
-        });
-    });
-
-    it('should use nested values keys', async () => {
-        const result = await validator({
-            title: 'title too short',
-            'backlinks.0.url': 'url too short',
-        });
-
-        expect(result).toEqual({
-            values: {},
-            errors: {
-                title: { type: 'manual', message: 'title too short' },
-                'backlinks.0.url': {
-                    type: 'manual',
-                    message: 'url too short',
-                },
-            },
+            });
         });
     });
 });
