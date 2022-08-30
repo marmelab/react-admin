@@ -179,7 +179,7 @@ const UseInfiniteComponentWithIntersectionObserver = () => {
         hasNextPage,
         isFetchingNextPage,
     } = useInfiniteGetList('countries', {
-        pagination: { page: 1, perPage: 10 },
+        pagination: { page: 1, perPage: 20 },
         sort: { field: 'id', order: 'DESC' },
     });
     const observerElem = useRef(null);
@@ -187,11 +187,11 @@ const UseInfiniteComponentWithIntersectionObserver = () => {
     const handleObserver = useCallback(
         entries => {
             const [target] = entries;
-            if (target.isIntersecting) {
+            if (target.isIntersecting && hasNextPage) {
                 fetchNextPage();
             }
         },
-        [fetchNextPage]
+        [fetchNextPage, hasNextPage]
     );
     useEffect(() => {
         const element = observerElem.current;
@@ -225,7 +225,7 @@ const UseInfiniteComponentWithIntersectionObserver = () => {
             <Typography variant="body2" color="grey.500" ref={observerElem}>
                 {isFetchingNextPage && hasNextPage
                     ? 'Loading...'
-                    : 'No search left'}
+                    : 'End of list'}
             </Typography>
         </div>
     );
