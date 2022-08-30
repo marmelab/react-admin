@@ -228,4 +228,39 @@ describe('<useList />', () => {
             })
         );
     });
+
+    it('should filter array data based on the custom filter', async () => {
+        const callback = jest.fn();
+        const data = [
+            { id: 1, items: ['one', 'two'] },
+            { id: 2, items: ['three'] },
+            { id: 3, items: 'four' },
+            { id: 4, items: ['five'] },
+        ];
+
+        render(
+            <UseList
+                data={data}
+                sort={{ field: 'id', order: 'ASC' }}
+                setCustomFilter={record => record.id > 2}
+                callback={callback}
+            />
+        );
+
+        await waitFor(() => {
+            expect(callback).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    sort: { field: 'id', order: 'ASC' },
+                    isFetching: false,
+                    isLoading: false,
+                    data: [
+                        { id: 3, items: 'four' },
+                        { id: 4, items: ['five'] },
+                    ],
+                    error: undefined,
+                    total: 2,
+                })
+            );
+        });
+    });
 });
