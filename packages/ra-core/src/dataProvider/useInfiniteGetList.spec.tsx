@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
-import { screen, render, waitFor } from '@testing-library/react';
-import { UseInfiniteListCore } from './useInfiniteGetList.stories';
+import { screen, render, waitFor, fireEvent } from '@testing-library/react';
+import { Basic, PageInfo } from './useInfiniteGetList.stories';
 
 describe('useInfiniteGetList', () => {
     it('should call dataProvider.getList() on mount', async () => {
@@ -14,12 +14,7 @@ describe('useInfiniteGetList', () => {
             ),
         } as any;
 
-        render(
-            <UseInfiniteListCore
-                dataProvider={dataProvider}
-                resource="heroes"
-            />
-        );
+        render(<Basic dataProvider={dataProvider} resource="heroes" />);
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(1);
             expect(dataProvider.getList).toBeCalledWith('heroes', {
@@ -39,13 +34,11 @@ describe('useInfiniteGetList', () => {
                 })
             ),
         } as any;
-        const { rerender } = render(
-            <UseInfiniteListCore dataProvider={dataProvider} />
-        );
+        const { rerender } = render(<Basic dataProvider={dataProvider} />);
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(1);
         });
-        rerender(<UseInfiniteListCore dataProvider={dataProvider} />);
+        rerender(<Basic dataProvider={dataProvider} />);
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(1);
         });
@@ -61,15 +54,12 @@ describe('useInfiniteGetList', () => {
             ),
         } as any;
         const { rerender } = render(
-            <UseInfiniteListCore
-                dataProvider={dataProvider}
-                resource="heroes"
-            />
+            <Basic dataProvider={dataProvider} resource="heroes" />
         );
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(1);
         });
-        rerender(<UseInfiniteListCore dataProvider={dataProvider} />);
+        rerender(<Basic dataProvider={dataProvider} />);
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(2);
         });
@@ -85,7 +75,7 @@ describe('useInfiniteGetList', () => {
             ),
         } as any;
         render(
-            <UseInfiniteListCore
+            <Basic
                 dataProvider={dataProvider}
                 pagination={{ page: 1, perPage: 20 }}
                 meta={{ hello: 'world' }}
@@ -125,7 +115,7 @@ describe('useInfiniteGetList', () => {
         };
 
         render(
-            <UseInfiniteListCore
+            <Basic
                 dataProvider={dataProvider}
                 pagination={{ page: 1, perPage: 1 }}
                 options={{ onSuccess: onSuccess1 }}
@@ -143,6 +133,21 @@ describe('useInfiniteGetList', () => {
                 expect(onSuccess1).toBeCalledTimes(2);
                 expect(screen.queryAllByLabelText('country')).toHaveLength(2);
             });
+        });
+    });
+
+    describe('fetchNextPage', () => {
+        it('should fetch the next page when the dataProvider uses total', async () => {
+            render(<Basic />);
+            const button = await screen.findByLabelText('refetch-button');
+            fireEvent.click(button);
+            await screen.findByText('Belgium -- BE');
+        });
+        it('should fetch the next page when the dataProvider uses pageInfo', async () => {
+            render(<PageInfo />);
+            const button = await screen.findByLabelText('refetch-button');
+            fireEvent.click(button);
+            await screen.findByText('Belgium -- BE');
         });
     });
 });
