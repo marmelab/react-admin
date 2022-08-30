@@ -48,6 +48,7 @@ const refetch = () => {
  * @param {Number} props.page: Optional. The initial page index
  * @param {Number} props.perPage: Optional. The initial page size
  * @param {SortPayload} props.sort: Optional. The initial sort (field and order)
+ * @param {setCustomFilter} prop.setCustomFilter Optional. A function that allows you to make a custom filter
  */
 export const useList = <RecordType extends RaRecord = any>(
     props: UseListOptions<RecordType>
@@ -61,6 +62,7 @@ export const useList = <RecordType extends RaRecord = any>(
         page: initialPage = 1,
         perPage: initialPerPage = 1000,
         sort: initialSort,
+        setCustomFilter = (record: RecordType) => Boolean(record),
     } = props;
     const resource = useResourceContext(props);
 
@@ -161,23 +163,25 @@ export const useList = <RecordType extends RaRecord = any>(
 
             // 1. filter
             if (filterValues) {
-                tempData = data.filter(record =>
-                    Object.entries(filterValues).every(
-                        ([filterName, filterValue]) => {
-                            const recordValue = get(record, filterName);
-                            const result = Array.isArray(recordValue)
-                                ? Array.isArray(filterValue)
-                                    ? recordValue.some(item =>
-                                          filterValue.includes(item)
-                                      )
-                                    : recordValue.includes(filterValue)
-                                : Array.isArray(filterValue)
-                                ? filterValue.includes(recordValue)
-                                : filterValue == recordValue; // eslint-disable-line eqeqeq
-                            return result;
-                        }
+                tempData = data
+                    .filter(record =>
+                        Object.entries(filterValues).every(
+                            ([filterName, filterValue]) => {
+                                const recordValue = get(record, filterName);
+                                const result = Array.isArray(recordValue)
+                                    ? Array.isArray(filterValue)
+                                        ? recordValue.some(item =>
+                                              filterValue.includes(item)
+                                          )
+                                        : recordValue.includes(filterValue)
+                                    : Array.isArray(filterValue)
+                                    ? filterValue.includes(recordValue)
+                                    : filterValue == recordValue; // eslint-disable-line eqeqeq
+                                return result;
+                            }
+                        )
                     )
-                );
+                    .filter(setCustomFilter);
             }
             const filteredLength = tempData.length;
 
@@ -269,6 +273,7 @@ export interface UseListOptions<RecordType extends RaRecord = any> {
     perPage?: number;
     sort?: SortPayload;
     resource?: string;
+    setCustomFilter?: (record: RecordType) => boolean;
 }
 
 export type UseListValue<
