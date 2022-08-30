@@ -205,7 +205,7 @@ import { Pagination, ReferenceArrayField } from 'react-admin';
 
 ## `perPage`
 
-`<ReferenceArrayField>` fetches *all* the related fields, and puts them all in a `ListContext`. If a record has a large number of related records, it my be a good idea to limit the number of displayed records. The `perPage` prop allows to create a client-side pagination for the related records.
+`<ReferenceArrayField>` fetches *all* the related fields, and puts them all in a `ListContext`. If a record has a large number of related records, it may be a good idea to limit the number of displayed records. The `perPage` prop allows to create a client-side pagination for the related records.
 
 For instance, to limit the display of related records to 10, you can use the following code:
 
