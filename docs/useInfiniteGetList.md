@@ -164,3 +164,72 @@ const { data } = useInfiniteGetList(
 ```
 
 Additional options are passed to react-query's `useQuery` hook. Check the [react-query documentation](https://react-query-v3.tanstack.com/reference/useQuery) for more information.
+
+## Infinite Scrolling
+
+Combining `useInfiniteGetList` and [the Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API), you can implement an infinite scrolling list, where the next page loads automatically when the user scrolls down.
+
+```jsx
+import { useRef, useCallback, useEffect } from 'react';
+import {
+    List,
+    ListItem,
+    ListItemText,
+    ListItemIcon,
+    Button,
+    Typography,
+} from '@mui/material';
+import { useInfiniteGetList } from 'react-admin';
+
+const LatestNews = () => {
+    const {
+        data,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+    } = useInfiniteGetList('posts', {
+        pagination: { page: 1, perPage: 10 },
+        sort: { field: 'published_at', order: 'DESC' },
+    });
+    const observerElem = useRef(null);
+
+    const handleObserver = useCallback(
+        entries => {
+            const [target] = entries;
+            if (target.isIntersecting) {
+                fetchNextPage();
+            }
+        },
+        [fetchNextPage]
+    );
+    useEffect(() => {
+        const element = observerElem.current;
+        if (!element) return;
+        const option = { threshold: 0 };
+        const observer = new IntersectionObserver(handleObserver, option);
+        observer.observe(element);
+        return () => observer.unobserve(element);
+    }, [fetchNextPage, hasNextPage, handleObserver]);
+
+    return (
+        <>
+            <List dense>
+                {data?.pages.map(page => {
+                    return page.data.map(post => (
+                        <ListItem disablePadding key={post.id}>
+                            <ListItemText>
+                                {post.title}
+                            </ListItemText>
+                        </ListItem>
+                    ));
+                })}
+            </List>
+            <Typography ref={observerElem} variant="body2" color="grey.500" >
+                {isFetchingNextPage && hasNextPage
+                    ? 'Loading...'
+                    : 'No search left'}
+            </Typography>
+        </>
+    );
+};
+```

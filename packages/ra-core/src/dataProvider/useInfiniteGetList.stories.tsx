@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 import {
     List,
     ListItem,
     ListItemText,
     ListItemIcon,
     Button,
+    Typography,
 } from '@mui/material';
 import { useInfiniteGetList } from '..';
 
@@ -139,5 +141,92 @@ export const PageInfo = props => {
         <CoreAdminContext dataProvider={dataProvider}>
             <UseInfiniteComponent {...rest} />
         </CoreAdminContext>
+    );
+};
+
+export const InfiniteScroll = () => {
+    const dataProvider = {
+        getList: (resource, params) => {
+            return new Promise(resolve => {
+                setTimeout(
+                    () =>
+                        resolve({
+                            data: countries.slice(
+                                (params.pagination.page - 1) *
+                                    params.pagination.perPage,
+                                (params.pagination.page - 1) *
+                                    params.pagination.perPage +
+                                    params.pagination.perPage
+                            ),
+                            total: countries.length,
+                        }),
+                    300
+                );
+            });
+        },
+    } as any;
+    return (
+        <CoreAdminContext dataProvider={dataProvider}>
+            <UseInfiniteComponentWithIntersectionObserver />
+        </CoreAdminContext>
+    );
+};
+
+const UseInfiniteComponentWithIntersectionObserver = () => {
+    const {
+        data,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+    } = useInfiniteGetList('countries', {
+        pagination: { page: 1, perPage: 10 },
+        sort: { field: 'id', order: 'DESC' },
+    });
+    const observerElem = useRef(null);
+
+    const handleObserver = useCallback(
+        entries => {
+            const [target] = entries;
+            if (target.isIntersecting) {
+                fetchNextPage();
+            }
+        },
+        [fetchNextPage]
+    );
+    useEffect(() => {
+        const element = observerElem.current;
+        if (!element) return;
+        const option = { threshold: 0 };
+        const observer = new IntersectionObserver(handleObserver, option);
+        observer.observe(element);
+        return () => observer.unobserve(element);
+    }, [fetchNextPage, hasNextPage, handleObserver]);
+
+    return (
+        <div style={{ width: 250, margin: 'auto' }}>
+            <List dense>
+                {data?.pages.map(page => {
+                    return page.data.map(country => (
+                        <ListItem
+                            aria-label="country"
+                            disablePadding
+                            key={country.code}
+                        >
+                            <ListItemIcon sx={{ minWidth: 30 }}>
+                                {country.emoji}
+                            </ListItemIcon>
+                            <ListItemText>
+                                {country.name} -- {country.code}
+                            </ListItemText>
+                        </ListItem>
+                    ));
+                })}
+            </List>
+            <Typography variant="body2" color="grey.500" ref={observerElem}>
+                {isFetchingNextPage && hasNextPage
+                    ? 'Loading...'
+                    : 'No search left'}
+            </Typography>
+        </div>
     );
 };
