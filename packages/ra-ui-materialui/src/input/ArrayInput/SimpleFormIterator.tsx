@@ -146,6 +146,11 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                 ))}
                 {!disabled && !disableAdd && (
                     <li className={SimpleFormIteratorClasses.line}>
+                        {fields.length > 0 && (
+                            <span
+                                className={SimpleFormIteratorClasses.form}
+                            ></span>
+                        )}
                         <span className={SimpleFormIteratorClasses.action}>
                             {cloneElement(addButton, {
                                 className: clsx(
@@ -188,6 +193,8 @@ SimpleFormIterator.propTypes = {
     TransitionProps: PropTypes.shape({}),
 };
 
+type GetItemLabelFunc = (index: number) => string | ReactElement;
+
 export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
     addButton?: ReactElement;
     children?: ReactNode;
@@ -196,7 +203,7 @@ export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
     disableAdd?: boolean;
     disableRemove?: boolean | DisableRemoveFunction;
     disableReordering?: boolean;
-    getItemLabel?: (index: number) => string;
+    getItemLabel?: boolean | GetItemLabelFunc;
     inline?: boolean;
     meta?: {
         // the type defined in FieldArrayRenderProps says error is boolean, which is wrong.
@@ -232,9 +239,9 @@ const Root = styled('ul', {
     },
     [`& .${SimpleFormIteratorClasses.indexContainer}`]: {
         display: 'flex',
-        paddingTop: '1em',
-        marginRight: theme.spacing(1),
-        alignItems: 'center',
+        marginTop: theme.spacing(1),
+        marginRight: theme.spacing(0.5),
+        alignItems: 'top',
     },
     [`& .${SimpleFormIteratorClasses.form}`]: {
         alignItems: 'flex-start',
@@ -247,7 +254,7 @@ const Root = styled('ul', {
         gap: '1em',
     },
     [`& .${SimpleFormIteratorClasses.action}`]: {
-        paddingTop: '0.5em',
+        marginTop: theme.spacing(0.5),
     },
     [`& .${SimpleFormIteratorClasses.leftIcon}`]: {
         marginRight: theme.spacing(1),

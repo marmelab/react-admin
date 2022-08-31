@@ -49,7 +49,7 @@ const BookEdit = () => {
             }}
         >
             <SimpleForm>
-                <ArrayInput source="authors" fullWidth>
+                <ArrayInput source="authors">
                     <SimpleFormIterator>
                         <TextInput source="name" />
                         <TextInput source="role" />
@@ -219,6 +219,46 @@ export const Realistic = () => (
                                     source="quantity"
                                     helperText={false}
                                 />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
+    </Admin>
+);
+
+export const ActionsLeft = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                >
+                    <SimpleForm>
+                        <TextInput source="title" />
+                        <ArrayInput source="authors">
+                            <SimpleFormIterator
+                                sx={{
+                                    '& .RaSimpleFormIterator-indexContainer': {
+                                        order: 0,
+                                    },
+                                    '& .RaSimpleFormIterator-action': {
+                                        order: 1,
+                                    },
+                                    '& .RaSimpleFormIterator-form': {
+                                        order: 2,
+                                    },
+                                }}
+                            >
+                                <TextInput source="name" />
+                                <TextInput source="role" />
                             </SimpleFormIterator>
                         </ArrayInput>
                     </SimpleForm>
