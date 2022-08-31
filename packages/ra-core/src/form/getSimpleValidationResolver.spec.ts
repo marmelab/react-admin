@@ -108,7 +108,7 @@ describe('getSimpleValidationResolver', () => {
             });
         });
 
-        it('should treat an array with emmpty objects as no error', async () => {
+        it('should treat an array with empty objects as no error', async () => {
             const result = await validator({
                 title: 'title too short',
                 backlinks: [{}, {}],
