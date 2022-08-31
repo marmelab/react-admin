@@ -143,6 +143,10 @@ export interface GetListResult<RecordType extends RaRecord = any> {
     };
 }
 
+export interface GetInfiniteListResult<RecordType extends RaRecord = any>
+    extends GetListResult<RecordType> {
+    pageParam?: number;
+}
 export interface GetOneParams<RecordType extends RaRecord = any> {
     id: RecordType['id'];
     meta?: any;
