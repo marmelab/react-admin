@@ -9,112 +9,66 @@ To edit arrays of data embedded inside a record, `<ArrayInput>` creates a list o
 
 ![ArrayInput](./img/array-input.gif)
 
-```jsx
-import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admin';
+`<ArrayInput>` allows editing of embedded arrays, like the `items` field in the following `order` record:
 
-<ArrayInput source="authors">
-    <SimpleFormIterator>
-        <DateInput source="user" />
-        <TextInput source="role" />
-    </SimpleFormIterator>
-</ArrayInput>
-```
-
-`<ArrayInput>` allows editing of embedded arrays, like the `authors` field in the following `post` record:
-
-```json
+```js
 {
-  "id": 123,
-  "authors": [
+    "id": 1,
+    "date": "2022-08-30",
+    "customer": "John Doe",
+    "items": [
         {
-            "user_id": 123,
-            "role": "head_writer",
+            "name": "Office Jeans",
+            "price": 45.99,
+            "quantity": 1,
         },
         {
-            "user_id": 456,
-            "url": "co_writer",
-        }
-   ]
+            "name": "Black Elegance Jeans",
+            "price": 69.99,
+            "quantity": 2,
+        },
+        {
+            "name": "Slim Fit Jeans",
+            "price": 55.99,
+            "quantity": 1,
+        },
+    ],
 }
 ```
 
 ## Usage
 
-`<ArrayInput>` expects a single child, which must be a *form iterator* component. A form iterator is a component accepting a `fields` object as passed by [react-hook-form](https://react-hook-form.com/api/usefieldarray), and defining a layout for an array of fields. It also receives several functions to manipulate the array values. For instance, the `<SimpleFormIterator>` component displays an array of react-admin Inputs in an unordered list (`<ul>`), one sub-form by list item (`<li>`). It also provides controls for adding and removing a sub-record (a backlink in this example).
-
-By using `<SimpleFormIterator inline>`, child inputs apper inline.
+`<ArrayInput>` expects a single child, which must be a *form iterator* component. A form iterator is a component rendering a field array (the object returned by react-hook-form's [`useFieldArray`](https://react-hook-form.com/api/usefieldarray). For instance, [the `<SimpleFormIterator>` component](./SimpleFormIterator.md) displays an array of react-admin Inputs in an unordered list (`<ul>`), one sub-form by list item (`<li>`). It also provides controls for adding and removing a sub-record.
 
 ```jsx
-import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admin';
+import { 
+    Edit,
+    SimpleForm,
+    TextInput,
+    DateInput,
+    ArrayInput,
+    NumberInput,
+    SimpleFormIterator
+} from 'react-admin';
 
-<ArrayInput source="backlinks">
-    <SimpleFormIterator inline>
-        <DateInput source="date" />
-        <TextInput source="url" />
-    </SimpleFormIterator>
-</ArrayInput>
+const OrderEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="customer" />
+            <DateInput source="date" />
+            <ArrayInput source="items">
+                <SimpleFormIterator>
+                    <TextInput source="name" />
+                    <NumberInput source="price" />
+                    <NumberInput source="quantity" />
+                </SimpleFormIterator>
+            </ArrayInput>
+        </SimpleForm>
+    </Edit>
+);
 ```
 
-You can pass `disableAdd`, `disableRemove` and `disableReordering` as props of `SimpleFormIterator`, to disable `ADD`, `REMOVE` and the `UP/DOWN` button(s) respectively. Default value of each is `false`.
-
-```jsx
-import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admin';
-
-<ArrayInput source="backlinks">
-    <SimpleFormIterator disableRemove>
-        <DateInput source="date" />
-        <TextInput source="url" />
-    </SimpleFormIterator>
-</ArrayInput>
-```
-
-You can also use `addButton`, `removeButton` and `reOrderButtons` props to pass your custom add, remove and reordering buttons to `SimpleFormIterator`.
-
-```jsx
-import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admin';
-
-<ArrayInput source="backlinks">
-    <SimpleFormIterator addButton={<CustomAddButton />} removeButton={<CustomRemoveButton />}>
-        <DateInput source="date" />
-        <TextInput source="url" />
-    </SimpleFormIterator>
-</ArrayInput>
-```
-
-Furthermore, if you want to customize the label displayed for each item, you can pass a function to `<SimpleFormIterator>` via the `getItemLabel` prop.
-
-```jsx
-import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admin';
-
-<ArrayInput source="backlinks">
-    <SimpleFormIterator getItemLabel={(index) => `${index + 1}. link`}>
-        <DateInput source="date" />
-        <TextInput source="url" />
-    </SimpleFormIterator>
-</ArrayInput>
-```
-
-**Note**: `<SimpleFormIterator>` only accepts `Input` components as children. If you want to use some `Fields` instead, you have to use a `<FormDataConsumer>` to get the correct source, as follows:
-
-```jsx
-import { ArrayInput, SimpleFormIterator, DateInput, TextInput, FormDataConsumer } from 'react-admin';
-
-<ArrayInput source="backlinks">
-    <SimpleFormIterator disableRemove >
-        <DateInput source="date" />
-        <FormDataConsumer>
-            {({ getSource, scopedFormData }) => {
-                return (
-                    <TextField
-                        source={getSource('url')}
-                        record={scopedFormData}
-                    />
-                );
-            }}
-        </FormDataConsumer>
-    </SimpleFormIterator>
-</ArrayInput>
-```
+Check [the `<SimpleFormIterator>` documentation](./SimpleFormIterator.md) for details about how to customize the sub form layout.
 
 `<ArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props) (except `format` and `parse`).
 

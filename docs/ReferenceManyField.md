@@ -45,6 +45,8 @@ This component fetches a list of referenced records by a reverse lookup of the c
 
 **Tip**: If the relationship is materialized by an array of ids in the initial record, use [the `<ReferenceArrayField>` component](./ReferenceArrayField.md) instead.
 
+**Tip**: To edit the records of a one-to-many relationship, use [the `<ReferenceManyInput>` component](./ReferenceManyInput.md).
+
 ## Usage
 
 For instance, here is how to show the title of the books written by a particular author in a show view.
