@@ -158,6 +158,10 @@ const BookEditGlobalValidation = () => {
             }}
         >
             <SimpleForm validate={globalValidator}>
+                {/* 
+                  We still need `validate={required()}` to indicate fields are required 
+                  with a '*' symbol after the label, but the real validation happens in `globalValidator`
+                */}
                 <ArrayInput source="authors" fullWidth validate={required()}>
                     <SimpleFormIterator>
                         <TextInput source="name" validate={required()} />
