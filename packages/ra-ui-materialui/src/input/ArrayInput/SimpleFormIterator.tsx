@@ -223,6 +223,7 @@ const Root = styled('ul', {
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     padding: 0,
+    marginTop: 0,
     marginBottom: 0,
     '& > li:last-child': {
         borderBottom: 'none',

@@ -216,7 +216,7 @@ const Root = styled(FormControl, {
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     [`& .${ArrayInputClasses.label}`]: {
-        top: theme.spacing(-0.5),
+        top: theme.spacing(-2),
         left: theme.spacing(-1.5),
     },
 }));
