@@ -1234,4 +1234,30 @@ describe('<AutocompleteInput />', () => {
             screen.getByText(/Dalmatian #1050/);
         });
     });
+
+    it('should clear the input when its blurred, having an unmatching selection and clearOnBlur prop is true', async () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <AutocompleteInput
+                        {...defaultProps}
+                        clearOnBlur
+                        choices={[
+                            { id: 1, name: 'ab' },
+                            { id: 2, name: 'abc' },
+                            { id: 3, name: '123' },
+                        ]}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+        const input = screen.getByLabelText(
+            'resources.users.fields.role'
+        ) as HTMLInputElement;
+        fireEvent.change(input, { target: { value: 'no match' } });
+        fireEvent.blur(input);
+        await waitFor(() => {
+            expect(input.value).toEqual('');
+        });
+    });
 });
