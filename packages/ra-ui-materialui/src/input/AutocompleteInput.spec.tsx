@@ -875,7 +875,7 @@ describe('<AutocompleteInput />', () => {
         fireEvent.blur(input);
         fireEvent.focus(input);
         await waitFor(() => {
-            expect(screen.queryAllByRole('option').length).toEqual(2);
+            expect(screen.queryAllByRole('option').length).toEqual(3);
         });
     });
 
