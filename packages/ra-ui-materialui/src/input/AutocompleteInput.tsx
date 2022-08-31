@@ -215,11 +215,11 @@ export const AutocompleteInput = <
     });
 
     const finalOnBlur = useCallback((): void => {
-        if (clearOnBlur && !(!!create || !!onCreate)) {
+        if (clearOnBlur) {
             setFilterValue('');
         }
         field.onBlur();
-    }, [clearOnBlur, field, create, onCreate]);
+    }, [clearOnBlur, field]);
 
     const selectedChoice = useSelectedChoice<
         OptionType,
