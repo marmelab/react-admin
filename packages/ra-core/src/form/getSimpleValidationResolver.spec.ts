@@ -157,5 +157,68 @@ describe('getSimpleValidationResolver', () => {
                 },
             });
         });
+
+        it('should handle RA translation objects', async () => {
+            const result = await validator({
+                title: 'title too short',
+                average_note: {
+                    message: 'ra.validation.minValue',
+                    args: { min: 2 },
+                },
+            });
+
+            expect(result).toEqual({
+                values: {},
+                errors: {
+                    title: { type: 'manual', message: 'title too short' },
+                    average_note: {
+                        type: 'manual',
+                        message: {
+                            message: 'ra.validation.minValue',
+                            args: { min: 2 },
+                        },
+                    },
+                },
+            });
+        });
+
+        it('should handle RA translation objects in arrays', async () => {
+            const result = await validator({
+                title: 'title too short',
+                backlinks: [
+                    {
+                        average_note: {
+                            message: 'ra.validation.minValue',
+                            args: { min: 2 },
+                        },
+                    },
+                    { id: 'missing id' },
+                ],
+            });
+
+            expect(result).toEqual({
+                values: {},
+                errors: {
+                    title: { type: 'manual', message: 'title too short' },
+                    backlinks: [
+                        {
+                            average_note: {
+                                type: 'manual',
+                                message: {
+                                    message: 'ra.validation.minValue',
+                                    args: { min: 2 },
+                                },
+                            },
+                        },
+                        {
+                            id: {
+                                type: 'manual',
+                                message: 'missing id',
+                            },
+                        },
+                    ],
+                },
+            });
+        });
     });
 });
