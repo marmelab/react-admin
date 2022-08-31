@@ -219,7 +219,7 @@ export const AutocompleteInput = <
             setFilterValue('');
         }
         field.onBlur();
-    }, [field]);
+    }, [clearOnBlur, field, create, onCreate]);
 
     const selectedChoice = useSelectedChoice<
         OptionType,
