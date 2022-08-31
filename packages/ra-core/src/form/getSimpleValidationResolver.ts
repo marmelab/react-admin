@@ -55,7 +55,7 @@ export const getSimpleValidationResolver = (validate: ValidateForm) => async (
         return { values: data, errors: {} };
     }
 
-    // Else, we return an error object shaped liked errors but having for each leaf
+    // Else, we return an error object shaped like errors but having for each leaf
     // `type: 'manual'` and a `message` prop like react-hook-form expects it
     const transformedErrors = transformErrorFields(errors);
 
@@ -64,7 +64,7 @@ export const getSimpleValidationResolver = (validate: ValidateForm) => async (
         return { values: data, errors: {} };
     }
 
-    // Else return the errors and no value
+    // Else return the errors and no values
     return {
         values: {},
         errors: transformedErrors,
@@ -105,7 +105,7 @@ const transformErrorFields = (error: object) => {
             };
         }
 
-        // Handle leaf (primary type or RaTranslationObj)
+        // Handle leaf (either primary type or RaTranslationObj)
         return {
             ...acc,
             [field]: addTypeAndMessage(error[field]),
