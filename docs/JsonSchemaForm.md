@@ -16,7 +16,7 @@ Configure the <Edit> view with a <JsonSchemaForm> child as follows:
 {% raw %}
 ```jsx
 import { Edit } from "react-admin";
-import { JsonSchemaForm } from "@react-admin/ra-form-layout";
+import { JsonSchemaForm } from "@react-admin/ra-json-schema-form";
 
 const CustomerEdit = () => (
   <Edit>
@@ -66,5 +66,5 @@ const CustomerEdit = () => (
 ```
 {% endraw %}
 
-Check [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/modules/ra-form-layout#jsonschemaform) for more details.
+Check [the `ra-json-schema-form` documentation](https://marmelab.com/ra-enterprise/modules/ra-json-schema-form#installation) for more details.
 

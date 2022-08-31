@@ -17,9 +17,9 @@ npm install --save ra-data-local-storage
 import * as React from "react";
 import { Admin, Resource } from 'react-admin';
 import localStorageDataProvider from 'ra-data-local-storage';
+import { PostList } from './posts';
 
 const dataProvider = localStorageDataProvider();
-import { PostList } from './posts';
 
 const App = () => (
     <Admin dataProvider={dataProvider}>

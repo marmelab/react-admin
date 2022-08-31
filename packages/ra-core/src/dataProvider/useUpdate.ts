@@ -10,7 +10,12 @@ import {
 
 import { useDataProvider } from './useDataProvider';
 import undoableEventEmitter from './undoableEventEmitter';
-import { RaRecord, UpdateParams, MutationMode } from '../types';
+import {
+    RaRecord,
+    UpdateParams,
+    MutationMode,
+    GetListResult as OriginalGetListResult,
+} from '../types';
 
 /**
  * Get a callback to call the dataProvider.update() method, the result and the loading state.
@@ -110,7 +115,9 @@ export const useUpdate = <
             ];
         };
 
-        type GetListResult = { data?: RecordType[]; total?: number };
+        type GetListResult = Omit<OriginalGetListResult, 'data'> & {
+            data?: RecordType[];
+        };
 
         queryClient.setQueryData(
             [resource, 'getOne', { id: String(id), meta }],
@@ -120,9 +127,7 @@ export const useUpdate = <
         queryClient.setQueriesData(
             [resource, 'getList'],
             (res: GetListResult) =>
-                res && res.data
-                    ? { data: updateColl(res.data), total: res.total }
-                    : res,
+                res && res.data ? { ...res, data: updateColl(res.data) } : res,
             { updatedAt }
         );
         queryClient.setQueriesData(

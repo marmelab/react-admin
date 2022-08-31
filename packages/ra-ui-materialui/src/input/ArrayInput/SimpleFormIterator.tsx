@@ -170,7 +170,6 @@ SimpleFormIterator.defaultProps = {
 };
 
 SimpleFormIterator.propTypes = {
-    defaultValue: PropTypes.any,
     addButton: PropTypes.element,
     removeButton: PropTypes.element,
     children: PropTypes.node,
@@ -193,7 +192,6 @@ export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
     addButton?: ReactElement;
     children?: ReactNode;
     className?: string;
-    defaultValue?: any;
     disabled?: boolean;
     disableAdd?: boolean;
     disableRemove?: boolean | DisableRemoveFunction;

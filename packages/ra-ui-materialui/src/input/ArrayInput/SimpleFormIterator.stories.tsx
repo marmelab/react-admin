@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Button } from '@mui/material';
 
 import { Edit } from '../../detail';
 import { SimpleForm } from '../../form';
@@ -35,6 +36,53 @@ export const Basic = () => (
             <SimpleForm>
                 <ArrayInput source="authors" fullWidth>
                     <SimpleFormIterator>
+                        <TextInput source="name" />
+                        <TextInput source="role" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        </Edit>
+    </AdminContext>
+);
+
+export const AddButton = () => (
+    <AdminContext dataProvider={dataProvider}>
+        <Edit resource="books" id="1">
+            <SimpleForm>
+                <ArrayInput source="authors">
+                    <SimpleFormIterator addButton={<Button>Add</Button>}>
+                        <TextInput source="name" />
+                        <TextInput source="role" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        </Edit>
+    </AdminContext>
+);
+
+export const GetItemLabel = () => (
+    <AdminContext dataProvider={dataProvider}>
+        <Edit resource="books" id="1">
+            <SimpleForm>
+                <ArrayInput source="authors" fullWidth>
+                    <SimpleFormIterator
+                        getItemLabel={index => `item #${index}`}
+                    >
+                        <TextInput source="name" />
+                        <TextInput source="role" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        </Edit>
+    </AdminContext>
+);
+
+export const GetItemLabelEmpty = () => (
+    <AdminContext dataProvider={dataProvider}>
+        <Edit resource="books" id="1">
+            <SimpleForm>
+                <ArrayInput source="authors" fullWidth>
+                    <SimpleFormIterator getItemLabel={index => ''}>
                         <TextInput source="name" />
                         <TextInput source="role" />
                     </SimpleFormIterator>
