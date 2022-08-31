@@ -241,7 +241,7 @@ describe('<SimpleFormIterator />', () => {
 
         const addItemElement = screen
             .getByLabelText('ra.action.add')
-            .closest('button');
+            .closest('button') as HTMLButtonElement;
 
         fireEvent.click(addItemElement);
         await waitFor(() => {
@@ -289,7 +289,7 @@ describe('<SimpleFormIterator />', () => {
 
         const addItemElement = screen
             .getByLabelText('ra.action.add')
-            .closest('button');
+            .closest('button') as HTMLButtonElement;
 
         fireEvent.click(addItemElement);
         await waitFor(() => {
@@ -328,7 +328,7 @@ describe('<SimpleFormIterator />', () => {
 
         const addItemElement = screen
             .getByLabelText('ra.action.add')
-            .closest('button');
+            .closest('button') as HTMLButtonElement;
 
         fireEvent.click(addItemElement);
         await waitFor(() => {
@@ -372,11 +372,10 @@ describe('<SimpleFormIterator />', () => {
         );
 
         const removeFirstButton = getByLabelText(
-            (screen.queryAllByLabelText('Email')[0] as HTMLElement).closest(
-                'li'
-            ),
+            // @ts-ignore
+            screen.queryAllByLabelText('Email')[0].closest('li'),
             'ra.action.remove'
-        ).closest('button');
+        ).closest('button') as HTMLButtonElement;
 
         fireEvent.click(removeFirstButton);
         await waitFor(() => {
@@ -385,7 +384,7 @@ describe('<SimpleFormIterator />', () => {
 
         const addItemElement = screen
             .getByLabelText('ra.action.add')
-            .closest('button');
+            .closest('button') as HTMLButtonElement;
 
         fireEvent.click(addItemElement);
         await waitFor(() => {
@@ -396,12 +395,12 @@ describe('<SimpleFormIterator />', () => {
         expect(
             screen
                 .queryAllByLabelText('Email')
-                .map(inputElement => inputElement.value)
+                .map(inputElement => (inputElement as HTMLInputElement).value)
         ).toEqual(['default@marmelab.com']);
         expect(
             screen
                 .queryAllByLabelText('Name')
-                .map(inputElement => inputElement.value)
+                .map(inputElement => (inputElement as HTMLInputElement).value)
         ).toEqual(['']);
 
         expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(1);
@@ -433,9 +432,10 @@ describe('<SimpleFormIterator />', () => {
         ).toEqual(emails);
 
         const removeFirstButton = getByLabelText(
+            // @ts-ignore
             inputElements[0].closest('li'),
             'ra.action.remove'
-        ).closest('button');
+        ).closest('button') as HTMLButtonElement;
 
         fireEvent.click(removeFirstButton);
         await waitFor(() => {

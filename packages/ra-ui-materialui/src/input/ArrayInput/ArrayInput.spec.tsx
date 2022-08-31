@@ -206,16 +206,14 @@ describe('<ArrayInput />', () => {
 
             setArrayInputVisible = setVisible;
 
-            return (
-                visible && (
-                    <ArrayInput resource="bar" source="arr">
-                        <SimpleFormIterator>
-                            <TextInput source="id" />
-                            <TextInput source="foo" />
-                        </SimpleFormIterator>
-                    </ArrayInput>
-                )
-            );
+            return visible ? (
+                <ArrayInput resource="bar" source="arr">
+                    <SimpleFormIterator>
+                        <TextInput source="id" />
+                        <TextInput source="foo" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            ) : null;
         };
 
         render(

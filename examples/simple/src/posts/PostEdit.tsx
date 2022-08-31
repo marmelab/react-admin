@@ -148,12 +148,12 @@ const PostEdit = () => {
                     </ImageInput>
                     {permissions === 'admin' && (
                         <ArrayInput source="authors">
-                            <SimpleFormIterator>
+                            <SimpleFormIterator inline>
                                 <ReferenceInput
                                     source="user_id"
                                     reference="users"
                                 >
-                                    <AutocompleteInput />
+                                    <AutocompleteInput helperText={false} />
                                 </ReferenceInput>
                                 <FormDataConsumer>
                                     {({
@@ -180,6 +180,7 @@ const PostEdit = () => {
                                                         name: 'Co-Writer',
                                                     },
                                                 ]}
+                                                helperText={false}
                                                 {...rest}
                                             />
                                         ) : null

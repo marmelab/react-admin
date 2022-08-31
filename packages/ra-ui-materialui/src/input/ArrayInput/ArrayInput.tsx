@@ -142,7 +142,12 @@ export const ArrayInput = (props: ArrayInputProps) => {
         <Root
             fullWidth
             margin={margin}
-            className={clsx('ra-input', `ra-input-${source}`, className)}
+            className={clsx(
+                'ra-input',
+                `ra-input-${source}`,
+                ArrayInputClasses.root,
+                className
+            )}
             error={(isDirty || isSubmitted) && !!error}
             {...sanitizeInputRestProps(rest)}
         >
@@ -208,6 +213,7 @@ export interface ArrayInputProps
 const PREFIX = 'RaArrayInput';
 
 export const ArrayInputClasses = {
+    root: `${PREFIX}-root`,
     label: `${PREFIX}-label`,
 };
 
@@ -215,9 +221,14 @@ const Root = styled(FormControl, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    marginTop: theme.spacing(2),
+    marginTop: 0,
     [`& .${ArrayInputClasses.label}`]: {
-        top: theme.spacing(-2),
+        position: 'relative',
+        top: theme.spacing(0.5),
         left: theme.spacing(-1.5),
+    },
+    [`& .${ArrayInputClasses.root}`]: {
+        // nested ArrayInput
+        paddingLeft: theme.spacing(2),
     },
 }));
