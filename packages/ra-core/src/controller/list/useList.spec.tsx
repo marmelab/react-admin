@@ -242,7 +242,7 @@ describe('<useList />', () => {
             <UseList
                 data={data}
                 sort={{ field: 'id', order: 'ASC' }}
-                setCustomFilter={record => record.id > 2}
+                filterCallback={record => record.id > 2}
                 callback={callback}
             />
         );

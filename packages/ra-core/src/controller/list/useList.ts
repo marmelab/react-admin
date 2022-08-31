@@ -48,7 +48,7 @@ const refetch = () => {
  * @param {Number} props.page: Optional. The initial page index
  * @param {Number} props.perPage: Optional. The initial page size
  * @param {SortPayload} props.sort: Optional. The initial sort (field and order)
- * @param {setCustomFilter} prop.setCustomFilter Optional. A function that allows you to make a custom filter
+ * @param {filterCallback} prop.filterCallback Optional. A function that allows you to make a custom filter
  */
 export const useList = <RecordType extends RaRecord = any>(
     props: UseListOptions<RecordType>
@@ -62,7 +62,7 @@ export const useList = <RecordType extends RaRecord = any>(
         page: initialPage = 1,
         perPage: initialPerPage = 1000,
         sort: initialSort,
-        setCustomFilter = (record: RecordType) => Boolean(record),
+        filterCallback = (record: RecordType) => Boolean(record),
     } = props;
     const resource = useResourceContext(props);
 
@@ -181,7 +181,7 @@ export const useList = <RecordType extends RaRecord = any>(
                             }
                         )
                     )
-                    .filter(setCustomFilter);
+                    .filter(filterCallback);
             }
             const filteredLength = tempData.length;
 
@@ -273,7 +273,7 @@ export interface UseListOptions<RecordType extends RaRecord = any> {
     perPage?: number;
     sort?: SortPayload;
     resource?: string;
-    setCustomFilter?: (record: RecordType) => boolean;
+    filterCallback?: (record: RecordType) => boolean;
 }
 
 export type UseListValue<

@@ -242,7 +242,7 @@ const {
     refetch, // a function that throws an error, as refetch doesn't make sense for local data
 } = getGetList({ data });
 ```
-## `setCustomFilter`
+## `filterCallback`
 
 Property for custom filter definition. Being able to apply more complex filters using operators
 
@@ -254,7 +254,7 @@ const { data } = useList({
         { id: 3, name: 'Jean-Claude' },
     ],
     sort: { field: 'name', order: 'ASC' },
-    setCustomFilter: (record) => record.id > 1 && record.name !== 'Jean-Claude'
+    filterCallback: (record) => record.id > 1 && record.name !== 'Jean-Claude'
 });
 // data will be
 // [
