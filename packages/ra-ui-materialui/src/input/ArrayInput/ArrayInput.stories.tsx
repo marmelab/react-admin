@@ -209,7 +209,7 @@ export const Realistic = () => (
                         <TextInput source="customer" helperText={false} />
                         <DateInput source="date" helperText={false} />
                         <ArrayInput source="items">
-                            <SimpleFormIterator>
+                            <SimpleFormIterator inline>
                                 <TextInput source="name" helperText={false} />
                                 <NumberInput
                                     source="price"
