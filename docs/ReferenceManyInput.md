@@ -60,7 +60,7 @@ const ProductEdit = () => (
 );
 ```
 
-`<ReferenceManyInput>` requires a `reference` and a `target` prop to know which entity to fetch, and a child component (usually a `<SimpleFormIterator>`) to edit the relationship.
+`<ReferenceManyInput>` requires a `reference` and a `target` prop to know which entity to fetch, and a child component (usually a [`<SimpleFormIterator>`](./SimpleFormIterator.md)) to edit the relationship.
 
 `<ReferenceManyInput>` persists the changes in the reference records (variants in the above example) after persisting the changes in the main resource (product in the above example). This means that you can also use `<ReferenceManyInput>` in `<Create>` views.
 
