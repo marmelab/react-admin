@@ -9,11 +9,11 @@ This component provides a UI for editing arrays of objects, one row per object a
 
 ![ArrayInput](./img/array-input.gif)
 
-`<SimpleFormIterator>` lets user edit, add, remove and reorder sub-records. It is designed to be used as a child of [`<ArrayInput>`](./ArrayInput.md) or [`<ReferenceManyInput>`](./ReferenceManyInput.md). You can also use it within an `ArrayInputContext` containing a *field array*, i.e. the value returned by [react-hook-form's `useFieldArray` hook](https://react-hook-form.com/api/usefieldarray).
+`<SimpleFormIterator>` lets users edit, add, remove and reorder sub-records. It is designed to be used as a child of [`<ArrayInput>`](./ArrayInput.md) or [`<ReferenceManyInput>`](./ReferenceManyInput.md). You can also use it within an `ArrayInputContext` containing a *field array*, i.e. the value returned by [react-hook-form's `useFieldArray` hook](https://react-hook-form.com/api/usefieldarray).
 
 ## Usage
 
-`<SimpleFormIterator>` requires no prop by default. It expects an array of inputs as children. It renders these inputs once per row, and takes care of setting a different source for each row. 
+`<SimpleFormIterator>` requires no prop by default. It expects an array of inputs as children. It renders these inputs once per row and takes care of setting a different source for each row. 
 
 ```jsx
 import { 
@@ -150,7 +150,7 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput, FormDataConsumer 
 
 ## `className`
 
-CSS class name passed to the root component. 
+CSS classes passed to the root component. 
 
 ```jsx
 <SimpleFormIterator className="dummy">
@@ -164,7 +164,7 @@ CSS class name passed to the root component.
 
 ## `disableAdd`
 
-When true, the Add button isn't rendered, so user cannot add new rows.
+When true, the Add button isn't rendered, so users cannot add new rows.
 
 ```jsx
 <SimpleFormIterator disableAdd>
@@ -176,7 +176,7 @@ When true, the Add button isn't rendered, so user cannot add new rows.
 
 ## `disableRemove`
 
-When true, the Remove buttons aren't rendered, so user cannot remove existing rows.
+When true, the Remove buttons aren't rendered, so users cannot remove existing rows.
 
 ```jsx
 <SimpleFormIterator disableRemove>
@@ -200,7 +200,7 @@ When true, the up and down buttons aren't rendered, so the user cannot reorder r
 
 ## `getItemLabel`
 
-Callback to render the label displayed in each row. `<SimpleFormIterator>` calls this function with the current row index as argument.
+Callback to render the label displayed in each row. `<SimpleFormIterator>` calls this function with the current row index as an argument.
 
 ```jsx
 <SimpleFormIterator getItemLabel={index => `item #${index}`}>
@@ -293,16 +293,16 @@ const OrderEdit = () => (
 
 ## `sx`
 
-You can also othe style of the root element (a `<ul>` element) as well as those of the inner components thanks to the `sx` property. It relies on MUI System and supports CSS ans shorthand properties (see [their documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)).
+You can override the style of the root element (a `<ul>` element) as well as those of the inner components thanks to the `sx` property. It relies on MUI System and supports CSS and shorthand properties (see [their documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)).
 
 This property accepts the following subclasses:
 
 | Rule name                | Description                                               |
 |--------------------------|-----------------------------------------------------------|
 | `RaSimpleFormIterator-action`         | Applied to the action zone on each row (the one containing the Remove button) |
-| `RaSimpleFormIterator-form`           | Applied to the sub form on each row |
+| `RaSimpleFormIterator-form`           | Applied to the subform on each row |
 | `RaSimpleFormIterator-index`          | Applied to the index label |
-| `RaSimpleFormIterator-indexContainer` | Applied to the conteiner of the index label and reorder buttons |
+| `RaSimpleFormIterator-indexContainer` | Applied to the container of the index label and reorder buttons |
 | `RaSimpleFormIterator-inline`         | Applied to rows when `inline` is true |
 | `RaSimpleFormIterator-leftIcon`       | Applied to the left icon on each row |
 | `RaSimpleFormIterator-line`           | Applied to each row |
