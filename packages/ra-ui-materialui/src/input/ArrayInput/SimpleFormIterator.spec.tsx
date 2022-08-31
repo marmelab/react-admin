@@ -3,8 +3,8 @@ import {
     screen,
     render,
     fireEvent,
-    getByText,
     waitFor,
+    getByLabelText,
 } from '@testing-library/react';
 import expect from 'expect';
 import { FormDataConsumer, testDataProvider } from 'ra-core';
@@ -124,7 +124,7 @@ describe('<SimpleFormIterator />', () => {
             </Wrapper>
         );
 
-        expect(screen.getByText('ra.action.add')).not.toBeNull();
+        expect(screen.getByLabelText('ra.action.add')).not.toBeNull();
     });
 
     it('should not display add button if disableAdd is truthy', () => {
@@ -140,7 +140,7 @@ describe('<SimpleFormIterator />', () => {
             </Wrapper>
         );
 
-        expect(screen.queryAllByText('ra.action.add').length).toBe(0);
+        expect(screen.queryAllByLabelText('ra.action.add').length).toBe(0);
     });
 
     it('should not display add button if disabled is truthy', () => {
@@ -156,7 +156,7 @@ describe('<SimpleFormIterator />', () => {
             </Wrapper>
         );
 
-        expect(screen.queryAllByText('ra.action.add').length).toBe(0);
+        expect(screen.queryAllByLabelText('ra.action.add').length).toBe(0);
     });
 
     it('should not display remove button if disableRemove is truthy', () => {
@@ -177,7 +177,7 @@ describe('<SimpleFormIterator />', () => {
             </Wrapper>
         );
 
-        expect(screen.queryAllByText('ra.action.remove').length).toBe(0);
+        expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(0);
     });
 
     it('should not display remove button if disableRemove return value is truthy', () => {
@@ -202,7 +202,7 @@ describe('<SimpleFormIterator />', () => {
             </Wrapper>
         );
 
-        expect(screen.queryAllByText('ra.action.remove').length).toBe(1);
+        expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(1);
     });
 
     it('should not display remove button if disabled is truthy', () => {
@@ -223,7 +223,7 @@ describe('<SimpleFormIterator />', () => {
             </Wrapper>
         );
 
-        expect(screen.queryAllByText('ra.action.remove').length).toBe(0);
+        expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(0);
     });
 
     it('should add children row on add button click', async () => {
@@ -240,7 +240,7 @@ describe('<SimpleFormIterator />', () => {
         );
 
         const addItemElement = screen
-            .getByText('ra.action.add')
+            .getByLabelText('ra.action.add')
             .closest('button');
 
         fireEvent.click(addItemElement);
@@ -271,7 +271,7 @@ describe('<SimpleFormIterator />', () => {
             }))
         ).toEqual([{ email: '' }, { email: '' }]);
 
-        expect(screen.queryAllByText('ra.action.remove').length).toBe(2);
+        expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(2);
     });
 
     it('should add correct children on add button click without source', async () => {
@@ -288,7 +288,7 @@ describe('<SimpleFormIterator />', () => {
         );
 
         const addItemElement = screen
-            .getByText('ra.action.add')
+            .getByLabelText('ra.action.add')
             .closest('button');
 
         fireEvent.click(addItemElement);
@@ -306,7 +306,7 @@ describe('<SimpleFormIterator />', () => {
             '',
         ]);
 
-        expect(screen.queryAllByText('ra.action.remove').length).toBe(1);
+        expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(1);
     });
 
     it('should add correct children with default value on add button click without source', async () => {
@@ -327,7 +327,7 @@ describe('<SimpleFormIterator />', () => {
         );
 
         const addItemElement = screen
-            .getByText('ra.action.add')
+            .getByLabelText('ra.action.add')
             .closest('button');
 
         fireEvent.click(addItemElement);
@@ -345,7 +345,7 @@ describe('<SimpleFormIterator />', () => {
             '5',
         ]);
 
-        expect(screen.queryAllByText('ra.action.remove').length).toBe(1);
+        expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(1);
     });
 
     it('should add correct children with default value after removing one', async () => {
@@ -371,7 +371,7 @@ describe('<SimpleFormIterator />', () => {
             </Wrapper>
         );
 
-        const removeFirstButton = getByText(
+        const removeFirstButton = getByLabelText(
             (screen.queryAllByLabelText('Email')[0] as HTMLElement).closest(
                 'li'
             ),
@@ -384,7 +384,7 @@ describe('<SimpleFormIterator />', () => {
         });
 
         const addItemElement = screen
-            .getByText('ra.action.add')
+            .getByLabelText('ra.action.add')
             .closest('button');
 
         fireEvent.click(addItemElement);
@@ -404,7 +404,7 @@ describe('<SimpleFormIterator />', () => {
                 .map(inputElement => inputElement.value)
         ).toEqual(['']);
 
-        expect(screen.queryAllByText('ra.action.remove').length).toBe(1);
+        expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(1);
     });
 
     it('should remove children row on remove button click', async () => {
@@ -432,7 +432,7 @@ describe('<SimpleFormIterator />', () => {
             }))
         ).toEqual(emails);
 
-        const removeFirstButton = getByText(
+        const removeFirstButton = getByLabelText(
             inputElements[0].closest('li'),
             'ra.action.remove'
         ).closest('button');
@@ -548,7 +548,7 @@ describe('<SimpleFormIterator />', () => {
             </Wrapper>
         );
 
-        expect(screen.queryAllByText('ra.action.remove').length).toBe(0);
+        expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(0);
         expect(
             screen.queryAllByText('Custom Remove Button').length
         ).toBeGreaterThan(0);
@@ -731,7 +731,7 @@ describe('<SimpleFormIterator />', () => {
         );
 
         const addItemElement = screen
-            .getByText('ra.action.add')
+            .getByLabelText('ra.action.add')
             .closest('button') as HTMLButtonElement;
 
         fireEvent.click(addItemElement);
