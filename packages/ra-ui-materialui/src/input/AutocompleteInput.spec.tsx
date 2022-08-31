@@ -1206,7 +1206,7 @@ describe('<AutocompleteInput />', () => {
                         reference="tags"
                         source="tags"
                     >
-                        <AutocompleteArrayInput />
+                        <AutocompleteArrayInput resource="comments" />
                     </ReferenceArrayInput>
                 </SimpleForm>
             </AdminContext>
@@ -1214,9 +1214,9 @@ describe('<AutocompleteInput />', () => {
         // Give time for the (previously thrown) error to happen
         await new Promise(resolve => setTimeout(resolve, 1000));
         await waitFor(() => {
-            screen.getByText('resources.undefined.fields.tags');
+            screen.getByText('resources.comments.fields.tags');
         });
-        fireEvent.click(screen.getByText('resources.undefined.fields.tags'));
+        fireEvent.click(screen.getByText('resources.comments.fields.tags'));
         await waitFor(() => {
             screen.getByText('No options');
         });

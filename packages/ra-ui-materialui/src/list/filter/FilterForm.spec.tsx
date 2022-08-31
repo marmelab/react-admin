@@ -130,7 +130,10 @@ describe('<FilterForm />', () => {
                     <ListContext.Provider value={defaultProps}>
                         <Filter>
                             <ReferenceInput source="post_id" reference="posts">
-                                <SelectInput optionText="title" />
+                                <SelectInput
+                                    optionText="title"
+                                    resource="comments"
+                                />
                             </ReferenceInput>
                         </Filter>
                     </ListContext.Provider>
