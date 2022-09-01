@@ -173,4 +173,67 @@ describe('useDataProvider', () => {
 
         expect(customVerb).toHaveBeenCalledWith({ id: 1 }, ['something']);
     });
+
+    it('should return array or object when 401', async () => {
+        const results = [] as any[];
+        const doSomethingWithResult = (arg: any) => results.push(arg);
+        const UseDataProvider = () => {
+            const dataProvider = useDataProvider();
+            useEffect(() => {
+                async function callDataProvider() {
+                    doSomethingWithResult(
+                        (await dataProvider.getList('posts', {
+                            filter: { id: 1 },
+                        })) as any
+                    );
+                    doSomethingWithResult(
+                        (await dataProvider.getMany('posts', {
+                            filter: { id: 1 },
+                        })) as any
+                    );
+                    doSomethingWithResult(
+                        (await dataProvider.getOne('posts', {
+                            filter: { id: 1 },
+                        })) as any
+                    );
+                    doSomethingWithResult(
+                        (await dataProvider.getManyReference('posts', {
+                            filter: { id: 1 },
+                        })) as any
+                    );
+                }
+                callDataProvider();
+            }, [dataProvider]);
+            return <div data-testid="loading">loading</div>;
+        };
+        const dataProvider = {
+            getMany: () => Promise.reject({ status: 401 }),
+            getList: () => Promise.reject({ status: 401 }),
+            getOne: () => Promise.reject({ status: 401 }),
+            getManyReference: () => Promise.reject({ status: 401 }),
+        };
+        render(
+            <CoreAdminContext
+                dataProvider={dataProvider}
+                authProvider={{
+                    checkError: () => Promise.reject(true),
+                    checkAuth: () => Promise.reject(true),
+                    logout: () => Promise.resolve(false),
+                }}
+            >
+                <UseDataProvider />
+            </CoreAdminContext>
+        );
+        // waitFor for the dataProvider to return
+        await act(async () => {
+            await new Promise(resolve => setTimeout(resolve));
+        });
+
+        expect(results).toEqual([
+            { data: [] },
+            { data: [] },
+            { data: {} },
+            { data: [] },
+        ]);
+    });
 });
