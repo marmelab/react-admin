@@ -124,5 +124,29 @@ describe('<FilterButton />', () => {
                 ).toBeNull();
             });
         });
+
+        it('should not display save query in filter button', async () => {
+            const { queryByText } = render(
+                <AdminContext theme={theme}>
+                    <FilterButton
+                        {...defaultProps}
+                        filterValues={{ title: 'foo' }}
+                        filters={[
+                            <TextInput source="Returned" label="Returned" />,
+                        ]}
+                        disableSaveQuery
+                    />
+                </AdminContext>
+            );
+            expect(
+                screen.queryByLabelText('ra.action.add_filter')
+            ).not.toBeNull();
+
+            fireEvent.click(screen.getByLabelText('ra.action.add_filter'));
+
+            await screen.findByText('Returned');
+
+            expect(queryByText('ra.saved_queries.new_label')).toBeNull();
+        });
     });
 });
