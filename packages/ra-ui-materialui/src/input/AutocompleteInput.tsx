@@ -214,13 +214,6 @@ export const AutocompleteInput = <
         ...rest,
     });
 
-    const finalOnBlur = useCallback((): void => {
-        if (clearOnBlur) {
-            setFilterValue('');
-        }
-        field.onBlur();
-    }, [clearOnBlur, field]);
-
     const selectedChoice = useSelectedChoice<
         OptionType,
         Multiple,
@@ -232,6 +225,14 @@ export const AutocompleteInput = <
         multiple,
         optionValue,
     });
+
+    const finalOnBlur = useCallback((): void => {
+        if (clearOnBlur) {
+            const optionLabel = getOptionLabel(selectedChoice);
+            setFilterValue(optionLabel);
+        }
+        field.onBlur();
+    }, [clearOnBlur, field, selectedChoice]);
 
     useEffect(() => {
         // eslint-disable-next-line eqeqeq
