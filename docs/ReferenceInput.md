@@ -108,7 +108,7 @@ In a Filter form, react-admin uses the `label` prop to set the Filter label. So 
 
 ```jsx
 const filters = [
-    <ReferenceInput label="Posts" source="post_id" reference="posts">
+    <ReferenceInput label="Post" source="post_id" reference="posts">
         <AutocompleteInput label="Post" />
     </ReferenceInput>,
 ];
