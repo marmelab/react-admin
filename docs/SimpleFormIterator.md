@@ -43,7 +43,7 @@ const OrderEdit = () => (
 );
 ```
 
-In this example, the inputs for each row appear inline, with no helper text. This dense layout is adapted to arrays with many items. If you need more room, omit the `inline` prop to use the default layout, where each input is displayed in a separate row.
+In the example above, the inputs for each row appear inline, with no helper text. This dense layout is adapted to arrays with many items. If you need more room, omit the `inline` prop to use the default layout, where each input is displayed in a separate row.
 
 ```jsx
 const OrderEdit = () => (
