@@ -71,6 +71,9 @@ import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
  *     )
  * }
  */
+
+const arrayReturnTypes = ['getList', 'getMany', 'getManyReference'];
+
 export const useDataProvider = <
     TDataProvider extends DataProvider = DataProvider
 >(): TDataProvider => {
@@ -109,7 +112,14 @@ export const useDataProvider = <
                                 }
                                 return logoutIfAccessDenied(error).then(
                                     loggedOut => {
-                                        if (loggedOut) return { data: {} };
+                                        if (loggedOut)
+                                            return {
+                                                data: arrayReturnTypes.includes(
+                                                    type
+                                                )
+                                                    ? []
+                                                    : {},
+                                            };
                                         throw error;
                                     }
                                 );
