@@ -101,6 +101,7 @@ title: "Reference"
 * [`<ReferenceField>`](./ReferenceField.md)
 * [`<ReferenceInput>`](./ReferenceInput.md)
 * [`<ReferenceManyField>`](./ReferenceManyField.md)
+* [`<ReferenceManyInput>`](./ReferenceManyInput.md)<img class="icon" src="./img/premium.svg" />
 * [`<ReferenceManyToManyField>`](https://marmelab.com/ra-enterprise/modules/ra-relationships#referencemanytomanyfield)<img class="icon" src="./img/premium.svg" />
 * [`<ReferenceManyToManyInput>`](https://marmelab.com/ra-enterprise/modules/ra-relationships#referencemanytomanyinput)<img class="icon" src="./img/premium.svg" />
 * [`<ReferenceOneField>`](./ReferenceOneField.md)
