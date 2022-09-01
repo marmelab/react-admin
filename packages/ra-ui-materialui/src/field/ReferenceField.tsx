@@ -16,6 +16,7 @@ import {
     useCreatePath,
     Identifier,
     useGetRecordRepresentation,
+    useTranslate,
 } from 'ra-core';
 
 import { LinearProgress } from '../layout';
@@ -57,11 +58,12 @@ export const ReferenceField: FC<ReferenceFieldProps> = props => {
     const { source, emptyText, ...rest } = props;
     const record = useRecordContext(props);
     const id = get(record, source);
+    const translate = useTranslate();
 
     return id == null ? (
         emptyText ? (
             <Typography component="span" variant="body2">
-                {emptyText}
+                {translate(emptyText, { _: emptyText })}
             </Typography>
         ) : null
     ) : (
@@ -164,6 +166,7 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
         sx,
     } = props;
     const getRecordRepresentation = useGetRecordRepresentation(reference);
+    const translate = useTranslate();
 
     if (error) {
         return (
@@ -181,7 +184,7 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
         return <LinearProgress />;
     }
     if (!referenceRecord) {
-        return emptyText ? <>{emptyText}</> : null;
+        return emptyText ? <>{translate(emptyText, { _: emptyText })}</> : null;
     }
 
     let child = children || (

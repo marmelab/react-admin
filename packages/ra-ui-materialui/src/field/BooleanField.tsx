@@ -62,7 +62,7 @@ export const BooleanField: FunctionComponent<BooleanFieldProps> = memo(
                 className={className}
                 {...sanitizeFieldRestProps(rest)}
             >
-                {emptyText}
+                {translate(emptyText, { _: emptyText })}
             </Typography>
         );
     }

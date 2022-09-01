@@ -2,7 +2,12 @@ import * as React from 'react';
 import { memo, FC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { ChoicesProps, useChoices, useRecordContext } from 'ra-core';
+import {
+    ChoicesProps,
+    useChoices,
+    useRecordContext,
+    useTranslate,
+} from 'ra-core';
 import { Typography, TypographyProps } from '@mui/material';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
@@ -85,6 +90,7 @@ export const SelectField: FC<SelectFieldProps> = memo(props => {
         optionValue,
         translateChoice,
     });
+    const translate = useTranslate();
 
     const choice = choices.find(choice => getChoiceValue(choice) === value);
 
@@ -96,7 +102,7 @@ export const SelectField: FC<SelectFieldProps> = memo(props => {
                 className={className}
                 {...sanitizeFieldRestProps(rest)}
             >
-                {emptyText}
+                {translate(emptyText, { _: emptyText })}
             </Typography>
         ) : null;
     }
