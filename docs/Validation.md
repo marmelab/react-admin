@@ -34,14 +34,40 @@ const validateUserCreation = (values) => {
             args: { min: 18 }
         };
     }
+    // You can add a message for a whole ArrayInput
+    if (!values.children || !values.children.length) {
+        errors.children = 'ra.validation.required';
+    } else {
+        // Or target each child of an ArrayInput by returning an array of error objects
+        errors.children = values.children.map(child => {
+            const childErrors: any = {};
+            if (!child?.firstName) {
+                childErrors.firstName = 'The firstName is required';
+            }
+            if (!child?.age) {
+                childErrors.age = 'ra.validation.required'; // Translation keys are supported here too
+            }
+            return childErrors;
+        });
+    }
     return errors
 };
 
 export const UserCreate = () => (
     <Create>
         <SimpleForm validate={validateUserCreation}>
-            <TextInput label="First Name" source="firstName" />
-            <TextInput label="Age" source="age" />
+            {/* 
+                We need to add `validate={required()}` on required fields to append a '*' symbol 
+                to the label, but the real validation still happens in `validateUserCreation`
+            */}
+            <TextInput label="First Name" source="firstName" validate={required()} />
+            <TextInput label="Age" source="age" validate={required()} />
+            <ArrayInput label="Children" source="children" fullWidth validate={required()}>
+                <SimpleFormIterator>
+                    <TextInput label="First Name" source="firstName" validate={required()} />
+                    <TextInput label="Age" source="age" validate={required()} />
+                </SimpleFormIterator>
+            </ArrayInput>
         </SimpleForm>
     </Create>
 );
