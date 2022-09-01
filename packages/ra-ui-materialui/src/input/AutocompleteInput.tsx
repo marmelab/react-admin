@@ -226,14 +226,6 @@ export const AutocompleteInput = <
         optionValue,
     });
 
-    const finalOnBlur = useCallback((): void => {
-        if (clearOnBlur) {
-            const optionLabel = getOptionLabel(selectedChoice);
-            setFilterValue(optionLabel);
-        }
-        field.onBlur();
-    }, [clearOnBlur, field, selectedChoice]);
-
     useEffect(() => {
         // eslint-disable-next-line eqeqeq
         if (isValidElement(optionText) && inputText == undefined) {
@@ -358,6 +350,14 @@ If you provided a React element for the optionText prop, you must also provide t
         },
         [getChoiceText, inputText, createId]
     );
+
+    const finalOnBlur = useCallback((): void => {
+        if (clearOnBlur) {
+            const optionLabel = getOptionLabel(selectedChoice);
+            setFilterValue(optionLabel);
+        }
+        field.onBlur();
+    }, [clearOnBlur, field, selectedChoice, getOptionLabel]);
 
     useEffect(() => {
         if (!multiple) {
