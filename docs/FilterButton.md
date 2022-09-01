@@ -58,7 +58,7 @@ const PostList = () => (
 
 ## `disableSaveQuery`
 
-By default, the filter button has a feature for you to be able to save a group of filters called `saved query` if you do not want to leave this feature active, you can add `disableSaveQuery` in filter button
+By default, the filter button lets users save a group of filters for later reuse. You can set the `disableSaveQuery` prop in the filter button to disable this feature. 
 
 ```jsx
 const ListToolbar = () => (
