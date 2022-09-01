@@ -875,7 +875,7 @@ describe('<AutocompleteInput />', () => {
         fireEvent.blur(input);
         fireEvent.focus(input);
         await waitFor(() => {
-            expect(screen.queryAllByRole('option').length).toEqual(2);
+            expect(screen.queryAllByRole('option').length).toEqual(3);
         });
     });
 
@@ -1232,6 +1232,32 @@ describe('<AutocompleteInput />', () => {
         userEvent.type(screen.getByRole('textbox'), '1050');
         await waitFor(() => {
             screen.getByText(/Dalmatian #1050/);
+        });
+    });
+
+    it('should clear the input when its blurred, having an unmatching selection and clearOnBlur prop is true', async () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <AutocompleteInput
+                        {...defaultProps}
+                        clearOnBlur
+                        choices={[
+                            { id: 1, name: 'ab' },
+                            { id: 2, name: 'abc' },
+                            { id: 3, name: '123' },
+                        ]}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+        const input = screen.getByLabelText(
+            'resources.users.fields.role'
+        ) as HTMLInputElement;
+        fireEvent.change(input, { target: { value: 'no match' } });
+        fireEvent.blur(input);
+        await waitFor(() => {
+            expect(input.value).toEqual('');
         });
     });
 });
