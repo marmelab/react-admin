@@ -1,28 +1,5 @@
 import { FieldValues } from 'react-hook-form';
-import isObject from 'lodash/isObject';
-import merge from 'lodash/merge';
-import reduce from 'lodash/reduce';
-import { ValidationErrorMessageWithArgs } from './validate';
 
-// Flattening an object into path keys:
-// https://github.com/lodash/lodash/issues/2240#issuecomment-418820848
-export const flattenErrors = (obj, path: string[] = []) =>
-    !isObject(obj)
-        ? { [path.join('.')]: obj }
-        : reduce(
-              obj,
-              (cum, next, key) => {
-                  if (
-                      (obj[key] as ValidationErrorMessageWithArgs).message !=
-                          null &&
-                      (obj[key] as ValidationErrorMessageWithArgs).args != null
-                  ) {
-                      return merge(cum, { [key]: obj[key] });
-                  }
-                  return merge(cum, flattenErrors(next, [...path, key]));
-              },
-              {}
-          );
 /**
  * Convert a simple validation function that returns an object matching the form shape with errors
  * to a validation resolver compatible with react-hook-form.
