@@ -57,10 +57,10 @@ const OrderEdit = () => (
             <TextInput source="customer" />
             <DateInput source="date" />
             <ArrayInput source="items">
-                <SimpleFormIterator>
-                    <TextInput source="name" />
-                    <NumberInput source="price" />
-                    <NumberInput source="quantity" />
+                <SimpleFormIterator inline>
+                    <TextInput source="name" helperText={false} />
+                    <NumberInput source="price" helperText={false} />
+                    <NumberInput source="quantity" helperText={false} />
                 </SimpleFormIterator>
             </ArrayInput>
         </SimpleForm>

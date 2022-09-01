@@ -5,7 +5,7 @@ title: "SimpleFormIterator"
 
 # `<SimpleFormIterator>`
 
-This component provides a UI for editing arrays of objects, one row per object and one line per field.
+This component provides a UI for editing arrays of objects, one row per object.
 
 ![ArrayInput](./img/array-input.gif)
 
@@ -32,6 +32,26 @@ const OrderEdit = () => (
             <TextInput source="customer" />
             <DateInput source="date" />
             <ArrayInput source="items">
+                <SimpleFormIterator inline>
+                    <TextInput source="name" helperText={false} />
+                    <NumberInput source="price" helperText={false} />
+                    <NumberInput source="quantity" helperText={false} />
+                </SimpleFormIterator>
+            </ArrayInput>
+        </SimpleForm>
+    </Edit>
+);
+```
+
+In this example, the inputs for each row appear inline, with no helper text. This dense layout is adapted to arrays with many items. If you need more room, omit the `inline` prop to use the default default layout, where each input is displayed in a separate row.
+
+```jsx
+const OrderEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="customer" />
+            <DateInput source="date" />
+            <ArrayInput source="items">
                 <SimpleFormIterator>
                     <TextInput source="name" />
                     <NumberInput source="price" />
@@ -42,6 +62,8 @@ const OrderEdit = () => (
     </Edit>
 );
 ```
+
+![Simple form iterator block](./img/array-input-block.png)
 
 ## Props
 
@@ -200,25 +222,17 @@ When true, the up and down buttons aren't rendered, so the user cannot reorder r
 
 ## `getItemLabel`
 
-Callback to render the label displayed in each row. `<SimpleFormIterator>` calls this function with the current row index as an argument.
+`<SimpleFormIterator>` can add a label in front of each row, based on the row index. Set the `getItemLabel` prop with a callback to enable this feature.
 
 ```jsx
-<SimpleFormIterator getItemLabel={index => `item #${index}`}>
+<SimpleFormIterator getItemLabel={index => `#${index + 1}`}>
     <TextInput source="name" />
     <NumberInput source="price" />
     <NumberInput source="quantity" />
 </SimpleFormIterator>
 ```
 
-Use a function returning an empty string to disable the line labels:
-
-```jsx
-<SimpleFormIterator getItemLabel={() => ''}>
-    <TextInput source="name" />
-    <NumberInput source="price" />
-    <NumberInput source="quantity" />
-</SimpleFormIterator>
-```
+![SimpleFormIterator with iterm label](./img/array-input-item-label.png)
 
 ## `inline`
 
@@ -233,6 +247,18 @@ When true, inputs are put on the same line. Use this option to make the lines mo
 ```
 
 ![Inline form iterator](./img/simple-form-iterator-inline.png)
+
+Without this prop, `<SimpleFormIterator>` will render one input per line.
+
+```jsx
+<SimpleFormIterator>
+    <TextInput source="name" />
+    <NumberInput source="price" />
+    <NumberInput source="quantity" />
+</SimpleFormIterator>
+```
+
+![Not Inline form iterator](./img/simple-form-iterator-not-inline.png)
 
 ## `removeButton`
 
@@ -293,16 +319,16 @@ const OrderEdit = () => (
 
 ## `sx`
 
-You can override the style of the root element (a `<ul>` element) as well as those of the inner components thanks to the `sx` property. It relies on MUI System and supports CSS and shorthand properties (see [their documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)).
+You can override the style of the root element (a `<div>` element) as well as those of the inner components thanks to the `sx` property. It relies on MUI System and supports CSS and shorthand properties (see [their documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)).
 
 This property accepts the following subclasses:
 
 | Rule name                | Description                                               |
 |--------------------------|-----------------------------------------------------------|
 | `RaSimpleFormIterator-action`         | Applied to the action zone on each row (the one containing the Remove button) |
+| `RaSimpleFormIterator-add`            | Applied to the bottom line containing the Add button |
 | `RaSimpleFormIterator-form`           | Applied to the subform on each row |
-| `RaSimpleFormIterator-index`          | Applied to the index label |
-| `RaSimpleFormIterator-indexContainer` | Applied to the container of the index label and reorder buttons |
+| `RaSimpleFormIterator-index`          | Applied to the row label when `getItemLabel` is set |
 | `RaSimpleFormIterator-inline`         | Applied to rows when `inline` is true |
-| `RaSimpleFormIterator-leftIcon`       | Applied to the left icon on each row |
 | `RaSimpleFormIterator-line`           | Applied to each row |
+| `RaSimpleFormIterator-list`           | Applied to the `<ul>` element |

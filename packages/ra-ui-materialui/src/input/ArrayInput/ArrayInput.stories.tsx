@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import { Resource } from 'ra-core';
+import { RecordContext, Resource } from 'ra-core';
 import { createMemoryHistory } from 'history';
 import { InputAdornment } from '@mui/material';
 

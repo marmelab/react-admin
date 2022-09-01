@@ -243,14 +243,11 @@ const Root = styled('div', {
         [theme.breakpoints.down('sm')]: { display: 'block' },
     },
     [`& .${SimpleFormIteratorClasses.index}`]: {
-        [theme.breakpoints.down('md')]: { display: 'none' },
-        marginRight: theme.spacing(1),
-    },
-    [`& .${SimpleFormIteratorClasses.indexContainer}`]: {
         display: 'flex',
-        marginTop: theme.spacing(1),
-        marginRight: theme.spacing(0.5),
         alignItems: 'top',
+        marginRight: theme.spacing(1),
+        marginTop: theme.spacing(1),
+        [theme.breakpoints.down('md')]: { display: 'none' },
     },
     [`& .${SimpleFormIteratorClasses.form}`]: {
         alignItems: 'flex-start',

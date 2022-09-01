@@ -1,12 +1,11 @@
 export const SimpleFormIteratorPrefix = 'RaSimpleFormIterator';
 
 export const SimpleFormIteratorClasses = {
-    list: `${SimpleFormIteratorPrefix}-list`,
-    line: `${SimpleFormIteratorPrefix}-line`,
+    action: `${SimpleFormIteratorPrefix}-action`,
     add: `${SimpleFormIteratorPrefix}-add`,
+    form: `${SimpleFormIteratorPrefix}-form`,
     index: `${SimpleFormIteratorPrefix}-index`,
     inline: `${SimpleFormIteratorPrefix}-inline`,
-    indexContainer: `${SimpleFormIteratorPrefix}-indexContainer`,
-    form: `${SimpleFormIteratorPrefix}-form`,
-    action: `${SimpleFormIteratorPrefix}-action`,
+    line: `${SimpleFormIteratorPrefix}-line`,
+    list: `${SimpleFormIteratorPrefix}-list`,
 };

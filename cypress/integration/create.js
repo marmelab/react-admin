@@ -42,7 +42,7 @@ describe('Create Page', () => {
         const backlinksContainer = cy
             .get(CreatePage.elements.input('backlinks.0.date'))
             .parents('.ra-input-backlinks');
-        backlinksContainer.get('.button-remove').click();
+        backlinksContainer.get('.button-remove').click({ force: true });
         CreatePage.setValues([
             {
                 type: 'input',

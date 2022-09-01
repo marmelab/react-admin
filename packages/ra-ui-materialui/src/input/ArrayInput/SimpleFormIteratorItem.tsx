@@ -81,16 +81,12 @@ export const SimpleFormIteratorItem = React.forwardRef(
             <SimpleFormIteratorItemContext.Provider value={context}>
                 <li className={SimpleFormIteratorClasses.line} ref={ref}>
                     {label && (
-                        <div
-                            className={SimpleFormIteratorClasses.indexContainer}
+                        <Typography
+                            variant="body2"
+                            className={SimpleFormIteratorClasses.index}
                         >
-                            <Typography
-                                variant="body2"
-                                className={SimpleFormIteratorClasses.index}
-                            >
-                                {label}
-                            </Typography>
-                        </div>
+                            {label}
+                        </Typography>
                     )}
                     <section
                         className={clsx(
@@ -152,6 +148,7 @@ export const SimpleFormIteratorItem = React.forwardRef(
 export type DisableRemoveFunction = (record: RaRecord) => boolean;
 
 type GetItemLabelFunc = (index: number) => string | ReactElement;
+
 export type SimpleFormIteratorItemProps = Partial<ArrayInputContextValue> & {
     children?: ReactNode;
     disabled?: boolean;
