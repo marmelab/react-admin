@@ -75,6 +75,7 @@ const OrderEdit = () => (
 | `disableAdd` | Optional | `boolean` | `false` | When true, the user cannot add new rows |
 | `disableRemove` | Optional | `boolean` | `false` | When true, the user cannot remove rows |
 | `disableReordering` | Optional | `boolean` | `false` | When true, the user cannot reorder rows |
+| `fullWidth` | Optional | `boolean` | `false` | Set to true to push the actions to the right |
 | `getItemLabel` | Optional | `function` | `x => x` | Callback to render the label displayed in each row |
 | `inline` | Optional | `boolean` | `false` | When true, inputs are put on the same line |
 | `removeButton` | Optional | `ReactElement` | - | Component to render for the remove button |
@@ -219,6 +220,24 @@ When true, the up and down buttons aren't rendered, so the user cannot reorder r
     <NumberInput source="quantity" />
 </SimpleFormIterator>
 ``` 
+
+## `fullWidth`
+
+When true, the row actions appear at the end of the row.
+
+```jsx
+<SimpleFormIterator fullWidth>
+    <TextInput source="name" />
+    <NumberInput source="price" />
+    <NumberInput source="quantity" />
+</SimpleFormIterator>
+```
+
+![SimpleFormIterator full width](./img/simple-form-iterator-fullWidth.png)
+
+This differs with the default behavior, where the row actions appear after the inputs.
+
+![SimpleFormIterator default width](./img/simple-form-iterator-fullWidth-false.png)
 
 ## `getItemLabel`
 
