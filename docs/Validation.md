@@ -40,11 +40,11 @@ const validateUserCreation = (values) => {
     } else {
         // Or target each child of an ArrayInput by returning an array of error objects
         errors.children = values.children.map(child => {
-            const childErrors: any = {};
-            if (!child?.firstName) {
+            const childErrors = {};
+            if (!child || !child.firstName) {
                 childErrors.firstName = 'The firstName is required';
             }
-            if (!child?.age) {
+            if (!child || !child.age) {
                 childErrors.age = 'ra.validation.required'; // Translation keys are supported here too
             }
             return childErrors;
