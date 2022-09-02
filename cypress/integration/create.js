@@ -42,7 +42,10 @@ describe('Create Page', () => {
         const backlinksContainer = cy
             .get(CreatePage.elements.input('backlinks.0.date'))
             .parents('.ra-input-backlinks');
-        backlinksContainer.contains('Remove').click();
+        // The button is visibility:hidden unless the user hovers on the row.
+        // It is not possible to simulate a CSS hover with cypress, so we use force: true
+        // see https://docs.cypress.io/api/commands/hover
+        backlinksContainer.get('.button-remove').click({ force: true });
         CreatePage.setValues([
             {
                 type: 'input',

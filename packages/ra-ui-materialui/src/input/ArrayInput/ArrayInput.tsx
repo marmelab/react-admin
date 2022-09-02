@@ -15,6 +15,7 @@ import {
     FormControl,
     FormHelperText,
     FormControlProps,
+    styled,
 } from '@mui/material';
 
 import { LinearProgress } from '../../layout';
@@ -138,15 +139,21 @@ export const ArrayInput = (props: ArrayInputProps) => {
     }
 
     return (
-        <FormControl
+        <Root
             fullWidth
             margin={margin}
-            className={clsx('ra-input', `ra-input-${source}`, className)}
+            className={clsx(
+                'ra-input',
+                `ra-input-${source}`,
+                ArrayInputClasses.root,
+                className
+            )}
             error={(isDirty || isSubmitted) && !!error}
             {...sanitizeInputRestProps(rest)}
         >
             <InputLabel
                 htmlFor={source}
+                className={ArrayInputClasses.label}
                 shrink
                 error={(isDirty || isSubmitted) && !!error}
             >
@@ -177,13 +184,12 @@ export const ArrayInput = (props: ArrayInputProps) => {
                     />
                 </FormHelperText>
             ) : null}
-        </FormControl>
+        </Root>
     );
 };
 
 ArrayInput.defaultProps = {
     options: {},
-    fullWidth: true,
 };
 
 export const getArrayInputError = error => {
@@ -203,3 +209,26 @@ export interface ArrayInputProps
     isLoading?: boolean;
     record?: Partial<RaRecord>;
 }
+
+const PREFIX = 'RaArrayInput';
+
+export const ArrayInputClasses = {
+    root: `${PREFIX}-root`,
+    label: `${PREFIX}-label`,
+};
+
+const Root = styled(FormControl, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    marginTop: 0,
+    [`& .${ArrayInputClasses.label}`]: {
+        position: 'relative',
+        top: theme.spacing(0.5),
+        left: theme.spacing(-1.5),
+    },
+    [`& .${ArrayInputClasses.root}`]: {
+        // nested ArrayInput
+        paddingLeft: theme.spacing(2),
+    },
+}));
