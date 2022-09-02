@@ -112,6 +112,22 @@ export const EmptyText = () => (
     </Wrapper>
 );
 
+export const Sort = () => (
+    <Wrapper>
+        <SelectInput
+            source="status"
+            choices={[
+                { id: 'created', name: 'Created' },
+                { id: 'sent', name: 'Sent' },
+                { id: 'inbox', name: 'Inbox' },
+                { id: 'spam', name: 'Spam' },
+                { id: 'error', name: 'Error' },
+            ]}
+            validate={() => 'error'}
+        />
+    </Wrapper>
+);
+
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({ children }) => (

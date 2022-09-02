@@ -11,7 +11,7 @@ import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { SelectInput } from './SelectInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
-import { InsideReferenceInput } from './SelectInput.stories';
+import { InsideReferenceInput, Sort } from './SelectInput.stories';
 
 describe('<SelectInput />', () => {
     const defaultProps = {
@@ -119,6 +119,14 @@ describe('<SelectInput />', () => {
                 screen.getByLabelText('resources.posts.fields.language *')
             );
             expect(screen.queryAllByRole('option')).toHaveLength(2);
+        });
+
+        it('should return the choices in the order in which they were defined', () => {
+            render(<Sort />);
+            fireEvent.mouseDown(screen.getByLabelText('Status'));
+            const options = screen.queryAllByRole('option');
+            expect(options.length).toEqual(6);
+            expect(options[1].textContent).toEqual('Created');
         });
     });
 
