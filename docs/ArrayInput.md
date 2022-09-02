@@ -72,3 +72,26 @@ Check [the `<SimpleFormIterator>` documentation](./SimpleFormIterator.md) for de
 
 `<ArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props) (except `format` and `parse`).
 
+## Global validation
+
+If you are using an `<ArrayInput>` inside a form with global validation, you need to shape the errors object returned by the `validate` function like an array too.
+
+For instance, to display the following errors:
+
+![ArrayInput global validation](./img/ArrayInput-global-validation.png)
+
+You need to return an errors object shaped like this:
+
+```js
+        {
+            authors: [
+                {},
+                {
+                    name: 'A name is required', 
+                    role: 'ra.validation.required' // translation keys are supported too
+                },
+            ],
+        }
+```
+
+**Tip:** You can find a sample `validate` function that handles arrays in the [Form Validation documentation](./Validation.md#global-validation).
