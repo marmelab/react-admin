@@ -1,5 +1,23 @@
 # Changelog
 
+## v4.3.1
+
+* Fix `<SelectInput>` reorders choices by id ([#8135](https://github.com/marmelab/react-admin/pull/8135)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix global validation not firing after submit with `<ArrayInput>` ([#8118](https://github.com/marmelab/react-admin/pull/8118)) ([slax57](https://github.com/slax57))
+* Fix `useGetManyAggregate` throws "filter is not a function" when getting 401 ([#8131](https://github.com/marmelab/react-admin/pull/8131)) ([matthieuMay](https://github.com/matthieuMay))
+* Fix `<AutocompleteInput clearOnBlur>` has no effect ([#8123](https://github.com/marmelab/react-admin/pull/8123)) ([WiXSL](https://github.com/WiXSL))
+* Fix dataProvider hooks do not handle `pageInfo` when updating `getList` query cache ([#8105](https://github.com/marmelab/react-admin/pull/8105)) ([slax57](https://github.com/slax57))
+* Fix guesser for of `<ReferenceField>` and `<ReferenceArrayField>` do not use `recordRepresentation` ([#8104](https://github.com/marmelab/react-admin/pull/8104)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `useGetList`'s onSuccess side effect overriding internal one ([#8102](https://github.com/marmelab/react-admin/pull/8102)) ([slax57](https://github.com/slax57))
+* [Doc] Fix ambiguity about `<ReferenceInput>` label prop ([#8128](https://github.com/marmelab/react-admin/pull/8128)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc]: Fix `ra-rbac` links ([#8127](https://github.com/marmelab/react-admin/pull/8127)) ([slax57](https://github.com/slax57))
+* [Doc] Fix code error in usage example of `ra-data-localstorage` README ([#8122](https://github.com/marmelab/react-admin/pull/8122)) ([rnllv](https://github.com/rnllv))
+* [Doc] Fix outdated link to `ra-data-postgrest` data provider ([#8111](https://github.com/marmelab/react-admin/pull/8111)) ([scheiblr](https://github.com/scheiblr))
+* [Doc] Fix `<ReferenceArrayField>` doc to use a child-less syntax first ([#8117](https://github.com/marmelab/react-admin/pull/8117)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix package name for `<JsonSchemaForm>` ([#8106](https://github.com/marmelab/react-admin/pull/8106)) ([arimet](https://github.com/arimet))
+* [Doc] Fix typo in `<ReferenceField emptyText>` documentation ([#8112](https://github.com/marmelab/react-admin/pull/8112)) ([LabisAnargyrou](https://github.com/LabisAnargyrou))
+* [Doc] Fix `<TabbedForm>` chapter to explain how to force scrollable variant ([#8109](https://github.com/marmelab/react-admin/pull/8109)) ([arimet](https://github.com/arimet))
+
 ## v4.3.0
 
 * Add default Record representation ([#8011](https://github.com/marmelab/react-admin/pull/8011)) ([fzaninotto](https://github.com/fzaninotto))
