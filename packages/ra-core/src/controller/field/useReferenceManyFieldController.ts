@@ -5,7 +5,7 @@ import isEqual from 'lodash/isEqual';
 import { useSafeSetState, removeEmpty } from '../../util';
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
-import { Optional, RaRecord, SortPayload } from '../../types';
+import { RaRecord, SortPayload } from '../../types';
 import { ListControllerResult } from '../list';
 import usePaginationState from '../usePaginationState';
 import { useRecordSelection } from '../list/useRecordSelection';
@@ -60,10 +60,7 @@ const defaultFilter = {};
  */
 export const useReferenceManyFieldController = (
     props: UseReferenceManyFieldControllerParams
-): Optional<
-    ListControllerResult,
-    'data' | 'hasNextPage' | 'hasPreviousPage' | 'total'
-> => {
+): ListControllerResult => {
     const {
         reference,
         record,

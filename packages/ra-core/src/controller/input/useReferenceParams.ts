@@ -183,7 +183,7 @@ export const useReferenceParams = ({
             filterValues,
             requestSignature,
             ...query,
-            displayedFilters: displayedFilterValues,
+            displayedFilters: query.displayedFilters ?? displayedFilterValues,
         },
         {
             changeParams,

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import { removeEmpty, useSafeSetState } from '../../util';
-import { FilterPayload, Optional, RaRecord, SortPayload } from '../../types';
+import { FilterPayload, RaRecord, SortPayload } from '../../types';
 import { useResourceContext } from '../../core';
 import usePaginationState from '../usePaginationState';
 import useSortState from '../useSortState';
@@ -233,7 +233,7 @@ export const useList = <RecordType extends RaRecord = any>(
 
     return {
         sort,
-        data: finalItems?.data ?? [],
+        data: finalItems?.data,
         defaultTitle: '',
         error,
         displayedFilters,
@@ -259,7 +259,7 @@ export const useList = <RecordType extends RaRecord = any>(
         setPerPage,
         setSort,
         showFilter,
-        total: finalItems?.total ?? 0,
+        total: finalItems?.total,
     };
 };
 
@@ -276,9 +276,8 @@ export interface UseListOptions<RecordType extends RaRecord = any> {
     filterCallback?: (record: RecordType) => boolean;
 }
 
-export type UseListValue<RecordType extends RaRecord = any> = Optional<
-    ListControllerResult<RecordType>,
-    'resource'
->;
+export type UseListValue<
+    RecordType extends RaRecord = any
+> = ListControllerResult<RecordType>;
 
 const defaultFilter = {};
