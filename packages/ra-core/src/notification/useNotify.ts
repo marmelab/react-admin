@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { useNotificationContext } from './useNotificationContext';
+import { useAddNotificationContext } from './useAddNotificationContext';
 import { NotificationType, NotificationOptions } from './types';
 
 /**
@@ -19,7 +19,7 @@ import { NotificationType, NotificationOptions } from './types';
  * notify('Post renamed', { type: 'info', undoable: true })
  */
 export const useNotify = () => {
-    const { addNotification } = useNotificationContext();
+    const addNotification = useAddNotificationContext();
     return useCallback(
         (
             message: string,
