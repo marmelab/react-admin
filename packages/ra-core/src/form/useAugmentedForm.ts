@@ -45,7 +45,9 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
 
     const defaultValuesIncludingRecord = useMemo(
         () => getFormInitialValues(defaultValues, record),
+        // eslint-disable-next-line
         [
+            // eslint-disable-next-line
             JSON.stringify({
                 defaultValues:
                     typeof defaultValues === 'function'
@@ -53,7 +55,7 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
                         : defaultValues,
                 record,
             }),
-        ] // eslint-disable-line
+        ]
     );
 
     const finalResolver = resolver
@@ -79,15 +81,25 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
     // `formState` must be read before a render in order to enable the state update.
     const {
         formState: {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             isSubmitting,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             isDirty,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             isValid,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             isValidating,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             dirtyFields,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             errors,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             submitCount,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             touchedFields,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             isSubmitted,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             isSubmitSuccessful,
         },
     } = form;
