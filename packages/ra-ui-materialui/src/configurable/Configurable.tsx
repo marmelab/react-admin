@@ -8,16 +8,17 @@ import { usePreferencesEditor } from 'ra-core';
 
 export const Configurable = (props: ConfigurableProps) => {
     const { children, elementRef, editor, openButtonLabel } = props;
-    const buttonRef = useRef<HTMLButtonElement>();
     const [showEditorButton, setShowEditorButton] = useState(false);
     const { isEnabled, setEditor } = usePreferencesEditor();
 
-    const handleMouseEnter = (event: MouseEvent) => {
+    const handleMouseOver = (event: MouseEvent) => {
         event.stopPropagation();
         setShowEditorButton(true);
+        const element = event.target as Element;
+        element.classList.add(ConfigurableClasses.hover);
     };
 
-    const handleMouseLeave = (event: MouseEvent) => {
+    const handleMouseOut = (event: MouseEvent) => {
         // We don't want to hide the configuration button if users hover it
         // To ensure that, we check whether the cursor is still over the editor target (the table element for the Datagrid for example)
         const targetRect = (event.target as Element).getBoundingClientRect();
@@ -29,6 +30,9 @@ export const Configurable = (props: ConfigurableProps) => {
 
         if (!isMouseHoverTarget) {
             setShowEditorButton(false);
+            (event.target as Element).classList.remove(
+                ConfigurableClasses.hover
+            );
         }
     };
 
@@ -39,15 +43,15 @@ export const Configurable = (props: ConfigurableProps) => {
         const element = elementRef.current;
         if (isEnabled) {
             element.classList.add(ConfigurableClasses.element);
-            element.addEventListener('mouseover', handleMouseEnter);
-            element.addEventListener('mouseleave', handleMouseLeave);
+            element.addEventListener('mouseover', handleMouseOver);
+            element.addEventListener('mouseout', handleMouseOut);
         }
 
         return () => {
             setShowEditorButton(false);
             element.classList.remove(ConfigurableClasses.element);
-            element.removeEventListener('mouseover', handleMouseEnter);
-            element.removeEventListener('mouseleave', handleMouseLeave);
+            element.removeEventListener('mouseover', handleMouseOver);
+            element.removeEventListener('mouseout', handleMouseOut);
         };
     }, [elementRef, isEnabled]);
 
@@ -65,9 +69,9 @@ export const Configurable = (props: ConfigurableProps) => {
                 modifiers={popperModifiers}
             >
                 <InspectorButton
-                    ref={buttonRef}
                     onClick={handleOpenEditor}
                     label={openButtonLabel}
+                    size="small"
                 />
             </Popper>
             {children}
@@ -76,7 +80,7 @@ export const Configurable = (props: ConfigurableProps) => {
 };
 
 const popperModifiers = [
-    { name: 'offset', enabled: true, options: { offset: [0, -40] } },
+    { name: 'offset', enabled: true, options: { offset: [0, -30] } },
     { name: 'flip', enabled: false },
     { name: 'hide', enabled: false },
     { name: 'preventOverflow', enabled: false, options: { padding: 0 } },
@@ -94,6 +98,7 @@ const PREFIX = 'RaConfigurable';
 export const ConfigurableClasses = {
     popper: `${PREFIX}-popper`,
     element: `${PREFIX}-element`,
+    hover: `${PREFIX}-hover`,
 };
 
 const Root = styled('span', {
@@ -107,9 +112,9 @@ const Root = styled('span', {
         boxShadow: `rgb(255, 255, 255) 0px 0px 0px 0px, ${alpha(
             theme.palette.primary.main,
             0.3
-        )} 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`,
-        '&:hover': {
-            boxShadow: `rgb(255, 255, 255) 0px 0px 0px 0px, ${theme.palette.primary.main} 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`,
+        )} 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`,
+        [`&.${ConfigurableClasses.hover}`]: {
+            boxShadow: `rgb(255, 255, 255) 0px 0px 0px 0px, ${theme.palette.primary.main} 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`,
         },
     },
 }));

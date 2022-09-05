@@ -5,7 +5,6 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { useTranslate, usePreferencesEditor } from 'ra-core';
 
 export const InspectorButton = ({
-    children = <SettingsIcon />,
     label = 'inspector.action.show',
     ...props
 }: IconButtonProps & { label?: string }) => {
@@ -26,7 +25,7 @@ export const InspectorButton = ({
                 color="inherit"
                 {...props}
             >
-                {children}
+                <SettingsIcon fontSize="inherit" />
             </IconButton>
         </Tooltip>
     );

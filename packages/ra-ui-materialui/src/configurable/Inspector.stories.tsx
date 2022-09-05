@@ -19,6 +19,7 @@ const Dummy = React.forwardRef<HTMLDivElement>((props, ref) => {
         <div
             style={{
                 border: 'solid 1px lightgrey',
+                borderRadius: 3,
                 padding: '0 10px',
                 margin: 10,
                 width: 200,
