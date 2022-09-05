@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { useEffect } from 'react';
-import { StoreContext } from './StoreContext';
+import { StoreContext, defaultStore } from './StoreContext';
 import { Store } from './types';
 
 export const StoreContextProvider = ({
-    value: Store,
+    value: Store = defaultStore,
     children,
 }: StoreContextProviderProps) => {
     useEffect(() => {
@@ -20,6 +20,6 @@ export const StoreContextProvider = ({
 };
 
 export interface StoreContextProviderProps {
-    value: Store;
+    value?: Store;
     children: React.ReactNode;
 }

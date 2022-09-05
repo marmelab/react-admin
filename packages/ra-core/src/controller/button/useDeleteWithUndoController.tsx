@@ -126,7 +126,7 @@ export interface UseDeleteWithUndoControllerParams<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown
 > {
-    record?: RecordType;
+    record: RecordType;
     redirect?: RedirectionSideEffect;
     // @deprecated. This hook get the resource from the context
     resource?: string;

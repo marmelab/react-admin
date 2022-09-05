@@ -12,6 +12,7 @@ interface State {
 const emptyParams = {};
 
 // keep a cache of already fetched permissions to initialize state for new
+
 // components and avoid a useless rerender if the permissions haven't changed
 const alreadyFetchedPermissions = { '{}': undefined };
 

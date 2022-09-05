@@ -57,7 +57,16 @@ export const useShowController = <RecordType extends RaRecord = any>(
     const redirect = useRedirect();
     const refresh = useRefresh();
     const { id: routeId } = useParams<'id'>();
-    const id = propsId != null ? propsId : decodeURIComponent(routeId);
+    const id =
+        propsId != null
+            ? propsId
+            : routeId
+            ? decodeURIComponent(routeId)
+            : null;
+
+    if (id === null) {
+        throw new Error("useShowController: id can't be null");
+    }
     const { meta, ...otherQueryOptions } = queryOptions;
 
     const { data: record, error, isLoading, isFetching, refetch } = useGetOne<

@@ -15,6 +15,7 @@ import {
     DeleteParams,
     MutationMode,
     GetListResult as OriginalGetListResult,
+    Identifier,
 } from '../types';
 
 /**
@@ -96,7 +97,6 @@ export const useDelete = <
         const updatedAt = mode.current === 'undoable' ? now + 5 * 1000 : now;
 
         const updateColl = (old: RecordType[]) => {
-            if (!old) return;
             const index = old.findIndex(
                 // eslint-disable-next-line eqeqeq
                 record => record.id == id
@@ -136,7 +136,7 @@ export const useDelete = <
         queryClient.setQueriesData(
             [resource, 'getManyReference'],
             (res: GetListResult) => {
-                if (!res || !res.data) return res;
+                if (!res || !res.data || !res.total) return res;
                 const newCollection = updateColl(res.data);
                 const recordWasFound = newCollection.length < res.data.length;
                 return recordWasFound
@@ -162,8 +162,8 @@ export const useDelete = <
             meta: callTimeMeta = paramsRef.current.meta,
         } = {}) =>
             dataProvider
-                .delete<RecordType>(callTimeResource, {
-                    id: callTimeId,
+                .delete<RecordType>(callTimeResource as string, {
+                    id: callTimeId as Identifier,
                     previousData: callTimePreviousData,
                     meta: callTimeMeta,
                 })
@@ -265,7 +265,7 @@ export const useDelete = <
     );
 
     const mutate = async (
-        callTimeResource: string = resource,
+        callTimeResource: string | undefined = resource,
         callTimeParams: Partial<DeleteParams<RecordType>> = {},
         updateOptions: MutateOptions<
             RecordType,
@@ -341,7 +341,7 @@ export const useDelete = <
             setTimeout(
                 () =>
                     onSuccess(
-                        callTimePreviousData,
+                        callTimePreviousData as RecordType,
                         { resource: callTimeResource, ...callTimeParams },
                         { snapshot: snapshot.current }
                     ),
@@ -351,8 +351,8 @@ export const useDelete = <
         if (reactMutationOptions.onSuccess) {
             setTimeout(
                 () =>
-                    reactMutationOptions.onSuccess(
-                        callTimePreviousData,
+                    reactMutationOptions.onSuccess?.(
+                        callTimePreviousData as RecordType,
                         { resource: callTimeResource, ...callTimeParams },
                         { snapshot: snapshot.current }
                     ),

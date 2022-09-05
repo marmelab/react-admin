@@ -23,6 +23,7 @@ import {
     DashboardComponent,
     LegacyDataProvider,
 } from '../types';
+import { defaultProvider as defaultAuthProvider } from '../auth/AuthContext';
 
 export interface CoreAdminContextProps {
     authProvider?: AuthProvider | LegacyAuthProvider;
@@ -42,7 +43,7 @@ export interface CoreAdminContextProps {
 
 export const CoreAdminContext = (props: CoreAdminContextProps) => {
     const {
-        authProvider,
+        authProvider = defaultAuthProvider,
         basename,
         dataProvider,
         i18nProvider,

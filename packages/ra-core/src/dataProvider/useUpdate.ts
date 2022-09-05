@@ -15,6 +15,7 @@ import {
     UpdateParams,
     MutationMode,
     GetListResult as OriginalGetListResult,
+    Identifier,
 } from '../types';
 
 /**
@@ -159,9 +160,9 @@ export const useUpdate = <
             previousData: callTimePreviousData = paramsRef.current.previousData,
         } = {}) =>
             dataProvider
-                .update<RecordType>(callTimeResource, {
-                    id: callTimeId,
-                    data: callTimeData,
+                .update<RecordType>(callTimeResource as string, {
+                    id: callTimeId as Identifier,
+                    data: callTimeData as Partial<RecordType>,
                     previousData: callTimePreviousData,
                     meta: callTimeMeta,
                 })
@@ -264,7 +265,7 @@ export const useUpdate = <
     );
 
     const update = async (
-        callTimeResource: string = resource,
+        callTimeResource: string | undefined = resource,
         callTimeParams: Partial<UpdateParams<RecordType>> = {},
         updateOptions: MutateOptions<
             RecordType,
@@ -372,7 +373,7 @@ export const useUpdate = <
             setTimeout(
                 () =>
                     onSuccess(
-                        { ...previousRecord, ...callTimeData },
+                        { ...previousRecord, ...callTimeData } as any,
                         { resource: callTimeResource, ...callTimeParams },
                         { snapshot: snapshot.current }
                     ),
@@ -382,8 +383,8 @@ export const useUpdate = <
         if (reactMutationOptions.onSuccess) {
             setTimeout(
                 () =>
-                    reactMutationOptions.onSuccess(
-                        { ...previousRecord, ...callTimeData },
+                    reactMutationOptions.onSuccess?.(
+                        { ...previousRecord, ...callTimeData } as any,
                         { resource: callTimeResource, ...callTimeParams },
                         { snapshot: snapshot.current }
                     ),

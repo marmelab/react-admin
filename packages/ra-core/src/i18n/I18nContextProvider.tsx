@@ -55,7 +55,7 @@ export const I18nContextProvider = ({
 };
 
 export interface I18nContextProviderProps {
-    value: I18nProvider;
+    value?: I18nProvider;
     children: ReactNode;
 }
 

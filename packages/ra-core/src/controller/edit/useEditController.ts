@@ -66,7 +66,18 @@ export const useEditController = <
     const redirect = useRedirect();
     const refresh = useRefresh();
     const { id: routeId } = useParams<'id'>();
-    const id = propsId != null ? propsId : decodeURIComponent(routeId);
+
+    const id =
+        propsId != null
+            ? propsId
+            : routeId
+            ? decodeURIComponent(routeId)
+            : null;
+
+    if (id === null) {
+        throw new Error(`useEditController: id param is not present`);
+    }
+
     const { meta: queryMeta, ...otherQueryOptions } = queryOptions;
     const {
         onSuccess,

@@ -98,7 +98,6 @@ export const useDeleteMany = <
         const updatedAt = mode.current === 'undoable' ? now + 5 * 1000 : now;
 
         const updateColl = (old: RecordType[]) => {
-            if (!old) return;
             let newCollection = [...old];
             ids.forEach(id => {
                 const index = newCollection.findIndex(
@@ -148,7 +147,7 @@ export const useDeleteMany = <
         queryClient.setQueriesData(
             [resource, 'getManyReference'],
             (res: GetListResult) => {
-                if (!res || !res.data) return res;
+                if (!res || !res.data || !res.total) return res;
                 const newCollection = updateColl(res.data);
                 const recordWasFound = newCollection.length < res.data.length;
                 return recordWasFound
@@ -169,17 +168,19 @@ export const useDeleteMany = <
         MutationError,
         Partial<UseDeleteManyMutateParams<RecordType>>
     >(
-        ({
-            resource: callTimeResource = resource,
-            ids: callTimeIds = paramsRef.current.ids,
-            meta: callTimeMeta = paramsRef.current.meta,
-        } = {}) =>
-            dataProvider
+        params => {
+            const {
+                resource: callTimeResource = resource as string,
+                ids: callTimeIds = paramsRef.current.ids,
+                meta: callTimeMeta = paramsRef.current.meta,
+            } = params;
+            return dataProvider
                 .deleteMany<RecordType>(callTimeResource, {
-                    ids: callTimeIds,
+                    ids: callTimeIds as RecordType['id'][],
                     meta: callTimeMeta,
                 })
-                .then(({ data }) => data),
+                .then(({ data }) => data as RecordType['id'][]);
+        },
         {
             ...reactMutationOptions,
             onMutate: async (
@@ -277,7 +278,7 @@ export const useDeleteMany = <
     );
 
     const mutate = async (
-        callTimeResource: string = resource,
+        callTimeResource: string | undefined = resource,
         callTimeParams: Partial<DeleteManyParams<RecordType>> = {},
         updateOptions: MutateOptions<
             RecordType['id'][],
@@ -350,7 +351,7 @@ export const useDeleteMany = <
             setTimeout(
                 () =>
                     onSuccess(
-                        callTimeIds,
+                        callTimeIds as RecordType['id'][],
                         { resource: callTimeResource, ...callTimeParams },
                         { snapshot: snapshot.current }
                     ),
@@ -360,8 +361,8 @@ export const useDeleteMany = <
         if (reactMutationOptions.onSuccess) {
             setTimeout(
                 () =>
-                    reactMutationOptions.onSuccess(
-                        callTimeIds,
+                    reactMutationOptions.onSuccess?.(
+                        callTimeIds as RecordType['id'][],
                         { resource: callTimeResource, ...callTimeParams },
                         { snapshot: snapshot.current }
                     ),

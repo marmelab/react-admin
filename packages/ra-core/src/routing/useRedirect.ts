@@ -39,7 +39,7 @@ export const useRedirect = () => {
 
     return useCallback(
         (
-            redirectTo: RedirectionSideEffect,
+            redirectTo?: RedirectionSideEffect,
             resource: string = '',
             id?: Identifier,
             data?: Partial<RaRecord>,

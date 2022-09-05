@@ -137,22 +137,23 @@ export const useListParams = ({
 
             if (!tempParams.current) {
                 // no other changeParams action dispatched this tick
-                tempParams.current = queryReducer(query, action);
+                const nextLocalParams = queryReducer(query, action);
+                tempParams.current = nextLocalParams;
                 // schedule side effects for next tick
                 setTimeout(() => {
                     if (disableSyncWithLocation) {
-                        setLocalParams(tempParams.current);
+                        setLocalParams(nextLocalParams);
                     } else {
                         // the useEffect above will apply the changes to the params in the store
                         navigate(
                             {
                                 search: `?${stringify({
-                                    ...tempParams.current,
+                                    ...nextLocalParams,
                                     filter: JSON.stringify(
-                                        tempParams.current.filter
+                                        nextLocalParams.filter
                                     ),
                                     displayedFilters: JSON.stringify(
-                                        tempParams.current.displayedFilters
+                                        nextLocalParams.displayedFilters
                                     ),
                                 })}`,
                             },
@@ -245,10 +246,10 @@ export const useListParams = ({
 
     return [
         {
-            displayedFilters: displayedFilterValues,
             filterValues,
             requestSignature,
             ...query,
+            displayedFilters: query.displayedFilters ?? displayedFilterValues,
         },
         {
             changeParams,
@@ -363,7 +364,9 @@ export const getNumberOrDefault = (
             ? parseInt(possibleNumber, 10)
             : possibleNumber;
 
-    return isNaN(parsedNumber) ? defaultValue : parsedNumber;
+    return parsedNumber === undefined || isNaN(parsedNumber)
+        ? defaultValue
+        : parsedNumber;
 };
 
 export interface ListParamsOptions {

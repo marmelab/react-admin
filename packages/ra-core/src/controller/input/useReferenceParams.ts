@@ -92,10 +92,11 @@ export const useReferenceParams = ({
     const changeParams = useCallback(action => {
         if (!tempParams.current) {
             // no other changeParams action dispatched this tick
-            tempParams.current = queryReducer(query, action);
+            const nextParams = queryReducer(query, action);
+            tempParams.current = nextParams;
             // schedule side effects for next tick
             setTimeout(() => {
-                setParams(tempParams.current);
+                setParams(nextParams);
                 tempParams.current = undefined;
             }, 0);
         } else {
@@ -176,12 +177,13 @@ export const useReferenceParams = ({
             },
         });
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
+
     return [
         {
-            displayedFilters: displayedFilterValues,
             filterValues,
             requestSignature,
             ...query,
+            displayedFilters: displayedFilterValues,
         },
         {
             changeParams,
@@ -275,7 +277,9 @@ export const getNumberOrDefault = (
             ? parseInt(possibleNumber, 10)
             : possibleNumber;
 
-    return isNaN(parsedNumber) ? defaultValue : parsedNumber;
+    return parsedNumber === undefined || isNaN(parsedNumber)
+        ? defaultValue
+        : parsedNumber;
 };
 
 export interface ReferenceParamsOptions {

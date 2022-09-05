@@ -73,6 +73,7 @@ export const useFormGroup = (name: string): FormGroupState => {
     });
 
     const updateGroupState = useCallback(() => {
+        if (!formGroups) return;
         const fields = formGroups.getGroupFields(name);
         const fieldStates = fields
             .map<FieldState>(field => {
@@ -109,6 +110,7 @@ export const useFormGroup = (name: string): FormGroupState => {
     );
 
     useEffect(() => {
+        if (!formGroups) return;
         // Whenever the group content changes (input are added or removed)
         // we must update its state
         return formGroups.subscribe(name, () => {

@@ -168,12 +168,12 @@ export const useUpdateMany = <
             meta: callTimeMeta = paramsRef.current.meta,
         } = {}) =>
             dataProvider
-                .updateMany(callTimeResource, {
-                    ids: callTimeIds,
+                .updateMany(callTimeResource as string, {
+                    ids: callTimeIds as Identifier[],
                     data: callTimeData,
                     meta: callTimeMeta,
                 })
-                .then(({ data }) => data),
+                .then(({ data }) => data as any[]),
         {
             ...reactMutationOptions,
             onMutate: async (
@@ -230,8 +230,8 @@ export const useUpdateMany = <
                         meta: callTimeMeta = meta,
                     } = variables;
                     updateCache({
-                        resource: callTimeResource,
-                        ids: callTimeIds,
+                        resource: callTimeResource as string,
+                        ids: callTimeIds as Identifier[],
                         data: callTimeData,
                         meta: callTimeMeta,
                     });
@@ -275,7 +275,7 @@ export const useUpdateMany = <
     );
 
     const updateMany = async (
-        callTimeResource: string = resource,
+        callTimeResource: string | undefined = resource,
         callTimeParams: Partial<UpdateManyParams<RecordType>> = {},
         updateOptions: MutateOptions<
             Array<RecordType['id']>,
@@ -363,8 +363,8 @@ export const useUpdateMany = <
 
         // Optimistically update to the new data
         await updateCache({
-            resource: callTimeResource,
-            ids: callTimeIds,
+            resource: callTimeResource as string,
+            ids: callTimeIds as Identifier[],
             data: callTimeData,
             meta: callTimeMeta,
         });
@@ -374,7 +374,7 @@ export const useUpdateMany = <
             setTimeout(
                 () =>
                     onSuccess(
-                        callTimeIds,
+                        callTimeIds as Identifier[],
                         { resource: callTimeResource, ...callTimeParams },
                         { snapshot: snapshot.current }
                     ),
@@ -384,8 +384,8 @@ export const useUpdateMany = <
         if (reactMutationOptions.onSuccess) {
             setTimeout(
                 () =>
-                    reactMutationOptions.onSuccess(
-                        callTimeIds,
+                    reactMutationOptions.onSuccess?.(
+                        callTimeIds as Identifier[],
                         { resource: callTimeResource, ...callTimeParams },
                         { snapshot: snapshot.current }
                     ),

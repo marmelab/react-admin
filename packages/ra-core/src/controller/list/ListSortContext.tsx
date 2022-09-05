@@ -34,11 +34,7 @@ import { ListControllerResult } from './useListController';
  *     );
  * };
  */
-export const ListSortContext = createContext<ListSortContextValue>({
-    sort: null,
-    setSort: null,
-    resource: null,
-});
+export const ListSortContext = createContext<ListSortContextValue>(undefined!);
 
 export type ListSortContextValue = Pick<
     ListControllerResult,

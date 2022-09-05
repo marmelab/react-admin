@@ -293,9 +293,9 @@ const getSingleChildFunction = (
 const getRoutesAndResourceFromNodes = (
     children: ReactNode
 ): RoutesAndResources => {
-    const customRoutesWithLayout = [];
-    const customRoutesWithoutLayout = [];
-    const resources = [];
+    const customRoutesWithLayout: CustomRouteWithLayout[] = [];
+    const customRoutesWithoutLayout: CustomRouteWithoutLayout[] = [];
+    const resources: Resource[] = [];
     Children.forEach(children, element => {
         if (!React.isValidElement(element)) {
             // Ignore non-elements. This allows people to more easily inline
@@ -322,13 +322,16 @@ const getRoutesAndResourceFromNodes = (
 
             if (customRoutesElement.props.noLayout) {
                 customRoutesWithoutLayout.push(
-                    customRoutesElement.props.children
+                    customRoutesElement.props
+                        .children as CustomRouteWithoutLayout
                 );
             } else {
-                customRoutesWithLayout.push(customRoutesElement.props.children);
+                customRoutesWithLayout.push(
+                    customRoutesElement.props.children as CustomRouteWithLayout
+                );
             }
         } else if ((element.type as any).raName === 'Resource') {
-            resources.push(element as ReactElement<ResourceProps>);
+            resources.push(element as Resource);
         }
     });
 
@@ -339,10 +342,14 @@ const getRoutesAndResourceFromNodes = (
     };
 };
 
+type CustomRouteWithLayout = ReactElement<CustomRoutesProps>;
+type CustomRouteWithoutLayout = ReactElement<CustomRoutesProps>;
+type Resource = ReactElement<ResourceProps> & ResourceWithRegisterFunction;
+
 type RoutesAndResources = {
-    customRoutesWithLayout: ReactElement<CustomRoutesProps>[];
-    customRoutesWithoutLayout: ReactElement<CustomRoutesProps>[];
-    resources: (ReactElement<ResourceProps> & ResourceWithRegisterFunction)[];
+    customRoutesWithLayout: CustomRouteWithLayout[];
+    customRoutesWithoutLayout: CustomRouteWithoutLayout[];
+    resources: Resource[];
 };
 
 type ResourceWithRegisterFunction = {

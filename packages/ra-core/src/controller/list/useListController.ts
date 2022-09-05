@@ -7,7 +7,13 @@ import { useNotify } from '../../notification';
 import { useGetList, UseGetListHookValue } from '../../dataProvider';
 import { SORT_ASC } from './queryReducer';
 import { defaultExporter } from '../../export';
-import { FilterPayload, SortPayload, RaRecord, Exporter } from '../../types';
+import {
+    FilterPayload,
+    SortPayload,
+    RaRecord,
+    Exporter,
+    Optional,
+} from '../../types';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
@@ -204,7 +210,7 @@ const defaultSort = {
 
 export interface ListControllerResult<RecordType extends RaRecord = any> {
     sort: SortPayload;
-    data: RecordType[];
+    data?: RecordType[];
     defaultTitle?: string;
     displayedFilters: any;
     error?: any;
@@ -231,9 +237,9 @@ export interface ListControllerResult<RecordType extends RaRecord = any> {
     setPerPage: (page: number) => void;
     setSort: (sort: SortPayload) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
-    total: number;
-    hasNextPage: boolean;
-    hasPreviousPage: boolean;
+    total?: number;
+    hasNextPage?: boolean;
+    hasPreviousPage?: boolean;
 }
 
 export const injectedProps = [

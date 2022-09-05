@@ -58,4 +58,4 @@ export const useRecordSelection = (
     return [ids, selectionModifiers];
 };
 
-const defaultSelection = [];
+const defaultSelection: Identifier[] = [];

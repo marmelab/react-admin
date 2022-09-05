@@ -4,7 +4,7 @@ import { AuthProvider, UserIdentity } from '../types';
 
 const defaultIdentity: UserIdentity = { id: '' };
 
-const defaultProvider: AuthProvider = {
+export const defaultProvider: AuthProvider = {
     login: () => Promise.resolve(),
     logout: () => Promise.resolve(),
     checkAuth: () => Promise.resolve(),

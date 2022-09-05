@@ -18,7 +18,6 @@ export interface UseReferenceArrayFieldControllerParams {
 
 const emptyArray = [];
 const defaultFilter = {};
-const defaultSort = { field: null, order: null };
 
 /**
  * Hook that fetches records from another resource specified
@@ -52,7 +51,7 @@ export const useReferenceArrayFieldController = (
         perPage = 1000,
         record,
         reference,
-        sort = defaultSort,
+        sort,
         source,
     } = props;
     const notify = useNotify();
@@ -101,7 +100,6 @@ export const useReferenceArrayFieldController = (
 
     return {
         ...listProps,
-        defaultTitle: null,
         refetch,
         resource: reference,
     };

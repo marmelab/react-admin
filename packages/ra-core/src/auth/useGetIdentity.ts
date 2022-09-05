@@ -5,7 +5,6 @@ import { useSafeSetState } from '../util/hooks';
 
 const defaultIdentity = {
     id: '',
-    fullName: null,
 };
 
 /**
@@ -45,21 +44,20 @@ const useGetIdentity = () => {
     const authProvider = useAuthProvider();
     useEffect(() => {
         if (authProvider && typeof authProvider.getIdentity === 'function') {
-            const callAuthProvider = async () => {
-                try {
-                    const identity = await authProvider.getIdentity();
+            authProvider
+                .getIdentity()
+                .then(identity => {
                     setState({
                         isLoading: false,
                         identity: identity || defaultIdentity,
                     });
-                } catch (error) {
+                })
+                .catch(error => {
                     setState({
                         isLoading: false,
                         error,
                     });
-                }
-            };
-            callAuthProvider();
+                });
         } else {
             setState({
                 isLoading: false,

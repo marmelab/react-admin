@@ -5,8 +5,8 @@ import isEqual from 'lodash/isEqual';
 // thanks Kent C Dodds for the following helpers
 
 export function useSafeSetState<T>(
-    initialState?: T | (() => T)
-): [T | undefined, React.Dispatch<React.SetStateAction<T>>] {
+    initialState: T | (() => T)
+): [T, React.Dispatch<React.SetStateAction<T>>] {
     const [state, setState] = useState(initialState);
 
     const mountedRef = useRef(false);

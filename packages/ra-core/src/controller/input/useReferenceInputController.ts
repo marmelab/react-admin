@@ -117,7 +117,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         },
     });
     // add current value to possible sources
-    let finalData: RecordType[], finalTotal: number;
+    let finalData: RecordType[], finalTotal: number | undefined;
     if (
         !referenceRecord ||
         possibleValuesData.find(record => record.id === currentValue)
@@ -145,7 +145,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         sort: currentSort,
         allChoices: finalData,
         availableChoices: possibleValuesData,
-        selectedChoices: [referenceRecord],
+        selectedChoices: referenceRecord ? [referenceRecord] : [],
         displayedFilters: params.displayedFilters,
         error: referenceError || possibleValuesError,
         filter: params.filter,

@@ -91,7 +91,7 @@ export const useCreate = <
             meta: callTimeMeta = paramsRef.current.meta,
         } = {}) =>
             dataProvider
-                .create<RecordType>(callTimeResource, {
+                .create<RecordType>(callTimeResource as string, {
                     data: callTimeData,
                     meta: callTimeMeta,
                 })
@@ -117,8 +117,8 @@ export const useCreate = <
         }
     );
 
-    const create = (
-        callTimeResource: string = resource,
+    const create = async (
+        callTimeResource: string | undefined = resource,
         callTimeParams: Partial<CreateParams<RecordType>> = {},
         createOptions: MutateOptions<
             RecordType,

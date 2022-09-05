@@ -2,7 +2,7 @@ import { createContext } from 'react';
 
 import { DataProvider } from '../types';
 
-const DataProviderContext = createContext<DataProvider>(null);
+const DataProviderContext = createContext<DataProvider>(undefined!);
 
 DataProviderContext.displayName = 'DataProviderContext';
 

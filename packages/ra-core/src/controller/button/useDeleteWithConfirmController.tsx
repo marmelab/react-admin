@@ -169,7 +169,7 @@ export interface UseDeleteWithConfirmControllerParams<
     MutationOptionsError = unknown
 > {
     mutationMode?: MutationMode;
-    record?: RecordType;
+    record: RecordType;
     redirect?: RedirectionSideEffect;
     // @deprecated. This hook get the resource from the context
     resource?: string;

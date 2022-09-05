@@ -28,4 +28,4 @@ export type SaveHandler<RecordType> = (
     }
 ) => Promise<void | RecordType> | Record<string, string>;
 
-export const SaveContext = createContext<SaveContextValue>(undefined);
+export const SaveContext = createContext<SaveContextValue>(undefined!);

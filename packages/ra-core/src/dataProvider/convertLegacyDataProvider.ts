@@ -65,7 +65,7 @@ const convertLegacyDataProvider = (
         },
     });
 
-    return proxy;
+    return (proxy as unknown) as ConvertedDataProvider;
 };
 
 export default convertLegacyDataProvider;

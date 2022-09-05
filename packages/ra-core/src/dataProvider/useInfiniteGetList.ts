@@ -117,7 +117,8 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
             ...options,
             getNextPageParam: lastLoadedPage => {
                 if (lastLoadedPage.pageInfo) {
-                    return lastLoadedPage.pageInfo.hasNextPage
+                    return lastLoadedPage.pageInfo.hasNextPage &&
+                        lastLoadedPage.pageParam
                         ? lastLoadedPage.pageParam + 1
                         : undefined;
                 }
@@ -125,18 +126,21 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
                     (lastLoadedPage.total || 0) / pagination.perPage
                 );
 
-                return lastLoadedPage.pageParam < totalPages
+                return lastLoadedPage.pageParam &&
+                    lastLoadedPage.pageParam < totalPages
                     ? Number(lastLoadedPage.pageParam) + 1
                     : undefined;
             },
             getPreviousPageParam: lastLoadedPage => {
                 if (lastLoadedPage.pageInfo) {
-                    return lastLoadedPage.pageInfo.hasPreviousPage
+                    return lastLoadedPage.pageInfo.hasPreviousPage &&
+                        lastLoadedPage.pageParam
                         ? lastLoadedPage.pageParam - 1
                         : undefined;
                 }
 
-                return lastLoadedPage.pageParam === 1
+                return lastLoadedPage.pageParam === 1 ||
+                    lastLoadedPage.pageParam === undefined
                     ? undefined
                     : lastLoadedPage.pageParam - 1;
             },

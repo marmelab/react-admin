@@ -76,7 +76,7 @@ export default ({
             permanentFilterProp.current = permanentFilter;
             setFilterValue({
                 ...permanentFilter,
-                ...filterToQuery(latestValue.current),
+                ...filterToQuery(latestValue.current ?? ''),
             });
         }
     }, [permanentFilterSignature, permanentFilterProp, filterToQuery]); // eslint-disable-line react-hooks/exhaustive-deps

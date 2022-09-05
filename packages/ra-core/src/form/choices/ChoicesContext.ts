@@ -12,22 +12,22 @@ export const ChoicesContext = createContext<ChoicesContextValue | undefined>(
 );
 
 export type ChoicesContextValue<RecordType extends RaRecord = any> = {
-    allChoices: RecordType[];
-    availableChoices: RecordType[];
+    allChoices?: RecordType[];
+    availableChoices?: RecordType[];
     displayedFilters: any;
     error?: any;
     filter?: FilterPayload;
     filterValues: any;
-    hasNextPage: boolean;
-    hasPreviousPage: boolean;
+    hasNextPage?: boolean;
+    hasPreviousPage?: boolean;
     hideFilter: (filterName: string) => void;
     isFetching: boolean;
     isLoading: boolean;
     page: number;
     perPage: number;
     refetch: (() => void) | UseGetListHookValue<RecordType>['refetch'];
-    resource: string;
-    selectedChoices: RecordType[];
+    resource?: string;
+    selectedChoices?: RecordType[];
     setFilters: (
         filters: any,
         displayedFilters: any,
@@ -38,7 +38,7 @@ export type ChoicesContextValue<RecordType extends RaRecord = any> = {
     setSort: (sort: SortPayload) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
     sort: SortPayload;
-    source: string;
-    total: number;
+    source?: string;
+    total?: number;
     isFromReference: boolean;
 };
