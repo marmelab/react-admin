@@ -7,10 +7,11 @@ import { usePreferencesEditor } from './usePreferencesEditor';
  * @example
  * useSetInspectorTitle('Datagrid');
  */
-export const useSetInspectorTitle = (title: string) => {
+export const useSetInspectorTitle = (title: string, options?: any) => {
     const { setTitle } = usePreferencesEditor();
 
     useEffect(() => {
-        setTitle(title);
-    }, [title, setTitle]);
+        setTitle(title, options);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [title, JSON.stringify(options), setTitle]);
 };

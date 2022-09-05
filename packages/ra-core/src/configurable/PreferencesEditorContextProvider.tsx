@@ -9,11 +9,17 @@ export const PreferencesEditorContextProvider = ({ children }) => {
     const [isEnabled, setIsEnabled] = useState(false);
     const [editor, setEditor] = useState<ReactElement>(null);
     const [path, setPath] = useState<string>(null);
-    const [title, setTitle] = useState<string>(null);
+    const [title, setTitleString] = useState<string>(null);
+    const [titleOptions, setTitleOptions] = useState<any>();
     const enable = useCallback(() => setIsEnabled(true), []);
     const disable = useCallback(() => {
         setIsEnabled(false);
         setEditor(null);
+    }, []);
+
+    const setTitle = useCallback((title: string, titleOptions?: any) => {
+        setTitleString(title);
+        setTitleOptions(titleOptions);
     }, []);
 
     const context = useMemo<PreferencesEditorContextValue>(() => {
@@ -21,6 +27,7 @@ export const PreferencesEditorContextProvider = ({ children }) => {
             editor,
             setEditor,
             title,
+            titleOptions,
             setTitle,
             isEnabled,
             disable,
@@ -28,7 +35,17 @@ export const PreferencesEditorContextProvider = ({ children }) => {
             path,
             setPath,
         };
-    }, [disable, enable, editor, isEnabled, path, setPath, title, setTitle]);
+    }, [
+        disable,
+        enable,
+        editor,
+        isEnabled,
+        path,
+        setPath,
+        title,
+        titleOptions,
+        setTitle,
+    ]);
 
     return (
         <PreferencesEditorContext.Provider value={context}>

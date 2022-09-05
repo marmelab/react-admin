@@ -7,7 +7,7 @@ import { InspectorButton } from './InspectorButton';
 import { usePreferencesEditor } from 'ra-core';
 
 export const Configurable = (props: ConfigurableProps) => {
-    const { children, editableEl, editor, openButtonLabel } = props;
+    const { children, elementRef, editor, openButtonLabel } = props;
     const buttonRef = useRef<HTMLButtonElement>();
     const [showEditorButton, setShowEditorButton] = useState(false);
     const { isEnabled, setEditor } = usePreferencesEditor();
@@ -33,23 +33,23 @@ export const Configurable = (props: ConfigurableProps) => {
     };
 
     useEffect(() => {
-        if (!editableEl) {
+        if (!elementRef.current) {
             return;
         }
+        const element = elementRef.current;
         if (isEnabled) {
-            editableEl.classList.add(ConfigurableClasses.element);
-            editableEl.addEventListener('mouseover', handleMouseEnter);
-            editableEl.addEventListener('mouseleave', handleMouseLeave);
+            element.classList.add(ConfigurableClasses.element);
+            element.addEventListener('mouseover', handleMouseEnter);
+            element.addEventListener('mouseleave', handleMouseLeave);
         }
 
         return () => {
             setShowEditorButton(false);
-
-            editableEl.classList.remove(ConfigurableClasses.element);
-            editableEl.removeEventListener('mouseover', handleMouseEnter);
-            editableEl.removeEventListener('mouseleave', handleMouseLeave);
+            element.classList.remove(ConfigurableClasses.element);
+            element.removeEventListener('mouseover', handleMouseEnter);
+            element.removeEventListener('mouseleave', handleMouseLeave);
         };
-    }, [editableEl, isEnabled]);
+    }, [elementRef, isEnabled]);
 
     const handleOpenEditor = () => {
         setEditor(editor);
@@ -59,7 +59,7 @@ export const Configurable = (props: ConfigurableProps) => {
         <Root>
             <Popper
                 open={showEditorButton}
-                anchorEl={editableEl}
+                anchorEl={elementRef.current}
                 placement="top-end"
                 className={ConfigurableClasses.popper}
                 modifiers={popperModifiers}
@@ -76,7 +76,7 @@ export const Configurable = (props: ConfigurableProps) => {
 };
 
 const popperModifiers = [
-    { name: 'offset', enabled: true, options: { offset: [0, -30] } },
+    { name: 'offset', enabled: true, options: { offset: [0, -40] } },
     { name: 'flip', enabled: false },
     { name: 'hide', enabled: false },
     { name: 'preventOverflow', enabled: false, options: { padding: 0 } },
@@ -84,7 +84,7 @@ const popperModifiers = [
 
 export interface ConfigurableProps {
     children: ReactNode;
-    editableEl?: HTMLElement | null;
+    elementRef: React.RefObject<HTMLElement>;
     editor: ReactNode;
     openButtonLabel: string;
 }

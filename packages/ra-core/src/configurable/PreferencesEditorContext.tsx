@@ -8,7 +8,8 @@ export type PreferencesEditorContextValue = {
     editor: ReactNode | null;
     setEditor: (editor: ReactNode) => void;
     title: string | null;
-    setTitle: (path: string) => void;
+    titleOptions?: any;
+    setTitle: (title: string, titleOptions?: any) => void;
     isEnabled: boolean;
     enable: () => void;
     disable: () => void;

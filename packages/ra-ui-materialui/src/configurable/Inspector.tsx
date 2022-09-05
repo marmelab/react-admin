@@ -9,7 +9,13 @@ import Draggable, { DraggableEventHandler } from 'react-draggable';
 import { InspectorRoot } from './InspectorRoot';
 
 export const Inspector = () => {
-    const { isEnabled, disable, title, editor } = usePreferencesEditor();
+    const {
+        isEnabled,
+        disable,
+        title,
+        titleOptions,
+        editor,
+    } = usePreferencesEditor();
     const theme = useTheme();
     const translate = useTranslate();
 
@@ -64,7 +70,7 @@ export const Inspector = () => {
                             px={2}
                             flex="1"
                         >
-                            {title}
+                            {translate(title, titleOptions)}
                         </Typography>
                         <IconButton
                             aria-label={translate('ra.action.close')}

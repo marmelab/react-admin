@@ -4,7 +4,7 @@ import { useTranslate, useSetInspectorTitle } from 'ra-core';
 
 export const InspectorRoot = () => {
     const translate = useTranslate();
-    useSetInspectorTitle('ra.inspector.default.title');
+    useSetInspectorTitle('ra.inspector.default.title', { _: 'Inspector' });
 
     return (
         <Typography>
