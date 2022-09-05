@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { fireEvent, screen, render, waitFor } from '@testing-library/react';
-import { useFormState } from 'react-hook-form';
+import { useFormState, useFormContext } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
@@ -10,6 +10,7 @@ import { Form } from './Form';
 import { useNotificationContext } from '../notification';
 import { useInput } from './useInput';
 import { required } from './validate';
+import assert from 'assert';
 
 describe('Form', () => {
     const Input = props => {
@@ -104,6 +105,30 @@ describe('Form', () => {
 
         expect(screen.getByDisplayValue('Foo')).not.toBeNull();
         expect(screen.getByText('isDirty: false')).not.toBeNull();
+    });
+
+    it('should update Form state on submit', async () => {
+        let globalFormState;
+
+        const CustomInput = props => {
+            globalFormState = useFormContext();
+
+            return <Input {...props} />;
+        };
+        render(
+            <CoreAdminContext>
+                <Form onSubmit={jest.fn()}>
+                    <CustomInput source="name" validate={required()} />
+                    <button type="submit">Submit</button>
+                </Form>
+            </CoreAdminContext>
+        );
+
+        fireEvent.click(screen.getByText('Submit'));
+
+        await waitFor(() => {
+            assert.equal(globalFormState.formState.isSubmitting, true);
+        });
     });
 
     it('Displays a notification on submit when invalid', async () => {
