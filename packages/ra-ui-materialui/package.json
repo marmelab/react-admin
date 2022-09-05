@@ -39,6 +39,7 @@
         "ra-language-english": "^4.3.0",
         "react": "^17.0.0",
         "react-dom": "^17.0.0",
+        "react-draggable": "^4.4.3",
         "react-hook-form": "^7.34.2",
         "react-router": "^6.1.0",
         "react-router-dom": "^6.1.0",
