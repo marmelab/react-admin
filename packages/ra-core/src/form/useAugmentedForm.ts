@@ -45,7 +45,15 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
 
     const defaultValuesIncludingRecord = useMemo(
         () => getFormInitialValues(defaultValues, record),
-        [JSON.stringify({ defaultValues: typeof defaultValues === 'function' ? 'function' : defaultValues, record })] // eslint-disable-line
+        [
+            JSON.stringify({
+                defaultValues:
+                    typeof defaultValues === 'function'
+                        ? 'function'
+                        : defaultValues,
+                record,
+            }),
+        ] // eslint-disable-line
     );
 
     const finalResolver = resolver
@@ -66,6 +74,23 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
         shouldUnregister,
         shouldUseNativeValidation,
     });
+
+    // According to react-hook-form docs: https://react-hook-form.com/api/useform/formstate
+    // `formState` must be read before a render in order to enable the state update.
+    const {
+        formState: {
+            isSubmitting,
+            isDirty,
+            isValid,
+            isValidating,
+            dirtyFields,
+            errors,
+            submitCount,
+            touchedFields,
+            isSubmitted,
+            isSubmitSuccessful,
+        },
+    } = form;
 
     // initialize form with record
     /* eslint-disable react-hooks/exhaustive-deps */
