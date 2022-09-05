@@ -51,12 +51,12 @@ const EventList = () => {
     const { data: orders } = useGetList<OrderRecord>('commands', {
         pagination: { page: 1, perPage: 100 },
         sort: { field: 'date', order: 'DESC' },
-        filter: { customer_id: record.id },
+        filter: { customer_id: record?.id },
     });
     const { data: reviews } = useGetList<ReviewRecord>('reviews', {
         pagination: { page: 1, perPage: 100 },
         sort: { field: 'date', order: 'DESC' },
-        filter: { customer_id: record.id },
+        filter: { customer_id: record?.id },
     });
     const events = mixOrdersAndReviews(orders, reviews);
 

@@ -23,7 +23,7 @@ interface MobileGridProps {
 const MobileGrid = (props: MobileGridProps) => {
     const { data, isLoading } = useListContext<Order>();
     const translate = useTranslate();
-    if (isLoading || data.length === 0) {
+    if (isLoading || !data || data.length === 0) {
         return null;
     }
     return (

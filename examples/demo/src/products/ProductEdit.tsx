@@ -91,7 +91,7 @@ const ReviewsFormTab = (props: any) => {
         'reviews',
         {
             target: 'product_id',
-            id: record.id,
+            id: record?.id,
             pagination: { page: 1, perPage: 25 },
             sort: { field: 'id', order: 'DESC' },
         },

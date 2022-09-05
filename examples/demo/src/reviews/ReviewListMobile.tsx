@@ -8,7 +8,7 @@ import { Review } from './../types';
 
 const ReviewListMobile = () => {
     const { data, isLoading, total } = useListContext<Review>();
-    if (isLoading || Number(total) === 0) {
+    if (isLoading || !data || Number(total) === 0) {
         return null;
     }
     return (

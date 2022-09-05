@@ -101,7 +101,7 @@ export const useGetList = <RecordType extends RaRecord = any>(
         }
     );
 
-    return (result.data
+    return (!result.isLoading
         ? {
               ...result,
               data: result.data?.data,

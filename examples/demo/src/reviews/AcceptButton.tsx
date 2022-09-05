@@ -22,7 +22,7 @@ const AcceptButton = () => {
 
     const [approve, { isLoading }] = useUpdate(
         'reviews',
-        { id: record.id, data: { status: 'accepted' }, previousData: record },
+        { id: record?.id, data: { status: 'accepted' }, previousData: record },
         {
             mutationMode: 'undoable',
             onSuccess: () => {

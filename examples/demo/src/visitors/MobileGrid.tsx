@@ -19,7 +19,7 @@ const MobileGrid = () => {
     const translate = useTranslate();
     const { data, isLoading } = useListContext<Customer>();
 
-    if (isLoading || data.length === 0) {
+    if (isLoading || !data || data.length === 0) {
         return null;
     }
 

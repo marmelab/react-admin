@@ -32,7 +32,7 @@ const CategoryList = () => (
 
 const CategoryGrid = () => {
     const { data, isLoading } = useListContext<Category>();
-    if (isLoading) {
+    if (isLoading || !data) {
         return null;
     }
     return (
