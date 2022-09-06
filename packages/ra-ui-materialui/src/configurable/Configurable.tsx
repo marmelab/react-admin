@@ -123,14 +123,14 @@ const Root = styled('span', {
         zIndex: theme.zIndex.modal - 1,
     },
     [`&.${ConfigurableClasses.editMode} > :not(.${ConfigurableClasses.button})`]: {
-        transition: theme.transitions.create('box-shadow'),
-        boxShadow: `${alpha(theme.palette.primary.main, 0.3)} 0px 0px 0px 2px`,
+        transition: theme.transitions.create('outline'),
+        outline: `${alpha(theme.palette.primary.main, 0.3)} solid 2px`,
     },
     [`&.${ConfigurableClasses.editMode}:hover > :not(.${ConfigurableClasses.button})`]: {
-        boxShadow: `${alpha(theme.palette.primary.main, 0.5)} 0px 0px 0px 2px`,
+        outline: `${alpha(theme.palette.primary.main, 0.5)} solid 2px`,
     },
 
     [`&.${ConfigurableClasses.editorActive} > :not(.${ConfigurableClasses.button}), &.${ConfigurableClasses.editorActive}:hover > :not(.${ConfigurableClasses.button})`]: {
-        boxShadow: ` ${theme.palette.primary.main} 0px 0px 0px 2px`,
+        outline: `${theme.palette.primary.main} solid 2px`,
     },
 }));
