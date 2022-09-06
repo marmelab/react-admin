@@ -36,7 +36,7 @@ export const Configurable = (props: ConfigurableProps) => {
         editorKey,
         openButtonLabel = 'ra.configurable.customize',
     } = props;
-    const ref = useRef<HTMLDivElement>(null);
+    const ref = useRef(null);
     const rect = ref.current?.getBoundingClientRect();
 
     const {
