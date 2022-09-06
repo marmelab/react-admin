@@ -7,8 +7,8 @@ export const PreferencesEditorContext = createContext<
 export type PreferencesEditorContextValue = {
     editor: ReactNode | null;
     setEditor: (editor: ReactNode) => void;
-    editorKey?: string;
-    setEditorKey: (key?: string) => void;
+    preferencesKey?: string;
+    setPreferencesKey: (key?: string) => void;
     title: string | null;
     titleOptions?: any;
     setTitle: (title: string, titleOptions?: any) => void;

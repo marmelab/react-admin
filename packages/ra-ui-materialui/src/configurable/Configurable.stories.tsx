@@ -19,9 +19,9 @@ export default {
 
 const ConfigurableTextBlock = React.forwardRef<
     HTMLDivElement,
-    { editorKey?: string; children?: any }
->(({ children, editorKey }, ref) => {
-    const [color] = useStore(`textBlock.${editorKey}.color`, '#ffffff');
+    { preferencesKey?: string; children?: any }
+>(({ children, preferencesKey }, ref) => {
+    const [color] = useStore(`textBlock.${preferencesKey}.color`, '#ffffff');
     return (
         <Box
             border="solid 1px lightgrey"
@@ -44,9 +44,9 @@ const ConfigurableTextBlock = React.forwardRef<
     );
 });
 
-const TextBlockEditor = ({ editorKey }: { editorKey?: string }) => {
+const TextBlockEditor = ({ preferencesKey }: { preferencesKey?: string }) => {
     const [color, setColor] = useStore(
-        `textBlock.${editorKey}.color`,
+        `textBlock.${preferencesKey}.color`,
         '#ffffff'
     );
     useSetInspectorTitle('ra.inspector.textBlock', { _: 'Text block' });
@@ -62,7 +62,7 @@ const TextBlockEditor = ({ editorKey }: { editorKey?: string }) => {
                 key={key}
             />
             <ResetSettingsButton
-                preferencesKey={`textBlock.${editorKey}.color`}
+                preferencesKey={`textBlock.${preferencesKey}.color`}
                 // force redraw of component to reset displayed value
                 onReset={() => setKey(key => key + 1)}
             />
@@ -70,8 +70,8 @@ const TextBlockEditor = ({ editorKey }: { editorKey?: string }) => {
     );
 };
 
-const TextBlock = ({ editorKey, ...props }: any) => (
-    <Configurable editor={<TextBlockEditor />} editorKey={editorKey}>
+const TextBlock = ({ preferencesKey, ...props }: any) => (
+    <Configurable editor={<TextBlockEditor />} preferencesKey={preferencesKey}>
         <ConfigurableTextBlock {...props} />
     </Configurable>
 );
@@ -165,8 +165,8 @@ export const MultipleInstances = () => (
         <InspectorButton />
         <hr />
         <Box display="flex" alignItems="flex-start">
-            <TextBlock editorKey="foo" />
-            <TextBlock editorKey="bar" />
+            <TextBlock preferencesKey="foo" />
+            <TextBlock preferencesKey="bar" />
         </Box>
     </PreferencesEditorContextProvider>
 );

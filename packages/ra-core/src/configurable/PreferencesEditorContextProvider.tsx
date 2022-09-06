@@ -8,7 +8,7 @@ import {
 export const PreferencesEditorContextProvider = ({ children }) => {
     const [isEnabled, setIsEnabled] = useState(false);
     const [editor, setEditor] = useState<ReactElement>(null);
-    const [editorKey, setEditorKey] = useState<string>();
+    const [preferencesKey, setPreferencesKey] = useState<string>();
     const [path, setPath] = useState<string>(null);
     const [title, setTitleString] = useState<string>(null);
     const [titleOptions, setTitleOptions] = useState<any>();
@@ -27,8 +27,8 @@ export const PreferencesEditorContextProvider = ({ children }) => {
         return {
             editor,
             setEditor,
-            editorKey,
-            setEditorKey,
+            preferencesKey,
+            setPreferencesKey,
             title,
             titleOptions,
             setTitle,
@@ -42,7 +42,7 @@ export const PreferencesEditorContextProvider = ({ children }) => {
         disable,
         enable,
         editor,
-        editorKey,
+        preferencesKey,
         isEnabled,
         path,
         setPath,

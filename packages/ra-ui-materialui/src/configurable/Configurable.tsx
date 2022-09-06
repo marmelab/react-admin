@@ -33,7 +33,7 @@ export const Configurable = (props: ConfigurableProps) => {
     const {
         children,
         editor,
-        editorKey,
+        preferencesKey,
         openButtonLabel = 'ra.configurable.customize',
     } = props;
     const ref = useRef(null);
@@ -47,27 +47,29 @@ export const Configurable = (props: ConfigurableProps) => {
         isEnabled,
         editor: currentEditor,
         setEditor,
-        editorKey: currentEditorKey,
-        setEditorKey,
+        preferencesKey: currentPreferencesKey,
+        setPreferencesKey,
     } = preferencesEditorContext;
 
     const handleOpenEditor = () => {
-        if (editorKey) {
+        if (preferencesKey) {
             // include the editorKey as key to force destroy and mount
             // when switching between two identical editors with different editor keys
             // otherwise the editor will see an update and its useStore will return one tick later
             // which would forbid the usage of uncontrolled inputs ion the editor
-            setEditor(cloneElement(editor, { editorKey, key: editorKey }));
+            setEditor(
+                cloneElement(editor, { preferencesKey, key: preferencesKey })
+            );
             // as we modify the editor, isEditorOpen cannot compare the editor element
             // we'll compare the editor key instead
-            setEditorKey(editorKey);
+            setPreferencesKey(preferencesKey);
         } else {
             setEditor(editor);
         }
     };
 
-    const isEditorOpen = editorKey
-        ? editorKey === currentEditorKey
+    const isEditorOpen = preferencesKey
+        ? preferencesKey === currentPreferencesKey
         : editor === currentEditor;
 
     return (
@@ -77,8 +79,8 @@ export const Configurable = (props: ConfigurableProps) => {
                 isEditorOpen && ConfigurableClasses.editorActive
             )}
         >
-            {editorKey
-                ? cloneElement(children, { ref, editorKey })
+            {preferencesKey
+                ? cloneElement(children, { ref, preferencesKey })
                 : cloneElement(children, { ref })}
             <InspectorButton
                 onClick={handleOpenEditor}
@@ -98,7 +100,7 @@ export const Configurable = (props: ConfigurableProps) => {
 export interface ConfigurableProps {
     children: ReactElement;
     editor: ReactElement;
-    editorKey?: string;
+    preferencesKey?: string;
     openButtonLabel?: string;
 }
 
