@@ -4,10 +4,10 @@ import { IconButton, IconButtonProps, Tooltip } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useTranslate, usePreferencesEditor } from 'ra-core';
 
-export const InspectorButton = ({
-    label = 'inspector.action.show',
-    ...props
-}: IconButtonProps & { label?: string }) => {
+export const InspectorButton = React.forwardRef<
+    HTMLButtonElement,
+    IconButtonProps & { label?: string }
+>(({ label = 'inspector.action.show', ...props }, ref) => {
     const { enable, disable, isEnabled } = usePreferencesEditor();
     const translate = useTranslate();
 
@@ -23,10 +23,11 @@ export const InspectorButton = ({
                 aria-label={translatedLabel}
                 onClick={handleClick}
                 color="inherit"
+                ref={ref}
                 {...props}
             >
                 <SettingsIcon fontSize="inherit" />
             </IconButton>
         </Tooltip>
     );
-};
+});

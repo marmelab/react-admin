@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { alpha, Fade, Popper } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -67,12 +67,18 @@ export const Configurable = (props: ConfigurableProps) => {
                 placement="top-end"
                 className={ConfigurableClasses.popper}
                 modifiers={popperModifiers}
+                transition
             >
-                <InspectorButton
-                    onClick={handleOpenEditor}
-                    label={openButtonLabel}
-                    size="small"
-                />
+                {({ TransitionProps }) => (
+                    <Fade {...TransitionProps} timeout={350}>
+                        <InspectorButton
+                            onClick={handleOpenEditor}
+                            label={openButtonLabel}
+                            size="small"
+                            color="primary"
+                        />
+                    </Fade>
+                )}
             </Popper>
             {children}
         </Root>
@@ -109,11 +115,13 @@ const Root = styled('span', {
         zIndex: theme.zIndex.modal - 1,
     },
     [`& .${ConfigurableClasses.element}`]: {
+        transition: theme.transitions.create('box-shadow'),
         boxShadow: `rgb(255, 255, 255) 0px 0px 0px 0px, ${alpha(
             theme.palette.primary.main,
             0.3
         )} 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`,
         [`&.${ConfigurableClasses.hover}`]: {
+            transition: theme.transitions.create('box-shadow'),
             boxShadow: `rgb(255, 255, 255) 0px 0px 0px 0px, ${theme.palette.primary.main} 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`,
         },
     },
