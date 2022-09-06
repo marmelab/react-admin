@@ -41,7 +41,7 @@ export const ResetSettingsButton = ({
                 onClick={handleClick}
                 className={ResetSettingsButtonClasses.button}
             >
-                {translate('ra.inspector.reset', {
+                {translate('ra.configurable.inspector.reset', {
                     _: 'Reset Settings',
                 })}
             </Button>

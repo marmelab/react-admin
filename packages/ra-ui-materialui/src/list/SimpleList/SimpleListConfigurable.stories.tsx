@@ -2,10 +2,13 @@ import * as React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { PreferencesEditorContextProvider, I18nContextProvider } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
-import englishMessages from 'ra-language-english';
+import en from 'ra-language-english';
+import fr from 'ra-language-french';
 
 import { SimpleListConfigurable } from './SimpleListConfigurable';
 import { Inspector, InspectorButton } from '../../preferences';
+import { LocalesMenuButton } from '../../button/LocalesMenuButton';
+import { Box } from '@mui/material';
 
 export default { title: 'ra-ui-materialui/list/SimpleListConfigurable' };
 
@@ -36,14 +39,23 @@ const data = [
     },
 ];
 
-const i18nProvider = polyglotI18nProvider(() => englishMessages, 'en');
+const translations = { en, fr };
+const i18nProvider = polyglotI18nProvider(locale => translations[locale], 'en');
 
 export const Basic = () => (
     <I18nContextProvider value={i18nProvider}>
         <PreferencesEditorContextProvider>
             <MemoryRouter>
                 <Inspector />
-                <InspectorButton />
+                <Box display="flex" justifyContent="flex-end">
+                    <LocalesMenuButton
+                        languages={[
+                            { locale: 'en', name: 'English' },
+                            { locale: 'fr', name: 'Français' },
+                        ]}
+                    />
+                    <InspectorButton />
+                </Box>
                 <SimpleListConfigurable
                     resource="books"
                     data={data}
