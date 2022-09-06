@@ -1,11 +1,189 @@
 import * as React from 'react';
-
-import { Configurable } from '../../configurable';
+import { styled } from '@mui/material/styles';
+import { isValidElement, ReactNode, ReactElement, Ref } from 'react';
+import PropTypes from 'prop-types';
 import {
-    SimpleListConfigurable,
-    SimpleListProps,
-} from './SimpleListConfigurable';
-import { SimpleListEditor } from './SimpleListEditor';
+    Avatar,
+    List,
+    ListProps,
+    ListItem,
+    ListItemAvatar,
+    ListItemButton,
+    ListItemIcon,
+    ListItemProps,
+    ListItemSecondaryAction,
+    ListItemText,
+} from '@mui/material';
+import { Link } from 'react-router-dom';
+import {
+    Identifier,
+    RaRecord,
+    RecordContextProvider,
+    useRenderTemplate,
+    sanitizeListRestProps,
+    useListContext,
+    useResourceContext,
+    useCreatePath,
+    useStore,
+} from 'ra-core';
+
+import { SimpleListLoading } from './SimpleListLoading';
+
+const SimpleListInner = <RecordType extends RaRecord = any>(
+    props: SimpleListProps<RecordType>,
+    ref: Ref<HTMLUListElement>
+) => {
+    const {
+        className,
+        preferencesKey,
+        hasBulkActions,
+        leftAvatar,
+        leftIcon,
+        linkType = 'edit',
+        primaryText,
+        rightAvatar,
+        rightIcon,
+        secondaryText,
+        tertiaryText,
+        rowStyle,
+        ...rest
+    } = props;
+    const { data, isLoading, total } = useListContext<RecordType>(props);
+    const resource = useResourceContext(props);
+    const renderTemplate = useRenderTemplate();
+    const [primaryTextFromStore] = useStore(
+        `simpleList.${preferencesKey || resource}.primaryText`
+    );
+    const [secondaryTextFromStore] = useStore(
+        `simpleList.${preferencesKey || resource}.secondaryText`
+    );
+    const [tertiaryTextFromStore] = useStore(
+        `simpleList.${preferencesKey || resource}.tertiaryText`
+    );
+
+    if (isLoading === true) {
+        return (
+            <SimpleListLoading
+                className={className}
+                hasLeftAvatarOrIcon={!!leftIcon || !!leftAvatar}
+                hasRightAvatarOrIcon={!!rightIcon || !!rightAvatar}
+                hasSecondaryText={!!secondaryText}
+                hasTertiaryText={!!tertiaryText}
+            />
+        );
+    }
+
+    const renderAvatar = (
+        record: RecordType,
+        avatarCallback: FunctionToElement<RecordType>
+    ) => {
+        const avatarValue = avatarCallback(record, record.id);
+        if (
+            typeof avatarValue === 'string' &&
+            (avatarValue.startsWith('http') || avatarValue.startsWith('data:'))
+        ) {
+            return <Avatar src={avatarValue} />;
+        } else {
+            return <Avatar>{avatarValue}</Avatar>;
+        }
+    };
+
+    return (total == null && data?.length > 0) || total > 0 ? (
+        <Root className={className} {...sanitizeListRestProps(rest)} ref={ref}>
+            {data.map((record, rowIndex) => (
+                <RecordContextProvider key={record.id} value={record}>
+                    <ListItem disablePadding>
+                        <LinkOrNot
+                            linkType={linkType}
+                            resource={resource}
+                            id={record.id}
+                            record={record}
+                            style={
+                                rowStyle
+                                    ? rowStyle(record, rowIndex)
+                                    : undefined
+                            }
+                        >
+                            {leftIcon && (
+                                <ListItemIcon>
+                                    {leftIcon(record, record.id)}
+                                </ListItemIcon>
+                            )}
+                            {leftAvatar && (
+                                <ListItemAvatar>
+                                    {renderAvatar(record, leftAvatar)}
+                                </ListItemAvatar>
+                            )}
+                            <ListItemText
+                                primary={
+                                    <div>
+                                        {primaryTextFromStore
+                                            ? renderTemplate(
+                                                  primaryTextFromStore,
+                                                  record
+                                              )
+                                            : isValidElement(primaryText)
+                                            ? primaryText
+                                            : primaryText(record, record.id)}
+
+                                        {tertiaryTextFromStore
+                                            ? renderTemplate(
+                                                  tertiaryTextFromStore,
+                                                  record
+                                              )
+                                            : !!tertiaryText &&
+                                              (isValidElement(tertiaryText) ? (
+                                                  tertiaryText
+                                              ) : (
+                                                  <span
+                                                      className={
+                                                          SimpleListClasses.tertiary
+                                                      }
+                                                  >
+                                                      {tertiaryText(
+                                                          record,
+                                                          record.id
+                                                      )}
+                                                  </span>
+                                              ))}
+                                    </div>
+                                }
+                                secondary={
+                                    secondaryTextFromStore
+                                        ? renderTemplate(
+                                              secondaryTextFromStore,
+                                              record
+                                          )
+                                        : !!secondaryText &&
+                                          (isValidElement(secondaryText)
+                                              ? secondaryText
+                                              : secondaryText(
+                                                    record,
+                                                    record.id
+                                                ))
+                                }
+                            />
+                            {(rightAvatar || rightIcon) && (
+                                <ListItemSecondaryAction>
+                                    {rightAvatar && (
+                                        <Avatar>
+                                            {renderAvatar(record, rightAvatar)}
+                                        </Avatar>
+                                    )}
+                                    {rightIcon && (
+                                        <ListItemIcon>
+                                            {rightIcon(record, record.id)}
+                                        </ListItemIcon>
+                                    )}
+                                </ListItemSecondaryAction>
+                            )}
+                        </LinkOrNot>
+                    </ListItem>
+                </RecordContextProvider>
+            ))}
+        </Root>
+    ) : null;
+};
 
 /**
  * The <SimpleList> component renders a list of records as a MUI <List>.
@@ -41,13 +219,111 @@ import { SimpleListEditor } from './SimpleListEditor';
  *     </List>
  * );
  */
-export const SimpleList = ({ preferencesKey, ...props }: SimpleListProps) => (
-    <Configurable
-        editor={<SimpleListEditor resource={props.resource} />}
-        preferencesKey={preferencesKey}
-    >
-        <SimpleListConfigurable {...props} />
-    </Configurable>
-);
+export const SimpleList = React.forwardRef(SimpleListInner) as (<
+    RecordType extends RaRecord = any
+>(
+    props: SimpleListProps<RecordType> & { ref?: Ref<HTMLUListElement> }
+) => JSX.Element) & { propTypes: any };
 
-SimpleList.propTypes = SimpleListConfigurable.propTypes;
+SimpleList.propTypes = {
+    className: PropTypes.string,
+    leftAvatar: PropTypes.func,
+    leftIcon: PropTypes.func,
+    linkType: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
+    primaryText: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
+    rightAvatar: PropTypes.func,
+    rightIcon: PropTypes.func,
+    secondaryText: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
+    tertiaryText: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
+    rowStyle: PropTypes.func,
+};
+
+export type FunctionToElement<RecordType extends RaRecord = any> = (
+    record: RecordType,
+    id: Identifier
+) => ReactNode;
+
+export interface SimpleListProps<RecordType extends RaRecord = any>
+    extends Omit<ListProps, 'classes'> {
+    className?: string;
+    preferencesKey?: string;
+    hasBulkActions?: boolean;
+    leftAvatar?: FunctionToElement<RecordType>;
+    leftIcon?: FunctionToElement<RecordType>;
+    primaryText?: FunctionToElement<RecordType> | ReactElement;
+    linkType?: string | FunctionLinkType | false;
+    rightAvatar?: FunctionToElement<RecordType>;
+    rightIcon?: FunctionToElement<RecordType>;
+    secondaryText?: FunctionToElement<RecordType> | ReactElement;
+    tertiaryText?: FunctionToElement<RecordType> | ReactElement;
+    rowStyle?: (record: RecordType, index: number) => any;
+    // can be injected when using the component without context
+    resource?: string;
+    data?: RecordType[];
+    isLoading?: boolean;
+    isLoaded?: boolean;
+    total?: number;
+}
+
+const LinkOrNot = (
+    props: LinkOrNotProps & Omit<ListItemProps, 'button' | 'component' | 'id'>
+) => {
+    const {
+        classes: classesOverride,
+        linkType,
+        resource,
+        id,
+        children,
+        record,
+        ...rest
+    } = props;
+    const createPath = useCreatePath();
+    const type =
+        typeof linkType === 'function' ? linkType(record, id) : linkType;
+
+    return type === false ? (
+        <ListItemText
+            // @ts-ignore
+            component="div"
+            {...rest}
+        >
+            {children}
+        </ListItemText>
+    ) : (
+        // @ts-ignore
+        <ListItemButton
+            component={Link}
+            to={createPath({ resource, id, type })}
+            {...rest}
+        >
+            {children}
+        </ListItemButton>
+    );
+};
+
+export type FunctionLinkType = (record: RaRecord, id: Identifier) => string;
+
+export interface LinkOrNotProps {
+    linkType?: string | FunctionLinkType | false;
+    resource: string;
+    id: Identifier;
+    record: RaRecord;
+    children: ReactNode;
+}
+
+const PREFIX = 'RaSimpleList';
+
+export const SimpleListClasses = {
+    tertiary: `${PREFIX}-tertiary`,
+};
+
+const Root = styled(List, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
+    [`& .${SimpleListClasses.tertiary}`]: { float: 'right', opacity: 0.541176 },
+});
