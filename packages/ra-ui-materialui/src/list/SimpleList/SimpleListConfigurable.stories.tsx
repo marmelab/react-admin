@@ -5,7 +5,7 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 
 import { SimpleListConfigurable } from './SimpleListConfigurable';
-import { Inspector, InspectorButton } from '../../configurable';
+import { Inspector, InspectorButton } from '../../preferences';
 
 export default { title: 'ra-ui-materialui/list/SimpleListConfigurable' };
 

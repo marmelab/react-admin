@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { TextField } from '@mui/material';
 import { useTranslate, useStore, useResourceContext } from 'ra-core';
 
-import { ResetSettingsButton } from '../../configurable/ResetSettingsButton';
+import { ResetSettingsButton } from '../../preferences/ResetSettingsButton';
 
 /**
  * A component which provides a configuration UI to tweak the SimpleList

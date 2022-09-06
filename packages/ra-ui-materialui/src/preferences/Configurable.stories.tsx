@@ -14,7 +14,7 @@ import { Configurable } from './Configurable';
 import { ResetSettingsButton } from './ResetSettingsButton';
 
 export default {
-    title: 'ra-ui-materialui/configurable/Configurable',
+    title: 'ra-ui-materialui/preferences/Configurable',
 };
 
 const TextBlock = React.forwardRef<

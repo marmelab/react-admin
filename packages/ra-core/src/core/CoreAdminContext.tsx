@@ -11,7 +11,7 @@ import {
     defaultDataProvider,
 } from '../dataProvider';
 import { StoreContextProvider, Store, memoryStore } from '../store';
-import { PreferencesEditorContextProvider } from '../configurable//PreferencesEditorContextProvider';
+import { PreferencesEditorContextProvider } from '../preferences/PreferencesEditorContextProvider';
 import { I18nContextProvider } from '../i18n';
 import { ResourceDefinitionContextProvider } from './ResourceDefinitionContext';
 import { NotificationContextProvider } from '../notification';
