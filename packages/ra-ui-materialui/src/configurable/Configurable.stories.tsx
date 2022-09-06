@@ -13,7 +13,7 @@ import { Inspector } from './Inspector';
 import { Configurable } from './Configurable';
 
 export default {
-    title: 'ra-ui-materialui/customizable/Configurable',
+    title: 'ra-ui-materialui/configurable/Configurable',
 };
 
 const TextBlock = React.forwardRef<

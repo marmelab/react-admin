@@ -4,7 +4,7 @@ import { InspectorButton } from './InspectorButton';
 import { Inspector as InspectorUI } from './Inspector';
 
 export default {
-    title: 'ra-ui-materialui/customizable/Inspector',
+    title: 'ra-ui-materialui/configurable/Inspector',
 };
 
 export const Inspector = () => (
