@@ -13,7 +13,7 @@ import { InspectorButton } from './InspectorButton';
  * When the edit mode is enabled, users will see a button to edit the component;
  * when clicked, the inspector will show the editor element.
  *
- * The child component fust forward its ref to the root DOM element
+ * The child component must forward its ref to the root DOM element
  *
  * @example
  * const ConfigurableTextBlock = (props) => (
