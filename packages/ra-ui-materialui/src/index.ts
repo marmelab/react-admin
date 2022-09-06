@@ -1,5 +1,6 @@
 export * from './auth';
 export * from './button';
+export * from './configurable';
 export * from './defaultTheme';
 export * from './detail';
 export * from './form';
