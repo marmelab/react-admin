@@ -166,3 +166,5 @@ export const I18n = () => {
         </I18nContextProvider>
     );
 };
+
+export const NotInContext = () => <ConfigurableTextBlock />;

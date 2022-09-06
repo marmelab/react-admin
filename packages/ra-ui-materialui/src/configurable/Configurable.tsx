@@ -39,13 +39,17 @@ export const Configurable = (props: ConfigurableProps) => {
     const ref = useRef(null);
     const rect = ref.current?.getBoundingClientRect();
 
+    const preferencesEditorContext = usePreferencesEditor();
+    if (!preferencesEditorContext) {
+        return children;
+    }
     const {
         isEnabled,
         editor: currentEditor,
         setEditor,
         editorKey: currentEditorKey,
         setEditorKey,
-    } = usePreferencesEditor();
+    } = preferencesEditorContext;
 
     const handleOpenEditor = () => {
         if (editorKey) {
