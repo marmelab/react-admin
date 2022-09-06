@@ -1,6 +1,6 @@
 import Polyglot from 'node-polyglot';
 
-import { I18nProvider, TranslationMessages } from 'ra-core';
+import { I18nProvider, TranslationMessages, Locale } from 'ra-core';
 
 type GetMessages = (
     locale: string
@@ -19,11 +19,16 @@ type GetMessages = (
  *     fr: frenchMessages,
  *     en: englishMessages,
  * };
- * const i18nProvider = polyglotI18nProvider(locale => messages[locale])
+ * const i18nProvider = polyglotI18nProvider(
+ *     locale => messages[locale],
+ *     'en',
+ *     [{ locale: 'en', name: 'English' }, { locale: 'fr', name: 'Français' }]
+ * )
  */
 export default (
     getMessages: GetMessages,
     initialLocale: string = 'en',
+    availableLocales: Locale[] = [{ locale: 'en', name: 'English' }],
     polyglotOptions: any = {}
 ): I18nProvider => {
     let locale = initialLocale;
@@ -36,7 +41,9 @@ export default (
     const polyglot = new Polyglot({
         locale,
         phrases: { '': '', ...messages },
-        ...polyglotOptions,
+        ...(Array.isArray(availableLocales)
+            ? polyglotOptions
+            : availableLocales),
     });
     let translate = polyglot.t.bind(polyglot);
 
@@ -57,5 +64,6 @@ export default (
                 }
             ),
         getLocale: () => locale,
+        getLocales: () => availableLocales,
     };
 };
