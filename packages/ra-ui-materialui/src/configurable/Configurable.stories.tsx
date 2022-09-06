@@ -16,37 +16,41 @@ export default {
     title: 'ra-ui-materialui/customizable/Configurable',
 };
 
-const TextBlock = React.forwardRef<HTMLDivElement, { children?: any }>(
-    ({ children }, ref) => {
-        const [color] = useStore('textBlock.color', '#ffffff');
-        return (
-            <Box
-                border="solid 1px lightgrey"
-                borderRadius={3}
-                p={1}
-                margin={1}
-                width={300}
-                bgcolor={color}
-                ref={ref}
-            >
-                <Typography variant="h6">Lorem ipsum</Typography>
-                <Typography>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                    Qui, quia rem? Nulla asperiores ea beatae iure, dignissimos
-                    ut perferendis nemo reiciendis reprehenderit, consequuntur
-                    debitis maiores! Quaerat dolor unde dolorum qui.
-                </Typography>
-                {children}
-            </Box>
-        );
-    }
-);
+const TextBlock = React.forwardRef<
+    HTMLDivElement,
+    { editorKey?: string; children?: any }
+>(({ children, editorKey }, ref) => {
+    const [color] = useStore(`textBlock.${editorKey}.color`, '#ffffff');
+    return (
+        <Box
+            border="solid 1px lightgrey"
+            borderRadius={3}
+            p={1}
+            margin={1}
+            width={300}
+            bgcolor={color}
+            ref={ref}
+        >
+            <Typography variant="h6">Lorem ipsum</Typography>
+            <Typography>
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui,
+                quia rem? Nulla asperiores ea beatae iure, dignissimos ut
+                perferendis nemo reiciendis reprehenderit, consequuntur debitis
+                maiores! Quaerat dolor unde dolorum qui.
+            </Typography>
+            {children}
+        </Box>
+    );
+});
 
-const TextBlockInspector = () => {
-    const [color, setColor] = useStore('textBlock.color', '#ffffff');
+const TextBlockEditor = ({ editorKey }: { editorKey?: string }) => {
+    const [color, setColor] = useStore(
+        `textBlock.${editorKey}.color`,
+        '#ffffff'
+    );
     useSetInspectorTitle('ra.inspector.textBlock', { _: 'Text block' });
     return (
-        <>
+        <div>
             <label htmlFor="color">Background color</label>
             {/* uncontrolled component */}
             <input
@@ -54,13 +58,13 @@ const TextBlockInspector = () => {
                 onBlur={e => setColor(e.target.value)}
                 id="color"
             />
-        </>
+        </div>
     );
 };
 
-const ConfigurableTextBlock = ({ children }: any) => (
-    <Configurable editor={<TextBlockInspector />}>
-        <TextBlock>{children}</TextBlock>
+const ConfigurableTextBlock = ({ editorKey, ...props }: any) => (
+    <Configurable editor={<TextBlockEditor />} editorKey={editorKey}>
+        <TextBlock {...props} />
     </Configurable>
 );
 
@@ -90,7 +94,7 @@ const SalesBlock = React.forwardRef<HTMLDivElement>((props, ref) => {
     );
 });
 
-const SalesBlockInspector = () => {
+const SalesBlockEditor = () => {
     const [showDate, setShowDate] = useStore('salesBlock.showDate', true);
     useSetInspectorTitle('ra.inspector.salesBlock', { _: 'Sales block' });
     return (
@@ -99,17 +103,17 @@ const SalesBlockInspector = () => {
 
             <input
                 type="checkbox"
-                checked={showDate}
-                onClick={e => setShowDate(showDatz => !showDate)}
+                defaultChecked={showDate}
+                onChange={e => setShowDate(showDatz => !showDate)}
                 id="showDate"
             />
         </>
     );
 };
 
-const ConfigurableSalesBlock = () => (
-    <Configurable editor={<SalesBlockInspector />}>
-        <SalesBlock />
+const ConfigurableSalesBlock = props => (
+    <Configurable editor={<SalesBlockEditor />}>
+        <SalesBlock {...props} />
     </Configurable>
 );
 
@@ -134,6 +138,18 @@ export const Nested = () => (
             <ConfigurableTextBlock>
                 <ConfigurableSalesBlock />
             </ConfigurableTextBlock>
+        </Box>
+    </PreferencesEditorContextProvider>
+);
+
+export const MultipleInstances = () => (
+    <PreferencesEditorContextProvider>
+        <Inspector />
+        <InspectorButton />
+        <hr />
+        <Box display="flex" alignItems="flex-start">
+            <ConfigurableTextBlock editorKey="foo" />
+            <ConfigurableTextBlock editorKey="bar" />
         </Box>
     </PreferencesEditorContextProvider>
 );

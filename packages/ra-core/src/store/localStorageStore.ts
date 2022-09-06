@@ -30,10 +30,10 @@ let localStorageAvailable = testLocalStorage();
  *
  * @example
  *
- * import { localStorageProvider } from 'react-admin';
+ * import { localStorageStore } from 'react-admin';
  *
  * const App = () => (
- *    <Admin store={localStorageProvider()}>
+ *    <Admin store={localStorageStore()}>
  *       ...
  *   </Admin>
  * );
