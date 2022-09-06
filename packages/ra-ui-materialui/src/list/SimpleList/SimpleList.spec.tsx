@@ -2,9 +2,9 @@ import * as React from 'react';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import { ListContext, ResourceContextProvider } from 'ra-core';
 
-import { AdminContext } from '../AdminContext';
+import { AdminContext } from '../../AdminContext';
 import { SimpleList } from './SimpleList';
-import { TextField } from '../field';
+import { TextField } from '../../field';
 
 const Wrapper = ({ children }: any) => (
     <AdminContext>

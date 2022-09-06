@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Configurable } from '../configurable';
+import { Configurable } from '../../configurable';
 import {
     SimpleListConfigurable,
     SimpleListProps,
