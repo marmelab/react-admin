@@ -165,3 +165,31 @@ export const PostList = props => {
     );
 }
 ```
+
+## Configurable
+
+You can let end users customize the fields displayed in the `<SimpleList>` by using the `<SimpleListConfigurable>` component instead.
+
+![SimpleListConfigurable](./img/SimpleListConfigurable.gif)
+
+```diff
+import {
+    List,
+-   SimpleList,
++   SimpleListConfigurable,
+} from 'react-admin';
+
+export const BookList = () => (
+    <List>
+-       <SimpleList
++       <SimpleListConfigurable
+            primaryText={record => record.title}
+            secondaryText={record => record.author}
+            tertiaryText={record => record.date}
+        />
+    </List>
+);
+```
+
+When users enter the edit mode and select the `SimpleList`, they can set the `primaryText`, `secondaryText`, and `tertiaryText` fields via the inspector.
+
