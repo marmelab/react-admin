@@ -11,6 +11,7 @@ import TimelineIcon from '@mui/icons-material/Timeline';
 import { InspectorButton } from './InspectorButton';
 import { Inspector } from './Inspector';
 import { Configurable } from './Configurable';
+import { ResetSettingsButton } from './ResetSettingsButton';
 
 export default {
     title: 'ra-ui-materialui/configurable/Configurable',
@@ -49,6 +50,7 @@ const TextBlockEditor = ({ editorKey }: { editorKey?: string }) => {
         '#ffffff'
     );
     useSetInspectorTitle('ra.inspector.textBlock', { _: 'Text block' });
+    const [key, setKey] = React.useState<number>(0);
     return (
         <div>
             <label htmlFor="color">Background color</label>
@@ -57,6 +59,12 @@ const TextBlockEditor = ({ editorKey }: { editorKey?: string }) => {
                 defaultValue={color}
                 onBlur={e => setColor(e.target.value)}
                 id="color"
+                key={key}
+            />
+            <ResetSettingsButton
+                preferencesKey={`textBlock.${editorKey}.color`}
+                // force redraw of component to reset displayed value
+                onReset={() => setKey(key => key + 1)}
             />
         </div>
     );
