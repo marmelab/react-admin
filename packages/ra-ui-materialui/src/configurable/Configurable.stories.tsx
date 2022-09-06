@@ -59,7 +59,7 @@ const TextBlockInspector = () => {
 };
 
 const ConfigurableTextBlock = ({ children }: any) => (
-    <Configurable editor={<TextBlockInspector />} openButtonLabel="edit dummy">
+    <Configurable editor={<TextBlockInspector />}>
         <TextBlock>{children}</TextBlock>
     </Configurable>
 );
@@ -108,7 +108,7 @@ const SalesBlockInspector = () => {
 };
 
 const ConfigurableSalesBlock = () => (
-    <Configurable editor={<SalesBlockInspector />} openButtonLabel="edit dummy">
+    <Configurable editor={<SalesBlockInspector />}>
         <SalesBlock />
     </Configurable>
 );

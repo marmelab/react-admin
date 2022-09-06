@@ -7,7 +7,7 @@ import { useTranslate, usePreferencesEditor } from 'ra-core';
 export const InspectorButton = React.forwardRef<
     HTMLButtonElement,
     IconButtonProps & { label?: string }
->(({ label = 'inspector.action.show', ...props }, ref) => {
+>(({ label = 'ra.configurable.configureMode', ...props }, ref) => {
     const { enable, disable, isEnabled } = usePreferencesEditor();
     const translate = useTranslate();
 
@@ -15,7 +15,7 @@ export const InspectorButton = React.forwardRef<
         isEnabled ? disable() : enable();
     };
 
-    const translatedLabel = translate(label);
+    const translatedLabel = translate(label, { _: 'Configure mode' });
 
     return (
         <Tooltip title={translatedLabel}>

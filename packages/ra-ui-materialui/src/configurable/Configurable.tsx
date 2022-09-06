@@ -8,7 +8,11 @@ import clsx from 'clsx';
 import { InspectorButton } from './InspectorButton';
 
 export const Configurable = (props: ConfigurableProps) => {
-    const { children, editor, openButtonLabel } = props;
+    const {
+        children,
+        editor,
+        openButtonLabel = 'ra.configurable.customize',
+    } = props;
     const ref = React.useRef<HTMLDivElement>(null);
     const rect = ref.current?.getBoundingClientRect();
 
@@ -48,7 +52,7 @@ export const Configurable = (props: ConfigurableProps) => {
 export interface ConfigurableProps {
     children: ReactElement;
     editor: ReactNode;
-    openButtonLabel: string;
+    openButtonLabel?: string;
 }
 
 const PREFIX = 'RaConfigurable';
@@ -73,19 +77,13 @@ const Root = styled('span', {
     },
     [`&.${ConfigurableClasses.editMode} > *:first-child`]: {
         transition: theme.transitions.create('box-shadow'),
-        boxShadow: `rgb(255, 255, 255) 0px 0px 0px 0px, ${alpha(
-            theme.palette.primary.main,
-            0.3
-        )} 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`,
+        boxShadow: `${alpha(theme.palette.primary.main, 0.3)} 0px 0px 0px 2px`,
     },
     [`&.${ConfigurableClasses.editMode}:hover > *:first-child`]: {
-        boxShadow: `rgb(255, 255, 255) 0px 0px 0px 0px, ${alpha(
-            theme.palette.primary.main,
-            0.3
-        )} 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`,
+        boxShadow: `${alpha(theme.palette.primary.main, 0.5)} 0px 0px 0px 2px`,
     },
 
     [`&.${ConfigurableClasses.editorActive} > *:first-child, &.${ConfigurableClasses.editorActive}:hover > *:first-child`]: {
-        boxShadow: `rgb(255, 255, 255) 0px 0px 0px 0px, ${theme.palette.primary.main} 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`,
+        boxShadow: `${theme.palette.primary.main} 0px 0px 0px 2px`,
     },
 }));
