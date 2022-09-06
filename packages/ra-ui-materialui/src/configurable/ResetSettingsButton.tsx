@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { Button } from '@mui/material';
-import { alpha } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useTranslate, useRemoveFromStore } from 'ra-core';
 import { Confirm } from '../layout';
