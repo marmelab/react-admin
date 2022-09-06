@@ -13,12 +13,12 @@ import { Confirm } from '../layout';
  * <ResetSettingsButton preferencesKey="myPreferencesKey" />
  */
 export const ResetSettingsButton = ({
-    preferencesKey,
+    preferencesKeys,
     onReset,
 }: ResetSettingsButtonProps) => {
     const [open, setOpen] = useState(false);
     const translate = useTranslate();
-    const remove = useRemoveFromStore(preferencesKey);
+    const remove = useRemoveFromStore();
 
     const handleClick = () => {
         setOpen(true);
@@ -28,7 +28,7 @@ export const ResetSettingsButton = ({
     };
 
     const handleConfirm = () => {
-        remove();
+        preferencesKeys.map(remove);
         onReset && onReset();
         setOpen(false);
     };
@@ -73,6 +73,6 @@ const Root = styled('span', {
 }));
 
 export interface ResetSettingsButtonProps {
-    preferencesKey: string;
+    preferencesKeys: string[];
     onReset?: () => void;
 }

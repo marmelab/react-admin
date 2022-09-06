@@ -1,5 +1,5 @@
 export * from './PreferencesEditorContext';
 export * from './PreferencesEditorContextProvider';
-export * from './renderTemplate';
+export * from './useRenderTemplate';
 export * from './usePreferencesEditor';
 export * from './useSetInspectorTitle';

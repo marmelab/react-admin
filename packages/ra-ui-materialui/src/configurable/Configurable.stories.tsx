@@ -62,7 +62,7 @@ const TextBlockEditor = ({ preferencesKey }: { preferencesKey?: string }) => {
                 key={key}
             />
             <ResetSettingsButton
-                preferencesKey={`textBlock.${preferencesKey}.color`}
+                preferencesKeys={[`textBlock.${preferencesKey}.color`]}
                 // force redraw of component to reset displayed value
                 onReset={() => setKey(key => key + 1)}
             />
