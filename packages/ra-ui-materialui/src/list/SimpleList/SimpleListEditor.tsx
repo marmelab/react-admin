@@ -20,6 +20,7 @@ export const SimpleListEditor = (props: SimpleListEditorProps) => {
         defaultTertiatyText,
         preferencesKey,
     } = props;
+
     const translate = useTranslate();
     const resource = useResourceContext(props);
     const rootKey = `simpleList.${preferencesKey || resource}`;

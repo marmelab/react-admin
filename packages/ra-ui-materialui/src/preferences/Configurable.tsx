@@ -22,9 +22,9 @@ import { InspectorButton } from './InspectorButton';
  *     </Configurable>
  * );
  *
- * @example // with editorKey (allows more than one editor of that type per page)
- * const ConfigurableTextBlock = ({ editorKey, ...props }) => (
- *     <Configurable editor={<TextBlockInspector />} editorKey={editorKey}>
+ * @example // with preferencesKey (allows more than one editor of that type per page)
+ * const ConfigurableTextBlock = ({ preferencesKey, ...props }) => (
+ *     <Configurable editor={<TextBlockInspector />} preferencesKey={preferencesKey}>
  *         <TextBlock {...props} />
  *     </Configurable>
  * );

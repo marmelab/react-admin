@@ -191,5 +191,5 @@ export const BookList = () => (
 );
 ```
 
-When users enter the edit mode and select the `SimpleList`, they can set the `primaryText`, `secondaryText`, and `tertiaryText` fields via the inspector.
+When users enter the configuration mode and select the `SimpleList`, they can set the `primaryText`, `secondaryText`, and `tertiaryText` fields via the inspector.
 
