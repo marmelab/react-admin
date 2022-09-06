@@ -278,7 +278,8 @@ If you provided a React element for the optionText prop, you must also provide t
                 ]);
             }
         } else {
-            field.onChange(getChoiceValue(newValue) || '');
+            const finalValue = getChoiceValue(newValue);
+            field.onChange(finalValue ?? '');
         }
     };
 
