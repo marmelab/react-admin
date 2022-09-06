@@ -901,10 +901,10 @@ describe('<AutocompleteInput />', () => {
         );
     });
 
-    it('should accept 0 as an input value', () => {
+    it('should accept 0 as an input value', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: 0 }}>
+                <SimpleForm onSubmit={jest.fn()}>
                     <AutocompleteInput
                         {...defaultProps}
                         choices={[{ id: 0, name: 'foo' }]}
@@ -912,7 +912,21 @@ describe('<AutocompleteInput />', () => {
                 </SimpleForm>
             </AdminContext>
         );
-        expect(screen.queryByDisplayValue('foo')).not.toBeNull();
+        const input = screen.getByLabelText(
+            'resources.users.fields.role'
+        ) as HTMLInputElement;
+        input.focus();
+        fireEvent.change(input, { target: { value: 'foo' } });
+        await waitFor(
+            () => {
+                expect(screen.getByRole('listbox').children).toHaveLength(1);
+            },
+            { timeout: 2000 }
+        );
+        fireEvent.click(screen.getByText('foo'));
+        await waitFor(() => {
+            expect(input.value).toEqual('foo');
+        });
     });
 
     it('should support creation of a new choice through the onCreate event', async () => {
