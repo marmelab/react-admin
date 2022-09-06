@@ -58,18 +58,11 @@ const TextBlockInspector = () => {
     );
 };
 
-const ConfigurableTextBlock = ({ children }: any) => {
-    const ref = React.useRef<HTMLDivElement>(null);
-    return (
-        <Configurable
-            elementRef={ref}
-            editor={<TextBlockInspector />}
-            openButtonLabel="edit dummy"
-        >
-            <TextBlock ref={ref}>{children}</TextBlock>
-        </Configurable>
-    );
-};
+const ConfigurableTextBlock = ({ children }: any) => (
+    <Configurable editor={<TextBlockInspector />} openButtonLabel="edit dummy">
+        <TextBlock>{children}</TextBlock>
+    </Configurable>
+);
 
 const SalesBlock = React.forwardRef<HTMLDivElement>((props, ref) => {
     const [showDate] = useStore('salesBlock.showDate', true);
@@ -114,18 +107,11 @@ const SalesBlockInspector = () => {
     );
 };
 
-const ConfigurableSalesBlock = () => {
-    const ref = React.useRef<HTMLDivElement>(null);
-    return (
-        <Configurable
-            elementRef={ref}
-            editor={<SalesBlockInspector />}
-            openButtonLabel="edit dummy"
-        >
-            <SalesBlock ref={ref} />
-        </Configurable>
-    );
-};
+const ConfigurableSalesBlock = () => (
+    <Configurable editor={<SalesBlockInspector />} openButtonLabel="edit dummy">
+        <SalesBlock />
+    </Configurable>
+);
 
 export const Basic = () => (
     <PreferencesEditorContextProvider>

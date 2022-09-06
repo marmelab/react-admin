@@ -1,14 +1,16 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
+import { ReactNode, ReactElement } from 'react';
+import { usePreferencesEditor } from 'ra-core';
 import { alpha } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 
 import { InspectorButton } from './InspectorButton';
-import { usePreferencesEditor } from 'ra-core';
 
 export const Configurable = (props: ConfigurableProps) => {
-    const { children, elementRef, editor, openButtonLabel } = props;
+    const { children, editor, openButtonLabel } = props;
+    const ref = React.useRef<HTMLDivElement>(null);
+    const rect = ref.current?.getBoundingClientRect();
 
     const {
         isEnabled,
@@ -20,8 +22,6 @@ export const Configurable = (props: ConfigurableProps) => {
         setEditor(editor);
     };
 
-    const rect = elementRef?.current?.getBoundingClientRect();
-
     return (
         <Root
             className={clsx(
@@ -29,7 +29,7 @@ export const Configurable = (props: ConfigurableProps) => {
                 editor === currentEditor && ConfigurableClasses.editorActive
             )}
         >
-            {children}
+            {React.cloneElement(children, { ref })}
             <InspectorButton
                 onClick={handleOpenEditor}
                 label={openButtonLabel}
@@ -46,8 +46,7 @@ export const Configurable = (props: ConfigurableProps) => {
 };
 
 export interface ConfigurableProps {
-    children: ReactNode;
-    elementRef: React.RefObject<HTMLElement>;
+    children: ReactElement;
     editor: ReactNode;
     openButtonLabel: string;
 }
