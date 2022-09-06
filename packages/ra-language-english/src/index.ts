@@ -176,6 +176,21 @@ const englishMessages: TranslationMessages = {
                 'Are you sure you want to remove that item from your list of saved queries?',
             help: 'Filter the list and save this query for later',
         },
+        configurable: {
+            customize: 'Customize',
+            templateError: '## Template error',
+            configureMode: 'Configure this page',
+            inspector: {
+                title: 'Inspector',
+                content: 'Hover the application UI elements to configure them',
+                reset: 'Reset Settings',
+            },
+            SimpleList: {
+                primaryText: 'Primary text',
+                secondaryText: 'Secondary text',
+                tertiaryText: 'Tertiary text',
+            },
+        },
     },
 };
 

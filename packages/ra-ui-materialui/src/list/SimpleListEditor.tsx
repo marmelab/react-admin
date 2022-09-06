@@ -46,7 +46,7 @@ export const SimpleListEditor = (props: SimpleListEditorProps) => {
     return (
         <>
             <TextField
-                label={translate('rainspector.SimpleList.primaryText', {
+                label={translate('ra.configurable.SimpleList.primaryText', {
                     _: 'Primary Text',
                 })}
                 value={primaryText || ''}
@@ -58,7 +58,7 @@ export const SimpleListEditor = (props: SimpleListEditorProps) => {
                 sx={{ mb: 1 }}
             />
             <TextField
-                label={translate('rainspector.SimpleList.secondaryText', {
+                label={translate('ra.configurable.SimpleList.secondaryText', {
                     _: 'Secondary Text',
                 })}
                 value={secondaryText || ''}
@@ -70,7 +70,7 @@ export const SimpleListEditor = (props: SimpleListEditorProps) => {
                 sx={{ mb: 1 }}
             />
             <TextField
-                label={translate('rainspector.SimpleList.tertiaryText', {
+                label={translate('ra.configurable.SimpleList.tertiaryText', {
                     _: 'Tertiary Text',
                 })}
                 value={tertiaryText || ''}

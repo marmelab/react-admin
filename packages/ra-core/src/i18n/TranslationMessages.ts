@@ -1,3 +1,5 @@
+import { string } from 'prop-types';
+
 export interface StringMap {
     [key: string]: StringMap | string | undefined;
 }
@@ -174,6 +176,21 @@ export interface TranslationMessages extends StringMap {
             remove_dialog_title: string;
             remove_message: string;
             help: string;
+        };
+        configurable?: {
+            customize: string;
+            templateError: string;
+            configureMode: string;
+            inspector: {
+                title: string;
+                content: string;
+                reset: string;
+            };
+            SimpleList: {
+                primaryText: string;
+                secondaryText: string;
+                tertiaryText: string;
+            };
         };
     };
 }
