@@ -1,99 +1,49 @@
 import * as React from 'react';
-import { ReactNode, useEffect, useState } from 'react';
-import { alpha, Fade, Popper } from '@mui/material';
+import { ReactNode } from 'react';
+import { alpha } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import clsx from 'clsx';
 
 import { InspectorButton } from './InspectorButton';
 import { usePreferencesEditor } from 'ra-core';
 
 export const Configurable = (props: ConfigurableProps) => {
     const { children, elementRef, editor, openButtonLabel } = props;
-    const [showEditorButton, setShowEditorButton] = useState(false);
+
     const {
         isEnabled,
         setEditor,
         editor: currentEditor,
     } = usePreferencesEditor();
 
-    const handleMouseOver = (event: MouseEvent) => {
-        event.stopPropagation();
-        setShowEditorButton(true);
-    };
-
-    const handleMouseOut = (event: MouseEvent) => {
-        // We don't want to hide the configuration button if users hover it
-        // To ensure that, we check whether the cursor is still over the editor target (the table element for the Datagrid for example)
-        const targetRect = (event.target as Element).getBoundingClientRect();
-        const isMouseHoverTarget =
-            event.clientX > targetRect.left &&
-            event.clientX < targetRect.right &&
-            event.clientY > targetRect.top &&
-            event.clientY < targetRect.bottom;
-
-        if (!isMouseHoverTarget) {
-            setShowEditorButton(false);
-        }
-    };
-
-    useEffect(() => {
-        if (!elementRef.current) {
-            return;
-        }
-        const element = elementRef.current;
-        if (isEnabled) {
-            element.classList.add(ConfigurableClasses.element);
-            element.addEventListener('mouseover', handleMouseOver);
-            element.addEventListener('mouseout', handleMouseOut);
-        }
-
-        return () => {
-            setShowEditorButton(false);
-            element.classList.remove(ConfigurableClasses.element);
-            element.removeEventListener('mouseover', handleMouseOver);
-            element.removeEventListener('mouseout', handleMouseOut);
-        };
-    }, [elementRef, isEnabled]);
-
     const handleOpenEditor = () => {
         setEditor(editor);
     };
 
+    const rect = elementRef?.current?.getBoundingClientRect();
+
     return (
         <Root
-            className={
-                editor === currentEditor ? ConfigurableClasses.editorActive : ''
-            }
+            className={clsx(
+                isEnabled && ConfigurableClasses.editMode,
+                editor === currentEditor && ConfigurableClasses.editorActive
+            )}
         >
-            <Popper
-                open={showEditorButton}
-                anchorEl={elementRef.current}
-                placement="top-end"
-                className={ConfigurableClasses.popper}
-                modifiers={popperModifiers}
-                transition
-            >
-                {({ TransitionProps }) => (
-                    <Fade {...TransitionProps} timeout={350}>
-                        <InspectorButton
-                            onClick={handleOpenEditor}
-                            label={openButtonLabel}
-                            size="small"
-                            color="primary"
-                        />
-                    </Fade>
-                )}
-            </Popper>
             {children}
+            <InspectorButton
+                onClick={handleOpenEditor}
+                label={openButtonLabel}
+                size="small"
+                color="primary"
+                className={ConfigurableClasses.button}
+                sx={{
+                    left: rect?.right - 30,
+                    top: rect?.top,
+                }}
+            />
         </Root>
     );
 };
-
-const popperModifiers = [
-    { name: 'offset', enabled: true, options: { offset: [0, -30] } },
-    { name: 'flip', enabled: false },
-    { name: 'hide', enabled: false },
-    { name: 'preventOverflow', enabled: false, options: { padding: 0 } },
-];
 
 export interface ConfigurableProps {
     children: ReactNode;
@@ -105,27 +55,38 @@ export interface ConfigurableProps {
 const PREFIX = 'RaConfigurable';
 
 export const ConfigurableClasses = {
-    popper: `${PREFIX}-popper`,
+    editMode: `${PREFIX}-editMode`,
+    button: `${PREFIX}-button`,
     editorActive: `${PREFIX}-editorActive`,
-    element: `${PREFIX}-element`,
 };
 
 const Root = styled('span', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    [`& .${ConfigurableClasses.popper}`]: {
+    [`& .${ConfigurableClasses.button}`]: {
+        display: 'none',
+    },
+    [`&.${ConfigurableClasses.editMode}:hover > .${ConfigurableClasses.button}`]: {
+        display: 'block',
+        position: 'absolute',
         zIndex: theme.zIndex.modal - 1,
     },
-
-    [`& .${ConfigurableClasses.element}`]: {
+    [`&.${ConfigurableClasses.editMode} > *:first-child`]: {
         transition: theme.transitions.create('box-shadow'),
         boxShadow: `rgb(255, 255, 255) 0px 0px 0px 0px, ${alpha(
             theme.palette.primary.main,
             0.3
         )} 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`,
     },
-    [`&.${ConfigurableClasses.editorActive} > .${ConfigurableClasses.element}`]: {
+    [`&.${ConfigurableClasses.editMode}:hover > *:first-child`]: {
+        boxShadow: `rgb(255, 255, 255) 0px 0px 0px 0px, ${alpha(
+            theme.palette.primary.main,
+            0.3
+        )} 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`,
+    },
+
+    [`&.${ConfigurableClasses.editorActive} > *:first-child, &.${ConfigurableClasses.editorActive}:hover > *:first-child`]: {
         boxShadow: `rgb(255, 255, 255) 0px 0px 0px 0px, ${theme.palette.primary.main} 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`,
     },
 }));
