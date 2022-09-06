@@ -16,7 +16,7 @@ export default {
     title: 'ra-ui-materialui/configurable/Configurable',
 };
 
-const TextBlock = React.forwardRef<
+const ConfigurableTextBlock = React.forwardRef<
     HTMLDivElement,
     { editorKey?: string; children?: any }
 >(({ children, editorKey }, ref) => {
@@ -62,37 +62,46 @@ const TextBlockEditor = ({ editorKey }: { editorKey?: string }) => {
     );
 };
 
-const ConfigurableTextBlock = ({ editorKey, ...props }: any) => (
+const TextBlock = ({ editorKey, ...props }: any) => (
     <Configurable editor={<TextBlockEditor />} editorKey={editorKey}>
-        <TextBlock {...props} />
+        <ConfigurableTextBlock {...props} />
     </Configurable>
 );
 
-const SalesBlock = React.forwardRef<HTMLDivElement>((props, ref) => {
-    const [showDate] = useStore('salesBlock.showDate', true);
-    return (
-        <Box
-            display="flex"
-            border="solid 1px lightgrey"
-            borderRadius={3}
-            p={1}
-            margin={1}
-            width={200}
-            ref={ref}
-        >
-            <Box flex="1" mr={1}>
-                <Typography variant="h6">Sales</Typography>
-                {showDate && <Typography variant="caption">Today</Typography>}
-                <Typography variant="h4" textAlign="right" mt={2}>
-                    $4,452
-                </Typography>
+const ConfigurableSalesBlock = React.forwardRef<HTMLDivElement>(
+    (props, ref) => {
+        const [showDate] = useStore('salesBlock.showDate', true);
+        return (
+            <Box
+                display="flex"
+                border="solid 1px lightgrey"
+                borderRadius={3}
+                p={1}
+                margin={1}
+                width={200}
+                ref={ref}
+            >
+                <Box flex="1" mr={1}>
+                    <Typography variant="h6">Sales</Typography>
+                    {showDate && (
+                        <Typography variant="caption">Today</Typography>
+                    )}
+                    <Typography variant="h4" textAlign="right" mt={2}>
+                        $4,452
+                    </Typography>
+                </Box>
+                <Box
+                    bgcolor="lightgrey"
+                    display="flex"
+                    alignItems="center"
+                    p={1}
+                >
+                    <TimelineIcon />
+                </Box>
             </Box>
-            <Box bgcolor="lightgrey" display="flex" alignItems="center" p={1}>
-                <TimelineIcon />
-            </Box>
-        </Box>
-    );
-});
+        );
+    }
+);
 
 const SalesBlockEditor = () => {
     const [showDate, setShowDate] = useStore('salesBlock.showDate', true);
@@ -111,9 +120,9 @@ const SalesBlockEditor = () => {
     );
 };
 
-const ConfigurableSalesBlock = props => (
+const SalesBlock = props => (
     <Configurable editor={<SalesBlockEditor />}>
-        <SalesBlock {...props} />
+        <ConfigurableSalesBlock {...props} />
     </Configurable>
 );
 
@@ -123,8 +132,8 @@ export const Basic = () => (
         <InspectorButton />
         <hr />
         <Box display="flex" alignItems="flex-start">
-            <ConfigurableTextBlock />
-            <ConfigurableSalesBlock />
+            <TextBlock />
+            <SalesBlock />
         </Box>
     </PreferencesEditorContextProvider>
 );
@@ -135,9 +144,9 @@ export const Nested = () => (
         <InspectorButton />
         <hr />
         <Box display="flex" alignItems="flex-start">
-            <ConfigurableTextBlock>
-                <ConfigurableSalesBlock />
-            </ConfigurableTextBlock>
+            <TextBlock>
+                <SalesBlock />
+            </TextBlock>
         </Box>
     </PreferencesEditorContextProvider>
 );
@@ -148,8 +157,8 @@ export const MultipleInstances = () => (
         <InspectorButton />
         <hr />
         <Box display="flex" alignItems="flex-start">
-            <ConfigurableTextBlock editorKey="foo" />
-            <ConfigurableTextBlock editorKey="bar" />
+            <TextBlock editorKey="foo" />
+            <TextBlock editorKey="bar" />
         </Box>
     </PreferencesEditorContextProvider>
 );
@@ -167,4 +176,4 @@ export const I18n = () => {
     );
 };
 
-export const NotInContext = () => <ConfigurableTextBlock />;
+export const NotInContext = () => <TextBlock />;
