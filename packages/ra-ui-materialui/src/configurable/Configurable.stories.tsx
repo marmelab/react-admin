@@ -16,28 +16,31 @@ export default {
     title: 'ra-ui-materialui/customizable/Configurable',
 };
 
-const TextBlock = React.forwardRef<HTMLDivElement>((props, ref) => {
-    const [color] = useStore('textBlock.color', '#ffffff');
-    return (
-        <Box
-            border="solid 1px lightgrey"
-            borderRadius={3}
-            p={1}
-            margin={1}
-            width={200}
-            bgcolor={color}
-            ref={ref}
-        >
-            <Typography variant="h6">Lorem ipsum</Typography>
-            <Typography>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui,
-                quia rem? Nulla asperiores ea beatae iure, dignissimos ut
-                perferendis nemo reiciendis reprehenderit, consequuntur debitis
-                maiores! Quaerat dolor unde dolorum qui.
-            </Typography>
-        </Box>
-    );
-});
+const TextBlock = React.forwardRef<HTMLDivElement, { children?: any }>(
+    ({ children }, ref) => {
+        const [color] = useStore('textBlock.color', '#ffffff');
+        return (
+            <Box
+                border="solid 1px lightgrey"
+                borderRadius={3}
+                p={1}
+                margin={1}
+                width={300}
+                bgcolor={color}
+                ref={ref}
+            >
+                <Typography variant="h6">Lorem ipsum</Typography>
+                <Typography>
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                    Qui, quia rem? Nulla asperiores ea beatae iure, dignissimos
+                    ut perferendis nemo reiciendis reprehenderit, consequuntur
+                    debitis maiores! Quaerat dolor unde dolorum qui.
+                </Typography>
+                {children}
+            </Box>
+        );
+    }
+);
 
 const TextBlockInspector = () => {
     const [color, setColor] = useStore('textBlock.color', '#ffffff');
@@ -55,7 +58,7 @@ const TextBlockInspector = () => {
     );
 };
 
-const ConfigurableTextBlock = () => {
+const ConfigurableTextBlock = ({ children }: any) => {
     const ref = React.useRef<HTMLDivElement>(null);
     return (
         <Configurable
@@ -63,7 +66,7 @@ const ConfigurableTextBlock = () => {
             editor={<TextBlockInspector />}
             openButtonLabel="edit dummy"
         >
-            <TextBlock ref={ref} />
+            <TextBlock ref={ref}>{children}</TextBlock>
         </Configurable>
     );
 };
@@ -132,6 +135,19 @@ export const Basic = () => (
         <Box display="flex" alignItems="flex-start">
             <ConfigurableTextBlock />
             <ConfigurableSalesBlock />
+        </Box>
+    </PreferencesEditorContextProvider>
+);
+
+export const Nested = () => (
+    <PreferencesEditorContextProvider>
+        <Inspector />
+        <InspectorButton />
+        <hr />
+        <Box display="flex" alignItems="flex-start">
+            <ConfigurableTextBlock>
+                <ConfigurableSalesBlock />
+            </ConfigurableTextBlock>
         </Box>
     </PreferencesEditorContextProvider>
 );
