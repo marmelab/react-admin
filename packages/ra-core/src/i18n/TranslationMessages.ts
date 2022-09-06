@@ -1,5 +1,3 @@
-import { string } from 'prop-types';
-
 export interface StringMap {
     [key: string]: StringMap | string | undefined;
 }
