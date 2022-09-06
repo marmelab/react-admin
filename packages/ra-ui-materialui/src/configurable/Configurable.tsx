@@ -9,13 +9,15 @@ import { usePreferencesEditor } from 'ra-core';
 export const Configurable = (props: ConfigurableProps) => {
     const { children, elementRef, editor, openButtonLabel } = props;
     const [showEditorButton, setShowEditorButton] = useState(false);
-    const { isEnabled, setEditor } = usePreferencesEditor();
+    const {
+        isEnabled,
+        setEditor,
+        editor: currentEditor,
+    } = usePreferencesEditor();
 
     const handleMouseOver = (event: MouseEvent) => {
         event.stopPropagation();
         setShowEditorButton(true);
-        const element = event.target as Element;
-        element.classList.add(ConfigurableClasses.hover);
     };
 
     const handleMouseOut = (event: MouseEvent) => {
@@ -30,9 +32,6 @@ export const Configurable = (props: ConfigurableProps) => {
 
         if (!isMouseHoverTarget) {
             setShowEditorButton(false);
-            (event.target as Element).classList.remove(
-                ConfigurableClasses.hover
-            );
         }
     };
 
@@ -60,7 +59,11 @@ export const Configurable = (props: ConfigurableProps) => {
     };
 
     return (
-        <Root>
+        <Root
+            className={
+                editor === currentEditor ? ConfigurableClasses.editorActive : ''
+            }
+        >
             <Popper
                 open={showEditorButton}
                 anchorEl={elementRef.current}
@@ -103,8 +106,8 @@ const PREFIX = 'RaConfigurable';
 
 export const ConfigurableClasses = {
     popper: `${PREFIX}-popper`,
+    editorActive: `${PREFIX}-editorActive`,
     element: `${PREFIX}-element`,
-    hover: `${PREFIX}-hover`,
 };
 
 const Root = styled('span', {
@@ -114,15 +117,15 @@ const Root = styled('span', {
     [`& .${ConfigurableClasses.popper}`]: {
         zIndex: theme.zIndex.modal - 1,
     },
+
     [`& .${ConfigurableClasses.element}`]: {
         transition: theme.transitions.create('box-shadow'),
         boxShadow: `rgb(255, 255, 255) 0px 0px 0px 0px, ${alpha(
             theme.palette.primary.main,
             0.3
         )} 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`,
-        [`&.${ConfigurableClasses.hover}`]: {
-            transition: theme.transitions.create('box-shadow'),
-            boxShadow: `rgb(255, 255, 255) 0px 0px 0px 0px, ${theme.palette.primary.main} 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`,
-        },
+    },
+    [`&.${ConfigurableClasses.editorActive} > .${ConfigurableClasses.element}`]: {
+        boxShadow: `rgb(255, 255, 255) 0px 0px 0px 0px, ${theme.palette.primary.main} 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px`,
     },
 }));
