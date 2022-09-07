@@ -22,9 +22,9 @@ import { InspectorButton } from './InspectorButton';
  *     </Configurable>
  * );
  *
- * @example // with preferencesKey (allows more than one editor of that type per page)
- * const ConfigurableTextBlock = ({ preferencesKey, ...props }) => (
- *     <Configurable editor={<TextBlockInspector />} preferencesKey={preferencesKey}>
+ * @example // with preferenceKey (allows more than one editor of that type per page)
+ * const ConfigurableTextBlock = ({ preferenceKey, ...props }) => (
+ *     <Configurable editor={<TextBlockInspector />} preferenceKey={preferenceKey}>
  *         <TextBlock {...props} />
  *     </Configurable>
  * );
@@ -33,7 +33,7 @@ export const Configurable = (props: ConfigurableProps) => {
     const {
         children,
         editor,
-        preferencesKey,
+        preferenceKey,
         openButtonLabel = 'ra.configurable.customize',
     } = props;
     const ref = useRef(null);
@@ -47,29 +47,29 @@ export const Configurable = (props: ConfigurableProps) => {
         isEnabled,
         editor: currentEditor,
         setEditor,
-        preferencesKey: currentPreferencesKey,
-        setPreferencesKey,
+        preferenceKey: currentPreferenceKey,
+        setPreferenceKey,
     } = preferencesEditorContext;
 
     const handleOpenEditor = () => {
-        if (preferencesKey) {
+        if (preferenceKey) {
             // include the editorKey as key to force destroy and mount
             // when switching between two identical editors with different editor keys
             // otherwise the editor will see an update and its useStore will return one tick later
             // which would forbid the usage of uncontrolled inputs ion the editor
             setEditor(
-                cloneElement(editor, { preferencesKey, key: preferencesKey })
+                cloneElement(editor, { preferenceKey, key: preferenceKey })
             );
             // as we modify the editor, isEditorOpen cannot compare the editor element
             // we'll compare the editor key instead
-            setPreferencesKey(preferencesKey);
+            setPreferenceKey(preferenceKey);
         } else {
             setEditor(editor);
         }
     };
 
-    const isEditorOpen = preferencesKey
-        ? preferencesKey === currentPreferencesKey
+    const isEditorOpen = preferenceKey
+        ? preferenceKey === currentPreferenceKey
         : editor === currentEditor;
 
     return (
@@ -79,8 +79,8 @@ export const Configurable = (props: ConfigurableProps) => {
                 isEditorOpen && ConfigurableClasses.editorActive
             )}
         >
-            {preferencesKey
-                ? cloneElement(children, { ref, preferencesKey })
+            {preferenceKey
+                ? cloneElement(children, { ref, preferenceKey })
                 : cloneElement(children, { ref })}
             <InspectorButton
                 onClick={handleOpenEditor}
@@ -100,7 +100,7 @@ export const Configurable = (props: ConfigurableProps) => {
 export interface ConfigurableProps {
     children: ReactElement;
     editor: ReactElement;
-    preferencesKey?: string;
+    preferenceKey?: string;
     openButtonLabel?: string;
 }
 

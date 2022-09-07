@@ -35,7 +35,7 @@ const SimpleListInner = <RecordType extends RaRecord = any>(
 ) => {
     const {
         className,
-        preferencesKey,
+        preferenceKey,
         hasBulkActions,
         leftAvatar,
         leftIcon,
@@ -52,13 +52,13 @@ const SimpleListInner = <RecordType extends RaRecord = any>(
     const resource = useResourceContext(props);
     const renderTemplate = useRenderTemplate();
     const [primaryTextFromStore] = useStore(
-        `simpleList.${preferencesKey || resource}.primaryText`
+        `simpleList.${preferenceKey || resource}.primaryText`
     );
     const [secondaryTextFromStore] = useStore(
-        `simpleList.${preferencesKey || resource}.secondaryText`
+        `simpleList.${preferenceKey || resource}.secondaryText`
     );
     const [tertiaryTextFromStore] = useStore(
-        `simpleList.${preferencesKey || resource}.tertiaryText`
+        `simpleList.${preferenceKey || resource}.tertiaryText`
     );
 
     if (isLoading === true) {
@@ -250,7 +250,7 @@ export type FunctionToElement<RecordType extends RaRecord = any> = (
 export interface SimpleListProps<RecordType extends RaRecord = any>
     extends Omit<ListProps, 'classes'> {
     className?: string;
-    preferencesKey?: string;
+    preferenceKey?: string;
     hasBulkActions?: boolean;
     leftAvatar?: FunctionToElement<RecordType>;
     leftIcon?: FunctionToElement<RecordType>;

@@ -19,9 +19,9 @@ export default {
 
 const TextBlock = React.forwardRef<
     HTMLDivElement,
-    { preferencesKey?: string; children?: any }
->(({ children, preferencesKey }, ref) => {
-    const [color] = useStore(`textBlock.${preferencesKey}.color`, '#ffffff');
+    { preferenceKey?: string; children?: any }
+>(({ children, preferenceKey }, ref) => {
+    const [color] = useStore(`textBlock.${preferenceKey}.color`, '#ffffff');
     return (
         <Box
             border="solid 1px lightgrey"
@@ -44,9 +44,9 @@ const TextBlock = React.forwardRef<
     );
 });
 
-const TextBlockEditor = ({ preferencesKey }: { preferencesKey?: string }) => {
+const TextBlockEditor = ({ preferenceKey }: { preferenceKey?: string }) => {
     const [color, setColor] = useStore(
-        `textBlock.${preferencesKey}.color`,
+        `textBlock.${preferenceKey}.color`,
         '#ffffff'
     );
     useSetInspectorTitle('ra.inspector.textBlock', { _: 'Text block' });
@@ -62,7 +62,7 @@ const TextBlockEditor = ({ preferencesKey }: { preferencesKey?: string }) => {
                 key={key}
             />
             <ResetSettingsButton
-                preferencesKeys={[`textBlock.${preferencesKey}.color`]}
+                preferenceKeys={[`textBlock.${preferenceKey}.color`]}
                 // force redraw of component to reset displayed value
                 onReset={() => setKey(key => key + 1)}
             />
@@ -70,8 +70,8 @@ const TextBlockEditor = ({ preferencesKey }: { preferencesKey?: string }) => {
     );
 };
 
-const ConfigurableTextBlock = ({ preferencesKey, ...props }: any) => (
-    <Configurable editor={<TextBlockEditor />} preferencesKey={preferencesKey}>
+const ConfigurableTextBlock = ({ preferenceKey, ...props }: any) => (
+    <Configurable editor={<TextBlockEditor />} preferenceKey={preferenceKey}>
         <TextBlock {...props} />
     </Configurable>
 );
@@ -156,8 +156,8 @@ export const MultipleInstances = () => (
         <InspectorButton />
         <hr />
         <Box display="flex" alignItems="flex-start">
-            <ConfigurableTextBlock preferencesKey="foo" />
-            <ConfigurableTextBlock preferencesKey="bar" />
+            <ConfigurableTextBlock preferenceKey="foo" />
+            <ConfigurableTextBlock preferenceKey="bar" />
         </Box>
     </PreferencesEditorContextProvider>
 );

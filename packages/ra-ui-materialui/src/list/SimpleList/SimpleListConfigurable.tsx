@@ -5,12 +5,12 @@ import { SimpleList, SimpleListProps } from './SimpleList';
 import { SimpleListEditor } from './SimpleListEditor';
 
 export const SimpleListConfigurable = ({
-    preferencesKey,
+    preferenceKey,
     ...props
 }: SimpleListProps) => (
     <Configurable
         editor={<SimpleListEditor resource={props.resource} />}
-        preferencesKey={preferencesKey}
+        preferenceKey={preferenceKey}
     >
         <SimpleList {...props} />
     </Configurable>

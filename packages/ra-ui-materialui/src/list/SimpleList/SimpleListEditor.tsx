@@ -10,19 +10,19 @@ import { ResetSettingsButton } from '../../preferences/ResetSettingsButton';
  * @param {SimpleListEditorProps} props
  * @param props.defaultPrimaryText The SimpleList columns
  * @param {String} props.resource The resource
- * @param {String} props.preferencesKey The key of the columns preferences
+ * @param {String} props.preferenceKey The key of the columns preferences
  */
 export const SimpleListEditor = (props: SimpleListEditorProps) => {
     const {
         defaultPrimaryText = '',
         defaultSecondaryText = '',
         defaultTertiatyText = '',
-        preferencesKey,
+        preferenceKey,
     } = props;
 
     const translate = useTranslate();
     const resource = useResourceContext(props);
-    const rootKey = `simpleList.${preferencesKey || resource}`;
+    const rootKey = `simpleList.${preferenceKey || resource}`;
 
     const primaryTextKey = `${rootKey}.primaryText`;
     const primaryTextField = usePreferenceInput(
@@ -74,7 +74,7 @@ export const SimpleListEditor = (props: SimpleListEditorProps) => {
             />
 
             <ResetSettingsButton
-                preferencesKeys={[
+                preferenceKeys={[
                     primaryTextKey,
                     secondaryTextKey,
                     tertiaryTextKey,
@@ -86,7 +86,7 @@ export const SimpleListEditor = (props: SimpleListEditorProps) => {
 
 export interface SimpleListEditorProps {
     resource?: string;
-    preferencesKey?: string;
+    preferenceKey?: string;
     defaultPrimaryText?: string;
     defaultSecondaryText?: string;
     defaultTertiatyText?: string;
