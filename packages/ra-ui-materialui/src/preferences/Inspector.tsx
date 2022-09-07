@@ -33,32 +33,43 @@ export const Inspector = () => {
     );
 
     // poor man's drag and drop
-    // store click position relatove to the dialog position
+    // store click position relative to the dialog position
     const [clickPosition, setClickPosition] = useState<
         { x: number; y: number } | undefined
     >();
-    const handleMouseDown = e => {
+    const handleDragStart = e => {
+        e.dataTransfer.effectAllowed = 'move';
+        setTimeout(() => {
+            e.target.classList.add('hide');
+        }, 0);
         setClickPosition({
             x: e.clientX - dialogPosition.x,
             y: e.clientY - dialogPosition.y,
         });
     };
-    const handleMouseUp = e => {
-        setClickPosition(undefined);
-    };
-    const handleMouseMove = e => {
-        if (clickPosition) {
-            setDialogPosition({
-                x: e.clientX - clickPosition.x,
-                y: e.clientY - clickPosition.y,
-            });
-        }
+    const handleDragEnd = e => {
+        setDialogPosition({
+            x: e.clientX - clickPosition.x,
+            y: e.clientY - clickPosition.y,
+        });
+        e.target.classList.remove('hide');
     };
 
+    // prevent "back to base" animation when the inspector is dropped
+    useEffect(() => {
+        const handleDragover = e => {
+            e.preventDefault();
+        };
+        document.addEventListener('dragover', handleDragover);
+        return () => {
+            document.removeEventListener('dragover', handleDragover);
+        };
+    }, []);
+
+    // when the window is reduced, make sure that the dialog is still visible
     useEffect(() => {
         const handleResize = () => {
             window.requestAnimationFrame(() => {
-                console.log(document.body.clientHeight);
                 setDialogPosition(position => ({
                     x: Math.min(
                         position.x,
@@ -81,6 +92,9 @@ export const Inspector = () => {
         <StyledPaper
             className={InspectorClasses.modal}
             elevation={3}
+            draggable
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
             sx={{ left: dialogPosition.x, top: dialogPosition.y }}
         >
             <div className={InspectorClasses.title}>
@@ -91,10 +105,6 @@ export const Inspector = () => {
                     py={1}
                     px={2}
                     flex="1"
-                    onMouseDown={handleMouseDown}
-                    onMouseUp={handleMouseUp}
-                    onMouseLeave={handleMouseUp}
-                    onMouseMove={handleMouseMove}
                 >
                     {title && translate(title, titleOptions)}
                 </Typography>
@@ -130,6 +140,9 @@ const StyledPaper = styled(Paper, {
     zIndex: theme.zIndex.modal,
     width: theme.breakpoints.values.sm / 2,
     transition: theme.transitions.create(['height', 'width']),
+    '&.hide': {
+        display: 'none',
+    },
     [`& .${InspectorClasses.title}`]: {
         display: 'flex',
         justifyContent: 'space-between',
