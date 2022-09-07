@@ -39,6 +39,7 @@ export const Inspector = () => {
     >();
     const handleDragStart = e => {
         e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('inspector', '');
         setTimeout(() => {
             e.target.classList.add('hide');
         }, 0);
@@ -57,17 +58,21 @@ export const Inspector = () => {
 
     // prevent "back to base" animation when the inspector is dropped
     useEffect(() => {
+        if (!isEnabled) return;
         const handleDragover = e => {
-            e.preventDefault();
+            if (e.dataTransfer.types.includes('inspector')) {
+                e.preventDefault();
+            }
         };
         document.addEventListener('dragover', handleDragover);
         return () => {
             document.removeEventListener('dragover', handleDragover);
         };
-    }, []);
+    }, [isEnabled]);
 
     // when the window is reduced, make sure that the dialog is still visible
     useEffect(() => {
+        if (!isEnabled) return;
         const handleResize = () => {
             window.requestAnimationFrame(() => {
                 setDialogPosition(position => ({
@@ -85,7 +90,7 @@ export const Inspector = () => {
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-    }, []);
+    }, [isEnabled, setDialogPosition, theme.breakpoints.values.sm]);
 
     if (!isEnabled) return null;
     return (
