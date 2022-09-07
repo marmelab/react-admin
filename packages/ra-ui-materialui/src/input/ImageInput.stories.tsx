@@ -14,7 +14,7 @@ export default { title: 'ra-ui-materialui/input/ImageInput' };
 export const Basic = () => (
     <Wrapper>
         <ImageInput source="image">
-            <ImageField source="attachment" title="title" />
+            <ImageField source="src" title="title" />
         </ImageInput>
     </Wrapper>
 );
@@ -22,7 +22,7 @@ export const Basic = () => (
 export const LimitByFileType = () => (
     <Wrapper>
         <ImageInput source="image" accept="image/png">
-            <ImageField source="attachment" title="title" />
+            <ImageField source="src" title="title" />
         </ImageInput>
     </Wrapper>
 );
@@ -36,7 +36,7 @@ export const CustomPreview = () => (
                     borderColor: 'blue',
                     borderStyle: 'solid',
                 }}
-                source="attachment"
+                source="src"
                 title="title"
             />
         </ImageInput>
