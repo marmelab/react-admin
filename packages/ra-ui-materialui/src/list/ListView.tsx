@@ -43,6 +43,7 @@ export const ListView = <RecordType extends RaRecord = any>(
         total,
         isLoading,
         filterValues,
+        resource,
     } = useListContext<RecordType>(props);
 
     if (!children || (!data && isLoading && emptyWhileLoading)) {
@@ -84,7 +85,11 @@ export const ListView = <RecordType extends RaRecord = any>(
 
     return (
         <Root className={clsx('list-page', className)} {...rest}>
-            <Title title={title} defaultTitle={defaultTitle} />
+            <Title
+                title={title}
+                defaultTitle={defaultTitle}
+                preferenceKey={`list.${resource}`}
+            />
             {shouldRenderEmptyPage ? renderEmpty() : renderList()}
             {aside}
         </Root>

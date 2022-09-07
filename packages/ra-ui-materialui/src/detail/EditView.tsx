@@ -28,7 +28,7 @@ export const EditView = (props: EditViewProps) => {
     } = props;
 
     const { hasShow } = useResourceDefinition();
-    const { defaultTitle, record } = useEditContext(props);
+    const { resource, defaultTitle, record } = useEditContext(props);
 
     const finalActions =
         typeof actions === 'undefined' && hasShow ? (
@@ -44,7 +44,11 @@ export const EditView = (props: EditViewProps) => {
             className={clsx('edit-page', className)}
             {...sanitizeRestProps(rest)}
         >
-            <Title title={title} defaultTitle={defaultTitle} />
+            <Title
+                title={title}
+                defaultTitle={defaultTitle}
+                preferenceKey={`edit.${resource}`}
+            />
             {finalActions}
             <div
                 className={clsx(EditClasses.main, {
