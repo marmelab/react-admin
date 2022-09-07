@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useStore, usePreferencesEditor, useTranslate } from 'ra-core';
 import { Paper, Typography, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/CancelOutlined';
 import { useTheme, styled } from '@mui/material/styles';
-import Draggable, { DraggableEventHandler } from 'react-draggable';
 
 import { InspectorRoot } from './InspectorRoot';
 
@@ -33,61 +32,85 @@ export const Inspector = () => {
         }
     );
 
-    useEffect(() => {
-        if (dialogPosition.x > document.body.clientWidth) {
+    // poor man's drag and drop
+    // store click position relatove to the dialog position
+    const [clickPosition, setClickPosition] = useState<
+        { x: number; y: number } | undefined
+    >();
+    const handleMouseDown = e => {
+        setClickPosition({
+            x: e.clientX - dialogPosition.x,
+            y: e.clientY - dialogPosition.y,
+        });
+    };
+    const handleMouseUp = e => {
+        setClickPosition(undefined);
+    };
+    const handleMouseMove = e => {
+        if (clickPosition) {
             setDialogPosition({
-                x:
-                    // We want it positioned to the far right of the screen
-                    document.body.clientWidth -
-                    // So we remove its size (see the root css class)
-                    theme.breakpoints.values.sm / 2 -
-                    // And add a margin
-                    8,
-                y: 8,
+                x: e.clientX - clickPosition.x,
+                y: e.clientY - clickPosition.y,
             });
         }
-    }, [isEnabled, dialogPosition, setDialogPosition, theme]);
-
-    const handleDraggableStop: DraggableEventHandler = (e, data) => {
-        setDialogPosition({ x: data.x, y: data.y });
     };
+
+    useEffect(() => {
+        const handleResize = () => {
+            window.requestAnimationFrame(() => {
+                console.log(document.body.clientHeight);
+                setDialogPosition(position => ({
+                    x: Math.min(
+                        position.x,
+                        document.body.clientWidth -
+                            theme.breakpoints.values.sm / 2 -
+                            8
+                    ),
+                    y: Math.min(position.y, document.body.clientHeight - 20),
+                }));
+            });
+        };
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     if (!isEnabled) return null;
     return (
-        <Root>
-            <Draggable
-                handle="#inspectore-dialog-title"
-                defaultPosition={dialogPosition}
-                onStop={handleDraggableStop}
-                bounds="body"
-            >
-                <Paper className={InspectorClasses.modal} elevation={3}>
-                    <div className={InspectorClasses.title}>
-                        <Typography
-                            id="inspectore-dialog-title"
-                            variant="overline"
-                            component="div"
-                            py={1}
-                            px={2}
-                            flex="1"
-                        >
-                            {translate(title, titleOptions)}
-                        </Typography>
-                        <IconButton
-                            aria-label={translate('ra.action.close')}
-                            onClick={disable}
-                            size="small"
-                            sx={{ mr: 1 }}
-                        >
-                            <CloseIcon fontSize="inherit" />
-                        </IconButton>
-                    </div>
-                    <div className={InspectorClasses.content}>
-                        {editor || <InspectorRoot />}
-                    </div>
-                </Paper>
-            </Draggable>
-        </Root>
+        <StyledPaper
+            className={InspectorClasses.modal}
+            elevation={3}
+            sx={{ left: dialogPosition.x, top: dialogPosition.y }}
+        >
+            <div className={InspectorClasses.title}>
+                <Typography
+                    id="inspectore-dialog-title"
+                    variant="overline"
+                    component="div"
+                    py={1}
+                    px={2}
+                    flex="1"
+                    onMouseDown={handleMouseDown}
+                    onMouseUp={handleMouseUp}
+                    onMouseLeave={handleMouseUp}
+                    onMouseMove={handleMouseMove}
+                >
+                    {title && translate(title, titleOptions)}
+                </Typography>
+                <IconButton
+                    aria-label={translate('ra.action.close')}
+                    onClick={disable}
+                    size="small"
+                    sx={{ mr: 1 }}
+                >
+                    <CloseIcon fontSize="inherit" />
+                </IconButton>
+            </div>
+            <div className={InspectorClasses.content}>
+                {editor || <InspectorRoot />}
+            </div>
+        </StyledPaper>
     );
 };
 
@@ -99,16 +122,14 @@ export const InspectorClasses = {
     content: `${PREFIX}-content`,
 };
 
-const Root = styled('div', {
+const StyledPaper = styled(Paper, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    [`& .${InspectorClasses.modal}`]: {
-        position: 'absolute',
-        zIndex: theme.zIndex.modal,
-        width: theme.breakpoints.values.sm / 2,
-        transition: theme.transitions.create(['height', 'width']),
-    },
+    position: 'fixed',
+    zIndex: theme.zIndex.modal,
+    width: theme.breakpoints.values.sm / 2,
+    transition: theme.transitions.create(['height', 'width']),
     [`& .${InspectorClasses.title}`]: {
         display: 'flex',
         justifyContent: 'space-between',
