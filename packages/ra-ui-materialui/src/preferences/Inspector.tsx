@@ -59,6 +59,7 @@ export const Inspector = () => {
                 handle="#inspectore-dialog-title"
                 defaultPosition={dialogPosition}
                 onStop={handleDraggableStop}
+                bounds="body"
             >
                 <Paper className={InspectorClasses.modal} elevation={3}>
                     <div className={InspectorClasses.title}>

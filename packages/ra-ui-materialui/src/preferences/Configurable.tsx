@@ -82,17 +82,25 @@ export const Configurable = (props: ConfigurableProps) => {
             {preferenceKey
                 ? cloneElement(children, { ref, preferenceKey })
                 : cloneElement(children, { ref })}
-            <InspectorButton
-                onClick={handleOpenEditor}
-                label={openButtonLabel}
-                size="small"
-                color="primary"
-                className={ConfigurableClasses.button}
-                sx={{
-                    left: rect?.right - 30,
-                    top: rect?.top,
-                }}
-            />
+            {isEnabled && (
+                <InspectorButton
+                    onClick={handleOpenEditor}
+                    label={openButtonLabel}
+                    size="small"
+                    color="warning"
+                    className={ConfigurableClasses.button}
+                    sx={{
+                        left: rect?.right - 30,
+                        top: rect?.top,
+                    }}
+                    SvgIconProps={{
+                        sx: {
+                            filter:
+                                'drop-shadow(0 0 3px rgba(255, 255, 255, .8))',
+                        },
+                    }}
+                />
+            )}
         </Root>
     );
 };
@@ -126,13 +134,13 @@ const Root = styled('span', {
     },
     [`&.${ConfigurableClasses.editMode} > :not(.${ConfigurableClasses.button})`]: {
         transition: theme.transitions.create('outline'),
-        outline: `${alpha(theme.palette.primary.main, 0.3)} solid 2px`,
+        outline: `${alpha(theme.palette.warning.main, 0.3)} solid 2px`,
     },
     [`&.${ConfigurableClasses.editMode}:hover > :not(.${ConfigurableClasses.button})`]: {
-        outline: `${alpha(theme.palette.primary.main, 0.5)} solid 2px`,
+        outline: `${alpha(theme.palette.warning.main, 0.5)} solid 2px`,
     },
 
-    [`&.${ConfigurableClasses.editorActive} > :not(.${ConfigurableClasses.button}), &.${ConfigurableClasses.editorActive}:hover > :not(.${ConfigurableClasses.button})`]: {
-        outline: `${theme.palette.primary.main} solid 2px`,
+    [`&.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive} > :not(.${ConfigurableClasses.button}), &.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive}:hover > :not(.${ConfigurableClasses.button})`]: {
+        outline: `${theme.palette.warning.main} solid 2px`,
     },
 }));

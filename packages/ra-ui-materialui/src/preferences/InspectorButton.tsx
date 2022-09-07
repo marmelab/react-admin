@@ -6,28 +6,37 @@ import { useTranslate, usePreferencesEditor } from 'ra-core';
 
 export const InspectorButton = React.forwardRef<
     HTMLButtonElement,
-    IconButtonProps & { label?: string }
->(({ label = 'ra.configurable.configureMode', ...props }, ref) => {
-    const { enable, disable, isEnabled } = usePreferencesEditor();
-    const translate = useTranslate();
+    IconButtonProps & { label?: string; SvgIconProps?: any }
+>(
+    (
+        {
+            label = 'ra.configurable.configureMode',
+            SvgIconProps = {},
+            ...props
+        },
+        ref
+    ) => {
+        const { enable, disable, isEnabled } = usePreferencesEditor();
+        const translate = useTranslate();
 
-    const handleClick: MouseEventHandler<HTMLButtonElement> = () => {
-        isEnabled ? disable() : enable();
-    };
+        const handleClick: MouseEventHandler<HTMLButtonElement> = () => {
+            isEnabled ? disable() : enable();
+        };
 
-    const translatedLabel = translate(label, { _: 'Configure mode' });
+        const translatedLabel = translate(label, { _: 'Configure mode' });
 
-    return (
-        <Tooltip title={translatedLabel}>
-            <IconButton
-                aria-label={translatedLabel}
-                onClick={handleClick}
-                color="inherit"
-                ref={ref}
-                {...props}
-            >
-                <SettingsIcon fontSize="inherit" />
-            </IconButton>
-        </Tooltip>
-    );
-});
+        return (
+            <Tooltip title={translatedLabel}>
+                <IconButton
+                    aria-label={translatedLabel}
+                    onClick={handleClick}
+                    color="inherit"
+                    ref={ref}
+                    {...props}
+                >
+                    <SettingsIcon fontSize="inherit" {...SvgIconProps} />
+                </IconButton>
+            </Tooltip>
+        );
+    }
+);
