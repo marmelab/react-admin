@@ -191,5 +191,9 @@ export const BookList = () => (
 );
 ```
 
-When users enter the configuration mode and select the `SimpleList`, they can set the `primaryText`, `secondaryText`, and `tertiaryText` fields via the inspector.
+When users enter the configuration mode and select the `<SimpleList>`, they can set the `primaryText`, `secondaryText`, and `tertiaryText` fields via the inspector. `<SimpleList>` uses a simple templating engine (based on [`lodash.template()`](https://lodash.com/docs/4.17.15#template)) to render the fields. The template receives the current record as parameter. This means users can access the record field using the `${field}` syntax, e.g.:
+
+```
+Title: ${title} (by ${author})
+```
 
