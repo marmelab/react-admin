@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
 import { TextField } from '@mui/material';
-import { useTranslate, useStore, useResourceContext } from 'ra-core';
+import { useTranslate, useResourceContext, usePreferenceInput } from 'ra-core';
 
 import { ResetSettingsButton } from '../../preferences/ResetSettingsButton';
 
@@ -15,9 +14,9 @@ import { ResetSettingsButton } from '../../preferences/ResetSettingsButton';
  */
 export const SimpleListEditor = (props: SimpleListEditorProps) => {
     const {
-        defaultPrimaryText,
-        defaultSecondaryText,
-        defaultTertiatyText,
+        defaultPrimaryText = '',
+        defaultSecondaryText = '',
+        defaultTertiatyText = '',
         preferencesKey,
     } = props;
 
@@ -26,23 +25,20 @@ export const SimpleListEditor = (props: SimpleListEditorProps) => {
     const rootKey = `simpleList.${preferencesKey || resource}`;
 
     const primaryTextKey = `${rootKey}.primaryText`;
-    const [
-        primaryText,
-        handlePrimaryTextChange,
-        handlePrimaryTextBlur,
-    ] = usePreferenceInput(primaryTextKey, defaultPrimaryText);
+    const primaryTextField = usePreferenceInput(
+        primaryTextKey,
+        defaultPrimaryText
+    );
     const secondaryTextKey = `${rootKey}.secondaryText`;
-    const [
-        secondaryText,
-        handleSecondaryTextChange,
-        handleSecondaryTextBlur,
-    ] = usePreferenceInput(secondaryTextKey, defaultSecondaryText);
+    const secondaryTextField = usePreferenceInput(
+        secondaryTextKey,
+        defaultSecondaryText
+    );
     const tertiaryTextKey = `${rootKey}.tertiaryText`;
-    const [
-        tertiaryText,
-        handleTertiaryTextChange,
-        handleTertiaryTextBlur,
-    ] = usePreferenceInput(tertiaryTextKey, defaultTertiatyText);
+    const tertiaryTextField = usePreferenceInput(
+        tertiaryTextKey,
+        defaultTertiatyText
+    );
 
     return (
         <>
@@ -50,9 +46,7 @@ export const SimpleListEditor = (props: SimpleListEditorProps) => {
                 label={translate('ra.configurable.SimpleList.primaryText', {
                     _: 'Primary Text',
                 })}
-                value={primaryText || ''}
-                onChange={handlePrimaryTextChange}
-                onBlur={handlePrimaryTextBlur}
+                {...primaryTextField}
                 variant="filled"
                 size="small"
                 fullWidth
@@ -62,9 +56,7 @@ export const SimpleListEditor = (props: SimpleListEditorProps) => {
                 label={translate('ra.configurable.SimpleList.secondaryText', {
                     _: 'Secondary Text',
                 })}
-                value={secondaryText || ''}
-                onChange={handleSecondaryTextChange}
-                onBlur={handleSecondaryTextBlur}
+                {...secondaryTextField}
                 variant="filled"
                 size="small"
                 fullWidth
@@ -74,9 +66,7 @@ export const SimpleListEditor = (props: SimpleListEditorProps) => {
                 label={translate('ra.configurable.SimpleList.tertiaryText', {
                     _: 'Tertiary Text',
                 })}
-                value={tertiaryText || ''}
-                onChange={handleTertiaryTextChange}
-                onBlur={handleTertiaryTextBlur}
+                {...tertiaryTextField}
                 variant="filled"
                 size="small"
                 fullWidth
@@ -101,18 +91,3 @@ export interface SimpleListEditorProps {
     defaultSecondaryText?: string;
     defaultTertiatyText?: string;
 }
-
-const usePreferenceInput = (key, defaultValue) => {
-    const [valueFromStore, setValueFromStore] = useStore(key);
-    const [value, setValue] = useState(valueFromStore || defaultValue);
-    useEffect(() => {
-        setValue(valueFromStore || defaultValue);
-    }, [valueFromStore, defaultValue]);
-    const handleChange = event => {
-        setValue(event.target.value === '' ? undefined : event.target.value);
-    };
-    const handleBlur = () => {
-        setValueFromStore(value);
-    };
-    return [value, handleChange, handleBlur];
-};
