@@ -10,6 +10,7 @@ import { ListControllerResult } from '../list';
 import usePaginationState from '../usePaginationState';
 import { useRecordSelection } from '../list/useRecordSelection';
 import useSortState from '../useSortState';
+import { useResourceContext } from '../../core';
 
 export interface UseReferenceManyFieldControllerParams {
     filter?: any;
@@ -72,6 +73,7 @@ export const useReferenceManyFieldController = (
         sort: initialSort = { field: 'id', order: 'DESC' },
     } = props;
     const notify = useNotify();
+    const resource = useResourceContext(props);
 
     // pagination logic
     const { page, setPage, perPage, setPerPage } = usePaginationState({
@@ -90,7 +92,9 @@ export const useReferenceManyFieldController = (
     );
 
     // selection logic
-    const [selectedIds, selectionModifiers] = useRecordSelection(reference);
+    const [selectedIds, selectionModifiers] = useRecordSelection(
+        `${resource}.${record?.id}.${reference}`
+    );
 
     // filter logic
     const filterRef = useRef(filter);
