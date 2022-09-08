@@ -43,7 +43,7 @@ const MyList = () => {
 * [`queryOptions`](./List.md#queryoptions): react-query options for the useQuery call
 * [`resource`](./List.md#resource): resource name, e.g. 'posts' ; defaults to the current resource context
 * [`sort`](./List.md#sort-default-sort-field--order), current sort value, e.g. { field: 'published_at', order: 'DESC' }
-* [`storeKey`](#storeKey): key used to differenciate the list from another sharing the same resource, in store managed states
+* [`storeKey`](#storekey): key used to differenciate the list from another sharing the same resource, in store managed states
 
 Here are their default values:
 
