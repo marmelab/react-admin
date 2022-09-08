@@ -1,6 +1,5 @@
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from './i18n/en';
-import frenchMessages from './i18n/fr';
 
 const messages = {
     fr: () => import('./i18n/fr').then(messages => messages.default),
