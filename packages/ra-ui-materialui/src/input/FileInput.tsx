@@ -91,7 +91,7 @@ export const FileInput = (props: FileInputProps) => {
         validate,
         ...rest,
     });
-    const { isTouched, error } = fieldState;
+    const { isTouched, error, invalid } = fieldState;
     const files = value ? (Array.isArray(value) ? value : [value]) : [];
 
     const onDrop = (newFiles, rejectedFiles, event) => {
@@ -152,6 +152,7 @@ export const FileInput = (props: FileInputProps) => {
             source={source}
             resource={resource}
             isRequired={isRequired}
+            color={(isTouched || isSubmitted) && invalid && 'error'}
             {...sanitizeInputRestProps(rest)}
         >
             <>
@@ -176,7 +177,7 @@ export const FileInput = (props: FileInputProps) => {
                         <p>{translate(labelSingle)}</p>
                     )}
                 </div>
-                <FormHelperText>
+                <FormHelperText error={(isTouched || isSubmitted) && invalid}>
                     <InputHelperText
                         touched={isTouched || isSubmitted}
                         error={error?.message}
