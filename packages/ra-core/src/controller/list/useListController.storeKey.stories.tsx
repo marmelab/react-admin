@@ -3,7 +3,12 @@ import { Route } from 'react-router';
 import { Link } from 'react-router-dom';
 import fakeDataProvider from 'ra-data-fakerest';
 
-import { CoreAdmin, CustomRoutes, Resource } from '../../core';
+import {
+    CoreAdminContext,
+    CoreAdminUI,
+    CustomRoutes,
+    Resource,
+} from '../../core';
 import { localStorageStore } from '../../store';
 import { FakeBrowserDecorator } from '../../storybook/FakeBrowser';
 import { CoreLayoutProps, SortPayload } from '../../types';
@@ -111,19 +116,20 @@ const FlopList = () =>
 export const ListsUsingSameResource = (argsOrProps, context) => {
     const history = context?.history || argsOrProps.history;
     return (
-        <CoreAdmin
+        <CoreAdminContext
             history={history}
-            layout={MinimalLayout}
             store={localStorageStore()}
             dataProvider={dataProvider}
         >
-            <CustomRoutes>
-                <Route path="/top" element={<TopList />} />
-            </CustomRoutes>
-            <CustomRoutes>
-                <Route path="/flop" element={<FlopList />} />
-            </CustomRoutes>
-            <Resource name="posts" />
-        </CoreAdmin>
+            <CoreAdminUI layout={MinimalLayout}>
+                <CustomRoutes>
+                    <Route path="/top" element={<TopList />} />
+                </CustomRoutes>
+                <CustomRoutes>
+                    <Route path="/flop" element={<FlopList />} />
+                </CustomRoutes>
+                <Resource name="posts" />
+            </CoreAdminUI>
+        </CoreAdminContext>
     );
 };

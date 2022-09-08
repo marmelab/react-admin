@@ -92,7 +92,9 @@ const MyList = ({
 
 To display multiple lists of the same resource and keep distinct store states for each of them (filters, sorting and pagination), specify unique keys with the `storeKey` property.
 
-**Note:** Please note that selection state will remain linked to a resource-based key as described [here](https://marmelab.com/react-admin/List.html#disablesyncwithlocation).
+In case no `storeKey` is provided, the states will be stored with the following key: `${resource}.listParams`.
+
+**Note:** Please note that selection state will remain linked to a resource-based key as described [here](./List.md#disablesyncwithlocation).
 
 ```jsx
 // display the top 5 posts
