@@ -73,14 +73,18 @@ export const useExpandedMultiple = (
         []
     );
 
-    const expanded = expandedIds.some(id => ids.some(id2 => id2 == id));
+    const expanded = Array.isArray(expandedIds)
+        ? // eslint-disable-next-line eqeqeq
+          expandedIds.some(id => ids.some(id2 => id2 == id))
+        : false;
 
-    const setExpanded = useCallback(() => {
-        const filtered = expandedIds.filter(
-            expanded_id => !ids.some(id => id === expanded_id)
+    const toggleExpanded = useCallback(() => {
+        const unaffectedIds = expandedIds.filter(
+            // eslint-disable-next-line eqeqeq
+            expanded_id => !ids.some(id => id == expanded_id)
         );
-        setExpandedIds(expanded ? filtered : filtered.concat(ids));
+        setExpandedIds(expanded ? unaffectedIds : unaffectedIds.concat(ids));
     }, [expandedIds, setExpandedIds, expanded, ids]);
 
-    return [expanded, setExpanded];
+    return [expanded, toggleExpanded];
 };
