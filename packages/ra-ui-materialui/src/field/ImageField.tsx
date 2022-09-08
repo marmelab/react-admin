@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { useRecordContext } from 'ra-core';
+import { useRecordContext, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
@@ -13,6 +13,7 @@ export const ImageField = (props: ImageFieldProps) => {
     const { className, emptyText, source, src, title, ...rest } = props;
     const record = useRecordContext(props);
     const sourceValue = get(record, source);
+    const translate = useTranslate();
 
     if (!sourceValue) {
         return emptyText ? (
@@ -22,7 +23,7 @@ export const ImageField = (props: ImageFieldProps) => {
                 className={className}
                 {...sanitizeFieldRestProps(rest)}
             >
-                {emptyText}
+                {translate(emptyText, { _: emptyText })}
             </Typography>
         ) : (
             <div className={className} {...sanitizeFieldRestProps(rest)} />

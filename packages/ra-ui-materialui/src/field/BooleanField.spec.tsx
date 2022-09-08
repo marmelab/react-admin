@@ -2,7 +2,8 @@ import * as React from 'react';
 import expect from 'expect';
 import { BooleanField } from './BooleanField';
 import { screen, render } from '@testing-library/react';
-import { RecordContextProvider } from 'ra-core';
+import { RecordContextProvider, I18nContextProvider } from 'ra-core';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 const defaultProps = {
     record: { id: 123, published: true },
@@ -10,6 +11,24 @@ const defaultProps = {
     resource: 'posts',
     classes: {},
 };
+
+const i18nProvider = polyglotI18nProvider(
+    _locale => ({
+        resources: {
+            books: {
+                name: 'Books',
+                fields: {
+                    id: 'Id',
+                    title: 'Title',
+                    author: 'Author',
+                    year: 'Year',
+                },
+                not_found: 'Not found',
+            },
+        },
+    }),
+    'en'
+);
 
 describe('<BooleanField />', () => {
     it('should display tick and truthy text if value is true', () => {
@@ -151,5 +170,19 @@ describe('<BooleanField />', () => {
             />
         );
         expect(screen.queryByLabelText('ra.boolean.true')).not.toBeNull();
+    });
+
+    it('should translate emptyText', () => {
+        const { getByText } = render(
+            <I18nContextProvider value={i18nProvider}>
+                <BooleanField
+                    record={{ id: 123 }}
+                    source="foo.bar"
+                    emptyText="resources.books.not_found"
+                />
+            </I18nContextProvider>
+        );
+
+        expect(getByText('Not found')).not.toBeNull();
     });
 });

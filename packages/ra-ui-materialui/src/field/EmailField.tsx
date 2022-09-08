@@ -3,7 +3,7 @@ import { memo, FC } from 'react';
 import get from 'lodash/get';
 import Typography from '@mui/material/Typography';
 import { Link, LinkProps } from '@mui/material';
-import { useRecordContext } from 'ra-core';
+import { useRecordContext, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
@@ -12,6 +12,7 @@ export const EmailField: FC<EmailFieldProps> = memo(props => {
     const { className, source, emptyText, ...rest } = props;
     const record = useRecordContext(props);
     const value = get(record, source);
+    const translate = useTranslate();
 
     if (value == null) {
         return emptyText ? (
@@ -21,7 +22,7 @@ export const EmailField: FC<EmailFieldProps> = memo(props => {
                 className={className}
                 {...sanitizeFieldRestProps(rest)}
             >
-                {emptyText}
+                {translate(emptyText, { _: emptyText })}
             </Typography>
         ) : null;
     }
