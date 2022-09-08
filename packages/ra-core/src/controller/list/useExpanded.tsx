@@ -49,3 +49,24 @@ export const useExpanded = (
 
     return [expanded, toggleExpanded];
 };
+
+export const useExpandedMultiple = (
+    resource: string,
+    ids: Identifier[]
+): [boolean, () => void] => {
+    const [expandedIds, setExpandedIds] = useStore<Identifier[]>(
+        `${resource}.datagrid.expanded`,
+        []
+    );
+
+    const expanded = expandedIds.some(id => ids.some(id2 => id2 == id));
+
+    const setExpanded = useCallback(() => {
+        const filtered = expandedIds.filter(
+            expanded_id => !ids.some(id => id == expanded_id)
+        );
+        setExpandedIds(expanded ? filtered : filtered.concat(ids));
+    }, [expandedIds, setExpandedIds, expanded, ids]);
+
+    return [expanded, setExpanded];
+};
