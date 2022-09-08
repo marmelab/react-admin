@@ -9,16 +9,22 @@ describe('Expand', () => {
         const button = rendered.container.querySelector(
             '.RaDatagrid-expandHeader>div'
         );
+        const expectExpandedRows = (count: number) => {
+            expect(
+                rendered.container.querySelectorAll('.RaDatagrid-expandedPanel')
+            ).toHaveLength(count);
+        };
 
         expect(button).not.toBe(null);
+
+        expectExpandedRows(0);
 
         expect(
             rendered.container.querySelectorAll('.RaDatagrid-expandedPanel')
         ).toHaveLength(0);
         fireEvent.click(button);
-
-        expect(
-            rendered.container.querySelectorAll('.RaDatagrid-expandedPanel')
-        ).toHaveLength(4);
+        expectExpandedRows(4);
+        fireEvent.click(button);
+        expectExpandedRows(0);
     });
 });
