@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Children, isValidElement, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
-    useExpandedMultiple,
     useListContext,
     useResourceContext,
     Identifier,
@@ -13,9 +12,9 @@ import {
 import { Checkbox, TableCell, TableHead, TableRow } from '@mui/material';
 import clsx from 'clsx';
 
-import ExpandRowButton from './ExpandRowButton';
 import DatagridHeaderCell from './DatagridHeaderCell';
 import { DatagridClasses } from './useDatagridStyles';
+import ExpandAllButton from './ExpandAllButton';
 
 /**
  * The default Datagrid Header component.
@@ -53,11 +52,6 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
     );
 
     const updateSort = setSort ? updateSortCallback : null;
-
-    const [expanded, toggleExpanded] = useExpandedMultiple(
-        resource,
-        data.map(record => record.id)
-    );
 
     const handleSelectAll = useCallback(
         event =>
@@ -101,12 +95,9 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                             DatagridClasses.expandHeader
                         )}
                     >
-                        <ExpandRowButton
-                            className={clsx(DatagridClasses.expandIcon, {
-                                [DatagridClasses.expanded]: expanded,
-                            })}
-                            expanded={expanded}
-                            onClick={toggleExpanded}
+                        <ExpandAllButton
+                            resource={resource}
+                            ids={data.map(record => record.id)}
                         />
                     </TableCell>
                 )}

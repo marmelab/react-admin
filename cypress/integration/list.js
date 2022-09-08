@@ -261,7 +261,7 @@ describe('List Page', () => {
         it('should accept multiple expands', () => {
             cy.contains('1-10 of 13'); // wait for data
             cy.get('[aria-label="Expand"]')
-                .eq(1)
+                .eq(1) // we have to skip the first button (expand-all button)
                 .click()
                 .should(el => expect(el).to.have.attr('aria-expanded', 'true'))
                 .should(el => expect(el).to.have.attr('aria-label', 'Close'));
@@ -270,23 +270,29 @@ describe('List Page', () => {
             cy.wait(500); // Ensure animations are done
 
             cy.get('[aria-label="Expand"]')
-                .eq(1) // We still target the first button labeled Expand because the previous one should now have a Close label
+                .eq(0) // We now target the first button because the expand-all button and expand-13 should now have a Close label
                 .click()
                 .should(el => expect(el).to.have.attr('aria-expanded', 'true'))
                 .should(el => expect(el).to.have.attr('aria-label', 'Close'));
 
             cy.get('#12-expand').should(el => expect(el).to.exist);
 
+            let all_labels = [13, 12, 11, 10, 9, 8, 7, 6, 4, 2];
+
             // two opened => collapse all
-            cy.get('[aria-label="Expand"]').eq(0).click();
-            for (let i = 13; i > 2; i--) {
-                cy.get(`#${i}-expand`).should(el => expect(el).not.to.exist);
-            }
+            cy.get('[aria-label="Close"]').eq(0).click();
+            all_labels.forEach(label => {
+                cy.get(`#${label}-expand`).should(
+                    el => expect(el).not.to.exist
+                );
+            });
+
             // expand all
             cy.get('[aria-label="Expand"]').eq(0).click();
-            for (let i = 13; i > 2; i--) {
-                cy.get(`#${i}-expand`).should(el => expect(el).to.exist);
-            }
+
+            all_labels.forEach(label => {
+                cy.get(`#${label}-expand`).should(el => expect(el).to.exist);
+            });
         });
     });
 

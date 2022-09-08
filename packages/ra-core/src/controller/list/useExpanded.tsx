@@ -50,6 +50,20 @@ export const useExpanded = (
     return [expanded, toggleExpanded];
 };
 
+/**
+ * State-like hook for controlling the expanded state of many list items
+ * expanded state is true when at least one item from ids is expanded.
+ *
+ * @param {string} resource The resource name, e.g. 'posts'
+ * @param {string[]|integer[]} ids A list of record identifiers
+ * @returns {Object} Destructure as [expanded, toggleExpanded].
+ *
+ * @example
+ *
+ * const [expanded, toggleExpanded] = useExpandedMultiple('posts', [123, 124, 125]);
+ * const expandIcon = expanded ? ExpandLess : ExpandMore;
+ * const onExpandClick = () => toggleExpanded();
+ */
 export const useExpandedMultiple = (
     resource: string,
     ids: Identifier[]
@@ -63,7 +77,7 @@ export const useExpandedMultiple = (
 
     const setExpanded = useCallback(() => {
         const filtered = expandedIds.filter(
-            expanded_id => !ids.some(id => id == expanded_id)
+            expanded_id => !ids.some(id => id === expanded_id)
         );
         setExpandedIds(expanded ? filtered : filtered.concat(ids));
     }, [expandedIds, setExpandedIds, expanded, ids]);
