@@ -5,11 +5,18 @@ const messages = {
     fr: () => import('./i18n/fr').then(messages => messages.default),
 };
 
-export default polyglotI18nProvider(locale => {
-    if (locale === 'fr') {
-        return messages[locale]();
-    }
+export default polyglotI18nProvider(
+    locale => {
+        if (locale === 'fr') {
+            return messages[locale]();
+        }
 
-    // Always fallback on english
-    return englishMessages;
-}, 'en');
+        // Always fallback on english
+        return englishMessages;
+    },
+    'en',
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' },
+    ]
+);
