@@ -82,7 +82,7 @@ export const Inspector = () => {
                             theme.breakpoints.values.sm / 2 -
                             8
                     ),
-                    y: Math.min(position.y, document.body.clientHeight - 20),
+                    y: Math.min(position.y, window.innerHeight - 20),
                 }));
             });
         };
