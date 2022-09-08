@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 
 import { Expand } from './Datagrid.stories';
 
 describe('Expand', () => {
-    it('should render the recordRepresentation of the related record', async () => {
+    it('should expand all rows at once', async () => {
         const rendered = render(<Expand />);
         const button = rendered.container.querySelector(
             '.RaDatagrid-expandHeader>div'
