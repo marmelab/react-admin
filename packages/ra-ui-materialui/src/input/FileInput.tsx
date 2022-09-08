@@ -152,6 +152,7 @@ export const FileInput = (props: FileInputProps) => {
             source={source}
             resource={resource}
             isRequired={isRequired}
+            color={(isTouched || isSubmitted) && invalid && 'error'}
             {...sanitizeInputRestProps(rest)}
         >
             <>
