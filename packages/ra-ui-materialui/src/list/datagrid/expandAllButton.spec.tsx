@@ -19,11 +19,9 @@ describe('Expand', () => {
 
         expectExpandedRows(0);
 
-        expect(
-            rendered.container.querySelectorAll('.RaDatagrid-expandedPanel')
-        ).toHaveLength(0);
         fireEvent.click(button);
         expectExpandedRows(4);
+
         fireEvent.click(button);
         expectExpandedRows(0);
     });
