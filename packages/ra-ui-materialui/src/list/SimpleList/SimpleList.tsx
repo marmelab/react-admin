@@ -52,13 +52,13 @@ const SimpleListInner = <RecordType extends RaRecord = any>(
     const resource = useResourceContext(props);
     const renderTemplate = useRenderTemplate();
     const [primaryTextFromStore] = useStore(
-        `simpleList.${preferenceKey || resource}.primaryText`
+        `preferences.simpleList.${preferenceKey || resource}.primaryText`
     );
     const [secondaryTextFromStore] = useStore(
-        `simpleList.${preferenceKey || resource}.secondaryText`
+        `preferences.simpleList.${preferenceKey || resource}.secondaryText`
     );
     const [tertiaryTextFromStore] = useStore(
-        `simpleList.${preferenceKey || resource}.tertiaryText`
+        `preferences.simpleList.${preferenceKey || resource}.tertiaryText`
     );
 
     if (isLoading === true) {

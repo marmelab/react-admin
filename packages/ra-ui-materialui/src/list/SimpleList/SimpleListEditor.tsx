@@ -22,7 +22,7 @@ export const SimpleListEditor = (props: SimpleListEditorProps) => {
 
     const translate = useTranslate();
     const resource = useResourceContext(props);
-    const rootKey = `simpleList.${preferenceKey || resource}`;
+    const rootKey = `preferences.simpleList.${preferenceKey || resource}`;
 
     const primaryTextKey = `${rootKey}.primaryText`;
     const primaryTextField = usePreferenceInput(

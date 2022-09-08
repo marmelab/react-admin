@@ -40,7 +40,7 @@ export const ShowView = (props: ShowViewProps) => {
             <Title
                 title={title}
                 defaultTitle={defaultTitle}
-                preferenceKey={`show.${resource}`}
+                preferenceKey={`${resource}.show`}
             />
             {finalActions !== false && finalActions}
             <div

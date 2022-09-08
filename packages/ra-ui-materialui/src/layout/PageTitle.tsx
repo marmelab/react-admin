@@ -11,7 +11,7 @@ export const PageTitle = React.forwardRef<HTMLSpanElement, any>(
     ({ title, defaultTitle, className, preferenceKey, ...rest }, ref) => {
         const { pathname } = useLocation();
         const [titleFromPreferences] = useStore(
-            `${preferenceKey || pathname}.title`
+            `preferences.${preferenceKey || pathname}.title`
         );
         const translate = useTranslate();
         const renderTemplate = useRenderTemplate();

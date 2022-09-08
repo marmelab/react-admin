@@ -8,7 +8,7 @@ import { PageTitle } from './PageTitle';
 
 export const PageTitleEditor = ({ preferenceKey }: any) => {
     const { pathname } = useLocation();
-    const key = `${preferenceKey || pathname}.title`;
+    const key = `preferences.${preferenceKey || pathname}.title`;
     const field = usePreferenceInput(key, '');
     return (
         <>
