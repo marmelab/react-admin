@@ -149,5 +149,10 @@ const i18nProvider = polyglotI18nProvider(locale =>
 
 **Tip**: Check [the Polyglot documentation](https://airbnb.io/polyglot.js/#options-overview) for a list of options you can pass to Polyglot at startup. 
 
-This solution is all-or-nothing: you can't silence only *some* missing translation warnings. An alternative solution consists of passing a default translation using the `_` translation option, as explained in the [Using Specific Polyglot Features section](#using-specific-polyglot-features) above. 
+This solution is all-or-nothing: you can't silence only *some* missing translation warnings. An alternative solution consists of passing a default translation using the `_` translation option, as explained in the [default translation option](./TranslationTranslating.md#interpolation-pluralization-and-default-translation) section. 
+
+```jsx
+translate('not_yet_translated', { _: 'Default translation' });
+=> 'Default translation'
+```
 
