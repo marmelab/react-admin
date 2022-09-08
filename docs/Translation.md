@@ -26,10 +26,11 @@ It should be an object with the following methods:
 ```jsx
 // in src/i18nProvider.js
 export const i18nProvider = {
+    // required
     translate: (key, options) => string,
     changeLocale: locale => Promise<void>,
     getLocale: () => string,
-    // Optional. Used by LocalesMenuButton if available
+    // optional
     getLocales: () => [{ locale: string; name: string; }],
 }
 ```
@@ -102,37 +103,20 @@ import fr from 'ra-language-french';
 
 const translations = { en, fr };
 
-export const i18nProvider = polyglotI18nProvider(locale => translations[locale], 'en');
-
-// in src/MyAppBar.js
-import { LocalesMenuButton, AppBar } from 'react-admin';
-import { Typography } from '@mui/material';
-
-export const MyAppBar = () => (
-    <AppBar>
-        <Typography flex="1" variant="h6" id="react-admin-title"/>
-        <LocalesMenuButton
-            languages={[
-                { locale: 'en', name: 'English' },
-                { locale: 'fr', name: 'Français' },
-            ]}
-        />
-    </AppBar>
+export const i18nProvider = polyglotI18nProvider(
+    locale => translations[locale],
+    'en', // default locale
+    [{ locale: 'en', name: 'English' }, { locale: 'fr', name: 'Français' }],
 );
 
 // in src/App.js
 import { Admin } from 'react-admin';
-
-import { MyAppBar } from './MyAppBar';
 import { i18nProvider } from './i18nProvider';
-
-const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
 
 const App = () => (
     <Admin
         i18nProvider={i18nProvider}
         dataProvider={dataProvider}
-        layout={MyLayout}
     >
         ...
     </Admin>

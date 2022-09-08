@@ -1,9 +1,28 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render } from '@testing-library/react';
-import { RecordContextProvider } from 'ra-core';
+import { RecordContextProvider, I18nContextProvider } from 'ra-core';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import { DateField } from './DateField';
+
+const i18nProvider = polyglotI18nProvider(
+    _locale => ({
+        resources: {
+            books: {
+                name: 'Books',
+                fields: {
+                    id: 'Id',
+                    title: 'Title',
+                    author: 'Author',
+                    year: 'Year',
+                },
+                not_found: 'Not found',
+            },
+        },
+    }),
+    'en'
+);
 
 describe('<DateField />', () => {
     it('should return null when the record is not set', () => {
@@ -68,6 +87,21 @@ describe('<DateField />', () => {
         );
 
         const date = new Date('2017-04-23 23:05').toLocaleString('en-US');
+        expect(queryByText(date)).not.toBeNull();
+    });
+
+    it('should render only a time when the showtime prop is true and showdate is false', () => {
+        const { queryByText } = render(
+            <DateField
+                record={{ id: 123, foo: new Date('2017-04-23 23:05') }}
+                showTime
+                showDate={false}
+                source="foo"
+                locales="en-US"
+            />
+        );
+
+        const date = new Date('2017-04-23 23:05').toLocaleTimeString('en-US');
         expect(queryByText(date)).not.toBeNull();
     });
 
@@ -146,4 +180,18 @@ describe('<DateField />', () => {
             expect(queryByText('NA')).not.toBeNull();
         }
     );
+
+    it('should translate emptyText', () => {
+        const { getByText } = render(
+            <I18nContextProvider value={i18nProvider}>
+                <DateField
+                    record={{ id: 123 }}
+                    source="foo.bar"
+                    emptyText="resources.books.not_found"
+                />
+            </I18nContextProvider>
+        );
+
+        expect(getByText('Not found')).not.toBeNull();
+    });
 });

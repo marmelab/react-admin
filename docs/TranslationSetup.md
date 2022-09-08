@@ -54,46 +54,28 @@ import fr from 'ra-language-french';
 
 const translations = { en, fr };
 
-export const i18nProvider = polyglotI18nProvider(locale => translations[locale], 'en');
-```
-
-The second argument to the `polyglotI18nProvider` function is the default locale.
-
-Next, create a custom App Bar containing the `<LocalesMenuButton>` button, which lets users change the current locale:
-
-```jsx
-// in src/MyAppBar.js
-import { LocalesMenuButton, AppBar } from 'react-admin';
-import { Typography } from '@mui/material';
-
-export const MyAppBar = () => (
-    <AppBar>
-        <Typography flex="1" variant="h6" id="react-admin-title"/>
-        <LocalesMenuButton
-            languages={[
-                { locale: 'en', name: 'English' },
-                { locale: 'fr', name: 'Français' },
-            ]}
-        />
-    </AppBar>
+export const i18nProvider = polyglotI18nProvider(
+    locale => translations[locale],
+    'en', // default locale
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' }
+    ],
 );
 ```
 
-Then, pass the custom App Bar to a custom `<Layout>`, and the `<Layout>` to your `<Admin>`:
+The second argument to the `polyglotI18nProvider` function is the default locale. The third is the list of supported locales - and is used by the [`<LocaleMenuButton>`](./LocalesMenuButton.md) component to display a list of languages.
+
+Next, pass the custom `i18nProvider` to your `<Admin>`:
 
 ```jsx
 import { Admin } from 'react-admin';
-
-import { MyAppBar } from './MyAppBar';
 import { i18nProvider } from './i18nProvider';
-
-const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
 
 const App = () => (
     <Admin
         i18nProvider={i18nProvider}
         dataProvider={dataProvider}
-        layout={MyLayout}
     >
         ...
     </Admin>
@@ -117,7 +99,11 @@ const translations = { en, fr };
 
 export const i18nProvider = polyglotI18nProvider(
     locale => translations[locale] ? translations[locale] : translations.en,
-    resolveBrowserLocale()
+    resolveBrowserLocale(),
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' }
+    ],
 );
 ```
 
@@ -126,7 +112,11 @@ export const i18nProvider = polyglotI18nProvider(
 ```jsx
 export const i18nProvider = polyglotI18nProvider(
     locale => translations[locale] ? translations[locale] : translations.en,
-    resolveBrowserLocale('en', { fullLocale: true }) // 'en' => Default locale when browser locale can't be resolved, { fullLocale: true } => Return full locale
+    resolveBrowserLocale('en', { fullLocale: true }), // 'en' => Default locale when browser locale can't be resolved, { fullLocale: true } => Return full locale
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' }
+    ],
 );
 ```
 
@@ -138,7 +128,7 @@ By default, the `polyglotI18nProvider` logs a warning in the console each time i
 
 But you may want to avoid this for some messages, e.g. error messages from a data source you don't control (like a web server).
 
-The fastest way to do so is to use the third parameter of the `polyglotI18nProvider` function to pass the `allowMissing` option to Polyglot at initialization:
+The fastest way to do so is to use the fourth parameter of the `polyglotI18nProvider` function to pass the `allowMissing` option to Polyglot at initialization:
 
 ```diff
 // in src/i18nProvider.js
@@ -149,11 +139,20 @@ import fr from './i18n/frenchMessages';
 const i18nProvider = polyglotI18nProvider(locale => 
     locale === 'fr' ? fr : en,
     'en', // Default locale
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' }
+    ],
 +   { allowMissing: true }
 );
 ```
 
 **Tip**: Check [the Polyglot documentation](https://airbnb.io/polyglot.js/#options-overview) for a list of options you can pass to Polyglot at startup. 
 
-This solution is all-or-nothing: you can't silence only *some* missing translation warnings. An alternative solution consists of passing a default translation using the `_` translation option, as explained in the [Using Specific Polyglot Features section](#using-specific-polyglot-features) above. 
+This solution is all-or-nothing: you can't silence only *some* missing translation warnings. An alternative solution consists of passing a default translation using the `_` translation option, as explained in the [default translation option](./TranslationTranslating.md#interpolation-pluralization-and-default-translation) section. 
+
+```jsx
+translate('not_yet_translated', { _: 'Default translation' });
+=> 'Default translation'
+```
 

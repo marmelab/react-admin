@@ -144,7 +144,7 @@ CSS class name passed to the root component.
 
 ## `emptyText`
 
-By default, a Field renders an empty string when the record has no value for that field. You can override this behavior by setting the `emptyText` prop.
+By default, a Field renders an empty string when the record has no value for that field. You can override this behavior by setting the `emptyText` prop. The emptyText supports i8nProvider translation, if the translation is not found it will display the value as default.
 
 ```jsx
 const PostList = () => (

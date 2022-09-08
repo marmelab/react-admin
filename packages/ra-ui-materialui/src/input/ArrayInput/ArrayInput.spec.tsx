@@ -162,12 +162,12 @@ describe('<ArrayInput />', () => {
             </AdminContext>
         );
 
-        fireEvent.click(screen.getByText('ra.action.add'));
+        fireEvent.click(screen.getByLabelText('ra.action.add'));
         fireEvent.click(screen.getByText('ra.action.save'));
         await waitFor(() => {
             expect(screen.queryByText('array_min_length')).not.toBeNull();
         });
-        fireEvent.click(screen.getByText('ra.action.add'));
+        fireEvent.click(screen.getByLabelText('ra.action.add'));
         const firstId = screen.getAllByLabelText(
             'resources.bar.fields.arr.id *'
         )[0];
@@ -206,16 +206,14 @@ describe('<ArrayInput />', () => {
 
             setArrayInputVisible = setVisible;
 
-            return (
-                visible && (
-                    <ArrayInput resource="bar" source="arr">
-                        <SimpleFormIterator>
-                            <TextInput source="id" />
-                            <TextInput source="foo" />
-                        </SimpleFormIterator>
-                    </ArrayInput>
-                )
-            );
+            return visible ? (
+                <ArrayInput resource="bar" source="arr">
+                    <SimpleFormIterator>
+                        <TextInput source="id" />
+                        <TextInput source="foo" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            ) : null;
         };
 
         render(

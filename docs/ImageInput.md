@@ -59,8 +59,7 @@ The `<ImageInput>` component accepts the usual `className` prop. You can also ov
 
 | Rule name                       | Description                                         |
 |---------------------------------|-----------------------------------------------------|
-| `& .RaImageInput-dropZone`      | Styles pass to the underlying `FileInput` component |
-| `& .RaImageInput-preview`       | Styles pass to the underlying `FileInput` component |
-| `& .RaImageInput-removeButton`  | Styles pass to the underlying `FileInput` component |
+| `& .RaFileInput-dropZone`      | Styles pass to the underlying `FileInput` component |
+| `& .RaFileInput-removeButton`  | Styles pass to the underlying `FileInput` component |
 
 To override the style of all instances of `<ImageInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaImageInput` key.

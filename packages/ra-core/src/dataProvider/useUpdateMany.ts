@@ -10,7 +10,12 @@ import {
 
 import { useDataProvider } from './useDataProvider';
 import undoableEventEmitter from './undoableEventEmitter';
-import { RaRecord, UpdateManyParams, MutationMode } from '../types';
+import {
+    RaRecord,
+    UpdateManyParams,
+    MutationMode,
+    GetListResult as OriginalGetListResult,
+} from '../types';
 import { Identifier } from '..';
 
 /**
@@ -118,7 +123,9 @@ export const useUpdateMany = <
             return newCollection;
         };
 
-        type GetListResult = { data?: RecordType[]; total?: number };
+        type GetListResult = Omit<OriginalGetListResult, 'data'> & {
+            data?: RecordType[];
+        };
 
         ids.forEach(id =>
             queryClient.setQueryData(
@@ -130,9 +137,7 @@ export const useUpdateMany = <
         queryClient.setQueriesData(
             [resource, 'getList'],
             (res: GetListResult) =>
-                res && res.data
-                    ? { data: updateColl(res.data), total: res.total }
-                    : res,
+                res && res.data ? { ...res, data: updateColl(res.data) } : res,
             { updatedAt }
         );
         queryClient.setQueriesData(
@@ -221,12 +226,13 @@ export const useUpdateMany = <
                     const {
                         resource: callTimeResource = resource,
                         ids: callTimeIds = ids,
+                        data: callTimeData = data,
                         meta: callTimeMeta = meta,
                     } = variables;
                     updateCache({
                         resource: callTimeResource,
                         ids: callTimeIds,
-                        data,
+                        data: callTimeData,
                         meta: callTimeMeta,
                     });
 

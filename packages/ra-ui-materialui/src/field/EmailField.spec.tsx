@@ -1,9 +1,28 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render } from '@testing-library/react';
-import { RecordContextProvider } from 'ra-core';
+import { RecordContextProvider, I18nContextProvider } from 'ra-core';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import { EmailField } from './EmailField';
+
+const i18nProvider = polyglotI18nProvider(
+    _locale => ({
+        resources: {
+            books: {
+                name: 'Books',
+                fields: {
+                    id: 'Id',
+                    title: 'Title',
+                    author: 'Author',
+                    year: 'Year',
+                },
+                not_found: 'Not found',
+            },
+        },
+    }),
+    'en'
+);
 
 const url = 'foo@bar.com';
 
@@ -86,5 +105,19 @@ describe('<EmailField />', () => {
             <EmailField record={{ id: 123 }} source="foo" />
         );
         expect(container.firstChild).toBeNull();
+    });
+
+    it('should translate emptyText', () => {
+        const { getByText } = render(
+            <I18nContextProvider value={i18nProvider}>
+                <EmailField
+                    record={{ id: 123 }}
+                    source="foo.bar"
+                    emptyText="resources.books.not_found"
+                />
+            </I18nContextProvider>
+        );
+
+        expect(getByText('Not found')).not.toBeNull();
     });
 });

@@ -85,7 +85,7 @@ describe('Edit Page', () => {
             cy.window().then(win => {
                 cy.on('window:confirm', () => true);
             });
-            cy.get('[role="menuitem"]:first-child').click();
+            cy.get('.RaSidebar-fixed [role="menuitem"]:first-child').click();
         });
 
         it('should change reference list correctly when changing filter', () => {

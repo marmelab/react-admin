@@ -30,6 +30,7 @@ You can tweak how this component fetches the possible values using the `page`, `
 | Prop               | Required | Type                                        | Default                          | Description                                                                              |
 |--------------------|----------|---------------------------------------------|----------------------------------|------------------------------------------------------------------------------------------|
 | `source`           | Required | `string`                                    | -                                | Name of the entity property to use for the input value                                   |
+| `label`            | Optional | `string`                                    | -                                | Useful only when `ReferenceInput` is in a Filter array, the label is used as the Filter label.|
 | `reference`        | Required | `string`                                    | ''                               | Name of the reference resource, e.g. 'posts'.                                            |
 | `children`         | Optional | `ReactNode`                                 | `<AutocompleteInput />`          | The actual selection component                                                           |
 | `filter`           | Optional | `Object`                                    | `{}`                             | Permanent filters to use for getting the suggestion list                                 |
