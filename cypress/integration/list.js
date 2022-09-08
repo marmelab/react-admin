@@ -261,7 +261,7 @@ describe('List Page', () => {
         it('should accept multiple expands', () => {
             cy.contains('1-10 of 13'); // wait for data
             cy.get('[aria-label="Expand"]')
-                .eq(0)
+                .eq(1)
                 .click()
                 .should(el => expect(el).to.have.attr('aria-expanded', 'true'))
                 .should(el => expect(el).to.have.attr('aria-label', 'Close'));
@@ -270,12 +270,23 @@ describe('List Page', () => {
             cy.wait(500); // Ensure animations are done
 
             cy.get('[aria-label="Expand"]')
-                .eq(0) // We still target the first button labeled Expand because the previous one should now have a Close label
+                .eq(1) // We still target the first button labeled Expand because the previous one should now have a Close label
                 .click()
                 .should(el => expect(el).to.have.attr('aria-expanded', 'true'))
                 .should(el => expect(el).to.have.attr('aria-label', 'Close'));
 
             cy.get('#12-expand').should(el => expect(el).to.exist);
+
+            // two opened => collapse all
+            cy.get('[aria-label="Expand"]').eq(0).click();
+            for (let i = 13; i > 2; i--) {
+                cy.get(`#${i}-expand`).should(el => expect(el).not.to.exist);
+            }
+            // expand all
+            cy.get('[aria-label="Expand"]').eq(0).click();
+            for (let i = 13; i > 2; i--) {
+                cy.get(`#${i}-expand`).should(el => expect(el).to.exist);
+            }
         });
     });
 
