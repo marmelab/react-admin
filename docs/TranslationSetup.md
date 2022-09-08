@@ -64,7 +64,7 @@ export const i18nProvider = polyglotI18nProvider(
 );
 ```
 
-The second argument to the `polyglotI18nProvider` function is the default locale. The third is the list of supported locales - and is used by the `<LocaleMenuButton>` component to display a list of languages.
+The second argument to the `polyglotI18nProvider` function is the default locale. The third is the list of supported locales - and is used by the [`<LocaleMenuButton>`](./LocalesMenuButton.md) component to display a list of languages.
 
 Next, pass the custom `i18nProvider` to your `<Admin>`:
 
