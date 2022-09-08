@@ -69,7 +69,7 @@ export const FullWidth = () => (
 
 export const Disabled = () => (
     <Wrapper>
-        <FileInput source="attachment" inputProps={{ disabled: true }}>
+        <FileInput source="attachment" options={{ disabled: true }}>
             <FileField source="src" title="title" />
         </FileInput>
     </Wrapper>
