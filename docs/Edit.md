@@ -572,7 +572,7 @@ export const UserEdit = (props) => {
 }
 ```
 
-As an alternative, you can cleanup empty values at the input level, using [the `parse` prop](./Inputs.md#transforming-input-value-tofrom-record).
+As an alternative, you can clean up empty values at the input level, using [the `parse` prop](./Inputs.md#transforming-input-value-tofrom-record).
 
 ## Adding `meta` To The DataProvider Call
 
