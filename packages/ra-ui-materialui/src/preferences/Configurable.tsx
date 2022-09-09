@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useRef, cloneElement, ReactElement } from 'react';
+import { useRef, useEffect, cloneElement, ReactElement } from 'react';
 import { usePreferencesEditor } from 'ra-core';
 import { alpha } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -40,16 +40,38 @@ export const Configurable = (props: ConfigurableProps) => {
     const rect = ref.current?.getBoundingClientRect();
 
     const preferencesEditorContext = usePreferencesEditor();
-    if (!preferencesEditorContext) {
-        return children;
-    }
+    const hasPreferencesEditorContext = !!preferencesEditorContext;
+
     const {
         isEnabled,
         editor: currentEditor,
         setEditor,
         preferenceKey: currentPreferenceKey,
         setPreferenceKey,
-    } = preferencesEditorContext;
+    } = preferencesEditorContext || {};
+
+    const isEditorOpen = preferenceKey
+        ? preferenceKey === currentPreferenceKey
+        : editor === currentEditor;
+
+    useEffect(() => {
+        // on unmount, remove the editor
+        return hasPreferencesEditorContext && isEditorOpen
+            ? () => {
+                  setEditor(null);
+                  setPreferenceKey(null);
+              }
+            : undefined;
+    }, [
+        hasPreferencesEditorContext,
+        isEditorOpen,
+        setEditor,
+        setPreferenceKey,
+    ]);
+
+    if (!hasPreferencesEditorContext) {
+        return children;
+    }
 
     const handleOpenEditor = () => {
         if (preferenceKey) {
@@ -67,10 +89,6 @@ export const Configurable = (props: ConfigurableProps) => {
             setEditor(editor);
         }
     };
-
-    const isEditorOpen = preferenceKey
-        ? preferenceKey === currentPreferenceKey
-        : editor === currentEditor;
 
     return (
         <Root
