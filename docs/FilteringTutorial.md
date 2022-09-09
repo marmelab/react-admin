@@ -161,11 +161,59 @@ const postFilters = [
 
 An alternative UI to the Filter Button/Form Combo is the FilterList Sidebar. Similar to what users usually see on e-commerce websites, it's a panel with many simple filters that can be enabled and combined using the mouse. The user experience is better than the Button/Form Combo, because the filter values are explicit, and it doesn't require typing anything in a form. But it's a bit less powerful, as only filters with a finite set of values (or intervals) can be used in the `<FilterList>`.
 
+Here is an example FilterList sidebar:
+
+{% raw %}
+```jsx
+import { SavedQueriesList, FilterLiveSearch, FilterList, FilterListItem } from 'react-admin';
+import { Card, CardContent } from '@mui/material';
+import MailIcon from '@mui/icons-material/MailOutline';
+import CategoryIcon from '@mui/icons-material/LocalOffer';
+
+export const PostFilterSidebar = () => (
+    <Card sx={{ order: -1, mr: 2, mt: 9, width: 200 }}>
+        <CardContent>
+            <SavedQueriesList />
+            <FilterLiveSearch >
+            <FilterList label="Subscribed to newsletter" icon={<MailIcon />}>
+                <FilterListItem label="Yes" value={{ has_newsletter: true }} />
+                <FilterListItem label="No" value={{ has_newsletter: false }} />
+            </FilterList>
+            <FilterList label="Category" icon={<CategoryIcon />}>
+                <FilterListItem label="Tests" value={{ category: 'tests' }} />
+                <FilterListItem label="News" value={{ category: 'news' }} />
+                <FilterListItem label="Deals" value={{ category: 'deals' }} />
+                <FilterListItem label="Tutorials" value={{ category: 'tutorials' }} />
+            </FilterList>
+        </CardContent>
+    </Card>
+);
+```
+{% endraw %}
+
+Add it to the list view using the `<List aside>` prop:
+
+```jsx
+import { PostFilterSidebar } from './PostFilterSidebar';
+
+export const PostList = () => (
+    <List aside={<PostFilterSidebar />}>
+        ...
+    </List>
+);
+```
+
+**Tip**: the `<Card sx>` prop in the `PostFilterSidebar` component above is here to put the sidebar on the left side of the screen, instead of the default right side.
+
 Check [the `<FilterList>` documentation](./FilterList.md) for more information.
 
 If you use the FilterList, you'll probably need a search input. As the FilterList sidebar is not a form, this requires a bit of extra work. Fortunately, react-admin provides a specialized search input component for that purpose: check [the `<FilterLiveSearch>` documentation](./FilterLiveSearch.md) for details.
 
 ![Filter Live Search](./img/filter-live-search.gif)
+
+Finally, a filter sidebar is the ideal place to display the user's favorite filters. Check [the `<SavedQueriesList>` documentation](./SavedQueriesList.md) for more information.
+
+![Filter Sidebar With SavedQueriesList](./img/SavedQueriesList.gif)
 
 ## Filter Operators
 
