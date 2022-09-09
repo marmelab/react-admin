@@ -67,7 +67,7 @@ const listControllerComponent = (storeKey: string, sort?: SortPayload) => {
                     <br />
                     <button
                         aria-label="incrementPerPage"
-                        disabled={params.perPage > params.data?.length ?? 0}
+                        disabled={params.perPage > params.data?.length ?? false}
                         onClick={() => params.setPerPage(++params.perPage)}
                     >
                         Increment perPage
