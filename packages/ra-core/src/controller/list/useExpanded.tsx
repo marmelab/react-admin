@@ -64,7 +64,7 @@ export const useExpanded = (
  * const expandIcon = expanded ? ExpandLess : ExpandMore;
  * const onExpandClick = () => toggleExpanded();
  */
-export const useExpandedMultiple = (
+export const useExpandAll = (
     resource: string,
     ids: Identifier[]
 ): [boolean, () => void] => {
@@ -78,13 +78,15 @@ export const useExpandedMultiple = (
           expandedIds.some(id => ids.some(id2 => id2 == id))
         : false;
 
-    const toggleExpanded = useCallback(() => {
-        const unaffectedIds = expandedIds.filter(
+    const toggleExpandedAll = useCallback(() => {
+        const unaffectedExpandedIds = expandedIds.filter(
             // eslint-disable-next-line eqeqeq
             expanded_id => !ids.some(id => id == expanded_id)
         );
-        setExpandedIds(expanded ? unaffectedIds : unaffectedIds.concat(ids));
+        setExpandedIds(
+            expanded ? unaffectedExpandedIds : unaffectedExpandedIds.concat(ids)
+        );
     }, [expandedIds, setExpandedIds, expanded, ids]);
 
-    return [expanded, toggleExpanded];
+    return [expanded, toggleExpandedAll];
 };
