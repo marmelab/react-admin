@@ -26,7 +26,6 @@ const ExpandAllButton = ({ resource, ids }: ExpandAllButtonProps) => {
             aria-expanded={expanded}
             tabIndex={-1}
             aria-hidden="true"
-            component="div"
             onClick={toggleExpanded}
             size="small"
         >
