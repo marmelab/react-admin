@@ -334,6 +334,43 @@ export const TagEdit = () => (
 );
 ```
 
+## Cleaning Up Empty Strings
+
+As a reminder, HTML form inputs always return strings, even for numbers and booleans. So the empty value for a text input is the empty string, not `null` or `undefined`. This means that the data sent to the form handler will contain empty strings:
+
+```js
+{
+    title: '',
+    average_note: '',
+    body: '',
+    // etc.
+}
+```
+
+If you prefer to have `null` values, or to omit the key for empty values, use `transform` prop of the parent component ([`<Edit>`](./Edit.md#transform) or [`<Create>`](./Create.md#transform)) to sanitize the form data before passing it to the `dataProvider`:
+
+```jsx
+export const UserEdit = (props) => {
+    const transform = (data) => {
+        const sanitizedData = {};
+        for (const key in data) {
+            if (typeof data[key] === "string" && data[key].trim().length === 0) continue;
+            sanitizedData[key] = data[key]; 
+        }
+        return sanitizedData;
+    };
+    return (
+        <Edit {...props} transform={transform}>
+            <SimpleForm>
+                ...
+            </SimpleForm>
+        </Edit>
+    );
+}
+```
+
+As an alternative, you can cleanup empty values at the input level, using [the `parse` prop](./Inputs.md#transforming-input-value-tofrom-record). 
+
 ## Using Fields As Children
 
 The basic usage of `<SimpleForm>` is to pass [Input components](./Inputs.md) as children. For non-editable fields, you can pass `disabled` inputs, or even [Field components](./Fields.md). But since `<Field>` components have no label by default, you'll have to wrap your inputs in a `<Labeled>` component in that case:
