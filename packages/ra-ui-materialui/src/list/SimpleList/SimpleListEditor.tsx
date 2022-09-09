@@ -41,7 +41,7 @@ export const SimpleListEditor = (props: SimpleListEditorProps) => {
     );
 
     return (
-        <>
+        <form>
             <TextField
                 label={translate('ra.configurable.SimpleList.primaryText', {
                     _: 'Primary Text',
@@ -80,7 +80,7 @@ export const SimpleListEditor = (props: SimpleListEditorProps) => {
                     tertiaryTextKey,
                 ]}
             />
-        </>
+        </form>
     );
 };
 

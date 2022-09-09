@@ -31,5 +31,17 @@ export const usePreferenceInput = (key, defaultValue) => {
         setValueFromStore(value);
     };
 
-    return { value, onChange, onBlur };
+    const onKeyDown = event => {
+        if (event.key === 'Enter') {
+            setValueFromStore(value);
+            const form = event.target.form;
+            if (form) {
+                const index = [...form].indexOf(event.target);
+                form.elements[index + 1]?.focus();
+            }
+            event.preventDefault();
+        }
+    };
+
+    return { value, onChange, onBlur, onKeyDown };
 };
