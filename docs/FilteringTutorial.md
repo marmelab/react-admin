@@ -203,7 +203,7 @@ export const PostList = () => (
 );
 ```
 
-**Tip**: the `<Card sx>` prop in the `PostFilterSidebar` component above is here to put the sidebar on the left side of the screen, instead of the default right side.
+**Tip**: The `<Card sx>` prop in the `PostFilterSidebar` component above is here to put the sidebar on the left side of the screen, instead of the default right side.
 
 Check [the `<FilterList>` documentation](./FilterList.md) for more information.
 
