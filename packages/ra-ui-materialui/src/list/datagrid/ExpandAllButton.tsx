@@ -6,12 +6,12 @@ import { useTranslate, useExpandedMultiple } from 'ra-core';
 import { DatagridClasses } from './useDatagridStyles';
 import clsx from 'clsx';
 
-interface ExpandMultipleButtonProps {
+interface ExpandAllButtonProps {
     resource: string;
     ids: string[] | number[];
 }
 
-const ExpandAllButton = ({ resource, ids }: ExpandMultipleButtonProps) => {
+const ExpandAllButton = ({ resource, ids }: ExpandAllButtonProps) => {
     const translate = useTranslate();
     const [expanded, toggleExpanded] = useExpandedMultiple(resource, ids);
 
@@ -34,11 +34,5 @@ const ExpandAllButton = ({ resource, ids }: ExpandMultipleButtonProps) => {
         </IconButton>
     );
 };
-
-export interface ExpandRowButtonProps extends IconButtonProps {
-    component?: ElementType;
-    expanded: boolean;
-    expandContentId?: string;
-}
 
 export default memo(ExpandAllButton);

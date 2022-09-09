@@ -3,7 +3,7 @@ import { render, fireEvent } from '@testing-library/react';
 
 import { Expand } from './Datagrid.stories';
 
-describe('Expand', () => {
+describe('ExpandAllButton', () => {
     it('should expand all rows at once', async () => {
         const rendered = render(<Expand />);
         const button = rendered.container.querySelector(

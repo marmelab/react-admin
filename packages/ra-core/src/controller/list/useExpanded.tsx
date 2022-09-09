@@ -55,7 +55,7 @@ export const useExpanded = (
  * expanded state is true when at least one item from ids is expanded.
  *
  * @param {string} resource The resource name, e.g. 'posts'
- * @param {string[]|integer[]} ids A list of record identifiers
+ * @param {Identifier[]} ids A list of record identifiers
  * @returns {Object} Destructure as [expanded, toggleExpanded].
  *
  * @example
