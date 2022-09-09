@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { ElementType, memo } from 'react';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import { memo } from 'react';
+import IconButton from '@mui/material/IconButton';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslate, useExpandedMultiple } from 'ra-core';
 import { DatagridClasses } from './useDatagridStyles';
