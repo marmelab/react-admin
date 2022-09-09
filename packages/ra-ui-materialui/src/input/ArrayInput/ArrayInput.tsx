@@ -172,7 +172,12 @@ export const ArrayInput = (props: ArrayInputProps) => {
                 <FormHelperText error={(isDirty || isSubmitted) && !!error}>
                     <InputHelperText
                         touched={isDirty || isSubmitted}
-                        error={error?.root?.message}
+                        // root property is applicable to built-in validation only,
+                        // Resolvers are yet to support useFieldArray root level validation.
+                        // Reference: https://react-hook-form.com/api/usefieldarray
+                        error={
+                            error.root ? error.root?.message : error?.message
+                        }
                         helperText={helperText}
                     />
                 </FormHelperText>
