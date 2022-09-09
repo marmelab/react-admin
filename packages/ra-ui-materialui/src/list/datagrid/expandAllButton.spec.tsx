@@ -1,28 +1,32 @@
 import * as React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 
 import { Expand } from './Datagrid.stories';
 
 describe('ExpandAllButton', () => {
     it('should expand all rows at once', async () => {
         const rendered = render(<Expand />);
-        const button = rendered.container.querySelector(
-            '.RaDatagrid-expandHeader>div'
-        );
-        const expectExpandedRows = (count: number) => {
-            expect(
-                rendered.container.querySelectorAll('.RaDatagrid-expandedPanel')
-            ).toHaveLength(count);
+        const expand = () => {
+            const button = rendered.getAllByLabelText('ra.action.expand')[0];
+            fireEvent.click(button);
+        };
+        const collapse = () => {
+            const button = rendered.getAllByLabelText('ra.action.close')[0];
+            fireEvent.click(button);
         };
 
-        expect(button).not.toBe(null);
+        const expectExpandedRows = (count: number) => {
+            expect(rendered.queryAllByTestId('ExpandPanel')).toHaveLength(
+                count
+            );
+        };
 
         expectExpandedRows(0);
 
-        fireEvent.click(button);
+        expand();
         expectExpandedRows(4);
 
-        fireEvent.click(button);
+        collapse();
         expectExpandedRows(0);
     });
 });

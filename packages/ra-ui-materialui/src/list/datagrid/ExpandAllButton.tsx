@@ -2,7 +2,7 @@ import * as React from 'react';
 import { memo } from 'react';
 import IconButton from '@mui/material/IconButton';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useTranslate, useExpandedMultiple } from 'ra-core';
+import { useTranslate, useExpandAll } from 'ra-core';
 import { DatagridClasses } from './useDatagridStyles';
 import clsx from 'clsx';
 
@@ -13,7 +13,7 @@ interface ExpandAllButtonProps {
 
 const ExpandAllButton = ({ resource, ids }: ExpandAllButtonProps) => {
     const translate = useTranslate();
-    const [expanded, toggleExpanded] = useExpandedMultiple(resource, ids);
+    const [expanded, toggleExpanded] = useExpandAll(resource, ids);
 
     return (
         <IconButton
