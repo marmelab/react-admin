@@ -97,10 +97,10 @@ const MinimalLayout = (props: CoreLayoutProps) => {
     return (
         <div style={styles.mainContainer}>
             <Link aria-label="top" to={`/top`}>
-                Go to Top
+                Go to Top List
             </Link>{' '}
             <Link aria-label="flop" to={`/flop`}>
-                Go to Flop
+                Go to Flop List
             </Link>
             <br />
             <br />
