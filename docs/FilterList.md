@@ -5,129 +5,63 @@ title: "The FilterList Component"
 
 # `<FilterList>`
 
+An alternative UI to the Filter Button/Form Combo is the FilterList Sidebar. Similar to what users usually see on e-commerce websites, it's a panel with many simple filters that can be enabled and combined using the mouse.
+
 ![Filter Sidebar](./img/filter-sidebar.gif)
 
-An alternative UI to the Filter Button/Form Combo is the FilterList Sidebar. Similar to what users usually see on e-commerce websites, it's a panel with many simple filters that can be enabled and combined using the mouse. The user experience is better than the Button/Form Combo, because the filter values are explicit, and it doesn't require typing anything in a form. But it's a bit less powerful, as only filters with a finite set of values (or intervals) can be used in the `<FilterList>`.
+The user experience is better than the Button/Form Combo, because the filter values are explicit, and it doesn't require typing anything in a form. But it's a bit less powerful, as only filters with a finite set of values (or intervals) can be used in the `<FilterList>`.
 
 ## Usage
 
-The `<FilterList>` component expects a list of `<FilterListItem>` as children. Each `<FilterListItem>` defines a filter `label` and a `value`, which is merged with the current filter value when enabled by the user. Here is an example usage for a list of customers:
+Use the `<FilterList>` component in a sidebar for the `<List>` view. It expects a list of `<FilterListItem>` as children. Each `<FilterListItem>` defines a filter `label` and a `value`, which is merged with the current filter value when enabled by the user. 
+
+For instance, here is a filter sidebar for a post list, allowing users to filter on two fields:
 
 {% raw %}
 ```jsx
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import MonetizationOnIcon from '@mui/icons-material/MonetizationOnOutlined';
+import { SavedQueriesList, FilterLiveSearch, FilterList, FilterListItem } from 'react-admin';
+import { Card, CardContent } from '@mui/material';
 import MailIcon from '@mui/icons-material/MailOutline';
-import LocalOfferIcon from '@mui/icons-material/LocalOfferOutlined';
-import { FilterList, FilterListItem } from 'react-admin';
-import {
-    endOfYesterday,
-    startOfWeek,
-    subWeeks,
-    startOfMonth,
-    subMonths,
-} from 'date-fns';
+import CategoryIcon from '@mui/icons-material/LocalOffer';
 
-import segments from '../segments/data';
-
-const LastVisitedFilter = () => (
-    <FilterList label="Last visited" icon={<AccessTimeIcon />}>
-        <FilterListItem
-            label="Today"
-            value={{
-                last_seen_gte: endOfYesterday().toISOString(),
-                last_seen_lte: undefined,
-            }}
-        />
-        <FilterListItem
-            label="This week"
-            value={{
-                last_seen_gte: startOfWeek(new Date()).toISOString(),
-                last_seen_lte: undefined,
-            }}
-        />
-        <FilterListItem
-            label="Last week"
-            value={{
-                last_seen_gte: subWeeks(startOfWeek(new Date()), 1).toISOString(),
-                last_seen_lte: startOfWeek(new Date()).toISOString(),
-            }}
-        />
-        <FilterListItem
-            label="This month"
-            value={{
-                last_seen_gte: startOfMonth(new Date()).toISOString(),
-                last_seen_lte: undefined,
-            }}
-        />
-        <FilterListItem
-            label="Last month"
-            value={{
-                last_seen_gte: subMonths(startOfMonth(new Date()),1).toISOString(),
-                last_seen_lte: startOfMonth(new Date()).toISOString(),
-            }}
-        />
-        <FilterListItem
-            label="Earlier"
-            value={{
-                last_seen_gte: undefined,
-                last_seen_lte: subMonths(startOfMonth(new Date()),1).toISOString(),
-            }}
-        />
-    </FilterList>
-);
-const HasOrderedFilter = () => (
-    <FilterList
-        label="Has ordered"
-        icon={<MonetizationOnIcon />}
-    >
-        <FilterListItem
-            label="True"
-            value={{
-                nb_commands_gte: 1,
-                nb_commands_lte: undefined,
-            }}
-        />
-        <FilterListItem
-            label="False"
-            value={{
-                nb_commands_gte: undefined,
-                nb_commands_lte: 0,
-            }}
-        />
-    </FilterList>
-);
-const HasNewsletterFilter = () => (
-    <FilterList
-        label="Has newsletter"
-        icon={<MailIcon />}
-    >
-        <FilterListItem
-            label="True"
-            value={{ has_newsletter: true }}
-        />
-        <FilterListItem
-            label="False"
-            value={{ has_newsletter: false }}
-        />
-    </FilterList>
-);
-const SegmentFilter = () => (
-    <FilterList
-        label="Segment"
-        icon={<LocalOfferIcon />}
-    >
-        {segments.map(segment => (
-            <FilterListItem
-                label={segment.name}
-                key={segment.id}
-                value={{ groups: segment.id }}
-            />
-        ))}
-    </FilterList>
+export const PostFilterSidebar = () => (
+    <Card sx={{ order: -1, mr: 2, mt: 9, width: 200 }}>
+        <CardContent>
+            <SavedQueriesList />
+            <FilterLiveSearch >
+            <FilterList label="Subscribed to newsletter" icon={<MailIcon />}>
+                <FilterListItem label="Yes" value={{ has_newsletter: true }} />
+                <FilterListItem label="No" value={{ has_newsletter: false }} />
+            </FilterList>
+            <FilterList label="Category" icon={<CategoryIcon />}>
+                <FilterListItem label="Tests" value={{ category: 'tests' }} />
+                <FilterListItem label="News" value={{ category: 'news' }} />
+                <FilterListItem label="Deals" value={{ category: 'deals' }} />
+                <FilterListItem label="Tutorials" value={{ category: 'tutorials' }} />
+            </FilterList>
+        </CardContent>
+    </Card>
 );
 ```
 {% endraw %}
+
+Add this component to the list view using [the `<List aside>` prop](./List.md#aside):
+
+```jsx
+import { PostFilterSidebar } from './PostFilterSidebar';
+
+export const PostList = () => (
+    <List aside={<PostFilterSidebar />}>
+        ...
+    </List>
+);
+```
+
+**Tip**: The `<Card sx>` prop in the `PostFilterSidebar` component above is here to put the sidebar on the left side of the screen, instead of the default right side.
+
+A more sophisticated example is the filter sidebar for the visitors list visible in the screencast at the beginning of this page. The code for this example is available in the [react-admin repository](https://github.com/marmelab/react-admin/blob/master/examples/demo/src/visitors/VisitorListAside.tsx).
+
+**Tip**: In a Filter List sidebar, you can use [the `<FilterLiveSearch>` component](./FilterLiveSearch.md) to add a search input at the top of the sidebar, and [the `<SavedQueriesList>` component](./SavedQueriesList.md) to add a list of saved queries.
 
 `<FilterList>` accepts 3 props:
 
