@@ -4,6 +4,8 @@ import {
     useSetInspectorTitle,
     useStore,
     I18nContextProvider,
+    memoryStore,
+    StoreContextProvider,
 } from 'ra-core';
 import { Box, Typography } from '@mui/material';
 import TimelineIcon from '@mui/icons-material/Timeline';
@@ -126,15 +128,17 @@ const ConfigurableSalesBlock = props => (
 );
 
 export const Basic = () => (
-    <PreferencesEditorContextProvider>
-        <Inspector />
-        <InspectorButton />
-        <hr />
-        <Box display="flex" alignItems="flex-start">
-            <ConfigurableTextBlock />
-            <ConfigurableSalesBlock />
-        </Box>
-    </PreferencesEditorContextProvider>
+    <StoreContextProvider value={memoryStore()}>
+        <PreferencesEditorContextProvider>
+            <Inspector />
+            <InspectorButton />
+            <hr />
+            <Box display="flex" alignItems="flex-start">
+                <ConfigurableTextBlock />
+                <ConfigurableSalesBlock />
+            </Box>
+        </PreferencesEditorContextProvider>
+    </StoreContextProvider>
 );
 
 export const Nested = () => (
