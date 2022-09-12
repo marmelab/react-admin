@@ -7,7 +7,7 @@ title: "The SavedQueriesList Component"
 
 ![Filter Sidebar With SavedQueriesList](./img/SavedQueriesList.gif)
 
-`<SavedQueriesList>` renders a list of filters saved by the end user (and kept in [the Store](./Store.md)). It is a complement to `<FilterList>` sections for the filter sidebar
+`<SavedQueriesList>` renders a list of filters saved by the end user (and kept in [the Store](./Store.md)). It is a complement to `<FilterList>` sections for [the filter sidebar](./FilteringTutorial.md#the-filterlist-sidebar).
 
 ## Usage
 
@@ -17,7 +17,7 @@ import {
     FilterListItem,
     List,
     Datagrid
-+    SavedQueriesList
++   SavedQueriesList
 } from 'react-admin';
 import { Card, CardContent } from '@mui/material';
 
@@ -82,6 +82,3 @@ const SongList = props => (
 ```
 {% endraw %}
 
-## API
-
-[`<SavedQueriesList>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/list/filter/SavedQueriesList.tsx

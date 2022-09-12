@@ -338,7 +338,20 @@ The `transform` function can also return a `Promise`, which allows you to do all
 
 **Tip**: If you want to have different transformations based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save", and another to "save and notify other admins"), you can set the `transform` prop on [the `<SaveButton>` component](./SaveButton.md), too.
 
-**Tip**: A frequent usage of the `transform` function is to stripe empty string values returned by the form.
+## Cleaning Up Empty Strings
+
+As a reminder, HTML form inputs always return strings, even for numbers and booleans. So the empty value for a text input is the empty string, not `null` or `undefined`. This means that the data sent to `dataProvider.create()` will contain empty strings:
+
+```js
+{
+    title: '',
+    average_note: '',
+    body: '',
+    // etc.
+}
+```
+
+If you prefer to have `null` values, or to omit the key for empty values, use [the `transform` prop](#transform) to sanitize the form data before submission:
 
 ```jsx
 export const UserCreate = (props) => {

@@ -539,7 +539,20 @@ export const UserEdit = (props) => {
 }
 ```
 
-**Tip**: A frequent usage of the `transform` function is to stripe empty string values returned by the form.
+## Cleaning Up Empty Strings
+
+As a reminder, HTML form inputs always return strings, even for numbers and booleans. So the empty value for a text input is the empty string, not `null` or `undefined`. This means that the data sent to `dataProvider.update()` will contain empty strings:
+
+```js
+{
+    title: '',
+    average_note: '',
+    body: '',
+    // etc.
+}
+```
+
+If you prefer to have `null` values, or to omit the key for empty values, use [the `transform` prop](#transform) to sanitize the form data before submission:
 
 ```jsx
 export const UserEdit = (props) => {
@@ -558,6 +571,8 @@ export const UserEdit = (props) => {
     );
 }
 ```
+
+As an alternative, you can clean up empty values at the input level, using [the `parse` prop](./Inputs.md#transforming-input-value-tofrom-record).
 
 ## Adding `meta` To The DataProvider Call
 
