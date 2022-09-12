@@ -38,6 +38,11 @@ export const Inspector = () => {
         { x: number; y: number } | undefined
     >();
     const handleDragStart = e => {
+        // exit if the user drags on anything but the title
+        const draggedElement = document.elementFromPoint(e.clientX, e.clientY);
+        if (draggedElement.id !== 'inspector-dialog-title') {
+            return e.preventDefault();
+        }
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setData('inspector', '');
         setTimeout(() => {
@@ -104,7 +109,7 @@ export const Inspector = () => {
         >
             <div className={InspectorClasses.title}>
                 <Typography
-                    id="inspectore-dialog-title"
+                    id="inspector-dialog-title"
                     variant="overline"
                     component="div"
                     py={1}
