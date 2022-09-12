@@ -143,10 +143,12 @@ const Root = styled('span', {
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     [`& .${ConfigurableClasses.button}`]: {
-        display: 'none',
+        visibility: 'hidden',
+        pointerEvents: 'none',
     },
     [`&.${ConfigurableClasses.editMode}:hover > .${ConfigurableClasses.button}`]: {
-        display: 'block',
+        visibility: 'visible',
+        pointerEvents: 'initial',
         position: 'absolute',
         zIndex: theme.zIndex.modal - 1,
     },

@@ -24,7 +24,7 @@ export const usePreferenceInput = (key, defaultValue) => {
     }, [valueFromStore, defaultValue]);
 
     const onChange = event => {
-        setValue(event.target.value === '' ? undefined : event.target.value);
+        setValue(event.target.value === '' ? defaultValue : event.target.value);
     };
 
     const onBlur = () => {
