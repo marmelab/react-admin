@@ -1,5 +1,18 @@
 # Changelog
 
+## v4.3.2
+
+* Fix `useFormState` sometimes returns outdated state ([#8138](https://github.com/marmelab/react-admin/pull/8138)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<ArrayInput>` not showing validation error message ([#8154](https://github.com/marmelab/react-admin/pull/8154)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<FileInput>` and `<ImageInput>` not showing validation error message ([#8150](https://github.com/marmelab/react-admin/pull/8150)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<AppBar className>` prop is ignored ([#8148](https://github.com/marmelab/react-admin/pull/8148)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<ReferenceManyField>` row selection is shared for a given resources ([#8149](https://github.com/marmelab/react-admin/pull/8149)) ([WiXSL](https://github.com/WiXSL))
+* Fix `useNotify()` triggers useless rerenders ([#8136](https://github.com/marmelab/react-admin/pull/8136)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<AutocompleteInput>` does not allow zero as value ([#8144](https://github.com/marmelab/react-admin/pull/8144)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Add documentation for the `<SavedQueriesList>` component ([#8157](https://github.com/marmelab/react-admin/pull/8157)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix tutorial about sanitizing empty values ([#8156](https://github.com/marmelab/react-admin/pull/8156)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix Theming doc mentions old syntax of `<Menu.Item>` ([#8137](https://github.com/marmelab/react-admin/pull/8137)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v4.3.1
 
 * Fix `<SelectInput>` reorders choices by id ([#8135](https://github.com/marmelab/react-admin/pull/8135)) ([fzaninotto](https://github.com/fzaninotto))
