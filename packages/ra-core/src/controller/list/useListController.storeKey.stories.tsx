@@ -12,8 +12,7 @@ import {
 import { localStorageStore } from '../../store';
 import { FakeBrowserDecorator } from '../../storybook/FakeBrowser';
 import { CoreLayoutProps, SortPayload } from '../../types';
-import { ListController } from './ListController';
-import { ListControllerResult } from './useListController';
+import { useListController } from './useListController';
 
 export default {
     title: 'ra-core/controller/list/useListController',
@@ -46,50 +45,54 @@ const dataProvider = fakeDataProvider({
     ],
 });
 
-const listControllerComponent = (storeKey: string, sort?: SortPayload) => {
+const OrderedPostList = ({
+    storeKey,
+    sort,
+}: {
+    storeKey: string;
+    sort?: SortPayload;
+}) => {
+    const params = useListController({
+        resource: 'posts',
+        debounce: 200,
+        perPage: 3,
+        sort,
+        storeKey,
+    });
     return (
-        <ListController
-            resource="posts"
-            debounce={200}
-            perPage={3}
-            sort={sort}
-            storeKey={storeKey}
-            children={(params: ListControllerResult) => (
-                <div>
-                    <span aria-label="storeKey" data-value={storeKey}>
-                        storeKey: {storeKey}
-                    </span>
-                    <br />
-                    <span aria-label="perPage" data-value={params.perPage}>
-                        perPage: {params.perPage}
-                    </span>
-                    <br />
-                    <br />
-                    <button
-                        aria-label="incrementPerPage"
-                        disabled={params.perPage > params.data?.length ?? false}
-                        onClick={() => params.setPerPage(++params.perPage)}
-                    >
-                        Increment perPage
-                    </button>{' '}
-                    <button
-                        aria-label="decrementPerPage"
-                        disabled={params.perPage <= 0}
-                        onClick={() => params.setPerPage(--params.perPage)}
-                    >
-                        Decrement perPage
-                    </button>
-                    <ul style={styles.ul}>
-                        {!params.isLoading &&
-                            params.data.map(post => (
-                                <li key={`post_${post.id}`}>
-                                    {post.title} - {post.votes} votes
-                                </li>
-                            ))}
-                    </ul>
-                </div>
-            )}
-        />
+        <div>
+            <span aria-label="storeKey" data-value={storeKey}>
+                storeKey: {storeKey}
+            </span>
+            <br />
+            <span aria-label="perPage" data-value={params.perPage}>
+                perPage: {params.perPage}
+            </span>
+            <br />
+            <br />
+            <button
+                aria-label="incrementPerPage"
+                disabled={params.perPage > params.data?.length ?? false}
+                onClick={() => params.setPerPage(++params.perPage)}
+            >
+                Increment perPage
+            </button>{' '}
+            <button
+                aria-label="decrementPerPage"
+                disabled={params.perPage <= 0}
+                onClick={() => params.setPerPage(--params.perPage)}
+            >
+                Decrement perPage
+            </button>
+            <ul style={styles.ul}>
+                {!params.isLoading &&
+                    params.data.map(post => (
+                        <li key={`post_${post.id}`}>
+                            {post.title} - {post.votes} votes
+                        </li>
+                    ))}
+            </ul>
+        </div>
     );
 };
 
@@ -108,10 +111,12 @@ const MinimalLayout = (props: CoreLayoutProps) => {
         </div>
     );
 };
-const TopList = () =>
-    listControllerComponent('top', { field: 'votes', order: 'DESC' });
-const FlopList = () =>
-    listControllerComponent('flop', { field: 'votes', order: 'ASC' });
+const TopPosts = (
+    <OrderedPostList storeKey="top" sort={{ field: 'votes', order: 'DESC' }} />
+);
+const FlopPosts = (
+    <OrderedPostList storeKey="flop" sort={{ field: 'votes', order: 'ASC' }} />
+);
 
 export const ListsUsingSameResource = (argsOrProps, context) => {
     const history = context?.history || argsOrProps.history;
@@ -123,10 +128,10 @@ export const ListsUsingSameResource = (argsOrProps, context) => {
         >
             <CoreAdminUI layout={MinimalLayout}>
                 <CustomRoutes>
-                    <Route path="/top" element={<TopList />} />
+                    <Route path="/top" element={TopPosts} />
                 </CustomRoutes>
                 <CustomRoutes>
-                    <Route path="/flop" element={<FlopList />} />
+                    <Route path="/flop" element={FlopPosts} />
                 </CustomRoutes>
                 <Resource name="posts" />
             </CoreAdminUI>

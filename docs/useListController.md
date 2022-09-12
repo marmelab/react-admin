@@ -96,20 +96,40 @@ In case no `storeKey` is provided, the states will be stored with the following 
 
 **Note:** Please note that selection state will remain linked to a resource-based key as described [here](./List.md#disablesyncwithlocation).
 
+In the example below, both lists `TopPosts` and `FlopPosts` use the same resource ('posts'), but their controller states are stored separately (under the store keys `'top'` and `'flop'` respectively).
+
 ```jsx
-// display the top 5 posts
-<ListController
-    resource="posts"
-    storeKey="top"
-    sort={{ field: 'votes', order: 'DESC' }}
-    children={params => (
-        <ul>{
-            !params.isLoading && params.data.map(post => (
-                <li key={`post_${post.id}`}>{post.title} - {post.votes} votes</li>
-            ))
-        }</ul> 
-    )}
-/>
+import { useListController } from 'react-admin';
+
+const OrderedPostList = ({
+    storeKey,
+    sort,
+}) => {
+    const params = useListController({
+        resource: 'posts',
+        sort,
+        storeKey,
+    });
+    return (
+        <div>
+            <ul style={styles.ul}>
+                {!params.isLoading &&
+                    params.data.map(post => (
+                        <li key={`post_${post.id}`}>
+                            {post.title} - {post.votes} votes
+                        </li>
+                    ))}
+            </ul>
+        </div>
+    );
+};
+
+const TopPosts = (
+    <OrderedPostList storeKey="top" sort={{ field: 'votes', order: 'DESC' }} />
+);
+const FlopPosts = (
+    <OrderedPostList storeKey="flop" sort={{ field: 'votes', order: 'ASC' }} />
+);
 ```
 
 ## Return Value
