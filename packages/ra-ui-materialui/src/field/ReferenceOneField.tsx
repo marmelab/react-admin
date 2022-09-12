@@ -64,7 +64,7 @@ export const ReferenceOneField = (props: ReferenceOneFieldProps) => {
     return !record || (!isLoading && referenceRecord == null) ? (
         emptyText ? (
             <Typography component="span" variant="body2">
-                {translate(emptyText, { _: emptyText })}
+                {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
         ) : null
     ) : (
