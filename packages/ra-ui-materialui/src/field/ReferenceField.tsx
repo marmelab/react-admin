@@ -63,7 +63,7 @@ export const ReferenceField: FC<ReferenceFieldProps> = props => {
     return id == null ? (
         emptyText ? (
             <Typography component="span" variant="body2">
-                {translate(emptyText, { _: emptyText })}
+                {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
         ) : null
     ) : (
@@ -184,7 +184,9 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
         return <LinearProgress />;
     }
     if (!referenceRecord) {
-        return emptyText ? <>{translate(emptyText, { _: emptyText })}</> : null;
+        return emptyText ? (
+            <>{emptyText && translate(emptyText, { _: emptyText })}</>
+        ) : null;
     }
 
     let child = children || (

@@ -48,7 +48,7 @@ export const FileField = (props: FileFieldProps) => {
                 className={className}
                 {...sanitizeFieldRestProps(rest)}
             >
-                {translate(emptyText, { _: emptyText })}
+                {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
         ) : (
             <Root className={className} {...sanitizeFieldRestProps(rest)} />
