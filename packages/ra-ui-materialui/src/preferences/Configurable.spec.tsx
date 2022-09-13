@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { screen, render } from '@testing-library/react';
+import { screen, render, waitFor } from '@testing-library/react';
 import expect from 'expect';
 
-import { Basic } from './Configurable.stories';
+import { Basic, Unmount } from './Configurable.stories';
 
 describe('Configurable', () => {
     it('should show the block inspector on selection', async () => {
@@ -42,5 +42,29 @@ describe('Configurable', () => {
         screen.getByLabelText('Show date').click();
         screen.getByLabelText('ra.action.close').click();
         expect(screen.queryByText('Today')).toBeNull();
+    });
+    it('should remove the editor when unmounting', async () => {
+        render(<Unmount />);
+        screen.getByLabelText('ra.configurable.configureMode').click();
+        screen.getByText('ra.configurable.inspector.title');
+        screen.getAllByLabelText('ra.configurable.customize')[0].click();
+        await screen.findByText('ra.inspector.textBlock');
+        screen.getByText('toggle text block').click();
+        await waitFor(() => {
+            expect(screen.queryByText('Lorem ipsum')).toBeNull();
+        });
+        expect(screen.queryByText('ra.inspector.textBlock')).toBeNull();
+    });
+    it('should not remove the editor when unmounting another confiurable element', async () => {
+        render(<Unmount />);
+        screen.getByLabelText('ra.configurable.configureMode').click();
+        screen.getByText('ra.configurable.inspector.title');
+        screen.getAllByLabelText('ra.configurable.customize')[0].click();
+        await screen.findByText('ra.inspector.textBlock');
+        screen.getByText('toggle sales block').click();
+        await waitFor(() => {
+            expect(screen.queryByText('Today')).toBeNull();
+        });
+        expect(screen.queryByText('ra.inspector.textBlock')).not.toBeNull();
     });
 });

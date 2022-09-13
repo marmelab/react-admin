@@ -1,14 +1,15 @@
-import { createContext, ReactNode } from 'react';
+import * as React from 'react';
+import { createContext, ReactElement } from 'react';
 
 export const PreferencesEditorContext = createContext<
     PreferencesEditorContextValue
 >(undefined);
 
 export type PreferencesEditorContextValue = {
-    editor: ReactNode | null;
-    setEditor: (editor: ReactNode) => void;
+    editor: ReactElement | null;
+    setEditor: React.Dispatch<React.SetStateAction<ReactElement>>;
     preferenceKey?: string;
-    setPreferenceKey: (key?: string) => void;
+    setPreferenceKey: React.Dispatch<React.SetStateAction<string>>;
     title: string | null;
     titleOptions?: any;
     setTitle: (title: string, titleOptions?: any) => void;

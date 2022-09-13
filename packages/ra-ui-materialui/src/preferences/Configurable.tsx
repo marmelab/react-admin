@@ -52,22 +52,21 @@ export const Configurable = (props: ConfigurableProps) => {
 
     const isEditorOpen = preferenceKey
         ? preferenceKey === currentPreferenceKey
-        : editor === currentEditor;
+        : currentEditor && editor.type === currentEditor.type;
+    const editorOpenRef = useRef(isEditorOpen);
 
     useEffect(() => {
-        // on unmount, remove the editor
-        return hasPreferencesEditorContext && isEditorOpen
-            ? () => {
-                  setEditor(null);
-                  setPreferenceKey(null);
-              }
-            : undefined;
-    }, [
-        hasPreferencesEditorContext,
-        isEditorOpen,
-        setEditor,
-        setPreferenceKey,
-    ]);
+        editorOpenRef.current = isEditorOpen;
+    }, [isEditorOpen]);
+
+    useEffect(() => {
+        // on unmount, if selected, remove the editor
+        return () => {
+            if (!editorOpenRef.current) return;
+            setPreferenceKey && setPreferenceKey(null);
+            setEditor && setEditor(null);
+        };
+    }, [setEditor, setPreferenceKey]);
 
     if (!hasPreferencesEditorContext) {
         return children;

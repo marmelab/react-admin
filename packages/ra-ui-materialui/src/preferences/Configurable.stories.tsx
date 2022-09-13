@@ -166,6 +166,41 @@ export const MultipleInstances = () => (
     </PreferencesEditorContextProvider>
 );
 
+export const Unmount = () => {
+    const [isTextBlockVisible, setTextBlockVisible] = React.useState(true);
+    const [isSalesBlockVisible, setSalesBlockVisible] = React.useState(true);
+    return (
+        <StoreContextProvider value={memoryStore()}>
+            <PreferencesEditorContextProvider>
+                <Inspector />
+                <InspectorButton />
+                <hr />
+                <Box display="flex" alignItems="flex-start">
+                    <Box flex="1">
+                        <button
+                            onClick={() =>
+                                setTextBlockVisible(!isTextBlockVisible)
+                            }
+                        >
+                            toggle text block
+                        </button>
+                        {isTextBlockVisible && <ConfigurableTextBlock />}
+                    </Box>
+                    <Box flex="1">
+                        <button
+                            onClick={() =>
+                                setSalesBlockVisible(!isSalesBlockVisible)
+                            }
+                        >
+                            toggle sales block
+                        </button>
+                        {isSalesBlockVisible && <ConfigurableSalesBlock />}
+                    </Box>
+                </Box>
+            </PreferencesEditorContextProvider>
+        </StoreContextProvider>
+    );
+};
 export const I18n = () => {
     const i18nProvider = {
         translate: (key: string, options: any) => options?._ ?? key,
