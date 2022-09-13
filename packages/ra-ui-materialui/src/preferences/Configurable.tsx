@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { useRef, useEffect, cloneElement, ReactElement } from 'react';
 import { usePreferencesEditor } from 'ra-core';
-import { alpha } from '@mui/material';
+import { alpha, Badge } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import SettingsIcon from '@mui/icons-material/Settings';
 import clsx from 'clsx';
-
-import { InspectorButton } from './InspectorButton';
 
 /**
  * Wrap any component with this component to make it configurable
@@ -36,8 +35,6 @@ export const Configurable = (props: ConfigurableProps) => {
         preferenceKey,
         openButtonLabel = 'ra.configurable.customize',
     } = props;
-    const ref = useRef(null);
-    const rect = ref.current?.getBoundingClientRect();
 
     const preferencesEditorContext = usePreferencesEditor();
     const hasPreferencesEditorContext = !!preferencesEditorContext;
@@ -59,8 +56,8 @@ export const Configurable = (props: ConfigurableProps) => {
         editorOpenRef.current = isEditorOpen;
     }, [isEditorOpen]);
 
+    // on unmount, if selected, remove the editor
     useEffect(() => {
-        // on unmount, if selected, remove the editor
         return () => {
             if (!editorOpenRef.current) return;
             setPreferenceKey && setPreferenceKey(null);
@@ -96,28 +93,26 @@ export const Configurable = (props: ConfigurableProps) => {
                 isEditorOpen && ConfigurableClasses.editorActive
             )}
         >
-            {preferenceKey
-                ? cloneElement(children, { ref, preferenceKey })
-                : cloneElement(children, { ref })}
-            {isEnabled && (
-                <InspectorButton
-                    onClick={handleOpenEditor}
-                    label={openButtonLabel}
-                    size="small"
-                    color="warning"
-                    className={ConfigurableClasses.button}
-                    sx={{
-                        left: rect?.right - 30,
-                        top: rect?.top,
-                    }}
-                    SvgIconProps={{
-                        sx: {
-                            filter:
-                                'drop-shadow(0 0 3px rgba(255, 255, 255, .8))',
-                        },
-                    }}
-                />
-            )}
+            <Badge
+                badgeContent={
+                    <SettingsIcon
+                        label={openButtonLabel}
+                        // @ts-ignore
+                        fontSize="12px"
+                    />
+                }
+                componentsProps={{
+                    badge: {
+                        onClick: handleOpenEditor,
+                    },
+                }}
+                color="warning"
+                invisible={!isEnabled}
+            >
+                {preferenceKey
+                    ? cloneElement(children, { preferenceKey })
+                    : children}
+            </Badge>
         </Root>
     );
 };
@@ -141,25 +136,27 @@ const Root = styled('span', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    [`& .${ConfigurableClasses.button}`]: {
+    [`& .MuiBadge-badge`]: {
         visibility: 'hidden',
         pointerEvents: 'none',
+        padding: 0,
     },
-    [`&.${ConfigurableClasses.editMode}:hover > .${ConfigurableClasses.button}`]: {
+    [`&.${ConfigurableClasses.editMode}:hover > .MuiBadge-root > .MuiBadge-badge`]: {
         visibility: 'visible',
         pointerEvents: 'initial',
         position: 'absolute',
         zIndex: theme.zIndex.modal - 1,
+        cursor: 'pointer',
     },
-    [`&.${ConfigurableClasses.editMode} > :not(.${ConfigurableClasses.button})`]: {
+    [`&.${ConfigurableClasses.editMode} > .MuiBadge-root > :not(.MuiBadge-badge)`]: {
         transition: theme.transitions.create('outline'),
         outline: `${alpha(theme.palette.warning.main, 0.3)} solid 2px`,
     },
-    [`&.${ConfigurableClasses.editMode}:hover > :not(.${ConfigurableClasses.button})`]: {
+    [`&.${ConfigurableClasses.editMode}:hover > .MuiBadge-root > :not(.MuiBadge-badge)`]: {
         outline: `${alpha(theme.palette.warning.main, 0.5)} solid 2px`,
     },
 
-    [`&.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive} > :not(.${ConfigurableClasses.button}), &.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive}:hover > :not(.${ConfigurableClasses.button})`]: {
+    [`&.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive} > .MuiBadge-root > :not(.MuiBadge-badge), &.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive}:hover > .MuiBadge-root > :not(.MuiBadge-badge)`]: {
         outline: `${theme.palette.warning.main} solid 2px`,
     },
 }));

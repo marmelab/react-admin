@@ -29,7 +29,6 @@ const TextBlock = React.forwardRef<
             border="solid 1px lightgrey"
             borderRadius={3}
             p={1}
-            margin={1}
             width={300}
             bgcolor={color}
             ref={ref}
@@ -86,7 +85,6 @@ const SalesBlock = React.forwardRef<HTMLDivElement>((props, ref) => {
             border="solid 1px lightgrey"
             borderRadius={3}
             p={1}
-            margin={1}
             width={200}
             ref={ref}
         >
@@ -133,7 +131,7 @@ export const Basic = () => (
             <Inspector />
             <InspectorButton />
             <hr />
-            <Box display="flex" alignItems="flex-start">
+            <Box display="flex" alignItems="flex-start" gap="1em" padding="1em">
                 <ConfigurableTextBlock />
                 <ConfigurableSalesBlock />
             </Box>
@@ -146,7 +144,7 @@ export const Nested = () => (
         <Inspector />
         <InspectorButton />
         <hr />
-        <Box display="flex" alignItems="flex-start">
+        <Box display="flex" alignItems="flex-start" gap="1em" padding="1em">
             <ConfigurableTextBlock>
                 <ConfigurableSalesBlock />
             </ConfigurableTextBlock>
@@ -159,7 +157,7 @@ export const MultipleInstances = () => (
         <Inspector />
         <InspectorButton />
         <hr />
-        <Box display="flex" alignItems="flex-start">
+        <Box display="flex" alignItems="flex-start" gap="1em" padding="1em">
             <ConfigurableTextBlock preferenceKey="foo" />
             <ConfigurableTextBlock preferenceKey="bar" />
         </Box>
@@ -174,8 +172,8 @@ export const Unmount = () => {
             <Inspector />
             <InspectorButton />
             <hr />
-            <Box display="flex" alignItems="flex-start">
-                <Box flex="1">
+            <Box display="flex" alignItems="flex-start" gap="1em" padding="1em">
+                <Box flex="1" display="flex" flexDirection="column" gap="1em">
                     <button
                         onClick={() => setTextBlockVisible(!isTextBlockVisible)}
                     >
@@ -183,7 +181,7 @@ export const Unmount = () => {
                     </button>
                     {isTextBlockVisible && <ConfigurableTextBlock />}
                 </Box>
-                <Box flex="1">
+                <Box flex="1" display="flex" flexDirection="column" gap="1em">
                     <button
                         onClick={() =>
                             setSalesBlockVisible(!isSalesBlockVisible)
