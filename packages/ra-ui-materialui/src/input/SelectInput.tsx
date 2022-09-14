@@ -115,6 +115,7 @@ export const SelectInput = (props: SelectInputProps) => {
         defaultValue = '',
         disableValue,
         emptyText,
+        emptyValue,
         format,
         filter,
         helperText,
@@ -305,7 +306,7 @@ export const SelectInput = (props: SelectInputProps) => {
             >
                 {!isRequired && (
                     <MenuItem
-                        value={''}
+                        value={emptyValue}
                         key="null"
                         aria-label={translate('ra.action.clear_input_value')}
                         title={translate('ra.action.clear_input_value')}
@@ -322,6 +323,7 @@ export const SelectInput = (props: SelectInputProps) => {
 
 SelectInput.propTypes = {
     emptyText: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+    emptyValue: PropTypes.any,
     choices: PropTypes.arrayOf(PropTypes.object),
     className: PropTypes.string,
     label: PropTypes.oneOfType([
@@ -345,6 +347,7 @@ SelectInput.propTypes = {
 
 SelectInput.defaultProps = {
     emptyText: '',
+    emptyValue: '',
     options: {},
     translateChoice: true,
     disableValue: 'disabled',
@@ -404,6 +407,7 @@ export type SelectInputProps = Omit<CommonInputProps, 'source'> &
     Omit<TextFieldProps, 'label' | 'helperText' | 'classes' | 'onChange'> & {
         disableValue?: string;
         emptyText?: string | ReactElement;
+        emptyValue?: any;
         resettable?: boolean;
         // Source is optional as AutocompleteInput can be used inside a ReferenceInput that already defines the source
         source?: string;
