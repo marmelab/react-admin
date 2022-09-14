@@ -119,6 +119,7 @@ export const Inspector = () => {
                 >
                     {title && translate(title, titleOptions)}
                 </Typography>
+                <span id="inspector-toolbar" />
                 <IconButton
                     aria-label={translate('ra.action.close')}
                     onClick={disable}

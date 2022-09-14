@@ -114,17 +114,23 @@ export const localStorageStore = (
             getStorage().removeItem(`${prefix}.${key}`);
             publish(key, undefined);
         },
+        removeItems(keyPrefix: string): void {
+            const storage = getStorage();
+            Object.keys(storage).forEach(key => {
+                if (key.startsWith(`${prefix}.${keyPrefix}`)) {
+                    storage.removeItem(key);
+                    const publishKey = key.substring(prefixLength + 1);
+                    publish(publishKey, undefined);
+                }
+            });
+        },
         reset(): void {
             const storage = getStorage();
-            for (let i = 0; i < storage.length; i++) {
-                if (storage.key(i)?.substring(0, prefixLength) === prefix) {
-                    const key = storage.key(i)?.substring(prefixLength + 1);
-                    if (!key || !storage.key(i)) return;
-                    // @ts-ignore
-                    storage.removeItem(storage.key(i));
-                    publish(key, undefined);
-                }
-            }
+            Object.keys(storage).forEach(key => {
+                storage.removeItem(key);
+                const publishKey = key.substring(prefixLength + 1);
+                publish(publishKey, undefined);
+            });
         },
         subscribe: (key: string, callback: (value: string) => void) => {
             const id = Math.random().toString();
@@ -162,6 +168,14 @@ class LocalStorageShim {
 
     removeItem(key: string) {
         this.valuesMap.delete(key);
+    }
+
+    removeItems(keyPrefix: string) {
+        this.valuesMap.forEach((value, key) => {
+            if (key.startsWith(keyPrefix)) {
+                this.valuesMap.delete(key);
+            }
+        });
     }
 
     clear() {

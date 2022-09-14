@@ -47,6 +47,14 @@ export const memoryStore = (storage: any = {}): Store => {
             unset(storage, key);
             publish(key, undefined);
         },
+        removeItems(keyPrefix: string): void {
+            Object.keys(storage).forEach(key => {
+                if (key.startsWith(keyPrefix)) {
+                    unset(storage, key);
+                    publish(key, undefined);
+                }
+            });
+        },
         reset(): void {
             Object.keys(storage).forEach(key => {
                 unset(storage, key);
