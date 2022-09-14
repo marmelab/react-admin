@@ -98,13 +98,13 @@ export const Configurable = (props: ConfigurableProps) => {
             <Badge
                 badgeContent={
                     <SettingsIcon
-                        label={openButtonLabel}
                         // @ts-ignore
                         fontSize="12px"
                     />
                 }
                 componentsProps={{
                     badge: {
+                        title: openButtonLabel,
                         onClick: handleOpenEditor,
                     },
                 }}
@@ -147,8 +147,6 @@ const Root = styled('span', {
     [`&.${ConfigurableClasses.editMode}:hover > .MuiBadge-root > .MuiBadge-badge`]: {
         visibility: 'visible',
         pointerEvents: 'initial',
-        position: 'absolute',
-        zIndex: theme.zIndex.modal - 1,
         cursor: 'pointer',
     },
     [`&.${ConfigurableClasses.editMode} > .MuiBadge-root > :not(.MuiBadge-badge)`]: {
