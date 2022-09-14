@@ -136,8 +136,6 @@ export const AutocompleteInput = <
         createValue,
         debounce: debounceDelay = 250,
         defaultValue = '',
-        emptyText,
-        emptyValue = '',
         field: fieldOverride,
         format,
         helperText,
@@ -252,8 +250,6 @@ If you provided a React element for the optionText prop, you must also provide t
 
     const { getChoiceText, getChoiceValue, getSuggestions } = useSuggestions({
         choices: allChoices,
-        emptyText,
-        emptyValue,
         limitChoicesToValue,
         matchSuggestion,
         optionText:
