@@ -18,10 +18,13 @@ export default {
     title: 'ra-ui-materialui/preferences/Configurable',
 };
 
-const TextBlock = React.forwardRef<
-    HTMLDivElement,
-    { preferenceKey?: string; children?: any }
->(({ children, preferenceKey }, ref) => {
+const TextBlock = ({
+    children,
+    preferenceKey,
+}: {
+    children?: React.ReactNode;
+    preferenceKey?: string;
+}) => {
     const [color] = useStore(`${preferenceKey}.color`, '#ffffff');
 
     return (
@@ -31,7 +34,6 @@ const TextBlock = React.forwardRef<
             p={1}
             width={300}
             bgcolor={color}
-            ref={ref}
         >
             <Typography variant="h6">Lorem ipsum</Typography>
             <Typography>
@@ -43,7 +45,7 @@ const TextBlock = React.forwardRef<
             {children}
         </Box>
     );
-});
+};
 
 const TextBlockEditor = ({ preferenceKey }: { preferenceKey?: string }) => {
     const [color, setColor] = useStore(`${preferenceKey}.color`, '#ffffff');
@@ -70,39 +72,29 @@ const ConfigurableTextBlock = ({
     </Configurable>
 );
 
-const SalesBlock = React.forwardRef<HTMLDivElement, { preferenceKey?: string }>(
-    ({ preferenceKey, ...props }, ref) => {
-        const [showDate] = useStore(`${preferenceKey}.showDate`, true);
-        return (
-            <Box
-                display="flex"
-                border="solid 1px lightgrey"
-                borderRadius={3}
-                p={1}
-                width={200}
-                ref={ref}
-            >
-                <Box flex="1" mr={1}>
-                    <Typography variant="h6">Sales</Typography>
-                    {showDate && (
-                        <Typography variant="caption">Today</Typography>
-                    )}
-                    <Typography variant="h4" textAlign="right" mt={2}>
-                        $4,452
-                    </Typography>
-                </Box>
-                <Box
-                    bgcolor="lightgrey"
-                    display="flex"
-                    alignItems="center"
-                    p={1}
-                >
-                    <TimelineIcon />
-                </Box>
+const SalesBlock = ({ preferenceKey }: { preferenceKey?: string }) => {
+    const [showDate] = useStore(`${preferenceKey}.showDate`, true);
+    return (
+        <Box
+            display="flex"
+            border="solid 1px lightgrey"
+            borderRadius={3}
+            p={1}
+            width={200}
+        >
+            <Box flex="1" mr={1}>
+                <Typography variant="h6">Sales</Typography>
+                {showDate && <Typography variant="caption">Today</Typography>}
+                <Typography variant="h4" textAlign="right" mt={2}>
+                    $4,452
+                </Typography>
             </Box>
-        );
-    }
-);
+            <Box bgcolor="lightgrey" display="flex" alignItems="center" p={1}>
+                <TimelineIcon />
+            </Box>
+        </Box>
+    );
+};
 
 const SalesBlockEditor = ({ preferenceKey }: { preferenceKey?: string }) => {
     const [showDate, setShowDate] = useStore(`${preferenceKey}.showDate`, true);
