@@ -8,7 +8,7 @@ import { SimpleListEditor } from './SimpleListEditor';
 export const SimpleListConfigurable = ({
     preferenceKey,
     ...props
-}: SimpleListProps) => {
+}: SimpleListProps & { preferenceKey?: string }) => {
     const resource = useResourceContext();
     return (
         <Configurable
