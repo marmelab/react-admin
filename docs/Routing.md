@@ -63,6 +63,7 @@ In addition to CRUD pages for resources, you can create as many routes as you wa
 ```jsx
 // in src/App.js
 import * as React from "react";
+import { Route } from 'react-router-dom';
 import { Admin, Resource, CustomRoutes } from 'react-admin';
 import posts from './posts';
 import comments from './comments';
