@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { TextField } from '@mui/material';
-import { useTranslate, usePreferenceInput } from 'ra-core';
+import { useTranslate, usePreferenceInput, usePreferenceKey } from 'ra-core';
 
 /**
  * A component which provides a configuration UI to tweak the SimpleList
@@ -15,8 +15,8 @@ export const SimpleListEditor = (props: SimpleListEditorProps) => {
         defaultPrimaryText = '',
         defaultSecondaryText = '',
         defaultTertiatyText = '',
-        preferenceKey,
     } = props;
+    const preferenceKey = usePreferenceKey();
 
     const translate = useTranslate();
 
@@ -73,7 +73,6 @@ export const SimpleListEditor = (props: SimpleListEditorProps) => {
 };
 
 export interface SimpleListEditorProps {
-    preferenceKey?: string;
     defaultPrimaryText?: string;
     defaultSecondaryText?: string;
     defaultTertiatyText?: string;

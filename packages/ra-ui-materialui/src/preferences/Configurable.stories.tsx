@@ -6,6 +6,7 @@ import {
     I18nContextProvider,
     memoryStore,
     StoreContextProvider,
+    usePreferenceKey,
 } from 'ra-core';
 import { Box, Typography } from '@mui/material';
 import TimelineIcon from '@mui/icons-material/Timeline';
@@ -18,15 +19,9 @@ export default {
     title: 'ra-ui-materialui/preferences/Configurable',
 };
 
-const TextBlock = ({
-    children,
-    preferenceKey,
-}: {
-    children?: React.ReactNode;
-    preferenceKey?: string;
-}) => {
+const TextBlock = ({ children }: { children?: React.ReactNode }) => {
+    const preferenceKey = usePreferenceKey();
     const [color] = useStore(`${preferenceKey}.color`, '#ffffff');
-
     return (
         <Box
             border="solid 1px lightgrey"
@@ -47,7 +42,8 @@ const TextBlock = ({
     );
 };
 
-const TextBlockEditor = ({ preferenceKey }: { preferenceKey?: string }) => {
+const TextBlockEditor = () => {
+    const preferenceKey = usePreferenceKey();
     const [color, setColor] = useStore(`${preferenceKey}.color`, '#ffffff');
     useSetInspectorTitle('ra.inspector.textBlock', { _: 'Text block' });
     return (
@@ -72,7 +68,8 @@ const ConfigurableTextBlock = ({
     </Configurable>
 );
 
-const SalesBlock = ({ preferenceKey }: { preferenceKey?: string }) => {
+const SalesBlock = () => {
+    const preferenceKey = usePreferenceKey();
     const [showDate] = useStore(`${preferenceKey}.showDate`, true);
     return (
         <Box
@@ -96,7 +93,8 @@ const SalesBlock = ({ preferenceKey }: { preferenceKey?: string }) => {
     );
 };
 
-const SalesBlockEditor = ({ preferenceKey }: { preferenceKey?: string }) => {
+const SalesBlockEditor = () => {
+    const preferenceKey = usePreferenceKey();
     const [showDate, setShowDate] = useStore(`${preferenceKey}.showDate`, true);
     useSetInspectorTitle('ra.inspector.salesBlock', { _: 'Sales block' });
     return (

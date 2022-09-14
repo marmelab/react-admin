@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useRef, useEffect, cloneElement, ReactElement } from 'react';
-import { usePreferencesEditor } from 'ra-core';
+import { usePreferencesEditor, PreferenceKeyContextProvider } from 'ra-core';
 import { alpha, Badge } from '@mui/material';
 import { styled, SxProps } from '@mui/material/styles';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -12,7 +12,8 @@ import clsx from 'clsx';
  * When the edit mode is enabled, users will see a button to edit the component;
  * when clicked, the inspector will show the editor element.
  *
- * The child component must forward its ref to the root DOM element
+ * Creates a context for the preference key, so that both the child component
+ * and the editor can access it using usePreferenceKey();
  *
  * @example
  * const ConfigurableTextBlock = ({ preferenceKey = "TextBlock", ...props }) => (
@@ -78,34 +79,34 @@ export const Configurable = (props: ConfigurableProps) => {
     };
 
     return (
-        <Root
-            className={clsx(
-                isEnabled && ConfigurableClasses.editMode,
-                isEditorOpen && ConfigurableClasses.editorActive
-            )}
-            sx={sx}
-        >
-            <Badge
-                badgeContent={
-                    <SettingsIcon
-                        // @ts-ignore
-                        fontSize="12px"
-                    />
-                }
-                componentsProps={{
-                    badge: {
-                        title: openButtonLabel,
-                        onClick: handleOpenEditor,
-                    },
-                }}
-                color="warning"
-                invisible={!isEnabled}
+        <PreferenceKeyContextProvider value={prefixedPreferenceKey}>
+            <Root
+                className={clsx(
+                    isEnabled && ConfigurableClasses.editMode,
+                    isEditorOpen && ConfigurableClasses.editorActive
+                )}
+                sx={sx}
             >
-                {cloneElement(children, {
-                    preferenceKey: prefixedPreferenceKey,
-                })}
-            </Badge>
-        </Root>
+                <Badge
+                    badgeContent={
+                        <SettingsIcon
+                            // @ts-ignore
+                            fontSize="12px"
+                        />
+                    }
+                    componentsProps={{
+                        badge: {
+                            title: openButtonLabel,
+                            onClick: handleOpenEditor,
+                        },
+                    }}
+                    color="warning"
+                    invisible={!isEnabled}
+                >
+                    {children}
+                </Badge>
+            </Root>
+        </PreferenceKeyContextProvider>
     );
 };
 

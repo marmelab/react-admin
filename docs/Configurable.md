@@ -15,18 +15,20 @@ Some react-admin components are already configurable - or rather they have a con
 
 ## Usage
 
-Wrap any component with `<Configurable>` and define its editor to let users customize it via a UI. Don't forget to pass down props to the inner component.
+Wrap any component with `<Configurable>` and define its editor to let users customize it via a UI. Don't forget to pass down props to the inner component. Note that every configurable component needs a unique preference key, that is used to persist the user's preferences in the Store.
 
 ```jsx
 import { Configurable } from 'react-admin';
 
-const ConfigurableTextBlock = (props) => (
-    <Configurable editor={<TextBlockEditor />}>
+const ConfigurableTextBlock = ({ preferenceKey = "textBlock", ...props }) => (
+    <Configurable editor={<TextBlockEditor />} preferenceKey={preferenceKey}>
         <TextBlock {...props} />
     </Configurable>
 );
 ```
 
+`<Configurable>` creates a context for the `preferenceKey`, so that both the child component and the editor can access it using `usePreferenceKey()`.
+ 
 Then, use this component in your app:
 
 ```jsx
@@ -42,32 +44,33 @@ export const Dashboard = () => (
 
 ## `children`
 
-The wrapped component must forward refs. It must also use [`useStore`](./useStore.md) to access the configuration.
+The wrapped component must use `usePreferenceKey` to get the preference key, and [`useStore`](./useStore.md) to access the configuration.
 
 ```jsx
-import { useStore } from 'react-admin';
+import { useStore, usePreferenceKey } from 'react-admin';
 
-const TextBlock = React.forwardRef((props, ref) => {
-    const { title, content } = props;
-    const [color] = useStore(`textBlock.color`, '#ffffff');
+const TextBlock = ({ title, content }) => {
+    const preferenceKey = usePreferenceKey();
+    const [color] = useStore(`${preferenceKey}.color`, '#ffffff');
     return (
-        <Box bgcolor={color} ref={ref}>
+        <Box bgcolor={color}>
             <Typography variant="h6">{title}</Typography>
             <Typography>{content}</Typography>
         </Box>
     );
-});
+};
 ```
 
 ## `editor`
 
-The editor component must also use [`useStore`](./useStore.md) to read and write the configuration. React-admin renders it in the inspector when the user selects the component.
+The editor component must also use `usePreferenceKey` to get the preference key, and [`useStore`](./useStore.md) to read and write the configuration. When the user selects the configurable component, react-admin renders the `editor` component in the inspector.
 
 ```jsx
-import { useStore } from 'react-admin';
+import { useStore, usePreferenceKey } from 'react-admin';
 
-const TextBlockEditor = () => {
-    const [color, setColor] = useStore(`textBlock.color`, '#ffffff');
+const TextBlockEditor = ({ preferenceKey }) => {
+    const preferenceKey = usePreferenceKey();
+    const [color, setColor] = useStore(`${preferenceKey}.color`, '#ffffff');
     return (
         <Box>
             <Typography>Configure the text block</Typography>
@@ -83,7 +86,7 @@ const TextBlockEditor = () => {
 
 ## `preferencesKey`
 
-This optional parameter lets you specify the key used to store the configuration in the user's preferences. This allows you to have more than one configurable component of the same type per page. 
+This parameter lets you specify the key used to store the configuration in the user's preferences. This allows you to have more than one configurable component of the same type per page. 
 
 ```jsx
 import { Configurable } from 'react-admin';

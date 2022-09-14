@@ -5,6 +5,7 @@ import {
     usePreferencesEditor,
     useTranslate,
     useRemoveItemsFromStore,
+    PreferenceKeyContextProvider,
 } from 'ra-core';
 import { Paper, Typography, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/CancelOutlined';
@@ -155,7 +156,9 @@ export const Inspector = () => {
                 </IconButton>
             </div>
             <div className={InspectorClasses.content} key={version}>
-                {editor || <InspectorRoot />}
+                <PreferenceKeyContextProvider value={preferenceKey}>
+                    {editor || <InspectorRoot />}
+                </PreferenceKeyContextProvider>
             </div>
         </StyledPaper>
     );

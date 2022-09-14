@@ -25,6 +25,7 @@ import {
     useResourceContext,
     useCreatePath,
     useStore,
+    usePreferenceKey,
 } from 'ra-core';
 
 import { SimpleListLoading } from './SimpleListLoading';
@@ -35,7 +36,6 @@ const SimpleListInner = <RecordType extends RaRecord = any>(
 ) => {
     const {
         className,
-        preferenceKey = 'preferences.SimpleList',
         hasBulkActions,
         leftAvatar,
         leftIcon,
@@ -51,6 +51,7 @@ const SimpleListInner = <RecordType extends RaRecord = any>(
     const { data, isLoading, total } = useListContext<RecordType>(props);
     const resource = useResourceContext(props);
     const renderTemplate = useRenderTemplate();
+    const preferenceKey = usePreferenceKey();
     const [primaryTextFromStore] = useStore(`${preferenceKey}.primaryText`);
     const [secondaryTextFromStore] = useStore(`${preferenceKey}.secondaryText`);
     const [tertiaryTextFromStore] = useStore(`${preferenceKey}.tertiaryText`);
