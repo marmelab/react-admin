@@ -11,7 +11,7 @@ export const PageTitleEditor = ({ preferenceKey }: any) => {
     const key = `preferences.${preferenceKey || pathname}.title`;
     const field = usePreferenceInput(key, '');
     return (
-        <>
+        <form>
             <TextField
                 label="title"
                 variant="filled"
@@ -21,7 +21,7 @@ export const PageTitleEditor = ({ preferenceKey }: any) => {
                 {...field}
             />
             <ResetSettingsButton preferenceKeys={[key]} />
-        </>
+        </form>
     );
 };
 
