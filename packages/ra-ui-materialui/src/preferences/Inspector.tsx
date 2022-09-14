@@ -75,10 +75,10 @@ export const Inspector = () => {
         };
     }, [isEnabled]);
 
-    // when the window is reduced, make sure that the dialog is still visible
+    // make sure that the dialog is always visible, as the stored position may be outside the screen
     useEffect(() => {
         if (!isEnabled) return;
-        const handleResize = () => {
+        const moveInspectorIfOutsideScreen = () => {
             window.requestAnimationFrame(() => {
                 setDialogPosition(position => ({
                     x: Math.min(
@@ -87,13 +87,14 @@ export const Inspector = () => {
                             theme.breakpoints.values.sm / 2 -
                             8
                     ),
-                    y: Math.min(position.y, window.innerHeight - 20),
+                    y: Math.min(position.y, window.innerHeight - 50),
                 }));
             });
         };
-        window.addEventListener('resize', handleResize);
+        moveInspectorIfOutsideScreen();
+        window.addEventListener('resize', moveInspectorIfOutsideScreen);
         return () => {
-            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('resize', moveInspectorIfOutsideScreen);
         };
     }, [isEnabled, setDialogPosition, theme.breakpoints.values.sm]);
 
