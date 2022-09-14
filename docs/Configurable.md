@@ -84,21 +84,21 @@ const TextBlockEditor = ({ preferenceKey }) => {
 };
 ```
 
-## `preferencesKey`
+## `preferenceKey`
 
 This parameter lets you specify the key used to store the configuration in the user's preferences. This allows you to have more than one configurable component of the same type per page. 
 
 ```jsx
 import { Configurable } from 'react-admin';
 
-const ConfigurableTextBlock = ({ preferencesKey, ...props }) => (
-    <Configurable editor={<TextBlockInspector />} preferencesKey={preferencesKey}>
+const ConfigurableTextBlock = ({ preferenceKey, ...props }) => (
+    <Configurable editor={<TextBlockInspector />} preferenceKey={preferenceKey}>
         <TextBlock {...props} />
     </Configurable>
 );
 ```
 
-Then in your application, set the `preferencesKey` prop to a unique value for each component:
+Then in your application, set the `preferenceKey` prop to a unique value for each component:
 
 ```jsx
 import { ConfigurableTextBlock } from './ConfigurableTextBlock';
@@ -106,12 +106,12 @@ import { ConfigurableTextBlock } from './ConfigurableTextBlock';
 export const Dashboard = () => (
     <>
         <ConfigurableTextBlock
-            preferencesKey="textBlock1"
+            preferenceKey="textBlock1"
             title="Welcome to the administration"
             content="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
         />
         <ConfigurableTextBlock
-            preferencesKey="textBlock2"
+            preferenceKey="textBlock2"
             title="Security reminder"
             content="Nullam bibendum orci tortor, a posuere arcu sollicitudin ac"
         />
