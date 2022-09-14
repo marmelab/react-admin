@@ -127,9 +127,11 @@ export const localStorageStore = (
         reset(): void {
             const storage = getStorage();
             Object.keys(storage).forEach(key => {
-                storage.removeItem(key);
-                const publishKey = key.substring(prefixLength + 1);
-                publish(publishKey, undefined);
+                if (key.startsWith(prefix)) {
+                    storage.removeItem(key);
+                    const publishKey = key.substring(prefixLength + 1);
+                    publish(publishKey, undefined);
+                }
             });
         },
         subscribe: (key: string, callback: (value: string) => void) => {
