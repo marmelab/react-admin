@@ -35,7 +35,7 @@ const SimpleListInner = <RecordType extends RaRecord = any>(
 ) => {
     const {
         className,
-        preferenceKey,
+        preferenceKey = 'preferences.SimpleList',
         hasBulkActions,
         leftAvatar,
         leftIcon,
@@ -51,15 +51,9 @@ const SimpleListInner = <RecordType extends RaRecord = any>(
     const { data, isLoading, total } = useListContext<RecordType>(props);
     const resource = useResourceContext(props);
     const renderTemplate = useRenderTemplate();
-    const [primaryTextFromStore] = useStore(
-        `preferences.simpleList.${preferenceKey || resource}.primaryText`
-    );
-    const [secondaryTextFromStore] = useStore(
-        `preferences.simpleList.${preferenceKey || resource}.secondaryText`
-    );
-    const [tertiaryTextFromStore] = useStore(
-        `preferences.simpleList.${preferenceKey || resource}.tertiaryText`
-    );
+    const [primaryTextFromStore] = useStore(`${preferenceKey}.primaryText`);
+    const [secondaryTextFromStore] = useStore(`${preferenceKey}.secondaryText`);
+    const [tertiaryTextFromStore] = useStore(`${preferenceKey}.tertiaryText`);
 
     if (isLoading === true) {
         return (

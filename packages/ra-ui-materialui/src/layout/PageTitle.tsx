@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useLocation } from 'react-router-dom';
 import {
     useStore,
     useRenderTemplate,
@@ -9,10 +8,7 @@ import {
 
 export const PageTitle = React.forwardRef<HTMLSpanElement, any>(
     ({ title, defaultTitle, className, preferenceKey, ...rest }, ref) => {
-        const { pathname } = useLocation();
-        const [titleFromPreferences] = useStore(
-            `preferences.${preferenceKey || pathname}.title`
-        );
+        const [titleFromPreferences] = useStore(preferenceKey);
         const translate = useTranslate();
         const renderTemplate = useRenderTemplate();
         const record = useRecordContext();

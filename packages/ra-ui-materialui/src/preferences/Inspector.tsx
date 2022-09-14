@@ -1,8 +1,14 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { useStore, usePreferencesEditor, useTranslate } from 'ra-core';
+import {
+    useStore,
+    usePreferencesEditor,
+    useTranslate,
+    useRemoveItemsFromStore,
+} from 'ra-core';
 import { Paper, Typography, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/CancelOutlined';
+import DeleteIcon from '@mui/icons-material/DeleteOutline';
 import { useTheme, styled } from '@mui/material/styles';
 
 import { InspectorRoot } from './InspectorRoot';
@@ -14,9 +20,13 @@ export const Inspector = () => {
         title,
         titleOptions,
         editor,
+        preferenceKey,
     } = usePreferencesEditor();
+
+    const removeItems = useRemoveItemsFromStore(preferenceKey);
     const theme = useTheme();
     const translate = useTranslate();
+    const [version, setVersion] = useState(0);
 
     const [dialogPosition, setDialogPosition] = useStore(
         'ra.inspector.position',
@@ -98,6 +108,12 @@ export const Inspector = () => {
         };
     }, [isEnabled, setDialogPosition, theme.breakpoints.values.sm]);
 
+    const handleReset = () => {
+        removeItems();
+        // force redraw of the form to use the default values
+        setVersion(version => version + 1);
+    };
+
     if (!isEnabled) return null;
     return (
         <StyledPaper
@@ -120,6 +136,15 @@ export const Inspector = () => {
                     {title && translate(title, titleOptions)}
                 </Typography>
                 <span id="inspector-toolbar" />
+                {preferenceKey && (
+                    <IconButton
+                        aria-label={translate('ra.action.remove')}
+                        onClick={handleReset}
+                        size="small"
+                    >
+                        <DeleteIcon fontSize="inherit" />
+                    </IconButton>
+                )}
                 <IconButton
                     aria-label={translate('ra.action.close')}
                     onClick={disable}
@@ -129,7 +154,7 @@ export const Inspector = () => {
                     <CloseIcon fontSize="inherit" />
                 </IconButton>
             </div>
-            <div className={InspectorClasses.content}>
+            <div className={InspectorClasses.content} key={version}>
                 {editor || <InspectorRoot />}
             </div>
         </StyledPaper>

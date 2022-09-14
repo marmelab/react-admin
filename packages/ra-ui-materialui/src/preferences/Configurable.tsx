@@ -15,14 +15,7 @@ import clsx from 'clsx';
  * The child component must forward its ref to the root DOM element
  *
  * @example
- * const ConfigurableTextBlock = (props) => (
- *     <Configurable editor={<TextBlockInspector />}>
- *         <TextBlock {...props} />
- *     </Configurable>
- * );
- *
- * @example // with preferenceKey (allows more than one editor of that type per page)
- * const ConfigurableTextBlock = ({ preferenceKey, ...props }) => (
+ * const ConfigurableTextBlock = ({ preferenceKey = "TextBlock", ...props }) => (
  *     <Configurable editor={<TextBlockInspector />} preferenceKey={preferenceKey}>
  *         <TextBlock {...props} />
  *     </Configurable>
@@ -37,20 +30,18 @@ export const Configurable = (props: ConfigurableProps) => {
         sx,
     } = props;
 
+    const prefixedPreferenceKey = `preferences.${preferenceKey}`;
     const preferencesEditorContext = usePreferencesEditor();
     const hasPreferencesEditorContext = !!preferencesEditorContext;
 
     const {
         isEnabled,
-        editor: currentEditor,
         setEditor,
         preferenceKey: currentPreferenceKey,
         setPreferenceKey,
     } = preferencesEditorContext || {};
 
-    const isEditorOpen = preferenceKey
-        ? preferenceKey === currentPreferenceKey
-        : currentEditor && editor.type === currentEditor.type;
+    const isEditorOpen = prefixedPreferenceKey === currentPreferenceKey;
     const editorOpenRef = useRef(isEditorOpen);
 
     useEffect(() => {
@@ -71,20 +62,19 @@ export const Configurable = (props: ConfigurableProps) => {
     }
 
     const handleOpenEditor = () => {
-        if (preferenceKey) {
-            // include the editorKey as key to force destroy and mount
-            // when switching between two identical editors with different editor keys
-            // otherwise the editor will see an update and its useStore will return one tick later
-            // which would forbid the usage of uncontrolled inputs ion the editor
-            setEditor(
-                cloneElement(editor, { preferenceKey, key: preferenceKey })
-            );
-            // as we modify the editor, isEditorOpen cannot compare the editor element
-            // we'll compare the editor key instead
-            setPreferenceKey(preferenceKey);
-        } else {
-            setEditor(editor);
-        }
+        // include the editorKey as key to force destroy and mount
+        // when switching between two identical editors with different editor keys
+        // otherwise the editor will see an update and its useStore will return one tick later
+        // which would forbid the usage of uncontrolled inputs in the editor
+        setEditor(
+            cloneElement(editor, {
+                preferenceKey: prefixedPreferenceKey,
+                key: prefixedPreferenceKey,
+            })
+        );
+        // as we modify the editor, isEditorOpen cannot compare the editor element
+        // we'll compare the editor key instead
+        setPreferenceKey(prefixedPreferenceKey);
     };
 
     return (
@@ -111,9 +101,9 @@ export const Configurable = (props: ConfigurableProps) => {
                 color="warning"
                 invisible={!isEnabled}
             >
-                {preferenceKey
-                    ? cloneElement(children, { preferenceKey })
-                    : children}
+                {cloneElement(children, {
+                    preferenceKey: prefixedPreferenceKey,
+                })}
             </Badge>
         </Root>
     );
@@ -122,7 +112,7 @@ export const Configurable = (props: ConfigurableProps) => {
 export interface ConfigurableProps {
     children: ReactElement;
     editor: ReactElement;
-    preferenceKey?: string;
+    preferenceKey: string;
     openButtonLabel?: string;
     sx?: SxProps;
 }

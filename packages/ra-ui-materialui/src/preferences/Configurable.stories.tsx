@@ -13,7 +13,6 @@ import TimelineIcon from '@mui/icons-material/Timeline';
 import { InspectorButton } from './InspectorButton';
 import { Inspector } from './Inspector';
 import { Configurable } from './Configurable';
-import { ResetSettingsButton } from './ResetSettingsButton';
 
 export default {
     title: 'ra-ui-materialui/preferences/Configurable',
@@ -23,7 +22,8 @@ const TextBlock = React.forwardRef<
     HTMLDivElement,
     { preferenceKey?: string; children?: any }
 >(({ children, preferenceKey }, ref) => {
-    const [color] = useStore(`textBlock.${preferenceKey}.color`, '#ffffff');
+    const [color] = useStore(`${preferenceKey}.color`, '#ffffff');
+
     return (
         <Box
             border="solid 1px lightgrey"
@@ -46,12 +46,8 @@ const TextBlock = React.forwardRef<
 });
 
 const TextBlockEditor = ({ preferenceKey }: { preferenceKey?: string }) => {
-    const [color, setColor] = useStore(
-        `textBlock.${preferenceKey}.color`,
-        '#ffffff'
-    );
+    const [color, setColor] = useStore(`${preferenceKey}.color`, '#ffffff');
     useSetInspectorTitle('ra.inspector.textBlock', { _: 'Text block' });
-    const [key, setKey] = React.useState<number>(0);
     return (
         <div>
             <label htmlFor="color">Background color</label>
@@ -60,50 +56,56 @@ const TextBlockEditor = ({ preferenceKey }: { preferenceKey?: string }) => {
                 defaultValue={color}
                 onBlur={e => setColor(e.target.value)}
                 id="color"
-                key={key}
-            />
-            <ResetSettingsButton
-                preferenceKeys={[`textBlock.${preferenceKey}.color`]}
-                // force redraw of component to reset displayed value
-                onReset={() => setKey(key => key + 1)}
             />
         </div>
     );
 };
 
-const ConfigurableTextBlock = ({ preferenceKey, ...props }: any) => (
+const ConfigurableTextBlock = ({
+    preferenceKey = 'textBlock',
+    ...props
+}: any) => (
     <Configurable editor={<TextBlockEditor />} preferenceKey={preferenceKey}>
         <TextBlock {...props} />
     </Configurable>
 );
 
-const SalesBlock = React.forwardRef<HTMLDivElement>((props, ref) => {
-    const [showDate] = useStore('salesBlock.showDate', true);
-    return (
-        <Box
-            display="flex"
-            border="solid 1px lightgrey"
-            borderRadius={3}
-            p={1}
-            width={200}
-            ref={ref}
-        >
-            <Box flex="1" mr={1}>
-                <Typography variant="h6">Sales</Typography>
-                {showDate && <Typography variant="caption">Today</Typography>}
-                <Typography variant="h4" textAlign="right" mt={2}>
-                    $4,452
-                </Typography>
+const SalesBlock = React.forwardRef<HTMLDivElement, { preferenceKey?: string }>(
+    ({ preferenceKey, ...props }, ref) => {
+        const [showDate] = useStore(`${preferenceKey}.showDate`, true);
+        return (
+            <Box
+                display="flex"
+                border="solid 1px lightgrey"
+                borderRadius={3}
+                p={1}
+                width={200}
+                ref={ref}
+            >
+                <Box flex="1" mr={1}>
+                    <Typography variant="h6">Sales</Typography>
+                    {showDate && (
+                        <Typography variant="caption">Today</Typography>
+                    )}
+                    <Typography variant="h4" textAlign="right" mt={2}>
+                        $4,452
+                    </Typography>
+                </Box>
+                <Box
+                    bgcolor="lightgrey"
+                    display="flex"
+                    alignItems="center"
+                    p={1}
+                >
+                    <TimelineIcon />
+                </Box>
             </Box>
-            <Box bgcolor="lightgrey" display="flex" alignItems="center" p={1}>
-                <TimelineIcon />
-            </Box>
-        </Box>
-    );
-});
+        );
+    }
+);
 
-const SalesBlockEditor = () => {
-    const [showDate, setShowDate] = useStore('salesBlock.showDate', true);
+const SalesBlockEditor = ({ preferenceKey }: { preferenceKey?: string }) => {
+    const [showDate, setShowDate] = useStore(`${preferenceKey}.showDate`, true);
     useSetInspectorTitle('ra.inspector.salesBlock', { _: 'Sales block' });
     return (
         <>
@@ -119,8 +121,8 @@ const SalesBlockEditor = () => {
     );
 };
 
-const ConfigurableSalesBlock = props => (
-    <Configurable editor={<SalesBlockEditor />}>
+const ConfigurableSalesBlock = ({ preferenceKey = 'salesBlock', ...props }) => (
+    <Configurable editor={<SalesBlockEditor />} preferenceKey={preferenceKey}>
         <SalesBlock {...props} />
     </Configurable>
 );

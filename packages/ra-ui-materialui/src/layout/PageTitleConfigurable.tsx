@@ -3,13 +3,18 @@ import { useLocation } from 'react-router-dom';
 import { usePreferenceInput } from 'ra-core';
 import { TextField } from '@mui/material';
 
-import { Configurable, ResetSettingsButton } from '../preferences';
+import { Configurable } from '../preferences';
 import { PageTitle } from './PageTitle';
 
-export const PageTitleEditor = ({ preferenceKey }: any) => {
-    const { pathname } = useLocation();
-    const key = `preferences.${preferenceKey || pathname}.title`;
-    const field = usePreferenceInput(key, '');
+export const PageTitleEditor = ({
+    preferenceKey,
+}: {
+    preferenceKey?: string;
+}) => {
+    if (!preferenceKey) {
+        throw new Error('preferenceKey is required');
+    }
+    const field = usePreferenceInput(preferenceKey, '');
     return (
         <form>
             <TextField
@@ -20,13 +25,18 @@ export const PageTitleEditor = ({ preferenceKey }: any) => {
                 sx={{ mb: 1 }}
                 {...field}
             />
-            <ResetSettingsButton preferenceKeys={[key]} />
         </form>
     );
 };
 
-export const PageTitleConfigurable = ({ preferenceKey, ...props }) => (
-    <Configurable editor={<PageTitleEditor />} preferenceKey={preferenceKey}>
-        <PageTitle {...props} />
-    </Configurable>
-);
+export const PageTitleConfigurable = ({ preferenceKey, ...props }) => {
+    const { pathname } = useLocation();
+    return (
+        <Configurable
+            editor={<PageTitleEditor />}
+            preferenceKey={preferenceKey || `${pathname}.title`}
+        >
+            <PageTitle {...props} />
+        </Configurable>
+    );
+};

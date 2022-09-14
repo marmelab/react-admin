@@ -16,11 +16,21 @@ export const InspectorButton = React.forwardRef<
         },
         ref
     ) => {
-        const { enable, disable, isEnabled } = usePreferencesEditor();
+        const {
+            enable,
+            disable,
+            setPreferenceKey,
+            isEnabled,
+        } = usePreferencesEditor();
         const translate = useTranslate();
 
         const handleClick: MouseEventHandler<HTMLButtonElement> = () => {
-            isEnabled ? disable() : enable();
+            if (isEnabled) {
+                disable();
+                setPreferenceKey(null);
+            } else {
+                enable();
+            }
         };
 
         const translatedLabel = translate(label, { _: 'Configure mode' });

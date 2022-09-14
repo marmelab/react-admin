@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { TextField } from '@mui/material';
-import { useTranslate, useResourceContext, usePreferenceInput } from 'ra-core';
-
-import { ResetSettingsButton } from '../../preferences/ResetSettingsButton';
+import { useTranslate, usePreferenceInput } from 'ra-core';
 
 /**
  * A component which provides a configuration UI to tweak the SimpleList
@@ -21,20 +19,18 @@ export const SimpleListEditor = (props: SimpleListEditorProps) => {
     } = props;
 
     const translate = useTranslate();
-    const resource = useResourceContext(props);
-    const rootKey = `preferences.simpleList.${preferenceKey || resource}`;
 
-    const primaryTextKey = `${rootKey}.primaryText`;
+    const primaryTextKey = `${preferenceKey}.primaryText`;
     const primaryTextField = usePreferenceInput(
         primaryTextKey,
         defaultPrimaryText
     );
-    const secondaryTextKey = `${rootKey}.secondaryText`;
+    const secondaryTextKey = `${preferenceKey}.secondaryText`;
     const secondaryTextField = usePreferenceInput(
         secondaryTextKey,
         defaultSecondaryText
     );
-    const tertiaryTextKey = `${rootKey}.tertiaryText`;
+    const tertiaryTextKey = `${preferenceKey}.tertiaryText`;
     const tertiaryTextField = usePreferenceInput(
         tertiaryTextKey,
         defaultTertiatyText
@@ -72,20 +68,11 @@ export const SimpleListEditor = (props: SimpleListEditorProps) => {
                 fullWidth
                 sx={{ mb: 1 }}
             />
-
-            <ResetSettingsButton
-                preferenceKeys={[
-                    primaryTextKey,
-                    secondaryTextKey,
-                    tertiaryTextKey,
-                ]}
-            />
         </form>
     );
 };
 
 export interface SimpleListEditorProps {
-    resource?: string;
     preferenceKey?: string;
     defaultPrimaryText?: string;
     defaultSecondaryText?: string;
