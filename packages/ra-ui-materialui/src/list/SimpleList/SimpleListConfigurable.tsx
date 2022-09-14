@@ -11,6 +11,7 @@ export const SimpleListConfigurable = ({
     <Configurable
         editor={<SimpleListEditor resource={props.resource} />}
         preferenceKey={preferenceKey}
+        sx={{ '& ul': { flex: 1 } }}
     >
         <SimpleList {...props} />
     </Configurable>

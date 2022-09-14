@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useRef, useEffect, cloneElement, ReactElement } from 'react';
 import { usePreferencesEditor } from 'ra-core';
 import { alpha, Badge } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, SxProps } from '@mui/material/styles';
 import SettingsIcon from '@mui/icons-material/Settings';
 import clsx from 'clsx';
 
@@ -34,6 +34,7 @@ export const Configurable = (props: ConfigurableProps) => {
         editor,
         preferenceKey,
         openButtonLabel = 'ra.configurable.customize',
+        sx,
     } = props;
 
     const preferencesEditorContext = usePreferencesEditor();
@@ -92,6 +93,7 @@ export const Configurable = (props: ConfigurableProps) => {
                 isEnabled && ConfigurableClasses.editMode,
                 isEditorOpen && ConfigurableClasses.editorActive
             )}
+            sx={sx}
         >
             <Badge
                 badgeContent={
@@ -122,6 +124,7 @@ export interface ConfigurableProps {
     editor: ReactElement;
     preferenceKey?: string;
     openButtonLabel?: string;
+    sx?: SxProps;
 }
 
 const PREFIX = 'RaConfigurable';

@@ -56,14 +56,15 @@ export const Basic = () => (
                     />
                     <InspectorButton />
                 </Box>
-                <SimpleListConfigurable
-                    resource="books"
-                    data={data}
-                    primaryText={record => record.title}
-                    secondaryText={record => record.author}
-                    tertiaryText={record => record.year}
-                    sx={{ margin: 2 }}
-                />
+                <Box p={2}>
+                    <SimpleListConfigurable
+                        resource="books"
+                        data={data}
+                        primaryText={record => record.title}
+                        secondaryText={record => record.author}
+                        tertiaryText={record => record.year}
+                    />
+                </Box>
             </MemoryRouter>
         </PreferencesEditorContextProvider>
     </I18nContextProvider>
