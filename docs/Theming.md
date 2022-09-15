@@ -970,7 +970,7 @@ const MyUserMenu = () => <UserMenu><MyLogoutButton /></UserMenu>;
 
 const MyAppBar = () => <AppBar userMenu={<MyUserMenu />} />;
 
-const MyLayout = () => <Layout appBar={MyAppBar} />;
+const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
 
 const App = () => (
     <Admin layout={MyLayout}>
