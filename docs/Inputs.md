@@ -339,7 +339,7 @@ import { TextInput } from 'react-admin';
 const TextInputWithNullEmptyValue = props => (
     <TextInput
         {...props}
-        parse={ v => typeof v === 'string' && v.length === 0 ? null : v }
+        parse={ v =>  v === '' ? null : v }
     />
 );
 
