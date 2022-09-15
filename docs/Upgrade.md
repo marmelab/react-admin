@@ -2929,7 +2929,7 @@ const MyCustomLogout = () => <Logout className="my-class-name" />;
 const MyAdmin = () => (
     <Admin
 -        logoutButton={<MyCustomLogout />}
-+        layout={<MyLayout />}
++        layout={MyLayout}
     >
         // ....
     </Admin>
