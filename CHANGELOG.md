@@ -1,5 +1,16 @@
 # Changelog
 
+## v4.3.3
+
+* Fix `<Confirm>` doesn't pass props to the underlying MUI `<Dialog>` component ([#8176](https://github.com/marmelab/react-admin/pull/8176)) ([WiXSL](https://github.com/WiXSL))
+* Fix performance issue in `useGetList` and `useGetManyReferences` ([#8174](https://github.com/marmelab/react-admin/pull/8174)) ([djhi](https://github.com/djhi))
+* Fix `localStorageStore.reset()` does not remove all items ([#8161](https://github.com/marmelab/react-admin/pull/8161)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix upgrade doc mentions wrong syntax for `<Admin layout>` prop ([#8169](https://github.com/marmelab/react-admin/pull/8169)) ([herndlm](https://github.com/herndlm))
+* [doc] Fix custom layout examples miss props forwarding ([#8170](https://github.com/marmelab/react-admin/pull/8170)) ([herndlm](https://github.com/herndlm))
+* [Doc] Fix Input chapter example about sanitizing empty values ([#8167](https://github.com/marmelab/react-admin/pull/8167)) ([Cimanel](https://github.com/Cimanel))
+* [Doc] Fix missing import in Routing chapter ([#8164](https://github.com/marmelab/react-admin/pull/8164)) ([herndlm](https://github.com/herndlm))
+* [Doc] Fix `useDelete` usage in JSDoc ([#8160](https://github.com/marmelab/react-admin/pull/8160)) ([slax57](https://github.com/slax57))
+
 ## v4.3.2
 
 * Fix `useFormState` sometimes returns outdated state ([#8138](https://github.com/marmelab/react-admin/pull/8138)) ([WiXSL](https://github.com/WiXSL))
