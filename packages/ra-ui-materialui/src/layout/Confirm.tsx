@@ -2,7 +2,7 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { useCallback, MouseEventHandler } from 'react';
 import PropTypes, { ReactComponentLike } from 'prop-types';
-import Dialog from '@mui/material/Dialog';
+import Dialog, { DialogProps } from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
@@ -13,7 +13,6 @@ import ActionCheck from '@mui/icons-material/CheckCircle';
 import AlertError from '@mui/icons-material/ErrorOutline';
 import clsx from 'clsx';
 import { useTranslate } from 'ra-core';
-import { SxProps } from '@mui/system';
 
 /**
  * Confirmation dialog
@@ -47,7 +46,7 @@ export const Confirm = (props: ConfirmProps) => {
         onClose,
         onConfirm,
         translateOptions = {},
-        sx,
+        ...rest
     } = props;
 
     const translate = useTranslate();
@@ -71,7 +70,7 @@ export const Confirm = (props: ConfirmProps) => {
             onClose={onClose}
             onClick={handleClick}
             aria-labelledby="alert-dialog-title"
-            sx={sx}
+            {...rest}
         >
             <DialogTitle id="alert-dialog-title">
                 {translate(title, { _: title, ...translateOptions })}
@@ -112,7 +111,7 @@ export const Confirm = (props: ConfirmProps) => {
     );
 };
 
-export interface ConfirmProps {
+export interface ConfirmProps extends Omit<DialogProps, 'onClose'> {
     cancel?: string;
     className?: string;
     confirm?: string;
@@ -126,7 +125,6 @@ export interface ConfirmProps {
     onConfirm: MouseEventHandler;
     title: string;
     translateOptions?: object;
-    sx?: SxProps;
 }
 
 Confirm.propTypes = {
