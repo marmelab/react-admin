@@ -77,7 +77,7 @@ export const PostList = () => (
 
 * `linkType="edit"`: links to the edit page. This is the default behavior.
 * `linkType="show"`: links to the show page.
-* `linkType={false}`: removes the link.
+* `linkType={false}`: does not create any link.
 
 
 
