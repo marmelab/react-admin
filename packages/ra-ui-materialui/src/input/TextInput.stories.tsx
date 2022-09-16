@@ -209,6 +209,19 @@ export const Sx = () => (
     </AdminContext>
 );
 
+export const ExtraProps = () => (
+    <AdminContext>
+        <Create resource="posts" sx={{ width: 600 }}>
+            <SimpleForm>
+                <TextInput
+                    source="username"
+                    inputProps={{ autocomplete: 'off' }}
+                />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
 const FormStateInspector = () => {
     const {
         touchedFields,
