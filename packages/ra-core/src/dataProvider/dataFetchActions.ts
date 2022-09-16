@@ -21,7 +21,7 @@ export const fetchActionsWithArrayOfRecordsResponse = [
 ];
 export const fetchActionsWithTotalResponse = ['getList', 'getManyReference'];
 
-export const fetchActions = [
+export const reactAdminFetchActions = [
     ...fetchActionsWithRecordResponse,
     ...fetchActionsWithArrayOfRecordsResponse,
 ];
