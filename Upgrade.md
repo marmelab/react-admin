@@ -2924,12 +2924,12 @@ const MyCustomLogout = () => <Logout className="my-class-name" />;
 
 + const MyAppBar = () => <AppBar userMenu={<MyUserMenu />} />;
 
-+ const MyLayout = () => <Layout appBar={MyAppBar} />;
++ const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
 
 const MyAdmin = () => (
     <Admin
 -        logoutButton={<MyCustomLogout />}
-+        layout={<MyLayout />}
++        layout={MyLayout}
     >
         // ....
     </Admin>
