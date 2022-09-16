@@ -83,7 +83,7 @@ The `<SingleFieldList>` items link to the edition page by default. You can set t
 
 * `linkType="edit"`: links to the edit page. This is the default behavior.
 * `linkType="show"`: links to the show page.
-* `linkType={false}`: removes the link.
+* `linkType={false}`: does not create any link.
 
 
 ## `sx`: CSS API
