@@ -79,7 +79,7 @@ The `<SingleFieldList>` items link to the edition page by default. You can set t
 ```
 
 
-`linkType` accepts the following options:
+`linkType` accepts the following values:
 
 * `linkType="edit"`: links to the edit page. This is the default behavior.
 * `linkType="show"`: links to the show page.
