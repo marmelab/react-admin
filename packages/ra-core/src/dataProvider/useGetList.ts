@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import {
     useQuery,
     UseQueryOptions,
@@ -101,14 +102,18 @@ export const useGetList = <RecordType extends RaRecord = any>(
         }
     );
 
-    return (result.data
-        ? {
-              ...result,
-              data: result.data?.data,
-              total: result.data?.total,
-              pageInfo: result.data?.pageInfo,
-          }
-        : result) as UseQueryResult<RecordType[], Error> & {
+    return useMemo(
+        () =>
+            result.data
+                ? {
+                      ...result,
+                      data: result.data?.data,
+                      total: result.data?.total,
+                      pageInfo: result.data?.pageInfo,
+                  }
+                : result,
+        [result]
+    ) as UseQueryResult<RecordType[], Error> & {
         total?: number;
         pageInfo?: {
             hasNextPage?: boolean;
