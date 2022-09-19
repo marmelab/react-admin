@@ -231,6 +231,8 @@ describe('useDataProvider', () => {
     });
 
     it('should call getList and show error', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+
         const getList = jest.fn(() =>
             Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
         );
@@ -240,6 +242,7 @@ describe('useDataProvider', () => {
                 <UseGetList />
             </CoreAdminContext>
         );
+
         expect(queryByTestId('loading')).not.toBeNull();
         await act(async () => {
             await new Promise(resolve => setTimeout(resolve));
