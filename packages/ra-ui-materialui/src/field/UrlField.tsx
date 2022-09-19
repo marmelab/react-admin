@@ -20,7 +20,7 @@ export const UrlField: FC<UrlFieldProps> = memo(props => {
                 className={className}
                 {...sanitizeFieldRestProps(rest)}
             >
-                {translate(emptyText, { _: emptyText })}
+                {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
         );
     }

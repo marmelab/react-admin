@@ -65,7 +65,7 @@ export const DateField: FC<DateFieldProps> = memo(props => {
                 className={className}
                 {...sanitizeFieldRestProps(rest)}
             >
-                {translate(emptyText, { _: emptyText })}
+                {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
         ) : null;
     }

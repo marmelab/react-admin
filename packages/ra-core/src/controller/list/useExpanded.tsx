@@ -49,3 +49,46 @@ export const useExpanded = (
 
     return [expanded, toggleExpanded];
 };
+
+/**
+ * State-like hook for controlling the expanded state of many list items
+ * expanded state is true when at least one item from ids is expanded.
+ *
+ * @param {string} resource The resource name, e.g. 'posts'
+ * @param {Identifier[]} ids A list of record identifiers
+ * @returns {Object} Destructure as [expanded, toggleExpanded].
+ *
+ * @example
+ *
+ * const [expanded, toggleExpanded] = useExpandedMultiple('posts', [123, 124, 125]);
+ * const expandIcon = expanded ? ExpandLess : ExpandMore;
+ * const onExpandClick = () => toggleExpanded();
+ */
+export const useExpandAll = (
+    resource: string,
+    ids: Identifier[]
+): [boolean, () => void] => {
+    const [expandedIds, setExpandedIds] = useStore<Identifier[]>(
+        `${resource}.datagrid.expanded`,
+        []
+    );
+
+    const isEexpanded = Array.isArray(expandedIds)
+        ? // eslint-disable-next-line eqeqeq
+          expandedIds.some(id => ids.some(id2 => id2 == id))
+        : false;
+
+    const toggleExpandedAll = useCallback(() => {
+        const unaffectedExpandedIds = expandedIds.filter(
+            // eslint-disable-next-line eqeqeq
+            expanded_id => !ids.some(id => id == expanded_id)
+        );
+        setExpandedIds(
+            isEexpanded
+                ? unaffectedExpandedIds
+                : unaffectedExpandedIds.concat(ids)
+        );
+    }, [expandedIds, setExpandedIds, isEexpanded, ids]);
+
+    return [isEexpanded, toggleExpandedAll];
+};
