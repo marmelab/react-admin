@@ -174,14 +174,7 @@ export const getSuggestionsFactory = ({
     getChoiceText: (choice: any) => string | ReactElement;
     getChoiceValue: (choice: any) => string;
 }) => filter => {
-    let suggestions: any[] = [
-        getSuggestion({
-            optionText,
-            optionValue,
-            text: emptyText,
-            value: emptyValue,
-        }),
-    ];
+    let suggestions: any[] = [];
     // if an item is selected and matches the filter
     if (
         selectedItem &&
