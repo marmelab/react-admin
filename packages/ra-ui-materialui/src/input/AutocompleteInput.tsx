@@ -136,6 +136,8 @@ export const AutocompleteInput = <
         createValue,
         debounce: debounceDelay = 250,
         defaultValue = '',
+        emptyText,
+        emptyValue = '',
         field: fieldOverride,
         format,
         helperText,
@@ -190,6 +192,11 @@ export const AutocompleteInput = <
 
     const translate = useTranslate();
 
+    const finalChoices =
+        isRequiredOverride || emptyText == null
+            ? allChoices
+            : [{ id: emptyValue, name: emptyText }].concat(allChoices);
+
     const {
         id,
         field,
@@ -218,7 +225,7 @@ export const AutocompleteInput = <
         DisableClearable,
         SupportCreate
     >(field.value, {
-        choices: allChoices,
+        choices: finalChoices,
         // @ts-ignore
         multiple,
         optionValue,
@@ -249,7 +256,9 @@ If you provided a React element for the optionText prop, you must also provide t
     const getRecordRepresentation = useGetRecordRepresentation(resource);
 
     const { getChoiceText, getChoiceValue, getSuggestions } = useSuggestions({
-        choices: allChoices,
+        choices: finalChoices,
+        emptyText,
+        emptyValue,
         limitChoicesToValue,
         matchSuggestion,
         optionText:
@@ -399,13 +408,13 @@ If you provided a React element for the optionText prop, you must also provide t
     );
     const doesQueryMatchSuggestion = useCallback(
         filter => {
-            const hasOption = !!allChoices
-                ? allChoices.some(choice => getOptionLabel(choice) === filter)
+            const hasOption = !!finalChoices
+                ? finalChoices.some(choice => getOptionLabel(choice) === filter)
                 : false;
 
             return doesQueryMatchSelection(filter) || hasOption;
         },
-        [allChoices, getOptionLabel, doesQueryMatchSelection]
+        [finalChoices, getOptionLabel, doesQueryMatchSelection]
     );
 
     const filterOptions = (options, params) => {
@@ -443,9 +452,9 @@ If you provided a React element for the optionText prop, you must also provide t
         if (matchSuggestion || limitChoicesToValue) {
             return getSuggestions(filterValue);
         }
-        return allChoices?.slice(0, suggestionLimit) || [];
+        return finalChoices?.slice(0, suggestionLimit) || [];
     }, [
-        allChoices,
+        finalChoices,
         filterValue,
         getSuggestions,
         limitChoicesToValue,
@@ -543,7 +552,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 inputValue={filterValue}
                 loading={
                     isLoading &&
-                    (!allChoices || allChoices.length === 0) &&
+                    (!finalChoices || finalChoices.length === 0) &&
                     oneSecondHasPassed
                 }
                 value={selectedChoice}

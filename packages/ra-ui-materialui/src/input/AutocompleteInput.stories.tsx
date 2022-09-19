@@ -607,3 +607,38 @@ export const VeryLargeOptionsNumber = () => {
         </Admin>
     );
 };
+
+const BookEditWithEmptyText = () => {
+    const choices = [
+        { id: 1, name: 'Leo Tolstoy' },
+        { id: 2, name: 'Victor Hugo' },
+        { id: 3, name: 'William Shakespeare' },
+        { id: 4, name: 'Charles Baudelaire' },
+        { id: 5, name: 'Marcel Proust' },
+    ];
+    return (
+        <Edit
+            mutationMode="pessimistic"
+            mutationOptions={{
+                onSuccess: data => {
+                    console.log(data);
+                },
+            }}
+        >
+            <SimpleForm>
+                <AutocompleteInput
+                    source="author"
+                    choices={choices}
+                    emptyText="None"
+                    fullWidth
+                />
+            </SimpleForm>
+        </Edit>
+    );
+};
+
+export const EmptyText = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource name="books" edit={BookEditWithEmptyText} />
+    </Admin>
+);
