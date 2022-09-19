@@ -379,7 +379,7 @@ Next is the filter form component, displayed only when the "main" filter is disp
 {% raw %}
 ```jsx
 import * as React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { Box, Button, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { TextInput, NullableBooleanInput, useListContext } from 'react-admin';
@@ -411,43 +411,45 @@ const PostFilterForm = () => {
     };
 
     return (
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-            <Box display="flex" alignItems="flex-end" mb={1}>
-                <Box component="span" mr={2}>
-                    {/* Full-text search filter. We don't use <SearchFilter> to force a large form input */}
-                    <TextInput
-                        resettable
-                        helperText={false}
-                        source="q"
-                        label="Search"
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment>
-                                    <SearchIcon color="disabled" />
-                                </InputAdornment>
-                            )
-                        }}
-                    />
+        <FormProvider {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+                <Box display="flex" alignItems="flex-end" mb={1}>
+                    <Box component="span" mr={2}>
+                        {/* Full-text search filter. We don't use <SearchFilter> to force a large form input */}
+                        <TextInput
+                            resettable
+                            helperText={false}
+                            source="q"
+                            label="Search"
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment>
+                                        <SearchIcon color="disabled" />
+                                    </InputAdornment>
+                                )
+                            }}
+                        />
+                    </Box>
+                    <Box component="span" mr={2}>
+                        {/* Commentable filter */}
+                        <NullableBooleanInput
+                            helperText={false}
+                            source="commentable"
+                        />
+                    </Box>
+                    <Box component="span" mr={2} mb={1.5}>
+                        <Button variant="outlined" color="primary" type="submit">
+                            Filter
+                        </Button>
+                    </Box>
+                    <Box component="span" mb={1.5}>
+                        <Button variant="outlined" onClick={resetFilter}>
+                            Close
+                        </Button>
+                    </Box>
                 </Box>
-                <Box component="span" mr={2}>
-                    {/* Commentable filter */}
-                    <NullableBooleanInput
-                        helperText={false}
-                        source="commentable"
-                    />
-                </Box>
-                <Box component="span" mr={2} mb={1.5}>
-                    <Button variant="outlined" color="primary" type="submit">
-                        Filter
-                    </Button>
-                </Box>
-                <Box component="span" mb={1.5}>
-                    <Button variant="outlined" onClick={resetFilter}>
-                        Close
-                    </Button>
-                </Box>
-            </Box>
-        </form>
+            </form>
+        </FormProvider>
     );
 };
 ```
