@@ -5,9 +5,9 @@ title: "useListController"
 
 # `useListController`
 
-The `useListController` hook fetches the data, prepares callbacks for modifying the pagination, filters, sort and selection, and returns them. Its return value match the `ListContext` shape. `useListController` is used internally by the `<List>` and `<ListBase>` components. 
+The `useListController` hook fetches the data, prepares callbacks for modifying the pagination, filters, sort and selection, and returns them. Its return value match the `ListContext` shape. `useListController` is used internally by the `<List>` and `<ListBase>` components.
 
-You can use it to create a custom List view, although its component counterpart, [`<ListBase>`](./ListBase.md), is probably better in most cases. 
+You can use it to create a custom List view, although its component counterpart, [`<ListBase>`](./ListBase.md), is probably better in most cases.
 
 ## Usage
 
@@ -43,11 +43,12 @@ const MyList = () => {
 * [`queryOptions`](./List.md#queryoptions): react-query options for the useQuery call
 * [`resource`](./List.md#resource): resource name, e.g. 'posts' ; defaults to the current resource context
 * [`sort`](./List.md#sort-default-sort-field--order), current sort value, e.g. { field: 'published_at', order: 'DESC' }
+* [`storeKey`](#storekey): key used to differenciate the list from another sharing the same resource, in store managed states
 
 Here are their default values:
 
 ```jsx
-import { 
+import {  
     useListController,
     defaultExporter,
     ListContextProvider
@@ -64,6 +65,7 @@ const MyList = ({
     queryOptions = undefined,
     resource = '',
     sort = { field: 'id', order: 'DESC' },
+    storeKey = undefined,
 }) => {
     const listContext = useListController({
         debounce,
@@ -76,6 +78,7 @@ const MyList = ({
         queryOptions,
         resource,
         sort,
+        storeKey,
     });
     return (
         <ListContextProvider value={listContext}>
@@ -83,6 +86,50 @@ const MyList = ({
         </ListContextProvider>
     );
 };
+```
+
+## `storeKey`
+
+To display multiple lists of the same resource and keep distinct store states for each of them (filters, sorting and pagination), specify unique keys with the `storeKey` property.
+
+In case no `storeKey` is provided, the states will be stored with the following key: `${resource}.listParams`.
+
+**Note:** Please note that selection state will remain linked to a resource-based key as described [here](./List.md#disablesyncwithlocation).
+
+In the example below, both lists `TopPosts` and `FlopPosts` use the same resource ('posts'), but their controller states are stored separately (under the store keys `'top'` and `'flop'` respectively).
+
+```jsx
+import { useListController } from 'react-admin';
+
+const OrderedPostList = ({
+    storeKey,
+    sort,
+}) => {
+    const params = useListController({
+        resource: 'posts',
+        sort,
+        storeKey,
+    });
+    return (
+        <div>
+            <ul style={styles.ul}>
+                {!params.isLoading &&
+                    params.data.map(post => (
+                        <li key={`post_${post.id}`}>
+                            {post.title} - {post.votes} votes
+                        </li>
+                    ))}
+            </ul>
+        </div>
+    );
+};
+
+const TopPosts = (
+    <OrderedPostList storeKey="top" sort={{ field: 'votes', order: 'DESC' }} />
+);
+const FlopPosts = (
+    <OrderedPostList storeKey="flop" sort={{ field: 'votes', order: 'ASC' }} />
+);
 ```
 
 ## Return Value
