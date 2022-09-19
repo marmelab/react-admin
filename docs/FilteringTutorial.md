@@ -101,7 +101,7 @@ export const PostList = (props) => (
 );
 ```
 
-Elements passed as `filters` are regular inputs. That means you can build sophisticated filters based on references, array values, etc. `<List>` hides all inputs in the filter form by default, except those that have the `alwaysOn` prop.
+Elements passed as `filters` are regular inputs. That means you can build sophisticated filters based on references, array values, etc. `<List>` hides all inputs in the [`Filter Form`](./FilterForm.md) by default, except those that have the `alwaysOn` prop.
 
 **Tip**: For technical reasons, react-admin does not accept Filter inputs having both a `defaultValue` and `alwaysOn`. To set default values for always on filters, use the [`filterDefaultValues`](./List.md#filterdefaultvalues) prop of the `<List>` component instead.
 
@@ -114,7 +114,7 @@ Elements passed as `filters` are regular inputs. That means you can build sophis
 
 ![`<SearchInput>`](./img/search_input.gif)
 
-In addition to [the usual input types](./Inputs.md) (`<TextInput>`, `<SelectInput>`, `<ReferenceInput>`, etc.), you can use the `<SearchInput>` in the `filters` array. This input is designed especially for the filter form. It's like a `<TextInput resettable>` with a magnifier glass icon - exactly the type of input users look for when they want to do a full-text search. 
+In addition to [the usual input types](./Inputs.md) (`<TextInput>`, `<SelectInput>`, `<ReferenceInput>`, etc.), you can use the `<SearchInput>` in the `filters` array. This input is designed especially for the [`Filter Form`](./FilterForm.md). It's like a `<TextInput resettable>` with a magnifier glass icon - exactly the type of input users look for when they want to do a full-text search. 
 
 ```jsx
 import { SearchInput, TextInput } from 'react-admin';
@@ -332,7 +332,7 @@ For instance, by default, the filter button/form combo doesn't provide a submit 
 
 In that case, the solution is to process the filter when users click on a submit button, rather than when they type values in form inputs. React-admin doesn't provide any component for that, but it's a good opportunity to illustrate the internals of the filter functionality. We'll actually provide an alternative implementation to the Filter button/form combo.
 
-To create a custom filter UI, we'll have to override the default List Toolbar component, which will contain both a Filter Button and a Filter Form, interacting with the List filters via the ListContext.
+To create a custom filter UI, we'll have to override the default List Toolbar component, which will contain both a Filter Button and a [`Filter Form`](./FilterForm.md), interacting with the List filters via the ListContext.
 
 ### Filter Callbacks
 
