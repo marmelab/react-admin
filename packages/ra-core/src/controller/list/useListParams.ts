@@ -83,10 +83,8 @@ export const useListParams = ({
     perPage = 10,
     resource,
     sort = defaultSort,
-    storeKey,
+    storeKey = `${resource}.listParams`,
 }: ListParamsOptions): [Parameters, Modifiers] => {
-    if (!storeKey) storeKey = `${resource}.listParams`;
-
     const location = useLocation();
     const navigate = useNavigate();
     const [localParams, setLocalParams] = useState(defaultParams);
