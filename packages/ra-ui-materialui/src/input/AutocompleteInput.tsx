@@ -265,8 +265,6 @@ If you provided a React element for the optionText prop, you must also provide t
 
     const { getChoiceText, getChoiceValue, getSuggestions } = useSuggestions({
         choices: finalChoices,
-        emptyText,
-        emptyValue,
         limitChoicesToValue,
         matchSuggestion,
         optionText:

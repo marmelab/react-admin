@@ -8,8 +8,6 @@ import { useTranslate } from '../i18n';
  *
  * @param allowDuplicates A boolean indicating whether a suggestion can be added several times
  * @param choices An array of available choices
- * @param emptyText The text to use for the empty suggestion. Defaults to an empty string
- * @param emptyValue The value to use for the empty suggestion. Defaults to `null`
  * @param limitChoicesToValue A boolean indicating whether the initial suggestions should be limited to the currently selected one(s)
  * @param matchSuggestion Optional unless `optionText` is a React element. Function which check whether a choice matches a filter. Must return a boolean.
  * @param optionText Either a string defining the property to use to get the choice text, a function or a React element
@@ -28,8 +26,6 @@ export const useSuggestions = ({
     choices,
     createText = 'ra.action.create',
     createValue = '@@create',
-    emptyText = '',
-    emptyValue = null,
     limitChoicesToValue,
     matchSuggestion,
     optionText,
@@ -52,8 +48,6 @@ export const useSuggestions = ({
             choices,
             createText,
             createValue,
-            emptyText: translate(emptyText, { _: emptyText }),
-            emptyValue,
             getChoiceText,
             getChoiceValue,
             limitChoicesToValue,
@@ -68,8 +62,6 @@ export const useSuggestions = ({
             choices,
             createText,
             createValue,
-            emptyText,
-            emptyValue,
             getChoiceText,
             getChoiceValue,
             limitChoicesToValue,
@@ -98,8 +90,6 @@ export interface UseSuggestionsOptions extends UseChoicesOptions {
     choices: any[];
     createText?: string;
     createValue?: any;
-    emptyText?: string;
-    emptyValue?: any;
     limitChoicesToValue?: boolean;
     matchSuggestion?: (
         filter: string,
@@ -160,8 +150,6 @@ export const getSuggestionsFactory = ({
     choices = [],
     createText = 'ra.action.create',
     createValue = '@@create',
-    emptyText = '',
-    emptyValue = '',
     optionText = 'name',
     optionValue = 'id',
     getChoiceText,
