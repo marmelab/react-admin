@@ -137,7 +137,6 @@ export const AutocompleteInput = <
         debounce: debounceDelay = 250,
         defaultValue = '',
         emptyText,
-        emptyValue = '',
         field: fieldOverride,
         format,
         helperText,
@@ -197,7 +196,7 @@ export const AutocompleteInput = <
             ? allChoices
             : [
                   {
-                      id: emptyValue,
+                      id: '',
                       name:
                           emptyText === ''
                               ? ' ' // em space, forces the display of an empty line of normal height
@@ -429,7 +428,7 @@ If you provided a React element for the optionText prop, you must also provide t
             matchSuggestion || // When using element as optionText (and matchSuggestion), options are filtered by getSuggestions, so they shouldn't be filtered here
             limitChoicesToValue // When limiting choices to values (why? it's legacy!), options are also filtered by getSuggestions, so they shouldn't be filtered here
                 ? options
-                : defaultFilterOptions(options, params); // Otherwise we let MUI's Autocomplete do the filtering
+                : defaultFilterOptions(options, params); // Otherwise, we let MUI's Autocomplete do the filtering
 
         // add create option if necessary
         const { inputValue } = params;
@@ -613,6 +612,7 @@ export interface AutocompleteInputProps<
         > {
     children?: ReactNode;
     debounce?: number;
+    emptyText?: string;
     filterToQuery?: (searchText: string) => any;
     inputText?: (option: any) => string;
     setFilter?: (value: string) => void;
