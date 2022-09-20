@@ -132,4 +132,4 @@ export interface CoreAdminRoutesProps extends CoreLayoutProps {
     ready?: ComponentType;
 }
 
-const defaultAuthParams = { route: 'dashboard' };
+const defaultAuthParams = { params: { route: 'dashboard' } };
