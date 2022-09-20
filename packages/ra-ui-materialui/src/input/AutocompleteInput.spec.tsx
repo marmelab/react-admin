@@ -58,7 +58,7 @@ describe('<AutocompleteInput />', () => {
     });
 
     describe('emptyText', () => {
-        it('should allow to override the empty menu option text by passing a string', () => {
+        it('should allow to have an empty menu option text by passing a string', () => {
             const emptyText = 'Default';
 
             render(
