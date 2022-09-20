@@ -254,7 +254,7 @@ describe('<ArrayInput />', () => {
         it('should display an error if the array is required and empty', async () => {
             render(<GlobalValidation />);
             await screen.findByDisplayValue('Leo Tolstoy');
-            const RemoveButtons = screen.getAllByText('Remove');
+            const RemoveButtons = screen.getAllByLabelText('Remove');
             fireEvent.click(RemoveButtons[1]);
             fireEvent.click(RemoveButtons[0]);
             const SaveButton = screen.getByText('Save');
