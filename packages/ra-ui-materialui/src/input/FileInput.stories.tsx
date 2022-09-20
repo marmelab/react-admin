@@ -7,6 +7,7 @@ import { Create } from '../detail';
 import { SimpleForm } from '../form';
 import { FileInput } from './FileInput';
 import { FileField } from '../field';
+import { required } from 'ra-core';
 
 export default { title: 'ra-ui-materialui/input/FileInput' };
 
@@ -21,6 +22,14 @@ export const Basic = () => (
 export const LimitByFileType = () => (
     <Wrapper>
         <FileInput source="attachment" accept="application/pdf">
+            <FileField source="src" title="title" />
+        </FileInput>
+    </Wrapper>
+);
+
+export const Required = () => (
+    <Wrapper>
+        <FileInput source="attachment" isRequired validate={required()}>
             <FileField source="src" title="title" />
         </FileInput>
     </Wrapper>
@@ -60,7 +69,7 @@ export const FullWidth = () => (
 
 export const Disabled = () => (
     <Wrapper>
-        <FileInput source="attachment" disabled>
+        <FileInput source="attachment" options={{ disabled: true }}>
             <FileField source="src" title="title" />
         </FileInput>
     </Wrapper>

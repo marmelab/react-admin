@@ -38,8 +38,8 @@ const MyAppBar = () => (
     <AppBar userMenu={<UserMenu />} />
 );
 
-const MyLayout = () => (
-    <Layout appBar={MyAppBar} />
+const MyLayout = (props) => (
+    <Layout {...props} appBar={MyAppBar} />
 );
 
 export default MyLayout;

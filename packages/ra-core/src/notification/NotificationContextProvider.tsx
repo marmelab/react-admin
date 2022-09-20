@@ -3,6 +3,7 @@ import { useState, useCallback, useMemo } from 'react';
 
 import { NotificationPayload } from './types';
 import { NotificationContext } from './NotificationContext';
+import { AddNotificationContext } from './AddNotificationContext';
 
 export const NotificationContextProvider = ({ children }) => {
     const [notifications, setNotifications] = useState<NotificationPayload[]>(
@@ -33,9 +34,13 @@ export const NotificationContextProvider = ({ children }) => {
         [notifications] // eslint-disable-line react-hooks/exhaustive-deps
     );
 
+    // we separate the addNotification context to avoid rerendering all components
+    // that depend on useNotify when a notification is dispatched
     return (
         <NotificationContext.Provider value={contextValue}>
-            {children}
+            <AddNotificationContext.Provider value={addNotification}>
+                {children}
+            </AddNotificationContext.Provider>
         </NotificationContext.Provider>
     );
 };

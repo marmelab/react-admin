@@ -127,6 +127,7 @@ export const AutocompleteInput = <
     const {
         choices: choicesProp,
         className,
+        clearOnBlur = true,
         clearText = 'ra.action.clear_input_value',
         closeText = 'ra.action.close',
         create,
@@ -277,7 +278,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 ]);
             }
         } else {
-            field.onChange(getChoiceValue(newValue) || '');
+            field.onChange(getChoiceValue(newValue) ?? '');
         }
     };
 
@@ -349,6 +350,14 @@ If you provided a React element for the optionText prop, you must also provide t
         },
         [getChoiceText, inputText, createId]
     );
+
+    const finalOnBlur = useCallback((): void => {
+        if (clearOnBlur) {
+            const optionLabel = getOptionLabel(selectedChoice);
+            setFilterValue(optionLabel);
+        }
+        field.onBlur();
+    }, [clearOnBlur, field, selectedChoice, getOptionLabel]);
 
     useEffect(() => {
         if (!multiple) {
@@ -523,7 +532,7 @@ If you provided a React element for the optionText prop, you must also provide t
                         : noOptionsText
                 }
                 selectOnFocus
-                clearOnBlur
+                clearOnBlur={clearOnBlur}
                 {...sanitizeInputRestProps(rest)}
                 freeSolo={!!create || !!onCreate}
                 handleHomeEndKeys={!!create || !!onCreate}
@@ -543,7 +552,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 }
                 value={selectedChoice}
                 onChange={handleAutocompleteChange}
-                onBlur={field.onBlur}
+                onBlur={finalOnBlur}
                 onInputChange={handleInputChange}
                 renderOption={(props, record: RaRecord) => {
                     (props as {

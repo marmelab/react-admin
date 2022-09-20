@@ -331,7 +331,22 @@ Mnemonic for the two functions:
 - `parse()`: input -> record
 - `format()`: record -> input
 
-Say the user would like to input values of 0-100 to a percentage field but your API (hence record) expects 0-1.0. You can use simple `parse()` and `format()` functions to archive the transform:
+A common usage for this feature is to strip empty strings from the record before saving it to the API. As a reminder, HTML form inputs always return strings, even for numbers and booleans. So the empty value for a text input is the empty string, not `null` or `undefined`. Leveraging `parse` allows you to transform the empty string to `null` before saving the record.
+
+```jsx
+import { TextInput } from 'react-admin';
+
+const TextInputWithNullEmptyValue = props => (
+    <TextInput
+        {...props}
+        parse={ v =>  v === '' ? null : v }
+    />
+);
+
+export default TextInputWithNullEmptyValue;
+```
+
+Let's look at another usage example. Say the user would like to input values of 0-100 to a percentage field but your API (hence record) expects 0-1.0. You can use simple `parse()` and `format()` functions to archive the transform:
 
 ```jsx
 <NumberInput source="percent" format={v => v * 100} parse={v => parseFloat(v) / 100} label="Formatted number" />
@@ -374,23 +389,6 @@ const dateParser = value => {
 };
 
 <DateInput source="isodate" format={dateFormatter} parse={dateParser} defaultValue={new Date()} />
-```
-
-**Tip:** To spread a conversion behaviour to your whole application, you can import a `react-admin`component then re-export them with their `format` and/or `parse` props set.
-
-```jsx
-import * as React from 'react';
-import { TextInput } from 'react-admin';
-
-const FilledOrNullTextInput = props => {
-    return (
-        <TextInput
-            {...props}
-            format={ v => typeof v === 'string' && v.length === 0 ? null : v }
-            />
-    );
-};
-export default FilledOrNullTextInput;
 ```
 
 ## Linking Two Inputs

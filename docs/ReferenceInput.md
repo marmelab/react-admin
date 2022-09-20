@@ -92,6 +92,28 @@ You can filter the query used to populate the possible values. Use the `filter` 
 ```
 {% endraw %}
 
+## `label`
+
+In an `<Edit>` or `<Create>` view, the `label` prop has no effect. `<ReferenceInput>` has no label, it simply renders its child (an `<AutocompleteInput>` by default). If you need to customize the label, set the `label` prop on the child element:
+
+```jsx
+import { ReferenceInput, AutocompleteInput } from 'react-admin';
+
+<ReferenceInput source="post_id" reference="posts">
+    <AutocompleteInput label="Post" />
+</ReferenceInput>
+```
+
+In a Filter form, react-admin uses the `label` prop to set the Filter label. So in this case, the `label` prop is not ignored, but you also have to set it on the child input.
+
+```jsx
+const filters = [
+    <ReferenceInput label="Post" source="post_id" reference="posts">
+        <AutocompleteInput label="Post" />
+    </ReferenceInput>,
+];
+```
+
 ## `perPage`
 
 By default, `<ReferenceInput>` fetches only the first 25 values. You can extend this limit by setting the `perPage` prop.

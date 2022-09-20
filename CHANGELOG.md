@@ -1,5 +1,47 @@
 # Changelog
 
+## v4.3.3
+
+* Fix `<Confirm>` doesn't pass props to the underlying MUI `<Dialog>` component ([#8176](https://github.com/marmelab/react-admin/pull/8176)) ([WiXSL](https://github.com/WiXSL))
+* Fix performance issue in `useGetList` and `useGetManyReferences` ([#8174](https://github.com/marmelab/react-admin/pull/8174)) ([djhi](https://github.com/djhi))
+* Fix `localStorageStore.reset()` does not remove all items ([#8161](https://github.com/marmelab/react-admin/pull/8161)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix upgrade doc mentions wrong syntax for `<Admin layout>` prop ([#8169](https://github.com/marmelab/react-admin/pull/8169)) ([herndlm](https://github.com/herndlm))
+* [doc] Fix custom layout examples miss props forwarding ([#8170](https://github.com/marmelab/react-admin/pull/8170)) ([herndlm](https://github.com/herndlm))
+* [Doc] Fix Input chapter example about sanitizing empty values ([#8167](https://github.com/marmelab/react-admin/pull/8167)) ([Cimanel](https://github.com/Cimanel))
+* [Doc] Fix missing import in Routing chapter ([#8164](https://github.com/marmelab/react-admin/pull/8164)) ([herndlm](https://github.com/herndlm))
+* [Doc] Fix `useDelete` usage in JSDoc ([#8160](https://github.com/marmelab/react-admin/pull/8160)) ([slax57](https://github.com/slax57))
+
+## v4.3.2
+
+* Fix `useFormState` sometimes returns outdated state ([#8138](https://github.com/marmelab/react-admin/pull/8138)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<ArrayInput>` not showing validation error message ([#8154](https://github.com/marmelab/react-admin/pull/8154)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<FileInput>` and `<ImageInput>` not showing validation error message ([#8150](https://github.com/marmelab/react-admin/pull/8150)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<AppBar className>` prop is ignored ([#8148](https://github.com/marmelab/react-admin/pull/8148)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<ReferenceManyField>` row selection is shared for a given resources ([#8149](https://github.com/marmelab/react-admin/pull/8149)) ([WiXSL](https://github.com/WiXSL))
+* Fix `useNotify()` triggers useless rerenders ([#8136](https://github.com/marmelab/react-admin/pull/8136)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<AutocompleteInput>` does not allow zero as value ([#8144](https://github.com/marmelab/react-admin/pull/8144)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Add documentation for the `<SavedQueriesList>` component ([#8157](https://github.com/marmelab/react-admin/pull/8157)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix tutorial about sanitizing empty values ([#8156](https://github.com/marmelab/react-admin/pull/8156)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix Theming doc mentions old syntax of `<Menu.Item>` ([#8137](https://github.com/marmelab/react-admin/pull/8137)) ([fzaninotto](https://github.com/fzaninotto))
+
+## v4.3.1
+
+* Fix `<SelectInput>` reorders choices by id ([#8135](https://github.com/marmelab/react-admin/pull/8135)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix global validation not firing after submit with `<ArrayInput>` ([#8118](https://github.com/marmelab/react-admin/pull/8118)) ([slax57](https://github.com/slax57))
+* Fix `useGetManyAggregate` throws "filter is not a function" when getting 401 ([#8131](https://github.com/marmelab/react-admin/pull/8131)) ([matthieuMay](https://github.com/matthieuMay))
+* Fix `<AutocompleteInput clearOnBlur>` has no effect ([#8123](https://github.com/marmelab/react-admin/pull/8123)) ([WiXSL](https://github.com/WiXSL))
+* Fix dataProvider hooks do not handle `pageInfo` when updating `getList` query cache ([#8105](https://github.com/marmelab/react-admin/pull/8105)) ([slax57](https://github.com/slax57))
+* Fix guesser for of `<ReferenceField>` and `<ReferenceArrayField>` do not use `recordRepresentation` ([#8104](https://github.com/marmelab/react-admin/pull/8104)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `useGetList`'s onSuccess side effect overriding internal one ([#8102](https://github.com/marmelab/react-admin/pull/8102)) ([slax57](https://github.com/slax57))
+* [Doc] Fix ambiguity about `<ReferenceInput>` label prop ([#8128](https://github.com/marmelab/react-admin/pull/8128)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc]: Fix `ra-rbac` links ([#8127](https://github.com/marmelab/react-admin/pull/8127)) ([slax57](https://github.com/slax57))
+* [Doc] Fix code error in usage example of `ra-data-localstorage` README ([#8122](https://github.com/marmelab/react-admin/pull/8122)) ([rnllv](https://github.com/rnllv))
+* [Doc] Fix outdated link to `ra-data-postgrest` data provider ([#8111](https://github.com/marmelab/react-admin/pull/8111)) ([scheiblr](https://github.com/scheiblr))
+* [Doc] Fix `<ReferenceArrayField>` doc to use a child-less syntax first ([#8117](https://github.com/marmelab/react-admin/pull/8117)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix package name for `<JsonSchemaForm>` ([#8106](https://github.com/marmelab/react-admin/pull/8106)) ([arimet](https://github.com/arimet))
+* [Doc] Fix typo in `<ReferenceField emptyText>` documentation ([#8112](https://github.com/marmelab/react-admin/pull/8112)) ([LabisAnargyrou](https://github.com/LabisAnargyrou))
+* [Doc] Fix `<TabbedForm>` chapter to explain how to force scrollable variant ([#8109](https://github.com/marmelab/react-admin/pull/8109)) ([arimet](https://github.com/arimet))
+
 ## v4.3.0
 
 * Add default Record representation ([#8011](https://github.com/marmelab/react-admin/pull/8011)) ([fzaninotto](https://github.com/fzaninotto))

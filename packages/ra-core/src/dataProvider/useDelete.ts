@@ -53,7 +53,7 @@ import {
  * const DeleteButton = ({ record }) => {
  *     const [deleteOne, { isLoading, error }] = useDelete();
  *     const handleClick = () => {
- *         deleteOne('likes', { id: record.id }, record)
+ *         deleteOne('likes', { id: record.id, previousData: record })
  *     }
  *     if (error) { return <p>ERROR</p>; }
  *     return <button disabled={isLoading} onClick={handleClick}>Delete</div>;
@@ -64,7 +64,7 @@ import {
  * import { useDelete } from 'react-admin';
  *
  * const DeleteButton = ({ record }) => {
- *     const [deleteOne, { isLoading, error }] = useDelete('likes', { id: record.id }, record);
+ *     const [deleteOne, { isLoading, error }] = useDelete('likes', { id: record.id, previousData: record });
  *     if (error) { return <p>ERROR</p>; }
  *     return <button disabled={isLoading} onClick={() => deleteOne()}>Delete</button>;
  * };

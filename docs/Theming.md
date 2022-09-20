@@ -882,14 +882,12 @@ To make it easier to customize, we export some components and hooks used by the 
 
 By default, React-admin uses the list of `<Resource>` components passed as children of `<Admin>` to build a menu to each resource with a `list` component. If you want to reorder, add or remove menu items, for instance to link to non-resources pages, you have to provide a custom `<Menu>` component to your `Layout`.
 
-### Custom Menu Example
-
-You can create a custom menu component using the `<DashboardMenuItem>` and `<MenuItemLink>` components:
+To do that, create a custom menu component using the `<Menu`, `<Menu.DashboardItem>`, and `<Menu.Item>` components:
 
 ```jsx
 // in src/MyMenu.js
 import * as React from 'react';
-import { DashboardMenuItem, Menu, MenuItemLink } from 'react-admin';
+import { Menu } from 'react-admin';
 import BookIcon from '@mui/icons-material/Book';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import PeopleIcon from '@mui/icons-material/People';
@@ -897,11 +895,11 @@ import LabelIcon from '@mui/icons-material/Label';
 
 export const MyMenu = (props) => (
     <Menu {...props}>
-        <DashboardMenuItem />
-        <MenuItemLink to="/posts" primaryText="Posts" leftIcon={<BookIcon />}/>
-        <MenuItemLink to="/comments" primaryText="Comments" leftIcon={<ChatBubbleIcon />}/>
-        <MenuItemLink to="/users" primaryText="Users" leftIcon={<PeopleIcon />}/>
-        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
+        <Menu.DashboardItem />
+        <Menu.Item to="/posts" primaryText="Posts" leftIcon={<BookIcon />}/>
+        <Menu.Item to="/comments" primaryText="Comments" leftIcon={<ChatBubbleIcon />}/>
+        <Menu.Item to="/users" primaryText="Users" leftIcon={<PeopleIcon />}/>
+        <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
     </Menu>
 );
 ```
@@ -929,128 +927,13 @@ const App = () => (
 );
 ```
 
-**Tip**: You can generate the menu items for each of the resources by reading the Resource configurations context: 
-
-```jsx
-// in src/Menu.js
-import * as React from 'react';
-import { createElement } from 'react';
-import { useMediaQuery } from '@mui/material';
-import { DashboardMenuItem, Menu, MenuItemLink, useResourceDefinitions, useSidebarState } from 'react-admin';
-import DefaultIcon from '@mui/icons-material/ViewList';
-import LabelIcon from '@mui/icons-material/Label';
-
-export const Menu = (props) => {
-    const resources = useResourceDefinitions()
-    const [open] = useSidebarState();
-    return (
-        <Menu {...props}>
-            <DashboardMenuItem />
-            {Object.keys(resources).map(name => (
-                <MenuItemLink
-                    key={name}
-                    to={`/${name}`}
-                    primaryText={
-                        (resources[name].options && resources[name].options.label) ||
-                        name
-                    }
-                    leftIcon={
-                        resources[name].icon ? createElement(resources[name].icon) : <DefaultIcon />
-                    }
-                    onClick={props.onMenuClick}
-                    sidebarIsOpen={open}
-                />
-            ))}
-            {/* add your custom menus here */}
-        </Menu>
-    );
-};
-```
+**Tip**: You can generate the menu items for each resource automatically by reading the Resource configuration context. You can also add a menu entry to a pre-filtered list. For more information, check [the `<Menu>`component documenation](./Menu.md).
 
 **Tip**: If you need a multi-level menu, or a Mega Menu opening panels with custom content, check out [the `ra-navigation`<img class="icon" src="./img/premium.svg" /> module](https://marmelab.com/ra-enterprise/modules/ra-navigation) (part of the [Enterprise Edition](https://marmelab.com/ra-enterprise))
 
 ![multi-level menu](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.gif)
 
 ![MegaMenu and Breadcrumb](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.gif)
-
-### `<MenuItemLink>`
-
-The `<MenuItemLink>` component displays a menu item with a label and an icon - or only the icon with a tooltip when the sidebar is minimized. It also handles the automatic closing of the menu on tap on mobile.
-
-The `primaryText` prop accepts a string or a React node. You can use it e.g. to display a badge on top of the menu item:
-
-```jsx
-import Badge from '@mui/material/Badge';
-
-<MenuItemLink to="/custom-route" primaryText={
-    <Badge badgeContent={4} color="primary">
-        Notifications
-    </Badge>
-} />
-``` 
-
-The `letfIcon` prop allows to set the menu left icon.
-
-Additional props are passed down to [the underling MUI `<MenuItem>` component](https://mui.com/api/menu-item/#menuitem-api).
-
-**Tip**: The `<MenuItemLink>` component makes use of the React Router [NavLink](https://reacttraining.com/react-router/web/api/NavLink) component, hence allowing to customize the active menu style. For instance, here is how to use a custom theme to show a left border for the active menu:
-
-```jsx
-export const theme = {
-    palette: {
-        // ...
-    },
-  components: {
-    // ... 
-    RaMenuItemLink: {
-        styleOverrides: {
-            root: {
-                // invisible border when not active, to avoid position flashs
-                borderLeft: '3px solid transparent', 
-                '&.RaMenuItemLink-active': {
-                    borderLeft: '10px solid #4f3cc9',
-                },
-                '& .RaMenuItemLink-icon': {
-                    color: '#EFC44F',
-                },
-            },
-        },
-    },
-};
-```
-
-### Menu To A Filtered List
-
-As the filter values are taken from the URL, you can link to a pre-filtered list by setting the `filter` query parameter.
-
-For instance, to include a menu to a list of published posts:
-
-{% raw %}
-```jsx
-<MenuItemLink
-    to={{
-        pathname: '/posts',
-        search: `filter=${JSON.stringify({ is_published: true })}`,
-    }}
-    primaryText="Posts"
-    leftIcon={<BookIcon />}
-/>
-```
-{% endraw %}
-
-### Menu To A List Without Filters
-
-By default, a click on `<MenuItemLink >` for a list page opens the list with the same filters as they were applied the last time the user saw them. This is usually the expected behavior, but your users may prefer that clicking on a menu item resets the list filters.
-
-Just use an empty `filter` query parameter to force empty filters:
-
-```jsx
-<MenuItemLink
-    to="/posts?filter=%7B%7D" // %7B%7D is JSON.stringify({})
-    primaryText="Posts"
-    leftIcon={<BookIcon />}
-/>
-```
 
 ## Using a Custom Login Page
 
@@ -1087,7 +970,7 @@ const MyUserMenu = () => <UserMenu><MyLogoutButton /></UserMenu>;
 
 const MyAppBar = () => <AppBar userMenu={<MyUserMenu />} />;
 
-const MyLayout = () => <Layout appBar={MyAppBar} />;
+const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
 
 const App = () => (
     <Admin layout={MyLayout}>

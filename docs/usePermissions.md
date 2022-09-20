@@ -63,7 +63,7 @@ const MyPage = () => {
 
 ## RBAC
 
-[The ra-rbac module](https://marmelab.com/ra-rbac)<img class="icon" src="./img/premium.svg" /> provides an alternative implementation of the `usePermissions` hook. It returns an array of permissions, resulting in the merge of the user permissions and the permissions from the user roles.
+[The ra-rbac module](https://marmelab.com/ra-enterprise/modules/ra-rbac)<img class="icon" src="./img/premium.svg" /> provides an alternative implementation of the `usePermissions` hook. It returns an array of permissions, resulting in the merge of the user permissions and the permissions from the user roles.
 
 ```jsx
 import { usePermissions } from "@react-admin/ra-rbac";

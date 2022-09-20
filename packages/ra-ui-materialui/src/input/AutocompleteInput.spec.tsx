@@ -875,7 +875,7 @@ describe('<AutocompleteInput />', () => {
         fireEvent.blur(input);
         fireEvent.focus(input);
         await waitFor(() => {
-            expect(screen.queryAllByRole('option').length).toEqual(2);
+            expect(screen.queryAllByRole('option').length).toEqual(3);
         });
     });
 
@@ -901,10 +901,10 @@ describe('<AutocompleteInput />', () => {
         );
     });
 
-    it('should accept 0 as an input value', () => {
+    it('should accept 0 as an input value', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: 0 }}>
+                <SimpleForm onSubmit={jest.fn()}>
                     <AutocompleteInput
                         {...defaultProps}
                         choices={[{ id: 0, name: 'foo' }]}
@@ -912,7 +912,21 @@ describe('<AutocompleteInput />', () => {
                 </SimpleForm>
             </AdminContext>
         );
-        expect(screen.queryByDisplayValue('foo')).not.toBeNull();
+        const input = screen.getByLabelText(
+            'resources.users.fields.role'
+        ) as HTMLInputElement;
+        input.focus();
+        fireEvent.change(input, { target: { value: 'foo' } });
+        await waitFor(
+            () => {
+                expect(screen.getByRole('listbox').children).toHaveLength(1);
+            },
+            { timeout: 2000 }
+        );
+        fireEvent.click(screen.getByText('foo'));
+        await waitFor(() => {
+            expect(input.value).toEqual('foo');
+        });
     });
 
     it('should support creation of a new choice through the onCreate event', async () => {
@@ -1232,6 +1246,32 @@ describe('<AutocompleteInput />', () => {
         userEvent.type(screen.getByRole('textbox'), '1050');
         await waitFor(() => {
             screen.getByText(/Dalmatian #1050/);
+        });
+    });
+
+    it('should clear the input when its blurred, having an unmatching selection and clearOnBlur prop is true', async () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <AutocompleteInput
+                        {...defaultProps}
+                        clearOnBlur
+                        choices={[
+                            { id: 1, name: 'ab' },
+                            { id: 2, name: 'abc' },
+                            { id: 3, name: '123' },
+                        ]}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+        const input = screen.getByLabelText(
+            'resources.users.fields.role'
+        ) as HTMLInputElement;
+        fireEvent.change(input, { target: { value: 'no match' } });
+        fireEvent.blur(input);
+        await waitFor(() => {
+            expect(input.value).toEqual('');
         });
     });
 });

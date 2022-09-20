@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import { Resource } from 'ra-core';
+import { required, Resource } from 'ra-core';
 import { createMemoryHistory } from 'history';
 import { InputAdornment } from '@mui/material';
 
@@ -373,5 +373,54 @@ export const ActionsLeft = () => (
                 </Edit>
             )}
         />
+    </Admin>
+);
+
+const globalValidator = values => {
+    const errors: any = {};
+    if (!values.authors || !values.authors.length) {
+        errors.authors = 'ra.validation.required';
+    } else {
+        errors.authors = values.authors.map(author => {
+            const authorErrors: any = {};
+            if (!author?.name) {
+                authorErrors.name = 'A name is required';
+            }
+            if (!author?.role) {
+                authorErrors.role = 'ra.validation.required';
+            }
+            return authorErrors;
+        });
+    }
+    return errors;
+};
+const BookEditGlobalValidation = () => {
+    return (
+        <Edit
+            mutationMode="pessimistic"
+            mutationOptions={{
+                onSuccess: data => {
+                    console.log(data);
+                },
+            }}
+        >
+            <SimpleForm validate={globalValidator}>
+                {/* 
+                  We still need `validate={required()}` to indicate fields are required 
+                  with a '*' symbol after the label, but the real validation happens in `globalValidator`
+                */}
+                <ArrayInput source="authors" fullWidth validate={required()}>
+                    <SimpleFormIterator>
+                        <TextInput source="name" validate={required()} />
+                        <TextInput source="role" validate={required()} />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        </Edit>
+    );
+};
+export const GlobalValidation = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource name="books" edit={BookEditGlobalValidation} />
     </Admin>
 );

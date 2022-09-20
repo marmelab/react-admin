@@ -137,7 +137,7 @@ const PostList = () => (
 ```
 {% endraw %}
 
-The `aside` component can call the `useListContext()` hook to receive the same props as the `List` child component. This means you can display additional details of the current list in the aside component:
+The `aside` component can call the `useListContext()` hook to receive the same props as the `<List>` child component. This means you can display additional details of the current list in the aside component:
 
 {% raw %}
 ```jsx
@@ -158,6 +158,50 @@ const Aside = () => {
 };
 ```
 {% endraw %}
+
+The `aside` prop is also the preferred way to add a [Filter Sidebar](./FilteringTutorial.md#the-filterlist-sidebar) to a list view: 
+
+{% raw %}
+```jsx
+// in src/PostFilterSidebar.js
+import { SavedQueriesList, FilterLiveSearch, FilterList, FilterListItem } from 'react-admin';
+import { Card, CardContent } from '@mui/material';
+import MailIcon from '@mui/icons-material/MailOutline';
+import CategoryIcon from '@mui/icons-material/LocalOffer';
+
+export const PostFilterSidebar = () => (
+    <Card sx={{ order: -1, mr: 2, mt: 9, width: 200 }}>
+        <CardContent>
+            <SavedQueriesList />
+            <FilterLiveSearch >
+            <FilterList label="Subscribed to newsletter" icon={<MailIcon />}>
+                <FilterListItem label="Yes" value={{ has_newsletter: true }} />
+                <FilterListItem label="No" value={{ has_newsletter: false }} />
+            </FilterList>
+            <FilterList label="Category" icon={<CategoryIcon />}>
+                <FilterListItem label="Tests" value={{ category: 'tests' }} />
+                <FilterListItem label="News" value={{ category: 'news' }} />
+                <FilterListItem label="Deals" value={{ category: 'deals' }} />
+                <FilterListItem label="Tutorials" value={{ category: 'tutorials' }} />
+            </FilterList>
+        </CardContent>
+    </Card>
+);
+```
+{% endraw %}
+
+```jsx
+// in src/PostList.js
+import { PostFilterSidebar } from './PostFilterSidebar';
+
+export const PostList = () => (
+    <List aside={<PostFilterSidebar />}>
+        ...
+    </List>
+);
+```
+
+**Tip**: the `<Card sx>` prop in the `PostFilterSidebar` component above is here to put the sidebar on the left side of the screen, instead of the default right side.
 
 ## `children`: List Layout
 
