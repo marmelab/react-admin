@@ -9,7 +9,7 @@ import { Stack, Divider, Typography } from '@mui/material';
 
 import { Edit } from '../detail';
 import { SimpleForm } from '../form';
-import { SelectInput, TextInput } from '../input';
+import { SelectInput, RadioButtonGroupInput, TextInput } from '../input';
 import { ReferenceInput } from './ReferenceInput';
 
 export default { title: 'ra-ui-materialui/input/ReferenceInput' };
@@ -322,7 +322,37 @@ export const ErrorAutocomplete = () => (
     </Admin>
 );
 
-export const ErrorSelect = () => (
+export const WithSelectInput = () => (
+    <Admin dataProvider={dataProviderWithAuthors} history={history}>
+        <Resource
+            name="authors"
+            recordRepresentation={record =>
+                `${record.first_name} ${record.last_name}`
+            }
+        />
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                >
+                    <SimpleForm>
+                        <ReferenceInput reference="authors" source="author">
+                            <SelectInput optionText="first_name" />
+                        </ReferenceInput>
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
+    </Admin>
+);
+
+export const ErrorSelectInput = () => (
     <Admin
         dataProvider={
             {
@@ -353,6 +383,75 @@ export const ErrorSelect = () => (
                     <SimpleForm>
                         <ReferenceInput reference="authors" source="author">
                             <SelectInput />
+                        </ReferenceInput>
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
+    </Admin>
+);
+
+export const WithRadioButtonGroupInput = () => (
+    <Admin dataProvider={dataProviderWithAuthors} history={history}>
+        <Resource
+            name="authors"
+            recordRepresentation={record =>
+                `${record.first_name} ${record.last_name}`
+            }
+        />
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                >
+                    <SimpleForm>
+                        <ReferenceInput reference="authors" source="author">
+                            <RadioButtonGroupInput optionText="first_name" />
+                        </ReferenceInput>
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
+    </Admin>
+);
+
+export const ErrorRadioButtonGroupInput = () => (
+    <Admin
+        dataProvider={
+            {
+                getOne: (resource, params) => Promise.resolve({ data: book }),
+                getMany: (resource, params) =>
+                    Promise.resolve({
+                        data: authors.filter(author =>
+                            params.ids.includes(author.id)
+                        ),
+                    }),
+                getList: (resource, params) =>
+                    Promise.reject(new Error('An error occured')),
+            } as any
+        }
+        history={history}
+        queryClient={
+            new QueryClient({ defaultOptions: { queries: { retry: false } } })
+        }
+    >
+        <Resource
+            name="authors"
+            recordRepresentation={r => `${r.first_name} ${r.last_name}`}
+        />
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit mutationMode="pessimistic">
+                    <SimpleForm>
+                        <ReferenceInput reference="authors" source="author">
+                            <RadioButtonGroupInput optionText="first_name" />
                         </ReferenceInput>
                     </SimpleForm>
                 </Edit>
