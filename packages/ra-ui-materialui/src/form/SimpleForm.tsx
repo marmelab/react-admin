@@ -93,7 +93,9 @@ const sanitizeRestProps = ({
     children,
     className,
     component,
+    criteriaMode,
     defaultValues,
+    delayError,
     onSubmit,
     record,
     resource,
@@ -102,6 +104,9 @@ const sanitizeRestProps = ({
     toolbar,
     validate,
     resolver,
+    shouldFocusError,
+    shouldUnregister,
+    shouldUseNativeValidation,
     warnWhenUnsavedChanges,
     ...props
 }: SimpleFormProps) => props;
