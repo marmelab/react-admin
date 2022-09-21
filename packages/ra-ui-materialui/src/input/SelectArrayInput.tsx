@@ -233,15 +233,11 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
             <StyledFormControl
                 margin={margin}
                 className={clsx('ra-input', `ra-input-${source}`, className)}
-                error={(isTouched || isSubmitted) && invalid}
+                error={fetchError || ((isTouched || isSubmitted) && invalid)}
                 variant={variant}
                 {...sanitizeRestProps(rest)}
             >
-                <InputLabel
-                    ref={inputLabel}
-                    id={`${label}-outlined-label`}
-                    error={(isTouched || isSubmitted) && invalid}
-                >
+                <InputLabel ref={inputLabel} id={`${label}-outlined-label`}>
                     <FieldTitle
                         label={label}
                         source={source}

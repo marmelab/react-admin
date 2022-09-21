@@ -7,6 +7,7 @@ import { TextField } from '../field';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 import { SelectArrayInput } from './SelectArrayInput';
+import { CheckboxGroupInput } from './CheckboxGroupInput';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 
@@ -96,6 +97,41 @@ export const ErrorSelect = () => (
                 source="tag_ids"
             >
                 <SelectArrayInput optionText="name" />
+            </ReferenceArrayInput>
+        </Form>
+    </AdminContext>
+);
+
+export const WithCheckboxGroupInput = () => (
+    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
+            <ReferenceArrayInput
+                reference="tags"
+                resource="posts"
+                source="tag_ids"
+            >
+                <CheckboxGroupInput optionText="name" />
+            </ReferenceArrayInput>
+        </Form>
+    </AdminContext>
+);
+
+export const ErrorCheckboxGroupInput = () => (
+    <AdminContext
+        dataProvider={{
+            getList: () => Promise.reject(new Error('fetch error')),
+            getMany: () =>
+                Promise.resolve({ data: [{ id: 5, name: 'test1' }] }),
+        }}
+        i18nProvider={i18nProvider}
+    >
+        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
+            <ReferenceArrayInput
+                reference="tags"
+                resource="posts"
+                source="tag_ids"
+            >
+                <CheckboxGroupInput optionText="name" />
             </ReferenceArrayInput>
         </Form>
     </AdminContext>
