@@ -13,6 +13,7 @@ import { SimpleForm } from '../form';
 import { DatagridInput } from './DatagridInput';
 import { TextField } from '../field';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
+import { SelectArrayInput } from './SelectArrayInput';
 import { QueryClient } from 'react-query';
 
 describe('<ReferenceArrayInput />', () => {
@@ -43,7 +44,7 @@ describe('<ReferenceArrayInput />', () => {
             >
                 <SimpleForm onSubmit={jest.fn()}>
                     <ReferenceArrayInput {...defaultProps}>
-                        <MyComponent />
+                        <SelectArrayInput optionText="name" />
                     </ReferenceArrayInput>
                 </SimpleForm>
             </AdminContext>
