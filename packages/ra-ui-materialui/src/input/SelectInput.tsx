@@ -139,6 +139,7 @@ export const SelectInput = (props: SelectInputProps) => {
     const {
         allChoices,
         isLoading,
+        error: fetchError,
         source,
         resource,
         isFromReference,
@@ -293,11 +294,11 @@ export const SelectInput = (props: SelectInputProps) => {
                     )
                 }
                 clearAlwaysVisible
-                error={(isTouched || isSubmitted) && invalid}
+                error={!!fetchError || ((isTouched || isSubmitted) && invalid)}
                 helperText={
                     <InputHelperText
-                        touched={isTouched || isSubmitted}
-                        error={error?.message}
+                        touched={isTouched || isSubmitted || fetchError}
+                        error={error?.message || fetchError?.message}
                         helperText={helperText}
                     />
                 }

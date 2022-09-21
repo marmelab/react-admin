@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { createMemoryHistory } from 'history';
 import { Admin, AdminContext } from 'react-admin';
+import { QueryClient } from 'react-query';
 import { Resource, Form, testDataProvider } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
@@ -268,4 +269,94 @@ export const Loading = () => (
             </Stack>
         </Form>
     </AdminContext>
+);
+
+const book = {
+    id: 1,
+    title: 'War and Peace',
+    author: 1,
+    summary:
+        "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+    year: 1869,
+};
+
+export const ErrorAutocomplete = () => (
+    <Admin
+        dataProvider={
+            {
+                getOne: (resource, params) => Promise.resolve({ data: book }),
+                getMany: (resource, params) =>
+                    Promise.resolve({
+                        data: authors.filter(author =>
+                            params.ids.includes(author.id)
+                        ),
+                    }),
+                getList: (resource, params) =>
+                    params.filter.q === 'lorem'
+                        ? Promise.reject(new Error('An error occured'))
+                        : Promise.resolve({
+                              data: authors,
+                              total: authors.length,
+                          }),
+            } as any
+        }
+        history={history}
+        queryClient={
+            new QueryClient({ defaultOptions: { queries: { retry: false } } })
+        }
+    >
+        <Resource
+            name="authors"
+            recordRepresentation={r => `${r.first_name} ${r.last_name}`}
+        />
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit mutationMode="pessimistic">
+                    <SimpleForm>
+                        <ReferenceInput reference="authors" source="author" />
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
+    </Admin>
+);
+
+export const ErrorSelect = () => (
+    <Admin
+        dataProvider={
+            {
+                getOne: (resource, params) => Promise.resolve({ data: book }),
+                getMany: (resource, params) =>
+                    Promise.resolve({
+                        data: authors.filter(author =>
+                            params.ids.includes(author.id)
+                        ),
+                    }),
+                getList: (resource, params) =>
+                    Promise.reject(new Error('An error occured')),
+            } as any
+        }
+        history={history}
+        queryClient={
+            new QueryClient({ defaultOptions: { queries: { retry: false } } })
+        }
+    >
+        <Resource
+            name="authors"
+            recordRepresentation={r => `${r.first_name} ${r.last_name}`}
+        />
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit mutationMode="pessimistic">
+                    <SimpleForm>
+                        <ReferenceInput reference="authors" source="author">
+                            <SelectInput />
+                        </ReferenceInput>
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
+    </Admin>
 );
