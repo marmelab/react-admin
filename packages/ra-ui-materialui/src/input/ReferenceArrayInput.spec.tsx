@@ -49,7 +49,7 @@ describe('<ReferenceArrayInput />', () => {
             </AdminContext>
         );
         await waitFor(() => {
-            expect(screen.queryByDisplayValue('fetch error')).not.toBeNull();
+            expect(screen.queryByText('fetch error')).not.toBeNull();
         });
     });
     it('should pass the correct resource down to child component', async () => {
