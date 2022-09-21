@@ -395,7 +395,7 @@ const dateParser = value => {
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
 
-React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form [useWatch](https://react-hook-form.com/api/usewatch) hook.
+React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://react-hook-form.com/api/usewatch) hook.
 
 ```jsx
 import * as React from 'react';
@@ -412,8 +412,6 @@ const toChoices = items => items.map(item => ({ id: item, name: item }));
 
 const CityInput = props => {
     const country = useWatch({ name: 'country' });
-    const values = getValues();
-
     return (
         <SelectInput
             choices={country ? toChoices(cities[country]) : []}
