@@ -7,7 +7,6 @@ import {
     ResourceContextProvider,
     ChoicesContextProvider,
 } from 'ra-core';
-import { ReferenceError } from './ReferenceError';
 
 /**
  * An Input component for fields containing a list of references to another resource.
