@@ -12,6 +12,7 @@ This component makes another component configurable by the end user. When they e
 Some react-admin components are already configurable - or rather they have a configurable counterpart:
 
 - [`<SimpleListConfigurable>`](./SimpleList.md#configurable)
+- `<PageTitleConfigurable>` - used by the `<Title>` component
 
 ## Usage
 
@@ -26,8 +27,6 @@ const ConfigurableTextBlock = ({ preferenceKey = "textBlock", ...props }) => (
     </Configurable>
 );
 ```
-
-`<Configurable>` creates a context for the `preferenceKey`, so that both the child component and the editor can access it using `usePreferenceKey()`.
  
 Then, use this component in your app:
 
@@ -42,9 +41,13 @@ export const Dashboard = () => (
 );
 ```
 
+`<Configurable>` creates a context for the `preferenceKey`, so that both the child component and the editor can access it using `usePreferenceKey()`. The next sections describe how the Configurable child component and the editor can access the preferences.
+
 ## `children`
 
-The wrapped component must use `usePreferenceKey` to get the preference key, and [`useStore`](./useStore.md) to access the configuration.
+The wrapped component can be any component relying on [`useStore`](./useStore.md). It must must use `usePreferenceKey` to get the preference key.
+
+For instance, the following `<TextBlock>` component uses a `color` setting from the store to change its background color:
 
 ```jsx
 import { useStore, usePreferenceKey } from 'react-admin';
@@ -63,12 +66,16 @@ const TextBlock = ({ title, content }) => {
 
 ## `editor`
 
-The editor component must also use `usePreferenceKey` to get the preference key, and [`useStore`](./useStore.md) to read and write the configuration. When the user selects the configurable component, react-admin renders the `editor` component in the inspector.
+The `editor` component should let the user change the setting of the child component - usually via form controls. When the user selects the configurable component, react-admin renders the `editor` component in the inspector.
+
+It must also use `usePreferenceKey` to get the preference key, and [`useStore`](./useStore.md) to read and write the configuration. 
+
+For instance, here is a simple editor for the `<TextBlock>` component, letting users customize the `color` setting in a `<TextField>`:
 
 ```jsx
 import { useStore, usePreferenceKey } from 'react-admin';
 
-const TextBlockEditor = ({ preferenceKey }) => {
+const TextBlockEditor = () => {
     const preferenceKey = usePreferenceKey();
     const [color, setColor] = useStore(`${preferenceKey}.color`, '#ffffff');
     return (
