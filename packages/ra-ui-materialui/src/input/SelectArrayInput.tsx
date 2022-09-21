@@ -250,7 +250,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     labelId={`${label}-outlined-label`}
                     multiple
                     error={
-                        fetchError || ((isTouched || isSubmitted) && invalid)
+                        !!fetchError || ((isTouched || isSubmitted) && invalid)
                     }
                     renderValue={(selected: any[]) => (
                         <div className={SelectArrayInputClasses.chips}>
