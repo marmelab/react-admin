@@ -137,8 +137,31 @@ export const ErrorCheckboxGroupInput = () => (
     </AdminContext>
 );
 
-export const WithDatagridChild = () => (
+export const WithDatagridInput = () => (
     <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
+            <ReferenceArrayInput
+                reference="tags"
+                resource="posts"
+                source="tag_ids"
+            >
+                <DatagridInput rowClick="toggleSelection" sx={{ mt: 6 }}>
+                    <TextField source="name" />
+                </DatagridInput>
+            </ReferenceArrayInput>
+        </Form>
+    </AdminContext>
+);
+
+export const ErrorDatagridInput = () => (
+    <AdminContext
+        dataProvider={{
+            getList: () => Promise.reject(new Error('fetch error')),
+            getMany: () =>
+                Promise.resolve({ data: [{ id: 5, name: 'test1' }] }),
+        }}
+        i18nProvider={i18nProvider}
+    >
         <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
             <ReferenceArrayInput
                 reference="tags"
