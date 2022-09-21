@@ -1,4 +1,10 @@
-import { BaseSyntheticEvent, useCallback, useMemo, useEffect } from 'react';
+import {
+    BaseSyntheticEvent,
+    useCallback,
+    useMemo,
+    useEffect,
+    useRef,
+} from 'react';
 import { FieldValues, useForm, UseFormProps } from 'react-hook-form';
 
 import { RaRecord } from '../types';
@@ -12,6 +18,7 @@ import {
 import { setSubmissionErrors } from './setSubmissionErrors';
 import { useNotifyIsFormInvalid } from './useNotifyIsFormInvalid';
 import { useWarnWhenUnsavedChanges } from './useWarnWhenUnsavedChanges';
+import { sanitizeEmptyValues as sanitizeValues } from './sanitizeEmptyValues';
 
 /**
  * Wrapper around react-hook-form's useForm
@@ -20,6 +27,7 @@ import { useWarnWhenUnsavedChanges } from './useWarnWhenUnsavedChanges';
  *
  * - form initialization based on RecordContext
  * - validation based on a validate function
+ * - sanitization of empty values
  * - notification on invalid form
  * - stop form submission event propagation
  */
@@ -34,6 +42,7 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
         resolver,
         reValidateMode = 'onChange',
         onSubmit,
+        sanitizeEmptyValues,
         shouldFocusError,
         shouldUnregister,
         shouldUseNativeValidation,
@@ -76,6 +85,8 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
         shouldUnregister,
         shouldUseNativeValidation,
     });
+
+    const formRef = useRef(form);
 
     // According to react-hook-form docs: https://react-hook-form.com/api/useform/formstate
     // `formState` must be read before a render in order to enable the state update.
@@ -137,18 +148,20 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
     const handleSubmit = useCallback(
         async values => {
             let errors;
-
+            const finalValues = sanitizeEmptyValues
+                ? sanitizeValues(values, record)
+                : values;
             if (onSubmit) {
-                errors = await onSubmit(values);
+                errors = await onSubmit(finalValues);
             }
             if (onSubmit == null && saveContext?.save) {
-                errors = await saveContext.save(values);
+                errors = await saveContext.save(finalValues);
             }
             if (errors != null) {
-                setSubmissionErrors(errors, form.setError);
+                setSubmissionErrors(errors, formRef.current.setError);
             }
         },
-        [form, onSubmit, saveContext]
+        [onSubmit, saveContext, sanitizeEmptyValues, record]
     );
 
     const formHandleSubmit = useCallback(
@@ -181,4 +194,5 @@ export interface UseFormOwnProps {
     record?: Partial<RaRecord>;
     onSubmit?: (data: FieldValues) => any | Promise<any>;
     warnWhenUnsavedChanges?: boolean;
+    sanitizeEmptyValues?: boolean;
 }

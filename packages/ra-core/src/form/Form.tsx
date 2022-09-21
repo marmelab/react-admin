@@ -79,4 +79,5 @@ export interface FormOwnProps {
     resource?: string;
     onSubmit?: (data: FieldValues) => any | Promise<any>;
     warnWhenUnsavedChanges?: boolean;
+    sanitizeEmptyValues?: boolean;
 }
