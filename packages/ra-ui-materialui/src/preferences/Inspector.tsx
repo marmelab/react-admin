@@ -34,7 +34,7 @@ export const Inspector = () => {
         {
             x:
                 // We want it positioned to the far right of the screen
-                document.body.clientWidth -
+                document?.body.clientWidth -
                 // So we remove its size (see the root css class)
                 theme.breakpoints.values.sm / 2 -
                 // And add a margin
@@ -50,7 +50,7 @@ export const Inspector = () => {
     >();
     const handleDragStart = e => {
         // exit if the user drags on anything but the title
-        const draggedElement = document.elementFromPoint(e.clientX, e.clientY);
+        const draggedElement = document?.elementFromPoint(e.clientX, e.clientY);
         if (draggedElement.id !== 'inspector-dialog-title') {
             return e.preventDefault();
         }
@@ -80,9 +80,9 @@ export const Inspector = () => {
                 e.preventDefault();
             }
         };
-        document.addEventListener('dragover', handleDragover);
+        document?.addEventListener('dragover', handleDragover);
         return () => {
-            document.removeEventListener('dragover', handleDragover);
+            document?.removeEventListener('dragover', handleDragover);
         };
     }, [isEnabled]);
 
@@ -90,22 +90,22 @@ export const Inspector = () => {
     useEffect(() => {
         if (!isEnabled) return;
         const moveInspectorIfOutsideScreen = () => {
-            window.requestAnimationFrame(() => {
+            window?.requestAnimationFrame(() => {
                 setDialogPosition(position => ({
                     x: Math.min(
                         position.x,
-                        document.body.clientWidth -
+                        document?.body.clientWidth -
                             theme.breakpoints.values.sm / 2 -
                             8
                     ),
-                    y: Math.min(position.y, window.innerHeight - 50),
+                    y: Math.min(position.y, window?.innerHeight - 50),
                 }));
             });
         };
         moveInspectorIfOutsideScreen();
-        window.addEventListener('resize', moveInspectorIfOutsideScreen);
+        window?.addEventListener('resize', moveInspectorIfOutsideScreen);
         return () => {
-            window.removeEventListener('resize', moveInspectorIfOutsideScreen);
+            window?.removeEventListener('resize', moveInspectorIfOutsideScreen);
         };
     }, [isEnabled, setDialogPosition, theme.breakpoints.values.sm]);
 
