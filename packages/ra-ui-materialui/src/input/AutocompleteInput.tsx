@@ -240,6 +240,12 @@ export const AutocompleteInput = <
 
     useEffect(() => {
         // eslint-disable-next-line eqeqeq
+        if (isValidElement(optionText) && emptyText != undefined) {
+            throw new Error(
+                `optionText of type React element is not supported when setting emptyText`
+            );
+        }
+        // eslint-disable-next-line eqeqeq
         if (isValidElement(optionText) && inputText == undefined) {
             throw new Error(`
 If you provided a React element for the optionText prop, you must also provide the inputText prop (used for the text input)`);
@@ -249,7 +255,7 @@ If you provided a React element for the optionText prop, you must also provide t
             throw new Error(`
 If you provided a React element for the optionText prop, you must also provide the matchSuggestion prop (used to match the user input with a choice)`);
         }
-    }, [optionText, inputText, matchSuggestion]);
+    }, [optionText, inputText, matchSuggestion, emptyText]);
 
     useEffect(() => {
         warning(
