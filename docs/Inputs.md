@@ -522,7 +522,7 @@ import { FormDataConsumer } from 'react-admin';
  );
 ```
 
-**Important**: By default `react-hook-form` submits values of unmounted components, so if you don't want this behaivour you can set `shouldUnregister` prop to `true` in the form
+**Important**: By default `react-hook-form` submits values of unmounted input components, so if you don't want this behaivour you can set `shouldUnregister` prop to `true` in the form
 
 ```diff
 import { FormDataConsumer } from 'react-admin';
