@@ -213,7 +213,7 @@ form input value (string) ---> parse ---> form state value
     parse={v => parseFloat(v) / 100}
 ```
 
-`parse` often comes in pair with [`format`](#format) to transform the form value value before passing it to the input. See the [Transforming Input Value](#transforming-input-value-tofrom-record) section for more details.
+`parse` often comes in pair with [`format`](#format) to transform the form value before passing it to the input. See the [Transforming Input Value](#transforming-input-value-tofrom-record) section for more details.
 
 ## `source`
 
@@ -511,6 +511,26 @@ import { FormDataConsumer } from 'react-admin';
  const PostEdit = () => (
      <Edit>
          <SimpleForm>
+             <BooleanInput source="hasEmail" />
+             <FormDataConsumer>
+                 {({ formData, ...rest }) => formData.hasEmail &&
+                      <TextInput source="email" {...rest} />
+                 }
+             </FormDataConsumer>
+         </SimpleForm>
+     </Edit>
+ );
+```
+
+**Important**: By default `react-hook-form` submits values of unmounted components, so if you don't want this behaivour you can set `shouldUnregister` prop to `true` in the form
+
+```diff
+import { FormDataConsumer } from 'react-admin';
+
+ const PostEdit = () => (
+     <Edit>
+-        <SimpleForm>
++        <SimpleForm shouldUnregister>
              <BooleanInput source="hasEmail" />
              <FormDataConsumer>
                  {({ formData, ...rest }) => formData.hasEmail &&
