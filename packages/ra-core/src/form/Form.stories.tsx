@@ -22,7 +22,8 @@ const Input = props => {
         >
             <label htmlFor={field.name}>{field.name}</label>
             <input
-                aria-label="name"
+                aria-label={field.name}
+                id={field.name}
                 type="text"
                 aria-invalid={fieldState.invalid}
                 {...field}
@@ -79,7 +80,9 @@ export const SanitizeEmptyValues = () => {
 
                 <SubmitButton />
             </Form>
-            <pre>{JSON.stringify(submittedData, null, 2)}</pre>
+            <pre data-testid="result">
+                {JSON.stringify(submittedData, null, 2)}
+            </pre>
         </CoreAdminContext>
     );
 };
