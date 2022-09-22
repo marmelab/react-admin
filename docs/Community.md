@@ -5,7 +5,7 @@ title: "Community"
 
 # Community
 
-Thousands of new react-admin applications are created every month. Many, many developers use react-admin on a day-to-day bais. We're excited that you're apart of this large and friendly community. 
+Thousands of new react-admin applications are created every month. Many, many developers use react-admin on a day-to-day bais. We're excited that you're a part of this large and friendly community.
 
 We're doing our best to keep it a convivial place where people want to hang out and help/be helped. 
 
