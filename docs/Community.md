@@ -25,6 +25,8 @@ The [#react-admin](https://stackoverflow.com/questions/tagged/react-admin) tag c
 
 The [React-admin Discord Server](https://discord.gg/GeZF9sqh3N) is a great place to have conversations, answer and ask questions, all about react-admin.
 
+<iframe src="https://discord.com/widget?id=830711057643208724&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+
 ## Examples
 
 There are several examples inside [the `examples/` folder](https://github.com/marmelab/react-admin/tree/master/examples):
