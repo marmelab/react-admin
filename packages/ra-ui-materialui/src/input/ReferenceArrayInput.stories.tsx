@@ -81,7 +81,7 @@ export const WithSelectArrayInput = () => (
     </AdminContext>
 );
 
-export const ErrorSelect = () => (
+export const ErrorSelectArray = () => (
     <AdminContext
         dataProvider={{
             getList: () => Promise.reject(new Error('fetch error')),
