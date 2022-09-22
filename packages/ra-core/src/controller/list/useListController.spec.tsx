@@ -86,6 +86,7 @@ describe('useListController', () => {
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
                     <ListController
+                        disableSyncWithLocation
                         resource="posts"
                         queryOptions={{ enabled: false }}
                         {...props}
