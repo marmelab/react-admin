@@ -7,7 +7,6 @@ import {
     ResourceContextProvider,
     ChoicesContextProvider,
 } from 'ra-core';
-import { ReferenceError } from './ReferenceError';
 
 /**
  * An Input component for fields containing a list of references to another resource.
@@ -77,7 +76,7 @@ import { ReferenceError } from './ReferenceError';
  * a `setFilters` function. You can call this function to filter the results.
  */
 export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
-    const { children, label, reference } = props;
+    const { children, reference } = props;
     if (React.Children.count(children) !== 1) {
         throw new Error(
             '<ReferenceArrayInput> only accepts a single child (like <Datagrid>)'
@@ -85,12 +84,6 @@ export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
     }
 
     const controllerProps = useReferenceArrayInputController(props);
-
-    // This is not a form error but an unrecoverable error from the
-    // useReferenceInputController hook
-    if (controllerProps.error) {
-        return <ReferenceError label={label} error={controllerProps.error} />;
-    }
 
     return (
         <ResourceContextProvider value={reference}>

@@ -112,7 +112,13 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
 
     const inputLabel = useRef(null);
 
-    const { allChoices, isLoading, source, resource } = useChoicesContext({
+    const {
+        allChoices,
+        isLoading,
+        error: fetchError,
+        source,
+        resource,
+    } = useChoicesContext({
         choices: choicesProp,
         isLoading: isLoadingProp,
         isFetching: isFetchingProp,
@@ -227,15 +233,11 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
             <StyledFormControl
                 margin={margin}
                 className={clsx('ra-input', `ra-input-${source}`, className)}
-                error={(isTouched || isSubmitted) && invalid}
+                error={fetchError || ((isTouched || isSubmitted) && invalid)}
                 variant={variant}
                 {...sanitizeRestProps(rest)}
             >
-                <InputLabel
-                    ref={inputLabel}
-                    id={`${label}-outlined-label`}
-                    error={(isTouched || isSubmitted) && invalid}
-                >
+                <InputLabel ref={inputLabel} id={`${label}-outlined-label`}>
                     <FieldTitle
                         label={label}
                         source={source}
@@ -247,7 +249,9 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     autoWidth
                     labelId={`${label}-outlined-label`}
                     multiple
-                    error={(isTouched || isSubmitted) && invalid}
+                    error={
+                        !!fetchError || ((isTouched || isSubmitted) && invalid)
+                    }
                     renderValue={(selected: any[]) => (
                         <div className={SelectArrayInputClasses.chips}>
                             {selected
@@ -276,10 +280,10 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                 >
                     {finalChoices.map(renderMenuItem)}
                 </Select>
-                <FormHelperText error={isTouched && !!error}>
+                <FormHelperText error={fetchError || (isTouched && !!error)}>
                     <InputHelperText
-                        touched={isTouched || isSubmitted}
-                        error={error?.message}
+                        touched={isTouched || isSubmitted || fetchError}
+                        error={error?.message || fetchError?.message}
                         helperText={helperText}
                     />
                 </FormHelperText>

@@ -114,7 +114,13 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         ...rest
     } = props;
 
-    const { allChoices, isLoading, resource, source } = useChoicesContext({
+    const {
+        allChoices,
+        isLoading,
+        error: fetchError,
+        resource,
+        source,
+    } = useChoicesContext({
         choices: choicesProp,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
@@ -199,7 +205,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         <StyledFormControl
             component="fieldset"
             margin={margin}
-            error={(isTouched || isSubmitted) && invalid}
+            error={fetchError || ((isTouched || isSubmitted) && invalid)}
             className={clsx('ra-input', `ra-input-${source}`, className)}
             {...sanitizeRestProps(rest)}
         >
@@ -229,10 +235,10 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                     />
                 ))}
             </FormGroup>
-            <FormHelperText>
+            <FormHelperText error={fetchError || (isTouched && !!error)}>
                 <InputHelperText
-                    touched={isTouched || isSubmitted}
-                    error={error?.message}
+                    touched={isTouched || isSubmitted || fetchError}
+                    error={error?.message || fetchError?.message}
                     helperText={helperText}
                 />
             </FormHelperText>

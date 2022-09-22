@@ -20,7 +20,7 @@ describe('<ReferenceInput />', () => {
         jest.spyOn(console, 'error')
             .mockImplementationOnce(() => {})
             .mockImplementationOnce(() => {});
-        const MyComponent = () => <span id="mycomponent" />;
+
         render(
             <AdminContext
                 queryClient={
@@ -33,14 +33,12 @@ describe('<ReferenceInput />', () => {
                 })}
             >
                 <SimpleForm onSubmit={jest.fn()}>
-                    <ReferenceInput {...defaultProps}>
-                        <MyComponent />
-                    </ReferenceInput>
+                    <ReferenceInput {...defaultProps} />
                 </SimpleForm>
             </AdminContext>
         );
         await waitFor(() => {
-            expect(screen.queryByDisplayValue('fetch error')).not.toBeNull();
+            expect(screen.queryByText('fetch error')).not.toBeNull();
         });
     });
 
