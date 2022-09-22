@@ -522,7 +522,7 @@ import { FormDataConsumer } from 'react-admin';
  );
 ```
 
-**Important**: By default `react-hook-form` submits values of unmounted input components, to prevent this from happen in the above example, `shouldUnregister` prop was set to `true` in the `<SimpleForm>`
+**Note**: By default, `react-hook-form` submits values of unmounted input components. In the above example, the `shouldUnregister` prop of the `<SimpleForm>` component prevents that from happening. That way, when end users hide an input, its value isn't included in the submitted data.
 
 ## Overriding The Input Variant
 
