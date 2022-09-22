@@ -510,7 +510,7 @@ import { FormDataConsumer } from 'react-admin';
 
  const PostEdit = () => (
      <Edit>
-         <SimpleForm>
+         <SimpleForm shouldUnregister>
              <BooleanInput source="hasEmail" />
              <FormDataConsumer>
                  {({ formData, ...rest }) => formData.hasEmail &&
@@ -522,25 +522,7 @@ import { FormDataConsumer } from 'react-admin';
  );
 ```
 
-**Important**: By default `react-hook-form` submits values of unmounted input components, so if you don't want this behaivour you can set `shouldUnregister` prop to `true` in the form
-
-```diff
-import { FormDataConsumer } from 'react-admin';
-
- const PostEdit = () => (
-     <Edit>
--        <SimpleForm>
-+        <SimpleForm shouldUnregister>
-             <BooleanInput source="hasEmail" />
-             <FormDataConsumer>
-                 {({ formData, ...rest }) => formData.hasEmail &&
-                      <TextInput source="email" {...rest} />
-                 }
-             </FormDataConsumer>
-         </SimpleForm>
-     </Edit>
- );
-```
+**Important**: By default `react-hook-form` submits values of unmounted input components, to prevent this from happen in the above example, `shouldUnregister` prop was set to `true` in the `<SimpleForm>`
 
 ## Overriding The Input Variant
 
