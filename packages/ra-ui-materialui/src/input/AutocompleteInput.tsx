@@ -192,12 +192,12 @@ export const AutocompleteInput = <
     const translate = useTranslate();
 
     const finalChoices =
-        isRequiredOverride || emptyText == null
+        emptyText == null || isRequiredOverride
             ? allChoices
             : [
                   {
-                      id: '',
-                      name:
+                      [optionValue || 'id']: '',
+                      [typeof optionText === 'string' ? optionText : 'name']:
                           emptyText === ''
                               ? ' ' // em space, forces the display of an empty line of normal height
                               : translate(emptyText, { _: emptyText }),
