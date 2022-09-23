@@ -136,7 +136,7 @@ export const AutocompleteInput = <
         createValue,
         debounce: debounceDelay = 250,
         defaultValue = '',
-        emptyText,
+        emptyText = '',
         emptyValue = '',
         field: fieldOverride,
         format,
@@ -262,7 +262,7 @@ If you provided a React element for the optionText prop, you must also provide t
             throw new Error(`
 If you provided a React element for the optionText prop, you must also provide the matchSuggestion prop (used to match the user input with a choice)`);
         }
-    }, [optionText, inputText, matchSuggestion, emptyText]);
+    }, [optionText, inputText, matchSuggestion, emptyText, emptyValue]);
 
     useEffect(() => {
         warning(
