@@ -108,7 +108,7 @@ const choices = [
 
 ## `emptyValue`
 
-An empty choice is always added (with a default `''` value, which you can overwrite with the `emptyValue` prop) on top of the options. You can furthermore customize the `MenuItem` for the empty choice by using the `emptyText` prop, which can receive either a string or a React Element, which doesn't receive any props.
+An empty choice is always added (with a default `''` value, which you can override with the `emptyValue` prop) on top of the options. You can furthermore customize the `MenuItem` for the empty choice by using the `emptyText` prop, which can receive either a string or a React Element, which doesn't receive any props.
 
 ```jsx
 <SelectInput source="category" emptyValue="" choices={[
