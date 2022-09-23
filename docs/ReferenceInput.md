@@ -27,17 +27,18 @@ You can tweak how this component fetches the possible values using the `page`, `
 
 ## Props
 
-| Prop               | Required | Type                                        | Default                          | Description                                                                              |
-|--------------------|----------|---------------------------------------------|----------------------------------|------------------------------------------------------------------------------------------|
-| `source`           | Required | `string`                                    | -                                | Name of the entity property to use for the input value                                   |
-| `label`            | Optional | `string`                                    | -                                | Useful only when `ReferenceInput` is in a Filter array, the label is used as the Filter label.|
-| `reference`        | Required | `string`                                    | ''                               | Name of the reference resource, e.g. 'posts'.                                            |
-| `children`         | Optional | `ReactNode`                                 | `<AutocompleteInput />`          | The actual selection component                                                           |
-| `filter`           | Optional | `Object`                                    | `{}`                             | Permanent filters to use for getting the suggestion list                                 |
-| `page`             | Optional | `number`                                    | 1                                | The current page number                                                                  |
-| `perPage`          | Optional | `number`                                    | 25                               | Number of suggestions to show                                                            |
-| `sort`             | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }` | How to order the list of suggestions                                                     |
-| `enableGetChoices` | Optional | `({q: string}) => boolean`                  | `() => true`                     | Function taking the `filterValues` and returning a boolean to enable the `getList` call. |
+| Prop               | Required | Type                                        | Default                          | Description                                                                                    |
+|--------------------|----------|---------------------------------------------|----------------------------------|------------------------------------------------------------------------------------------------|
+| `source`           | Required | `string`                                    | -                                | Name of the entity property to use for the input value                                         |
+| `label`            | Optional | `string`                                    | -                                | Useful only when `ReferenceInput` is in a Filter array, the label is used as the Filter label. |
+| `reference`        | Required | `string`                                    | ''                               | Name of the reference resource, e.g. 'posts'.                                                  |
+| `children`         | Optional | `ReactNode`                                 | `<AutocompleteInput />`          | The actual selection component                                                                 |
+| `filter`           | Optional | `Object`                                    | `{}`                             | Permanent filters to use for getting the suggestion list                                       |
+| `page`             | Optional | `number`                                    | 1                                | The current page number                                                                        |
+| `perPage`          | Optional | `number`                                    | 25                               | Number of suggestions to show                                                                  |
+| `sort`             | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }` | How to order the list of suggestions                                                           |
+| `enableGetChoices` | Optional | `({q: string}) => boolean`                  | `() => true`                     | Function taking the `filterValues` and returning a boolean to enable the `getList` call.       |
+| `queryOptions`     | Optional | [`UseQueryOptions`](https://tanstack.com/query/v4/docs/reference/useQuery?from=reactQueryV3&original=https://react-query-v3.tanstack.com/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
 
 **Note**: `<ReferenceInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) (like `label`) ; it is the responsibility of the child component to apply them.
 
@@ -79,7 +80,8 @@ You can make the `getList()` call lazy by using the `enableGetChoices` prop. Thi
 <ReferenceInput
      source="post_id"
      reference="posts"
-     enableGetChoices={({ q }) => q.length >= 2} />
+     enableGetChoices={({ q }) => q.length >= 2}
+/>
 ```
 
 ## `filter`
@@ -164,6 +166,22 @@ Then to display a selector for the post author, you should call `<ReferenceInput
 
 ```jsx
 <ReferenceInput source="author_id" reference="authors" />
+```
+
+## queryOptions
+
+Use [the `queryOptions` prop](#queryoptions) to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getList()` call.
+
+```jsx
+import { ReferenceInput, AutocompleteInput } from 'react-admin';
+
+<ReferenceInput 
+    source="post_id"
+    reference="posts"
+    queryOptions={{ meta: { foo: 'bar' } }}
+>
+    <AutocompleteInput label="Post" />
+</ReferenceInput>
 ```
 
 ## Performance 
