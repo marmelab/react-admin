@@ -113,6 +113,9 @@ An empty choice is always added (with a default `''` value, which you can overwr
 />
 ```
 
+**Note**: `emptyValue` can not be set to `undefined` or `null` since the `dataProvider` method will recibe an empty string every du to the nature of HTML inputs.
+
+
 ## `optionText`
 
 You can customize the choice field to use for the option name, thanks to the `optionText` attribute:
