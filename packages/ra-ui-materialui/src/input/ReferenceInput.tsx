@@ -8,7 +8,6 @@ import {
     UseReferenceInputControllerParams,
 } from 'ra-core';
 
-import { ReferenceError } from './ReferenceError';
 import { AutocompleteInput } from './AutocompleteInput';
 
 /**
@@ -72,18 +71,12 @@ import { AutocompleteInput } from './AutocompleteInput';
  * a `setFilters` function. You can call this function to filter the results.
  */
 export const ReferenceInput = (props: ReferenceInputProps) => {
-    const { children, label, reference } = props;
+    const { children, reference } = props;
 
     const controllerProps = useReferenceInputController(props);
 
     if (Children.count(children) !== 1) {
         throw new Error('<ReferenceInput> only accepts a single child');
-    }
-
-    // This is not a form error but an unrecoverable error from the
-    // useReferenceInputController hook
-    if (controllerProps.error) {
-        return <ReferenceError label={label} error={controllerProps.error} />;
     }
 
     return (

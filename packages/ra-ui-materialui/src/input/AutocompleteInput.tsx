@@ -178,6 +178,7 @@ export const AutocompleteInput = <
     const {
         allChoices,
         isLoading,
+        error: fetchError,
         resource,
         source,
         setFilters,
@@ -489,11 +490,14 @@ If you provided a React element for the optionText prop, you must also provide t
                                 }
                             />
                         }
-                        error={(isTouched || isSubmitted) && invalid}
+                        error={
+                            !!fetchError ||
+                            ((isTouched || isSubmitted) && invalid)
+                        }
                         helperText={
                             <InputHelperText
-                                touched={isTouched || isSubmitted}
-                                error={error?.message}
+                                touched={isTouched || isSubmitted || fetchError}
+                                error={error?.message || fetchError?.message}
                                 helperText={helperText}
                             />
                         }

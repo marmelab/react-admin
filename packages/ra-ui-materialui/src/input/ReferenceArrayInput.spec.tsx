@@ -13,6 +13,7 @@ import { SimpleForm } from '../form';
 import { DatagridInput } from './DatagridInput';
 import { TextField } from '../field';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
+import { SelectArrayInput } from './SelectArrayInput';
 import { QueryClient } from 'react-query';
 
 describe('<ReferenceArrayInput />', () => {
@@ -29,7 +30,6 @@ describe('<ReferenceArrayInput />', () => {
 
     it('should display an error if error is defined', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
-        const MyComponent = () => <span id="mycomponent" />;
         render(
             <AdminContext
                 queryClient={
@@ -43,13 +43,13 @@ describe('<ReferenceArrayInput />', () => {
             >
                 <SimpleForm onSubmit={jest.fn()}>
                     <ReferenceArrayInput {...defaultProps}>
-                        <MyComponent />
+                        <SelectArrayInput optionText="name" />
                     </ReferenceArrayInput>
                 </SimpleForm>
             </AdminContext>
         );
         await waitFor(() => {
-            expect(screen.queryByDisplayValue('fetch error')).not.toBeNull();
+            expect(screen.queryByText('fetch error')).not.toBeNull();
         });
     });
     it('should pass the correct resource down to child component', async () => {

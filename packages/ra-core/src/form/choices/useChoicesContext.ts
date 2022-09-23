@@ -23,7 +23,7 @@ export const useChoicesContext = <ChoicesType extends RaRecord = RaRecord>(
                 selectedChoices: options.selectedChoices ?? data,
                 displayedFilters:
                     options.selectedChoices ?? list.displayedFilters,
-                error: options.error ?? list.displayedFilters,
+                error: options.error,
                 filter: options.filter ?? list.filter,
                 filterValues: options.filterValues ?? list.filterValues,
                 hasNextPage: options.hasNextPage ?? list.hasNextPage,
