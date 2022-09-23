@@ -99,7 +99,7 @@ See [Using in a `ReferenceInput>`](#using-in-a-referenceinput) below for more in
 
 ## `emptyValue`
 
-An empty choice is always added (with a default `''` value, which you can overwrite with the `emptyValue` prop) on top of the options. You can furthermore customize the empty choice by using the `emptyText` prop, which can receive string or a React Element, which doesn't receive any props.
+An empty choice is always added (with a default `''` value, which you can override with the `emptyValue` prop) on top of the options. You can furthermore customize the empty choice by using the `emptyText` prop, which can receive a string or a React Element.
 
 ```jsx
 <AutocompleteInput
