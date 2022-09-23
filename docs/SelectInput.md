@@ -118,7 +118,7 @@ An empty choice is always added (with a default `''` value, which you can overwr
 ]} />
 ```
 
-**Note**: `emptyValue` can not be set to `undefined` or `null` since the `dataProvider` method will recibe an empty string on submit due to the nature of HTML inputs.
+**Note**: `emptyValue` cannot be set to `undefined` or `null` since the `dataProvider` method will receive an empty string on submit due to the nature of HTML inputs.
 
 ## `options`
 
