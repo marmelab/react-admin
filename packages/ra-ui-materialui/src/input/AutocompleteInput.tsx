@@ -136,7 +136,7 @@ export const AutocompleteInput = <
         createValue,
         debounce: debounceDelay = 250,
         defaultValue = '',
-        emptyText = '',
+        emptyText,
         emptyValue = '',
         field: fieldOverride,
         format,
@@ -192,17 +192,18 @@ export const AutocompleteInput = <
 
     const translate = useTranslate();
 
-    const finalChoices = isRequiredOverride
-        ? allChoices
-        : [
-              {
-                  [optionValue || 'id']: emptyValue,
-                  [typeof optionText === 'string' ? optionText : 'name']:
-                      emptyText === ''
-                          ? ' ' // em space, forces the display of an empty line of normal height
-                          : translate(emptyText, { _: emptyText }),
-              },
-          ].concat(allChoices);
+    const finalChoices =
+        emptyText == null || isRequiredOverride
+            ? allChoices
+            : [
+                  {
+                      [optionValue || 'id']: emptyValue,
+                      [typeof optionText === 'string' ? optionText : 'name']:
+                          emptyText === ''
+                              ? ' ' // em space, forces the display of an empty line of normal height
+                              : translate(emptyText, { _: emptyText }),
+                  },
+              ].concat(allChoices);
 
     const {
         id,
