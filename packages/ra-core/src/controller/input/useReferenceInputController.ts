@@ -186,7 +186,7 @@ export interface UseReferenceInputControllerParams<
             hasNextPage?: boolean;
             hasPreviousPage?: boolean;
         };
-    }>;
+    }> & { meta?: any };
     page?: number;
     perPage?: number;
     record?: RaRecord;

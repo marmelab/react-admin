@@ -5,6 +5,7 @@ import {
     useReferenceInputController,
     InputProps,
     ResourceContextProvider,
+    UseReferenceInputControllerParams,
 } from 'ra-core';
 
 import { ReferenceError } from './ReferenceError';
@@ -118,15 +119,10 @@ ReferenceInput.defaultProps = {
     children: <AutocompleteInput />,
 };
 
-export interface ReferenceInputProps extends InputProps {
+export interface ReferenceInputProps
+    extends InputProps,
+        UseReferenceInputControllerParams {
     children?: ReactElement;
     label?: string;
-    page?: number;
-    perPage?: number;
-    reference: string;
-    // @deprecated
-    referenceSource?: (resource: string, source: string) => string;
-    resource?: string;
-    enableGetChoices?: (filters: any) => boolean;
     [key: string]: any;
 }
