@@ -104,7 +104,7 @@ An empty choice is always added (with a default `''` value, which you can overri
 ```jsx
 <AutocompleteInput
     source="author_id"
-    emptyValue=""
+    emptyValue={0}
     emptyText="No author"
     choices={[
         { id: 123, name: 'Leo Tolstoi' },
