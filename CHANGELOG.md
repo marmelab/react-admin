@@ -1,5 +1,17 @@
 # Changelog
 
+## v4.3.4
+
+* Fix `<SimpleForm>` does not sanitize react-hook-form props ([#8186](https://github.com/marmelab/react-admin/pull/8186)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<ReferenceInput>` fetching error makes `<AutocompleteInput>` unusable ([#8183](https://github.com/marmelab/react-admin/pull/8183)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix cannot let anonymous users access dashboard ([#8180](https://github.com/marmelab/react-admin/pull/8180)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Datagrid>` error when `queryOptions` contains `enable: false` ([#7987](https://github.com/marmelab/react-admin/pull/7987)) ([yanchesky](https://github.com/yanchesky))
+* [Doc] Fix `<FormDataConsumer>` usage example ([#8189](https://github.com/marmelab/react-admin/pull/8189)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Add community page ([#8187](https://github.com/marmelab/react-admin/pull/8187)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix "Linking two inputs" code snippet ([#8184](https://github.com/marmelab/react-admin/pull/8184)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix Custom Filter Form example ([#8177](https://github.com/marmelab/react-admin/pull/8177)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `linkType` prop doc for `<SimpleList>` and `<SingleFieldList>` ([#8171](https://github.com/marmelab/react-admin/pull/8171)) ([riexn](https://github.com/riexn))
+
 ## v4.3.3
 
 * Fix `<Confirm>` doesn't pass props to the underlying MUI `<Dialog>` component ([#8176](https://github.com/marmelab/react-admin/pull/8176)) ([WiXSL](https://github.com/WiXSL))
