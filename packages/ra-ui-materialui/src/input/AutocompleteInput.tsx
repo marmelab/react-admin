@@ -136,7 +136,7 @@ export const AutocompleteInput = <
         createValue,
         debounce: debounceDelay = 250,
         defaultValue = '',
-        emptyText = '',
+        emptyText,
         emptyValue = '',
         field: fieldOverride,
         format,
