@@ -136,7 +136,8 @@ export const AutocompleteInput = <
         createValue,
         debounce: debounceDelay = 250,
         defaultValue = '',
-        emptyText,
+        emptyText = '',
+        emptyValue = '',
         field: fieldOverride,
         format,
         helperText,
@@ -191,18 +192,17 @@ export const AutocompleteInput = <
 
     const translate = useTranslate();
 
-    const finalChoices =
-        emptyText == null || isRequiredOverride
-            ? allChoices
-            : [
-                  {
-                      [optionValue || 'id']: '',
-                      [typeof optionText === 'string' ? optionText : 'name']:
-                          emptyText === ''
-                              ? ' ' // em space, forces the display of an empty line of normal height
-                              : translate(emptyText, { _: emptyText }),
-                  },
-              ].concat(allChoices);
+    const finalChoices = isRequiredOverride
+        ? allChoices
+        : [
+              {
+                  [optionValue || 'id']: emptyValue,
+                  [typeof optionText === 'string' ? optionText : 'name']:
+                      emptyText === ''
+                          ? ' ' // em space, forces the display of an empty line of normal height
+                          : translate(emptyText, { _: emptyText }),
+              },
+          ].concat(allChoices);
 
     const {
         id,
@@ -239,6 +239,12 @@ export const AutocompleteInput = <
     });
 
     useEffect(() => {
+        // eslint-disable-next-line eqeqeq
+        if (emptyValue == null) {
+            throw new Error(
+                `emptyValue being set to null or undefined is not supported`
+            );
+        }
         // eslint-disable-next-line eqeqeq
         if (isValidElement(optionText) && emptyText != undefined) {
             throw new Error(
@@ -619,6 +625,7 @@ export interface AutocompleteInputProps<
     children?: ReactNode;
     debounce?: number;
     emptyText?: string;
+    emptyValue?: any;
     filterToQuery?: (searchText: string) => any;
     inputText?: (option: any) => string;
     setFilter?: (value: string) => void;

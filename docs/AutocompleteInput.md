@@ -42,13 +42,14 @@ import { AutocompleteInput, ReferenceInput } from 'react-admin';
 | `create`                  | Optional | `Element`                                     | `-`                                     | A React Element to render when users want to create a new choice                                                                                                                                                                                                                                            |
 | `createItemLabel`         | Optional | `string`                                      | `ra.action.create_item`                 | The label for the menu item allowing users to create a new choice. Used when the filter is not empty                                                                                                                                                                                                        |
 | `emptyText`               | Optional | `string`                                      | `''`                                    | The text to use for the empty element                                                                                                                                                                                                                                                                       |
+| `emptyValue`              | Optional | `any`                                         | `''`                                    | The value to use for the empty element                                                                                                                                                                                                                                                                      |
 | `matchSuggestion`         | Optional | `Function`                                    | `-`                                     | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`                                                                                                                                                     |
 | `onCreate`                | Optional | `Function`                                    | `-`                                     | A function called with the current filter value when users choose to create a new choice.                                                                                                                                                                                                                   |
 | `optionText`              | Optional | `string` &#124; `Function` &#124; `Component` | `name`                                  | Field name of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`)                                                                                                                                                                     |
 | `optionValue`             | Optional | `string`                                      | `id`                                    | Field name of record containing the value to use as input value                                                                                                                                                                                                                                             |
 | `inputText`               | Optional | `Function`                                    | `-`                                     | Required if `optionText` is a custom Component, this function must return the text displayed for the current selection.                                                                                                                                                                                     |
 | `filterToQuery`           | Optional | `string` => `Object`                          | `searchText => ({ q: [searchText] })`   | How to transform the searchText into a parameter for the data provider                                                                                                                                                                                                                                      |
-| `setFilter`               | Optional | `Function`                                    | `null`                                  | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically set up when using `ReferenceInput`.                                                                                          |
+| `setFilter`               | Optional | `Function`                                    | `null`                                  | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically set up when using `ReferenceInput`.                                                                                         |
 | `shouldRenderSuggestions` | Optional | `Function`                                    | `() => true`                            | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim().length > 2` |
 | `suggestionLimit`         | Optional | `number`                                      | `null`                                  | Limits the numbers of suggestions that are shown in the dropdown list                                                                                                                                                                                                                                       |
 
@@ -95,6 +96,22 @@ When used inside a `<ReferenceInput>`, `<AutocompleteInput>` doesn't need a `cho
 
 See [Using in a `ReferenceInput>`](#using-in-a-referenceinput) below for more information.
 
+
+## `emptyValue`
+
+An empty choice is always added (with a default `''` value, which you can overwrite with the `emptyValue` prop) on top of the options. You can furthermore customize the empty choice by using the `emptyText` prop, which can receive string or a React Element, which doesn't receive any props.
+
+```jsx
+<AutocompleteInput
+    source="author_id"
+    emptyValue=""
+    emptyText="No author"
+    choices={[
+        { id: 123, name: 'Leo Tolstoi' },
+        { id: 456, name: 'Jane Austen' },
+    ]}
+/>
+```
 
 ## `optionText`
 
