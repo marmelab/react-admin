@@ -72,7 +72,14 @@ export const PostList = () => (
 );
 ```
 
-Setting the `linkType` prop to `false` (boolean, not string) removes the link in all list items.
+
+`linkType` accepts the following values:
+
+* `linkType="edit"`: links to the edit page. This is the default behavior.
+* `linkType="show"`: links to the show page.
+* `linkType={false}`: does not create any link.
+
+
 
 ## `primaryText`
 

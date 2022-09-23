@@ -213,7 +213,7 @@ form input value (string) ---> parse ---> form state value
     parse={v => parseFloat(v) / 100}
 ```
 
-`parse` often comes in pair with [`format`](#format) to transform the form value value before passing it to the input. See the [Transforming Input Value](#transforming-input-value-tofrom-record) section for more details.
+`parse` often comes in pair with [`format`](#format) to transform the form value before passing it to the input. See the [Transforming Input Value](#transforming-input-value-tofrom-record) section for more details.
 
 ## `source`
 
@@ -395,7 +395,7 @@ const dateParser = value => {
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
 
-React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form [useWatch](https://react-hook-form.com/api/usewatch) hook.
+React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://react-hook-form.com/api/usewatch) hook.
 
 ```jsx
 import * as React from 'react';
@@ -412,8 +412,6 @@ const toChoices = items => items.map(item => ({ id: item, name: item }));
 
 const CityInput = props => {
     const country = useWatch({ name: 'country' });
-    const values = getValues();
-
     return (
         <SelectInput
             choices={country ? toChoices(cities[country]) : []}
@@ -512,7 +510,7 @@ import { FormDataConsumer } from 'react-admin';
 
  const PostEdit = () => (
      <Edit>
-         <SimpleForm>
+         <SimpleForm shouldUnregister>
              <BooleanInput source="hasEmail" />
              <FormDataConsumer>
                  {({ formData, ...rest }) => formData.hasEmail &&
@@ -523,6 +521,8 @@ import { FormDataConsumer } from 'react-admin';
      </Edit>
  );
 ```
+
+**Note**: By default, `react-hook-form` submits values of unmounted input components. In the above example, the `shouldUnregister` prop of the `<SimpleForm>` component prevents that from happening. That way, when end users hide an input, its value isn't included in the submitted data.
 
 ## Overriding The Input Variant
 
