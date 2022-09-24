@@ -1,14 +1,8 @@
 import * as React from 'react';
-import {
-    useStore,
-    useRecordContext,
-    useTranslate,
-    usePreferenceKey,
-} from 'ra-core';
+import { useRecordContext, useTranslate, usePreference } from 'ra-core';
 
 export const PageTitle = ({ title, defaultTitle, className, ...rest }: any) => {
-    const preferenceKey = usePreferenceKey();
-    const [titleFromPreferences] = useStore(preferenceKey);
+    const [titleFromPreferences] = usePreference();
     const translate = useTranslate();
     const record = useRecordContext();
 

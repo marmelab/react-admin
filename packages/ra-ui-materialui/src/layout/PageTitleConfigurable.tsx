@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { useLocation } from 'react-router-dom';
-import { usePreferenceInput, usePreferenceKey } from 'ra-core';
+import { usePreferenceInput } from 'ra-core';
 import { TextField } from '@mui/material';
 
 import { Configurable } from '../preferences';
 import { PageTitle } from './PageTitle';
 
 export const PageTitleEditor = () => {
-    const preferenceKey = usePreferenceKey();
-    const field = usePreferenceInput(preferenceKey, '');
+    const field = usePreferenceInput();
     return (
         <form>
             <TextField
