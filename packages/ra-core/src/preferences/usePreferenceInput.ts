@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { useStore } from '../store/useStore';
+import { usePreference } from './usePreference';
 
 /**
  * Build props for a preference input that changes the value on blur
@@ -16,9 +16,12 @@ import { useStore } from '../store/useStore';
  *     );
  * }
  */
-export const usePreferenceInput = (key, defaultValue) => {
-    const [valueFromStore, setValueFromStore] = useStore(key);
-    const [value, setValue] = useState(valueFromStore || defaultValue);
+export const usePreferenceInput = (key: string, defaultValue?: any) => {
+    const [valueFromStore, setValueFromStore] = usePreference(
+        key,
+        defaultValue
+    );
+    const [value, setValue] = useState(valueFromStore);
     useEffect(() => {
         setValue(valueFromStore || defaultValue);
     }, [valueFromStore, defaultValue]);
