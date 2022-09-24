@@ -7,16 +7,16 @@ import { Basic, Unmount } from './Configurable.stories';
 describe('Configurable', () => {
     it('should show the block inspector on selection', async () => {
         render(<Basic />);
-        screen.getByLabelText('ra.configurable.configureMode').click();
-        await screen.findByText('ra.configurable.inspector.title');
+        screen.getByLabelText('Configure mode').click();
+        await screen.findByText('Inspector');
         screen.getAllByTitle('ra.configurable.customize')[0].click();
-        await screen.findByText('ra.inspector.textBlock');
+        await screen.findByText('Text block');
     });
 
     it('should show the default value for the settings', async () => {
         render(<Basic />);
-        screen.getByLabelText('ra.configurable.configureMode').click();
-        await screen.findByText('ra.configurable.inspector.title');
+        screen.getByLabelText('Configure mode').click();
+        await screen.findByText('Inspector');
         await screen.getAllByTitle('ra.configurable.customize')[0].click();
         expect(
             (screen.getByLabelText('Background color') as HTMLInputElement)
@@ -27,9 +27,9 @@ describe('Configurable', () => {
     it('should allow to change settings', async () => {
         render(<Basic />);
         screen.getByText('Today');
-        screen.getByLabelText('ra.configurable.configureMode').click();
+        screen.getByLabelText('Configure mode').click();
         screen.getAllByTitle('ra.configurable.customize')[1].click();
-        await screen.findByText('ra.inspector.salesBlock');
+        await screen.findByText('Sales block');
         screen.getByLabelText('Show date').click();
         expect(screen.queryByText('Today')).toBeNull();
     });
@@ -37,9 +37,9 @@ describe('Configurable', () => {
     it('should keep settings after the inspector is closed', async () => {
         render(<Basic />);
         screen.getByText('Today');
-        screen.getByLabelText('ra.configurable.configureMode').click();
+        screen.getByLabelText('Configure mode').click();
         screen.getAllByTitle('ra.configurable.customize')[1].click();
-        await screen.findByText('ra.inspector.salesBlock');
+        await screen.findByText('Sales block');
         screen.getByLabelText('Show date').click();
         screen.getByLabelText('ra.action.close').click();
         expect(screen.queryByText('Today')).toBeNull();
@@ -47,27 +47,27 @@ describe('Configurable', () => {
 
     it('should remove the editor when unmounting', async () => {
         render(<Unmount />);
-        screen.getByLabelText('ra.configurable.configureMode').click();
-        await screen.findByText('ra.configurable.inspector.title');
+        screen.getByLabelText('Configure mode').click();
+        await screen.findByText('Inspector');
         screen.getAllByTitle('ra.configurable.customize')[0].click();
-        await screen.findByText('ra.inspector.textBlock');
+        await screen.findByText('Text block');
         screen.getByText('toggle text block').click();
         await waitFor(() => {
             expect(screen.queryByText('Lorem ipsum')).toBeNull();
         });
-        expect(screen.queryByText('ra.inspector.textBlock')).toBeNull();
+        expect(screen.queryByText('Text block')).toBeNull();
     });
 
     it('should not remove the editor when unmounting another confiurable element', async () => {
         render(<Unmount />);
-        screen.getByLabelText('ra.configurable.configureMode').click();
-        await screen.findByText('ra.configurable.inspector.title');
+        screen.getByLabelText('Configure mode').click();
+        await screen.findByText('Inspector');
         screen.getAllByTitle('ra.configurable.customize')[0].click();
-        await screen.findByText('ra.inspector.textBlock');
+        await screen.findByText('Text block');
         screen.getByText('toggle sales block').click();
         await waitFor(() => {
             expect(screen.queryByText('Today')).toBeNull();
         });
-        expect(screen.queryByText('ra.inspector.textBlock')).not.toBeNull();
+        expect(screen.queryByText('Text block')).not.toBeNull();
     });
 });

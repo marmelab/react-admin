@@ -8,28 +8,34 @@ describe('Inspector', () => {
     it('should not render by default', () => {
         render(<Inspector />);
         expect(
-            screen.queryByText('ra.configurable.inspector.content')
+            screen.queryByText(
+                'Hover the application UI elements to configure them'
+            )
         ).toBeNull();
     });
     it('should render when edit mode is turned on', () => {
         render(<Inspector />);
-        screen.getByLabelText('ra.configurable.configureMode').click();
-        screen.getByText('ra.configurable.inspector.content');
+        screen.getByLabelText('Configure mode').click();
+        screen.getByText('Hover the application UI elements to configure them');
     });
     it('should disappear when edit mode is turned off', () => {
         render(<Inspector />);
-        screen.getByLabelText('ra.configurable.configureMode').click();
-        screen.getByLabelText('ra.configurable.configureMode').click();
+        screen.getByLabelText('Configure mode').click();
+        screen.getByLabelText('Configure mode').click();
         expect(
-            screen.queryByText('ra.configurable.inspector.content')
+            screen.queryByText(
+                'Hover the application UI elements to configure them'
+            )
         ).toBeNull();
     });
     it('should disappear when clioed by the user', () => {
         render(<Inspector />);
-        screen.getByLabelText('ra.configurable.configureMode').click();
+        screen.getByLabelText('Configure mode').click();
         screen.getByLabelText('ra.action.close').click();
         expect(
-            screen.queryByText('ra.configurable.inspector.content')
+            screen.queryByText(
+                'Hover the application UI elements to configure them'
+            )
         ).toBeNull();
     });
 });

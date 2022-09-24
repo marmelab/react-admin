@@ -19,7 +19,7 @@ describe('<Labeled />', () => {
 
     it('should render a title based on the resource and source', () => {
         render(<Basic />);
-        screen.getByText('resources.books.fields.title');
+        screen.getByText('Title');
     });
 
     it('should use custom label in child', () => {
@@ -34,7 +34,7 @@ describe('<Labeled />', () => {
 
     it('should allow to disable label', () => {
         render(<NoLabel />);
-        expect(screen.queryByText('resources.books.fields.title')).toBeNull();
+        expect(screen.queryByText('Title')).toBeNull();
     });
 
     it('should render the child even for non-fields', () => {
