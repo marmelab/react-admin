@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useResourceContext } from 'ra-core';
+import { useResourceContext, useStore, usePreferenceKey } from 'ra-core';
 
 import { Configurable } from '../../preferences';
 import { SimpleList, SimpleListProps } from './SimpleList';
@@ -20,8 +20,23 @@ export const SimpleListConfigurable = ({
                 '& ul': { flex: 1 },
             }}
         >
-            <SimpleList {...props} />
+            <SimpleListWithPreferences {...props} />
         </Configurable>
+    );
+};
+
+const SimpleListWithPreferences = (props: SimpleListProps) => {
+    const preferenceKey = usePreferenceKey();
+    const [primaryTextFromStore] = useStore(`${preferenceKey}.primaryText`);
+    const [secondaryTextFromStore] = useStore(`${preferenceKey}.secondaryText`);
+    const [tertiaryTextFromStore] = useStore(`${preferenceKey}.tertiaryText`);
+    return (
+        <SimpleList
+            {...props}
+            primaryText={primaryTextFromStore || props.primaryText}
+            secondaryText={secondaryTextFromStore || props.secondaryText}
+            tertiaryText={tertiaryTextFromStore || props.tertiaryText}
+        />
     );
 };
 
