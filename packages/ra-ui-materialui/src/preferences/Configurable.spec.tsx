@@ -58,7 +58,7 @@ describe('Configurable', () => {
         expect(screen.queryByText('Text block')).toBeNull();
     });
 
-    it('should not remove the editor when unmounting another confiurable element', async () => {
+    it('should not remove the editor when unmounting another configurable element', async () => {
         render(<Unmount />);
         screen.getByLabelText('Configure mode').click();
         await screen.findByText('Inspector');

@@ -28,7 +28,7 @@ describe('Inspector', () => {
             )
         ).toBeNull();
     });
-    it('should disappear when clioed by the user', () => {
+    it('should disappear when closed by the user', () => {
         render(<Inspector />);
         screen.getByLabelText('Configure mode').click();
         screen.getByLabelText('ra.action.close').click();
