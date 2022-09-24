@@ -12,7 +12,7 @@ import { usePreferenceKey } from './PreferenceKeyContext';
  * // this is equivalent to
  * const [theme, setTheme] = useStore('my-app.theme', 'light');
  */
-export const usePreference = (key: string, defaultValue?: any) => {
+export const usePreference = (key?: string, defaultValue?: any) => {
     const preferenceKey = usePreferenceKey();
     return useStore(
         preferenceKey && key ? `${preferenceKey}.${key}` : preferenceKey ?? key,

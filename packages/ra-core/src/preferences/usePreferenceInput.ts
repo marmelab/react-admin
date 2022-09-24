@@ -18,7 +18,7 @@ import { usePreference } from './usePreference';
  *     );
  * }
  */
-export const usePreferenceInput = (key: string, defaultValue?: any) => {
+export const usePreferenceInput = (key?: string, defaultValue?: any) => {
     const [valueFromStore, setValueFromStore] = usePreference(
         key,
         defaultValue
