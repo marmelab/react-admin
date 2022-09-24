@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { TextField } from '@mui/material';
-import { useTranslate, usePreferenceInput, usePreference } from 'ra-core';
+import { useTranslate, usePreferenceInput } from 'ra-core';
 
 /**
  * A component which provides a configuration UI to tweak the SimpleList
