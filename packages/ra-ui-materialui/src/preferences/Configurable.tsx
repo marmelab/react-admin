@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { useRef, useEffect, cloneElement, ReactElement } from 'react';
-import { usePreferencesEditor, PreferenceKeyContextProvider } from 'ra-core';
+import {
+    usePreferencesEditor,
+    PreferenceKeyContextProvider,
+    useTranslate,
+} from 'ra-core';
 import { alpha, Badge } from '@mui/material';
 import { styled, SxProps } from '@mui/material/styles';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -34,6 +38,8 @@ export const Configurable = (props: ConfigurableProps) => {
     const prefixedPreferenceKey = `preferences.${preferenceKey}`;
     const preferencesEditorContext = usePreferencesEditor();
     const hasPreferencesEditorContext = !!preferencesEditorContext;
+
+    const translate = useTranslate();
 
     const {
         isEnabled,
@@ -96,7 +102,7 @@ export const Configurable = (props: ConfigurableProps) => {
                     }
                     componentsProps={{
                         badge: {
-                            title: openButtonLabel,
+                            title: translate(openButtonLabel),
                             onClick: handleOpenEditor,
                         },
                     }}
