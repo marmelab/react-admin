@@ -3,7 +3,9 @@ import { useState, useEffect } from 'react';
 import { usePreference } from './usePreference';
 
 /**
- * Build props for a preference input that changes the value on blur
+ * Get the props for a preference input that changes the value on blur
+ *
+ * Relies on `usePreference`, so it's using the PreferenceKeyContext
  *
  * @example
  * const FontSizePreferenceInput = () => {
