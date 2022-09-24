@@ -2,15 +2,18 @@ import * as React from 'react';
 import {
     PreferencesEditorContextProvider,
     useSetInspectorTitle,
-    useStore,
     I18nContextProvider,
     memoryStore,
     StoreContextProvider,
-    usePreferenceKey,
+    usePreference,
 } from 'ra-core';
 import { Box, Typography } from '@mui/material';
 import TimelineIcon from '@mui/icons-material/Timeline';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import en from 'ra-language-english';
+import fr from 'ra-language-french';
 
+import { LocalesMenuButton } from '../button/LocalesMenuButton';
 import { InspectorButton } from './InspectorButton';
 import { Inspector } from './Inspector';
 import { Configurable } from './Configurable';
@@ -19,9 +22,13 @@ export default {
     title: 'ra-ui-materialui/preferences/Configurable',
 };
 
-const TextBlock = ({ children }: { children?: React.ReactNode }) => {
-    const preferenceKey = usePreferenceKey();
-    const [color] = useStore(`${preferenceKey}.color`, '#ffffff');
+const TextBlock = ({
+    color,
+    children,
+}: {
+    color?: string;
+    children?: React.ReactNode;
+}) => {
     return (
         <Box
             border="solid 1px lightgrey"
@@ -42,9 +49,13 @@ const TextBlock = ({ children }: { children?: React.ReactNode }) => {
     );
 };
 
+const TextBlocWithPreferences = props => {
+    const [color] = usePreference('color', '#ffffff');
+    return <TextBlock color={color} {...props} />;
+};
+
 const TextBlockEditor = () => {
-    const preferenceKey = usePreferenceKey();
-    const [color, setColor] = useStore(`${preferenceKey}.color`, '#ffffff');
+    const [color, setColor] = usePreference('color', '#ffffff');
     useSetInspectorTitle('ra.inspector.textBlock', { _: 'Text block' });
     return (
         <div>
@@ -64,38 +75,38 @@ const ConfigurableTextBlock = ({
     ...props
 }: any) => (
     <Configurable editor={<TextBlockEditor />} preferenceKey={preferenceKey}>
-        <TextBlock {...props} />
+        <TextBlocWithPreferences {...props} />
     </Configurable>
 );
 
-const SalesBlock = () => {
-    const preferenceKey = usePreferenceKey();
-    const [showDate] = useStore(`${preferenceKey}.showDate`, true);
-    return (
-        <Box
-            display="flex"
-            border="solid 1px lightgrey"
-            borderRadius={3}
-            p={1}
-            width={200}
-        >
-            <Box flex="1" mr={1}>
-                <Typography variant="h6">Sales</Typography>
-                {showDate && <Typography variant="caption">Today</Typography>}
-                <Typography variant="h4" textAlign="right" mt={2}>
-                    $4,452
-                </Typography>
-            </Box>
-            <Box bgcolor="lightgrey" display="flex" alignItems="center" p={1}>
-                <TimelineIcon />
-            </Box>
+const SalesBlock = ({ showDate }: { showDate?: boolean }) => (
+    <Box
+        display="flex"
+        border="solid 1px lightgrey"
+        borderRadius={3}
+        p={1}
+        width={200}
+    >
+        <Box flex="1" mr={1}>
+            <Typography variant="h6">Sales</Typography>
+            {showDate && <Typography variant="caption">Today</Typography>}
+            <Typography variant="h4" textAlign="right" mt={2}>
+                $4,452
+            </Typography>
         </Box>
-    );
+        <Box bgcolor="lightgrey" display="flex" alignItems="center" p={1}>
+            <TimelineIcon />
+        </Box>
+    </Box>
+);
+
+const SalesBlockWithPreferences = props => {
+    const [showDate] = usePreference('showDate', true);
+    return <SalesBlock showDate={showDate} {...props} />;
 };
 
 const SalesBlockEditor = () => {
-    const preferenceKey = usePreferenceKey();
-    const [showDate, setShowDate] = useStore(`${preferenceKey}.showDate`, true);
+    const [showDate, setShowDate] = usePreference('showDate', true);
     useSetInspectorTitle('ra.inspector.salesBlock', { _: 'Sales block' });
     return (
         <>
@@ -104,7 +115,7 @@ const SalesBlockEditor = () => {
             <input
                 type="checkbox"
                 defaultChecked={showDate}
-                onChange={e => setShowDate(showDatz => !showDate)}
+                onChange={e => setShowDate(v => !v)}
                 id="showDate"
             />
         </>
@@ -113,7 +124,7 @@ const SalesBlockEditor = () => {
 
 const ConfigurableSalesBlock = ({ preferenceKey = 'salesBlock', ...props }) => (
     <Configurable editor={<SalesBlockEditor />} preferenceKey={preferenceKey}>
-        <SalesBlock {...props} />
+        <SalesBlockWithPreferences {...props} />
     </Configurable>
 );
 
@@ -188,13 +199,19 @@ export const Unmount = () => {
     );
 };
 export const I18n = () => {
-    const i18nProvider = {
-        translate: (key: string, options: any) => options?._ ?? key,
-        changeLocale: () => Promise.resolve(),
-        getLocale: () => 'en',
-    };
+    const translations = { en, fr };
+    const i18nProvider = polyglotI18nProvider(
+        locale => translations[locale],
+        'en'
+    );
     return (
         <I18nContextProvider value={i18nProvider}>
+            <LocalesMenuButton
+                languages={[
+                    { locale: 'en', name: 'English' },
+                    { locale: 'fr', name: 'Français' },
+                ]}
+            />
             <Basic />
         </I18nContextProvider>
     );
