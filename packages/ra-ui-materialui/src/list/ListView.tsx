@@ -88,7 +88,7 @@ export const ListView = <RecordType extends RaRecord = any>(
             <Title
                 title={title}
                 defaultTitle={defaultTitle}
-                preferenceKey={`${resource}.list`}
+                preferenceKey={`${resource}.list.title`}
             />
             {shouldRenderEmptyPage ? renderEmpty() : renderList()}
             {aside}

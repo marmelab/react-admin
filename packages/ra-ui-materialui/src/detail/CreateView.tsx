@@ -30,7 +30,7 @@ export const CreateView = (props: CreateViewProps) => {
             <Title
                 title={title}
                 defaultTitle={defaultTitle}
-                preferenceKey={`${resource}.create`}
+                preferenceKey={`${resource}.create.title`}
             />
             {actions}
             <div

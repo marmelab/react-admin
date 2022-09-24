@@ -15,7 +15,7 @@ import { usePreferenceKey } from './PreferenceKeyContext';
 export const usePreference = (key: string, defaultValue?: any) => {
     const preferenceKey = usePreferenceKey();
     return useStore(
-        preferenceKey ? `${preferenceKey}.${key}` : key,
+        preferenceKey && key ? `${preferenceKey}.${key}` : preferenceKey ?? key,
         defaultValue
     );
 };

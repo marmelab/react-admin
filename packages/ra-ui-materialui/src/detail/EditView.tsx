@@ -47,7 +47,7 @@ export const EditView = (props: EditViewProps) => {
             <Title
                 title={title}
                 defaultTitle={defaultTitle}
-                preferenceKey={`${resource}.edit`}
+                preferenceKey={`${resource}.edit.title`}
             />
             {finalActions}
             <div
