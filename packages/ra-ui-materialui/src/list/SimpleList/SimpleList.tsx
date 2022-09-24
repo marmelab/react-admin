@@ -25,7 +25,7 @@ import {
     useCreatePath,
     usePreferenceKey,
     useStore,
-    useRenderTemplate,
+    useTranslate,
 } from 'ra-core';
 
 import { SimpleListLoading } from './SimpleListLoading';
@@ -84,7 +84,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
     const { data, isLoading, total } = useListContext<RecordType>(props);
     const resource = useResourceContext(props);
     const preferenceKey = usePreferenceKey();
-    const renderTemplate = useRenderTemplate();
+    const translate = useTranslate();
     const [primaryTextFromStore] = useStore(`${preferenceKey}.primaryText`);
     const [secondaryTextFromStore] = useStore(`${preferenceKey}.secondaryText`);
     const [tertiaryTextFromStore] = useStore(`${preferenceKey}.tertiaryText`);
@@ -146,19 +146,19 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                 primary={
                                     <div>
                                         {primaryTextFromStore
-                                            ? renderTemplate(
-                                                  primaryTextFromStore,
-                                                  record
-                                              )
+                                            ? translate(primaryTextFromStore, {
+                                                  ...record,
+                                                  _: primaryTextFromStore,
+                                              })
                                             : isValidElement(primaryText)
                                             ? primaryText
                                             : primaryText(record, record.id)}
 
                                         {tertiaryTextFromStore
-                                            ? renderTemplate(
-                                                  tertiaryTextFromStore,
-                                                  record
-                                              )
+                                            ? translate(tertiaryTextFromStore, {
+                                                  ...record,
+                                                  _: tertiaryTextFromStore,
+                                              })
                                             : !!tertiaryText &&
                                               (isValidElement(tertiaryText) ? (
                                                   tertiaryText
@@ -178,10 +178,10 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                 }
                                 secondary={
                                     secondaryTextFromStore
-                                        ? renderTemplate(
-                                              secondaryTextFromStore,
-                                              record
-                                          )
+                                        ? translate(secondaryTextFromStore, {
+                                              ...record,
+                                              _: secondaryTextFromStore,
+                                          })
                                         : !!secondaryText &&
                                           (isValidElement(secondaryText)
                                               ? secondaryText

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
     useStore,
-    useRenderTemplate,
     useRecordContext,
     useTranslate,
     usePreferenceKey,
@@ -11,12 +10,14 @@ export const PageTitle = ({ title, defaultTitle, className, ...rest }: any) => {
     const preferenceKey = usePreferenceKey();
     const [titleFromPreferences] = useStore(preferenceKey);
     const translate = useTranslate();
-    const renderTemplate = useRenderTemplate();
     const record = useRecordContext();
 
     return titleFromPreferences ? (
         <span className={className} {...rest}>
-            {renderTemplate(titleFromPreferences, record, defaultTitle)}
+            {translate(titleFromPreferences, {
+                ...record,
+                _: titleFromPreferences,
+            })}
         </span>
     ) : (
         <span className={className}>
