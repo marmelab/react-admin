@@ -5,7 +5,7 @@ title: "The Configurable Component"
 
 # `<Configurable>`
 
-This component makes another component configurable by the end user. When they enter the configuration mode, users can customize the component's settings via the inspector.
+This component makes another component configurable by the end user. When users enter the configuration mode, they can customize the component's settings via the inspector.
 
 ![SimpleListConfigurable](./img/SimpleListConfigurable.gif)
 
@@ -16,7 +16,7 @@ Some react-admin components are already configurable - or rather they have a con
 
 ## Usage
 
-Wrap any component with `<Configurable>` and define its editor to let users customize it via a UI. Don't forget to pass down props to the inner component. Note that every configurable component needs a unique preference key, that is used to persist the user's preferences in the Store.
+Wrap any component with `<Configurable>` and define its editor component to let users customize it via a UI. Don't forget to pass down props to the inner component. Note that every configurable component needs a unique preference key, that is used to persist the user's preferences in the Store.
 
 ```jsx
 import { Configurable } from 'react-admin';
@@ -27,57 +27,18 @@ const ConfigurableTextBlock = ({ preferenceKey = "textBlock", ...props }) => (
     </Configurable>
 );
 ```
- 
-Then, use this component in your app:
+
+`<Configurable>` creates a context for the `preferenceKey`, so that both the child component and the editor can access it.
+
+The editor commponent lets users edit the preferences for the configurable compoonent. It does so using the `usePreference` hook, which is a namespaced version of [the `useStore` hook](./useStore.md) for the current `preferenceKey`:
 
 ```jsx
-import { ConfigurableTextBlock } from './ConfigurableTextBlock';
-
-export const Dashboard = () => (
-    <ConfigurableTextBlock
-        title="Welcome to the administration"
-        content="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-    />
-);
-```
-
-`<Configurable>` creates a context for the `preferenceKey`, so that both the child component and the editor can access it using `usePreferenceKey()`. The next sections describe how the Configurable child component and the editor can access the preferences.
-
-## `children`
-
-The wrapped component can be any component relying on [`useStore`](./useStore.md). It must must use `usePreferenceKey` to get the preference key.
-
-For instance, the following `<TextBlock>` component uses a `color` setting from the store to change its background color:
-
-```jsx
-import { useStore, usePreferenceKey } from 'react-admin';
-
-const TextBlock = ({ title, content }) => {
-    const preferenceKey = usePreferenceKey();
-    const [color] = useStore(`${preferenceKey}.color`, '#ffffff');
-    return (
-        <Box bgcolor={color}>
-            <Typography variant="h6">{title}</Typography>
-            <Typography>{content}</Typography>
-        </Box>
-    );
-};
-```
-
-## `editor`
-
-The `editor` component should let the user change the setting of the child component - usually via form controls. When the user selects the configurable component, react-admin renders the `editor` component in the inspector.
-
-It must also use `usePreferenceKey` to get the preference key, and [`useStore`](./useStore.md) to read and write the configuration. 
-
-For instance, here is a simple editor for the `<TextBlock>` component, letting users customize the `color` setting in a `<TextField>`:
-
-```jsx
-import { useStore, usePreferenceKey } from 'react-admin';
+import { usePreference } from 'react-admin';
 
 const TextBlockEditor = () => {
-    const preferenceKey = usePreferenceKey();
-    const [color, setColor] = useStore(`${preferenceKey}.color`, '#ffffff');
+    const [color, setColor] = usePreference('color', '#ffffff');
+    // equivalent to:
+    // const [color, setColor] = useStore('textBlock.color', '#ffffff');
     return (
         <Box>
             <Typography>Configure the text block</Typography>
@@ -90,6 +51,110 @@ const TextBlockEditor = () => {
     );
 };
 ```
+ 
+The inner component reads the preferences using the same `usePreference` hook:
+
+```jsx
+const TextBlock = ({ title, content }) => {
+    const [color] = usePreference('color', '#ffffff');
+    return (
+        <Box bgcolor={color}>
+            <Typography variant="h6">{title}</Typography>
+            <Typography>{content}</Typography>
+        </Box>
+    );
+};
+```
+
+Then, use the configurable component in your app:
+
+```jsx
+import { ConfigurableTextBlock } from './ConfigurableTextBlock';
+
+export const Dashboard = () => (
+    <ConfigurableTextBlock
+        title="Welcome to the administration"
+        content="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    />
+);
+```
+
+## `children`
+
+The wrapped component can be any component relying on `usePreference`. Configurable components let users customize their content, look and feel, and behavior.
+
+For instance, the following `<TextBlock>` component lets end users change its foreground and background colors:
+
+{% raw %}
+```jsx
+import { usePreference } from 'react-admin';
+
+const TextBlock = ({ title, content }) => {
+    const [color] = usePreference('color', 'primary.contrastTest');
+    const [bgcolor] = usePreference('bgcolor', 'primary.main');
+    return (
+        <Box sx={{ color, bgcolor }}>
+            <Typography variant="h6">{title}</Typography>
+            <Typography>{content}</Typography>
+        </Box>
+    );
+};
+```
+{% endraw %}
+
+## `editor`
+
+The `editor` component should let the user change the settings of the child component - usually via form controls. When the user enters configuration mode then selects the configurable component, react-admin renders the `editor` component in the inspector.
+
+The editor component must also use `usePreference` to read and write a given preference.
+
+For instance, here is a simple editor for the above `<TextBlock>` component, letting users customize the foreground and background colors:
+
+```jsx
+import { usePreference } from 'react-admin';
+
+const TextBlockEditor = () => {
+    const [color, setColor] = usePreference('color', 'primary.contrastTest');
+    const [bgcolor, setBgcolor] = usePreference('bgcolor', 'primary.main');
+    return (
+        <Box>
+            <Typography>Configure the text block</Typography>
+            <TextField
+                label="Color"
+                value={color}
+                onChange={e => setColor(e.target.value)}
+            />
+            <TextField
+                label="Background Color"
+                value={bgcolor}
+                onChange={e => setBgcolor(e.target.value)}
+            />
+        </Box>
+    );
+};
+```
+
+In practice, instead of updating the preferences on change like in the above example, you should wait for the user to validate the input. Otherwise, the setting may temporarily have an invalid value (e.g., when entering the string 'primary.main', the value may temporarily be 'prim', which is invalid).
+
+React-admin provides a `usePreferenceInput` hook to help you with that. It returns an object with the following properties: `{ value, onChange, onBlur, onKeyDown }`, and you can directly pass it to an input component:
+
+```jsx
+import { usePreferenceInput } from 'react-admin';
+
+const TextBlockEditor = () => {
+    const colorField = usePreferenceInput('color', 'primary.contrastTest');
+    const bgcolorField = usePreferenceInput('bgcolor', 'primary.main');
+    return (
+        <Box>
+            <Typography>Configure the text block</Typography>
+            <TextField label="Color" {...colorField} />
+            <TextField label="Background Color" {...bgcolorField} />
+        </Box>
+    );
+};
+```
+
+`usePreferenceInput` changes the preference on blur, or when the user presses the Enter key. Just like `usePreference`, it uses the `preferenceKey` from the context to namespace the preference.
 
 ## `preferenceKey`
 
