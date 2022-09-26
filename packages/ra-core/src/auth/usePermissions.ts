@@ -1,7 +1,5 @@
 import { useMemo } from 'react';
-import useGetPermissions from './useGetPermissions';
 import { useQuery, UseQueryOptions } from 'react-query';
-import { reactAdminFetchActions } from '../dataProvider';
 import useAuthProvider from './useAuthProvider';
 
 const emptyParams = {};
