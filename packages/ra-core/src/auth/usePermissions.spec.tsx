@@ -5,7 +5,10 @@ import { CoreAdminContext } from '../core/CoreAdminContext';
 
 import usePermissions from './usePermissions';
 
-const UsePermissions = ({ children, authParams }: any) => {
+const UsePermissions = ({ children }: any) => {
+    const authParams = {
+        retry: false,
+    };
     const res = usePermissions(authParams);
     return children(res);
 };
