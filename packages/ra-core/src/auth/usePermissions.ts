@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import useGetPermissions from './useGetPermissions';
 import { useQuery, UseQueryOptions } from 'react-query';
 import { reactAdminFetchActions } from '../dataProvider';
+import useAuthProvider from './useAuthProvider';
 
 const emptyParams = {};
 /**
@@ -40,11 +41,13 @@ const usePermissions = <Permissions = any, Error = any>(
         refetchOnMount: false,
     }
 ) => {
-    const getPermissions = useGetPermissions();
+    const authProvider = useAuthProvider();
 
     const result = useQuery(
         ['auth', 'getPermissions', params],
-        () => getPermissions(params),
+        authProvider
+            ? () => authProvider.getPermissions(params)
+            : async () => [],
         queryParams
     );
 
