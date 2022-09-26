@@ -344,7 +344,7 @@ describe('<AutocompleteInput />', () => {
                             resource="posts"
                             choices={choices}
                             matchSuggestion={(filter, choice) => {
-                                if (!filter) return true;
+                                if (!filter || filter === ' ') return true;
                                 if (
                                     filter === 'gugu' &&
                                     choice.name === 'Angular'
@@ -403,7 +403,7 @@ describe('<AutocompleteInput />', () => {
                             resource="posts"
                             choices={choices}
                             matchSuggestion={(filter, choice) => {
-                                if (!filter) return true;
+                                if (!filter || filter === ' ') return true;
                                 if (
                                     filter === 'gugu' &&
                                     choice.name === 'Angular'
@@ -476,7 +476,7 @@ describe('<AutocompleteInput />', () => {
 
         userEvent.type(input, '{backspace}');
         await waitFor(() => {
-            expect(input.value).toEqual('');
+            expect(input.value).toEqual(' ');
         });
     });
 
@@ -598,7 +598,7 @@ describe('<AutocompleteInput />', () => {
         const input = screen.getByLabelText(
             'resources.users.fields.role'
         ) as HTMLInputElement;
-        expect(input.value).toEqual('');
+        expect(input.value).toEqual(' ');
         // Temporary workaround until we can upgrade testing-library in v4
         input.focus();
 
@@ -613,7 +613,7 @@ describe('<AutocompleteInput />', () => {
             </AdminContext>
         );
 
-        expect(input.value).toEqual('');
+        expect(input.value).toEqual(' ');
     });
 
     it('should repopulate the suggestions after the suggestions are dismissed', async () => {
@@ -946,7 +946,7 @@ describe('<AutocompleteInput />', () => {
         fireEvent.change(input, { target: { value: 'foo' } });
         await waitFor(
             () => {
-                expect(screen.getByRole('listbox').children).toHaveLength(1);
+                expect(screen.queryAllByRole('option')).toHaveLength(1);
             },
             { timeout: 2000 }
         );
@@ -1189,7 +1189,7 @@ describe('<AutocompleteInput />', () => {
         await waitFor(() => {
             expect(
                 (screen.getByRole('textbox') as HTMLInputElement).value
-            ).toEqual('');
+            ).toEqual(' ');
         });
         expect(screen.queryByText('Leo Tolstoy')).toBeNull();
     });
@@ -1298,7 +1298,7 @@ describe('<AutocompleteInput />', () => {
         fireEvent.change(input, { target: { value: 'no match' } });
         fireEvent.blur(input);
         await waitFor(() => {
-            expect(input.value).toEqual('');
+            expect(input.value).toEqual(' ');
         });
     });
 });
