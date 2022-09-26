@@ -193,7 +193,7 @@ export const AutocompleteInput = <
     const translate = useTranslate();
 
     const finalChoices =
-        emptyText == null || isRequiredOverride
+        emptyText == null || isRequiredOverride || multiple
             ? allChoices
             : [
                   {
