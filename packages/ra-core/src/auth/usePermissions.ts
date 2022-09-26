@@ -1,20 +1,11 @@
-import { useEffect } from 'react';
-
 import useGetPermissions from './useGetPermissions';
-import { useSafeSetState } from '../util/hooks';
-
-interface State<Permissions, Error> {
-    isLoading: boolean;
-    permissions?: Permissions;
-    error?: Error;
-}
-
-const emptyParams = {};
+import { useQuery, UseQueryOptions } from 'react-query';
+import useAuthState from './useAuthState';
 
 /**
  * Hook for getting user permissions
  *
- * Calls the authProvider.getPermissions() method asynchronously.
+ * Calls the authProvider.getPermissions() method using react-query.
  * If the authProvider returns a rejected promise, returns empty permissions.
  *
  * The return value updates according to the request state:
@@ -42,25 +33,23 @@ const emptyParams = {};
  *     };
  */
 const usePermissions = <Permissions = any, Error = any>(
-    params = emptyParams
-): State<Permissions, Error> => {
-    const [state, setState] = useSafeSetState<State<Permissions, Error>>({
-        isLoading: true,
-    });
+    params: UseQueryOptions<Permissions[], Error> = {
+        refetchOnMount: false,
+        initialData: [],
+    }
+) => {
     const getPermissions = useGetPermissions();
-    useEffect(() => {
-        getPermissions(params)
-            .then(permissions => {
-                setState({ isLoading: false, permissions });
-            })
-            .catch(error => {
-                setState({
-                    isLoading: false,
-                    error,
-                });
-            });
-    }, [getPermissions, params, setState]);
-    return state;
+
+    const { data: permissions, isLoading } = useQuery(
+        'ra-Permissions',
+        getPermissions,
+        params
+    );
+
+    return {
+        permissions,
+        isLoading,
+    };
 };
 
 export default usePermissions;
