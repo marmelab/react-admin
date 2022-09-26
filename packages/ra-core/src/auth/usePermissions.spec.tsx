@@ -9,7 +9,7 @@ const UsePermissions = ({ children }: any) => {
     const authParams = {
         retry: false,
     };
-    const res = usePermissions(authParams);
+    const res = usePermissions({}, authParams);
     return children(res);
 };
 

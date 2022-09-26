@@ -1,6 +1,7 @@
 import useGetPermissions from './useGetPermissions';
 import { useQuery, UseQueryOptions } from 'react-query';
 
+const emptyParams = {};
 /**
  * Hook for getting user permissions
  *
@@ -32,16 +33,17 @@ import { useQuery, UseQueryOptions } from 'react-query';
  *     };
  */
 const usePermissions = <Permissions = any, Error = any>(
-    params: UseQueryOptions<Permissions, Error> = {
+    params = emptyParams,
+    useQueryParams: UseQueryOptions<Permissions, Error> = {
         refetchOnMount: false,
     }
 ) => {
     const getPermissions = useGetPermissions();
 
     const { data, isLoading, error } = useQuery(
-        ['ra-Permissions'],
-        getPermissions,
-        params
+        ['auth', 'getPermissions', params],
+        () => getPermissions(params),
+        useQueryParams
     );
 
     return {
