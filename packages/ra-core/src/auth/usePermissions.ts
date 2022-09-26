@@ -1,5 +1,7 @@
+import { useMemo } from 'react';
 import useGetPermissions from './useGetPermissions';
 import { useQuery, UseQueryOptions } from 'react-query';
+import { reactAdminFetchActions } from '../dataProvider';
 
 const emptyParams = {};
 /**
@@ -40,17 +42,19 @@ const usePermissions = <Permissions = any, Error = any>(
 ) => {
     const getPermissions = useGetPermissions();
 
-    const { data, isLoading, error } = useQuery(
+    const result = useQuery(
         ['auth', 'getPermissions', params],
         () => getPermissions(params),
         queryParams
     );
 
-    return {
-        permissions: data,
-        isLoading,
-        error,
-    };
+    return useMemo(() => {
+        return {
+            permissions: result.data,
+            isLoading: result.isLoading,
+            error: result.error,
+        };
+    }, [result]);
 };
 
 export default usePermissions;
