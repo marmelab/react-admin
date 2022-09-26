@@ -368,6 +368,12 @@ If you provided a React element for the optionText prop, you must also provide t
                 return option?.name;
             }
 
+            if (!isListItem && option[optionValue || 'id'] === emptyValue) {
+                return option[
+                    typeof optionText === 'string' ? optionText : 'name'
+                ];
+            }
+
             if (!isListItem && inputText !== undefined) {
                 return inputText(option);
             }
