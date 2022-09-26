@@ -34,7 +34,7 @@ const emptyParams = {};
  */
 const usePermissions = <Permissions = any, Error = any>(
     params = emptyParams,
-    useQueryParams: UseQueryOptions<Permissions, Error> = {
+    queryParams: UseQueryOptions<Permissions, Error> = {
         refetchOnMount: false,
     }
 ) => {
@@ -43,7 +43,7 @@ const usePermissions = <Permissions = any, Error = any>(
     const { data, isLoading, error } = useQuery(
         ['auth', 'getPermissions', params],
         () => getPermissions(params),
-        useQueryParams
+        queryParams
     );
 
     return {

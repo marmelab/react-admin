@@ -6,10 +6,10 @@ import { CoreAdminContext } from '../core/CoreAdminContext';
 import usePermissions from './usePermissions';
 
 const UsePermissions = ({ children }: any) => {
-    const authParams = {
+    const permissionQueryParams = {
         retry: false,
     };
-    const res = usePermissions({}, authParams);
+    const res = usePermissions({}, permissionQueryParams);
     return children(res);
 };
 
