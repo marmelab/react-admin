@@ -305,7 +305,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 ]);
             }
         } else {
-            field.onChange(getChoiceValue(newValue) ?? '');
+            field.onChange(getChoiceValue(newValue) ?? emptyValue);
         }
     };
 
@@ -465,7 +465,7 @@ If you provided a React element for the optionText prop, you must also provide t
         newValue: any,
         reason: string
     ) => {
-        handleChangeWithCreateSupport(newValue != null ? newValue : '');
+        handleChangeWithCreateSupport(newValue != null ? newValue : emptyValue);
     };
 
     const oneSecondHasPassed = useTimeout(1000, filterValue);
