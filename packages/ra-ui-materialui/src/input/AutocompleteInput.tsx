@@ -380,7 +380,14 @@ If you provided a React element for the optionText prop, you must also provide t
 
             return getChoiceText(option);
         },
-        [getChoiceText, inputText, createId]
+        [
+            getChoiceText,
+            inputText,
+            createId,
+            optionText,
+            optionValue,
+            emptyValue,
+        ]
     );
 
     const finalOnBlur = useCallback((): void => {
