@@ -737,9 +737,12 @@ describe('<SimpleFormIterator />', () => {
         fireEvent.click(addItemElement);
         fireEvent.click(screen.getByText('ra.action.save'));
         await waitFor(() => {
-            expect(save).toHaveBeenCalledWith({
-                emails: [{ email: '' }],
-            });
+            expect(save).toHaveBeenCalledWith(
+                {
+                    emails: [{ email: '' }],
+                },
+                expect.anything()
+            );
         });
     });
 });

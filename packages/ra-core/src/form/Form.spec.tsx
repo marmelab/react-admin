@@ -210,7 +210,10 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({ foo: null });
+            expect(onSubmit).toHaveBeenCalledWith(
+                { foo: null },
+                expect.anything()
+            );
         });
     });
 
@@ -235,7 +238,10 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({ foo: { bar: null } });
+            expect(onSubmit).toHaveBeenCalledWith(
+                { foo: { bar: null } },
+                expect.anything()
+            );
         });
     });
 
@@ -257,7 +263,10 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({ foo: str });
+            expect(onSubmit).toHaveBeenCalledWith(
+                { foo: str },
+                expect.anything()
+            );
         });
     });
     it('should accept date values', async () => {
@@ -283,7 +292,10 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({ foo: date });
+            expect(onSubmit).toHaveBeenCalledWith(
+                { foo: date },
+                expect.anything()
+            );
         });
     });
 
@@ -310,7 +322,10 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({ foo: arr });
+            expect(onSubmit).toHaveBeenCalledWith(
+                { foo: arr },
+                expect.anything()
+            );
         });
     });
 
@@ -337,7 +352,10 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({ foo: obj });
+            expect(onSubmit).toHaveBeenCalledWith(
+                { foo: obj },
+                expect.anything()
+            );
         });
     });
     it('should accept deep object values', async () => {
@@ -363,7 +381,10 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({ foo: obj });
+            expect(onSubmit).toHaveBeenCalledWith(
+                { foo: obj },
+                expect.anything()
+            );
         });
     });
     it('should accept object values in arrays', async () => {
@@ -389,7 +410,10 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({ foo: obj });
+            expect(onSubmit).toHaveBeenCalledWith(
+                { foo: obj },
+                expect.anything()
+            );
         });
     });
     it('should accept adding objects in arrays', async () => {
@@ -418,7 +442,10 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({ foo: obj });
+            expect(onSubmit).toHaveBeenCalledWith(
+                { foo: obj },
+                expect.anything()
+            );
         });
     });
     it('should accept removing objects in array of objects', async () => {
@@ -449,7 +476,10 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({ foo: obj });
+            expect(onSubmit).toHaveBeenCalledWith(
+                { foo: obj },
+                expect.anything()
+            );
         });
     });
     describe('defaultValues', () => {
@@ -519,7 +549,10 @@ describe('Form', () => {
             fireEvent.click(screen.getByText('Submit'));
 
             await waitFor(() => {
-                expect(onSubmit).toHaveBeenCalledWith(values);
+                expect(onSubmit).toHaveBeenCalledWith(
+                    values,
+                    expect.anything()
+                );
             });
         });
     });
