@@ -200,12 +200,11 @@ export const AutocompleteInput = <
             : [
                   {
                       [optionValue || 'id']: emptyValue,
-                      [typeof optionText === 'string' ? optionText : 'name']:
-                          finalEmptyText === ''
-                              ? ' ' // em space, forces the display of an empty line of normal height
-                              : translate(finalEmptyText, {
-                                    _: finalEmptyText,
-                                }),
+                      [typeof optionText === 'string'
+                          ? optionText
+                          : 'name']: translate(finalEmptyText, {
+                          _: finalEmptyText,
+                      }),
                   },
               ].concat(allChoices);
 
@@ -584,7 +583,14 @@ If you provided a React element for the optionText prop, you must also provide t
                     (props as {
                         key: string;
                     }).key = getChoiceValue(record);
-                    return <li {...props}>{getOptionLabel(record, true)}</li>;
+
+                    const optionLabel = getOptionLabel(record, true);
+
+                    return (
+                        <li {...props}>
+                            {optionLabel === '' ? ' ' : optionLabel}
+                        </li>
+                    );
                 }}
             />
             {createElement}
