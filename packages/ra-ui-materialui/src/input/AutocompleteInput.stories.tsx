@@ -42,6 +42,7 @@ const dataProviderEmpty = {
                 id: 1,
                 title: 'War and Peace',
                 author: 1,
+                authorNone: 1,
                 authorEmpty: 1,
                 authorZero: 1,
                 summary:
@@ -644,8 +645,15 @@ const BookEditWithEmptyText = () => {
         >
             <SimpleForm>
                 <AutocompleteInput
-                    label="emptyValue set to 'none'"
+                    label="emptyValue set to 'no-author', emptyText set to '' by default"
                     source="author"
+                    choices={choices}
+                    emptyValue="no-author"
+                    fullWidth
+                />
+                <AutocompleteInput
+                    label="emptyValue set to 'none'"
+                    source="authorNone"
                     choices={choices}
                     emptyValue="none"
                     emptyText="- No author - "
