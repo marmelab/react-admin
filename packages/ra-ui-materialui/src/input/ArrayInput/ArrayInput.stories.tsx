@@ -3,8 +3,8 @@ import { Admin } from 'react-admin';
 import { required, Resource } from 'ra-core';
 import { createMemoryHistory } from 'history';
 
-import { Edit } from '../../detail';
-import { SimpleForm } from '../../form';
+import { Edit, Create } from '../../detail';
+import { SimpleForm, TabbedForm, FormTab } from '../../form';
 import { ArrayInput } from './ArrayInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
 import { TextInput } from '../TextInput';
@@ -34,6 +34,9 @@ const dataProvider = {
             },
         }),
     update: (resource, params) => Promise.resolve(params),
+    create: (resource, params) => {
+        return Promise.resolve({ data: { ...params.data, id: 2 } });
+    },
 } as any;
 
 const history = createMemoryHistory({ initialEntries: ['/books/1'] });
@@ -274,5 +277,48 @@ const BookEditGlobalValidation = () => {
 export const GlobalValidation = () => (
     <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" edit={BookEditGlobalValidation} />
+    </Admin>
+);
+
+const CreateGlobalValidationInFormTab = () => {
+    return (
+        <Create
+            mutationOptions={{
+                onSuccess: data => {
+                    console.log(data);
+                },
+            }}
+        >
+            <TabbedForm validate={globalValidator}>
+                {/* 
+                  We still need `validate={required()}` to indicate fields are required 
+                  with a '*' symbol after the label, but the real validation happens in `globalValidator`
+                */}
+                <FormTab label="Main">
+                    <TextInput source="title" />
+                    <ArrayInput
+                        source="authors"
+                        fullWidth
+                        validate={required()}
+                    >
+                        <SimpleFormIterator>
+                            <TextInput source="name" validate={required()} />
+                            <TextInput source="role" validate={required()} />
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </FormTab>
+            </TabbedForm>
+        </Create>
+    );
+};
+
+export const ValidationInFormTab = () => (
+    <Admin
+        dataProvider={dataProvider}
+        history={createMemoryHistory({
+            initialEntries: ['/books/create'],
+        })}
+    >
+        <Resource name="books" create={CreateGlobalValidationInFormTab} />
     </Admin>
 );
