@@ -35,11 +35,20 @@ const Wrapper = ({
     record = defaultRecord,
 }: any) => (
     <CoreAdminContext dataProvider={dataProvider} history={history}>
-        <ResourceContextProvider value="books">
-            <RecordContextProvider value={record}>
-                {children}
-            </RecordContextProvider>
-        </ResourceContextProvider>
+        <ResourceDefinitionContextProvider
+            definitions={{
+                book_details: {
+                    hasShow: true,
+                    hasEdit: true,
+                },
+            }}
+        >
+            <ResourceContextProvider value="books">
+                <RecordContextProvider value={record}>
+                    {children}
+                </RecordContextProvider>
+            </ResourceContextProvider>
+        </ResourceDefinitionContextProvider>
     </CoreAdminContext>
 );
 
@@ -108,6 +117,26 @@ export const Link = () => (
     </Wrapper>
 );
 
+export const LinkWithoutEditView = () => (
+    <CoreAdminContext dataProvider={defaultDataProvider} history={history}>
+        <ResourceDefinitionContextProvider
+            definitions={{
+                book_details: {
+                    hasEdit: false,
+                },
+            }}
+        >
+            <ResourceContextProvider value="books">
+                <RecordContextProvider value={defaultRecord}>
+                    <ReferenceField source="detail_id" reference="book_details">
+                        <TextField source="ISBN" />
+                    </ReferenceField>
+                </RecordContextProvider>
+            </ResourceContextProvider>
+        </ResourceDefinitionContextProvider>
+    </CoreAdminContext>
+);
+
 export const Children = () => (
     <Wrapper>
         <ReferenceField
@@ -115,7 +144,8 @@ export const Children = () => (
             reference="book_details"
             link={false}
         >
-            <TextField source="ISBN" /> <TextField source="genre" />
+            <TextField source="ISBN" />
+            <TextField source="genre" />
         </ReferenceField>
     </Wrapper>
 );
@@ -269,6 +299,7 @@ export const RecordRepresentation = () => (
                                 book_details: {
                                     name: 'book_details',
                                     recordRepresentation: 'ISBN',
+                                    hasEdit: true,
                                 },
                             }}
                         >
@@ -286,6 +317,7 @@ export const RecordRepresentation = () => (
                                     name: 'book_details',
                                     recordRepresentation: record =>
                                         `Genre: ${record.genre}, ISBN: ${record.ISBN}`,
+                                    hasEdit: true,
                                 },
                             }}
                         >
@@ -304,6 +336,7 @@ export const RecordRepresentation = () => (
                                     recordRepresentation: (
                                         <BookDetailsRepresentation />
                                     ),
+                                    hasEdit: true,
                                 },
                             }}
                         >

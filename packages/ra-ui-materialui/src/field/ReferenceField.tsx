@@ -16,6 +16,7 @@ import {
     useCreatePath,
     Identifier,
     useGetRecordRepresentation,
+    useResourceDefinition,
 } from 'ra-core';
 
 import { LinearProgress } from '../layout';
@@ -119,8 +120,16 @@ export const NonEmptyReferenceField: FC<
     Omit<ReferenceFieldProps, 'source'> & { id: Identifier }
 > = ({ children, id, record, reference, link, ...props }) => {
     const createPath = useCreatePath();
+
+    const referenceHasEdit = useResourceDefinition({ resource: reference })
+        .hasEdit;
+    const referenceHasShow = useResourceDefinition({ resource: reference })
+        .hasShow;
+
     const resourceLinkPath =
-        link === false
+        link === false ||
+        (link === 'edit' && !referenceHasEdit) ||
+        (link === 'show' && !referenceHasShow)
             ? false
             : createPath({
                   resource: reference,

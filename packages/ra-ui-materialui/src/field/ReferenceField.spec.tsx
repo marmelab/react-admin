@@ -39,14 +39,22 @@ describe('<ReferenceField />', () => {
             render(
                 <ThemeProvider theme={theme}>
                     <CoreAdminContext dataProvider={dataProvider}>
-                        <ReferenceField
-                            record={record}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
+                        <ResourceDefinitionContextProvider
+                            definitions={{
+                                posts: {
+                                    hasEdit: true,
+                                },
+                            }}
                         >
-                            <TextField source="title" />
-                        </ReferenceField>
+                            <ReferenceField
+                                record={record}
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                            >
+                                <TextField source="title" />
+                            </ReferenceField>
+                        </ResourceDefinitionContextProvider>
                     </CoreAdminContext>
                 </ThemeProvider>
             );
@@ -73,14 +81,22 @@ describe('<ReferenceField />', () => {
             render(
                 <ThemeProvider theme={theme}>
                     <CoreAdminContext dataProvider={dataProvider}>
-                        <ReferenceField
-                            record={record}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
+                        <ResourceDefinitionContextProvider
+                            definitions={{
+                                posts: {
+                                    hasEdit: true,
+                                },
+                            }}
                         >
-                            <TextField source="title" />
-                        </ReferenceField>
+                            <ReferenceField
+                                record={record}
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                            >
+                                <TextField source="title" />
+                            </ReferenceField>
+                        </ResourceDefinitionContextProvider>
                     </CoreAdminContext>
                 </ThemeProvider>
             );
@@ -132,14 +148,22 @@ describe('<ReferenceField />', () => {
                         dataProvider={slowDataProvider}
                         queryClient={queryClient}
                     >
-                        <ReferenceField
-                            record={record}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
+                        <ResourceDefinitionContextProvider
+                            definitions={{
+                                posts: {
+                                    hasEdit: true,
+                                },
+                            }}
                         >
-                            <TextField source="title" />
-                        </ReferenceField>
+                            <ReferenceField
+                                record={record}
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                            >
+                                <TextField source="title" />
+                            </ReferenceField>
+                        </ResourceDefinitionContextProvider>
                     </CoreAdminContext>
                 </ThemeProvider>
             );
@@ -157,14 +181,22 @@ describe('<ReferenceField />', () => {
             render(
                 <ThemeProvider theme={theme}>
                     <CoreAdminContext dataProvider={dataProvider}>
-                        <ReferenceField
-                            record={record}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
+                        <ResourceDefinitionContextProvider
+                            definitions={{
+                                posts: {
+                                    hasEdit: true,
+                                },
+                            }}
                         >
-                            <TextField source="title" />
-                        </ReferenceField>
+                            <ReferenceField
+                                record={record}
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                            >
+                                <TextField source="title" />
+                            </ReferenceField>
+                        </ResourceDefinitionContextProvider>
                     </CoreAdminContext>
                 </ThemeProvider>
             );
@@ -184,14 +216,22 @@ describe('<ReferenceField />', () => {
             render(
                 <ThemeProvider theme={theme}>
                     <CoreAdminContext dataProvider={dataProvider}>
-                        <ReferenceField
-                            record={record}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
+                        <ResourceDefinitionContextProvider
+                            definitions={{
+                                posts: {
+                                    hasEdit: true,
+                                },
+                            }}
                         >
-                            <TextField source="title" />
-                        </ReferenceField>
+                            <ReferenceField
+                                record={record}
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                            >
+                                <TextField source="title" />
+                            </ReferenceField>
+                        </ResourceDefinitionContextProvider>
                     </CoreAdminContext>
                 </ThemeProvider>
             );
@@ -208,14 +248,22 @@ describe('<ReferenceField />', () => {
             render(
                 <ThemeProvider theme={theme}>
                     <CoreAdminContext dataProvider={dataProvider}>
-                        <ReferenceField
-                            record={record}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
+                        <ResourceDefinitionContextProvider
+                            definitions={{
+                                posts: {
+                                    hasEdit: true,
+                                },
+                            }}
                         >
-                            <TextField source="title" />
-                        </ReferenceField>
+                            <ReferenceField
+                                record={record}
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                            >
+                                <TextField source="title" />
+                            </ReferenceField>
+                        </ResourceDefinitionContextProvider>
                     </CoreAdminContext>
                 </ThemeProvider>
             );
@@ -258,13 +306,21 @@ describe('<ReferenceField />', () => {
         render(
             <ThemeProvider theme={theme}>
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <RecordContextProvider value={record}>
-                        <ReferenceField
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
-                        />
-                    </RecordContextProvider>
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: {
+                                hasEdit: true,
+                            },
+                        }}
+                    >
+                        <RecordContextProvider value={record}>
+                            <ReferenceField
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                            />
+                        </RecordContextProvider>
+                    </ResourceDefinitionContextProvider>
                 </CoreAdminContext>
             </ThemeProvider>
         );
@@ -290,6 +346,7 @@ describe('<ReferenceField />', () => {
                         definitions={{
                             posts: {
                                 recordRepresentation: 'title',
+                                hasEdit: true,
                             },
                         }}
                     >
@@ -322,15 +379,23 @@ describe('<ReferenceField />', () => {
         render(
             <ThemeProvider theme={theme}>
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <RecordContextProvider value={record}>
-                        <ReferenceField
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
-                        >
-                            <TextField source="title" />
-                        </ReferenceField>
-                    </RecordContextProvider>
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: {
+                                hasEdit: true,
+                            },
+                        }}
+                    >
+                        <RecordContextProvider value={record}>
+                            <ReferenceField
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                            >
+                                <TextField source="title" />
+                            </ReferenceField>
+                        </RecordContextProvider>
+                    </ResourceDefinitionContextProvider>
                 </CoreAdminContext>
             </ThemeProvider>
         );
@@ -405,15 +470,23 @@ describe('<ReferenceField />', () => {
         render(
             <ThemeProvider theme={theme}>
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <ReferenceField
-                        record={record}
-                        resource="comments"
-                        source="postId"
-                        reference="posts"
-                        link="show"
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: {
+                                hasShow: true,
+                            },
+                        }}
                     >
-                        <TextField source="title" />
-                    </ReferenceField>
+                        <ReferenceField
+                            record={record}
+                            resource="comments"
+                            source="postId"
+                            reference="posts"
+                            link="show"
+                        >
+                            <TextField source="title" />
+                        </ReferenceField>
+                    </ResourceDefinitionContextProvider>
                 </CoreAdminContext>
             </ThemeProvider>
         );
@@ -425,6 +498,41 @@ describe('<ReferenceField />', () => {
         );
     });
 
+    it('should render no link when view to link to does not exist', async () => {
+        const dataProvider = testDataProvider({
+            getMany: jest.fn().mockResolvedValue({
+                data: [{ id: 123, title: 'foo' }],
+            }),
+        });
+        render(
+            <ThemeProvider theme={theme}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: {
+                                hasShow: false,
+                            },
+                        }}
+                    >
+                        <ReferenceField
+                            record={record}
+                            resource="comments"
+                            source="postId"
+                            reference="posts"
+                            link="show"
+                        >
+                            <TextField source="title" />
+                        </ReferenceField>
+                    </ResourceDefinitionContextProvider>
+                </CoreAdminContext>
+            </ThemeProvider>
+        );
+        await waitFor(() =>
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
+        );
+        expect(screen.queryAllByRole('link')).toHaveLength(0);
+    });
+
     it('should render no link when link is false', async () => {
         const dataProvider = testDataProvider({
             getMany: jest.fn().mockResolvedValue({
@@ -434,15 +542,23 @@ describe('<ReferenceField />', () => {
         render(
             <ThemeProvider theme={theme}>
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <ReferenceField
-                        record={record}
-                        resource="comments"
-                        source="postId"
-                        reference="posts"
-                        link={false}
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: {
+                                hasEdit: true,
+                            },
+                        }}
                     >
-                        <TextField source="title" />
-                    </ReferenceField>
+                        <ReferenceField
+                            record={record}
+                            resource="comments"
+                            source="postId"
+                            reference="posts"
+                            link={false}
+                        >
+                            <TextField source="title" />
+                        </ReferenceField>
+                    </ResourceDefinitionContextProvider>
                 </CoreAdminContext>
             </ThemeProvider>
         );
