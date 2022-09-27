@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { minLength, required, testDataProvider } from 'ra-core';
 
 import { AdminContext } from '../../AdminContext';
@@ -9,7 +10,7 @@ import { TextInput } from '../TextInput';
 import { ArrayInput } from './ArrayInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
 import { useFormContext } from 'react-hook-form';
-import { GlobalValidation } from './ArrayInput.stories';
+import { GlobalValidation, ValidationInFormTab } from './ArrayInput.stories';
 
 describe('<ArrayInput />', () => {
     it('should pass its record props to its child', async () => {
@@ -290,6 +291,18 @@ describe('<ArrayInput />', () => {
             await waitFor(() => {
                 expect(screen.queryByText('A name is required')).toBeNull();
             });
+        });
+        it('should turn form tab in red if the array is required and empty', async () => {
+            render(<ValidationInFormTab />);
+            const input = screen.getByLabelText('Title');
+            userEvent.type(input, 'a');
+            const SaveButton = screen.getByText('Save');
+            fireEvent.click(SaveButton);
+            const formTab = await screen.findByText('Main');
+            expect(
+                formTab.classList.contains('RaTabbedForm-errorTabButton')
+            ).toBe(true);
+            expect(formTab.classList.contains('error')).toBe(true);
         });
     });
 });

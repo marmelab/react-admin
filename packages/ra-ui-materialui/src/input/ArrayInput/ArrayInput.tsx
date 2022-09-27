@@ -8,6 +8,8 @@ import {
     RaRecord,
     useApplyInputDefaultValues,
     useGetValidationErrorMessage,
+    useFormGroupContext,
+    useFormGroups,
 } from 'ra-core';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import {
@@ -84,6 +86,9 @@ export const ArrayInput = (props: ArrayInputProps) => {
         ...rest
     } = props;
 
+    const formGroupName = useFormGroupContext();
+    const formGroups = useFormGroups();
+
     const sanitizedValidate = Array.isArray(validate)
         ? composeSyncValidators(validate)
         : validate;
@@ -119,11 +124,13 @@ export const ArrayInput = (props: ArrayInputProps) => {
     // We need to register the array itself as a field to enable validation at its level
     useEffect(() => {
         register(source);
+        formGroups.registerField(source, formGroupName);
 
         return () => {
             unregister(source, { keepValue: true });
+            formGroups.unregisterField(source, formGroupName);
         };
-    }, [register, unregister, source]);
+    }, [register, unregister, source, formGroups, formGroupName]);
 
     useApplyInputDefaultValues(props);
 
