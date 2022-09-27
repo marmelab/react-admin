@@ -154,9 +154,12 @@ describe('<FileInput />', () => {
         fireEvent.click(screen.getByLabelText('ra.action.save'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({
-                image: null,
-            });
+            expect(onSubmit).toHaveBeenCalledWith(
+                {
+                    image: null,
+                },
+                expect.anything()
+            );
         });
     });
 
@@ -192,14 +195,17 @@ describe('<FileInput />', () => {
         fireEvent.click(screen.getByLabelText('ra.action.save'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({
-                images: [
-                    {
-                        src: 'test2.png',
-                        title: 'cats2',
-                    },
-                ],
-            });
+            expect(onSubmit).toHaveBeenCalledWith(
+                {
+                    images: [
+                        {
+                            src: 'test2.png',
+                            title: 'cats2',
+                        },
+                    ],
+                },
+                expect.anything()
+            );
         });
     });
 
@@ -240,14 +246,17 @@ describe('<FileInput />', () => {
         fireEvent.click(screen.getByLabelText('ra.action.save'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({
-                images: [
-                    {
-                        src: 'test.png',
-                        title: 'cats',
-                    },
-                ],
-            });
+            expect(onSubmit).toHaveBeenCalledWith(
+                {
+                    images: [
+                        {
+                            src: 'test.png',
+                            title: 'cats',
+                        },
+                    ],
+                },
+                expect.anything()
+            );
         });
     });
 
@@ -292,12 +301,15 @@ describe('<FileInput />', () => {
             fireEvent.click(screen.getByLabelText('ra.action.save'));
 
             await waitFor(() => {
-                expect(onSubmit).toHaveBeenCalledWith({
-                    image: {
-                        src: 'test.png',
-                        title: 'cats',
+                expect(onSubmit).toHaveBeenCalledWith(
+                    {
+                        image: {
+                            src: 'test.png',
+                            title: 'cats',
+                        },
                     },
-                });
+                    expect.anything()
+                );
             });
         });
 
@@ -339,12 +351,15 @@ describe('<FileInput />', () => {
             });
             fireEvent.click(screen.getByLabelText('ra.action.save'));
             await waitFor(() => {
-                expect(onSubmit).toHaveBeenCalledWith({
-                    image: {
-                        src: 'test.png',
-                        title: 'cats',
+                expect(onSubmit).toHaveBeenCalledWith(
+                    {
+                        image: {
+                            src: 'test.png',
+                            title: 'cats',
+                        },
                     },
-                });
+                    expect.anything()
+                );
             });
         });
     });
@@ -381,9 +396,12 @@ describe('<FileInput />', () => {
             fireEvent.click(screen.getByLabelText('ra.action.save'));
 
             await waitFor(() => {
-                expect(onSubmit).toHaveBeenCalledWith({
-                    image: null,
-                });
+                expect(onSubmit).toHaveBeenCalledWith(
+                    {
+                        image: null,
+                    },
+                    expect.anything()
+                );
             });
         });
         it('promise function', async () => {
@@ -417,9 +435,12 @@ describe('<FileInput />', () => {
             fireEvent.click(screen.getByLabelText('ra.action.save'));
 
             await waitFor(() => {
-                expect(onSubmit).toHaveBeenCalledWith({
-                    image: null,
-                });
+                expect(onSubmit).toHaveBeenCalledWith(
+                    {
+                        image: null,
+                    },
+                    expect.anything()
+                );
             });
         });
     });
