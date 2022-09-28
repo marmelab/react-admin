@@ -1,20 +1,12 @@
-import { useEffect } from 'react';
-
-import useGetPermissions from './useGetPermissions';
-import { useSafeSetState } from '../util/hooks';
-
-interface State<Permissions, Error> {
-    isLoading: boolean;
-    permissions?: Permissions;
-    error?: Error;
-}
+import { useMemo } from 'react';
+import { useQuery, UseQueryOptions } from 'react-query';
+import useAuthProvider from './useAuthProvider';
 
 const emptyParams = {};
-
 /**
  * Hook for getting user permissions
  *
- * Calls the authProvider.getPermissions() method asynchronously.
+ * Calls the authProvider.getPermissions() method using react-query.
  * If the authProvider returns a rejected promise, returns empty permissions.
  *
  * The return value updates according to the request state:
@@ -42,25 +34,28 @@ const emptyParams = {};
  *     };
  */
 const usePermissions = <Permissions = any, Error = any>(
-    params = emptyParams
-): State<Permissions, Error> => {
-    const [state, setState] = useSafeSetState<State<Permissions, Error>>({
-        isLoading: true,
-    });
-    const getPermissions = useGetPermissions();
-    useEffect(() => {
-        getPermissions(params)
-            .then(permissions => {
-                setState({ isLoading: false, permissions });
-            })
-            .catch(error => {
-                setState({
-                    isLoading: false,
-                    error,
-                });
-            });
-    }, [getPermissions, params, setState]);
-    return state;
+    params = emptyParams,
+    queryParams: UseQueryOptions<Permissions, Error> = {
+        staleTime: 5 * 60 * 1000,
+    }
+) => {
+    const authProvider = useAuthProvider();
+
+    const result = useQuery(
+        ['auth', 'getPermissions', params],
+        authProvider
+            ? () => authProvider.getPermissions(params)
+            : async () => [],
+        queryParams
+    );
+
+    return useMemo(() => {
+        return {
+            permissions: result.data,
+            isLoading: result.isLoading,
+            error: result.error,
+        };
+    }, [result]);
 };
 
 export default usePermissions;
