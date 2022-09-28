@@ -21674,6 +21674,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-hook-form@npm:^7.36.1":
+  version: 7.36.1
+  resolution: "react-hook-form@npm:7.36.1"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18
+  checksum: 28a36ccd600f3781a35fa5eddb1b8ef2c73fa3388814f81d1a71e3d43eb8ff676d3d384dcd16322f29bc89c04d0a87be3972b97cc635b9af2b8f6cf8b55b1f87
+  languageName: node
+  linkType: hard
+
 "react-inspector@npm:^5.1.0":
   version: 5.1.1
   resolution: "react-inspector@npm:5.1.1"
@@ -23481,7 +23490,7 @@ __metadata:
     react-admin: ^4.3.4
     react-app-polyfill: ^1.0.4
     react-dom: ^17.0.0
-    react-hook-form: ^7.34.2
+    react-hook-form: ^7.36.1
     react-query: ^3.32.1
     react-router: ^6.1.0
     react-router-dom: ^6.1.0

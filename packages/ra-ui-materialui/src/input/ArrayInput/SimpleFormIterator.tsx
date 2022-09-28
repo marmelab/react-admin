@@ -30,6 +30,8 @@ import { AddItemButton as DefaultAddItemButton } from './AddItemButton';
 import { RemoveItemButton as DefaultRemoveItemButton } from './RemoveItemButton';
 import { ReOrderButtons as DefaultReOrderButtons } from './ReOrderButtons';
 
+let initialDefaultValue = {};
+
 export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     const {
         addButton = <DefaultAddItemButton />,
@@ -57,13 +59,24 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         [remove]
     );
 
+    if (fields.length > 0) {
+        const { id, ...rest } = fields[0];
+        initialDefaultValue = rest;
+        for (const k in initialDefaultValue) initialDefaultValue[k] = '';
+    }
+
     const addField = useCallback(
         (item: any = undefined) => {
             let defaultValue = item;
+
             if (item == null) {
+                defaultValue = initialDefaultValue;
+
                 if (
                     Children.count(children) === 1 &&
                     React.isValidElement(Children.only(children)) &&
+                    (Children.only(children) as ReactElement<any>).type !==
+                        FormDataConsumer &&
                     // @ts-ignore
                     !Children.only(children).props.source
                 ) {
@@ -73,11 +86,14 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                 } else {
                     // ArrayInput used for an array of objects
                     // (e.g. authors: [{ firstName: 'John', lastName: 'Doe' }, { firstName: 'Jane', lastName: 'Doe' }])
-                    defaultValue = {} as Record<string, unknown>;
+                    defaultValue =
+                        defaultValue || ({} as Record<string, unknown>);
+
                     Children.forEach(children, input => {
                         if (
                             React.isValidElement(input) &&
-                            input.type !== FormDataConsumer
+                            input.type !== FormDataConsumer &&
+                            input.props.source
                         ) {
                             defaultValue[input.props.source] =
                                 input.props.defaultValue ?? '';
@@ -85,6 +101,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                     });
                 }
             }
+
             append(defaultValue);
         },
         [append, children]
