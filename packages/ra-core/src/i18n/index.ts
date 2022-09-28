@@ -1,5 +1,6 @@
 export const DEFAULT_LOCALE = 'en';
 
+export * from './substituteTokens';
 export * from './TestTranslationProvider';
 export * from './I18nContext';
 export * from './I18nContextProvider';

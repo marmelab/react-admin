@@ -1,5 +1,10 @@
 import { BaseSyntheticEvent, useCallback, useMemo, useEffect } from 'react';
-import { FieldValues, useForm, UseFormProps } from 'react-hook-form';
+import {
+    FieldValues,
+    SubmitHandler,
+    useForm,
+    UseFormProps,
+} from 'react-hook-form';
 
 import { RaRecord } from '../types';
 import { useSaveContext } from '../controller';
@@ -10,8 +15,7 @@ import {
     ValidateForm,
 } from './getSimpleValidationResolver';
 import { setSubmissionErrors } from './setSubmissionErrors';
-import { useNotify } from '../notification';
-import { useIsFormInvalid } from './useIsFormInvalid';
+import { useNotifyIsFormInvalid } from './useNotifyIsFormInvalid';
 import { useWarnWhenUnsavedChanges } from './useWarnWhenUnsavedChanges';
 
 /**
@@ -46,7 +50,17 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
 
     const defaultValuesIncludingRecord = useMemo(
         () => getFormInitialValues(defaultValues, record),
-        [JSON.stringify({ defaultValues: typeof defaultValues === 'function' ? 'function' : defaultValues, record })] // eslint-disable-line
+        // eslint-disable-next-line
+        [
+            // eslint-disable-next-line
+            JSON.stringify({
+                defaultValues:
+                    typeof defaultValues === 'function'
+                        ? 'function'
+                        : defaultValues,
+                record,
+            }),
+        ]
     );
 
     const finalResolver = resolver
@@ -68,6 +82,33 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
         shouldUseNativeValidation,
     });
 
+    // According to react-hook-form docs: https://react-hook-form.com/api/useform/formstate
+    // `formState` must be read before a render in order to enable the state update.
+    const {
+        formState: {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            isSubmitting,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            isDirty,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            isValid,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            isValidating,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            dirtyFields,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            errors,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            submitCount,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            touchedFields,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            isSubmitted,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            isSubmitSuccessful,
+        },
+    } = form;
+
     // initialize form with record
     /* eslint-disable react-hooks/exhaustive-deps */
     useEffect(() => {
@@ -88,13 +129,7 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
     /* eslint-enable react-hooks/exhaustive-deps */
 
     // notify on invalid form
-    const isInvalid = useIsFormInvalid(form.control);
-    const notify = useNotify();
-    useEffect(() => {
-        if (isInvalid) {
-            notify('ra.message.invalid_form', { type: 'warning' });
-        }
-    }, [isInvalid, notify]);
+    useNotifyIsFormInvalid(form.control);
 
     // warn when unsaved change
     useWarnWhenUnsavedChanges(
@@ -105,14 +140,14 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
 
     // submit callbacks
     const handleSubmit = useCallback(
-        async values => {
+        async (values, event) => {
             let errors;
 
             if (onSubmit) {
-                errors = await onSubmit(values);
+                errors = await onSubmit(values, event);
             }
             if (onSubmit == null && saveContext?.save) {
-                errors = await saveContext.save(values);
+                errors = await saveContext.save(values, event);
             }
             if (errors != null) {
                 setSubmissionErrors(errors, form.setError);
@@ -137,7 +172,6 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
         form,
         handleSubmit,
         formHandleSubmit,
-        isInvalid,
     };
 };
 
@@ -150,6 +184,6 @@ export interface UseFormOwnProps {
     defaultValues?: any;
     formRootPathname?: string;
     record?: Partial<RaRecord>;
-    onSubmit?: (data: FieldValues) => any | Promise<any>;
+    onSubmit?: SubmitHandler<FieldValues>;
     warnWhenUnsavedChanges?: boolean;
 }

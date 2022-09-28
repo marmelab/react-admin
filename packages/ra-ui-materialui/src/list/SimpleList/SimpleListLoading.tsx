@@ -1,15 +1,18 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
+import { styled } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
-import List, { ListProps } from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
-import ListItemText from '@mui/material/ListItemText';
-
-import { Placeholder } from './Placeholder';
+import {
+    List,
+    ListProps,
+    ListItem,
+    ListItemAvatar,
+    ListItemSecondaryAction,
+    ListItemText,
+} from '@mui/material';
 import { useTimeout } from 'ra-core';
+
+import { Placeholder } from '../Placeholder';
 
 export const SimpleListLoading = (props: Props & ListProps) => {
     const {

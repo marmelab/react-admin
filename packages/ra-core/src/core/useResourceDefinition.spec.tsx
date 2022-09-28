@@ -34,9 +34,13 @@ describe('useResourceDefinition', () => {
             <ResourceDefinitionContextProvider
                 definitions={{
                     posts: {
+                        name: 'posts',
+                        hasList: true,
                         options: { label: 'Posts' },
+                        recordRepresentation: 'title',
                     },
                     comments: {
+                        name: 'comments',
                         options: { label: 'Comments' },
                     },
                 }}
@@ -45,10 +49,12 @@ describe('useResourceDefinition', () => {
             </ResourceDefinitionContextProvider>
         );
         expect(callback).toHaveBeenCalledWith({
+            name: 'posts',
             hasCreate: undefined,
             hasEdit: undefined,
-            hasList: undefined,
+            hasList: true,
             hasShow: undefined,
+            recordRepresentation: 'title',
             options: { label: 'Posts' },
         });
     });

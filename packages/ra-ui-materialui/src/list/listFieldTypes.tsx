@@ -62,20 +62,25 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
     reference: {
         component: ReferenceField,
         representation: props =>
-            `<ReferenceField source="${props.source}" reference="${props.reference}"><TextField source="id" /></ReferenceField>`,
+            `<ReferenceField source="${props.source}" reference="${props.reference}" />`,
     },
     referenceChild: {
-        component: props => <TextField source="id" {...props} />, // eslint-disable-line react/display-name
+        component: () => <TextField source="id" />, // eslint-disable-line react/display-name
         representation: () => `<TextField source="id" />`,
     },
     referenceArray: {
         component: ReferenceArrayField,
         representation: props =>
-            `<ReferenceArrayField source="${props.source}" reference="${props.reference}"><TextField source="id" /></ReferenceArrayField>`,
+            `<ReferenceArrayField source="${props.source}" reference="${props.reference}" />`,
     },
     referenceArrayChild: {
-        component: props => <TextField source="id" {...props} />, // eslint-disable-line react/display-name
-        representation: () => `<TextField source="id" />`,
+        component: () => (
+            <SingleFieldList>
+                <ChipField source="id" />
+            </SingleFieldList>
+        ), // eslint-disable-line react/display-name
+        representation: () =>
+            `<SingleFieldList><ChipField source="id" /></SingleFieldList>`,
     },
     richText: undefined, // never display a rich text field in a datagrid
     string: {

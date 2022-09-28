@@ -49,7 +49,7 @@ export const LocalesMenuButton = (props: LocalesMenuButtonProps) => {
     };
 
     return (
-        <Root>
+        <Root component="span">
             <Button
                 color="inherit"
                 aria-controls="simple-menu"

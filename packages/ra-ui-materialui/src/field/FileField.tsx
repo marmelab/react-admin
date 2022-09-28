@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography from '@mui/material/Typography';
-import { useRecordContext } from 'ra-core';
+import { useRecordContext, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
@@ -38,6 +38,7 @@ export const FileField = (props: FileFieldProps) => {
     } = props;
     const record = useRecordContext(props);
     const sourceValue = get(record, source);
+    const translate = useTranslate();
 
     if (!sourceValue) {
         return emptyText ? (
@@ -47,7 +48,7 @@ export const FileField = (props: FileFieldProps) => {
                 className={className}
                 {...sanitizeFieldRestProps(rest)}
             >
-                {emptyText}
+                {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
         ) : (
             <Root className={className} {...sanitizeFieldRestProps(rest)} />

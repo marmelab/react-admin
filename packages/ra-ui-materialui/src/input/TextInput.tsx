@@ -89,7 +89,11 @@ export const TextInput = (props: TextInputProps) => {
 
 TextInput.propTypes = {
     className: PropTypes.string,
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    label: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.element,
+    ]),
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,

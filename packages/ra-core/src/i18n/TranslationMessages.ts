@@ -23,6 +23,7 @@ export interface TranslationMessages extends StringMap {
             list: string;
             refresh: string;
             remove_filter: string;
+            remove_all_filters: string;
             remove: string;
             save: string;
             search: string;
@@ -173,6 +174,21 @@ export interface TranslationMessages extends StringMap {
             remove_dialog_title: string;
             remove_message: string;
             help: string;
+        };
+        configurable?: {
+            customize: string;
+            templateError: string;
+            configureMode: string;
+            inspector: {
+                title: string;
+                content: string;
+                reset: string;
+            };
+            SimpleList: {
+                primaryText: string;
+                secondaryText: string;
+                tertiaryText: string;
+            };
         };
     };
 }

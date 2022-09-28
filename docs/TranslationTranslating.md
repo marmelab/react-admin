@@ -216,6 +216,34 @@ const ValidateCommentButton = ({ id }) => {
 }
 ```
 
+## Interpolation, Pluralization and Default Translation
+
+If you're using [`ra-i18n-polyglot`](./Translation.md#ra-i18n-polyglot) (the default `i18nProvider`), you can leverage the advanced features of its `translate` function. [Polyglot.js](https://airbnb.io/polyglot.js/), the library behind `ra-i18n-polyglot`, provides some nice features such as interpolation and pluralization, that you can use in react-admin.
+
+```js
+const messages = {
+    'hello_name': 'Hello, %{name}',
+    'count_beer': 'One beer |||| %{smart_count} beers',
+};
+
+// interpolation
+translate('hello_name', { name: 'John Doe' });
+=> 'Hello, John Doe.'
+
+// pluralization
+translate('count_beer', { smart_count: 1 });
+=> 'One beer'
+
+translate('count_beer', { smart_count: 2 });
+=> '2 beers'
+
+// default value
+translate('not_yet_translated', { _: 'Default translation' });
+=> 'Default translation'
+```
+
+Check out the [Polyglot.js documentation](https://airbnb.io/polyglot.js/) for more information.
+
 ## Translating Record Content
 
 Some of your records may contain data with multiple versions - one for each locale. 

@@ -101,7 +101,7 @@ export const PostList = (props) => (
 );
 ```
 
-Elements passed as `filters` are regular inputs. That means you can build sophisticated filters based on references, array values, etc. `<List>` hides all inputs in the filter form by default, except those that have the `alwaysOn` prop.
+Elements passed as `filters` are regular inputs. That means you can build sophisticated filters based on references, array values, etc. `<List>` hides all inputs in the [`Filter Form`](./FilterForm.md) by default, except those that have the `alwaysOn` prop.
 
 **Tip**: For technical reasons, react-admin does not accept Filter inputs having both a `defaultValue` and `alwaysOn`. To set default values for always on filters, use the [`filterDefaultValues`](./List.md#filterdefaultvalues) prop of the `<List>` component instead.
 
@@ -114,7 +114,7 @@ Elements passed as `filters` are regular inputs. That means you can build sophis
 
 ![`<SearchInput>`](./img/search_input.gif)
 
-In addition to [the usual input types](./Inputs.md) (`<TextInput>`, `<SelectInput>`, `<ReferenceInput>`, etc.), you can use the `<SearchInput>` in the `filters` array. This input is designed especially for the filter form. It's like a `<TextInput resettable>` with a magnifier glass icon - exactly the type of input users look for when they want to do a full-text search. 
+In addition to [the usual input types](./Inputs.md) (`<TextInput>`, `<SelectInput>`, `<ReferenceInput>`, etc.), you can use the `<SearchInput>` in the `filters` array. This input is designed especially for the [`Filter Form`](./FilterForm.md). It's like a `<TextInput resettable>` with a magnifier glass icon - exactly the type of input users look for when they want to do a full-text search. 
 
 ```jsx
 import { SearchInput, TextInput } from 'react-admin';
@@ -161,11 +161,59 @@ const postFilters = [
 
 An alternative UI to the Filter Button/Form Combo is the FilterList Sidebar. Similar to what users usually see on e-commerce websites, it's a panel with many simple filters that can be enabled and combined using the mouse. The user experience is better than the Button/Form Combo, because the filter values are explicit, and it doesn't require typing anything in a form. But it's a bit less powerful, as only filters with a finite set of values (or intervals) can be used in the `<FilterList>`.
 
+Here is an example FilterList sidebar:
+
+{% raw %}
+```jsx
+import { SavedQueriesList, FilterLiveSearch, FilterList, FilterListItem } from 'react-admin';
+import { Card, CardContent } from '@mui/material';
+import MailIcon from '@mui/icons-material/MailOutline';
+import CategoryIcon from '@mui/icons-material/LocalOffer';
+
+export const PostFilterSidebar = () => (
+    <Card sx={{ order: -1, mr: 2, mt: 9, width: 200 }}>
+        <CardContent>
+            <SavedQueriesList />
+            <FilterLiveSearch >
+            <FilterList label="Subscribed to newsletter" icon={<MailIcon />}>
+                <FilterListItem label="Yes" value={{ has_newsletter: true }} />
+                <FilterListItem label="No" value={{ has_newsletter: false }} />
+            </FilterList>
+            <FilterList label="Category" icon={<CategoryIcon />}>
+                <FilterListItem label="Tests" value={{ category: 'tests' }} />
+                <FilterListItem label="News" value={{ category: 'news' }} />
+                <FilterListItem label="Deals" value={{ category: 'deals' }} />
+                <FilterListItem label="Tutorials" value={{ category: 'tutorials' }} />
+            </FilterList>
+        </CardContent>
+    </Card>
+);
+```
+{% endraw %}
+
+Add it to the list view using the `<List aside>` prop:
+
+```jsx
+import { PostFilterSidebar } from './PostFilterSidebar';
+
+export const PostList = () => (
+    <List aside={<PostFilterSidebar />}>
+        ...
+    </List>
+);
+```
+
+**Tip**: The `<Card sx>` prop in the `PostFilterSidebar` component above is here to put the sidebar on the left side of the screen, instead of the default right side.
+
 Check [the `<FilterList>` documentation](./FilterList.md) for more information.
 
 If you use the FilterList, you'll probably need a search input. As the FilterList sidebar is not a form, this requires a bit of extra work. Fortunately, react-admin provides a specialized search input component for that purpose: check [the `<FilterLiveSearch>` documentation](./FilterLiveSearch.md) for details.
 
 ![Filter Live Search](./img/filter-live-search.gif)
+
+Finally, a filter sidebar is the ideal place to display the user's favorite filters. Check [the `<SavedQueriesList>` documentation](./SavedQueriesList.md) for more information.
+
+![Filter Sidebar With SavedQueriesList](./img/SavedQueriesList.gif)
 
 ## Filter Operators
 
@@ -284,7 +332,7 @@ For instance, by default, the filter button/form combo doesn't provide a submit 
 
 In that case, the solution is to process the filter when users click on a submit button, rather than when they type values in form inputs. React-admin doesn't provide any component for that, but it's a good opportunity to illustrate the internals of the filter functionality. We'll actually provide an alternative implementation to the Filter button/form combo.
 
-To create a custom filter UI, we'll have to override the default List Toolbar component, which will contain both a Filter Button and a Filter Form, interacting with the List filters via the ListContext.
+To create a custom filter UI, we'll have to override the default List Toolbar component, which will contain both a Filter Button and a [`Filter Form`](./FilterForm.md), interacting with the List filters via the ListContext.
 
 ### Filter Callbacks
 
@@ -331,7 +379,7 @@ Next is the filter form component, displayed only when the "main" filter is disp
 {% raw %}
 ```jsx
 import * as React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { Box, Button, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { TextInput, NullableBooleanInput, useListContext } from 'react-admin';
@@ -363,43 +411,45 @@ const PostFilterForm = () => {
     };
 
     return (
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-            <Box display="flex" alignItems="flex-end" mb={1}>
-                <Box component="span" mr={2}>
-                    {/* Full-text search filter. We don't use <SearchFilter> to force a large form input */}
-                    <TextInput
-                        resettable
-                        helperText={false}
-                        source="q"
-                        label="Search"
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment>
-                                    <SearchIcon color="disabled" />
-                                </InputAdornment>
-                            )
-                        }}
-                    />
+        <FormProvider {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+                <Box display="flex" alignItems="flex-end" mb={1}>
+                    <Box component="span" mr={2}>
+                        {/* Full-text search filter. We don't use <SearchFilter> to force a large form input */}
+                        <TextInput
+                            resettable
+                            helperText={false}
+                            source="q"
+                            label="Search"
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment>
+                                        <SearchIcon color="disabled" />
+                                    </InputAdornment>
+                                )
+                            }}
+                        />
+                    </Box>
+                    <Box component="span" mr={2}>
+                        {/* Commentable filter */}
+                        <NullableBooleanInput
+                            helperText={false}
+                            source="commentable"
+                        />
+                    </Box>
+                    <Box component="span" mr={2} mb={1.5}>
+                        <Button variant="outlined" color="primary" type="submit">
+                            Filter
+                        </Button>
+                    </Box>
+                    <Box component="span" mb={1.5}>
+                        <Button variant="outlined" onClick={resetFilter}>
+                            Close
+                        </Button>
+                    </Box>
                 </Box>
-                <Box component="span" mr={2}>
-                    {/* Commentable filter */}
-                    <NullableBooleanInput
-                        helperText={false}
-                        source="commentable"
-                    />
-                </Box>
-                <Box component="span" mr={2} mb={1.5}>
-                    <Button variant="outlined" color="primary" type="submit">
-                        Filter
-                    </Button>
-                </Box>
-                <Box component="span" mb={1.5}>
-                    <Button variant="outlined" onClick={resetFilter}>
-                        Close
-                    </Button>
-                </Box>
-            </Box>
-        </form>
+            </form>
+        </FormProvider>
     );
 };
 ```

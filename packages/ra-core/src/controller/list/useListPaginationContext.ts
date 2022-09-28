@@ -1,4 +1,5 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
+import defaults from 'lodash/defaults';
 
 import {
     ListPaginationContext,
@@ -29,25 +30,43 @@ export const useListPaginationContext = (
     props?: any
 ): ListPaginationContextValue => {
     const context = useContext(ListPaginationContext);
-    if (!context.setPage) {
-        /**
-         * The element isn't inside a <ListPaginationContext.Provider>
-         *
-         * This may only happen when using Datagrid / SimpleList / SingleFieldList components
-         * outside of a List / ReferenceManyField / ReferenceArrayField -
-         * which isn't documented but tolerated.
-         * To avoid breakage in that case, fallback to props
-         *
-         * @deprecated - to be removed in 4.0
-         */
-        if (process.env.NODE_ENV !== 'production') {
-            console.log(
-                "List components must be used inside a <ListContextProvider>. Relying on props rather than context to get List data and callbacks is deprecated and won't be supported in the next major version of react-admin."
-            );
-        }
-        return props;
-    }
-    return context;
+    return useMemo(
+        () =>
+            defaults(
+                {},
+                props != null ? extractListPaginationContextProps(props) : {},
+                context
+            ),
+        [context, props]
+    );
 };
 
+/**
+ * Extract only the list controller props
+ *
+ * @param {Object} props Props passed to the useListContext hook
+ *
+ * @returns {ListControllerResult} List controller props
+ */
+const extractListPaginationContextProps = ({
+    isLoading,
+    page,
+    perPage,
+    setPage,
+    setPerPage,
+    hasPreviousPage,
+    hasNextPage,
+    total,
+    resource,
+}) => ({
+    isLoading,
+    page,
+    perPage,
+    setPage,
+    setPerPage,
+    hasPreviousPage,
+    hasNextPage,
+    total,
+    resource,
+});
 export default useListPaginationContext;

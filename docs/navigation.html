@@ -1,9 +1,11 @@
 <li><a class="nav-link external" href="https://github.com/marmelab/react-admin/releases" target="_blank">What's new?</a></li>
 <li {% if page.path == 'Upgrade.md' %} class="active" {% endif %}><a class="nav-link" href="./Upgrade.html">Upgrading to v4</a></li>
+<li {% if page.path == 'Community.md' %} class="active" {% endif %}><a class="nav-link" href="./Community.html">Community</a></li>
 
 <ul><div>Getting Started</div>
   <li {% if page.path == 'Tutorial.md' %} class="active" {% endif %}><a class="nav-link" href="./Tutorial.html">Tutorial</a></li>
   <li {% if page.path == 'CreateReactApp.md' %} class="active" {% endif %}><a class="nav-link" href="./CreateReactApp.html">Create React App</a></li>
+  <li {% if page.path == 'Vite.md' %} class="active" {% endif %}><a class="nav-link" href="./Vite.html">Vite</a></li>
   <li {% if page.path == 'NextJs.md' %} class="active" {% endif %}><a class="nav-link" href="./NextJs.html">Next.js</a></li>
   <li {% if page.path == 'Remix.md' %} class="active" {% endif %}><a class="nav-link" href="./Remix.html">Remix</a></li>
 </ul>
@@ -22,6 +24,7 @@
   <li {% if page.path == 'Actions.md' %} class="active" {% endif %}><a class="nav-link" href="./Actions.html">Querying the API</a></li>
   <li {% if page.path == 'useDataProvider.md' %} class="active" {% endif %}><a class="nav-link" href="./useDataProvider.html"><code>useDataProvider</code></a></li>
   <li {% if page.path == 'useGetList.md' %} class="active" {% endif %}><a class="nav-link" href="./useGetList.html"><code>useGetList</code></a></li>
+  <li {% if page.path == 'useInfiniteGetList.md' %} class="active" {% endif %}><a class="nav-link" href="./useInfiniteGetList.html"><code>useInfiniteGetList</code></a></li>
   <li {% if page.path == 'useGetOne.md' %} class="active" {% endif %}><a class="nav-link" href="./useGetOne.html"><code>useGetOne</code></a></li>
   <li {% if page.path == 'useGetMany.md' %} class="active" {% endif %}><a class="nav-link" href="./useGetMany.html"><code>useGetMany</code></a></li>
   <li {% if page.path == 'useGetManyReference.md' %} class="active" {% endif %}><a class="nav-link" href="./useGetManyReference.html"><code>useGetManyReference</code></a></li>
@@ -31,6 +34,7 @@
   <li {% if page.path == 'useDelete.md' %} class="active" {% endif %}><a class="nav-link" href="./useDelete.html"><code>useDelete</code></a></li>
   <li {% if page.path == 'useDeleteMany.md' %} class="active" {% endif %}><a class="nav-link" href="./useDeleteMany.html"><code>useDeleteMany</code></a></li>
   <li><a class="nav-link external" href="https://marmelab.com/ra-enterprise/modules/ra-realtime#real-time-hooks.html" target="_blank"><code>useSubscribe</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'useGetTree.md' %} class="active" {% endif %}><a class="nav-link" href="./useGetTree.html"><code>useGetTree</code><img class="premium" src="./img/premium.svg" /></a></li>
 </ul>
 
 <ul><div>Auth Provider and Security</div>
@@ -40,7 +44,8 @@
   <li {% if page.path == 'Permissions.md' %} class="active" {% endif %}><a class="nav-link" href="./Permissions.html">Permissions</a></li>
   <li {% if page.path == 'AuthRBAC.md' %} class="active" {% endif %}><a class="nav-link" href="./AuthRBAC.html">RBAC<img class="premium" src="./img/premium.svg" /></a></li>
   <li {% if page.path == 'Authenticated.md' %} class="active" {% endif %}><a class="nav-link" href="./Authenticated.html"><code>&lt;Authenticated&gt;</code></a></li>
-  <li {% if page.path == 'WithPermissions.md' %} class="active" {% endif %}><a class="nav-link" href="./WithPermissions.html"><code>&lt;WithPermissions&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'IfCanAccess.md' %} class="active" {% endif %}><a class="nav-link" href="./IfCanAccess.html"><code>&lt;IfCanAccess&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'WithPermissions.md' %} class="active" {% endif %}><a class="nav-link" href="./WithPermissions.html"><code>&lt;WithPermissions&gt;</code></a></li>
   <li {% if page.path == 'useAuthProvider.md' %} class="active" {% endif %}><a class="nav-link" href="./useAuthProvider.html"><code>useAuthProvider</code></a></li>
   <li {% if page.path == 'useAuthenticated.md' %} class="active" {% endif %}><a class="nav-link" href="./useAuthenticated.html"><code>useAuthenticated</code></a></li>
   <li {% if page.path == 'useAuthState.md' %} class="active" {% endif %}><a class="nav-link" href="./useAuthState.html"><code>useAuthState</code></a></li>
@@ -67,6 +72,7 @@
   <li {% if page.path == 'FilterButton.md' %} class="active" {% endif %}><a class="nav-link" href="./FilterButton.html"><code>&lt;FilterButton&gt;</code></a></li>
   <li {% if page.path == 'FilterList.md' %} class="active" {% endif %}><a class="nav-link" href="./FilterList.html"><code>&lt;FilterList&gt;</code></a></li>
   <li {% if page.path == 'FilterLiveSearch.md' %} class="active" {% endif %}><a class="nav-link" href="./FilterLiveSearch.html"><code>&lt;FilterLiveSearch&gt;</code></a></li>
+  <li {% if page.path == 'SavedQueriesList.md' %} class="active" {% endif %}><a class="nav-link" href="./SavedQueriesList.html"><code>&lt;SavedQueriesList&gt;</code></a></li>
   <li {% if page.path == 'Pagination.md' %} class="active" {% endif %}><a class="nav-link" href="./Pagination.html"><code>&lt;Pagination&gt;</code></a></li>
   <li {% if page.path == 'SortButton.md' %} class="active" {% endif %}><a class="nav-link" href="./SortButton.html"><code>&lt;SortButton&gt;</code></a></li>
   <li {% if page.path == 'useList.md' %} class="active" {% endif %}><a class="nav-link" href="./useList.html"><code>useList</code></a></li>
@@ -92,6 +98,7 @@
   <li {% if page.path == 'WizardForm.md' %} class="active" {% endif %}><a class="nav-link" href="./WizardForm.html"><code>&lt;WizardForm&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
   <li {% if page.path == 'EditDialog.md' %} class="active" {% endif %}><a class="nav-link" href="./EditDialog.html"><code>&lt;EditDialog&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
   <li {% if page.path == 'CreateDialog.md' %} class="active" {% endif %}><a class="nav-link" href="./CreateDialog.html"><code>&lt;CreateDialog&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'JsonSchemaForm.md' %} class="active" {% endif %}><a class="nav-link" href="./JsonSchemaForm.html"><code>&lt;JsonSchemaForm&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
   <li {% if page.path == 'Toolbar.md' %} class="active" {% endif %}><a class="nav-link" href="./Toolbar.html"><code>&lt;Toolbar&gt;</code></a></li>
   <li {% if page.path == 'SaveButton.md' %} class="active" {% endif %}><a class="nav-link" href="./SaveButton.html"><code>&lt;SaveButton&gt;</code></a></li>
   <li {% if page.path == 'useCreateContext.md' %} class="active" {% endif %}><a class="nav-link" href="./useCreateContext.html"><code>useCreateContext</code></a></li>
@@ -116,6 +123,7 @@
 <ul><div>Common</div>
   <li {% if page.path == 'WithRecord.md' %} class="active" {% endif %}><a class="nav-link" href="./WithRecord.html"><code>&lt;WithRecord&gt;</code></a></li>
   <li {% if page.path == 'useRecordContext.md' %} class="active" {% endif %}><a class="nav-link" href="./useRecordContext.html"><code>useRecordContext</code></a></li>
+  <li {% if page.path == 'useGetRecordId.md' %} class="active" {% endif %}><a class="nav-link" href="./useGetRecordId.html"><code>useGetRecordId</code></a></li>
   <li {% if page.path == 'useNotify.md' %} class="active" {% endif %}><a class="nav-link" href="./useNotify.html"><code>useNotify</code></a></li>
   <li {% if page.path == 'useRedirect.md' %} class="active" {% endif %}><a class="nav-link" href="./useRedirect.html"><code>useRedirect</code></a></li>
   <li {% if page.path == 'useRefresh.md' %} class="active" {% endif %}><a class="nav-link" href="./useRefresh.html"><code>useRefresh</code></a></li>
@@ -167,21 +175,24 @@
   <li {% if page.path == 'SelectArrayInput.md' %} class="active" {% endif %}><a class="nav-link" href="./SelectArrayInput.html"><code>&lt;SelectArrayInput&gt;</code></a></li>
   <li {% if page.path == 'SelectInput.md' %} class="active" {% endif %}><a class="nav-link" href="./SelectInput.html"><code>&lt;SelectInput&gt;</code></a></li>
   <li {% if page.path == 'TextInput.md' %} class="active" {% endif %}><a class="nav-link" href="./TextInput.html"><code>&lt;TextInput&gt;</code></a></li>
+  <li {% if page.path == 'TimeInput.md' %} class="active" {% endif %}><a class="nav-link" href="./TimeInput.html"><code>&lt;TimeInput&gt;</code></a></li>
   <li {% if page.path == 'TranslatableInputs.md' %} class="active" {% endif %}><a class="nav-link" href="./TranslatableInputs.html"><code>&lt;TranslatableInputs&gt;</code></a></li>
   <li {% if page.path == 'PasswordInput.md' %} class="active" {% endif %}><a class="nav-link" href="./PasswordInput.html"><code>&lt;PasswordInput&gt;</code></a></li>
-  <li {% if page.path == 'ReferenceArrayInput.md' %} class="active" {% endif %}><a class="nav-link" href="./ReferenceArrayInput.html"><code>&lt;ReferenceArrayInput&gt;</code></a></li>
   <li {% if page.path == 'ReferenceInput.md' %} class="active" {% endif %}><a class="nav-link" href="./ReferenceInput.html"><code>&lt;ReferenceInput&gt;</code></a></li>
+  <li {% if page.path == 'ReferenceArrayInput.md' %} class="active" {% endif %}><a class="nav-link" href="./ReferenceArrayInput.html"><code>&lt;ReferenceArrayInput&gt;</code></a></li>
+  <li {% if page.path == 'ReferenceManyInput.md' %} class="active" {% endif %}><a class="nav-link" href="./ReferenceManyInput.html"><code>&lt;ReferenceManyInput&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
   <li {% if page.path == 'ReferenceManyToManyInput.md' %} class="active" {% endif %}><a class="nav-link" href="./ReferenceManyToManyInput.html"><code>&lt;ReferenceManyToManyInput&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'SimpleFormIterator.md' %} class="active" {% endif %}><a class="nav-link" href="./SimpleFormIterator.html"><code>&lt;SimpleFormIterator&gt;</code></a></li>
 </ul>
 
 <ul><div>The Store</div>
   <li {% if page.path == 'Store.md' %} class="active" {% endif %}><a class="nav-link" href="./Store.html">Introduction</a></li>
-  <li {% if page.path == 'LocalesMenuButton.md' %} class="active" {% endif %}><a class="nav-link" href="./LocalesMenuButton.html"><code>&lt;LocalesMenuButton&gt;</code></a></li>
-  <li {% if page.path == 'ToggleThemeButton.md' %} class="active" {% endif %}><a class="nav-link" href="./ToggleThemeButton.html"><code>&lt;ToggleThemeButton&gt;</code></a></li>
   <li {% if page.path == 'useStore.md' %} class="active" {% endif %}><a class="nav-link" href="./useStore.html"><code>useStore</code></a></li>
   <li {% if page.path == 'useRemoveFromStore.md' %} class="active" {% endif %}><a class="nav-link" href="./useRemoveFromStore.html"><code>useRemoveFromStore</code></a></li>
   <li {% if page.path == 'useResetStore.md' %} class="active" {% endif %}><a class="nav-link" href="./useResetStore.html"><code>useResetStore</code></a></li>
   <li {% if page.path == 'useStoreContext.md' %} class="active" {% endif %}><a class="nav-link" href="./useStoreContext.html"><code>useStoreContext</code></a></li>
+  <li {% if page.path == 'Configurable.md' %} class="active" {% endif %}><a class="nav-link" href="./Configurable.html"><code>&lt;Configurable&gt;</code></a></li>
+  <li {% if page.path == 'ToggleThemeButton.md' %} class="active" {% endif %}><a class="nav-link" href="./ToggleThemeButton.html"><code>&lt;ToggleThemeButton&gt;</code></a></li>
 </ul>
 
 <ul><div>I18N Provider and Translations</div>
@@ -198,7 +209,10 @@
 <ul><div>Other UI components</div>
   <li {% if page.path == 'Layout.md' %} class="active" {% endif %}><a class="nav-link" href="./Layout.html"><code>&lt;Layout&gt;</code></a></li>
   <li {% if page.path == 'Menu.md' %} class="active" {% endif %}><a class="nav-link" href="./Menu.html"><code>&lt;Menu&gt;</code></a></li>
+  <li {% if page.path == 'MultiLevelMenu.md' %} class="active" {% endif %}><a class="nav-link" href="./MultiLevelMenu.html"><code>&lt;MultiLevelMenu&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
   <li {% if page.path == 'IconMenu.md' %} class="active" {% endif %}><a class="nav-link" href="./IconMenu.html"><code>&lt;IconMenu&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'Breadcrumb.md' %} class="active" {% endif %}><a class="nav-link" href="./Breadcrumb.html"><code>&lt;Breadcrumb&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'Search.md' %} class="active" {% endif %}><a class="nav-link" href="./Search.html"><code>&lt;Search&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
   <li {% if page.path == 'Buttons.md' %} class="active" {% endif %}><a class="nav-link" href="./Buttons.html">Buttons</a></li>
   <li {% if page.path == 'Confirm.md' %} class="active" {% endif %}><a class="nav-link" href="./Confirm.html">Confirm</a></li>
 </ul>
@@ -220,6 +234,7 @@
 <script>
 var allMenus = Array.from(document.querySelectorAll(`.sidenav a.nav-link`));
 var navLinks = allMenus.filter(link => !link.classList.contains('external')).map(link => link.href);
+var versionsLinks = Array.from(document.querySelectorAll('#versions > li > a'));
 
 function replaceContent(text) {
     var tmpElement = document.createElement('div');
@@ -258,6 +273,11 @@ function catchNavigation() {
         // now we're sure it's an internal navigation link
         // transform it to an AJAX call
         event.preventDefault();
+	// update versions links
+        var currentPage = href.split('/').pop();
+        versionsLinks.forEach(link => {
+            link.href = link.href.substr(0, link.href.lastIndexOf('/') + 1) + currentPage;
+        });
         // fetch the new content
         fetch(href)
             .then(res => res.text())

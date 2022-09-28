@@ -20,6 +20,7 @@ const frenchMessages: TranslationMessages = {
             list: 'Liste',
             refresh: 'Actualiser',
             remove_filter: 'Supprimer ce filtre',
+            remove_all_filters: 'Supprimer tous les filtres',
             remove: 'Supprimer',
             save: 'Enregistrer',
             select_all: 'Tout sélectionner',
@@ -47,12 +48,12 @@ const frenchMessages: TranslationMessages = {
         page: {
             create: 'Créer %{name}',
             dashboard: 'Tableau de bord',
-            edit: '%{name} #%{id}',
+            edit: '%{name} %{recordRepresentation}',
             error: 'Un problème est survenu',
             list: '%{name}',
             loading: 'Chargement',
             not_found: 'Page manquante',
-            show: '%{name} #%{id}',
+            show: '%{name} %{recordRepresentation}',
             empty: 'Pas encore de %{name}.',
             invite: 'Voulez-vous en créer un ?',
         },
@@ -180,6 +181,21 @@ const frenchMessages: TranslationMessages = {
             remove_message:
                 'Etes-vous sûr(e) de vouloir supprimer cette requête de votre liste de requêtes ?',
             help: 'Filtrez la liste et ajoutez cette requête à votre liste',
+        },
+        configurable: {
+            customize: 'Personnaliser',
+            templateError: '## Erreur de formule',
+            configureMode: 'Configurer cette page',
+            inspector: {
+                title: 'Inspecteur',
+                content: 'Sélectionner un composant pour le configurer',
+                reset: 'Réinitialiser',
+            },
+            SimpleList: {
+                primaryText: 'Texte principal',
+                secondaryText: 'Texte secondaire',
+                tertiaryText: 'Texte annexe',
+            },
         },
     },
 };

@@ -33,15 +33,16 @@ export const useListController = <RecordType extends RaRecord = any>(
     props: ListControllerProps<RecordType> = {}
 ): ListControllerResult<RecordType> => {
     const {
-        disableAuthentication,
-        exporter = defaultExporter,
-        filterDefaultValues,
-        sort = defaultSort,
-        perPage = 10,
-        filter,
         debounce = 500,
+        disableAuthentication,
         disableSyncWithLocation,
+        exporter = defaultExporter,
+        filter,
+        filterDefaultValues,
+        perPage = 10,
         queryOptions = {},
+        sort = defaultSort,
+        storeKey,
     } = props;
     useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
@@ -62,12 +63,13 @@ export const useListController = <RecordType extends RaRecord = any>(
     const notify = useNotify();
 
     const [query, queryModifiers] = useListParams({
-        resource,
-        filterDefaultValues,
-        sort,
-        perPage,
         debounce,
         disableSyncWithLocation,
+        filterDefaultValues,
+        perPage,
+        resource,
+        sort,
+        storeKey,
     });
 
     const [selectedIds, selectionModifiers] = useRecordSelection(resource);
@@ -109,7 +111,9 @@ export const useListController = <RecordType extends RaRecord = any>(
     useEffect(() => {
         if (
             query.page <= 0 ||
-            (!isFetching && query.page > 1 && data?.length === 0)
+            (!isFetching &&
+                query.page > 1 &&
+                (data == null || data?.length === 0))
         ) {
             // Query for a page that doesn't exist, set page to 1
             queryModifiers.setPage(1);
@@ -195,6 +199,7 @@ export interface ListControllerProps<RecordType extends RaRecord = any> {
     }> & { meta?: any };
     resource?: string;
     sort?: SortPayload;
+    storeKey?: string;
 }
 
 const defaultSort = {
@@ -219,7 +224,7 @@ export interface ListControllerResult<RecordType extends RaRecord = any> {
     onUnselectItems: () => void;
     page: number;
     perPage: number;
-    refetch: UseGetListHookValue<RecordType>['refetch'];
+    refetch: (() => void) | UseGetListHookValue<RecordType>['refetch'];
     resource: string;
     selectedIds: RecordType['id'][];
     setFilters: (

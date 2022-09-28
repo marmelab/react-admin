@@ -24,8 +24,11 @@ import {
     useNotify,
     usePermissions,
     useRedirect,
+    useCreate,
+    useCreateSuggestionContext,
 } from 'react-admin';
 import { useFormContext, useWatch } from 'react-hook-form';
+import { Button, Dialog, DialogActions, DialogContent } from '@mui/material';
 
 const PostCreateToolbar = props => {
     const notify = useNotify();
@@ -152,7 +155,10 @@ const PostCreate = () => {
                     <ArrayInput source="authors">
                         <SimpleFormIterator>
                             <ReferenceInput source="user_id" reference="users">
-                                <AutocompleteInput label="User" />
+                                <AutocompleteInput
+                                    label="User"
+                                    create={<CreateUser />}
+                                />
                             </ReferenceInput>
                             <FormDataConsumer>
                                 {({
@@ -204,4 +210,57 @@ const DependantInput = ({
     const dependencyValue = useWatch({ name: dependency });
 
     return dependencyValue ? children : null;
+};
+
+const CreateUser = () => {
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
+    const [value, setValue] = React.useState(filter || '');
+    const [create] = useCreate();
+
+    const handleSubmit = event => {
+        event.preventDefault();
+        create(
+            'users',
+            {
+                data: {
+                    name: value,
+                },
+            },
+            {
+                onSuccess: data => {
+                    setValue('');
+                    onCreate(data);
+                },
+            }
+        );
+    };
+
+    return (
+        <Dialog open onClose={onCancel}>
+            <form onSubmit={handleSubmit}>
+                <DialogContent>
+                    <TextInput
+                        source="name"
+                        defaultValue="Slim Shady"
+                        autoFocus
+                        validate={[required()]}
+                    />
+                    <AutocompleteInput
+                        source="role"
+                        choices={[
+                            { id: '', name: 'None' },
+                            { id: 'admin', name: 'Admin' },
+                            { id: 'user', name: 'User' },
+                            { id: 'user_simple', name: 'UserSimple' },
+                        ]}
+                        validate={[required()]}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button type="submit">Save</Button>
+                    <Button onClick={onCancel}>Cancel</Button>
+                </DialogActions>
+            </form>
+        </Dialog>
+    );
 };

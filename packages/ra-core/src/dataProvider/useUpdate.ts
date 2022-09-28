@@ -10,7 +10,12 @@ import {
 
 import { useDataProvider } from './useDataProvider';
 import undoableEventEmitter from './undoableEventEmitter';
-import { RaRecord, UpdateParams, MutationMode } from '../types';
+import {
+    RaRecord,
+    UpdateParams,
+    MutationMode,
+    GetListResult as OriginalGetListResult,
+} from '../types';
 
 /**
  * Get a callback to call the dataProvider.update() method, the result and the loading state.
@@ -41,7 +46,7 @@ import { RaRecord, UpdateParams, MutationMode } from '../types';
  * This hook uses react-query useMutation under the hood.
  * This means the state object contains mutate, isIdle, reset and other react-query methods.
  *
- * @see https://react-query.tanstack.com/reference/useMutation
+ * @see https://react-query-v3.tanstack.com/reference/useMutation
  *
  * @example // set params when calling the update callback
  *
@@ -110,7 +115,9 @@ export const useUpdate = <
             ];
         };
 
-        type GetListResult = { data?: RecordType[]; total?: number };
+        type GetListResult = Omit<OriginalGetListResult, 'data'> & {
+            data?: RecordType[];
+        };
 
         queryClient.setQueryData(
             [resource, 'getOne', { id: String(id), meta }],
@@ -120,9 +127,7 @@ export const useUpdate = <
         queryClient.setQueriesData(
             [resource, 'getList'],
             (res: GetListResult) =>
-                res && res.data
-                    ? { data: updateColl(res.data), total: res.total }
-                    : res,
+                res && res.data ? { ...res, data: updateColl(res.data) } : res,
             { updatedAt }
         );
         queryClient.setQueriesData(
@@ -310,7 +315,7 @@ export const useUpdate = <
             meta: callTimeMeta = meta,
         } = callTimeParams;
 
-        // optimistic update as documented in https://react-query.tanstack.com/guides/optimistic-updates
+        // optimistic update as documented in https://react-query-v3.tanstack.com/guides/optimistic-updates
         // except we do it in a mutate wrapper instead of the onMutate callback
         // to have access to success side effects
 
@@ -343,7 +348,7 @@ export const useUpdate = <
          *   [['posts', 'getMany'], [{ id: 1, title: 'Hello' }]],
          * ]
          *
-         * @see https://react-query.tanstack.com/reference/QueryClient#queryclientgetqueriesdata
+         * @see https://react-query-v3.tanstack.com/reference/QueryClient#queryclientgetqueriesdata
          */
         snapshot.current = queryKeys.reduce(
             (prev, curr) => prev.concat(queryClient.getQueriesData(curr)),

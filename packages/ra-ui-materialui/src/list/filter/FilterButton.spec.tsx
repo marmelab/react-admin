@@ -1,11 +1,12 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import { createTheme } from '@mui/material/styles';
 
 import { AdminContext } from '../../AdminContext';
 import { FilterButton } from './FilterButton';
 import { TextInput } from '../../input';
+import { Basic } from './FilterButton.stories';
 
 const theme = createTheme();
 
@@ -44,25 +45,6 @@ describe('<FilterButton />', () => {
             expect(queryByText('Name')).toBeNull();
         });
 
-        it('should not display the filter button if all filters are shown and there is no filter value', () => {
-            render(
-                <AdminContext theme={theme}>
-                    <FilterButton
-                        {...defaultProps}
-                        filters={[
-                            <TextInput source="title" label="Title" />,
-                            <TextInput source="customer.name" label="Name" />,
-                        ]}
-                        displayedFilters={{
-                            title: true,
-                            'customer.name': true,
-                        }}
-                    />
-                </AdminContext>
-            );
-            expect(screen.queryByLabelText('ra.action.add_filter')).toBeNull();
-        });
-
         it('should display the filter button if all filters are shown and there is a filter value', () => {
             render(
                 <AdminContext theme={theme}>
@@ -91,7 +73,7 @@ describe('<FilterButton />', () => {
             const hiddenFilter = (
                 <TextInput source="Returned" label="Returned" disabled={true} />
             );
-            const { getByRole, getByLabelText } = render(
+            const { getByLabelText, queryByText } = render(
                 <AdminContext theme={theme}>
                     <FilterButton
                         {...defaultProps}
@@ -102,12 +84,69 @@ describe('<FilterButton />', () => {
 
             fireEvent.click(getByLabelText('ra.action.add_filter'));
 
-            const disabledFilter = getByRole('menuitem');
+            const disabledFilter = queryByText('Returned')?.closest('li');
 
             expect(disabledFilter).not.toBeNull();
-            expect(disabledFilter.getAttribute('aria-disabled')).toEqual(
+            expect(disabledFilter?.getAttribute('aria-disabled')).toEqual(
                 'true'
             );
+        });
+
+        it('should remove all filters when the "Clear all filters" button is clicked', async () => {
+            render(<Basic />);
+
+            // First, check we don't have a clear filters option yet
+            await screen.findByText('Add filter');
+            fireEvent.click(screen.getByText('Add filter'));
+
+            await screen.findByText('Title', { selector: 'li > span' });
+            expect(screen.queryByDisplayValue('Remove all filters')).toBeNull();
+
+            // Then we apply a filter
+            fireEvent.click(
+                screen.getByText('Title', { selector: 'li > span' })
+            );
+            await screen.findByDisplayValue(
+                'Accusantium qui nihil voluptatum quia voluptas maxime ab similique'
+            );
+
+            // Then we clear all filters
+            fireEvent.click(screen.getByText('Add filter'));
+            await screen.findByText('Remove all filters');
+            fireEvent.click(screen.getByText('Remove all filters'));
+
+            // We check that the previously applied filter has been removed
+            await waitFor(() => {
+                expect(
+                    screen.queryByDisplayValue(
+                        'Accusantium qui nihil voluptatum quia voluptas maxime ab similique'
+                    )
+                ).toBeNull();
+            });
+        });
+
+        it('should not display save query in filter button', async () => {
+            const { queryByText } = render(
+                <AdminContext theme={theme}>
+                    <FilterButton
+                        {...defaultProps}
+                        filterValues={{ title: 'foo' }}
+                        filters={[
+                            <TextInput source="Returned" label="Returned" />,
+                        ]}
+                        disableSaveQuery
+                    />
+                </AdminContext>
+            );
+            expect(
+                screen.queryByLabelText('ra.action.add_filter')
+            ).not.toBeNull();
+
+            fireEvent.click(screen.getByLabelText('ra.action.add_filter'));
+
+            await screen.findByText('Returned');
+
+            expect(queryByText('ra.saved_queries.new_label')).toBeNull();
         });
     });
 });

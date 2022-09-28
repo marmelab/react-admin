@@ -59,7 +59,9 @@ export interface UserIdentity {
  * authProvider types
  */
 export type AuthProvider = {
-    login: (params: any) => Promise<any>;
+    login: (
+        params: any
+    ) => Promise<{ redirectTo?: string | boolean } | void | any>;
     logout: (params: any) => Promise<void | false | string>;
     checkAuth: (params: any) => Promise<void>;
     checkError: (error: any) => Promise<void>;
@@ -141,6 +143,10 @@ export interface GetListResult<RecordType extends RaRecord = any> {
     };
 }
 
+export interface GetInfiniteListResult<RecordType extends RaRecord = any>
+    extends GetListResult<RecordType> {
+    pageParam?: number;
+}
 export interface GetOneParams<RecordType extends RaRecord = any> {
     id: RecordType['id'];
     meta?: any;
@@ -257,6 +263,8 @@ export type LegacyDataProvider = (
     params: any
 ) => Promise<any>;
 
+export type RecordToStringFunction = (record: any) => string;
+
 export interface ResourceDefinition {
     readonly name: string;
     readonly options?: any;
@@ -265,6 +273,10 @@ export interface ResourceDefinition {
     readonly hasShow?: boolean;
     readonly hasCreate?: boolean;
     readonly icon?: any;
+    readonly recordRepresentation?:
+        | ReactElement
+        | RecordToStringFunction
+        | string;
 }
 
 /**
@@ -278,7 +290,11 @@ export type Dispatch<T> = T extends (...args: infer A) => any
 export type ResourceElement = ReactElement<ResourceProps>;
 export type RenderResourcesFunction = (
     permissions: any
-) => ResourceElement[] | Promise<ResourceElement[]>;
+) =>
+    | ReactNode // (permissions) => <><Resource /><Resource /><Resource /></>
+    | Promise<ReactNode> // (permissions) => fetch().then(() => <><Resource /><Resource /><Resource /></>)
+    | ResourceElement[] // // (permissions) => [<Resource />, <Resource />, <Resource />]
+    | Promise<ResourceElement[]>; // (permissions) => fetch().then(() => [<Resource />, <Resource />, <Resource />])
 export type AdminChildren = RenderResourcesFunction | ReactNode;
 
 export type TitleComponent = string | ReactElement<any>;
@@ -325,7 +341,9 @@ export interface ResourceProps {
     edit?: ComponentType<any> | ReactElement;
     show?: ComponentType<any> | ReactElement;
     icon?: ComponentType<any>;
+    recordRepresentation?: ReactElement | RecordToStringFunction | string;
     options?: ResourceOptions;
+    children?: ReactNode;
 }
 
 export type Exporter = (

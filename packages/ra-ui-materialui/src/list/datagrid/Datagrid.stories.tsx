@@ -91,7 +91,7 @@ export const Basic = () => (
 const ExpandPanel = () => {
     const book = useRecordContext();
     return (
-        <div>
+        <div data-testid="ExpandPanel">
             <i>{book.title}</i>, by {book.author} ({book.year})
         </div>
     );

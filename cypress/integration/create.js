@@ -42,7 +42,10 @@ describe('Create Page', () => {
         const backlinksContainer = cy
             .get(CreatePage.elements.input('backlinks.0.date'))
             .parents('.ra-input-backlinks');
-        backlinksContainer.contains('Remove').click();
+        // The button is visibility:hidden unless the user hovers on the row.
+        // It is not possible to simulate a CSS hover with cypress, so we use force: true
+        // see https://docs.cypress.io/api/commands/hover
+        backlinksContainer.get('.button-remove').click({ force: true });
         CreatePage.setValues([
             {
                 type: 'input',
@@ -60,6 +63,7 @@ describe('Create Page', () => {
                 value: 'foo',
             },
         ]);
+        CreatePage.submit();
         cy.get('.ra-input-backlinks').contains('Required');
     });
 
@@ -90,7 +94,7 @@ describe('Create Page', () => {
                 value: 'Annamarie Mayer',
             },
         ]);
-        cy.get('[role="option"]').trigger('click');
+        cy.get('[role="option"]:first').trigger('click');
         cy.get(CreatePage.elements.input('authors.0.role')).should(
             el => expect(el).to.exist
         );

@@ -59,6 +59,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         reference,
         source,
     } = props;
+    const { meta, ...otherQueryOptions } = queryOptions;
 
     const [params, paramsModifiers] = useReferenceParams({
         resource: reference,
@@ -94,10 +95,12 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
             },
             sort: { field: params.sort, order: params.order },
             filter: { ...params.filter, ...filter },
+            meta,
         },
         {
             enabled: isGetMatchingEnabled,
-            ...queryOptions,
+            keepPreviousData: true,
+            ...otherQueryOptions,
         }
     );
 
@@ -169,6 +172,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
             ? params.page * params.perPage < total
             : undefined,
         hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : params.page > 1,
+        isFromReference: true,
     };
 };
 
@@ -184,7 +188,7 @@ export interface UseReferenceInputControllerParams<
             hasNextPage?: boolean;
             hasPreviousPage?: boolean;
         };
-    }>;
+    }> & { meta?: any };
     page?: number;
     perPage?: number;
     record?: RaRecord;

@@ -12,7 +12,11 @@ import {
     undoableEventEmitter,
     useRecordContext,
     useSaveContext,
+    useEditContext,
+    ResourceDefinitionContextProvider,
 } from 'ra-core';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
 
 import { AdminContext } from '../AdminContext';
 import { Edit } from './Edit';
@@ -21,8 +25,6 @@ describe('<Edit />', () => {
     const defaultEditProps = {
         id: '123',
         resource: 'foo',
-        location: {} as any,
-        match: {} as any,
     };
 
     it('should call dataProvider.getOne() and pass the result to its child as record', async () => {
@@ -61,7 +63,11 @@ describe('<Edit />', () => {
             return (
                 <>
                     <span>{record.title}</span>
-                    <button onClick={() => save({ ...record, title: 'ipsum' })}>
+                    <button
+                        onClick={() =>
+                            save && save({ ...record, title: 'ipsum' })
+                        }
+                    >
                         Update
                     </button>
                 </>
@@ -112,7 +118,9 @@ describe('<Edit />', () => {
                     <>
                         <span>{record.title}</span>
                         <button
-                            onClick={() => save({ ...record, title: 'ipsum' })}
+                            onClick={() =>
+                                save && save({ ...record, title: 'ipsum' })
+                            }
                         >
                             Update
                         </button>
@@ -168,7 +176,9 @@ describe('<Edit />', () => {
                     <>
                         <span>{record.title}</span>
                         <button
-                            onClick={() => save({ ...record, title: 'ipsum' })}
+                            onClick={() =>
+                                save && save({ ...record, title: 'ipsum' })
+                            }
                         >
                             Update
                         </button>
@@ -222,7 +232,9 @@ describe('<Edit />', () => {
                     <>
                         <span>{record.title}</span>
                         <button
-                            onClick={() => save({ ...record, title: 'ipsum' })}
+                            onClick={() =>
+                                save && save({ ...record, title: 'ipsum' })
+                            }
                         >
                             Update
                         </button>
@@ -281,7 +293,9 @@ describe('<Edit />', () => {
                     <>
                         <span>{record.title}</span>
                         <button
-                            onClick={() => save({ ...record, title: 'ipsum' })}
+                            onClick={() =>
+                                save && save({ ...record, title: 'ipsum' })
+                            }
                         >
                             Update
                         </button>
@@ -337,6 +351,7 @@ describe('<Edit />', () => {
                         <span>{record.title}</span>
                         <button
                             onClick={() =>
+                                save &&
                                 save(
                                     { ...record, title: 'ipsum' },
                                     {
@@ -401,7 +416,9 @@ describe('<Edit />', () => {
                     <>
                         <span>{record.title}</span>
                         <button
-                            onClick={() => save({ ...record, title: 'ipsum' })}
+                            onClick={() =>
+                                save && save({ ...record, title: 'ipsum' })
+                            }
                         >
                             Update
                         </button>
@@ -455,6 +472,7 @@ describe('<Edit />', () => {
                         <span>{record.title}</span>
                         <button
                             onClick={() =>
+                                save &&
                                 save(
                                     { ...record, title: 'ipsum' },
                                     {
@@ -525,7 +543,9 @@ describe('<Edit />', () => {
                     <>
                         <span>{record.title}</span>
                         <button
-                            onClick={() => save({ ...record, title: 'ipsum' })}
+                            onClick={() =>
+                                save && save({ ...record, title: 'ipsum' })
+                            }
                         >
                             Update
                         </button>
@@ -590,6 +610,7 @@ describe('<Edit />', () => {
                         <span>{record.title}</span>
                         <button
                             onClick={() =>
+                                save &&
                                 save(
                                     { ...record, title: 'ipsum' },
                                     {
@@ -658,7 +679,9 @@ describe('<Edit />', () => {
                     <>
                         <span>{record.title}</span>
                         <button
-                            onClick={() => save({ ...record, title: 'ipsum' })}
+                            onClick={() =>
+                                save && save({ ...record, title: 'ipsum' })
+                            }
                         >
                             Update
                         </button>
@@ -722,6 +745,7 @@ describe('<Edit />', () => {
                         <span>{record.title}</span>
                         <button
                             onClick={() =>
+                                save &&
                                 save(
                                     { ...record, title: 'ipsum' },
                                     {
@@ -783,6 +807,57 @@ describe('<Edit />', () => {
                 </AdminContext>
             );
             expect(screen.queryAllByText('Hello')).toHaveLength(1);
+        });
+    });
+
+    describe('defaultTitle', () => {
+        it('should use the record id by default', async () => {
+            const dataProvider = {
+                getOne: () =>
+                    Promise.resolve({ data: { id: 123, title: 'lorem' } }),
+            } as any;
+            const Title = () => {
+                const { defaultTitle } = useEditContext();
+                return <>{defaultTitle}</>;
+            };
+            const i18nProvider = polyglotI18nProvider(() => englishMessages);
+            render(
+                <AdminContext
+                    dataProvider={dataProvider}
+                    i18nProvider={i18nProvider}
+                >
+                    <Edit {...defaultEditProps}>
+                        <Title />
+                    </Edit>
+                </AdminContext>
+            );
+            await screen.findByText('Foo #123');
+        });
+        it('should use the recordRepresentation when defined', async () => {
+            const dataProvider = {
+                getOne: () =>
+                    Promise.resolve({ data: { id: 123, title: 'lorem' } }),
+            } as any;
+            const Title = () => {
+                const { defaultTitle } = useEditContext();
+                return <>{defaultTitle}</>;
+            };
+            const i18nProvider = polyglotI18nProvider(() => englishMessages);
+            render(
+                <AdminContext
+                    dataProvider={dataProvider}
+                    i18nProvider={i18nProvider}
+                >
+                    <ResourceDefinitionContextProvider
+                        definitions={{ foo: { recordRepresentation: 'title' } }}
+                    >
+                        <Edit {...defaultEditProps}>
+                            <Title />
+                        </Edit>
+                    </ResourceDefinitionContextProvider>
+                </AdminContext>
+            );
+            await screen.findByText('Foo lorem');
         });
     });
 });

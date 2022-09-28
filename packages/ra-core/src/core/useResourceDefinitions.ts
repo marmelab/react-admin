@@ -16,6 +16,7 @@ import { useResourceDefinitionContext } from './useResourceDefinitionContext';
  * //   hasCreate: true,
  * //   options: {},
  * //   icon: PostIcon,
+ * //   recordRepresentation: 'title',
  * // }
  */
 export const useResourceDefinitions = (): ResourceDefinitions =>

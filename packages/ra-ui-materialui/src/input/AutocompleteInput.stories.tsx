@@ -250,6 +250,119 @@ export const CreationSupport = () => (
     </Admin>
 );
 
+const authorsWithFirstAndLastName = [
+    { id: 1, first_name: 'Leo', last_name: 'Tolstoy', language: 'Russian' },
+    { id: 2, first_name: 'Victor', last_name: 'Hugo', language: 'French' },
+    {
+        id: 3,
+        first_name: 'William',
+        last_name: 'Shakespeare',
+        language: 'English',
+    },
+    {
+        id: 4,
+        first_name: 'Charles',
+        last_name: 'Baudelaire',
+        language: 'French',
+    },
+    { id: 5, first_name: 'Marcel', last_name: 'Proust', language: 'French' },
+];
+
+const dataProviderWithAuthorsWithFirstAndLastName = {
+    getOne: (resource, params) =>
+        Promise.resolve({
+            data: {
+                id: 1,
+                title: 'War and Peace',
+                author: 1,
+                summary:
+                    "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                year: 1869,
+            },
+        }),
+    getMany: (resource, params) =>
+        Promise.resolve({
+            data: authorsWithFirstAndLastName.filter(author =>
+                params.ids.includes(author.id)
+            ),
+        }),
+    getList: (resource, params) =>
+        new Promise(resolve => {
+            // eslint-disable-next-line eqeqeq
+            if (params.filter.q == undefined) {
+                setTimeout(
+                    () =>
+                        resolve({
+                            data: authorsWithFirstAndLastName,
+                            total: authors.length,
+                        }),
+                    500
+                );
+                return;
+            }
+
+            const filteredAuthors = authorsWithFirstAndLastName.filter(author =>
+                author.last_name
+                    .toLowerCase()
+                    .includes(params.filter.q.toLowerCase())
+            );
+
+            setTimeout(
+                () =>
+                    resolve({
+                        data: filteredAuthors,
+                        total: filteredAuthors.length,
+                    }),
+                500
+            );
+        }),
+    update: (resource, params) => Promise.resolve(params),
+    create: (resource, params) => {
+        const newAuthor = {
+            id: authorsWithFirstAndLastName.length + 1,
+            name: params.data.name,
+            language: params.data.language,
+        };
+        authors.push(newAuthor);
+        return Promise.resolve({ data: newAuthor });
+    },
+} as any;
+
+const BookEditWithReferenceAndRecordRepresentation = () => (
+    <Edit
+        mutationMode="pessimistic"
+        mutationOptions={{
+            onSuccess: data => {
+                console.log(data);
+            },
+        }}
+    >
+        <SimpleForm>
+            <ReferenceInput reference="authors" source="author">
+                <AutocompleteInput />
+            </ReferenceInput>
+        </SimpleForm>
+    </Edit>
+);
+
+export const InsideReferenceInputWithRecordRepresentation = () => (
+    <Admin
+        dataProvider={dataProviderWithAuthorsWithFirstAndLastName}
+        history={history}
+    >
+        <Resource
+            name="authors"
+            recordRepresentation={record =>
+                `${record.first_name} ${record.last_name}`
+            }
+        />
+        <Resource
+            name="books"
+            edit={BookEditWithReferenceAndRecordRepresentation}
+        />
+    </Admin>
+);
+
 const authors = [
     { id: 1, name: 'Leo Tolstoy', language: 'Russian' },
     { id: 2, name: 'Victor Hugo', language: 'French' },
@@ -327,7 +440,7 @@ const BookEditWithReference = () => (
     >
         <SimpleForm>
             <ReferenceInput reference="authors" source="author">
-                <AutocompleteInput fullWidth />
+                <AutocompleteInput fullWidth optionText="name" />
             </ReferenceInput>
         </SimpleForm>
     </Edit>
@@ -407,7 +520,11 @@ const BookEditWithReferenceAndCreationSupport = () => (
     >
         <SimpleForm>
             <ReferenceInput reference="authors" source="author">
-                <AutocompleteInput create={<CreateAuthor />} fullWidth />
+                <AutocompleteInput
+                    create={<CreateAuthor />}
+                    optionText="name"
+                    fullWidth
+                />
             </ReferenceInput>
         </SimpleForm>
     </Edit>
@@ -439,7 +556,9 @@ export const CustomizedItemRendering = () => {
                     resource="users"
                     optionText={<OptionItem />}
                     inputText={record => `from inputText ${record?.name}`}
-                    matchSuggestion={() => true}
+                    matchSuggestion={(filter, option) =>
+                        option.name.includes(filter)
+                    }
                     choices={[
                         { id: 1, name: 'bar' },
                         { id: 2, name: 'foo' },

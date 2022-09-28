@@ -29,6 +29,8 @@ const emptyParams = {};
  *
  * @param {Object} params Any params you want to pass to the authProvider
  *
+ * @param {Boolean} logoutOnFailure: Optional. Whether the user should be logged out if the authProvider fails to authenticate them. False by default.
+ *
  * @returns The current auth check state. Destructure as { authenticated, error, isLoading }.
  *
  * @example
@@ -45,17 +47,20 @@ const emptyParams = {};
  *     return <AnonymousContent />;
  * };
  */
-const useAuthState = (params: any = emptyParams): State => {
+const useAuthState = (
+    params: any = emptyParams,
+    logoutOnFailure: boolean = false
+): State => {
     const [state, setState] = useSafeSetState({
         isLoading: true,
         authenticated: true, // optimistic
     });
     const checkAuth = useCheckAuth();
     useEffect(() => {
-        checkAuth(params, false)
+        checkAuth(params, logoutOnFailure)
             .then(() => setState({ isLoading: false, authenticated: true }))
             .catch(() => setState({ isLoading: false, authenticated: false }));
-    }, [checkAuth, params, setState]);
+    }, [checkAuth, params, logoutOnFailure, setState]);
     return state;
 };
 

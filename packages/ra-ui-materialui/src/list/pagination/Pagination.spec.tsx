@@ -118,7 +118,7 @@ describe('<Pagination />', () => {
                 </ThemeProvider>
             );
             const nextButton = screen.queryByLabelText(
-                'ra.navigation.next'
+                'Go to next page'
             ) as HTMLButtonElement;
             expect(nextButton).not.toBeNull();
             expect(nextButton.disabled).toBe(false);
@@ -139,7 +139,7 @@ describe('<Pagination />', () => {
                 </ThemeProvider>
             );
             const nextButton = screen.queryByLabelText(
-                'ra.navigation.next'
+                'Go to next page'
             ) as HTMLButtonElement;
             expect(nextButton).not.toBeNull();
             expect(nextButton.disabled).toBe(true);
@@ -160,7 +160,7 @@ describe('<Pagination />', () => {
                 </ThemeProvider>
             );
             const prevButton = screen.queryByLabelText(
-                'ra.navigation.previous'
+                'Go to previous page'
             ) as HTMLButtonElement;
             expect(prevButton).not.toBeNull();
             expect(prevButton.disabled).toBe(false);
@@ -181,7 +181,7 @@ describe('<Pagination />', () => {
                 </ThemeProvider>
             );
             const prevButton = screen.queryByLabelText(
-                'ra.navigation.previous'
+                'Go to previous page'
             ) as HTMLButtonElement;
             expect(prevButton).not.toBeNull();
             expect(prevButton.disabled).toBe(true);
@@ -206,7 +206,7 @@ describe('<Pagination />', () => {
                 </ThemeProvider>
             );
             const nextButton = screen.queryByLabelText(
-                'ra.navigation.next'
+                'Go to next page'
             ) as HTMLButtonElement;
             expect(nextButton).not.toBeNull();
             expect(nextButton.disabled).toBe(false);
@@ -228,7 +228,7 @@ describe('<Pagination />', () => {
                 </ThemeProvider>
             );
             const nextButton = screen.queryByLabelText(
-                'ra.navigation.next'
+                'Go to next page'
             ) as HTMLButtonElement;
             expect(nextButton).not.toBeNull();
             expect(nextButton.disabled).toBe(true);
@@ -250,7 +250,7 @@ describe('<Pagination />', () => {
                 </ThemeProvider>
             );
             const prevButton = screen.queryByLabelText(
-                'ra.navigation.previous'
+                'Go to previous page'
             ) as HTMLButtonElement;
             expect(prevButton).not.toBeNull();
             expect(prevButton.disabled).toBe(false);
@@ -272,7 +272,7 @@ describe('<Pagination />', () => {
                 </ThemeProvider>
             );
             const prevButton = screen.queryByLabelText(
-                'ra.navigation.previous'
+                'Go to previous page'
             ) as HTMLButtonElement;
             expect(prevButton).not.toBeNull();
             expect(prevButton.disabled).toBe(true);
@@ -322,5 +322,34 @@ describe('<Pagination />', () => {
                 screen.queryByText('ra.navigation.page_rows_per_page')
             ).not.toBeNull();
         });
+    });
+
+    it('should work outside of a ListContext', () => {
+        render(
+            <ThemeProvider theme={theme}>
+                <Pagination
+                    resource="posts"
+                    setPage={() => null}
+                    isLoading={false}
+                    setPerPage={() => {}}
+                    hasNextPage={undefined}
+                    hasPreviousPage={undefined}
+                    perPage={1}
+                    total={2}
+                    page={1}
+                    rowsPerPageOptions={[1]}
+                />
+            </ThemeProvider>
+        );
+        const nextButton = screen.queryByLabelText(
+            'Go to next page'
+        ) as HTMLButtonElement;
+        expect(nextButton).not.toBeNull();
+        expect(nextButton.disabled).toBe(false);
+        const prevButton = screen.queryByLabelText(
+            'Go to previous page'
+        ) as HTMLButtonElement;
+        expect(prevButton).not.toBeNull();
+        expect(prevButton.disabled).toBe(true);
     });
 });

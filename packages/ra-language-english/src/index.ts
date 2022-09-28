@@ -19,6 +19,7 @@ const englishMessages: TranslationMessages = {
             list: 'List',
             refresh: 'Refresh',
             remove_filter: 'Remove this filter',
+            remove_all_filters: 'Remove all filters',
             remove: 'Remove',
             save: 'Save',
             search: 'Search',
@@ -46,12 +47,12 @@ const englishMessages: TranslationMessages = {
         page: {
             create: 'Create %{name}',
             dashboard: 'Dashboard',
-            edit: '%{name} #%{id}',
+            edit: '%{name} %{recordRepresentation}',
             error: 'Something went wrong',
             list: '%{name}',
             loading: 'Loading',
             not_found: 'Not Found',
-            show: '%{name} #%{id}',
+            show: '%{name} %{recordRepresentation}',
             empty: 'No %{name} yet.',
             invite: 'Do you want to add one?',
         },
@@ -174,6 +175,21 @@ const englishMessages: TranslationMessages = {
             remove_message:
                 'Are you sure you want to remove that item from your list of saved queries?',
             help: 'Filter the list and save this query for later',
+        },
+        configurable: {
+            customize: 'Customize',
+            templateError: '## Template error',
+            configureMode: 'Configure this page',
+            inspector: {
+                title: 'Inspector',
+                content: 'Hover the application UI elements to configure them',
+                reset: 'Reset Settings',
+            },
+            SimpleList: {
+                primaryText: 'Primary text',
+                secondaryText: 'Secondary text',
+                tertiaryText: 'Tertiary text',
+            },
         },
     },
 };

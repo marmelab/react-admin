@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState, useRef } from 'react';
+import { useCallback, useMemo, useState, useRef, useEffect } from 'react';
 import lodashDebounce from 'lodash/debounce';
 
 import { SortPayload, FilterPayload } from '../../types';
@@ -127,20 +127,28 @@ export const useReferenceParams = ({
     const filterValues = query.filter || emptyObject;
     const displayedFilterValues = query.displayedFilters || emptyObject;
 
-    const debouncedSetFilters = lodashDebounce((filter, displayedFilters) => {
-        changeParams({
-            type: SET_FILTER,
-            payload: {
-                filter: removeEmpty(filter),
-                displayedFilters,
-            },
-        });
-    }, debounce);
+    const debouncedSetFilters = useRef(
+        lodashDebounce((filter, displayedFilters) => {
+            changeParams({
+                type: SET_FILTER,
+                payload: {
+                    filter: removeEmpty(filter),
+                    displayedFilters,
+                },
+            });
+        }, debounce)
+    );
+    useEffect(() => {
+        return () => {
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            debouncedSetFilters.current.cancel();
+        };
+    }, []);
 
     const setFilters = useCallback(
         (filter, displayedFilters, debounce = true) => {
             debounce
-                ? debouncedSetFilters(filter, displayedFilters)
+                ? debouncedSetFilters.current(filter, displayedFilters)
                 : changeParams({
                       type: SET_FILTER,
                       payload: {

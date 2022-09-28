@@ -113,7 +113,7 @@ const CommentEdit = props => {
     return (
         <EditContextProvider value={controllerProps}>
             <div className="edit-page">
-                <Title defaultTitle={`Comment #${record ? record.id : ''}`} />
+                <Title defaultTitle={controllerProps.defaultTitle} />
                 <Box sx={{ float: 'right' }}>
                     <TopToolbar>
                         <ShowButton record={record} />

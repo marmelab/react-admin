@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { required } from 'ra-core';
-import { useWatch } from 'react-hook-form';
+import { useFormState, useWatch, useFormContext } from 'react-hook-form';
 
 import { NumberInput } from './NumberInput';
 import { AdminContext } from '../AdminContext';
@@ -266,6 +266,60 @@ export const Sx = () => (
                         '& .MuiInputLabel-root': { fontWeight: 'bold' },
                     }}
                 />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+const FormStateInspector = () => {
+    const {
+        touchedFields,
+        isDirty,
+        dirtyFields,
+        isValid,
+        errors,
+    } = useFormState();
+    return (
+        <div>
+            form state:&nbsp;
+            <code style={{ backgroundColor: 'lightgrey' }}>
+                {JSON.stringify({
+                    touchedFields,
+                    isDirty,
+                    dirtyFields,
+                    isValid,
+                    errors,
+                })}
+            </code>
+        </div>
+    );
+};
+
+const FieldStateInspector = ({ name = 'views' }) => {
+    const formContext = useFormContext();
+    return (
+        <div>
+            {name}:
+            <code style={{ backgroundColor: 'lightgrey' }}>
+                {JSON.stringify(
+                    formContext.getFieldState(name, formContext.formState)
+                )}
+            </code>
+        </div>
+    );
+};
+
+export const FieldState = () => (
+    <AdminContext>
+        <Create
+            resource="posts"
+            record={{ id: 123, views: 23 }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <NumberInput source="views" />
+                <FormStateInspector />
+                <FieldStateInspector />
             </SimpleForm>
         </Create>
     </AdminContext>

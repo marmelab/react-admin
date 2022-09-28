@@ -42,7 +42,14 @@ const App = () => (
 );
 ```
 
-**Tip**: How does a resource map to an API endpoint? The `<Resource>` component doesn't know this mapping - it's [the `dataProvider`'s job](./DataProviders.md) to define it.
+The routes call the following `dataProvider` methods:
+
+* `list` calls `getList()` on mount
+* `show` calls `getOne()` on mount
+* `edit` calls `getOne()` on mount, and `update()` or `delete()` on submission
+* `create` calls `create()` on submission
+
+**Tip**: Which API endpoint does a resource rely on? The `<Resource>` component doesn't know this mapping - it's [the `dataProvider`'s job](./DataProviderIntroduction.md) to define it.
 
 ## `name`
 
@@ -84,6 +91,7 @@ The routing will map the component as follows:
 * [`name`](#name)
 * [`icon`](#icon)
 * [`options`](#icon)
+* [`recordRepresentation`](#recordrepresentation)
 
 ## `icon`
 
@@ -116,6 +124,26 @@ const App = () => (
 <Resource name="v2/posts" options={{ label: 'Posts' }} list={PostList} />
 ```
 {% endraw %}
+
+## `recordRepresentation`
+
+Whenever react-admin needs to render a record (e.g. in the title of an edition view, or in a `<ReferenceField>`), it uses the `recordRepresentation` to do it. By default, the representation of a record is its `id` field. But you can customize it by specifying the representation you want.
+
+For instance, to change the default representation of "users" records to render the full name instead of the id:
+
+```jsx
+<Resource
+    name="users"
+    list={UserList}
+    recordRepresentation={(record) => `${record.first_name} ${record.last_name}`}
+/>
+```
+
+`recordRepresentation` can take 3 types of values:
+
+- a string (e.g. `'title'`) to specify the field to use as representation
+- a function (e.g. `(record) => record.title`) to specify a custom string representation
+- a React component (e.g. `<MyCustomRecordRepresentation />`). In such components, use [`useRecordContext`](./useRecordContext.md) to access the record.
 
 ## Resource Context
 

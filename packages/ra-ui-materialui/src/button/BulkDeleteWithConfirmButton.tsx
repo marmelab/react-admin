@@ -14,11 +14,14 @@ import {
     useTranslate,
     useUnselectAll,
     useSafeSetState,
+    RaRecord,
+    DeleteManyParams,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
+import { UseMutationOptions } from 'react-query';
 
 export const BulkDeleteWithConfirmButton = (
     props: BulkDeleteWithConfirmButtonProps
@@ -29,9 +32,11 @@ export const BulkDeleteWithConfirmButton = (
         icon = defaultIcon,
         label = 'ra.action.delete',
         mutationMode = 'pessimistic',
+        mutationOptions = {},
         onClick,
         ...rest
     } = props;
+    const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
     const { selectedIds } = useListContext(props);
     const [isOpen, setOpen] = useSafeSetState(false);
     const notify = useNotify();
@@ -41,7 +46,7 @@ export const BulkDeleteWithConfirmButton = (
     const translate = useTranslate();
     const [deleteMany, { isLoading }] = useDeleteMany(
         resource,
-        { ids: selectedIds },
+        { ids: selectedIds, meta: mutationMeta },
         {
             onSuccess: () => {
                 refresh();
@@ -73,6 +78,7 @@ export const BulkDeleteWithConfirmButton = (
                 setOpen(false);
             },
             mutationMode,
+            ...otherMutationOptions,
         }
     );
 
@@ -141,13 +147,20 @@ const sanitizeRestProps = ({
     'resource' | 'icon' | 'mutationMode'
 >) => rest;
 
-export interface BulkDeleteWithConfirmButtonProps
-    extends BulkActionProps,
+export interface BulkDeleteWithConfirmButtonProps<
+    RecordType extends RaRecord = any,
+    MutationOptionsError = unknown
+> extends BulkActionProps,
         ButtonProps {
     confirmContent?: React.ReactNode;
     confirmTitle?: string;
     icon?: ReactElement;
     mutationMode: MutationMode;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        MutationOptionsError,
+        DeleteManyParams<RecordType>
+    > & { meta?: any };
 }
 
 const PREFIX = 'RaBulkDeleteWithConfirmButton';

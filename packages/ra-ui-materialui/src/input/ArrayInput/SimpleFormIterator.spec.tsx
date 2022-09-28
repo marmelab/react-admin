@@ -3,11 +3,11 @@ import {
     screen,
     render,
     fireEvent,
-    getByText,
     waitFor,
+    getByLabelText,
 } from '@testing-library/react';
 import expect from 'expect';
-import { testDataProvider } from 'ra-core';
+import { FormDataConsumer, testDataProvider } from 'ra-core';
 
 import { AdminContext } from '../../AdminContext';
 import { SimpleForm } from '../../form';
@@ -124,7 +124,7 @@ describe('<SimpleFormIterator />', () => {
             </Wrapper>
         );
 
-        expect(screen.getByText('ra.action.add')).not.toBeNull();
+        expect(screen.getByLabelText('ra.action.add')).not.toBeNull();
     });
 
     it('should not display add button if disableAdd is truthy', () => {
@@ -140,7 +140,7 @@ describe('<SimpleFormIterator />', () => {
             </Wrapper>
         );
 
-        expect(screen.queryAllByText('ra.action.add').length).toBe(0);
+        expect(screen.queryAllByLabelText('ra.action.add').length).toBe(0);
     });
 
     it('should not display add button if disabled is truthy', () => {
@@ -156,7 +156,7 @@ describe('<SimpleFormIterator />', () => {
             </Wrapper>
         );
 
-        expect(screen.queryAllByText('ra.action.add').length).toBe(0);
+        expect(screen.queryAllByLabelText('ra.action.add').length).toBe(0);
     });
 
     it('should not display remove button if disableRemove is truthy', () => {
@@ -177,7 +177,7 @@ describe('<SimpleFormIterator />', () => {
             </Wrapper>
         );
 
-        expect(screen.queryAllByText('ra.action.remove').length).toBe(0);
+        expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(0);
     });
 
     it('should not display remove button if disableRemove return value is truthy', () => {
@@ -202,7 +202,7 @@ describe('<SimpleFormIterator />', () => {
             </Wrapper>
         );
 
-        expect(screen.queryAllByText('ra.action.remove').length).toBe(1);
+        expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(1);
     });
 
     it('should not display remove button if disabled is truthy', () => {
@@ -223,7 +223,7 @@ describe('<SimpleFormIterator />', () => {
             </Wrapper>
         );
 
-        expect(screen.queryAllByText('ra.action.remove').length).toBe(0);
+        expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(0);
     });
 
     it('should add children row on add button click', async () => {
@@ -240,8 +240,8 @@ describe('<SimpleFormIterator />', () => {
         );
 
         const addItemElement = screen
-            .getByText('ra.action.add')
-            .closest('button');
+            .getByLabelText('ra.action.add')
+            .closest('button') as HTMLButtonElement;
 
         fireEvent.click(addItemElement);
         await waitFor(() => {
@@ -271,7 +271,7 @@ describe('<SimpleFormIterator />', () => {
             }))
         ).toEqual([{ email: '' }, { email: '' }]);
 
-        expect(screen.queryAllByText('ra.action.remove').length).toBe(2);
+        expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(2);
     });
 
     it('should add correct children on add button click without source', async () => {
@@ -288,8 +288,8 @@ describe('<SimpleFormIterator />', () => {
         );
 
         const addItemElement = screen
-            .getByText('ra.action.add')
-            .closest('button');
+            .getByLabelText('ra.action.add')
+            .closest('button') as HTMLButtonElement;
 
         fireEvent.click(addItemElement);
         await waitFor(() => {
@@ -306,7 +306,7 @@ describe('<SimpleFormIterator />', () => {
             '',
         ]);
 
-        expect(screen.queryAllByText('ra.action.remove').length).toBe(1);
+        expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(1);
     });
 
     it('should add correct children with default value on add button click without source', async () => {
@@ -327,8 +327,8 @@ describe('<SimpleFormIterator />', () => {
         );
 
         const addItemElement = screen
-            .getByText('ra.action.add')
-            .closest('button');
+            .getByLabelText('ra.action.add')
+            .closest('button') as HTMLButtonElement;
 
         fireEvent.click(addItemElement);
         await waitFor(() => {
@@ -345,7 +345,65 @@ describe('<SimpleFormIterator />', () => {
             '5',
         ]);
 
-        expect(screen.queryAllByText('ra.action.remove').length).toBe(1);
+        expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(1);
+    });
+
+    it('should add correct children with default value after removing one', async () => {
+        render(
+            <Wrapper>
+                <SimpleForm>
+                    <ArrayInput
+                        source="emails"
+                        defaultValue={[
+                            { email: 'test@marmelab.com', name: 'test' },
+                        ]}
+                    >
+                        <SimpleFormIterator>
+                            <TextInput
+                                source="email"
+                                label="Email"
+                                defaultValue="default@marmelab.com"
+                            />
+                            <TextInput source="name" label="Name" />
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </Wrapper>
+        );
+
+        const removeFirstButton = getByLabelText(
+            // @ts-ignore
+            screen.queryAllByLabelText('Email')[0].closest('li'),
+            'ra.action.remove'
+        ).closest('button') as HTMLButtonElement;
+
+        fireEvent.click(removeFirstButton);
+        await waitFor(() => {
+            expect(screen.queryAllByLabelText('Email').length).toEqual(0);
+        });
+
+        const addItemElement = screen
+            .getByLabelText('ra.action.add')
+            .closest('button') as HTMLButtonElement;
+
+        fireEvent.click(addItemElement);
+        await waitFor(() => {
+            const inputElements = screen.queryAllByLabelText('Email');
+            expect(inputElements.length).toBe(1);
+        });
+
+        expect(
+            screen
+                .queryAllByLabelText('Email')
+                .map(inputElement => (inputElement as HTMLInputElement).value)
+        ).toEqual(['default@marmelab.com']);
+        expect(
+            screen
+                .queryAllByLabelText('Name')
+                .map(inputElement => (inputElement as HTMLInputElement).value)
+        ).toEqual(['']);
+
+        expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(1);
     });
 
     it('should remove children row on remove button click', async () => {
@@ -373,10 +431,11 @@ describe('<SimpleFormIterator />', () => {
             }))
         ).toEqual(emails);
 
-        const removeFirstButton = getByText(
+        const removeFirstButton = getByLabelText(
+            // @ts-ignore
             inputElements[0].closest('li'),
             'ra.action.remove'
-        ).closest('button');
+        ).closest('button') as HTMLButtonElement;
 
         fireEvent.click(removeFirstButton);
         await waitFor(() => {
@@ -489,7 +548,7 @@ describe('<SimpleFormIterator />', () => {
             </Wrapper>
         );
 
-        expect(screen.queryAllByText('ra.action.remove').length).toBe(0);
+        expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(0);
         expect(
             screen.queryAllByText('Custom Remove Button').length
         ).toBeGreaterThan(0);
@@ -644,5 +703,46 @@ describe('<SimpleFormIterator />', () => {
         expect(
             screen.queryAllByText('Custom Remove Button').length
         ).toBeGreaterThan(0);
+    });
+
+    it('should not add an empty property when using FormDataConsumer as child', async () => {
+        const save = jest.fn();
+        render(
+            <AdminContext>
+                <SimpleForm onSubmit={save}>
+                    <ArrayInput source="emails">
+                        <SimpleFormIterator>
+                            <TextInput source="email" />
+                            <FormDataConsumer>
+                                {({ scopedFormData, getSource }) =>
+                                    scopedFormData && scopedFormData.name ? (
+                                        <TextInput
+                                            source={(getSource as (
+                                                arg: string
+                                            ) => string)('role')}
+                                        />
+                                    ) : null
+                                }
+                            </FormDataConsumer>
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        const addItemElement = screen
+            .getByLabelText('ra.action.add')
+            .closest('button') as HTMLButtonElement;
+
+        fireEvent.click(addItemElement);
+        fireEvent.click(screen.getByText('ra.action.save'));
+        await waitFor(() => {
+            expect(save).toHaveBeenCalledWith(
+                {
+                    emails: [{ email: '' }],
+                },
+                expect.anything()
+            );
+        });
     });
 });

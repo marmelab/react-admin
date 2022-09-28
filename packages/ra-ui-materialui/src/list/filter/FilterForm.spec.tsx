@@ -68,7 +68,7 @@ describe('<FilterForm />', () => {
                 />
             </AdminContext>
         );
-        fireEvent.change(screen.queryByLabelText('Title'), {
+        fireEvent.change(screen.queryByLabelText('Title') as Element, {
             target: { value: 'foo' },
         });
         await waitFor(() => {
@@ -164,7 +164,7 @@ describe('<FilterForm />', () => {
                 />
             </AdminContext>
         );
-        fireEvent.change(screen.queryByLabelText('Title'), {
+        fireEvent.change(screen.queryByLabelText('Title') as Element, {
             target: { value: 'foo' },
         });
         await waitFor(() => {

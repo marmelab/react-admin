@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cloneElement, Children, ReactElement, useEffect, useRef } from 'react';
+import { cloneElement, Children, ReactElement, useEffect } from 'react';
 import clsx from 'clsx';
 import {
     isRequired,
@@ -9,14 +9,14 @@ import {
     useApplyInputDefaultValues,
     useGetValidationErrorMessage,
 } from 'ra-core';
-import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 import {
     InputLabel,
     FormControl,
     FormHelperText,
     FormControlProps,
+    styled,
 } from '@mui/material';
-import isEqual from 'lodash/isEqual';
 
 import { LinearProgress } from '../../layout';
 import { CommonInputProps } from '../CommonInputProps';
@@ -84,24 +84,36 @@ export const ArrayInput = (props: ArrayInputProps) => {
         margin = 'dense',
         ...rest
     } = props;
+
     const sanitizedValidate = Array.isArray(validate)
         ? composeSyncValidators(validate)
         : validate;
     const getValidationErrorMessage = useGetValidationErrorMessage();
 
-    const fieldProps = useFieldArray({
-        name: source,
-    });
-
     const {
         getFieldState,
-        clearErrors,
         formState,
         getValues,
         register,
-        setError,
         unregister,
     } = useFormContext();
+
+    const fieldProps = useFieldArray({
+        name: source,
+        rules: {
+            validate: async value => {
+                if (!sanitizedValidate) return true;
+                const error = await sanitizedValidate(
+                    value,
+                    getValues(),
+                    props
+                );
+
+                if (!error) return true;
+                return getValidationErrorMessage(error);
+            },
+        },
+    });
 
     const { isSubmitted } = formState;
 
@@ -116,43 +128,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
 
     useApplyInputDefaultValues(props);
 
-    const value = useWatch({ name: source });
-    const { isDirty, invalid, error } = getFieldState(source, formState);
-
-    // As react-hook-form does not handle validation on the array itself,
-    // we need to do it manually
-    const errorRef = useRef(null);
-    useEffect(() => {
-        const applyValidation = async () => {
-            const newError = await sanitizedValidate(value, getValues(), props);
-            if (newError && !isEqual(errorRef.current, newError)) {
-                errorRef.current = newError;
-                setError(source, {
-                    type: 'manual',
-                    message: getValidationErrorMessage(newError),
-                });
-            }
-
-            if (!newError && error) {
-                errorRef.current = null;
-                clearErrors(source);
-            }
-        };
-
-        if (sanitizedValidate) {
-            applyValidation();
-        }
-    }, [
-        clearErrors,
-        error,
-        sanitizedValidate,
-        value,
-        getValues,
-        props,
-        setError,
-        source,
-        getValidationErrorMessage,
-    ]);
+    const { isDirty, error } = getFieldState(source, formState);
 
     if (isLoading) {
         return (
@@ -163,17 +139,23 @@ export const ArrayInput = (props: ArrayInputProps) => {
     }
 
     return (
-        <FormControl
+        <Root
             fullWidth
             margin={margin}
-            className={clsx('ra-input', `ra-input-${source}`, className)}
-            error={(isDirty || isSubmitted) && invalid}
+            className={clsx(
+                'ra-input',
+                `ra-input-${source}`,
+                ArrayInputClasses.root,
+                className
+            )}
+            error={(isDirty || isSubmitted) && !!error}
             {...sanitizeInputRestProps(rest)}
         >
             <InputLabel
                 htmlFor={source}
+                className={ArrayInputClasses.label}
                 shrink
-                error={(isDirty || isSubmitted) && invalid}
+                error={(isDirty || isSubmitted) && !!error}
             >
                 <FieldTitle
                     label={label}
@@ -193,22 +175,26 @@ export const ArrayInput = (props: ArrayInputProps) => {
                     disabled,
                 })}
             </ArrayInputContext.Provider>
-            {!!((isDirty || isSubmitted) && invalid) || helperText ? (
-                <FormHelperText error={(isDirty || isSubmitted) && invalid}>
+            {!!((isDirty || isSubmitted) && !!error) || helperText ? (
+                <FormHelperText error={(isDirty || isSubmitted) && !!error}>
                     <InputHelperText
                         touched={isDirty || isSubmitted}
-                        error={error?.message}
+                        // root property is applicable to built-in validation only,
+                        // Resolvers are yet to support useFieldArray root level validation.
+                        // Reference: https://react-hook-form.com/api/usefieldarray
+                        error={
+                            error.root ? error.root?.message : error?.message
+                        }
                         helperText={helperText}
                     />
                 </FormHelperText>
             ) : null}
-        </FormControl>
+        </Root>
     );
 };
 
 ArrayInput.defaultProps = {
     options: {},
-    fullWidth: true,
 };
 
 export const getArrayInputError = error => {
@@ -228,3 +214,26 @@ export interface ArrayInputProps
     isLoading?: boolean;
     record?: Partial<RaRecord>;
 }
+
+const PREFIX = 'RaArrayInput';
+
+export const ArrayInputClasses = {
+    root: `${PREFIX}-root`,
+    label: `${PREFIX}-label`,
+};
+
+const Root = styled(FormControl, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    marginTop: 0,
+    [`& .${ArrayInputClasses.label}`]: {
+        position: 'relative',
+        top: theme.spacing(0.5),
+        left: theme.spacing(-1.5),
+    },
+    [`& .${ArrayInputClasses.root}`]: {
+        // nested ArrayInput
+        paddingLeft: theme.spacing(2),
+    },
+}));

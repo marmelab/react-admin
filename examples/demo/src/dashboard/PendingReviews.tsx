@@ -19,6 +19,8 @@ import {
     useIsDataLoaded,
 } from 'react-admin';
 
+import { stringify } from 'query-string';
+
 import CardWithIcon from './CardWithIcon';
 import StarRatingField from '../reviews/StarRatingField';
 import { Customer, Review } from '../types';
@@ -43,7 +45,12 @@ const PendingReviews = () => {
 
     return (
         <CardWithIcon
-            to="/reviews"
+            to={{
+                pathname: '/reviews',
+                search: stringify({
+                    filter: JSON.stringify({ status: 'pending' }),
+                }),
+            }}
             icon={CommentIcon}
             title={translate('pos.dashboard.pending_reviews')}
             subtitle={total}

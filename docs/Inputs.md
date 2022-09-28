@@ -213,7 +213,7 @@ form input value (string) ---> parse ---> form state value
     parse={v => parseFloat(v) / 100}
 ```
 
-`parse` often comes in pair with [`format`](#format) to transform the form value value before passing it to the input. See the [Transforming Input Value](#transforming-input-value-tofrom-record) section for more details.
+`parse` often comes in pair with [`format`](#format) to transform the form value before passing it to the input. See the [Transforming Input Value](#transforming-input-value-tofrom-record) section for more details.
 
 ## `source`
 
@@ -331,7 +331,22 @@ Mnemonic for the two functions:
 - `parse()`: input -> record
 - `format()`: record -> input
 
-Say the user would like to input values of 0-100 to a percentage field but your API (hence record) expects 0-1.0. You can use simple `parse()` and `format()` functions to archive the transform:
+A common usage for this feature is to strip empty strings from the record before saving it to the API. As a reminder, HTML form inputs always return strings, even for numbers and booleans. So the empty value for a text input is the empty string, not `null` or `undefined`. Leveraging `parse` allows you to transform the empty string to `null` before saving the record.
+
+```jsx
+import { TextInput } from 'react-admin';
+
+const TextInputWithNullEmptyValue = props => (
+    <TextInput
+        {...props}
+        parse={ v =>  v === '' ? null : v }
+    />
+);
+
+export default TextInputWithNullEmptyValue;
+```
+
+Let's look at another usage example. Say the user would like to input values of 0-100 to a percentage field but your API (hence record) expects 0-1.0. You can use simple `parse()` and `format()` functions to archive the transform:
 
 ```jsx
 <NumberInput source="percent" format={v => v * 100} parse={v => parseFloat(v) / 100} label="Formatted number" />
@@ -380,7 +395,7 @@ const dateParser = value => {
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
 
-React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form [useWatch](https://react-hook-form.com/api/usewatch) hook.
+React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://react-hook-form.com/api/usewatch) hook.
 
 ```jsx
 import * as React from 'react';
@@ -397,8 +412,6 @@ const toChoices = items => items.map(item => ({ id: item, name: item }));
 
 const CityInput = props => {
     const country = useWatch({ name: 'country' });
-    const values = getValues();
-
     return (
         <SelectInput
             choices={country ? toChoices(cities[country]) : []}
@@ -497,7 +510,7 @@ import { FormDataConsumer } from 'react-admin';
 
  const PostEdit = () => (
      <Edit>
-         <SimpleForm>
+         <SimpleForm shouldUnregister>
              <BooleanInput source="hasEmail" />
              <FormDataConsumer>
                  {({ formData, ...rest }) => formData.hasEmail &&
@@ -509,11 +522,13 @@ import { FormDataConsumer } from 'react-admin';
  );
 ```
 
+**Note**: By default, `react-hook-form` submits values of unmounted input components. In the above example, the `shouldUnregister` prop of the `<SimpleForm>` component prevents that from happening. That way, when end users hide an input, its value isn't included in the submitted data.
+
 ## Overriding The Input Variant
 
 MUI offers [3 variants for text fields](https://mui.com/material-ui/react-text-field/#basic-textfield): `outlined`, `filled`, and `standard`. The default react-admin theme uses the `filled` variant.
 
-Most Input components pass their additional props down to the root component, which is often an MUI Field component. This means you can pass a `variant` prop to override the varaint of a single input:
+Most Input components pass their additional props down to the root component, which is often an MUI Field component. This means you can pass a `variant` prop to override the variant of a single input:
 
 ```jsx
 <TextInput source="name" variant="outlined" />

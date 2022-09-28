@@ -1,6 +1,5 @@
 import React, {
     Children,
-    cloneElement,
     isValidElement,
     ReactElement,
     ReactNode,
@@ -10,7 +9,12 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { useDropzone, DropzoneOptions } from 'react-dropzone';
 import FormHelperText from '@mui/material/FormHelperText';
-import { useInput, useTranslate, shallowEqual } from 'ra-core';
+import {
+    useInput,
+    useTranslate,
+    shallowEqual,
+    RecordContextProvider,
+} from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
 import { Labeled } from '../Labeled';
@@ -52,19 +56,12 @@ export const FileInput = (props: FileInputProps) => {
             return file;
         }
 
-        const { source, title } = (Children.only(children) as ReactElement<
-            any
-        >).props;
-
         const preview = URL.createObjectURL(file);
         const transformedFile = {
             rawFile: file,
-            [source]: preview,
+            src: preview,
+            title: file.name,
         };
-
-        if (title) {
-            transformedFile[title] = file.name;
-        }
 
         return transformedFile;
     };
@@ -94,7 +91,7 @@ export const FileInput = (props: FileInputProps) => {
         validate,
         ...rest,
     });
-    const { isTouched, error } = fieldState;
+    const { isTouched, error, invalid } = fieldState;
     const files = value ? (Array.isArray(value) ? value : [value]) : [];
 
     const onDrop = (newFiles, rejectedFiles, event) => {
@@ -155,6 +152,7 @@ export const FileInput = (props: FileInputProps) => {
             source={source}
             resource={resource}
             isRequired={isRequired}
+            color={(isTouched || isSubmitted) && invalid && 'error'}
             {...sanitizeInputRestProps(rest)}
         >
             <>
@@ -179,7 +177,7 @@ export const FileInput = (props: FileInputProps) => {
                         <p>{translate(labelSingle)}</p>
                     )}
                 </div>
-                <FormHelperText>
+                <FormHelperText error={(isTouched || isSubmitted) && invalid}>
                     <InputHelperText
                         touched={isTouched || isSubmitted}
                         error={error?.message}
@@ -195,10 +193,9 @@ export const FileInput = (props: FileInputProps) => {
                                 onRemove={onRemove(file)}
                                 className={FileInputClasses.removeButton}
                             >
-                                {cloneElement(childrenElement as ReactElement, {
-                                    record: file,
-                                    className: FileInputClasses.preview,
-                                })}
+                                <RecordContextProvider value={file}>
+                                    {childrenElement}
+                                </RecordContextProvider>
                             </FileInputPreview>
                         ))}
                     </div>
@@ -214,7 +211,11 @@ FileInput.propTypes = {
     className: PropTypes.string,
     id: PropTypes.string,
     isRequired: PropTypes.bool,
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    label: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.element,
+    ]),
     labelMultiple: PropTypes.string,
     labelSingle: PropTypes.string,
     maxSize: PropTypes.number,
@@ -231,7 +232,6 @@ const PREFIX = 'RaFileInput';
 
 export const FileInputClasses = {
     dropZone: `${PREFIX}-dropZone`,
-    preview: `${PREFIX}-preview`,
     removeButton: `${PREFIX}-removeButton`,
 };
 
@@ -249,7 +249,6 @@ const StyledLabeled = styled(Labeled, {
         textAlign: 'center',
         color: theme.palette.getContrastText(theme.palette.background.default),
     },
-    [`& .${FileInputClasses.preview}`]: {},
     [`& .${FileInputClasses.removeButton}`]: {},
 }));
 

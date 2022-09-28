@@ -5,33 +5,32 @@ import {
     useReferenceInputController,
     InputProps,
     ResourceContextProvider,
+    UseReferenceInputControllerParams,
 } from 'ra-core';
 
-import { ReferenceError } from './ReferenceError';
+import { AutocompleteInput } from './AutocompleteInput';
 
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
  *
  * This component fetches the possible values in the reference resource
- * (using `dataProvider.getList()`), then delegates rendering
- * to a subcomponent, to which it passes the possible choices
- * as the `choices` attribute.
+ * (using `dataProvider.getList()`), then renders an `<AutocompleteInput>`,
+ * to which it passes the possible choices via a `ChoicesContext`.
  *
- * Use it with a selector component as child, like `<AutocompleteInput>`,
- * `<SelectInput>`, or `<RadioButtonGroupInput>`.
+ * You can pass a child select component to customize the way the reference
+ * selector is displayed (e.g. using `<SelectInput>` or `<RadioButtonGroupInput>`
+ * instead of `<AutocompleteInput>`).
  *
- * @example
+ * @example // default selector: AutocompleteInput
  * export const CommentEdit = (props) => (
  *     <Edit {...props}>
  *         <SimpleForm>
- *             <ReferenceInput label="Post" source="post_id" reference="posts">
- *                 <AutocompleteInput optionText="title" />
- *             </ReferenceInput>
+ *             <ReferenceInput label="Post" source="post_id" reference="posts" />
  *         </SimpleForm>
  *     </Edit>
  * );
  *
- * @example
+ * @example // using a SelectInput as selector
  * export const CommentEdit = (props) => (
  *     <Edit {...props}>
  *         <SimpleForm>
@@ -46,12 +45,7 @@ import { ReferenceError } from './ReferenceError';
  * by setting the `perPage` prop.
  *
  * @example
- * <ReferenceInput
- *      source="post_id"
- *      reference="posts"
- *      perPage={100}>
- *     <SelectInput optionText="title" />
- * </ReferenceInput>
+ * <ReferenceInput source="post_id" reference="posts" perPage={100}/>
  *
  * By default, orders the possible values by id desc. You can change this order
  * by setting the `sort` prop (an object with `field` and `order` properties).
@@ -60,9 +54,8 @@ import { ReferenceError } from './ReferenceError';
  * <ReferenceInput
  *      source="post_id"
  *      reference="posts"
- *      sort={{ field: 'title', order: 'ASC' }}>
- *     <SelectInput optionText="title" />
- * </ReferenceInput>
+ *      sort={{ field: 'title', order: 'ASC' }}
+ * />
  *
  * Also, you can filter the query used to populate the possible values. Use the
  * `filter` prop for that.
@@ -71,26 +64,19 @@ import { ReferenceError } from './ReferenceError';
  * <ReferenceInput
  *      source="post_id"
  *      reference="posts"
- *      filter={{ is_published: true }}>
- *     <SelectInput optionText="title" />
- * </ReferenceInput>
+ *      filter={{ is_published: true }}
+ * />
  *
  * The enclosed component may filter results. ReferenceInput create a ChoicesContext which provides
  * a `setFilters` function. You can call this function to filter the results.
  */
 export const ReferenceInput = (props: ReferenceInputProps) => {
-    const { children, label, reference } = props;
+    const { children, reference } = props;
 
     const controllerProps = useReferenceInputController(props);
 
     if (Children.count(children) !== 1) {
         throw new Error('<ReferenceInput> only accepts a single child');
-    }
-
-    // This is not a form error but an unrecoverable error from the
-    // useReferenceInputController hook
-    if (controllerProps.error) {
-        return <ReferenceError label={label} error={controllerProps.error} />;
     }
 
     return (
@@ -103,7 +89,7 @@ export const ReferenceInput = (props: ReferenceInputProps) => {
 };
 
 ReferenceInput.propTypes = {
-    children: PropTypes.element.isRequired,
+    children: PropTypes.element,
     filter: PropTypes.object,
     label: PropTypes.string,
     page: PropTypes.number,
@@ -123,17 +109,13 @@ ReferenceInput.defaultProps = {
     page: 1,
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
+    children: <AutocompleteInput />,
 };
 
-export interface ReferenceInputProps extends InputProps {
-    children: ReactElement;
+export interface ReferenceInputProps
+    extends InputProps,
+        UseReferenceInputControllerParams {
+    children?: ReactElement;
     label?: string;
-    page?: number;
-    perPage?: number;
-    reference: string;
-    // @deprecated
-    referenceSource?: (resource: string, source: string) => string;
-    resource?: string;
-    enableGetChoices?: (filters: any) => boolean;
     [key: string]: any;
 }

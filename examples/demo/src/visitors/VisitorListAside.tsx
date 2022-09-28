@@ -4,7 +4,12 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOnOutlined';
 import MailIcon from '@mui/icons-material/MailOutline';
 import LocalOfferIcon from '@mui/icons-material/LocalOfferOutlined';
-import { FilterList, FilterListItem, FilterLiveSearch } from 'react-admin';
+import {
+    FilterList,
+    FilterListItem,
+    FilterLiveSearch,
+    SavedQueriesList,
+} from 'react-admin';
 import {
     endOfYesterday,
     startOfWeek,
@@ -31,6 +36,8 @@ const Aside = () => (
     >
         <CardContent sx={{ pt: 1 }}>
             <FilterLiveSearch />
+
+            <SavedQueriesList />
 
             <FilterList
                 label="resources.customers.filters.last_visited"

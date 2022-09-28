@@ -4,11 +4,16 @@ import {
     CoreAdminContext,
     RecordContextProvider,
     ResourceContextProvider,
+    ResourceDefinitionContextProvider,
     ListContextProvider,
+    useRecordContext,
+    I18nContextProvider,
 } from 'ra-core';
 import { createMemoryHistory } from 'history';
-import { ThemeProvider } from '@mui/material';
+import { ThemeProvider, Stack } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
 
 import { TextField } from '../field';
 import { ReferenceField } from './ReferenceField';
@@ -16,6 +21,25 @@ import { SimpleShowLayout } from '../detail/SimpleShowLayout';
 import { Datagrid } from '../list/datagrid/Datagrid';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceField' };
+
+const i18nProvider = polyglotI18nProvider(
+    _locale => ({
+        ...englishMessages,
+        resources: {
+            books: {
+                name: 'Books',
+                fields: {
+                    id: 'Id',
+                    title: 'Title',
+                    author: 'Author',
+                    year: 'Year',
+                },
+                not_found: 'Not found',
+            },
+        },
+    }),
+    'en'
+);
 
 const history = createMemoryHistory({ initialEntries: ['/books/1/show'] });
 
@@ -76,6 +100,20 @@ export const Empty = () => (
         >
             <TextField source="ISBN" />
         </ReferenceField>
+    </Wrapper>
+);
+
+export const EmptyWithTranslate = () => (
+    <Wrapper record={{ id: 1, title: 'War and Peace' }}>
+        <I18nContextProvider value={i18nProvider}>
+            <ReferenceField
+                source="detail_id"
+                reference="book_details"
+                emptyText="resources.books.not_found"
+            >
+                <TextField source="ISBN" />
+            </ReferenceField>
+        </I18nContextProvider>
     </Wrapper>
 );
 
@@ -238,4 +276,82 @@ export const InDatagrid = () => (
             </ReferenceField>
         </Datagrid>
     </ListWrapper>
+);
+
+const BookDetailsRepresentation = () => {
+    const record = useRecordContext();
+    return (
+        <>
+            <strong>Genre</strong>: {record.genre}, <strong>ISBN</strong>:{' '}
+            {record.ISBN}
+        </>
+    );
+};
+export const RecordRepresentation = () => (
+    <CoreAdminContext dataProvider={defaultDataProvider} history={history}>
+        <ResourceContextProvider value="books">
+            <RecordContextProvider value={defaultRecord}>
+                <Stack spacing={4} direction="row" sx={{ ml: 2 }}>
+                    <div>
+                        <h3>Default</h3>
+                        <ReferenceField
+                            source="detail_id"
+                            reference="book_details"
+                        />
+                    </div>
+                    <div>
+                        <ResourceDefinitionContextProvider
+                            definitions={{
+                                book_details: {
+                                    name: 'book_details',
+                                    recordRepresentation: 'ISBN',
+                                },
+                            }}
+                        >
+                            <h3>String</h3>
+                            <ReferenceField
+                                source="detail_id"
+                                reference="book_details"
+                            />
+                        </ResourceDefinitionContextProvider>
+                    </div>
+                    <div>
+                        <ResourceDefinitionContextProvider
+                            definitions={{
+                                book_details: {
+                                    name: 'book_details',
+                                    recordRepresentation: record =>
+                                        `Genre: ${record.genre}, ISBN: ${record.ISBN}`,
+                                },
+                            }}
+                        >
+                            <h3>Function</h3>
+                            <ReferenceField
+                                source="detail_id"
+                                reference="book_details"
+                            />
+                        </ResourceDefinitionContextProvider>
+                    </div>
+                    <div>
+                        <ResourceDefinitionContextProvider
+                            definitions={{
+                                book_details: {
+                                    name: 'book_details',
+                                    recordRepresentation: (
+                                        <BookDetailsRepresentation />
+                                    ),
+                                },
+                            }}
+                        >
+                            <h3>Element</h3>
+                            <ReferenceField
+                                source="detail_id"
+                                reference="book_details"
+                            />
+                        </ResourceDefinitionContextProvider>
+                    </div>
+                </Stack>
+            </RecordContextProvider>
+        </ResourceContextProvider>
+    </CoreAdminContext>
 );

@@ -47,8 +47,18 @@ export const memoryStore = (storage: any = {}): Store => {
             unset(storage, key);
             publish(key, undefined);
         },
+        removeItems(keyPrefix: string): void {
+            const flatStorage = flatten(storage);
+            Object.keys(flatStorage).forEach(key => {
+                if (key.startsWith(keyPrefix)) {
+                    unset(storage, key);
+                    publish(key, undefined);
+                }
+            });
+        },
         reset(): void {
-            Object.keys(storage).forEach(key => {
+            const flatStorage = flatten(storage);
+            Object.keys(flatStorage).forEach(key => {
                 unset(storage, key);
                 publish(key, undefined);
             });
@@ -64,4 +74,30 @@ export const memoryStore = (storage: any = {}): Store => {
             };
         },
     };
+};
+
+// taken from https://stackoverflow.com/a/19101235/1333479
+const flatten = (data: any) => {
+    var result = {};
+    function doFlatten(current, prop) {
+        if (Object(current) !== current) {
+            // scalar value
+            result[prop] = current;
+        } else if (Array.isArray(current)) {
+            // array
+            for (var i = 0, l = current.length; i < l; i++)
+                doFlatten(current[i], prop + '[' + i + ']');
+            if (l === 0) result[prop] = [];
+        } else {
+            // object
+            var isEmpty = true;
+            for (var p in current) {
+                isEmpty = false;
+                doFlatten(current[p], prop ? prop + '.' + p : p);
+            }
+            if (isEmpty && prop) result[prop] = {};
+        }
+    }
+    doFlatten(data, '');
+    return result;
 };

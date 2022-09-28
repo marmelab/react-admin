@@ -32,8 +32,7 @@ export const PostList = () => (
 
 You can find more advanced examples of `<Datagrid>` usage in the [demos](./Demos.md). 
 
-
-**Tip**: To let users hide or show columns at will, check the [`<SelectColumnsButton>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#selectcolumnsbutton-store-datagrid-columns-in-preferences)<img class="icon" src="./img/premium.svg" />, an [Enterprise Edition](https://marmelab.com/ra-enterprise) component.
+**Tip**: To let users edit the content right in the datagrid, check [`<EditableDatagrid>`](./EditableDatagrid.md)<img class="icon" src="./img/premium.svg" />, an [Enterprise Edition](https://marmelab.com/ra-enterprise) component.
 
 The `<Datagrid>` is an **iterator** component: it gets an array of records from the `ListContext`, and iterates to display each record in a row. Other examples of iterator component are [`<SimpleList>`](./SimpleList.md) and [`<SingleFieldList>`](./SingleFieldList.md).
 

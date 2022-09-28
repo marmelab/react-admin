@@ -58,4 +58,15 @@ describe('localStorageStore', () => {
         fireEvent.click(screen.getByText('update'));
         screen.getByText('hello');
     });
+
+    it('should keep two version of the same key on two stores differing bey their appKey', () => {
+        const store1 = localStorageStore(undefined, 'app1');
+        const store2 = localStorageStore(undefined, 'app2');
+
+        store1.setItem('foo', 'app1');
+        store2.setItem('foo', 'app2');
+
+        expect(store1.getItem('foo')).toBe('app1');
+        expect(store2.getItem('foo')).toBe('app2');
+    });
 });

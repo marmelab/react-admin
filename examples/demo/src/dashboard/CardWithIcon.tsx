@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC, createElement } from 'react';
 import { Card, Box, Typography, Divider } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, To } from 'react-router-dom';
 import { ReactNode } from 'react';
 
 import cartouche from './cartouche.png';
@@ -9,7 +9,7 @@ import cartoucheDark from './cartoucheDark.png';
 
 interface Props {
     icon: FC<any>;
-    to: string;
+    to: To;
     title?: string;
     subtitle?: string | number;
     children?: ReactNode;

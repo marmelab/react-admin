@@ -106,7 +106,13 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         ...rest
     } = props;
 
-    const { allChoices, isLoading, resource, source } = useChoicesContext({
+    const {
+        allChoices,
+        isLoading,
+        error: fetchError,
+        resource,
+        source,
+    } = useChoicesContext({
         choices: choicesProp,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
@@ -157,7 +163,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
             component="fieldset"
             className={clsx('ra-input', `ra-input-${source}`, className)}
             margin={margin}
-            error={(isTouched || isSubmitted) && invalid}
+            error={fetchError || ((isTouched || isSubmitted) && invalid)}
             {...sanitizeRestProps(rest)}
         >
             <FormLabel
@@ -191,8 +197,8 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
             </RadioGroup>
             <FormHelperText>
                 <InputHelperText
-                    touched={isTouched || isSubmitted}
-                    error={error?.message}
+                    touched={isTouched || isSubmitted || fetchError}
+                    error={error?.message || fetchError?.message}
                     helperText={helperText}
                 />
             </FormHelperText>
@@ -202,7 +208,11 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
 
 RadioButtonGroupInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.any),
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    label: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.element,
+    ]),
     options: PropTypes.object,
     optionText: PropTypes.oneOfType([
         PropTypes.string,

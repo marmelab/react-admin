@@ -50,9 +50,12 @@ describe('<DateInput />', () => {
         });
         fireEvent.click(screen.getByLabelText('ra.action.save'));
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({
-                publishedAt: '2021-10-22',
-            });
+            expect(onSubmit).toHaveBeenCalledWith(
+                {
+                    publishedAt: '2021-10-22',
+                },
+                expect.anything()
+            );
         });
     });
 
@@ -77,9 +80,12 @@ describe('<DateInput />', () => {
         });
         fireEvent.click(screen.getByLabelText('ra.action.save'));
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({
-                publishedAt: '2021-10-22',
-            });
+            expect(onSubmit).toHaveBeenCalledWith(
+                {
+                    publishedAt: '2021-10-22',
+                },
+                expect.anything()
+            );
         });
     });
 
@@ -104,9 +110,12 @@ describe('<DateInput />', () => {
         });
         fireEvent.click(screen.getByLabelText('ra.action.save'));
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({
-                publishedAt: '2021-10-22',
-            });
+            expect(onSubmit).toHaveBeenCalledWith(
+                {
+                    publishedAt: '2021-10-22',
+                },
+                expect.anything()
+            );
         });
     });
 
@@ -131,9 +140,12 @@ describe('<DateInput />', () => {
         });
         fireEvent.click(screen.getByLabelText('ra.action.save'));
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({
-                publishedAt: new Date('2021-10-22'),
-            });
+            expect(onSubmit).toHaveBeenCalledWith(
+                {
+                    publishedAt: new Date('2021-10-22'),
+                },
+                expect.anything()
+            );
         });
     });
 
@@ -158,9 +170,12 @@ describe('<DateInput />', () => {
         });
         fireEvent.click(screen.getByLabelText('ra.action.save'));
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({
-                publishedAt: null,
-            });
+            expect(onSubmit).toHaveBeenCalledWith(
+                {
+                    publishedAt: null,
+                },
+                expect.anything()
+            );
         });
     });
 

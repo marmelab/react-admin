@@ -256,6 +256,11 @@ export const PostEdit = () => (
 );
 ```
 
+**Tip**: MUI will only adds the scroll buttons if there isn't enough space to display all the tabs. That can only happen if the Tabs containers have a fixed width.
+The solution here is to set a max width on one of the following components:
+* the Edit or Create
+* the TabbedForm 
+
 ## `toolbar`
 
 By default, `<TabbedForm>` renders a toolbar at the bottom of the form, containing:
@@ -473,6 +478,41 @@ const ProductEdit = () => (
 ```
 
 **Tip**: React-admin renders each tab *twice*: once to get the tab header, and once to get the tab content. If you use a custom component instead of a `<FormTab>`, make sure that it accepts an `intent` prop, and renders differently when the value of that prop is 'header' or 'content'.
+
+## Cleaning Up Empty Strings
+
+As a reminder, HTML form inputs always return strings, even for numbers and booleans. So the empty value for a text input is the empty string, not `null` or `undefined`. This means that the data sent to the form handler will contain empty strings:
+
+```js
+{
+    title: '',
+    average_note: '',
+    body: '',
+    // etc.
+}
+```
+
+If you prefer to have `null` values, or to omit the key for empty values, use `transform` prop of the parent component ([`<Edit>`](./Edit.md#transform) or [`<Create>`](./Create.md#transform)) to sanitize the form data before passing it to the `dataProvider`:
+
+```jsx
+export const UserEdit = (props) => {
+    const transform = (data) => {
+        const sanitizedData = {};
+        for (const key in data) {
+            if (typeof data[key] === "string" && data[key].trim().length === 0) continue;
+            sanitizedData[key] = data[key]; 
+        }
+        return sanitizedData;
+    };
+    return (
+        <Edit {...props} transform={transform}>
+            <TabbedForm>
+                ...
+            </TabbedForm>
+        </Edit>
+    );
+}
+```
 
 ## Using Fields As FormTab Children
 

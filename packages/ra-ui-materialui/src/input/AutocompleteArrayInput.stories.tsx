@@ -320,13 +320,13 @@ const BookEditWithReference = () => (
     >
         <SimpleForm>
             <ReferenceArrayInput reference="authors" source="author">
-                <AutocompleteArrayInput fullWidth />
+                <AutocompleteArrayInput fullWidth optionText="name" />
             </ReferenceArrayInput>
         </SimpleForm>
     </Edit>
 );
 
-export const InsideReferenceInput = () => (
+export const InsideReferenceArrayInput = () => (
     <Admin dataProvider={dataProviderWithAuthors} history={history}>
         <Resource name="authors" />
         <Resource name="books" edit={BookEditWithReference} />
@@ -400,13 +400,17 @@ const BookEditWithReferenceAndCreationSupport = () => (
     >
         <SimpleForm>
             <ReferenceArrayInput reference="authors" source="author">
-                <AutocompleteArrayInput create={<CreateAuthor />} fullWidth />
+                <AutocompleteArrayInput
+                    create={<CreateAuthor />}
+                    fullWidth
+                    optionText="name"
+                />
             </ReferenceArrayInput>
         </SimpleForm>
     </Edit>
 );
 
-export const InsideReferenceInputWithCreationSupport = () => (
+export const InsideReferenceArrayInputWithCreationSupport = () => (
     <Admin dataProvider={dataProviderWithAuthors} history={history}>
         <Resource name="authors" />
         <Resource name="books" edit={BookEditWithReferenceAndCreationSupport} />

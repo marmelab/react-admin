@@ -5,6 +5,7 @@ import expect from 'expect';
 import { testDataProvider } from './testDataProvider';
 import { CoreAdminContext } from '../core';
 import { useUpdateMany } from './useUpdateMany';
+import { QueryClient } from 'react-query';
 
 describe('useUpdateMany', () => {
     it('returns a callback that can be used with update arguments', async () => {
@@ -111,6 +112,111 @@ describe('useUpdateMany', () => {
                 ids: [1, 2],
                 data: { bar: 'baz' },
                 meta: { hello: 'world' },
+            });
+        });
+    });
+
+    describe('query cache', () => {
+        it('updates getList query cache when dataProvider promise resolves', async () => {
+            const queryClient = new QueryClient();
+            queryClient.setQueryData(['foo', 'getList'], {
+                data: [
+                    { id: 1, bar: 'bar' },
+                    { id: 2, bar: 'bar' },
+                ],
+                total: 2,
+            });
+            const dataProvider = {
+                updateMany: jest.fn(() =>
+                    Promise.resolve({ data: [1, 2] } as any)
+                ),
+            } as any;
+            let localUpdateMany;
+            const Dummy = () => {
+                const [updateMany] = useUpdateMany('foo', {
+                    ids: [1, 2],
+                    data: { bar: 'baz' },
+                });
+                localUpdateMany = updateMany;
+                return <span />;
+            };
+            render(
+                <CoreAdminContext
+                    dataProvider={dataProvider}
+                    queryClient={queryClient}
+                >
+                    <Dummy />
+                </CoreAdminContext>
+            );
+            localUpdateMany('foo', { ids: [1, 2], data: { bar: 'baz' } });
+            await waitFor(() => {
+                expect(dataProvider.updateMany).toHaveBeenCalledWith('foo', {
+                    ids: [1, 2],
+                    data: { bar: 'baz' },
+                });
+            });
+            await waitFor(() => {
+                expect(queryClient.getQueryData(['foo', 'getList'])).toEqual({
+                    data: [
+                        { id: 1, bar: 'baz' },
+                        { id: 2, bar: 'baz' },
+                    ],
+                    total: 2,
+                });
+            });
+        });
+        it('updates getList query cache with pageInfo when dataProvider promise resolves', async () => {
+            const queryClient = new QueryClient();
+            queryClient.setQueryData(['foo', 'getList'], {
+                data: [
+                    { id: 1, bar: 'bar' },
+                    { id: 2, bar: 'bar' },
+                ],
+                pageInfo: {
+                    hasPreviousPage: false,
+                    hasNextPage: true,
+                },
+            });
+            const dataProvider = {
+                updateMany: jest.fn(() =>
+                    Promise.resolve({ data: [1, 2] } as any)
+                ),
+            } as any;
+            let localUpdateMany;
+            const Dummy = () => {
+                const [updateMany] = useUpdateMany('foo', {
+                    ids: [1, 2],
+                    data: { bar: 'baz' },
+                });
+                localUpdateMany = updateMany;
+                return <span />;
+            };
+            render(
+                <CoreAdminContext
+                    dataProvider={dataProvider}
+                    queryClient={queryClient}
+                >
+                    <Dummy />
+                </CoreAdminContext>
+            );
+            localUpdateMany('foo', { ids: [1, 2], data: { bar: 'baz' } });
+            await waitFor(() => {
+                expect(dataProvider.updateMany).toHaveBeenCalledWith('foo', {
+                    ids: [1, 2],
+                    data: { bar: 'baz' },
+                });
+            });
+            await waitFor(() => {
+                expect(queryClient.getQueryData(['foo', 'getList'])).toEqual({
+                    data: [
+                        { id: 1, bar: 'baz' },
+                        { id: 2, bar: 'baz' },
+                    ],
+                    pageInfo: {
+                        hasPreviousPage: false,
+                        hasNextPage: true,
+                    },
+                });
             });
         });
     });

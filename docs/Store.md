@@ -120,7 +120,7 @@ To create a Store with a different version number, call the `localStorageStore()
 ```jsx
 import { Admin, Resource, localStorageStore } from 'react-admin';
 
-const STORE_VERSION = 2
+const STORE_VERSION = 2;
 
 const App = () => (
     <Admin dataProvider={dataProvider} store={localStorageStore(STORE_VERSION)}>
@@ -130,6 +130,23 @@ const App = () => (
 ```
 
 Increase the version number each time you push code that isn't compatible with the stored values. 
+
+## Share/separate Store data between same domain instances
+
+If you are running multiple instances of react-admin on the same domain, you can distinguish their stored objects by defining different application keys. By default, the application key is empty to allow configuration sharing between instances.
+
+```jsx
+import { Admin, Resource, localStorageStore } from 'react-admin';
+
+const APP_KEY = 'blog';
+
+const App = () => (
+    <Admin dataProvider={dataProvider} store={localStorageStore(undefined, APP_KEY)}>
+        <Resource name="posts" />
+    </Admin>
+);
+```
+
 
 ## Transient Store
 

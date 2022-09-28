@@ -100,6 +100,7 @@ export const CoreAdmin = (props: CoreAdminProps) => {
         menu, // deprecated, use a custom layout instead
         ready,
         requireAuth,
+        store,
         title = 'React Admin',
     } = props;
     return (
@@ -110,6 +111,7 @@ export const CoreAdmin = (props: CoreAdminProps) => {
             i18nProvider={i18nProvider}
             queryClient={queryClient}
             history={history}
+            store={store}
         >
             <CoreAdminUI
                 layout={layout}

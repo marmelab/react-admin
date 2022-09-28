@@ -9,6 +9,7 @@ import { TextInput } from '../TextInput';
 import { ArrayInput } from './ArrayInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
 import { useFormContext } from 'react-hook-form';
+import { GlobalValidation } from './ArrayInput.stories';
 
 describe('<ArrayInput />', () => {
     it('should pass its record props to its child', async () => {
@@ -162,12 +163,12 @@ describe('<ArrayInput />', () => {
             </AdminContext>
         );
 
-        fireEvent.click(screen.getByText('ra.action.add'));
+        fireEvent.click(screen.getByLabelText('ra.action.add'));
         fireEvent.click(screen.getByText('ra.action.save'));
         await waitFor(() => {
             expect(screen.queryByText('array_min_length')).not.toBeNull();
         });
-        fireEvent.click(screen.getByText('ra.action.add'));
+        fireEvent.click(screen.getByLabelText('ra.action.add'));
         const firstId = screen.getAllByLabelText(
             'resources.bar.fields.arr.id *'
         )[0];
@@ -206,16 +207,14 @@ describe('<ArrayInput />', () => {
 
             setArrayInputVisible = setVisible;
 
-            return (
-                visible && (
-                    <ArrayInput resource="bar" source="arr">
-                        <SimpleFormIterator>
-                            <TextInput source="id" />
-                            <TextInput source="foo" />
-                        </SimpleFormIterator>
-                    </ArrayInput>
-                )
-            );
+            return visible ? (
+                <ArrayInput resource="bar" source="arr">
+                    <SimpleFormIterator>
+                        <TextInput source="id" />
+                        <TextInput source="foo" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            ) : null;
         };
 
         render(
@@ -248,6 +247,47 @@ describe('<ArrayInput />', () => {
                 { id: 1, foo: 'bar' },
                 { id: 2, foo: 'baz' },
             ]);
+        });
+    });
+
+    describe('used within a form with global validation', () => {
+        it('should display an error if the array is required and empty', async () => {
+            render(<GlobalValidation />);
+            await screen.findByDisplayValue('Leo Tolstoy');
+            const RemoveButtons = screen.getAllByLabelText('Remove');
+            fireEvent.click(RemoveButtons[1]);
+            fireEvent.click(RemoveButtons[0]);
+            const SaveButton = screen.getByText('Save');
+            fireEvent.click(SaveButton);
+            await screen.findByText(
+                'The form is not valid. Please check for errors'
+            );
+        });
+        it('should display an error if one of the required field is empty', async () => {
+            render(<GlobalValidation />);
+            await screen.findByDisplayValue('Leo Tolstoy');
+            fireEvent.change(screen.queryAllByLabelText('Name *')[0], {
+                target: { value: '' },
+            });
+            const SaveButton = screen.getByText('Save');
+            fireEvent.click(SaveButton);
+            await screen.findByText('A name is required');
+        });
+        it('should clear the error right after it has been fixed after submission', async () => {
+            render(<GlobalValidation />);
+            await screen.findByDisplayValue('Leo Tolstoy');
+            fireEvent.change(screen.queryAllByLabelText('Name *')[0], {
+                target: { value: '' },
+            });
+            const SaveButton = screen.getByText('Save');
+            fireEvent.click(SaveButton);
+            await screen.findByText('A name is required');
+            fireEvent.change(screen.queryAllByLabelText('Name *')[0], {
+                target: { value: 'Leo Dicaprio' },
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('A name is required')).toBeNull();
+            });
         });
     });
 });

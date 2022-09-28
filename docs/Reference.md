@@ -17,8 +17,8 @@ title: "Reference"
 * [`<Authenticated>`](./Authenticated.md)
 * [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md)
 * [`<AutocompleteInput>`](./AutocompleteInput.md)
-* [`<Breadcrumb>`](https://marmelab.com/ra-enterprise/modules/ra-navigation#breadcrumb-adding-a-breadcrumb-path-to-every-page)<img class="icon" src="./img/premium.svg" />
-* [`<BreadcrumbItem>`](https://marmelab.com/ra-enterprise/modules/ra-navigation#the-breadcrumbitem-component)<img class="icon" src="./img/premium.svg" />
+* [`<Breadcrumb>`](./Breadcrumb.md)<img class="icon" src="./img/premium.svg" />
+* [`<BreadcrumbItem>`](./Breadcrumb.md#breadcrumbitem)<img class="icon" src="./img/premium.svg" />
 * [`<BooleanField>`](./BooleanField.md)
 * [`<BooleanInput>`](./BooleanInput.md)
 * [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton)
@@ -65,6 +65,7 @@ title: "Reference"
 * [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs)
 * [`<FormTab>`](./TabbedForm.md)
 * [`<FunctionField>`](./FunctionField.md)
+* [`<IfCanAccess>`](./IfCanAccess.md)<img class="icon" src="./img/premium.svg" />
 * [`<ImageField>`](./ImageField.md)
 * [`<ImageInput>`](./ImageInput.md)
 * [`<ImageInputPreview>`](./ImageInput.md#imageinput)
@@ -100,6 +101,7 @@ title: "Reference"
 * [`<ReferenceField>`](./ReferenceField.md)
 * [`<ReferenceInput>`](./ReferenceInput.md)
 * [`<ReferenceManyField>`](./ReferenceManyField.md)
+* [`<ReferenceManyInput>`](./ReferenceManyInput.md)<img class="icon" src="./img/premium.svg" />
 * [`<ReferenceManyToManyField>`](https://marmelab.com/ra-enterprise/modules/ra-relationships#referencemanytomanyfield)<img class="icon" src="./img/premium.svg" />
 * [`<ReferenceManyToManyInput>`](https://marmelab.com/ra-enterprise/modules/ra-relationships#referencemanytomanyinput)<img class="icon" src="./img/premium.svg" />
 * [`<ReferenceOneField>`](./ReferenceOneField.md)
@@ -142,7 +144,7 @@ title: "Reference"
 * `<TopToolbar>`
 * [`<UrlField>`](./UrlField.md)
 * [`<UserMenu>`](./Theming.md#usermenu-customization)
-* [`<WithPermissions>`](./WithPermissions.md)<img class="icon" src="./img/premium.svg" />
+* [`<WithPermissions>`](./WithPermissions.md)
 * [`<WithRecord>`](./WithRecord.md)
 * [`<WizardForm>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#wizardform)<img class="icon" src="./img/premium.svg" />
 * [`useAppLocationState`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useapplocationstate-retrieve-and-define-app-location)<img class="icon" src="./img/premium.svg" />

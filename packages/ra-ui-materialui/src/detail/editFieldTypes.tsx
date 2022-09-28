@@ -74,15 +74,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             props: ReferenceInputProps,
             children: InferredElement
         ) =>
-            `<ReferenceInput source="${props.source}" reference="${
-                props.reference
-            }">${children.getRepresentation()}</ReferenceInput>`,
-    },
-    referenceChild: {
-        component: (props: { children: ReactNode } & InputProps) => (
-            <SelectInput optionText="id" {...props} />
-        ), // eslint-disable-line react/display-name
-        representation: () => `<SelectInput optionText="id" />`,
+            `<ReferenceInput source="${props.source}" reference="${props.reference}" />`,
     },
     referenceArray: {
         component: ReferenceArrayInput,

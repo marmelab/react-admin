@@ -16,7 +16,6 @@ import {
     usePermissions,
 } from 'react-admin';
 
-import UserTitle from './UserTitle';
 import Aside from './Aside';
 
 /**
@@ -92,7 +91,7 @@ const UserEditForm = ({ save, ...props }: { save?: any }) => {
 };
 const UserEdit = () => {
     return (
-        <Edit title={<UserTitle />} aside={<Aside />} actions={<EditActions />}>
+        <Edit aside={<Aside />} actions={<EditActions />}>
             <UserEditForm />
         </Edit>
     );

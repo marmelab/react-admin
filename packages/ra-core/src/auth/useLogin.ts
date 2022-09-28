@@ -46,10 +46,16 @@ const useLogin = (): Login => {
         (params: any = {}, pathName) =>
             authProvider.login(params).then(ret => {
                 resetNotifications();
-                const redirectUrl = pathName
-                    ? pathName
-                    : nextPathName + nextSearch || afterLoginUrl;
-                navigate(redirectUrl);
+                if (ret && ret.hasOwnProperty('redirectTo')) {
+                    if (ret) {
+                        navigate(ret.redirectTo);
+                    }
+                } else {
+                    const redirectUrl = pathName
+                        ? pathName
+                        : nextPathName + nextSearch || afterLoginUrl;
+                    navigate(redirectUrl);
+                }
                 return ret;
             }),
         [

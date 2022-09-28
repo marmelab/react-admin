@@ -24,7 +24,12 @@ import { AddSavedQueryDialog } from './AddSavedQueryDialog';
 import { RemoveSavedQueryDialog } from './RemoveSavedQueryDialog';
 
 export const FilterButton = (props: FilterButtonProps): JSX.Element => {
-    const { filters: filtersProp, className, ...rest } = props;
+    const {
+        filters: filtersProp,
+        className,
+        disableSaveQuery,
+        ...rest
+    } = props;
     const filters = useContext(FilterContext) || filtersProp;
     const resource = useResourceContext(props);
     const translate = useTranslate();
@@ -34,10 +39,12 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
         displayedFilters = {},
         filterValues,
         perPage,
+        setFilters,
         showFilter,
         sort,
     } = useListContext(props);
     const hasFilterValues = !isEqual(filterValues, {});
+    const hasDisplayedFilters = !isEqual(displayedFilters, {});
     const validSavedQueries = extractValidSavedQueries(savedQueries);
     const hasSavedCurrentQuery = validSavedQueries.some(savedQuery =>
         isEqual(savedQuery.value, {
@@ -184,22 +191,33 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
                         </MenuItem>
                     )
                 )}
-                {hasFilterValues && !hasSavedCurrentQuery ? (
+                {hasFilterValues && !hasSavedCurrentQuery && !disableSaveQuery && (
                     <MenuItem onClick={showAddSavedQueryDialog}>
                         {translate('ra.saved_queries.new_label', {
                             _: 'Save current query...',
                         })}
                     </MenuItem>
-                ) : null}
+                )}
+                {hasDisplayedFilters && (
+                    <MenuItem onClick={() => setFilters({}, {}, false)}>
+                        {translate('ra.action.remove_all_filters', {
+                            _: 'Remove all filters',
+                        })}
+                    </MenuItem>
+                )}
             </Menu>
-            <AddSavedQueryDialog
-                open={addSavedQueryDialogOpen}
-                onClose={hideAddSavedQueryDialog}
-            />
-            <RemoveSavedQueryDialog
-                open={removeSavedQueryDialogOpen}
-                onClose={hideRemoveSavedQueryDialog}
-            />
+            {!disableSaveQuery && (
+                <>
+                    <AddSavedQueryDialog
+                        open={addSavedQueryDialogOpen}
+                        onClose={hideAddSavedQueryDialog}
+                    />
+                    <RemoveSavedQueryDialog
+                        open={removeSavedQueryDialogOpen}
+                        onClose={hideRemoveSavedQueryDialog}
+                    />
+                </>
+            )}
         </Root>
     );
 };
@@ -227,6 +245,7 @@ export interface FilterButtonProps extends HtmlHTMLAttributes<HTMLDivElement> {
     showFilter?: (filterName: string, defaultValue: any) => void;
     displayedFilters?: any;
     filters?: ReactNode[];
+    disableSaveQuery?: boolean;
 }
 
 const PREFIX = 'RaFilterButton';

@@ -8,13 +8,12 @@ import {
     usePermissions,
 } from 'react-admin';
 
-import UserTitle from './UserTitle';
 import Aside from './Aside';
 
 const UserShow = () => {
     const { permissions } = usePermissions();
     return (
-        <Show title={<UserTitle />}>
+        <Show>
             <TabbedShowLayout>
                 <Tab label="user.form.summary">
                     <TextField source="id" />

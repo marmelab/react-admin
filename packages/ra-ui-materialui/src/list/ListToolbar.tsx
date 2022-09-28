@@ -67,17 +67,17 @@ const Root = styled(Toolbar, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
+    position: 'relative',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
-    minHeight: 'auto',
-    [theme.breakpoints.up('sm')]: {
-        paddingRight: 0,
-    },
-    [theme.breakpoints.up('xs')]: {
-        paddingLeft: 0,
-    },
+    width: '100%',
+    padding: '0 !important',
+    minHeight: theme.spacing(8),
     [theme.breakpoints.down('sm')]: {
-        paddingLeft: theme.spacing(2),
         backgroundColor: theme.palette.background.paper,
+    },
+    [theme.breakpoints.down('md')]: {
+        margin: 0,
+        flexWrap: 'wrap',
     },
 }));

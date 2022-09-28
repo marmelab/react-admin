@@ -46,7 +46,9 @@ export const Menu = (props: MenuProps) => {
     const {
         hasDashboard,
         children = [
-            hasDashboard ? <DashboardMenuItem /> : null,
+            hasDashboard ? (
+                <DashboardMenuItem key="default-dashboard-menu-item" />
+            ) : null,
             ...Object.keys(resources)
                 .filter(name => resources[name].hasList)
                 .map(name => (

@@ -158,6 +158,7 @@ export const useReferenceArrayInputController = <
             ? params.page * params.perPage < total
             : undefined,
         hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : params.page > 1,
+        isFromReference: true,
     };
 };
 

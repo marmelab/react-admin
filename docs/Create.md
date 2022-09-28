@@ -168,7 +168,7 @@ const PostCreate = () => (
 ```
 {% endraw %}
 
-You can also use `mutationOptions` to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://react-query.tanstack.com/reference/useMutation) in the react-query website for a list of the possible options.
+You can also use `mutationOptions` to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://react-query-v3.tanstack.com/reference/useMutation) in the react-query website for a list of the possible options.
 
 Let's see an example with the success side effect. By default, when the save action succeeds, react-admin shows a notification, and redirects to the new record edit page. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
 
@@ -336,7 +336,40 @@ export const UserCreate = (props) => {
 
 The `transform` function can also return a `Promise`, which allows you to do all sorts of asynchronous calls (e.g. to the `dataProvider`) during the transformation.
 
-**Tip**: If you want to have different transformations based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save", and another to "save and notify other admins"), you can set the `transform` prop on [the `<SaveButton>` component](./SaveButton.md), too. 
+**Tip**: If you want to have different transformations based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save", and another to "save and notify other admins"), you can set the `transform` prop on [the `<SaveButton>` component](./SaveButton.md), too.
+
+## Cleaning Up Empty Strings
+
+As a reminder, HTML form inputs always return strings, even for numbers and booleans. So the empty value for a text input is the empty string, not `null` or `undefined`. This means that the data sent to `dataProvider.create()` will contain empty strings:
+
+```js
+{
+    title: '',
+    average_note: '',
+    body: '',
+    // etc.
+}
+```
+
+If you prefer to have `null` values, or to omit the key for empty values, use [the `transform` prop](#transform) to sanitize the form data before submission:
+
+```jsx
+export const UserCreate = (props) => {
+    const transform = (data) => {
+        const sanitizedData = {};
+        for (const key in data) {
+            if (typeof data[key] === "string" && data[key].length === 0) continue;
+            sanitizedData[key] = data[key]; 
+        }
+        return sanitizedData;
+    };
+    return (
+        <Create {...props} transform={transform}>
+            ...
+        </Create>
+    );
+}
+```
 
 ## Adding `meta` To The DataProvider Call
 

@@ -78,6 +78,14 @@ The `<SingleFieldList>` items link to the edition page by default. You can set t
 </ReferenceArrayField>
 ```
 
+
+`linkType` accepts the following values:
+
+* `linkType="edit"`: links to the edit page. This is the default behavior.
+* `linkType="show"`: links to the show page.
+* `linkType={false}`: does not create any link.
+
+
 ## `sx`: CSS API
 
 The `<SingleFieldList>` component accepts the usual `className` prop. You can also override the styles of the inner components thanks to the `sx` property. This property accepts the following subclasses:

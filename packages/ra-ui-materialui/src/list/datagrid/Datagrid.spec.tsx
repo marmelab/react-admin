@@ -69,8 +69,24 @@ describe('<Datagrid />', () => {
             ids: [],
         };
 
-        render(
+        const { rerender } = render(
             <Wrapper listContext={emptyData}>
+                <Datagrid empty={<Empty />}>
+                    <TitleField />
+                </Datagrid>
+            </Wrapper>
+        );
+
+        expect(screen.queryByText('No records to show')).toBeTruthy();
+
+        const undefinedData = {
+            ...contextValue,
+            data: undefined,
+            ids: [],
+        };
+
+        rerender(
+            <Wrapper listContext={undefinedData}>
                 <Datagrid empty={<Empty />}>
                     <TitleField />
                 </Datagrid>

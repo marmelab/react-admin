@@ -10,7 +10,12 @@ import {
 
 import { useDataProvider } from './useDataProvider';
 import undoableEventEmitter from './undoableEventEmitter';
-import { RaRecord, DeleteParams, MutationMode } from '../types';
+import {
+    RaRecord,
+    DeleteParams,
+    MutationMode,
+    GetListResult as OriginalGetListResult,
+} from '../types';
 
 /**
  * Get a callback to call the dataProvider.delete() method, the result and the loading state.
@@ -39,7 +44,7 @@ import { RaRecord, DeleteParams, MutationMode } from '../types';
  * This hook uses react-query useMutation under the hood.
  * This means the state object contains mutate, isIdle, reset and other react-query methods.
  *
- * @see https://react-query.tanstack.com/reference/useMutation
+ * @see https://react-query-v3.tanstack.com/reference/useMutation
  *
  * @example // set params when calling the deleteOne callback
  *
@@ -48,7 +53,7 @@ import { RaRecord, DeleteParams, MutationMode } from '../types';
  * const DeleteButton = ({ record }) => {
  *     const [deleteOne, { isLoading, error }] = useDelete();
  *     const handleClick = () => {
- *         deleteOne('likes', { id: record.id }, record)
+ *         deleteOne('likes', { id: record.id, previousData: record })
  *     }
  *     if (error) { return <p>ERROR</p>; }
  *     return <button disabled={isLoading} onClick={handleClick}>Delete</div>;
@@ -59,7 +64,7 @@ import { RaRecord, DeleteParams, MutationMode } from '../types';
  * import { useDelete } from 'react-admin';
  *
  * const DeleteButton = ({ record }) => {
- *     const [deleteOne, { isLoading, error }] = useDelete('likes', { id: record.id }, record);
+ *     const [deleteOne, { isLoading, error }] = useDelete('likes', { id: record.id, previousData: record });
  *     if (error) { return <p>ERROR</p>; }
  *     return <button disabled={isLoading} onClick={() => deleteOne()}>Delete</button>;
  * };
@@ -102,7 +107,9 @@ export const useDelete = <
             return [...old.slice(0, index), ...old.slice(index + 1)];
         };
 
-        type GetListResult = { data?: RecordType[]; total?: number };
+        type GetListResult = Omit<OriginalGetListResult, 'data'> & {
+            data?: RecordType[];
+        };
 
         queryClient.setQueriesData(
             [resource, 'getList'],
@@ -113,7 +120,8 @@ export const useDelete = <
                 return recordWasFound
                     ? {
                           data: newCollection,
-                          total: res.total - 1,
+                          total: res.total ? res.total - 1 : undefined,
+                          pageInfo: res.pageInfo,
                       }
                     : res;
             },
@@ -289,7 +297,7 @@ export const useDelete = <
             previousData: callTimePreviousData = previousData,
         } = callTimeParams;
 
-        // optimistic update as documented in https://react-query.tanstack.com/guides/optimistic-updates
+        // optimistic update as documented in https://react-query-v3.tanstack.com/guides/optimistic-updates
         // except we do it in a mutate wrapper instead of the onMutate callback
         // to have access to success side effects
 
@@ -310,7 +318,7 @@ export const useDelete = <
          *   [['posts', 'getMany'], [{ id: 1, title: 'Hello' }]],
          * ]
          *
-         * @see https://react-query.tanstack.com/reference/QueryClient#queryclientgetqueriesdata
+         * @see https://react-query-v3.tanstack.com/reference/QueryClient#queryclientgetqueriesdata
          */
         snapshot.current = queryKeys.reduce(
             (prev, curr) => prev.concat(queryClient.getQueriesData(curr)),
