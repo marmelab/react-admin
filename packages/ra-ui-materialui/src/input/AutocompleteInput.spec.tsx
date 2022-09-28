@@ -57,6 +57,33 @@ describe('<AutocompleteInput />', () => {
         expect(screen.queryByDisplayValue('foo')).not.toBeNull();
     });
 
+    describe('emptyText', () => {
+        it('should allow to have an empty menu option text by passing a string', () => {
+            const emptyText = 'Default';
+
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteInput
+                            emptyText={emptyText}
+                            {...defaultProps}
+                            choices={[{ id: 2, name: 'foo' }]}
+                        />
+                    </SimpleForm>
+                </AdminContext>
+            );
+            fireEvent.mouseDown(
+                screen.getByLabelText('resources.users.fields.role')
+            );
+
+            expect(screen.queryAllByRole('option').length).toEqual(1);
+
+            const input = screen.getByRole('textbox') as HTMLInputElement;
+
+            expect(input.value).toEqual('Default');
+        });
+    });
+
     describe('optionValue', () => {
         it('should use optionValue as value identifier', async () => {
             render(
@@ -919,7 +946,7 @@ describe('<AutocompleteInput />', () => {
         fireEvent.change(input, { target: { value: 'foo' } });
         await waitFor(
             () => {
-                expect(screen.getByRole('listbox').children).toHaveLength(1);
+                expect(screen.queryAllByRole('option')).toHaveLength(1);
             },
             { timeout: 2000 }
         );

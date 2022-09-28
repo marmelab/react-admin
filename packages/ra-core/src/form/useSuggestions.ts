@@ -8,13 +8,11 @@ import { useTranslate } from '../i18n';
  *
  * @param allowDuplicates A boolean indicating whether a suggestion can be added several times
  * @param choices An array of available choices
- * @param emptyText The text to use for the empty suggestion. Defaults to an empty string
- * @param emptyValue The value to use for the empty suggestion. Defaults to `null`
  * @param limitChoicesToValue A boolean indicating whether the initial suggestions should be limited to the currently selected one(s)
  * @param matchSuggestion Optional unless `optionText` is a React element. Function which check whether a choice matches a filter. Must return a boolean.
  * @param optionText Either a string defining the property to use to get the choice text, a function or a React element
  * @param optionValue The property to use to get the choice value
- * @param selectedItem The currently selected item. May be an array of selected items
+ * @param selectedItem The currently selected item. Maybe an array of selected items
  * @param suggestionLimit The maximum number of suggestions returned
  * @param translateChoice A boolean indicating whether to option text should be translated
  *
@@ -28,8 +26,6 @@ export const useSuggestions = ({
     choices,
     createText = 'ra.action.create',
     createValue = '@@create',
-    emptyText = '',
-    emptyValue = null,
     limitChoicesToValue,
     matchSuggestion,
     optionText,
@@ -52,8 +48,6 @@ export const useSuggestions = ({
             choices,
             createText,
             createValue,
-            emptyText: translate(emptyText, { _: emptyText }),
-            emptyValue,
             getChoiceText,
             getChoiceValue,
             limitChoicesToValue,
@@ -68,8 +62,6 @@ export const useSuggestions = ({
             choices,
             createText,
             createValue,
-            emptyText,
-            emptyValue,
             getChoiceText,
             getChoiceValue,
             limitChoicesToValue,
@@ -98,8 +90,6 @@ export interface UseSuggestionsOptions extends UseChoicesOptions {
     choices: any[];
     createText?: string;
     createValue?: any;
-    emptyText?: string;
-    emptyValue?: any;
     limitChoicesToValue?: boolean;
     matchSuggestion?: (
         filter: string,
@@ -160,8 +150,6 @@ export const getSuggestionsFactory = ({
     choices = [],
     createText = 'ra.action.create',
     createValue = '@@create',
-    emptyText = '',
-    emptyValue = null,
     optionText = 'name',
     optionValue = 'id',
     getChoiceText,
@@ -263,7 +251,7 @@ const limitSuggestions = (suggestions: any[], limit: any = 0) =>
  *  [{ id: 1, name: 'foo'}, { id: 2, name: 'bar' }],
  * );
  *
- * // Will return [{ id: null, name: '' }, { id: 1, name: 'foo' }, , { id: 2, name: 'bar' }]
+ * // Will return [{ id: null, name: '' }, { id: 1, name: 'foo' }, { id: 2, name: 'bar' }]
  *
  * @param suggestions List of suggestions
  * @param options

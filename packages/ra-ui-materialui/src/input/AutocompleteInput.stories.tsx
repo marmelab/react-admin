@@ -35,6 +35,24 @@ const dataProvider = {
     update: (resource, params) => Promise.resolve(params),
 } as any;
 
+const dataProviderEmpty = {
+    getOne: (resource, params) =>
+        Promise.resolve({
+            data: {
+                id: 1,
+                title: 'War and Peace',
+                author: 1,
+                authorNone: 1,
+                authorEmpty: 1,
+                authorZero: 1,
+                summary:
+                    "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                year: 1869,
+            },
+        }),
+    update: (resource, params) => Promise.resolve(params),
+} as any;
+
 const history = createMemoryHistory({ initialEntries: ['/books/1'] });
 
 const BookEdit = () => {
@@ -607,3 +625,62 @@ export const VeryLargeOptionsNumber = () => {
         </Admin>
     );
 };
+
+const BookEditWithEmptyText = () => {
+    const choices = [
+        { id: 1, name: 'Leo Tolstoy' },
+        { id: 2, name: 'Victor Hugo' },
+        { id: 3, name: 'William Shakespeare' },
+        { id: 4, name: 'Charles Baudelaire' },
+        { id: 5, name: 'Marcel Proust' },
+    ];
+    return (
+        <Edit
+            mutationMode="pessimistic"
+            mutationOptions={{
+                onSuccess: data => {
+                    console.log(data);
+                },
+            }}
+        >
+            <SimpleForm>
+                <AutocompleteInput
+                    label="emptyValue set to 'no-author', emptyText set to '' by default"
+                    source="author"
+                    choices={choices}
+                    emptyValue="no-author"
+                    fullWidth
+                />
+                <AutocompleteInput
+                    label="emptyValue set to 'none'"
+                    source="authorNone"
+                    choices={choices}
+                    emptyValue="none"
+                    emptyText="- No author - "
+                    fullWidth
+                />
+                <AutocompleteInput
+                    label="emptyValue set to ''"
+                    source="authorEmpty"
+                    choices={choices}
+                    emptyText="- No author - "
+                    fullWidth
+                />
+                <AutocompleteInput
+                    label="emptyValue set to 0"
+                    source="authorZero"
+                    choices={choices}
+                    emptyValue={0}
+                    emptyText="- No author - "
+                    fullWidth
+                />
+            </SimpleForm>
+        </Edit>
+    );
+};
+
+export const EmptyText = () => (
+    <Admin dataProvider={dataProviderEmpty} history={history}>
+        <Resource name="books" edit={BookEditWithEmptyText} />
+    </Admin>
+);
