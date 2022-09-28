@@ -1620,6 +1620,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.9.0":
+  version: 7.19.0
+  resolution: "@babel/runtime@npm:7.19.0"
+  dependencies:
+    regenerator-runtime: ^0.13.4
+  checksum: 42d4f11d6a5bfcf5a3d05346e7f1aef79a53b9e1968b4dc54a0682df60284300c97de3be63f4d5dd47b404d3a1022a8a57444b5d150822ec8974757de7233f6e
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.12.7, @babel/template@npm:^7.16.7, @babel/template@npm:^7.3.3":
   version: 7.16.7
   resolution: "@babel/template@npm:7.16.7"
@@ -4164,6 +4173,36 @@ __metadata:
   version: 2.11.2
   resolution: "@popperjs/core@npm:2.11.2"
   checksum: b06f65fcef9dbfe7487fd53e38f12684267e91c8bc667a6c9621c207f42ee97d48059039ee8dae0327df509234b6f09bf5b940b34b71ee453d307f53d84e99b2
+  languageName: node
+  linkType: hard
+
+"@react-keycloak/core@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "@react-keycloak/core@npm:3.2.0"
+  dependencies:
+    react-fast-compare: ^3.2.0
+  peerDependencies:
+    react: ">=16"
+  checksum: 1bfc5fcab4e50ee6785bd5715f8e0fc109360bafcf74a664c1df37e69685e82e452eee7a2c2d8cbb0c69d7b09e77e8044f00122396ae560f03ab533b75b9aa84
+  languageName: node
+  linkType: hard
+
+"@react-keycloak/web@npm:^3.4.0":
+  version: 3.4.0
+  resolution: "@react-keycloak/web@npm:3.4.0"
+  dependencies:
+    "@babel/runtime": ^7.9.0
+    "@react-keycloak/core": ^3.2.0
+    hoist-non-react-statics: ^3.3.2
+  peerDependencies:
+    keycloak-js: ">=9.0.2"
+    react: ">=16.8"
+    react-dom: ">=16.8"
+    typescript: ">=3.8"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: f38b1682d31a999706b624f47927168ef9ecacd827fd9422ad060fdc4eb2ceb6253b87172a4a3cf079efff48b13d5acc8fc5e2f8f9cfb41f255642e6d83e5f99
   languageName: node
   linkType: hard
 
@@ -8446,6 +8485,13 @@ __metadata:
   version: 1.0.2
   resolution: "balanced-match@npm:1.0.2"
   checksum: 9308baf0a7e4838a82bbfd11e01b1cb0f0cf2893bc1676c27c2a8c0e70cbae1c59120c3268517a8ae7fb6376b4639ef81ca22582611dbee4ed28df945134aaee
+  languageName: node
+  linkType: hard
+
+"base64-js@npm:^1.5.1":
+  version: 1.5.1
+  resolution: "base64-js@npm:1.5.1"
+  checksum: f23823513b63173a001030fae4f2dabe283b99a9d324ade3ad3d148e218134676f1ee8568c877cd79ec1c53158dcf2d2ba527a97c606618928ba99dd930102bf
   languageName: node
   linkType: hard
 
@@ -16619,6 +16665,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"js-sha256@npm:^0.9.0":
+  version: 0.9.0
+  resolution: "js-sha256@npm:0.9.0"
+  checksum: f20b9245f6ebe666f42ca05536f777301132fb1aa7fbc22f10578fa302717a6cca507344894efdeaf40a011256eb2f7d517b94ac7105bd5cf087fa61551ad634
+  languageName: node
+  linkType: hard
+
 "js-sha3@npm:0.8.0":
   version: 0.8.0
   resolution: "js-sha3@npm:0.8.0"
@@ -16927,6 +16980,23 @@ __metadata:
   version: 5.0.3
   resolution: "just-diff@npm:5.0.3"
   checksum: 0f3c8a082a02ab6bc2fa844a89dddde7983579a23056e1c65aab6cb0094e2a8f6fc3af2837b67dd3812497adfc0e60b90038ff9c6c3abe39e9b3c37bca22dcab
+  languageName: node
+  linkType: hard
+
+"jwt-decode@npm:^3.1.2":
+  version: 3.1.2
+  resolution: "jwt-decode@npm:3.1.2"
+  checksum: a951547946b5e8b1d9df818152d6b1dbaf13eebb3a6e6daceedf888968f5d255959852c8188aae2c825dc9104a99d25cb6c23f25d76545d1aa0315b968b6912e
+  languageName: node
+  linkType: hard
+
+"keycloak-js@npm:^17.0.0":
+  version: 17.0.1
+  resolution: "keycloak-js@npm:17.0.1"
+  dependencies:
+    base64-js: ^1.5.1
+    js-sha256: ^0.9.0
+  checksum: 5c1592692ee5c87c5cd9e58195602554b2fa984ce56dc36967fd69950ff9eb7f108aa670f3a8c451c6b5c30f365518ed9df9d50186ff95ebe614eef561b667e3
   languageName: node
   linkType: hard
 
@@ -21167,6 +21237,24 @@ __metadata:
     ra-ui-materialui: ^4.0.0
     react: ^16.9.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.9.0 || ^17.0.0 || ^18.0.0
+  languageName: unknown
+  linkType: soft
+
+"ra-keycloak@workspace:packages/ra-keycloak":
+  version: 0.0.0-use.local
+  resolution: "ra-keycloak@workspace:packages/ra-keycloak"
+  dependencies:
+    "@react-keycloak/web": ^3.4.0
+    cross-env: ^5.2.0
+    jwt-decode: ^3.1.2
+    keycloak-js: ^17.0.0
+    react: ^17.0.0
+    react-dom: ^17.0.0
+    react-router-dom: ^6.1.0
+    rimraf: ^3.0.2
+    typescript: ^4.4.0
+  peerDependencies:
+    ra-core: "*"
   languageName: unknown
   linkType: soft
 
