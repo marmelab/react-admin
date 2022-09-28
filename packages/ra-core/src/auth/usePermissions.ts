@@ -36,7 +36,7 @@ const emptyParams = {};
 const usePermissions = <Permissions = any, Error = any>(
     params = emptyParams,
     queryParams: UseQueryOptions<Permissions, Error> = {
-        refetchOnMount: false,
+        staleTime: 5 * 60 * 1000,
     }
 ) => {
     const authProvider = useAuthProvider();
