@@ -2,12 +2,13 @@ import { getKeycloakHeaders } from './httpClient';
 
 describe('getKeycloakHeaders', () => {
     it('should return the headers needed to authenticate keycloak user', () => {
+        const token = 'KeycloakToken';
         const expected = new Headers({
             Accept: 'application/json',
-            Authorization: 'Bearer KeycloakToken',
+            Authorization: `Bearer ${token}`,
         });
 
-        const extraHeaders = getKeycloakHeaders('KeycloakToken', {});
+        const extraHeaders = getKeycloakHeaders(token, {});
 
         expect(extraHeaders).toEqual(expected);
     });
