@@ -27,9 +27,7 @@ describe('<Filter />', () => {
                 </ResourceContextProvider>
             );
 
-            expect(
-                queryByLabelText('resources.posts.fields.title')
-            ).not.toBeNull();
+            expect(queryByLabelText('Title')).not.toBeNull();
         });
 
         it('should pass `filterValues` as `initialValues` props', () => {

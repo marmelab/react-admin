@@ -83,7 +83,43 @@ export const PostList = () => (
 
 ## `primaryText`
 
-The `primaryText`, `secondaryText` and `tertiaryText` functions can be either a function returning a string, or a React element. This means you can use any react-admin field, including reference fields:
+The `primaryText`, `secondaryText` and `tertiaryText` props can accept 3 types of values:
+
+1. a function returning a string, 
+2. a string, 
+3. a React element. 
+
+If it's a **function**, react-admin passes the current record as parameter:
+
+```jsx
+import { List, SimpleList } from 'react-admin';
+
+export const PostList = () => (
+    <List>
+        <SimpleList
+            primaryText={record => record.title}
+            secondaryText={record => `${record.views} views`}
+        />
+    </List>
+);
+```
+
+If it's a **string**, react-admin passes it to [the `translate` function](./useTranslate.md), together with the `record` so you can use substitutions with the `%{token}` syntax:
+
+```jsx
+import { List, SimpleList } from 'react-admin';
+
+export const PostList = () => (
+    <List>
+        <SimpleList
+            primaryText="%{title}"
+            secondaryText="%{views} views"
+        />
+    </List>
+);
+```
+
+If it's a **React element**, react-admin renders it. This means you can use any react-admin field, including reference fields:
 
 ```jsx
 import {
@@ -97,8 +133,7 @@ export const PostList = () => (
     <List>
         <SimpleList
             primaryText={<TextField source="title" />}
-            secondaryText={record => `${record.views} views`}
-            tertiaryText={
+            secondaryText={
                 <ReferenceField reference="categories" source="category_id">
                     <TextField source="name" />
                 </ReferenceField>
@@ -172,3 +207,35 @@ export const PostList = props => {
     );
 }
 ```
+
+## Configurable
+
+You can let end users customize the fields displayed in the `<SimpleList>` by using the `<SimpleListConfigurable>` component instead.
+
+![SimpleListConfigurable](./img/SimpleListConfigurable.gif)
+
+```diff
+import {
+    List,
+-   SimpleList,
++   SimpleListConfigurable,
+} from 'react-admin';
+
+export const BookList = () => (
+    <List>
+-       <SimpleList
++       <SimpleListConfigurable
+            primaryText={record => record.title}
+            secondaryText={record => record.author}
+            tertiaryText={record => record.date}
+        />
+    </List>
+);
+```
+
+When users enter the configuration mode and select the `<SimpleList>`, they can set the `primaryText`, `secondaryText`, and `tertiaryText` fields via the inspector. `<SimpleList>` uses [the `useTranslate` hook](./useTranslate.md) to render the fields. The `translate` function receives the current record as parameter. This means users can access the record field using the `%{field}` syntax, e.g.:
+
+```
+Title: %{title} (by %{author})
+```
+

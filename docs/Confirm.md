@@ -77,6 +77,5 @@ The `<Confirm>` component accepts the usual `className` prop. You can also overr
 |---------------------------------|----------------------------------------------------------------|
 | `& .RaConfirm-confirmPrimary`   | Applied to the confirm button when `confirmColor` is `primary` |
 | `& .RaConfirm-confirmWarning`   | Applied to the confirm button when `confirmColor` is `warning` |
-| `& .RaConfirm-iconPaddingStyle` | Applied to the confirm and cancel icon elements                |
 
 To override the style of all instances of `<Confirm>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaConfirm` key.

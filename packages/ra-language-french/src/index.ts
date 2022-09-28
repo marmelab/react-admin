@@ -182,6 +182,21 @@ const frenchMessages: TranslationMessages = {
                 'Etes-vous sûr(e) de vouloir supprimer cette requête de votre liste de requêtes ?',
             help: 'Filtrez la liste et ajoutez cette requête à votre liste',
         },
+        configurable: {
+            customize: 'Personnaliser',
+            templateError: '## Erreur de formule',
+            configureMode: 'Configurer cette page',
+            inspector: {
+                title: 'Inspecteur',
+                content: 'Sélectionner un composant pour le configurer',
+                reset: 'Réinitialiser',
+            },
+            SimpleList: {
+                primaryText: 'Texte principal',
+                secondaryText: 'Texte secondaire',
+                tertiaryText: 'Texte annexe',
+            },
+        },
     },
 };
 
