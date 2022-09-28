@@ -68,10 +68,8 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     const addField = useCallback(
         (item: any = undefined) => {
             let defaultValue = item;
-
             if (item == null) {
                 defaultValue = initialDefaultValue;
-
                 if (
                     Children.count(children) === 1 &&
                     React.isValidElement(Children.only(children)) &&
@@ -88,7 +86,6 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                     // (e.g. authors: [{ firstName: 'John', lastName: 'Doe' }, { firstName: 'Jane', lastName: 'Doe' }])
                     defaultValue =
                         defaultValue || ({} as Record<string, unknown>);
-
                     Children.forEach(children, input => {
                         if (
                             React.isValidElement(input) &&
@@ -101,7 +98,6 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                     });
                 }
             }
-
             append(defaultValue);
         },
         [append, children]
