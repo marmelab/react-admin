@@ -66,6 +66,7 @@ If you don't know where to start, use any of the following:
 * [marmelab/ra-data-json-server](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-json-server): Similar to the previous one, but requires an API powered by JSONServer.
 * [marmelab/ra-data-simple-rest](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-simple-rest): A basic REST adapter that reflects the structure of many APIs
 * [marmelab/ra-data-localstorage](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-localstorage): Persists user editions in local storage. This allows local-first apps, and can be useful in tests.
+* [marmelab/ra-data-localforage](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-localforage): Persists user editions in IndexedDB. Fallback to WebSQL or localStorage. This allows local-first apps, and can be useful in tests.
 
 **Tip**: Since dataProviders all present the same interface, you can use one dataProvider during early prototyping / development phases, then switch to the dataProvider that fits your production infrastructure.
 
