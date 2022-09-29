@@ -30,10 +30,10 @@ let localStorageAvailable = testLocalStorage();
  *
  * @example
  *
- * import { localStorageProvider } from 'react-admin';
+ * import { localStorageStore } from 'react-admin';
  *
  * const App = () => (
- *    <Admin store={localStorageProvider()}>
+ *    <Admin store={localStorageStore()}>
  *       ...
  *   </Admin>
  * );
@@ -114,6 +114,16 @@ export const localStorageStore = (
             getStorage().removeItem(`${prefix}.${key}`);
             publish(key, undefined);
         },
+        removeItems(keyPrefix: string): void {
+            const storage = getStorage();
+            Object.keys(storage).forEach(key => {
+                if (key.startsWith(`${prefix}.${keyPrefix}`)) {
+                    storage.removeItem(key);
+                    const publishKey = key.substring(prefixLength + 1);
+                    publish(publishKey, undefined);
+                }
+            });
+        },
         reset(): void {
             const storage = getStorage();
             Object.keys(storage).forEach(key => {
@@ -160,6 +170,14 @@ class LocalStorageShim {
 
     removeItem(key: string) {
         this.valuesMap.delete(key);
+    }
+
+    removeItems(keyPrefix: string) {
+        this.valuesMap.forEach((value, key) => {
+            if (key.startsWith(keyPrefix)) {
+                this.valuesMap.delete(key);
+            }
+        });
     }
 
     clear() {

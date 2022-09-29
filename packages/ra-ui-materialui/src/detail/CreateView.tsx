@@ -20,14 +20,18 @@ export const CreateView = (props: CreateViewProps) => {
         ...rest
     } = props;
 
-    const { defaultTitle } = useCreateContext(props);
+    const { resource, defaultTitle } = useCreateContext(props);
 
     return (
         <Root
             className={clsx('create-page', className)}
             {...sanitizeRestProps(rest)}
         >
-            <Title title={title} defaultTitle={defaultTitle} />
+            <Title
+                title={title}
+                defaultTitle={defaultTitle}
+                preferenceKey={`${resource}.create.title`}
+            />
             {actions}
             <div
                 className={clsx(CreateClasses.main, {

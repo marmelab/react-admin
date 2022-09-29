@@ -5,6 +5,9 @@ import { AdminContext } from '../AdminContext';
 import { DatagridInput } from '../input';
 import { TextField } from '../field';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
+import { AutocompleteArrayInput } from './AutocompleteArrayInput';
+import { SelectArrayInput } from './SelectArrayInput';
+import { CheckboxGroupInput } from './CheckboxGroupInput';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 
@@ -29,8 +32,136 @@ const dataProvider = testDataProvider({
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
-export const WithDatagridChild = () => (
+export const WithAutocompleteInput = () => (
     <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
+            <ReferenceArrayInput
+                reference="tags"
+                resource="posts"
+                source="tag_ids"
+            >
+                <AutocompleteArrayInput optionText="name" />
+            </ReferenceArrayInput>
+        </Form>
+    </AdminContext>
+);
+
+export const ErrorAutocomplete = () => (
+    <AdminContext
+        dataProvider={{
+            getList: () => Promise.reject(new Error('fetch error')),
+            getMany: () =>
+                Promise.resolve({ data: [{ id: 5, name: 'test1' }] }),
+        }}
+        i18nProvider={i18nProvider}
+    >
+        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
+            <ReferenceArrayInput
+                reference="tags"
+                resource="posts"
+                source="tag_ids"
+            >
+                <AutocompleteArrayInput optionText="name" />
+            </ReferenceArrayInput>
+        </Form>
+    </AdminContext>
+);
+
+export const WithSelectArrayInput = () => (
+    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
+            <ReferenceArrayInput
+                reference="tags"
+                resource="posts"
+                source="tag_ids"
+            >
+                <SelectArrayInput optionText="name" />
+            </ReferenceArrayInput>
+        </Form>
+    </AdminContext>
+);
+
+export const ErrorSelectArray = () => (
+    <AdminContext
+        dataProvider={{
+            getList: () => Promise.reject(new Error('fetch error')),
+            getMany: () =>
+                Promise.resolve({ data: [{ id: 5, name: 'test1' }] }),
+        }}
+        i18nProvider={i18nProvider}
+    >
+        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
+            <ReferenceArrayInput
+                reference="tags"
+                resource="posts"
+                source="tag_ids"
+            >
+                <SelectArrayInput optionText="name" />
+            </ReferenceArrayInput>
+        </Form>
+    </AdminContext>
+);
+
+export const WithCheckboxGroupInput = () => (
+    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
+            <ReferenceArrayInput
+                reference="tags"
+                resource="posts"
+                source="tag_ids"
+            >
+                <CheckboxGroupInput optionText="name" />
+            </ReferenceArrayInput>
+        </Form>
+    </AdminContext>
+);
+
+export const ErrorCheckboxGroupInput = () => (
+    <AdminContext
+        dataProvider={{
+            getList: () => Promise.reject(new Error('fetch error')),
+            getMany: () =>
+                Promise.resolve({ data: [{ id: 5, name: 'test1' }] }),
+        }}
+        i18nProvider={i18nProvider}
+    >
+        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
+            <ReferenceArrayInput
+                reference="tags"
+                resource="posts"
+                source="tag_ids"
+            >
+                <CheckboxGroupInput optionText="name" />
+            </ReferenceArrayInput>
+        </Form>
+    </AdminContext>
+);
+
+export const WithDatagridInput = () => (
+    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
+            <ReferenceArrayInput
+                reference="tags"
+                resource="posts"
+                source="tag_ids"
+            >
+                <DatagridInput rowClick="toggleSelection" sx={{ mt: 6 }}>
+                    <TextField source="name" />
+                </DatagridInput>
+            </ReferenceArrayInput>
+        </Form>
+    </AdminContext>
+);
+
+export const ErrorDatagridInput = () => (
+    <AdminContext
+        dataProvider={{
+            getList: () => Promise.reject(new Error('fetch error')),
+            getMany: () =>
+                Promise.resolve({ data: [{ id: 5, name: 'test1' }] }),
+        }}
+        i18nProvider={i18nProvider}
+    >
         <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
             <ReferenceArrayInput
                 reference="tags"

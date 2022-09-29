@@ -5,7 +5,12 @@ import {
     useEffect,
     useRef,
 } from 'react';
-import { FieldValues, useForm, UseFormProps } from 'react-hook-form';
+import {
+    FieldValues,
+    SubmitHandler,
+    useForm,
+    UseFormProps,
+} from 'react-hook-form';
 
 import { RaRecord } from '../types';
 import { useSaveContext } from '../controller';
@@ -146,16 +151,16 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
 
     // submit callbacks
     const handleSubmit = useCallback(
-        async values => {
+        async (values, event) => {
             let errors;
             const finalValues = sanitizeEmptyValues
                 ? sanitizeValues(values, record)
                 : values;
             if (onSubmit) {
-                errors = await onSubmit(finalValues);
+                errors = await onSubmit(finalValues, event);
             }
             if (onSubmit == null && saveContext?.save) {
-                errors = await saveContext.save(finalValues);
+                errors = await saveContext.save(finalValues, event);
             }
             if (errors != null) {
                 setSubmissionErrors(errors, formRef.current.setError);
@@ -192,7 +197,7 @@ export interface UseFormOwnProps {
     defaultValues?: any;
     formRootPathname?: string;
     record?: Partial<RaRecord>;
-    onSubmit?: (data: FieldValues) => any | Promise<any>;
+    onSubmit?: SubmitHandler<FieldValues>;
     warnWhenUnsavedChanges?: boolean;
     sanitizeEmptyValues?: boolean;
 }

@@ -16,6 +16,7 @@ import { Menu as DefaultMenu, MenuProps } from './Menu';
 import { Error, ErrorProps } from './Error';
 import { SkipNavigationButton } from '../button';
 import { useSidebarState } from './useSidebarState';
+import { Inspector } from '../preferences';
 
 export const Layout = (props: LayoutProps) => {
     const {
@@ -63,6 +64,7 @@ export const Layout = (props: LayoutProps) => {
                         </ErrorBoundary>
                     </div>
                 </main>
+                <Inspector />
             </div>
         </StyledLayout>
     );

@@ -2,7 +2,12 @@ import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
 import { QueryClient } from 'react-query';
-import { testDataProvider, useChoicesContext } from 'ra-core';
+import {
+    testDataProvider,
+    useChoicesContext,
+    CoreAdminContext,
+    Form,
+} from 'ra-core';
 
 import { ReferenceInput } from './ReferenceInput';
 import { AdminContext } from '../AdminContext';
@@ -20,7 +25,7 @@ describe('<ReferenceInput />', () => {
         jest.spyOn(console, 'error')
             .mockImplementationOnce(() => {})
             .mockImplementationOnce(() => {});
-        const MyComponent = () => <span id="mycomponent" />;
+
         render(
             <AdminContext
                 queryClient={
@@ -33,14 +38,12 @@ describe('<ReferenceInput />', () => {
                 })}
             >
                 <SimpleForm onSubmit={jest.fn()}>
-                    <ReferenceInput {...defaultProps}>
-                        <MyComponent />
-                    </ReferenceInput>
+                    <ReferenceInput {...defaultProps} />
                 </SimpleForm>
             </AdminContext>
         );
         await waitFor(() => {
-            expect(screen.queryByDisplayValue('fetch error')).not.toBeNull();
+            expect(screen.queryByText('fetch error')).not.toBeNull();
         });
     });
 
@@ -94,6 +97,33 @@ describe('<ReferenceInput />', () => {
         );
         await waitFor(() => {
             expect(screen.getByLabelText('total').innerHTML).toEqual('2');
+        });
+    });
+
+    it('should accept meta in queryOptions', async () => {
+        const getList = jest
+            .fn()
+            .mockImplementationOnce(() =>
+                Promise.resolve({ data: [], total: 25 })
+            );
+        const dataProvider = testDataProvider({ getList });
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Form>
+                    <ReferenceInput
+                        {...defaultProps}
+                        queryOptions={{ meta: { foo: 'bar' } }}
+                    />
+                </Form>
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(getList).toHaveBeenCalledWith('posts', {
+                filter: {},
+                pagination: { page: 1, perPage: 25 },
+                sort: { field: 'id', order: 'DESC' },
+                meta: { foo: 'bar' },
+            });
         });
     });
 });

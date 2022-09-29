@@ -7,4 +7,5 @@ export * from './types';
 export * from './useStore';
 export * from './useStoreContext';
 export * from './useRemoveFromStore';
+export * from './useRemoveItemsFromStore';
 export * from './useResetStore';

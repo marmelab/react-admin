@@ -212,7 +212,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
      * displaying the table header with zero data rows,
      * the datagrid displays nothing or a custom empty component.
      */
-    if (data.length === 0 || total === 0) {
+    if (data == null || data.length === 0 || total === 0) {
         if (empty) {
             return empty;
         }
