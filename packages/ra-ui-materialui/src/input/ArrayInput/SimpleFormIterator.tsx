@@ -74,8 +74,6 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                 if (
                     Children.count(children) === 1 &&
                     React.isValidElement(Children.only(children)) &&
-                    (Children.only(children) as ReactElement<any>).type !==
-                        FormDataConsumer &&
                     // @ts-ignore
                     !Children.only(children).props.source
                 ) {
