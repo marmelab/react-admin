@@ -730,6 +730,7 @@ In case no `storeKey` is provided, the states will be stored with the following 
 
 In the example below, both lists `NewerBooks` and `OlderBooks` use the same resource ('books'), but their controller states are stored separately (under the store keys `'newerBooks'` and `'olderBooks'` respectively). This allows to use both components in the same app, each having its own state (filters, sorting and pagination).
 
+{% raw %}
 ```jsx
 import {
     Admin,
@@ -783,6 +784,7 @@ const Admin = () => {
     );
 };
 ```
+{% endraw %}
 
 **Tip:** The `storeKey` is actually passed to the underlying `useListController` hook, which you can use directly for more complex scenarios. See the [`useListController` doc](./useListController.md#storekey) for more info.
 

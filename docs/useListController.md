@@ -98,6 +98,7 @@ In case no `storeKey` is provided, the states will be stored with the following 
 
 In the example below, both lists `TopPosts` and `FlopPosts` use the same resource ('posts'), but their controller states are stored separately (under the store keys `'top'` and `'flop'` respectively).
 
+{% raw %}
 ```jsx
 import { useListController } from 'react-admin';
 
@@ -131,6 +132,7 @@ const FlopPosts = (
     <OrderedPostList storeKey="flop" sort={{ field: 'votes', order: 'ASC' }} />
 );
 ```
+{% endraw %}
 
 ## Return Value
 
