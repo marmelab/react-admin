@@ -201,14 +201,15 @@ export const AutocompleteInput = <
         formState: { isSubmitted },
     } = useInput({
         defaultValue,
-        format,
         id: idOverride,
         field: fieldOverride,
         fieldState: fieldStateOverride,
         formState: formStateOverride,
         onBlur,
         onChange,
-        parse,
+        parse: parse ?? isFromReference ? convertEmptyStringToNull : undefined,
+        format:
+            format ?? isFromReference ? convertNullToEmptyString : undefined,
         resource,
         source,
         validate,
@@ -678,3 +679,6 @@ const getSelectedItems = (
 };
 
 const DefaultFilterToQuery = searchText => ({ q: searchText });
+
+const convertEmptyStringToNull = value => (value === '' ? null : value);
+const convertNullToEmptyString = value => (value === null ? '' : value);

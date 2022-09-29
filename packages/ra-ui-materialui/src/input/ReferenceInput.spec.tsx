@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { QueryClient } from 'react-query';
 import {
     testDataProvider,
@@ -12,7 +12,11 @@ import {
 import { ReferenceInput } from './ReferenceInput';
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
-import { Basic } from './ReferenceInput.stories';
+import {
+    Basic,
+    WithSelectInput,
+    dataProviderWithAuthors,
+} from './ReferenceInput.stories';
 
 describe('<ReferenceInput />', () => {
     const defaultProps = {
@@ -125,5 +129,69 @@ describe('<ReferenceInput />', () => {
                 meta: { foo: 'bar' },
             });
         });
+    });
+
+    it('should convert empty values to null with AutocompleteInput', async () => {
+        jest.spyOn(console, 'log').mockImplementationOnce(() => {});
+        const dataProvider = {
+            ...dataProviderWithAuthors,
+            update: jest
+                .fn()
+                .mockImplementation((resource, params) =>
+                    Promise.resolve(params)
+                ),
+        };
+        render(<Basic dataProvider={dataProvider} />);
+        await screen.findByDisplayValue('Leo Tolstoy');
+        const input = screen.getByLabelText('Author') as HTMLInputElement;
+        input.focus();
+        screen.getByLabelText('Clear value').click();
+        screen.getByLabelText('Save').click();
+        await waitFor(() => {
+            expect(
+                (screen.getByLabelText('Save') as HTMLButtonElement).disabled
+            ).toBeTruthy();
+        });
+        expect(dataProvider.update).toHaveBeenCalledWith(
+            'books',
+            expect.objectContaining({
+                data: expect.objectContaining({
+                    author: null,
+                }),
+            })
+        );
+    });
+
+    it('should convert empty values to null with SelectInput', async () => {
+        jest.spyOn(console, 'log').mockImplementationOnce(() => {});
+        const dataProvider = {
+            ...dataProviderWithAuthors,
+            update: jest
+                .fn()
+                .mockImplementation((resource, params) =>
+                    Promise.resolve(params)
+                ),
+        };
+        render(<WithSelectInput dataProvider={dataProvider} />);
+        const input = (await screen.findByDisplayValue(
+            '1'
+        )) as HTMLInputElement;
+        fireEvent.change(input, {
+            target: { value: '' },
+        });
+        screen.getByLabelText('Save').click();
+        await waitFor(() => {
+            expect(
+                (screen.getByLabelText('Save') as HTMLButtonElement).disabled
+            ).toBeTruthy();
+        });
+        expect(dataProvider.update).toHaveBeenCalledWith(
+            'books',
+            expect.objectContaining({
+                data: expect.objectContaining({
+                    author: null,
+                }),
+            })
+        );
     });
 });
