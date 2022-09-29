@@ -172,6 +172,7 @@ Then to display a selector for the post author, you should call `<ReferenceInput
 
 Use [the `queryOptions` prop](#queryoptions) to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getList()` call.
 
+{% raw %}
 ```jsx
 import { ReferenceInput, AutocompleteInput } from 'react-admin';
 
@@ -183,6 +184,7 @@ import { ReferenceInput, AutocompleteInput } from 'react-admin';
     <AutocompleteInput label="Post" />
 </ReferenceInput>
 ```
+{% endraw %}
 
 ## Performance 
 
