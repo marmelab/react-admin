@@ -8,6 +8,7 @@ import {
     ReactNode,
     useCallback,
     useMemo,
+    useRef,
 } from 'react';
 import { styled, SxProps } from '@mui/material';
 import clsx from 'clsx';
@@ -30,8 +31,6 @@ import { AddItemButton as DefaultAddItemButton } from './AddItemButton';
 import { RemoveItemButton as DefaultRemoveItemButton } from './RemoveItemButton';
 import { ReOrderButtons as DefaultReOrderButtons } from './ReOrderButtons';
 
-let initialDefaultValue = {};
-
 export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     const {
         addButton = <DefaultAddItemButton />,
@@ -51,6 +50,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     } = props;
     const { append, fields, move, remove } = useArrayInput(props);
     const record = useRecordContext(props);
+    const initialDefaultValue = useRef({});
 
     const removeField = useCallback(
         (index: number) => {
@@ -61,15 +61,16 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
 
     if (fields.length > 0) {
         const { id, ...rest } = fields[0];
-        initialDefaultValue = rest;
-        for (const k in initialDefaultValue) initialDefaultValue[k] = '';
+        initialDefaultValue.current = rest;
+        for (const k in initialDefaultValue.current)
+            initialDefaultValue.current[k] = '';
     }
 
     const addField = useCallback(
         (item: any = undefined) => {
             let defaultValue = item;
             if (item == null) {
-                defaultValue = initialDefaultValue;
+                defaultValue = initialDefaultValue.current;
                 if (
                     Children.count(children) === 1 &&
                     React.isValidElement(Children.only(children)) &&
