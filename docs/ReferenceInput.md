@@ -106,7 +106,7 @@ For instance, if you want to transform an option value before rendering, and the
 import { ReferenceInput, AutocompleteInput } from 'react-admin';
 
 <ReferenceInput source="post_id" reference="posts">
-    <AutocompleteInput format={value => value === undefined ? 'not defined' : null} />
+    <AutocompleteInput format={value => value == null ? 'not defined' : value} />
 </ReferenceInput>
 ```
 
