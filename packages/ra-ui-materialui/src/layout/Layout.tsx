@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import clsx from 'clsx';
-import { styled } from '@mui/material/styles';
+import { styled, SxProps } from '@mui/material/styles';
 import { CoreLayoutProps } from 'ra-core';
 
 import { AppBar as DefaultAppBar, AppBarProps } from './AppBar';
@@ -76,6 +76,7 @@ export interface LayoutProps
     error?: ComponentType<ErrorProps>;
     menu?: ComponentType<MenuProps>;
     sidebar?: ComponentType<{ children: ReactNode }>;
+    sx?: SxProps;
 }
 
 export interface LayoutState {
