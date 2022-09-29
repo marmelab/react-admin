@@ -144,7 +144,7 @@ const filters = [
 
 ## `parse`
 
-By default, children of `<ReferenceInput>` transform the empty form value (an empty string) into `null` before passing ot to the `dataProvider`. 
+By default, children of `<ReferenceInput>` transform the empty form value (an empty string) into `null` before passing it to the `dataProvider`. 
 
 If you want to change this behavior, you have to pass a custom `parse` prop to the `<ReferenceInput>` *child component*, because  **`<ReferenceInput>` doesn't have a `parse` prop**. It is the responsibility of the child component to parse the input value.
 
