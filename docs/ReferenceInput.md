@@ -154,7 +154,7 @@ For instance, if you want to transform an option value before submission, and th
 import { ReferenceInput, AutocompleteInput } from 'react-admin';
 
 <ReferenceInput source="post_id" reference="posts">
-    <AutocompleteInput parse={value => value === 'not defined' ? undefined : null} />
+    <AutocompleteInput parse={value => value === 'not defined' ? null : value} />
 </ReferenceInput>
 ```
 
