@@ -73,7 +73,7 @@ export default async (
     };
 
     const localForageData = await getLocalForageData();
-    const data = localForageData ? localForageData : defaultData;
+    const data = localForageData ?? defaultData;
 
     // Persist in localForage
     const updateLocalForage = (resource: string) => {
