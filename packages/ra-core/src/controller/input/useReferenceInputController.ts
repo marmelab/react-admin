@@ -125,7 +125,10 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         finalData = possibleValuesData;
         finalTotal = total;
     } else {
-        finalData = [referenceRecord, ...possibleValuesData];
+        finalData = [...possibleValuesData];
+        if (finalData.indexOf(referenceRecord) === -1) {
+            finalData.push(referenceRecord);
+        }
         finalTotal = total == null ? undefined : total + 1;
     }
 
