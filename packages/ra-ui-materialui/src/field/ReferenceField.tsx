@@ -120,16 +120,12 @@ export const NonEmptyReferenceField: FC<
     Omit<ReferenceFieldProps, 'source'> & { id: Identifier }
 > = ({ children, id, record, reference, link, ...props }) => {
     const createPath = useCreatePath();
-
-    const referenceHasEdit = useResourceDefinition({ resource: reference })
-        .hasEdit;
-    const referenceHasShow = useResourceDefinition({ resource: reference })
-        .hasShow;
+    const resourceDefinition = useResourceDefinition({ resource: reference });
 
     const resourceLinkPath =
         link === false ||
-        (link === 'edit' && !referenceHasEdit) ||
-        (link === 'show' && !referenceHasShow)
+        (link === 'edit' && !resourceDefinition.hasEdit) ||
+        (link === 'show' && !resourceDefinition.hasShow)
             ? false
             : createPath({
                   resource: reference,
