@@ -208,7 +208,7 @@ export interface CreateResult<RecordType extends RaRecord = any> {
 }
 
 export interface DeleteParams<RecordType extends RaRecord = any> {
-    id: Identifier;
+    id: RecordType['id'];
     previousData?: RecordType;
     meta?: any;
 }

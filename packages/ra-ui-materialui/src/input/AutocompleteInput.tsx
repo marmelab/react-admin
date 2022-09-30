@@ -193,6 +193,22 @@ export const AutocompleteInput = <
 
     const translate = useTranslate();
 
+    const finalEmptyText = emptyText ?? '';
+
+    const finalChoices =
+        isRequiredOverride || multiple
+            ? allChoices
+            : [
+                  {
+                      [optionValue || 'id']: emptyValue,
+                      [typeof optionText === 'string'
+                          ? optionText
+                          : 'name']: translate(finalEmptyText, {
+                          _: finalEmptyText,
+                      }),
+                  },
+              ].concat(allChoices);
+
     const {
         id,
         field,
@@ -221,13 +237,25 @@ export const AutocompleteInput = <
         DisableClearable,
         SupportCreate
     >(field.value, {
-        choices: allChoices,
+        choices: finalChoices,
         // @ts-ignore
         multiple,
         optionValue,
     });
 
     useEffect(() => {
+        // eslint-disable-next-line eqeqeq
+        if (emptyValue == null) {
+            throw new Error(
+                `emptyValue being set to null or undefined is not supported`
+            );
+        }
+        // eslint-disable-next-line eqeqeq
+        if (isValidElement(optionText) && emptyText != undefined) {
+            throw new Error(
+                `optionText of type React element is not supported when setting emptyText`
+            );
+        }
         // eslint-disable-next-line eqeqeq
         if (isValidElement(optionText) && inputText == undefined) {
             throw new Error(`
@@ -238,7 +266,7 @@ If you provided a React element for the optionText prop, you must also provide t
             throw new Error(`
 If you provided a React element for the optionText prop, you must also provide the matchSuggestion prop (used to match the user input with a choice)`);
         }
-    }, [optionText, inputText, matchSuggestion]);
+    }, [optionText, inputText, matchSuggestion, emptyText, emptyValue]);
 
     useEffect(() => {
         warning(
@@ -252,9 +280,7 @@ If you provided a React element for the optionText prop, you must also provide t
     const getRecordRepresentation = useGetRecordRepresentation(resource);
 
     const { getChoiceText, getChoiceValue, getSuggestions } = useSuggestions({
-        choices: allChoices,
-        emptyText,
-        emptyValue,
+        choices: finalChoices,
         limitChoicesToValue,
         matchSuggestion,
         optionText:
@@ -279,7 +305,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 ]);
             }
         } else {
-            field.onChange(getChoiceValue(newValue) ?? '');
+            field.onChange(getChoiceValue(newValue) ?? emptyValue);
         }
     };
 
@@ -343,13 +369,26 @@ If you provided a React element for the optionText prop, you must also provide t
                 return option?.name;
             }
 
+            if (!isListItem && option[optionValue || 'id'] === emptyValue) {
+                return option[
+                    typeof optionText === 'string' ? optionText : 'name'
+                ];
+            }
+
             if (!isListItem && inputText !== undefined) {
                 return inputText(option);
             }
 
             return getChoiceText(option);
         },
-        [getChoiceText, inputText, createId]
+        [
+            getChoiceText,
+            inputText,
+            createId,
+            optionText,
+            optionValue,
+            emptyValue,
+        ]
     );
 
     const finalOnBlur = useCallback((): void => {
@@ -404,13 +443,13 @@ If you provided a React element for the optionText prop, you must also provide t
     );
     const doesQueryMatchSuggestion = useCallback(
         filter => {
-            const hasOption = !!allChoices
-                ? allChoices.some(choice => getOptionLabel(choice) === filter)
+            const hasOption = !!finalChoices
+                ? finalChoices.some(choice => getOptionLabel(choice) === filter)
                 : false;
 
             return doesQueryMatchSelection(filter) || hasOption;
         },
-        [allChoices, getOptionLabel, doesQueryMatchSelection]
+        [finalChoices, getOptionLabel, doesQueryMatchSelection]
     );
 
     const filterOptions = (options, params) => {
@@ -419,7 +458,7 @@ If you provided a React element for the optionText prop, you must also provide t
             matchSuggestion || // When using element as optionText (and matchSuggestion), options are filtered by getSuggestions, so they shouldn't be filtered here
             limitChoicesToValue // When limiting choices to values (why? it's legacy!), options are also filtered by getSuggestions, so they shouldn't be filtered here
                 ? options
-                : defaultFilterOptions(options, params); // Otherwise we let MUI's Autocomplete do the filtering
+                : defaultFilterOptions(options, params); // Otherwise, we let MUI's Autocomplete do the filtering
 
         // add create option if necessary
         const { inputValue } = params;
@@ -439,7 +478,7 @@ If you provided a React element for the optionText prop, you must also provide t
         newValue: any,
         reason: string
     ) => {
-        handleChangeWithCreateSupport(newValue != null ? newValue : '');
+        handleChangeWithCreateSupport(newValue != null ? newValue : emptyValue);
     };
 
     const oneSecondHasPassed = useTimeout(1000, filterValue);
@@ -448,9 +487,9 @@ If you provided a React element for the optionText prop, you must also provide t
         if (matchSuggestion || limitChoicesToValue) {
             return getSuggestions(filterValue);
         }
-        return allChoices?.slice(0, suggestionLimit) || [];
+        return finalChoices?.slice(0, suggestionLimit) || [];
     }, [
-        allChoices,
+        finalChoices,
         filterValue,
         getSuggestions,
         limitChoicesToValue,
@@ -459,8 +498,7 @@ If you provided a React element for the optionText prop, you must also provide t
     ]);
 
     const isOptionEqualToValue = (option, value) => {
-        // eslint-disable-next-line eqeqeq
-        return getChoiceValue(option) == getChoiceValue(value);
+        return getChoiceValue(option) === getChoiceValue(value);
     };
 
     return (
@@ -551,7 +589,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 inputValue={filterValue}
                 loading={
                     isLoading &&
-                    (!allChoices || allChoices.length === 0) &&
+                    (!finalChoices || finalChoices.length === 0) &&
                     oneSecondHasPassed
                 }
                 value={selectedChoice}
@@ -562,7 +600,14 @@ If you provided a React element for the optionText prop, you must also provide t
                     (props as {
                         key: string;
                     }).key = getChoiceValue(record);
-                    return <li {...props}>{getOptionLabel(record, true)}</li>;
+
+                    const optionLabel = getOptionLabel(record, true);
+
+                    return (
+                        <li {...props}>
+                            {optionLabel === '' ? ' ' : optionLabel}
+                        </li>
+                    );
                 }}
             />
             {createElement}
@@ -606,6 +651,8 @@ export interface AutocompleteInputProps<
         > {
     children?: ReactNode;
     debounce?: number;
+    emptyText?: string;
+    emptyValue?: any;
     filterToQuery?: (searchText: string) => any;
     inputText?: (option: any) => string;
     setFilter?: (value: string) => void;

@@ -383,5 +383,3 @@ export const UserCreate = () => {
 {% endraw %}
 
 **Tip**: The shape of the returned validation errors must correspond to the form: a key needs to match a `source` prop.
-
-**Tip**: The returned validation errors might have any validation format we support (simple strings or object with message and args) for each key.

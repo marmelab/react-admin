@@ -38,6 +38,7 @@ export * from './setSubmissionErrors';
 export * from './useApplyInputDefaultValues';
 export * from './useChoices';
 export * from './useFormGroup';
+export * from './useFormGroups';
 export * from './useFormGroupContext';
 export * from './useGetValidationErrorMessage';
 export * from './useInitializeFormWithRecord';
