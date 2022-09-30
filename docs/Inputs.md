@@ -339,12 +339,14 @@ import { TextInput } from 'react-admin';
 const TextInputWithNullEmptyValue = props => (
     <TextInput
         {...props}
-        parse={ v =>  v === '' ? null : v }
+        parse={v =>  v === '' ? null : v}
     />
 );
 
 export default TextInputWithNullEmptyValue;
 ```
+
+**Tip**: If you need to do that for every input, use [the `sanitizeEmptyValues` prop of the `<Form>` component](./Form.md#sanitizeemptyvalues) instead.
 
 Let's look at another usage example. Say the user would like to input values of 0-100 to a percentage field but your API (hence record) expects 0-1.0. You can use simple `parse()` and `format()` functions to archive the transform:
 

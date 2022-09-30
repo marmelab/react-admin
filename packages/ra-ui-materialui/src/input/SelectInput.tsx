@@ -168,8 +168,9 @@ export const SelectInput = (props: SelectInputProps) => {
         formState: { isSubmitted },
     } = useInput({
         defaultValue,
-        format,
-        parse,
+        parse: parse ?? isFromReference ? convertEmptyStringToNull : undefined,
+        format:
+            format ?? isFromReference ? convertNullToEmptyString : undefined,
         onBlur,
         onChange,
         resource,
@@ -414,3 +415,6 @@ export type SelectInputProps = Omit<CommonInputProps, 'source'> &
         source?: string;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
     };
+
+const convertEmptyStringToNull = value => (value === '' ? null : value);
+const convertNullToEmptyString = value => (value === null ? '' : value);

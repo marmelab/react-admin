@@ -3,14 +3,14 @@ import { fireEvent, screen, render, waitFor } from '@testing-library/react';
 import { useFormState, useFormContext } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import assert from 'assert';
 
 import { CoreAdminContext } from '../core';
-
 import { Form } from './Form';
 import { useNotificationContext } from '../notification';
 import { useInput } from './useInput';
 import { required } from './validate';
-import assert from 'assert';
+import { SanitizeEmptyValues } from './Form.stories';
 
 describe('Form', () => {
     const Input = props => {
@@ -554,6 +554,30 @@ describe('Form', () => {
                     expect.anything()
                 );
             });
+        });
+    });
+
+    describe('sanitizeEmtpyValues', () => {
+        it('should remove empty values from the record', async () => {
+            render(<SanitizeEmptyValues />);
+            fireEvent.change(screen.getByLabelText('field1'), {
+                target: { value: '' },
+            });
+            fireEvent.change(screen.getByLabelText('field2'), {
+                target: { value: '' },
+            });
+            fireEvent.change(screen.getByLabelText('field4'), {
+                target: { value: 'hello' },
+            });
+            fireEvent.change(screen.getByLabelText('field4'), {
+                target: { value: '' },
+            });
+            fireEvent.click(screen.getByText('Submit'));
+            await waitFor(() =>
+                expect(screen.getByTestId('result')?.textContent).toEqual(
+                    '{\n  "id": 1,\n  "field1": null\n}'
+                )
+            );
         });
     });
 

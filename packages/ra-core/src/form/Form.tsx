@@ -84,4 +84,5 @@ export interface FormOwnProps {
     resource?: string;
     onSubmit?: SubmitHandler<FieldValues>;
     warnWhenUnsavedChanges?: boolean;
+    sanitizeEmptyValues?: boolean;
 }

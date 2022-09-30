@@ -94,6 +94,32 @@ You can filter the query used to populate the possible values. Use the `filter` 
 ```
 {% endraw %}
 
+## `format`
+
+By default, children of `<ReferenceInput>` transform `null` values from the `dataProvider` into empty strings. 
+
+If you want to change this behavior, you have to pass a custom `format` prop to the `<ReferenceInput>` *child component*, because  **`<ReferenceInput>` doesn't have a `format` prop**. It is the responsibility of the child component to format the input value.
+
+For instance, if you want to transform an option value before rendering, and the selection control is an `<AutocompleteInput>` (the default), set [the `<AutocompleteInput format>` prop](./Inputs.md#format) as follows:
+
+```jsx
+import { ReferenceInput, AutocompleteInput } from 'react-admin';
+
+<ReferenceInput source="post_id" reference="posts">
+    <AutocompleteInput format={value => value == null ? 'not defined' : value} />
+</ReferenceInput>
+```
+
+The same goes if the child is a `<SelectInput>`:
+
+```jsx
+import { ReferenceInput, SelectInput } from 'react-admin';
+
+<ReferenceInput source="post_id" reference="posts">
+    <SelectInput format={value => value === undefined ? 'not defined' : null} />
+</ReferenceInput>
+```
+
 ## `label`
 
 In an `<Edit>` or `<Create>` view, the `label` prop has no effect. `<ReferenceInput>` has no label, it simply renders its child (an `<AutocompleteInput>` by default). If you need to customize the label, set the `label` prop on the child element:
@@ -114,6 +140,32 @@ const filters = [
         <AutocompleteInput label="Post" />
     </ReferenceInput>,
 ];
+```
+
+## `parse`
+
+By default, children of `<ReferenceInput>` transform the empty form value (an empty string) into `null` before passing it to the `dataProvider`. 
+
+If you want to change this behavior, you have to pass a custom `parse` prop to the `<ReferenceInput>` *child component*, because  **`<ReferenceInput>` doesn't have a `parse` prop**. It is the responsibility of the child component to parse the input value.
+
+For instance, if you want to transform an option value before submission, and the selection control is an `<AutocompleteInput>` (the default), set [the `<AutocompleteInput parse>` prop](./Inputs.md#parse) as follows:
+
+```jsx
+import { ReferenceInput, AutocompleteInput } from 'react-admin';
+
+<ReferenceInput source="post_id" reference="posts">
+    <AutocompleteInput parse={value => value === 'not defined' ? null : value} />
+</ReferenceInput>
+```
+
+The same goes if the child is a `<SelectInput>`:
+
+```jsx
+import { ReferenceInput, SelectInput } from 'react-admin';
+
+<ReferenceInput source="post_id" reference="posts">
+    <SelectInput parse={value => value === 'not defined' ? undefined : null} />
+</ReferenceInput>
 ```
 
 ## `perPage`

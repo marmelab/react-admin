@@ -106,6 +106,7 @@ const sanitizeRestProps = ({
     record,
     resolver,
     reValidateMode,
+    sanitizeEmptyValues,
     shouldFocusError,
     shouldUnregister,
     shouldUseNativeValidation,
