@@ -106,19 +106,56 @@ const choices = [
 <SelectInput source="contact_id" choices={choices} optionText="full_name" optionValue="_id" disableValue="not_available" />
 ```
 
-## `emptyValue`
+## `emptyText`
 
-An empty choice is always added (with a default `''` value, which you can override with the `emptyValue` prop) on top of the options. You can furthermore customize the `MenuItem` for the empty choice by using the `emptyText` prop, which can receive either a string or a React Element, which doesn't receive any props.
+If the input isn't required (using `validate={required()}`), users can select an empty choice with an empty text `''` as label.
+
+You can override that label with the `emptyText` prop.
 
 ```jsx
-<SelectInput source="category" emptyValue={0} choices={[
-    { id: 'programming', name: 'Programming' },
-    { id: 'lifestyle', name: 'Lifestyle' },
-    { id: 'photography', name: 'Photography' },
-]} />
+<SelectInput
+    source="category" 
+    emptyText="No category selected"
+    choices={[
+        { id: 'programming', name: 'Programming' },
+        { id: 'lifestyle', name: 'Lifestyle' },
+        { id: 'photography', name: 'Photography' },
+    ]}
+/>
 ```
 
-**Note**: `emptyValue` cannot be set to `undefined` or `null` since the `dataProvider` method will receive an empty string on submit due to the nature of HTML inputs.
+The `emptyText` prop accepts either a string or a React Element.
+
+And if you want to hide that empty choice, make the input required. 
+
+```jsx
+<SelectInput
+    source="category" 
+    choices={[
+        { id: 'programming', name: 'Programming' },
+        { id: 'lifestyle', name: 'Lifestyle' },
+        { id: 'photography', name: 'Photography' },
+    ]}
+    validate={required()}
+/>
+```
+
+## `emptyValue`
+
+If the input isn't required (using `validate={required()}`), users can select an empty choice. The default value for that empty choice is tyhe empty string (`''`), or `null` if the input is inside a [`<ReferenceInput>`](./ReferenceInput.md).
+
+You can override this value with the `emptyValue` prop.
+
+```jsx
+<SelectInput 
+    source="category"
+    emptyValue={0}
+    choices={[
+        { id: 'programming', name: 'Programming' },
+        { id: 'lifestyle', name: 'Lifestyle' },
+        { id: 'photography', name: 'Photography' },
+    ]} />
+```
 
 ## `options`
 
