@@ -111,12 +111,18 @@
             });
         </script>
         <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
+        {% if page.dir contains "doc" %}
+        {% assign version = page.dir | split: '/' | last %}
+        {% else %}
+        {% assign version = "latest" %}
+        {% endif %}
         <script type="text/javascript">
             docsearch({
                 container: '#docsearch',
                 appId: 'QY9T9CVM2N',
                 indexName: 'marmelab-react-admin',
                 apiKey: '75332227370be3dc35777cee6244881a',
+                searchParameters: { facetFilters: ['version:  {{ version }}'] },
             });
         </script>
         <script
