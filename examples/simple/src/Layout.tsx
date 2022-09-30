@@ -2,7 +2,7 @@ import * as React from 'react';
 import { memo } from 'react';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { AppBar, Layout, InspectorButton } from 'react-admin';
-import { CssBaseline, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 
 const MyAppBar = memo(props => (
     <AppBar {...props}>
@@ -13,7 +13,6 @@ const MyAppBar = memo(props => (
 
 export default props => (
     <>
-        <CssBaseline />
         <Layout {...props} appBar={MyAppBar} />
         <ReactQueryDevtools
             initialIsOpen={false}

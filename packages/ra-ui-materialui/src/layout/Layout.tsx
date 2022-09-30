@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import clsx from 'clsx';
+import { ScopedCssBaseline } from '@mui/material';
 import { styled, SxProps } from '@mui/material/styles';
 import { CoreLayoutProps } from 'ra-core';
 
@@ -39,34 +40,42 @@ export const Layout = (props: LayoutProps) => {
     };
 
     return (
-        <StyledLayout className={clsx('layout', className)} {...rest}>
-            <SkipNavigationButton />
-            <div className={LayoutClasses.appFrame}>
-                <AppBar open={open} title={title} />
-                <main className={LayoutClasses.contentWithSidebar}>
-                    <Sidebar>
-                        <Menu hasDashboard={!!dashboard} />
-                    </Sidebar>
-                    <div id="main-content" className={LayoutClasses.content}>
-                        <ErrorBoundary
-                            onError={handleError}
-                            fallbackRender={({ error, resetErrorBoundary }) => (
-                                <Error
-                                    error={error}
-                                    errorComponent={errorComponent}
-                                    errorInfo={errorInfo}
-                                    resetErrorBoundary={resetErrorBoundary}
-                                    title={title}
-                                />
-                            )}
+        <ScopedCssBaseline enableColorScheme>
+            <StyledLayout className={clsx('layout', className)} {...rest}>
+                <SkipNavigationButton />
+                <div className={LayoutClasses.appFrame}>
+                    <AppBar open={open} title={title} />
+                    <main className={LayoutClasses.contentWithSidebar}>
+                        <Sidebar>
+                            <Menu hasDashboard={!!dashboard} />
+                        </Sidebar>
+                        <div
+                            id="main-content"
+                            className={LayoutClasses.content}
                         >
-                            {children}
-                        </ErrorBoundary>
-                    </div>
-                </main>
-                <Inspector />
-            </div>
-        </StyledLayout>
+                            <ErrorBoundary
+                                onError={handleError}
+                                fallbackRender={({
+                                    error,
+                                    resetErrorBoundary,
+                                }) => (
+                                    <Error
+                                        error={error}
+                                        errorComponent={errorComponent}
+                                        errorInfo={errorInfo}
+                                        resetErrorBoundary={resetErrorBoundary}
+                                        title={title}
+                                    />
+                                )}
+                            >
+                                {children}
+                            </ErrorBoundary>
+                        </div>
+                    </main>
+                    <Inspector />
+                </div>
+            </StyledLayout>
+        </ScopedCssBaseline>
     );
 };
 
