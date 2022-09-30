@@ -142,7 +142,7 @@ And if you want to hide that empty choice, make the input required.
 
 ## `emptyValue`
 
-If the input isn't required (using `validate={required()}`), users can select an empty choice. The default value for that empty choice is tyhe empty string (`''`), or `null` if the input is inside a [`<ReferenceInput>`](./ReferenceInput.md).
+If the input isn't required (using `validate={required()}`), users can select an empty choice. The default value for that empty choice is the empty string (`''`), or `null` if the input is inside a [`<ReferenceInput>`](./ReferenceInput.md).
 
 You can override this value with the `emptyValue` prop.
 
