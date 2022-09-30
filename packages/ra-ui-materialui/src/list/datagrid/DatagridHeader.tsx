@@ -15,6 +15,7 @@ import clsx from 'clsx';
 import DatagridHeaderCell from './DatagridHeaderCell';
 import { DatagridClasses } from './useDatagridStyles';
 import ExpandAllButton from './ExpandAllButton';
+import { useDatagridContext } from './useDatagridContext';
 
 /**
  * The default Datagrid Header component.
@@ -34,6 +35,7 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
     const { sort, data, onSelect, selectedIds, setSort } = useListContext(
         props
     );
+    const { expandSingle } = useDatagridContext();
 
     const updateSortCallback = useCallback(
         event => {
@@ -95,10 +97,12 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                             DatagridClasses.expandHeader
                         )}
                     >
-                        <ExpandAllButton
-                            resource={resource}
-                            ids={data.map(record => record.id)}
-                        />
+                        {!expandSingle ? (
+                            <ExpandAllButton
+                                resource={resource}
+                                ids={data.map(record => record.id)}
+                            />
+                        ) : null}
                     </TableCell>
                 )}
                 {hasBulkActions && selectedIds && (
