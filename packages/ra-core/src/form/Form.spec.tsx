@@ -11,6 +11,7 @@ import { useNotificationContext } from '../notification';
 import { useInput } from './useInput';
 import { required } from './validate';
 import { SanitizeEmptyValues } from './Form.stories';
+import { NullValue } from './Form.stories';
 
 describe('Form', () => {
     const Input = props => {
@@ -575,7 +576,7 @@ describe('Form', () => {
             fireEvent.click(screen.getByText('Submit'));
             await waitFor(() =>
                 expect(screen.getByTestId('result')?.textContent).toEqual(
-                    '{\n  "id": 1,\n  "field1": null\n}'
+                    '{\n  "id": 1,\n  "field1": null,\n  "field6": null\n}'
                 )
             );
         });
@@ -610,5 +611,20 @@ describe('Form', () => {
             screen.getByText('title is a required field');
         });
         screen.getByText('number must be a positive number');
+    });
+
+    it('should convert null values to empty strings', () => {
+        jest.spyOn(console, 'error').mockImplementation(message => {
+            // not very robust but there are other React warnings due to act()
+            // so we must check the exact message
+            if (
+                message ===
+                'Warning: `value` prop on `%s` should not be null. Consider using an empty string to clear the component or `undefined` for uncontrolled components.%s'
+            ) {
+                fail(message);
+            }
+        });
+        render(<NullValue />);
+        // no assertion needed: if there is a console error, the test fails
     });
 });

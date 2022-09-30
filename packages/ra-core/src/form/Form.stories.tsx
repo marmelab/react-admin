@@ -49,13 +49,14 @@ export const Basic = () => {
         <CoreAdminContext>
             <Form
                 onSubmit={data => setSubmittedData(data)}
-                record={{ id: 1, field1: 'bar' }}
+                record={{ id: 1, field1: 'bar', field6: null }}
             >
                 <Input source="field1" />
                 <Input source="field2" defaultValue="bar" />
                 <Input source="field3" defaultValue="" />
                 <Input source="field4" />
                 <Input source="field5" parse={v => v || undefined} />
+                <Input source="field6" />
                 <SubmitButton />
             </Form>
             <pre>{JSON.stringify(submittedData, null, 2)}</pre>
@@ -69,7 +70,7 @@ export const SanitizeEmptyValues = () => {
         <CoreAdminContext>
             <Form
                 onSubmit={data => setSubmittedData(data)}
-                record={{ id: 1, field1: 'bar' }}
+                record={{ id: 1, field1: 'bar', field6: null }}
                 sanitizeEmptyValues
             >
                 <Input source="field1" />
@@ -77,12 +78,39 @@ export const SanitizeEmptyValues = () => {
                 <Input source="field3" defaultValue="" />
                 <Input source="field4" />
                 <Input source="field5" parse={v => v || undefined} />
+                <Input source="field6" />
 
                 <SubmitButton />
             </Form>
             <pre data-testid="result">
                 {JSON.stringify(submittedData, null, 2)}
             </pre>
+        </CoreAdminContext>
+    );
+};
+
+export const NullValue = () => {
+    const [result, setResult] = React.useState<any>();
+    return (
+        <CoreAdminContext>
+            <Form record={{ foo: null }} onSubmit={data => setResult(data)}>
+                <Input source="foo" />
+                <button type="submit">Submit</button>
+            </Form>
+            <pre>{JSON.stringify(result, null, 2)}</pre>
+        </CoreAdminContext>
+    );
+};
+
+export const UndefinedValue = () => {
+    const [result, setResult] = React.useState<any>();
+    return (
+        <CoreAdminContext>
+            <Form record={{}} onSubmit={data => setResult(data)}>
+                <Input source="foo" />
+                <button type="submit">Submit</button>
+            </Form>
+            <pre>{JSON.stringify(result, null, 2)}</pre>
         </CoreAdminContext>
     );
 };
