@@ -108,15 +108,17 @@ const choices = [
 
 ## `emptyValue`
 
-An empty choice is always added (with a default `''` value, which you can overwrite with the `emptyValue` prop) on top of the options. You can furthermore customize the `MenuItem` for the empty choice by using the `emptyText` prop, which can receive either a string or a React Element, which doesn't receive any props.
+An empty choice is always added (with a default `''` value, which you can override with the `emptyValue` prop) on top of the options. You can furthermore customize the `MenuItem` for the empty choice by using the `emptyText` prop, which can receive either a string or a React Element, which doesn't receive any props.
 
 ```jsx
-<SelectInput source="category" emptyValue={null} choices={[
+<SelectInput source="category" emptyValue={0} choices={[
     { id: 'programming', name: 'Programming' },
     { id: 'lifestyle', name: 'Lifestyle' },
     { id: 'photography', name: 'Photography' },
 ]} />
 ```
+
+**Note**: `emptyValue` cannot be set to `undefined` or `null` since the `dataProvider` method will receive an empty string on submit due to the nature of HTML inputs.
 
 ## `options`
 

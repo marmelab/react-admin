@@ -293,10 +293,11 @@ export const PostEdit = () => (
 );
 ```
 
-**Tip**: MUI will only adds the scroll buttons if there isn't enough space to display all the tabs. That can only happen if the Tabs containers have a fixed width.
+**Tip**: MUI only adds the scroll buttons if there isn't enough space to display all the tabs. That can only happen if the Tabs containers have a fixed width.
 The solution here is to set a max width on one of the following components:
-* the Edit or Create
-* the TabbedForm 
+
+* the `<Edit>` or `<Create>`
+* the `<TabbedForm>` 
 
 ## `toolbar`
 

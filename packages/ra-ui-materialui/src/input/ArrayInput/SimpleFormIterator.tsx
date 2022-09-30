@@ -8,6 +8,7 @@ import {
     ReactNode,
     useCallback,
     useMemo,
+    useRef,
 } from 'react';
 import { styled, SxProps } from '@mui/material';
 import clsx from 'clsx';
@@ -50,6 +51,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     } = props;
     const { append, fields, move, remove } = useArrayInput(props);
     const record = useRecordContext(props);
+    const initialDefaultValue = useRef({});
 
     const removeField = useCallback(
         (index: number) => {
@@ -58,10 +60,18 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         [remove]
     );
 
+    if (fields.length > 0) {
+        const { id, ...rest } = fields[0];
+        initialDefaultValue.current = rest;
+        for (const k in initialDefaultValue.current)
+            initialDefaultValue.current[k] = '';
+    }
+
     const addField = useCallback(
         (item: any = undefined) => {
             let defaultValue = item;
             if (item == null) {
+                defaultValue = initialDefaultValue.current;
                 if (
                     Children.count(children) === 1 &&
                     React.isValidElement(Children.only(children)) &&
@@ -74,11 +84,13 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                 } else {
                     // ArrayInput used for an array of objects
                     // (e.g. authors: [{ firstName: 'John', lastName: 'Doe' }, { firstName: 'Jane', lastName: 'Doe' }])
-                    defaultValue = {} as Record<string, unknown>;
+                    defaultValue =
+                        defaultValue || ({} as Record<string, unknown>);
                     Children.forEach(children, input => {
                         if (
                             React.isValidElement(input) &&
-                            input.type !== FormDataConsumer
+                            input.type !== FormDataConsumer &&
+                            input.props.source
                         ) {
                             defaultValue[input.props.source] =
                                 input.props.defaultValue ?? '';
