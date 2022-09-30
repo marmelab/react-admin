@@ -14,6 +14,7 @@ import clsx from 'clsx';
 
 import DatagridHeaderCell from './DatagridHeaderCell';
 import { DatagridClasses } from './useDatagridStyles';
+import ExpandAllButton from './ExpandAllButton';
 
 /**
  * The default Datagrid Header component.
@@ -93,7 +94,12 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                             DatagridClasses.headerCell,
                             DatagridClasses.expandHeader
                         )}
-                    />
+                    >
+                        <ExpandAllButton
+                            resource={resource}
+                            ids={data.map(record => record.id)}
+                        />
+                    </TableCell>
                 )}
                 {hasBulkActions && selectedIds && (
                     <TableCell

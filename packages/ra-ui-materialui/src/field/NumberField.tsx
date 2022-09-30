@@ -3,7 +3,7 @@ import { memo, FC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@mui/material/Typography';
-import { useRecordContext } from 'ra-core';
+import { useRecordContext, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
@@ -47,10 +47,13 @@ export const NumberField: FC<NumberFieldProps> = memo(props => {
         ...rest
     } = props;
     const record = useRecordContext(props);
+    const translate = useTranslate();
+
     if (!record) {
         return null;
     }
     const value = get(record, source);
+
     if (value == null) {
         return emptyText ? (
             <Typography
@@ -59,7 +62,7 @@ export const NumberField: FC<NumberFieldProps> = memo(props => {
                 className={className}
                 {...sanitizeFieldRestProps(rest)}
             >
-                {emptyText}
+                {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
         ) : null;
     }

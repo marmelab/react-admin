@@ -3,14 +3,15 @@ import { fireEvent, screen, render, waitFor } from '@testing-library/react';
 import { useFormState, useFormContext } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import assert from 'assert';
 
 import { CoreAdminContext } from '../core';
-
 import { Form } from './Form';
 import { useNotificationContext } from '../notification';
 import { useInput } from './useInput';
 import { required } from './validate';
-import assert from 'assert';
+import { SanitizeEmptyValues } from './Form.stories';
+import { NullValue } from './Form.stories';
 
 describe('Form', () => {
     const Input = props => {
@@ -210,7 +211,10 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({ foo: null });
+            expect(onSubmit).toHaveBeenCalledWith(
+                { foo: null },
+                expect.anything()
+            );
         });
     });
 
@@ -235,7 +239,10 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({ foo: { bar: null } });
+            expect(onSubmit).toHaveBeenCalledWith(
+                { foo: { bar: null } },
+                expect.anything()
+            );
         });
     });
 
@@ -257,7 +264,10 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({ foo: str });
+            expect(onSubmit).toHaveBeenCalledWith(
+                { foo: str },
+                expect.anything()
+            );
         });
     });
     it('should accept date values', async () => {
@@ -283,7 +293,10 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({ foo: date });
+            expect(onSubmit).toHaveBeenCalledWith(
+                { foo: date },
+                expect.anything()
+            );
         });
     });
 
@@ -310,7 +323,10 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({ foo: arr });
+            expect(onSubmit).toHaveBeenCalledWith(
+                { foo: arr },
+                expect.anything()
+            );
         });
     });
 
@@ -337,7 +353,10 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({ foo: obj });
+            expect(onSubmit).toHaveBeenCalledWith(
+                { foo: obj },
+                expect.anything()
+            );
         });
     });
     it('should accept deep object values', async () => {
@@ -363,7 +382,10 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({ foo: obj });
+            expect(onSubmit).toHaveBeenCalledWith(
+                { foo: obj },
+                expect.anything()
+            );
         });
     });
     it('should accept object values in arrays', async () => {
@@ -389,7 +411,10 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({ foo: obj });
+            expect(onSubmit).toHaveBeenCalledWith(
+                { foo: obj },
+                expect.anything()
+            );
         });
     });
     it('should accept adding objects in arrays', async () => {
@@ -418,7 +443,10 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({ foo: obj });
+            expect(onSubmit).toHaveBeenCalledWith(
+                { foo: obj },
+                expect.anything()
+            );
         });
     });
     it('should accept removing objects in array of objects', async () => {
@@ -449,7 +477,10 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({ foo: obj });
+            expect(onSubmit).toHaveBeenCalledWith(
+                { foo: obj },
+                expect.anything()
+            );
         });
     });
     describe('defaultValues', () => {
@@ -519,8 +550,35 @@ describe('Form', () => {
             fireEvent.click(screen.getByText('Submit'));
 
             await waitFor(() => {
-                expect(onSubmit).toHaveBeenCalledWith(values);
+                expect(onSubmit).toHaveBeenCalledWith(
+                    values,
+                    expect.anything()
+                );
             });
+        });
+    });
+
+    describe('sanitizeEmtpyValues', () => {
+        it('should remove empty values from the record', async () => {
+            render(<SanitizeEmptyValues />);
+            fireEvent.change(screen.getByLabelText('field1'), {
+                target: { value: '' },
+            });
+            fireEvent.change(screen.getByLabelText('field2'), {
+                target: { value: '' },
+            });
+            fireEvent.change(screen.getByLabelText('field4'), {
+                target: { value: 'hello' },
+            });
+            fireEvent.change(screen.getByLabelText('field4'), {
+                target: { value: '' },
+            });
+            fireEvent.click(screen.getByText('Submit'));
+            await waitFor(() =>
+                expect(screen.getByTestId('result')?.textContent).toEqual(
+                    '{\n  "id": 1,\n  "field1": null,\n  "field6": null\n}'
+                )
+            );
         });
     });
 
@@ -553,5 +611,20 @@ describe('Form', () => {
             screen.getByText('title is a required field');
         });
         screen.getByText('number must be a positive number');
+    });
+
+    it('should convert null values to empty strings', () => {
+        jest.spyOn(console, 'error').mockImplementation(message => {
+            // not very robust but there are other React warnings due to act()
+            // so we must check the exact message
+            if (
+                message ===
+                'Warning: `value` prop on `%s` should not be null. Consider using an empty string to clear the component or `undefined` for uncontrolled components.%s'
+            ) {
+                fail(message);
+            }
+        });
+        render(<NullValue />);
+        // no assertion needed: if there is a console error, the test fails
     });
 });

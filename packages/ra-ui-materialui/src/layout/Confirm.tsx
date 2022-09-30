@@ -88,8 +88,11 @@ export const Confirm = (props: ConfirmProps) => {
                 )}
             </DialogContent>
             <DialogActions>
-                <Button disabled={loading} onClick={onClose}>
-                    <CancelIcon className={ConfirmClasses.iconPaddingStyle} />
+                <Button
+                    disabled={loading}
+                    onClick={onClose}
+                    startIcon={<CancelIcon />}
+                >
                     {translate(cancel, { _: cancel })}
                 </Button>
                 <Button
@@ -102,8 +105,8 @@ export const Confirm = (props: ConfirmProps) => {
                             confirmColor === 'primary',
                     })}
                     autoFocus
+                    startIcon={<ConfirmIcon />}
                 >
-                    <ConfirmIcon className={ConfirmClasses.iconPaddingStyle} />
                     {translate(confirm, { _: confirm })}
                 </Button>
             </DialogActions>
@@ -148,7 +151,6 @@ const PREFIX = 'RaConfirm';
 export const ConfirmClasses = {
     confirmPrimary: `${PREFIX}-confirmPrimary`,
     confirmWarning: `${PREFIX}-confirmWarning`,
-    iconPaddingStyle: `${PREFIX}-iconPaddingStyle`,
 };
 
 const StyledDialog = styled(Dialog, {
@@ -168,9 +170,5 @@ const StyledDialog = styled(Dialog, {
                 backgroundColor: 'transparent',
             },
         },
-    },
-
-    [`& .${ConfirmClasses.iconPaddingStyle}`]: {
-        paddingRight: '0.5em',
     },
 }));

@@ -32,7 +32,7 @@ const authors = [
     { id: 5, first_name: 'Marcel', last_name: 'Proust', language: 'French' },
 ];
 
-const dataProviderWithAuthors = {
+export const dataProviderWithAuthors = {
     getOne: (resource, params) =>
         Promise.resolve({
             data: {
@@ -61,6 +61,7 @@ const dataProviderWithAuthors = {
             );
             return;
         }),
+    update: (resource, params) => Promise.resolve(params),
 } as any;
 
 const BookEdit = () => (
@@ -80,8 +81,8 @@ const BookEdit = () => (
 
 const history = createMemoryHistory({ initialEntries: ['/books/1'] });
 
-export const Basic = () => (
-    <Admin dataProvider={dataProviderWithAuthors} history={history}>
+export const Basic = ({ dataProvider = dataProviderWithAuthors }) => (
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource
             name="authors"
             recordRepresentation={record =>
@@ -322,8 +323,8 @@ export const ErrorAutocomplete = () => (
     </Admin>
 );
 
-export const WithSelectInput = () => (
-    <Admin dataProvider={dataProviderWithAuthors} history={history}>
+export const WithSelectInput = ({ dataProvider = dataProviderWithAuthors }) => (
+    <Admin dataProvider={dataProvider} history={history}>
         <Resource
             name="authors"
             recordRepresentation={record =>

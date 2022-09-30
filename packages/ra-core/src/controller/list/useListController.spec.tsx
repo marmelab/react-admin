@@ -264,6 +264,7 @@ describe('useListController', () => {
             clock.uninstall();
         });
     });
+
     describe('showFilter', () => {
         it('Does not remove previously shown filter when adding a new one', async () => {
             let currentDisplayedFilters;
@@ -438,6 +439,7 @@ describe('useListController', () => {
             });
         });
     });
+
     describe('getListControllerProps', () => {
         it('should only pick the props injected by the ListController', () => {
             expect(
@@ -478,6 +480,7 @@ describe('useListController', () => {
             });
         });
     });
+
     describe('sanitizeListRestProps', () => {
         it('should omit the props injected by the ListController', () => {
             expect(

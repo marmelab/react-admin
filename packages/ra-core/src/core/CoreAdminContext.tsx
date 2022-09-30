@@ -11,6 +11,7 @@ import {
     defaultDataProvider,
 } from '../dataProvider';
 import { StoreContextProvider, Store, memoryStore } from '../store';
+import { PreferencesEditorContextProvider } from '../preferences/PreferencesEditorContextProvider';
 import { I18nContextProvider } from '../i18n';
 import { ResourceDefinitionContextProvider } from './ResourceDefinitionContext';
 import { NotificationContextProvider } from '../notification';
@@ -81,17 +82,19 @@ React-admin requires a valid dataProvider function to work.`);
         <AuthContext.Provider value={finalAuthProvider}>
             <DataProviderContext.Provider value={finalDataProvider}>
                 <StoreContextProvider value={store}>
-                    <QueryClientProvider client={finalQueryClient}>
-                        <AdminRouter history={history} basename={basename}>
-                            <I18nContextProvider value={i18nProvider}>
-                                <NotificationContextProvider>
-                                    <ResourceDefinitionContextProvider>
-                                        {children}
-                                    </ResourceDefinitionContextProvider>
-                                </NotificationContextProvider>
-                            </I18nContextProvider>
-                        </AdminRouter>
-                    </QueryClientProvider>
+                    <PreferencesEditorContextProvider>
+                        <QueryClientProvider client={finalQueryClient}>
+                            <AdminRouter history={history} basename={basename}>
+                                <I18nContextProvider value={i18nProvider}>
+                                    <NotificationContextProvider>
+                                        <ResourceDefinitionContextProvider>
+                                            {children}
+                                        </ResourceDefinitionContextProvider>
+                                    </NotificationContextProvider>
+                                </I18nContextProvider>
+                            </AdminRouter>
+                        </QueryClientProvider>
+                    </PreferencesEditorContextProvider>
                 </StoreContextProvider>
             </DataProviderContext.Provider>
         </AuthContext.Provider>

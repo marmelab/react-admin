@@ -1,13 +1,22 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { QueryClient } from 'react-query';
-import { testDataProvider, useChoicesContext } from 'ra-core';
+import {
+    testDataProvider,
+    useChoicesContext,
+    CoreAdminContext,
+    Form,
+} from 'ra-core';
 
 import { ReferenceInput } from './ReferenceInput';
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
-import { Basic } from './ReferenceInput.stories';
+import {
+    Basic,
+    WithSelectInput,
+    dataProviderWithAuthors,
+} from './ReferenceInput.stories';
 
 describe('<ReferenceInput />', () => {
     const defaultProps = {
@@ -93,5 +102,96 @@ describe('<ReferenceInput />', () => {
         await waitFor(() => {
             expect(screen.getByLabelText('total').innerHTML).toEqual('2');
         });
+    });
+
+    it('should accept meta in queryOptions', async () => {
+        const getList = jest
+            .fn()
+            .mockImplementationOnce(() =>
+                Promise.resolve({ data: [], total: 25 })
+            );
+        const dataProvider = testDataProvider({ getList });
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Form>
+                    <ReferenceInput
+                        {...defaultProps}
+                        queryOptions={{ meta: { foo: 'bar' } }}
+                    />
+                </Form>
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(getList).toHaveBeenCalledWith('posts', {
+                filter: {},
+                pagination: { page: 1, perPage: 25 },
+                sort: { field: 'id', order: 'DESC' },
+                meta: { foo: 'bar' },
+            });
+        });
+    });
+
+    it('should convert empty values to null with AutocompleteInput', async () => {
+        jest.spyOn(console, 'log').mockImplementationOnce(() => {});
+        const dataProvider = {
+            ...dataProviderWithAuthors,
+            update: jest
+                .fn()
+                .mockImplementation((resource, params) =>
+                    Promise.resolve(params)
+                ),
+        };
+        render(<Basic dataProvider={dataProvider} />);
+        await screen.findByDisplayValue('Leo Tolstoy');
+        const input = screen.getByLabelText('Author') as HTMLInputElement;
+        input.focus();
+        screen.getByLabelText('Clear value').click();
+        screen.getByLabelText('Save').click();
+        await waitFor(() => {
+            expect(
+                (screen.getByLabelText('Save') as HTMLButtonElement).disabled
+            ).toBeTruthy();
+        });
+        expect(dataProvider.update).toHaveBeenCalledWith(
+            'books',
+            expect.objectContaining({
+                data: expect.objectContaining({
+                    author: null,
+                }),
+            })
+        );
+    });
+
+    it('should convert empty values to null with SelectInput', async () => {
+        jest.spyOn(console, 'log').mockImplementationOnce(() => {});
+        const dataProvider = {
+            ...dataProviderWithAuthors,
+            update: jest
+                .fn()
+                .mockImplementation((resource, params) =>
+                    Promise.resolve(params)
+                ),
+        };
+        render(<WithSelectInput dataProvider={dataProvider} />);
+        const input = (await screen.findByDisplayValue(
+            '1'
+        )) as HTMLInputElement;
+        fireEvent.change(input, {
+            target: { value: '' },
+        });
+        screen.getByLabelText('Save').click();
+        await waitFor(() => {
+            expect(
+                (screen.getByLabelText('Save') as HTMLButtonElement).disabled
+            ).toBeTruthy();
+        });
+        expect(dataProvider.update).toHaveBeenCalledWith(
+            'books',
+            expect.objectContaining({
+                data: expect.objectContaining({
+                    author: null,
+                }),
+            })
+        );
     });
 });

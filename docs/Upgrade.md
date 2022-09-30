@@ -1869,9 +1869,9 @@ const MyCustomForm = () => {
 }
 ```
 
-### `sanitizeEmptyValues` Has Been Removed
+### `sanitizeEmptyValues` Works the Other Way Around
 
-React-hook-form doesn't remove empty values like react-final-fom did. Therefore, you no longer need to opt out this behavior:
+React-hook-form doesn't remove empty values like react-final-fom did. Therefore, if you opted out of this behavior with `sanitizeEmptyValues={false}`, you no longer need that prop:
 
 ```diff
 export const PostEdit = () => (
@@ -1885,16 +1885,21 @@ export const PostEdit = () => (
 );
 ```
 
-If you actually need to remove empty values, you can use the `parse` prop on a per-input basis:
+If you actually need to remove empty values, you have to set the `sanitizeEmptyValues` prop explicitly:
 
 ```diff
-+const convertEmptyStringToUndefined = v => v === '' ? undefined : v;
-
--<TextInput source="title" />
-+<TextInput source="title" parse={convertEmptyStringToUndefined} />
+export const PostEdit = () => (
+    <Edit>
+-       <SimpleForm>
++       <SimpleForm sanitizeEmptyValues>
+            <TextInput source="title" />
+            <JsonInput source="body" />
+        </SimpleForm>
+    </Edit>
+);
 ```
 
-Or use the `transform` prop on the `<Create>`, `<Edit>`, or `<SaveButton>` components. 
+If this sanitization strategy doesn't suit your needs, you can use the `transform` prop on the `<Create>`, `<Edit>`, or `<SaveButton>` components.
 
 ### `useFormGroup` Hook Returned State Has Changed
 

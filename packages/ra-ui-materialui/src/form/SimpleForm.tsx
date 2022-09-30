@@ -104,6 +104,7 @@ const sanitizeRestProps = ({
     toolbar,
     validate,
     resolver,
+    sanitizeEmptyValues,
     shouldFocusError,
     shouldUnregister,
     shouldUseNativeValidation,

@@ -3,7 +3,7 @@ import { memo, FC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import { Typography, TypographyProps } from '@mui/material';
-import { useRecordContext } from 'ra-core';
+import { useRecordContext, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
@@ -43,6 +43,7 @@ export const DateField: FC<DateFieldProps> = memo(props => {
         source,
         ...rest
     } = props;
+    const translate = useTranslate();
 
     if (!showTime && !showDate) {
         throw new Error(
@@ -54,6 +55,7 @@ export const DateField: FC<DateFieldProps> = memo(props => {
     if (!record) {
         return null;
     }
+
     const value = get(record, source);
     if (value == null || value === '') {
         return emptyText ? (
@@ -63,7 +65,7 @@ export const DateField: FC<DateFieldProps> = memo(props => {
                 className={className}
                 {...sanitizeFieldRestProps(rest)}
             >
-                {emptyText}
+                {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
         ) : null;
     }

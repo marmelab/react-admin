@@ -68,6 +68,7 @@ export const List = <RecordType extends RaRecord = any>({
     queryOptions,
     resource,
     sort,
+    storeKey,
     ...rest
 }: ListProps<RecordType>): ReactElement => (
     <ListBase<RecordType>
@@ -81,6 +82,7 @@ export const List = <RecordType extends RaRecord = any>({
         queryOptions={queryOptions}
         resource={resource}
         sort={sort}
+        storeKey={storeKey}
     >
         <ListView<RecordType> {...rest} />
     </ListBase>

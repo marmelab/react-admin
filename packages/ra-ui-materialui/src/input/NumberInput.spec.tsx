@@ -213,7 +213,10 @@ describe('<NumberInput />', () => {
             );
             fireEvent.click(screen.getByText('ra.action.save'));
             await waitFor(() => {
-                expect(onSubmit).toHaveBeenCalledWith({ views: 12 });
+                expect(onSubmit).toHaveBeenCalledWith(
+                    { views: 12 },
+                    expect.anything()
+                );
             });
             expect(typeof onSubmit.mock.calls[0][0].views).toEqual('number');
         });
@@ -229,7 +232,10 @@ describe('<NumberInput />', () => {
             );
             fireEvent.click(screen.getByText('ra.action.save'));
             await waitFor(() => {
-                expect(onSubmit).toHaveBeenCalledWith({ views: null });
+                expect(onSubmit).toHaveBeenCalledWith(
+                    { views: null },
+                    expect.anything()
+                );
             });
             expect(onSubmit.mock.calls[0][0].views).toBeNull();
         });
@@ -251,7 +257,10 @@ describe('<NumberInput />', () => {
             fireEvent.change(input, { target: { value: '3' } });
             fireEvent.click(screen.getByText('ra.action.save'));
             await waitFor(() => {
-                expect(onSubmit).toHaveBeenCalledWith({ views: 3 });
+                expect(onSubmit).toHaveBeenCalledWith(
+                    { views: 3 },
+                    expect.anything()
+                );
             });
             expect(typeof onSubmit.mock.calls[0][0].views).toEqual('number');
         });
@@ -273,7 +282,10 @@ describe('<NumberInput />', () => {
             fireEvent.change(input, { target: { value: '' } });
             fireEvent.click(screen.getByText('ra.action.save'));
             await waitFor(() => {
-                expect(onSubmit).toHaveBeenCalledWith({ views: null });
+                expect(onSubmit).toHaveBeenCalledWith(
+                    { views: null },
+                    expect.anything()
+                );
             });
             expect(onSubmit.mock.calls[0][0].views).toBeNull();
         });
@@ -324,7 +336,10 @@ describe('<NumberInput />', () => {
             expect(value).toEqual('3');
             fireEvent.click(screen.getByText('ra.action.save'));
             await waitFor(() => {
-                expect(onSubmit).toHaveBeenCalledWith({ views: 3 });
+                expect(onSubmit).toHaveBeenCalledWith(
+                    { views: 3 },
+                    expect.anything()
+                );
             });
         });
     });

@@ -72,32 +72,22 @@ export const SimpleFormIteratorItem = React.forwardRef(
             [index, total, reOrder, remove]
         );
 
+        const label =
+            typeof getItemLabel === 'function'
+                ? getItemLabel(index)
+                : getItemLabel;
+
         return (
             <SimpleFormIteratorItemContext.Provider value={context}>
                 <li className={SimpleFormIteratorClasses.line} ref={ref}>
-                    <div>
-                        <div
-                            className={SimpleFormIteratorClasses.indexContainer}
+                    {label && (
+                        <Typography
+                            variant="body2"
+                            className={SimpleFormIteratorClasses.index}
                         >
-                            <Typography
-                                variant="body1"
-                                className={SimpleFormIteratorClasses.index}
-                            >
-                                {getItemLabel(index)}
-                            </Typography>
-                            {!disabled &&
-                                !disableReordering &&
-                                cloneElement(reOrderButtons, {
-                                    index,
-                                    max: total,
-                                    reOrder,
-                                    className: clsx(
-                                        'button-reorder',
-                                        `button-reorder-${source}-${index}`
-                                    ),
-                                })}
-                        </div>
-                    </div>
+                            {label}
+                        </Typography>
+                    )}
                     <section
                         className={clsx(
                             SimpleFormIteratorClasses.form,
@@ -123,18 +113,30 @@ export const SimpleFormIteratorItem = React.forwardRef(
                             }
                         )}
                     </section>
-                    {!disabled && !disableRemoveField(record) && (
+                    {!disabled && (
                         <span className={SimpleFormIteratorClasses.action}>
-                            {cloneElement(removeButton, {
-                                onClick: handleRemoveButtonClick(
-                                    removeButton.props.onClick,
-                                    index
-                                ),
-                                className: clsx(
-                                    'button-remove',
-                                    `button-remove-${source}-${index}`
-                                ),
-                            })}
+                            {!disableReordering &&
+                                cloneElement(reOrderButtons, {
+                                    index,
+                                    max: total,
+                                    reOrder,
+                                    className: clsx(
+                                        'button-reorder',
+                                        `button-reorder-${source}-${index}`
+                                    ),
+                                })}
+
+                            {!disableRemoveField(record) &&
+                                cloneElement(removeButton, {
+                                    onClick: handleRemoveButtonClick(
+                                        removeButton.props.onClick,
+                                        index
+                                    ),
+                                    className: clsx(
+                                        'button-remove',
+                                        `button-remove-${source}-${index}`
+                                    ),
+                                })}
                         </span>
                     )}
                 </li>
@@ -145,12 +147,14 @@ export const SimpleFormIteratorItem = React.forwardRef(
 
 export type DisableRemoveFunction = (record: RaRecord) => boolean;
 
+type GetItemLabelFunc = (index: number) => string | ReactElement;
+
 export type SimpleFormIteratorItemProps = Partial<ArrayInputContextValue> & {
     children?: ReactNode;
     disabled?: boolean;
     disableRemove?: boolean | DisableRemoveFunction;
     disableReordering?: boolean;
-    getItemLabel?: (index: number) => string;
+    getItemLabel?: boolean | GetItemLabelFunc;
     index: number;
     inline?: boolean;
     member: string;

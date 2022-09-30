@@ -45,7 +45,8 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         disableRemove,
         disableReordering,
         inline,
-        getItemLabel = DefaultLabelFn,
+        getItemLabel = false,
+        fullWidth,
         sx,
     } = props;
     const { append, fields, move, remove } = useArrayInput(props);
@@ -133,43 +134,50 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     );
     return fields ? (
         <SimpleFormIteratorContext.Provider value={context}>
-            <Root className={className} sx={sx}>
-                {fields.map((member, index) => (
-                    <SimpleFormIteratorItem
-                        key={member.id}
-                        disabled={disabled}
-                        disableRemove={disableRemove}
-                        disableReordering={disableReordering}
-                        fields={fields}
-                        getItemLabel={getItemLabel}
-                        index={index}
-                        member={`${source}.${index}`}
-                        onRemoveField={removeField}
-                        onReorder={handleReorder}
-                        record={(records && records[index]) || {}}
-                        removeButton={removeButton}
-                        reOrderButtons={reOrderButtons}
-                        resource={resource}
-                        source={source}
-                        inline={inline}
-                    >
-                        {children}
-                    </SimpleFormIteratorItem>
-                ))}
+            <Root
+                className={clsx(
+                    className,
+                    fullWidth && 'fullwidth',
+                    disabled && 'disabled'
+                )}
+                sx={sx}
+            >
+                <ul className={SimpleFormIteratorClasses.list}>
+                    {fields.map((member, index) => (
+                        <SimpleFormIteratorItem
+                            key={member.id}
+                            disabled={disabled}
+                            disableRemove={disableRemove}
+                            disableReordering={disableReordering}
+                            fields={fields}
+                            getItemLabel={getItemLabel}
+                            index={index}
+                            member={`${source}.${index}`}
+                            onRemoveField={removeField}
+                            onReorder={handleReorder}
+                            record={(records && records[index]) || {}}
+                            removeButton={removeButton}
+                            reOrderButtons={reOrderButtons}
+                            resource={resource}
+                            source={source}
+                            inline={inline}
+                        >
+                            {children}
+                        </SimpleFormIteratorItem>
+                    ))}
+                </ul>
                 {!disabled && !disableAdd && (
-                    <li className={SimpleFormIteratorClasses.line}>
-                        <span className={SimpleFormIteratorClasses.action}>
-                            {cloneElement(addButton, {
-                                className: clsx(
-                                    'button-add',
-                                    `button-add-${source}`
-                                ),
-                                onClick: handleAddButtonClick(
-                                    addButton.props.onClick
-                                ),
-                            })}
-                        </span>
-                    </li>
+                    <div className={SimpleFormIteratorClasses.add}>
+                        {cloneElement(addButton, {
+                            className: clsx(
+                                'button-add',
+                                `button-add-${source}`
+                            ),
+                            onClick: handleAddButtonClick(
+                                addButton.props.onClick
+                            ),
+                        })}
+                    </div>
                 )}
             </Root>
         </SimpleFormIteratorContext.Provider>
@@ -190,6 +198,7 @@ SimpleFormIterator.propTypes = {
     fields: PropTypes.array,
     fieldState: PropTypes.object,
     formState: PropTypes.object,
+    fullWidth: PropTypes.bool,
     inline: PropTypes.bool,
     record: PropTypes.object,
     source: PropTypes.string,
@@ -200,6 +209,8 @@ SimpleFormIterator.propTypes = {
     TransitionProps: PropTypes.shape({}),
 };
 
+type GetItemLabelFunc = (index: number) => string | ReactElement;
+
 export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
     addButton?: ReactElement;
     children?: ReactNode;
@@ -208,7 +219,8 @@ export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
     disableAdd?: boolean;
     disableRemove?: boolean | DisableRemoveFunction;
     disableReordering?: boolean;
-    getItemLabel?: (index: number) => string;
+    fullWidth?: boolean;
+    getItemLabel?: boolean | GetItemLabelFunc;
     inline?: boolean;
     meta?: {
         // the type defined in FieldArrayRenderProps says error is boolean, which is wrong.
@@ -223,13 +235,17 @@ export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
     sx?: SxProps;
 }
 
-const Root = styled('ul', {
+const Root = styled('div', {
     name: SimpleFormIteratorPrefix,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    padding: 0,
-    marginBottom: 0,
-    '& > li:last-child': {
+    '& > ul': {
+        padding: 0,
+        marginTop: 0,
+        marginBottom: 0,
+    },
+    '& > ul > li:last-child': {
+        // hide the last separator
         borderBottom: 'none',
     },
     [`& .${SimpleFormIteratorClasses.line}`]: {
@@ -239,31 +255,36 @@ const Root = styled('ul', {
         [theme.breakpoints.down('sm')]: { display: 'block' },
     },
     [`& .${SimpleFormIteratorClasses.index}`]: {
-        [theme.breakpoints.down('md')]: { display: 'none' },
-        marginRight: theme.spacing(1),
-    },
-    [`& .${SimpleFormIteratorClasses.indexContainer}`]: {
         display: 'flex',
-        paddingTop: '1em',
+        alignItems: 'top',
         marginRight: theme.spacing(1),
-        alignItems: 'center',
+        marginTop: theme.spacing(1),
+        [theme.breakpoints.down('md')]: { display: 'none' },
     },
     [`& .${SimpleFormIteratorClasses.form}`]: {
         alignItems: 'flex-start',
         display: 'flex',
         flexDirection: 'column',
+    },
+    [`&.fullwidth > ul > li > .${SimpleFormIteratorClasses.form}`]: {
         flex: 2,
     },
     [`& .${SimpleFormIteratorClasses.inline}`]: {
         flexDirection: 'row',
-        gap: '1em',
+        columnGap: '1em',
+        flexWrap: 'wrap',
     },
     [`& .${SimpleFormIteratorClasses.action}`]: {
-        paddingTop: '0.5em',
+        marginTop: theme.spacing(0.5),
+        visibility: 'hidden',
+        '@media(hover:none)': {
+            visibility: 'visible',
+        },
     },
-    [`& .${SimpleFormIteratorClasses.leftIcon}`]: {
-        marginRight: theme.spacing(1),
+    [`& .${SimpleFormIteratorClasses.add}`]: {
+        borderBottom: 'none',
+    },
+    [`& .${SimpleFormIteratorClasses.line}:hover > .${SimpleFormIteratorClasses.action}`]: {
+        visibility: 'visible',
     },
 }));
-
-const DefaultLabelFn = index => index + 1;

@@ -175,5 +175,20 @@ export interface TranslationMessages extends StringMap {
             remove_message: string;
             help: string;
         };
+        configurable?: {
+            customize: string;
+            templateError: string;
+            configureMode: string;
+            inspector: {
+                title: string;
+                content: string;
+                reset: string;
+            };
+            SimpleList: {
+                primaryText: string;
+                secondaryText: string;
+                tertiaryText: string;
+            };
+        };
     };
 }

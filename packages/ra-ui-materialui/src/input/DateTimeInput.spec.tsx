@@ -105,9 +105,12 @@ describe('<DateTimeInput />', () => {
         ).not.toBeNull();
         fireEvent.click(screen.getByLabelText('ra.action.save'));
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({
-                publishedAt,
-            });
+            expect(onSubmit).toHaveBeenCalledWith(
+                {
+                    publishedAt,
+                },
+                expect.anything()
+            );
         });
     });
 
@@ -138,9 +141,12 @@ describe('<DateTimeInput />', () => {
         ).not.toBeNull();
         fireEvent.click(screen.getByLabelText('ra.action.save'));
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({
-                publishedAt,
-            });
+            expect(onSubmit).toHaveBeenCalledWith(
+                {
+                    publishedAt,
+                },
+                expect.anything()
+            );
         });
     });
 

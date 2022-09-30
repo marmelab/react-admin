@@ -172,23 +172,26 @@ describe('<TranslatableInputs />', () => {
         fireEvent.click(screen.getByText('ra.action.save'));
 
         await waitFor(() => {
-            expect(save).toHaveBeenCalledWith({
-                id: 123,
-                name: {
-                    en: 'english name updated',
-                    fr: 'french name',
-                },
-                description: {
-                    en: 'english description',
-                    fr: 'french description',
-                },
-                nested: {
-                    field: {
-                        en: 'english nested field',
-                        fr: 'french nested field updated',
+            expect(save).toHaveBeenCalledWith(
+                {
+                    id: 123,
+                    name: {
+                        en: 'english name updated',
+                        fr: 'french name',
+                    },
+                    description: {
+                        en: 'english description',
+                        fr: 'french description',
+                    },
+                    nested: {
+                        field: {
+                            en: 'english nested field',
+                            fr: 'french nested field updated',
+                        },
                     },
                 },
-            });
+                expect.anything()
+            );
         });
     });
 
