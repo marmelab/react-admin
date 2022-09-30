@@ -3,10 +3,13 @@
 ## v4.4.0
 
 * Add `<Configurable>` components, make `<SimpleList>` accept template strings ([#8145](https://github.com/marmelab/react-admin/pull/8145)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `useInfiniteGetList` hook ([#8063](https://github.com/marmelab/react-admin/pull/8063)) ([arimet](https://github.com/arimet))
 * Add `sanitizeRestProps` to Form components to replace empty values by null ([#8188](https://github.com/marmelab/react-admin/pull/8188)) ([fzaninotto](https://github.com/fzaninotto))
 * Add `emptyText` and `emptyValue` support in `<AutocompleteInput>` ([#8162](https://github.com/marmelab/react-admin/pull/8162)) ([WiXSL](https://github.com/WiXSL))
 * Add cache to `usePermissions` ([#8196](https://github.com/marmelab/react-admin/pull/8196)) ([hiaselhans](https://github.com/hiaselhans))
+* Add ability to create independent store configurations for different lists of same resource ([#8073](https://github.com/marmelab/react-admin/pull/8073)) ([septentrion-730n](https://github.com/septentrion-730n))
 * Add `emptyText` translation on Field components ([#8132](https://github.com/marmelab/react-admin/pull/8132)) ([oguhpereira](https://github.com/oguhpereira))
+* Add `ra-data-localforage` data provider ([#7959](https://github.com/marmelab/react-admin/pull/7959)) ([arimet](https://github.com/arimet))
 * Add `queryOptions` support in `<ReferenceInput>` ([#8192](https://github.com/marmelab/react-admin/pull/8192)) ([WiXSL](https://github.com/WiXSL))
 * Add better UI to `<SimpleFormIterator>` ([#8124](https://github.com/marmelab/react-admin/pull/8124)) ([fzaninotto](https://github.com/fzaninotto))
 * Add expand/collapse all toggle to `<Datagrid>` header ([#8152](https://github.com/marmelab/react-admin/pull/8152)) ([hiaselhans](https://github.com/hiaselhans))
