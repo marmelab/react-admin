@@ -64,10 +64,25 @@ const Root = styled('div', {
     display: 'flex',
     alignItems: 'flex-end',
     pointerEvents: 'auto',
+    position: 'relative',
+    '@media (hover: hover)': {
+        '&:hover': {
+            [`& .${FilterFormInputClasses.hideButton}`]: {
+                display: 'flex',
+            },
+        },
+    },
 
     [`& .${FilterFormInputClasses.spacer}`]: { width: theme.spacing(2) },
     [`& .${FilterFormInputClasses.hideButton}`]: {
         marginBottom: theme.spacing(1),
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        zIndex: 10,
+        '@media (hover: hover)': {
+            display: 'none',
+        },
     },
 }));
 
