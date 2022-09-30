@@ -576,7 +576,7 @@ describe('Form', () => {
             fireEvent.click(screen.getByText('Submit'));
             await waitFor(() =>
                 expect(screen.getByTestId('result')?.textContent).toEqual(
-                    '{\n  "id": 1,\n  "field1": null\n}'
+                    '{\n  "id": 1,\n  "field1": null,\n  "field6": null\n}'
                 )
             );
         });
