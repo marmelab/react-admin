@@ -1,5 +1,34 @@
 # Changelog
 
+## v4.4.0
+
+* Add `<Configurable>` components, make `<SimpleList>` accept template strings ([#8145](https://github.com/marmelab/react-admin/pull/8145)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `sanitizeRestProps` to Form components to replace empty values by null ([#8188](https://github.com/marmelab/react-admin/pull/8188)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `emptyText` and `emptyValue` support in `<AutocompleteInput>` ([#8162](https://github.com/marmelab/react-admin/pull/8162)) ([WiXSL](https://github.com/WiXSL))
+* Add cache to `usePermissions` ([#8196](https://github.com/marmelab/react-admin/pull/8196)) ([hiaselhans](https://github.com/hiaselhans))
+* Add `emptyText` translation on Field components ([#8132](https://github.com/marmelab/react-admin/pull/8132)) ([oguhpereira](https://github.com/oguhpereira))
+* Add `queryOptions` support in `<ReferenceInput>` ([#8192](https://github.com/marmelab/react-admin/pull/8192)) ([WiXSL](https://github.com/WiXSL))
+* Add better UI to `<SimpleFormIterator>` ([#8124](https://github.com/marmelab/react-admin/pull/8124)) ([fzaninotto](https://github.com/fzaninotto))
+* Add expand/collapse all toggle to `<Datagrid>` header ([#8152](https://github.com/marmelab/react-admin/pull/8152)) ([hiaselhans](https://github.com/hiaselhans))
+* Add submit event as second argument of `<Form>` submit handler ([#8199](https://github.com/marmelab/react-admin/pull/8199)) ([djhi](https://github.com/djhi))
+* Add ability to have custom `dataProvider` method that don't return a `data` object ([#8159](https://github.com/marmelab/react-admin/pull/8159)) ([oguhpereira](https://github.com/oguhpereira))
+* Add ability to set custom routes as `<Resource>` children ([#8079](https://github.com/marmelab/react-admin/pull/8079)) ([hiaselhans](https://github.com/hiaselhans))
+* Add support for `getLocales` in Polyglot i18nProvider ([#8143](https://github.com/marmelab/react-admin/pull/8143)) ([fzaninotto](https://github.com/fzaninotto))
+* Add support for filter callbacks in `useList` ([#8116](https://github.com/marmelab/react-admin/pull/8116)) ([oguhpereira](https://github.com/oguhpereira))
+* Add ability to hide saved queries in `<FilterButton>` ([#8113](https://github.com/marmelab/react-admin/pull/8113)) ([oguhpereira](https://github.com/oguhpereira))
+* Add `useGetRecordId` hook to make react-admin components more versatile ([#8103](https://github.com/marmelab/react-admin/pull/8103)) ([arimet](https://github.com/arimet))
+* Fix null values cause warning in forms ([#8212](https://github.com/marmelab/react-admin/pull/8212)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<SimpleFormIterator>` defaultValues when adding a record ([#8204](https://github.com/marmelab/react-admin/pull/8204)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<ReferenceField>` generates a link even though there is nothing to link to ([#8202](https://github.com/marmelab/react-admin/pull/8202)) ([thibault-barrat](https://github.com/thibault-barrat))
+* Fix `<FormTab>` not turning red after `<ArrayInput>` global validation error ([#8198](https://github.com/marmelab/react-admin/pull/8198)) ([thibault-barrat](https://github.com/thibault-barrat))
+* Fix warning in Field components ([#8158](https://github.com/marmelab/react-admin/pull/8158)) ([fzaninotto](https://github.com/fzaninotto))
+* Update Cypress to 10.9.0 ([#8211](https://github.com/marmelab/react-admin/pull/8211)) ([arimet](https://github.com/arimet))
+* [TypeScript] Fix `<Layout>` misses sx prop ([#8209](https://github.com/marmelab/react-admin/pull/8209)) ([djhi](https://github.com/djhi))
+* [TypeScript] Fix `useDelete` id type doesn't use generic type ([#8208](https://github.com/marmelab/react-admin/pull/8208)) ([zhujinxuan](https://github.com/zhujinxuan))
+* [Doc] Fix outdated tip related to unsupported feature in Server Side validation ([#8205](https://github.com/marmelab/react-admin/pull/8205)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix broken links in Show documentation ([#8203](https://github.com/marmelab/react-admin/pull/8203)) ([LabisAnargyrou](https://github.com/LabisAnargyrou))
+* [Doc] Add `useGetRecordId` section ([#8107](https://github.com/marmelab/react-admin/pull/8107)) ([arimet](https://github.com/arimet))
+
 ## v4.3.4
 
 * Fix `<SimpleForm>` does not sanitize react-hook-form props ([#8186](https://github.com/marmelab/react-admin/pull/8186)) ([WiXSL](https://github.com/WiXSL))
