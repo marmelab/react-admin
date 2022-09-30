@@ -6762,10 +6762,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/sinonjs__fake-timers@npm:^6.0.2":
-  version: 6.0.4
-  resolution: "@types/sinonjs__fake-timers@npm:6.0.4"
-  checksum: ba880e2451a439d9696c9adbea1b163a4077cf3d48eb8282f1ec9b640c9f063d66df9af44ec73d35c64a2bb9cd780cff02de61043c3b0d501dbaa4280ad26d19
+"@types/sinonjs__fake-timers@npm:8.1.1":
+  version: 8.1.1
+  resolution: "@types/sinonjs__fake-timers@npm:8.1.1"
+  checksum: e2e6c425a548177c0930c2f9b82d3951956c9701b9ebf59623d5ad2c3229c523d3c0d598e79fe7392a239657abd3dbe3676be0650ce438bcd1199ee3b617a4d7
   languageName: node
   linkType: hard
 
@@ -8449,6 +8449,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"base64-js@npm:^1.3.1":
+  version: 1.5.1
+  resolution: "base64-js@npm:1.5.1"
+  checksum: f23823513b63173a001030fae4f2dabe283b99a9d324ade3ad3d148e218134676f1ee8568c877cd79ec1c53158dcf2d2ba527a97c606618928ba99dd930102bf
+  languageName: node
+  linkType: hard
+
 "base@npm:^0.11.1":
   version: 0.11.2
   resolution: "base@npm:0.11.2"
@@ -8564,7 +8571,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bluebird@npm:3.7.2, bluebird@npm:^3.3.5, bluebird@npm:^3.5.5":
+"bluebird@npm:^3.3.5, bluebird@npm:^3.5.5, bluebird@npm:^3.7.2":
   version: 3.7.2
   resolution: "bluebird@npm:3.7.2"
   checksum: 680de03adc54ff925eaa6c7bb9a47a0690e8b5de60f4792604aae8ed618c65e6b63a7893b57ca924beaf53eee69c5af4f8314148c08124c550fe1df1add897d2
@@ -8773,6 +8780,16 @@ __metadata:
   version: 1.1.1
   resolution: "buffer-indexof@npm:1.1.1"
   checksum: 67906b0a9892854e24ac717ef823c3b19790c653a8b1902835bbf3c3c46ea8d99f0680a92f7394fc5acbbecb3385775ccd504ea00587d2d67d8dfaadd460eeae
+  languageName: node
+  linkType: hard
+
+"buffer@npm:^5.6.0":
+  version: 5.7.1
+  resolution: "buffer@npm:5.7.1"
+  dependencies:
+    base64-js: ^1.3.1
+    ieee754: ^1.1.13
+  checksum: 27cac81cff434ed2876058d72e7c4789d11ff1120ef32c9de48f59eab58179b66710c488987d295ae89a228f835fc66d088652dffeb8e3ba8659f80eb091d55e
   languageName: node
   linkType: hard
 
@@ -10417,18 +10434,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cypress@npm:^9.1.1":
-  version: 9.2.1
-  resolution: "cypress@npm:9.2.1"
+"cypress@npm:^10.9.0":
+  version: 10.9.0
+  resolution: "cypress@npm:10.9.0"
   dependencies:
     "@cypress/request": ^2.88.10
     "@cypress/xvfb": ^1.2.4
     "@types/node": ^14.14.31
-    "@types/sinonjs__fake-timers": ^6.0.2
+    "@types/sinonjs__fake-timers": 8.1.1
     "@types/sizzle": ^2.3.2
     arch: ^2.2.0
     blob-util: ^2.0.2
-    bluebird: 3.7.2
+    bluebird: ^3.7.2
+    buffer: ^5.6.0
     cachedir: ^2.3.0
     chalk: ^4.1.0
     check-more-types: ^2.24.0
@@ -10439,7 +10457,7 @@ __metadata:
     dayjs: ^1.10.4
     debug: ^4.3.2
     enquirer: ^2.3.6
-    eventemitter2: ^6.4.3
+    eventemitter2: 6.4.7
     execa: 4.1.0
     executable: ^4.1.1
     extract-zip: 2.0.1
@@ -10452,19 +10470,19 @@ __metadata:
     listr2: ^3.8.3
     lodash: ^4.17.21
     log-symbols: ^4.0.0
-    minimist: ^1.2.5
+    minimist: ^1.2.6
     ospath: ^1.2.2
     pretty-bytes: ^5.6.0
     proxy-from-env: 1.0.0
     request-progress: ^3.0.0
+    semver: ^7.3.2
     supports-color: ^8.1.1
     tmp: ~0.2.1
     untildify: ^4.0.0
-    url: ^0.11.0
     yauzl: ^2.10.0
   bin:
     cypress: bin/cypress
-  checksum: 8f900f63c94e958896e8c8c7169a6589d39051d94bfc042c85a4ba87933d013236db4b43c4c20358bcce05cb99280486e5816bb834681011dd57e8c4504cf54b
+  checksum: 0d16ca0e3b20cdd9b84651ae9a8549d211c916642c8b4537087f65e6607a70a9b3c0f92f9ec45813c918f047e1e32623449a78d8923a5cc245130b6f7da1c626
   languageName: node
   linkType: hard
 
@@ -11346,7 +11364,7 @@ __metadata:
   resolution: "e2e@workspace:cypress"
   dependencies:
     "@cypress/webpack-preprocessor": ^5.10.0
-    cypress: ^9.1.1
+    cypress: ^10.9.0
     cypress-plugin-tab: ^1.0.5
     express: ~4.16.3
   languageName: unknown
@@ -12384,10 +12402,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eventemitter2@npm:^6.4.3":
-  version: 6.4.5
-  resolution: "eventemitter2@npm:6.4.5"
-  checksum: d6f489daf37148f1fa44bb20a0f2c2570bf4939adc34b9c5e4886e7942fbe44976b8386e54de86399efa9d4405b7fc3cf2071ee8638ee86680042f2324595f8c
+"eventemitter2@npm:6.4.7":
+  version: 6.4.7
+  resolution: "eventemitter2@npm:6.4.7"
+  checksum: 35d8e9d51b919114eb072d33786274e1475db50efe00960c24c088ce4f76c07a826ccc927602724928efb3d8f09a7d8dd1fa79e410875118c0e9846959287f34
   languageName: node
   linkType: hard
 
@@ -14588,6 +14606,13 @@ __metadata:
   dependencies:
     harmony-reflect: ^1.4.6
   checksum: a3fc4de0042d7b45bf8652d5596c80b42139d8625c9cd6a8834e29e1b6dce8fccabd1228e08744b78677a19ceed7201a32fed8ca3dc3e4852e8fee24360a6cfc
+  languageName: node
+  linkType: hard
+
+"ieee754@npm:^1.1.13":
+  version: 1.2.1
+  resolution: "ieee754@npm:1.2.1"
+  checksum: b0782ef5e0935b9f12883a2e2aa37baa75da6e66ce6515c168697b42160807d9330de9a32ec1ed73149aea02e0d822e572bca6f1e22bdcbd2149e13b050b17bb
   languageName: node
   linkType: hard
 

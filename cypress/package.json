@@ -8,7 +8,7 @@
     },
     "devDependencies": {
         "@cypress/webpack-preprocessor": "^5.10.0",
-        "cypress": "^9.1.1",
+        "cypress": "^10.9.0",
         "cypress-plugin-tab": "^1.0.5",
         "express": "~4.16.3"
     }
