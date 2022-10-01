@@ -184,7 +184,6 @@ const frenchMessages: TranslationMessages = {
         },
         configurable: {
             customize: 'Personnaliser',
-            templateError: '## Erreur de formule',
             configureMode: 'Configurer cette page',
             inspector: {
                 title: 'Inspecteur',

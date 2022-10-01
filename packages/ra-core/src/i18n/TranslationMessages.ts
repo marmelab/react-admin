@@ -177,7 +177,6 @@ export interface TranslationMessages extends StringMap {
         };
         configurable?: {
             customize: string;
-            templateError: string;
             configureMode: string;
             inspector: {
                 title: string;

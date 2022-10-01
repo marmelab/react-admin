@@ -178,7 +178,6 @@ const englishMessages: TranslationMessages = {
         },
         configurable: {
             customize: 'Customize',
-            templateError: '## Template error',
             configureMode: 'Configure this page',
             inspector: {
                 title: 'Inspector',
