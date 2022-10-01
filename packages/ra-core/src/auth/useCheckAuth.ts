@@ -107,6 +107,6 @@ export type CheckAuth = (
 const getErrorMessage = (error, defaultMessage) =>
     typeof error === 'string'
         ? error
-        : !error?.message
-        ? defaultMessage
-        : error.message;
+        : error?.message
+        ? error.message
+        : defaultMessage;
