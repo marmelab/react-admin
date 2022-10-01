@@ -8,7 +8,7 @@ export const Title = (props: TitleProps) => {
     const { className, defaultTitle, title, ...rest } = props;
     const translate = useTranslate();
     const container =
-        typeof document !== 'undefined'
+        document !== undefined
             ? document.getElementById('react-admin-title')
             : null;
 

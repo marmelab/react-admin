@@ -145,9 +145,9 @@ export const FilterListItem = memo((props: FilterListItemProps) => {
     const { filterValues, setFilters } = useListFilterContext();
     const translate = useTranslate();
 
-    const isSelected = matches(
-        pickBy(value, val => typeof val !== 'undefined')
-    )(filterValues);
+    const isSelected = matches(pickBy(value, val => val !== undefined))(
+        filterValues
+    );
 
     const addFilter = () => {
         setFilters({ ...filterValues, ...value }, null, false);

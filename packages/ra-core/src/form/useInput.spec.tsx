@@ -189,7 +189,7 @@ describe('useInput', () => {
         const values = useFormContext().getValues();
         return (
             <>
-                {typeof values[source] === 'undefined'
+                {values[source] === undefined
                     ? 'undefined'
                     : values[source]
                     ? 'true'

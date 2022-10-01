@@ -40,7 +40,7 @@ const Login = () => {
             notify(
                 typeof error === 'string'
                     ? error
-                    : typeof error === 'undefined' || !error.message
+                    : error === undefined || !error.message
                     ? 'ra.auth.sign_in_error'
                     : error.message,
                 {

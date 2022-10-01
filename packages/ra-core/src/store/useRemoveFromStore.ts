@@ -22,10 +22,7 @@ export const useRemoveFromStore = (hookTimeKey?: string) => {
     const { removeItem } = useStoreContext();
     return useCallback(
         (key?: string) => {
-            if (
-                typeof key === 'undefined' &&
-                typeof hookTimeKey === 'undefined'
-            ) {
+            if (key === undefined && hookTimeKey === undefined) {
                 throw new Error(
                     'You must provide a key to remove an item from the store'
                 );

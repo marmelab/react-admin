@@ -103,7 +103,7 @@ export const queryReducer: Reducer<ListParams, ActionTypes> = (
             return {
                 ...previousState,
                 filter:
-                    typeof action.payload.defaultValue !== 'undefined'
+                    action.payload.defaultValue !== undefined
                         ? set(
                               previousState.filter,
                               action.payload.filterName,

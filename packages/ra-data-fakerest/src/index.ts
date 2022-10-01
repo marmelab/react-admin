@@ -36,7 +36,7 @@ function log(type, resource, params, response) {
 export default (data, loggingEnabled = false): DataProvider => {
     const restServer = new FakeRest.Server();
     restServer.init(data);
-    if (typeof window !== 'undefined') {
+    if (window !== undefined) {
         // give way to update data in the console
         (window as any).restServer = restServer;
     }

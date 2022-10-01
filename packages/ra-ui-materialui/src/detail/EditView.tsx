@@ -31,11 +31,7 @@ export const EditView = (props: EditViewProps) => {
     const { defaultTitle, record } = useEditContext(props);
 
     const finalActions =
-        typeof actions === 'undefined' && hasShow ? (
-            <DefaultActions />
-        ) : (
-            actions
-        );
+        actions === undefined && hasShow ? <DefaultActions /> : actions;
     if (!children) {
         return null;
     }

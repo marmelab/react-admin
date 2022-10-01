@@ -26,9 +26,9 @@ export default (options?: Args): TranslationArguments => {
 
     const { label, prefix, resource, resourceFromContext, source } = options;
 
-    if (typeof label !== 'undefined') return [label, { _: label }];
+    if (label !== undefined) return [label, { _: label }];
 
-    if (typeof source === 'undefined') return [''];
+    if (source === undefined) return [''];
 
     const { sourceWithoutDigits, sourceSuffix } = getSourceParts(source);
 

@@ -123,9 +123,7 @@ export const SaveButton = <RecordType extends RaRecord = any>(
 
     const displayedLabel = label && translate(label, { _: label });
     const finalSaving =
-        typeof saving !== 'undefined'
-            ? saving
-            : saveContext?.saving || isSubmitting;
+        saving !== undefined ? saving : saveContext?.saving || isSubmitting;
 
     return (
         <StyledButton
@@ -198,4 +196,4 @@ const StyledButton = styled(Button, {
 }));
 
 const valueOrDefault = (value, defaultValue) =>
-    typeof value === 'undefined' ? defaultValue : value;
+    value === undefined ? defaultValue : value;

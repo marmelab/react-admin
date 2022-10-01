@@ -522,7 +522,7 @@ If you provided a React element for the optionText prop, you must also provide t
                                 source={source}
                                 resource={resourceProp}
                                 isRequired={
-                                    typeof isRequiredOverride !== 'undefined'
+                                    isRequiredOverride !== undefined
                                         ? isRequiredOverride
                                         : isRequired
                                 }

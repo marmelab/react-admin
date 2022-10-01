@@ -27,7 +27,7 @@ export const ShowView = (props: ShowViewProps) => {
     const { hasEdit } = useResourceDefinition(props);
 
     const finalActions =
-        typeof actions === 'undefined' && hasEdit ? defaultActions : actions;
+        actions === undefined && hasEdit ? defaultActions : actions;
 
     if (!children || (!record && emptyWhileLoading)) {
         return null;

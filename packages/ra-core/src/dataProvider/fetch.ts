@@ -67,7 +67,7 @@ const isValidObject = value => {
     }
 
     const isArray = Array.isArray(value);
-    const isBuffer = typeof Buffer !== 'undefined' && Buffer.isBuffer(value);
+    const isBuffer = !!Buffer?.isBuffer(value);
     const isObject =
         Object.prototype.toString.call(value) === '[object Object]';
     const hasKeys = !!Object.keys(value).length;

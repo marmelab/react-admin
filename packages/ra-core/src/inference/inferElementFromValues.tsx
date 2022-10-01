@@ -37,7 +37,7 @@ const defaultTypes = {
     url: defaultType,
 };
 
-const hasType = (type, types) => typeof types[type] !== 'undefined';
+const hasType = (type, types) => types[type] !== undefined;
 
 /**
  * Guesses an element based on an array of values

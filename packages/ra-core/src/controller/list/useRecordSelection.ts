@@ -39,7 +39,7 @@ export const useRecordSelection = (
                 });
             },
             toggle: (id: Identifier) => {
-                if (typeof id === 'undefined') return;
+                if (id === undefined) return;
                 setIds(ids => {
                     if (!Array.isArray(ids)) return [...ids];
                     const index = ids.indexOf(id);

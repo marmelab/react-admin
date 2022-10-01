@@ -59,7 +59,7 @@ export const useStore = <T = any>(
             setValue(storedValue);
         }
         const unsubscribe = subscribe(key, newValue => {
-            setValue(typeof newValue === 'undefined' ? defaultValue : newValue);
+            setValue(newValue === undefined ? defaultValue : newValue);
         });
         return () => unsubscribe();
     }, [key, subscribe, defaultValue, getItem, value]);
@@ -75,8 +75,8 @@ export const useStore = <T = any>(
             // by the useEffect during the next render
             setItem(
                 key,
-                typeof newValue === 'undefined'
-                    ? typeof runtimeDefaultValue === 'undefined'
+                newValue === undefined
+                    ? runtimeDefaultValue === undefined
                         ? defaultValue
                         : runtimeDefaultValue
                     : newValue

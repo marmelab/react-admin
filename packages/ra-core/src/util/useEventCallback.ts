@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 
 // allow the hook to work in SSR
 const useLayoutEffect =
-    typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
+    window !== undefined ? React.useLayoutEffect : React.useEffect;
 
 /**
  * Alternative to useCallback that doesn't update the callback when dependencies change

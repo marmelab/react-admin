@@ -10,7 +10,7 @@ const RA_STORE = 'RaStore';
 // localStorage isn't available in incognito mode. We need to detect it
 const testLocalStorage = () => {
     // eslint-disable-next-line eqeqeq
-    if (typeof window === 'undefined' || window.localStorage == undefined) {
+    if (window?.localStorage == undefined) {
         return false;
     }
 

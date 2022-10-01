@@ -12,7 +12,7 @@ export const OnlyMineInput = ({ alwaysOn }: { alwaysOn: boolean }) => {
 
     const handleChange = () => {
         const newFilterValues = { ...filterValues };
-        if (typeof filterValues.sales_id !== 'undefined') {
+        if (filterValues.sales_id !== undefined) {
             delete newFilterValues.sales_id;
         } else {
             newFilterValues.sales_id = identity && identity?.id;
@@ -24,7 +24,7 @@ export const OnlyMineInput = ({ alwaysOn }: { alwaysOn: boolean }) => {
             <FormControlLabel
                 control={
                     <Switch
-                        checked={typeof filterValues.sales_id !== 'undefined'}
+                        checked={filterValues.sales_id !== undefined}
                         onChange={handleChange}
                         color="primary"
                         name="checkedC"

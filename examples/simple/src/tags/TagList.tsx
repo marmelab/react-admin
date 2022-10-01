@@ -44,9 +44,7 @@ const Tree = () => {
                 return [...state, node.id];
             }
         });
-    const roots = data
-        ? data.filter(node => typeof node.parent_id === 'undefined')
-        : [];
+    const roots = data ? data.filter(node => node.parent_id === undefined) : [];
     const getChildNodes = root =>
         data.filter(node => node.parent_id === root.id);
     return (

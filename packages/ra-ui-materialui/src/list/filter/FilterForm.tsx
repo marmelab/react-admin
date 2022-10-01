@@ -108,7 +108,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
             return (
                 filterElement.props.alwaysOn ||
                 displayedFilters[filterElement.props.source] ||
-                (filterValue !== '' && typeof filterValue !== 'undefined')
+                (filterValue !== '' && filterValue !== undefined)
             );
         });
     };

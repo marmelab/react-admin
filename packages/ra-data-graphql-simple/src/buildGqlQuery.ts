@@ -196,7 +196,7 @@ export const buildArgs = (
     }
 
     const validVariables = Object.keys(variables).filter(
-        k => typeof variables[k] !== 'undefined'
+        k => variables[k] !== undefined
     );
     let args = query.args
         .filter(a => validVariables.includes(a.name))
@@ -223,7 +223,7 @@ export const buildApolloArgs = (
     }
 
     const validVariables = Object.keys(variables).filter(
-        k => typeof variables[k] !== 'undefined'
+        k => variables[k] !== undefined
     );
 
     let args = query.args

@@ -73,10 +73,7 @@ export const NumberInput = ({
         if (onChange) {
             onChange(event);
         }
-        if (
-            typeof event.target === 'undefined' ||
-            typeof event.target.value === 'undefined'
-        ) {
+        if (event.target?.value === undefined) {
             return;
         }
         const target = event.target;

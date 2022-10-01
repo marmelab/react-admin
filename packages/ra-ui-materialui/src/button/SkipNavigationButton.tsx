@@ -47,7 +47,7 @@ const StyledButton = styled(Button, {
 }));
 
 const skipToContent = () => {
-    if (typeof document === 'undefined') return;
+    if (document === undefined) return;
     const element = document.getElementById('main-content');
 
     if (!element) {

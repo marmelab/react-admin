@@ -60,8 +60,7 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
         (filterElement: JSX.Element) =>
             !filterElement.props.alwaysOn &&
             !displayedFilters[filterElement.props.source] &&
-            typeof lodashGet(filterValues, filterElement.props.source) ===
-                'undefined'
+            lodashGet(filterValues, filterElement.props.source) === undefined
     );
 
     const handleClickButton = useCallback(

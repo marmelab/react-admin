@@ -55,9 +55,8 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
         if (
             disableTelemetry ||
             process.env.NODE_ENV !== 'production' ||
-            typeof window === 'undefined' ||
-            typeof window.location === 'undefined' ||
-            typeof Image === 'undefined'
+            window?.location === undefined ||
+            Image === undefined
         ) {
             return;
         }
