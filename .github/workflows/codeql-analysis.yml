@@ -6,10 +6,17 @@ on:
   schedule:
     - cron: '0 10 * * 3'
 
+permissions:
+  contents: read
+
 jobs:
   CodeQL-Build:
 
     # CodeQL runs on ubuntu-latest and windows-latest
+    permissions:
+      actions: read  # for github/codeql-action/init to get workflow details
+      contents: read  # for actions/checkout to fetch code
+      security-events: write  # for github/codeql-action/autobuild to send a status report
     runs-on: ubuntu-latest
 
     steps:
