@@ -30,7 +30,7 @@
         />
         <link
             rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/@docsearch/css@1.0.0-alpha.28"
+            href="https://cdn.jsdelivr.net/npm/@docsearch/css@3"
         />
         <link
             rel="stylesheet"
@@ -186,17 +186,19 @@
         </main>
 
         <script src="js/materialize.min.js"></script>
-        <script></script>
-        <script
-            type="text/javascript"
-            src="https://cdn.jsdelivr.net/npm/@docsearch/js@1.0.0-alpha.28"
-        ></script>
+        <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
+        {% if page.dir contains "doc" %}
+        {% assign version = page.dir | split: '/' | last %}
+        {% else %}
+        {% assign version = "latest" %}
+        {% endif %}
         <script type="text/javascript">
             docsearch({
                 container: '#docsearch',
                 appId: 'QY9T9CVM2N',
                 indexName: 'marmelab-react-admin',
                 apiKey: '75332227370be3dc35777cee6244881a',
+                searchParameters: { facetFilters: ['version:  {{ version }}'] },
             });
         </script>
         <!--
