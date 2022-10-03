@@ -80,8 +80,8 @@ React-admin requires a valid dataProvider function to work.`);
 
     return (
         <AuthContext.Provider value={finalAuthProvider}>
-            <DataProviderContext.Provider value={finalDataProvider}>
-                <StoreContextProvider value={store}>
+            <StoreContextProvider value={store}>
+                <DataProviderContext.Provider value={finalDataProvider}>
                     <PreferencesEditorContextProvider>
                         <QueryClientProvider client={finalQueryClient}>
                             <AdminRouter history={history} basename={basename}>
@@ -95,8 +95,8 @@ React-admin requires a valid dataProvider function to work.`);
                             </AdminRouter>
                         </QueryClientProvider>
                     </PreferencesEditorContextProvider>
-                </StoreContextProvider>
-            </DataProviderContext.Provider>
+                </DataProviderContext.Provider>
+            </StoreContextProvider>
         </AuthContext.Provider>
     );
 };
