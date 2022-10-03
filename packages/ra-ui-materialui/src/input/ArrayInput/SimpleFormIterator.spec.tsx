@@ -745,4 +745,87 @@ describe('<SimpleFormIterator />', () => {
             );
         });
     });
+
+    it('should empty children values after removing only child and add it back again', async () => {
+        const save = jest.fn();
+        render(
+            <Wrapper>
+                <SimpleForm
+                    onSubmit={save}
+                    record={{
+                        id: 1,
+                        emails: [{ email: 'test@marmelab.com', role: 'User' }],
+                    }}
+                >
+                    <ArrayInput source="emails">
+                        <SimpleFormIterator>
+                            <TextInput source="email" label="Email" />
+                            <FormDataConsumer>
+                                {({ scopedFormData, getSource }) => (
+                                    <TextInput
+                                        label="Role"
+                                        source={(getSource as (
+                                            arg: string
+                                        ) => string)('role')}
+                                    />
+                                )}
+                            </FormDataConsumer>
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </Wrapper>
+        );
+
+        await waitFor(() => {
+            expect(
+                screen
+                    .queryAllByLabelText('Email')
+                    .map(
+                        inputElement => (inputElement as HTMLInputElement).value
+                    )
+            ).toEqual(['test@marmelab.com']);
+            expect(
+                screen
+                    .queryAllByLabelText('Role')
+                    .map(
+                        inputElement => (inputElement as HTMLInputElement).value
+                    )
+            ).toEqual(['User']);
+        });
+
+        const removeFirstButton = getByLabelText(
+            // @ts-ignore
+            screen.queryAllByLabelText('Email')[0].closest('li'),
+            'ra.action.remove'
+        ).closest('button') as HTMLButtonElement;
+
+        fireEvent.click(removeFirstButton);
+        await waitFor(() => {
+            expect(screen.queryAllByLabelText('Email').length).toEqual(0);
+            expect(screen.queryAllByLabelText('Role').length).toEqual(0);
+        });
+
+        const addItemElement = screen
+            .getByLabelText('ra.action.add')
+            .closest('button') as HTMLButtonElement;
+
+        fireEvent.click(addItemElement);
+        await waitFor(() => {
+            const inputElements = screen.queryAllByLabelText('Email');
+            expect(inputElements.length).toBe(1);
+            const inputRole = screen.queryAllByLabelText('Role');
+            expect(inputRole.length).toBe(1);
+        });
+
+        fireEvent.click(screen.getByText('ra.action.save'));
+        await waitFor(() => {
+            expect(save).toHaveBeenCalledWith(
+                {
+                    id: 1,
+                    emails: [{ email: '', role: '' }],
+                },
+                expect.anything()
+            );
+        });
+    });
 });
