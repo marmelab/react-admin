@@ -5,21 +5,25 @@ title: "The CustomRoutes Component"
 
 # `<CustomRoutes>`
 
-To register your own routes, pass one or several `<CustomRoutes>` elements as children of `<Admin>`. Declare as many [react-router-dom](https://reactrouter.com/docs/en/v6/api#routes-and-route) `<Route>` as you want inside them:
+To register your own routes, pass one or several `<CustomRoutes>` elements as children of `<Admin>`. Declare as many [react-router-dom](https://reactrouter.com/docs/en/v6/api#routes-and-route) `<Route>` as you want inside them.
+Alternatively, you can add your custom routes to resources. They will be available under the resource prefix.
 
 ```jsx
 // in src/App.js
 import * as React from "react";
 import { Admin, Resource, CustomRoutes } from 'react-admin';
 import { Route } from "react-router-dom";
-import posts from './posts';
+import simpleRestProvider from 'ra-data-simple-rest';
+import posts, { PostAnalytics } from './posts';
 import comments from './comments';
 import Settings from './Settings';
 import Profile from './Profile';
 
 const App = () => (
     <Admin dataProvider={simpleRestProvider('http://path.to.my.api')}>
-        <Resource name="posts" {...posts} />
+        <Resource name="posts" {...posts}>
+            <Route path="analytics" element={<PostAnalytics/>} />
+        </Resource>
         <Resource name="comments" {...comments} />
         <CustomRoutes>
             <Route path="/settings" element={<Settings />} />
@@ -61,6 +65,7 @@ If you want a custom route to render without the layout (without the menu and th
 // in src/App.js
 import * as React from "react";
 import { Admin, CustomRoutes } from 'react-admin';
+import simpleRestProvider from 'ra-data-simple-rest';
 import { Route } from "react-router-dom";
 import Settings from './Settings';
 import Register from './register';

@@ -5,7 +5,7 @@ import get from 'lodash/get';
 import Chip, { ChipProps } from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
-import { useRecordContext } from 'ra-core';
+import { useRecordContext, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
@@ -13,8 +13,8 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 export const ChipField: FC<ChipFieldProps> = memo(props => {
     const { className, source, emptyText, ...rest } = props;
     const record = useRecordContext(props);
-
     const value = get(record, source);
+    const translate = useTranslate();
 
     if (value == null && emptyText) {
         return (
@@ -24,7 +24,7 @@ export const ChipField: FC<ChipFieldProps> = memo(props => {
                 className={className}
                 {...sanitizeFieldRestProps(rest)}
             >
-                {emptyText}
+                {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
         );
     }

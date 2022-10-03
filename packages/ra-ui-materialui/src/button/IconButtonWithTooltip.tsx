@@ -41,7 +41,6 @@ export const IconButtonWithTooltip = ({
                 aria-label={translatedLabel}
                 onClick={handleClick}
                 {...props}
-                size="large"
             />
         </Tooltip>
     );

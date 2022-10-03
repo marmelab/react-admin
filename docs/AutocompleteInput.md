@@ -96,10 +96,43 @@ When used inside a `<ReferenceInput>`, `<AutocompleteInput>` doesn't need a `cho
 
 See [Using in a `ReferenceInput>`](#using-in-a-referenceinput) below for more information.
 
+## `emptyText`
+
+If the input isn't required (using `validate={required()}`), users can select an empty choice with an empty text `''` as label.
+
+You can override that label with the `emptyText` prop.
+
+```jsx
+<AutocompleteInput
+    source="author_id"
+    emptyText="No author"
+    choices={[
+        { id: 123, name: 'Leo Tolstoi' },
+        { id: 456, name: 'Jane Austen' },
+    ]}
+/>
+```
+
+The `emptyText` prop accepts either a string or a React Element.
+
+And if you want to hide that empty choice, make the input required. 
+
+```jsx
+<AutocompleteInput
+    source="author_id"
+    choices={[
+        { id: 123, name: 'Leo Tolstoi' },
+        { id: 456, name: 'Jane Austen' },
+    ]}
+    validate={required()}
+/>
+```
 
 ## `emptyValue`
 
-An empty choice is always added (with a default `''` value, which you can override with the `emptyValue` prop) on top of the options. You can furthermore customize the empty choice by using the `emptyText` prop, which can receive a string or a React Element.
+If the input isn't required (using `validate={required()}`), users can select an empty choice. The default value for that empty choice is the empty string (`''`), or `null` if the input is inside a [`<ReferenceInput>`](./ReferenceInput.md).
+
+You can override this value with the `emptyValue` prop.
 
 ```jsx
 <AutocompleteInput
@@ -113,8 +146,7 @@ An empty choice is always added (with a default `''` value, which you can overri
 />
 ```
 
-**Note**: `emptyValue` cannot be set to `undefined` or `null` since the `dataProvider` method will receive an empty string on submit due to the nature of HTML inputs.
-
+You can furthermore customize the empty choice by using [the `emptyText` prop](#emptytext).
 
 ## `optionText`
 

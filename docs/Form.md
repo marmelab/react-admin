@@ -47,6 +47,7 @@ Here are all the props you can set on the `<Form>` component:
 * [`id`](#id)
 * [`noValidate`](#novalidate)
 * [`onSubmit`](#onsubmit)
+* [`sanitizeEmptyValues`](#sanitizeemptyvalues)
 * [`validate`](#validate)
 * [`warnWhenUnsavedChanges`](#warnwhenunsavedchanges)
 
@@ -132,6 +133,32 @@ export const PostCreate = () => {
     );
 };
 ```
+
+## `sanitizeEmptyValues`
+
+In HTML, the value of empty form inputs is the empty string (`''`) by default. React-hook-form doesn't sanitize these values. This leads to unexpected `create` and `update` payloads like:
+
+```jsx
+{
+    id: 123,
+    title: '',
+    author: '',
+} 
+```
+
+To avoid that, set the `sanitizeEmptyValues` prop to `true`. This will remove empty strings from the form state on submit, unless the record actually had a value for that field.
+
+```jsx
+const PostCreate = () =>  (
+    <Create>
+        <Form sanitizeEmptyValues>
+            ...
+        </Form>
+    </Create>
+);
+```
+
+If you need a more fine-grained control over the sanitization, you can use [the `transform` prop](./Edit.md#transform) of `<Edit>` or `<Create>` components, or [the `parse` prop](./Inputs.md#parse) of individual inputs.
 
 ## `validate`
 

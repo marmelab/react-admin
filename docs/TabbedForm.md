@@ -190,6 +190,43 @@ export const PostCreate = () => (
 
 **Tip:** If you want to customize the _content_ of the tabs instead, for example to limit the width of the form, you should rather add an `sx` prop to the [`<FormTab>` component](#formtab).
 
+## `sanitizeEmptyValues`
+
+As a reminder, HTML form inputs always return strings, even for numbers and booleans. So the empty value for a text input is the empty string, not `null` or `undefined`. This means that the data sent to the form handler will contain empty strings:
+
+```jsx
+{
+    id: 1234,
+    title: 'Lorem Ipsum',
+    is_published: '',
+    body: '',
+    // etc.
+}
+```
+
+React-hook-form doesn't sanitize these values. If you prefer to omit the keys for empty values, set the `sanitizeEmptyValues` prop to `true`. This will sanitize the form data before passing it to the `dataProvider`, i.e. remove empty strings from the form state, unless the record actually had a value for that field before edition.
+
+```jsx
+const PostCreate = () =>  (
+    <Create>
+        <TabbedForm sanitizeEmptyValues>
+            ...
+        </TabbedForm>
+    </Create>
+);
+```
+
+For the previous example, the data sent to the `dataProvider` will be:
+
+```jsx
+{
+    id: 1234,
+    title: 'Lorem Ipsum',
+}
+```
+
+If you need a more fine-grained control over the sanitization, you can use [the `transform` prop](./Edit.md#transform) of `<Edit>` or `<Create>` components, or [the `parse` prop](./Inputs.md#parse) of individual inputs.
+
 ## `syncWithLocation`
 
 When the user clicks on a tab header, react-admin changes the URL to enable the back button.
@@ -479,41 +516,6 @@ const ProductEdit = () => (
 ```
 
 **Tip**: React-admin renders each tab *twice*: once to get the tab header, and once to get the tab content. If you use a custom component instead of a `<FormTab>`, make sure that it accepts an `intent` prop, and renders differently when the value of that prop is 'header' or 'content'.
-
-## Cleaning Up Empty Strings
-
-As a reminder, HTML form inputs always return strings, even for numbers and booleans. So the empty value for a text input is the empty string, not `null` or `undefined`. This means that the data sent to the form handler will contain empty strings:
-
-```js
-{
-    title: '',
-    average_note: '',
-    body: '',
-    // etc.
-}
-```
-
-If you prefer to have `null` values, or to omit the key for empty values, use `transform` prop of the parent component ([`<Edit>`](./Edit.md#transform) or [`<Create>`](./Create.md#transform)) to sanitize the form data before passing it to the `dataProvider`:
-
-```jsx
-export const UserEdit = (props) => {
-    const transform = (data) => {
-        const sanitizedData = {};
-        for (const key in data) {
-            if (typeof data[key] === "string" && data[key].trim().length === 0) continue;
-            sanitizedData[key] = data[key]; 
-        }
-        return sanitizedData;
-    };
-    return (
-        <Edit {...props} transform={transform}>
-            <TabbedForm>
-                ...
-            </TabbedForm>
-        </Edit>
-    );
-}
-```
 
 ## Using Fields As FormTab Children
 

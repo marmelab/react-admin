@@ -5,6 +5,7 @@ import { defaultDataProvider } from './defaultDataProvider';
 import validateResponseFormat from './validateResponseFormat';
 import { DataProvider } from '../types';
 import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
+import { reactAdminFetchActions } from './dataFetchActions';
 
 /**
  * Hook for getting a dataProvider
@@ -101,7 +102,10 @@ export const useDataProvider = <
                         return dataProvider[type]
                             .apply(dataProvider, args)
                             .then(response => {
-                                if (process.env.NODE_ENV !== 'production') {
+                                if (
+                                    process.env.NODE_ENV !== 'production' &&
+                                    reactAdminFetchActions.includes(type)
+                                ) {
                                     validateResponseFormat(response, type);
                                 }
                                 return response;

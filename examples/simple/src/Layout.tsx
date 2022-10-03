@@ -1,54 +1,15 @@
 import * as React from 'react';
-import { forwardRef, memo } from 'react';
+import { memo } from 'react';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import {
-    AppBar,
-    Layout,
-    Logout,
-    UserMenu,
-    useLocaleState,
-    useUserMenu,
-} from 'react-admin';
-import {
-    MenuItem,
-    MenuItemProps,
-    ListItemIcon,
-    CssBaseline,
-} from '@mui/material';
-import Language from '@mui/icons-material/Language';
+import { AppBar, Layout, InspectorButton } from 'react-admin';
+import { CssBaseline, Typography } from '@mui/material';
 
-const SwitchLanguage = forwardRef<HTMLLIElement, MenuItemProps>(
-    (props, ref) => {
-        const [locale, setLocale] = useLocaleState();
-        const { onClose } = useUserMenu();
-
-        return (
-            <MenuItem
-                ref={ref}
-                {...props}
-                sx={{ color: 'text.secondary' }}
-                onClick={event => {
-                    setLocale(locale === 'en' ? 'fr' : 'en');
-                    onClose();
-                }}
-            >
-                <ListItemIcon sx={{ minWidth: 5 }}>
-                    <Language />
-                </ListItemIcon>
-                Switch Language
-            </MenuItem>
-        );
-    }
-);
-
-const MyUserMenu = () => (
-    <UserMenu>
-        <SwitchLanguage />
-        <Logout />
-    </UserMenu>
-);
-
-const MyAppBar = memo(props => <AppBar {...props} userMenu={<MyUserMenu />} />);
+const MyAppBar = memo(props => (
+    <AppBar {...props}>
+        <Typography flex="1" variant="h6" id="react-admin-title" />
+        <InspectorButton />
+    </AppBar>
+));
 
 export default props => (
     <>

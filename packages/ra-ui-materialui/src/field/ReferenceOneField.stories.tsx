@@ -7,10 +7,13 @@ import {
     ResourceDefinitionContextProvider,
     ListContextProvider,
     useRecordContext,
+    I18nContextProvider,
 } from 'ra-core';
 import { createMemoryHistory } from 'history';
 import { ThemeProvider, Stack } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
 
 import { TextField } from '../field';
 import { ReferenceOneField } from './ReferenceOneField';
@@ -18,6 +21,25 @@ import { SimpleShowLayout } from '../detail/SimpleShowLayout';
 import { Datagrid } from '../list/datagrid/Datagrid';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceOneField' };
+
+const i18nProvider = polyglotI18nProvider(
+    _locale => ({
+        ...englishMessages,
+        resources: {
+            books: {
+                name: 'Books',
+                fields: {
+                    id: 'Id',
+                    title: 'Title',
+                    author: 'Author',
+                    year: 'Year',
+                },
+                not_found: 'Not found',
+            },
+        },
+    }),
+    'en'
+);
 
 const defaultDataProvider = {
     getManyReference: () =>
@@ -86,6 +108,20 @@ export const Empty = () => (
         >
             <TextField source="ISBN" />
         </ReferenceOneField>
+    </Wrapper>
+);
+
+export const EmptyWithTranslate = () => (
+    <Wrapper dataProvider={emptyDataProvider}>
+        <I18nContextProvider value={i18nProvider}>
+            <ReferenceOneField
+                reference="book_details"
+                target="book_id"
+                emptyText="resources.books.not_found"
+            >
+                <TextField source="ISBN" />
+            </ReferenceOneField>
+        </I18nContextProvider>
     </Wrapper>
 );
 

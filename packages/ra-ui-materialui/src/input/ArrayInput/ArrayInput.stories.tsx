@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Admin } from 'react-admin';
 import { required, Resource } from 'ra-core';
 import { createMemoryHistory } from 'history';
+import { InputAdornment } from '@mui/material';
 
 import { Edit, Create } from '../../detail';
 import { SimpleForm, TabbedForm, FormTab } from '../../form';
@@ -52,7 +53,8 @@ const BookEdit = () => {
             }}
         >
             <SimpleForm>
-                <ArrayInput source="authors" fullWidth>
+                <TextInput source="title" />
+                <ArrayInput source="authors">
                     <SimpleFormIterator>
                         <TextInput source="name" />
                         <TextInput source="role" />
@@ -84,6 +86,7 @@ export const Disabled = () => (
                         }}
                     >
                         <SimpleForm>
+                            <TextInput source="title" />
                             <ArrayInput source="authors" disabled>
                                 <SimpleFormIterator>
                                     <TextInput source="name" />
@@ -109,6 +112,7 @@ const BookEditWithAutocomplete = () => {
             }}
         >
             <SimpleForm>
+                <TextInput source="title" />
                 <ArrayInput source="authors" fullWidth>
                     <SimpleFormIterator>
                         <AutocompleteInput
@@ -163,35 +167,119 @@ export const Scalar = () => (
     </Admin>
 );
 
+const order = {
+    id: 1,
+    date: '2022-08-30',
+    customer: 'John Doe',
+    items: [
+        {
+            name: 'Office Jeans',
+            price: 45.99,
+            quantity: 1,
+            extras: [
+                {
+                    type: 'card',
+                    price: 2.99,
+                    content: 'For you my love',
+                },
+                {
+                    type: 'gift package',
+                    price: 1.99,
+                    content: '',
+                },
+                {
+                    type: 'insurance',
+                    price: 5,
+                    content: '',
+                },
+            ],
+        },
+        {
+            name: 'Black Elegance Jeans',
+            price: 69.99,
+            quantity: 2,
+            extras: [
+                {
+                    type: 'card',
+                    price: 2.99,
+                    content: 'For you my love',
+                },
+            ],
+        },
+        {
+            name: 'Slim Fit Jeans',
+            price: 55.99,
+            quantity: 1,
+        },
+    ],
+};
+
 export const Realistic = () => (
     <Admin
         dataProvider={
             {
-                getOne: (resource, params) =>
-                    Promise.resolve({
-                        data: {
-                            id: 1,
-                            date: '2022-08-30',
-                            customer: 'John Doe',
-                            items: [
-                                {
-                                    name: 'Office Jeans',
-                                    price: 45.99,
-                                    quantity: 1,
-                                },
-                                {
-                                    name: 'Black Elegance Jeans',
-                                    price: 69.99,
-                                    quantity: 2,
-                                },
-                                {
-                                    name: 'Slim Fit Jeans',
-                                    price: 55.99,
-                                    quantity: 1,
-                                },
-                            ],
+                getOne: (resource, params) => Promise.resolve({ data: order }),
+                update: (resource, params) => Promise.resolve(params),
+            } as any
+        }
+        history={createMemoryHistory({ initialEntries: ['/orders/1'] })}
+    >
+        <Resource
+            name="orders"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
                         },
-                    }),
+                    }}
+                >
+                    <SimpleForm>
+                        <TextInput
+                            source="customer"
+                            helperText={false}
+                            sx={{ width: 250 }}
+                        />
+                        <DateInput source="date" helperText={false} />
+                        <ArrayInput source="items">
+                            <SimpleFormIterator inline>
+                                <TextInput
+                                    source="name"
+                                    helperText={false}
+                                    sx={{ width: 250 }}
+                                />
+                                <NumberInput
+                                    source="price"
+                                    helperText={false}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                €
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                    sx={{ maxWidth: 120 }}
+                                />
+                                <NumberInput
+                                    source="quantity"
+                                    helperText={false}
+                                    sx={{ maxWidth: 120 }}
+                                />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
+    </Admin>
+);
+
+export const NestedInline = () => (
+    <Admin
+        dataProvider={
+            {
+                getOne: (resource, params) => Promise.resolve({ data: order }),
                 update: (resource, params) => Promise.resolve(params),
             } as any
         }
@@ -212,7 +300,7 @@ export const Realistic = () => (
                         <TextInput source="customer" helperText={false} />
                         <DateInput source="date" helperText={false} />
                         <ArrayInput source="items">
-                            <SimpleFormIterator>
+                            <SimpleFormIterator inline fullWidth>
                                 <TextInput source="name" helperText={false} />
                                 <NumberInput
                                     source="price"
@@ -222,6 +310,66 @@ export const Realistic = () => (
                                     source="quantity"
                                     helperText={false}
                                 />
+                                <ArrayInput source="extras">
+                                    <SimpleFormIterator
+                                        inline
+                                        disableReordering
+                                    >
+                                        <TextInput
+                                            source="type"
+                                            helperText={false}
+                                        />
+                                        <NumberInput
+                                            source="price"
+                                            helperText={false}
+                                        />
+                                        <TextInput
+                                            source="content"
+                                            helperText={false}
+                                        />
+                                    </SimpleFormIterator>
+                                </ArrayInput>
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
+    </Admin>
+);
+
+export const ActionsLeft = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                >
+                    <SimpleForm>
+                        <TextInput source="title" />
+                        <ArrayInput source="authors">
+                            <SimpleFormIterator
+                                sx={{
+                                    '& .RaSimpleFormIterator-indexContainer': {
+                                        order: 0,
+                                    },
+                                    '& .RaSimpleFormIterator-action': {
+                                        order: 1,
+                                        visibility: 'visible',
+                                    },
+                                    '& .RaSimpleFormIterator-form': {
+                                        order: 2,
+                                    },
+                                }}
+                            >
+                                <TextInput source="name" />
+                                <TextInput source="role" />
                             </SimpleFormIterator>
                         </ArrayInput>
                     </SimpleForm>

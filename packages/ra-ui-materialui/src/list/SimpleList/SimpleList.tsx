@@ -23,6 +23,7 @@ import {
     useListContext,
     useResourceContext,
     useCreatePath,
+    useTranslate,
 } from 'ra-core';
 
 import { SimpleListLoading } from './SimpleListLoading';
@@ -80,6 +81,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
     } = props;
     const { data, isLoading, total } = useListContext<RecordType>(props);
     const resource = useResourceContext(props);
+    const translate = useTranslate();
 
     if (isLoading === true) {
         return (
@@ -137,7 +139,12 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                             <ListItemText
                                 primary={
                                     <div>
-                                        {isValidElement(primaryText)
+                                        {typeof primaryText === 'string'
+                                            ? translate(primaryText, {
+                                                  ...record,
+                                                  _: primaryText,
+                                              })
+                                            : isValidElement(primaryText)
                                             ? primaryText
                                             : primaryText(record, record.id)}
 
@@ -150,17 +157,31 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                                         SimpleListClasses.tertiary
                                                     }
                                                 >
-                                                    {tertiaryText(
-                                                        record,
-                                                        record.id
-                                                    )}
+                                                    {typeof tertiaryText ===
+                                                    'string'
+                                                        ? translate(
+                                                              tertiaryText,
+                                                              {
+                                                                  ...record,
+                                                                  _: tertiaryText,
+                                                              }
+                                                          )
+                                                        : tertiaryText(
+                                                              record,
+                                                              record.id
+                                                          )}
                                                 </span>
                                             ))}
                                     </div>
                                 }
                                 secondary={
                                     !!secondaryText &&
-                                    (isValidElement(secondaryText)
+                                    (typeof secondaryText === 'string'
+                                        ? translate(secondaryText, {
+                                              ...record,
+                                              _: secondaryText,
+                                          })
+                                        : isValidElement(secondaryText)
                                         ? secondaryText
                                         : secondaryText(record, record.id))
                                 }
@@ -196,11 +217,23 @@ SimpleList.propTypes = {
         PropTypes.bool,
         PropTypes.func,
     ]),
-    primaryText: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
+    primaryText: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.element,
+        PropTypes.string,
+    ]),
     rightAvatar: PropTypes.func,
     rightIcon: PropTypes.func,
-    secondaryText: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
-    tertiaryText: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
+    secondaryText: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.element,
+        PropTypes.string,
+    ]),
+    tertiaryText: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.element,
+        PropTypes.string,
+    ]),
     rowStyle: PropTypes.func,
 };
 
@@ -215,12 +248,12 @@ export interface SimpleListProps<RecordType extends RaRecord = any>
     hasBulkActions?: boolean;
     leftAvatar?: FunctionToElement<RecordType>;
     leftIcon?: FunctionToElement<RecordType>;
-    primaryText?: FunctionToElement<RecordType> | ReactElement;
+    primaryText?: FunctionToElement<RecordType> | ReactElement | string;
     linkType?: string | FunctionLinkType | false;
     rightAvatar?: FunctionToElement<RecordType>;
     rightIcon?: FunctionToElement<RecordType>;
-    secondaryText?: FunctionToElement<RecordType> | ReactElement;
-    tertiaryText?: FunctionToElement<RecordType> | ReactElement;
+    secondaryText?: FunctionToElement<RecordType> | ReactElement | string;
+    tertiaryText?: FunctionToElement<RecordType> | ReactElement | string;
     rowStyle?: (record: RecordType, index: number) => any;
     // can be injected when using the component without context
     resource?: string;

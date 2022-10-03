@@ -22,6 +22,7 @@ export * from './useUpdate';
 export * from './useUpdateMany';
 export * from './useDelete';
 export * from './useDeleteMany';
+export * from './useInfiniteGetList';
 
 export type { Options } from './fetch';
 

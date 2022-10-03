@@ -242,3 +242,21 @@ const {
     refetch, // a function that throws an error, as refetch doesn't make sense for local data
 } = getGetList({ data });
 ```
+## `filterCallback`
+
+Property for custom filter definition. Being able to apply more complex filters using operators
+
+```jsx
+const { data } = useList({
+    data: [
+        { id: 1, name: 'Arnold' },
+        { id: 2, name: 'Sylvester' },
+        { id: 3, name: 'Jean-Claude' },
+    ],
+    sort: { field: 'name', order: 'ASC' },
+    filterCallback: (record) => record.id > 1 && record.name !== 'Jean-Claude'
+});
+// data will be
+// [
+//    { id: 2, name: 'Sylvester' }, 
+// ]

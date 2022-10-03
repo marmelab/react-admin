@@ -720,6 +720,74 @@ export const PostList = () => (
 
 For more details on list sort, see the [Sorting The List](./ListTutorial.md#sorting-the-list) section below. 
 
+## `storeKey`
+
+To display multiple lists of the same resource and keep distinct store states for each of them (filters, sorting and pagination), specify unique keys with the `storeKey` property.
+
+In case no `storeKey` is provided, the states will be stored with the following key: `${resource}.listParams`.
+
+**Note:** Please note that selection state will remain linked to a resource-based key as described [here](./List.md#disablesyncwithlocation).
+
+In the example below, both lists `NewerBooks` and `OlderBooks` use the same resource ('books'), but their controller states are stored separately (under the store keys `'newerBooks'` and `'olderBooks'` respectively). This allows to use both components in the same app, each having its own state (filters, sorting and pagination).
+
+{% raw %}
+```jsx
+import {
+    Admin,
+    CustomRoutes,
+    Resource,
+    List,
+    Datagrid,
+    TextField,
+} from 'react-admin';
+import { Route } from 'react-router';
+
+const NewerBooks = () => (
+    <List
+        resource="books"
+        storeKey="newerBooks"
+        sort={{ field: 'year', order: 'DESC' }}
+    >
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </List>
+);
+
+const OlderBooks = () => (
+    <List
+        resource="books"
+        storeKey="olderBooks"
+        sort={{ field: 'year', order: 'ASC' }}
+    >
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </List>
+);
+
+const Admin = () => {
+    return (
+        <Admin dataProvider={dataProvider}>
+            <CustomRoutes>
+                <Route path="/newerBooks" element={<NewerBooks />} />
+                <Route path="/olderBooks" element={<OlderBooks />} />
+            </CustomRoutes>
+            <Resource name="books" />
+        </Admin>
+    );
+};
+```
+{% endraw %}
+
+**Tip:** The `storeKey` is actually passed to the underlying `useListController` hook, which you can use directly for more complex scenarios. See the [`useListController` doc](./useListController.md#storekey) for more info.
+
 ## `title`
 
 The default title for a list view is "[resource] list" (e.g. "Posts list"). Use the `title` prop to customize the List view title:

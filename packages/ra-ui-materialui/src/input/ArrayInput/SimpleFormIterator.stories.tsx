@@ -34,7 +34,7 @@ export const Basic = () => (
     <AdminContext dataProvider={dataProvider}>
         <Edit resource="books" id="1">
             <SimpleForm>
-                <ArrayInput source="authors" fullWidth>
+                <ArrayInput source="authors">
                     <SimpleFormIterator>
                         <TextInput source="name" />
                         <TextInput source="role" />
@@ -64,7 +64,7 @@ export const GetItemLabel = () => (
     <AdminContext dataProvider={dataProvider}>
         <Edit resource="books" id="1">
             <SimpleForm>
-                <ArrayInput source="authors" fullWidth>
+                <ArrayInput source="authors">
                     <SimpleFormIterator
                         getItemLabel={index => `item #${index}`}
                     >
@@ -77,12 +77,12 @@ export const GetItemLabel = () => (
     </AdminContext>
 );
 
-export const GetItemLabelEmpty = () => (
+export const FullWidth = () => (
     <AdminContext dataProvider={dataProvider}>
         <Edit resource="books" id="1">
             <SimpleForm>
-                <ArrayInput source="authors" fullWidth>
-                    <SimpleFormIterator getItemLabel={index => ''}>
+                <ArrayInput source="authors">
+                    <SimpleFormIterator fullWidth>
                         <TextInput source="name" />
                         <TextInput source="role" />
                     </SimpleFormIterator>
@@ -96,8 +96,53 @@ export const Inline = () => (
     <AdminContext dataProvider={dataProvider}>
         <Edit resource="books" id="1">
             <SimpleForm>
-                <ArrayInput source="authors" fullWidth>
+                <ArrayInput source="authors">
                     <SimpleFormIterator inline>
+                        <TextInput source="name" />
+                        <TextInput source="role" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        </Edit>
+    </AdminContext>
+);
+
+export const DisableAdd = () => (
+    <AdminContext dataProvider={dataProvider}>
+        <Edit resource="books" id="1">
+            <SimpleForm>
+                <ArrayInput source="authors">
+                    <SimpleFormIterator disableAdd>
+                        <TextInput source="name" />
+                        <TextInput source="role" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        </Edit>
+    </AdminContext>
+);
+
+export const DisableRemove = () => (
+    <AdminContext dataProvider={dataProvider}>
+        <Edit resource="books" id="1">
+            <SimpleForm>
+                <ArrayInput source="authors">
+                    <SimpleFormIterator disableRemove>
+                        <TextInput source="name" />
+                        <TextInput source="role" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        </Edit>
+    </AdminContext>
+);
+
+export const DisableReordering = () => (
+    <AdminContext dataProvider={dataProvider}>
+        <Edit resource="books" id="1">
+            <SimpleForm>
+                <ArrayInput source="authors">
+                    <SimpleFormIterator disableReordering>
                         <TextInput source="name" />
                         <TextInput source="role" />
                     </SimpleFormIterator>
@@ -111,7 +156,7 @@ export const Sx = () => (
     <AdminContext dataProvider={dataProvider}>
         <Edit resource="books" id="1">
             <SimpleForm>
-                <ArrayInput source="authors" fullWidth>
+                <ArrayInput source="authors">
                     <SimpleFormIterator
                         sx={{
                             border: 'solid lightgrey 1px',

@@ -14,7 +14,17 @@ import {
 } from 'react-admin';
 import fakerestDataProvider from 'ra-data-fakerest';
 
-export default { title: 'ra-ui-materialui/list/filter/FilterButton' };
+export default {
+    title: 'ra-ui-materialui/list/filter/FilterButton',
+    argTypes: {
+        disableSaveQuery: {
+            control: {
+                type: 'select',
+                options: [false, true],
+            },
+        },
+    },
+};
 
 const data = {
     posts: [
@@ -101,20 +111,29 @@ const data = {
     ],
 };
 
-const ListToolbar = (props: { postFilters: React.ReactElement[] }) => {
+const ListToolbar = (props: {
+    postFilters: React.ReactElement[];
+    args: { disableSaveQuery?: boolean };
+}) => {
     return (
         <TopToolbar>
             <FilterForm filters={props.postFilters} />
             <div>
-                <FilterButton filters={props.postFilters} />
+                <FilterButton
+                    filters={props.postFilters}
+                    disableSaveQuery={props.args.disableSaveQuery}
+                />
                 <CreateButton />
             </div>
         </TopToolbar>
     );
 };
-const PostList = (props: { postFilters: React.ReactElement[] }) => (
+const PostList = (props: {
+    postFilters: React.ReactElement[];
+    args: { disableSaveQuery?: boolean };
+}) => (
     <ListBase>
-        <ListToolbar postFilters={props.postFilters} />
+        <ListToolbar postFilters={props.postFilters} args={props.args} />
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" />
@@ -124,7 +143,7 @@ const PostList = (props: { postFilters: React.ReactElement[] }) => (
     </ListBase>
 );
 
-export const Basic = () => {
+export const Basic = (args: { disableSaveQuery?: boolean }) => {
     const postFilters: React.ReactElement[] = [
         <TextInput label="Search" source="q" alwaysOn />,
         <TextInput
@@ -137,13 +156,13 @@ export const Basic = () => {
         <Admin dataProvider={fakerestDataProvider(data)}>
             <Resource
                 name="posts"
-                list={<PostList postFilters={postFilters} />}
+                list={<PostList postFilters={postFilters} args={args} />}
             />
         </Admin>
     );
 };
 
-export const DisabledFilters = () => {
+export const DisabledFilters = (args: { disableSaveQuery?: boolean }) => {
     const postFilters: React.ReactElement[] = [
         <TextInput label="Title" source="title" disabled={true} />,
     ];
@@ -151,7 +170,7 @@ export const DisabledFilters = () => {
         <Admin dataProvider={fakerestDataProvider(data)}>
             <Resource
                 name="posts"
-                list={<PostList postFilters={postFilters} />}
+                list={<PostList postFilters={postFilters} args={args} />}
             />
         </Admin>
     );

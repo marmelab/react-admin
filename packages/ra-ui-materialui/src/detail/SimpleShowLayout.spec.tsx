@@ -21,9 +21,7 @@ describe('<SimpleShowLayout />', () => {
 
     it('should add a label for each field', () => {
         render(<Basic />);
-        expect(
-            screen.queryByText('resources.books.fields.title')
-        ).not.toBeNull();
+        expect(screen.queryByText('Title')).not.toBeNull();
         expect(screen.queryByText('War and Peace')).not.toBeNull();
     });
 
@@ -35,8 +33,8 @@ describe('<SimpleShowLayout />', () => {
 
     it('should allows to customize or disable the label', () => {
         render(<CustomLabel />);
-        expect(screen.queryByText('resources.books.fields.author')).toBeNull();
+        expect(screen.queryByText('Author')).toBeNull();
         expect(screen.queryByText('Author name')).not.toBeNull();
-        expect(screen.queryByText('resources.books.fields.summary')).toBeNull();
+        expect(screen.queryByText('Summary')).toBeNull();
     });
 });

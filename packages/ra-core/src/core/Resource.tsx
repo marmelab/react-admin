@@ -35,6 +35,7 @@ export const Resource = (props: ResourceProps) => {
                         element={isValidElement(List) ? List : <List />}
                     />
                 )}
+                {props.children}
             </Routes>
         </ResourceContextProvider>
     );
