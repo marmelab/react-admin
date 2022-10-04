@@ -88,7 +88,11 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
     const record = useRecordContext(props);
     const nonNullChildren = Children.toArray(children).filter(
         child => child !== null
-    );
+    ) as ReactElement<{
+        context?: string;
+        spacing?: ResponsiveStyleValue<number | string>;
+        divider?: ReactNode;
+    }>[];
     const [tabValue, setTabValue] = useState(0);
 
     const handleTabChange = (event: ChangeEvent<{}>, value: any): void => {
