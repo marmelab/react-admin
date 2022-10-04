@@ -96,6 +96,19 @@ describe('<Datagrid />', () => {
         expect(screen.queryByText('No records to show')).toBeTruthy();
     });
 
+    it('should not allow to expand all rows when `expandSingle` prop is true', () => {
+        render(
+            <Wrapper listContext={contextValue}>
+                <Datagrid expand={<div>Expanded panel</div>} expandSingle>
+                    <TitleField />
+                </Datagrid>
+            </Wrapper>
+        );
+        expect(screen.queryAllByTestId('ExpandMoreIcon')).toHaveLength(
+            defaultData.length
+        );
+    });
+
     describe('selecting items with the shift key', () => {
         it('should call onSelect with the correct ids when the last selection is after the first', () => {
             const Test = ({ selectedIds = [] }) => (
