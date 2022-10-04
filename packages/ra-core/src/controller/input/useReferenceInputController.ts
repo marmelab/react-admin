@@ -122,7 +122,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
     let finalData: RecordType[], finalTotal: number;
     if (
         !referenceRecord ||
-        possibleValuesData.find(record => record.id === currentValue)
+        possibleValuesData.find(record => record.id === referenceRecord.id)
     ) {
         finalData = possibleValuesData;
         finalTotal = total;
