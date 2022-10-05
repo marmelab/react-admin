@@ -110,39 +110,42 @@ import HorizontalRule from '@tiptap/extension-horizontal-rule';
 import Remove from '@mui/icons-material/Remove';
 import { ToggleButton } from '@mui/material';
 
-const MyRichTextInput = ({ size, ...props }) => {
+const MyRichTextInputToolbar = ({ size, ...props }) => {
     const editor = useTipTapEdit();
-
+  
     return (
-        <RichTextInput
-            editorOptions={MyEditorOptions}
-            toolbar={
-                <RichTextInputToolbar>
-                    <LevelSelect size={size} />
-                    <FormatButtons size={size} />
-                    <AlignmentButtons size={size} />
-                    <ListButtons size={size} />
-                    <LinkButtons size={size} />
-                    <QuoteButtons size={size} />
-                    <ClearButtons size={size} />
-                    <ToggleButton
-                        aria-label="Add an horizontal rule"
-                        title="Add an horizontal rule"
-                        onClick={() =>
-                            editor.chain().focus().setHorizontalRule().run()
-                        }
-                        selected={editor && editor.isActive('horizontalRule')}
-                    >
-                        <Remove fontSize="inherit" />
-                    </ToggleButton>
-                </RichTextInputToolbar>
-            }
-            label="Body"
-            source="body"
-            {...props}
-        />
+        <RichTextInputToolbar {...props}>
+            <LevelSelect size={size} />
+            <FormatButtons size={size} />
+            <AlignmentButtons size={size} />
+            <ListButtons size={size} />
+            <LinkButtons size={size} />
+            <QuoteButtons size={size} />
+            <ClearButtons size={size} />
+            <ToggleButton
+                aria-label="Add an horizontal rule"
+                title="Add an horizontal rule"
+                value="left"
+                onClick={() =>
+                    editor.chain().focus().setHorizontalRule().run()
+                }
+                selected={editor && editor.isActive('horizontalRule')}
+            >
+                <Remove fontSize="inherit" />
+            </ToggleButton>
+        </RichTextInputToolbar>
     );
-};
+}
+
+const MyRichTextInput = ({ size, ...props }) => (
+    <RichTextInput
+        editorOptions={MyEditorOptions}
+        toolbar={<MyRichTextInputToolbar size={size} />}
+        label="Body"
+        source="body"
+        {...props}
+    />
+);
 
 export const MyEditorOptions = {
 	...DefaultEditorOptions,
