@@ -223,7 +223,8 @@ export const AutocompleteInput = <
         formState: formStateOverride,
         onBlur,
         onChange,
-        parse: parse ?? (isFromReference ? convertEmptyStringToNull : undefined),
+        parse:
+            parse ?? (isFromReference ? convertEmptyStringToNull : undefined),
         format:
             format ?? (isFromReference ? convertNullToEmptyString : undefined),
         resource,
