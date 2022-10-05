@@ -2186,7 +2186,7 @@ If you relied on `handleSubmit` or `handleSubmitWithRedirect`, you can now use t
 
 ### The `save` Function Signature Changed
 
-The `save` function signature no longer take a redirection side effect as the second argument. Instead, it only receives the data and an options object for side effects (which was the third argument before):
+The `save` function signature no longer takes a redirection side effect as the second argument. Instead, it only receives the data and an options object for side effects (which was the third argument before):
 
 ```diff
 const MyCustomCreate = () => {
