@@ -157,6 +157,8 @@ You can override this value with the `emptyValue` prop.
     ]} />
 ```
 
+**Tip**: While you can set `emptyValue` to a non-string value (e.g. `0`), you cannot use `null` or `undefined`, as it would turn the `<SelectInput>` into an [uncontrolled component](https://reactjs.org/docs/uncontrolled-components.html). If you need the empty choice to be stored as `null` or `undefined`, use [the `parse` prop](./Inputs.md#parse) to convert the default empty value ('') to `null` or `undefined`, or use [the `sanitizeEmptyValues` prop](./SimpleForm.md#sanitizeemptyvalues) on the Form component. 
+
 ## `options`
 
 Use the `options` attribute if you want to override any of MUI's `<SelectField>` attributes:
