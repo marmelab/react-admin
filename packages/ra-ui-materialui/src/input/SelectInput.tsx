@@ -178,9 +178,10 @@ export const SelectInput = (props: SelectInputProps) => {
         formState: { isSubmitted },
     } = useInput({
         defaultValue: defaultValue ?? (isFromReference ? null : ''),
-        parse: parse ?? isFromReference ? convertEmptyStringToNull : undefined,
+        parse:
+            parse ?? (isFromReference ? convertEmptyStringToNull : undefined),
         format:
-            format ?? isFromReference ? convertNullToEmptyString : undefined,
+            format ?? (isFromReference ? convertNullToEmptyString : undefined),
         onBlur,
         onChange,
         resource,
