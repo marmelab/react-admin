@@ -195,19 +195,31 @@ export const AutocompleteInput = <
 
     const finalEmptyText = emptyText ?? '';
 
-    const finalChoices =
-        isRequiredOverride || multiple
-            ? allChoices
-            : [
-                  {
-                      [optionValue || 'id']: emptyValue,
-                      [typeof optionText === 'string'
-                          ? optionText
-                          : 'name']: translate(finalEmptyText, {
-                          _: finalEmptyText,
-                      }),
-                  },
-              ].concat(allChoices);
+    const finalChoices = useMemo(
+        () =>
+            isRequiredOverride || multiple
+                ? allChoices
+                : [
+                      {
+                          [optionValue || 'id']: emptyValue,
+                          [typeof optionText === 'string'
+                              ? optionText
+                              : 'name']: translate(finalEmptyText, {
+                              _: finalEmptyText,
+                          }),
+                      },
+                  ].concat(allChoices),
+        [
+            allChoices,
+            emptyValue,
+            finalEmptyText,
+            isRequiredOverride,
+            multiple,
+            optionText,
+            optionValue,
+            translate,
+        ]
+    );
 
     const {
         id,
