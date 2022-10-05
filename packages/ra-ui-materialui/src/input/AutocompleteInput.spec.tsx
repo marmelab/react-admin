@@ -14,6 +14,7 @@ import { AutocompleteInput } from './AutocompleteInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import {
     InsideReferenceInput,
+    InsideReferenceInputDefaultValue,
     VeryLargeOptionsNumber,
 } from './AutocompleteInput.stories';
 import { act } from '@testing-library/react-hooks';
@@ -1150,48 +1151,67 @@ describe('<AutocompleteInput />', () => {
         expect(screen.queryByText('New Kid On The Block')).not.toBeNull();
     });
 
-    it('should work inside a ReferenceInput field', async () => {
-        render(<InsideReferenceInput />);
-        await waitFor(() => {
-            expect(
-                (screen.getByRole('textbox') as HTMLInputElement).value
-            ).toBe('Leo Tolstoy');
+    describe('Inside <ReferenceInput>', () => {
+        it('should work inside a ReferenceInput field', async () => {
+            render(<InsideReferenceInput />);
+            await waitFor(() => {
+                expect(
+                    (screen.getByRole('textbox') as HTMLInputElement).value
+                ).toBe('Leo Tolstoy');
+            });
+            screen.getByRole('textbox').focus();
+            fireEvent.click(screen.getByLabelText('Clear value'));
+            await waitFor(() => {
+                expect(screen.getByRole('listbox').children).toHaveLength(5);
+            });
+            fireEvent.change(screen.getByRole('textbox'), {
+                target: { value: 'Vic' },
+            });
+            await waitFor(
+                () => {
+                    expect(screen.getByRole('listbox').children).toHaveLength(
+                        1
+                    );
+                },
+                { timeout: 2000 }
+            );
+            expect(screen.queryByText('Leo Tolstoy')).toBeNull();
         });
-        screen.getByRole('textbox').focus();
-        fireEvent.click(screen.getByLabelText('Clear value'));
-        await waitFor(() => {
-            expect(screen.getByRole('listbox').children).toHaveLength(5);
-        });
-        fireEvent.change(screen.getByRole('textbox'), {
-            target: { value: 'Vic' },
-        });
-        await waitFor(
-            () => {
-                expect(screen.getByRole('listbox').children).toHaveLength(1);
-            },
-            { timeout: 2000 }
-        );
-        expect(screen.queryByText('Leo Tolstoy')).toBeNull();
-    });
 
-    it('should allow to clear the value inside a ReferenceInput field', async () => {
-        render(<InsideReferenceInput />);
-        await waitFor(() => {
-            expect(
-                (screen.getByRole('textbox') as HTMLInputElement).value
-            ).toBe('Leo Tolstoy');
+        it('should allow to clear the value inside a ReferenceInput field', async () => {
+            render(<InsideReferenceInput />);
+            await waitFor(() => {
+                expect(
+                    (screen.getByRole('textbox') as HTMLInputElement).value
+                ).toBe('Leo Tolstoy');
+            });
+            fireEvent.click(screen.getByLabelText('Clear value'));
+            userEvent.tab();
+            // Couldn't reproduce the infinite loop issue without this timeout
+            // See https://github.com/marmelab/react-admin/issues/7482
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            await waitFor(() => {
+                expect(
+                    (screen.getByRole('textbox') as HTMLInputElement).value
+                ).toEqual('');
+            });
+            expect(screen.queryByText('Leo Tolstoy')).toBeNull();
         });
-        fireEvent.click(screen.getByLabelText('Clear value'));
-        userEvent.tab();
-        // Couldn't reproduce the infinite loop issue without this timeout
-        // See https://github.com/marmelab/react-admin/issues/7482
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        await waitFor(() => {
-            expect(
-                (screen.getByRole('textbox') as HTMLInputElement).value
-            ).toEqual('');
+
+        it('should not change an undefined value to empty string', async () => {
+            const onSuccess = jest.fn();
+            render(<InsideReferenceInputDefaultValue onSuccess={onSuccess} />);
+            const input = await screen.findByDisplayValue('War and Peace');
+            fireEvent.change(input, { target: { value: 'War' } });
+            screen.getByText('Save').click();
+            await waitFor(() => {
+                expect(onSuccess).toHaveBeenCalledWith(
+                    expect.objectContaining({ author: null }),
+                    expect.anything(),
+                    expect.anything()
+                );
+            });
         });
-        expect(screen.queryByText('Leo Tolstoy')).toBeNull();
     });
 
     it("should allow to edit the input if it's inside a FormDataConsumer", () => {
