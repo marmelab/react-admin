@@ -442,7 +442,7 @@ If you provided a React element for the optionText prop, you must also provide t
 
     const doesQueryMatchSelection = useCallback(
         (filter: string, eventType?: string) => {
-            let selectedItemTexts = [];
+            let selectedItemTexts;
 
             if (multiple) {
                 selectedItemTexts = selectedChoice.map(item =>
@@ -453,10 +453,12 @@ If you provided a React element for the optionText prop, you must also provide t
             }
 
             return eventType && eventType === 'change'
-                ? selectedItemTexts.includes(filter) && selectedChoice
+                ? selectedItemTexts.includes(filter) &&
+                      selectedChoice &&
+                      selectedChoice[optionValue || 'id'] !== emptyValue
                 : selectedItemTexts.includes(filter);
         },
-        [getOptionLabel, multiple, selectedChoice]
+        [emptyValue, getOptionLabel, multiple, optionValue, selectedChoice]
     );
     const doesQueryMatchSuggestion = useCallback(
         filter => {
