@@ -126,14 +126,14 @@ const MyRichTextInput = ({ size, ...props }) => {
                     <QuoteButtons size={size} />
                     <ClearButtons size={size} />
                     <ToggleButton
-                      aria-label="Add an horizontal rule"
-                      title="Add an horizontal rule"
-                      onClick={() =>
-                          editor.chain().focus().setHorizontalRule().run()
-                      }
-                      selected={editor && editor.isActive('horizontalRule')}
+                        aria-label="Add an horizontal rule"
+                        title="Add an horizontal rule"
+                        onClick={() =>
+                            editor.chain().focus().setHorizontalRule().run()
+                        }
+                        selected={editor && editor.isActive('horizontalRule')}
                     >
-                      <Remove fontSize="inherit" />
+                        <Remove fontSize="inherit" />
                     </ToggleButton>
                 </RichTextInputToolbar>
             }
