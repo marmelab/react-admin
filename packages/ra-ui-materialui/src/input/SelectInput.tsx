@@ -112,7 +112,7 @@ export const SelectInput = (props: SelectInputProps) => {
         create,
         createLabel,
         createValue,
-        defaultValue = '',
+        defaultValue,
         disableValue,
         emptyText,
         emptyValue,
@@ -167,7 +167,7 @@ export const SelectInput = (props: SelectInputProps) => {
         isRequired,
         formState: { isSubmitted },
     } = useInput({
-        defaultValue,
+        defaultValue: defaultValue ?? (isFromReference ? null : ''),
         parse: parse ?? isFromReference ? convertEmptyStringToNull : undefined,
         format:
             format ?? isFromReference ? convertNullToEmptyString : undefined,

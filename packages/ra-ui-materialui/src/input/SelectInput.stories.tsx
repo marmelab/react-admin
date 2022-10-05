@@ -8,6 +8,7 @@ import englishMessages from 'ra-language-english';
 import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { SelectInput } from './SelectInput';
+import { TextInput } from './TextInput';
 import { ReferenceInput } from './ReferenceInput';
 
 export default { title: 'ra-ui-materialui/input/SelectInput' };
@@ -198,23 +199,6 @@ const dataProviderWithAuthors = {
     },
 } as any;
 
-const BookEditWithReference = () => (
-    <Edit
-        mutationMode="pessimistic"
-        mutationOptions={{
-            onSuccess: data => {
-                console.log(data);
-            },
-        }}
-    >
-        <SimpleForm>
-            <ReferenceInput reference="authors" source="author">
-                <SelectInput />
-            </ReferenceInput>
-        </SimpleForm>
-    </Edit>
-);
-
 const history = createMemoryHistory({ initialEntries: ['/books/1'] });
 
 export const InsideReferenceInput = () => (
@@ -225,6 +209,70 @@ export const InsideReferenceInput = () => (
                 `${record.first_name} ${record.last_name}`
             }
         />
-        <Resource name="books" edit={BookEditWithReference} />
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                >
+                    <SimpleForm>
+                        <ReferenceInput reference="authors" source="author">
+                            <SelectInput />
+                        </ReferenceInput>
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
+    </Admin>
+);
+
+export const InsideReferenceInputDefaultValue = ({
+    onSuccess = console.log,
+}) => (
+    <Admin
+        dataProvider={{
+            ...dataProviderWithAuthors,
+            getOne: (resource, params) =>
+                Promise.resolve({
+                    data: {
+                        id: 1,
+                        title: 'War and Peace',
+                        // trigger default value
+                        author: undefined,
+                        summary:
+                            "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                        year: 1869,
+                    },
+                }),
+        }}
+        history={history}
+    >
+        <Resource
+            name="authors"
+            recordRepresentation={record =>
+                `${record.first_name} ${record.last_name}`
+            }
+        />
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{ onSuccess }}
+                >
+                    <SimpleForm>
+                        <TextInput source="title" />
+                        <ReferenceInput reference="authors" source="author">
+                            <SelectInput />
+                        </ReferenceInput>
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
     </Admin>
 );

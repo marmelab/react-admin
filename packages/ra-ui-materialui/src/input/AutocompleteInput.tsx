@@ -135,7 +135,7 @@ export const AutocompleteInput = <
         createItemLabel,
         createValue,
         debounce: debounceDelay = 250,
-        defaultValue = '',
+        defaultValue,
         emptyText,
         emptyValue = '',
         field: fieldOverride,
@@ -216,7 +216,7 @@ export const AutocompleteInput = <
         fieldState: { error, invalid, isTouched },
         formState: { isSubmitted },
     } = useInput({
-        defaultValue,
+        defaultValue: defaultValue ?? (isFromReference ? null : ''),
         id: idOverride,
         field: fieldOverride,
         fieldState: fieldStateOverride,
