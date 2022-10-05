@@ -135,7 +135,7 @@ export const AutocompleteInput = <
         createItemLabel,
         createValue,
         debounce: debounceDelay = 250,
-        defaultValue = '',
+        defaultValue,
         emptyText,
         emptyValue = '',
         field: fieldOverride,
@@ -216,7 +216,7 @@ export const AutocompleteInput = <
         fieldState: { error, invalid, isTouched },
         formState: { isSubmitted },
     } = useInput({
-        defaultValue,
+        defaultValue: defaultValue ?? (isFromReference ? null : ''),
         id: idOverride,
         field: fieldOverride,
         fieldState: fieldStateOverride,
@@ -249,9 +249,12 @@ export const AutocompleteInput = <
         // eslint-disable-next-line eqeqeq
         if (emptyValue == null) {
             throw new Error(
-                `emptyValue being set to null or undefined is not supported`
+                `emptyValue being set to null or undefined is not supported. Use parse to turn the empty string into null.`
             );
         }
+    }, [emptyValue]);
+
+    useEffect(() => {
         // eslint-disable-next-line eqeqeq
         if (isValidElement(optionText) && emptyText != undefined) {
             throw new Error(
@@ -268,7 +271,7 @@ If you provided a React element for the optionText prop, you must also provide t
             throw new Error(`
 If you provided a React element for the optionText prop, you must also provide the matchSuggestion prop (used to match the user input with a choice)`);
         }
-    }, [optionText, inputText, matchSuggestion, emptyText, emptyValue]);
+    }, [optionText, inputText, matchSuggestion, emptyText]);
 
     useEffect(() => {
         warning(
