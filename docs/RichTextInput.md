@@ -104,14 +104,14 @@ import {
     LinkButtons,
     QuoteButtons,
     ClearButtons,
-    useTipTapEdit,  
+    useTiptapEditor,  
 } from 'ra-input-rich-text';
 import HorizontalRule from '@tiptap/extension-horizontal-rule';
 import Remove from '@mui/icons-material/Remove';
 import { ToggleButton } from '@mui/material';
 
 const MyRichTextInputToolbar = ({ size, ...props }) => {
-    const editor = useTipTapEdit();
+    const editor = useTiptapEditor();
   
     return (
         <RichTextInputToolbar {...props}>
