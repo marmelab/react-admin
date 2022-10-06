@@ -220,7 +220,7 @@ export const useEditController = <
         isLoading,
         mutationMode,
         record,
-        redirect: DefaultRedirect,
+        redirect: redirectTo,
         refetch,
         registerMutationMiddleware,
         resource,
