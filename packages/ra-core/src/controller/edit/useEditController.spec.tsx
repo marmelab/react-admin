@@ -109,6 +109,31 @@ describe('useEditController', () => {
         });
     });
 
+    it('should return the `redirect` provided through props or the default', async () => {
+        const getOne = jest
+            .fn()
+            .mockImplementationOnce(() =>
+                Promise.resolve({ data: { id: 12, title: 'hello' } })
+            );
+        const dataProvider = ({ getOne } as unknown) as DataProvider;
+        const Component = ({ redirect = undefined }) => (
+            <CoreAdminContext dataProvider={dataProvider}>
+                <EditController {...defaultProps} redirect={redirect}>
+                    {({ redirect }) => <div>{redirect}</div>}
+                </EditController>
+            </CoreAdminContext>
+        );
+        const { rerender } = render(<Component />);
+        await waitFor(() => {
+            expect(screen.queryAllByText('list')).toHaveLength(1);
+        });
+
+        rerender(<Component redirect="show" />);
+        await waitFor(() => {
+            expect(screen.queryAllByText('show')).toHaveLength(1);
+        });
+    });
+
     describe('queryOptions', () => {
         it('should accept custom client query options', async () => {
             const mock = jest
