@@ -642,6 +642,8 @@ export const PostList = () => (
 );
 ```
 
+**Note**: If you've added a [`Pagination`](#pagination-pagination-component) component to your `List` component, make sure to set `perPage` to a value that exists in `rowsPerPageOptions`
+
 ## `queryOptions`
 
 `<List>` accepts a `queryOptions` prop to pass options to the react-query client. 
