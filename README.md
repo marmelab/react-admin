@@ -205,29 +205,15 @@ Both of these examples work without server - the API is simulated on the client-
 
 ### Testing Your Changes In Your App
 
-Using `yarn link`, you can have your project use a local checkout of the react-admin package instead of npm. This allows you to test react-admin changes in your app: 
+Using [yalc](https://github.com/wclr/yalc), you can let your project use a local checkout of the react-admin package instead of npm. This allows you to test react-admin changes in your app: 
 
 ```sh
-# Register your local react-admin as a linkable package
-$ cd /code/path/to/react-admin/packages/react-admin && yarn link
-
+# for any updated package
+$ cd /code/path/to/react-admin/packages/<package-name> && yalc publish
 # Replace the npm-installed version with a symlink to your local version 
-$ cd /code/path/to/myapp/ && yarn link react-admin
-
-# If you run into issues with React red-screen, then you need to register your app's version of React as a linkable package 
-
-$ cd /code/path/to/myapp/node_modules/react && yarn link
-# And then replace the npm-installed version of React with a symlink to your app's node_modules version
-$ cd /code/path/to/react-admin/ && yarn link react
-
-# Rebuild the packages with the same version of React
-$ cd /code/path/to/react-admin/ && make build
-
-# Return to your app and ensure all dependencies have resolved 
-$ cd /code/path/to/myapp/ && yarn install
-
-# Start your app
-$ yarn start
+$ cd /code/path/to/myapp/ && yalc link <package-name>
+# whenever you update react-admin/packages/<package-name>, in order to see the result in your app, just run
+$ cd /code/path/to/react-admin/packages/<package-name> && yalc publish --push
 ```
 
 ### Automated Tests
