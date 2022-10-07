@@ -58,6 +58,37 @@ describe('<AutocompleteInput />', () => {
         expect(screen.queryByDisplayValue('foo')).not.toBeNull();
     });
 
+    it('should not match selection when selected choice id equals the emptyValue while changing the input', async () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm>
+                    <AutocompleteInput
+                        {...defaultProps}
+                        choices={[
+                            { id: 2, foobar: 'foo' },
+                            { id: 3, foobar: 'bar' },
+                        ]}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+        const input = screen.getByLabelText(
+            'resources.users.fields.role'
+        ) as HTMLInputElement;
+
+        fireEvent.focus(input);
+
+        userEvent.type(input, 'f');
+        await waitFor(() => {
+            expect(input.value).toEqual('f');
+        });
+
+        userEvent.type(input, '{backspace}');
+        await waitFor(() => {
+            expect(input.value).toEqual('');
+        });
+    });
+
     describe('emptyText', () => {
         it('should allow to have an empty menu option text by passing a string', () => {
             const emptyText = 'Default';
