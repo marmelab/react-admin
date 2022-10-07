@@ -1,5 +1,24 @@
 # Changelog
 
+## v4.4.1
+
+* Fix `format` and `parse` on `<AutocompleteInput>` and `<SelectInput>` ([#8237](https://github.com/marmelab/react-admin/pull/8237)) ([byymster](https://github.com/byymster))
+* Fix `<SelectInput>` and `<AutocompleteInput>` change empty references ([#8234](https://github.com/marmelab/react-admin/pull/8234)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<SelectInput emptyValue>` accepts null value ([#8235](https://github.com/marmelab/react-admin/pull/8235)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<RadioButtonGroupInput>` inside `<ReferenceInput>` when reference ids are numbers ([#8229](https://github.com/marmelab/react-admin/pull/8229)) ([slax57](https://github.com/slax57))
+* Fix `useEditController` returns wrong `redirectTo` value ([#8243](https://github.com/marmelab/react-admin/pull/8243)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<Datagrid>`'s ExpandAllButton conflicts with expandSingle prop ([#8221](https://github.com/marmelab/react-admin/pull/8221)) ([WiXSL](https://github.com/WiXSL))
+* Fix development dependencies causing security alerts ([#8230](https://github.com/marmelab/react-admin/pull/8230)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ReferenceInput>` story contains a non-story ([#8228](https://github.com/marmelab/react-admin/pull/8228)) ([WiXSL](https://github.com/WiXSL))
+* Fix missing test for `<SimpleFormIterator>` ([#8215](https://github.com/marmelab/react-admin/pull/8215)) ([WiXSL](https://github.com/WiXSL))
+* [TypeScript] Fix `useCreateController` parameter type for onError effect ([#8242](https://github.com/marmelab/react-admin/pull/8242)) ([WiXSL](https://github.com/WiXSL))
+* [TypeScript] Fix unused TranslationMessage ([#8223](https://github.com/marmelab/react-admin/pull/8223)) ([bicstone](https://github.com/bicstone))
+* [Doc] Fix `<RichTextInput>` example ([#8245](https://github.com/marmelab/react-admin/pull/8245)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `<RichTextInput>` toolbar customization example ([#8239](https://github.com/marmelab/react-admin/pull/8239)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `<List perPage>` doc misses mention of `<Pagination rowsPerPages>` relationship ([#8244](https://github.com/marmelab/react-admin/pull/8244)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix Upgrade guide typo ([#8240](https://github.com/marmelab/react-admin/pull/8240)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix CHANGELOG ([#8219](https://github.com/marmelab/react-admin/pull/8219)) ([WiXSL](https://github.com/WiXSL))
+
 ## v4.4.0
 
 * Add `<Configurable>` components, make `<SimpleList>` accept template strings ([#8145](https://github.com/marmelab/react-admin/pull/8145)) ([fzaninotto](https://github.com/fzaninotto))
