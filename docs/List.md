@@ -646,15 +646,12 @@ export const PostList = () => (
 
 ```diff
 // in src/MyPagination.js
-import { Pagination, List } from 'react-admin';
-
-const PostPagination = props => <Pagination {...props} />;
+-import { List } from 'react-admin';
++import { List, Pagination } from 'react-admin';
 
 export const PostList = () => (
-     // perPage equals 10 by default, is not incuded in rowsPerPageOptions
--    <List pagination={<PostPagination rowsPerPageOptions={[6, 12, 24, 36]} />}>
-     // perPage equals 6, is incuded in rowsPerPageOptions
-+    <List perPage={6} pagination={<PostPagination rowsPerPageOptions={[6, 12, 24, 36]} />}>
+-    <List perPage={6}>
++    <List perPage={6} pagination={<Pagination rowsPerPageOptions={[6, 12, 24, 36]} />}>
         ...
     </List>
 );
