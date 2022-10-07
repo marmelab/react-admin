@@ -642,7 +642,7 @@ export const PostList = () => (
 );
 ```
 
-**Note**: The default pagination component's `rowsPerPageOptions` includes options of 5, 10, and 25. If you set your List `perPage` to a value not in that set, you must also customize the pagination so that it allows this value, or else there will be an error.
+**Note**: The default pagination component's `rowsPerPageOptions` includes options of 5, 10, 25 and 50. If you set your List `perPage` to a value not in that set, you must also customize the pagination so that it allows this value, or else there will be an error.
 
 ```diff
 // in src/MyPagination.js
