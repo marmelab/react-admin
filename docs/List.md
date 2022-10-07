@@ -642,7 +642,23 @@ export const PostList = () => (
 );
 ```
 
-**Note**: If you've added a [`Pagination`](#pagination-pagination-component) component to your `List` component, make sure to set `perPage` to a value that exists in `rowsPerPageOptions`
+**Note**: The default pagination component's `rowsPerPageOptions` includes options of 5, 10, and 25. If you set your List `perPage` to a value not in that set, you must also customize the pagination so that it allows this value, or else there will be an error.
+
+```diff
+// in src/MyPagination.js
+import { Pagination, List } from 'react-admin';
+
+const PostPagination = props => <Pagination {...props} />;
+
+export const PostList = () => (
+     // perPage equals 10 by default, is not incuded in rowsPerPageOptions
+-    <List pagination={<PostPagination rowsPerPageOptions={[6, 12, 24, 36]} />}>
+     // perPage equals 6, is incuded in rowsPerPageOptions
++    <List perPage={6} pagination={<PostPagination rowsPerPageOptions={[6, 12, 24, 36]} />}>
+        ...
+    </List>
+);
+```
 
 ## `queryOptions`
 
