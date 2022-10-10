@@ -443,7 +443,7 @@ If you provided a React element for the optionText prop, you must also provide t
     const doesQueryMatchSelection = useCallback(
         (filter: string, eventType?: string) => {
             let selectedItemTexts;
-            let isValidChoice = false;
+            let matchValidChoice = false;
 
             if (multiple) {
                 selectedItemTexts = selectedChoice.map(item =>
@@ -451,7 +451,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 );
             } else {
                 selectedItemTexts = [getOptionLabel(selectedChoice)];
-                isValidChoice =
+                matchValidChoice =
                     selectedChoice &&
                     selectedChoice[
                         typeof optionText === 'string' ? optionText : 'name'
@@ -461,7 +461,7 @@ If you provided a React element for the optionText prop, you must also provide t
             return eventType && eventType === 'change'
                 ? selectedItemTexts.includes(filter) &&
                       selectedChoice &&
-                      !isValidChoice
+                      !matchValidChoice
                 : selectedItemTexts.includes(filter);
         },
         [getOptionLabel, multiple, optionText, selectedChoice]
