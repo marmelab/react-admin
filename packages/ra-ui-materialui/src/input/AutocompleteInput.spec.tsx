@@ -486,16 +486,15 @@ describe('<AutocompleteInput />', () => {
         });
     });
 
-    it('should allow to clear the first character', async () => {
+    it('should not match selection when selected choice id equals the emptyValue while changing the input', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: 2 }}>
+                <SimpleForm>
                     <AutocompleteInput
                         {...defaultProps}
-                        optionText="foobar"
                         choices={[
-                            { id: 2, foobar: 'foo' },
-                            { id: 3, foobar: 'bar' },
+                            { id: 2, name: 'foo' },
+                            { id: 3, name: 'bar' },
                         ]}
                     />
                 </SimpleForm>
