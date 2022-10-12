@@ -10,6 +10,7 @@ import {
     SubmitHandler,
     useForm,
     UseFormProps,
+    UseFormReturn,
 } from 'react-hook-form';
 
 import { RaRecord } from '../types';
@@ -36,7 +37,9 @@ import { sanitizeEmptyValues as sanitizeValues } from './sanitizeEmptyValues';
  * - notification on invalid form
  * - stop form submission event propagation
  */
-export const useAugmentedForm = (props: UseAugmentedFormProps) => {
+export const useAugmentedForm = (
+    props: UseAugmentedFormProps
+): AugmentedFormResult => {
     const {
         context,
         criteriaMode = 'firstError',
@@ -200,4 +203,10 @@ export interface UseFormOwnProps {
     onSubmit?: SubmitHandler<FieldValues>;
     warnWhenUnsavedChanges?: boolean;
     sanitizeEmptyValues?: boolean;
+}
+
+export interface AugmentedFormResult {
+    handleSubmit: (values, event) => Promise<void>;
+    form: UseFormReturn;
+    formHandleSubmit: (event: BaseSyntheticEvent) => void;
 }
