@@ -278,6 +278,7 @@ export type CheckboxGroupInputProps = Omit<CommonInputProps, 'source'> &
         row?: boolean;
         // Optional as this input can be used inside a ReferenceInput
         source?: string;
+        labelPlacement?: 'bottom' | 'end' | 'start' | 'top';
     };
 
 const PREFIX = 'RaCheckboxGroupInput';
