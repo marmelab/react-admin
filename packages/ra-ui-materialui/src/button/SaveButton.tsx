@@ -12,9 +12,12 @@ import {
     TransformData,
     UpdateParams,
     useSaveContext,
+    useRecordContext,
     useTranslate,
     warning,
+    sanitizeEmptyValues as sanitizeValues,
     setSubmissionErrors,
+    useAugmentedFormContext,
 } from 'ra-core';
 
 /**
@@ -64,6 +67,8 @@ export const SaveButton = <RecordType extends RaRecord = any>(
     } = props;
     const translate = useTranslate();
     const form = useFormContext();
+    const record = useRecordContext(props);
+    const { onSubmit, sanitizeEmptyValues } = useAugmentedFormContext();
     const saveContext = useSaveContext();
     const { isDirty, isValidating, isSubmitting } = useFormState();
     // Use form isDirty, isValidating and form context saving to enable or disable the save button
@@ -88,13 +93,19 @@ export const SaveButton = <RecordType extends RaRecord = any>(
     );
 
     const handleSubmit = useCallback(
-        async values => {
+        async (values, event) => {
             let errors;
-            if (saveContext?.save) {
-                errors = await saveContext.save(values, {
+            const finalValues = sanitizeEmptyValues
+                ? sanitizeValues(values, record)
+                : values;
+
+            if ((mutationOptions || transform) && saveContext?.save) {
+                errors = await saveContext.save(finalValues, {
                     ...mutationOptions,
                     transform,
                 });
+            } else if (onSubmit) {
+                errors = await onSubmit(finalValues, event);
             }
             if (errors != null) {
                 setSubmissionErrors(errors, form.setError);
