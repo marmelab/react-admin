@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
 import {
     FormProvider,
     FieldValues,
@@ -14,6 +14,7 @@ import { useResourceContext } from '../core';
 import { LabelPrefixContextProvider } from '../util';
 import { ValidateForm } from './getSimpleValidationResolver';
 import { useAugmentedForm } from './useAugmentedForm';
+import { AugmentedFormContext } from './AugmentedFormContext';
 
 /**
  * Creates a form element, initialized with the current record, calling the saveContext on submit
@@ -47,21 +48,30 @@ export const Form = (props: FormProps) => {
     const record = useRecordContext(props);
     const resource = useResourceContext(props);
     const { form, formHandleSubmit } = useAugmentedForm(props);
+    const augmentedFormContext = useMemo(
+        () => ({
+            onSubmit: props.onSubmit,
+            sanitizeEmptyValues: props.sanitizeEmptyValues,
+        }),
+        [props.onSubmit, props.sanitizeEmptyValues]
+    );
 
     return (
         <OptionalRecordContextProvider value={record}>
             <LabelPrefixContextProvider prefix={`resources.${resource}.fields`}>
                 <FormProvider {...form}>
-                    <FormGroupsProvider>
-                        <form
-                            onSubmit={formHandleSubmit}
-                            noValidate={noValidate}
-                            id={id}
-                            className={className}
-                        >
-                            {children}
-                        </form>
-                    </FormGroupsProvider>
+                    <AugmentedFormContext.Provider value={augmentedFormContext}>
+                        <FormGroupsProvider>
+                            <form
+                                onSubmit={formHandleSubmit}
+                                noValidate={noValidate}
+                                id={id}
+                                className={className}
+                            >
+                                {children}
+                            </form>
+                        </FormGroupsProvider>
+                    </AugmentedFormContext.Provider>
                 </FormProvider>
             </LabelPrefixContextProvider>
         </OptionalRecordContextProvider>

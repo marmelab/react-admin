@@ -31,11 +31,14 @@ export {
 export * from './choices';
 export * from './Form';
 export * from './validate';
+export * from './sanitizeEmptyValues';
+export * from './AugmentedFormContext';
 export * from './FormGroupContext';
 export * from './FormGroupContextProvider';
 export * from './FormGroupsProvider';
 export * from './setSubmissionErrors';
 export * from './useApplyInputDefaultValues';
+export * from './useAugmentedFormContext';
 export * from './useChoices';
 export * from './useFormGroup';
 export * from './useFormGroups';
