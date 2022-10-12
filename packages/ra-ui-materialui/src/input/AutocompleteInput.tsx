@@ -436,7 +436,7 @@ If you provided a React element for the optionText prop, you must also provide t
     ) => {
         if (
             event?.type === 'change' ||
-            !doesQueryMatchSelection(newInputValue, event?.type)
+            !doesQueryMatchSelection(newInputValue)
         ) {
             setFilterValue(newInputValue);
             debouncedSetFilter(newInputValue);
@@ -444,7 +444,7 @@ If you provided a React element for the optionText prop, you must also provide t
     };
 
     const doesQueryMatchSelection = useCallback(
-        (filter: string, eventType?: string) => {
+        (filter: string) => {
             let selectedItemTexts;
 
             if (multiple) {
@@ -455,11 +455,9 @@ If you provided a React element for the optionText prop, you must also provide t
                 selectedItemTexts = [getOptionLabel(selectedChoice)];
             }
 
-            return eventType && eventType === 'change'
-                ? selectedItemTexts.includes(filter) && selectedChoice
-                : selectedItemTexts.includes(filter);
+            return selectedItemTexts.includes(filter);
         },
-        [getOptionLabel, multiple, optionText, selectedChoice]
+        [getOptionLabel, multiple, selectedChoice]
     );
     const doesQueryMatchSuggestion = useCallback(
         filter => {
