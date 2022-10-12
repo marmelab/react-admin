@@ -195,19 +195,31 @@ export const AutocompleteInput = <
 
     const finalEmptyText = emptyText ?? '';
 
-    const finalChoices =
-        isRequiredOverride || multiple
-            ? allChoices
-            : [
-                  {
-                      [optionValue || 'id']: emptyValue,
-                      [typeof optionText === 'string'
-                          ? optionText
-                          : 'name']: translate(finalEmptyText, {
-                          _: finalEmptyText,
-                      }),
-                  },
-              ].concat(allChoices);
+    const finalChoices = useMemo(
+        () =>
+            isRequiredOverride || multiple
+                ? allChoices
+                : [
+                      {
+                          [optionValue || 'id']: emptyValue,
+                          [typeof optionText === 'string'
+                              ? optionText
+                              : 'name']: translate(finalEmptyText, {
+                              _: finalEmptyText,
+                          }),
+                      },
+                  ].concat(allChoices),
+        [
+            allChoices,
+            emptyValue,
+            finalEmptyText,
+            isRequiredOverride,
+            multiple,
+            optionText,
+            optionValue,
+            translate,
+        ]
+    );
 
     const {
         id,
@@ -422,15 +434,18 @@ If you provided a React element for the optionText prop, you must also provide t
         newInputValue: string,
         reason: string
     ) => {
-        if (!doesQueryMatchSelection(newInputValue, event?.type)) {
+        if (
+            event?.type === 'change' ||
+            !doesQueryMatchSelection(newInputValue)
+        ) {
             setFilterValue(newInputValue);
             debouncedSetFilter(newInputValue);
         }
     };
 
     const doesQueryMatchSelection = useCallback(
-        (filter: string, eventType?: string) => {
-            let selectedItemTexts = [];
+        (filter: string) => {
+            let selectedItemTexts;
 
             if (multiple) {
                 selectedItemTexts = selectedChoice.map(item =>
@@ -440,9 +455,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 selectedItemTexts = [getOptionLabel(selectedChoice)];
             }
 
-            return eventType && eventType === 'change'
-                ? selectedItemTexts.includes(filter) && selectedChoice
-                : selectedItemTexts.includes(filter);
+            return selectedItemTexts.includes(filter);
         },
         [getOptionLabel, multiple, selectedChoice]
     );

@@ -58,6 +58,43 @@ describe('<AutocompleteInput />', () => {
         expect(screen.queryByDisplayValue('foo')).not.toBeNull();
     });
 
+    it('should allow filter to match the selected choice while removing characters in the input', async () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm>
+                    <AutocompleteInput
+                        {...defaultProps}
+                        choices={[
+                            { id: 1, name: 'foo' },
+                            { id: 2, name: 'bar' },
+                        ]}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        const input = screen.getByLabelText(
+            'resources.users.fields.role'
+        ) as HTMLInputElement;
+
+        fireEvent.mouseDown(input);
+        await waitFor(() => {
+            expect(screen.getByText('foo')).not.toBe(null);
+        });
+        fireEvent.click(screen.getByText('foo'));
+        await waitFor(() => {
+            expect(input.value).toEqual('foo');
+        });
+        fireEvent.focus(input);
+        userEvent.type(input, '{end}');
+        userEvent.type(input, '2');
+        expect(input.value).toEqual('foo2');
+        userEvent.type(input, '{backspace}');
+        await waitFor(() => {
+            expect(input.value).toEqual('foo');
+        });
+    });
+
     describe('emptyText', () => {
         it('should allow to have an empty menu option text by passing a string', () => {
             const emptyText = 'Default';
@@ -449,16 +486,15 @@ describe('<AutocompleteInput />', () => {
         });
     });
 
-    it('should allow to clear the first character', async () => {
+    it('should not match selection when selected choice id equals the emptyValue while changing the input', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: 2 }}>
+                <SimpleForm>
                     <AutocompleteInput
                         {...defaultProps}
-                        optionText="foobar"
                         choices={[
-                            { id: 2, foobar: 'foo' },
-                            { id: 3, foobar: 'bar' },
+                            { id: 2, name: 'foo' },
+                            { id: 3, name: 'bar' },
                         ]}
                     />
                 </SimpleForm>
