@@ -151,28 +151,6 @@ describe('useInput', () => {
         expect(screen.queryByDisplayValue('99')).toBeNull();
     });
 
-    it('does not apply the defaultValue when input has a value of 0', () => {
-        render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form onSubmit={jest.fn()} record={{ id: 1, views: 0 }}>
-                    <Input source="views" resource="posts" defaultValue={99}>
-                        {({ id, field }) => {
-                            return (
-                                <input
-                                    type="number"
-                                    id={id}
-                                    aria-label="Views"
-                                    {...field}
-                                />
-                            );
-                        }}
-                    </Input>
-                </Form>
-            </CoreAdminContext>
-        );
-        expect(screen.queryByDisplayValue('99')).toBeNull();
-    });
-
     const BooleanInput = ({
         source,
         defaultValue,
@@ -297,5 +275,38 @@ describe('useInput', () => {
             </CoreAdminContext>
         );
         expect(screen.getByDisplayValue('1000')).not.toBeNull();
+    });
+
+    it('should format null values to an empty string to avoid console warnings about controlled/uncontrolled components', () => {
+        let inputProps;
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <Form onSubmit={jest.fn()} record={{ id: 1, views: null }}>
+                    <Input source="views" resource="posts">
+                        {props => {
+                            inputProps = props;
+                            return <div />;
+                        }}
+                    </Input>
+                </Form>
+            </CoreAdminContext>
+        );
+        expect(inputProps.field.value).toEqual('');
+    });
+    it('should format null default values to an empty string to avoid console warnings about controlled/uncontrolled components', () => {
+        let inputProps;
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <Form onSubmit={jest.fn()}>
+                    <Input source="views" resource="posts" defaultValue={null}>
+                        {props => {
+                            inputProps = props;
+                            return <div />;
+                        }}
+                    </Input>
+                </Form>
+            </CoreAdminContext>
+        );
+        expect(inputProps.field.value).toEqual('');
     });
 });

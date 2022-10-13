@@ -18,10 +18,13 @@ import { useGetValidationErrorMessage } from './useGetValidationErrorMessage';
 import { useFormGroups } from './useFormGroups';
 import { useApplyInputDefaultValues } from './useApplyInputDefaultValues';
 
+// replace null values by empty string to avoid controlled/ uncontrolled input warning
+const defaultFormat = (value: any) => (value === null ? '' : value);
+
 export const useInput = (props: InputProps): UseInputValue => {
     const {
         defaultValue,
-        format,
+        format = defaultFormat,
         id,
         isRequired: isRequiredOption,
         name,

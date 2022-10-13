@@ -275,3 +275,23 @@ export const FieldState = () => (
         </Create>
     </AdminContext>
 );
+
+export const WithNullSupport = () => (
+    <AdminContext>
+        <Create
+            resource="posts"
+            record={{ id: 123, title: null }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <TextInput
+                    source="title"
+                    defaultValue={null}
+                    parse={value => (value === '' ? null : value)}
+                    format={value => (value === null ? '' : value)}
+                />
+                <FormInspector />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
