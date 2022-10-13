@@ -106,6 +106,8 @@ export const SaveButton = <RecordType extends RaRecord = any>(
                 });
             } else if (onSubmit) {
                 errors = await onSubmit(finalValues, event);
+            } else if (saveContext?.save) {
+                errors = await saveContext.save(finalValues);
             }
             if (errors != null) {
                 setSubmissionErrors(errors, form.setError);
