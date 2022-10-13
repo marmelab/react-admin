@@ -48,7 +48,7 @@ export const TextInput = (props: TextInputProps) => {
         isRequired,
     } = useInput({
         defaultValue,
-        format: format ?? defaultFormat,
+        format,
         parse: parse ?? defaultParse,
         resource,
         source,
@@ -103,7 +103,6 @@ TextInput.defaultProps = {
     options: {},
 };
 
-const defaultFormat = (value: any) => (value == null ? '' : value);
 const defaultParse = (value: string) => (value === '' ? null : value);
 
 export type TextInputProps = CommonInputProps &
