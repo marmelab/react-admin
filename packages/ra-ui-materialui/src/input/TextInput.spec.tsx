@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
-
 import { required, testDataProvider } from 'ra-core';
+
 import { AdminContext } from '../AdminContext';
-import { SimpleForm, Toolbar } from '../form';
+import { SimpleForm } from '../form';
 import { TextInput } from './TextInput';
-import { SaveButton } from '../button';
+import { ValueNull, Parse } from './TextInput.stories';
 
 describe('<TextInput />', () => {
     const defaultProps = {
@@ -114,37 +114,20 @@ describe('<TextInput />', () => {
         });
     });
 
-    it('should work with null values', async () => {
-        const onSubmit = jest.fn();
-        render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    record={{ id: 1, title: null }}
-                    onSubmit={onSubmit}
-                    toolbar={
-                        <Toolbar>
-                            <SaveButton alwaysEnable />
-                        </Toolbar>
-                    }
-                >
-                    <TextInput
-                        {...defaultProps}
-                        defaultValue={null}
-                        parse={value => (value === '' ? null : value)}
-                    />
-                </SimpleForm>
-            </AdminContext>
-        );
-        const input = screen.getByLabelText(
+    it('should keep null values', async () => {
+        const onSuccess = jest.fn();
+        render(<ValueNull onSuccess={onSuccess} />);
+        const input = (await screen.findByLabelText(
             'resources.posts.fields.title'
-        ) as HTMLInputElement;
+        )) as HTMLInputElement;
         const saveBtn = screen.getByText('ra.action.save');
 
         expect(input.value).toEqual('');
         fireEvent.click(saveBtn);
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith(
-                { id: 1, title: null },
+            expect(onSuccess).toHaveBeenCalledWith(
+                { id: 123, title: null },
+                expect.anything(),
                 expect.anything()
             );
         });
@@ -153,8 +136,9 @@ describe('<TextInput />', () => {
         expect(input.value).toEqual('test');
         fireEvent.click(saveBtn);
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith(
-                { id: 1, title: 'test' },
+            expect(onSuccess).toHaveBeenCalledWith(
+                { id: 123, title: 'test' },
+                expect.anything(),
                 expect.anything()
             );
         });
@@ -163,10 +147,23 @@ describe('<TextInput />', () => {
         expect(input.value).toEqual('');
         fireEvent.click(saveBtn);
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith(
-                { id: 1, title: null },
+            expect(onSuccess).toHaveBeenCalledWith(
+                { id: 123, title: null },
+                expect.anything(),
                 expect.anything()
             );
+        });
+    });
+
+    describe('parse', () => {
+        it('should transform the value before storing it in the form state', () => {
+            render(<Parse />);
+            const input = screen.getByLabelText(
+                'resources.posts.fields.title'
+            ) as HTMLInputElement;
+            expect(input.value).toEqual('Lorem ipsum');
+            fireEvent.change(input, { target: { value: 'foo' } });
+            expect(input.value).toEqual('bar');
         });
     });
 });

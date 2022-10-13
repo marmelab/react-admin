@@ -28,7 +28,7 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 export const TextInput = (props: TextInputProps) => {
     const {
         className,
-        defaultValue = '',
+        defaultValue,
         label,
         format,
         helperText,
@@ -48,8 +48,8 @@ export const TextInput = (props: TextInputProps) => {
         isRequired,
     } = useInput({
         defaultValue,
-        format,
-        parse,
+        format: format ?? defaultFormat,
+        parse: parse ?? defaultParse,
         resource,
         source,
         type: 'text',
@@ -102,6 +102,9 @@ TextInput.propTypes = {
 TextInput.defaultProps = {
     options: {},
 };
+
+const defaultFormat = (value: any) => (value == null ? '' : value);
+const defaultParse = (value: string) => (value === '' ? null : value);
 
 export type TextInputProps = CommonInputProps &
     Omit<ResettableTextFieldProps, 'label' | 'helperText'>;
