@@ -163,7 +163,7 @@ export const useAugmentedForm = (
                 errors = await onSubmit(finalValues, event);
             }
             if (onSubmit == null && saveContext?.save) {
-                errors = await saveContext.save(finalValues, event);
+                errors = await saveContext.save(finalValues);
             }
             if (errors != null) {
                 setSubmissionErrors(errors, formRef.current.setError);
