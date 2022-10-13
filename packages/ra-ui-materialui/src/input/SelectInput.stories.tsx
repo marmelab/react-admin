@@ -4,6 +4,7 @@ import { Admin, AdminContext } from 'react-admin';
 import { Resource, required } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
+import { useWatch } from 'react-hook-form';
 
 import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
@@ -58,6 +59,7 @@ export const InitialValue = () => (
                         { id: 'F', name: 'Female' },
                     ]}
                 />
+                <FormInspector />
             </SimpleForm>
         </Edit>
     </AdminContext>
@@ -159,6 +161,18 @@ export const Sort = () => (
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
+const FormInspector = ({ name = 'gender' }) => {
+    const value = useWatch({ name });
+    return (
+        <div style={{ backgroundColor: 'lightgrey' }}>
+            {name} value in form:&nbsp;
+            <code>
+                {JSON.stringify(value)} ({typeof value})
+            </code>
+        </div>
+    );
+};
+
 const Wrapper = ({ children }) => (
     <AdminContext
         i18nProvider={i18nProvider}
@@ -176,6 +190,7 @@ const Wrapper = ({ children }) => (
                 }
             >
                 {children}
+                <FormInspector />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -266,6 +281,7 @@ export const InsideReferenceInput = () => (
                         <ReferenceInput reference="authors" source="author">
                             <SelectInput />
                         </ReferenceInput>
+                        <FormInspector name="author" />
                     </SimpleForm>
                 </Edit>
             )}
@@ -312,6 +328,7 @@ export const InsideReferenceInputDefaultValue = ({
                         <ReferenceInput reference="authors" source="author">
                             <SelectInput />
                         </ReferenceInput>
+                        <FormInspector name="author" />
                     </SimpleForm>
                 </Edit>
             )}
