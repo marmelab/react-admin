@@ -288,7 +288,6 @@ export const WithNullSupport = () => (
                     source="title"
                     defaultValue={null}
                     parse={value => (value === '' ? null : value)}
-                    format={value => (value === null ? '' : value)}
                 />
                 <FormInspector />
             </SimpleForm>

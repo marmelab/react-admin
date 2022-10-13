@@ -131,7 +131,6 @@ describe('<TextInput />', () => {
                         {...defaultProps}
                         defaultValue={null}
                         parse={value => (value === '' ? null : value)}
-                        format={value => (value === null ? '' : value)}
                     />
                 </SimpleForm>
             </AdminContext>
