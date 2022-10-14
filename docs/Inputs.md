@@ -388,10 +388,9 @@ const dateParser = value => {
 <DateInput source="isodate" format={dateFormatter} parse={dateParser} defaultValue={new Date()} />
 ```
 
-**Tip:** A common usage for this feature was to strip empty strings from the record before saving it to the API. Indeed HTML form inputs always return strings, even for numbers and booleans, however most backends expect a value like `null`. This is why, by default, all React-admin inputs will be parsed to `null` when the HTML input value is `''`. 
+**Tip:** A common usage for this feature is to deal with empty values. Indeed HTML form inputs always return strings, even for numbers and booleans, however most backends expect a value like `null`. This is why, by default, all react-admin inputs will store the value `null` when the HTML input value is `''`. 
 
 **Tip**: If you need React-admin to completely remove all empty values (that did not change) from the record upon submission, have a look at [the `sanitizeEmptyValues` prop of the `<Form>` component](./Form.md#sanitizeemptyvalues).
-
 
 ## Linking Two Inputs
 
