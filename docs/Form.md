@@ -136,7 +136,9 @@ export const PostCreate = () => {
 
 ## `sanitizeEmptyValues`
 
-In HTML, the value of empty form inputs is the empty string (`''`) by default. React-hook-form doesn't sanitize these values. This leads to unexpected `create` and `update` payloads like:
+In HTML, the value of empty form inputs is the empty string (`''`). React-admin inputs (like `<TextInput>`, `<NumberInput>`, etc.) automatically transform these empty values into `null`.
+
+But for your own input components based on react-hook-form, this is not the default. React-hook-form doesn't transform empty values by default. This leads to unexpected `create` and `update` payloads like:
 
 ```jsx
 {

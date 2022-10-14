@@ -144,7 +144,9 @@ export const PostCreate = () => {
 
 ## `sanitizeEmptyValues`
 
-As a reminder, HTML form inputs always return strings, even for numbers and booleans. So the empty value for a text input is the empty string, not `null` or `undefined`. This means that the data sent to the form handler will contain empty strings:
+In HTML, the value of empty form inputs is the empty string (`''`). React-admin inputs (like `<TextInput>`, `<NumberInput>`, etc.) automatically transform these empty values into `null`.
+
+But for your own input components based on react-hook-form, this is not the default. React-hook-form doesn't transform empty values by default. This leads to unexpected `create` and `update` payloads like:
 
 ```jsx
 {
@@ -156,7 +158,7 @@ As a reminder, HTML form inputs always return strings, even for numbers and bool
 }
 ```
 
-React-hook-form doesn't sanitize these values. If you prefer to omit the keys for empty values, set the `sanitizeEmptyValues` prop to `true`. This will sanitize the form data before passing it to the `dataProvider`, i.e. remove empty strings from the form state, unless the record actually had a value for that field before edition.
+If you prefer to omit the keys for empty values, set the `sanitizeEmptyValues` prop to `true`. This will sanitize the form data before passing it to the `dataProvider`, i.e. remove empty strings from the form state, unless the record actually had a value for that field before edition.
 
 ```jsx
 const PostCreate = () =>  (
