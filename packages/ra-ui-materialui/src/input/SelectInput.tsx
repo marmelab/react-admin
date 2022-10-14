@@ -177,7 +177,7 @@ export const SelectInput = (props: SelectInputProps) => {
         isRequired,
         formState: { isSubmitted },
     } = useInput({
-        defaultValue: defaultValue ?? (isFromReference ? null : ''),
+        defaultValue,
         parse,
         format,
         onBlur,

@@ -228,7 +228,7 @@ export const AutocompleteInput = <
         fieldState: { error, invalid, isTouched },
         formState: { isSubmitted },
     } = useInput({
-        defaultValue: defaultValue ?? (isFromReference ? null : ''),
+        defaultValue,
         id: idOverride,
         field: fieldOverride,
         fieldState: fieldStateOverride,

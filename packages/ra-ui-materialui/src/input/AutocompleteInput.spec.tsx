@@ -1258,7 +1258,7 @@ describe('<AutocompleteInput />', () => {
             screen.getByText('Save').click();
             await waitFor(() => {
                 expect(onSuccess).toHaveBeenCalledWith(
-                    expect.objectContaining({ author: null }),
+                    expect.objectContaining({ author: undefined }),
                     expect.anything(),
                     expect.anything()
                 );
