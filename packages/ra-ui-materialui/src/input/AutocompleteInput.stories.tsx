@@ -91,6 +91,39 @@ export const Basic = () => (
     </Admin>
 );
 
+export const Nullable = ({ onSuccess = console.log }) => {
+    const choices = [
+        { id: 1, name: 'Leo Tolstoy' },
+        { id: 2, name: 'Victor Hugo' },
+        { id: 3, name: 'William Shakespeare' },
+        { id: 4, name: 'Charles Baudelaire' },
+        { id: 5, name: 'Marcel Proust' },
+    ];
+    return (
+        <Admin dataProvider={dataProvider} history={history}>
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess,
+                        }}
+                    >
+                        <SimpleForm>
+                            <AutocompleteInput
+                                source="author"
+                                choices={choices}
+                                fullWidth
+                            />
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    );
+};
+
 const BookEditCustomText = () => {
     const choices = [
         { id: 1, fullName: 'Leo Tolstoy' },

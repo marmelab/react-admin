@@ -235,10 +235,8 @@ export const AutocompleteInput = <
         formState: formStateOverride,
         onBlur,
         onChange,
-        parse:
-            parse ?? (isFromReference ? convertEmptyStringToNull : undefined),
-        format:
-            format ?? (isFromReference ? convertNullToEmptyString : undefined),
+        parse: parse ?? convertEmptyStringToNull,
+        format: format ?? convertNullToEmptyString,
         resource,
         source,
         validate,
@@ -745,4 +743,4 @@ const getSelectedItems = (
 const DefaultFilterToQuery = searchText => ({ q: searchText });
 
 const convertEmptyStringToNull = value => (value === '' ? null : value);
-const convertNullToEmptyString = value => (value === null ? '' : value);
+const convertNullToEmptyString = value => (value == null ? '' : value);
