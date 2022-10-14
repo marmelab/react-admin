@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FunctionComponent, ReactElement, useEffect } from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { useFormContext } from 'react-hook-form';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { CoreAdminContext } from '../core';
 import { testDataProvider } from '../dataProvider';
 import { Form } from './Form';
@@ -355,6 +355,40 @@ describe('useInput', () => {
                 </CoreAdminContext>
             );
             expect(screen.getByDisplayValue('1000')).not.toBeNull();
+        });
+
+        test('should parse empty strings to null by default', async () => {
+            const onSubmit = jest.fn();
+            render(
+                <CoreAdminContext dataProvider={testDataProvider()}>
+                    <Form onSubmit={onSubmit}>
+                        <Input
+                            defaultValue="foo"
+                            source="test"
+                            children={({ id, field }) => {
+                                useEffect(() => {
+                                    field.onChange('');
+                                }, [field]);
+                                const value = useWatch({ name: 'test' });
+
+                                return (
+                                    <>
+                                        <input type="text" id={id} {...field} />
+                                        <div>
+                                            'test' value in form:&nbsp;
+                                            <code>
+                                                {JSON.stringify(value)} (
+                                                {typeof value})
+                                            </code>
+                                        </div>
+                                    </>
+                                );
+                            }}
+                        />
+                    </Form>
+                </CoreAdminContext>
+            );
+            await screen.findByText('null (object)');
         });
     });
 });
