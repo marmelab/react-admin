@@ -16,7 +16,7 @@ import { InputHelperText } from './InputHelperText';
  * @return {Date}
  */
 const parseTime = (value: string) => {
-    if (!value) return value;
+    if (!value) return null;
     const timeTokens = value.split(':').map(v => parseInt(v));
     const today = new Date();
     today.setHours(timeTokens[0] ?? 0);

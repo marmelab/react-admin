@@ -6,6 +6,7 @@ import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
 import { SimpleForm } from '../form';
 import { TimeInput } from './TimeInput';
+import { FormInspector } from './common.stories';
 
 export default { title: 'ra-ui-materialui/input/TimeInput' };
 
@@ -32,7 +33,10 @@ const i18nProvider = polyglotI18nProvider(() => englishMessages);
 const Wrapper = ({ children }) => (
     <AdminContext i18nProvider={i18nProvider}>
         <Create resource="posts">
-            <SimpleForm>{children}</SimpleForm>
+            <SimpleForm>
+                {children}
+                <FormInspector name="published" />
+            </SimpleForm>
         </Create>
     </AdminContext>
 );
