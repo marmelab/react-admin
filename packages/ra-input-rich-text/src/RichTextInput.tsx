@@ -84,7 +84,6 @@ export const RichTextInput = (props: RichTextInputProps) => {
         readOnly = false,
         source,
         toolbar,
-        parse,
     } = props;
 
     const resource = useResourceContext(props);
@@ -98,7 +97,6 @@ export const RichTextInput = (props: RichTextInputProps) => {
         ...props,
         source,
         defaultValue,
-        parse: parse ?? defaultParse,
     });
 
     const editor = useEditor({
@@ -216,8 +214,6 @@ const RichTextInputContent = ({
         </FormHelperText>
     </Root>
 );
-
-const defaultParse = (value: string) => (value === '' ? null : value);
 
 export const DefaultEditorOptions = {
     extensions: [

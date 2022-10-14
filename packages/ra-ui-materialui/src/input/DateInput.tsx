@@ -51,7 +51,7 @@ export const DateInput = ({
         defaultValue,
         name,
         format,
-        parse: parse ?? defaultParse,
+        parse,
         onBlur,
         onChange,
         resource,
@@ -143,5 +143,3 @@ const getStringFromDate = (value: string | Date) => {
 
     return convertDateToString(new Date(value));
 };
-
-const defaultParse = (value: string) => (value === '' ? null : value);
