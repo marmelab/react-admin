@@ -125,7 +125,7 @@ export const SaveButton = <RecordType extends RaRecord = any>(
                 return;
             }
             if (type === 'button') {
-                // this button doesn't submit the form, so it doesn't trigger useIsFormInvalid in <FormContent>
+                // this button doesn't submit the form, so it doesn't trigger useNotifyIsFormInvalid in <FormContent>
                 // therefore we need to check for errors manually
                 event.stopPropagation();
                 await form.handleSubmit(handleSubmit)(event);
