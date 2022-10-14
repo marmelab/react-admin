@@ -15,7 +15,8 @@ import { InputHelperText } from './InputHelperText';
  * @param {string} value Date string, formatted as yyyy-MM-ddThh:mm
  * @return {Date}
  */
-const parseDateTime = (value: string) => (value ? new Date(value) : value);
+const parseDateTime = (value: string) =>
+    value ? new Date(value) : value === '' ? null : value;
 
 /**
  * Input component for entering a date and a time with timezone, using the browser locale
