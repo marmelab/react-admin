@@ -113,7 +113,15 @@ export const SaveButton = <RecordType extends RaRecord = any>(
                 setSubmissionErrors(errors, form.setError);
             }
         },
-        [form.setError, saveContext, mutationOptions, transform]
+        [
+            form.setError,
+            onSubmit,
+            record,
+            sanitizeEmptyValues,
+            saveContext,
+            mutationOptions,
+            transform,
+        ]
     );
 
     const handleClick: MouseEventHandler<HTMLButtonElement> = useCallback(
