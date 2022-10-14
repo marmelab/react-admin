@@ -201,6 +201,36 @@ describe('<DateInput />', () => {
         expect(screen.queryByText('Dirty: false')).not.toBeNull();
     });
 
+    it('should return null when date is empty', async () => {
+        const onSubmit = jest.fn();
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    onSubmit={onSubmit}
+                    defaultValues={{ publishedAt: new Date('2021-09-11') }}
+                >
+                    <DateInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
+        );
+        const input = screen.getByLabelText(
+            'resources.posts.fields.publishedAt'
+        ) as HTMLInputElement;
+        expect(input.value).toBe('2021-09-11');
+        fireEvent.change(input, {
+            target: { value: '' },
+        });
+        fireEvent.click(screen.getByLabelText('ra.action.save'));
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith(
+                {
+                    publishedAt: null,
+                },
+                expect.anything()
+            );
+        });
+    });
+
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
             render(
