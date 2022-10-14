@@ -12,6 +12,7 @@ import { SimpleForm } from '../form';
 import { SelectInput } from './SelectInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import {
+    EmptyText,
     InsideReferenceInput,
     InsideReferenceInputDefaultValue,
     Sort,
@@ -758,6 +759,23 @@ describe('<SelectInput />', () => {
                     expect.anything()
                 );
             });
+        });
+    });
+
+    it('should return null when empty', async () => {
+        const onSuccess = jest.fn();
+        render(<EmptyText onSuccess={onSuccess} />);
+        const input = await screen.findByLabelText('Gender');
+        fireEvent.mouseDown(input);
+        fireEvent.click(screen.getByText('Male'));
+        fireEvent.click(screen.getByText('None'));
+        screen.getByText('Save').click();
+        await waitFor(() => {
+            expect(onSuccess).toHaveBeenCalledWith(
+                expect.objectContaining({ gender: null }),
+                expect.anything(),
+                undefined
+            );
         });
     });
 });
