@@ -93,11 +93,7 @@ export const RichTextInput = (props: RichTextInputProps) => {
         isRequired,
         fieldState,
         formState: { isSubmitted },
-    } = useInput({
-        ...props,
-        source,
-        defaultValue,
-    });
+    } = useInput({ ...props, source, defaultValue });
 
     const editor = useEditor({
         ...editorOptions,
