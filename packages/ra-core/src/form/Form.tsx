@@ -14,7 +14,7 @@ import { useResourceContext } from '../core';
 import { LabelPrefixContextProvider } from '../util';
 import { ValidateForm } from './getSimpleValidationResolver';
 import { useAugmentedForm } from './useAugmentedForm';
-import { AugmentedFormContext } from './AugmentedFormContext';
+import { SubmitContext } from './SubmitContext';
 
 /**
  * Creates a form element, initialized with the current record, calling the saveContext on submit
@@ -48,7 +48,7 @@ export const Form = (props: FormProps) => {
     const record = useRecordContext(props);
     const resource = useResourceContext(props);
     const { form, formHandleSubmit } = useAugmentedForm(props);
-    const augmentedFormContext = useMemo(
+    const submitContext = useMemo(
         () => ({
             onSubmit: props.onSubmit,
             sanitizeEmptyValues: props.sanitizeEmptyValues,
@@ -60,7 +60,7 @@ export const Form = (props: FormProps) => {
         <OptionalRecordContextProvider value={record}>
             <LabelPrefixContextProvider prefix={`resources.${resource}.fields`}>
                 <FormProvider {...form}>
-                    <AugmentedFormContext.Provider value={augmentedFormContext}>
+                    <SubmitContext.Provider value={submitContext}>
                         <FormGroupsProvider>
                             <form
                                 onSubmit={formHandleSubmit}
@@ -71,7 +71,7 @@ export const Form = (props: FormProps) => {
                                 {children}
                             </form>
                         </FormGroupsProvider>
-                    </AugmentedFormContext.Provider>
+                    </SubmitContext.Provider>
                 </FormProvider>
             </LabelPrefixContextProvider>
         </OptionalRecordContextProvider>
