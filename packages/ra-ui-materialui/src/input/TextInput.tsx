@@ -49,7 +49,7 @@ export const TextInput = (props: TextInputProps) => {
     } = useInput({
         defaultValue,
         format,
-        parse: parse ?? defaultParse,
+        parse,
         resource,
         source,
         type: 'text',
@@ -102,8 +102,6 @@ TextInput.propTypes = {
 TextInput.defaultProps = {
     options: {},
 };
-
-const defaultParse = (value: string) => (value === '' ? null : value);
 
 export type TextInputProps = CommonInputProps &
     Omit<ResettableTextFieldProps, 'label' | 'helperText'>;
