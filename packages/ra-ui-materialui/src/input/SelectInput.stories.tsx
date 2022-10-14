@@ -4,7 +4,6 @@ import { Admin, AdminContext } from 'react-admin';
 import { Resource, required } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { useWatch } from 'react-hook-form';
 
 import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
@@ -13,6 +12,7 @@ import { TextInput } from './TextInput';
 import { ReferenceInput } from './ReferenceInput';
 import { SaveButton } from '../button//SaveButton';
 import { Toolbar } from '../form/Toolbar';
+import { FormInspector } from './common.stories';
 
 export default { title: 'ra-ui-materialui/input/SelectInput' };
 
@@ -59,7 +59,7 @@ export const InitialValue = () => (
                         { id: 'F', name: 'Female' },
                     ]}
                 />
-                <FormInspector />
+                <FormInspector name="gender" />
             </SimpleForm>
         </Edit>
     </AdminContext>
@@ -161,18 +161,6 @@ export const Sort = () => (
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
-const FormInspector = ({ name = 'gender' }) => {
-    const value = useWatch({ name });
-    return (
-        <div style={{ backgroundColor: 'lightgrey' }}>
-            {name} value in form:&nbsp;
-            <code>
-                {JSON.stringify(value)} ({typeof value})
-            </code>
-        </div>
-    );
-};
-
 const Wrapper = ({ children }) => (
     <AdminContext
         i18nProvider={i18nProvider}
@@ -190,7 +178,7 @@ const Wrapper = ({ children }) => (
                 }
             >
                 {children}
-                <FormInspector />
+                <FormInspector name="gender" />
             </SimpleForm>
         </Create>
     </AdminContext>

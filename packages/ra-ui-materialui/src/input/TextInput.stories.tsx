@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { required } from 'ra-core';
-import { useFormState, useWatch, useFormContext } from 'react-hook-form';
+import { useFormState, useFormContext } from 'react-hook-form';
 
 import { TextInput } from './TextInput';
 import { AdminContext } from '../AdminContext';
@@ -8,20 +8,9 @@ import { Create } from '../detail';
 import { Edit } from '../detail';
 import { SimpleForm, Toolbar } from '../form';
 import { SaveButton } from '../button';
+import { FormInspector } from './common.stories';
 
 export default { title: 'ra-ui-materialui/input/TextInput' };
-
-const FormInspector = ({ name = 'title' }) => {
-    const value = useWatch({ name });
-    return (
-        <div style={{ backgroundColor: 'lightgrey' }}>
-            {name} value in form:&nbsp;
-            <code>
-                {JSON.stringify(value)} ({typeof value})
-            </code>
-        </div>
-    );
-};
 
 export const Basic = () => (
     <AdminContext>
