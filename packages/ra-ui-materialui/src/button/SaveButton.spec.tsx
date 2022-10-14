@@ -386,6 +386,71 @@ describe('<SaveButton />', () => {
         });
     });
 
+    it('should call custom form onSubmit on click if no mutationOptions or transform props are passed and type prop is "button"', async () => {
+        const onSubmit = jest.fn();
+        render(
+            <AdminContext>
+                <Form onSubmit={onSubmit}>
+                    <SaveButton alwaysEnable type="button" />
+                </Form>
+            </AdminContext>
+        );
+
+        fireEvent.click(screen.getByText('ra.action.save'));
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalled();
+        });
+    });
+
+    it('should sanitize empty values when type prop is "button"', async () => {
+        const update = jest
+            .fn()
+            .mockImplementation((_, data) => Promise.resolve(data));
+        const dataProvider = testDataProvider({
+            getOne: () =>
+                // @ts-ignore
+                Promise.resolve({
+                    data: { id: 123, title: '', category: 'tech' },
+                }),
+            update,
+        });
+        const EditToolbar = props => (
+            <Toolbar {...props}>
+                <SaveButton type="button" />
+            </Toolbar>
+        );
+        render(
+            <AdminContext dataProvider={dataProvider}>
+                <Edit {...defaultEditProps}>
+                    <SimpleForm sanitizeEmptyValues toolbar={<EditToolbar />}>
+                        <TextInput source="title" />
+                        <TextInput source="category" />
+                    </SimpleForm>
+                </Edit>
+            </AdminContext>
+        );
+        // waitFor for the dataProvider.getOne() return
+        await waitFor(() => {
+            expect(screen.queryByDisplayValue('tech')).toBeDefined();
+        });
+        // change one input to enable the SaveButton (which is disabled when the form is pristine)
+        fireEvent.change(
+            screen.getByLabelText('resources.posts.fields.category'),
+            {
+                target: { value: 'lifestyle' },
+            }
+        );
+        fireEvent.click(screen.getByText('ra.action.save'));
+        await waitFor(() => {
+            expect(update).toHaveBeenCalledWith(
+                'posts',
+                expect.objectContaining({
+                    data: { id: 123, title: null, category: 'lifestyle' },
+                })
+            );
+        });
+    });
+
     it('should render enabled if alwaysEnable is true', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
