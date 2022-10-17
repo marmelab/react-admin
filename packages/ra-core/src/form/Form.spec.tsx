@@ -573,10 +573,22 @@ describe('Form', () => {
             fireEvent.change(screen.getByLabelText('field4'), {
                 target: { value: '' },
             });
+            fireEvent.change(screen.getByLabelText('field11'), {
+                target: { value: '' },
+            });
+            fireEvent.change(screen.getByLabelText('field12'), {
+                target: { value: '' },
+            });
+            fireEvent.change(screen.getByLabelText('field14'), {
+                target: { value: 'hello' },
+            });
+            fireEvent.change(screen.getByLabelText('field14'), {
+                target: { value: '' },
+            });
             fireEvent.click(screen.getByText('Submit'));
             await waitFor(() =>
                 expect(screen.getByTestId('result')?.textContent).toEqual(
-                    '{\n  "id": 1,\n  "field1": null,\n  "field6": null\n}'
+                    '{\n  "id": 1,\n  "field1": null,\n  "field6": null,\n  "field11": null,\n  "field16": null\n}'
                 )
             );
         });
