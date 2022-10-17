@@ -21,7 +21,7 @@ export const DatagridConfigurable = ({
             sx={{
                 display: 'block',
                 '& .MuiBadge-root': { display: 'flex' },
-                '& .MuiBadge-root > div': { flex: 1 },
+                '& .RaDatagrid-root': { flex: 1 },
                 '& .MuiBadge-badge': { zIndex: 2 },
             }}
         >

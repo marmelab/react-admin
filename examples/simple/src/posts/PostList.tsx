@@ -10,7 +10,6 @@ import {
     BulkDeleteButton,
     BulkExportButton,
     ChipField,
-    Datagrid,
     DatagridConfigurable,
     DateField,
     downloadCSV,
@@ -118,6 +117,7 @@ const PostList = () => {
                     bulkActionButtons={<PostListBulkActions />}
                     rowClick={rowClick}
                     expand={PostPanel}
+                    omit={['average_note']}
                 >
                     <TextField source="id" />
                     <TextField source="title" cellClassName="title" />
@@ -146,6 +146,7 @@ const PostList = () => {
                             <ChipField source="name.en" size="small" />
                         </SingleFieldList>
                     </ReferenceArrayField>
+                    <NumberField source="average_note" />
                     <PostListActionToolbar>
                         <EditButton />
                         <ShowButton />
