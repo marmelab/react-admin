@@ -142,7 +142,7 @@ form state value --> format --> form input value (string)
 
 `format` often comes in pair with [`parse`](#parse) to transform the input value before storing it in the form state. See the [Transforming Input Value](#transforming-input-value-tofrom-record) section for more details.
 
-**Tip:** By default, react-admin inputs have to following `format` function, which turns any `null` or `undefined` value into an empty string. This is to avoid warnings about controlled/uncontrolled input components:
+**Tip:** By default, react-admin inputs have the following `format` function, which turns any `null` or `undefined` value into an empty string. This is to avoid warnings about controlled/uncontrolled input components:
 
 ```js
 const defaultFormat = (value: any) => value == null ? '' : value;
@@ -221,7 +221,7 @@ form input value (string) ---> parse ---> form state value
 
 `parse` often comes in pair with [`format`](#format) to transform the form value before passing it to the input. See the [Transforming Input Value](#transforming-input-value-tofrom-record) section for more details.
 
-**Tip:** By default, react-admin inputs have to following `parse` function, which transforms any empty string into `null`:
+**Tip:** By default, react-admin inputs have the following `parse` function, which transforms any empty string into `null`:
 
 ```js
 const defaultParse = (value: string) => value === '' ? null : value;
@@ -388,7 +388,7 @@ const dateParser = value => {
 <DateInput source="isodate" format={dateFormatter} parse={dateParser} defaultValue={new Date()} />
 ```
 
-**Tip:** A common usage for this feature is to deal with empty values. Indeed HTML form inputs always return strings, even for numbers and booleans, however most backends expect a value like `null`. This is why, by default, all react-admin inputs will store the value `null` when the HTML input value is `''`. 
+**Tip:** A common usage for this feature is to deal with empty values. Indeed, HTML form inputs always return strings, even for numbers and booleans, however most backends expect a value like `null`. This is why, by default, all react-admin inputs will store the value `null` when the HTML input value is `''`. 
 
 **Tip**: If you need to do this globally, including for custom input components that do not use [the `useInput` hook](#the-useinput-hook), have a look at [the `sanitizeEmptyValues` prop of the `<Form>` component](./Form.md#sanitizeemptyvalues).
 
