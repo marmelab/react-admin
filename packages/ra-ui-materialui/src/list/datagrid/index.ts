@@ -16,6 +16,7 @@ import DatagridRow, {
 import ExpandRowButton, { ExpandRowButtonProps } from './ExpandRowButton';
 
 export * from './Datagrid';
+export * from './DatagridConfigurable';
 export * from './DatagridContext';
 export * from './DatagridContextProvider';
 export * from './DatagridHeader';

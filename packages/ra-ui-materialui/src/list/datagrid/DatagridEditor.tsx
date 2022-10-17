@@ -26,7 +26,7 @@ export const DatagridEditor = (props: {
     return (
         <div>
             {React.Children.map(props.children, child =>
-                React.isValidElement(child) ? (
+                React.isValidElement(child) && child.props.source ? (
                     <FieldEditor
                         source={child.props.source}
                         label={child.props.label}

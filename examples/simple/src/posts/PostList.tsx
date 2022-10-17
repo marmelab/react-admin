@@ -11,6 +11,7 @@ import {
     BulkExportButton,
     ChipField,
     Datagrid,
+    DatagridConfigurable,
     DateField,
     downloadCSV,
     EditButton,
@@ -54,7 +55,7 @@ const exporter = posts => {
     return jsonExport(data, (err, csv) => downloadCSV(csv, 'posts'));
 };
 
-const StyledDatagrid = styled(Datagrid)(({ theme }) => ({
+const StyledDatagrid = styled(DatagridConfigurable)(({ theme }) => ({
     '& .title': {
         maxWidth: '20em',
         overflow: 'hidden',
@@ -117,7 +118,6 @@ const PostList = () => {
                     bulkActionButtons={<PostListBulkActions />}
                     rowClick={rowClick}
                     expand={PostPanel}
-                    optimized
                 >
                     <TextField source="id" />
                     <TextField source="title" cellClassName="title" />

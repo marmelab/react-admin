@@ -19,6 +19,9 @@ export const DatagridConfigurable = ({
             }
             preferenceKey={preferenceKey || `${resource}.datagrid`}
             sx={{
+                display: 'block',
+                '& .MuiBadge-root': { display: 'flex' },
+                '& .MuiBadge-root > div': { flex: 1 },
                 '& .MuiBadge-badge': { zIndex: 2 },
             }}
         >
@@ -43,10 +46,11 @@ const DatagridWithPreferences = ({
     return (
         <Datagrid {...props}>
             {React.Children.map(children, (child, index) =>
-                React.isValidElement(child) &&
-                columns.includes(child.props.source)
-                    ? child
-                    : null
+                React.isValidElement(child) && child.props.source
+                    ? columns.includes(child.props.source)
+                        ? child
+                        : null
+                    : child
             )}
         </Datagrid>
     );
