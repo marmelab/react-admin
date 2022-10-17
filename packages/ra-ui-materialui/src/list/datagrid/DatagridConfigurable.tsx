@@ -8,11 +8,15 @@ import { DatagridEditor } from './DatagridEditor';
 export const DatagridConfigurable = ({
     preferenceKey,
     ...props
-}: DatagridProps & { preferenceKey?: string }) => {
+}: DatagridProps & { preferenceKey?: string; omit?: string[] }) => {
     const resource = useResourceContext(props);
     return (
         <Configurable
-            editor={<DatagridEditor>{props.children}</DatagridEditor>}
+            editor={
+                <DatagridEditor omit={props.omit}>
+                    {props.children}
+                </DatagridEditor>
+            }
             preferenceKey={preferenceKey || `${resource}.datagrid`}
             sx={{
                 '& .MuiBadge-badge': { zIndex: 2 },
@@ -23,12 +27,18 @@ export const DatagridConfigurable = ({
     );
 };
 
-const DatagridWithPreferences = ({ children, ...props }: DatagridProps) => {
+const DatagridWithPreferences = ({
+    children,
+    omit,
+    ...props
+}: DatagridProps & { omit?: string[] }) => {
     const [columns] = usePreference(
         'colums',
         React.Children.map(children, child =>
             React.isValidElement(child) ? child.props.source : null
-        ).filter(name => name != null)
+        )
+            .filter(name => name != null)
+            .filter(name => !omit?.includes(name))
     );
     return (
         <Datagrid {...props}>

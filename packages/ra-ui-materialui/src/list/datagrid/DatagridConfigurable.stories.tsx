@@ -69,6 +69,7 @@ export const Basic = () => (
                             data={data}
                             sort={{ field: 'title', order: 'ASC' }}
                             bulkActionButtons={false}
+                            omit={['id']}
                         >
                             <TextField source="id" />
                             <TextField source="title" />

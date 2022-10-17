@@ -3,12 +3,17 @@ import { usePreference } from 'ra-core';
 
 import { FieldEditor } from './FieldEditor';
 
-export const DatagridEditor = (props: { children: React.ReactNode }) => {
+export const DatagridEditor = (props: {
+    children: React.ReactNode;
+    omit?: string[];
+}) => {
     const [columns, setColumns] = usePreference(
         'colums',
         React.Children.map(props.children, child =>
             React.isValidElement(child) ? child.props.source : null
-        ).filter(name => name != null)
+        )
+            .filter(name => name != null)
+            .filter(name => !props.omit?.includes(name))
     );
     const onToggle = event => {
         if (event.target.checked) {

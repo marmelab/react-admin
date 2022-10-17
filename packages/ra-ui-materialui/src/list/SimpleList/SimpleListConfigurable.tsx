@@ -9,7 +9,7 @@ export const SimpleListConfigurable = ({
     preferenceKey,
     ...props
 }: SimpleListProps & { preferenceKey?: string }) => {
-    const resource = useResourceContext();
+    const resource = useResourceContext(props);
     return (
         <Configurable
             editor={<SimpleListEditor />}
