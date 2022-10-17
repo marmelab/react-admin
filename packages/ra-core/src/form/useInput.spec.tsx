@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FunctionComponent, ReactElement, useEffect } from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { CoreAdminContext } from '../core';
 import { testDataProvider } from '../dataProvider';
