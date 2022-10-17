@@ -1,5 +1,10 @@
 # Changelog
 
+## v4.4.3
+
+* Fix `<Loading>` component doesn't translate messages ([#8269](https://github.com/marmelab/react-admin/8269)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix typos in Input chapter ([#8270](https://github.com/marmelab/react-admin/8270)) ([WiXSL](https://github.com/WiXSL))
+
 ## v4.4.2
 
 * Fix `null` value support in inputs ([#8262](https://github.com/marmelab/react-admin/pull/8262)) ([slax57](https://github.com/slax57))
