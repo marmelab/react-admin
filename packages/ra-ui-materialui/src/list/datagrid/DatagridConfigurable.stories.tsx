@@ -1,19 +1,10 @@
 import * as React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import {
-    PreferencesEditorContextProvider,
-    I18nContextProvider,
-    StoreContextProvider,
-    localStorageStore,
-} from 'ra-core';
-import polyglotI18nProvider from 'ra-i18n-polyglot';
-import en from 'ra-language-english';
-import fr from 'ra-language-french';
+import { PreferencesEditorContextProvider } from 'ra-core';
 import { Box } from '@mui/material';
 
 import { DatagridConfigurable } from './DatagridConfigurable';
 import { Inspector, InspectorButton } from '../../preferences';
-import { LocalesMenuButton } from '../../button/LocalesMenuButton';
 import { TextField } from '../../field';
 
 export default { title: 'ra-ui-materialui/list/DatagridConfigurable' };
@@ -45,40 +36,27 @@ const data = [
     },
 ];
 
-const translations = { en, fr };
-const i18nProvider = polyglotI18nProvider(locale => translations[locale], 'en');
-
 export const Basic = () => (
-    <StoreContextProvider value={localStorageStore()}>
-        <I18nContextProvider value={i18nProvider}>
-            <PreferencesEditorContextProvider>
-                <MemoryRouter>
-                    <Inspector />
-                    <Box display="flex" justifyContent="flex-end">
-                        <LocalesMenuButton
-                            languages={[
-                                { locale: 'en', name: 'English' },
-                                { locale: 'fr', name: 'Français' },
-                            ]}
-                        />
-                        <InspectorButton />
-                    </Box>
-                    <Box p={2}>
-                        <DatagridConfigurable
-                            resource="books"
-                            data={data}
-                            sort={{ field: 'title', order: 'ASC' }}
-                            bulkActionButtons={false}
-                            omit={['id']}
-                        >
-                            <TextField source="id" />
-                            <TextField source="title" />
-                            <TextField source="author" />
-                            <TextField source="year" />
-                        </DatagridConfigurable>
-                    </Box>
-                </MemoryRouter>
-            </PreferencesEditorContextProvider>
-        </I18nContextProvider>
-    </StoreContextProvider>
+    <PreferencesEditorContextProvider>
+        <MemoryRouter>
+            <Inspector />
+            <Box display="flex" justifyContent="flex-end">
+                <InspectorButton />
+            </Box>
+            <Box p={2}>
+                <DatagridConfigurable
+                    resource="books"
+                    data={data}
+                    sort={{ field: 'title', order: 'ASC' }}
+                    bulkActionButtons={false}
+                    omit={['id']}
+                >
+                    <TextField source="id" />
+                    <TextField source="title" label="Original title" />
+                    <TextField source="author" />
+                    <TextField source="year" />
+                </DatagridConfigurable>
+            </Box>
+        </MemoryRouter>
+    </PreferencesEditorContextProvider>
 );

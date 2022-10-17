@@ -51,7 +51,18 @@ export const memoryStore = (storage: any = {}): Store => {
             const flatStorage = flatten(storage);
             Object.keys(flatStorage).forEach(key => {
                 if (key.startsWith(keyPrefix)) {
-                    unset(storage, key);
+                    if (key.endsWith(']')) {
+                        // this is a key to an array item, i.e. "foo.bar[1]"
+                        // we can't use lodash `unset`, unstead we must unset the parent array
+                        const parentKey = key.substring(
+                            0,
+                            key.lastIndexOf('[')
+                        );
+                        unset(storage, parentKey);
+                        publish(parentKey, undefined);
+                    } else {
+                        unset(storage, key);
+                    }
                     publish(key, undefined);
                 }
             });
