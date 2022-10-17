@@ -1,25 +1,16 @@
 import * as React from 'react';
 import { required } from 'ra-core';
-import { useFormState, useWatch, useFormContext } from 'react-hook-form';
+import { useFormState, useFormContext } from 'react-hook-form';
 
 import { TextInput } from './TextInput';
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
-import { SimpleForm } from '../form';
+import { Edit } from '../detail';
+import { SimpleForm, Toolbar } from '../form';
+import { SaveButton } from '../button';
+import { FormInspector } from './common.stories';
 
 export default { title: 'ra-ui-materialui/input/TextInput' };
-
-const FormInspector = ({ name = 'title' }) => {
-    const value = useWatch({ name });
-    return (
-        <div style={{ backgroundColor: 'lightgrey' }}>
-            {name} value in form:&nbsp;
-            <code>
-                {JSON.stringify(value)} ({typeof value})
-            </code>
-        </div>
-    );
-};
 
 export const Basic = () => (
     <AdminContext>
@@ -154,7 +145,7 @@ export const Required = () => (
             record={{ id: 123, title: 'Lorem ipsum' }}
             sx={{ width: 600 }}
         >
-            <SimpleForm>
+            <SimpleForm mode="onBlur">
                 <TextInput source="title" />
                 <TextInput source="title" required />
                 <TextInput source="title" validate={required()} />
@@ -271,6 +262,77 @@ export const FieldState = () => (
                 <TextInput source="title" />
                 <FormStateInspector />
                 <FieldStateInspector />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+const AlwaysOnToolbar = (
+    <Toolbar>
+        <SaveButton alwaysEnable />
+    </Toolbar>
+);
+
+export const ValueUndefined = ({ onSuccess = console.log }) => (
+    <AdminContext
+        dataProvider={
+            {
+                getOne: () => Promise.resolve({ data: { id: 123 } }),
+                update: (resource, { data }) => Promise.resolve({ data }),
+            } as any
+        }
+    >
+        <Edit
+            resource="posts"
+            id="123"
+            sx={{ width: 600 }}
+            mutationOptions={{ onSuccess }}
+        >
+            <SimpleForm toolbar={AlwaysOnToolbar}>
+                <TextInput source="title" />
+                <FormInspector />
+            </SimpleForm>
+        </Edit>
+    </AdminContext>
+);
+
+export const ValueNull = ({ onSuccess = console.log }) => (
+    <AdminContext
+        dataProvider={
+            {
+                getOne: () =>
+                    Promise.resolve({ data: { id: 123, title: null } }),
+                update: (resource, { data }) => Promise.resolve({ data }),
+            } as any
+        }
+    >
+        <Edit
+            resource="posts"
+            id="123"
+            sx={{ width: 600 }}
+            mutationOptions={{ onSuccess }}
+        >
+            <SimpleForm toolbar={AlwaysOnToolbar}>
+                <TextInput source="title" />
+                <FormInspector />
+            </SimpleForm>
+        </Edit>
+    </AdminContext>
+);
+
+export const Parse = ({ onSuccess = console.log }) => (
+    <AdminContext>
+        <Create
+            resource="posts"
+            record={{ id: 123, title: 'Lorem ipsum' }}
+            sx={{ width: 600 }}
+            mutationOptions={{ onSuccess }}
+        >
+            <SimpleForm>
+                <TextInput
+                    source="title"
+                    parse={v => (v === 'foo' ? 'bar' : v)}
+                />
             </SimpleForm>
         </Create>
     </AdminContext>

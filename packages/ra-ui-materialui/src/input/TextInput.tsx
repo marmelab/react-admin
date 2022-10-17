@@ -28,7 +28,7 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 export const TextInput = (props: TextInputProps) => {
     const {
         className,
-        defaultValue = '',
+        defaultValue,
         label,
         format,
         helperText,

@@ -141,6 +141,43 @@ describe('<TimeInput />', () => {
         });
     });
 
+    it('should submit null when empty', async () => {
+        const publishedAt = new Date('Wed Oct 05 2011 16:48:00 GMT+0200');
+        const onSubmit = jest.fn();
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    onSubmit={onSubmit}
+                    toolbar={
+                        <Toolbar>
+                            <SaveButton alwaysEnable />
+                        </Toolbar>
+                    }
+                >
+                    <TimeInput {...defaultProps} defaultValue={publishedAt} />
+                </SimpleForm>
+            </AdminContext>
+        );
+        expect(
+            screen.queryByDisplayValue(format(publishedAt, 'HH:mm'))
+        ).not.toBeNull();
+        const input = screen.getByLabelText(
+            'resources.posts.fields.publishedAt'
+        );
+        fireEvent.change(input, {
+            target: { value: '' },
+        });
+        fireEvent.click(screen.getByLabelText('ra.action.save'));
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith(
+                {
+                    publishedAt: null,
+                },
+                expect.anything()
+            );
+        });
+    });
+
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
             render(

@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { useFormState } from 'react-hook-form';
+import {
+    useController,
+    UseControllerProps,
+    useFormState,
+} from 'react-hook-form';
 
 import { CoreAdminContext } from '../core';
 import { Form } from './Form';
@@ -64,13 +68,54 @@ export const Basic = () => {
     );
 };
 
+const CustomInput = (props: UseControllerProps) => {
+    const { field, fieldState } = useController(props);
+    return (
+        <div
+            style={{
+                display: 'flex',
+                gap: '1em',
+                margin: '1em',
+                alignItems: 'center',
+            }}
+        >
+            <label htmlFor={field.name}>{field.name}</label>
+            <input
+                aria-label={field.name}
+                id={field.name}
+                type="text"
+                aria-invalid={fieldState.invalid}
+                {...field}
+            />
+            <p>{fieldState.error?.message}</p>
+        </div>
+    );
+};
+
 export const SanitizeEmptyValues = () => {
     const [submittedData, setSubmittedData] = React.useState<any>();
+    const field11 = { name: 'field11' };
+    const field12 = {
+        name: 'field12',
+        defaultValue: 'bar',
+    };
+    const field13 = {
+        name: 'field13',
+        defaultValue: '',
+    };
+    const field14 = { name: 'field14' };
+    const field16 = { name: 'field16' };
     return (
         <CoreAdminContext>
             <Form
                 onSubmit={data => setSubmittedData(data)}
-                record={{ id: 1, field1: 'bar', field6: null }}
+                record={{
+                    id: 1,
+                    field1: 'bar',
+                    field6: null,
+                    field11: 'bar',
+                    field16: null,
+                }}
                 sanitizeEmptyValues
             >
                 <Input source="field1" />
@@ -79,6 +124,11 @@ export const SanitizeEmptyValues = () => {
                 <Input source="field4" />
                 <Input source="field5" parse={v => v || undefined} />
                 <Input source="field6" />
+                <CustomInput {...field11} />
+                <CustomInput {...field12} />
+                <CustomInput {...field13} />
+                <CustomInput {...field14} />
+                <CustomInput {...field16} />
 
                 <SubmitButton />
             </Form>

@@ -12,6 +12,7 @@ import { TextInput } from './TextInput';
 import { ReferenceInput } from './ReferenceInput';
 import { SaveButton } from '../button//SaveButton';
 import { Toolbar } from '../form/Toolbar';
+import { FormInspector } from './common.stories';
 
 export default { title: 'ra-ui-materialui/input/SelectInput' };
 
@@ -58,6 +59,7 @@ export const InitialValue = () => (
                         { id: 'F', name: 'Female' },
                     ]}
                 />
+                <FormInspector name="gender" />
             </SimpleForm>
         </Edit>
     </AdminContext>
@@ -102,8 +104,8 @@ export const Required = () => (
     </Wrapper>
 );
 
-export const EmptyText = () => (
-    <Wrapper>
+export const EmptyText = ({ onSuccess = console.log }) => (
+    <Wrapper onSuccess={onSuccess}>
         <SelectInput
             source="gender"
             choices={[
@@ -159,15 +161,17 @@ export const Sort = () => (
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
-const Wrapper = ({ children }) => (
+const Wrapper = ({ children, onSuccess = console.log }) => (
     <AdminContext
         i18nProvider={i18nProvider}
-        dataProvider={{
-            create: (resource, params) =>
-                Promise.resolve({ data: { id: 1, ...params.data } }),
-        }}
+        dataProvider={
+            {
+                create: (resource, params) =>
+                    Promise.resolve({ data: { id: 1, ...params.data } }),
+            } as any
+        }
     >
-        <Create resource="posts" mutationOptions={{ onSuccess: console.log }}>
+        <Create resource="posts" mutationOptions={{ onSuccess }}>
             <SimpleForm
                 toolbar={
                     <Toolbar>
@@ -176,6 +180,7 @@ const Wrapper = ({ children }) => (
                 }
             >
                 {children}
+                <FormInspector name="gender" />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -266,6 +271,7 @@ export const InsideReferenceInput = () => (
                         <ReferenceInput reference="authors" source="author">
                             <SelectInput />
                         </ReferenceInput>
+                        <FormInspector name="author" />
                     </SimpleForm>
                 </Edit>
             )}
@@ -312,6 +318,7 @@ export const InsideReferenceInputDefaultValue = ({
                         <ReferenceInput reference="authors" source="author">
                             <SelectInput />
                         </ReferenceInput>
+                        <FormInspector name="author" />
                     </SimpleForm>
                 </Edit>
             )}

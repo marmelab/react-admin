@@ -228,17 +228,15 @@ export const AutocompleteInput = <
         fieldState: { error, invalid, isTouched },
         formState: { isSubmitted },
     } = useInput({
-        defaultValue: defaultValue ?? (isFromReference ? null : ''),
+        defaultValue,
         id: idOverride,
         field: fieldOverride,
         fieldState: fieldStateOverride,
         formState: formStateOverride,
         onBlur,
         onChange,
-        parse:
-            parse ?? (isFromReference ? convertEmptyStringToNull : undefined),
-        format:
-            format ?? (isFromReference ? convertNullToEmptyString : undefined),
+        parse,
+        format,
         resource,
         source,
         validate,
@@ -743,6 +741,3 @@ const getSelectedItems = (
 };
 
 const DefaultFilterToQuery = searchText => ({ q: searchText });
-
-const convertEmptyStringToNull = value => (value === '' ? null : value);
-const convertNullToEmptyString = value => (value === null ? '' : value);

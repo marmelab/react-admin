@@ -5,26 +5,26 @@ import englishMessages from 'ra-language-english';
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
 import { SimpleForm } from '../form';
-import { TimeInput } from './TimeInput';
+import { DateTimeInput } from './DateTimeInput';
 import { FormInspector } from './common.stories';
 
-export default { title: 'ra-ui-materialui/input/TimeInput' };
+export default { title: 'ra-ui-materialui/input/DateTimeInput' };
 
 export const Basic = () => (
     <Wrapper>
-        <TimeInput source="published" />
+        <DateTimeInput source="published" />
     </Wrapper>
 );
 
 export const FullWidth = () => (
     <Wrapper>
-        <TimeInput source="published" fullWidth />
+        <DateTimeInput source="published" fullWidth />
     </Wrapper>
 );
 
 export const Disabled = () => (
     <Wrapper>
-        <TimeInput source="published" disabled />
+        <DateTimeInput source="published" disabled />
     </Wrapper>
 );
 

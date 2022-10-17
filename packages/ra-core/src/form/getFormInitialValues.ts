@@ -10,12 +10,6 @@ export default function getFormInitialValues(
         getValues(defaultValues, record),
         record
     );
-    // replace null values by empty string to avoid controlled/ uncontrolled input warning
-    Object.keys(finalInitialValues).forEach(key => {
-        if (finalInitialValues[key] === null) {
-            finalInitialValues[key] = '';
-        }
-    });
     return finalInitialValues;
 }
 

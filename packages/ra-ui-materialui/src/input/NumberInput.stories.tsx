@@ -1,25 +1,14 @@
 import * as React from 'react';
 import { required } from 'ra-core';
-import { useFormState, useWatch, useFormContext } from 'react-hook-form';
+import { useFormState, useFormContext } from 'react-hook-form';
 
 import { NumberInput } from './NumberInput';
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
 import { SimpleForm } from '../form';
+import { FormInspector } from './common.stories';
 
 export default { title: 'ra-ui-materialui/input/NumberInput' };
-
-const FormInspector = ({ name = 'views' }) => {
-    const value = useWatch({ name });
-    return (
-        <div style={{ backgroundColor: 'lightgrey' }}>
-            {name} value in form:&nbsp;
-            <code>
-                {JSON.stringify(value)} ({typeof value})
-            </code>
-        </div>
-    );
-};
 
 export const Basic = () => (
     <AdminContext>
@@ -30,7 +19,7 @@ export const Basic = () => (
         >
             <SimpleForm>
                 <NumberInput source="views" />
-                <FormInspector />
+                <FormInspector name="views" />
             </SimpleForm>
         </Create>
     </AdminContext>

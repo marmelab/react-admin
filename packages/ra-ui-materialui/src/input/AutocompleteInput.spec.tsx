@@ -15,6 +15,7 @@ import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import {
     InsideReferenceInput,
     InsideReferenceInputDefaultValue,
+    Nullable,
     VeryLargeOptionsNumber,
 } from './AutocompleteInput.stories';
 import { act } from '@testing-library/react-hooks';
@@ -1187,6 +1188,21 @@ describe('<AutocompleteInput />', () => {
         expect(screen.queryByText('New Kid On The Block')).not.toBeNull();
     });
 
+    it('should return null when no choice is selected', async () => {
+        const onSuccess = jest.fn();
+        render(<Nullable onSuccess={onSuccess} />);
+        const clearBtn = await screen.findByLabelText('Clear value');
+        fireEvent.click(clearBtn);
+        screen.getByText('Save').click();
+        await waitFor(() => {
+            expect(onSuccess).toHaveBeenCalledWith(
+                expect.objectContaining({ author: null }),
+                expect.anything(),
+                expect.anything()
+            );
+        });
+    });
+
     describe('Inside <ReferenceInput>', () => {
         it('should work inside a ReferenceInput field', async () => {
             render(<InsideReferenceInput />);
@@ -1242,7 +1258,7 @@ describe('<AutocompleteInput />', () => {
             screen.getByText('Save').click();
             await waitFor(() => {
                 expect(onSuccess).toHaveBeenCalledWith(
-                    expect.objectContaining({ author: null }),
+                    expect.objectContaining({ author: undefined }),
                     expect.anything(),
                     expect.anything()
                 );

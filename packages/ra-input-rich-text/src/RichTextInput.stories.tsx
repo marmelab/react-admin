@@ -3,8 +3,21 @@ import { I18nProvider, required } from 'ra-core';
 import { AdminContext, SimpleForm, SimpleFormProps } from 'ra-ui-materialui';
 import { RichTextInput } from './RichTextInput';
 import { RichTextInputToolbar } from './RichTextInputToolbar';
+import { useWatch } from 'react-hook-form';
 
 export default { title: 'ra-input-rich-text' };
+
+const FormInspector = ({ name = 'body' }) => {
+    const value = useWatch({ name });
+    return (
+        <div style={{ backgroundColor: 'lightgrey' }}>
+            {name} value in form:&nbsp;
+            <code>
+                {JSON.stringify(value)} ({typeof value})
+            </code>
+        </div>
+    );
+};
 
 const i18nProvider: I18nProvider = {
     translate: (key: string, options: any) => options?._ ?? key,
@@ -20,6 +33,7 @@ export const Basic = (props: Partial<SimpleFormProps>) => (
             {...props}
         >
             <RichTextInput label="Body" source="body" />
+            <FormInspector />
         </SimpleForm>
     </AdminContext>
 );
@@ -32,6 +46,7 @@ export const Disabled = (props: Partial<SimpleFormProps>) => (
             {...props}
         >
             <RichTextInput label="Body" source="body" disabled />
+            <FormInspector />
         </SimpleForm>
     </AdminContext>
 );
@@ -48,6 +63,7 @@ export const Small = (props: Partial<SimpleFormProps>) => (
                 label="Body"
                 source="body"
             />
+            <FormInspector />
         </SimpleForm>
     </AdminContext>
 );
@@ -64,6 +80,7 @@ export const Large = (props: Partial<SimpleFormProps>) => (
                 label="Body"
                 source="body"
             />
+            <FormInspector />
         </SimpleForm>
     </AdminContext>
 );
@@ -81,6 +98,7 @@ export const FullWidth = (props: Partial<SimpleFormProps>) => (
                 source="body"
                 fullWidth
             />
+            <FormInspector />
         </SimpleForm>
     </AdminContext>
 );
@@ -89,6 +107,7 @@ export const Validation = (props: Partial<SimpleFormProps>) => (
     <AdminContext i18nProvider={i18nProvider}>
         <SimpleForm onSubmit={() => {}} {...props}>
             <RichTextInput label="Body" source="body" validate={required()} />
+            <FormInspector />
         </SimpleForm>
     </AdminContext>
 );
