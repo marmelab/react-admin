@@ -602,8 +602,8 @@ For instance, let's write a component to edit the latitude and longitude of the 
 import { useController } from 'react-hook-form';
 
 const LatLngInput = () => {
-    const input1 = useController({ name: 'lat' });
-    const input2 = useController({ name: 'lng' });
+    const input1 = useController({ name: 'lat', defaultValue: '' });
+    const input2 = useController({ name: 'lng', defaultValue: '' });
 
     return (
         <span>
@@ -634,14 +634,16 @@ const ItemEdit = () => (
 </span>
 ```
 
+**Tip**: Notice that we have added `defaultValue: ''` as one of the `useController` params. This is a good practice to avoid getting console warnings about controlled/uncontrolled components, that may arise if the value of `record.lat` or `record.lng` is `undefined` or `null`.
+
 **Tip**: React-hook-form's `useController` component supports dot notation in the `name` prop, to allow binding to nested values:
 
 ```jsx
 import { useController } from 'react-hook-form';
 
 const LatLngInput = () => {
-    const input1 = useController({ name: 'position.lat' });
-    const input2 = useController({ name: 'position.lng' });
+    const input1 = useController({ name: 'position.lat', defaultValue: '' });
+    const input2 = useController({ name: 'position.lng', defaultValue: '' });
     
     return (
         <span>
@@ -664,8 +666,8 @@ import { useController } from 'react-hook-form';
 import { Labeled } from 'react-admin';
 
 const LatLngInput = () => {
-    const input1 = useController({ name: 'lat' });
-    const input2 = useController({ name: 'lng' });
+    const input1 = useController({ name: 'lat', defaultValue: '' });
+    const input2 = useController({ name: 'lng', defaultValue: '' });
     
     return (
         <Labeled label="position">
@@ -704,7 +706,7 @@ const BoundedTextField = ({ name, label }) => {
         field,
         fieldState: { isTouched, invalid, error },
         formState: { isSubmitted }
-    } = useController(name);
+    } = useController(name, defaultValue: '');
     return (
         <TextField
             {...field}
@@ -724,6 +726,8 @@ const LatLngInput = () => (
 ```
 
 **Tip**: MUI's `<TextField>` component already includes a label, so you don't need to use `<Labeled>` in this case.
+
+**Tip**: Notice that we have added `defaultValue: ''` as one of the `useController` params. This is a good practice to avoid getting console warnings about controlled/uncontrolled components, that may arise if the value of `record.lat` or `record.lng` is `undefined` or `null`.
 
 `useController()` returns three values: `field`, `fieldState`, and `formState`. To learn more about these props, please refer to the [useController](https://react-hook-form.com/api/usecontroller) hook documentation.
 
