@@ -1,5 +1,15 @@
 # Changelog
 
+## v4.4.2
+
+* Fix `null` value support in inputs ([#8262](https://github.com/marmelab/react-admin/pull/8262)) ([slax57](https://github.com/slax57))
+* Fix `<AutocompleteInput>` doesn't allow clearing the inputs in certain scenarios ([#8238](https://github.com/marmelab/react-admin/pull/8238)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<Loading>` displays translation messages even though it should not ([#8261](https://github.com/marmelab/react-admin/pull/8261)) ([alioguzhan](https://github.com/alioguzhan))
+* Fix `<Loading>` message contains trailing dot ([#8257](https://github.com/marmelab/react-admin/pull/8257)) ([alioguzhan](https://github.com/alioguzhan))
+* Fix internal code workflow for tighter permissions ([#8253](https://github.com/marmelab/react-admin/pull/8253)) ([slax57](https://github.com/slax57))
+* [Doc] Add ra-keycloak authProvider ([#8263](https://github.com/marmelab/react-admin/pull/8263)) ([slax57](https://github.com/slax57))
+* [Doc] Fix missing `filterToQuery` prop in `<AutocompleteInput>` and `<AutocompleteArrayInput>` components ([#8251](https://github.com/marmelab/react-admin/pull/8251)) ([WiXSL](https://github.com/WiXSL))
+
 ## v4.4.1
 
 * Fix `format` and `parse` on `<AutocompleteInput>` and `<SelectInput>` ([#8237](https://github.com/marmelab/react-admin/pull/8237)) ([byymster](https://github.com/byymster))
