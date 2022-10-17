@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { usePreference } from 'ra-core';
+import { usePreference, useSetInspectorTitle } from 'ra-core';
 
 import { FieldEditor } from './FieldEditor';
 
@@ -7,6 +7,7 @@ export const DatagridEditor = (props: {
     children: React.ReactNode;
     omit?: string[];
 }) => {
+    useSetInspectorTitle('ra.inspector.datagrid', { _: 'Datagrid' });
     const [columns, setColumns] = usePreference(
         'colums',
         React.Children.map(props.children, child =>
