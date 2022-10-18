@@ -5,6 +5,27 @@ import { Configurable } from '../../preferences';
 import { Datagrid, DatagridProps } from './Datagrid';
 import { DatagridEditor } from './DatagridEditor';
 
+/**
+ * A Datagrid that users can customize in configuration mode
+ *
+ * @example
+ * import {
+ *     List,
+ *     DatagridConfigurable,
+ *     TextField,
+ * } from 'react-admin';
+ *
+ * export const PostList = () => (
+ *     <List>
+ *         <DatagridConfigurable>
+ *             <TextField source="id" />
+ *             <TextField source="title" />
+ *             <TextField source="author" />
+ *             <TextField source="year" />
+ *         </DatagridConfigurable>
+ *     </List>
+ * );
+ */
 export const DatagridConfigurable = ({
     preferenceKey,
     omit,
@@ -64,6 +85,23 @@ export const DatagridConfigurable = ({
 
 export type DatagridConfigurableProps = DatagridProps & {
     preferenceKey?: string;
+    /**
+     * columns to hide by default
+     *
+     * @example
+     * // by default, hide the id and author columns
+     * // users can choose to show show them in configuration mode
+     * const PostList = () => (
+     *     <List>
+     *         <DatagridConfigurable omit={['id', 'author']}>
+     *             <TextField source="id" />
+     *             <TextField source="title" />
+     *             <TextField source="author" />
+     *             <TextField source="year" />
+     *         </DatagridConfigurable>
+     *     </List>
+     * );
+     */
     omit?: string[];
 };
 

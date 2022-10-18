@@ -797,6 +797,55 @@ const PostList = () => (
 ```
 {% endraw %}
 
+## Configurable
+
+You can let end users customize the fields displayed in the `<Datagrid>` by using the `<DatagridConfigurable>` component instead.
+
+![DatagridConfigurable](./img/DatagridConfigurable.gif)
+
+```diff
+import {
+    List,
+-   Datagrid,
++   DatagridConfigurable,
+    TextField,
+} from 'react-admin';
+
+const PostList = () => (
+    <List>
+-       <Datagrid>
++       <DatagridConfigurable>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+-       </Datagrid>
++       </DatagridConfigurable>
+    </List>
+);
+```
+
+When users enter the configuration mode and select the `<Datagrid>`, they can show / hide datagrid columns.
+
+By default, `<DatagridConfigurable>` renders all child fields. But you can also omit some of them by passing an `omit` prop containing an array of field sources:
+
+```jsx
+// by default, hide the id and author columns
+// users can choose to show show them in configuration mode
+const PostList = () => (
+    <List>
+        <DatagridConfigurable omit={['id', 'author']}>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </DatagridConfigurable>
+    </List>
+);
+```
+
+`<DatagridConfigurable>` accepts the same props as `<Datagrid>`.
+
 ## Customizing Column Sort
 
 ![Sort Column Header](./img/sort-column-header.gif)
