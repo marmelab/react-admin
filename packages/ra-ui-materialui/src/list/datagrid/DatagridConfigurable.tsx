@@ -84,6 +84,12 @@ export const DatagridConfigurable = ({
 };
 
 export type DatagridConfigurableProps = DatagridProps & {
+    /**
+     * Key to use to store the user's preferences for this datagrid.
+     *
+     * Set to '[resource].datagrid' by default. Pass a custom key if you need
+     * to display more than one ConfigurableDatagrid per resource.
+     */
     preferenceKey?: string;
     /**
      * columns to hide by default

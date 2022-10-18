@@ -844,6 +844,21 @@ const PostList = () => (
 );
 ```
 
+If you render more thab one `<DatagridConfigurable>` in the same page, you must pass a unique `preferenceKey` prop to each one:
+
+```jsx
+const PostList = () => (
+    <List>
+        <DatagridConfigurable preferenceKey="posts.datagrid">
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </DatagridConfigurable>
+    </List>
+);
+```
+
 `<DatagridConfigurable>` accepts the same props as `<Datagrid>`.
 
 ## Customizing Column Sort
