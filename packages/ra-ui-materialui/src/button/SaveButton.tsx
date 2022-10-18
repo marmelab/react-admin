@@ -65,7 +65,8 @@ export const SaveButton = <RecordType extends RaRecord = any>(
     const translate = useTranslate();
     const form = useFormContext();
     const saveContext = useSaveContext();
-    const { isDirty, isValidating, isSubmitting } = useFormState();
+    const { dirtyFields, isValidating, isSubmitting } = useFormState();
+    const isDirty = Object.keys(dirtyFields).length;
     // Use form isDirty, isValidating and form context saving to enable or disable the save button
     // if alwaysEnable is undefined
     const disabled = valueOrDefault(

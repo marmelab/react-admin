@@ -12,7 +12,12 @@ import {
 import { SaveButton } from './SaveButton';
 import { SimpleForm, Toolbar } from '../form';
 import { Edit } from '../detail';
-import { TextInput } from '../input';
+import {
+    TextInput,
+    ArrayInput,
+    SimpleFormIterator,
+    NumberInput,
+} from '../input';
 import { AdminContext } from '../AdminContext';
 
 const invalidButtonDomProps = {
@@ -397,6 +402,60 @@ describe('<SaveButton />', () => {
         await waitFor(() =>
             expect(screen.getByLabelText('ra.action.save')['disabled']).toEqual(
                 false
+            )
+        );
+    });
+
+    it('should not be enabled if no inputs have changed', async () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    resource="myresource"
+                    onSubmit={jest.fn}
+                    defaultValues={{
+                        test: 'test',
+                        arr: [
+                            {
+                                id: 123,
+                                foo: 'bar',
+                                nested: {
+                                    deep: '1',
+                                },
+                            },
+                            {
+                                id: 456,
+                                foo: 'baz',
+                                nested: {
+                                    deep: '2',
+                                },
+                            },
+                        ],
+                    }}
+                >
+                    <TextInput source="test" />
+                    <ArrayInput resource="foo" source="arr">
+                        <SimpleFormIterator>
+                            <NumberInput source="id" />
+                            <ArrayInput resource="bar" source="arr.nested">
+                                <SimpleFormIterator>
+                                    <NumberInput source="deep" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        const testInput = screen.getByLabelText(
+            'resources.myresource.fields.test'
+        );
+        fireEvent.focus(testInput);
+        fireEvent.blur(testInput);
+
+        await waitFor(() =>
+            expect(screen.getByLabelText('ra.action.save')['disabled']).toEqual(
+                true
             )
         );
     });
