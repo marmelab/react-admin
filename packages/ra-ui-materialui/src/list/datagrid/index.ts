@@ -15,12 +15,12 @@ import DatagridRow, {
 } from './DatagridRow';
 import ExpandRowButton, { ExpandRowButtonProps } from './ExpandRowButton';
 
-export * from './ColumnsButton';
 export * from './Datagrid';
 export * from './DatagridConfigurable';
 export * from './DatagridContext';
 export * from './DatagridContextProvider';
 export * from './DatagridHeader';
+export * from './SelectColumnsButton';
 export * from './useDatagridContext';
 export * from './useDatagridStyles';
 

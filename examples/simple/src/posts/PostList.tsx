@@ -10,7 +10,7 @@ import {
     BulkDeleteButton,
     BulkExportButton,
     ChipField,
-    ColumnsButton,
+    SelectColumnsButton,
     CreateButton,
     DatagridConfigurable,
     DateField,
@@ -87,7 +87,7 @@ const PostListBulkActions = memo(({ children, ...props }) => (
 
 const PostListActions = () => (
     <TopToolbar>
-        <ColumnsButton />
+        <SelectColumnsButton />
         <FilterButton />
         <CreateButton />
         <ExportButton />

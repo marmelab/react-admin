@@ -9,11 +9,11 @@ import { FieldEditor } from './FieldEditor';
  * Render s a button that lets users show / hide columns in a configurable datagrid
  * 
  * @example
- * import { ColumnsButton, DatagridConfigurable } from 'react-admin';
+ * import { SelectColumnsButton, DatagridConfigurable } from 'react-admin';
  * 
  * const PostListActions = () => (
  *   <TopToolbar>
-        <ColumnsButton />
+        <SelectColumnsButton />
         <FilterButton />
  *   </TopToolbar>
  * );
@@ -28,7 +28,7 @@ import { FieldEditor } from './FieldEditor';
  *   </List>
  * );
  */
-export const ColumnsButton = props => {
+export const SelectColumnsButton = props => {
     const resource = useResourceContext(props);
     const preferenceKey =
         props.preferenceKey || `preferences.${resource}.datagrid`;
@@ -110,6 +110,6 @@ export const ColumnsButton = props => {
     );
 };
 
-export interface ColumnsButtonProps {
+export interface SelectColumnsButtonProps {
     preferenceKey: string;
 }
