@@ -28,6 +28,14 @@ export const useWarnWhenUnsavedChanges = (
 
     useEffect(() => {
         if (!enable || !isDirty) return;
+        if (!navigator.block) {
+            if (process.env.NODE_ENV !== 'production') {
+                console.warn(
+                    'warnWhenUnsavedChanged is not compatible with react-router >= 6.4. If you need this feature, please downgrade react-router to 6.3.0'
+                );
+            }
+            return;
+        }
 
         let unblock = navigator.block((tx: Transition) => {
             const newLocationIsInsideForm = tx.location.pathname.startsWith(
