@@ -34,6 +34,7 @@ title: "Reference"
 * `<CreateActions>`
 * [`<CreateButton>`](./Buttons.md#createbutton)
 * [`<CreateDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog--editdialog)<img class="icon" src="./img/premium.svg" />
+* [`<CreateInDialogButton>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createindialogbutton-editindialogbutton-and-showindialogbutton)<img class="icon" src="./img/premium.svg" />
 * [`<DashboardMenuItem>`](./Theming.md#using-a-custom-menu)
 * [`<Datagrid>`](./Datagrid.md)
 * [`<DatagridBody>`](./Datagrid.md#body)
@@ -52,6 +53,7 @@ title: "Reference"
 * `<EditActions>`
 * [`<EditButton>`](./Buttons.md#editbutton)
 * [`<EditDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog--editdialog)<img class="icon" src="./img/premium.svg" />
+* [`<EditInDialogButton>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createindialogbutton-editindialogbutton-and-showindialogbutton)<img class="icon" src="./img/premium.svg" />
 * [`<EmailField>`](./EmailField.md)
 * [`<Empty>`](./List.md#empty-empty-page-component)  
 * [`<FileField>`](./FileField.md)
@@ -121,6 +123,7 @@ title: "Reference"
 * [`<Show>`](./Show.md#show)
 * [`<ShowGuesser`](./ShowGuesser.md#showguesser)
 * [`<ShowButton>`](./Buttons.md#showbutton)
+* [`<ShowInDialogButton>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createindialogbutton-editindialogbutton-and-showindialogbutton)<img class="icon" src="./img/premium.svg" />
 * [`<Sidebar>`](./Theming.md#sidebar-customization)
 * [`<SidebarOpenPreferenceSync>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#sidebaropenpreferencesync-store-the-sidebar-openclose-state-in-preferences)<img class="icon" src="./img/premium.svg" />
 * [`<SimpleForm>`](./SimpleForm.md)
