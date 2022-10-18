@@ -36,6 +36,9 @@ const data = [
     },
 ];
 
+const AuthorField = () => <TextField source="author" />;
+AuthorField.defaultProps = { label: 'Author' };
+
 export const Basic = () => (
     <PreferencesEditorContextProvider>
         <MemoryRouter>
@@ -53,7 +56,7 @@ export const Basic = () => (
                 >
                     <TextField source="id" />
                     <TextField source="title" label="Original title" />
-                    <TextField source="author" />
+                    <AuthorField />
                     <TextField source="year" />
                 </DatagridConfigurable>
             </Box>

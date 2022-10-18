@@ -33,16 +33,15 @@ export const ColumnsButton = props => {
     const preferenceKey =
         props.preferenceKey || `preferences.${resource}.datagrid`;
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const [availableColumns] = useStore<{ source: string; label?: string }[]>(
-        `${preferenceKey}.availableColumns`,
-        []
-    );
+    const [availableColumns] = useStore<
+        { index: string; source: string; label?: string }[]
+    >(`${preferenceKey}.availableColumns`, []);
     const [omit] = useStore<string[]>(`${preferenceKey}.omit`, []);
     const [columns, setColumns] = useStore<string[]>(
         `${preferenceKey}.columns`,
         availableColumns
-            .map(column => column.source)
-            .filter(source => !omit.includes(source))
+            .filter(column => !omit?.includes(column.source))
+            .map(column => column.index)
     );
     const translate = useTranslate();
 
@@ -61,13 +60,13 @@ export const ColumnsButton = props => {
                 availableColumns
                     .filter(
                         column =>
-                            column.source === event.target.name ||
-                            columns.includes(column.source)
+                            column.index === event.target.name ||
+                            columns.includes(column.index)
                     )
-                    .map(column => column.source)
+                    .map(column => column.index)
             );
         } else {
-            setColumns(columns.filter(name => name !== event.target.name));
+            setColumns(columns.filter(index => index !== event.target.name));
         }
     };
 
@@ -79,7 +78,7 @@ export const ColumnsButton = props => {
                 startIcon={<ViewWeekIcon />}
                 sx={{ '&.MuiButton-sizeSmall': { lineHeight: 1.5 } }}
             >
-                {translate('ra.action.columns', { _: 'Columns' })}
+                {translate('ra.action.select_columns', { _: 'Columns' })}
             </Button>
             <Popover
                 open={Boolean(anchorEl)}
@@ -97,9 +96,11 @@ export const ColumnsButton = props => {
                 <Box p={1}>
                     {availableColumns.map(column => (
                         <FieldEditor
+                            key={column.index}
                             source={column.source}
                             label={column.label}
-                            selected={columns.includes(column.source)}
+                            index={column.index}
+                            selected={columns.includes(column.index)}
                             onToggle={handleToggle}
                         />
                     ))}

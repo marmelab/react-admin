@@ -6,16 +6,16 @@ import { Switch, Typography } from '@mui/material';
  * UI to edit a field in a DatagridEditor
  */
 export const FieldEditor = props => {
-    const { selected, label, onToggle, source } = props;
+    const { selected, label, onToggle, source, index } = props;
     const resource = useResourceContext();
     return (
         <div key={source}>
-            <label htmlFor={`switch_${source}`}>
+            <label htmlFor={`switch_${index}`}>
                 <Switch
                     checked={selected}
                     onChange={onToggle}
-                    name={source}
-                    id={`switch_${source}`}
+                    name={index}
+                    id={`switch_${index}`}
                     size="small"
                     sx={{
                         mr: 0.5,

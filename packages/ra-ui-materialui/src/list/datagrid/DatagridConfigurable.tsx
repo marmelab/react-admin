@@ -7,7 +7,7 @@ import { DatagridEditor } from './DatagridEditor';
 
 export const DatagridConfigurable = ({
     preferenceKey,
-    omit: omitFromProps,
+    omit,
     ...props
 }: DatagridConfigurableProps) => {
     if (props.optimized) {
@@ -17,25 +17,32 @@ export const DatagridConfigurable = ({
     }
     const resource = useResourceContext(props);
     const finalPreferenceKey = preferenceKey || `${resource}.datagrid`;
+
     const [availableColumns, setAvailableColumns] = useStore<
-        { source: string; label?: string }[]
+        { index: string; source: string; label?: string }[]
     >(`preferences.${finalPreferenceKey}.availableColumns`, []);
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, setOmit] = useStore<string[]>(
         `preferences.${finalPreferenceKey}.omit`,
-        omitFromProps
+        omit
     );
 
     React.useEffect(() => {
         if (availableColumns.length === 0) {
             // first render, or the preference have been cleared
-            const columns = React.Children.map(props.children, child =>
-                React.isValidElement(child) && child.props.source
-                    ? { source: child.props.source, label: child.props.label }
+            const columns = React.Children.map(props.children, (child, index) =>
+                React.isValidElement(child) &&
+                (child.props.source || child.props.label)
+                    ? {
+                          index: String(index),
+                          source: child.props.source,
+                          label: child.props.label,
+                      }
                     : null
             ).filter(column => column != null);
             setAvailableColumns(columns);
-            setOmit(omitFromProps);
+            setOmit(omit);
         }
     }, [availableColumns]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -71,24 +78,15 @@ const DatagridWithPreferences = ({ children, ...props }: DatagridProps) => {
     const [columns] = usePreference(
         'columns',
         availableColumns
-            .map(column => column.source)
-            .filter(name => !omit?.includes(name))
+            .filter(column => !omit?.includes(column.source))
+            .map(column => column.index)
     );
-    const columnsBySource = React.Children.toArray(children).reduce(
-        (acc, child) => {
-            if (React.isValidElement(child)) {
-                acc[child.props.source] = child;
-            }
-            return acc;
-        },
-        {}
-    );
-
+    const childrenArray = React.Children.toArray(children);
     return (
         <Datagrid {...props}>
             {columns === undefined
                 ? children
-                : columns.map(name => columnsBySource[name])}
+                : columns.map(index => childrenArray[index])}
         </Datagrid>
     );
 };

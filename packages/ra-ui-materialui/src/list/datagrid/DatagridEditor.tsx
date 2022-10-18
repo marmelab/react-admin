@@ -14,8 +14,8 @@ export const DatagridEditor = (props: { children: React.ReactNode }) => {
     const [columns, setColumns] = usePreference(
         'columns',
         availableColumns
-            .map(column => column.source)
-            .filter(name => !omit?.includes(name))
+            .filter(column => !omit?.includes(column.source))
+            .map(column => column.index)
     );
 
     const handleToggle = event => {
@@ -25,13 +25,13 @@ export const DatagridEditor = (props: { children: React.ReactNode }) => {
                 availableColumns
                     .filter(
                         column =>
-                            column.source === event.target.name ||
-                            columns.includes(column.source)
+                            column.index === event.target.name ||
+                            columns.includes(column.index)
                     )
-                    .map(column => column.source)
+                    .map(column => column.index)
             );
         } else {
-            setColumns(columns.filter(name => name !== event.target.name));
+            setColumns(columns.filter(index => index !== event.target.name));
         }
     };
 
@@ -39,15 +39,17 @@ export const DatagridEditor = (props: { children: React.ReactNode }) => {
         setColumns([]);
     };
     const handleShowAll = () => {
-        setColumns(availableColumns.map(column => column.source));
+        setColumns(availableColumns.map(column => column.index));
     };
     return (
         <div>
             {availableColumns.map(column => (
                 <FieldEditor
+                    key={column.index}
                     source={column.source}
                     label={column.label}
-                    selected={columns.includes(column.source)}
+                    index={column.index}
+                    selected={columns.includes(column.index)}
                     onToggle={handleToggle}
                 />
             ))}
