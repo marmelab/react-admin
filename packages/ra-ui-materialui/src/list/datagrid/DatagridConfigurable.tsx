@@ -8,7 +8,7 @@ import { DatagridEditor } from './DatagridEditor';
 export const DatagridConfigurable = ({
     preferenceKey,
     ...props
-}: DatagridProps & { preferenceKey?: string; omit?: string[] }) => {
+}: DatagridConfigurableProps) => {
     if (props.optimized) {
         throw new Error(
             'DatagridConfigurable does not support the optimized prop'
@@ -35,6 +35,11 @@ export const DatagridConfigurable = ({
     );
 };
 
+export type DatagridConfigurableProps = DatagridProps & {
+    preferenceKey?: string;
+    omit?: string[];
+};
+
 const DatagridWithPreferences = ({
     children,
     omit,
@@ -48,15 +53,21 @@ const DatagridWithPreferences = ({
             .filter(name => name != null)
             .filter(name => !omit?.includes(name))
     );
+    const columnsBySource = React.Children.toArray(children).reduce(
+        (acc, child) => {
+            if (React.isValidElement(child)) {
+                acc[child.props.source] = child;
+            }
+            return acc;
+        },
+        {}
+    );
+
     return (
         <Datagrid {...props}>
-            {React.Children.map(children, (child, index) =>
-                React.isValidElement(child) && child.props.source
-                    ? columns.includes(child.props.source)
-                        ? child
-                        : null
-                    : child
-            )}
+            {columns === undefined
+                ? children
+                : columns.map(name => columnsBySource[name])}
         </Datagrid>
     );
 };

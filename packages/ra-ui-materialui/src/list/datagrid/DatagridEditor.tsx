@@ -10,30 +10,35 @@ export const DatagridEditor = (props: {
 }) => {
     const translate = useTranslate();
     useSetInspectorTitle('ra.inspector.datagrid', { _: 'Datagrid' });
+
+    const availableColumns = React.Children.map(props.children, child =>
+        React.isValidElement(child) ? child.props.source : null
+    ).filter(name => name != null);
+
     const [columns, setColumns] = usePreference(
         'colums',
-        React.Children.map(props.children, child =>
-            React.isValidElement(child) ? child.props.source : null
-        )
-            .filter(name => name != null)
-            .filter(name => !props.omit?.includes(name))
+        availableColumns.filter(name => !props.omit?.includes(name))
     );
+
     const handleToggle = event => {
         if (event.target.checked) {
-            setColumns([...columns, event.target.name]);
+            // add the column at the right position
+            setColumns(
+                availableColumns.filter(
+                    column =>
+                        column === event.target.name || columns.includes(column)
+                )
+            );
         } else {
             setColumns(columns.filter(name => name !== event.target.name));
         }
     };
+
     const handleHideAll = () => {
         setColumns([]);
     };
     const handleShowAll = () => {
-        setColumns(
-            React.Children.map(props.children, child =>
-                React.isValidElement(child) ? child.props.source : null
-            ).filter(name => name != null)
-        );
+        setColumns(availableColumns);
     };
     return (
         <div>
