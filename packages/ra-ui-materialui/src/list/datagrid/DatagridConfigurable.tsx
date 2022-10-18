@@ -9,6 +9,11 @@ export const DatagridConfigurable = ({
     preferenceKey,
     ...props
 }: DatagridProps & { preferenceKey?: string; omit?: string[] }) => {
+    if (props.optimized) {
+        throw new Error(
+            'DatagridConfigurable does not support the optimized prop'
+        );
+    }
     const resource = useResourceContext(props);
     return (
         <Configurable
