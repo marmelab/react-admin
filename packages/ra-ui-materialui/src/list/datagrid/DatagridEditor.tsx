@@ -24,10 +24,13 @@ export const DatagridEditor = (props: {
         if (event.target.checked) {
             // add the column at the right position
             setColumns(
-                availableColumns.filter(
-                    column =>
-                        column === event.target.name || columns.includes(column)
-                )
+                availableColumns
+                    .filter(
+                        column =>
+                            column.source === event.target.name ||
+                            columns.includes(column.source)
+                    )
+                    .map(column => column.source)
             );
         } else {
             setColumns(columns.filter(name => name !== event.target.name));
