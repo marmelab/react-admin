@@ -83,3 +83,5 @@ const LatestNews = () => {
     );
 };
 ```
+
+Alternately, you can use [the `useInfiniteGetList` hook](./useInfiniteGetList.md) to keep the previous pages on screen while loading new pages - just like users see older content when they scroll down their feed on social media. 

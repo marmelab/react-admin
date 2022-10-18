@@ -8,7 +8,11 @@ import englishMessages from 'ra-language-english';
 import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { SelectInput } from './SelectInput';
+import { TextInput } from './TextInput';
 import { ReferenceInput } from './ReferenceInput';
+import { SaveButton } from '../button//SaveButton';
+import { Toolbar } from '../form/Toolbar';
+import { FormInspector } from './common.stories';
 
 export default { title: 'ra-ui-materialui/input/SelectInput' };
 
@@ -55,6 +59,7 @@ export const InitialValue = () => (
                         { id: 'F', name: 'Female' },
                     ]}
                 />
+                <FormInspector name="gender" />
             </SimpleForm>
         </Edit>
     </AdminContext>
@@ -99,8 +104,8 @@ export const Required = () => (
     </Wrapper>
 );
 
-export const EmptyText = () => (
-    <Wrapper>
+export const EmptyText = ({ onSuccess = console.log }) => (
+    <Wrapper onSuccess={onSuccess}>
         <SelectInput
             source="gender"
             choices={[
@@ -111,6 +116,32 @@ export const EmptyText = () => (
         />
     </Wrapper>
 );
+
+export const EmptyValue = ({ emptyValue = 'foo' }) => (
+    <Wrapper>
+        <SelectInput
+            source="gender"
+            choices={[
+                { id: 'M', name: 'Male ' },
+                { id: 'F', name: 'Female' },
+            ]}
+            emptyValue={emptyValue}
+        />
+    </Wrapper>
+);
+EmptyValue.argTypes = {
+    emptyValue: {
+        options: ['foo', '0', 'null', 'undefined', 'empty string'],
+        mapping: {
+            foo: 'foo',
+            0: 0,
+            null: null,
+            undefined: undefined,
+            'empty string': '',
+        },
+        control: { type: 'select' },
+    },
+};
 
 export const Sort = () => (
     <Wrapper>
@@ -130,10 +161,27 @@ export const Sort = () => (
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
-const Wrapper = ({ children }) => (
-    <AdminContext i18nProvider={i18nProvider}>
-        <Create resource="posts">
-            <SimpleForm>{children}</SimpleForm>
+const Wrapper = ({ children, onSuccess = console.log }) => (
+    <AdminContext
+        i18nProvider={i18nProvider}
+        dataProvider={
+            {
+                create: (resource, params) =>
+                    Promise.resolve({ data: { id: 1, ...params.data } }),
+            } as any
+        }
+    >
+        <Create resource="posts" mutationOptions={{ onSuccess }}>
+            <SimpleForm
+                toolbar={
+                    <Toolbar>
+                        <SaveButton alwaysEnable />
+                    </Toolbar>
+                }
+            >
+                {children}
+                <FormInspector name="gender" />
+            </SimpleForm>
         </Create>
     </AdminContext>
 );
@@ -198,23 +246,6 @@ const dataProviderWithAuthors = {
     },
 } as any;
 
-const BookEditWithReference = () => (
-    <Edit
-        mutationMode="pessimistic"
-        mutationOptions={{
-            onSuccess: data => {
-                console.log(data);
-            },
-        }}
-    >
-        <SimpleForm>
-            <ReferenceInput reference="authors" source="author">
-                <SelectInput />
-            </ReferenceInput>
-        </SimpleForm>
-    </Edit>
-);
-
 const history = createMemoryHistory({ initialEntries: ['/books/1'] });
 
 export const InsideReferenceInput = () => (
@@ -225,6 +256,72 @@ export const InsideReferenceInput = () => (
                 `${record.first_name} ${record.last_name}`
             }
         />
-        <Resource name="books" edit={BookEditWithReference} />
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                >
+                    <SimpleForm>
+                        <ReferenceInput reference="authors" source="author">
+                            <SelectInput />
+                        </ReferenceInput>
+                        <FormInspector name="author" />
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
+    </Admin>
+);
+
+export const InsideReferenceInputDefaultValue = ({
+    onSuccess = console.log,
+}) => (
+    <Admin
+        dataProvider={{
+            ...dataProviderWithAuthors,
+            getOne: (resource, params) =>
+                Promise.resolve({
+                    data: {
+                        id: 1,
+                        title: 'War and Peace',
+                        // trigger default value
+                        author: undefined,
+                        summary:
+                            "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                        year: 1869,
+                    },
+                }),
+        }}
+        history={history}
+    >
+        <Resource
+            name="authors"
+            recordRepresentation={record =>
+                `${record.first_name} ${record.last_name}`
+            }
+        />
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{ onSuccess }}
+                >
+                    <SimpleForm>
+                        <TextInput source="title" />
+                        <ReferenceInput reference="authors" source="author">
+                            <SelectInput />
+                        </ReferenceInput>
+                        <FormInspector name="author" />
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
     </Admin>
 );

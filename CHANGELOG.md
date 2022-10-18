@@ -1,10 +1,44 @@
 # Changelog
 
+## v4.4.3
+
+* Fix `<Loading>` component doesn't translate messages ([#8269](https://github.com/marmelab/react-admin/8269)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix typos in Input chapter ([#8270](https://github.com/marmelab/react-admin/8270)) ([WiXSL](https://github.com/WiXSL))
+
+## v4.4.2
+
+* Fix `null` value support in inputs ([#8262](https://github.com/marmelab/react-admin/pull/8262)) ([slax57](https://github.com/slax57))
+* Fix `<AutocompleteInput>` doesn't allow clearing the inputs in certain scenarios ([#8238](https://github.com/marmelab/react-admin/pull/8238)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<Loading>` displays translation messages even though it should not ([#8261](https://github.com/marmelab/react-admin/pull/8261)) ([alioguzhan](https://github.com/alioguzhan))
+* Fix `<Loading>` message contains trailing dot ([#8257](https://github.com/marmelab/react-admin/pull/8257)) ([alioguzhan](https://github.com/alioguzhan))
+* Fix internal code workflow for tighter permissions ([#8253](https://github.com/marmelab/react-admin/pull/8253)) ([slax57](https://github.com/slax57))
+* [Doc] Add ra-keycloak authProvider ([#8263](https://github.com/marmelab/react-admin/pull/8263)) ([slax57](https://github.com/slax57))
+* [Doc] Fix missing `filterToQuery` prop in `<AutocompleteInput>` and `<AutocompleteArrayInput>` components ([#8251](https://github.com/marmelab/react-admin/pull/8251)) ([WiXSL](https://github.com/WiXSL))
+
+## v4.4.1
+
+* Fix `format` and `parse` on `<AutocompleteInput>` and `<SelectInput>` ([#8237](https://github.com/marmelab/react-admin/pull/8237)) ([byymster](https://github.com/byymster))
+* Fix `<SelectInput>` and `<AutocompleteInput>` change empty references ([#8234](https://github.com/marmelab/react-admin/pull/8234)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<SelectInput emptyValue>` accepts null value ([#8235](https://github.com/marmelab/react-admin/pull/8235)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<RadioButtonGroupInput>` inside `<ReferenceInput>` when reference ids are numbers ([#8229](https://github.com/marmelab/react-admin/pull/8229)) ([slax57](https://github.com/slax57))
+* Fix `useEditController` returns wrong `redirectTo` value ([#8243](https://github.com/marmelab/react-admin/pull/8243)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<Datagrid>`'s ExpandAllButton conflicts with expandSingle prop ([#8221](https://github.com/marmelab/react-admin/pull/8221)) ([WiXSL](https://github.com/WiXSL))
+* Fix development dependencies causing security alerts ([#8230](https://github.com/marmelab/react-admin/pull/8230)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ReferenceInput>` story contains a non-story ([#8228](https://github.com/marmelab/react-admin/pull/8228)) ([WiXSL](https://github.com/WiXSL))
+* Fix missing test for `<SimpleFormIterator>` ([#8215](https://github.com/marmelab/react-admin/pull/8215)) ([WiXSL](https://github.com/WiXSL))
+* [TypeScript] Fix `useCreateController` parameter type for onError effect ([#8242](https://github.com/marmelab/react-admin/pull/8242)) ([WiXSL](https://github.com/WiXSL))
+* [TypeScript] Fix unused TranslationMessage ([#8223](https://github.com/marmelab/react-admin/pull/8223)) ([bicstone](https://github.com/bicstone))
+* [Doc] Fix `<RichTextInput>` example ([#8245](https://github.com/marmelab/react-admin/pull/8245)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `<RichTextInput>` toolbar customization example ([#8239](https://github.com/marmelab/react-admin/pull/8239)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `<List perPage>` doc misses mention of `<Pagination rowsPerPages>` relationship ([#8244](https://github.com/marmelab/react-admin/pull/8244)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix Upgrade guide typo ([#8240](https://github.com/marmelab/react-admin/pull/8240)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix CHANGELOG ([#8219](https://github.com/marmelab/react-admin/pull/8219)) ([WiXSL](https://github.com/WiXSL))
+
 ## v4.4.0
 
 * Add `<Configurable>` components, make `<SimpleList>` accept template strings ([#8145](https://github.com/marmelab/react-admin/pull/8145)) ([fzaninotto](https://github.com/fzaninotto))
 * Add `useInfiniteGetList` hook ([#8063](https://github.com/marmelab/react-admin/pull/8063)) ([arimet](https://github.com/arimet))
-* Add `sanitizeRestProps` to Form components to replace empty values by null ([#8188](https://github.com/marmelab/react-admin/pull/8188)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `sanitizeEmptyValues` prop to Form components to replace empty values by null ([#8188](https://github.com/marmelab/react-admin/pull/8188)) ([fzaninotto](https://github.com/fzaninotto))
 * Add `emptyText` and `emptyValue` support in `<AutocompleteInput>` ([#8162](https://github.com/marmelab/react-admin/pull/8162)) ([WiXSL](https://github.com/WiXSL))
 * Add cache to `usePermissions` ([#8196](https://github.com/marmelab/react-admin/pull/8196)) ([hiaselhans](https://github.com/hiaselhans))
 * Add ability to create independent store configurations for different lists of same resource ([#8073](https://github.com/marmelab/react-admin/pull/8073)) ([septentrion-730n](https://github.com/septentrion-730n))

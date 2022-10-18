@@ -476,12 +476,12 @@ const PostList = () => (
 
 ## `expandSingle`
 
-The `expandSingle` allows a single row to be expanded at a time.
+By default, when using [an `expand` panel](#expand), users can expand as many rows as they want. The `expandSingle` prop changes that behavior: when a user clicks on the expand button of a row, other expanded rows collapse. As a consequence, only a single row can be expanded at a time.
 
 ```jsx
 export const PostList = () => (
     <List>
-        <Datagrid expandSingle>
+        <Datagrid expand={<PostPanel />} expandSingle>
             ...
         </Datagrid>
     </List>

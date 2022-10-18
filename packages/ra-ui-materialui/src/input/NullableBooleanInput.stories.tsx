@@ -5,26 +5,20 @@ import englishMessages from 'ra-language-english';
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
 import { SimpleForm } from '../form';
-import { TimeInput } from './TimeInput';
+import { NullableBooleanInput } from './NullableBooleanInput';
 import { FormInspector } from './common.stories';
 
-export default { title: 'ra-ui-materialui/input/TimeInput' };
+export default { title: 'ra-ui-materialui/input/NullableBooleanInput' };
 
 export const Basic = () => (
     <Wrapper>
-        <TimeInput source="published" />
-    </Wrapper>
-);
-
-export const FullWidth = () => (
-    <Wrapper>
-        <TimeInput source="published" fullWidth />
+        <NullableBooleanInput source="published" />
     </Wrapper>
 );
 
 export const Disabled = () => (
     <Wrapper>
-        <TimeInput source="published" disabled />
+        <NullableBooleanInput source="published" disabled />
     </Wrapper>
 );
 

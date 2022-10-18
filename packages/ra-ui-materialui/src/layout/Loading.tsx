@@ -22,7 +22,7 @@ export const Loading = (props: LoadingProps) => {
                     color="primary"
                 />
                 <h1>{translate(loadingPrimary)}</h1>
-                <div>{translate(loadingSecondary)}.</div>
+                <div>{translate(loadingSecondary)}</div>
             </div>
         </Root>
     );

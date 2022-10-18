@@ -135,7 +135,7 @@ export const AutocompleteInput = <
         createItemLabel,
         createValue,
         debounce: debounceDelay = 250,
-        defaultValue = '',
+        defaultValue,
         emptyText,
         emptyValue = '',
         field: fieldOverride,
@@ -195,19 +195,31 @@ export const AutocompleteInput = <
 
     const finalEmptyText = emptyText ?? '';
 
-    const finalChoices =
-        isRequiredOverride || multiple
-            ? allChoices
-            : [
-                  {
-                      [optionValue || 'id']: emptyValue,
-                      [typeof optionText === 'string'
-                          ? optionText
-                          : 'name']: translate(finalEmptyText, {
-                          _: finalEmptyText,
-                      }),
-                  },
-              ].concat(allChoices);
+    const finalChoices = useMemo(
+        () =>
+            isRequiredOverride || multiple
+                ? allChoices
+                : [
+                      {
+                          [optionValue || 'id']: emptyValue,
+                          [typeof optionText === 'string'
+                              ? optionText
+                              : 'name']: translate(finalEmptyText, {
+                              _: finalEmptyText,
+                          }),
+                      },
+                  ].concat(allChoices),
+        [
+            allChoices,
+            emptyValue,
+            finalEmptyText,
+            isRequiredOverride,
+            multiple,
+            optionText,
+            optionValue,
+            translate,
+        ]
+    );
 
     const {
         id,
@@ -223,9 +235,8 @@ export const AutocompleteInput = <
         formState: formStateOverride,
         onBlur,
         onChange,
-        parse: parse ?? isFromReference ? convertEmptyStringToNull : undefined,
-        format:
-            format ?? isFromReference ? convertNullToEmptyString : undefined,
+        parse,
+        format,
         resource,
         source,
         validate,
@@ -248,9 +259,12 @@ export const AutocompleteInput = <
         // eslint-disable-next-line eqeqeq
         if (emptyValue == null) {
             throw new Error(
-                `emptyValue being set to null or undefined is not supported`
+                `emptyValue being set to null or undefined is not supported. Use parse to turn the empty string into null.`
             );
         }
+    }, [emptyValue]);
+
+    useEffect(() => {
         // eslint-disable-next-line eqeqeq
         if (isValidElement(optionText) && emptyText != undefined) {
             throw new Error(
@@ -267,7 +281,7 @@ If you provided a React element for the optionText prop, you must also provide t
             throw new Error(`
 If you provided a React element for the optionText prop, you must also provide the matchSuggestion prop (used to match the user input with a choice)`);
         }
-    }, [optionText, inputText, matchSuggestion, emptyText, emptyValue]);
+    }, [optionText, inputText, matchSuggestion, emptyText]);
 
     useEffect(() => {
         warning(
@@ -418,15 +432,18 @@ If you provided a React element for the optionText prop, you must also provide t
         newInputValue: string,
         reason: string
     ) => {
-        if (!doesQueryMatchSelection(newInputValue, event?.type)) {
+        if (
+            event?.type === 'change' ||
+            !doesQueryMatchSelection(newInputValue)
+        ) {
             setFilterValue(newInputValue);
             debouncedSetFilter(newInputValue);
         }
     };
 
     const doesQueryMatchSelection = useCallback(
-        (filter: string, eventType?: string) => {
-            let selectedItemTexts = [];
+        (filter: string) => {
+            let selectedItemTexts;
 
             if (multiple) {
                 selectedItemTexts = selectedChoice.map(item =>
@@ -436,9 +453,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 selectedItemTexts = [getOptionLabel(selectedChoice)];
             }
 
-            return eventType && eventType === 'change'
-                ? selectedItemTexts.includes(filter) && selectedChoice
-                : selectedItemTexts.includes(filter);
+            return selectedItemTexts.includes(filter);
         },
         [getOptionLabel, multiple, selectedChoice]
     );
@@ -726,6 +741,3 @@ const getSelectedItems = (
 };
 
 const DefaultFilterToQuery = searchText => ({ q: searchText });
-
-const convertEmptyStringToNull = value => (value === '' ? null : value);
-const convertNullToEmptyString = value => (value === null ? '' : value);

@@ -16,6 +16,7 @@ import { Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { AutocompleteInput } from './AutocompleteInput';
 import { ReferenceInput } from './ReferenceInput';
+import { TextInput } from './TextInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteInput' };
@@ -89,6 +90,39 @@ export const Basic = () => (
         <Resource name="books" edit={BookEdit} />
     </Admin>
 );
+
+export const Nullable = ({ onSuccess = console.log }) => {
+    const choices = [
+        { id: 1, name: 'Leo Tolstoy' },
+        { id: 2, name: 'Victor Hugo' },
+        { id: 3, name: 'William Shakespeare' },
+        { id: 4, name: 'Charles Baudelaire' },
+        { id: 5, name: 'Marcel Proust' },
+    ];
+    return (
+        <Admin dataProvider={dataProvider} history={history}>
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess,
+                        }}
+                    >
+                        <SimpleForm>
+                            <AutocompleteInput
+                                source="author"
+                                choices={choices}
+                                fullWidth
+                            />
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    );
+};
 
 const BookEditCustomText = () => {
     const choices = [
@@ -447,27 +481,69 @@ const dataProviderWithAuthors = {
     },
 } as any;
 
-const BookEditWithReference = () => (
-    <Edit
-        mutationMode="pessimistic"
-        mutationOptions={{
-            onSuccess: data => {
-                console.log(data);
-            },
-        }}
-    >
-        <SimpleForm>
-            <ReferenceInput reference="authors" source="author">
-                <AutocompleteInput fullWidth optionText="name" />
-            </ReferenceInput>
-        </SimpleForm>
-    </Edit>
-);
-
 export const InsideReferenceInput = () => (
     <Admin dataProvider={dataProviderWithAuthors} history={history}>
         <Resource name="authors" />
-        <Resource name="books" edit={BookEditWithReference} />
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                >
+                    <SimpleForm>
+                        <ReferenceInput reference="authors" source="author">
+                            <AutocompleteInput fullWidth optionText="name" />
+                        </ReferenceInput>
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
+    </Admin>
+);
+
+export const InsideReferenceInputDefaultValue = ({
+    onSuccess = console.log,
+}) => (
+    <Admin
+        dataProvider={{
+            ...dataProviderWithAuthors,
+            getOne: (resource, params) =>
+                Promise.resolve({
+                    data: {
+                        id: 1,
+                        title: 'War and Peace',
+                        // trigger default value
+                        author: undefined,
+                        summary:
+                            "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                        year: 1869,
+                    },
+                }),
+        }}
+        history={history}
+    >
+        <Resource name="authors" />
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{ onSuccess }}
+                >
+                    <SimpleForm>
+                        <TextInput source="title" />
+                        <ReferenceInput reference="authors" source="author">
+                            <AutocompleteInput fullWidth optionText="name" />
+                        </ReferenceInput>
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
     </Admin>
 );
 

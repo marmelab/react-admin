@@ -108,6 +108,17 @@ export const Expand = () => (
     </Wrapper>
 );
 
+export const ExpandSingle = () => (
+    <Wrapper>
+        <Datagrid expand={<ExpandPanel />} expandSingle>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </Wrapper>
+);
+
 export const Hover = () => (
     <Wrapper>
         <Datagrid hover={false}>

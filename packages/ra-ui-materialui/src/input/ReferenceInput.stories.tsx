@@ -12,7 +12,10 @@ import { SimpleForm } from '../form';
 import { SelectInput, RadioButtonGroupInput, TextInput } from '../input';
 import { ReferenceInput } from './ReferenceInput';
 
-export default { title: 'ra-ui-materialui/input/ReferenceInput' };
+export default {
+    title: 'ra-ui-materialui/input/ReferenceInput',
+    excludeStories: ['dataProviderWithAuthors'],
+};
 
 const authors = [
     { id: 1, first_name: 'Leo', last_name: 'Tolstoy', language: 'Russian' },

@@ -7,7 +7,7 @@
 export const sanitizeEmptyValues = (values: any, record: any = {}): any => {
     const sanitizedValues = {};
     Object.keys(values).forEach(key => {
-        if (values[key] === '') {
+        if (values[key] == null || values[key] === '') {
             if (record.hasOwnProperty(key)) {
                 // user has emptied a field, make the value null
                 sanitizedValues[key] = null;

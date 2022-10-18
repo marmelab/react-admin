@@ -119,7 +119,7 @@ export const useCreateController = <
                             ? onErrorFromSave
                             : onError
                             ? onError
-                            : (error: Error) => {
+                            : (error: Error | string) => {
                                   notify(
                                       typeof error === 'string'
                                           ? error

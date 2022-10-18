@@ -136,17 +136,21 @@ export const PostCreate = () => {
 
 ## `sanitizeEmptyValues`
 
-In HTML, the value of empty form inputs is the empty string (`''`) by default. React-hook-form doesn't sanitize these values. This leads to unexpected `create` and `update` payloads like:
+In HTML, the value of empty form inputs is the empty string (`''`). React-admin inputs (like `<TextInput>`, `<NumberInput>`, etc.) automatically transform these empty values into `null`.
+
+But for your own input components based on react-hook-form, this is not the default. React-hook-form doesn't transform empty values by default. This leads to unexpected `create` and `update` payloads like:
 
 ```jsx
 {
-    id: 123,
-    title: '',
-    author: '',
-} 
+    id: 1234,
+    title: 'Lorem Ipsum',
+    is_published: '',
+    body: '',
+    // etc.
+}
 ```
 
-To avoid that, set the `sanitizeEmptyValues` prop to `true`. This will remove empty strings from the form state on submit, unless the record actually had a value for that field.
+If you prefer to omit the keys for empty values, set the `sanitizeEmptyValues` prop to `true`. This will sanitize the form data before passing it to the `dataProvider`, i.e. remove empty strings from the form state, unless the record actually had a value for that field before edition.
 
 ```jsx
 const PostCreate = () =>  (
@@ -157,6 +161,17 @@ const PostCreate = () =>  (
     </Create>
 );
 ```
+
+For the previous example, the data sent to the `dataProvider` will be:
+
+```jsx
+{
+    id: 1234,
+    title: 'Lorem Ipsum',
+}
+```
+
+**Note:** Setting the `sanitizeEmptyValues` prop to `true` will also have a (minor) impact on react-admin inputs (like `<TextInput>`, `<NumberInput>`, etc.): empty values (i.e. values equal to `null`) will be removed from the form state on submit, unless the record actually had a value for that field.
 
 If you need a more fine-grained control over the sanitization, you can use [the `transform` prop](./Edit.md#transform) of `<Edit>` or `<Create>` components, or [the `parse` prop](./Inputs.md#parse) of individual inputs.
 

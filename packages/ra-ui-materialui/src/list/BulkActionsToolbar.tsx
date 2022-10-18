@@ -72,7 +72,7 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
                 </div>
                 <TopToolbar className={BulkActionsToolbarClasses.topToolbar}>
                     {Children.map(children, child =>
-                        isValidElement(child)
+                        isValidElement<any>(child)
                             ? cloneElement(child, {
                                   filterValues,
                                   resource,

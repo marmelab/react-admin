@@ -150,7 +150,7 @@ Pagination.propTypes = {
 };
 
 const DefaultLimit = <PaginationLimit />;
-const DefaultRowsPerPageOptions = [5, 10, 25];
+const DefaultRowsPerPageOptions = [5, 10, 25, 50];
 const emptyArray = [];
 
 export interface PaginationProps

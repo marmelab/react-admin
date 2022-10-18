@@ -60,7 +60,7 @@ export const useExpanded = (
  *
  * @example
  *
- * const [expanded, toggleExpanded] = useExpandedMultiple('posts', [123, 124, 125]);
+ * const [expanded, toggleExpanded] = useExpandAll('posts', [123, 124, 125]);
  * const expandIcon = expanded ? ExpandLess : ExpandMore;
  * const onExpandClick = () => toggleExpanded();
  */
