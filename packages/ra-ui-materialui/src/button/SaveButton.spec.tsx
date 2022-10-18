@@ -418,16 +418,20 @@ describe('<SaveButton />', () => {
                             {
                                 id: 123,
                                 foo: 'bar',
-                                nested: {
-                                    deep: '1',
-                                },
+                                nested: [
+                                    {
+                                        deep: '1',
+                                    },
+                                ],
                             },
                             {
                                 id: 456,
                                 foo: 'baz',
-                                nested: {
-                                    deep: '2',
-                                },
+                                nested: [
+                                    {
+                                        deep: '2',
+                                    },
+                                ],
                             },
                         ],
                     }}
