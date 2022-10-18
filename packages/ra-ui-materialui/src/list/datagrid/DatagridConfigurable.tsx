@@ -7,6 +7,7 @@ import { DatagridEditor } from './DatagridEditor';
 
 export const DatagridConfigurable = ({
     preferenceKey,
+    omit: omitFromProps,
     ...props
 }: DatagridConfigurableProps) => {
     if (props.optimized) {
@@ -19,6 +20,11 @@ export const DatagridConfigurable = ({
     const [availableColumns, setAvailableColumns] = useStore<
         { source: string; label?: string }[]
     >(`preferences.${finalPreferenceKey}.availableColumns`, []);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, setOmit] = useStore<string[]>(
+        `preferences.${finalPreferenceKey}.omit`,
+        omitFromProps
+    );
 
     React.useEffect(() => {
         if (availableColumns.length === 0) {
@@ -29,16 +35,13 @@ export const DatagridConfigurable = ({
                     : null
             ).filter(column => column != null);
             setAvailableColumns(columns);
+            setOmit(omitFromProps);
         }
     }, [availableColumns]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Configurable
-            editor={
-                <DatagridEditor omit={props.omit}>
-                    {props.children}
-                </DatagridEditor>
-            }
+            editor={<DatagridEditor>{props.children}</DatagridEditor>}
             preferenceKey={finalPreferenceKey}
             sx={{
                 display: 'block',
@@ -57,12 +60,14 @@ export type DatagridConfigurableProps = DatagridProps & {
     omit?: string[];
 };
 
-const DatagridWithPreferences = ({
-    children,
-    omit,
-    ...props
-}: DatagridProps & { omit?: string[] }) => {
+DatagridConfigurable.propTypes = Datagrid.propTypes;
+
+/**
+ * This Datagrid filters its children depending on preferences
+ */
+const DatagridWithPreferences = ({ children, ...props }: DatagridProps) => {
     const [availableColumns] = usePreference('availableColumns', []);
+    const [omit] = usePreference('omit', []);
     const [columns] = usePreference(
         'columns',
         availableColumns
@@ -87,5 +92,3 @@ const DatagridWithPreferences = ({
         </Datagrid>
     );
 };
-
-DatagridConfigurable.propTypes = Datagrid.propTypes;

@@ -5,6 +5,29 @@ import ViewWeekIcon from '@mui/icons-material/ViewWeek';
 
 import { FieldEditor } from './FieldEditor';
 
+/**
+ * Render s a button that lets users show / hide columns in a configurable datagrid
+ * 
+ * @example
+ * import { ColumnsButton, DatagridConfigurable } from 'react-admin';
+ * 
+ * const PostListActions = () => (
+ *   <TopToolbar>
+        <ColumnsButton />
+        <FilterButton />
+ *   </TopToolbar>
+ * );
+ * 
+ * const PostList = () => (
+ *   <List actions={<PostListActions />}>
+ *     <DatagridConfigurable>
+ *       <TextField source="title" />
+ *       <TextField source="author" />
+         ...
+ *     </DatagridConfigurable>
+ *   </List>
+ * );
+ */
 export const ColumnsButton = props => {
     const resource = useResourceContext(props);
     const preferenceKey =
@@ -14,9 +37,12 @@ export const ColumnsButton = props => {
         `${preferenceKey}.availableColumns`,
         []
     );
+    const [omit] = useStore<string[]>(`${preferenceKey}.omit`, []);
     const [columns, setColumns] = useStore<string[]>(
         `${preferenceKey}.columns`,
-        availableColumns.map(column => column.source)
+        availableColumns
+            .map(column => column.source)
+            .filter(source => !omit.includes(source))
     );
     const translate = useTranslate();
 

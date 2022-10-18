@@ -4,20 +4,18 @@ import { Box, Button } from '@mui/material';
 
 import { FieldEditor } from './FieldEditor';
 
-export const DatagridEditor = (props: {
-    children: React.ReactNode;
-    omit?: string[];
-}) => {
+export const DatagridEditor = (props: { children: React.ReactNode }) => {
     const translate = useTranslate();
     useSetInspectorTitle('ra.inspector.datagrid', { _: 'Datagrid' });
 
     const [availableColumns] = usePreference('availableColumns', []);
+    const [omit] = usePreference('omit', []);
 
     const [columns, setColumns] = usePreference(
         'columns',
         availableColumns
             .map(column => column.source)
-            .filter(name => !props.omit?.includes(name))
+            .filter(name => !omit?.includes(name))
     );
 
     const handleToggle = event => {
