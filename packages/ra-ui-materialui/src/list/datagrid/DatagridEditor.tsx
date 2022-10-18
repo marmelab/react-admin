@@ -11,13 +11,13 @@ export const DatagridEditor = (props: {
     const translate = useTranslate();
     useSetInspectorTitle('ra.inspector.datagrid', { _: 'Datagrid' });
 
-    const availableColumns = React.Children.map(props.children, child =>
-        React.isValidElement(child) ? child.props.source : null
-    ).filter(name => name != null);
+    const [availableColumns] = usePreference('availableColumns', []);
 
     const [columns, setColumns] = usePreference(
-        'colums',
-        availableColumns.filter(name => !props.omit?.includes(name))
+        'columns',
+        availableColumns
+            .map(column => column.source)
+            .filter(name => !props.omit?.includes(name))
     );
 
     const handleToggle = event => {
@@ -38,20 +38,18 @@ export const DatagridEditor = (props: {
         setColumns([]);
     };
     const handleShowAll = () => {
-        setColumns(availableColumns);
+        setColumns(availableColumns.map(column => column.source));
     };
     return (
         <div>
-            {React.Children.map(props.children, child =>
-                React.isValidElement(child) && child.props.source ? (
-                    <FieldEditor
-                        source={child.props.source}
-                        label={child.props.label}
-                        selected={columns.includes(child.props.source)}
-                        onToggle={handleToggle}
-                    />
-                ) : null
-            )}
+            {availableColumns.map(column => (
+                <FieldEditor
+                    source={column.source}
+                    label={column.label}
+                    selected={columns.includes(column.source)}
+                    onToggle={handleToggle}
+                />
+            ))}
             <Box display="flex" justifyContent="space-between" mx={-0.5} mt={1}>
                 <Button size="small" onClick={handleHideAll}>
                     {translate('ra.inspector.datagrid.hideAll', {

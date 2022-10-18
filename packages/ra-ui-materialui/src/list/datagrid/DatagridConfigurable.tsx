@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useResourceContext, usePreference } from 'ra-core';
+import { useResourceContext, usePreference, useStore } from 'ra-core';
 
 import { Configurable } from '../../preferences';
 import { Datagrid, DatagridProps } from './Datagrid';
@@ -15,6 +15,23 @@ export const DatagridConfigurable = ({
         );
     }
     const resource = useResourceContext(props);
+    const finalPreferenceKey = preferenceKey || `${resource}.datagrid`;
+    const [availableColumns, setAvailableColumns] = useStore<
+        { source: string; label?: string }[]
+    >(`preferences.${finalPreferenceKey}.availableColumns`, []);
+
+    React.useEffect(() => {
+        if (availableColumns.length === 0) {
+            // first render, or the preference have been cleared
+            const columns = React.Children.map(props.children, child =>
+                React.isValidElement(child) && child.props.source
+                    ? { source: child.props.source, label: child.props.label }
+                    : null
+            ).filter(column => column != null);
+            setAvailableColumns(columns);
+        }
+    }, [availableColumns]); // eslint-disable-line react-hooks/exhaustive-deps
+
     return (
         <Configurable
             editor={
@@ -22,7 +39,7 @@ export const DatagridConfigurable = ({
                     {props.children}
                 </DatagridEditor>
             }
-            preferenceKey={preferenceKey || `${resource}.datagrid`}
+            preferenceKey={finalPreferenceKey}
             sx={{
                 display: 'block',
                 '& .MuiBadge-root': { display: 'flex' },
@@ -45,12 +62,11 @@ const DatagridWithPreferences = ({
     omit,
     ...props
 }: DatagridProps & { omit?: string[] }) => {
+    const [availableColumns] = usePreference('availableColumns', []);
     const [columns] = usePreference(
-        'colums',
-        React.Children.map(children, child =>
-            React.isValidElement(child) ? child.props.source : null
-        )
-            .filter(name => name != null)
+        'columns',
+        availableColumns
+            .map(column => column.source)
             .filter(name => !omit?.includes(name))
     );
     const columnsBySource = React.Children.toArray(children).reduce(

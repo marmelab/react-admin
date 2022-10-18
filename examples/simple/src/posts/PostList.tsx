@@ -10,10 +10,14 @@ import {
     BulkDeleteButton,
     BulkExportButton,
     ChipField,
+    ColumnsButton,
+    CreateButton,
     DatagridConfigurable,
     DateField,
     downloadCSV,
     EditButton,
+    ExportButton,
+    FilterButton,
     List,
     NumberField,
     ReferenceArrayField,
@@ -23,6 +27,7 @@ import {
     SingleFieldList,
     TextField,
     TextInput,
+    TopToolbar,
     useTranslate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
@@ -80,6 +85,15 @@ const PostListBulkActions = memo(({ children, ...props }) => (
     </Fragment>
 ));
 
+const PostListActions = () => (
+    <TopToolbar>
+        <ColumnsButton />
+        <FilterButton />
+        <CreateButton />
+        <ExportButton />
+    </TopToolbar>
+);
+
 const PostListActionToolbar = ({ children, ...props }) => (
     <Box sx={{ alignItems: 'center', display: 'flex' }}>{children}</Box>
 );
@@ -103,6 +117,7 @@ const PostList = () => {
             filters={postFilter}
             sort={{ field: 'published_at', order: 'DESC' }}
             exporter={exporter}
+            actions={<PostListActions />}
         >
             {isSmall ? (
                 <SimpleList
