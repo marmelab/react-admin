@@ -251,6 +251,19 @@ describe('<ArrayInput />', () => {
         });
     });
 
+    it('should allow to have a helperText', () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn}>
+                    <ArrayInput source="foo" helperText="test helper text">
+                        <SimpleFormIterator />
+                    </ArrayInput>
+                </SimpleForm>
+            </AdminContext>
+        );
+        expect(screen.queryByText('test helper text')).not.toBeNull();
+    });
+
     describe('used within a form with global validation', () => {
         it('should display an error if the array is required and empty', async () => {
             render(<GlobalValidation />);
