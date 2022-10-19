@@ -48,15 +48,76 @@ export const Basic = () => (
             </Box>
             <Box p={2}>
                 <DatagridConfigurable
-                    resource="books"
+                    resource="books1"
                     data={data}
                     sort={{ field: 'title', order: 'ASC' }}
                     bulkActionButtons={false}
-                    omit={['id']}
+                >
+                    <TextField source="id" />
+                    <TextField source="title" label="Original title" />
+                    <TextField source="author" />
+                    <TextField source="year" />
+                </DatagridConfigurable>
+            </Box>
+        </MemoryRouter>
+    </PreferencesEditorContextProvider>
+);
+
+export const Omit = () => (
+    <PreferencesEditorContextProvider>
+        <MemoryRouter>
+            <Inspector />
+            <Box display="flex" justifyContent="flex-end">
+                <InspectorButton />
+            </Box>
+            <Box p={2}>
+                <DatagridConfigurable
+                    resource="books2"
+                    data={data}
+                    sort={{ field: 'title', order: 'ASC' }}
+                    bulkActionButtons={false}
+                    omit={['title']}
                 >
                     <TextField source="id" />
                     <TextField source="title" label="Original title" />
                     <AuthorField />
+                    <TextField source="year" />
+                </DatagridConfigurable>
+            </Box>
+        </MemoryRouter>
+    </PreferencesEditorContextProvider>
+);
+
+export const PreferenceKey = () => (
+    <PreferencesEditorContextProvider>
+        <MemoryRouter>
+            <Inspector />
+            <Box display="flex" justifyContent="flex-end">
+                <InspectorButton />
+            </Box>
+            <Box p={2} display="flex" justifyContent="space-between">
+                <DatagridConfigurable
+                    resource="books3"
+                    data={data}
+                    sort={{ field: 'title', order: 'ASC' }}
+                    bulkActionButtons={false}
+                    preferenceKey="pref1"
+                >
+                    <TextField source="id" />
+                    <TextField source="title" label="Original title" />
+                    <TextField source="author" />
+                    <TextField source="year" />
+                </DatagridConfigurable>
+                <DatagridConfigurable
+                    resource="books3"
+                    data={data}
+                    sort={{ field: 'title', order: 'ASC' }}
+                    bulkActionButtons={false}
+                    preferenceKey="pref2"
+                >
+                    <TextField source="id" />
+                    <TextField source="title" label="Original title" />
+                    <TextField source="author" />
                     <TextField source="year" />
                 </DatagridConfigurable>
             </Box>
