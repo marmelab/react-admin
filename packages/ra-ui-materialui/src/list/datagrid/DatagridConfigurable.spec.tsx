@@ -5,7 +5,7 @@ import expect from 'expect';
 import { Basic, Omit, PreferenceKey } from './DatagridConfigurable.stories';
 
 describe('<DatagridConfigurable>', () => {
-    it('should render a datagrid with a configurable columns', async () => {
+    it('should render a datagrid with configurable columns', async () => {
         render(<Basic />);
         screen.getByLabelText('Configure mode').click();
         await screen.findByText('Inspector');
