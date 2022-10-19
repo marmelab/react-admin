@@ -797,6 +797,41 @@ const PostList = () => (
 ```
 {% endraw %}
 
+## Showing / Hiding Columns
+
+The [`<SelectColumnsButton>`](./SelectColumnsButton.md) lets users hide or show datagrid columns. 
+
+![SelectColumnsButton](./img/SelectColumnsButton.gif)
+
+```jsx
+import {
+    DatagridConfigurable,
+    List,
+    SelectColumnsButton,
+    TextField
+    TopToolbar,
+} from "react-admin";
+
+const PostListActions = () => (
+    <TopToolbar>
+        <SelectColumnsButton />
+    </TopToolbar>
+);
+
+const PostList = () => (
+    <List actions={<PostListActions />}>
+        <DatagridConfigurable>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </DatagridConfigurable>
+    </List>
+);
+```
+
+`<SelectColumnsButton>` must be used in conjunction with `<DatagridConfigurable>`, the configurable version of `<Datagrid>`, described in the next section.
+
 ## Configurable
 
 You can let end users customize the fields displayed in the `<Datagrid>` by using the `<DatagridConfigurable>` component instead.
@@ -825,7 +860,7 @@ const PostList = () => (
 );
 ```
 
-When users enter the configuration mode and select the `<Datagrid>`, they can show / hide datagrid columns.
+When users enter the configuration mode and select the `<Datagrid>`, they can show / hide datagrid columns. They can also use the [`<SelectColumnsButton>`](./SelectColumnsButton.md)
 
 By default, `<DatagridConfigurable>` renders all child fields. But you can also omit some of them by passing an `omit` prop containing an array of field sources:
 
