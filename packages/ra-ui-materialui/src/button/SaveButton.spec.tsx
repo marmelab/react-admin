@@ -414,37 +414,12 @@ describe('<SaveButton />', () => {
                     onSubmit={jest.fn}
                     defaultValues={{
                         test: 'test',
-                        arr: [
-                            {
-                                id: 123,
-                                foo: 'bar',
-                                nested: [
-                                    {
-                                        deep: '1',
-                                    },
-                                ],
-                            },
-                            {
-                                id: 456,
-                                foo: 'baz',
-                                nested: [
-                                    {
-                                        deep: '2',
-                                    },
-                                ],
-                            },
-                        ],
                     }}
                 >
                     <TextInput source="test" />
                     <ArrayInput resource="foo" source="arr">
                         <SimpleFormIterator>
                             <NumberInput source="id" />
-                            <ArrayInput resource="bar" source="arr.nested">
-                                <SimpleFormIterator>
-                                    <NumberInput source="deep" />
-                                </SimpleFormIterator>
-                            </ArrayInput>
                         </SimpleFormIterator>
                     </ArrayInput>
                 </SimpleForm>
