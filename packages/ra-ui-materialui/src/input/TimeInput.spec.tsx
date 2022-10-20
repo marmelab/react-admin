@@ -213,7 +213,7 @@ describe('<TimeInput />', () => {
             const onSubmit = jest.fn();
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={onSubmit}>
+                    <SimpleForm mode="onBlur" onSubmit={onSubmit}>
                         <TimeInput {...defaultProps} validate={required()} />
                     </SimpleForm>
                 </AdminContext>
@@ -232,7 +232,6 @@ describe('<TimeInput />', () => {
                 target: { value: '' },
             });
             fireEvent.blur(input);
-            fireEvent.click(screen.getByText('ra.action.save'));
             await waitFor(() => {
                 expect(
                     screen.queryByText('ra.validation.required')
