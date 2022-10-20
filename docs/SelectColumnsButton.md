@@ -14,7 +14,7 @@ import {
     DatagridConfigurable,
     List,
     SelectColumnsButton,
-    TextField
+    TextField,
     TopToolbar,
 } from "react-admin";
 

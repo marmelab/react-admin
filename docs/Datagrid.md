@@ -808,7 +808,7 @@ import {
     DatagridConfigurable,
     List,
     SelectColumnsButton,
-    TextField
+    TextField,
     TopToolbar,
 } from "react-admin";
 
@@ -866,7 +866,7 @@ By default, `<DatagridConfigurable>` renders all child fields. But you can also 
 
 ```jsx
 // by default, hide the id and author columns
-// users can choose to show show them in configuration mode
+// users can choose to show them in configuration mode
 const PostList = () => (
     <List>
         <DatagridConfigurable omit={['id', 'author']}>
@@ -879,7 +879,7 @@ const PostList = () => (
 );
 ```
 
-If you render more thab one `<DatagridConfigurable>` in the same page, you must pass a unique `preferenceKey` prop to each one:
+If you render more than one `<DatagridConfigurable>` in the same page, you must pass a unique `preferenceKey` prop to each one:
 
 ```jsx
 const PostList = () => (
