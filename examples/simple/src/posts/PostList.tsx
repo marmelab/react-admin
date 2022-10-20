@@ -141,7 +141,6 @@ const PostList = () => {
                         sortByOrder="DESC"
                         cellClassName="publishedAt"
                     />
-
                     <BooleanField
                         source="commentable"
                         label="resources.posts.fields.commentable_short"

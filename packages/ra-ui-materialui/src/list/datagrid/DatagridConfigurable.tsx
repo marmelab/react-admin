@@ -50,18 +50,18 @@ export const DatagridConfigurable = ({
     );
 
     React.useEffect(() => {
-        if (availableColumns.length === 0) {
-            // first render, or the preference have been cleared
-            const columns = React.Children.map(props.children, (child, index) =>
-                React.isValidElement(child) &&
-                (child.props.source || child.props.label)
-                    ? {
-                          index: String(index),
-                          source: child.props.source,
-                          label: child.props.label,
-                      }
-                    : null
-            ).filter(column => column != null);
+        // first render, or the preference have been cleared
+        const columns = React.Children.map(props.children, (child, index) =>
+            React.isValidElement(child) &&
+            (child.props.source || child.props.label)
+                ? {
+                      index: String(index),
+                      source: child.props.source,
+                      label: child.props.label,
+                  }
+                : null
+        ).filter(column => column != null);
+        if (JSON.stringify(columns) !== JSON.stringify(availableColumns)) {
             setAvailableColumns(columns);
             setOmit(omit);
         }
