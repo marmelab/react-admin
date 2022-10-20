@@ -66,7 +66,8 @@ export const SaveButton = <RecordType extends RaRecord = any>(
     const form = useFormContext();
     const saveContext = useSaveContext();
     const { dirtyFields, isValidating, isSubmitting } = useFormState();
-    const isDirty = Object.keys(dirtyFields).length;
+    // useFormState().isDirty might differ from useFormState().dirtyFields (https://github.com/react-hook-form/react-hook-form/issues/4740)
+    const isDirty = Object.keys(dirtyFields).length > 0;
     // Use form isDirty, isValidating and form context saving to enable or disable the save button
     // if alwaysEnable is undefined
     const disabled = valueOrDefault(
