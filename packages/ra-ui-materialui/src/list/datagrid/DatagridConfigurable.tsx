@@ -76,6 +76,7 @@ export const DatagridConfigurable = ({
                 '& .MuiBadge-root': { display: 'flex' },
                 '& .RaDatagrid-root': { flex: 1 },
                 '& .MuiBadge-badge': { zIndex: 2 },
+                minHeight: 2,
             }}
         >
             <DatagridWithPreferences {...props} />
