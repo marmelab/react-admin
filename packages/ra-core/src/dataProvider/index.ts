@@ -17,6 +17,7 @@ export * from './useGetList';
 export * from './useGetMany';
 export * from './useGetManyAggregate';
 export * from './useGetManyReference';
+export * from './useGetRecordId';
 export * from './useCreate';
 export * from './useUpdate';
 export * from './useUpdateMany';
