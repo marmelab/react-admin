@@ -13,6 +13,7 @@ It can be useful in case you want the ability to show a record linked by a refer
 
 Below is an example of an `<Edit>` view, inside which is a nested `<Datagrid>`, offering the ability to **create**, **edit** and **show** the rows thanks to `<CreateInDialogButton>`, `<EditInDialogButton>` and `<ShowInDialogButton>`:
 
+{% raw %}
 ```jsx
 import React from "react";
 import {
@@ -122,6 +123,7 @@ const EmployerEdit = () => (
   </Edit>
 );
 ```
+{% endraw %}
 
 Check out [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createindialogbutton-editindialogbutton-and-showindialogbutton) for more details.
 

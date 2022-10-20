@@ -11,10 +11,63 @@ It can be useful in case you want the ability to edit a record linked by a refer
 
 ![EditInDialogButton](https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.gif)
 
-Below is an example of an `<Edit>` view, inside which is a nested `<Datagrid>`, offering the ability to **create**, **edit** and **show** the rows thanks to `<CreateInDialogButton>`, `<EditInDialogButton>` and `<ShowInDialogButton>`:
+Note that this component doesn't use routing, so it doesn't change the URL. It's therefore not possible to bookmark the edit dialog, or to link to it from another page. If you need that functionality, use [`<EditDialog>`](./EditDialog.md) instead.
+
+## Usage
+
+Put `<EditInDialogButton>` wherever you would put an `<EditButton>`, and use the same children as you would for an [`<Edit>`](./Edit.md) component (e.g. a `<SimpleForm>`): 
 
 ```jsx
-import React from "react";
+import {
+  Datagrid,
+  ReferenceManyField,
+  Show,
+  SimpleForm,
+  SimpleShowLayout,
+  TextField,
+  TextInput,
+} from "react-admin";
+import { EditInDialogButton } from "@react-admin/ra-form-layout";
+
+const CompanyShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <TextField source="name" />
+            <TextField source="address" />
+            <TextField source="city" />
+            <ReferenceManyField target="company_id" reference="employees">
+                <Datagrid>
+                    <TextField source="first_name" />
+                    <TextField source="last_name" />
+                    <EditInDialogButton>
+                        <SimpleForm>
+                            <TextInput source="first_name" />
+                            <TextInput source="last_name" />
+                        </SimpleForm>
+                    </EditInDialogButton>
+                </Datagrid>
+            </ReferenceManyField>
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+It accepts the following props:
+
+* `inline`: set to true to display only an MUI `<IconButton>` instead of the full `<Button>`. The label will still be available as a `<Tooltip>` though.
+* `icon`: allows to override the default icon.
+* `label`: allows to override the default button label. I18N is supported.
+* `ButtonProps`: object containing props to pass to MUI's `<Button>`.
+* remaining props will be passed to the [`<EditDialog>`](./EditDialog.md) dialog component.
+
+Check out [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createindialogbutton-editindialogbutton-and-showindialogbutton) for more details.
+
+## Combining With `<CreateInDialogButton>`
+
+Below is an example of an `<Edit>` view, inside which is a nested `<Datagrid>`, offering the ability to **create**, **edit** and **show** the rows thanks to [`<CreateInDialogButton>`](./CreateInDialogButton.md), `<EditInDialogButton>` and [`<ShowInDialogButton>`](./ShowInDialogButton.md):
+
+{% raw %}
+```jsx
 import {
   Datagrid,
   DateField,
@@ -122,6 +175,6 @@ const EmployerEdit = () => (
   </Edit>
 );
 ```
+{% endraw %}
 
-Check out [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createindialogbutton-editindialogbutton-and-showindialogbutton) for more details.
 
