@@ -722,7 +722,7 @@ const MyToolbar = () => {
     const { getValues } = useFormContext();
     const redirect = useRedirect();
 
-    const onSave = e => {
+    const handleClick = e => {
         e.preventDefault(); // necessary to prevent default SaveButton submit logic
         const { id, ...data } = getValues();
         update(
@@ -734,7 +734,7 @@ const MyToolbar = () => {
 
     return (
         <Toolbar>
-            <SaveButton type="button" onClick={onSave} />
+            <SaveButton type="button" onClick={handleClick} />
             <DeleteButton />
         </Toolbar>
     );
