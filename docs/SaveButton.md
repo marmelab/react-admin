@@ -130,9 +130,82 @@ const PostCreateToolbar = () => (
 );
 ```
 
-`onClick` doesn't *replace* the default submission handler, but is instead called before it. To override the default submission handler, wrap a `<SaveButton>` in a custom [`SaveContext`](./useSaveContext.md).
+`onClick` doesn't *replace* the default submission handler, since a default `SaveButton` is a submit button, but is instead called before it. To override the default submission handler, wrap a `<SaveButton>` in a custom [`SaveContext`](./useSaveContext.md).
 
 Note that if you call `event.preventDefault()` in `onClick`, the form will not be submitted.
+This is especially usefull preventing the `<Form>` from being submited by pressing the `ENTER` key.
+By default, pressing `ENTER` in any of the form inputs submits the form - this is the expected behavior in most cases. To disable the automated form submission on enter, set the `type` prop of the `SaveButton` component to `button`.
+
+```jsx
+const MyToolbar = () => (
+    <Toolbar>
+        <SaveButton type="button" />
+        <DeleteButton />
+    </Toolbar>
+);
+
+export const PostEdit = () => (
+    <Edit>
+        <SimpleForm toolbar={<MyToolbar/>}>
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
+However, some of your custom input components (e.g. Google Maps widget) may have special handlers for the `ENTER` key. In that case, you should prevent the default handling of the event on those inputs. This would allow other inputs to still submit the form on Enter:
+
+```jsx
+export const PostEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput
+                source="name"
+                onKeyUp={event => {
+                    if (event.key === 'Enter') {
+                        event.stopPropagation();
+                    }
+                }}
+            /> 
+        </SimpleForm>
+    </Edit>
+);
+```
+
+**Tip**: `<SaveButton type="button">` does not take into account a custom `onSubmit` prop passed to the enclosing `<Form>`. If you need to override the default submit callback for a `<SaveButton type="button">`, you should include an `onClick` prop in the button.
+
+```jsx
+const MyToolbar = () => {
+    const [update] = useUpdate();
+    const { getValues } = useFormContext();
+    const redirect = useRedirect();
+
+    const handleClick = e => {
+        e.preventDefault(); // necessary to prevent default SaveButton submit logic
+        const { id, ...data } = getValues();
+        update(
+            'posts',
+            { id, data },
+            { onSuccess: () => { redirect('list'); }}
+        );
+    };
+
+    return (
+        <Toolbar>
+            <SaveButton type="button" onClick={handleClick} />
+            <DeleteButton />
+        </Toolbar>
+    );
+};
+
+export const PostEdit = () => (
+    <Edit>
+        <SimpleForm toolbar={<MyToolbar/>}>
+          ...
+        </SimpleForm>
+    </Edit>
+);
+```
 
 ## `alwaysEnable`
 
