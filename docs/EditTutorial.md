@@ -224,7 +224,7 @@ export const BookEdit = () => {
 };
 ```
 
-React-admin proposes alternative form layouts ([`<TabbedForm>`](./TabbedForm.md), [`<AccordionForm>`](./AccordionForm.md), [`<WizardForm>`](./WizardForm.md), [`<CreateDialog>, <EditDialog> & <ShowDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog-editdialog--showdialog) as well as a headless [`<LongForm>`](./LongForm.md) component.
+React-admin proposes alternative form layouts ([`<TabbedForm>`](./TabbedForm.md), [`<AccordionForm>`](./AccordionForm.md), [`<WizardForm>`](./WizardForm.md), [`<CreateDialog>, <EditDialog> & <ShowDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog-editdialog--showdialog) as well as a headless [`<Form>`](./Form.md) component.
 
 ### Using Input Components
 
