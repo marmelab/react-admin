@@ -130,7 +130,7 @@ const PostCreateToolbar = () => (
 );
 ```
 
-`onClick` it doesn't *replace* the default submission handler, but is instead called before it. To override the default submission handler, wrap a `<SaveButton>` in a custom [`SaveContext`](./useSaveContext.md).
+`onClick` doesn't *replace* the default submission handler, but is instead called before it. To override the default submission handler, wrap a `<SaveButton>` in a custom [`SaveContext`](./useSaveContext.md).
 
 Note that if you call `event.preventDefault()` in `onClick`, the form will not be submitted.
 
