@@ -133,7 +133,7 @@ const PostCreateToolbar = () => (
 `onClick` doesn't *replace* the default submission handler, since a default `SaveButton` is a submit button, but is instead called before it. To override the default submission handler, wrap a `<SaveButton>` in a custom [`SaveContext`](./useSaveContext.md).
 
 Note that if you call `event.preventDefault()` in `onClick`, the form will not be submitted.
-This is especially usefull preventing the `<Form>` from being submited by pressing the `ENTER` key.
+This is especially useful preventing the `<Form>` from being submitted by pressing the `ENTER` key.
 By default, pressing `ENTER` in any of the form inputs submits the form - this is the expected behavior in most cases. To disable the automated form submission on enter, set the `type` prop of the `SaveButton` component to `button`.
 
 ```jsx
