@@ -69,7 +69,7 @@ Check [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/mo
 
 ## Usage Without Routing
 
-By default, `<EditDialog>` creates a react-router `<Route>` for the creation path (e.g. `/posts/create`), and renders when users go to that location (either by clicking on a `<CreateButton>`, or by typing the URL in the browser). If you embed it in the `list` page as explained above, the dialog will always render on top of the list. 
+By default, `<CreateDialog>` creates a react-router `<Route>` for the creation path (e.g. `/posts/create`), and renders when users go to that location (either by clicking on a `<CreateButton>`, or by typing the URL in the browser). If you embed it in the `list` page as explained above, the dialog will always render on top of the list. 
 
 This may not be what you want if you need to display the creation dialog in another page (e.g. to create a related record).
 
