@@ -1,5 +1,19 @@
 # Changelog
 
+## v4.4.4
+
+* Fix `<ArrayInput>` throws an error when providing a helperText ([#8276](https://github.com/marmelab/react-admin/pull/8276)) ([slax57](https://github.com/slax57))
+* Fix `<ArrayInput>` makes edited form always dirty on input blur ([#8275](https://github.com/marmelab/react-admin/pull/8275)) ([WiXSL](https://github.com/WiXSL))
+* Fix label position config in `<CheckboxGroupInput>` ([#8260](https://github.com/marmelab/react-admin/pull/8260)) ([zhujinxuan](https://github.com/zhujinxuan))
+* Fix `warnWhenUnsavedChange` crashes the app when using `react-router` >= 6.4 ([#8272](https://github.com/marmelab/react-admin/pull/8272)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `useGetRecordId` missing export ([#8283](https://github.com/marmelab/react-admin/pull/8283)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix missing upgrade information about `<Field>` in `<SimpleForm>` ([#8280](https://github.com/marmelab/react-admin/pull/8280)) ([clement-escolano](https://github.com/clement-escolano))
+* [Doc] Add `<CreateInDialogButton>`, `<EditInDialogButton>` and `<ShowInDialogButton>` to docs ([#8271](https://github.com/marmelab/react-admin/pull/8271)) ([slax57](https://github.com/slax57))
+* [Doc] Fix links to `<EditInDialogButton>` and `<CreateInDialogButton>` ([#8284](https://github.com/marmelab/react-admin/pull/8284)) ([fzaninotto](https://github.com/fzaninotto))
+* Bump prismjs from 1.25.0 to 1.27.0 ([#8268](https://github.com/marmelab/react-admin/pull/8268)) ([dependabot](https://github.com/dependabot))
+* Bump node-forge from 1.2.1 to 1.3.1 ([#8267](https://github.com/marmelab/react-admin/pull/8267)) ([dependabot](https://github.com/dependabot))
+* Bump async from 2.6.3 to 2.6.4 ([#8266](https://github.com/marmelab/react-admin/pull/8266)) ([dependabot](https://github.com/dependabot))
+
 ## v4.4.3
 
 * Fix `<Loading>` component doesn't translate messages ([#8269](https://github.com/marmelab/react-admin/8269)) ([WiXSL](https://github.com/WiXSL))
@@ -540,8 +554,8 @@ Many thanks to all the contributors (whether they helped developing, testing, do
 * Fix `useGetMany` loading/loaded state does not change when query updated ([#6913](https://github.com/marmelab/react-admin/pull/6913)) ([WiXSL](https://github.com/WiXSL))
 * Fix `<BulkUpdateButton>` color ([#7303](https://github.com/marmelab/react-admin/pull/7303)) ([WiXSL](https://github.com/WiXSL))
 * Fix `<AutocompleteInput optionText>` returning an element throws error ([#7289](https://github.com/marmelab/react-admin/pull/7289)) ([WiXSL](https://github.com/WiXSL))
-* Bump `url-parse` from 1.5.7 to 1.5.10  dependencies([#7313](https://github.com/marmelab/react-admin/pull/7313)) ([dependabot bot](https://github.com/dependabot bot))
-* Bump `url-parse` from 1.5.3 to 1.5.7  dependencies([#7263](https://github.com/marmelab/react-admin/pull/7263)) ([dependabot bot](https://github.com/dependabot bot))
+* Bump `url-parse` from 1.5.7 to 1.5.10  dependencies([#7313](https://github.com/marmelab/react-admin/pull/7313)) ([dependabot](https://github.com/dependabot))
+* Bump `url-parse` from 1.5.3 to 1.5.7  dependencies([#7263](https://github.com/marmelab/react-admin/pull/7263)) ([dependabot](https://github.com/dependabot))
 * [Doc] Add missing import in Unit Testing doc ([#7434](https://github.com/marmelab/react-admin/pull/7434)) ([ValentinnDimitroff](https://github.com/ValentinnDimitroff))
 * [Doc] Remove deprecated props and unused imports ([#7413](https://github.com/marmelab/react-admin/pull/7413)) ([takayukioda](https://github.com/takayukioda))
 * [Doc] Fix `<Datagrid>` example ([#7375](https://github.com/marmelab/react-admin/pull/7375)) ([WiXSL](https://github.com/WiXSL))
