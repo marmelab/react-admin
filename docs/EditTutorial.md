@@ -740,15 +740,13 @@ const MyToolbar = () => {
     );
 };
 
-export const PostEdit = () => {
-    return (
-        <Edit>
-            <SimpleForm toolbar={<MyToolbar/>}>
-                ...
-            </SimpleForm>
-        </Edit>
-    );
-};
+export const PostEdit = () => (
+    <Edit>
+        <SimpleForm toolbar={<MyToolbar/>}>
+          ...
+        </SimpleForm>
+    </Edit>
+);
 ```
 
 ## Adding Fields With Labels
