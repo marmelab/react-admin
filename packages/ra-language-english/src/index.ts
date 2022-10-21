@@ -38,6 +38,7 @@ const englishMessages: TranslationMessages = {
             move_down: 'Move down',
             open: 'Open',
             toggle_theme: 'Toggle Theme',
+            select_columns: 'Columns',
         },
         boolean: {
             true: 'Yes',

@@ -31,55 +31,18 @@ const DatagridLoading = ({
     const oneSecondHasPassed = useTimeout(1000);
 
     return oneSecondHasPassed ? (
-        <Table className={clsx(DatagridClasses.table, className)} size={size}>
-            <TableHead>
-                <TableRow className={DatagridClasses.row}>
-                    {expand && (
-                        <TableCell
-                            padding="none"
-                            className={DatagridClasses.expandHeader}
-                        />
-                    )}
-                    {hasBulkActions && (
-                        <TableCell
-                            padding="checkbox"
-                            className={DatagridClasses.expandIconCell}
-                        >
-                            <Checkbox
-                                className="select-all"
-                                color="primary"
-                                checked={false}
-                            />
-                        </TableCell>
-                    )}
-                    {times(nbChildren, key => (
-                        <TableCell
-                            variant="head"
-                            className={DatagridClasses.headerCell}
-                            key={key}
-                        >
-                            <Placeholder />
-                        </TableCell>
-                    ))}
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                {times(nbFakeLines, key1 => (
-                    <TableRow key={key1} style={{ opacity: 1 / (key1 + 1) }}>
+        <div className={DatagridClasses.root}>
+            <Table
+                className={clsx(DatagridClasses.table, className)}
+                size={size}
+            >
+                <TableHead>
+                    <TableRow className={DatagridClasses.row}>
                         {expand && (
                             <TableCell
                                 padding="none"
-                                className={DatagridClasses.expandIconCell}
-                            >
-                                <IconButton
-                                    className={DatagridClasses.expandIcon}
-                                    component="div"
-                                    aria-hidden="true"
-                                    size="large"
-                                >
-                                    <ExpandMoreIcon />
-                                </IconButton>
-                            </TableCell>
+                                className={DatagridClasses.expandHeader}
+                            />
                         )}
                         {hasBulkActions && (
                             <TableCell
@@ -93,18 +56,63 @@ const DatagridLoading = ({
                                 />
                             </TableCell>
                         )}
-                        {times(nbChildren, key2 => (
+                        {times(nbChildren, key => (
                             <TableCell
-                                className={DatagridClasses.rowCell}
-                                key={key2}
+                                variant="head"
+                                className={DatagridClasses.headerCell}
+                                key={key}
                             >
                                 <Placeholder />
                             </TableCell>
                         ))}
                     </TableRow>
-                ))}
-            </TableBody>
-        </Table>
+                </TableHead>
+                <TableBody>
+                    {times(nbFakeLines, key1 => (
+                        <TableRow
+                            key={key1}
+                            style={{ opacity: 1 / (key1 + 1) }}
+                        >
+                            {expand && (
+                                <TableCell
+                                    padding="none"
+                                    className={DatagridClasses.expandIconCell}
+                                >
+                                    <IconButton
+                                        className={DatagridClasses.expandIcon}
+                                        component="div"
+                                        aria-hidden="true"
+                                        size="large"
+                                    >
+                                        <ExpandMoreIcon />
+                                    </IconButton>
+                                </TableCell>
+                            )}
+                            {hasBulkActions && (
+                                <TableCell
+                                    padding="checkbox"
+                                    className={DatagridClasses.expandIconCell}
+                                >
+                                    <Checkbox
+                                        className="select-all"
+                                        color="primary"
+                                        checked={false}
+                                    />
+                                </TableCell>
+                            )}
+                            {times(nbChildren, key2 => (
+                                <TableCell
+                                    className={DatagridClasses.rowCell}
+                                    key={key2}
+                                >
+                                    <Placeholder />
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </div>
     ) : null;
 };
 
