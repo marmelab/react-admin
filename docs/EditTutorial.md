@@ -679,8 +679,8 @@ const Form = ({ onSubmit }) => {
 By default, pressing `ENTER` in any of the form inputs submits the form - this is the expected behavior in most cases. To disable the automated form submission on enter, set the `type` prop of the `SaveButton` component to `button`.
 
 ```jsx
-const MyToolbar = props => (
-    <Toolbar {...props}>
+const MyToolbar = () => (
+    <Toolbar>
         <SaveButton type="button" />
         <DeleteButton />
     </Toolbar>
@@ -717,8 +717,8 @@ export const PostEdit = () => (
 **Important**: This approach isn't compatible with a custom `onSubmit` prop passed to your form, for that use case, you should pass an `onClick` handler to the `SaveButton` instead.
 
 ```jsx
-const PostCreateToolbar = () => {
-    const [create] = useCreate();
+const MyToolbar = () => {
+    const [update] = useUpdate();
     const { getValues } = useFormContext();
     const redirect = useRedirect();
 
@@ -728,14 +728,11 @@ const PostCreateToolbar = () => {
                 type="button"
                 onClick={e => {
                     e.preventDefault(); // necessary to prevent default SaveButton submit logic
-                    create(
+                    const { id, ...data } = getValues();
+                    update(
                         'posts',
-                        { data: getValues() },
-                        {
-                            onSuccess: data => {
-                                redirect('list');
-                            },
-                        }
+                        { id, data },
+                        { onSuccess: () => { redirect('list'); }}
                     );
                 }}
             />
@@ -744,13 +741,13 @@ const PostCreateToolbar = () => {
     );
 };
 
-export const PostCreate = () => {
+export const PostEdit = () => {
     return (
-        <Create>
-            <SimpleForm toolbar={<PostCreateToolbar />}>
+        <Edit>
+            <SimpleForm toolbar={<MyToolbar />}>
                 ...
             </SimpleForm>
-        </Create>
+        </Edit>
     );
 };
 ```
