@@ -40,7 +40,7 @@ export const DatagridConfigurable = ({
     const finalPreferenceKey = preferenceKey || `${resource}.datagrid`;
 
     const [availableColumns, setAvailableColumns] = useStore<
-        { index: string; source: string; label?: string }[]
+        ConfigurableDatagridColumn[]
     >(`preferences.${finalPreferenceKey}.availableColumns`, []);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -69,7 +69,7 @@ export const DatagridConfigurable = ({
 
     return (
         <Configurable
-            editor={<DatagridEditor>{props.children}</DatagridEditor>}
+            editor={<DatagridEditor />}
             preferenceKey={finalPreferenceKey}
             sx={{
                 display: 'block',
@@ -84,7 +84,7 @@ export const DatagridConfigurable = ({
     );
 };
 
-export type DatagridConfigurableProps = DatagridProps & {
+export interface DatagridConfigurableProps extends DatagridProps {
     /**
      * Key to use to store the user's preferences for this datagrid.
      *
@@ -110,7 +110,13 @@ export type DatagridConfigurableProps = DatagridProps & {
      * );
      */
     omit?: string[];
-};
+}
+
+export interface ConfigurableDatagridColumn {
+    index: string;
+    source: string;
+    label?: string;
+}
 
 DatagridConfigurable.propTypes = Datagrid.propTypes;
 

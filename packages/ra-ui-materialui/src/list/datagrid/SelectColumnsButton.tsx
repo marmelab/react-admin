@@ -4,6 +4,7 @@ import { Box, Button, Popover } from '@mui/material';
 import ViewWeekIcon from '@mui/icons-material/ViewWeek';
 
 import { FieldEditor } from './FieldEditor';
+import { ConfigurableDatagridColumn } from './DatagridConfigurable';
 
 /**
  * Render s a button that lets users show / hide columns in a configurable datagrid
@@ -33,9 +34,10 @@ export const SelectColumnsButton = props => {
     const preferenceKey =
         props.preferenceKey || `preferences.${resource}.datagrid`;
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const [availableColumns] = useStore<
-        { index: string; source: string; label?: string }[]
-    >(`${preferenceKey}.availableColumns`, []);
+    const [availableColumns] = useStore<ConfigurableDatagridColumn[]>(
+        `${preferenceKey}.availableColumns`,
+        []
+    );
     const [omit] = useStore<string[]>(`${preferenceKey}.omit`, []);
     const [columns, setColumns] = useStore<string[]>(
         `${preferenceKey}.columns`,

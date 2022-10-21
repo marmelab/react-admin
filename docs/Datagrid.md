@@ -695,6 +695,7 @@ The `<Datagrid>` component accepts the usual `className` prop. You can also over
 
 | Rule name                      | Description                                      |
 | ------------------------------ |--------------------------------------------------|
+| `& .RaDatagrid-root`           | Applied to the root div element                  |
 | `& .RaDatagrid-tableWrapper`   | Applied to the div that wraps table element      |
 | `& .RaDatagrid-table`          | Applied to the table element                     |
 | `& .RaDatagrid-thead`          | Applied to the table header                      |

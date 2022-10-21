@@ -2,13 +2,17 @@ import * as React from 'react';
 import { usePreference, useSetInspectorTitle, useTranslate } from 'ra-core';
 import { Box, Button } from '@mui/material';
 
+import { ConfigurableDatagridColumn } from './DatagridConfigurable';
 import { FieldEditor } from './FieldEditor';
 
-export const DatagridEditor = (props: { children: React.ReactNode }) => {
+export const DatagridEditor = () => {
     const translate = useTranslate();
     useSetInspectorTitle('ra.inspector.datagrid', { _: 'Datagrid' });
 
-    const [availableColumns] = usePreference('availableColumns', []);
+    const [availableColumns] = usePreference<ConfigurableDatagridColumn[]>(
+        'availableColumns',
+        []
+    );
     const [omit] = usePreference('omit', []);
 
     const [columns, setColumns] = usePreference(
