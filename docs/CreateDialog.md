@@ -77,7 +77,7 @@ In that case, use [the `<CreateInDialogButton>` component](./CreateInDialogButto
 
 ![CreateInDialogButton](https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/CreateInDialogButton.gif)
 
-Put `<CreateInDialogButton>` wherever you would put a `<CreateButton>`, and use the same children as you would for a `<Create>` component (e.g. a `<SimpleForm>`): 
+Put `<CreateInDialogButton>` wherever you would put a `<CreateButton>`, and use the same children as you would for a `<Create>` component (e.g. a `<SimpleForm>`). Don't forget to preset the `record` prop if you want to initialize the form with a foreign key.
 
 ```jsx
 import {
@@ -88,6 +88,7 @@ import {
   SimpleShowLayout,
   TextField,
   TextInput,
+  WithRecord,
 } from "react-admin";
 import { CreateInDialogButton } from "@react-admin/ra-form-layout";
 
@@ -98,12 +99,14 @@ const CompanyShow = () => (
             <TextField source="address" />
             <TextField source="city" />
             <ReferenceManyField target="company_id" reference="employees">
-                <CreateInDialogButton>
-                    <SimpleForm>
-                        <TextInput source="first_name" />
-                        <TextInput source="last_name" />
-                    </SimpleForm>
-                </CreateInDialogButton>
+                <WithRecord render={record => (
+                    <CreateInDialogButton record={{ company_id: record.id }}>
+                        <SimpleForm>
+                            <TextInput source="first_name" />
+                            <TextInput source="last_name" />
+                        </SimpleForm>
+                    </CreateInDialogButton>
+                )} />
                 <Datagrid>
                     <TextField source="first_name" />
                     <TextField source="last_name" />
@@ -113,3 +116,5 @@ const CompanyShow = () => (
     </Show>
 );
 ```
+
+In the above example, `<CreateInDialogButton>` is used to create a new employee for the current company. [The `<WithRecord>` component](./WithRecord.md) helps to set the new employee company id by default.

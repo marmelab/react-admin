@@ -26,6 +26,7 @@ import {
   SimpleShowLayout,
   TextField,
   TextInput,
+  WithRecord,
 } from "react-admin";
 import { CreateInDialogButton } from "@react-admin/ra-form-layout";
 
@@ -36,12 +37,14 @@ const CompanyShow = () => (
             <TextField source="address" />
             <TextField source="city" />
             <ReferenceManyField target="company_id" reference="employees">
-                <CreateInDialogButton>
-                    <SimpleForm>
-                        <TextInput source="first_name" />
-                        <TextInput source="last_name" />
-                    </SimpleForm>
-                </CreateInDialogButton>
+                <WithRecord render={record => (
+                    <CreateInDialogButton record={{ company_id: record.id }}>
+                        <SimpleForm>
+                            <TextInput source="first_name" />
+                            <TextInput source="last_name" />
+                        </SimpleForm>
+                    </CreateInDialogButton>
+                )} />
                 <Datagrid>
                     <TextField source="first_name" />
                     <TextField source="last_name" />
@@ -52,7 +55,9 @@ const CompanyShow = () => (
 );
 ```
 
-It accepts the following props:
+In the above example, `<CreateInDialogButton>` is used to create a new employee for the current company. [The `<WithRecord>` component](./WithRecord.md) helps to set the new employee company id by default.
+
+`<CreateInDialogButton>` accepts the following props:
 
 * `inline`: set to true to display only an MUI `<IconButton>` instead of the full `<Button>`. The label will still be available as a `<Tooltip>` though.
 * `icon`: allows to override the default icon.
