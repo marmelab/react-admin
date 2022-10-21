@@ -714,7 +714,7 @@ export const PostEdit = () => (
 );
 ```
 
-**Important**: By default, `SaveButton` with type="button" will save the form using the `SaveContext` (which is automatically provided by `Edit` or `Create`). If you have set a custom `onSubmit` prop on your `Form`, it won't be called. Instead, you should pass an `onClick` handler to the `SaveButton` to call your function instead of the default save function.
+**Tip**: `<SaveButton type="button">` does not take into account a custom `onSubmit` prop passed to the enclosing `<Form>`. If you need to override the default submit callback for a `<SaveButton type="button">`, you should include an `onClick` prop in the button.
 
 ```jsx
 const MyToolbar = () => {
