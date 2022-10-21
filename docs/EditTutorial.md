@@ -714,6 +714,47 @@ export const PostEdit = () => (
 );
 ```
 
+**Important**: This approach isn't compatible with a custom `onSubmit` prop passed to your form, for that use case, you should pass an `onClick` handler to the `SaveButton` instead.
+
+```jsx
+const PostCreateToolbar = () => {
+    const [create] = useCreate();
+    const { getValues } = useFormContext();
+    const redirect = useRedirect();
+
+    return (
+        <Toolbar>
+            <SaveButton
+                type="button"
+                onClick={e => {
+                    e.preventDefault(); // necessary to prevent default SaveButton submit logic
+                    create(
+                        'posts',
+                        { data: getValues() },
+                        {
+                            onSuccess: data => {
+                                redirect('list');
+                            },
+                        }
+                    );
+                }}
+            />
+            <DeleteButton />
+        </Toolbar>
+    );
+};
+
+export const PostCreate = () => {
+    return (
+        <Create>
+            <SimpleForm toolbar={<PostCreateToolbar />}>
+                ...
+            </SimpleForm>
+        </Create>
+    );
+};
+```
+
 ## Adding Fields With Labels
 
 All react-admin inputs handle the display of their label by wrapping their content inside a `<Labeled>` component.
