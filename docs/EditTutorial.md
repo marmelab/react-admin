@@ -714,7 +714,7 @@ export const PostEdit = () => (
 );
 ```
 
-**Important**: This approach isn't compatible with a custom `onSubmit` prop passed to your form, for that use case, you should pass an `onClick` handler to the `SaveButton` instead.
+**Important**: Having a `SaveButton` of type="button" prevents a custom `onSubmit` prop passed to your form from being called, you should pass an `onClick` handler to the `SaveButton` instead.
 
 ```jsx
 const MyToolbar = () => {
@@ -722,20 +722,19 @@ const MyToolbar = () => {
     const { getValues } = useFormContext();
     const redirect = useRedirect();
 
+    const onSave = e => {
+        e.preventDefault(); // necessary to prevent default SaveButton submit logic
+        const { id, ...data } = getValues();
+        update(
+            'posts',
+            { id, data },
+            { onSuccess: () => { redirect('list'); }}
+        );
+    };
+
     return (
         <Toolbar>
-            <SaveButton
-                type="button"
-                onClick={e => {
-                    e.preventDefault(); // necessary to prevent default SaveButton submit logic
-                    const { id, ...data } = getValues();
-                    update(
-                        'posts',
-                        { id, data },
-                        { onSuccess: () => { redirect('list'); }}
-                    );
-                }}
-            />
+            <SaveButton type="button" onClick={onSave} />
             <DeleteButton />
         </Toolbar>
     );
@@ -744,7 +743,7 @@ const MyToolbar = () => {
 export const PostEdit = () => {
     return (
         <Edit>
-            <SimpleForm toolbar={<MyToolbar />}>
+            <SimpleForm toolbar={<MyToolbar/>}>
                 ...
             </SimpleForm>
         </Edit>
