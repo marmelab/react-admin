@@ -125,10 +125,9 @@ By default, the `<SimpleForm>` calls the `save` callback passed to it by the edi
 
 ```jsx
 export const PostCreate = () => {
-    const { id } = useParams();
     const [create] = useCreate();
     const postSave = (data) => {
-        create('posts', { id, data });
+        create('posts', { data });
     };
     return (
         <Create>

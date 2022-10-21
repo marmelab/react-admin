@@ -119,10 +119,9 @@ By default, the `<Form>` calls the `save` callback passed to it by the edit or c
 
 ```jsx
 export const PostCreate = () => {
-    const { id } = useParams();
     const [create] = useCreate();
     const postSave = (data) => {
-        create('posts', { id, data });
+        create('posts', { data });
     };
     return (
         <Create>
