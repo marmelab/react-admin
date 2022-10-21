@@ -672,6 +672,8 @@ const Form = ({ onSubmit }) => {
 
 **Tip**: You can customize the message displayed in the confirm dialog by setting the `ra.message.unsaved_changes` message in your i18nProvider.
 
+**Warning**: This feature only works if you have a dependency on react-router 6.3.0 **at most**. The react-router team disabled this possibility in react-router 6.4, so `warnWhenUnsavedChanges` will silently fail with react-router 6.4 or later.
+
 ## Submit On Enter
 
 By default, pressing `ENTER` in any of the form inputs submits the form - this is the expected behavior in most cases. To disable the automated form submission on enter, set the `type` prop of the `SaveButton` component to `button`.
@@ -839,3 +841,14 @@ This affects both the submit button, and the form submission when the user press
 
 **Tip**: The `redirect` prop is ignored if you've set the `onSuccess` prop in the `<Edit>`/`<Create>` component, or in the `<SaveButton>` component.
 
+## Nested Forms
+
+Users often need to edit data from several resources in the same form. React-admin doesn't support nested forms, but provides ways to edit related data in a user-friendly way:
+
+- [`<EditInDialogButton>`](./EditInDialogButton.md) lets users open a modal to edit a related record
+- [`<ReferenceManyInput>`](./ReferenceManyInput.md) lets users edit a list of related records
+- [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md) lets users edit a list of related records via an associative table
+
+![EditInDialogButton](https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.gif)
+
+![ReferenceManyInput](./img/reference-many-input.gif)

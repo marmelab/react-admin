@@ -29,6 +29,7 @@ import { CheckboxGroupInput } from 'react-admin';
 | `optionText`  | Optional | `string` &#124; `Function` | `name`  | Field name of record to display in the suggestion item or function which accepts the correct record as argument (`record => {string}`) |
 | `optionValue` | Optional | `string`                   | `id`    | Field name of record containing the value to use as input value                                                                        |
 | `row`         | Optional | `boolean`                  | `true`  | Display group of elements in a compact row.                                                                                            |
+| `labelPlacement` | Optional | `"bottom" `&#124;`"end"`&#124;`"start"`&#124;`"top" ` | `"end"` | The position of the checkbox label.                                                                                                    |
 
 Refer to [MUI Checkbox documentation](https://mui.com/api/checkbox/) for more details.
 

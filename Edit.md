@@ -630,3 +630,12 @@ You can do the same for error notifications, by passing a custom `onError`  call
 
 **Tip**: The notification message will be translated.
 
+## Editing A Record In A Modal
+
+`<Edit>` is designed to be a page component, passed to the `edit` prop of the `<Resource>` component. But you may want to let users edit a record from another page. 
+
+![EditDialog](https://marmelab.com/ra-enterprise/modules/assets/edit-dialog.gif)
+
+* If you want to allow edition from the `list` page, use [the `<EditDialog>` component](./EditDialog.md)
+* If you want to allow edition from another page, use [the `<EditInDialogButton>` component](./EditInDialogButton.md)
+
