@@ -9,10 +9,69 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 It can be useful in case you want the ability to create a record linked by a reference to the currently edited record, or if you have a nested `<Datagrid>` inside a `<Show>` or an `<Edit>` view. 
 
-![CreateInDialogButton](https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.gif)
+![CreateInDialogButton](https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/CreateInDialogButton.gif)
 
-Below is an example of an `<Edit>` view, inside which is a nested `<Datagrid>`, offering the ability to **create**, **edit** and **show** the rows thanks to `<CreateInDialogButton>`, `<EditInDialogButton>` and `<ShowInDialogButton>`:
+Note that this component doesn't use routing, so it doesn't change the URL. It's therefore not possible to bookmark the creation dialog, or to link to it from another page. If you need that functionality, use [`<CreateDialog>`](./CreateDialog.md) instead.
 
+## Usage
+
+Put `<CreateInDialogButton>` wherever you would put a `<CreateButton>`, and use the same children as you would for a `<Create>` component (e.g. a `<SimpleForm>`): 
+
+```jsx
+import {
+  Datagrid,
+  ReferenceManyField,
+  Show,
+  SimpleForm,
+  SimpleShowLayout,
+  TextField,
+  TextInput,
+  WithRecord,
+} from "react-admin";
+import { CreateInDialogButton } from "@react-admin/ra-form-layout";
+
+const CompanyShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <TextField source="name" />
+            <TextField source="address" />
+            <TextField source="city" />
+            <ReferenceManyField target="company_id" reference="employees">
+                <WithRecord render={record => (
+                    <CreateInDialogButton record={{ company_id: record.id }}>
+                        <SimpleForm>
+                            <TextInput source="first_name" />
+                            <TextInput source="last_name" />
+                        </SimpleForm>
+                    </CreateInDialogButton>
+                )} />
+                <Datagrid>
+                    <TextField source="first_name" />
+                    <TextField source="last_name" />
+                </Datagrid>
+            </ReferenceManyField>
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+In the above example, `<CreateInDialogButton>` is used to create a new employee for the current company. [The `<WithRecord>` component](./WithRecord.md) helps to set the new employee company id by default.
+
+`<CreateInDialogButton>` accepts the following props:
+
+* `inline`: set to true to display only an MUI `<IconButton>` instead of the full `<Button>`. The label will still be available as a `<Tooltip>` though.
+* `icon`: allows to override the default icon.
+* `label`: allows to override the default button label. I18N is supported.
+* `ButtonProps`: object containing props to pass to MUI's `<Button>`.
+* remaining props will be passed to the [`<CreateDialog>`](./CreateDialog.md) dialog component.
+
+Check out [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createindialogbutton-editindialogbutton-and-showindialogbutton) for more details.
+
+## Combining With `<EditInDialogButton>`
+
+Below is an example of an `<Edit>` view, inside which is a nested `<Datagrid>`, offering the ability to **create**, **edit** and **show** the rows thanks to `<CreateInDialogButton>`, [`<EditInDialogButton>`](./EditInDialogButton.md) and [`<ShowInDialogButton>`](./ShowInDialogButton.md):
+
+{% raw %}
 ```jsx
 import React from "react";
 import {
@@ -122,6 +181,7 @@ const EmployerEdit = () => (
   </Edit>
 );
 ```
+{% endraw %}
 
-Check out [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createindialogbutton-editindialogbutton-and-showindialogbutton) for more details.
+
 

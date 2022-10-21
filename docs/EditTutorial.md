@@ -841,3 +841,14 @@ This affects both the submit button, and the form submission when the user press
 
 **Tip**: The `redirect` prop is ignored if you've set the `onSuccess` prop in the `<Edit>`/`<Create>` component, or in the `<SaveButton>` component.
 
+## Nested Forms
+
+Users often need to edit data from several resources in the same form. React-admin doesn't support nested forms, but provides ways to edit related data in a user-friendly way:
+
+- [`<EditInDialogButton>`](./EditInDialogButton.md) lets users open a modal to edit a related record
+- [`<ReferenceManyInput>`](./ReferenceManyInput.md) lets users edit a list of related records
+- [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md) lets users edit a list of related records via an associative table
+
+![EditInDialogButton](https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.gif)
+
+![ReferenceManyInput](./img/reference-many-input.gif)
