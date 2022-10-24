@@ -45,7 +45,7 @@ By default, the possible choices are built from the `choices` prop, using:
 }
 ```
 
-You can use `<CheckboxGroupInput>` inside a [`<ReferenceArrayInput>`](./ReferenceArrayInput.md) or a [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md) component to let users edit a one-to-many or a many-to-many relationship. In that case, you don't need to specify the `choices` prop - the parent component injects it based on the possible values of the related resource.
+If you need to *fetch*  the options from another retource, you're actually editing a one-to-many or a many-to-many relationship. In this case, wrap the `<CheckboxGroupInput>` in a [`<ReferenceArrayInput>`](./ReferenceArrayInput.md) or a [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md) component. You don't need to specify the `choices` prop - the parent component injects it based on the possible values of the related resource.
 
 ```jsx
 <ReferenceArrayInput source="tag_ids" reference="tags">
