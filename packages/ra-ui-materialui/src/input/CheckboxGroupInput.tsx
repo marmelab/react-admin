@@ -98,6 +98,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         format,
         helperText,
         label,
+        labelPlacement,
         isLoading: isLoadingProp,
         isFetching: isFetchingProp,
         margin = 'dense',
@@ -233,6 +234,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                         optionValue={optionValue}
                         translateChoice={translateChoice}
                         value={value}
+                        labelPlacement={labelPlacement}
                         {...sanitizeRestProps(rest)}
                     />
                 ))}
