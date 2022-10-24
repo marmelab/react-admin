@@ -11,13 +11,6 @@ To let users choose a value in a list using a dropdown, use `<SelectInput>`. It 
 
 This input allows editing record fields that are scalar values, e.g. `123`, `'admin'`, etc. 
 
-**Tip**: React-admin includes other components allowing the edition of such values:
-
- - [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md) renders a list of radio buttons
- - [`<AutocompleteInput>`](./AutocompleteInput.md) renders a list of suggestions in an autocomplete input
-
-**Tip**: If you need to let users select more than one item in the list, check out the [`<SelectArrayInput>`](./SelectArrayInput.md) component.
-
 ## Usage
 
 In addition to the `source`, `<SelectInput>` requires one prop: the `choices` listing the possible values.
@@ -46,11 +39,18 @@ The form value for the source must be the selected value, e.g.
 }
 ```
 
+**Tip**: React-admin includes other components to edit such values:
+
+ - [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md) renders a list of radio buttons
+ - [`<AutocompleteInput>`](./AutocompleteInput.md) renders a list of suggestions in an autocomplete input
+
+**Tip**: If you need to let users select more than one item in the list, check out the [`<SelectArrayInput>`](./SelectArrayInput.md) component.
+
 ## Props
 
 | Prop              | Required | Type                       | Default            | Description                                                                                                                            |
 |-------------------|----------|----------------------------|--------------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| `choices`         | Optional | `Object[]`                 | -                  | List of items to show as options. Required if not inside a ReferenceInput.                                                             |
+| `choices`         | Optional | `Object[]`                 | -                  | List of items to show as options. Required unless inside a ReferenceInput.                                                             |
 | `create`          | Optional | `Element`                  | `-`                | A React Element to render when users want to create a new choice                                                                       |
 | `createLabel`     | Optional | `string`                   | `ra.action.create` | The label for the menu item allowing users to create a new choice. Used when the filter is empty                                       |
 | `disableValue`    | Optional | `string`                   | 'disabled'         | The custom field name used in `choices` to disable some choices                                                                        |
@@ -323,7 +323,7 @@ Refer to [MUI Select documentation](https://mui.com/api/select) for more details
 
 ## `optionText`
 
-You can customize the choice field to use for the option name, thanks to the `optionText` attribute:
+You can customize the property to use for the option name (instead of the default `name`) thanks to the `optionText` prop:
 
 ```jsx
 const choices = [
@@ -370,12 +370,12 @@ const FullNameField = () => {
     return <span>{record.first_name} {record.last_name}</span>;
 }
 
-<SelectInput source="gender" choices={choices} optionText={<FullNameField />}/>
+<SelectInput source="author_id" choices={choices} optionText={<FullNameField />}/>
 ```
 
 ## `optionValue`
 
-You can customize the choice field to use for the option value, thanks to the `optionValue` attribute:
+You can customize the property to use for the option value (instead of the default `id`) thanks to the `optionValue` prop:
 
 ```jsx
 const choices = [
