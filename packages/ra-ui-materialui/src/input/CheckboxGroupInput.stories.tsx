@@ -28,11 +28,19 @@ export const Basic = () => (
     <AdminContext i18nProvider={i18nProvider}>
         <Create
             resource="posts"
-            record={{ options: [1, 2] }}
+            record={{ roles: ['u001', 'u003'] }}
             sx={{ width: 600 }}
         >
             <SimpleForm>
-                <CheckboxGroupInput source="options" choices={choices} />
+                <CheckboxGroupInput
+                    source="roles"
+                    choices={[
+                        { id: 'admin', name: 'Admin' },
+                        { id: 'u001', name: 'Editor' },
+                        { id: 'u002', name: 'Moderator' },
+                        { id: 'u003', name: 'Reviewer' },
+                    ]}
+                />
             </SimpleForm>
         </Create>
     </AdminContext>
