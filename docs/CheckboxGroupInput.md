@@ -20,7 +20,7 @@ And if you are looking for a way to edit a list of embedded objects (e.g. `[{ id
 
 ## Usage
 
-In addition to the `source`, `<CheckboxGroupInput>` requires one prop: the `choices` listing the possible values:
+In addition to the `source`, `<CheckboxGroupInput>` requires one prop: the `choices` listing the possible values.
 
 ```jsx
 import { CheckboxGroupInput } from 'react-admin';
