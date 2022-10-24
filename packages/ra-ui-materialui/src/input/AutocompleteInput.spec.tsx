@@ -14,7 +14,6 @@ import { SimpleForm } from '../form';
 import { AutocompleteInput } from './AutocompleteInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import {
-    Basic,
     InsideReferenceInput,
     InsideReferenceInputDefaultValue,
     Nullable,
