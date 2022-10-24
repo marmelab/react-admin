@@ -98,11 +98,13 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         format,
         helperText,
         label,
+        labelPlacement,
         isLoading: isLoadingProp,
         isFetching: isFetchingProp,
         margin = 'dense',
         onBlur,
         onChange,
+        options,
         optionText = 'name',
         optionValue = 'id',
         parse,
@@ -227,10 +229,12 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                         choice={choice}
                         id={id}
                         onChange={handleCheck}
+                        options={options}
                         optionText={optionText}
                         optionValue={optionValue}
                         translateChoice={translateChoice}
                         value={value}
+                        labelPlacement={labelPlacement}
                         {...sanitizeRestProps(rest)}
                     />
                 ))}
@@ -275,6 +279,7 @@ export type CheckboxGroupInputProps = Omit<CommonInputProps, 'source'> &
     ChoicesProps &
     CheckboxProps &
     FormControlProps & {
+        options?: CheckboxProps;
         row?: boolean;
         // Optional as this input can be used inside a ReferenceInput
         source?: string;
@@ -292,7 +297,7 @@ const StyledFormControl = styled(FormControl, {
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     [`& .${CheckboxGroupInputClasses.label}`]: {
-        transform: 'translate(0, 8px) scale(0.75)',
+        transform: 'translate(0, 4px) scale(0.75)',
         transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
     },
 }));
