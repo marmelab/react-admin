@@ -16,7 +16,7 @@ This input allows editing values that are arrays of scalar values, e.g. `[123, 4
 - [`<SelectArrayInput>`](./SelectArrayInput.md) renders a dropdown list of choices
 - [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md) renders an autocomplete input of choices
 
-And if you are looking for a way to edit a lost of embedded objects (e.g. `[{ id: 123, title: 'bar' }, { id: 456, title: 'baz' }]`), check the [`<ArrayInput>`](./ArrayInput.md) component.
+And if you are looking for a way to edit a list of embedded objects (e.g. `[{ id: 123, title: 'Hello' }, { id: 456, title: 'World' }]`), check the [`<ArrayInput>`](./ArrayInput.md) component.
 
 ## Usage
 
