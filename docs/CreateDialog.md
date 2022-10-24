@@ -79,6 +79,7 @@ In that case, use [the `<CreateInDialogButton>` component](./CreateInDialogButto
 
 Put `<CreateInDialogButton>` wherever you would put a `<CreateButton>`, and use the same children as you would for a `<Create>` component (e.g. a `<SimpleForm>`). Don't forget to preset the `record` prop if you want to initialize the form with a foreign key.
 
+{% raw %}
 ```jsx
 import {
   Datagrid,
@@ -116,5 +117,6 @@ const CompanyShow = () => (
     </Show>
 );
 ```
+{% endraw %}
 
 In the above example, `<CreateInDialogButton>` is used to create a new employee for the current company. [The `<WithRecord>` component](./WithRecord.md) helps to set the new employee company id by default.
