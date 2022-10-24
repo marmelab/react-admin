@@ -152,7 +152,7 @@ const choices = [
 
 ## `row`
 
-By default, the checkboxes are displayed in a row. You can change that an let react-admin render one choice per row by setting the `row` prop to `false`:
+By default, the checkboxes are displayed in a row. You can change that and let react-admin render one choice per row by setting the `row` prop to `false`:
 
 ```jsx
 <CheckboxGroupInput source="gender" choices={choices} row={false} />
