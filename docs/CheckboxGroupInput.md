@@ -126,6 +126,23 @@ By default, this inputs renders a checkbox and a label for each choice, with the
 
 ![labelPlacement bottom](./img/CheckboxGroupInput-labelPlacement.png)
 
+## `options`
+
+Use the `options` attribute if you want to override any of MUI's [MUI Checkbox documentation](https://mui.com/api/checkbox/) attributes:
+
+{% raw %}
+```jsx
+import { FavoriteBorder, Favorite } from '@mui/icons-material';
+
+<CheckboxGroupInput source="options" options={{
+    icon: <FavoriteBorder />,
+    checkedIcon: <Favorite />
+}} />
+```
+{% endraw %}
+
+![row bottom](./img/CheckboxGroupInput-options.png)
+
 ## `optionText`
 
 You can customize the properties to use for the option name (instead of the default `name`) thanks to the `optionText` prop:
@@ -138,6 +155,14 @@ const choices = [
     { id: 'u003', label: 'Reviewer' },
 ];
 <CheckboxGroupInput source="roles" choices={choices} optionText="label" />
+```
+
+`optionText` is especially useful when the choices are records coming from a `<ReferenceArrayInput>` or a `<ReferenceManyToManyInput>`. By default, react-admin uses the [`recordRepresentation`](./Resource.md#recordrepresentation) function to display the record label. But if you set the `optionText` prop, react-admin will use it instead.
+
+```jsx
+<ReferenceArrayInput source="tag_ids" reference="tags">
+    <CheckboxGroupInput optionText="tag" />
+</ReferenceArrayInput>
 ```
 
 `optionText` also accepts a function, so you can shape the option text based on the entire choice object:
@@ -192,6 +217,16 @@ By default, the checkboxes are displayed in a row. You can change that and let r
 
 ![row bottom](./img/CheckboxGroupInput-row.png)
 
+## `sx`: CSS API
+
+The `<CheckboxGroupInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+
+| Rule name                       | Description                                              |
+|---------------------------------|----------------------------------------------------------|
+| `& .RaCheckboxGroupInput-label` | Applied to the underlying MUI's `FormLabel` component    |
+
+To override the style of all instances of `<CheckboxGroupInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaCheckboxGroupInput` key.
+
 ## `translateChoice`
 
 The choices are translated by default, so you can use translation identifiers as choices:
@@ -210,30 +245,3 @@ However, in some cases (e.g. inside a `<ReferenceArrayInput>`), you may not want
 ```jsx
 <CheckboxGroupInput source="roles" choices={choices} translateChoice={false}/>
 ```
-
-## `options`
-
-Use the `options` attribute if you want to override any of MUI's [MUI Checkbox documentation](https://mui.com/api/checkbox/) attributes:
-
-{% raw %}
-```jsx
-import { FavoriteBorder, Favorite } from '@mui/icons-material';
-
-<CheckboxGroupInput source="options" options={{
-    icon: <FavoriteBorder />,
-    checkedIcon: <Favorite />
-}} />
-```
-{% endraw %}
-
-![row bottom](./img/CheckboxGroupInput-options.png)
-
-## `sx`: CSS API
-
-The `<CheckboxGroupInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
-
-| Rule name                       | Description                                              |
-|---------------------------------|----------------------------------------------------------|
-| `& .RaCheckboxGroupInput-label` | Applied to the underlying MUI's `FormLabel` component    |
-
-To override the style of all instances of `<CheckboxGroupInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaCheckboxGroupInput` key.
