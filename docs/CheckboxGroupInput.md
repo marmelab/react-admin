@@ -9,7 +9,7 @@ If you want to let the user choose multiple values among a list of possible valu
 
 ![CheckboxGroupInput](./img/checkbox-group-input.png)
 
-This input allows editing values that are arrays of scalar value, e.g. `[123, 456]`. 
+This input allows editing values that are arrays of scalar values, e.g. `[123, 456]`. 
 
 **Tip**: React-admin includes other components allowing the edition of such values:
 
@@ -25,10 +25,11 @@ In addition to the `source`, `<CheckboxGroupInput>` requires one prop: the `choi
 ```jsx
 import { CheckboxGroupInput } from 'react-admin';
 
-<CheckboxGroupInput source="categories" choices={[
-    { id: 'programming', name: 'Programming' },
-    { id: 'lifestyle', name: 'Lifestyle' },
-    { id: 'photography', name: 'Photography' },
+<CheckboxGroupInput source="roles" choices={[
+    { id: 'admin', name: 'Admin' },
+    { id: 'u001', name: 'Editor' },
+    { id: 'u002', name: 'Moderator' },
+    { id: 'u003', name: 'Reviewer' },
 ]} />
 ```
 
@@ -36,16 +37,68 @@ By default, the possible choices are built from the `choices` prop, using:
   - the `id` field as the option value,
   - the `name` field as the option text
 
-  The form value for the source must be an array of the selected values, e.g.
+The form value for the source must be an array of the selected values, e.g.
 
 ```js
 {
-    "id": 123,
-    "categories": ["programming", "photography"],
+    id: 123,
+    name: 'John Doe',
+    roles: ['u001', 'u003'],
 }
 ```
 
-If you need to *fetch*  the options from another retource, you're actually editing a one-to-many or a many-to-many relationship. In this case, wrap the `<CheckboxGroupInput>` in a [`<ReferenceArrayInput>`](./ReferenceArrayInput.md) or a [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md) component. You don't need to specify the `choices` prop - the parent component injects it based on the possible values of the related resource.
+## Props
+
+| Prop              | Required | Type                       | Default | Description                                                       |
+| ----------------- | -------- | -------------------------- | ------- | ----------------------------------------------------------------- |
+| `choices`         | Required | `Object[]`                 | -       | List of choices                                                   |
+| `labelPlacement`  | Optional | `"bottom" `&#124;`"end"`&#124;`"start"`&#124;`"top" ` | `"end"` | The position of the checkbox label.    |
+| `options`         | Optional | `Object`                   | -       | Props to pass to the MUI `<CheckboxGroup>` component.             |
+| `optionText`      | Optional | `string` &#124; `Function` | `name`  | Field name of record to display in the suggestion item or function which accepts the correct record as argument (`record => {string}`) |
+| `optionValue`     | Optional | `string`                   | `id`    | Field name of record containing the value to use as input value   |
+| `row`             | Optional | `boolean`                  | `true`  | Display group of elements in a compact row.                       |
+| `translateChoice` | Optional | `boolean`                  | `true`  | Whether the choices should be translated                          |
+
+`<CheckboxGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+## `choices`
+
+The list of choices must be an array of objects - one object for each possible choice. In each object, `id` is the value, and the `name` is the label displayed to the user.
+
+```jsx
+<CheckboxGroupInput source="roles" choices={[
+    { id: 'admin', name: 'Admin' },
+    { id: 'u001', name: 'Editor' },
+    { id: 'u002', name: 'Moderator' },
+    { id: 'u003', name: 'Reviewer' },
+]} />
+```
+
+You can also use an array of objects with different properties for the label and value, given you specify the `optionText` and `optionValue` props:
+
+```jsx
+<CheckboxGroupInput source="roles" choices={[
+    { _id: 'admin', label: 'Admin' },
+    { _id: 'u001', label: 'Editor' },
+    { _id: 'u002', label: 'Moderator' },
+    { _id: 'u003', label: 'Reviewer' },
+]} optionValue="_id" optionText="label" />
+```
+
+The choices are translated by default, so you can use translation identifiers as choices:
+
+```jsx
+const choices = [
+    { id: 'admin', label: 'myroot.roles.admin' },
+    { id: 'u001', label: 'myroot.roles.u001' },
+    { id: 'u002', label: 'myroot.roles.u002' },
+    { id: 'u003', label: 'myroot.roles.u003' },
+];
+```
+
+You can opt-out of this translation by setting [the `translateChoice` prop](#translatechoice) to `false`.
+
+If you need to *fetch* the options from another resource, you're actually editing a one-to-many or a many-to-many relationship. In this case, wrap the `<CheckboxGroupInput>` in a [`<ReferenceArrayInput>`](./ReferenceArrayInput.md) or a [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md) component. You don't need to specify the `choices` prop - the parent component injects it based on the possible values of the related resource.
 
 ```jsx
 <ReferenceArrayInput source="tag_ids" reference="tags">
@@ -53,40 +106,14 @@ If you need to *fetch*  the options from another retource, you're actually editi
 </ReferenceArrayInput>
 ```
 
-## Props
-
-| Prop          | Required | Type                       | Default | Description                                                                                                                            |
-| ------------- | -------- | -------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------  |
-| `choices`     | Required | `Object[]`                 | -       | List of choices                                                                                                                        |
-| `labelPlacement` | Optional | `"bottom" `&#124;`"end"`&#124;`"start"`&#124;`"top" ` | `"end"` | The position of the checkbox label.                                                                                                    |
-| `options`     | Optional | `Object`                   | -       | Props to pass to the MUI `<CheckboxGroup>` component.  |
-| `optionText`  | Optional | `string` &#124; `Function` | `name`  | Field name of record to display in the suggestion item or function which accepts the correct record as argument (`record => {string}`) |
-| `optionValue` | Optional | `string`                   | `id`    | Field name of record containing the value to use as input value                                                                        |
-| `row`         | Optional | `boolean`                  | `true`  | Display group of elements in a compact row.                                                                                            |
-| `translateChoice` | Optional | `boolean`              | `true`  | Whether the choices should be translated                                                                                               |
-
-`<CheckboxGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props).
-
-## `choices`
-
-The list of choices is an array of objects with an `id` and a `name` property. The `id` is the value of the input, and the `name` is the label displayed to the user.
+If you have an *array of values* for the options, turn it into an array of objects with the `id` and `name` properties:
 
 ```jsx
-<CheckboxGroupInput source="category" choices={[
-    { id: 'programming', name: 'Programming' },
-    { id: 'lifestyle', name: 'Lifestyle' },
-    { id: 'photography', name: 'Photography' },
-]} />
-```
+const possibleValues = ['programming', 'lifestyle', 'photography'];
+const ucfirst = name => name.charAt(0).toUpperCase() + name.slice(1);
+const choices = possibleValues.map(value => ({ id: value, name: ucfirst(value) }));
 
-You can also use an array of objects with different properties for the `id` and the `name`, given you specify the `optionText` and `optionValue` props:
-
-```jsx
-<CheckboxGroupInput source="category" choices={[
-    { value: 123, label: 'Programming' },
-    { value: 456, label: 'Lifestyle' },
-    { value: 789, label: 'Photography' },
-]} optionValue="value" optionText="label" />
+<CheckboxGroupInput source="roles" choices={choices} />
 ```
 
 ## `labelPlacement`
@@ -105,10 +132,12 @@ You can customize the properties to use for the option name (instead of the defa
 
 ```jsx
 const choices = [
-    { id: 123, full_name: 'Leo Tolstoi' },
-    { id: 456, full_name: 'Jane Austen' },
+    { id: 'admin', label: 'Admin' },
+    { id: 'u001', label: 'Editor' },
+    { id: 'u002', label: 'Moderator' },
+    { id: 'u003', label: 'Reviewer' },
 ];
-<CheckboxGroupInput source="author_id" choices={choices} optionText="full_name" />
+<CheckboxGroupInput source="roles" choices={choices} optionText="label" />
 ```
 
 `optionText` also accepts a function, so you can shape the option text based on the entire choice object:
@@ -119,7 +148,8 @@ const choices = [
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
 ];
 const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
-<CheckboxGroupInput source="author_id" choices={choices} optionText={optionRenderer} />
+
+<CheckboxGroupInput source="authors" choices={choices} optionText={optionRenderer} />
 ```
 
 `optionText` also accepts a React Element, that will be rendered inside a [`<RecordContext>`](./useRecordContext.md) using the related choice as the `record` prop. You can use Field components there.
@@ -135,7 +165,7 @@ const FullNameField = () => {
     return <span>{record.first_name} {record.last_name}</span>;
 }
 
-<CheckboxGroupInput source="gender" choices={choices} optionText={<FullNameField />}/>
+<CheckboxGroupInput source="authors" choices={choices} optionText={<FullNameField />}/>
 ```
 
 ## `optionValue`
@@ -144,10 +174,12 @@ You can customize the properties to use for the option value (instead of the def
 
 ```jsx
 const choices = [
-    { _id: 123, name: 'Leo Tolstoi' },
-    { _id: 456, name: 'Jane Austen' },
+    { _id: 'admin', name: 'Admin' },
+    { _id: 'u001', name: 'Editor' },
+    { _id: 'u002', name: 'Moderator' },
+    { _id: 'u003', name: 'Reviewer' },
 ];
-<CheckboxGroupInput source="author_id" choices={choices} optionValue="_id" />
+<CheckboxGroupInput source="roles" choices={choices} optionValue="_id" />
 ```
 
 ## `row`
@@ -155,7 +187,7 @@ const choices = [
 By default, the checkboxes are displayed in a row. You can change that and let react-admin render one choice per row by setting the `row` prop to `false`:
 
 ```jsx
-<CheckboxGroupInput source="gender" choices={choices} row={false} />
+<CheckboxGroupInput source="options" choices={choices} row={false} />
 ```
 
 ![row bottom](./img/CheckboxGroupInput-row.png)
@@ -166,16 +198,17 @@ The choices are translated by default, so you can use translation identifiers as
 
 ```jsx
 const choices = [
-    { id: 'programming', name: 'myroot.category.programming' },
-    { id: 'lifestyle', name: 'myroot.category.lifestyle' },
-    { id: 'photography', name: 'myroot.category.photography' },
+    { id: 'admin', label: 'myroot.roles.admin' },
+    { id: 'u001', label: 'myroot.roles.u001' },
+    { id: 'u002', label: 'myroot.roles.u002' },
+    { id: 'u003', label: 'myroot.roles.u003' },
 ];
 ```
 
-However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to `false`.
+However, in some cases (e.g. inside a `<ReferenceArrayInput>`), you may not want the choice to be translated. In that case, set the `translateChoice` prop to `false`.
 
 ```jsx
-<CheckboxGroupInput source="gender" choices={choices} translateChoice={false}/>
+<CheckboxGroupInput source="roles" choices={choices} translateChoice={false}/>
 ```
 
 ## `options`
@@ -186,7 +219,7 @@ Use the `options` attribute if you want to override any of MUI's [MUI Checkbox d
 ```jsx
 import { FavoriteBorder, Favorite } from '@mui/icons-material';
 
-<CheckboxGroupInput source="category" options={{
+<CheckboxGroupInput source="options" options={{
     icon: <FavoriteBorder />,
     checkedIcon: <Favorite />
 }} />
