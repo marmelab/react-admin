@@ -5,40 +5,48 @@ title: "The ReferenceInput Component"
 
 # `<ReferenceInput>`
 
-Use `<ReferenceInput>` for foreign-key values, for instance, to edit the `post_id` of a `comment` resource. 
+Use `<ReferenceInput>` for foreign-key values, for instance, to edit the `company_id` of a `contact` resource. 
 
 ![ReferenceInput](./img/reference-input.gif)
 
 ## Usage
 
-The component expects a `source` and a `reference` attributes. For instance, to make the `post_id` for a `comment` editable:
+The component expects a `source` and a `reference` attributes. For instance, to make the `company_id` for a `contact` editable:
 
 ```jsx
 import { ReferenceInput } from 'react-admin';
 
-<ReferenceInput source="post_id" reference="posts" />
+<ReferenceInput source="company_id" reference="companies" />
 ```
 
-This component fetches the related record (using `dataProvider.getMany()`) as well as possible choices (using `dataProvider.getList()` in the reference resource). 
+This component fetches the related record (using `dataProvider.getMany()`) as well as possible choices (using `dataProvider.getList()`) in the `reference` resource. 
 
-`<ReferenceInput>` renders an [`<AutocompleteInput>`](./AutocompleteInput.md) to let the user select the related record.
+`<ReferenceInput>` renders an [`<AutocompleteInput>`](./AutocompleteInput.md) to let the user select the related record. You pass an choice input as `<ReferenceInput>` child to use it instead of an `<AutocompleteInput>` (see [`children`](#children)). For instance, to use a `<SelectInput>`:
 
-You can tweak how this component fetches the possible values using the `page`, `perPage`, `sort`, and `filter` props.
+```jsx
+import { ReferenceInput, SelectInput } from 'react-admin';
+
+<ReferenceInput source="company_id" reference="companies">
+    <SelectInput />
+</ReferenceInput>
+```
+
+You can tweak how `<ReferenceInput>` fetches the possible values using the `page`, `perPage`, `sort`, and `filter` props.
 
 ## Props
 
 | Prop               | Required | Type                                        | Default                          | Description                                                                                    |
 |--------------------|----------|---------------------------------------------|----------------------------------|------------------------------------------------------------------------------------------------|
 | `source`           | Required | `string`                                    | -                                | Name of the entity property to use for the input value                                         |
-| `label`            | Optional | `string`                                    | -                                | Useful only when `ReferenceInput` is in a Filter array, the label is used as the Filter label. |
-| `reference`        | Required | `string`                                    | ''                               | Name of the reference resource, e.g. 'posts'.                                                  |
-| `children`         | Optional | `ReactNode`                                 | `<AutocompleteInput />`          | The actual selection component                                                                 |
+| `reference`        | Required | `string`                                    | ''                               | Name of the reference resource, e.g. 'companies'.                                                  |
+| `children`         | Optional | `ReactNode`                                 | `<Autocomplete Input/>`          | The actual selection component                                                                 |
+| `enableGet Choices` | Optional | `({q: string}) => boolean`                  | `() => true`                     | Function taking the `filterValues` and returning a boolean to enable the `getList` call.       |
 | `filter`           | Optional | `Object`                                    | `{}`                             | Permanent filters to use for getting the suggestion list                                       |
+| `label`            | Optional | `string`                                    | -                                | Useful only when `ReferenceInput` is in a Filter array, the label is used as the Filter label. |
 | `page`             | Optional | `number`                                    | 1                                | The current page number                                                                        |
 | `perPage`          | Optional | `number`                                    | 25                               | Number of suggestions to show                                                                  |
-| `sort`             | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }` | How to order the list of suggestions                                                           |
-| `enableGetChoices` | Optional | `({q: string}) => boolean`                  | `() => true`                     | Function taking the `filterValues` and returning a boolean to enable the `getList` call.       |
 | `queryOptions`     | Optional | [`UseQueryOptions`](https://tanstack.com/query/v4/docs/reference/useQuery?from=reactQueryV3&original=https://react-query-v3.tanstack.com/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
+| `sort`             | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field:'id', order:'DESC' }` | How to order the list of suggestions                                                           |
 
 **Note**: `<ReferenceInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) (like `label`) ; it is the responsibility of the child component to apply them.
 
@@ -53,8 +61,8 @@ For instance, to customize the input label, set the `label` prop on the child co
 ```jsx
 import { ReferenceInput, AutocompleteInput } from 'react-admin';
 
-<ReferenceInput source="post_id" reference="posts">
-    <AutocompleteInput label="Post" />
+<ReferenceInput source="company_id" reference="companies">
+    <AutocompleteInput label="Employer" />
 </ReferenceInput>
 ```
 
@@ -63,7 +71,7 @@ You can also use [`<SelectInput>`](./SelectInput.md) or [`<RadioButtonGroupInput
 ```jsx
 import { ReferenceInput, SelectInput } from 'react-admin';
 
-<ReferenceInput source="post_id" reference="posts">
+<ReferenceInput source="company_id" reference="companies">
     <SelectInput />
 </ReferenceInput>
 ```
@@ -78,8 +86,8 @@ You can make the `getList()` call lazy by using the `enableGetChoices` prop. Thi
 
 ```jsx
 <ReferenceInput
-     source="post_id"
-     reference="posts"
+     source="company_id"
+     reference="companies"
      enableGetChoices={({ q }) => q.length >= 2}
 />
 ```
@@ -90,7 +98,7 @@ You can filter the query used to populate the possible values. Use the `filter` 
 
 {% raw %}
 ```jsx
-<ReferenceInput source="post_id" reference="posts" filter={{ is_published: true }} />
+<ReferenceInput source="company_id" reference="companies" filter={{ is_published: true }} />
 ```
 {% endraw %}
 
@@ -105,7 +113,7 @@ For instance, if you want to transform an option value before rendering, and the
 ```jsx
 import { ReferenceInput, AutocompleteInput } from 'react-admin';
 
-<ReferenceInput source="post_id" reference="posts">
+<ReferenceInput source="company_id" reference="companies">
     <AutocompleteInput format={value => value == null ? 'not defined' : value} />
 </ReferenceInput>
 ```
@@ -115,7 +123,7 @@ The same goes if the child is a `<SelectInput>`:
 ```jsx
 import { ReferenceInput, SelectInput } from 'react-admin';
 
-<ReferenceInput source="post_id" reference="posts">
+<ReferenceInput source="company_id" reference="companies">
     <SelectInput format={value => value === undefined ? 'not defined' : null} />
 </ReferenceInput>
 ```
@@ -127,8 +135,8 @@ In an `<Edit>` or `<Create>` view, the `label` prop has no effect. `<ReferenceIn
 ```jsx
 import { ReferenceInput, AutocompleteInput } from 'react-admin';
 
-<ReferenceInput source="post_id" reference="posts">
-    <AutocompleteInput label="Post" />
+<ReferenceInput source="company_id" reference="companies">
+    <AutocompleteInput label="Employer" />
 </ReferenceInput>
 ```
 
@@ -136,8 +144,8 @@ In a Filter form, react-admin uses the `label` prop to set the Filter label. So 
 
 ```jsx
 const filters = [
-    <ReferenceInput label="Post" source="post_id" reference="posts">
-        <AutocompleteInput label="Post" />
+    <ReferenceInput label="Employer" source="company_id" reference="companies">
+        <AutocompleteInput label="Employer" />
     </ReferenceInput>,
 ];
 ```
@@ -153,7 +161,7 @@ For instance, if you want to transform an option value before submission, and th
 ```jsx
 import { ReferenceInput, AutocompleteInput } from 'react-admin';
 
-<ReferenceInput source="post_id" reference="posts">
+<ReferenceInput source="company_id" reference="companies">
     <AutocompleteInput parse={value => value === 'not defined' ? null : value} />
 </ReferenceInput>
 ```
@@ -163,7 +171,7 @@ The same goes if the child is a `<SelectInput>`:
 ```jsx
 import { ReferenceInput, SelectInput } from 'react-admin';
 
-<ReferenceInput source="post_id" reference="posts">
+<ReferenceInput source="company_id" reference="companies">
     <SelectInput parse={value => value === 'not defined' ? undefined : null} />
 </ReferenceInput>
 ```
@@ -173,18 +181,46 @@ import { ReferenceInput, SelectInput } from 'react-admin';
 By default, `<ReferenceInput>` fetches only the first 25 values. You can extend this limit by setting the `perPage` prop.
 
 ```jsx
-<ReferenceInput source="post_id" reference="posts" perPage={100} />
+<ReferenceInput source="company_id" reference="companies" perPage={100} />
 ```
 
 ## `reference`
 
-The name of the reference resource. For instance, in a Post form, if you want to edit the post author, the reference should be "authors".
+The name of the reference resource. For instance, in a contact form, if you want to edit the contact employer, the reference should be "companies".
 
 ```jsx
-<ReferenceInput source="author_id" reference="authors" />
+<ReferenceInput source="company_id" reference="companies" />
 ```
 
-`<ReferenceInput>` will use the reference resource `recordRepresentation` to display the selected record and the list of possible records.
+`<ReferenceInput>` will use the reference resource [`recordRepresentation`](./Resource.md#recordrepresentation) to display the selected record and the list of possible records. So for instance, if the `companies` resource is defined as follow:
+
+```jsx
+<Resource name="companies" recordRepresentation="name" />
+```
+
+Then `<ReferenceInput>` will display the company name in the input and in the list of possible values.
+
+You can override this default by specifying the `optionText` prop in the child component. For instance, for an `<AutocompleteInput>`:
+
+```jsx
+<ReferenceInput source="company_id" reference="companies">
+    <AutocompleteInput optionText="reference" />
+</ReferenceInput>
+```
+
+## `queryOptions`
+
+Use [the `queryOptions` prop](#queryoptions) to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getList()` call.
+
+{% raw %}
+```jsx
+<ReferenceInput 
+    source="company_id"
+    reference="companies"
+    queryOptions={{ meta: { foo: 'bar' } }}
+/>
+```
+{% endraw %}
 
 ## `sort`
 
@@ -193,9 +229,9 @@ By default, `<ReferenceInput>` orders the possible values by `id` desc. You can 
 {% raw %}
 ```jsx
 <ReferenceInput
-    source="post_id"
-    reference="posts"
-    sort={{ field: 'title', order: 'ASC' }}
+    source="company"
+    reference="companies"
+    sort={{ field: 'name', order: 'ASC' }}
 />
 ```
 {% endraw %}
@@ -204,39 +240,22 @@ By default, `<ReferenceInput>` orders the possible values by `id` desc. You can 
 
 The name of the property in the record that contains the identifier of the selected record.
 
-For instance, if a Post contains a reference to an author via an `author_id` property:
+For instance, if a contact contains a reference to a company via a `company_id` property:
 
-```json
+```js
 {
-    "id": 456,
-    "title": "Hello world",
-    "author_id": 12
+    id: 456,
+    firstName: "John",
+    lastName: "Doe",
+    company_id: 12,
 }
 ```
 
-Then to display a selector for the post author, you should call `<ReferenceInput>` as follows:
+Then to display a selector for the contact company, you should call `<ReferenceInput>` as follows:
 
 ```jsx
-<ReferenceInput source="author_id" reference="authors" />
+<ReferenceInput source="company_id" reference="companies" />
 ```
-
-## queryOptions
-
-Use [the `queryOptions` prop](#queryoptions) to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getList()` call.
-
-{% raw %}
-```jsx
-import { ReferenceInput, AutocompleteInput } from 'react-admin';
-
-<ReferenceInput 
-    source="post_id"
-    reference="posts"
-    queryOptions={{ meta: { foo: 'bar' } }}
->
-    <AutocompleteInput label="Post" />
-</ReferenceInput>
-```
-{% endraw %}
 
 ## Performance 
 
