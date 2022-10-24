@@ -271,7 +271,9 @@ You can override this default by specifying the `optionText` prop in the child c
 
 ## `queryOptions`
 
-Use [the `queryOptions` prop](#queryoptions) to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getList()` call.
+Use the `queryOptions` prop pass options to the `dataProvider.getList()` query that fetches the possible choices.
+
+For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
 
 {% raw %}
 ```jsx
@@ -285,7 +287,9 @@ Use [the `queryOptions` prop](#queryoptions) to pass [a custom `meta`](./Actions
 
 ## `sort`
 
-By default, `<ReferenceInput>` orders the possible values by `id` desc. You can change this order by setting the `sort` prop (an object with `field` and `order` properties).
+By default, `<ReferenceInput>` orders the possible values by `id` desc. 
+
+You can change this order by setting the `sort` prop (an object with `field` and `order` properties).
 
 {% raw %}
 ```jsx
