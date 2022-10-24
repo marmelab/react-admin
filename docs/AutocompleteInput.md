@@ -336,38 +336,7 @@ const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 <AutocompleteInput source="author_id" choices={choices} optionText={optionRenderer} />
 ```
 
-`optionText` also accepts a React Element, that will be rendered inside a [`<RecordContext>`](./useRecordContext.md) using the related choice as the `record` prop. You can use Field components there. However, as the underlying MUI `<Autocomplete>` component requires that the current selection is a string, if you opt for a element, you must pass a function as the `inputText` prop. This function should return a text representation of the current selection. You should also pass a `matchSuggestion` function to filter the choices based on the current selection.
-
-```jsx
-const choices = [
-   { id: 123, first_name: 'Leo', last_name: 'Tolstoi', avatar:'/penguin' },
-   { id: 456, first_name: 'Jane', last_name: 'Austen', avatar:'/panda' },
-];
-const OptionRenderer = () => {
-    const record = useRecordContext();
-    return (
-        <span>
-            <img src={record.avatar} />
-            {record.first_name} {record.last_name}
-        </span>
-    );
-};
-const inputText = choice => `${choice.first_name} ${choice.last_name}`;
-const matchSuggestion = (filter, choice) => {
-    return (
-        choice.first_name.toLowerCase().includes(filter.toLowerCase())
-        || choice.last_name.toLowerCase().includes(filter.toLowerCase())
-    );
-};
-
-<AutocompleteInput
-    source="author_id"
-    choices={choices}
-    optionText={<OptionRenderer />}
-    inputText={inputText}
-    matchSuggestion={matchSuggestion}
-/>
-```
+`optionText` also accepts a React Element, that will be rendered inside a [`<RecordContext>`](./useRecordContext.md) using the related choice as the `record` prop. You can use Field components there. However, using an element as `optionText` implies that you also set two more props, `inputText` and `matchSuggestion`. See [Using A Custom Element For Options](#using-a-custom-element-for-options) for more details.
 
 ## `optionValue`
 
@@ -498,6 +467,45 @@ Also, `<AutocompleteInput>` doesn't call `dataProvider.getList()` on every keyst
 <ReferenceInput label="Author" source="author_id" reference="authors">
     <AutocompleteInput debounce={500} />
 </ReferenceInput>
+```
+
+## Using A Custom Element For Options
+
+You can pass a custom element as [`optionText`](#optiontext) to have `<AutocompleteInput>` render each suggestion in a custom way.
+
+`<AutocompleteInput>` will render the custom option element inside a [`<RecordContext>`](./useRecordContext.md), using the related choice as the `record` prop. You can use Field components there.
+
+However, as the underlying MUI `<Autocomplete>` component requires that the current selection is a string, you must also pass a function as the `inputText` prop. This function should return a text representation of the current selection. You should also pass a `matchSuggestion` function to filter the choices based on the current selection.
+
+```jsx
+const choices = [
+   { id: 123, first_name: 'Leo', last_name: 'Tolstoi', avatar:'/penguin' },
+   { id: 456, first_name: 'Jane', last_name: 'Austen', avatar:'/panda' },
+];
+const OptionRenderer = () => {
+    const record = useRecordContext();
+    return (
+        <span>
+            <img src={record.avatar} />
+            {record.first_name} {record.last_name}
+        </span>
+    );
+};
+const inputText = choice => `${choice.first_name} ${choice.last_name}`;
+const matchSuggestion = (filter, choice) => {
+    return (
+        choice.first_name.toLowerCase().includes(filter.toLowerCase())
+        || choice.last_name.toLowerCase().includes(filter.toLowerCase())
+    );
+};
+
+<AutocompleteInput
+    source="author_id"
+    choices={choices}
+    optionText={<OptionRenderer />}
+    inputText={inputText}
+    matchSuggestion={matchSuggestion}
+/>
 ```
 
 ## Creating New Choices

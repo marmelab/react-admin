@@ -231,10 +231,10 @@ const BookEditCustomOptions = () => {
                         const searchTextLower = searchText.toLowerCase();
                         const match =
                             record.fullName
-                                .toLowerCase()
+                                ?.toLowerCase()
                                 .includes(searchTextLower) ||
                             record.language
-                                .toLowerCase()
+                                ?.toLowerCase()
                                 .includes(searchTextLower);
 
                         return match;
