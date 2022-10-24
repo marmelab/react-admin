@@ -140,7 +140,7 @@ const FullNameField = () => {
 
 ## `optionValue`
 
-You can customize the properties to use for the option value (instead of the default `_id`) thanks to the `optionValue` prop:
+You can customize the properties to use for the option value (instead of the default `id`) thanks to the `optionValue` prop:
 
 ```jsx
 const choices = [
