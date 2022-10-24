@@ -175,7 +175,7 @@ title: "Reference"
 * [`useGetPermissions`](./Authentication.md#usegetpermissions-hook)
 * [`useHasLock`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
 * [`useHasLocks`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
-* [`useInput`](./Inputs.md#the-useinput-hook)
+* [`useInput`](./useInput.md)
 * [`useList`](./useList.md)
 * [`useListContext`](./useListContext.md)
 * [`useListController`](./useListController.md)
