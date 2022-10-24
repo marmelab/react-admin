@@ -24,6 +24,8 @@ about: Something isn't working as expected. Please tell us!
 * Preferably, a CodeSandbox forked from 
   - https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/simple (v4)
   - https://codesandbox.io/s/github/marmelab/react-admin/tree/3.x/examples/simple (v3)
+* A StackBlitz forked from 
+  - https://stackblitz.com/github/marmelab/react-admin/tree/master/examples/simple (v4)
 * A link to a GitHub repo with the minimal codebase to reproduce the issue
 
 
