@@ -118,7 +118,7 @@ const choices = possibleValues.map(value => ({ id: value, name: ucfirst(value) }
 
 ## `labelPlacement`
 
-By default, this inputs renders a checkox and a label for each choice, with the label on the right of the checkbox. You can change this behavior with the `labelPlacement` prop:
+By default, this inputs renders a checkbox and a label for each choice, with the label on the right of the checkbox. You can change this behavior with the `labelPlacement` prop:
 
 ```jsx
 <CheckboxGroupInput source="options" choices={choices} labelPlacement="bottom" />
