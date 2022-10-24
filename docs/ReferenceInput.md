@@ -11,17 +11,56 @@ Use `<ReferenceInput>` for foreign-key values, for instance, to edit the `compan
 
 ## Usage
 
-The component expects a `source` and a `reference` attributes. For instance, to make the `company_id` for a `contact` editable:
+For instance, a contact record has a `company_id` field, which is a foreign key to a company record. 
 
-```jsx
-import { ReferenceInput } from 'react-admin';
-
-<ReferenceInput source="company_id" reference="companies" />
+```
+┌──────────────┐       ┌────────────┐
+│ contacts     │       │ companies  │
+│--------------│       │------------│
+│ id           │   ┌───│ id         │
+│ first_name   │   │   │ name       │
+│ last_name    │   │   │ address    │
+│ company_id   │───┘   └────────────┘
+└──────────────┘             
 ```
 
-This component fetches the related record (using `dataProvider.getMany()`) as well as possible choices (using `dataProvider.getList()`) in the `reference` resource. 
+To make the `company_id` for a `contact` editable, use the following syntax:
 
-`<ReferenceInput>` renders an [`<AutocompleteInput>`](./AutocompleteInput.md) to let the user select the related record. You pass an choice input as `<ReferenceInput>` child to use it instead of an `<AutocompleteInput>` (see [`children`](#children)). For instance, to use a `<SelectInput>`:
+```jsx
+import { Edit, SimpleForm, TextInput, ReferenceInput } from 'react-admin';
+
+const ContactEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="first_name" />
+            <TextInput source="last_name" />
+            <ReferenceInput source="company_id" reference="companies" />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+`<ReferenceInput>` require a `source` and a `reference` prop.
+
+`<ReferenceInput>` uses the foreign key value to fetch the the related record. It also grabs the list of possible choices for the field. For instance, if the `ContactEdit` component above is used to edit the following contact:
+
+```js
+{
+    id: 123,
+    first_name: 'John',
+    last_name: 'Doe',
+    company_id: 456
+}
+```
+
+Then `<ReferenceInput>` will issue the following queries:
+
+```js
+dataProvider.getMany('companies', { ids: [456] });
+dataProvider.getList('companies', { filter: {}, sort: {}, pagination: { page: 1, perPage: 25 } });
+```
+
+`<ReferenceInput>` renders an [`<AutocompleteInput>`](./AutocompleteInput.md) to let the user select the related record. You can pass an alternative choice input as `<ReferenceInput>` child to use it instead of an `<AutocompleteInput>` (see [`children`](#children)). For instance, to use a `<SelectInput>`:
 
 ```jsx
 import { ReferenceInput, SelectInput } from 'react-admin';
@@ -261,6 +300,6 @@ Then to display a selector for the contact company, you should call `<ReferenceI
 
 Why does `<ReferenceInput>` use the `dataProvider.getMany()` method with a single value `[id]` instead of `dataProvider.getOne()` to fetch the record for the current value?
 
-Because when there may be many `<ReferenceInput>` for the same resource in a form (for instance when inside an `<ArrayInput>`), so react-admin *aggregates* the calls to `dataProvider.getMany()` into a single one with `[id1, id2, ...]`.
+Because when there may be many `<ReferenceInput>` for the same resource in a form (for instance when inside an `<ArrayInput>`), react-admin *aggregates* the calls to `dataProvider.getMany()` into a single one with `[id1, id2, ...]`.
 
 This speeds up the UI and avoids hitting the API too much.
