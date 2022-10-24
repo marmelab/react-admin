@@ -1,6 +1,6 @@
 ---
 name: "\U0001F4AC Support Question"
-about: If you have a "How to" question, please check out StackOverflow!
+about: If you have a "How to" question, please check out StackOverflow or Discord!
 
 ---
 
