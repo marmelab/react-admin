@@ -57,10 +57,28 @@ Then `<ReferenceInput>` will issue the following queries:
 
 ```js
 dataProvider.getMany('companies', { ids: [456] });
-dataProvider.getList('companies', { filter: {}, sort: {}, pagination: { page: 1, perPage: 25 } });
+dataProvider.getList('companies', { 
+    filter: {},
+    sort: { field: 'id', order: 'DESC' },
+    pagination: { page: 1, perPage: 25 }
+});
 ```
 
-`<ReferenceInput>` renders an [`<AutocompleteInput>`](./AutocompleteInput.md) to let the user select the related record. You can pass an alternative choice input as `<ReferenceInput>` child to use it instead of an `<AutocompleteInput>` (see [`children`](#children)). For instance, to use a `<SelectInput>`:
+`<ReferenceInput>` renders an [`<AutocompleteInput>`](./AutocompleteInput.md) to let the user select the related record. Users can narrow down the choices by typing a search term in the input. This modifies the query sent to the `dataProvider` as follows:
+
+```js
+dataProvider.getList('companies', { 
+    filter: { q: [search term] },
+    sort: { field: 'id', order: 'DESC' },
+    pagination: { page: 1, perPage: 25 }
+});
+```
+
+See [Customizing the filter query](#customizing-the-filter-query) below for more information about how to change `filter` prop based on the `<AutocompleteInput>` search term.
+
+You can tweak how `<ReferenceInput>` fetches the possible values using the `page`, `perPage`, `sort`, and `filter` props.
+
+You can replace the default `<AutocompleteInput>` by another choice input. To do so, pass the choice input component as `<ReferenceInput>` child. For instance, to use a `<SelectInput>`:
 
 ```jsx
 import { ReferenceInput, SelectInput } from 'react-admin';
@@ -70,7 +88,7 @@ import { ReferenceInput, SelectInput } from 'react-admin';
 </ReferenceInput>
 ```
 
-You can tweak how `<ReferenceInput>` fetches the possible values using the `page`, `perPage`, `sort`, and `filter` props.
+See the [`children`](#children) section for more details.
 
 ## Props
 
@@ -140,6 +158,8 @@ You can filter the query used to populate the possible values. Use the `filter` 
 <ReferenceInput source="company_id" reference="companies" filter={{ is_published: true }} />
 ```
 {% endraw %}
+
+**Note**: When users type a search term in the `<AutocompleteInput>`, this doesn't affect the `filter` prop. Check the [Customizing the filter query](#customizing-the-filter-query) section below for details on how that filter works.
 
 ## `format`
 
@@ -223,6 +243,8 @@ By default, `<ReferenceInput>` fetches only the first 25 values. You can extend 
 <ReferenceInput source="company_id" reference="companies" perPage={100} />
 ```
 
+This prop is mostly useful when using [`<SelectInput>`](./SelectInput.md) or [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md) as child, as the default `<AutocompleteInput>` child allows to filter the possible choices with a search input.
+
 ## `reference`
 
 The name of the reference resource. For instance, in a contact form, if you want to edit the contact employer, the reference should be "companies".
@@ -294,6 +316,20 @@ Then to display a selector for the contact company, you should call `<ReferenceI
 
 ```jsx
 <ReferenceInput source="company_id" reference="companies" />
+```
+
+## Customizing The Filter Query
+
+By default, `<ReferenceInput>` renders an `<AutocompleteInput>`, which lets users type a search term to filter the possible values. `<ReferenceInput>` calls `dataProvider.getList()` using the search term as filter, using the format `filter: { q: [search term] }`.
+
+If you want to customize the conversion between the search term and the query filter to match the filtering capabilities of your API, use the [`<AutocompleteInput filterToQuery>`](./AutocompleteInput.md#filtertoquery) prop.
+
+```jsx
+const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
+
+<ReferenceInput source="company_id" reference="companies">
+    <AutocompleteInput filterToQuery={filterToQuery} />
+</ReferenceInput>
 ```
 
 ## Performance 

@@ -451,7 +451,7 @@ import { AutocompleteInput, ReferenceInput } from 'react-admin';
 </ReferenceInput>
 ```
 
-Whenever users type a string in the autocomplete input, `<AutocompleteInput>` calls `dataProvider.getList()` using the string as filter, to return a filtered list of possible options from the reference resource. This filter is built using the `filterToQuery` prop. You may want to customize that function to mtch the filtering capabilities of your API:
+Whenever users type a string in the autocomplete input, `<AutocompleteInput>` calls `dataProvider.getList()` using the string as filter, to return a filtered list of possible options from the reference resource. This filter is built using the `filterToQuery` prop. You may want to customize that function to match the filtering capabilities of your API:
 
 ```jsx
 const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
