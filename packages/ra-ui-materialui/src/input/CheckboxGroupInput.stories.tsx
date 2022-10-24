@@ -1,13 +1,14 @@
 import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
+import { Typography } from '@mui/material';
+import { FavoriteBorder, Favorite } from '@mui/icons-material';
+import { testDataProvider, useRecordContext } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
 import { SimpleForm } from '../form';
 import { CheckboxGroupInput } from './CheckboxGroupInput';
-import { Typography } from '@mui/material';
-import { testDataProvider, useRecordContext } from 'ra-core';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 
 export default { title: 'ra-ui-materialui/input/CheckboxGroupInput' };
@@ -80,6 +81,24 @@ export const Disabled = () => (
     </AdminContext>
 );
 
+export const LabelPlacement = () => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <Create
+            resource="posts"
+            record={{ options: [1, 2] }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <CheckboxGroupInput
+                    source="options"
+                    choices={choices}
+                    labelPlacement="bottom"
+                />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
 export const Column = () => (
     <AdminContext i18nProvider={i18nProvider}>
         <Create
@@ -92,6 +111,27 @@ export const Column = () => (
                     source="options"
                     choices={choices}
                     row={false}
+                />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+export const Options = () => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <Create
+            resource="posts"
+            record={{ options: [1, 2] }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <CheckboxGroupInput
+                    source="options"
+                    choices={choices}
+                    options={{
+                        icon: <FavoriteBorder />,
+                        checkedIcon: <Favorite />,
+                    }}
                 />
             </SimpleForm>
         </Create>
