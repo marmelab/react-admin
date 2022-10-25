@@ -721,7 +721,7 @@ const BookEditWithEmptyText = () => {
         >
             <SimpleForm>
                 <AutocompleteInput
-                    label="emptyValue set to 'no-author', emptyText set to '' by default"
+                    label="emptyValue set to 'no-author', emptyText not set"
                     source="author"
                     choices={choices}
                     emptyValue="no-author"
