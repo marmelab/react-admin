@@ -94,7 +94,7 @@ const choices = [
 />
 ```
 
-You can render some of the options as disabled by setting the `disabled` field in some of the choices:
+You can render some options as disabled by setting the `disabled` field in some choices:
 
 ```jsx
 const choices = [
