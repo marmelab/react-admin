@@ -410,10 +410,20 @@ If you provided a React element for the optionText prop, you must also provide t
     const finalOnBlur = useCallback((): void => {
         if (clearOnBlur) {
             const optionLabel = getOptionLabel(selectedChoice);
-            setFilterValue(optionLabel);
+            if (!isEqual(optionLabel, filterValue)) {
+                setFilterValue(optionLabel);
+                debouncedSetFilter('');
+            }
         }
         field.onBlur();
-    }, [clearOnBlur, field, selectedChoice, getOptionLabel]);
+    }, [
+        clearOnBlur,
+        field,
+        getOptionLabel,
+        selectedChoice,
+        filterValue,
+        debouncedSetFilter,
+    ]);
 
     useEffect(() => {
         if (!multiple) {
