@@ -88,7 +88,7 @@ const BoundedTextField = (props) => {
     );
 };
 const LatLngInput = props => {
-    const {source, ...rest} = props;
+    const { source, ...rest } = props;
 
     return (
         <span>
