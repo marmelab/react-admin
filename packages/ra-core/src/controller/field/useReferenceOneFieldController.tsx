@@ -2,7 +2,7 @@ import get from 'lodash/get';
 
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
-import { RaRecord } from '../../types';
+import { RaRecord, SortPayload } from '../../types';
 import { UseReferenceResult } from '../useReference';
 
 export interface UseReferenceOneFieldControllerParams {
@@ -10,6 +10,8 @@ export interface UseReferenceOneFieldControllerParams {
     reference: string;
     source?: string;
     target: string;
+    sort?: SortPayload;
+    filter?: any;
 }
 
 /**
@@ -31,13 +33,21 @@ export interface UseReferenceOneFieldControllerParams {
  * @prop {string} props.reference The linked resource name
  * @prop {string} props.target The target resource key
  * @prop {string} props.source The key current record identifier ('id' by default)
- *
+ * @prop {Object} props.sort The sort to apply to the referenced records
+ * @prop {Object} props.filter The filter to apply to the referenced records
  * @returns {UseReferenceResult} The request state. Destructure as { referenceRecord, isLoading, error }.
  */
 export const useReferenceOneFieldController = (
     props: UseReferenceOneFieldControllerParams
 ): UseReferenceResult => {
-    const { reference, record, target, source = 'id' } = props;
+    const {
+        reference,
+        record,
+        target,
+        source = 'id',
+        sort = { field: 'id', order: 'ASC' },
+        filter = {},
+    } = props;
     const notify = useNotify();
 
     const { data, error, isFetching, isLoading, refetch } = useGetManyReference(
@@ -46,8 +56,8 @@ export const useReferenceOneFieldController = (
             target,
             id: get(record, source),
             pagination: { page: 1, perPage: 1 },
-            sort: { field: 'id', order: 'ASC' },
-            filter: {},
+            sort,
+            filter,
         },
         {
             enabled: !!record,

@@ -90,6 +90,8 @@ describe('useReferenceOneFieldController', () => {
                     record={{ id: 123, name: 'James Joyce' }}
                     reference="bios"
                     target="author_id"
+                    sort={{ field: 'name', order: 'DESC' }}
+                    filter={{ gender: 'female' }}
                 >
                     {() => 'null'}
                 </ReferenceOneFieldController>
@@ -101,8 +103,8 @@ describe('useReferenceOneFieldController', () => {
                 target: 'author_id',
                 id: 123,
                 pagination: { page: 1, perPage: 1 },
-                sort: { field: 'id', order: 'ASC' },
-                filter: {},
+                sort: { field: 'name', order: 'DESC' },
+                filter: { gender: 'female' },
             });
         });
     });
