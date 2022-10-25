@@ -36,7 +36,7 @@ export const PostIcon = BookIcon;
 
 const QuickFilter = ({ label, source, defaultValue }) => {
     const translate = useTranslate();
-    return <Chip sx={{ marginBottom: 1 }} label={translate(label)} />;
+    return <Chip sx={{ marginBottom: 1 }} label={translate(label)} clickable />;
 };
 
 const postFilter = [

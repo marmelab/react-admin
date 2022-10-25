@@ -141,7 +141,7 @@ import { Chip } from '@mui/material';
 
 const QuickFilter = ({ label }) => {
     const translate = useTranslate();
-    return <Chip sx={{ marginBottom: 1 }} label={translate(label)} />;
+    return <Chip sx={{ marginBottom: 1 }} label={translate(label)} clickable />;
 };
 
 const postFilters = [
@@ -153,7 +153,9 @@ const postFilters = [
 ```
 {% endraw %}
 
-**Tip**: It's currently not possible to use two quick filters for the same source. 
+**Tip**: Notice we have set the `clickable` prop on the `<Chip>`. This is an accessibility good practice. Indeed this allows the element to be focusable, and hence allows to remove the filter using only the keyboard.
+
+**Tip**: It's currently not possible to use two quick filters for the same source.
 
 ## The `<FilterList>` Sidebar
 

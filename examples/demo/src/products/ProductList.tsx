@@ -50,7 +50,7 @@ const ProductList = () => {
 
 const QuickFilter = ({ label }: InputProps) => {
     const translate = useTranslate();
-    return <Chip sx={{ mb: 1 }} label={translate(label as string)} />;
+    return <Chip sx={{ mb: 1 }} label={translate(label as string)} clickable />;
 };
 
 export const productFilters = [
