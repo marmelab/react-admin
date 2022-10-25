@@ -157,7 +157,6 @@ const PostCreate = () => (
 import { useCreate, useCreateSuggestionContext } from 'react-admin';
 import {
     Box,
-    BoxProps,
     Button,
     Dialog,
     DialogActions,
