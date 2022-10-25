@@ -156,7 +156,6 @@ const PostCreate = () => (
 // in ./CreateCategory.js
 import { useCreate, useCreateSuggestionContext } from 'react-admin';
 import {
-    Box,
     Button,
     Dialog,
     DialogActions,
