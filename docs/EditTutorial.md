@@ -224,7 +224,7 @@ export const BookEdit = () => {
 };
 ```
 
-React-admin proposes alternative form layouts ([`<TabbedForm>`](./TabbedForm.md), [`<AccordionForm>`](./AccordionForm.md), [`<WizardForm>`](./WizardForm.md), [`<DialogForm>`](./DialogForm.md)) as well as a headless [`<Form>`](./Form.md) component.
+React-admin proposes alternative form layouts ([`<TabbedForm>`](./TabbedForm.md), [`<AccordionForm>`](./AccordionForm.md), [`<WizardForm>`](./WizardForm.md), [`<CreateDialog>, <EditDialog> & <ShowDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog-editdialog--showdialog) as well as a headless [`<Form>`](./Form.md) component.
 
 ### Using Input Components
 
@@ -679,8 +679,8 @@ const Form = ({ onSubmit }) => {
 By default, pressing `ENTER` in any of the form inputs submits the form - this is the expected behavior in most cases. To disable the automated form submission on enter, set the `type` prop of the `SaveButton` component to `button`.
 
 ```jsx
-const MyToolbar = props => (
-    <Toolbar {...props}>
+const MyToolbar = () => (
+    <Toolbar>
         <SaveButton type="button" />
         <DeleteButton />
     </Toolbar>
@@ -709,6 +709,41 @@ export const PostEdit = () => (
                     }
                 }}
             /> 
+        </SimpleForm>
+    </Edit>
+);
+```
+
+**Tip**: `<SaveButton type="button">` does not take into account a custom `onSubmit` prop passed to the enclosing `<Form>`. If you need to override the default submit callback for a `<SaveButton type="button">`, you should include an `onClick` prop in the button.
+
+```jsx
+const MyToolbar = () => {
+    const [update] = useUpdate();
+    const { getValues } = useFormContext();
+    const redirect = useRedirect();
+
+    const handleClick = e => {
+        e.preventDefault(); // necessary to prevent default SaveButton submit logic
+        const { id, ...data } = getValues();
+        update(
+            'posts',
+            { id, data },
+            { onSuccess: () => { redirect('list'); }}
+        );
+    };
+
+    return (
+        <Toolbar>
+            <SaveButton type="button" onClick={handleClick} />
+            <DeleteButton />
+        </Toolbar>
+    );
+};
+
+export const PostEdit = () => (
+    <Edit>
+        <SimpleForm toolbar={<MyToolbar/>}>
+          ...
         </SimpleForm>
     </Edit>
 );

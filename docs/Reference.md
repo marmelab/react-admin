@@ -33,7 +33,7 @@ title: "Reference"
 * [`<Create>`](./Create.md)
 * `<CreateActions>`
 * [`<CreateButton>`](./Buttons.md#createbutton)
-* [`<CreateDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog--editdialog)<img class="icon" src="./img/premium.svg" />
+* [`<CreateDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog-editdialog--showdialog)<img class="icon" src="./img/premium.svg" />
 * [`<CreateInDialogButton>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createindialogbutton-editindialogbutton-and-showindialogbutton)<img class="icon" src="./img/premium.svg" />
 * [`<DashboardMenuItem>`](./Theming.md#using-a-custom-menu)
 * [`<Datagrid>`](./Datagrid.md)
@@ -52,7 +52,7 @@ title: "Reference"
 * [`<EditGuesser>`](./EditGuesser.md)
 * `<EditActions>`
 * [`<EditButton>`](./Buttons.md#editbutton)
-* [`<EditDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog--editdialog)<img class="icon" src="./img/premium.svg" />
+* [`<EditDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog-editdialog--showdialog)<img class="icon" src="./img/premium.svg" />
 * [`<EditInDialogButton>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createindialogbutton-editindialogbutton-and-showindialogbutton)<img class="icon" src="./img/premium.svg" />
 * [`<EmailField>`](./EmailField.md)
 * [`<Empty>`](./List.md#empty-empty-page-component)  
@@ -64,6 +64,7 @@ title: "Reference"
 * [`<FilterList>`](./FilterList.md)
 * [`<FilterListItem>`](./FilterList.md#children)
 * [`<FilterLiveSearch>`](./FilterLiveSearch.md)
+* [`<Form>`](./Form.md)
 * [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs)
 * [`<FormTab>`](./TabbedForm.md)
 * [`<FunctionField>`](./FunctionField.md)
@@ -123,6 +124,7 @@ title: "Reference"
 * [`<Show>`](./Show.md#show)
 * [`<ShowGuesser`](./ShowGuesser.md#showguesser)
 * [`<ShowButton>`](./Buttons.md#showbutton)
+* [`<ShowDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog-editdialog--showdialog)<img class="icon" src="./img/premium.svg" />
 * [`<ShowInDialogButton>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createindialogbutton-editindialogbutton-and-showindialogbutton)<img class="icon" src="./img/premium.svg" />
 * [`<Sidebar>`](./Theming.md#sidebar-customization)
 * [`<SidebarOpenPreferenceSync>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#sidebaropenpreferencesync-store-the-sidebar-openclose-state-in-preferences)<img class="icon" src="./img/premium.svg" />
