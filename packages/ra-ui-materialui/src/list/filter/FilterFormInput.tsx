@@ -16,6 +16,14 @@ export const FilterFormInput = props => {
             data-source={filterElement.props.source}
             className={clsx('filter-field', className)}
         >
+            {React.cloneElement(filterElement, {
+                resource,
+                record: emptyRecord,
+                size: 'small',
+                helperText: false,
+                // ignore defaultValue in Field because it was already set in Form (via mergedInitialValuesWithDefaultValues)
+                defaultValue: undefined,
+            })}
             {!filterElement.props.alwaysOn && (
                 <IconButton
                     className={clsx(
@@ -30,14 +38,6 @@ export const FilterFormInput = props => {
                     <ActionHide />
                 </IconButton>
             )}
-            {React.cloneElement(filterElement, {
-                resource,
-                record: emptyRecord,
-                size: 'small',
-                helperText: false,
-                // ignore defaultValue in Field because it was already set in Form (via mergedInitialValuesWithDefaultValues)
-                defaultValue: undefined,
-            })}
             <div className={FilterFormInputClasses.spacer}>&nbsp;</div>
         </Root>
     );
@@ -66,9 +66,9 @@ const Root = styled('div', {
     pointerEvents: 'auto',
     position: 'relative',
     '@media (hover: hover)': {
-        '&:hover': {
+        '&:not(:hover, :focus, :active, :focus-visible, :focus-within)': {
             [`& .${FilterFormInputClasses.hideButton}`]: {
-                display: 'flex',
+                visibility: 'hidden',
             },
         },
     },
@@ -80,9 +80,7 @@ const Root = styled('div', {
         right: 0,
         top: 0,
         zIndex: 10,
-        '@media (hover: hover)': {
-            display: 'none',
-        },
+        display: 'flex',
     },
 }));
 
