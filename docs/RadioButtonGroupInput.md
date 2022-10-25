@@ -122,7 +122,7 @@ const choices = possibleValues.map(value => ({ id: value, name: ucfirst(value) }
 
 ## `options`
 
-Use the `options` attribute if you want to override any of MUI's `<RadioButtonGroup>` attributes:
+Use the `options` attribute if you want to override any of MUI's `<RadioGroup>` attributes:
 
 {% raw %}
 ```jsx
