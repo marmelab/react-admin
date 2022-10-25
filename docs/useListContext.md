@@ -74,7 +74,7 @@ const {
     hasNextPage, // boolean, true if the current page is not the last one
     // sorting
     sort, // a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
-    setSort, // a callback to change the sort, e.g. setSort({ field: 'name', orfer: 'ASC' })
+    setSort, // a callback to change the sort, e.g. setSort({ field: 'name', order: 'ASC' })
     // filtering
     filterValues, // a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
     displayedFilters, // a dictionary of the displayed filters, e.g. { title: true, nationality: true }
