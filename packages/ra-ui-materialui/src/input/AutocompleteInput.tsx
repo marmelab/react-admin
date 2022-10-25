@@ -538,11 +538,7 @@ If you provided a React element for the optionText prop, you must also provide t
                                 label={label}
                                 source={source}
                                 resource={resourceProp}
-                                isRequired={
-                                    typeof isRequiredOverride !== 'undefined'
-                                        ? isRequiredOverride
-                                        : isRequired
-                                }
+                                isRequired={isRequired}
                             />
                         }
                         error={
