@@ -40,6 +40,7 @@ export const Row = () => (
 export const DefaultValue = () => (
     <Wrapper>
         <RadioButtonGroupInput
+            defaultValue="M"
             choices={[
                 { id: 'M', name: 'Male' },
                 { id: 'F', name: 'Female' },
