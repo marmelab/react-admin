@@ -195,9 +195,32 @@ export const AutocompleteInput = <
 
     const finalEmptyText = emptyText ?? '';
 
+    const {
+        id,
+        field,
+        isRequired,
+        fieldState: { error, invalid, isTouched },
+        formState: { isSubmitted },
+    } = useInput({
+        defaultValue,
+        id: idOverride,
+        field: fieldOverride,
+        fieldState: fieldStateOverride,
+        formState: formStateOverride,
+        isRequired: isRequiredOverride,
+        onBlur,
+        onChange,
+        parse,
+        format,
+        resource,
+        source,
+        validate,
+        ...rest,
+    });
+
     const finalChoices = useMemo(
         () =>
-            isRequiredOverride || multiple
+            isRequired || multiple
                 ? allChoices
                 : [
                       {
@@ -213,35 +236,13 @@ export const AutocompleteInput = <
             allChoices,
             emptyValue,
             finalEmptyText,
-            isRequiredOverride,
+            isRequired,
             multiple,
             optionText,
             optionValue,
             translate,
         ]
     );
-
-    const {
-        id,
-        field,
-        isRequired,
-        fieldState: { error, invalid, isTouched },
-        formState: { isSubmitted },
-    } = useInput({
-        defaultValue,
-        id: idOverride,
-        field: fieldOverride,
-        fieldState: fieldStateOverride,
-        formState: formStateOverride,
-        onBlur,
-        onChange,
-        parse,
-        format,
-        resource,
-        source,
-        validate,
-        ...rest,
-    });
 
     const selectedChoice = useSelectedChoice<
         OptionType,
@@ -537,11 +538,7 @@ If you provided a React element for the optionText prop, you must also provide t
                                 label={label}
                                 source={source}
                                 resource={resourceProp}
-                                isRequired={
-                                    typeof isRequiredOverride !== 'undefined'
-                                        ? isRequiredOverride
-                                        : isRequired
-                                }
+                                isRequired={isRequired}
                             />
                         }
                         error={

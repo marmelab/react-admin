@@ -3,6 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
     FormDataConsumer,
+    required,
     testDataProvider,
     TestTranslationProvider,
     useRecordContext,
@@ -120,6 +121,85 @@ describe('<AutocompleteInput />', () => {
             const input = screen.getByRole('textbox') as HTMLInputElement;
 
             expect(input.value).toEqual('Default');
+        });
+
+        it('should display the emptyText when input is not required', async () => {
+            const emptyText = 'Default';
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        defaultValues={{ role: 1 }}
+                    >
+                        <AutocompleteInput
+                            emptyText={emptyText}
+                            {...defaultProps}
+                            choices={[]}
+                        />
+                    </SimpleForm>
+                </AdminContext>
+            );
+            fireEvent.click(
+                await screen.findByLabelText('resources.users.fields.role')
+            );
+            await waitFor(() => {
+                expect(screen.queryAllByRole('option').length).toEqual(1);
+            });
+            expect(screen.queryByText('Default')).not.toBeNull();
+        });
+
+        it('should not display the emptyText when validate equals required', async () => {
+            const emptyText = 'Default';
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        defaultValues={{ role: 1 }}
+                    >
+                        <AutocompleteInput
+                            emptyText={emptyText}
+                            {...defaultProps}
+                            choices={[]}
+                            validate={required()}
+                        />
+                    </SimpleForm>
+                </AdminContext>
+            );
+            fireEvent.click(
+                await screen.findByLabelText('resources.users.fields.role *')
+            );
+            await waitFor(() => {
+                expect(screen.queryAllByRole('option').length).toEqual(0);
+            });
+            expect(screen.queryByText('Default')).toBeNull();
+            await screen.findByText('No options');
+        });
+
+        it('should not display the emptyText when isRequired is true', async () => {
+            const emptyText = 'Default';
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        defaultValues={{ role: 1 }}
+                    >
+                        <AutocompleteInput
+                            emptyText={emptyText}
+                            {...defaultProps}
+                            choices={[]}
+                            isRequired
+                        />
+                    </SimpleForm>
+                </AdminContext>
+            );
+            fireEvent.click(
+                await screen.findByLabelText('resources.users.fields.role *')
+            );
+            await waitFor(() => {
+                expect(screen.queryAllByRole('option').length).toEqual(0);
+            });
+            expect(screen.queryByText('Default')).toBeNull();
+            await screen.findByText('No options');
         });
     });
 
