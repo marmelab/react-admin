@@ -42,7 +42,7 @@ const ContactEdit = () => (
 
 `<ReferenceInput>` require a `source` and a `reference` prop.
 
-`<ReferenceInput>` uses the foreign key value to fetch the the related record. It also grabs the list of possible choices for the field. For instance, if the `ContactEdit` component above is used to edit the following contact:
+`<ReferenceInput>` uses the foreign key value to fetch the related record. It also grabs the list of possible choices for the field. For instance, if the `ContactEdit` component above is used to edit the following contact:
 
 ```js
 {
