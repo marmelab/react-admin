@@ -177,3 +177,18 @@ export const Sx = () => (
         </Edit>
     </AdminContext>
 );
+
+export const DisableClearButton = () => (
+    <AdminContext dataProvider={dataProvider}>
+        <Edit resource="books" id="1">
+            <SimpleForm>
+                <ArrayInput source="authors">
+                    <SimpleFormIterator clearButton={false}>
+                        <TextInput source="name" />
+                        <TextInput source="role" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        </Edit>
+    </AdminContext>
+);

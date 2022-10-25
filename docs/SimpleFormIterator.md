@@ -70,6 +70,7 @@ const OrderEdit = () => (
 | Prop     | Required | Type           | Default               | Description                         |
 |----------|----------|----------------|-----------------------|-------------------------------------|
 | `addButton` | Optional | `ReactElement` | - | Component to render for the add button |
+| `clearButton` | Optional | `boolean` | `true` | When `false`, the user cannot clear the array |
 | `children` | Optional | `ReactElement` | - | List of inputs to display for each row |
 | `className` | Optional | `string` | - | Applied to the root element (`<ul>`) |
 | `disableAdd` | Optional | `boolean` | `false` | When true, the user cannot add new rows |
@@ -93,6 +94,10 @@ This prop lets you pass a custom element to replace the default Add button.
     <NumberInput source="quantity" />
 </SimpleFormIterator>
 ```
+
+## `clearButton`
+
+This prop lets you pass a custom element to replace the default "Clear the list" button
 
 ## `children`
 

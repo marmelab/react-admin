@@ -8,4 +8,5 @@ export const SimpleFormIteratorClasses = {
     inline: `${SimpleFormIteratorPrefix}-inline`,
     line: `${SimpleFormIteratorPrefix}-line`,
     list: `${SimpleFormIteratorPrefix}-list`,
+    buttons: `${SimpleFormIteratorPrefix}-buttons`,
 };
