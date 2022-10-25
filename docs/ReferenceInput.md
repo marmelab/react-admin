@@ -271,7 +271,7 @@ You can override this default by specifying the `optionText` prop in the child c
 
 ## `queryOptions`
 
-Use the `queryOptions` prop pass options to the `dataProvider.getList()` query that fetches the possible choices.
+Use the `queryOptions` prop to pass options to the `dataProvider.getList()` query that fetches the possible choices.
 
 For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
 
