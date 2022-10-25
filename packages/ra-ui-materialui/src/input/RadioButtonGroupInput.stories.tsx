@@ -10,14 +10,43 @@ import { FormInspector } from './common.stories';
 
 export default { title: 'ra-ui-materialui/input/RadioButtonGroupInput' };
 
-const choices = [
-    { id: 'M', name: 'Male' },
-    { id: 'F', name: 'Female' },
-];
-
 export const Basic = () => (
     <Wrapper>
-        <RadioButtonGroupInput choices={choices} source="gender" />
+        <RadioButtonGroupInput
+            source="category"
+            choices={[
+                { id: 'tech', name: 'Tech' },
+                { id: 'lifestyle', name: 'Lifestyle' },
+                { id: 'people', name: 'People' },
+            ]}
+        />
+    </Wrapper>
+);
+
+export const Row = () => (
+    <Wrapper>
+        <RadioButtonGroupInput
+            source="category"
+            choices={[
+                { id: 'tech', name: 'Tech' },
+                { id: 'lifestyle', name: 'Lifestyle' },
+                { id: 'people', name: 'People' },
+            ]}
+            row={false}
+        />
+    </Wrapper>
+);
+
+export const DefaultValue = () => (
+    <Wrapper>
+        <RadioButtonGroupInput
+            defaultValue="M"
+            choices={[
+                { id: 'M', name: 'Male' },
+                { id: 'F', name: 'Female' },
+            ]}
+            source="gender"
+        />
     </Wrapper>
 );
 
