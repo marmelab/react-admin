@@ -154,6 +154,7 @@ const PostCreate = () => (
 );
 
 // in ./CreateCategory.js
+import React from 'react';
 import { useCreate, useCreateSuggestionContext } from 'react-admin';
 import {
     Button,
