@@ -8,6 +8,7 @@ import {
     LinkToType,
     useCreatePath,
     useTranslate,
+    SortPayload,
 } from 'ra-core';
 
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
@@ -30,6 +31,8 @@ export const ReferenceOneField = (props: ReferenceOneFieldProps) => {
         source,
         target,
         emptyText,
+        sort,
+        filter,
         link = false,
     } = props;
     const record = useRecordContext(props);
@@ -47,6 +50,8 @@ export const ReferenceOneField = (props: ReferenceOneFieldProps) => {
         reference,
         source,
         target,
+        sort,
+        filter,
     });
 
     const resourceLinkPath =
@@ -90,6 +95,8 @@ export interface ReferenceOneFieldProps
     children?: ReactNode;
     reference: string;
     target: string;
+    sort?: SortPayload;
+    filter?: any;
     link?: LinkToType;
 }
 

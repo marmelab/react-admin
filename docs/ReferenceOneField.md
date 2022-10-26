@@ -47,13 +47,37 @@ const BookShow = () => (
 
 **Tip**: As with `<ReferenceField>`, you can call `<ReferenceOneField>` as many times as you need in the same component, react-admin will only make one call to `dataProvider.getManyReference()` per reference.
 
+**Tip**: `<ReferenceOneField>` can also be used to display one record of a one-to-many relationship. Use `sort` and/or `filter` props to select the appropriate record to display. The first record will be displayed.
+
+```jsx
+const BookShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <TextField source="title" />
+            <DateField source="published_at" />
+            <ReferenceOneField
+                label="Latest cool review"
+                reference="book_reviews"
+                target="book_id"
+                sort={{ field: "createdAt", order: "DESC" }}
+                filter={{ rating: 5 }}
+            >
+                <TextField source="title" />
+            </ReferenceOneField>
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
 ## Properties
 
 | Prop         | Required | Type               | Default                          | Description                                                                         |
-| ------------ | -------- | ------------------ | -------------------------------- | ----------------------------------------------------------------------------------- |
-| `children`   | Optional | `Element`          | -                                | The Field element used to render the referenced record                              |
-| `link`      | Optional | `string | Function` | `edit`   | Target of the link wrapping the rendered child. Set to `false` to disable the link.                                 |
-| `reference`  | Required | `string`           | -                                | The name of the resource for the referenced records, e.g. 'book_details'                   |
-| `target`     | Required | string             | -                                | Target field carrying the relationship on the referenced resource, e.g. 'book_id'   |
+| ------------ | -------- | ------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------- |
+| `children`   | Optional | `Element`                                   | -                                | The Field element used to render the referenced record                              |
+| `link`       | Optional | `string | Function`                         | `edit`                           | Target of the link wrapping the rendered child. Set to `false` to disable the link.                                 |
+| `reference`  | Required | `string`                                    | -                                | The name of the resource for the referenced records, e.g. 'book_details'                   |
+| `target`     | Required | string                                      | -                                | Target field carrying the relationship on the referenced resource, e.g. 'book_id'   |
+| `sort`       | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'ASC' }`  | Used to order referenced records                                                           |
+| `filter`     | Optional | `Object`                                    | `{}`                             | Used to filter referenced records                                                           |
 
 `<ReferenceOneField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
