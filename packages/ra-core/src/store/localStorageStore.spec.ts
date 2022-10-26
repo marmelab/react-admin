@@ -1,6 +1,6 @@
 import expect from 'expect';
 
-import { localStorageStore } from './localStorageStore';
+import { localStorageStore, getStorage } from './localStorageStore';
 
 describe('localStorageStore', () => {
     it('should allow to store and retrieve a value', () => {
@@ -37,6 +37,16 @@ describe('localStorageStore', () => {
             const store = localStorageStore();
             store.setItem('foo', 'bar');
             store.reset();
+            expect(store.getItem('foo')).toEqual(undefined);
+        });
+    });
+    describe('reset preserving items outside Ra-Store', () => {
+        it('should reset the store', () => {
+            const store = localStorageStore();
+            store.setItem('foo', 'bar');
+            getStorage().setItem('baz', 'baz'); //set custom item in localstorage
+            store.reset();
+            expect(getStorage().getItem('baz')).toEqual('baz'); //expect not to be wiped on store reset
             expect(store.getItem('foo')).toEqual(undefined);
         });
     });

@@ -83,7 +83,12 @@ export const localStorageStore = (
             if (localStorageAvailable) {
                 const storedVersion = getStorage().getItem(`${prefix}.version`);
                 if (storedVersion && storedVersion !== version) {
-                    getStorage().clear();
+                    const storage = getStorage();
+                    Object.keys(storage).forEach(key => {
+                        if (key.startsWith(`${prefix}`)) {
+                            storage.removeItem(key);
+                        }
+                    });
                 }
                 getStorage().setItem(`${prefix}.version`, version);
                 window.addEventListener('storage', onLocalStorageChange);
