@@ -193,8 +193,6 @@ export const AutocompleteInput = <
 
     const translate = useTranslate();
 
-    const finalEmptyText = emptyText ?? '';
-
     const {
         id,
         field,
@@ -220,22 +218,23 @@ export const AutocompleteInput = <
 
     const finalChoices = useMemo(
         () =>
-            isRequired || multiple
+            // eslint-disable-next-line eqeqeq
+            emptyText == undefined || isRequired || multiple
                 ? allChoices
                 : [
                       {
                           [optionValue || 'id']: emptyValue,
                           [typeof optionText === 'string'
                               ? optionText
-                              : 'name']: translate(finalEmptyText, {
-                              _: finalEmptyText,
+                              : 'name']: translate(emptyText, {
+                              _: emptyText,
                           }),
                       },
                   ].concat(allChoices),
         [
             allChoices,
             emptyValue,
-            finalEmptyText,
+            emptyText,
             isRequired,
             multiple,
             optionText,

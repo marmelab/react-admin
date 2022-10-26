@@ -221,9 +221,7 @@ This delay can be customized by setting the `debounce` prop.
 
 ## `emptyText`
 
-If the input isn't required (using `validate={required()}`), users can select an empty choice with an empty text `''` as label.
-
-You can override that label with the `emptyText` prop.
+If the input isn't required (using `validate={required()}`), and you need a choice to represent the empty value, set `emptyText` prop and a choice will be added at the top, with its value as label.
 
 ```jsx
 <AutocompleteInput source="author_id" choices={choices} emptyText="No author" />
