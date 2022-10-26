@@ -21,6 +21,27 @@ export const Basic = () => (
     </Wrapper>
 );
 
+export const DefaultValue = () => (
+    <Wrapper>
+        <FileInput
+            source="attachment"
+            defaultValue={[
+                {
+                    title: 'Image1',
+                    src: 'https://picsum.photos/200/300',
+                },
+                {
+                    title: 'Image2',
+                    src: 'https://picsum.photos/200/300',
+                },
+            ]}
+        >
+            <FileField source="src" title="title" />
+        </FileInput>
+        <FormInspector name="attachment" />
+    </Wrapper>
+);
+
 export const LimitByFileType = () => (
     <Wrapper>
         <FileInput source="attachment" accept="application/pdf">

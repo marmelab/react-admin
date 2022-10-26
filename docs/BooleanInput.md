@@ -5,7 +5,13 @@ title: "The BooleanInput Component"
 
 # `<BooleanInput>`
 
-`<BooleanInput />` is a toggle button allowing you to attribute a `true` or `false` value to a record field.
+`<BooleanInput />` renders a switch allowing users to set the value `true` or `false` to a record field.
+
+![BooleanInput](./img/boolean-input.gif)
+
+**Tip**: This input doesn't let users set a `null` value - only `true` or `false`. Use the [`<NullableBooleanInput />`](./NullableBooleanInput.md) component if you have to handle non-required booleans.
+
+## Usage 
 
 ```jsx
 import { BooleanInput } from 'react-admin';
@@ -13,11 +19,17 @@ import { BooleanInput } from 'react-admin';
 <BooleanInput label="Commentable" source="commentable" />
 ```
 
-![BooleanInput](./img/boolean-input.png)
+## Props
 
-This input does not handle `null` values. You would need the [`<NullableBooleanInput />`](./NullableBooleanInput.md) component if you have to handle non-set booleans.
+| Prop      | Required | Type     | Default | Description                                                                |
+|-----------|----------|----------|---------|----------------------------------------------------------------------------|
+| `options` | Optional | `Object` | `{}`    | Options object to pass to the underlying material-ui `<Switch>` component. |
 
-You can use the `options` prop to pass any option supported by the MUI's `Switch` components. For example, here's how to set a custom checked icon:
+`<BooleanInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+## `options`
+
+Use the `options` prop to pass any option supported by the MUI's `Switch` components. For example, here's how to set a custom checked icon:
 
 {% raw %}
 ```jsx
@@ -32,4 +44,4 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 
 Refer to [MUI Switch documentation](https://mui.com/api/switch) for more details.
 
-`<BooleanInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
