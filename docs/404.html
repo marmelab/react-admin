@@ -44,6 +44,27 @@ d88   888  888    888 d88   888
 <p><a href="#" onClick="history.go(-1); return false;">Go back</a></p>
 
 <script>
+    // helper function to replace the Navigation content
+    function replaceNavigationContent(text) {
+        var tmpElement = document.createElement('div');
+        tmpElement.innerHTML = text;
+        var content = document.querySelector('.sidenav');
+        content.innerHTML = tmpElement.querySelector('.sidenav').innerHTML;
+        buildPageToC();
+    }
+
+    // helper function to fetch the Navigation content for the current version and
+    // replace it in the DOM
+    function replaceNavigationWithVersion(version) {
+        var location = document.location.href.split('#')[0];
+        var locationSlices = location.split('/');
+        var href = [...locationSlices.slice(0, locationSlices.length - 2), version, 'Readme.html'].join('/');
+        // fetch the new content
+        fetch(href)
+            .then(res => res.text())
+            .then(replaceNavigationContent);
+    }
+
     let docPageRoot;
     const docPageRegexp = /(.*\/doc\/\d+\.\d+\/).*/;
     const versionRegexp = /.*\/doc\/(\d+\.\d+)\/.*/;
@@ -62,5 +83,8 @@ d88   888  888    888 d88   888
             'doc-version-number'
         )[1].innerText = version;
         document.getElementById('doc-version').style.display = 'block';
+
+        // Replace the Navigation content with the one for the current version
+        replaceNavigationWithVersion(version);
     }
 </script>
