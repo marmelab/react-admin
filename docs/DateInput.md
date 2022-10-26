@@ -21,7 +21,9 @@ import { DateInput } from 'react-admin';
 
 The field value must be a string with the pattern `YYYY-MM-DD` (ISO 8601), e.g. `'2022-04-30'`.
 
-`<DateInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+## Props
+
+`<DateInput>` accepts the [common input props](./Inputs.md#common-input-props).
 
 ## Validation
 

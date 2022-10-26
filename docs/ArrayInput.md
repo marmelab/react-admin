@@ -70,7 +70,9 @@ const OrderEdit = () => (
 
 Check [the `<SimpleFormIterator>` documentation](./SimpleFormIterator.md) for details about how to customize the sub form layout.
 
-`<ArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props) (except `format` and `parse`).
+## Props
+
+`<ArrayInput>` accepts the [common input props](./Inputs.md#common-input-props) (except `format` and `parse`).
 
 ## Global validation
 

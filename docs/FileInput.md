@@ -53,16 +53,16 @@ Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and 
 
 ## Props
 
-| Prop                   | Required | Type                | Default                         | Description                                                                                     |
-|------------------------|----------|---------------------|---------------------------------|-------------------------------------------------------------------------------------------------|
-| `accept`               | Optional | `string | string[]` | -                               | Accepted file type(s). When empty, all file types are accepted.                                 |
-| `children`             | Optional | `ReactNode`         | -                               | Element used to preview file(s)                                                                 |
-| `minSize`              | Optional | `number`            | 0                               | Minimum file size (in bytes), e.g. 5000 for 5KB                                                 |
-| `maxSize`              | Optional | `number`            | `Infinity`                      | Maximum file size (in bytes), e.g. 5000000 for 5MB                                              |
-| `multiple`             | Optional | `boolean`           | `false`                         | Set to true if the input should accept a list of files, false if it should only accept one file |
-| `options`              | Optional | `Object`            | `{}`                            | Additional options passed to react-dropzone's `useDropzone()` hook.                             |
-| `placeholder`          | Optional | `ReactNode`         | -                               | Invite displayed in the drop zone, overrides `labelSingle` and `labelMultiple`                  |
-| `validateFile Removal` | Optional | `function`          | -                               | Allows to cancel the removal of files                                                           |
+| Prop                   | Required | Type                | Default    | Description                                                         |
+|------------------------|----------|---------------------|------------|---------------------------------------------------------------------|
+| `accept`               | Optional | `string | string[]` | -          | Accepted file type(s). When empty, all file types are accepted.     |
+| `children`             | Optional | `ReactNode`         | -          | Element used to preview file(s)                                     |
+| `minSize`              | Optional | `number`            | 0          | Minimum file size (in bytes), e.g. 5000 for 5KB                     |
+| `maxSize`              | Optional | `number`            | `Infinity` | Maximum file size (in bytes), e.g. 5000000 for 5MB                  |
+| `multiple`             | Optional | `boolean`           | `false`    | Whether the inputs can accept multiple files.                       |
+| `options`              | Optional | `Object`            | `{}`       | Additional options passed to react-dropzone's `useDropzone()` hook. |
+| `placeholder`          | Optional | `ReactNode`         | -          | Invite displayed in the drop zone                                   |
+| `validateFile Removal` | Optional | `function`          | -          | Allows to cancel the removal of files                               |
 
 `<FileInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
@@ -118,7 +118,7 @@ Maximum file size (in bytes), e.g. 5000000 for 5MB. Defaults to `Infinity`.
 
 ## `multiple`
 
-Whether the inputs can accept multiple files. Defaults to `false`.
+Set to `true` if the input should accept a list of files, `false` if it should only accept one file. Defaults to `false`.
 
 If `multiple` is set to `false` and additional files are dropped, all files besides the first will be rejected. Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
 
