@@ -14,6 +14,22 @@ React-admin relies on [react-hook-form](https://react-hook-form.com/) for the va
 
 You can’t use both form level validation and input level validation - this is a `react-hook-form` limitation.
 
+## Validation Mode
+
+By default, the validation mode is `onSubmit`, and the re-validation mode is `onChange`.
+
+Since [`<Form>`](./Form.md) actually passes all additional props to react-hook-form's [`useForm` hook](https://react-hook-form.com/api/useform/), this can easily be changed by setting the `mode` and `reValidateMode` props.
+
+```jsx
+export const UserCreate = () => (
+    <Create>
+        <SimpleForm mode="onBlur" reValidateMode="onBlur">
+            <TextInput label="First Name" source="firstName" validate={required()} />
+        </SimpleForm>
+    </Create>
+);
+```
+
 ## Global Validation
 
 The value of the form `validate` prop must be a function taking the record as input, and returning an object with error messages indexed by field. For instance:
