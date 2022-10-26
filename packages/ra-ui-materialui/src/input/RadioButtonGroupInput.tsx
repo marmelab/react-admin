@@ -95,6 +95,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         margin = 'dense',
         onBlur,
         onChange,
+        options,
         optionText,
         optionValue,
         parse,
@@ -182,6 +183,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
                 id={id}
                 row={row}
                 {...field}
+                {...options}
                 {...sanitizeRestProps(rest)}
             >
                 {allChoices.map(choice => (
@@ -271,6 +273,7 @@ export type RadioButtonGroupInputProps = Omit<CommonInputProps, 'source'> &
     ChoicesProps &
     FormControlProps &
     RadioGroupProps & {
+        options?: RadioGroupProps;
         source?: string;
     };
 

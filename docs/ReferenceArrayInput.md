@@ -27,7 +27,7 @@ http://myapi.com/tags?page=1&perPage=25
 
 Once it receives the deduplicated reference resources, this component delegates rendering to its child component, by providing the possible choices through the `ChoicesContext`. This context value can be accessed with the [`useChoicesContext`](./useChoicesContext.md) hook.
 
-This means you can use `<ReferenceArrayInput>` with [`<SelectArrayInput>`](./SelectArrayInput.md), or with the component of your choice, provided they detect a `ChoicesContext` is available and get their choices from it.
+This means you can use `<ReferenceArrayInput>` with [`<SelectArrayInput>`](./SelectArrayInput.md), [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md), [`<DualListInput>`](./DualListInput.md), [`<CheckboxGroupInput>`](./CheckboxGroupInput.md), or with the component of your choice, provided they detect a `ChoicesContext` is available and get their choices from it.
 
 The component expects a `source` and a `reference` attributes. For instance, to make the `tag_ids` for a `post` editable:
 

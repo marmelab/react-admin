@@ -231,10 +231,10 @@ const BookEditCustomOptions = () => {
                         const searchTextLower = searchText.toLowerCase();
                         const match =
                             record.fullName
-                                .toLowerCase()
+                                ?.toLowerCase()
                                 .includes(searchTextLower) ||
                             record.language
-                                .toLowerCase()
+                                ?.toLowerCase()
                                 .includes(searchTextLower);
 
                         return match;
@@ -721,7 +721,7 @@ const BookEditWithEmptyText = () => {
         >
             <SimpleForm>
                 <AutocompleteInput
-                    label="emptyValue set to 'no-author', emptyText set to '' by default"
+                    label="emptyValue set to 'no-author', emptyText not set"
                     source="author"
                     choices={choices}
                     emptyValue="no-author"
