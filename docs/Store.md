@@ -120,7 +120,7 @@ To create a Store with a different version number, call the `localStorageStore()
 ```jsx
 import { Admin, Resource, localStorageStore } from 'react-admin';
 
-const STORE_VERSION = 2;
+const STORE_VERSION = "2";
 
 const App = () => (
     <Admin dataProvider={dataProvider} store={localStorageStore(STORE_VERSION)}>
