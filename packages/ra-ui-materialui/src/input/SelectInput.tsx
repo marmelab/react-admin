@@ -13,6 +13,7 @@ import {
     useChoices,
     RaRecord,
     useGetRecordRepresentation,
+    warning,
 } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
@@ -160,6 +161,16 @@ export const SelectInput = (props: SelectInputProps) => {
         resource: resourceProp,
         source: sourceProp,
     });
+
+    warning(
+        source === undefined,
+        `If you're not wrapping the SelectInput inside a ReferenceInput, you must provide the source prop`
+    );
+
+    warning(
+        !isLoading && allChoices === undefined,
+        `If you're not wrapping the SelectInput inside a ReferenceInput, you must provide the choices prop`
+    );
 
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     const { getChoiceText, getChoiceValue, getDisableValue } = useChoices({
