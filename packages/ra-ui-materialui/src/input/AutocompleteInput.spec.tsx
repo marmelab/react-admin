@@ -1330,6 +1330,30 @@ describe('<AutocompleteInput />', () => {
             expect(screen.queryByText('Leo Tolstoy')).toBeNull();
         });
 
+        it('should repopulate the suggestions after the suggestions are dismissed', async () => {
+            render(<InsideReferenceInput />);
+            const input = await screen.findByLabelText('Author');
+            fireEvent.focus(input);
+            await waitFor(() => {
+                expect(screen.queryByText('Victor Hugo')).not.toBeNull();
+            });
+            fireEvent.change(input, { target: { value: 'bar' } });
+            await waitFor(
+                () => {
+                    expect(screen.queryByText('Victor Hugo')).toBeNull();
+                },
+                { timeout: 2000 }
+            );
+            fireEvent.blur(input);
+            fireEvent.focus(input);
+            await waitFor(
+                () => {
+                    expect(screen.queryByText('Victor Hugo')).not.toBeNull();
+                },
+                { timeout: 2000 }
+            );
+        });
+
         it('should not change an undefined value to empty string', async () => {
             const onSuccess = jest.fn();
             render(<InsideReferenceInputDefaultValue onSuccess={onSuccess} />);
