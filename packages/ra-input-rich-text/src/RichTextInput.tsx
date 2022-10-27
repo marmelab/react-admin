@@ -111,6 +111,14 @@ export const RichTextInput = (props: RichTextInputProps) => {
     useEffect(() => {
         if (!editor) return;
 
+        editor.commands.setContent(field.value, false, {
+            preserveWhitespace: true,
+        });
+    }, [editor, field.value]);
+
+    useEffect(() => {
+        if (!editor) return;
+
         editor.setOptions({
             editable: !disabled && !readOnly,
             editorProps: {
