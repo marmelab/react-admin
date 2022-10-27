@@ -71,7 +71,7 @@ If you have multiple `TranslatableInputs` on the same page, you should specify a
 
 ## `locales`
 
-Set the `locales` to display with an array of strings - each string becoming a key in the input value. . The order of the locales will be the order of the tabs.
+Set the `locales` to display with an array of strings - each string becoming a key in the input value - . The order of the locales will be the order of the tabs.
 
 ```jsx
 <TranslatableInputs locales={['en', 'fr']}>
