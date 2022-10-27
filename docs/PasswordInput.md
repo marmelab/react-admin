@@ -7,12 +7,27 @@ title: "The PasswordInput Component"
 
 `<PasswordInput>` works like the [`<TextInput>`](./TextInput.md) but overwrites its `type` prop to `password` or `text` in accordance with a visibility button, hidden by default.
 
+![Password Input](./img/password-input.png)
+
+## Usage
+
+Use it like a [`<TextInput>`](./TextInput.md):
+
 ```jsx
 import { PasswordInput } from 'react-admin';
+
 <PasswordInput source="password" />
 ```
 
-![Password Input](./img/password-input.png)
+## Props
+
+| Prop   | Required | Type     | Default | Description   |
+| ------ | -------- | -------- | ------- | ------------- |
+| `initiallyVisible` | Optional | `boolean` | `false` | Whether the password should initially be shown |
+
+`<PasswordInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+
+## `initiallyVisible`
 
 It is possible to change the default behavior and display the value by default via the `initiallyVisible` prop:
 
@@ -23,7 +38,9 @@ import { PasswordInput } from 'react-admin';
 
 ![Password Input (visible)](./img/password-input-visible.png)
 
-**Tip**: It is possible to set the [`autocomplete` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) by injecting an input props:
+## Disabling Autocomplete
+
+Set the [`autocomplete` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) by injecting an input props:
 
 {% raw %}
 ```jsx

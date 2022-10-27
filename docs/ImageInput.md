@@ -5,53 +5,149 @@ title: "The ImageInput Component"
 
 # `<ImageInput>`
 
-`<ImageInput>` allows to upload some pictures using [react-dropzone](https://github.com/okonet/react-dropzone).
+`<ImageInput>` allows editing and uploading images (png, jpg, gif, etc). It is powered by [react-dropzone](https://github.com/okonet/react-dropzone).
 
 ![ImageInput](./img/image-input.png)
 
-## Properties
+## Usage
 
-| Prop            | Required | Type                        | Default                          | Description                                                                                                                                                                                                                                                         |
-| --------------- | -------- | --------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `accept`        | Optional | `string | string[]`         | -                                | Accepted file type(s), e. g. 'image/*,.pdf'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See [MDN input docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept) for syntax and examples. |
-| `children`      | Optional | `ReactNode`                 | -                                | Element used to display the preview of an image (cloned several times if the select accepts multiple files).                                                                                                                                                        |
-| `minSize`       | Optional | `number`                    | 0                                | Minimum image size (in bytes), e.g. 5000 for 5KB                                                                                                                                                                                                                   |
-| `maxSize`       | Optional | `number`                    | `Infinity`                       | Maximum image size (in bytes), e.g. 5000000 for 5MB                                                                                                                                                                                                                 |
-| `multiple`      | Optional | `boolean`                   | `false`                          | Set to true if the input should accept a list of images, false if it should only accept one image                                                                                                                                                                   |
-| `labelSingle`   | Optional | `string`                    | 'ra.input.image. upload_single'  | Invite displayed in the drop zone if the input accepts one image                                                                                                                                                                                                    |
-| `labelMultiple` | Optional | `string`                    | 'ra.input.file. upload_multiple' | Invite displayed in the drop zone if the input accepts several images                                                                                                                                                                                               |
-| `placeholder`   | Optional | `string` &#124; `ReactNode` | -                                | Invite displayed in the drop zone, overrides `labelSingle` and `labelMultiple`                                                                                                                                                                                      |
-| `options`       | Optional | `Object`                    | `{}`                             | Additional options passed to react-dropzone's `useDropzone()` hook. See [the react-dropzone source](https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js)  for details .                                                                       |
+```jsx
+import { ImageInput, ImageField } from 'react-admin';
+
+<ImageInput source="pictures" label="Related pictures">
+    <ImageField source="src" title="title" />
+</ImageInput>
+```
+
+`<ImageInput>` uses its child component to give a preview of the files. `<ImageInput>` renders it child once per file, inside a `<RecordContext>`, so the child can be a Field component. The default [`<ImageField>`](./ImageField.md) renders a thumbnail for the current image(s).
+
+The input value must be an object or an array of objects with a `title` and a `src` property, e.g.:
+
+```js
+{
+    id: 123,
+    attachments: [
+        {
+            title: 'cat.png',
+            src: 'https://example.com/uploads/cat1234.png',
+        },
+        {
+            title: 'dog.png',
+            src: 'https://example.com/uploads/dog5678.png',
+        },
+    ],
+}
+```
+
+After modification by the user, the value is stored as an array of objects with 3 properties: 
+
+* `title`: the file name with extension, e.g. 'Invoice-2929-01-06.pdf',
+* `src`: An [object URL](https://developer.mozilla.org/fr/docs/Web/API/URL/createObjectURL) for the `File`, e.g. 'blob:https://example.com/1e67e00e-860d-40a5-89ae-6ab0cbee6273'
+* `rawFile`: [The `File` object](https://developer.mozilla.org/fr/docs/Web/API/File) itself
+
+It is the responsibility of your `dataProvider` to send the file to the server (encoded in Base64, or using multipart upload) and to transform the `src` property. See [the Data Provider documentation](./DataProviders.html#handling-file-uploads) for an example.
+
+Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and `maxSize` props.
+
+## Props
+
+| Prop                   | Required | Type                | Default    | Description                                                         |
+|------------------------|----------|---------------------|------------|---------------------------------------------------------------------|
+| `accept`               | Optional | `string | string[]` | -          | Accepted file type(s). When empty, all file types are accepted.     |
+| `children`             | Optional | `ReactNode`         | -          | Element used to preview file(s)                                     |
+| `minSize`              | Optional | `number`            | 0          | Minimum file size (in bytes), e.g. 5000 for 5KB                     |
+| `maxSize`              | Optional | `number`            | `Infinity` | Maximum file size (in bytes), e.g. 5000000 for 5MB                  |
+| `multiple`             | Optional | `boolean`           | `false`    | Whether the inputs can accept multiple files.                       |
+| `options`              | Optional | `Object`            | `{}`       | Additional options passed to react-dropzone's `useDropzone()` hook. |
+| `placeholder`          | Optional | `ReactNode`         | -          | Invite displayed in the drop zone                                   |
+| `validateFile Removal` | Optional | `function`          | -          | Allows to cancel the removal of files                               |
 
 `<ImageInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
-## Usage
+## `accept`
 
-Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and `maxSize` props. `accept` must be a valid [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file) or a valid file extension. If `multiple` is set to false and additional files are dropped, all files besides the first will be rejected. Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
-
-`<ImageInput>` delegates the preview of currently selected images to its child. `<ImageInput>` clones its child as many times as there are selected images, passing the image as the `record` prop. To preview a simple list of image thumbnails, you can use `<ImageField>` as child, as follows:
+Equivalent of [the `accept` attribute of an `<input type="file">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept). `accept` must be a valid [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml), according to [input element specification](https://www.w3.org/wiki/HTML/Elements/input/file) or a valid file extension.
 
 ```jsx
-<ImageInput source="pictures" label="Related pictures" accept="image/*">
+<ImageInput source="pictures" accept="image/*">
+    <ImageField source="src" title="title" />
+</ImageInput>
+```
+
+Examples of valid `accept` values:
+
+- '.png,.gif,.jpg,.jpeg' 
+- 'image/*'
+
+If left empty, all file types are accepted (even non-image types).
+
+## `children`
+
+`<ImageInput>` delegates the preview of currently selected images to its child. `<ImageInput>` clones its child component once per file, inside a [`<RecordContext>`](./useRecordContext.md), so the child can be a [Field](./Fields.md) component. The default [`<ImageField>`](./ImageField.md) renders a thumbnail for the current image(s).
+
+```jsx
+<ImageInput source="pictures">
     <ImageField source="src" title="title" />
 </ImageInput>
 ```
 
 Writing a custom preview component is quite straightforward: it's a standard [field](./Fields.md#writing-your-own-field-component).
 
-When receiving **new** images, `ImageInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display information about size or MIME type inside a custom field.
+## `minSize`
 
-The `ImageInput` component accepts an `options` prop, allowing to set the [react-dropzone properties](https://react-dropzone.netlify.com/#proptypes).
-
-If the default Dropzone label doesn't fit with your need, you can pass a `placeholder` prop to overwrite it. The value can be anything React can render (`PropTypes.node`):
+Minimum file size (in bytes), e.g. 5000 for 5KB. Defaults to 0.
 
 ```jsx
-<ImageInput source="pictures" label="Related pictures" accept="image/*" placeholder={<p>Drop your file here</p>}>
+<ImageInput source="pictures" minSize={5000}>
     <ImageField source="src" title="title" />
 </ImageInput>
 ```
 
-Note that the image upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#handling-file-uploads) for base64 encoding data by extending the REST Client.
+## `maxSize`
+
+Maximum file size (in bytes), e.g. 5000000 for 5MB. Defaults to `Infinity`.
+
+```jsx
+<ImageInput source="pictures" maxSize={5000000}>
+    <ImageField source="src" title="title" />
+</ImageInput>
+```
+
+## `multiple`
+
+Set to `true` if the input should accept a list of files, `false` if it should only accept one file. Defaults to `false`.
+
+If `multiple` is set to `false` and additional files are dropped, all files besides the first will be rejected. Any file which does not have a size in the [`minSize`, `maxSize`] range, will be rejected as well.
+
+```jsx
+<ImageInput source="pictures" multiple>
+    <ImageField source="src" title="title" />
+</ImageInput>
+```
+
+## `options`
+
+`<ImageInput>` accepts an `options` prop into which you can pass all the [react-dropzone properties](https://react-dropzone.netlify.com/#proptypes).
+
+## `placeholder`
+
+The default droppable area renders the following text:
+              
+- 'Drop a picture to upload, or click to select it.' for single file inputs
+- 'Drop some pictures to upload, or click to select one.' for [multiple file inputs](#multiple)
+
+You can customize these labels using the followinf translation keys:
+
+- `ra.input.image.upload_single`
+- `ra.input.image.upload_several` 
+
+If that's not enough, you can pass a `placeholder` prop to overwrite it. The value can be anything React can render:
+
+```jsx
+<ImageInput source="files" placeholder={<p>Drop your file here</p>}>
+    <ImageField source="src" title="title" />
+</ImageInput>
+```
 
 ## `sx`: CSS API
 
