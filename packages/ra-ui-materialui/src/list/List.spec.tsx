@@ -208,7 +208,7 @@ describe('<List />', () => {
         });
     });
 
-    it('should render a list page with a no results found message when there is an error', async () => {
+    it('should render a list page with an error message when there is an error', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         const Datagrid = () => <div>datagrid</div>;
         const dataProvider = {
