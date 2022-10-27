@@ -9,7 +9,7 @@ import { ComponentPropType, useListContext, RaRecord } from 'ra-core';
 
 import { Title, TitlePropType } from '../layout/Title';
 import { ListToolbar } from './ListToolbar';
-import { Pagination as DefaultPagination } from './pagination';
+import { Pagination as DefaultPagination, PaginationLimit } from './pagination';
 import { ListActions as DefaultActions } from './ListActions';
 import { Empty } from './Empty';
 
@@ -50,10 +50,6 @@ export const ListView = <RecordType extends RaRecord = any>(
         return null;
     }
 
-    if (error) {
-        return null;
-    }
-
     const renderList = () => (
         <div className={ListClasses.main}>
             {(filters || actions) && (
@@ -70,7 +66,7 @@ export const ListView = <RecordType extends RaRecord = any>(
                       })
                     : children}
             </Content>
-            {pagination !== false && pagination}
+            {error ? <PaginationLimit /> : pagination !== false && pagination}
         </div>
     );
 
