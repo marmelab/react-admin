@@ -14,12 +14,12 @@ describe('<RichTextInput />', () => {
             );
         });
 
-        const newRecord = { id: 123, body: '<h1>Goodby world!</h1>' };
+        const newRecord = { id: 123, body: '<h1>Goodbye world!</h1>' };
         rerender(<Basic record={newRecord} />);
 
         await waitFor(() => {
             expect(container.querySelector('#body').innerHTML).toEqual(
-                '<h1>Goodby world!</h1>'
+                '<h1>Goodbye world!</h1>'
             );
         });
     });
