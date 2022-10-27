@@ -92,7 +92,7 @@ describe('<FilterButton />', () => {
             );
         });
 
-        it('should remove all filters when the "Clear all filters" button is clicked', async () => {
+        it('should remove all non alwaysOn filters when the "Remove all filters" button is clicked', async () => {
             render(<Basic />);
 
             // First, check we don't have a clear filters option yet
@@ -106,6 +106,42 @@ describe('<FilterButton />', () => {
             fireEvent.click(
                 screen.getByText('Title', { selector: 'li > span' })
             );
+            await screen.findByDisplayValue(
+                'Accusantium qui nihil voluptatum quia voluptas maxime ab similique'
+            );
+
+            // Then we clear all filters
+            fireEvent.click(screen.getByText('Add filter'));
+            await screen.findByText('Remove all filters');
+            fireEvent.click(screen.getByText('Remove all filters'));
+
+            // We check that the previously applied filter has been removed
+            await waitFor(() => {
+                expect(
+                    screen.queryByDisplayValue(
+                        'Accusantium qui nihil voluptatum quia voluptas maxime ab similique'
+                    )
+                ).toBeNull();
+            });
+        });
+
+        it('should remove all alwaysOn filters when the "Remove all filters" button is clicked', async () => {
+            render(<Basic />);
+
+            // First, check we don't have a clear filters option yet
+            await screen.findByText('Add filter');
+            fireEvent.click(screen.getByText('Add filter'));
+
+            await screen.findByText('Title', { selector: 'li > span' });
+            expect(screen.queryByDisplayValue('Remove all filters')).toBeNull();
+
+            // Then we apply a filter to an alwaysOn filter
+            fireEvent.change(screen.getByLabelText('Search'), {
+                target: {
+                    value:
+                        'Accusantium qui nihil voluptatum quia voluptas maxime ab similique',
+                },
+            });
             await screen.findByDisplayValue(
                 'Accusantium qui nihil voluptatum quia voluptas maxime ab similique'
             );
