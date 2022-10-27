@@ -120,7 +120,6 @@ export const RichTextInput = (props: RichTextInputProps) => {
         if (!editor) return;
 
         editor.setOptions({
-            content: field.value,
             editable: !disabled && !readOnly,
             editorProps: {
                 attributes: {
