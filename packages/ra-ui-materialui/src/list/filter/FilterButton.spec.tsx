@@ -92,7 +92,7 @@ describe('<FilterButton />', () => {
             );
         });
 
-        it('should remove all non alwaysOn filters when the "Remove all filters" button is clicked', async () => {
+        it('should remove all filters when the "Remove all filters" button is clicked', async () => {
             render(<Basic />);
 
             // First, check we don't have a clear filters option yet
