@@ -19,7 +19,7 @@ import { ImageInput, ImageField } from 'react-admin';
 </ImageInput>
 ```
 
-`<ImageInput>` uses its child component to give a preview of the files. `<ImageInput>` renders it child once per file, inside a `<RecordContext>`, so the child can be a Field component. The default [`<ImageField>`](./ImageField.md) renders the name of the file(s), with a hyperlink.
+`<ImageInput>` uses its child component to give a preview of the files. `<ImageInput>` renders it child once per file, inside a `<RecordContext>`, so the child can be a Field component. The default [`<ImageField>`](./ImageField.md) renders a thumbnail for the current image(s).
 
 The input value must be an object or an array of objects with a `title` and a `src` property, e.g.:
 
@@ -83,7 +83,7 @@ If left empty, all file types are accepted (even non-image types).
 
 ## `children`
 
-`<ImageInput>` delegates the preview of currently selected images to its child. `<ImageInput>` clones its child component once per file, inside a [`<RecordContext>`](./useRecordContext.md), so the child can be a [Field](./Fields.md) component. The default [`<ImageField>`](./ImageField.md) renders the name of the file(s), with a hyperlink.
+`<ImageInput>` delegates the preview of currently selected images to its child. `<ImageInput>` clones its child component once per file, inside a [`<RecordContext>`](./useRecordContext.md), so the child can be a [Field](./Fields.md) component. The default [`<ImageField>`](./ImageField.md) renders a thumbnail for the current image(s).
 
 ```jsx
 <ImageInput source="pictures">
