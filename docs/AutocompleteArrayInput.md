@@ -67,6 +67,8 @@ The form value for the source must be an array of the selected values, e.g.
 | `setFilter`                | Optional | `Function`            | `null`                   | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically set up when using `ReferenceArray Input`. |
 | `shouldRender Suggestions` | Optional | `Function`            | `() => true`             | A function that returns a `boolean` to determine whether or not suggestions are rendered.  |
 | `suggestionLimit`          | Optional | `number`              | `null`                   | Limits the numbers of suggestions that are shown in the dropdown list                                                                                   |
+| `translateChoice` | Optional | `boolean`                  | `true`             | Whether the choices should be translated                                                                                               |
+
 
 `<AutocompleteArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
@@ -396,6 +398,26 @@ The `<AutocompleteArrayInput>` component accepts the usual `className` prop. You
 `<AutocompleteArrayInput>` renders an [`<AutocompleteInput>`](./AutocompleteInput.md) and reuses its styles. To override the style of all instances of `<AutocompleteInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaAutocompleteInput` key.
 
 Refer to the [MUI `<Autocomplete>` component](https://mui.com/components/autocomplete/) to know its CSS API.
+
+## `translateChoice`
+
+The choices are translated by default, so you can use translation identifiers as choices:
+
+```jsx
+const choices = [
+    { id: 'admin', label: 'myroot.roles.admin' },
+    { id: 'u001', label: 'myroot.roles.u001' },
+    { id: 'u002', label: 'myroot.roles.u002' },
+    { id: 'u003', label: 'myroot.roles.u003' },
+];
+```
+
+However, in some cases (e.g. inside a `<ReferenceArrayInput>`), you may not want the choice to be translated.
+In that case, set the `translateChoice` prop to `false`.
+
+```jsx
+<AutocompleteArrayInput source="tags" choices={choices} translateChoice={false}/>
+```
 
 ## Additional Props
 
