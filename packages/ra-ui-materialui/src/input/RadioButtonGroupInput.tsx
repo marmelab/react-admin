@@ -11,13 +11,7 @@ import {
 import { RadioGroupProps } from '@mui/material/RadioGroup';
 import { FormControlProps } from '@mui/material/FormControl';
 import get from 'lodash/get';
-import {
-    useInput,
-    FieldTitle,
-    ChoicesProps,
-    warning,
-    useChoicesContext,
-} from 'ra-core';
+import { useInput, FieldTitle, ChoicesProps, useChoicesContext } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
@@ -121,15 +115,17 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         source: sourceProp,
     });
 
-    warning(
-        source === undefined,
-        `If you're not wrapping the RadioButtonGroupInput inside a ReferenceInput, you must provide the source prop`
-    );
+    if (source === undefined) {
+        throw new Error(
+            `If you're not wrapping the RadioButtonGroupInput inside a ReferenceArrayInput, you must provide the source prop`
+        );
+    }
 
-    warning(
-        allChoices === undefined,
-        `If you're not wrapping the RadioButtonGroupInput inside a ReferenceInput, you must provide the choices prop`
-    );
+    if (!isLoading && allChoices === undefined) {
+        throw new Error(
+            `If you're not wrapping the RadioButtonGroupInput inside a ReferenceArrayInput, you must provide the choices prop`
+        );
+    }
 
     const { id, isRequired, fieldState, field, formState } = useInput({
         format,
