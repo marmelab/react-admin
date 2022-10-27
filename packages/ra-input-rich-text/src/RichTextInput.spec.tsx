@@ -1,14 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { screen, render, waitFor } from '@testing-library/react';
-import {
-    RecordContextProvider,
-    Form,
-    testDataProvider,
-    CoreAdminContext,
-} from 'ra-core';
-
-import { RichTextInput } from './RichTextInput';
+import { render, waitFor } from '@testing-library/react';
 import { Basic } from './RichTextInput.stories';
 
 describe('<RichTextInput />', () => {
