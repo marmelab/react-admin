@@ -21,7 +21,7 @@ import { FileInput, FileField } from 'react-admin';
 </FileInput>
 ```
 
-`<FileInput>` uses its child component to give a preview of the files. `<FileInput>` renders it child once per file, inside a `<RecordContext>`, so the child can be a Field component. The default [`<FileField>`](./FileField.md) renders the name of the file(s), with a hyperlink.
+`<FileInput>` uses its child component to give a preview of the files. `<FileInput>` renders its child once per file, inside a `<RecordContext>`, so the child can be a Field component. The default [`<FileField>`](./FileField.md) renders the name of the file(s), with a hyperlink.
 
 The input value must be an object or an array of objects with a `title` and a `src` property, e.g.:
 
