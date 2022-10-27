@@ -9,13 +9,7 @@ import FormControl, { FormControlProps } from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
 import FormHelperText from '@mui/material/FormHelperText';
 import { CheckboxProps } from '@mui/material/Checkbox';
-import {
-    FieldTitle,
-    useInput,
-    ChoicesProps,
-    warning,
-    useChoicesContext,
-} from 'ra-core';
+import { FieldTitle, useInput, ChoicesProps, useChoicesContext } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
@@ -130,15 +124,17 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         source: sourceProp,
     });
 
-    warning(
-        source === undefined,
-        `If you're not wrapping the CheckboxGroupInput inside a ReferenceArrayInput, you must provide the source prop`
-    );
+    if (source === undefined) {
+        throw new Error(
+            `If you're not wrapping the CheckboxGroupInput inside a ReferenceArrayInput, you must provide the source prop`
+        );
+    }
 
-    warning(
-        !isLoading && allChoices === undefined,
-        `If you're not wrapping the CheckboxGroupInput inside a ReferenceArrayInput, you must provide the choices prop`
-    );
+    if (!isLoading && allChoices === undefined) {
+        throw new Error(
+            `If you're not wrapping the CheckboxGroupInput inside a ReferenceArrayInput, you must provide the choices prop`
+        );
+    }
 
     const {
         field: { onChange: formOnChange, onBlur: formOnBlur, value },
@@ -187,7 +183,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         [allChoices, formOnChange, formOnBlur, optionValue, value]
     );
 
-    if (isLoading && allChoices?.length === 0) {
+    if (isLoading && allChoices.length === 0) {
         return (
             <Labeled
                 id={id}
@@ -223,7 +219,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                 />
             </FormLabel>
             <FormGroup row={row}>
-                {allChoices?.map(choice => (
+                {allChoices.map(choice => (
                     <CheckboxGroupInputItem
                         key={get(choice, optionValue)}
                         choice={choice}
