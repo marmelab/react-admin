@@ -139,7 +139,7 @@ The default droppable area renders the following text:
 - 'Drop a file to upload, or click to select it.' for single file inputs
 - 'Drop some files to upload, or click to select one.' for [multiple file inputs](#multiple)
 
-You can customize these labels using the followinf translation keys:
+You can customize these labels using the following translation keys:
 
 - `ra.input.file.upload_single`
 - `ra.input.file.upload_several` 
