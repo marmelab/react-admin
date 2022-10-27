@@ -226,7 +226,9 @@ describe('<List />', () => {
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(screen.getByText('ra.navigation.no_results')).not.toBeNull();
+            expect(
+                screen.getByText('ra.notification.data_provider_error')
+            ).not.toBeNull();
         });
     });
 });

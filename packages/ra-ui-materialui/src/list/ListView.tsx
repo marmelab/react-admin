@@ -66,7 +66,11 @@ export const ListView = <RecordType extends RaRecord = any>(
                       })
                     : children}
             </Content>
-            {error ? <PaginationLimit /> : pagination !== false && pagination}
+            {error ? (
+                <PaginationLimit message="ra.notification.data_provider_error" />
+            ) : (
+                pagination !== false && pagination
+            )}
         </div>
     );
 
