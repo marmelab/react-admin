@@ -85,7 +85,7 @@ export const localStorageStore = (
                 if (storedVersion && storedVersion !== version) {
                     const storage = getStorage();
                     Object.keys(storage).forEach(key => {
-                        if (key.startsWith(`${prefix}`)) {
+                        if (key.startsWith(prefix)) {
                             storage.removeItem(key);
                         }
                     });

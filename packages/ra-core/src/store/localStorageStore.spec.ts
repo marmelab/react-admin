@@ -50,4 +50,22 @@ describe('localStorageStore', () => {
             expect(store.getItem('foo')).toEqual(undefined);
         });
     });
+    describe('changing version preserve localStorage items', () => {
+        it('should preserve localStorage items', () => {
+            const store = localStorageStore('1');
+            store.setItem('foo', 'bar');
+            getStorage().setItem('baz', 'baz'); //set custom item in localstorage
+            //change the localStorageStore version
+            //because actually the RA_STORE const is not exported, i search for the string "version" that is actually hardcoded in the keys
+            //also providing an actual default
+            const storeVersionName =
+                Object.getOwnPropertyNames(getStorage()).find(
+                    i => i.indexOf('.version') > 0
+                ) || 'RaStore.version';
+            getStorage().setItem(storeVersionName, '2');
+            store.setup();
+            expect(getStorage().getItem('baz')).toEqual('baz'); //expect not to be wiped on store reset
+            expect(store.getItem('foo')).toEqual(undefined); //deleted during setup
+        });
+    });
 });
