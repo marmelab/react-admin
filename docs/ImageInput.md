@@ -5,7 +5,7 @@ title: "The ImageInput Component"
 
 # `<ImageInput>`
 
-`<ImageInput>` allows editing and uploading iumages (png, jpg, gif, etc). It is powered by [react-dropzone](https://github.com/okonet/react-dropzone).
+`<ImageInput>` allows editing and uploading images (png, jpg, gif, etc). It is powered by [react-dropzone](https://github.com/okonet/react-dropzone).
 
 ![ImageInput](./img/image-input.png)
 
