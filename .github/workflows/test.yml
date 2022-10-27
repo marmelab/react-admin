@@ -79,6 +79,10 @@ jobs:
       run: make build
     - name: Build e-commerce
       run: make build-demo
+      env:
+          # Needed as workaround for Vite https://github.com/vitejs/vite/issues/2433#issuecomment-831399876
+          # value = (your memory in GiB, 6.51 for GH Actions) * 1024 - 512
+          NODE_OPTIONS: '--max-old-space-size=6163'
 
   crm:
     runs-on: ubuntu-latest
