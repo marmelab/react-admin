@@ -1,6 +1,22 @@
 import { defineConfig } from 'vite';
 import path from 'path';
+import fs from 'fs';
 import react from '@vitejs/plugin-react';
+
+const packages = fs.readdirSync(path.resolve(__dirname, '../../packages'));
+const aliases = packages.reduce((acc, dirName) => {
+    const packageJson = require(path.resolve(
+        __dirname,
+        '../../packages',
+        dirName,
+        'package.json'
+    ));
+    acc[packageJson.name] = path.resolve(
+        __dirname,
+        `${path.resolve('../..')}/packages/${packageJson.name}/src`
+    );
+    return acc;
+}, {});
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -28,22 +44,10 @@ export default defineConfig({
                 replacement: 'scheduler/tracing-profiling',
             },
             // we need to manually follow the symlinks for local packages to allow deep HMR
-            {
-                find: /^react-admin$/,
-                replacement: `${path.resolve(
-                    '../..'
-                )}/packages/react-admin/src`,
-            },
-            {
-                find: /^ra-ui-materialui$/,
-                replacement: `${path.resolve(
-                    '../..'
-                )}/packages/ra-ui-materialui/src`,
-            },
-            {
-                find: /^ra-core$/,
-                replacement: `${path.resolve('../..')}/packages/ra-core/src`,
-            },
+            ...Object.keys(aliases).map(packageName => ({
+                find: packageName,
+                replacement: aliases[packageName],
+            })),
         ],
     },
 });
