@@ -433,7 +433,7 @@ export const PostList = () => (
 ```
 {% endraw %}
 
-**Tip**: if you don't want to create a custom component to apply conditional formatting, you can also use [the `<WithRecord>` component](./WithRecord.md)].
+**Tip**: if you don't want to create a custom component to apply conditional formatting, you can also use [the `<WithRecord>` component](./WithRecord.md).
 
 ## `useMediaQuery` Hook
 

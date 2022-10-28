@@ -5,7 +5,7 @@ title: "The FileInput Component"
 
 # `<FileInput>`
 
-`<FileInput>` allows editing and uploading file attachments (pdfs, csv, images, etc). It is powered by [react-dropzone](https://github.com/okonet/react-dropzone).
+`<FileInput>` allows editing and uploading file attachments (pdfs, csv, images, etc.). It is powered by [react-dropzone](https://github.com/okonet/react-dropzone).
 
 ![FileInput](./img/file-input.png)
 

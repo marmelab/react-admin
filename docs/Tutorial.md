@@ -299,7 +299,7 @@ Let's get back to `<Datagrid>`. It reads the data fetched by `<List>`, then rend
 
 [![Users List](./img/tutorial_users_list_selected_columns.png)](./img/tutorial_users_list_selected_columns.png)
 
-In react-admin, most configuration is achieved via components. `<Datagrid>` could have taken a `columns` prop expecting a configuration object. But by using the `children` prop instead, it opens the door to much powerful customization - for instance, changing the column type, or using your own component for a given column.
+In react-admin, most configuration is achieved via components. `<Datagrid>` could have taken a `columns` prop expecting a configuration object. But by using the `children` prop instead, it opens the door to a much powerful customization - for instance, changing the column type, or using your own component for a given column.
 
 ## Using Field Types
 
@@ -498,7 +498,7 @@ The post list now displays the user names on each line.
 
 [![Post List With User Names](./img/tutorial_list_user_name.png)](./img/tutorial_list_user_name.png)
 
-The `<ReferenceField>` component fetches the reference data, creates a `RecordContext` with the result, and renders the record representation (or its its children).
+The `<ReferenceField>` component fetches the reference data, creates a `RecordContext` with the result, and renders the record representation (or its children).
 
 **Tip**: Look at the network tab of your browser again: react-admin deduplicates requests for users, and aggregates them in order to make only *one* HTTP request to the `/users` endpoint for the whole Datagrid. That's one of many optimizations that keep the UI fast and responsive.
 

@@ -82,7 +82,7 @@ const App = () => (
 );
 ```
 
-That's all it takes to have a multilingual UI. As an added benefit, once a user has chosen a locale different than the default one, the react-admin app will always render using that locale (thanks to [the Store](./Store.md)).
+That's all it takes to have a multilingual UI. As an added benefit, once a user has chosen a locale different from the default one, the react-admin app will always render using that locale (thanks to [the Store](./Store.md)).
 
 ## Using The Browser Locale
 

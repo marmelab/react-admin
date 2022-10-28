@@ -129,7 +129,7 @@ const choices = possibleValues.map(value => ({ id: value, name: ucfirst(value) }
 
 ## `create`
 
-To allow users to add new options, pass a React element as the `create` prop. `<SelectInput>` will then render a menu item at the bottom of the list, which will render the passed element when clicked.
+To allow users to add new options, pass a React element as the `create` prop. `<AutocompleteArrayInput>` will then render a menu item at the bottom of the list, which will render the passed element when clicked.
 
 {% raw %}
 ```jsx

@@ -174,7 +174,7 @@ title: "Reference"
 * [`useGetMany`](./useGetMany.md)
 * [`useGetManyReference`](./useGetManyReference.md)
 * [`useGetOne`](./useGetOne.md)
-* [`useGetPermissions`](./Authentication.md#usegetpermissions-hook)
+* [`useGetPermissions`](./WithPermissions.md)
 * [`useHasLock`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
 * [`useHasLocks`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
 * [`useInput`](./useInput.md)

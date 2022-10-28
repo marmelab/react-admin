@@ -325,7 +325,7 @@ const PostShow = () => (
 
 ## Displaying Fields Depending On User Permissions
 
-If you want to display some fields only to users with specific permissions, use the `usePermissions` hook and JSX conditions to show or hide fields.
+If you want to display some fields only to users with specific permissions, use the [`usePermissions`](./usePermissions.md) hook and JSX conditions to show or hide fields.
 
 Here's an example inside a `Show` view with a `SimpleShowLayout` and a custom `actions` component:
 
@@ -388,7 +388,7 @@ export const UserShow = () => {
 ```
 {% endraw %}
 
-For more details about permissions, check out the [authProvider documentation](./Authentication.md#authorization).
+For more details about permissions, check out the [authProvider documentation](./Authentication.md).
 
 ## Adding `meta` To The DataProvider Call
 

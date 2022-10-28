@@ -291,7 +291,7 @@ export const BookEdit = () => {
 
 ### `<EditContext>` Exposes Data And Callbacks
 
-Instead of passing the `record` and `onSubmit` callback to the `<SimpleForm>` element, react-admin prefers putting them in an [`<EditContext>`](./EditContext.md) context. This allows any descendant element to "pull" the data and callback from the context.
+Instead of passing the `record` and `onSubmit` callback to the `<SimpleForm>` element, react-admin prefers putting them in an [`<EditContext>`](./useEditContext.md) context. This allows any descendant element to "pull" the data and callback from the context.
 
 {% raw %}
 ```diff
