@@ -11,13 +11,17 @@ Use `<ReferenceArrayInput>` to edit an array of reference values, i.e. to let us
 
 ## Usage
 
-If a post has many tags, a post record may look like this:
+For instance, a post record has a `tag_ids` field, which is an array of foreign keys to tags record. 
 
-```json
-{
-    "id": 1234,
-    "tag_ids": [1, 23, 4]
-}
+```
+┌──────────────┐       ┌────────────┐
+│ post         │       │ tags       │
+│--------------│       │------------│
+│ id           │   ┌───│ id         │
+│ title        │   │   │ name       │
+│ body         │   │   └────────────┘
+│ tag_ids      │───┘
+└──────────────┘             
 ```
 
 To make the `tag_ids` for a `post` editable, use the following:
@@ -37,7 +41,18 @@ const PostEdit = () => (
 
 `<ReferenceArrayInput>` requires a `source` and a `reference` prop.
 
-`<ReferenceArrayInput>` uses the array of foreign keys to fetch the related records. It also grabs the list of possible choices for the field. For instance, if the `PostEdit` component above is used to edit the post record with `id` 1234, Then `<ReferenceArrayInput>` will issue the following queries:
+`<ReferenceArrayInput>` uses the array of foreign keys to fetch the related records. It also grabs the list of possible choices for the field. For instance, if the `PostEdit` component above is used to edit the following post:
+
+```js
+{
+    id: 1234,
+    title: "Lorem Ipsum",
+    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    tag_ids: [1, 23, 4]
+}
+```
+
+Then `<ReferenceArrayInput>` will issue the following queries:
 
 ```js
 dataProvider.getMany('tags', { ids: [1, 23, 4] });
