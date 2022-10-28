@@ -407,7 +407,7 @@ If you provided a React element for the optionText prop, you must also provide t
     );
 
     const finalOnBlur = useCallback((): void => {
-        if (clearOnBlur) {
+        if (clearOnBlur && !multiple) {
             const optionLabel = getOptionLabel(selectedChoice);
             if (!isEqual(optionLabel, filterValue)) {
                 setFilterValue(optionLabel);
@@ -422,6 +422,7 @@ If you provided a React element for the optionText prop, you must also provide t
         selectedChoice,
         filterValue,
         debouncedSetFilter,
+        multiple,
     ]);
 
     useEffect(() => {

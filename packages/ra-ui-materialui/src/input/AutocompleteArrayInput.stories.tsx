@@ -46,6 +46,64 @@ export const Basic = () => (
     </AdminContext>
 );
 
+const choices = [
+    { id: 'admin', name: 'Admin' },
+    { id: 'u001', name: 'Editor' },
+    { id: 'u002', name: 'Moderator' },
+    { id: 'u003', name: 'Reviewer' },
+];
+
+const CreateRole = () => {
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
+    const [value, setValue] = React.useState(filter || '');
+
+    const handleSubmit = event => {
+        event.preventDefault();
+        const newOption = { id: value, name: value };
+        choices.push(newOption);
+        setValue('');
+        onCreate(newOption);
+    };
+
+    return (
+        <Dialog open onClose={onCancel}>
+            <form onSubmit={handleSubmit}>
+                <DialogContent>
+                    <TextField
+                        label="Role name"
+                        value={value}
+                        onChange={event => setValue(event.target.value)}
+                        autoFocus
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button type="submit">Save</Button>
+                    <Button onClick={onCancel}>Cancel</Button>
+                </DialogActions>
+            </form>
+        </Dialog>
+    );
+};
+
+export const CreateProp = () => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <Create
+            resource="users"
+            record={{ roles: ['u001', 'u003'] }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <AutocompleteArrayInput
+                    source="roles"
+                    choices={choices}
+                    sx={{ width: 400 }}
+                    create={<CreateRole />}
+                />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
 const dataProvider = {
     getOne: (resource, params) =>
         Promise.resolve({
