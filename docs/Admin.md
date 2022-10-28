@@ -537,7 +537,7 @@ You might want to dynamically define the resources when the app starts. To do so
 
 ### Using a Function As `<Admin>` Child
 
-The `<Admin>` component accepts a function as one of its children and this function can return a Promise. If you also defined an `authProvider`, the child function will receive the result of a call to `authProvider.getPermissions()` (you can read more about this in the [Auth Provider](./Authentication.md#authorization) chapter).
+The `<Admin>` component accepts a function as one of its children and this function can return a Promise. If you also defined an `authProvider`, the child function will receive the result of a call to `authProvider.getPermissions()` (you can read more about this in the [Auth Provider](./Authentication.md#enabling-auth-features) chapter).
 
 For instance, getting the resource from an API might look like:
 
