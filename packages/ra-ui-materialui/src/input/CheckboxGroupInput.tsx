@@ -130,7 +130,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         );
     }
 
-    if (!isLoading && allChoices === undefined) {
+    if (!isLoading && !fetchError && allChoices === undefined) {
         throw new Error(
             `If you're not wrapping the CheckboxGroupInput inside a ReferenceArrayInput, you must provide the choices prop`
         );
@@ -183,7 +183,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         [allChoices, formOnChange, formOnBlur, optionValue, value]
     );
 
-    if (isLoading && allChoices.length === 0) {
+    if (isLoading && (!allChoices || allChoices.length === 0)) {
         return (
             <Labeled
                 id={id}
@@ -219,7 +219,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                 />
             </FormLabel>
             <FormGroup row={row}>
-                {allChoices.map(choice => (
+                {allChoices?.map(choice => (
                     <CheckboxGroupInputItem
                         key={get(choice, optionValue)}
                         choice={choice}

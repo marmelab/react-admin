@@ -1,40 +1,62 @@
 import * as React from 'react';
 import { Form, testDataProvider } from 'ra-core';
-import { AdminContext } from '../AdminContext';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
 
+import { AdminContext } from '../AdminContext';
+import { SimpleForm } from '../form';
 import { DatagridInput } from '../input';
 import { TextField } from '../field';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 import { SelectArrayInput } from './SelectArrayInput';
 import { CheckboxGroupInput } from './CheckboxGroupInput';
-import polyglotI18nProvider from 'ra-i18n-polyglot';
-import englishMessages from 'ra-language-english';
 
 export default { title: 'ra-ui-materialui/input/ReferenceArrayInput' };
+
+const tags = [
+    { id: 0, name: '3D' },
+    { id: 1, name: 'Architecture' },
+    { id: 2, name: 'Design' },
+    { id: 3, name: 'Painting' },
+    { id: 4, name: 'Photography' },
+];
 
 const dataProvider = testDataProvider({
     getList: () =>
         // @ts-ignore
         Promise.resolve({
-            data: [
-                { id: 5, name: 'test1' },
-                { id: 6, name: 'test2' },
-            ],
-            total: 2,
+            data: tags,
+            total: tags.length,
         }),
     // @ts-ignore
     getMany: (resource, params) => {
         console.log('getMany', resource, params);
-        return Promise.resolve({ data: [{ id: 5, name: 'test1' }] });
+        return Promise.resolve({
+            data: params.ids.map(id => tags.find(tag => tag.id === id)),
+        });
     },
 });
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
+export const Basic = () => (
+    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+        <SimpleForm onSubmit={() => {}} defaultValues={{ tags_ids: [1, 3] }}>
+            <ReferenceArrayInput
+                reference="tags"
+                resource="posts"
+                source="tags_ids"
+            >
+                <AutocompleteArrayInput optionText="name" sx={{ width: 400 }} />
+            </ReferenceArrayInput>
+        </SimpleForm>
+    </AdminContext>
+);
+
 export const WithAutocompleteInput = () => (
     <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
-        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
+        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>
             <ReferenceArrayInput
                 reference="tags"
                 resource="posts"
@@ -55,7 +77,7 @@ export const ErrorAutocomplete = () => (
         }}
         i18nProvider={i18nProvider}
     >
-        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
+        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>
             <ReferenceArrayInput
                 reference="tags"
                 resource="posts"
@@ -69,7 +91,7 @@ export const ErrorAutocomplete = () => (
 
 export const WithSelectArrayInput = () => (
     <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
-        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
+        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>
             <ReferenceArrayInput
                 reference="tags"
                 resource="posts"
@@ -90,7 +112,7 @@ export const ErrorSelectArray = () => (
         }}
         i18nProvider={i18nProvider}
     >
-        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
+        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>
             <ReferenceArrayInput
                 reference="tags"
                 resource="posts"
@@ -104,7 +126,7 @@ export const ErrorSelectArray = () => (
 
 export const WithCheckboxGroupInput = () => (
     <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
-        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
+        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>
             <ReferenceArrayInput
                 reference="tags"
                 resource="posts"
@@ -125,7 +147,7 @@ export const ErrorCheckboxGroupInput = () => (
         }}
         i18nProvider={i18nProvider}
     >
-        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
+        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>
             <ReferenceArrayInput
                 reference="tags"
                 resource="posts"
@@ -139,7 +161,7 @@ export const ErrorCheckboxGroupInput = () => (
 
 export const WithDatagridInput = () => (
     <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
-        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
+        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>
             <ReferenceArrayInput
                 reference="tags"
                 resource="posts"
@@ -162,7 +184,7 @@ export const ErrorDatagridInput = () => (
         }}
         i18nProvider={i18nProvider}
     >
-        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
+        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>
             <ReferenceArrayInput
                 reference="tags"
                 resource="posts"
