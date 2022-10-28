@@ -311,7 +311,7 @@ If a prompt is not enough, you can use [the `create` prop](#create) to render a 
 
 ## `options`
 
-Use the `options` attribute if you want to override any of MUI's `<SelectField>` attributes:
+Use the `options` attribute if you want to override any of MUI's `<Select>` attributes:
 
 {% raw %}
 ```jsx
