@@ -78,15 +78,16 @@ See the [`children`](#children) section for more details.
 
 | Prop               | Required | Type                                        | Default                            | Description                                                                                                         |
 |--------------------|----------|---------------------------------------------|------------------------------------|---------------------------------------------------------------------------------------------------------------------|
-| `source`           | Required | `string`                                    | -                                | Name of the entity property to use for the input value                                         |
+| `source`           | Required | `string`                                    | -                                | Name of the entity property to use for the input value                                                                |
 | `reference`        | Required | `string`                                    | ''                                 | Name of the reference resource, e.g. 'posts'.                                                                       |
-| `children`         | Optional | `ReactNode`                                 | `<Autocomplete ArrayInput/>`          | The actual selection component                                                                 |
+| `children`         | Optional | `ReactNode`                                 | `<Autocomplete ArrayInput/>`          | The actual selection component                                                                                   |
+| `enableGet Choices` | Optional | `({q: string}) => boolean`                  | `() => true`                       | Function taking the `filterValues` and returning a boolean to enable the `getList` call.                           |
 | `filter`           | Optional | `Object`                                    | `{}`                               | Permanent filters to use for getting the suggestion list                                                            |
-| `label`            | Optional | `string`                                    | -                                  | Useful only when `ReferenceArrayInput` is in a Filter array, the label is used as the Filter label.                         |
+| `label`            | Optional | `string`                                    | -                                  | Useful only when `ReferenceArrayInput` is in a Filter array, the label is used as the Filter label.                 |
 | `page`             | Optional | `number`                                    | 1                                  | The current page number                                                                                             |
 | `perPage`          | Optional | `number`                                    | 25                                 | Number of suggestions to show                                                                                       |
+| `queryOptions`     | Optional | [`UseQuery Options`](https://tanstack.com/query/v4/docs/reference/useQuery?from=reactQueryV3&original=https://react-query-v3.tanstack.com/reference/useQuery)| `{}`  | `react-query` client options     |
 | `sort`             | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`   | How to order the list of suggestions                                                                                |
-| `enableGet Choices` | Optional | `({q: string}) => boolean`                  | `() => true`                       | Function taking the `filterValues` and returning a boolean to enable the `getList` call.                            |
 
 **Note**: `<ReferenceArrayInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) ; it is the responsability of children to apply them.
 
