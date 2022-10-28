@@ -9,9 +9,10 @@ import { ComponentPropType, useListContext, RaRecord } from 'ra-core';
 
 import { Title, TitlePropType } from '../layout/Title';
 import { ListToolbar } from './ListToolbar';
-import { Pagination as DefaultPagination, PaginationLimit } from './pagination';
+import { Pagination as DefaultPagination } from './pagination';
 import { ListActions as DefaultActions } from './ListActions';
 import { Empty } from './Empty';
+import { Error } from '../layout';
 
 const defaultActions = <DefaultActions />;
 const defaultPagination = <DefaultPagination />;
@@ -67,7 +68,7 @@ export const ListView = <RecordType extends RaRecord = any>(
                     : children}
             </Content>
             {error ? (
-                <PaginationLimit message="ra.notification.data_provider_error" />
+                <Error error={error} resetErrorBoundary={null} />
             ) : (
                 pagination !== false && pagination
             )}

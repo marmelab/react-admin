@@ -226,7 +226,7 @@ describe('<List />', () => {
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(screen.getByText('ra.notification.data_provider_error'));
+            expect(screen.getByText('ra.page.error'));
         });
     });
 });
