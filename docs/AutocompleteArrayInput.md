@@ -85,7 +85,7 @@ The list of choices must be an array of objects - one object for each possible c
 ]} />
 ```
 
-You can also use an array of objects with different properties for the label and value, given you specify the `optionText` and `optionValue` props:
+You can also use an array of objects with different properties for the label and value, given you specify the [`optionText`](#optiontext) and [`optionValue`](#optionvalue) props:
 
 ```jsx
 <AutocompleteArrayInput source="roles" choices={[
@@ -129,28 +129,36 @@ const choices = possibleValues.map(value => ({ id: value, name: ucfirst(value) }
 
 ## `create`
 
-To allow users to add new options, pass a React element as the `create` prop. `<AutocompleteArrayInput>` will then render a menu item at the bottom of the list, which will render the passed element when clicked.
+To allow users to add new options, pass a React element as the `create` prop. `<AutocompleteArrayInput>` will then render a "Create" option at the bottom of the choices list. When clicked, it will render the create element.
+
+![create option](./img/autocomplete-array-input-create.gif)
 
 {% raw %}
 ```jsx
-import { CreateCategory } from './CreateCategory';
+import { CreateRole } from './CreateRole';
 
-const PostCreate = () => (
+const choices = [
+    { id: 'admin', name: 'Admin' },
+    { id: 'u001', name: 'Editor' },
+    { id: 'u002', name: 'Moderator' },
+    { id: 'u003', name: 'Reviewer' },
+];
+
+const UserCreate = () => (
     <Create>
         <SimpleForm>
-            <TextInput source="title" />
-            <ReferenceArrayInput source="category_ids" reference="categories">
-                <AutocompleteArrayInput create={<CreateCategory />} />
-            </ReferenceArrayInput>
+            <SelectArrayInput
+                source="roles"
+                choices={choices}
+                create={<CreateRole />}
+            />
         </SimpleForm>
     </Create>
 );
 
-// in ./CreateCategory.js
-import { useCreate, useCreateSuggestionContext } from 'react-admin';
+// in ./CreateRole.js
+import { useCreateSuggestionContext } from 'react-admin';
 import {
-    Box,
-    BoxProps,
     Button,
     Dialog,
     DialogActions,
@@ -158,23 +166,16 @@ import {
     TextField,
 } from '@mui/material';
 
-const CreateCategory = () => {
+const CreateRole = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
-    const [create] = useCreate();
     const [value, setValue] = React.useState(filter || '');
 
     const handleSubmit = event => {
         event.preventDefault();
-        create(
-          'categories',
-          { data: { title: value } },
-          {
-              onSuccess: (data) => {
-                  setValue('');
-                  onCreate(data);
-              },
-          }
-        );
+        const newOption = { id: value, name: value };
+        choices.push(newOption);
+        setValue('');
+        onCreate(newOption);
     };
 
     return (
@@ -182,7 +183,7 @@ const CreateCategory = () => {
             <form onSubmit={handleSubmit}>
                 <DialogContent>
                     <TextField
-                        label="New category name"
+                        label="Role name"
                         value={value}
                         onChange={event => setValue(event.target.value)}
                         autoFocus
@@ -200,6 +201,8 @@ const CreateCategory = () => {
 {% endraw %}
 
 If you just need to ask users for a single string to create the new option, you can use [the `onCreate` prop](#oncreate) instead.
+
+If you're in a `<ReferenceArrayInput>` or `<ReferenceManyToManyInput>`, the `handleSubmit` will need to create a new record in the related resource. Check the [Creating New Choices](#creating-new-choices) for an example. 
 
 ## `debounce`
 
