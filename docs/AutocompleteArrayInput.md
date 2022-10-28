@@ -16,8 +16,10 @@ This input allows editing values that are arrays of scalar values, e.g. `[123, 4
 
 - [`<SelectArrayInput>`](./SelectArrayInput.md) renders a dropdown list of choices
 - [`<CheckboxGroupInput>`](./CheckboxGroupInput.md) renders a list of checkbox options
+- [`<DualListInput>`](./DualListInput.md) renders a list of choices that can be moved from one list to another
 
 **Tip**: `<AutocompleteArrayInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceArrayInput>`](./ReferenceArrayInput.md) doesn't cover your need), you'll have to [write your own Input component](./Inputs.md#writing-your-own-input-component) based on MUI `<Autocomplete>` component.
+
 ## Usage
 
 In addition to the `source`, `<AutocompleteArrayInput>` requires one prop: the `choices` listing the possible values.
