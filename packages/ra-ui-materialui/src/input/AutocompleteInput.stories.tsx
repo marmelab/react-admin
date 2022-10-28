@@ -547,6 +547,37 @@ export const InsideReferenceInputDefaultValue = ({
     </Admin>
 );
 
+export const InsideReferenceInputWithError = () => (
+    <Admin
+        dataProvider={{
+            ...dataProviderWithAuthors,
+            getList: () => Promise.reject('error'),
+        }}
+        history={history}
+    >
+        <Resource name="authors" />
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                >
+                    <SimpleForm>
+                        <ReferenceInput reference="authors" source="author">
+                            <AutocompleteInput fullWidth optionText="name" />
+                        </ReferenceInput>
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
+    </Admin>
+);
+
 const CreateAuthor = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [name, setName] = React.useState(filter || '');
