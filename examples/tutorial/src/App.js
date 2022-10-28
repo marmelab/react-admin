@@ -14,8 +14,19 @@ const App = () => (
         dataProvider={jsonServerProvider(
             'https://jsonplaceholder.typicode.com'
         )}
+        authProvider={authProvider}
+        dashboard={Dashboard}
     >
-        <Resource name="users" list={UserList} />
+        <Resource
+            name="posts"
+            icon={PostIcon}
+            list={PostList}
+            edit={PostEdit}
+            create={PostCreate}
+            show={PostShow}
+        />
+        <Resource name="users" icon={UserIcon} list={UserList} />
+        <Resource name="comments" list={ListGuesser} />
     </Admin>
 );
 export default App;
