@@ -120,7 +120,7 @@ The react-admin documentation for individual components also lists the classes a
 
 ## Reusable Components
 
-To reuse the same style overrides in different locations across your application, create a reusable component using [the MUI `styled()` utility](https://mui.com/system/styled/). It's a function that creates a new component based on a source component and custom styles. The basinc syntax is `styled(Component)(styles) => Component` (where `styles` forllows the same syntax as the `sx` prop).
+To reuse the same style overrides in different locations across your application, create a reusable component using [the MUI `styled()` utility](https://mui.com/system/styled/). It's a function that creates a new component based on a source component and custom styles. The basic syntax is `styled(Component)(styles) => Component` (where `styles` follows the same syntax as the `sx` prop).
 
 For instance, to create a custom `<Datagrid>` component with the header style defined in the previous section:
 
