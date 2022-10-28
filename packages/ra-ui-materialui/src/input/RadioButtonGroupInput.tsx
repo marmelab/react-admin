@@ -121,7 +121,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         );
     }
 
-    if (!isLoading && allChoices === undefined) {
+    if (!isLoading && !fetchError && allChoices === undefined) {
         throw new Error(
             `If you're not wrapping the RadioButtonGroupInput inside a ReferenceArrayInput, you must provide the choices prop`
         );
@@ -182,7 +182,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
                 {...options}
                 {...sanitizeRestProps(rest)}
             >
-                {allChoices.map(choice => (
+                {allChoices?.map(choice => (
                     <RadioButtonGroupInputItem
                         key={get(choice, optionValue)}
                         choice={choice}

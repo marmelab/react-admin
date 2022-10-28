@@ -167,7 +167,7 @@ export const SelectInput = (props: SelectInputProps) => {
         );
     }
 
-    if (!isLoading && allChoices === undefined) {
+    if (!isLoading && !fetchError && allChoices === undefined) {
         throw new Error(
             `If you're not wrapping the SelectInput inside a ReferenceInput, you must provide the choices prop`
         );

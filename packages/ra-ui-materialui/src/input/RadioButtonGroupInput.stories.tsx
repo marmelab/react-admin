@@ -72,6 +72,28 @@ export const InsideReferenceArrayInput = () => (
     </AdminContext>
 );
 
+export const InsideReferenceArrayInputWithError = () => (
+    <AdminContext
+        dataProvider={{
+            ...dataProvider,
+            getList: () => Promise.reject(new Error('fetch error')),
+        }}
+        i18nProvider={i18nProvider}
+    >
+        <Create
+            resource="posts"
+            record={{ options: [1, 2] }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <ReferenceArrayInput reference="categories" source="category">
+                    <RadioButtonGroupInput />
+                </ReferenceArrayInput>
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({ children }) => (
