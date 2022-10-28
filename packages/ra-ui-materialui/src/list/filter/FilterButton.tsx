@@ -44,7 +44,6 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
         sort,
     } = useListContext(props);
     const hasFilterValues = !isEqual(filterValues, {});
-    const hasDisplayedFilters = !isEqual(displayedFilters, {});
     const validSavedQueries = extractValidSavedQueries(savedQueries);
     const hasSavedCurrentQuery = validSavedQueries.some(savedQuery =>
         isEqual(savedQuery.value, {
@@ -198,7 +197,7 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
                         })}
                     </MenuItem>
                 )}
-                {hasDisplayedFilters && (
+                {hasFilterValues && (
                     <MenuItem onClick={() => setFilters({}, {}, false)}>
                         {translate('ra.action.remove_all_filters', {
                             _: 'Remove all filters',
