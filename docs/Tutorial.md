@@ -83,7 +83,7 @@ That's enough for react-admin to render an empty app and confirm that the setup 
 
 [![Empty Admin](./img/tutorial_empty.png)](./img/tutorial_empty.png)
 
-The `App` component renders an `<Admin>` component, which is the root component of a react-admin application. This component expects a `dataProvider` prop - a function capable of fetching data from an API. Since there is no standard for data exchanges between computers, you will probably have to write a custom provider to connect react-admin to your own APIs - but we'll dive into Data Providers later. For now, let's take advantage of the `ra-data-json-server` data provider, which speaks the same REST dialect as JSONPlaceholder.
+The `<App>` component renders an `<Admin>` component, which is the root component of a react-admin application. This component expects a `dataProvider` prop - a function capable of fetching data from an API. Since there is no standard for data exchanges between computers, you will probably have to write a custom provider to connect react-admin to your own APIs - but we'll dive into Data Providers later. For now, let's take advantage of the `ra-data-json-server` data provider, which speaks the same REST dialect as JSONPlaceholder.
 
 Now it's time to add features!
 
@@ -114,17 +114,15 @@ export default App;
 
 The line `<Resource name="users" />` informs react-admin to fetch the "users" records from the [https://jsonplaceholder.typicode.com/users](https://jsonplaceholder.typicode.com/users) URL. `<Resource>` also defines the React components to use for each CRUD operation (`list`, `create`, `edit`, and `show`).
 
-The `list={ListGuesser}` prop means that react-admin should use the `<ListGuesser>` component to display the list of posts. This component *guesses* the format to use for the columns of the list based on the data fetched from the API.
+The `list={ListGuesser}` tells react-admin to the `<ListGuesser>` component to display the list of users. This component *guesses* the configuration to use for the list (column names and types) based on the data fetched from the API.
 
 The app can now display a list of users:
 
 [![Users List](./img/tutorial_users_list.png)](./img/tutorial_users_list.png)
 
-If you look at the network tab in the browser developer tools, you'll notice that the application fetched the `https://jsonplaceholder.typicode.com/users` URL, then used the results to build the Datagrid. That's basically how react-admin works.
+The list is already functional: you can reorder it by clicking on column headers, or change pages by using the bottom pagination controls. If you look at the network tab in the browser developer tools, you'll notice that each action on the list triggers a new call to `https://jsonplaceholder.typicode.com/users` with a modified query string. That's what the data provider does: it translates user actions to HTTP requests that the backend API understands.
 
-The list is already functional: you can reorder it by clicking on column headers, or change pages by using the bottom pagination controls. The `ra-data-json-server` data provider translates these actions to a query string that JSONPlaceholder understands.
-
-## Selecting Columns
+## Writing A Page Component
 
 The `<ListGuesser>` component is not meant to be used in production - it's just a way to quickly bootstrap an admin. That means you'll have to replace the `ListGuesser` component in the `users` resource by a custom React component. Fortunately, `ListGuesser` dumps the code of the list it has guessed to the console:
 
@@ -173,23 +171,19 @@ const App = () => (
 
 There is no visible change in the browser - except now, the app uses a component that you can customize. 
 
-The main component of the users list is a `<List>` component, responsible for grabbing the information from the API, displaying the page title, and handling pagination. This component then delegates the display of the actual list of users to its child. In this case, that's a `<Datagrid>` component, which renders a table with one row for each record. The Datagrid uses its child components (here, a list of `<TextField>` and `<EmailField>`) to determine the columns to render. Each Field component maps a different field in the API response, specified by the `source` prop.
+## Composing Components
 
-The `ListGuesser` created one column for every field in the response. That's a bit too much for a usable grid, so let's remove a couple `<TextField>` from the Datagrid and see the effect:
+Let's take a moment to analyze the code of the `<UserList>` component:
 
-```diff
-// in src/users.js
-import * as React from "react";
-import { List, Datagrid, TextField, EmailField } from 'react-admin';
-
+```jsx
 export const UserList = () => (
     <List>
         <Datagrid rowClick="edit">
             <TextField source="id" />
             <TextField source="name" />
--           <TextField source="username" />
+            <TextField source="username" />
             <EmailField source="email" />
--           <TextField source="address.street" />
+            <TextField source="address.street" />
             <TextField source="phone" />
             <TextField source="website" />
             <TextField source="company.name" />
@@ -198,44 +192,147 @@ export const UserList = () => (
 );
 ```
 
+The root component, `<List>`, reads the query parameters from the URL, crafts an API call based on these parameters, and puts the result in a React context. It also builds a set of callbacks allowing child components to modify the list filters, pagination, and sorting. `<List>` does a lot of things, yet its syntax couldn't be simpler:
+
+```jsx
+<List>
+```
+
+This is a good illustration of the react-admin target: helping developers build sophisticated apps in a simple way.
+
+But in most frameworks, "simple" means "limited", and it's hard to go beyond basic features. React-admin solves this by using *composition*. `<List>` only does the data fetching part. It delegates the rendering of the actual list to its child - in this case, `<Datagrid>`. To put it otherwise, the above code composes the `<List>` and `<Datagrid>` functionalities. 
+
+This means we can compose `<List>` with another component - for instance `<SimpleList>`:
+
+```jsx
+// in src/users.js
+import * as React from "react";
+import { List, SimpleList } from 'react-admin';
+
+export const UserList = () => (
+    <List>
+        <SimpleList
+            primaryText={record => record.name}
+            secondaryText={record => record.username}
+            tertiaryText={record => record.email}
+        />
+    </List>
+);
+```
+
+`<SimpleList>` uses [MUI's `<List>` and `<ListItem>` components](https://mui.com/components/lists), and expects functions as `primaryText`, `secondaryText`, and `tertiaryText` props.
+
+Refresh the page, and now the list displays in a different way:
+
+[![Users List](./img/tutorial_simple_list.webp)](./img/tutorial_simple_list.webp)
+
+React-admin offers a large library of components you can pick from to build the UI that you want using composition. And if this is not enough, it lets you build your own components to get exactly the UI you want. 
+
+## Writing A Custom List Component
+
+The react-admin layout is already responsive. Try to resize your browser to see how the sidebar switches to a drawer on smaller screens. Besides, the `<SimpleList>` component is a really good fit for mobile devices. 
+
+[![Mobile user list](./img/tutorial_mobile_user_list.gif)](./img/tutorial_mobile_user_list.gif)
+
+But on desktop, `<SimpleList>` takes too much space for a low information density. So let's modify the `<UserList>` component to use the `<Datagrid>` component on desktop, and the `<SimpleList>` component on mobile. 
+
+To do so, we'll use [the `useMediaQuery` hook](https://mui.com/material-ui/react-use-media-query/#main-content) from MUI:
+
+```jsx
+// in src/users.js
+import * as React from "react";
+import { useMediaQuery } from '@mui/material';
+import { List, SimpleList, Datagrid, TextField, EmailField } from 'react-admin';
+
+export const UserList = () => {
+    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    return (
+        <List>
+            {isSmall ? (
+                <SimpleList
+                    primaryText={record => record.name}
+                    secondaryText={record => record.username}
+                    tertiaryText={record => record.email}
+                />
+            ) : (
+                <Datagrid rowClick="edit">
+                    <TextField source="id" />
+                    <TextField source="name" />
+                    <TextField source="username" />
+                    <EmailField source="email" />
+                    <TextField source="address.street" />
+                    <TextField source="phone" />
+                    <TextField source="website" />
+                    <TextField source="company.name" />
+                </Datagrid>
+            )}
+        </List>
+    );
+}
+```
+
+This works exactly the way you expect.
+
+[![Responsive List](./img/tutorial_user_list_responsive.gif)](./img/tutorial_user_list_responsive.gif)
+
+This shows that the `<List>` child can be anything you want - even a custom React component with its own logic. It also shows that react-admin is a good fit for responsive applications - but it's your job to use `useMediaQuery()` in pages.
+
+## Selecting Columns
+
+Let's get back to `<Datagrid>`. It reads the data fetched by `<List>`, then renders a table with one row for each record. `<Datagrid>` uses its child components (here, a list of `<TextField>` and `<EmailField>`) to determine the columns to render. Each Field component maps a different field in the API response, specified by the `source` prop.
+
+`<ListGuesser>` created one column for every field in the response. That's a bit too much for a usable grid, so let's remove a couple `<TextField>` from the Datagrid and see the effect:
+
+```diff
+// in src/users.js
+    <Datagrid rowClick="edit">
+        <TextField source="id" />
+        <TextField source="name" />
+-       <TextField source="username" />
+        <EmailField source="email" />
+-       <TextField source="address.street" />
+        <TextField source="phone" />
+        <TextField source="website" />
+        <TextField source="company.name" />
+    </Datagrid>
+```
+
 [![Users List](./img/tutorial_users_list_selected_columns.png)](./img/tutorial_users_list_selected_columns.png)
+
+In react-admin, most configuration is achieved via components. `<Datagrid>` could have taken a `columns` prop expecting a configuration object. But by using the `children` prop instead, it opens the door to much powerful customization - for instance, changing the column type, or using your own component for a given column.
 
 ## Using Field Types
 
-You've just met the `<TextField>` and the `<EmailField>` components. React-admin provides [many more Field components](./Fields.md), mapping various data types: number, date, image, HTML, array, reference, etc.
+You've just met the `<TextField>` and the `<EmailField>` components. React-admin provides [many more Field components](./Fields.md), mapping various data types: number, date, image, HTML, array, relationship, etc.
 
 For instance, the `website` field looks like a URL. Instead of displaying it as text, why not display it using a clickable link? That's exactly what the `<UrlField>` does:
 
 ```diff
 // in src/users.js
-import * as React from "react";
--import { List, Datagrid, TextField, EmailField } from 'react-admin';
-+import { List, Datagrid, TextField, EmailField, UrlField } from 'react-admin';
+-import { List, SimpleList, Datagrid, TextField, EmailField } from 'react-admin';
++import { List, SimpleList, Datagrid, TextField, EmailField, UrlField } from 'react-admin';
+// ...
+    <Datagrid rowClick="edit">
+        <TextField source="id" />
+        <TextField source="name" />
+        <EmailField source="email" />
+        <TextField source="phone" />
+-       <TextField source="website" />
++       <UrlField source="website" />
+        <TextField source="company.name" />
+    </Datagrid>
 
-export const UserList = () => (
-    <List>
-        <Datagrid rowClick="edit">
-            <TextField source="id" />
-            <TextField source="name" />
-            <EmailField source="email" />
-            <TextField source="phone" />
--           <TextField source="website" />
-+           <UrlField source="website" />
-            <TextField source="company.name" />
-        </Datagrid>
-    </List>
-);
 ```
 
 [![Url Field](./img/tutorial_url_field.png)](./img/tutorial_url_field.png)
 
-What you've just done reflects the early stages of development with react-admin: let the guesser do the job, select only the fields you want, and start customizing types.
+This reflects the early stages of development with react-admin: let the guesser component bootstrap a basic page, then tweak the generated code to better match your business logic.
 
 ## Writing A Custom Field 
 
-In react-admin, fields are simple React components. At runtime, they grab the `record` fetched from the API (e.g. `{ "id": 2, "name": "Ervin Howell", "website": "anastasia.net", ... }`) with a custom hook, and use the `source` field (e.g. `website`) to get the value they should display (e.g. "anastasia.net").
+In react-admin, fields are just React components. When rendered, they grab the `record` fetched from the API (e.g. `{ "id": 2, "name": "Ervin Howell", "website": "anastasia.net", ... }`) using a custom hook, and use the `source` field (e.g. `website`) to get the value they should display (e.g. "anastasia.net").
 
-That means that writing a custom Field component is really straightforward. For instance, here is a simplified version of the `UrlField`:
+That means that you can do the same to write a custom Field. For instance, here is a simplified version of the `<UrlField>`:
 
 ```jsx
 // in src/MyUrlField.js
@@ -244,45 +341,43 @@ import { useRecordContext } from 'react-admin';
 
 const MyUrlField = ({ source }) => {
     const record = useRecordContext();
-    return record ? (
+    if (!record) return null;
+    return (
         <a href={record[source]}>
             {record[source]}
         </a>
-    ) : null;
+    );
 }
 
 export default MyUrlField;
 ```
 
-You can use this component in `<UserList>`, instead of react-admin's `<UrlField>` component, and it will work just the same.
+For each row, `<Datagrid>` creates a `RecordContext` and stores the current record in it. `useRecordContext` allows to read that record. It's one of the 50+ headless hooks that react-admin exposes to let you build your own components, without forcing a particular UI.
+
+You can use the `<MyUrlField>` component in `<UserList>`, instead of react-admin's `<UrlField>` component, and it will work just the same.
 
 ```diff
 // in src/users.js
-import * as React from "react";
--import { List, Datagrid, TextField, EmailField, UrlField } from 'react-admin';
-+import { List, Datagrid, TextField, EmailField } from 'react-admin';
+-import { List, SimpleList, Datagrid, TextField, EmailField, UrlField } from 'react-admin';
++import { List, SimpleList, Datagrid, TextField, EmailField } from 'react-admin';
 +import MyUrlField from './MyUrlField';
-
-export const UserList = () => (
-    <List>
-        <Datagrid rowClick="edit">
-            <TextField source="id" />
-            <TextField source="name" />
-            <EmailField source="email" />
-            <TextField source="phone" />
--           <UrlField source="website" />
-+           <MyUrlField source="website" />
-            <TextField source="company.name" />
-        </Datagrid>
-    </List>
-);
+// ...
+    <Datagrid rowClick="edit">
+        <TextField source="id" />
+        <TextField source="name" />
+        <EmailField source="email" />
+        <TextField source="phone" />
+-       <UrlField source="website" />
++       <MyUrlField source="website" />
+        <TextField source="company.name" />
+    </Datagrid>
 ```
 
-Yes, you can replace any of react-admin's components with your own! That means react-admin never blocks you: if one react-admin component doesn't perfectly suit your needs, you can easily swap it with your own version.
+That means react-admin never blocks you: if one react-admin component doesn't perfectly suit your needs, you can just swap it with your own version.
 
 ## Customizing Styles
 
-The `MyUrlField` component is a perfect opportunity to illustrate how to customize styles.
+The `<MyUrlField>` component is a perfect opportunity to illustrate how to customize styles.
 
 React-admin relies on [MUI](https://mui.com/), a set of React components modeled after Google's [Material Design UI Guidelines](https://material.io/). All MUI components (and most react-admin components) support a prop called `sx`, which allows custom inline styles. Let's take advantage of the `sx` prop to remove the underline from the link and add an icon:
 
@@ -386,7 +481,7 @@ const App = () => (
 );
 ```
 
-When displaying the posts list, the app displays the `id` of the post author. This doesn't mean much, let's use the user `name` instead. For that purpose, set the `recordRepresentation` prop of the "users" Resource:
+When displaying the posts list, the app displays the `id` of the post author. This doesn't mean much - we should use the user `name` instead. For that purpose, set the `recordRepresentation` prop of the "users" Resource:
 
 ```diff
 // in src/App.js
@@ -456,7 +551,7 @@ const App = () => (
 
 Users can display the edit page just by clicking on the Edit button. The form is already functional; it issues `PUT` requests to the REST API upon submission. And thanks to the `recordRepresentation` of the "users" Resource, the user name is displayed for the post author.
 
-Copy the `<PostEdit>` code dumped by the guesser in the console to the `posts.js` file so that you can customize the view. Don't forget to `import` the new components from react-admin:
+Copy the `<PostEdit>` code dumped by the guesser in the console to the `posts.js` file so that you can customize the view:
 
 ```jsx
 // in src/posts.js
@@ -765,74 +860,6 @@ const App = () => (
 Once the app reloads, it's now behind a login form that accepts everyone:
 
 [![Login form](./img/login.gif)](./img/login.gif)
-
-## Supporting Mobile Devices
-
-The react-admin layout is already responsive. Try to resize your browser to see how the sidebar switches to a drawer on smaller screens.
-
-But a responsive layout is not enough to make a responsive app. Datagrid components work well on desktop, but are absolutely not adapted to mobile devices. If your admin must be used on mobile devices, you'll have to provide an alternative component for small screens.
-
-First, you should know that you don't have to use the `<Datagrid>` component as `<List>` child. You can use any other component you like. For instance, the `<SimpleList>` component:
-
-```jsx
-// in src/posts.js
-import * as React from "react";
-import { List, SimpleList } from 'react-admin';
-
-export const PostList = () => (
-    <List>
-        <SimpleList
-            primaryText={record => record.title}
-            secondaryText={record => (
-                <ReferenceField label="User" source="userId" reference="users" />
-            )}
-        />
-    </List>
-);
-```
-
-[![Mobile post list](./img/tutorial_mobile_post_list.gif)](./img/tutorial_mobile_post_list.gif)
-
-The `<SimpleList>` component uses [MUI's `<List>` and `<ListItem>` components](https://mui.com/components/lists), and expects functions as `primaryText`, `secondaryText`, and `tertiaryText` props.
-
-**Note:** Since JSONRestServer doesn't provide `views` or `published_at` values for posts, we switched to a custom API for those screenshots in order to demonstrate how to use some of the `<SimpleList>` component props.
-
-That works fine on mobile, but now the desktop user experience is worse. The best compromise would be to use `<SimpleList>` on small screens, and `<Datagrid>` on other screens. That's where the `useMediaQuery` hook comes in:
-
-```jsx
-// in src/posts.js
-import * as React from "react";
-import { useMediaQuery } from '@mui/material';
-import { List, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
-
-export const PostList = () => {
-    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
-    return (
-        <List>
-            {isSmall ? (
-                <SimpleList
-                    primaryText={record => record.title}
-                    secondaryText={record => (
-                        <ReferenceField label="User" source="userId" reference="users" />
-                    )}
-                />
-            ) : (
-                <Datagrid>
-                    <TextField source="id" />
-                    <ReferenceField label="User" source="userId" reference="users" />
-                    <TextField source="title" />
-                    <TextField source="body" />
-                    <EditButton />
-                </Datagrid>
-            )}
-        </List>
-    );
-}
-```
-
-This works exactly the way you expect. The lesson here is that react-admin takes care of responsive web design for the layout, but it's your job to use `useMediaQuery()` in pages.
-
-[![Responsive List](./img/responsive-list.gif)](./img/responsive-list.gif)
 
 ## Connecting To A Real API
 

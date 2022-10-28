@@ -1,12 +1,12 @@
+// in src/users.js
 import * as React from 'react';
 import { useMediaQuery } from '@mui/material';
-import { SimpleList, List, Datagrid, EmailField, TextField } from 'react-admin';
+import { List, SimpleList, Datagrid, TextField, EmailField } from 'react-admin';
 
-export const UserList = props => {
-    const isSmall = useMediaQuery(theme => theme.breakpoints.down('md'));
-
+export const UserList = () => {
+    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
     return (
-        <List title="All users" {...props}>
+        <List>
             {isSmall ? (
                 <SimpleList
                     primaryText={record => record.name}
@@ -14,11 +14,15 @@ export const UserList = props => {
                     tertiaryText={record => record.email}
                 />
             ) : (
-                <Datagrid>
+                <Datagrid rowClick="edit">
                     <TextField source="id" />
                     <TextField source="name" />
                     <TextField source="username" />
                     <EmailField source="email" />
+                    <TextField source="address.street" />
+                    <TextField source="phone" />
+                    <TextField source="website" />
+                    <TextField source="company.name" />
                 </Datagrid>
             )}
         </List>
