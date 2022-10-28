@@ -7,6 +7,7 @@ import {
     ResourceContextProvider,
     ChoicesContextProvider,
 } from 'ra-core';
+import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 
 /**
  * An Input component for fields containing a list of references to another resource.
@@ -95,7 +96,7 @@ export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
 };
 
 ReferenceArrayInput.propTypes = {
-    children: PropTypes.element.isRequired,
+    children: PropTypes.element,
     filter: PropTypes.object,
     label: PropTypes.string,
     page: PropTypes.number,
@@ -114,10 +115,11 @@ ReferenceArrayInput.defaultProps = {
     page: 1,
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
+    children: <AutocompleteArrayInput />,
 };
 
 export interface ReferenceArrayInputProps extends InputProps {
-    children: ReactElement;
+    children?: ReactElement;
     label?: string;
     page?: number;
     perPage?: number;

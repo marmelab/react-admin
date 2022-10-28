@@ -1,9 +1,12 @@
 import * as React from 'react';
+import { createMemoryHistory } from 'history';
 import { Form, testDataProvider } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
+import { Admin, Resource } from 'react-admin';
 
 import { AdminContext } from '../AdminContext';
+import { Create } from '../detail';
 import { SimpleForm } from '../form';
 import { DatagridInput } from '../input';
 import { TextField } from '../field';
@@ -40,18 +43,30 @@ const dataProvider = testDataProvider({
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
+const history = createMemoryHistory({ initialEntries: ['/posts/create'] });
+
 export const Basic = () => (
-    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
-        <SimpleForm onSubmit={() => {}} defaultValues={{ tags_ids: [1, 3] }}>
-            <ReferenceArrayInput
-                reference="tags"
-                resource="posts"
-                source="tags_ids"
-            >
-                <AutocompleteArrayInput optionText="name" sx={{ width: 400 }} />
-            </ReferenceArrayInput>
-        </SimpleForm>
-    </AdminContext>
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource name="tags" recordRepresentation={'name'} />
+        <Resource
+            name="posts"
+            create={() => (
+                <Create
+                    resource="posts"
+                    record={{ tags_ids: [1, 3] }}
+                    sx={{ width: 600 }}
+                >
+                    <SimpleForm>
+                        <ReferenceArrayInput
+                            reference="tags"
+                            resource="posts"
+                            source="tags_ids"
+                        />
+                    </SimpleForm>
+                </Create>
+            )}
+        />
+    </Admin>
 );
 
 export const WithAutocompleteInput = () => (
