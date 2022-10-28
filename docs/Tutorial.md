@@ -114,7 +114,7 @@ export default App;
 
 The line `<Resource name="users" />` informs react-admin to fetch the "users" records from the [https://jsonplaceholder.typicode.com/users](https://jsonplaceholder.typicode.com/users) URL. `<Resource>` also defines the React components to use for each CRUD operation (`list`, `create`, `edit`, and `show`).
 
-The `list={ListGuesser}` tells react-admin to the `<ListGuesser>` component to display the list of users. This component *guesses* the configuration to use for the list (column names and types) based on the data fetched from the API.
+The `list={ListGuesser}` tells react-admin to use the `<ListGuesser>` component to display the list of users. This component *guesses* the configuration to use for the list (column names and types) based on the data fetched from the API.
 
 The app can now display a list of users:
 
