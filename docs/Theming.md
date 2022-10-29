@@ -397,6 +397,34 @@ const MyAppBar = props => (
 const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 ```
 
+## Changing the Theme Programmatically
+
+React-admin provides the `useTheme` hook to read and update the theme programmatically. It uses the same syntax as `useState`.
+Its used internally by `ToggleThemeButton` button.
+
+```jsx
+import { defaultTheme, useTheme } from 'react-admin';
+import { Button } from '@mui/material';
+
+const lightTheme = defaultTheme;
+const darkTheme = {
+    ...defaultTheme,
+    palette: {
+        mode: 'dark',
+    },
+};
+
+const ThemeToggler = () => {
+    const [theme, setTheme] = useTheme();
+
+    return (
+        <Button onClick={() => setTheme(theme.palette.mode === 'dark' ? lightTheme : darkTheme)}>
+            {theme.palette.mode === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+        </Button>
+    );
+}
+```
+
 ## Conditional Formatting
 
 Sometimes you want the format to depend on the value. Use `useRecordContext` to grab the record in a component, and the `sx` prop to apply the format.
