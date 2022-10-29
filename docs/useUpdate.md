@@ -30,9 +30,10 @@ This means the parameters can be passed either when calling the hook, or when ca
 
 ```jsx
 // set params when calling the hook
-import { useUpdate } from 'react-admin';
+import { useUpdate, useRecordContext } from 'react-admin';
 
-const IncreaseLikeButton = ({ record }) => {
+const IncreaseLikeButton = () => {
+    const record = useRecordContext();
     const diff = { likes: record.likes + 1 };
     const [update, { isLoading, error }] = useUpdate(
         'likes',
@@ -46,9 +47,10 @@ const IncreaseLikeButton = ({ record }) => {
 };
 
 // set params when calling the update callback
-import { useUpdate } from 'react-admin';
+import { useUpdate, useRecordContext } from 'react-admin';
 
-const IncreaseLikeButton = ({ record }) => {
+const IncreaseLikeButton = () => {
+    const record = useRecordContext();
     const diff = { likes: record.likes + 1 };
     const [update, { isLoading, error }] = useUpdate();
     const handleClick = () => {

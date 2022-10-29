@@ -756,21 +756,27 @@ All react-admin inputs handle the display of their label by wrapping their conte
 You can wrap your own components inside the `<Labeled>` component too. You can either provide it the `label` prop directly or leverage the automatic label inference by providing it the `source` prop:
 
 ```jsx
-const IdentifierField = ({ label, record }) => (
-    <Labeled label={label}>
-        <Typography>{record.id}</Typography>
-    </Labeled>
-);
+const IdentifierField = ({ label }) => {
+    const record = useRecordContext();
+    return (
+        <Labeled label={label}>
+            <Typography>{record.id}</Typography>
+        </Labeled>
+    );
+};
 
 // Here Labeled will try to translate the label with the translation key `resources.posts.fields.body`
 // and with an inferred default of `Body`
-const BodyField = ({ record }) => (
-    <Labeled source="body">
-        <Typography>
-            {record.body}
-        </Typography>
-    </Labeled>
-);
+const BodyField = () => {
+    const record = useRecordContext();
+    return (
+        <Labeled source="body">
+            <Typography>
+                {record.body}
+            </Typography>
+        </Labeled>
+    )
+};
 
 const PostEdit = () => (
     <Create>

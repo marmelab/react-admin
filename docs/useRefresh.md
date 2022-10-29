@@ -22,11 +22,12 @@ const RefreshButton = () => {
 It is common to use it after a mutation, e.g. after deleting a record. 
 
 ```jsx
-import * as React from "react";
-import { useDelete, useNotify, useRefresh, Button } from 'react-admin';
+import * as React from 'react';
+import { useDelete, useNotify, useRefresh, useRecordContext, Button } from 'react-admin';
 
-const DeleteCommentButton = ({ record }) => {
+const DeleteCommentButton = () => {
     const refresh = useRefresh();
+    const record = useRecordContext();
     const notify = useNotify();
     const [deleteOne, { isLoading }] = useDelete(
         'comments',

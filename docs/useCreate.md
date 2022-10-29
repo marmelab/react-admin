@@ -30,9 +30,10 @@ So, should you pass the parameters when calling the hook, or when executing the 
 
 ```jsx
 // set params when calling the hook
-import { useCreate } from 'react-admin';
+import { useCreate, useRecordContext } from 'react-admin';
 
-const LikeButton = ({ record }) => {
+const LikeButton = () => {
+    const record = useRecordContext();
     const like = { postId: record.id };
     const [create, { isLoading, error }] = useCreate('likes', { data: like });
     const handleClick = () => {
@@ -43,9 +44,10 @@ const LikeButton = ({ record }) => {
 };
 
 // set params when calling the create callback
-import { useCreate } from 'react-admin';
+import { useCreate, useRecordContext } from 'react-admin';
 
-const LikeButton = ({ record }) => {
+const LikeButton = () => {
+    const record = useRecordContext();
     const like = { postId: record.id };
     const [create, { isLoading, error }] = useCreate();
     const handleClick = () => {
