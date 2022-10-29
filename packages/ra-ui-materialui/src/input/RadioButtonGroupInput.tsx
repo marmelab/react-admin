@@ -60,7 +60,10 @@ import { LinearProgress } from '../layout';
  *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
  *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
  * ];
- * const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
+ * const FullNameField = () => {
+ *     const record = useRecordContext();
+ *     return (<span>{record.first_name} {record.last_name}</span>)
+ * };
  * <RadioButtonGroupInput source="recipients" choices={choices} optionText={<FullNameField />}/>
  *
  * The choices are translated by default, so you can use translation identifiers as choices:

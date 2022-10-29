@@ -14,11 +14,11 @@ import TopToolbar from '../layout/TopToolbar';
  *
  * @example
  *     import Button from '@mui/material/Button';
- *     import { TopToolbar, ShowButton, Edit } from 'react-admin';
+ *     import { TopToolbar, EditButton, Edit } from 'react-admin';
  *
- *     const PostEditActions = ({ record, resource }) => (
+ *     const PostEditActions = () => (
  *         <TopToolbar>
- *             <ShowButton record={record} />
+ *             <EditButton />
  *             // Add your custom actions here
  *             <Button color="primary" onClick={customAction}>Custom Action</Button>
  *         </TopToolbar>

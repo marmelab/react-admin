@@ -39,9 +39,10 @@ import { RaRecord, CreateParams } from '../types';
  *
  * @example // set params when calling the create callback
  *
- * import { useCreate } from 'react-admin';
+ * import { useCreate, useRecordContext } from 'react-admin';
  *
- * const LikeButton = ({ record }) => {
+ * const LikeButton = () => {
+ *     const record = useRecordContext();
  *     const like = { postId: record.id };
  *     const [create, { isLoading, error }] = useCreate();
  *     const handleClick = () => {
@@ -53,9 +54,10 @@ import { RaRecord, CreateParams } from '../types';
  *
  * @example // set params when calling the hook
  *
- * import { useCreate } from 'react-admin';
+ * import { useCreate, useRecordContext } from 'react-admin';
  *
- * const LikeButton = ({ record }) => {
+ * const LikeButton = () => {
+ *     const record = useRecordContext();
  *     const like = { postId: record.id };
  *     const [create, { isLoading, error }] = useCreate('likes', { data: like });
  *     if (error) { return <p>ERROR</p>; }
