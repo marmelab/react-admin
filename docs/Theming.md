@@ -400,7 +400,7 @@ const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 ## Changing the Theme Programmatically
 
 React-admin provides the `useTheme` hook to read and update the theme programmatically. It uses the same syntax as `useState`.
-Its used internally by `ToggleThemeButton` button.
+Its used internally by `ToggleThemeButton` component.
 
 ```jsx
 import { defaultTheme, useTheme } from 'react-admin';
