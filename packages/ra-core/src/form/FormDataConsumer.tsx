@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import { useWatch } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import get from 'lodash/get';
 
 import warning from '../util/warning';
@@ -43,9 +43,9 @@ import warning from '../util/warning';
  * );
  */
 const FormDataConsumer = (props: ConnectedProps) => {
-    const formData = useWatch();
+    const { getValues } = useFormContext();
 
-    return <FormDataConsumerView formData={formData} {...props} />;
+    return <FormDataConsumerView formData={getValues()} {...props} />;
 };
 
 export const FormDataConsumerView = (props: Props) => {
