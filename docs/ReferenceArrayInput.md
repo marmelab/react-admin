@@ -52,6 +52,7 @@ import { ReferenceArrayInput, SelectArrayInput } from 'react-admin';
 | `reference`        | Required | `string`                                    | ''                                 | Name of the reference resource, e.g. 'posts'.                                                                       |
 | `sort`             | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`   | How to order the list of suggestions                                                                                |
 | `enableGetChoices` | Optional | `({q: string}) => boolean`                  | `() => true`                       | Function taking the `filterValues` and returning a boolean to enable the `getList` call.                            |
+| `queryOptions`     | Optional | [`UseQueryOptions`](https://tanstack.com/query/v4/docs/reference/useQuery?from=reactQueryV3&original=https://react-query-v3.tanstack.com/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
 
 **Note**: `<ReferenceArrayInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) ; it is the responsability of children to apply them.
 
