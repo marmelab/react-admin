@@ -49,6 +49,7 @@ const BookShow = () => (
 
 **Tip**: `<ReferenceOneField>` can also be used to display one record of a one-to-many relationship. Use `sort` and/or `filter` props to select the appropriate record to display. The first record will be displayed.
 
+{% raw %}
 ```jsx
 const BookShow = () => (
     <Show>
@@ -68,6 +69,7 @@ const BookShow = () => (
     </Show>
 );
 ```
+{% endraw %}
 
 ## Properties
 
