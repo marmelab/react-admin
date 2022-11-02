@@ -172,6 +172,7 @@ title: "Reference"
 * [`useGetIdentity`](./useGetIdentity.md)
 * [`useGetList`](./useGetList.md)
 * [`useGetMany`](./useGetMany.md)
+* [´useGetManyAggregate´](./useGetOne.md#aggregating-getone-calls)
 * [`useGetManyReference`](./useGetManyReference.md)
 * [`useGetOne`](./useGetOne.md)
 * [`useGetPermissions`](./WithPermissions.md)
@@ -196,7 +197,7 @@ title: "Reference"
 * [`useRecordContext`](./useRecordContext.md)
 * `useRecordSelection`
 * [`useRedirect`](./useRedirect.md)
-* `useReference`
+* [`useReference`](./useGetOne.md#aggregating-getone-calls)
 * `useReferenceArrayFieldController`
 * `useReferenceArrayInputController`
 * `useReferenceInputController`
@@ -219,6 +220,6 @@ title: "Reference"
 * [`useUpdateMany`](./useUpdateMany.md)
 * [`useUnselect`](./useUnselect.md)
 * [`useUnselectAll`](./useUnselectAll.md)
-* `useWarnWhenUnsavedChanges`
+* [`useWarnWhenUnsavedChanges`](./EditTutorial.md#warning-about-unsaved-changes)
 
 </div>

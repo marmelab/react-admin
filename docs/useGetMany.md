@@ -16,9 +16,10 @@ const { data, isLoading, error, refetch } = useGetMany(
 );
 
 // example
-import { useGetMany } from 'react-admin';
+import { useGetMany, useRecordContext } from 'react-admin';
 
-const PostTags = ({ record }) => {
+const PostTags = () => {
+    const record = useRecordContext();
     const { data, isLoading, error } = useGetMany(
         'tags',
         { ids: record.tagIds }

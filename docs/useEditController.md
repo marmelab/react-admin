@@ -16,10 +16,12 @@ Use `useEditController` to create a custom Edition view, with exactly the conten
 {% raw %}
 ```jsx
 import * as React from "react";
+import { useParams } from "react-router-dom";
 import { useEditController, EditContextProvider, SimpleForm, TextInput, SelectInput } from "react-admin";
 import { Card } from "@mui/material";
 
-export const BookEdit = ({ id }) => {
+export const BookEdit = () => {
+  const { id } = useParams();
   const { record, save, isLoading } = useEditController({ resource: 'books', id });
   if (isLoading) return null;
   return (

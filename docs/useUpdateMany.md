@@ -31,9 +31,10 @@ So, should you pass the parameters when calling the hook, or when executing the 
 
 ```jsx
 // set params when calling the hook
-import { useUpdateMany } from 'react-admin';
+import { useUpdateMany, useListContext } from 'react-admin';
 
-const BulkResetViewsButton = ({ selectedIds }) => {
+const BulkResetViewsButton = () => {
+    const { selectedIds } = useListContext();
     const [updateMany, { isLoading, error }] = useUpdateMany(
         'posts',
         { ids: selectedIds, data: { views: 0 } }
@@ -46,9 +47,10 @@ const BulkResetViewsButton = ({ selectedIds }) => {
 };
 
 // set params when calling the updateMany callback
-import { useUpdateMany } from 'react-admin';
+import { useUpdateMany, useListContext } from 'react-admin';
 
-const BulkResetViewsButton = ({ selectedIds }) => {
+const BulkResetViewsButton = () => {
+    const { selectedIds } = useListContext();
     const [updateMany, { isLoading, error }] = useUpdateMany();
     const handleClick = () => {
         updateMany(

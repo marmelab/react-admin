@@ -196,6 +196,7 @@ const BookShow = () => {
 The initial logic that grabs the id from the location and fetches the record from the API is also common, and react-admin exposes [the `useShowController` hook](./useShowController.md) to do it: 
 
 ```diff
+-import { useParams } from 'react-router-dom';
 -import { useGetOne, useRedirect, RecordContextProvider, SimpleShowLayout, Title, TextField, DateField } from 'react-admin';
 +import { useShowController, RecordContextProvider, SimpleShowLayout, Title, TextField, DateField } from 'react-admin';
 import { Card } from '@mui/material';

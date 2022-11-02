@@ -19,7 +19,7 @@ For instance, the following component will render a creation form with 4 inputs 
 
 ```jsx
 // in src/posts.js
-import * as React from "react";
+import * as React from 'react';
 import { Create, SimpleForm, TextInput, DateInput, required } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
 
@@ -35,7 +35,7 @@ export const PostCreate = () => (
 );
 
 // in src/App.js
-import * as React from "react";
+import * as React from 'react';
 import { Admin, Resource } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
@@ -71,7 +71,7 @@ You can customize the `<Create>` component using the following props:
 You can replace the list of default actions by your own elements using the `actions` prop:
 
 ```jsx
-import * as React from "react";
+import * as React from 'react';
 import Button from '@mui/material/Button';
 import { TopToolbar, Create } from 'react-admin';
 
@@ -433,21 +433,24 @@ That means that if you want to create a link to a creation form, presetting *som
 {% raw %}
 ```jsx
 import * as React from 'react';
-import { Datagrid } from 'react-admin';
+import { Datagrid, useRecordContext } from 'react-admin';
 import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-const CreateRelatedCommentButton = ({ record }) => (
-    <Button
-        component={Link}
-        to={{
-            pathname: '/comments/create',
-        }}
-        state={{ record: { post_id: record.id } }}
-    >
-        Write a comment for that post
-    </Button>
-);
+const CreateRelatedCommentButton = () => {
+    const record = useRecordContext();
+    return (
+        <Button
+            component={Link}
+            to={{
+                pathname: '/comments/create',
+            }}
+            state={{ record: { post_id: record.id } }}
+        >
+            Write a comment for that post
+        </Button>
+    );
+};
 
 export default PostList = () => (
     <List>
@@ -466,21 +469,25 @@ export default PostList = () => (
 
 {% raw %}
 ```jsx
-import * as React from "react";
+import * as React from 'react';
+import { useRecordContext } from 'react-admin';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 
-const CreateRelatedCommentButton = ({ record }) => (
-    <Button
-        component={Link}
-        to={{
-            pathname: '/comments/create',
-            search: `?source=${JSON.stringify({ post_id: record.id })}`,
-        }}
-    >
-        Write a comment for that post
-    </Button>
-);
+const CreateRelatedCommentButton = () => {
+    const record = useRecordContext();
+    return (
+        <Button
+            component={Link}
+            to={{
+                pathname: '/comments/create',
+                search: `?source=${JSON.stringify({ post_id: record.id })}`,
+            }}
+        >
+            Write a comment for that post
+        </Button>
+    );
+};
 ```
 {% endraw %}
 
