@@ -49,9 +49,10 @@ import { useDataProvider } from './useDataProvider';
  *
  * @example
  *
- * import { useGetManyAggregate } from 'react-admin';
+ * import { useGetManyAggregate, useRecordContext } from 'react-admin';
  *
- * const PostTags = ({ record }) => {
+ * const PostTags = () => {
+ *     const record = useRecordContext();
  *     const { data, isLoading, error } = useGetManyAggregate('tags', { ids: record.tagIds });
  *     if (isLoading) { return <Loading />; }
  *     if (error) { return <p>ERROR</p>; }

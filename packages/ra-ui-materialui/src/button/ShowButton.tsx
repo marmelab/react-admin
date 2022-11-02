@@ -16,11 +16,14 @@ import { Button, ButtonProps } from './Button';
  * Opens the Show view of a given record
  *
  * @example // basic usage
- * import { ShowButton } from 'react-admin';
+ * import { ShowButton, useRecordContext } from 'react-admin';
  *
- * const CommentShowButton = ({ record }) => (
- *     <ShowButton label="Show comment" record={record} />
- * );
+ * const CommentShowButton = () => {
+ *     const record = useRecordContext();
+ *     return (
+ *         <ShowButton label="Show comment" record={record} />
+ *     );
+ * };
  */
 const ShowButton = <RecordType extends RaRecord = any>(
     props: ShowButtonProps<RecordType>
