@@ -49,6 +49,7 @@ export const useReferenceArrayInputController = <
     // When we change the defaultValue of the child input using react-hook-form resetField function,
     // useWatch does not seem to get the new value. We fallback to getValues to get it.
     const value = useWatch({ name: source }) ?? getValues(source);
+    const { meta, ...otherQueryOptions } = queryOptions;
 
     /**
      * Get the records related to the current value (with getMany)
@@ -104,8 +105,9 @@ export const useReferenceArrayInputController = <
             },
             sort: { field: params.sort, order: params.order },
             filter: { ...params.filter, ...filter },
+            meta,
         },
-        { retry: false, enabled: isGetMatchingEnabled, ...queryOptions }
+        { retry: false, enabled: isGetMatchingEnabled, ...otherQueryOptions }
     );
 
     // We merge the currently selected records with the matching ones, otherwise
@@ -192,7 +194,7 @@ export interface UseReferenceArrayInputParams<
             hasNextPage?: boolean;
             hasPreviousPage?: boolean;
         };
-    }>;
+    }> & { meta?: any };
     page?: number;
     perPage?: number;
     record?: RecordType;

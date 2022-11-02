@@ -6,6 +6,7 @@ import {
     useReferenceArrayInputController,
     ResourceContextProvider,
     ChoicesContextProvider,
+    UseReferenceArrayInputParams,
 } from 'ra-core';
 
 /**
@@ -116,13 +117,10 @@ ReferenceArrayInput.defaultProps = {
     sort: { field: 'id', order: 'DESC' },
 };
 
-export interface ReferenceArrayInputProps extends InputProps {
+export interface ReferenceArrayInputProps
+    extends InputProps,
+        UseReferenceArrayInputParams {
     children: ReactElement;
     label?: string;
-    page?: number;
-    perPage?: number;
-    reference: string;
-    resource?: string;
-    enableGetChoices?: (filters: any) => boolean;
     [key: string]: any;
 }
