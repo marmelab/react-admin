@@ -57,10 +57,12 @@ For instance, if you have a list of tags, you can display a button for each cate
 
 {% raw %}
 ```jsx
+import { useTranslate, useRecordContext } from 'react-admin';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 
-const LinkToRelatedProducts = ({ record }) => {
+const LinkToRelatedProducts = () => {
+    const record = useRecordContext();
     const translate = useTranslate();
     return record ? (
         <Button

@@ -120,7 +120,7 @@ The react-admin documentation for individual components also lists the classes a
 
 ## Reusable Components
 
-To reuse the same style overrides in different locations across your application, create a reusable component using [the MUI `styled()` utility](https://mui.com/system/styled/). It's a function that creates a new component based on a source component and custom styles. The basinc syntax is `styled(Component)(styles) => Component` (where `styles` forllows the same syntax as the `sx` prop).
+To reuse the same style overrides in different locations across your application, create a reusable component using [the MUI `styled()` utility](https://mui.com/system/styled/). It's a function that creates a new component based on a source component and custom styles. The basic syntax is `styled(Component)(styles) => Component` (where `styles` follows the same syntax as the `sx` prop).
 
 For instance, to create a custom `<Datagrid>` component with the header style defined in the previous section:
 
@@ -395,6 +395,34 @@ const MyAppBar = props => (
 );
 
 const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
+```
+
+## Changing the Theme Programmatically
+
+React-admin provides the `useTheme` hook to read and update the theme programmatically. It uses the same syntax as `useState`.
+Its used internally by `ToggleThemeButton` component.
+
+```jsx
+import { defaultTheme, useTheme } from 'react-admin';
+import { Button } from '@mui/material';
+
+const lightTheme = defaultTheme;
+const darkTheme = {
+    ...defaultTheme,
+    palette: {
+        mode: 'dark',
+    },
+};
+
+const ThemeToggler = () => {
+    const [theme, setTheme] = useTheme();
+
+    return (
+        <Button onClick={() => setTheme(theme.palette.mode === 'dark' ? lightTheme : darkTheme)}>
+            {theme.palette.mode === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+        </Button>
+    );
+}
 ```
 
 ## Conditional Formatting
@@ -1017,7 +1045,7 @@ import Button from '@mui/material/Button';
 import ErrorIcon from '@mui/icons-material/Report';
 import History from '@mui/icons-material/History';
 import { Title, useTranslate } from 'react-admin';
-import { useLocation } from 'react-router';
+import { useLocation } from 'react-router-dom';
 
 const MyError = ({
     error,

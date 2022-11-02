@@ -30,9 +30,10 @@ So, should you pass the parameters when calling the hook, or when executing the 
 
 ```jsx
 // set params when calling the hook
-import { useDelete } from 'react-admin';
+import { useDelete, useRecordContext } from 'react-admin';
 
-const DeleteButton = ({ record }) => {
+const DeleteButton = () => {
+    const record = useRecordContext();
     const [deleteOne, { isLoading, error }] = useDelete(
         'likes',
         { id: record.id, previousData: record }
@@ -45,9 +46,10 @@ const DeleteButton = ({ record }) => {
 };
 
 // set params when calling the deleteOne callback
-import { useDelete } from 'react-admin';
+import { useDelete, useRecordContext } from 'react-admin';
 
-const DeleteButton = ({ record }) => {
+const DeleteButton = () => {
+    const record = useRecordContext();
     const [deleteOne, { isLoading, error }] = useDelete();
     const handleClick = () => {
         deleteOne(

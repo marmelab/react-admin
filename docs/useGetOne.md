@@ -58,9 +58,10 @@ The react-query [query key](https://react-query-v3.tanstack.com/guides/query-key
 Call `useGetOne` in a component to query the data provider for a single record, based on its `id`.
 
 ```jsx
-import { useGetOne } from 'react-admin';
+import { useGetOne, useRecordContext } from 'react-admin';
 
-const UserProfile = ({ record }) => {
+const UserProfile = () => {
+    const record = useRecordContext();
     const { data: user, isLoading, error } = useGetOne('users', { id: record.userId });
     if (isLoading) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
@@ -73,10 +74,11 @@ const UserProfile = ({ record }) => {
 If you use `useGetOne` several times on a page for the same resource, replace the `useGetOne` call by `useGetManyAggregate`, as it de-duplicates and aggregates queries for a single record into one batch query for many records.
 
 ```diff
--import { useGetOne } from 'react-admin';
-+import { useGetManyAggregate } from 'react-admin';
+-import { useGetOne, useRecordContext } from 'react-admin';
++import { useGetManyAggregate, useRecordContext } from 'react-admin';
 
-const UserProfile = ({ record }) => {
+const UserProfile = () => {
+    const record = useRecordContext();
 -   const { data: user, isLoading, error } = useGetOne('users', { id: record.userId });
 +   const { data: users, isLoading, error } = useGetManyAggregate('users', { ids: [record.userId] });
     if (isLoading) { return <Loading />; }
@@ -91,12 +93,13 @@ This results in less calls to the dataProvider. For instance, if the `<UserProfi
 As this hook is often used to fetch references, react-admin exposes a `useReference` hook, which avoids doing the array conversion manually. It's an application hook rather than a data provider hook, so its syntax is a bit different. Prefer `useReference` to `useGetManyAggregate` when you use `useGetOne` to fetch a reference.
 
 ```diff
--import { useGetOne } from 'react-admin';
-+import { useReference } from 'react-admin';
+-import { useGetOne, useRecordContext } from 'react-admin';
++import { useReference, useRecordContext } from 'react-admin';
 
-const UserProfile = ({ record }) => {
+const UserProfile = () => {
+    const record = useRecordContext();
 -   const { data: user, isLoading, error } = useGetOne('users', { id: record.userId });
-+   const { referenceRecord: user, isLoading, error } = useReference({ reference: 'users', id: record.userId });
++   const { referenceRecord: user, isLoading, error } = useReference({ reference: 'users', id: record.userId });
     if (isLoading) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return <div>User {data.username}</div>;
