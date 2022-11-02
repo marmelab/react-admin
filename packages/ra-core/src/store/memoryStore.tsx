@@ -50,10 +50,11 @@ export const memoryStore = (storage: any = {}): Store => {
         removeItems(keyPrefix: string): void {
             const flatStorage = flatten(storage);
             Object.keys(flatStorage).forEach(key => {
-                if (key.startsWith(keyPrefix)) {
-                    unset(storage, key);
-                    publish(key, undefined);
+                if (!key.startsWith(keyPrefix)) {
+                    return;
                 }
+                unset(storage, key);
+                publish(key, undefined);
             });
         },
         reset(): void {
@@ -85,9 +86,7 @@ const flatten = (data: any) => {
             result[prop] = current;
         } else if (Array.isArray(current)) {
             // array
-            for (var i = 0, l = current.length; i < l; i++)
-                doFlatten(current[i], prop + '[' + i + ']');
-            if (l === 0) result[prop] = [];
+            result[prop] = current;
         } else {
             // object
             var isEmpty = true;

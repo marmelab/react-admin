@@ -10,10 +10,14 @@ import {
     BulkDeleteButton,
     BulkExportButton,
     ChipField,
-    Datagrid,
+    SelectColumnsButton,
+    CreateButton,
+    DatagridConfigurable,
     DateField,
     downloadCSV,
     EditButton,
+    ExportButton,
+    FilterButton,
     List,
     NumberField,
     ReferenceArrayField,
@@ -23,6 +27,7 @@ import {
     SingleFieldList,
     TextField,
     TextInput,
+    TopToolbar,
     useTranslate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
@@ -54,7 +59,7 @@ const exporter = posts => {
     return jsonExport(data, (err, csv) => downloadCSV(csv, 'posts'));
 };
 
-const StyledDatagrid = styled(Datagrid)(({ theme }) => ({
+const StyledDatagrid = styled(DatagridConfigurable)(({ theme }) => ({
     '& .title': {
         maxWidth: '20em',
         overflow: 'hidden',
@@ -80,6 +85,15 @@ const PostListBulkActions = memo(({ children, ...props }) => (
     </Fragment>
 ));
 
+const PostListActions = () => (
+    <TopToolbar>
+        <SelectColumnsButton />
+        <FilterButton />
+        <CreateButton />
+        <ExportButton />
+    </TopToolbar>
+);
+
 const PostListActionToolbar = ({ children, ...props }) => (
     <Box sx={{ alignItems: 'center', display: 'flex' }}>{children}</Box>
 );
@@ -103,6 +117,7 @@ const PostList = () => {
             filters={postFilter}
             sort={{ field: 'published_at', order: 'DESC' }}
             exporter={exporter}
+            actions={<PostListActions />}
         >
             {isSmall ? (
                 <SimpleList
@@ -117,7 +132,7 @@ const PostList = () => {
                     bulkActionButtons={<PostListBulkActions />}
                     rowClick={rowClick}
                     expand={PostPanel}
-                    optimized
+                    omit={['average_note']}
                 >
                     <TextField source="id" />
                     <TextField source="title" cellClassName="title" />
@@ -126,7 +141,6 @@ const PostList = () => {
                         sortByOrder="DESC"
                         cellClassName="publishedAt"
                     />
-
                     <BooleanField
                         source="commentable"
                         label="resources.posts.fields.commentable_short"
@@ -146,6 +160,7 @@ const PostList = () => {
                             <ChipField source="name.en" size="small" />
                         </SingleFieldList>
                     </ReferenceArrayField>
+                    <NumberField source="average_note" />
                     <PostListActionToolbar>
                         <EditButton />
                         <ShowButton />

@@ -118,7 +118,7 @@ title: "Reference"
 * [`<Search>`](https://marmelab.com/ra-enterprise/modules/ra-search#the-search-component)<img class="icon" src="./img/premium.svg" />
 * [`<SearchInput>`](./FilteringTutorial.md#searchinput)
 * [`<SelectArrayInput>`](./SelectArrayInput.md)
-* [`<SelectColumnsButton>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#selectcolumnsbutton-store-datagrid-columns-in-preferences)<img class="icon" src="./img/premium.svg" />
+* [`<SelectColumnsButton>`](./SelectColumnsButton.md)
 * [`<SelectField>`](./SelectField.md)
 * [`<SelectInput>`](./SelectInput.md)
 * [`<Show>`](./Show.md#show)

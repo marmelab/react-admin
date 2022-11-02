@@ -6,6 +6,7 @@ import {
     useReferenceArrayInputController,
     ResourceContextProvider,
     ChoicesContextProvider,
+    UseReferenceArrayInputParams,
 } from 'ra-core';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 
@@ -118,13 +119,10 @@ ReferenceArrayInput.defaultProps = {
     children: <AutocompleteArrayInput />,
 };
 
-export interface ReferenceArrayInputProps extends InputProps {
-    children?: ReactElement;
+export interface ReferenceArrayInputProps
+    extends InputProps,
+        UseReferenceArrayInputParams {
+    children: ReactElement;
     label?: string;
-    page?: number;
-    perPage?: number;
-    reference: string;
-    resource?: string;
-    enableGetChoices?: (filters: any) => boolean;
     [key: string]: any;
 }
