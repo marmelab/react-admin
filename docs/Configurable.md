@@ -193,3 +193,16 @@ export const Dashboard = () => (
 
 Users will be able to customize each component independently.
 
+## `<InspectorButton>`
+
+Users can add `<InspectorButton>` to the `<AppBar>` component in order to toggle
+the display of configuration editing panel.
+
+```
+const MyAppBar = props => (
+    <AppBar {...props}>
+        <Typography flex="1" variant="h6" id="react-admin-title" />
+        <InspectorButton />
+    </AppBar>
+);
+```
