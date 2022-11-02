@@ -142,7 +142,7 @@ const choices = possibleValues.map(value => ({ id: value, name: ucfirst(value) }
 
 ## `disableValue`
 
-By default, `<DualListInput>` renders the choices with the field `disabled: true` as disabled.
+By default, `<DualListInput>` renders the choices with the field `disabled` as disabled.
 
 ```jsx
 const choices = [

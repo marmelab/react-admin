@@ -99,26 +99,3 @@ export const CreateProp = () => (
         </Create>
     </AdminContext>
 );
-
-export const EmptyText = () => (
-    <AdminContext i18nProvider={i18nProvider}>
-        <Create
-            resource="users"
-            record={{ roles: ['u001', 'u003'] }}
-            sx={{ width: 600 }}
-        >
-            <SimpleForm>
-                <SelectArrayInput
-                    source="roles"
-                    choices={[
-                        { id: 'admin', name: 'Admin' },
-                        { id: 'u001', name: 'Editor' },
-                        { id: 'u002', name: 'Moderator' },
-                        { id: 'u003', name: 'Reviewer' },
-                    ]}
-                    sx={{ width: 300 }}
-                />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
-);

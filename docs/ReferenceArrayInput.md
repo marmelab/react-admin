@@ -101,7 +101,6 @@ See the [`children`](#children) section for more details.
 | `label`            | Optional | `string`                                    | -                                  | Useful only when `ReferenceArrayInput` is in a Filter array, the label is used as the Filter label.                 |
 | `page`             | Optional | `number`                                    | 1                                  | The current page number                                                                                             |
 | `perPage`          | Optional | `number`                                    | 25                                 | Number of suggestions to show                                                                                       |
-| `queryOptions`     | Optional | [`UseQuery Options`](https://tanstack.com/query/v4/docs/reference/useQuery?from=reactQueryV3&original=https://react-query-v3.tanstack.com/reference/useQuery)| `{}`  | `react-query` client options     |
 | `sort`             | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`   | How to order the list of suggestions                                                                                |
 
 **Note**: `<ReferenceArrayInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) ; it is the responsability of children to apply them.
@@ -270,22 +269,6 @@ You can override this default by specifying the `optionText` prop in the child c
     <AutocompleteArrayInput optionText="reference" />
 </ReferenceArrayInput>
 ```
-
-## `queryOptions`
-
-Use the `queryOptions` prop to pass options to the `dataProvider.getList()` query that fetches the possible choices.
-
-For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
-
-{% raw %}
-```jsx
-<ReferenceArrayInput 
-    source="tag_ids"
-    reference="tags"
-    queryOptions={{ meta: { foo: 'bar' } }}
-/>
-```
-{% endraw %}
 
 ## `sort`
 
