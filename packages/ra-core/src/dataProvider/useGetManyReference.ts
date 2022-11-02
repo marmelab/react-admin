@@ -39,14 +39,14 @@ import { useDataProvider } from './useDataProvider';
  * @prop params.filter The request filters, e.g. { title: 'hello, world' }
  * @prop params.meta Optional meta parameters
  *
- *
  * @returns The current request state. Destructure as { data, total, error, isLoading, refetch }.
  *
  * @example
  *
- * import { useGetManyReference } from 'react-admin';
+ * import { useGetManyReference, useRecordContext } from 'react-admin';
  *
- * const PostComments = ({ record }) => {
+ * const PostComments = () => {
+ *     const record = useRecordContext();
  *     // fetch all comments related to the current record
  *     const { data, isLoading, error } = useGetManyReference(
  *         'comments',

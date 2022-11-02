@@ -325,3 +325,40 @@ export const InsideReferenceInputDefaultValue = ({
         />
     </Admin>
 );
+
+export const InsideReferenceInputWithError = () => (
+    <Admin
+        dataProvider={{
+            ...dataProviderWithAuthors,
+            getList: () => Promise.reject('error'),
+        }}
+        history={history}
+    >
+        <Resource
+            name="authors"
+            recordRepresentation={record =>
+                `${record.first_name} ${record.last_name}`
+            }
+        />
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                >
+                    <SimpleForm>
+                        <ReferenceInput reference="authors" source="author">
+                            <SelectInput />
+                        </ReferenceInput>
+                        <FormInspector name="author" />
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
+    </Admin>
+);

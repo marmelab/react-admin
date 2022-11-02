@@ -1,6 +1,7 @@
 import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
+import { minValue } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
@@ -25,6 +26,12 @@ export const FullWidth = () => (
 export const Disabled = () => (
     <Wrapper>
         <DateInput source="published" disabled />
+    </Wrapper>
+);
+
+export const Validate = () => (
+    <Wrapper>
+        <DateInput source="published" validate={minValue('2022-10-26')} />
     </Wrapper>
 );
 

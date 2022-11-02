@@ -61,6 +61,21 @@ const App = () => <MyAdmin />;
 export default App;
 ```
 
+Finally, remove the `index.css` from the `main.tsx` folder:
+
+```diff
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+-import './index.css';
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+```
+
 Now, start the server with `yarn dev`, browse to `http://localhost:5173/`, and you should see the working admin:
 
 ![Working Page](./img/nextjs-react-admin.webp)

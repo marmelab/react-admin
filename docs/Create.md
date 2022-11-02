@@ -27,7 +27,7 @@ export const PostCreate = () => (
     <Create>
         <SimpleForm>
             <TextInput source="title" validate={[required()]} fullWidth />
-            <TextInput source="teaser" multiLine={true} label="Short description" />
+            <TextInput source="teaser" multiline={true} label="Short description" />
             <RichTextInput source="body" />
             <DateInput label="Publication date" source="published_at" defaultValue={new Date()} />
         </SimpleForm>
@@ -548,3 +548,13 @@ const PostCreate = () => {
 You can also leave the choice to the user, by supplying two submit buttons: one with a redirect, and one with a form reset. The same technique applies: use the `mutationOptions` prop on the `<SaveButton>` component.
 
 Note: In order to get the `mutationOptions` being considered, you have to set the `type` prop of the `SaveButton` to `button`.
+
+## Creating A New Record In A Modal
+
+`<Create>` is designed to be a page component, passed to the `create` prop of the `<Resource>` component. But you may want to let users create a record from another page. 
+
+![CreateDialog](https://marmelab.com/ra-enterprise/modules/assets/create-dialog.gif)
+
+* If you want to allow creation from the `list` page, use [the `<CreateDialog>` component](./CreateDialog.md)
+* If you want to allow creation from another page, use [the `<CreateInDialogButton>` component](./CreateInDialogButton.md)
+

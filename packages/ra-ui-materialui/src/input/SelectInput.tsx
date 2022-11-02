@@ -161,6 +161,18 @@ export const SelectInput = (props: SelectInputProps) => {
         source: sourceProp,
     });
 
+    if (source === undefined) {
+        throw new Error(
+            `If you're not wrapping the SelectInput inside a ReferenceInput, you must provide the source prop`
+        );
+    }
+
+    if (!isLoading && !fetchError && allChoices === undefined) {
+        throw new Error(
+            `If you're not wrapping the SelectInput inside a ReferenceInput, you must provide the choices prop`
+        );
+    }
+
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     const { getChoiceText, getChoiceValue, getDisableValue } = useChoices({
         optionText:

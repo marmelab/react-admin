@@ -5,9 +5,11 @@ title: "The RichTextInput Component"
 
 # `<RichTextInput>`
 
-`<RichTextInput>` is the ideal component if you want to allow your users to edit some HTML contents. It is powered by [TipTap](https://www.tiptap.dev/).
+`<RichTextInput>` is the ideal component to let users edit HTML content. It is powered by [TipTap](https://www.tiptap.dev/).
 
 ![RichTextInput](./img/rich-text-input.gif)
+
+## Usage
 
 **Note**: Due to its size, `<RichTextInput>` is not bundled by default with react-admin. You must install it first, using npm:
 
@@ -33,60 +35,16 @@ export const PostEdit = (props) => (
 );
 ```
 
-## Customizing the Toolbar
+## Props
 
-The `<RichTextInput>` component has a `toolbar` prop that accepts a `ReactNode`.
+| Prop   | Required | Type     | Default | Description |
+| ------ | -------- | -------- | ------- | ----------- |
+| `editorOptions` | Optional | `Object` | - | Options object to pass to the underlying TipTap editor. |
+| `toolbar` | Optional| ReactNode | - | The toolbar to use. If not set, the default toolbar is used. |
 
-You can leverage this to change the buttons [size](#api):
+`<RichTextInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
-```jsx
-import { Edit, SimpleForm, TextInput } from 'react-admin';
-import { RichTextInput, RichTextInputToolbar } from 'ra-input-rich-text';
-
-export const PostEdit = (props) => (
-	<Edit {...props}>
-		<SimpleForm>
-			<TextInput source="title" />
-			<RichTextInput source="body" toolbar={<RichTextInputToolbar size="large" />} />
-		</SimpleForm>
-	</Edit>
-);
-```
-
-Or to remove some prebuilt components like the `<AlignmentButtons>`:
-
-```jsx
-import {
-	RichTextInput,
-	RichTextInputToolbar,
-	LevelSelect,
-	FormatButtons,
-	ListButtons,
-	LinkButtons,
-	QuoteButtons,
-	ClearButtons,
-} from 'ra-input-rich-text';
-
-const MyRichTextInput = ({ size, ...props }) => (
-	<RichTextInput
-		toolbar={
-			<RichTextInputToolbar>
-				<LevelSelect size={size} />
-				<FormatButtons size={size} />
-				<ListButtons size={size} />
-				<LinkButtons size={size} />
-				<QuoteButtons size={size} />
-				<ClearButtons size={size} />
-			</RichTextInputToolbar>
-		}
-		label="Body"
-		source="body"
-		{...props}
-	/>
-);
-```
-
-## Customizing the editor
+## `editorOptions`
 
 You might want to add more Tiptap extensions. The `<RichTextInput>` component accepts an `editorOptions` prop which is the [object passed to Tiptap Editor](https://www.tiptap.dev/guide/configuration).
 
@@ -155,3 +113,57 @@ export const MyEditorOptions = {
 	],
 };
 ```
+
+## `toolbar`
+
+The `<RichTextInput>` component has a `toolbar` prop that accepts a `ReactNode`. But default, it uses the `<RichTextInputToolbar>` component.
+
+You can leverage the `tollbar` prop to change the buttons size:
+
+```jsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { RichTextInput, RichTextInputToolbar } from 'ra-input-rich-text';
+
+export const PostEdit = () => (
+	<Edit>
+		<SimpleForm>
+			<TextInput source="title" />
+			<RichTextInput source="body" toolbar={<RichTextInputToolbar size="large" />} />
+		</SimpleForm>
+	</Edit>
+);
+```
+
+Or to remove some prebuilt components like the `<AlignmentButtons>`:
+
+```jsx
+import {
+	RichTextInput,
+	RichTextInputToolbar,
+	LevelSelect,
+	FormatButtons,
+	ListButtons,
+	LinkButtons,
+	QuoteButtons,
+	ClearButtons,
+} from 'ra-input-rich-text';
+
+const MyRichTextInput = ({ size, ...props }) => (
+	<RichTextInput
+		toolbar={
+			<RichTextInputToolbar>
+				<LevelSelect size={size} />
+				<FormatButtons size={size} />
+				<ListButtons size={size} />
+				<LinkButtons size={size} />
+				<QuoteButtons size={size} />
+				<ClearButtons size={size} />
+			</RichTextInputToolbar>
+		}
+		label="Body"
+		source="body"
+		{...props}
+	/>
+);
+```
+

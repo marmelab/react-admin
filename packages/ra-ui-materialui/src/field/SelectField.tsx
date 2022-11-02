@@ -55,7 +55,10 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
  *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
  * ];
- * const FullNameField = ({ record }) => <Chip>{record.first_name} {record.last_name}</Chip>;
+ * const FullNameField = () => {
+ *     const record = useRecordContext();
+ *     return (<Chip>{record.first_name} {record.last_name}</Chip>)
+ * };
  * <SelectField source="gender" choices={choices} optionText={<FullNameField />}/>
  *
  * The current choice is translated by default, so you can use translation identifiers as choices:

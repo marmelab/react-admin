@@ -193,34 +193,6 @@ export const AutocompleteInput = <
 
     const translate = useTranslate();
 
-    const finalEmptyText = emptyText ?? '';
-
-    const finalChoices = useMemo(
-        () =>
-            isRequiredOverride || multiple
-                ? allChoices
-                : [
-                      {
-                          [optionValue || 'id']: emptyValue,
-                          [typeof optionText === 'string'
-                              ? optionText
-                              : 'name']: translate(finalEmptyText, {
-                              _: finalEmptyText,
-                          }),
-                      },
-                  ].concat(allChoices),
-        [
-            allChoices,
-            emptyValue,
-            finalEmptyText,
-            isRequiredOverride,
-            multiple,
-            optionText,
-            optionValue,
-            translate,
-        ]
-    );
-
     const {
         id,
         field,
@@ -233,6 +205,7 @@ export const AutocompleteInput = <
         field: fieldOverride,
         fieldState: fieldStateOverride,
         formState: formStateOverride,
+        isRequired: isRequiredOverride,
         onBlur,
         onChange,
         parse,
@@ -242,6 +215,33 @@ export const AutocompleteInput = <
         validate,
         ...rest,
     });
+
+    const finalChoices = useMemo(
+        () =>
+            // eslint-disable-next-line eqeqeq
+            emptyText == undefined || isRequired || multiple
+                ? allChoices
+                : [
+                      {
+                          [optionValue || 'id']: emptyValue,
+                          [typeof optionText === 'string'
+                              ? optionText
+                              : 'name']: translate(emptyText, {
+                              _: emptyText,
+                          }),
+                      },
+                  ].concat(allChoices),
+        [
+            allChoices,
+            emptyValue,
+            emptyText,
+            isRequired,
+            multiple,
+            optionText,
+            optionValue,
+            translate,
+        ]
+    );
 
     const selectedChoice = useSelectedChoice<
         OptionType,
@@ -407,12 +407,23 @@ If you provided a React element for the optionText prop, you must also provide t
     );
 
     const finalOnBlur = useCallback((): void => {
-        if (clearOnBlur) {
+        if (clearOnBlur && !multiple) {
             const optionLabel = getOptionLabel(selectedChoice);
-            setFilterValue(optionLabel);
+            if (!isEqual(optionLabel, filterValue)) {
+                setFilterValue(optionLabel);
+                debouncedSetFilter('');
+            }
         }
         field.onBlur();
-    }, [clearOnBlur, field, selectedChoice, getOptionLabel]);
+    }, [
+        clearOnBlur,
+        field,
+        getOptionLabel,
+        selectedChoice,
+        filterValue,
+        debouncedSetFilter,
+        multiple,
+    ]);
 
     useEffect(() => {
         if (!multiple) {
@@ -537,11 +548,7 @@ If you provided a React element for the optionText prop, you must also provide t
                                 label={label}
                                 source={source}
                                 resource={resourceProp}
-                                isRequired={
-                                    typeof isRequiredOverride !== 'undefined'
-                                        ? isRequiredOverride
-                                        : isRequired
-                                }
+                                isRequired={isRequired}
                             />
                         }
                         error={

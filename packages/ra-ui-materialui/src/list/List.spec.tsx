@@ -207,4 +207,26 @@ describe('<List />', () => {
             ).toHaveLength(1);
         });
     });
+
+    it('should render a list page with an error message when there is an error', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        const Datagrid = () => <div>datagrid</div>;
+        const dataProvider = {
+            getList: jest.fn(() =>
+                Promise.reject({ error: { key: 'error.unknown' } })
+            ),
+        } as any;
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <ThemeProvider theme={theme}>
+                    <List resource="posts">
+                        <Datagrid />
+                    </List>
+                </ThemeProvider>
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(screen.getByText('ra.page.error'));
+        });
+    });
 });

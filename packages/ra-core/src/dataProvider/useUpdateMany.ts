@@ -50,9 +50,10 @@ import { Identifier } from '..';
  *
  * @example // set params when calling the updateMany callback
  *
- * import { useUpdateMany } from 'react-admin';
+ * import { useUpdateMany, useListContext } from 'react-admin';
  *
- * const BulkResetViewsButton = ({ selectedIds }) => {
+ * const BulkResetViewsButton = () => {
+ *     const { selectedIds } = useListContext();
  *     const [updateMany, { isLoading, error }] = useUpdateMany();
  *     const handleClick = () => {
  *         updateMany('posts', { ids: selectedIds, data: { views: 0 } });
@@ -63,9 +64,10 @@ import { Identifier } from '..';
  *
  * @example // set params when calling the hook
  *
- * import { useUpdateMany } from 'react-admin';
+ * import { useUpdateMany, useListContext } from 'react-admin';
  *
- * const BulkResetViewsButton = ({ selectedIds }) => {
+ * const BulkResetViewsButton = () => {
+ *     const { selectedIds } = useListContext();
  *     const [updateMany, { isLoading, error }] = useUpdateMany('posts', { ids: selectedIds, data: { views: 0 } });
  *     if (error) { return <p>ERROR</p>; }
  *     return <button disabled={isLoading} onClick={() => updateMany()}>Reset views</button>;

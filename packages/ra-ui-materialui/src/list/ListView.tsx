@@ -12,6 +12,7 @@ import { ListToolbar } from './ListToolbar';
 import { Pagination as DefaultPagination } from './pagination';
 import { ListActions as DefaultActions } from './ListActions';
 import { Empty } from './Empty';
+import { Error } from '../layout';
 
 const defaultActions = <DefaultActions />;
 const defaultPagination = <DefaultPagination />;
@@ -50,10 +51,6 @@ export const ListView = <RecordType extends RaRecord = any>(
         return null;
     }
 
-    if (error) {
-        return null;
-    }
-
     const renderList = () => (
         <div className={ListClasses.main}>
             {(filters || actions) && (
@@ -70,7 +67,11 @@ export const ListView = <RecordType extends RaRecord = any>(
                       })
                     : children}
             </Content>
-            {pagination !== false && pagination}
+            {error ? (
+                <Error error={error} resetErrorBoundary={null} />
+            ) : (
+                pagination !== false && pagination
+            )}
         </div>
     );
 

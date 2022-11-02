@@ -1793,6 +1793,28 @@ const PostCreate = () => (
 )
 ```
 
+### Field components must be wrapped with `<Labeled>` in `<SimpleForm>`
+
+Field components don't have a label by default anymore and must be wrapped with `<Labeled>` when used within a `<SimpleForm>`.
+
+```diff
+const PostEdit = () => (
+    <Edit>
+        <SimpleForm>
+	    <TextInput source="title">
+-	    <ReferenceField source="author_id" reference="users">
+-	        <TextField source="username" />
+-	    </ReferenceField>
++           <Labeled label="Author">
++	        <ReferenceField source="author_id" reference="users">
++	            <TextField source="username" />
++	        </ReferenceField>
++           </Labeled>
+        </SimpleForm>
+    </Edit>
+)
+```
+
 ### `<SimpleFormIterator>` Does Not Accept the `TransitionProps` prop anymore
 
 Transitions were causing a lot of issues so we had to remove them for now, until we find a good solution.

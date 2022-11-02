@@ -50,9 +50,10 @@ import {
  *
  * @example // set params when calling the update callback
  *
- * import { useUpdate } from 'react-admin';
+ * import { useUpdate, useRecordContext } from 'react-admin';
  *
- * const IncreaseLikeButton = ({ record }) => {
+ * const IncreaseLikeButton = () => {
+ *     const record = useRecordContext();
  *     const diff = { likes: record.likes + 1 };
  *     const [update, { isLoading, error }] = useUpdate();
  *     const handleClick = () => {
@@ -64,9 +65,10 @@ import {
  *
  * @example // set params when calling the hook
  *
- * import { useUpdate } from 'react-admin';
+ * import { useUpdate, useRecordContext } from 'react-admin';
  *
- * const IncreaseLikeButton = ({ record }) => {
+ * const IncreaseLikeButton = () => {
+ *     const record = useRecordContext();
  *     const diff = { likes: record.likes + 1 };
  *     const [update, { isLoading, error }] = useUpdate('likes', { id: record.id, data: diff, previousData: record });
  *     if (error) { return <p>ERROR</p>; }

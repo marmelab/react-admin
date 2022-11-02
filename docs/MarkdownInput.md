@@ -9,6 +9,8 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 ![MarkdownInput](./img/markdown-input.gif)
 
+## Usage
+
 ```jsx
 import { Edit, SimpleForm, TextInput } from 'react-admin';
 import { MarkdownInput } from '@react-admin/ra-markdown';

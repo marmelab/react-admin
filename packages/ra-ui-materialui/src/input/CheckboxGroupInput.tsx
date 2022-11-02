@@ -9,13 +9,7 @@ import FormControl, { FormControlProps } from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
 import FormHelperText from '@mui/material/FormHelperText';
 import { CheckboxProps } from '@mui/material/Checkbox';
-import {
-    FieldTitle,
-    useInput,
-    ChoicesProps,
-    warning,
-    useChoicesContext,
-} from 'ra-core';
+import { FieldTitle, useInput, ChoicesProps, useChoicesContext } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
@@ -98,11 +92,13 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         format,
         helperText,
         label,
+        labelPlacement,
         isLoading: isLoadingProp,
         isFetching: isFetchingProp,
         margin = 'dense',
         onBlur,
         onChange,
+        options,
         optionText = 'name',
         optionValue = 'id',
         parse,
@@ -128,15 +124,17 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         source: sourceProp,
     });
 
-    warning(
-        source === undefined,
-        `If you're not wrapping the CheckboxGroupInput inside a ReferenceArrayInput, you must provide the source prop`
-    );
+    if (source === undefined) {
+        throw new Error(
+            `If you're not wrapping the CheckboxGroupInput inside a ReferenceArrayInput, you must provide the source prop`
+        );
+    }
 
-    warning(
-        !isLoading && allChoices === undefined,
-        `If you're not wrapping the CheckboxGroupInput inside a ReferenceArrayInput, you must provide the choices prop`
-    );
+    if (!isLoading && !fetchError && allChoices === undefined) {
+        throw new Error(
+            `If you're not wrapping the CheckboxGroupInput inside a ReferenceArrayInput, you must provide the choices prop`
+        );
+    }
 
     const {
         field: { onChange: formOnChange, onBlur: formOnBlur, value },
@@ -185,7 +183,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         [allChoices, formOnChange, formOnBlur, optionValue, value]
     );
 
-    if (isLoading && allChoices?.length === 0) {
+    if (isLoading && (!allChoices || allChoices.length === 0)) {
         return (
             <Labeled
                 id={id}
@@ -227,10 +225,12 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                         choice={choice}
                         id={id}
                         onChange={handleCheck}
+                        options={options}
                         optionText={optionText}
                         optionValue={optionValue}
                         translateChoice={translateChoice}
                         value={value}
+                        labelPlacement={labelPlacement}
                         {...sanitizeRestProps(rest)}
                     />
                 ))}
@@ -275,9 +275,11 @@ export type CheckboxGroupInputProps = Omit<CommonInputProps, 'source'> &
     ChoicesProps &
     CheckboxProps &
     FormControlProps & {
+        options?: CheckboxProps;
         row?: boolean;
         // Optional as this input can be used inside a ReferenceInput
         source?: string;
+        labelPlacement?: 'bottom' | 'end' | 'start' | 'top';
     };
 
 const PREFIX = 'RaCheckboxGroupInput';
@@ -291,7 +293,7 @@ const StyledFormControl = styled(FormControl, {
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     [`& .${CheckboxGroupInputClasses.label}`]: {
-        transform: 'translate(0, 8px) scale(0.75)',
+        transform: 'translate(0, 4px) scale(0.75)',
         transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
     },
 }));

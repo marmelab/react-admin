@@ -61,13 +61,16 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  * to write your own component:
  *
  * @example
- *     const TagsField = ({ record }) => (
- *          <ul>
- *              {record.tags.map(item => (
- *                  <li key={item.name}>{item.name}</li>
- *              ))}
- *          </ul>
- *     );
+ *   const TagsField = () => {
+ *       const record = useRecordContext();
+ *       return (
+ *           <ul>
+ *               {record.tags.map(item => (
+ *                   <li key={item.name}>{item.name}</li>
+ *               ))}
+ *           </ul>
+ *       );
+ *   };
  */
 export const ArrayField: FC<ArrayFieldProps> = memo(props => {
     const { children, resource, source } = props;

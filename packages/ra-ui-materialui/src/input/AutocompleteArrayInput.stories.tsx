@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
 import { RaRecord, Resource, required, useCreate } from 'ra-core';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
 import { createMemoryHistory } from 'history';
 import {
     Dialog,
@@ -11,13 +13,96 @@ import {
     Stack,
 } from '@mui/material';
 
-import { Edit } from '../detail';
+import { AdminContext } from '../AdminContext';
+import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteArrayInput' };
+
+const i18nProvider = polyglotI18nProvider(() => englishMessages);
+
+export const Basic = () => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <Create
+            resource="posts"
+            record={{ roles: ['u001', 'u003'] }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <AutocompleteArrayInput
+                    source="roles"
+                    choices={[
+                        { id: 'admin', name: 'Admin' },
+                        { id: 'u001', name: 'Editor' },
+                        { id: 'u002', name: 'Moderator' },
+                        { id: 'u003', name: 'Reviewer' },
+                    ]}
+                />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+const choices = [
+    { id: 'admin', name: 'Admin' },
+    { id: 'u001', name: 'Editor' },
+    { id: 'u002', name: 'Moderator' },
+    { id: 'u003', name: 'Reviewer' },
+];
+
+const CreateRole = () => {
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
+    const [value, setValue] = React.useState(filter || '');
+
+    const handleSubmit = event => {
+        event.preventDefault();
+        const newOption = { id: value, name: value };
+        choices.push(newOption);
+        setValue('');
+        onCreate(newOption);
+    };
+
+    return (
+        <Dialog open onClose={onCancel}>
+            <form onSubmit={handleSubmit}>
+                <DialogContent>
+                    <TextField
+                        label="Role name"
+                        value={value}
+                        onChange={event => setValue(event.target.value)}
+                        autoFocus
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button type="submit">Save</Button>
+                    <Button onClick={onCancel}>Cancel</Button>
+                </DialogActions>
+            </form>
+        </Dialog>
+    );
+};
+
+export const CreateProp = () => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <Create
+            resource="users"
+            record={{ roles: ['u001', 'u003'] }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <AutocompleteArrayInput
+                    source="roles"
+                    choices={choices}
+                    sx={{ width: 400 }}
+                    create={<CreateRole />}
+                />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
 
 const dataProvider = {
     getOne: (resource, params) =>
@@ -65,7 +150,7 @@ const BookEdit = () => {
     );
 };
 
-export const Basic = () => (
+export const InEdit = () => (
     <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" edit={BookEdit} />
     </Admin>

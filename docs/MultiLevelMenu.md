@@ -113,7 +113,7 @@ const MyMenu = () => (
 );
 ```
 
-Check [the `<MultiLevelMenu.Item>` section](#MultiLevelMenuitem) for more information.
+Check [the `<MultiLevelMenu.Item>` section](#multilevelmenuitem) for more information.
 
 ## `initialOpen`
 

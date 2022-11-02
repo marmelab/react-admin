@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
     Select,
+    SelectProps,
     MenuItem,
     InputLabel,
     FormHelperText,
@@ -71,7 +72,10 @@ import {
  *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
  *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
  * ];
- * const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
+ * const FullNameField = () => {
+ *     const record = useRecordContext();
+ *     return (<span>{record.first_name} {record.last_name}</span>)
+ * };
  * <SelectArrayInput source="authors" choices={choices} optionText={<FullNameField />}/>
  *
  * The choices are translated by default, so you can use translation identifiers as choices:
@@ -99,6 +103,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         onBlur,
         onChange,
         onCreate,
+        options,
         optionText,
         optionValue,
         parse,
@@ -275,6 +280,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     data-testid="selectArray"
                     size="small"
                     {...field}
+                    {...options}
                     onChange={handleChangeWithCreateSupport}
                     value={field.value || []}
                 >
@@ -297,6 +303,7 @@ export type SelectArrayInputProps = ChoicesProps &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
     Omit<CommonInputProps, 'source'> &
     Omit<FormControlProps, 'defaultValue' | 'onBlur' | 'onChange'> & {
+        options?: SelectProps;
         disableValue?: string;
         source?: string;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;

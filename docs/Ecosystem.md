@@ -37,7 +37,7 @@ See the [Available Translation](./TranslationLocales.md) page.
 
 ## Authentication Providers
 
-See the [Auth Provider](./Authentication.md#available-providers) page. Here is a list of additional packages:
+See the [Auth Provider List](./AuthProviderList.md) page. Here is a list of additional packages:
 
 ## Authorization Management
 

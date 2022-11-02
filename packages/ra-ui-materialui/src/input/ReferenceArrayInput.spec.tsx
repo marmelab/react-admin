@@ -13,6 +13,7 @@ import {
     Form,
     useInput,
 } from 'ra-core';
+import { QueryClient } from 'react-query';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
@@ -20,7 +21,6 @@ import { DatagridInput } from './DatagridInput';
 import { TextField } from '../field';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { SelectArrayInput } from './SelectArrayInput';
-import { QueryClient } from 'react-query';
 
 describe('<ReferenceArrayInput />', () => {
     const defaultProps = {

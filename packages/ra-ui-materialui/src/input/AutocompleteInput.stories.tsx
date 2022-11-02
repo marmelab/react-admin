@@ -231,10 +231,10 @@ const BookEditCustomOptions = () => {
                         const searchTextLower = searchText.toLowerCase();
                         const match =
                             record.fullName
-                                .toLowerCase()
+                                ?.toLowerCase()
                                 .includes(searchTextLower) ||
                             record.language
-                                .toLowerCase()
+                                ?.toLowerCase()
                                 .includes(searchTextLower);
 
                         return match;
@@ -547,6 +547,37 @@ export const InsideReferenceInputDefaultValue = ({
     </Admin>
 );
 
+export const InsideReferenceInputWithError = () => (
+    <Admin
+        dataProvider={{
+            ...dataProviderWithAuthors,
+            getList: () => Promise.reject('error'),
+        }}
+        history={history}
+    >
+        <Resource name="authors" />
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                >
+                    <SimpleForm>
+                        <ReferenceInput reference="authors" source="author">
+                            <AutocompleteInput fullWidth optionText="name" />
+                        </ReferenceInput>
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
+    </Admin>
+);
+
 const CreateAuthor = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [name, setName] = React.useState(filter || '');
@@ -721,7 +752,7 @@ const BookEditWithEmptyText = () => {
         >
             <SimpleForm>
                 <AutocompleteInput
-                    label="emptyValue set to 'no-author', emptyText set to '' by default"
+                    label="emptyValue set to 'no-author', emptyText not set"
                     source="author"
                     choices={choices}
                     emptyValue="no-author"

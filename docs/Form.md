@@ -80,7 +80,7 @@ export const PostCreate = () => (
 
 ## `id`
 
-Normally, a submit button only works when placed inside a `<form>` tag. However, you can place a submit button outside of the form if the submit button `form` matches the form `id`.
+Normally, a submit button only works when placed inside a `<form>` tag. However, you can place a submit button outside the form if the submit button `form` matches the form `id`.
 
 Set this form `id` via the `id` prop.
 
@@ -119,10 +119,9 @@ By default, the `<Form>` calls the `save` callback passed to it by the edit or c
 
 ```jsx
 export const PostCreate = () => {
-    const { id } = useParams();
     const [create] = useCreate();
     const postSave = (data) => {
-        create('posts', { id, data });
+        create('posts', { data });
     };
     return (
         <Create>
@@ -230,3 +229,4 @@ export const TagEdit = () => (
 );
 ```
 
+**Warning**: This feature only works if you have a dependency on react-router 6.3.0 **at most**. The react-router team disabled this possibility in react-router 6.4, so `warnWhenUnsavedChanges` will silently fail with react-router 6.4 or later.

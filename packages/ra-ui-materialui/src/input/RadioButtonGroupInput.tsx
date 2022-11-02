@@ -11,13 +11,7 @@ import {
 import { RadioGroupProps } from '@mui/material/RadioGroup';
 import { FormControlProps } from '@mui/material/FormControl';
 import get from 'lodash/get';
-import {
-    useInput,
-    FieldTitle,
-    ChoicesProps,
-    warning,
-    useChoicesContext,
-} from 'ra-core';
+import { useInput, FieldTitle, ChoicesProps, useChoicesContext } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
@@ -66,7 +60,10 @@ import { LinearProgress } from '../layout';
  *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
  *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
  * ];
- * const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
+ * const FullNameField = () => {
+ *     const record = useRecordContext();
+ *     return (<span>{record.first_name} {record.last_name}</span>)
+ * };
  * <RadioButtonGroupInput source="recipients" choices={choices} optionText={<FullNameField />}/>
  *
  * The choices are translated by default, so you can use translation identifiers as choices:
@@ -95,6 +92,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         margin = 'dense',
         onBlur,
         onChange,
+        options,
         optionText,
         optionValue,
         parse,
@@ -120,15 +118,17 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         source: sourceProp,
     });
 
-    warning(
-        source === undefined,
-        `If you're not wrapping the RadioButtonGroupInput inside a ReferenceInput, you must provide the source prop`
-    );
+    if (source === undefined) {
+        throw new Error(
+            `If you're not wrapping the RadioButtonGroupInput inside a ReferenceArrayInput, you must provide the source prop`
+        );
+    }
 
-    warning(
-        allChoices === undefined,
-        `If you're not wrapping the RadioButtonGroupInput inside a ReferenceInput, you must provide the choices prop`
-    );
+    if (!isLoading && !fetchError && allChoices === undefined) {
+        throw new Error(
+            `If you're not wrapping the RadioButtonGroupInput inside a ReferenceArrayInput, you must provide the choices prop`
+        );
+    }
 
     const { id, isRequired, fieldState, field, formState } = useInput({
         format,
@@ -182,9 +182,10 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
                 id={id}
                 row={row}
                 {...field}
+                {...options}
                 {...sanitizeRestProps(rest)}
             >
-                {allChoices.map(choice => (
+                {allChoices?.map(choice => (
                     <RadioButtonGroupInputItem
                         key={get(choice, optionValue)}
                         choice={choice}
@@ -271,6 +272,7 @@ export type RadioButtonGroupInputProps = Omit<CommonInputProps, 'source'> &
     ChoicesProps &
     FormControlProps &
     RadioGroupProps & {
+        options?: RadioGroupProps;
         source?: string;
     };
 
