@@ -54,6 +54,6 @@
         "rewire": "^5.0.0",
         "source-map-explorer": "^2.0.0",
         "typescript": "^4.4.0",
-        "vite": "^3.2.0"
+        "vite": "^2.9.13"
     }
 }
