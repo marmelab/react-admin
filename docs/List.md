@@ -755,7 +755,7 @@ import {
     Datagrid,
     TextField,
 } from 'react-admin';
-import { Route } from 'react-router';
+import { Route } from 'react-router-dom';
 
 const NewerBooks = () => (
     <List

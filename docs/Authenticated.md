@@ -9,7 +9,7 @@ The `<Authenticated>` component calls [the `useAuthState()` hook](./useAuthState
 
 ```jsx
 import { Admin, CustomRoutes, Authenticated } from 'react-admin';
-import { Route } from 'react-router';
+import { Route } from 'react-router-dom';
 
 const App = () => (
     <Admin authProvider={authProvider}>
