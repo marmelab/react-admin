@@ -17,6 +17,7 @@ Note that this component doesn't use routing, so it doesn't change the URL. It's
 
 Put `<CreateInDialogButton>` wherever you would put a `<CreateButton>`, and use the same children as you would for a `<Create>` component (e.g. a `<SimpleForm>`): 
 
+{% raw %}
 ```jsx
 import {
   Datagrid,
@@ -54,6 +55,7 @@ const CompanyShow = () => (
     </Show>
 );
 ```
+{% endraw %}
 
 In the above example, `<CreateInDialogButton>` is used to create a new employee for the current company. [The `<WithRecord>` component](./WithRecord.md) helps to set the new employee company id by default.
 
