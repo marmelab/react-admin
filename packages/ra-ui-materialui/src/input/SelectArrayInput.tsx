@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
     Select,
+    SelectProps,
     MenuItem,
     InputLabel,
     FormHelperText,
@@ -102,6 +103,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         onBlur,
         onChange,
         onCreate,
+        options,
         optionText,
         optionValue,
         parse,
@@ -278,6 +280,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     data-testid="selectArray"
                     size="small"
                     {...field}
+                    {...options}
                     onChange={handleChangeWithCreateSupport}
                     value={field.value || []}
                 >
@@ -300,6 +303,7 @@ export type SelectArrayInputProps = ChoicesProps &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
     Omit<CommonInputProps, 'source'> &
     Omit<FormControlProps, 'defaultValue' | 'onBlur' | 'onChange'> & {
+        options?: SelectProps;
         disableValue?: string;
         source?: string;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
