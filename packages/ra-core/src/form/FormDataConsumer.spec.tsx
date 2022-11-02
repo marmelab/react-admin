@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 
 import FormDataConsumer, { FormDataConsumerView } from './FormDataConsumer';
 import { testDataProvider } from '../dataProvider';
@@ -8,6 +8,8 @@ import {
     BooleanInput,
     SimpleForm,
     TextInput,
+    SimpleFormIterator,
+    ArrayInput,
 } from 'ra-ui-materialui';
 import expect from 'expect';
 
@@ -75,6 +77,58 @@ describe('FormDataConsumerView', () => {
 
         await waitFor(() => {
             expect(globalFormData).toEqual({ hi: true, bye: undefined });
+        });
+    });
+
+    it('calls its children with updated scopedFormData when inside an ArrayInput', async () => {
+        let globalScopedFormData;
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm>
+                    <ArrayInput source="authors">
+                        <SimpleFormIterator>
+                            <TextInput source="name" />
+                            <FormDataConsumer>
+                                {({
+                                    formData,
+                                    scopedFormData,
+                                    getSource,
+                                    ...rest
+                                }) => {
+                                    globalScopedFormData = scopedFormData;
+                                    return scopedFormData &&
+                                        scopedFormData.name ? (
+                                        <TextInput
+                                            source={getSource('role')}
+                                            {...rest}
+                                        />
+                                    ) : null;
+                                }}
+                            </FormDataConsumer>
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        expect(globalScopedFormData).toEqual(undefined);
+
+        fireEvent.click(screen.getByLabelText('ra.action.add'));
+
+        expect(globalScopedFormData).toEqual({ name: '' });
+
+        fireEvent.change(
+            screen.getByLabelText('resources.undefined.fields.authors.name'),
+            {
+                target: { value: 'a' },
+            }
+        );
+
+        await waitFor(() => {
+            expect(globalScopedFormData).toEqual({
+                name: 'a',
+                role: undefined,
+            });
         });
     });
 });
