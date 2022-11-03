@@ -117,7 +117,11 @@ nav {
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.menu-item.github svg {
+.menu-item.github {
+  margin-left: 20px;
+}
+
+.menu-item.github svg, .menu-item.discord svg {
   height: 25px;
   vertical-align: text-bottom;
   margin-right: 5px;
@@ -560,7 +564,7 @@ nav {
 
 .card .title {
   font-size: 23px;
-  text-align: left;
+  text-align: center;
 }
 
 .card img {
@@ -581,7 +585,7 @@ nav {
 
 .card li {
   position: relative;
-  margin: 10px 0;
+  margin: 15px 0;
 }
 
 .card li:before {
@@ -589,7 +593,7 @@ nav {
   display: block;
   content: "\2022"; /* bullet point, for screen readers */
   text-indent: -999999px; /* move the bullet point out of sight */
-  left: -1.2em;
+  left: -1.5em;
   width: 1em; /* desired width of the image */
   height: 1.3em; /* unrelated to image height; this is so it gets snipped */
   background-repeat: no-repeat;
@@ -738,6 +742,10 @@ nav {
     transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
     overflow: hidden;
     background: linear-gradient(135deg, #00023b 0%, #00023b 50%, #313264 100%);
+  }
+
+  .menu-item.github {
+    margin-left: 50px;
   }
 
   label[for="hamburger"] {
