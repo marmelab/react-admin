@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import PropTypes from 'prop-types';
+import { UseQueryOptions } from 'react-query';
 import { Typography } from '@mui/material';
 import {
     useReferenceOneFieldController,
@@ -9,6 +10,7 @@ import {
     useCreatePath,
     useTranslate,
     SortPayload,
+    RaRecord,
 } from 'ra-core';
 
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
@@ -24,7 +26,9 @@ import { ReferenceFieldView } from './ReferenceField';
  *     <TextField source="body" />
  * </ReferenceOneField>
  */
-export const ReferenceOneField = (props: ReferenceOneFieldProps) => {
+export const ReferenceOneField = <RecordType extends RaRecord = any>(
+    props: ReferenceOneFieldProps<RecordType>
+) => {
     const {
         children,
         reference,
@@ -34,6 +38,7 @@ export const ReferenceOneField = (props: ReferenceOneFieldProps) => {
         sort,
         filter,
         link = false,
+        queryOptions,
     } = props;
     const record = useRecordContext(props);
     const createPath = useCreatePath();
@@ -45,13 +50,14 @@ export const ReferenceOneField = (props: ReferenceOneFieldProps) => {
         referenceRecord,
         error,
         refetch,
-    } = useReferenceOneFieldController({
+    } = useReferenceOneFieldController<RecordType>({
         record,
         reference,
         source,
         target,
         sort,
         filter,
+        queryOptions,
     });
 
     const resourceLinkPath =
@@ -89,7 +95,7 @@ export const ReferenceOneField = (props: ReferenceOneFieldProps) => {
     );
 };
 
-export interface ReferenceOneFieldProps
+export interface ReferenceOneFieldProps<RecordType extends RaRecord = any>
     extends PublicFieldProps,
         InjectedFieldProps {
     children?: ReactNode;
@@ -98,6 +104,10 @@ export interface ReferenceOneFieldProps
     sort?: SortPayload;
     filter?: any;
     link?: LinkToType;
+    queryOptions?: UseQueryOptions<{
+        data: RecordType[];
+        total: number;
+    }> & { meta?: any };
 }
 
 ReferenceOneField.propTypes = {
@@ -108,6 +118,7 @@ ReferenceOneField.propTypes = {
     reference: PropTypes.string.isRequired,
     source: PropTypes.string.isRequired,
     target: PropTypes.string.isRequired,
+    queryOptions: PropTypes.any,
 };
 
 ReferenceOneField.defaultProps = {
