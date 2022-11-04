@@ -59,8 +59,8 @@ const Root = styled('div', {
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     [`& .${LoadingIndicatorClasses.loader}`]: {
-        marginLeft: theme.spacing(2),
-        marginRight: theme.spacing(2),
+        marginLeft: theme.spacing(1.5),
+        marginRight: theme.spacing(1.5),
     },
 
     [`& .${LoadingIndicatorClasses.loadedIcon}`]: {},

@@ -29,11 +29,7 @@ export const SidebarToggleButton = (props: SidebarToggleButtonProps) => {
             )}
             enterDelay={500}
         >
-            <StyledIconButton
-                color="inherit"
-                onClick={() => setOpen(!open)}
-                size="large"
-            >
+            <StyledIconButton color="inherit" onClick={() => setOpen(!open)}>
                 <MenuIcon
                     classes={{
                         root: open
