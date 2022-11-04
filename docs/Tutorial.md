@@ -28,7 +28,7 @@ You should be up and running with an empty React application on port 5173.
 
 ## Using an API As Data Source
 
-React-admin runs in the browser, and fetches data from an APIs.
+React-admin runs in the browser, and fetches data from an API.
 
 We'll be using [JSONPlaceholder](https://jsonplaceholder.typicode.com/), a fake REST API designed for testing and prototyping, as the datasource for the application. Here is what it looks like:
 
