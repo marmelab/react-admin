@@ -71,11 +71,7 @@ The `locale` will be passed to `setLocale` when the user selects the language, a
 
 ## `sx`: CSS API
 
-The `<LocalesMenuButton>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
-
-| Rule name                 | Description                                             |
-|---------------------------|---------------------------------------------------------|
-| `& .RaLocalesMenuButton-selectedLanguage`      | Applied to the current language element |
+The `<LocalesMenuButton>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)).
 
 To override the style of all instances of `<LocalesMenuButton>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaLocalesMenuButton` key.
 

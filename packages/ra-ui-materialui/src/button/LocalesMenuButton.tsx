@@ -56,12 +56,10 @@ export const LocalesMenuButton = (props: LocalesMenuButtonProps) => {
                 aria-label=""
                 aria-haspopup="true"
                 onClick={handleLanguageClick}
+                startIcon={<LanguageIcon />}
+                endIcon={<ExpandMoreIcon fontSize="small" />}
             >
-                <LanguageIcon />
-                <div className={LocalesMenuButtonClasses.selectedLanguage}>
-                    {getNameForLocale(locale)}
-                </div>
-                <ExpandMoreIcon fontSize="small" />
+                {getNameForLocale(locale)}
             </Button>
             <Menu
                 id="simple-menu"
@@ -86,18 +84,12 @@ export const LocalesMenuButton = (props: LocalesMenuButtonProps) => {
 
 const PREFIX = 'RaLocalesMenuButton';
 
-export const LocalesMenuButtonClasses = {
-    selectedLanguage: `${PREFIX}-selectedLanguage`,
-};
+export const LocalesMenuButtonClasses = {};
 
 const Root = styled(Box, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
-    [`& .${LocalesMenuButtonClasses.selectedLanguage}`]: {
-        marginLeft: theme.spacing(1),
-    },
-}));
+})({});
 
 export interface LocalesMenuButtonProps {
     languages?: { locale: string; name: string }[];
