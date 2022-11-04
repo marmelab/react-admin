@@ -89,7 +89,7 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
         <ResourceContextProvider value={reference}>
             <ListContextProvider value={controllerProps}>
                 {children}
-                {pagination !== false && pagination}
+                {pagination && pagination}
             </ListContextProvider>
         </ResourceContextProvider>
     );
@@ -101,7 +101,7 @@ export interface ReferenceManyFieldProps
     children: ReactNode;
     filter?: FilterPayload;
     page?: number;
-    pagination?: ReactElement | false;
+    pagination?: ReactElement;
     perPage?: number;
     reference: string;
     sort?: SortPayload;
