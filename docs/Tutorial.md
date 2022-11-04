@@ -915,7 +915,7 @@ The code for a Data Provider for the `my.api.url` API is as follows:
 
 ```js
 import { fetchUtils } from "react-admin";
-import { stringify } from 'query-string';
+import { stringify } from "query-string";
 
 const apiUrl = 'https://my.api.com/';
 const httpClient = fetchUtils.fetchJson;
