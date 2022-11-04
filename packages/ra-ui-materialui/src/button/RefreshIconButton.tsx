@@ -35,6 +35,7 @@ export const RefreshIconButton = (props: RefreshIconButtonProps) => {
                 color="inherit"
                 onClick={handleClick}
                 {...rest}
+                size="large"
             >
                 {icon}
             </IconButton>

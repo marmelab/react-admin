@@ -1,6 +1,5 @@
 import React from 'react';
 import { Tooltip, IconButton } from '@mui/material';
-import { IconButtonProps } from '@mui/material/IconButton';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useTranslate } from 'ra-core';
@@ -25,7 +24,7 @@ import { RaThemeOptions } from '..';
  */
 export const ToggleThemeButton = (props: ToggleThemeButtonProps) => {
     const translate = useTranslate();
-    const { darkTheme, lightTheme, ...rest } = props;
+    const { darkTheme, lightTheme } = props;
     const [theme, setTheme] = useTheme(lightTheme);
 
     const handleTogglePaletteType = (): void => {
@@ -41,7 +40,6 @@ export const ToggleThemeButton = (props: ToggleThemeButtonProps) => {
                 color="inherit"
                 onClick={handleTogglePaletteType}
                 aria-label={toggleThemeTitle}
-                {...rest}
             >
                 {theme?.palette.mode === 'dark' ? (
                     <Brightness7Icon />
@@ -53,9 +51,7 @@ export const ToggleThemeButton = (props: ToggleThemeButtonProps) => {
     );
 };
 
-interface Props {
+export interface ToggleThemeButtonProps {
     darkTheme: RaThemeOptions;
     lightTheme?: RaThemeOptions;
 }
-
-export type ToggleThemeButtonProps = Props & IconButtonProps;
