@@ -24,13 +24,13 @@ yarn dev
 
 You should be up and running with an empty React application on port 5173.
 
-**Tip**: Although this tutorial uses a TypeScript template, you can use react-admin with JavaScript if you prefer. Also, you can use [create-react-app](./CreateReactApp.md), [Next.js](./NextJs.md), [Remix](./Remix.md), or any other React framework to create your admin app. React-admin is framework agnostic.
+**Tip**: Although this tutorial uses a TypeScript template, you can use react-admin with JavaScript if you prefer. Also, you can use [create-react-app](./CreateReactApp.md), [Next.js](./NextJs.md), [Remix](./Remix.md), or any other React framework to create your admin app. React-admin is framework-agnostic.
 
 ## Using an API As Data Source
 
 React-admin runs in the browser, and fetches data from an API.
 
-We'll be using [JSONPlaceholder](https://jsonplaceholder.typicode.com/), a fake REST API designed for testing and prototyping, as the datasource for the application. Here is what it looks like:
+We'll be using [JSONPlaceholder](https://jsonplaceholder.typicode.com/), a fake REST API designed for testing and prototyping, as the data source for the application. Here is what it looks like:
 
 ```
 curl https://jsonplaceholder.typicode.com/users/2
@@ -398,7 +398,7 @@ import { useRecordContext } from "react-admin";
 import { Link } from "@mui/material";
 import LaunchIcon from "@mui/icons-material/Launch";
 
-const MyUrlField = ({ source }: { source: string }) => {
+const MyUrlField = ({ source }) => {
   const record = useRecordContext();
   return record ? (
     <Link href={record[source]} sx={{ textDecoration: "none" }}>
@@ -834,7 +834,7 @@ The `authProvider` must expose 5 methods, each returning a `Promise`:
 // in src/authProvider.ts
 export const authProvider = {
   // called when the user attempts to log in
-  login: ({ username }: { username: string }) => {
+  login: ({ username }) => {
     localStorage.setItem("username", username);
     // accept all username/password combinations
     return Promise.resolve();
@@ -845,7 +845,7 @@ export const authProvider = {
     return Promise.resolve();
   },
   // called when the API returns an error
-  checkError: ({ status }: { status: number }) => {
+  checkError: ({ status }) => {
     if (status === 401 || status === 403) {
       localStorage.removeItem("username");
       return Promise.reject();
