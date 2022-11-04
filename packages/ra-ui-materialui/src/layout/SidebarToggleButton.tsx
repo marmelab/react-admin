@@ -2,7 +2,6 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { IconButton, Tooltip } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { IconButtonProps } from '@mui/material/IconButton';
 import { useTranslate } from 'ra-core';
 
 import { useSidebarState } from './useSidebarState';
@@ -16,7 +15,7 @@ import { useSidebarState } from './useSidebarState';
 export const SidebarToggleButton = (props: SidebarToggleButtonProps) => {
     const translate = useTranslate();
 
-    const { className, ...rest } = props;
+    const { className } = props;
     const [open, setOpen] = useSidebarState();
 
     return (
@@ -33,7 +32,7 @@ export const SidebarToggleButton = (props: SidebarToggleButtonProps) => {
             <StyledIconButton
                 color="inherit"
                 onClick={() => setOpen(!open)}
-                {...rest}
+                size="large"
             >
                 <MenuIcon
                     classes={{
@@ -47,11 +46,9 @@ export const SidebarToggleButton = (props: SidebarToggleButtonProps) => {
     );
 };
 
-interface Props {
+export type SidebarToggleButtonProps = {
     className?: string;
-}
-
-export type SidebarToggleButtonProps = Props & IconButtonProps;
+};
 
 const PREFIX = 'RaSidebarToggleButton';
 
