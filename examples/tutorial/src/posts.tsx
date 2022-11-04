@@ -38,8 +38,8 @@ export const PostEdit = () => (
         <SimpleForm>
             <TextInput source="id" disabled />
             <ReferenceInput source="userId" reference="users" />
-            <TextInput source="title" sx={{ width: '20em' }} />
-            <TextInput source="body" multiline sx={{ width: '20em' }} />
+            <TextInput source="title" />
+            <TextInput source="body" multiline />
         </SimpleForm>
     </Edit>
 );
@@ -48,8 +48,8 @@ export const PostCreate = () => (
     <Create>
         <SimpleForm>
             <ReferenceInput source="userId" reference="users" />
-            <TextInput source="title" sx={{ width: '20em' }} />
-            <TextInput source="body" multiline sx={{ width: '20em' }} />
+            <TextInput source="title" />
+            <TextInput source="body" multiline />
         </SimpleForm>
     </Create>
 );

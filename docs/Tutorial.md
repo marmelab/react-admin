@@ -611,9 +611,8 @@ const App = () => (
 );
 ```
 
-You can now adjust the `<PostEdit>` component to disable the edition of the primary key (`id`), place it first, and use a longer text input for the `body` field, as follows:
+You can now adjust the `<PostEdit>` component to disable the edition of the primary key (`id`), place it first, and use a textarea for the `body` field, as follows:
 
-{% raw %}
 ```diff
 // in src/posts.tsx
 export const PostEdit = () => (
@@ -622,15 +621,13 @@ export const PostEdit = () => (
 +     <TextInput source="id" disabled />
       <ReferenceInput source="userId" reference="users" />
 -     <TextInput source="id" />
--     <TextInput source="title" />
-+     <TextInput source="title" sx={{ width: "20em" }} />
+      <TextInput source="title" />
 -     <TextInput source="body" />
-+     <TextInput source="body" multiline sx={{ width: "20em" }} />
++     <TextInput source="body" multiline />
     </SimpleForm>
   </Edit>
 );
 ```
-{% endraw %}
 
 If you've understood the `<List>` component, the `<Edit>` component will be no surprise. It's responsible for fetching the record, and displaying the page title. It passes the record down to the `<SimpleForm>` component, which is responsible for the form layout, default values, and validation. Just like `<Datagrid>`, `<SimpleForm>` uses its children to determine the form inputs to display. It expects *input components* as children. `<TextInput>` and `<ReferenceInput>` are such inputs.
 
@@ -640,7 +637,6 @@ The `<ReferenceInput>` takes the same props as the `<ReferenceField>` (used earl
 
 Let's allow users to create posts, too. Copy the `<PostEdit>` component into a `<PostCreate>`, and replace `<Edit>` by `<Create>`:
 
-{% raw %}
 ```diff
 // in src/posts.tsx
 import {
@@ -668,13 +664,12 @@ export const PostEdit = () => (
 +  <Create>
 +    <SimpleForm>
 +      <ReferenceInput source="userId" reference="users" />
-+      <TextInput source="title" sx={{ width: "20em" }} />
-+      <TextInput source="body" multiline sx={{ width: "20em" }} />
++      <TextInput source="title" />
++      <TextInput source="body" multiline />
 +    </SimpleForm>
 +  </Create>
 +);
 ```
-{% endraw %}
 
 **Tip**: The `<PostEdit>` and the `<PostCreate>` components use almost the same child form, except for the additional `id` input in `<PostEdit>`. In most cases, the forms for creating and editing a record are a bit different, because most APIs create primary keys server-side. But if the forms are the same, you can share a common form component in `<PostEdit>` and `<PostCreate>`.
 
