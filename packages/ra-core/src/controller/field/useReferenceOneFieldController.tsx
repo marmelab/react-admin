@@ -1,17 +1,24 @@
 import get from 'lodash/get';
+import { UseQueryOptions } from 'react-query';
 
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
 import { RaRecord, SortPayload } from '../../types';
 import { UseReferenceResult } from '../useReference';
 
-export interface UseReferenceOneFieldControllerParams {
+export interface UseReferenceOneFieldControllerParams<
+    RecordType extends RaRecord = any
+> {
     record?: RaRecord;
     reference: string;
     source?: string;
     target: string;
     sort?: SortPayload;
     filter?: any;
+    queryOptions?: UseQueryOptions<{
+        data: RecordType[];
+        total: number;
+    }> & { meta?: any };
 }
 
 /**
@@ -37,9 +44,11 @@ export interface UseReferenceOneFieldControllerParams {
  * @prop {Object} props.filter The filter to apply to the referenced records
  * @returns {UseReferenceResult} The request state. Destructure as { referenceRecord, isLoading, error }.
  */
-export const useReferenceOneFieldController = (
-    props: UseReferenceOneFieldControllerParams
-): UseReferenceResult => {
+export const useReferenceOneFieldController = <
+    RecordType extends RaRecord = any
+>(
+    props: UseReferenceOneFieldControllerParams<RecordType>
+): UseReferenceResult<RecordType> => {
     const {
         reference,
         record,
@@ -47,10 +56,14 @@ export const useReferenceOneFieldController = (
         source = 'id',
         sort = { field: 'id', order: 'ASC' },
         filter = {},
+        queryOptions = {},
     } = props;
     const notify = useNotify();
+    const { meta, ...otherQueryOptions } = queryOptions;
 
-    const { data, error, isFetching, isLoading, refetch } = useGetManyReference(
+    const { data, error, isFetching, isLoading, refetch } = useGetManyReference<
+        RecordType
+    >(
         reference,
         {
             target,
@@ -58,6 +71,7 @@ export const useReferenceOneFieldController = (
             pagination: { page: 1, perPage: 1 },
             sort,
             filter,
+            meta,
         },
         {
             enabled: !!record,
@@ -78,6 +92,7 @@ export const useReferenceOneFieldController = (
                         },
                     }
                 ),
+            ...otherQueryOptions,
         }
     );
 
