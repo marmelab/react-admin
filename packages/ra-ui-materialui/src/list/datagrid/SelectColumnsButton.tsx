@@ -1,24 +1,32 @@
 import * as React from 'react';
 import { useStore, useTranslate, useResourceContext } from 'ra-core';
-import { Box, Button, Popover } from '@mui/material';
+import {
+    Box,
+    Button,
+    Popover,
+    useMediaQuery,
+    Theme,
+    Tooltip,
+    IconButton,
+} from '@mui/material';
 import ViewWeekIcon from '@mui/icons-material/ViewWeek';
 
 import { FieldEditor } from './FieldEditor';
 import { ConfigurableDatagridColumn } from './DatagridConfigurable';
 
 /**
- * Render s a button that lets users show / hide columns in a configurable datagrid
- * 
+ * Renders a button that lets users show / hide columns in a configurable datagrid
+ *
  * @example
  * import { SelectColumnsButton, DatagridConfigurable } from 'react-admin';
- * 
+ *
  * const PostListActions = () => (
  *   <TopToolbar>
         <SelectColumnsButton />
         <FilterButton />
  *   </TopToolbar>
  * );
- * 
+ *
  * const PostList = () => (
  *   <List actions={<PostListActions />}>
  *     <DatagridConfigurable>
@@ -46,6 +54,11 @@ export const SelectColumnsButton = props => {
             .map(column => column.index)
     );
     const translate = useTranslate();
+    const isXSmall = useMediaQuery((theme: Theme) =>
+        theme.breakpoints.down('sm')
+    );
+
+    const title = translate('ra.action.select_columns', { _: 'Columns' });
 
     const handleClick = (event): void => {
         setAnchorEl(event.currentTarget);
@@ -74,14 +87,27 @@ export const SelectColumnsButton = props => {
 
     return (
         <>
-            <Button
-                size="small"
-                onClick={handleClick}
-                startIcon={<ViewWeekIcon />}
-                sx={{ '&.MuiButton-sizeSmall': { lineHeight: 1.5 } }}
-            >
-                {translate('ra.action.select_columns', { _: 'Columns' })}
-            </Button>
+            {isXSmall ? (
+                <Tooltip title={title}>
+                    <IconButton
+                        aria-label={title}
+                        color="primary"
+                        onClick={handleClick}
+                        size="large"
+                    >
+                        <ViewWeekIcon />
+                    </IconButton>
+                </Tooltip>
+            ) : (
+                <Button
+                    size="small"
+                    onClick={handleClick}
+                    startIcon={<ViewWeekIcon />}
+                    sx={{ '&.MuiButton-sizeSmall': { lineHeight: 1.5 } }}
+                >
+                    {title}
+                </Button>
+            )}
             <Popover
                 open={Boolean(anchorEl)}
                 anchorEl={anchorEl}

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { PreferencesEditorContextProvider } from 'ra-core';
 import { Box } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { DatagridConfigurable } from './DatagridConfigurable';
 import { SelectColumnsButton } from './SelectColumnsButton';
@@ -39,25 +40,29 @@ const data = [
 const AuthorField = () => <TextField source="author" />;
 AuthorField.defaultProps = { label: 'Author' };
 
+const theme = createTheme();
+
 export const Basic = () => (
-    <PreferencesEditorContextProvider>
-        <MemoryRouter>
-            <Box p={2}>
-                <Box textAlign="right">
-                    <SelectColumnsButton resource="books" />
+    <ThemeProvider theme={theme}>
+        <PreferencesEditorContextProvider>
+            <MemoryRouter>
+                <Box p={2}>
+                    <Box textAlign="right">
+                        <SelectColumnsButton resource="books" />
+                    </Box>
+                    <DatagridConfigurable
+                        resource="books"
+                        data={data}
+                        sort={{ field: 'title', order: 'ASC' }}
+                        bulkActionButtons={false}
+                    >
+                        <TextField source="id" />
+                        <TextField source="title" label="Original title" />
+                        <TextField source="author" />
+                        <TextField source="year" />
+                    </DatagridConfigurable>
                 </Box>
-                <DatagridConfigurable
-                    resource="books"
-                    data={data}
-                    sort={{ field: 'title', order: 'ASC' }}
-                    bulkActionButtons={false}
-                >
-                    <TextField source="id" />
-                    <TextField source="title" label="Original title" />
-                    <TextField source="author" />
-                    <TextField source="year" />
-                </DatagridConfigurable>
-            </Box>
-        </MemoryRouter>
-    </PreferencesEditorContextProvider>
+            </MemoryRouter>
+        </PreferencesEditorContextProvider>
+    </ThemeProvider>
 );
