@@ -399,20 +399,20 @@ const App = () => (
 );
 ```
 
-Your custom layout can simply extend [the default `<Layout>` component](./Layout.md) if you only want to override the appBar, the menu, the notification component, or the error page. For instance:
+Your custom layout can simply extend [the default `<Layout>` component](./Layout.md) if you only want to override the appBar, the menu, or the error page. For instance:
 
 ```jsx
 // in src/MyLayout.js
 import { Layout } from 'react-admin';
 import MyAppBar from './MyAppBar';
 import MyMenu from './MyMenu';
-import MyNotification from './MyNotification';
+import MyError from './MyError';
 
 const MyLayout = (props) => <Layout
     {...props}
     appBar={MyAppBar}
     menu={MyMenu}
-    notification={MyNotification}
+    error={MyError}
 />;
 
 export default MyLayout;
