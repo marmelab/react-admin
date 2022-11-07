@@ -533,6 +533,33 @@ const App = () => (
 );
 ```
 
+## `notification`
+
+You can override the notification component, for instance to change the notification duration. It defaults to 4000, i.e. 4 seconds, and you can override it using the `autoHideDuration` prop. For instance, to create a custom Notification component with a 5 seconds default:
+
+```jsx
+// in src/MyNotification.js
+import { Notification } from 'react-admin';
+
+const MyNotification = props => <Notification {...props} autoHideDuration={5000} />;
+
+export default MyNotification;
+```
+
+To use this custom notification component, pass it to the `<Admin>` component as the `notification` prop:
+
+```jsx
+// in src/App.js
+import MyNotification from './MyNotification';
+import dataProvider from './dataProvider';
+
+const App = () => (
+    <Admin notification={MyNotification} dataProvider={dataProvider}>
+        // ...
+    </Admin>
+);
+```
+
 ## Declaring resources at runtime
 
 You might want to dynamically define the resources when the app starts. To do so, you have two options: using a function as `<Admin>` child, or unplugging it to use a combination of `AdminContext` and `<AdminUI>` instead.
