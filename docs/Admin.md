@@ -541,7 +541,7 @@ You can override the notification component, for instance to change the notifica
 // in src/MyNotification.js
 import { Notification } from 'react-admin';
 
-const MyNotification = props => <Notification {...props} autoHideDuration={5000} />;
+const MyNotification =() => <Notification autoHideDuration={5000} />;
 
 export default MyNotification;
 ```
