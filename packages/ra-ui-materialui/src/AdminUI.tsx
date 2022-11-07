@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { createElement, ComponentType } from 'react';
 import { CoreAdminUI, CoreAdminUIProps } from 'ra-core';
+import { ScopedCssBaseline } from '@mui/material';
+
 import {
     Layout as DefaultLayout,
     LoadingPage,
@@ -10,10 +12,10 @@ import {
 import { Login } from './auth';
 
 export const AdminUI = ({ notification, ...props }: AdminUIProps) => (
-    <>
+    <ScopedCssBaseline enableColorScheme>
         <CoreAdminUI {...props} />
         {createElement(notification)}
-    </>
+    </ScopedCssBaseline>
 );
 
 export interface AdminUIProps extends CoreAdminUIProps {
