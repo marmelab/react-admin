@@ -39,7 +39,7 @@ export const PostEdit = () => (
             <TextInput source="id" disabled />
             <ReferenceInput source="userId" reference="users" />
             <TextInput source="title" />
-            <TextInput source="body" multiline />
+            <TextInput source="body" multiline rows={5} />
         </SimpleForm>
     </Edit>
 );
@@ -49,7 +49,7 @@ export const PostCreate = () => (
         <SimpleForm>
             <ReferenceInput source="userId" reference="users" />
             <TextInput source="title" />
-            <TextInput source="body" multiline />
+            <TextInput source="body" multiline rows={5} />
         </SimpleForm>
     </Create>
 );

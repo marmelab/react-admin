@@ -623,7 +623,7 @@ export const PostEdit = () => (
 -     <TextInput source="id" />
       <TextInput source="title" />
 -     <TextInput source="body" />
-+     <TextInput source="body" multiline />
++     <TextInput source="body" multiline rows={5} />
     </SimpleForm>
   </Edit>
 );
@@ -665,7 +665,7 @@ export const PostEdit = () => (
 +    <SimpleForm>
 +      <ReferenceInput source="userId" reference="users" />
 +      <TextInput source="title" />
-+      <TextInput source="body" multiline />
++      <TextInput source="body" multiline rows={5} />
 +    </SimpleForm>
 +  </Create>
 +);
