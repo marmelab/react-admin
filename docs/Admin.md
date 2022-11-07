@@ -46,6 +46,7 @@ Here are all the props accepted by the component:
 - [`ready`](#ready)
 - [`requireAuth`](#requireauth)
 - [`store`](#store)
+- [`notification`](#notification)
 
 ## `dataProvider`
 
