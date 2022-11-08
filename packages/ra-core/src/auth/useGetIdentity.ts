@@ -1,11 +1,15 @@
-import { useEffect } from 'react';
+import { useMemo } from 'react';
+import { useQuery, UseQueryOptions } from 'react-query';
+
 import useAuthProvider from './useAuthProvider';
 import { UserIdentity } from '../types';
-import { useSafeSetState } from '../util/hooks';
 
 const defaultIdentity = {
     id: '',
     fullName: null,
+};
+const defaultQueryParams = {
+    staleTime: 5 * 60 * 1000,
 };
 
 /**
@@ -38,42 +42,46 @@ const defaultIdentity = {
  *     }
  * }
  */
-const useGetIdentity = () => {
-    const [state, setState] = useSafeSetState<State>({
-        isLoading: true,
-    });
+export const useGetIdentity = (
+    queryParams: UseQueryOptions<UserIdentity, Error> = defaultQueryParams
+): UseGetIdentityResult => {
     const authProvider = useAuthProvider();
-    useEffect(() => {
-        if (authProvider && typeof authProvider.getIdentity === 'function') {
-            const callAuthProvider = async () => {
-                try {
-                    const identity = await authProvider.getIdentity();
-                    setState({
-                        isLoading: false,
-                        identity: identity || defaultIdentity,
-                    });
-                } catch (error) {
-                    setState({
-                        isLoading: false,
-                        error,
-                    });
-                }
-            };
-            callAuthProvider();
-        } else {
-            setState({
-                isLoading: false,
-                identity: defaultIdentity,
-            });
-        }
-    }, [authProvider, setState]);
-    return state;
+
+    const result = useQuery(
+        ['auth', 'getIdentity'],
+        authProvider
+            ? () => authProvider.getIdentity()
+            : async () => defaultIdentity,
+        queryParams
+    );
+
+    return useMemo(
+        () =>
+            result.isLoading
+                ? { isLoading: true }
+                : result.error
+                ? { error: result.error, isLoading: false }
+                : { identity: result.data, isLoading: false },
+
+        [result]
+    );
 };
 
-interface State {
-    isLoading: boolean;
-    identity?: UserIdentity;
-    error?: any;
-}
+export type UseGetIdentityResult =
+    | {
+          isLoading: true;
+          identity?: undefined;
+          error?: undefined;
+      }
+    | {
+          isLoading: false;
+          identity?: undefined;
+          error: Error;
+      }
+    | {
+          isLoading: false;
+          identity: UserIdentity;
+          error?: undefined;
+      };
 
 export default useGetIdentity;

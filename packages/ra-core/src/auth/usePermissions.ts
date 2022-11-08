@@ -49,13 +49,14 @@ const usePermissions = <Permissions = any, Error = any>(
         queryParams
     );
 
-    return useMemo(() => {
-        return {
+    return useMemo(
+        () => ({
             permissions: result.data,
             isLoading: result.isLoading,
             error: result.error,
-        };
-    }, [result]);
+        }),
+        [result]
+    );
 };
 
 export default usePermissions;
