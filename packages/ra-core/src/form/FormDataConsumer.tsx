@@ -47,7 +47,7 @@ const FormDataConsumer = (props: ConnectedProps) => {
     let formData = useWatch();
 
     //The initial return value from useWatch will be the provided defaultValues of the form.
-    //We must get the inicial formData from getValues
+    //We must get the initial formData from getValues
     if (Object.keys(formData).length === 0) {
         (formData as FieldValues) = getValues();
     }
