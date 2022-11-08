@@ -6985,6 +6985,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-dom@npm:^18.0.7":
+  version: 18.0.8
+  resolution: "@types/react-dom@npm:18.0.8"
+  dependencies:
+    "@types/react": "*"
+  checksum: e5e18d30a272b799e7579929b27f8cd078c5ee92cc11a4be80b63d9f4330d22c97cc2aeb89945fc8e88d59a92438fa89f37ac92021665021988ed56cb864b424
+  languageName: node
+  linkType: hard
+
 "@types/react-is@npm:^16.7.1 || ^17.0.0":
   version: 17.0.3
   resolution: "@types/react-is@npm:17.0.3"
@@ -7041,6 +7050,17 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: 828cd27ac220be8232535c4451b0020f6f05535d62407e5fe2547544a7d3123777ed31ab547d7c7f3d8b59d37268ee4b9209f1c110809f084cbbf0a7e27cd7ef
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:^18.0.22":
+  version: 18.0.24
+  resolution: "@types/react@npm:18.0.24"
+  dependencies:
+    "@types/prop-types": "*"
+    "@types/scheduler": "*"
+    csstype: ^3.0.2
+  checksum: 8ea907a8f944421a120f4db9fe52fe3752837e11031ff16b866e835adebb09b2b2ca3ac5f8aa622683778f6d40f791a369c9008c45537c1a7eb64347648fae3c
   languageName: node
   linkType: hard
 
@@ -21627,7 +21647,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-json-server@^4.0.0, ra-data-json-server@workspace:packages/ra-data-json-server":
+"ra-data-json-server@^4.5.0, ra-data-json-server@workspace:packages/ra-data-json-server":
   version: 0.0.0-use.local
   resolution: "ra-data-json-server@workspace:packages/ra-data-json-server"
   dependencies:
@@ -22159,6 +22179,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-dom@npm:^18.2.0":
+  version: 18.2.0
+  resolution: "react-dom@npm:18.2.0"
+  dependencies:
+    loose-envify: ^1.1.0
+    scheduler: ^0.23.0
+  peerDependencies:
+    react: ^18.2.0
+  checksum: 66dfc5f93e13d0674e78ef41f92ed21dfb80f9c4ac4ac25a4b51046d41d4d2186abc915b897f69d3d0ebbffe6184e7c5876f2af26bfa956f179225d921be713a
+  languageName: node
+  linkType: hard
+
 "react-draggable@npm:^4.4.3":
   version: 4.4.4
   resolution: "react-draggable@npm:4.4.4"
@@ -22630,6 +22662,15 @@ __metadata:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
   checksum: 07ae8959acf1596f0550685102fd6097d461a54a4fd46a50f88a0cd7daaa97fdd6415de1dcb4bfe0da6aa43221a6746ce380410fa848acc60f8ac41f6649c148
+  languageName: node
+  linkType: hard
+
+"react@npm:^18.2.0":
+  version: 18.2.0
+  resolution: "react@npm:18.2.0"
+  dependencies:
+    loose-envify: ^1.1.0
+  checksum: b562d9b569b0cb315e44b48099f7712283d93df36b19a39a67c254c6686479d3980b7f013dc931f4a5a3ae7645eae6386b4aa5eea933baa54ecd0f9acb0902b8
   languageName: node
   linkType: hard
 
@@ -23637,6 +23678,15 @@ __metadata:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
   checksum: b0982e4b0f34f4ffa4f2f486161c0fd9ce9b88680b045dccbf250eb1aa4fd27413570645455187a83535e2370f5c667a251045547765408492bd883cbe95fcdb
+  languageName: node
+  linkType: hard
+
+"scheduler@npm:^0.23.0":
+  version: 0.23.0
+  resolution: "scheduler@npm:0.23.0"
+  dependencies:
+    loose-envify: ^1.1.0
+  checksum: b777f7ca0115e6d93e126ac490dbd82642d14983b3079f58f35519d992fa46260be7d6e6cede433a92db70306310c6f5f06e144f0e40c484199e09c1f7be53dd
   languageName: node
   linkType: hard
 
@@ -25617,13 +25667,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tutorial@workspace:examples/tutorial"
   dependencies:
-    "@mui/icons-material": ^5.0.1
-    "@mui/material": ^5.0.2
-    ra-data-json-server: ^4.0.0
-    react: ^17.0.0
-    react-admin: ^4.0.0
-    react-dom: ^17.0.0
-    react-scripts: ^5.0.0
+    "@types/react": ^18.0.22
+    "@types/react-dom": ^18.0.7
+    "@vitejs/plugin-react": ^2.2.0
+    ra-data-json-server: ^4.5.0
+    react: ^18.2.0
+    react-admin: ^4.5.0
+    react-dom: ^18.2.0
+    typescript: ^4.6.4
+    vite: ^3.2.0
   languageName: unknown
   linkType: soft
 
@@ -25734,7 +25786,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^3 || ^4, typescript@npm:^4.4.0":
+"typescript@npm:^3 || ^4, typescript@npm:^4.4.0, typescript@npm:^4.6.4":
   version: 4.8.4
   resolution: "typescript@npm:4.8.4"
   bin:
@@ -25744,7 +25796,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^3 || ^4#~builtin<compat/typescript>, typescript@patch:typescript@^4.4.0#~builtin<compat/typescript>":
+"typescript@patch:typescript@^3 || ^4#~builtin<compat/typescript>, typescript@patch:typescript@^4.4.0#~builtin<compat/typescript>, typescript@patch:typescript@^4.6.4#~builtin<compat/typescript>":
   version: 4.8.4
   resolution: "typescript@patch:typescript@npm%3A4.8.4#~builtin<compat/typescript>::version=4.8.4&hash=493e53"
   bin:
