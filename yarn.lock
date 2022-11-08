@@ -17745,13 +17745,13 @@ __metadata:
   linkType: hard
 
 "loader-utils@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "loader-utils@npm:1.4.0"
+  version: 1.4.1
+  resolution: "loader-utils@npm:1.4.1"
   dependencies:
     big.js: ^5.2.2
     emojis-list: ^3.0.0
     json5: ^1.0.1
-  checksum: b3f383612c23c0adf535d61709fb3eaf864afa54dae45608e3831156b89b4b05a0a4ddc6db7d742071babe872750ba3f4f9ce89326d94f6e096dbed978fa424e
+  checksum: 38096fc9fba3160eb7b7408eb88658a854a992fed2106fe3972d144035688dc4fcb3767cf353f85513ac0e654efbf1001735bd5a8d8bb5429fdb5a6b0712ce92
   languageName: node
   linkType: hard
 
