@@ -48,13 +48,14 @@ If your application contains a form letting the current user update their name a
 const IdentityForm = () => {
     const { isLoading, error, identity, refetch } = useGetIdentity();
     const [newIdentity, setNewIdentity] = useState('');
-
+    
     if (isLoading) return <>Loading</>;
     if (error) return <>Error</>;
 
     const handleChange = event => {
         setNewIdentity(event.target.value);
     };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!newIdentity) return;
@@ -65,10 +66,10 @@ const IdentityForm = () => {
         }).then(() => { 
             // call authProvider.getIdentity() again and notify the listeners of the result,
             // including the UserMenu in the AppBar
-            refetch()
+            refetch();
          });
     };
-        
+    
     return (
         <form onSubmit={handleSubmit}>
             <input defaultValue={identity.fullName} onChange={handleChange} />
