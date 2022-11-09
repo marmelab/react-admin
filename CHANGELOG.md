@@ -1,5 +1,21 @@
 # Changelog
 
+## 4.5.1
+
+* Fix `<RichTextInput>` cursor moves to the end while typing ([#8365](https://github.com/marmelab/react-admin/pull/8365)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<SelectColumnsButton>` not being responsive ([#8362](https://github.com/marmelab/react-admin/pull/8362)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<Appbar>` buttons don't have consistent spacing ([#8356](https://github.com/marmelab/react-admin/pull/8356)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<BulkDeleteButton>` doesn't clear selection when used inside `<ReferenceManyField>` ([#8358](https://github.com/marmelab/react-admin/pull/8358)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<ReferenceManyField>` does not show pagination when using partial pagination ([#8354](https://github.com/marmelab/react-admin/pull/8354)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix typo in `ra-language-french` translations ([#8349](https://github.com/marmelab/react-admin/pull/8349)) ([asurare](https://github.com/asurare))
+* Fix Inputs layout is broken when rendering the Login page first ([#8368](https://github.com/marmelab/react-admin/pull/8368)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `no-code` example codesandbox ([#8352](https://github.com/marmelab/react-admin/pull/8352)) ([fzaninotto](https://github.com/fzaninotto))
+* Bump loader-utils from 1.4.0 to 1.4.1 ([#8371](https://github.com/marmelab/react-admin/pull/8371)) ([dependabot](https://github.com/dependabot))
+* [Doc] Add missing `<Admin notification>` prop ([#8369](https://github.com/marmelab/react-admin/pull/8369)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Add `<InspectorButton>` documentation ([#8346](https://github.com/marmelab/react-admin/pull/8346)) ([smeng9](https://github.com/smeng9))
+* [Doc] Update the tutorial to use Vite instead of create-react-app ([#8351](https://github.com/marmelab/react-admin/pull/8351)) ([fzaninotto](https://github.com/fzaninotto))
+* [Demo] Fix demos use different versions of Vite ([#8345](https://github.com/marmelab/react-admin/pull/8345)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v4.5.0
 
 * Add `<SelectColumnsButton>` and `<DatagridConfigurable>` components ([#8274](https://github.com/marmelab/react-admin/pull/8274)) ([fzaninotto](https://github.com/fzaninotto))
