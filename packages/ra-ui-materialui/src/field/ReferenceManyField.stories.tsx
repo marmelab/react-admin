@@ -5,7 +5,6 @@ import {
     RecordContextProvider,
     ResourceContextProvider,
 } from 'ra-core';
-import { createMemoryHistory } from 'history';
 import { ThemeProvider, Box } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 
@@ -15,8 +14,6 @@ import { Datagrid } from '../list/datagrid/Datagrid';
 import { Notification } from '../layout/Notification';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceManyField' };
-
-const history = createMemoryHistory({ initialEntries: ['/books/1/show'] });
 
 const author = { id: 1, name: 'Leo Tolstoi' };
 let books = [
@@ -48,7 +45,7 @@ const Wrapper = ({
     record = author,
 }: any) => (
     <ThemeProvider theme={createTheme()}>
-        <CoreAdminContext dataProvider={dataProvider} history={history}>
+        <CoreAdminContext dataProvider={dataProvider}>
             <ResourceContextProvider value="authors">
                 <RecordContextProvider value={record}>
                     <Box mx={2} mt={7}>
