@@ -376,22 +376,29 @@ export const UserCreate = () => {
 
     const [create] = useCreate();
     const save = useCallback(
-        values =>
-            create('users', { data: values }, { returnPromise: true })
-                .then(() => {
-                    notify('ra.notification.created', {
-                        type: 'info',
-                        messageArgs: { smart_count: 1 },
-                    });
-                    redirect('list');
-                })
-                .catch(error => {
-                    if (error.body.errors) {
-                        // The shape of the returned validation errors must match the shape of the form
-                        return error.body.errors;
+        async values => {
+            try {
+                await create(
+                    'users',
+                    { data: values },
+                    {
+                        returnPromise: true,
+                        onSuccess: () => {
+                            notify('ra.notification.created', {
+                                type: 'info',
+                                messageArgs: { smart_count: 1 },
+                            });
+                            redirect('list');
+                        },
                     }
-                    return undefined;
-                }),
+                );
+            } catch (error) {
+                if (error.body.errors) {
+                    // The shape of the returned validation errors must match the shape of the form
+                    return error.body.errors;
+                }
+            }
+        },
         [create]
     );
 
