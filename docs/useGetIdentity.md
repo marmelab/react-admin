@@ -5,9 +5,13 @@ title: "useGetIdentity"
 
 # `useGetIdentity`
 
-You may want to use the current user name, avatar, or id in your code. for that purpose, call the `useGetIdentity()` hook, which calls `authProvider.getIdentity()` on mount. It returns an object containing the loading state, the error state, and the identity.
+React-admin calls `authProvider.getIdentity()` to retrieve and display the current logged in user name and avatar. The logic for calling this method is packaged into a custom hook, `useGetIdentity`, which you can use in your own code.
+
+![identity](./img/identity.png)
 
 ## Syntax
+
+`useGetIdentity()` calls `authProvider.getIdentity()` on mount. It returns an object containing the loading state, the error state, and the identity.
 
 ```jsx
 const { identity, isLoading, error } = useGetIdentity();
@@ -18,6 +22,8 @@ Once loaded, the `identity` object contains the following properties:
 ```jsx
 const { id, fullName, avatar } = identity;
 ```
+
+ `useGetIdentity` uses [react-query's `useQuery` hook](https://react-query-v3.tanstack.com/reference/useQuery) to call the `authProvider`.
 
 ## Usage
 
