@@ -14,16 +14,16 @@ React-admin calls `authProvider.getIdentity()` to retrieve and display the curre
 `useGetIdentity()` calls `authProvider.getIdentity()` on mount. It returns an object containing the loading state, the error state, and the identity.
 
 ```jsx
-const { identity, isLoading, error } = useGetIdentity();
+const { data, isLoading, error } = useGetIdentity();
 ```
 
-Once loaded, the `identity` object contains the following properties:
+Once loaded, the `data` object contains the following properties:
 
 ```jsx
 const { id, fullName, avatar } = identity;
 ```
 
- `useGetIdentity` uses [react-query's `useQuery` hook](https://react-query-v3.tanstack.com/reference/useQuery) to call the `authProvider`.
+`useGetIdentity` uses [react-query's `useQuery` hook](https://react-query-v3.tanstack.com/reference/useQuery) to call the `authProvider`.
 
 ## Usage
 
@@ -34,7 +34,7 @@ import { useGetIdentity, useGetOne } from 'react-admin';
 
 const PostDetail = ({ id }) => {
     const { data: post, isLoading: postLoading } = useGetOne('posts', { id });
-    const { identity, isLoading: identityLoading } = useGetIdentity();
+    const { data: identity, isLoading: identityLoading } = useGetIdentity();
     if (postLoading || identityLoading) return <>Loading...</>;
     if (!post.lockedBy || post.lockedBy === identity.id) {
         // post isn't locked, or is locked by me
@@ -52,7 +52,7 @@ If your application contains a form letting the current user update their name a
 
 ```jsx
 const IdentityForm = () => {
-    const { isLoading, error, identity, refetch } = useGetIdentity();
+    const { isLoading, error, data, refetch } = useGetIdentity();
     const [newIdentity, setNewIdentity] = useState('');
     
     if (isLoading) return <>Loading</>;
@@ -78,7 +78,7 @@ const IdentityForm = () => {
     
     return (
         <form onSubmit={handleSubmit}>
-            <input defaultValue={identity.fullName} onChange={handleChange} />
+            <input defaultValue={data.fullName} onChange={handleChange} />
             <input type="submit" value="Save" />
         </form>
     );

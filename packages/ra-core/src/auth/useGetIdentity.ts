@@ -18,19 +18,19 @@ const defaultQueryParams = {
  * The return value updates according to the call state:
  *
  * - mount: { isLoading: true }
- * - success: { identity: Identity, refetch: () => {}, isLoading: false }
+ * - success: { data: Identity, refetch: () => {}, isLoading: false }
  * - error: { error: Error, isLoading: false }
  *
  * The implementation is left to the authProvider.
  *
- * @returns The current user identity. Destructure as { isLoading, identity, error, refetch }.
+ * @returns The current user identity. Destructure as { isLoading, data, error, refetch }.
  *
  * @example
  * import { useGetIdentity, useGetOne } from 'react-admin';
  *
  * const PostDetail = ({ id }) => {
  *     const { data: post, isLoading: postLoading } = useGetOne('posts', { id });
- *     const { identity, isLoading: identityLoading } = useGetIdentity();
+ *     const { data: identity, isLoading: identityLoading } = useGetIdentity();
  *     if (postLoading || identityLoading) return <>Loading...</>;
  *     if (!post.lockedBy || post.lockedBy === identity.id) {
  *         // post isn't locked, or is locked by me
@@ -61,6 +61,7 @@ export const useGetIdentity = (
                 : result.error
                 ? { error: result.error, isLoading: false }
                 : {
+                      data: result.data,
                       identity: result.data,
                       refetch: result.refetch,
                       isLoading: false,
@@ -73,18 +74,24 @@ export const useGetIdentity = (
 export type UseGetIdentityResult =
     | {
           isLoading: true;
+          data?: undefined;
           identity?: undefined;
           error?: undefined;
           refetch?: undefined;
       }
     | {
           isLoading: false;
+          data?: undefined;
           identity?: undefined;
           error: Error;
           refetch?: undefined;
       }
     | {
           isLoading: false;
+          data: UserIdentity;
+          /**
+           * @deprecated Use data instead
+           */
           identity: UserIdentity;
           error?: undefined;
           refetch: () => Promise<QueryObserverResult<UserIdentity, Error>>;

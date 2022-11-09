@@ -17,14 +17,8 @@ const authProvider = {
 };
 
 const Identity = () => {
-    const { identity, error, isLoading } = useGetIdentity();
-    return isLoading ? (
-        <>Loading</>
-    ) : error ? (
-        <>Error</>
-    ) : (
-        <>{identity.fullName}</>
-    );
+    const { data, error, isLoading } = useGetIdentity();
+    return isLoading ? <>Loading</> : error ? <>Error</> : <>{data.fullName}</>;
 };
 
 export const Basic = () => (
@@ -62,7 +56,7 @@ export const ResetIdentity = () => {
     let fullName = 'John Doe';
 
     const IdentityForm = () => {
-        const { isLoading, error, identity, refetch } = useGetIdentity();
+        const { isLoading, error, data, refetch } = useGetIdentity();
         const [newIdentity, setNewIdentity] = React.useState('');
 
         if (isLoading) return <>Loading</>;
@@ -81,10 +75,7 @@ export const ResetIdentity = () => {
 
         return (
             <form onSubmit={handleSubmit}>
-                <input
-                    defaultValue={identity.fullName}
-                    onChange={handleChange}
-                />
+                <input defaultValue={data.fullName} onChange={handleChange} />
                 <input type="submit" value="Save" />
             </form>
         );
