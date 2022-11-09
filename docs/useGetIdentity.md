@@ -5,7 +5,7 @@ title: "useGetIdentity"
 
 # `useGetIdentity`
 
-React-admin calls `authProvider.getIdentity()` to retrieve and display the current logged in user name and avatar. The logic for calling this method is packaged into a custom hook, `useGetIdentity`, which you can use in your own code.
+React-admin calls `authProvider.getIdentity()` to retrieve and display the current logged-in username and avatar. The logic for calling this method is packaged into a custom hook, `useGetIdentity`, which you can use in your own code.
 
 ![identity](./img/identity.png)
 
