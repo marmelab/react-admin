@@ -42,13 +42,15 @@ const PostDetail = ({ id }) => {
 
 ## Refreshing The Identity
 
-If your application contains a form letting the current user update their name and/or avatar, you may want to refresh the identity after the form is submitted. To do so, you should invalidate the react-query query cache for the `['auth', 'getIdentity']` key:
+If your application contains a form letting the current user update their name and/or avatar, you may want to refresh the identity after the form is submitted. As `useGetIdentity` uses [react-query's `useQuery` hook](https://react-query-v3.tanstack.com/reference/useQuery) to call the `authProvider`, you can take advantage of the `refetch` function to do so:
 
 ```jsx
 const IdentityForm = () => {
-    const { isLoading, error, identity } = useGetIdentity();
+    const { isLoading, error, identity, refetch } = useGetIdentity();
     const [newIdentity, setNewIdentity] = useState('');
-    const queryClient = useQueryClient();
+
+    if (isLoading) return <>Loading</>;
+    if (error) return <>Error</>;
 
     const handleChange = event => {
         setNewIdentity(event.target.value);
@@ -61,14 +63,12 @@ const IdentityForm = () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ identity: newIdentity })
         }).then(() => { 
-            // invalidate the react-query query cache for the useGetIdentity call
-            queryClient.invalidateQueries(['auth', 'getIdentity']);
+            // call authProvider.getIdentity() again and notify the listeners of the result,
+            // including the UserMenu in the AppBar
+            refetch()
          });
     };
-    
-    if (isLoading) return <>Loading</>;
-    if (error) return <>Error</>;
-    
+        
     return (
         <form onSubmit={handleSubmit}>
             <input defaultValue={identity.fullName} onChange={handleChange} />

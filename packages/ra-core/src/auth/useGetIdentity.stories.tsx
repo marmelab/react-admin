@@ -62,22 +62,22 @@ export const ResetIdentity = () => {
     let fullName = 'John Doe';
 
     const IdentityForm = () => {
-        const { isLoading, error, identity } = useGetIdentity();
+        const { isLoading, error, identity, refetch } = useGetIdentity();
         const [newIdentity, setNewIdentity] = React.useState('');
-        const queryClient = useQueryClient();
+
+        if (isLoading) return <>Loading</>;
+        if (error) return <>Error</>;
 
         const handleChange = event => {
             setNewIdentity(event.target.value);
         };
+
         const handleSubmit = e => {
             e.preventDefault();
             if (!newIdentity) return;
             fullName = newIdentity;
-            queryClient.invalidateQueries(['auth', 'getIdentity']);
+            refetch();
         };
-
-        if (isLoading) return <>Loading</>;
-        if (error) return <>Error</>;
 
         return (
             <form onSubmit={handleSubmit}>

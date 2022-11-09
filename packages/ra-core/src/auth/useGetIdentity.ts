@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useQuery, UseQueryOptions } from 'react-query';
+import { useQuery, UseQueryOptions, QueryObserverResult } from 'react-query';
 
 import useAuthProvider from './useAuthProvider';
 import { UserIdentity } from '../types';
@@ -18,15 +18,14 @@ const defaultQueryParams = {
  * The return value updates according to the call state:
  *
  * - mount: { isLoading: true }
- * - success: { identity: Identity, isLoading: false }
+ * - success: { identity: Identity, refetch: () => {}, isLoading: false }
  * - error: { error: Error, isLoading: false }
  *
  * The implementation is left to the authProvider.
  *
- * @returns The current user identity. Destructure as { identity, error, isLoading }.
+ * @returns The current user identity. Destructure as { isLoading, identity, error, refetch }.
  *
  * @example
- *
  * import { useGetIdentity, useGetOne } from 'react-admin';
  *
  * const PostDetail = ({ id }) => {
@@ -61,7 +60,11 @@ export const useGetIdentity = (
                 ? { isLoading: true }
                 : result.error
                 ? { error: result.error, isLoading: false }
-                : { identity: result.data, isLoading: false },
+                : {
+                      identity: result.data,
+                      refetch: result.refetch,
+                      isLoading: false,
+                  },
 
         [result]
     );
@@ -72,16 +75,19 @@ export type UseGetIdentityResult =
           isLoading: true;
           identity?: undefined;
           error?: undefined;
+          refetch?: undefined;
       }
     | {
           isLoading: false;
           identity?: undefined;
           error: Error;
+          refetch?: undefined;
       }
     | {
           isLoading: false;
           identity: UserIdentity;
           error?: undefined;
+          refetch: () => Promise<QueryObserverResult<UserIdentity, Error>>;
       };
 
 export default useGetIdentity;

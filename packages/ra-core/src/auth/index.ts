@@ -15,7 +15,6 @@ export * from './types';
 export * from './useAuthenticated';
 export * from './useCheckAuth';
 export * from './useGetIdentity';
-export * from './useRefreshIdentity';
 
 export {
     AuthContext,
