@@ -52,12 +52,14 @@ export const DatagridConfigurable = ({
     React.useEffect(() => {
         // first render, or the preference have been cleared
         const columns = React.Children.map(props.children, (child, index) =>
-            React.isValidElement(child) &&
-            (child.props.source || child.props.label)
+            React.isValidElement(child)
                 ? {
                       index: String(index),
                       source: child.props.source,
-                      label: child.props.label,
+                      label:
+                          child.props.source || child.props.label
+                              ? child.props.label
+                              : `Column-${index}`,
                   }
                 : null
         ).filter(column => column != null);
@@ -114,7 +116,7 @@ export interface DatagridConfigurableProps extends DatagridProps {
 
 export interface ConfigurableDatagridColumn {
     index: string;
-    source: string;
+    source?: string;
     label?: string;
 }
 
