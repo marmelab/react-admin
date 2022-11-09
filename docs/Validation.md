@@ -368,21 +368,30 @@ You can use the errors returned by the dataProvider mutation as a source for the
 ```jsx
 import * as React from 'react';
 import { useCallback } from 'react';
-import { Create, SimpleForm, TextInput, useCreate } from 'react-admin';
+import { Create, SimpleForm, TextInput, useCreate, useRedirect, useNotify } from 'react-admin';
 
 export const UserCreate = () => {
+    const redirect = useRedirect();
+    const notify = useNotify();
+
     const [create] = useCreate();
     const save = useCallback(
-        async values => {
-            try {
-                await create('users', { data: values }, { returnPromise: true });
-            } catch (error) {
-                if (error.body.errors) {
-                    // The shape of the returned validation errors must match the shape of the form
-                    return error.body.errors;
-                }
-            }
-        },
+        values =>
+            create('users', { data: values }, { returnPromise: true })
+                .then(() => {
+                    notify('ra.notification.created', {
+                        type: 'info',
+                        messageArgs: { smart_count: 1 },
+                    });
+                    redirect('list');
+                })
+                .catch(error => {
+                    if (error.body.errors) {
+                        // The shape of the returned validation errors must match the shape of the form
+                        return error.body.errors;
+                    }
+                    return undefined;
+                }),
         [create]
     );
 
