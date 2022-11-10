@@ -190,6 +190,7 @@ const frenchMessages: TranslationMessages = {
                 title: 'Inspecteur',
                 content: 'Sélectionner un composant pour le configurer',
                 reset: 'Réinitialiser',
+                unlabeled: 'Colonne sans libellé #%{column}',
             },
             SimpleList: {
                 primaryText: 'Texte principal',

@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { useResourceContext, usePreference, useStore } from 'ra-core';
+import {
+    useResourceContext,
+    usePreference,
+    useStore,
+    useTranslate,
+} from 'ra-core';
 
 import { Configurable } from '../../preferences';
 import { Datagrid, DatagridProps } from './Datagrid';
@@ -39,6 +44,8 @@ export const DatagridConfigurable = ({
     const resource = useResourceContext(props);
     const finalPreferenceKey = preferenceKey || `${resource}.datagrid`;
 
+    const translate = useTranslate();
+
     const [availableColumns, setAvailableColumns] = useStore<
         ConfigurableDatagridColumn[]
     >(`preferences.${finalPreferenceKey}.availableColumns`, []);
@@ -59,7 +66,13 @@ export const DatagridConfigurable = ({
                       label:
                           child.props.source || child.props.label
                               ? child.props.label
-                              : `Column-${index}`,
+                              : translate(
+                                    'ra.configurable.inspector.unlabeled',
+                                    {
+                                        column: index,
+                                        _: `Unlabeled column #%{column}`,
+                                    }
+                                ),
                   }
                 : null
         ).filter(column => column != null);

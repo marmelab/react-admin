@@ -184,6 +184,7 @@ const englishMessages: TranslationMessages = {
                 title: 'Inspector',
                 content: 'Hover the application UI elements to configure them',
                 reset: 'Reset Settings',
+                unlabeled: 'Unlabeled column #%{column}',
             },
             SimpleList: {
                 primaryText: 'Primary text',

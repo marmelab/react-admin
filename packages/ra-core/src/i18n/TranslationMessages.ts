@@ -183,6 +183,7 @@ export interface TranslationMessages extends StringMap {
                 title: string;
                 content: string;
                 reset: string;
+                unlabeled: string;
             };
             SimpleList: {
                 primaryText: string;
