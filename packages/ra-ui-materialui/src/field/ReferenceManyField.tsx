@@ -63,7 +63,7 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
         children,
         filter,
         page = 1,
-        pagination,
+        pagination = null,
         perPage,
         reference,
         resource,
@@ -89,9 +89,7 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
         <ResourceContextProvider value={reference}>
             <ListContextProvider value={controllerProps}>
                 {children}
-                {pagination && controllerProps.total !== undefined
-                    ? pagination
-                    : null}
+                {pagination}
             </ListContextProvider>
         </ResourceContextProvider>
     );

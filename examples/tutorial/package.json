@@ -1,25 +1,24 @@
 {
-    "name": "tutorial",
-    "version": "4.0.0",
-    "private": true,
-    "dependencies": {
-        "@mui/icons-material": "^5.0.1",
-        "@mui/material": "^5.0.2",
-        "ra-data-json-server": "^4.0.0",
-        "react": "^17.0.0",
-        "react-admin": "^4.0.0",
-        "react-dom": "^17.0.0",
-        "react-scripts": "^5.0.0"
-    },
-    "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "eject": "react-scripts eject"
-    },
-    "browserslist": [
-        ">0.2%",
-        "not dead",
-        "not ie <= 11",
-        "not op_mini all"
-    ]
+  "name": "tutorial",
+  "version": "4.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "ra-data-json-server": "^4.5.0",
+    "react": "^18.2.0",
+    "react-admin": "^4.5.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.22",
+    "@types/react-dom": "^18.0.7",
+    "@vitejs/plugin-react": "^2.2.0",
+    "typescript": "^4.6.4",
+    "vite": "^3.2.0"
+  }
 }

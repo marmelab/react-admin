@@ -10,6 +10,25 @@ Simple REST Data Provider for [react-admin](https://github.com/marmelab/react-ad
 npm install --save ra-data-simple-rest
 ```
 
+## Usage
+
+```jsx
+// in src/App.js
+import * as React from "react";
+import { Admin, Resource } from 'react-admin';
+import simpleRestProvider from 'ra-data-simple-rest';
+
+import { PostList } from './posts';
+
+const App = () => (
+    <Admin dataProvider={simpleRestProvider('http://my.api.url/')}>
+        <Resource name="posts" list={PostList} />
+    </Admin>
+);
+
+export default App;
+```
+
 ## REST Dialect
 
 This Data Provider fits REST APIs using simple GET parameters for filters and sorting. This is the dialect used for instance in [FakeRest](https://github.com/marmelab/FakeRest).
@@ -262,25 +281,6 @@ DELETE http://my.api.url/posts/125
 HTTP/1.1 200 OK
 Content-Type: application/json
 { "id": 125, "title": "howdy partner", "author_id": 12 }
-```
-
-## Usage
-
-```jsx
-// in src/App.js
-import * as React from "react";
-import { Admin, Resource } from 'react-admin';
-import simpleRestProvider from 'ra-data-simple-rest';
-
-import { PostList } from './posts';
-
-const App = () => (
-    <Admin dataProvider={simpleRestProvider('http://my.api.url/')}>
-        <Resource name="posts" list={PostList} />
-    </Admin>
-);
-
-export default App;
 ```
 
 ## Adding Custom Headers

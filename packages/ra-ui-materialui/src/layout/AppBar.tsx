@@ -153,13 +153,12 @@ const StyledAppBar = styled(MuiAppBar, {
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     [`& .${AppBarClasses.toolbar}`]: {
-        padding: `0 ${theme.spacing(1.5)} 0 0`,
+        padding: `0 ${theme.spacing(1)}`,
         [theme.breakpoints.down('md')]: {
             minHeight: theme.spacing(6),
         },
     },
     [`& .${AppBarClasses.menuButton}`]: {
-        marginLeft: '0.2em',
         marginRight: '0.2em',
     },
     [`& .${AppBarClasses.title}`]: {

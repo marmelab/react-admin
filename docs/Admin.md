@@ -46,6 +46,7 @@ Here are all the props accepted by the component:
 - [`ready`](#ready)
 - [`requireAuth`](#requireauth)
 - [`store`](#store)
+- [`notification`](#notification)
 
 ## `dataProvider`
 
@@ -399,20 +400,20 @@ const App = () => (
 );
 ```
 
-Your custom layout can simply extend [the default `<Layout>` component](./Layout.md) if you only want to override the appBar, the menu, the notification component, or the error page. For instance:
+Your custom layout can simply extend [the default `<Layout>` component](./Layout.md) if you only want to override the appBar, the menu, or the error page. For instance:
 
 ```jsx
 // in src/MyLayout.js
 import { Layout } from 'react-admin';
 import MyAppBar from './MyAppBar';
 import MyMenu from './MyMenu';
-import MyNotification from './MyNotification';
+import MyError from './MyError';
 
 const MyLayout = (props) => <Layout
     {...props}
     appBar={MyAppBar}
     menu={MyMenu}
-    notification={MyNotification}
+    error={MyError}
 />;
 
 export default MyLayout;
@@ -463,7 +464,7 @@ const App = () => (
 
 ## `basename`
 
-Use this prop to make all routes and links in your Admin relative to a "base" portion of the URL pathname that they all share. This is only needed when using the [`BrowserHistory`](https://github.com/remix-run/history/blob/main/docs/api-reference.md#createbrowserhistory) to serve the application under a sub-path of your domain (for example https://marmelab.com/ra-enterprise-demo), or when embedding react-admin inside a single-page app with its own routing. See https://reactrouter.com/docs/en/v6/api#router for more information.
+Use this prop to make all routes and links in your Admin relative to a "base" portion of the URL pathname that they all share. This is required when using the [`BrowserHistory`](https://github.com/remix-run/history/blob/main/docs/api-reference.md#createbrowserhistory) to serve the application under a sub-path of your domain (for example https://marmelab.com/ra-enterprise-demo), or when embedding react-admin inside a single-page app with its own routing.
 
 ```jsx
 import { Admin } from 'react-admin';
@@ -476,6 +477,8 @@ const App = () => (
     </Admin>
 );
 ```
+
+See [Using React-Admin In A Sub Path](./Routing.md#using-react-admin-in-a-sub-path) for more usage examples.
 
 ## `ready`
 
@@ -527,6 +530,33 @@ import { Admin, Resource, memoryStore } from 'react-admin';
 const App = () => (
     <Admin dataProvider={dataProvider} store={memoryStore()}>
         <Resource name="posts" />
+    </Admin>
+);
+```
+
+## `notification`
+
+You can override the notification component, for instance to change the notification duration. A common use case is to change the `autoHideDuration`, and force the notification to remain on screen longer than the default 4 seconds. For instance, to create a custom Notification component with a 5 seconds default:
+
+```jsx
+// in src/MyNotification.js
+import { Notification } from 'react-admin';
+
+const MyNotification = () => <Notification autoHideDuration={5000} />;
+
+export default MyNotification;
+```
+
+To use this custom notification component, pass it to the `<Admin>` component as the `notification` prop:
+
+```jsx
+// in src/App.js
+import MyNotification from './MyNotification';
+import dataProvider from './dataProvider';
+
+const App = () => (
+    <Admin notification={MyNotification} dataProvider={dataProvider}>
+        // ...
     </Admin>
 );
 ```

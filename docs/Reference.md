@@ -30,6 +30,7 @@ title: "Reference"
 * [`<CloneButton>`](./CloneButton.md)
 * [`<CompleteCalendar>`](https://marmelab.com/ra-enterprise/modules/ra-calendar#completecalendar)<img class="icon" src="./img/premium.svg" />
 * [`<Confirm>`](./Confirm.md)
+* [`<ContainerLayout>`](./ContainerLayout.md)<img class="icon" src="./img/premium.svg" />
 * [`<Create>`](./Create.md)
 * `<CreateActions>`
 * [`<CreateButton>`](./Buttons.md#createbutton)
@@ -68,10 +69,12 @@ title: "Reference"
 * [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs)
 * [`<FormTab>`](./TabbedForm.md)
 * [`<FunctionField>`](./FunctionField.md)
+* [`<HorizontalMenu>`](./HorizontalMenu.md)<img class="icon" src="./img/premium.svg" />
 * [`<IfCanAccess>`](./IfCanAccess.md)<img class="icon" src="./img/premium.svg" />
 * [`<ImageField>`](./ImageField.md)
 * [`<ImageInput>`](./ImageInput.md)
 * [`<ImageInputPreview>`](./ImageInput.md#imageinput)
+* [`<InspectorButton>`](./Configurable.md#inspectorbutton)
 * [`<Labeled>`](./Labeled.md)
 * [`<Layout>`](./Theming.md#using-a-custom-layout)
 * [`<Loading>`](./Theming.md#loading)
@@ -172,7 +175,7 @@ title: "Reference"
 * [`useGetIdentity`](./useGetIdentity.md)
 * [`useGetList`](./useGetList.md)
 * [`useGetMany`](./useGetMany.md)
-* [´useGetManyAggregate´](./useGetOne.md#aggregating-getone-calls)
+* [`useGetManyAggregate`](./useGetOne.md#aggregating-getone-calls)
 * [`useGetManyReference`](./useGetManyReference.md)
 * [`useGetOne`](./useGetOne.md)
 * [`useGetPermissions`](./WithPermissions.md)

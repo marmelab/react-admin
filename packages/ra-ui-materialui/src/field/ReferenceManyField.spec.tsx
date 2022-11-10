@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { testDataProvider, useListContext } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -9,6 +9,8 @@ import { AdminContext } from '../AdminContext';
 import { ReferenceManyField } from './ReferenceManyField';
 import { TextField } from './TextField';
 import { SingleFieldList } from '../list/SingleFieldList';
+import { Pagination } from '../list/pagination/Pagination';
+import { Basic } from './ReferenceManyField.stories';
 
 const theme = createTheme();
 
@@ -178,5 +180,90 @@ describe('<ReferenceManyField />', () => {
         expect(links[1].textContent).toEqual('world');
         expect(links[0].getAttribute('href')).toEqual('/comments/1');
         expect(links[1].getAttribute('href')).toEqual('/comments/2');
+    });
+
+    it('should clear selection on bulk delete', async () => {
+        render(<Basic />);
+        await screen.findByText('War and Peace');
+        const checkbox = (
+            await screen.findAllByLabelText('ra.action.select_row')
+        )[1];
+        fireEvent.click(checkbox);
+        await screen.findByText('ra.action.bulk_actions');
+        screen.getByText('ra.action.delete').click();
+        await waitFor(() => {
+            expect(
+                screen.queryAllByRole('ra.action.bulk_actions')
+            ).toHaveLength(0);
+        });
+    });
+
+    describe('pagination', () => {
+        it('should render pagination based on total from getManyReference', async () => {
+            const data = [
+                { id: 1, title: 'hello' },
+                { id: 2, title: 'world' },
+            ];
+            const history = createMemoryHistory();
+            render(
+                <AdminContext
+                    dataProvider={testDataProvider({
+                        getManyReference: () =>
+                            Promise.resolve({ data, total: 12 }),
+                    })}
+                    history={history}
+                >
+                    <ReferenceManyField
+                        {...defaultProps}
+                        pagination={<Pagination />}
+                    >
+                        <SingleFieldList>
+                            <TextField source="title" />
+                        </SingleFieldList>
+                    </ReferenceManyField>
+                </AdminContext>
+            );
+            await screen.findByText('hello');
+            await screen.findByText('world');
+            await screen.findByText('ra.navigation.page_range_info');
+            await screen.findByText('1');
+            await screen.findByText('2');
+        });
+        it('should render pagination based on pageInfo from getManyReference', async () => {
+            const data = [
+                { id: 1, title: 'hello' },
+                { id: 2, title: 'world' },
+            ];
+            const history = createMemoryHistory();
+            render(
+                <AdminContext
+                    dataProvider={testDataProvider({
+                        getManyReference: () =>
+                            Promise.resolve({
+                                data,
+                                pageInfo: {
+                                    hasPreviousPage: false,
+                                    hasNextPage: true,
+                                },
+                            }),
+                    })}
+                    history={history}
+                >
+                    <ReferenceManyField
+                        {...defaultProps}
+                        pagination={<Pagination />}
+                    >
+                        <SingleFieldList>
+                            <TextField source="title" />
+                        </SingleFieldList>
+                    </ReferenceManyField>
+                </AdminContext>
+            );
+            await screen.findByText('hello');
+            await screen.findByText('world');
+            await screen.findByText('ra.navigation.partial_page_range_info');
+            await screen.findByLabelText('ra.navigation.previous');
+            await screen.findByLabelText('ra.navigation.next');
+        });
     });
 });

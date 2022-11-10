@@ -12,7 +12,6 @@ import {
     useRefresh,
     useResourceContext,
     useTranslate,
-    useUnselectAll,
     useSafeSetState,
     RaRecord,
     DeleteManyParams,
@@ -37,11 +36,10 @@ export const BulkDeleteWithConfirmButton = (
         ...rest
     } = props;
     const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
-    const { selectedIds } = useListContext(props);
+    const { selectedIds, onUnselectItems } = useListContext(props);
     const [isOpen, setOpen] = useSafeSetState(false);
     const notify = useNotify();
     const resource = useResourceContext(props);
-    const unselectAll = useUnselectAll(resource);
     const refresh = useRefresh();
     const translate = useTranslate();
     const [deleteMany, { isLoading }] = useDeleteMany(
@@ -55,7 +53,7 @@ export const BulkDeleteWithConfirmButton = (
                     messageArgs: { smart_count: selectedIds.length },
                     undoable: mutationMode === 'undoable',
                 });
-                unselectAll();
+                onUnselectItems();
                 setOpen(false);
             },
             onError: (error: Error) => {

@@ -1,4 +1,4 @@
-import reactRefresh from '@vitejs/plugin-react-refresh';
+import react from '@vitejs/plugin-react';
 import path from 'path';
 import fs from 'fs';
 
@@ -24,7 +24,7 @@ const aliases = packages.map(dirName => {
  * @type { import('vite').UserConfig }
  */
 export default {
-    plugins: [reactRefresh()],
+    plugins: [react()],
     resolve: {
         alias: [
             ...aliases,

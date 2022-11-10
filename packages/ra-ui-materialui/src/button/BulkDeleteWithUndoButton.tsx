@@ -8,7 +8,6 @@ import {
     useDeleteMany,
     useRefresh,
     useNotify,
-    useUnselectAll,
     useResourceContext,
     useListContext,
     RaRecord,
@@ -30,11 +29,10 @@ export const BulkDeleteWithUndoButton = (
         ...rest
     } = props;
     const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
-    const { selectedIds } = useListContext(props);
+    const { selectedIds, onUnselectItems } = useListContext(props);
 
     const notify = useNotify();
     const resource = useResourceContext(props);
-    const unselectAll = useUnselectAll(resource);
     const refresh = useRefresh();
     const [deleteMany, { isLoading }] = useDeleteMany();
 
@@ -49,7 +47,7 @@ export const BulkDeleteWithUndoButton = (
                         messageArgs: { smart_count: selectedIds.length },
                         undoable: true,
                     });
-                    unselectAll();
+                    onUnselectItems();
                 },
                 onError: (error: Error) => {
                     notify(

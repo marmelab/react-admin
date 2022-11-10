@@ -111,9 +111,13 @@ export const RichTextInput = (props: RichTextInputProps) => {
     useEffect(() => {
         if (!editor) return;
 
+        const { from, to } = editor.state.selection;
+
         editor.commands.setContent(field.value, false, {
             preserveWhitespace: true,
         });
+
+        editor.commands.setTextSelection({ from, to });
     }, [editor, field.value]);
 
     useEffect(() => {

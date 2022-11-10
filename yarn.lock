@@ -120,7 +120,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:^7.0.0, @babel/core@npm:^7.1.0, @babel/core@npm:^7.11.1, @babel/core@npm:^7.12.10, @babel/core@npm:^7.12.3, @babel/core@npm:^7.14.8, @babel/core@npm:^7.16.0, @babel/core@npm:^7.7.2, @babel/core@npm:^7.7.5, @babel/core@npm:^7.8.0":
+"@babel/core@npm:^7.0.0, @babel/core@npm:^7.1.0, @babel/core@npm:^7.11.1, @babel/core@npm:^7.12.10, @babel/core@npm:^7.12.3, @babel/core@npm:^7.16.0, @babel/core@npm:^7.7.2, @babel/core@npm:^7.7.5, @babel/core@npm:^7.8.0":
   version: 7.16.7
   resolution: "@babel/core@npm:7.16.7"
   dependencies:
@@ -1499,17 +1499,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-react-jsx-self@npm:^7.14.5":
-  version: 7.16.7
-  resolution: "@babel/plugin-transform-react-jsx-self@npm:7.16.7"
-  dependencies:
-    "@babel/helper-plugin-utils": ^7.16.7
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-  checksum: ab8619ee77a4509ec6ef6cb77b6c8ae6e336880e8af6b63bc6b3c542357700e4b04f380116ac56f20fbd4a9405c5b811416b067cd8a23947de111c952b8e2777
-  languageName: node
-  linkType: hard
-
 "@babel/plugin-transform-react-jsx-self@npm:^7.18.6":
   version: 7.18.6
   resolution: "@babel/plugin-transform-react-jsx-self@npm:7.18.6"
@@ -1518,17 +1507,6 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.0.0-0
   checksum: 3fb17ae87eb264f77c5d1b30f4687f863f849bf4e8892159aee8e6bd069ff66d909f378dffdb7e6e157f9424cfbfe7c48e884aceac39e33f6a8abbdb04f83303
-  languageName: node
-  linkType: hard
-
-"@babel/plugin-transform-react-jsx-source@npm:^7.14.5":
-  version: 7.16.7
-  resolution: "@babel/plugin-transform-react-jsx-source@npm:7.16.7"
-  dependencies:
-    "@babel/helper-plugin-utils": ^7.16.7
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-  checksum: ea28a6bdefaaae6b882b79ec3f1eda761638d413fe7e25c8bba7fa8a5a98fa6d1317ba5f4c274f65234bd4a1adae89bf38e24e26887ca9c1175825e0bcd619da
   languageName: node
   linkType: hard
 
@@ -4727,16 +4705,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/pluginutils@npm:^4.1.1":
-  version: 4.1.2
-  resolution: "@rollup/pluginutils@npm:4.1.2"
-  dependencies:
-    estree-walker: ^2.0.1
-    picomatch: ^2.2.2
-  checksum: af12ea3ca6abd2a255647e40d2917129f7b8ff8d53aa914cba6bded34b5d4601481537d9cd02e6420bc20b1da44fa20a4fb86f89c841df579c4228afde801856
-  languageName: node
-  linkType: hard
-
 "@rushstack/eslint-patch@npm:^1.1.0":
   version: 1.1.0
   resolution: "@rushstack/eslint-patch@npm:1.1.0"
@@ -7017,6 +6985,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-dom@npm:^18.0.7":
+  version: 18.0.8
+  resolution: "@types/react-dom@npm:18.0.8"
+  dependencies:
+    "@types/react": "*"
+  checksum: e5e18d30a272b799e7579929b27f8cd078c5ee92cc11a4be80b63d9f4330d22c97cc2aeb89945fc8e88d59a92438fa89f37ac92021665021988ed56cb864b424
+  languageName: node
+  linkType: hard
+
 "@types/react-is@npm:^16.7.1 || ^17.0.0":
   version: 17.0.3
   resolution: "@types/react-is@npm:17.0.3"
@@ -7073,6 +7050,17 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: 828cd27ac220be8232535c4451b0020f6f05535d62407e5fe2547544a7d3123777ed31ab547d7c7f3d8b59d37268ee4b9209f1c110809f084cbbf0a7e27cd7ef
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:^18.0.22":
+  version: 18.0.24
+  resolution: "@types/react@npm:18.0.24"
+  dependencies:
+    "@types/prop-types": "*"
+    "@types/scheduler": "*"
+    csstype: ^3.0.2
+  checksum: 8ea907a8f944421a120f4db9fe52fe3752837e11031ff16b866e835adebb09b2b2ca3ac5f8aa622683778f6d40f791a369c9008c45537c1a7eb64347648fae3c
   languageName: node
   linkType: hard
 
@@ -7393,19 +7381,6 @@ __metadata:
     "@typescript-eslint/types": 5.9.1
     eslint-visitor-keys: ^3.0.0
   checksum: add2f083d1333fc9311776ee70f998b20e6137f00e4c36db619949ea52deb31d7fbe4b2617e7ac5c8dd09db2fba4e9d354419cc4d2e74072fa9fcfa641f63b56
-  languageName: node
-  linkType: hard
-
-"@vitejs/plugin-react-refresh@npm:^1.3.1, @vitejs/plugin-react-refresh@npm:^1.3.3":
-  version: 1.3.6
-  resolution: "@vitejs/plugin-react-refresh@npm:1.3.6"
-  dependencies:
-    "@babel/core": ^7.14.8
-    "@babel/plugin-transform-react-jsx-self": ^7.14.5
-    "@babel/plugin-transform-react-jsx-source": ^7.14.5
-    "@rollup/pluginutils": ^4.1.1
-    react-refresh: ^0.10.0
-  checksum: 991c714beca345f3693ff61409b2c5a8c63b1c09e8f5c71af9f107173889a97a57b1a209c92b8a20113028114e1206971fb3acc85a608f249ff5cf2d103db7fa
   languageName: node
   linkType: hard
 
@@ -11076,14 +11051,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"data-generator-retail@^4.0.0, data-generator-retail@^4.4.4, data-generator-retail@workspace:examples/data-generator":
+"data-generator-retail@^4.0.0, data-generator-retail@^4.5.0, data-generator-retail@workspace:examples/data-generator":
   version: 0.0.0-use.local
   resolution: "data-generator-retail@workspace:examples/data-generator"
   dependencies:
     cross-env: ^5.2.0
     date-fns: ^2.19.0
     faker: ^4.1.0
-    ra-core: ^4.4.4
+    ra-core: ^4.5.0
     rimraf: ^3.0.2
     typescript: ^4.4.0
   peerDependencies:
@@ -12098,24 +12073,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-android-arm64@npm:0.13.15":
-  version: 0.13.15
-  resolution: "esbuild-android-arm64@npm:0.13.15"
-  conditions: os=android & cpu=arm64
-  languageName: node
-  linkType: hard
-
 "esbuild-android-arm64@npm:0.15.12":
   version: 0.15.12
   resolution: "esbuild-android-arm64@npm:0.15.12"
   conditions: os=android & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"esbuild-darwin-64@npm:0.13.15":
-  version: 0.13.15
-  resolution: "esbuild-darwin-64@npm:0.13.15"
-  conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
@@ -12126,24 +12087,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-darwin-arm64@npm:0.13.15":
-  version: 0.13.15
-  resolution: "esbuild-darwin-arm64@npm:0.13.15"
-  conditions: os=darwin & cpu=arm64
-  languageName: node
-  linkType: hard
-
 "esbuild-darwin-arm64@npm:0.15.12":
   version: 0.15.12
   resolution: "esbuild-darwin-arm64@npm:0.15.12"
   conditions: os=darwin & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"esbuild-freebsd-64@npm:0.13.15":
-  version: 0.13.15
-  resolution: "esbuild-freebsd-64@npm:0.13.15"
-  conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
@@ -12154,24 +12101,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-freebsd-arm64@npm:0.13.15":
-  version: 0.13.15
-  resolution: "esbuild-freebsd-arm64@npm:0.13.15"
-  conditions: os=freebsd & cpu=arm64
-  languageName: node
-  linkType: hard
-
 "esbuild-freebsd-arm64@npm:0.15.12":
   version: 0.15.12
   resolution: "esbuild-freebsd-arm64@npm:0.15.12"
   conditions: os=freebsd & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"esbuild-linux-32@npm:0.13.15":
-  version: 0.13.15
-  resolution: "esbuild-linux-32@npm:0.13.15"
-  conditions: os=linux & cpu=ia32
   languageName: node
   linkType: hard
 
@@ -12182,24 +12115,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-linux-64@npm:0.13.15":
-  version: 0.13.15
-  resolution: "esbuild-linux-64@npm:0.13.15"
-  conditions: os=linux & cpu=x64
-  languageName: node
-  linkType: hard
-
 "esbuild-linux-64@npm:0.15.12":
   version: 0.15.12
   resolution: "esbuild-linux-64@npm:0.15.12"
   conditions: os=linux & cpu=x64
-  languageName: node
-  linkType: hard
-
-"esbuild-linux-arm64@npm:0.13.15":
-  version: 0.13.15
-  resolution: "esbuild-linux-arm64@npm:0.13.15"
-  conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
@@ -12210,13 +12129,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-linux-arm@npm:0.13.15":
-  version: 0.13.15
-  resolution: "esbuild-linux-arm@npm:0.13.15"
-  conditions: os=linux & cpu=arm
-  languageName: node
-  linkType: hard
-
 "esbuild-linux-arm@npm:0.15.12":
   version: 0.15.12
   resolution: "esbuild-linux-arm@npm:0.15.12"
@@ -12224,24 +12136,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-linux-mips64le@npm:0.13.15":
-  version: 0.13.15
-  resolution: "esbuild-linux-mips64le@npm:0.13.15"
-  conditions: os=linux & cpu=mips64el
-  languageName: node
-  linkType: hard
-
 "esbuild-linux-mips64le@npm:0.15.12":
   version: 0.15.12
   resolution: "esbuild-linux-mips64le@npm:0.15.12"
   conditions: os=linux & cpu=mips64el
-  languageName: node
-  linkType: hard
-
-"esbuild-linux-ppc64le@npm:0.13.15":
-  version: 0.13.15
-  resolution: "esbuild-linux-ppc64le@npm:0.13.15"
-  conditions: os=linux & cpu=ppc64
   languageName: node
   linkType: hard
 
@@ -12266,24 +12164,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-netbsd-64@npm:0.13.15":
-  version: 0.13.15
-  resolution: "esbuild-netbsd-64@npm:0.13.15"
-  conditions: os=netbsd & cpu=x64
-  languageName: node
-  linkType: hard
-
 "esbuild-netbsd-64@npm:0.15.12":
   version: 0.15.12
   resolution: "esbuild-netbsd-64@npm:0.15.12"
   conditions: os=netbsd & cpu=x64
-  languageName: node
-  linkType: hard
-
-"esbuild-openbsd-64@npm:0.13.15":
-  version: 0.13.15
-  resolution: "esbuild-openbsd-64@npm:0.13.15"
-  conditions: os=openbsd & cpu=x64
   languageName: node
   linkType: hard
 
@@ -12294,24 +12178,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-sunos-64@npm:0.13.15":
-  version: 0.13.15
-  resolution: "esbuild-sunos-64@npm:0.13.15"
-  conditions: os=sunos & cpu=x64
-  languageName: node
-  linkType: hard
-
 "esbuild-sunos-64@npm:0.15.12":
   version: 0.15.12
   resolution: "esbuild-sunos-64@npm:0.15.12"
   conditions: os=sunos & cpu=x64
-  languageName: node
-  linkType: hard
-
-"esbuild-windows-32@npm:0.13.15":
-  version: 0.13.15
-  resolution: "esbuild-windows-32@npm:0.13.15"
-  conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
@@ -12322,13 +12192,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-windows-64@npm:0.13.15":
-  version: 0.13.15
-  resolution: "esbuild-windows-64@npm:0.13.15"
-  conditions: os=win32 & cpu=x64
-  languageName: node
-  linkType: hard
-
 "esbuild-windows-64@npm:0.15.12":
   version: 0.15.12
   resolution: "esbuild-windows-64@npm:0.15.12"
@@ -12336,79 +12199,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-windows-arm64@npm:0.13.15":
-  version: 0.13.15
-  resolution: "esbuild-windows-arm64@npm:0.13.15"
-  conditions: os=win32 & cpu=arm64
-  languageName: node
-  linkType: hard
-
 "esbuild-windows-arm64@npm:0.15.12":
   version: 0.15.12
   resolution: "esbuild-windows-arm64@npm:0.15.12"
   conditions: os=win32 & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"esbuild@npm:^0.13.12":
-  version: 0.13.15
-  resolution: "esbuild@npm:0.13.15"
-  dependencies:
-    esbuild-android-arm64: 0.13.15
-    esbuild-darwin-64: 0.13.15
-    esbuild-darwin-arm64: 0.13.15
-    esbuild-freebsd-64: 0.13.15
-    esbuild-freebsd-arm64: 0.13.15
-    esbuild-linux-32: 0.13.15
-    esbuild-linux-64: 0.13.15
-    esbuild-linux-arm: 0.13.15
-    esbuild-linux-arm64: 0.13.15
-    esbuild-linux-mips64le: 0.13.15
-    esbuild-linux-ppc64le: 0.13.15
-    esbuild-netbsd-64: 0.13.15
-    esbuild-openbsd-64: 0.13.15
-    esbuild-sunos-64: 0.13.15
-    esbuild-windows-32: 0.13.15
-    esbuild-windows-64: 0.13.15
-    esbuild-windows-arm64: 0.13.15
-  dependenciesMeta:
-    esbuild-android-arm64:
-      optional: true
-    esbuild-darwin-64:
-      optional: true
-    esbuild-darwin-arm64:
-      optional: true
-    esbuild-freebsd-64:
-      optional: true
-    esbuild-freebsd-arm64:
-      optional: true
-    esbuild-linux-32:
-      optional: true
-    esbuild-linux-64:
-      optional: true
-    esbuild-linux-arm:
-      optional: true
-    esbuild-linux-arm64:
-      optional: true
-    esbuild-linux-mips64le:
-      optional: true
-    esbuild-linux-ppc64le:
-      optional: true
-    esbuild-netbsd-64:
-      optional: true
-    esbuild-openbsd-64:
-      optional: true
-    esbuild-sunos-64:
-      optional: true
-    esbuild-windows-32:
-      optional: true
-    esbuild-windows-64:
-      optional: true
-    esbuild-windows-arm64:
-      optional: true
-  bin:
-    esbuild: bin/esbuild
-  checksum: c1ddc5672838eb4ece0c7b182053ba597249c17af2ff454f02358bad1520c56f869fa24b138670cdd81c3a8ace506ca7fe7ffcb66eefda489cfc4e8f35e682ac
   languageName: node
   linkType: hard
 
@@ -12992,13 +12786,6 @@ __metadata:
   version: 1.0.1
   resolution: "estree-walker@npm:1.0.1"
   checksum: fa9e5f8c1bbe8d01e314c0f03067b64a4f22d4c58410fc5237060d0c15b81e58c23921c41acc60abbdab490f1fdfcbd6408ede2d03ca704454272e0244d61a55
-  languageName: node
-  linkType: hard
-
-"estree-walker@npm:^2.0.1":
-  version: 2.0.2
-  resolution: "estree-walker@npm:2.0.2"
-  checksum: 53a6c54e2019b8c914dc395890153ffdc2322781acf4bd7d1a32d7aedc1710807bdcd866ac133903d5629ec601fbb50abe8c2e5553c7f5a0afdd9b6af6c945af
   languageName: node
   linkType: hard
 
@@ -17958,13 +17745,13 @@ __metadata:
   linkType: hard
 
 "loader-utils@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "loader-utils@npm:1.4.0"
+  version: 1.4.1
+  resolution: "loader-utils@npm:1.4.1"
   dependencies:
     big.js: ^5.2.2
     emojis-list: ^3.0.0
     json5: ^1.0.1
-  checksum: b3f383612c23c0adf535d61709fb3eaf864afa54dae45608e3831156b89b4b05a0a4ddc6db7d742071babe872750ba3f4f9ce89326d94f6e096dbed978fa424e
+  checksum: 38096fc9fba3160eb7b7408eb88658a854a992fed2106fe3972d144035688dc4fcb3767cf353f85513ac0e654efbf1001735bd5a8d8bb5429fdb5a6b0712ce92
   languageName: node
   linkType: hard
 
@@ -19012,14 +18799,14 @@ __metadata:
   resolution: "no-code@workspace:examples/no-code"
   dependencies:
     "@mui/material": ^5.0.2
-    "@vitejs/plugin-react-refresh": ^1.3.1
+    "@vitejs/plugin-react": ^2.2.0
     ra-data-local-storage: ^4.0.0
     ra-no-code: ^4.0.0
     react: ^17.0.0
     react-admin: ^4.0.0
     react-dom: ^17.0.0
     typescript: ^4.4.0
-    vite: ^2.1.5
+    vite: ^3.2.0
   languageName: unknown
   linkType: soft
 
@@ -21237,7 +21024,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.2.15, postcss@npm:^8.3.5, postcss@npm:^8.4.4, postcss@npm:^8.4.5":
+"postcss@npm:^8.2.15, postcss@npm:^8.3.5, postcss@npm:^8.4.4":
   version: 8.4.5
   resolution: "postcss@npm:8.4.5"
   dependencies:
@@ -21766,7 +21553,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ra-core@^4.4.4, ra-core@workspace:packages/ra-core":
+"ra-core@^4.5.0, ra-core@workspace:packages/ra-core":
   version: 0.0.0-use.local
   resolution: "ra-core@workspace:packages/ra-core"
   dependencies:
@@ -21810,13 +21597,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-fakerest@^4.0.0, ra-data-fakerest@^4.4.4, ra-data-fakerest@workspace:packages/ra-data-fakerest":
+"ra-data-fakerest@^4.0.0, ra-data-fakerest@^4.5.0, ra-data-fakerest@workspace:packages/ra-data-fakerest":
   version: 0.0.0-use.local
   resolution: "ra-data-fakerest@workspace:packages/ra-data-fakerest"
   dependencies:
     cross-env: ^5.2.0
     fakerest: ^3.0.0
-    ra-core: ^4.4.4
+    ra-core: ^4.5.0
     rimraf: ^3.0.2
     typescript: ^4.4.0
   peerDependencies:
@@ -21860,13 +21647,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-json-server@^4.0.0, ra-data-json-server@workspace:packages/ra-data-json-server":
+"ra-data-json-server@^4.5.0, ra-data-json-server@workspace:packages/ra-data-json-server":
   version: 0.0.0-use.local
   resolution: "ra-data-json-server@workspace:packages/ra-data-json-server"
   dependencies:
     cross-env: ^5.2.0
     query-string: ^7.1.1
-    ra-core: ^4.4.4
+    ra-core: ^4.5.0
     rimraf: ^3.0.2
     typescript: ^4.4.0
   languageName: unknown
@@ -21879,7 +21666,7 @@ __metadata:
     cross-env: ^5.2.0
     localforage: ^1.7.1
     lodash: ~4.17.5
-    ra-data-fakerest: ^4.4.4
+    ra-data-fakerest: ^4.5.0
     rimraf: ^3.0.2
     typescript: ^4.4.0
   peerDependencies:
@@ -21887,13 +21674,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-local-storage@^4.0.0, ra-data-local-storage@^4.4.4, ra-data-local-storage@workspace:packages/ra-data-localstorage":
+"ra-data-local-storage@^4.0.0, ra-data-local-storage@^4.5.0, ra-data-local-storage@workspace:packages/ra-data-localstorage":
   version: 0.0.0-use.local
   resolution: "ra-data-local-storage@workspace:packages/ra-data-localstorage"
   dependencies:
     cross-env: ^5.2.0
     lodash: ~4.17.5
-    ra-data-fakerest: ^4.4.4
+    ra-data-fakerest: ^4.5.0
     rimraf: ^3.0.2
     typescript: ^4.4.0
   peerDependencies:
@@ -21907,7 +21694,7 @@ __metadata:
   dependencies:
     cross-env: ^5.2.0
     query-string: ^7.1.1
-    ra-core: ^4.4.4
+    ra-core: ^4.5.0
     rimraf: ^3.0.2
     typescript: ^4.4.0
   peerDependencies:
@@ -21915,19 +21702,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-i18n-polyglot@^4.0.0, ra-i18n-polyglot@^4.4.4, ra-i18n-polyglot@workspace:packages/ra-i18n-polyglot":
+"ra-i18n-polyglot@^4.0.0, ra-i18n-polyglot@^4.5.0, ra-i18n-polyglot@workspace:packages/ra-i18n-polyglot":
   version: 0.0.0-use.local
   resolution: "ra-i18n-polyglot@workspace:packages/ra-i18n-polyglot"
   dependencies:
     cross-env: ^5.2.0
     node-polyglot: ^2.2.2
-    ra-core: ^4.4.4
+    ra-core: ^4.5.0
     rimraf: ^3.0.2
     typescript: ^4.4.0
   languageName: unknown
   linkType: soft
 
-"ra-input-rich-text@^4.0.0, ra-input-rich-text@^4.4.4, ra-input-rich-text@workspace:packages/ra-input-rich-text":
+"ra-input-rich-text@^4.0.0, ra-input-rich-text@^4.5.1, ra-input-rich-text@workspace:packages/ra-input-rich-text":
   version: 0.0.0-use.local
   resolution: "ra-input-rich-text@workspace:packages/ra-input-rich-text"
   dependencies:
@@ -21945,10 +21732,10 @@ __metadata:
     "@tiptap/react": ^2.0.0-beta.63
     "@tiptap/starter-kit": ^2.0.0-beta.101
     clsx: ^1.1.1
-    data-generator-retail: ^4.4.4
-    ra-core: ^4.4.4
-    ra-data-fakerest: ^4.4.4
-    ra-ui-materialui: ^4.4.4
+    data-generator-retail: ^4.5.0
+    ra-core: ^4.5.0
+    ra-data-fakerest: ^4.5.0
+    ra-ui-materialui: ^4.5.1
     react: ^17.0.0
     react-dom: ^17.0.0
     react-hook-form: ^7.34.2
@@ -21964,21 +21751,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-language-english@^4.0.0, ra-language-english@^4.4.4, ra-language-english@workspace:packages/ra-language-english":
+"ra-language-english@^4.0.0, ra-language-english@^4.5.0, ra-language-english@workspace:packages/ra-language-english":
   version: 0.0.0-use.local
   resolution: "ra-language-english@workspace:packages/ra-language-english"
   dependencies:
-    ra-core: ^4.4.4
+    ra-core: ^4.5.0
     rimraf: ^3.0.2
     typescript: ^4.4.0
   languageName: unknown
   linkType: soft
 
-"ra-language-french@^4.0.0, ra-language-french@^4.4.4, ra-language-french@workspace:packages/ra-language-french":
+"ra-language-french@^4.0.0, ra-language-french@^4.5.1, ra-language-french@workspace:packages/ra-language-french":
   version: 0.0.0-use.local
   resolution: "ra-language-french@workspace:packages/ra-language-french"
   dependencies:
-    ra-core: ^4.4.4
+    ra-core: ^4.5.0
     rimraf: ^3.0.2
     typescript: ^4.4.0
   languageName: unknown
@@ -21999,9 +21786,9 @@ __metadata:
     lodash: ~4.17.5
     papaparse: ^5.3.0
     prop-types: ^15.6.1
-    ra-data-local-storage: ^4.4.4
+    ra-data-local-storage: ^4.5.0
     react: ^17.0.0
-    react-admin: ^4.4.4
+    react-admin: ^4.5.1
     react-dom: ^17.0.0
     react-dropzone: ^12.0.4
     react-query: ^3.32.1
@@ -22015,7 +21802,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-ui-materialui@^4.4.4, ra-ui-materialui@workspace:packages/ra-ui-materialui":
+"ra-ui-materialui@^4.5.1, ra-ui-materialui@workspace:packages/ra-ui-materialui":
   version: 0.0.0-use.local
   resolution: "ra-ui-materialui@workspace:packages/ra-ui-materialui"
   dependencies:
@@ -22035,9 +21822,9 @@ __metadata:
     lodash: ~4.17.5
     prop-types: ^15.7.0
     query-string: ^7.1.1
-    ra-core: ^4.4.4
-    ra-i18n-polyglot: ^4.4.4
-    ra-language-english: ^4.4.4
+    ra-core: ^4.5.0
+    ra-i18n-polyglot: ^4.5.0
+    ra-language-english: ^4.5.0
     react: ^17.0.0
     react-dom: ^17.0.0
     react-dropzone: ^12.0.4
@@ -22222,7 +22009,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-admin@^4.0.0, react-admin@^4.4.4, react-admin@workspace:packages/react-admin":
+"react-admin@^4.0.0, react-admin@^4.5.0, react-admin@^4.5.1, react-admin@workspace:packages/react-admin":
   version: 0.0.0-use.local
   resolution: "react-admin@workspace:packages/react-admin"
   dependencies:
@@ -22233,10 +22020,10 @@ __metadata:
     cross-env: ^5.2.0
     expect: ^27.4.6
     history: ^5.1.0
-    ra-core: ^4.4.4
-    ra-i18n-polyglot: ^4.4.4
-    ra-language-english: ^4.4.4
-    ra-ui-materialui: ^4.4.4
+    ra-core: ^4.5.0
+    ra-i18n-polyglot: ^4.5.0
+    ra-language-english: ^4.5.0
+    ra-ui-materialui: ^4.5.1
     react-hook-form: ^7.34.2
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
@@ -22389,6 +22176,18 @@ __metadata:
   peerDependencies:
     react: 17.0.2
   checksum: 51abbcb72450fe527ebf978c3bc989ba266630faaa53f47a2fae5392369729e8de62b2e4683598cbe651ea7873cd34ec7d5127e2f50bf4bfe6bd0c3ad9bddcb0
+  languageName: node
+  linkType: hard
+
+"react-dom@npm:^18.2.0":
+  version: 18.2.0
+  resolution: "react-dom@npm:18.2.0"
+  dependencies:
+    loose-envify: ^1.1.0
+    scheduler: ^0.23.0
+  peerDependencies:
+    react: ^18.2.0
+  checksum: 66dfc5f93e13d0674e78ef41f92ed21dfb80f9c4ac4ac25a4b51046d41d4d2186abc915b897f69d3d0ebbffe6184e7c5876f2af26bfa956f179225d921be713a
   languageName: node
   linkType: hard
 
@@ -22587,13 +22386,6 @@ __metadata:
     react-native:
       optional: true
   checksum: f2329642ef6ea95ad9384de08529ded1f836a82098a19f4f09f6afef612d9d5785b4e8aef4f9c9292d3f93812b979f94cd9b8d3aa8747e0a4a10e2600771c3f5
-  languageName: node
-  linkType: hard
-
-"react-refresh@npm:^0.10.0":
-  version: 0.10.0
-  resolution: "react-refresh@npm:0.10.0"
-  checksum: 616e82bed3787bf4e55dcc1c9836f251b93523dd4b0ffb1c24c2dcf5d09f686fbf3cffc7d489cd7f12429f76ddf66eb431748fc07df56b18a888a7705cbc079e
   languageName: node
   linkType: hard
 
@@ -22870,6 +22662,15 @@ __metadata:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
   checksum: 07ae8959acf1596f0550685102fd6097d461a54a4fd46a50f88a0cd7daaa97fdd6415de1dcb4bfe0da6aa43221a6746ce380410fa848acc60f8ac41f6649c148
+  languageName: node
+  linkType: hard
+
+"react@npm:^18.2.0":
+  version: 18.2.0
+  resolution: "react@npm:18.2.0"
+  dependencies:
+    loose-envify: ^1.1.0
+  checksum: b562d9b569b0cb315e44b48099f7712283d93df36b19a39a67c254c6686479d3980b7f013dc931f4a5a3ae7645eae6386b4aa5eea933baa54ecd0f9acb0902b8
   languageName: node
   linkType: hard
 
@@ -23667,7 +23468,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:^2.43.1, rollup@npm:^2.59.0":
+"rollup@npm:^2.43.1":
   version: 2.64.0
   resolution: "rollup@npm:2.64.0"
   dependencies:
@@ -23877,6 +23678,15 @@ __metadata:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
   checksum: b0982e4b0f34f4ffa4f2f486161c0fd9ce9b88680b045dccbf250eb1aa4fd27413570645455187a83535e2370f5c667a251045547765408492bd883cbe95fcdb
+  languageName: node
+  linkType: hard
+
+"scheduler@npm:^0.23.0":
+  version: 0.23.0
+  resolution: "scheduler@npm:0.23.0"
+  dependencies:
+    loose-envify: ^1.1.0
+  checksum: b777f7ca0115e6d93e126ac490dbd82642d14983b3079f58f35519d992fa46260be7d6e6cede433a92db70306310c6f5f06e144f0e40c484199e09c1f7be53dd
   languageName: node
   linkType: hard
 
@@ -24239,7 +24049,7 @@ __metadata:
     "@hookform/devtools": ^4.0.2
     "@mui/icons-material": ^5.0.1
     "@mui/material": ^5.0.2
-    "@vitejs/plugin-react-refresh": ^1.3.3
+    "@vitejs/plugin-react": ^2.2.0
     html-loader: ~3.1.0
     html-webpack-plugin: ~5.5.0
     ignore-not-found-export-plugin: ^1.0.1
@@ -24247,13 +24057,13 @@ __metadata:
     lodash: ~4.17.5
     prop-types: ^15.7.2
     proxy-polyfill: ^0.3.0
-    ra-data-fakerest: ^4.4.4
-    ra-i18n-polyglot: ^4.4.4
-    ra-input-rich-text: ^4.4.4
-    ra-language-english: ^4.4.4
-    ra-language-french: ^4.4.4
+    ra-data-fakerest: ^4.5.0
+    ra-i18n-polyglot: ^4.5.0
+    ra-input-rich-text: ^4.5.1
+    ra-language-english: ^4.5.0
+    ra-language-french: ^4.5.1
     react: ^17.0.0
-    react-admin: ^4.4.4
+    react-admin: ^4.5.1
     react-app-polyfill: ^1.0.4
     react-dom: ^17.0.0
     react-hook-form: ^7.34.2
@@ -24263,7 +24073,7 @@ __metadata:
     style-loader: ~3.3.1
     ts-loader: ^9.2.8
     typescript: ^4.4.0
-    vite: ^2.2.3
+    vite: ^3.2.0
     webpack: ~5.70.0
     webpack-cli: ^4.10.0
     webpack-dev-server: ~4.7.4
@@ -25857,13 +25667,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tutorial@workspace:examples/tutorial"
   dependencies:
-    "@mui/icons-material": ^5.0.1
-    "@mui/material": ^5.0.2
-    ra-data-json-server: ^4.0.0
-    react: ^17.0.0
-    react-admin: ^4.0.0
-    react-dom: ^17.0.0
-    react-scripts: ^5.0.0
+    "@types/react": ^18.0.22
+    "@types/react-dom": ^18.0.7
+    "@vitejs/plugin-react": ^2.2.0
+    ra-data-json-server: ^4.5.0
+    react: ^18.2.0
+    react-admin: ^4.5.0
+    react-dom: ^18.2.0
+    typescript: ^4.6.4
+    vite: ^3.2.0
   languageName: unknown
   linkType: soft
 
@@ -25974,7 +25786,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^3 || ^4, typescript@npm:^4.4.0":
+"typescript@npm:^3 || ^4, typescript@npm:^4.4.0, typescript@npm:^4.6.4":
   version: 4.8.4
   resolution: "typescript@npm:4.8.4"
   bin:
@@ -25984,7 +25796,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^3 || ^4#~builtin<compat/typescript>, typescript@patch:typescript@^4.4.0#~builtin<compat/typescript>":
+"typescript@patch:typescript@^3 || ^4#~builtin<compat/typescript>, typescript@patch:typescript@^4.4.0#~builtin<compat/typescript>, typescript@patch:typescript@^4.6.4#~builtin<compat/typescript>":
   version: 4.8.4
   resolution: "typescript@patch:typescript@npm%3A4.8.4#~builtin<compat/typescript>::version=4.8.4&hash=493e53"
   bin:
@@ -26549,35 +26361,6 @@ __metadata:
     unist-util-stringify-position: ^2.0.0
     vfile-message: ^2.0.0
   checksum: 4816aecfedc794ba4d3131abff2032ef0e825632cfa8cd20dd9d83819ef260589924f4f3e8fa30e06da2d8e60d7ec8ef7d0af93e0483df62890738258daf098a
-  languageName: node
-  linkType: hard
-
-"vite@npm:^2.1.5, vite@npm:^2.2.3":
-  version: 2.7.12
-  resolution: "vite@npm:2.7.12"
-  dependencies:
-    esbuild: ^0.13.12
-    fsevents: ~2.3.2
-    postcss: ^8.4.5
-    resolve: ^1.20.0
-    rollup: ^2.59.0
-  peerDependencies:
-    less: "*"
-    sass: "*"
-    stylus: "*"
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  peerDependenciesMeta:
-    less:
-      optional: true
-    sass:
-      optional: true
-    stylus:
-      optional: true
-  bin:
-    vite: bin/vite.js
-  checksum: 314eb288e6cc0f30f80593bd8c534e5405347503033f8f267f14f4670305bbf0f2e4e5d5b3d5229d681f3b0adc0518fc9ed0084bff09dca724fee4878a220d37
   languageName: node
   linkType: hard
 
