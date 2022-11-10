@@ -91,7 +91,7 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                             .catch(() => {});
                     }
                     const redirectTo =
-                        e && e.redirectTo
+                        e && e.redirectTo != null
                             ? e.redirectTo
                             : error && error.redirectTo
                             ? error.redirectTo

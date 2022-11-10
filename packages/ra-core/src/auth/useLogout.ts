@@ -57,14 +57,14 @@ const useLogout = (): Logout => {
         navigateRef.current = navigate;
     }, [location, navigate]);
 
-    const logout = useCallback(
+    const logout: Logout = useCallback(
         (
             params = {},
             redirectTo = loginUrl,
             redirectToCurrentLocationAfterLogin = true
         ) =>
             authProvider.logout(params).then(redirectToFromProvider => {
-                if (redirectToFromProvider === false) {
+                if (redirectToFromProvider === false || redirectTo === false) {
                     resetStore();
                     queryClient.clear();
                     // do not redirect
@@ -138,7 +138,7 @@ const useLogout = (): Logout => {
  */
 type Logout = (
     params?: any,
-    redirectTo?: string,
+    redirectTo?: string | false,
     redirectToCurrentLocationAfterLogin?: boolean
 ) => Promise<any>;
 

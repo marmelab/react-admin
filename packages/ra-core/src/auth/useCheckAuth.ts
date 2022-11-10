@@ -62,7 +62,7 @@ export const useCheckAuth = (): CheckAuth => {
                 if (logoutOnFailure) {
                     logout(
                         {},
-                        error && error.redirectTo
+                        error && error.redirectTo != null
                             ? error.redirectTo
                             : redirectTo
                     );
