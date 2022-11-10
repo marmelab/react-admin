@@ -381,17 +381,13 @@ export const UserCreate = () => {
                 await create(
                     'users',
                     { data: values },
-                    {
-                        returnPromise: true,
-                        onSuccess: () => {
-                            notify('ra.notification.created', {
-                                type: 'info',
-                                messageArgs: { smart_count: 1 },
-                            });
-                            redirect('list');
-                        },
-                    }
+                    { returnPromise: true }
                 );
+                notify('ra.notification.created', {
+                    type: 'info',
+                    messageArgs: { smart_count: 1 },
+                });
+                redirect('list');
             } catch (error) {
                 if (error.body.errors) {
                     // The shape of the returned validation errors must match the shape of the form
