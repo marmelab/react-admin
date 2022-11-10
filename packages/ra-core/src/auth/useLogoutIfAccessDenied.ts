@@ -60,10 +60,18 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                         timer = undefined;
                     }, 0);
 
+                    const redirectTo =
+                        e && e.redirectTo != null
+                            ? e.redirectTo
+                            : error && error.redirectTo
+                            ? error.redirectTo
+                            : undefined;
+
                     const shouldNotify = !(
                         disableNotification ||
                         (e && e.message === false) ||
-                        (error && error.message === false)
+                        (error && error.message === false) ||
+                        redirectTo.startsWith('http')
                     );
                     if (shouldNotify) {
                         // notify only if not yet logged out
@@ -90,12 +98,6 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                             })
                             .catch(() => {});
                     }
-                    const redirectTo =
-                        e && e.redirectTo != null
-                            ? e.redirectTo
-                            : error && error.redirectTo
-                            ? error.redirectTo
-                            : undefined;
 
                     if (logoutUser) {
                         logout({}, redirectTo);
