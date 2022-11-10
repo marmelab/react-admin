@@ -70,11 +70,20 @@ const useLogout = (): Logout => {
                     // do not redirect
                     return;
                 }
-                // redirectTo can contain a query string, e.g. '/login?foo=bar'
-                // we must split the redirectTo to pass a structured location to navigate()
-                const redirectToParts = (
-                    redirectToFromProvider || redirectTo
-                ).split('?');
+
+                const finalRedirectTo = redirectToFromProvider || redirectTo;
+
+                if (finalRedirectTo.startsWith('http')) {
+                    // absolute link (e.g. https://my.oidc.server/login)
+                    resetStore();
+                    queryClient.clear();
+                    window.location.href = finalRedirectTo;
+                    return finalRedirectTo;
+                }
+
+                // redirectTo is an internal location that may contain a query string, e.g. '/login?foo=bar'
+                // we must split it to pass a structured location to navigate()
+                const redirectToParts = finalRedirectTo.split('?');
                 const newLocation: Partial<Path> = {
                     pathname: redirectToParts[0],
                 };

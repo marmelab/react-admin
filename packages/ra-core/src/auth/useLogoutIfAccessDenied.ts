@@ -100,7 +100,13 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                     if (logoutUser) {
                         logout({}, redirectTo);
                     } else {
-                        navigate(redirectTo);
+                        if (redirectTo.startsWith('http')) {
+                            // absolute link (e.g. https://my.oidc.server/login)
+                            window.location.href = redirectTo;
+                        } else {
+                            // internal location
+                            navigate(redirectTo);
+                        }
                     }
 
                     return true;
