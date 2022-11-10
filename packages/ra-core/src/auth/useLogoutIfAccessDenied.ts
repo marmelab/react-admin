@@ -71,7 +71,7 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                         disableNotification ||
                         (e && e.message === false) ||
                         (error && error.message === false) ||
-                        redirectTo.startsWith('http')
+                        redirectTo?.startsWith('http')
                     );
                     if (shouldNotify) {
                         // notify only if not yet logged out

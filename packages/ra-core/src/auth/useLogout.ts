@@ -73,7 +73,7 @@ const useLogout = (): Logout => {
 
                 const finalRedirectTo = redirectToFromProvider || redirectTo;
 
-                if (finalRedirectTo.startsWith('http')) {
+                if (finalRedirectTo?.startsWith('http')) {
                     // absolute link (e.g. https://my.oidc.server/login)
                     resetStore();
                     queryClient.clear();
