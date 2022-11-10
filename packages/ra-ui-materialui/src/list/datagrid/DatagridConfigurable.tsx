@@ -67,7 +67,7 @@ export const DatagridConfigurable = ({
                           child.props.source || child.props.label
                               ? child.props.label
                               : translate(
-                                    'ra.configurable.inspector.unlabeled',
+                                    'ra.configurable.Datagrid.unlabeled',
                                     {
                                         column: index,
                                         _: `Unlabeled column #%{column}`,
