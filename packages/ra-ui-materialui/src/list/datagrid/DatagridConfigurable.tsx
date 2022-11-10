@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { useResourceContext, usePreference, useStore } from 'ra-core';
+import {
+    useResourceContext,
+    usePreference,
+    useStore,
+    useTranslate,
+} from 'ra-core';
 
 import { Configurable } from '../../preferences';
 import { Datagrid, DatagridProps } from './Datagrid';
@@ -39,6 +44,8 @@ export const DatagridConfigurable = ({
     const resource = useResourceContext(props);
     const finalPreferenceKey = preferenceKey || `${resource}.datagrid`;
 
+    const translate = useTranslate();
+
     const [availableColumns, setAvailableColumns] = useStore<
         ConfigurableDatagridColumn[]
     >(`preferences.${finalPreferenceKey}.availableColumns`, []);
@@ -52,12 +59,20 @@ export const DatagridConfigurable = ({
     React.useEffect(() => {
         // first render, or the preference have been cleared
         const columns = React.Children.map(props.children, (child, index) =>
-            React.isValidElement(child) &&
-            (child.props.source || child.props.label)
+            React.isValidElement(child)
                 ? {
                       index: String(index),
                       source: child.props.source,
-                      label: child.props.label,
+                      label:
+                          child.props.source || child.props.label
+                              ? child.props.label
+                              : translate(
+                                    'ra.configurable.Datagrid.unlabeled',
+                                    {
+                                        column: index,
+                                        _: `Unlabeled column #%{column}`,
+                                    }
+                                ),
                   }
                 : null
         ).filter(column => column != null);
@@ -114,7 +129,7 @@ export interface DatagridConfigurableProps extends DatagridProps {
 
 export interface ConfigurableDatagridColumn {
     index: string;
-    source: string;
+    source?: string;
     label?: string;
 }
 
