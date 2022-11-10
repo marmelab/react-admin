@@ -395,7 +395,7 @@ export const UserCreate = () => {
                 }
             }
         },
-        [create]
+        [create, notify, redirect]
     );
 
     return (
