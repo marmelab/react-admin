@@ -420,6 +420,19 @@ const dateParser = value => {
 
 **Tip**: If you need to do this globally, including for custom input components that do not use [the `useInput` hook](#the-useinput-hook), have a look at [the `sanitizeEmptyValues` prop of the `<Form>` component](./Form.md#sanitizeemptyvalues).
 
+## Marking An Input as Required
+
+By default, react-admin will add an asterisk to the input label if the Input component uses [the `required` validator](./Validation.md#per-input-validation-built-in-field-validators).
+
+![Required Input](./img/input-full-width.png)
+
+```jsx
+import { TextInput, required } from 'react-admin';
+
+<TextInput source="title" validate={required()} />
+<TextInput source="teaser" multiline fullWidth validate={required()} />
+```
+
 ## Linking Two Inputs
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
