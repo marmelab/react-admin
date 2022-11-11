@@ -200,7 +200,7 @@ title: "Reference"
 * [`useRecordContext`](./useRecordContext.md)
 * `useRecordSelection`
 * [`useRedirect`](./useRedirect.md)
-* [`useReference`](./useGetOne.md#aggregating-getone-calls)
+* [`useReference`](./useGetOne.md#usereference)
 * `useReferenceArrayFieldController`
 * `useReferenceArrayInputController`
 * `useReferenceInputController`
