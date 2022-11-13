@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import { useWatch } from 'react-hook-form';
+import { FieldValues, Path, PathValue, useWatch } from 'react-hook-form';
 import get from 'lodash/get';
-
 import warning from '../util/warning';
 /**
  * Get the current (edited) value of the record from the form and pass it
@@ -12,7 +11,7 @@ import warning from '../util/warning';
  *
  * const PostEdit = (props) => (
  *     <Edit {...props}>
- *         <SimpleForm>
+ *         <SimpleForm<FieldValues>>
  *             <BooleanInput source="hasEmail" />
  *             <FormDataConsumer>
  *                 {({ formData, ...rest }) => formData.hasEmail &&
@@ -29,7 +28,7 @@ import warning from '../util/warning';
  *     <Edit {...props}>
  *         <SimpleForm>
  *             <SelectInput source="country" choices={countries} />
- *             <FormDataConsumer>
+ *             <FormDataConsumer<FieldValues>>
  *                 {({ formData, ...rest }) =>
  *                      <SelectInput
  *                          source="city"
@@ -42,13 +41,20 @@ import warning from '../util/warning';
  *     </Edit>
  * );
  */
-const FormDataConsumer = (props: ConnectedProps) => {
-    const formData = useWatch();
-
-    return <FormDataConsumerView formData={formData} {...props} />;
+const FormDataConsumer = <TFieldValues extends FieldValues = FieldValues>(
+    props: ConnectedProps<TFieldValues>
+) => {
+    const formData = useWatch<TFieldValues>();
+    return (
+        <FormDataConsumerView<TFieldValues> formData={formData} {...props} />
+    );
 };
-
-export const FormDataConsumerView = (props: Props) => {
+export const FormDataConsumerView = <
+    TFieldValues extends FieldValues = FieldValues,
+    TPathValue = PathValue<TFieldValues, Path<TFieldValues>>[]
+>(
+    props: Props<TPathValue>
+) => {
     const { children, form, formData, source, index, ...rest } = props;
     let scopedFormData = formData;
     let getSource;
@@ -99,26 +105,24 @@ export const FormDataConsumerView = (props: Props) => {
 };
 
 export default FormDataConsumer;
-
-export interface FormDataConsumerRenderParams {
-    formData: any;
+export interface FormDataConsumerRenderParams<
+    TFieldValues extends FieldValues = FieldValues
+> {
+    formData: TFieldValues;
     scopedFormData?: any;
     getSource?: (source: string) => string;
 }
-
-export type FormDataConsumerRender = (
-    params: FormDataConsumerRenderParams
-) => ReactNode;
-
-interface ConnectedProps {
-    children: FormDataConsumerRender;
+export type FormDataConsumerRender<
+    TFieldValues extends FieldValues = FieldValues
+> = (params: FormDataConsumerRenderParams<TFieldValues>) => ReactNode;
+interface ConnectedProps<TFieldValues extends FieldValues = FieldValues> {
+    children: FormDataConsumerRender<TFieldValues>;
     form?: string;
     record?: any;
     source?: string;
     [key: string]: any;
 }
-
-interface Props extends ConnectedProps {
-    formData: any;
+interface Props<TFieldValues extends FieldValues> extends ConnectedProps {
+    formData: TFieldValues;
     index?: number;
 }
