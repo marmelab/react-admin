@@ -68,7 +68,9 @@ describe('FormDataConsumerView', () => {
                         {({ formData, ...rest }) => {
                             globalFormData = formData;
 
-                            return <TextInput source="bye" {...rest} />;
+                            return !formData.hi ? (
+                                <TextInput source="bye" {...rest} />
+                            ) : null;
                         }}
                     </FormDataConsumer>
                 </SimpleForm>
@@ -77,6 +79,18 @@ describe('FormDataConsumerView', () => {
 
         await waitFor(() => {
             expect(globalFormData).toEqual({ hi: true, bye: undefined });
+        });
+
+        expect(
+            screen.queryByLabelText('resources.undefined.fields.bye')
+        ).toBeNull();
+
+        fireEvent.click(screen.getByLabelText('resources.undefined.fields.hi'));
+
+        await waitFor(() => {
+            expect(
+                screen.getByLabelText('resources.undefined.fields.bye')
+            ).not.toBeNull();
         });
     });
 
