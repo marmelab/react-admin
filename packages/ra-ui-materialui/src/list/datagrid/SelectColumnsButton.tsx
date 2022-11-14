@@ -13,6 +13,7 @@ import ViewWeekIcon from '@mui/icons-material/ViewWeek';
 
 import { FieldEditor } from './FieldEditor';
 import { ConfigurableDatagridColumn } from './DatagridConfigurable';
+import { styled } from '@mui/material/styles';
 
 /**
  * Renders a button that lets users show / hide columns in a configurable datagrid
@@ -99,14 +100,13 @@ export const SelectColumnsButton = props => {
                     </IconButton>
                 </Tooltip>
             ) : (
-                <Button
+                <StyledButton
                     size="small"
                     onClick={handleClick}
                     startIcon={<ViewWeekIcon />}
-                    sx={{ '&.MuiButton-sizeSmall': { lineHeight: 1.5 } }}
                 >
                     {title}
-                </Button>
+                </StyledButton>
             )}
             <Popover
                 open={Boolean(anchorEl)}
@@ -137,6 +137,16 @@ export const SelectColumnsButton = props => {
         </>
     );
 };
+
+const StyledButton = styled(Button, {
+    name: 'RaSelectColumnsButton',
+    overridesResolver: (props, styles) => styles.root,
+})({
+    '&.MuiButton-sizeSmall': {
+        // fix for icon misalignment on small buttons, see https://github.com/mui/material-ui/pull/30240
+        lineHeight: 1.5,
+    },
+});
 
 export interface SelectColumnsButtonProps {
     preferenceKey: string;
