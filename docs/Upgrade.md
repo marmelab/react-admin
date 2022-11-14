@@ -3274,7 +3274,7 @@ Use the `<Title>` component instead.
 ### Removed Deprecated Elements
 
 - Removed `<BulkDeleteAction>` (use `<BulkDeleteButton>` instead)
-- Removed `<ReferenceFieldController>` (use `useReference` instead)
+- Removed `<ReferenceFieldController>` (use [`useReference`](./useGetOne.md#aggregating-getone-calls) instead)
 - Removed `<ReferenceArrayFieldController>` (use `useReferenceArrayFieldController` instead)
 - Removed `<ReferenceManyFieldController>` (use `useReferenceManyFieldController` instead)
 - Removed `<ReferenceInputController>` (use `useReferenceInputController` instead)
