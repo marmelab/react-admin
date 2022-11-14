@@ -1,11 +1,15 @@
-import { useEffect } from 'react';
+import { useMemo } from 'react';
+import { useQuery, UseQueryOptions, QueryObserverResult } from 'react-query';
+
 import useAuthProvider from './useAuthProvider';
 import { UserIdentity } from '../types';
-import { useSafeSetState } from '../util/hooks';
 
 const defaultIdentity = {
     id: '',
     fullName: null,
+};
+const defaultQueryParams = {
+    staleTime: 5 * 60 * 1000,
 };
 
 /**
@@ -14,20 +18,19 @@ const defaultIdentity = {
  * The return value updates according to the call state:
  *
  * - mount: { isLoading: true }
- * - success: { identity: Identity, isLoading: false }
+ * - success: { data: Identity, refetch: () => {}, isLoading: false }
  * - error: { error: Error, isLoading: false }
  *
  * The implementation is left to the authProvider.
  *
- * @returns The current user identity. Destructure as { identity, error, isLoading }.
+ * @returns The current user identity. Destructure as { isLoading, data, error, refetch }.
  *
  * @example
- *
  * import { useGetIdentity, useGetOne } from 'react-admin';
  *
  * const PostDetail = ({ id }) => {
  *     const { data: post, isLoading: postLoading } = useGetOne('posts', { id });
- *     const { identity, isLoading: identityLoading } = useGetIdentity();
+ *     const { data: identity, isLoading: identityLoading } = useGetIdentity();
  *     if (postLoading || identityLoading) return <>Loading...</>;
  *     if (!post.lockedBy || post.lockedBy === identity.id) {
  *         // post isn't locked, or is locked by me
@@ -38,42 +41,61 @@ const defaultIdentity = {
  *     }
  * }
  */
-const useGetIdentity = () => {
-    const [state, setState] = useSafeSetState<State>({
-        isLoading: true,
-    });
+export const useGetIdentity = (
+    queryParams: UseQueryOptions<UserIdentity, Error> = defaultQueryParams
+): UseGetIdentityResult => {
     const authProvider = useAuthProvider();
-    useEffect(() => {
-        if (authProvider && typeof authProvider.getIdentity === 'function') {
-            const callAuthProvider = async () => {
-                try {
-                    const identity = await authProvider.getIdentity();
-                    setState({
-                        isLoading: false,
-                        identity: identity || defaultIdentity,
-                    });
-                } catch (error) {
-                    setState({
-                        isLoading: false,
-                        error,
-                    });
-                }
-            };
-            callAuthProvider();
-        } else {
-            setState({
-                isLoading: false,
-                identity: defaultIdentity,
-            });
-        }
-    }, [authProvider, setState]);
-    return state;
+
+    const result = useQuery(
+        ['auth', 'getIdentity'],
+        authProvider
+            ? () => authProvider.getIdentity()
+            : async () => defaultIdentity,
+        queryParams
+    );
+
+    // @FIXME: return useQuery's result directly by removing identity prop (BC break - to be done in v5)
+    return useMemo(
+        () =>
+            result.isLoading
+                ? { isLoading: true }
+                : result.error
+                ? { error: result.error, isLoading: false }
+                : {
+                      data: result.data,
+                      identity: result.data,
+                      refetch: result.refetch,
+                      isLoading: false,
+                  },
+
+        [result]
+    );
 };
 
-interface State {
-    isLoading: boolean;
-    identity?: UserIdentity;
-    error?: any;
-}
+export type UseGetIdentityResult =
+    | {
+          isLoading: true;
+          data?: undefined;
+          identity?: undefined;
+          error?: undefined;
+          refetch?: undefined;
+      }
+    | {
+          isLoading: false;
+          data?: undefined;
+          identity?: undefined;
+          error: Error;
+          refetch?: undefined;
+      }
+    | {
+          isLoading: false;
+          data: UserIdentity;
+          /**
+           * @deprecated Use data instead
+           */
+          identity: UserIdentity;
+          error?: undefined;
+          refetch: () => Promise<QueryObserverResult<UserIdentity, Error>>;
+      };
 
 export default useGetIdentity;
