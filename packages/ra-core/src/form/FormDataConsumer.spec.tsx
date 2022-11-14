@@ -81,31 +81,26 @@ describe('FormDataConsumerView', () => {
     });
 
     it('should be reactive', async () => {
-        let globalFormData;
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm>
                     <BooleanInput source="hi" defaultValue />
                     <FormDataConsumer>
-                        {({ formData, ...rest }) => {
-                            globalFormData = formData;
-
-                            return !formData.hi ? (
+                        {({ formData, ...rest }) =>
+                            !formData.hi ? (
                                 <TextInput source="bye" {...rest} />
-                            ) : null;
-                        }}
+                            ) : null
+                        }
                     </FormDataConsumer>
                 </SimpleForm>
             </AdminContext>
         );
 
         await waitFor(() => {
-            expect(globalFormData).toEqual({ hi: true, bye: undefined });
+            expect(
+                screen.queryByLabelText('resources.undefined.fields.bye')
+            ).toBeNull();
         });
-
-        expect(
-            screen.queryByLabelText('resources.undefined.fields.bye')
-        ).toBeNull();
 
         fireEvent.click(screen.getByLabelText('resources.undefined.fields.hi'));
 
