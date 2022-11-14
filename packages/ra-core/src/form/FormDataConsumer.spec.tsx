@@ -68,6 +68,28 @@ describe('FormDataConsumerView', () => {
                         {({ formData, ...rest }) => {
                             globalFormData = formData;
 
+                            return <TextInput source="bye" {...rest} />;
+                        }}
+                    </FormDataConsumer>
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        await waitFor(() => {
+            expect(globalFormData).toEqual({ hi: true, bye: undefined });
+        });
+    });
+
+    it('should be reactive', async () => {
+        let globalFormData;
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm>
+                    <BooleanInput source="hi" defaultValue />
+                    <FormDataConsumer>
+                        {({ formData, ...rest }) => {
+                            globalFormData = formData;
+
                             return !formData.hi ? (
                                 <TextInput source="bye" {...rest} />
                             ) : null;
