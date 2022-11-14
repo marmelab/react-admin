@@ -13,7 +13,7 @@ describe('useGetIdentity', () => {
         render(<ErrorCase />);
         await screen.findByText('Error');
     });
-    it('should allow to invalidate the query cache', async () => {
+    it('should allow to update the identity after a change', async () => {
         render(<ResetIdentity />);
         expect(await screen.findByText('John Doe')).not.toBeNull();
         const input = screen.getByDisplayValue('John Doe');

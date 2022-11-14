@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { QueryClientProvider, QueryClient, useQueryClient } from 'react-query';
+import { QueryClientProvider, QueryClient } from 'react-query';
 import { useGetIdentity } from './useGetIdentity';
 import AuthContext from './AuthContext';
 

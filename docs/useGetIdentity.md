@@ -20,7 +20,7 @@ const { data, isLoading, error } = useGetIdentity();
 Once loaded, the `data` object contains the following properties:
 
 ```jsx
-const { id, fullName, avatar } = identity;
+const { id, fullName, avatar } = data;
 ```
 
 `useGetIdentity` uses [react-query's `useQuery` hook](https://react-query-v3.tanstack.com/reference/useQuery) to call the `authProvider`.
