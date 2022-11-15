@@ -15,6 +15,7 @@ export * from './MenuItemLink';
 export * from './NotFound';
 export * from './Notification';
 export * from './PageTitleConfigurable';
+export * from './ResourceMenuItem';
 export * from './Sidebar';
 export * from './SidebarToggleButton';
 export * from './Theme';

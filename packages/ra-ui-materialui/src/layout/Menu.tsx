@@ -1,21 +1,17 @@
 import * as React from 'react';
-import { ReactNode, createElement } from 'react';
+import { ReactNode } from 'react';
 import { MenuList } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import DefaultIcon from '@mui/icons-material/ViewList';
 import PropTypes from 'prop-types';
 import lodashGet from 'lodash/get';
 import clsx from 'clsx';
-import {
-    useResourceDefinitions,
-    useGetResourceLabel,
-    useCreatePath,
-} from 'ra-core';
+import { useResourceDefinitions } from 'ra-core';
 
 import { DRAWER_WIDTH, CLOSED_DRAWER_WIDTH } from './Sidebar';
 import { useSidebarState } from './useSidebarState';
 import { DashboardMenuItem } from './DashboardMenuItem';
 import { MenuItemLink } from './MenuItemLink';
+import { ResourceMenuItem } from './ResourceMenuItem';
 
 /**
  * Renders a menu with one menu item per resource by default. You can also set menu items by hand.
@@ -41,8 +37,6 @@ import { MenuItemLink } from './MenuItemLink';
  */
 export const Menu = (props: MenuProps) => {
     const resources = useResourceDefinitions();
-    const getResourceLabel = useGetResourceLabel();
-    const createPath = useCreatePath();
     const {
         hasDashboard,
         children = [
@@ -51,24 +45,7 @@ export const Menu = (props: MenuProps) => {
             ) : null,
             ...Object.keys(resources)
                 .filter(name => resources[name].hasList)
-                .map(name => (
-                    <MenuItemLink
-                        key={name}
-                        to={createPath({
-                            resource: name,
-                            type: 'list',
-                        })}
-                        state={{ _scrollToTop: true }}
-                        primaryText={getResourceLabel(name, 2)}
-                        leftIcon={
-                            resources[name].icon ? (
-                                createElement(resources[name].icon)
-                            ) : (
-                                <DefaultIcon />
-                            )
-                        }
-                    />
-                )),
+                .map(name => <ResourceMenuItem key={name} name={name} />),
         ],
         className,
         ...rest
@@ -110,6 +87,7 @@ Menu.propTypes = {
 // re-export MenuItem commponents for convenience
 Menu.Item = MenuItemLink;
 Menu.DashboardItem = DashboardMenuItem;
+Menu.ResourceItem = ResourceMenuItem;
 
 const PREFIX = 'RaMenu';
 
