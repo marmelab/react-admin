@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { useRef, useEffect, cloneElement, ReactElement } from 'react';
+import { useRef, useEffect, useState, cloneElement, ReactElement } from 'react';
 import {
     usePreferencesEditor,
     PreferenceKeyContextProvider,
     useTranslate,
 } from 'ra-core';
-import { alpha, Badge } from '@mui/material';
+import { alpha, Popover } from '@mui/material';
 import { styled, SxProps } from '@mui/material/styles';
 import SettingsIcon from '@mui/icons-material/Settings';
 import clsx from 'clsx';
@@ -50,6 +50,10 @@ export const Configurable = (props: ConfigurableProps) => {
 
     const isEditorOpen = prefixedPreferenceKey === currentPreferenceKey;
     const editorOpenRef = useRef(isEditorOpen);
+    const wrapperRef = useRef(null);
+    const [isCustomizeButtonVisible, setIsCustomizeButtonVisible] = useState(
+        false
+    );
 
     useEffect(() => {
         editorOpenRef.current = isEditorOpen;
@@ -84,6 +88,14 @@ export const Configurable = (props: ConfigurableProps) => {
         setPreferenceKey(prefixedPreferenceKey);
     };
 
+    const handleShowButton = event => {
+        setIsCustomizeButtonVisible(true);
+    };
+
+    const handleHideButton = () => {
+        setIsCustomizeButtonVisible(false);
+    };
+
     return (
         <PreferenceKeyContextProvider value={prefixedPreferenceKey}>
             <Root
@@ -92,26 +104,53 @@ export const Configurable = (props: ConfigurableProps) => {
                     isEditorOpen && ConfigurableClasses.editorActive
                 )}
                 sx={sx}
+                ref={wrapperRef}
+                onMouseEnter={isEnabled ? handleShowButton : undefined}
+                onMouseLeave={isEnabled ? handleHideButton : undefined}
             >
-                <Badge
-                    badgeContent={
-                        <SettingsIcon
-                            // @ts-ignore
-                            fontSize="12px"
-                        />
-                    }
-                    componentsProps={{
-                        badge: {
-                            title: translate(openButtonLabel),
-                            onClick: handleOpenEditor,
-                        },
-                    }}
-                    color="warning"
-                    invisible={!isEnabled}
-                >
-                    {children}
-                </Badge>
+                {children}
             </Root>
+            <Popover
+                open={isEnabled && isCustomizeButtonVisible}
+                sx={{
+                    pointerEvents: 'none',
+                    '& .MuiPaper-root': {
+                        pointerEvents: 'auto',
+                        borderRadius: 10,
+                        padding: '2px',
+                        lineHeight: 0,
+                        backgroundColor: 'warning.light',
+                        color: 'warning.contrastText',
+                        '&:hover': {
+                            cursor: 'pointer',
+                        },
+                    },
+                }}
+                anchorEl={wrapperRef.current}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                transformOrigin={{
+                    vertical: 'center',
+                    horizontal: 'center',
+                }}
+                onClose={handleHideButton}
+                disableRestoreFocus
+                PaperProps={{
+                    elevation: 1,
+                    onMouseEnter: handleShowButton,
+                    onMouseLeave: handleHideButton,
+                    title: translate(openButtonLabel),
+                    onClick: handleOpenEditor,
+                }}
+                disableScrollLock
+            >
+                <SettingsIcon
+                    // @ts-ignore
+                    fontSize="12px"
+                />
+            </Popover>
         </PreferenceKeyContextProvider>
     );
 };
@@ -128,7 +167,6 @@ const PREFIX = 'RaConfigurable';
 
 export const ConfigurableClasses = {
     editMode: `${PREFIX}-editMode`,
-    button: `${PREFIX}-button`,
     editorActive: `${PREFIX}-editorActive`,
 };
 
@@ -136,25 +174,16 @@ const Root = styled('span', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    [`& .MuiBadge-badge`]: {
-        visibility: 'hidden',
-        pointerEvents: 'none',
-        padding: 0,
-    },
-    [`&.${ConfigurableClasses.editMode}:hover > .MuiBadge-root > .MuiBadge-badge`]: {
-        visibility: 'visible',
-        pointerEvents: 'initial',
-        cursor: 'pointer',
-    },
-    [`&.${ConfigurableClasses.editMode} > .MuiBadge-root > :not(.MuiBadge-badge)`]: {
+    position: 'relative',
+    display: 'inline-block',
+    [`&.${ConfigurableClasses.editMode}`]: {
         transition: theme.transitions.create('outline'),
         outline: `${alpha(theme.palette.warning.main, 0.3)} solid 2px`,
     },
-    [`&.${ConfigurableClasses.editMode}:hover > .MuiBadge-root > :not(.MuiBadge-badge)`]: {
+    [`&.${ConfigurableClasses.editMode}:hover `]: {
         outline: `${alpha(theme.palette.warning.main, 0.5)} solid 2px`,
     },
-
-    [`&.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive} > .MuiBadge-root > :not(.MuiBadge-badge), &.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive}:hover > .MuiBadge-root > :not(.MuiBadge-badge)`]: {
+    [`&.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive} , &.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive}:hover `]: {
         outline: `${theme.palette.warning.main} solid 2px`,
     },
 }));
