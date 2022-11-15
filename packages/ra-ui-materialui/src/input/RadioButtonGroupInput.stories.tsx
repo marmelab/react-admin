@@ -47,6 +47,19 @@ export const DefaultValue = () => (
     </Wrapper>
 );
 
+export const Invalid = () => (
+    <Wrapper>
+        <RadioButtonGroupInput
+            validate={() => 'Not good'}
+            choices={[
+                { id: 'M', name: 'Male' },
+                { id: 'F', name: 'Female' },
+            ]}
+            source="gender"
+        />
+    </Wrapper>
+);
+
 const dataProvider = testDataProvider({
     getList: () => Promise.resolve({ data: choices, total: choices.length }),
     getMany: (resource, params) =>

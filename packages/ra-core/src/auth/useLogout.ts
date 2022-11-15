@@ -57,24 +57,33 @@ const useLogout = (): Logout => {
         navigateRef.current = navigate;
     }, [location, navigate]);
 
-    const logout = useCallback(
+    const logout: Logout = useCallback(
         (
             params = {},
             redirectTo = loginUrl,
             redirectToCurrentLocationAfterLogin = true
         ) =>
             authProvider.logout(params).then(redirectToFromProvider => {
-                if (redirectToFromProvider === false) {
+                if (redirectToFromProvider === false || redirectTo === false) {
                     resetStore();
                     queryClient.clear();
                     // do not redirect
                     return;
                 }
-                // redirectTo can contain a query string, e.g. '/login?foo=bar'
-                // we must split the redirectTo to pass a structured location to navigate()
-                const redirectToParts = (
-                    redirectToFromProvider || redirectTo
-                ).split('?');
+
+                const finalRedirectTo = redirectToFromProvider || redirectTo;
+
+                if (finalRedirectTo?.startsWith('http')) {
+                    // absolute link (e.g. https://my.oidc.server/login)
+                    resetStore();
+                    queryClient.clear();
+                    window.location.href = finalRedirectTo;
+                    return finalRedirectTo;
+                }
+
+                // redirectTo is an internal location that may contain a query string, e.g. '/login?foo=bar'
+                // we must split it to pass a structured location to navigate()
+                const redirectToParts = finalRedirectTo.split('?');
                 const newLocation: Partial<Path> = {
                     pathname: redirectToParts[0],
                 };
@@ -138,7 +147,7 @@ const useLogout = (): Logout => {
  */
 type Logout = (
     params?: any,
-    redirectTo?: string,
+    redirectTo?: string | false,
     redirectToCurrentLocationAfterLogin?: boolean
 ) => Promise<any>;
 
