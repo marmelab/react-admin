@@ -4,8 +4,6 @@ import { Switch, Typography } from '@mui/material';
 
 /**
  * UI to enable/disable a field
- *
- * @see DatagridEditor, SimpleFormEditor
  */
 export const FieldToggle = props => {
     const { selected, label, onToggle, source, index } = props;

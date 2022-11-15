@@ -4,6 +4,9 @@ import { Box, Button } from '@mui/material';
 
 import { FieldToggle } from './FieldToggle';
 
+/**
+ * UI to select / deselect fields, and store the selection in preferences
+ */
 export const FieldsSelector = ({
     name = 'columns',
     availableName = 'availableColumns',

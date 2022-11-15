@@ -41,10 +41,10 @@ export const DatagridConfigurable = ({
             'DatagridConfigurable does not support the optimized prop'
         );
     }
-    const resource = useResourceContext(props);
-    const finalPreferenceKey = preferenceKey || `${resource}.datagrid`;
 
     const translate = useTranslate();
+    const resource = useResourceContext(props);
+    const finalPreferenceKey = preferenceKey || `${resource}.datagrid`;
 
     const [availableColumns, setAvailableColumns] = useStore<
         ConfigurableDatagridColumn[]

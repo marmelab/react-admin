@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { useResourceContext, usePreference, useStore } from 'ra-core';
+import {
+    useResourceContext,
+    usePreference,
+    useStore,
+    useTranslate,
+} from 'ra-core';
 
 import { Configurable } from '../preferences';
 import { SimpleForm, SimpleFormProps } from './SimpleForm';
@@ -10,6 +15,7 @@ export const SimpleFormConfigurable = ({
     omit,
     ...props
 }: SimpleFormConfigurableProps) => {
+    const translate = useTranslate();
     const resource = useResourceContext(props);
     const finalPreferenceKey = preferenceKey || `${resource}.simpleForm`;
 
@@ -26,12 +32,20 @@ export const SimpleFormConfigurable = ({
     React.useEffect(() => {
         // first render, or the preference have been cleared
         const inputs = React.Children.map(props.children, (child, index) =>
-            React.isValidElement(child) &&
-            (child.props.source || child.props.label)
+            React.isValidElement(child)
                 ? {
                       index: String(index),
                       source: child.props.source,
-                      label: child.props.label,
+                      label:
+                          child.props.source || child.props.label
+                              ? child.props.label
+                              : translate(
+                                    'ra.configurable.simpleForm.unlabeled',
+                                    {
+                                        input: index,
+                                        _: `Unlabeled input #%{input}`,
+                                    }
+                                ),
                   }
                 : null
         ).filter(column => column != null);
