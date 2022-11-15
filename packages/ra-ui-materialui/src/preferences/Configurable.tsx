@@ -111,7 +111,7 @@ export const Configurable = (props: ConfigurableProps) => {
                 {children}
             </Root>
             <Popover
-                open={isEnabled && isCustomizeButtonVisible}
+                open={isEnabled && (isCustomizeButtonVisible || isEditorOpen)}
                 sx={{
                     pointerEvents: 'none',
                     '& .MuiPaper-root': {
@@ -136,7 +136,6 @@ export const Configurable = (props: ConfigurableProps) => {
                     horizontal: 'center',
                 }}
                 onClose={handleHideButton}
-                disableRestoreFocus
                 PaperProps={{
                     elevation: 1,
                     onMouseEnter: handleShowButton,
@@ -144,7 +143,10 @@ export const Configurable = (props: ConfigurableProps) => {
                     title: translate(openButtonLabel),
                     onClick: handleOpenEditor,
                 }}
+                disableAutoFocus
+                disableRestoreFocus
                 disableScrollLock
+                marginThreshold={8}
             >
                 <SettingsIcon
                     // @ts-ignore
