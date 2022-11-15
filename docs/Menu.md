@@ -211,7 +211,7 @@ Clicking on the dashboard menu item leads to the `/` route and renders the compo
 
 ## `<Menu.ResourceItem>`
 
-The `<Menu.DashboardItem>` component displays a menu item for the list page of a resource, based on the resource name.
+The `<Menu.ResourceItem>` component displays a menu item for the list page of a resource, based on the resource name.
 
 ```jsx
 import { Menu } from 'react-admin';
