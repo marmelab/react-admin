@@ -6,6 +6,8 @@ import { Box } from '@mui/material';
 import { DatagridConfigurable } from './DatagridConfigurable';
 import { Inspector, InspectorButton } from '../../preferences';
 import { TextField } from '../../field';
+import { EditButton } from '../../button';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 export default { title: 'ra-ui-materialui/list/DatagridConfigurable' };
 
@@ -39,28 +41,33 @@ const data = [
 const AuthorField = () => <TextField source="author" />;
 AuthorField.defaultProps = { label: 'Author' };
 
+const theme = createTheme();
+
 export const Basic = () => (
-    <PreferencesEditorContextProvider>
-        <MemoryRouter>
-            <Inspector />
-            <Box display="flex" justifyContent="flex-end">
-                <InspectorButton />
-            </Box>
-            <Box p={2}>
-                <DatagridConfigurable
-                    resource="books1"
-                    data={data}
-                    sort={{ field: 'title', order: 'ASC' }}
-                    bulkActionButtons={false}
-                >
-                    <TextField source="id" />
-                    <TextField source="title" label="Original title" />
-                    <TextField source="author" />
-                    <TextField source="year" />
-                </DatagridConfigurable>
-            </Box>
-        </MemoryRouter>
-    </PreferencesEditorContextProvider>
+    <ThemeProvider theme={theme}>
+        <PreferencesEditorContextProvider>
+            <MemoryRouter>
+                <Inspector />
+                <Box display="flex" justifyContent="flex-end">
+                    <InspectorButton />
+                </Box>
+                <Box p={2}>
+                    <DatagridConfigurable
+                        resource="books1"
+                        data={data}
+                        sort={{ field: 'title', order: 'ASC' }}
+                        bulkActionButtons={false}
+                    >
+                        <TextField source="id" />
+                        <TextField source="title" label="Original title" />
+                        <TextField source="author" />
+                        <TextField source="year" />
+                        <EditButton />
+                    </DatagridConfigurable>
+                </Box>
+            </MemoryRouter>
+        </PreferencesEditorContextProvider>
+    </ThemeProvider>
 );
 
 export const Omit = () => (

@@ -90,7 +90,7 @@ const UserProfile = () => {
 
 This results in less calls to the dataProvider. For instance, if the `<UserProfile>` component above is rendered in a `<Datagrid>`, it will only make one call to `dataProvider.getMany()` for the entire list instead of one call to `dataProvider.getOne()` per row.
 
-As this hook is often used to fetch references, react-admin exposes a `useReference` hook, which avoids doing the array conversion manually. It's an application hook rather than a data provider hook, so its syntax is a bit different. Prefer `useReference` to `useGetManyAggregate` when you use `useGetOne` to fetch a reference.
+As `useGetManyAggregate` is often used to fetch references, react-admin exposes a `useReference` hook, which avoids doing the array conversion manually. It's an application hook rather than a data provider hook, so its syntax is a bit different. Prefer `useReference` to `useGetManyAggregate` when you use `useGetOne` to fetch a reference.
 
 ```diff
 -import { useGetOne, useRecordContext } from 'react-admin';
