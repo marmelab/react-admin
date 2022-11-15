@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import ViewWeekIcon from '@mui/icons-material/ViewWeek';
 
-import { FieldEditor } from './FieldEditor';
+import { FieldToggle } from '../../preferences';
 import { ConfigurableDatagridColumn } from './DatagridConfigurable';
 
 /**
@@ -123,7 +123,7 @@ export const SelectColumnsButton = props => {
             >
                 <Box p={1}>
                     {availableColumns.map(column => (
-                        <FieldEditor
+                        <FieldToggle
                             key={column.index}
                             source={column.source}
                             label={column.label}
