@@ -35,7 +35,44 @@ const Wrapper = ({ children }) => (
 
 export const Basic = () => (
     <Wrapper>
-        <SimpleFormConfigurable record={data}>
+        <SimpleFormConfigurable record={data} resource="books">
+            <TextInput source="title" fullWidth />
+            <TextInput source="author" />
+            <NumberInput source="year" />
+        </SimpleFormConfigurable>
+    </Wrapper>
+);
+
+export const Omit = () => (
+    <Wrapper>
+        <SimpleFormConfigurable
+            record={data}
+            resource="books2"
+            omit={['author']}
+        >
+            <TextInput source="title" fullWidth />
+            <TextInput source="author" />
+            <NumberInput source="year" />
+        </SimpleFormConfigurable>
+    </Wrapper>
+);
+
+export const PreferenceKey = () => (
+    <Wrapper>
+        <SimpleFormConfigurable
+            record={data}
+            resource="books3"
+            preferenceKey="pref1"
+        >
+            <TextInput source="title" fullWidth />
+            <TextInput source="author" />
+            <NumberInput source="year" />
+        </SimpleFormConfigurable>
+        <SimpleFormConfigurable
+            record={data}
+            resource="books3"
+            preferenceKey="pref2"
+        >
             <TextInput source="title" fullWidth />
             <TextInput source="author" />
             <NumberInput source="year" />
