@@ -86,13 +86,7 @@ export const DatagridConfigurable = ({
         <Configurable
             editor={<DatagridEditor />}
             preferenceKey={finalPreferenceKey}
-            sx={{
-                display: 'block',
-                '& .MuiBadge-root': { display: 'flex' },
-                '& .RaDatagrid-root': { flex: 1 },
-                '& .MuiBadge-badge': { zIndex: 2 },
-                minHeight: 2,
-            }}
+            sx={{ display: 'block', minHeight: 2 }}
         >
             <DatagridWithPreferences {...props} />
         </Configurable>

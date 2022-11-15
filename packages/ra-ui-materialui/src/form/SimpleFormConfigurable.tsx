@@ -59,6 +59,12 @@ export const SimpleFormConfigurable = ({
         <Configurable
             editor={<SimpleFormEditor />}
             preferenceKey={finalPreferenceKey}
+            sx={{
+                display: 'block',
+                '&.RaConfigurable-editMode': {
+                    margin: '2px',
+                },
+            }}
         >
             <SimpleFormWithPreferences {...props} />
         </Configurable>
