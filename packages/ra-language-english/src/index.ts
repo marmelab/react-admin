@@ -180,15 +180,23 @@ const englishMessages: TranslationMessages = {
         configurable: {
             customize: 'Customize',
             configureMode: 'Configure this page',
-            Datagrid: {
-                unlabeled: 'Unlabeled column #%{column}',
-            },
             inspector: {
                 title: 'Inspector',
                 content: 'Hover the application UI elements to configure them',
                 reset: 'Reset Settings',
+                hideAll: 'Hide All',
+                showAll: 'Show All',
+            },
+            Datagrid: {
+                title: 'Datagrid',
+                unlabeled: 'Unlabeled column #%{column}',
+            },
+            SimpleForm: {
+                title: 'Form',
+                unlabeled: 'Unlabeled input #%{input}',
             },
             SimpleList: {
+                title: 'List',
                 primaryText: 'Primary text',
                 secondaryText: 'Secondary text',
                 tertiaryText: 'Tertiary text',

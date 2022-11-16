@@ -186,15 +186,23 @@ const frenchMessages: TranslationMessages = {
         configurable: {
             customize: 'Personnaliser',
             configureMode: 'Configurer cette page',
-            Datagrid: {
-                unlabeled: 'Colonne sans label #%{column}',
-            },
             inspector: {
                 title: 'Inspecteur',
                 content: 'Sélectionner un composant pour le configurer',
                 reset: 'Réinitialiser',
+                hideAll: 'Masquer tout',
+                showAll: 'Afficher tout',
+            },
+            Datagrid: {
+                title: 'Tableau',
+                unlabeled: 'Colonne #%{column}',
+            },
+            SimpleForm: {
+                title: 'Formulaire',
+                unlabeled: 'Champ #%{input}',
             },
             SimpleList: {
+                title: 'Liste',
                 primaryText: 'Texte principal',
                 secondaryText: 'Texte secondaire',
                 tertiaryText: 'Texte annexe',

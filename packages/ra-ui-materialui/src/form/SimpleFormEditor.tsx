@@ -4,7 +4,7 @@ import { useSetInspectorTitle } from 'ra-core';
 import { FieldsSelector } from '../preferences';
 
 export const SimpleFormEditor = () => {
-    useSetInspectorTitle('ra.inspector.simpleForm', { _: 'Form' });
+    useSetInspectorTitle('ra.inspector.SimpleForm.title', { _: 'Form' });
 
     return <FieldsSelector name="inputs" availableName="availableInputs" />;
 };
