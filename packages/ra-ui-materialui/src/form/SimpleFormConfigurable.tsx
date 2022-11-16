@@ -40,7 +40,7 @@ export const SimpleFormConfigurable = ({
                           child.props.source || child.props.label
                               ? child.props.label
                               : translate(
-                                    'ra.configurable.simpleForm.unlabeled',
+                                    'ra.configurable.SimpleForm.unlabeled',
                                     {
                                         input: index,
                                         _: `Unlabeled input #%{input}`,
