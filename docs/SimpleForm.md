@@ -525,7 +525,7 @@ When users enter the configuration mode and select the `<SimpleForm>`, they can 
 By default, `<SimpleFormConfigurable>` renders all child inputs. But you can also omit some of them by passing an `omit` prop containing an array of input sources:
 
 ```jsx
-// by default, hide the author ipnut
+// By default, hide the author input
 // users can choose to show it in configuration mode
 const PostEdit = () => (
     <Edit>
