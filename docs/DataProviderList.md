@@ -9,6 +9,7 @@ Thanks to the Data Provider architecture, react-admin supports a lot of API back
 
 If you can't find a Data Provider for your backend below, no worries! [Writing a Data Provider](./DataProviderWriting.md) takes a couple of hours, and won't prevent you from using react-admin.
 
+* **[AppWrite](https://appwrite.io/)**: [g33kdev/ra-appwrite](https://github.com/g33kdev/ra-appwrite)
 * **[AWS Amplify](https://docs.amplify.aws)**: [MrHertal/react-admin-amplify](https://github.com/MrHertal/react-admin-amplify)
 * **[Blitz-js](https://blitzjs.com/docs)**: [theapexlab/ra-data-blitz](https://github.com/theapexlab/ra-data-blitz)
 * **[Configurable Identity Property REST Client](https://github.com/zachrybaker/ra-data-rest-client)**: [zachrybaker/ra-data-rest-client](https://github.com/zachrybaker/ra-data-rest-client)
