@@ -186,7 +186,7 @@ const frenchMessages: TranslationMessages = {
         configurable: {
             customize: 'Personnaliser',
             configureMode: 'Configurer cette page',
-            Datagrid: {
+            datagrid: {
                 unlabeled: 'Colonne sans label #%{column}',
             },
             inspector: {

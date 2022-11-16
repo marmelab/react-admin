@@ -179,7 +179,7 @@ export interface TranslationMessages extends StringMap {
         configurable?: {
             customize: string;
             configureMode: string;
-            Datagrid: {
+            datagrid: {
                 unlabeled: string;
             };
             inspector: {

@@ -180,7 +180,7 @@ const englishMessages: TranslationMessages = {
         configurable: {
             customize: 'Customize',
             configureMode: 'Configure this page',
-            Datagrid: {
+            datagrid: {
                 unlabeled: 'Unlabeled column #%{column}',
             },
             inspector: {
