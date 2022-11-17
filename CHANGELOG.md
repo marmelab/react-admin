@@ -1,5 +1,21 @@
 # Changelog
 
+## v4.5.2
+
+* Fix `authProvider` hooks support for redirectTo: absolute URL ([#8382](https://github.com/marmelab/react-admin/pull/8382)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `authProvider` hooks support for redirectTo: false ([#8381](https://github.com/marmelab/react-admin/pull/8381)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<FormDataConsumer>` values not being up-to-date on mount ([#8340](https://github.com/marmelab/react-admin/pull/8340)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<DatagridConfigurable>` ignores children without label or source ([#8376](https://github.com/marmelab/react-admin/pull/8376)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<SelectColumnsButton>` styles ([#8391](https://github.com/marmelab/react-admin/pull/8391)) ([WiXSL](https://github.com/WiXSL))
+* Bump loader-utils from 1.4.1 to 1.4.2  dependenciesPull requests that update a dependency file([#8396](https://github.com/marmelab/react-admin/pull/8396)) ([dependabot](https://github.com/dependabot))
+* [Doc] Fix `<FilterList>` example and anchor ([#8401](https://github.com/marmelab/react-admin/pull/8401)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `useReference` hook docs ([#8385](https://github.com/marmelab/react-admin/pull/8385)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `<AutocompleteInput optionText>` defaultValue ([#8386](https://github.com/marmelab/react-admin/pull/8386)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix missing error type in `useNotify` ([#8398](https://github.com/marmelab/react-admin/pull/8398)) ([septentrion-730n](https://github.com/septentrion-730n))
+* [Doc] Improve server side validation example ([#8378](https://github.com/marmelab/react-admin/pull/8378)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Add mention about asterix decoration in required inputs ([#8383](https://github.com/marmelab/react-admin/pull/8383)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add AppWrite data provider ([#8399](https://github.com/marmelab/react-admin/pull/8399)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## 4.5.1
 
 * Fix `<RichTextInput>` cursor moves to the end while typing ([#8365](https://github.com/marmelab/react-admin/pull/8365)) ([WiXSL](https://github.com/WiXSL))
