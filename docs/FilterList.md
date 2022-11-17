@@ -28,7 +28,7 @@ export const PostFilterSidebar = () => (
     <Card sx={{ order: -1, mr: 2, mt: 9, width: 200 }}>
         <CardContent>
             <SavedQueriesList />
-            <FilterLiveSearch >
+            <FilterLiveSearch />
             <FilterList label="Subscribed to newsletter" icon={<MailIcon />}>
                 <FilterListItem label="Yes" value={{ has_newsletter: true }} />
                 <FilterListItem label="No" value={{ has_newsletter: false }} />
@@ -45,7 +45,7 @@ export const PostFilterSidebar = () => (
 ```
 {% endraw %}
 
-Add this component to the list view using [the `<List aside>` prop](./List.md#aside):
+Add this component to the list view using [the `<List aside>` prop](./List.md#aside-side-component):
 
 ```jsx
 import { PostFilterSidebar } from './PostFilterSidebar';
