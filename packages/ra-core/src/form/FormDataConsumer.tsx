@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import { useWatch } from 'react-hook-form';
+import { useWatch, useFormContext, FieldValues } from 'react-hook-form';
 import get from 'lodash/get';
 
 import warning from '../util/warning';
@@ -43,22 +43,27 @@ import warning from '../util/warning';
  * );
  */
 const FormDataConsumer = (props: ConnectedProps) => {
-    const formData = useWatch();
+    const { getValues } = useFormContext();
+    let formData = useWatch();
+
+    //useWatch will initially return the provided defaultValues of the form.
+    //We must get the initial formData from getValues
+    if (Object.keys(formData).length === 0) {
+        (formData as FieldValues) = getValues();
+    }
 
     return <FormDataConsumerView formData={formData} {...props} />;
 };
 
 export const FormDataConsumerView = (props: Props) => {
     const { children, form, formData, source, index, ...rest } = props;
-    let scopedFormData = formData;
-    let getSource;
     let getSourceHasBeenCalled = false;
     let ret;
 
     // If we have an index, we are in an iterator like component (such as the SimpleFormIterator)
     if (typeof index !== 'undefined' && source) {
-        scopedFormData = get(formData, source);
-        getSource = (scopedSource: string) => {
+        const scopedFormData = get(formData, source);
+        const getSource = (scopedSource: string) => {
             getSourceHasBeenCalled = true;
             return `${source}.${scopedSource}`;
         };
