@@ -74,6 +74,7 @@ title: "Reference"
 * [`<ImageField>`](./ImageField.md)
 * [`<ImageInput>`](./ImageInput.md)
 * [`<ImageInputPreview>`](./ImageInput.md#imageinput)
+* [`<InspectorButton>`](./Configurable.md#inspectorbutton)
 * [`<Labeled>`](./Labeled.md)
 * [`<Layout>`](./Theming.md#using-a-custom-layout)
 * [`<Loading>`](./Theming.md#loading)

@@ -1009,13 +1009,13 @@ const App = () => (
 
 ## Notifications
 
-You can override the notification component, for instance to change the notification duration. It defaults to 4000, i.e. 4 seconds, and you can override it using the `autoHideDuration` prop. For instance, to create a custom Notification component with a 5 seconds default:
+You can override the notification component, for instance to change the notification duration. A common use case is to change the `autoHideDuration`, and force the notification to remain on screen longer than the default 4 seconds. For instance, to create a custom Notification component with a 5 seconds default:
 
 ```jsx
 // in src/MyNotification.js
 import { Notification } from 'react-admin';
 
-const MyNotification = props => <Notification {...props} autoHideDuration={5000} />;
+const MyNotification = () => <Notification autoHideDuration={5000} />;
 
 export default MyNotification;
 ```
