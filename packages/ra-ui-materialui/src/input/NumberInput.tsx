@@ -27,6 +27,7 @@ export const NumberInput = ({
     label,
     margin,
     onChange,
+    onBlur,
     parse,
     resource,
     source,
@@ -46,6 +47,7 @@ export const NumberInput = ({
         isRequired,
     } = useInput({
         defaultValue,
+        onBlur,
         resource,
         source,
         validate,
