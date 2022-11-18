@@ -3,9 +3,9 @@ import { FieldTitle, useResourceContext } from 'ra-core';
 import { Switch, Typography } from '@mui/material';
 
 /**
- * UI to edit a field in a DatagridEditor
+ * UI to enable/disable a field
  */
-export const FieldEditor = props => {
+export const FieldToggle = props => {
     const { selected, label, onToggle, source, index } = props;
     const resource = useResourceContext();
     return (

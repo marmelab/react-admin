@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useParams } from 'react-router';
 import {
     Edit,
-    SimpleForm,
+    SimpleFormConfigurable,
     TextField,
     TextInput,
     required,
@@ -19,12 +19,12 @@ const TagEdit = () => {
     return (
         <>
             <Edit redirect="list">
-                <SimpleForm warnWhenUnsavedChanges>
+                <SimpleFormConfigurable warnWhenUnsavedChanges>
                     <TextField source="id" />
                     <TranslatableInputs locales={['en', 'fr']}>
                         <TextInput source="name" validate={[required()]} />
                     </TranslatableInputs>
-                </SimpleForm>
+                </SimpleFormConfigurable>
             </Edit>
             <ResourceContextProvider value="posts">
                 <List

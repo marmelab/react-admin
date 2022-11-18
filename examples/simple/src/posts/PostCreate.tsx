@@ -17,7 +17,7 @@ import {
     ReferenceInput,
     SaveButton,
     SelectInput,
-    SimpleForm,
+    SimpleFormConfigurable,
     SimpleFormIterator,
     TextInput,
     Toolbar,
@@ -103,7 +103,7 @@ const PostCreate = () => {
     const dateDefaultValue = useMemo(() => new Date(), []);
     return (
         <Create redirect="edit">
-            <SimpleForm
+            <SimpleFormConfigurable
                 toolbar={<PostCreateToolbar />}
                 defaultValues={defaultValues}
             >
@@ -193,7 +193,7 @@ const PostCreate = () => {
                         </SimpleFormIterator>
                     </ArrayInput>
                 )}
-            </SimpleForm>
+            </SimpleFormConfigurable>
         </Create>
     );
 };

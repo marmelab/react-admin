@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import expect from 'expect';
 
 import { Basic, Omit, PreferenceKey } from './DatagridConfigurable.stories';
@@ -9,7 +9,8 @@ describe('<DatagridConfigurable>', () => {
         render(<Basic />);
         screen.getByLabelText('Configure mode').click();
         await screen.findByText('Inspector');
-        await screen.getAllByTitle('ra.configurable.customize')[0].click();
+        fireEvent.mouseOver(screen.getByText('Leo Tolstoy'));
+        await screen.getByTitle('ra.configurable.customize').click();
         await screen.findByText('Datagrid');
         expect(screen.queryByText('1869')).not.toBeNull();
         screen.getByLabelText('Year').click();
@@ -21,7 +22,8 @@ describe('<DatagridConfigurable>', () => {
         render(<Basic />);
         screen.getByLabelText('Configure mode').click();
         await screen.findByText('Inspector');
-        await screen.getAllByTitle('ra.configurable.customize')[0].click();
+        fireEvent.mouseOver(screen.getByText('Leo Tolstoy'));
+        await screen.getByTitle('ra.configurable.customize').click();
         await screen.findByText('Datagrid');
         expect(screen.queryByText('War and Peace')).not.toBeNull();
         screen.getByLabelText('Original title').click();
@@ -33,7 +35,8 @@ describe('<DatagridConfigurable>', () => {
         render(<Basic />);
         screen.getByLabelText('Configure mode').click();
         await screen.findByText('Inspector');
-        await screen.getAllByTitle('ra.configurable.customize')[0].click();
+        fireEvent.mouseOver(screen.getByText('Leo Tolstoy'));
+        await screen.getByTitle('ra.configurable.customize').click();
         await screen.findByText('Datagrid');
         expect(screen.queryByText('Leo Tolstoy')).not.toBeNull();
         screen.getByLabelText('Author').click();
@@ -48,7 +51,8 @@ describe('<DatagridConfigurable>', () => {
             expect(screen.queryByText('War and Peace')).toBeNull();
             screen.getByLabelText('Configure mode').click();
             await screen.findByText('Inspector');
-            await screen.getAllByTitle('ra.configurable.customize')[0].click();
+            fireEvent.mouseOver(screen.getByText('Leo Tolstoy'));
+            await screen.getByTitle('ra.configurable.customize').click();
             await screen.findByText('Datagrid');
             screen.getByLabelText('Original title').click();
             expect(screen.queryByText('War and Peace')).not.toBeNull();
@@ -60,7 +64,8 @@ describe('<DatagridConfigurable>', () => {
             expect(screen.queryAllByText('War and Peace')).toHaveLength(2);
             screen.getByLabelText('Configure mode').click();
             await screen.findByText('Inspector');
-            await screen.getAllByTitle('ra.configurable.customize')[0].click();
+            fireEvent.mouseOver(screen.getAllByText('Leo Tolstoy')[0]);
+            await screen.getByTitle('ra.configurable.customize').click();
             await screen.findByText('Datagrid');
             screen.getByLabelText('Original title').click();
             expect(screen.queryAllByText('War and Peace')).toHaveLength(1);

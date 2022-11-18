@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { screen, render, waitFor } from '@testing-library/react';
+import { screen, render, waitFor, fireEvent } from '@testing-library/react';
 import expect from 'expect';
 
 import { Basic, Unmount } from './Configurable.stories';
@@ -9,7 +9,8 @@ describe('Configurable', () => {
         render(<Basic />);
         screen.getByLabelText('Configure mode').click();
         await screen.findByText('Inspector');
-        screen.getAllByTitle('ra.configurable.customize')[0].click();
+        fireEvent.mouseOver(screen.getByText('Lorem ipsum'));
+        screen.getByTitle('ra.configurable.customize').click();
         await screen.findByText('Text block');
     });
 
@@ -17,7 +18,8 @@ describe('Configurable', () => {
         render(<Basic />);
         screen.getByLabelText('Configure mode').click();
         await screen.findByText('Inspector');
-        await screen.getAllByTitle('ra.configurable.customize')[0].click();
+        fireEvent.mouseOver(screen.getByText('Lorem ipsum'));
+        screen.getByTitle('ra.configurable.customize').click();
         expect(
             (screen.getByLabelText('Background color') as HTMLInputElement)
                 .value
@@ -28,7 +30,8 @@ describe('Configurable', () => {
         render(<Basic />);
         screen.getByText('Today');
         screen.getByLabelText('Configure mode').click();
-        screen.getAllByTitle('ra.configurable.customize')[1].click();
+        fireEvent.mouseOver(screen.getByText('Sales'));
+        screen.getByTitle('ra.configurable.customize').click();
         await screen.findByText('Sales block');
         screen.getByLabelText('Show date').click();
         expect(screen.queryByText('Today')).toBeNull();
@@ -38,7 +41,8 @@ describe('Configurable', () => {
         render(<Basic />);
         screen.getByText('Today');
         screen.getByLabelText('Configure mode').click();
-        screen.getAllByTitle('ra.configurable.customize')[1].click();
+        fireEvent.mouseOver(screen.getByText('Sales'));
+        screen.getByTitle('ra.configurable.customize').click();
         await screen.findByText('Sales block');
         screen.getByLabelText('Show date').click();
         screen.getByLabelText('ra.action.close').click();
@@ -49,7 +53,8 @@ describe('Configurable', () => {
         render(<Unmount />);
         screen.getByLabelText('Configure mode').click();
         await screen.findByText('Inspector');
-        screen.getAllByTitle('ra.configurable.customize')[0].click();
+        fireEvent.mouseOver(screen.getByText('Lorem ipsum'));
+        screen.getByTitle('ra.configurable.customize').click();
         await screen.findByText('Text block');
         screen.getByText('toggle text block').click();
         await waitFor(() => {
@@ -62,7 +67,8 @@ describe('Configurable', () => {
         render(<Unmount />);
         screen.getByLabelText('Configure mode').click();
         await screen.findByText('Inspector');
-        screen.getAllByTitle('ra.configurable.customize')[0].click();
+        fireEvent.mouseOver(screen.getByText('Lorem ipsum'));
+        screen.getByTitle('ra.configurable.customize').click();
         await screen.findByText('Text block');
         screen.getByText('toggle sales block').click();
         await waitFor(() => {
