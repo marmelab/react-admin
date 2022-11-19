@@ -203,7 +203,7 @@ const { data } = useList({
 // ]
 ```
 
-## `Return Value`
+## Return Value
 
 `useGetList` returns an object matching the shape of the `ListContext`: 
 
