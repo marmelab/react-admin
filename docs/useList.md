@@ -246,7 +246,7 @@ const {
 
 ## `filterCallback`
 
-Property for custom filter definition. Being able to apply local filters to the fetched data
+Property for custom filter definition. Lets you apply local filters to the fetched data.
 
 ```jsx
 const { data } = useList({
