@@ -82,7 +82,7 @@ export default App;
 
 Also, change the default Vite CSS file to look like this:
 
-```diff
+```css
 // in src/index.css
 body {
     margin: 0;
