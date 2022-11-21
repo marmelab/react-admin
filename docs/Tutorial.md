@@ -80,20 +80,13 @@ const App = () => <Admin dataProvider={dataProvider} />;
 export default App;
 ```
 
-Also, remove the default Vite CSS fom the `main.tsx` file:
+Also, change the default Vite CSS file to look like this:
 
 ```diff
-// in src/main.tsx
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
--import './index.css'
-
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-)
+// in src/index.css
+body {
+    margin: 0;
+}
 ```
 
 That's enough for react-admin to render an empty app and confirm that the setup is done: 
