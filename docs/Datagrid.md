@@ -816,6 +816,9 @@ import {
 const PostListActions = () => (
     <TopToolbar>
         <SelectColumnsButton />
+        <FilterButton />
+        <CreateButton />
+        <ExportButton />
     </TopToolbar>
 );
 
