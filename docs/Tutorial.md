@@ -89,6 +89,28 @@ body {
 }
 ```
 
+In order to have the project using `Roboto` font, you have to add it to your index.html file
+
+```diff
+// in ./index.html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React Admin</title>
++   <link
++     rel="stylesheet"
++     href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
++   />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/index.tsx"></script>
+  </body>
+</html>
+```
+
 That's enough for react-admin to render an empty app and confirm that the setup is done: 
 
 [![Empty Admin](./img/tutorial_empty.png)](./img/tutorial_empty.png)
