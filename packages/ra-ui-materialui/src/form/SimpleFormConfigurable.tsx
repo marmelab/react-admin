@@ -30,26 +30,26 @@ export const SimpleFormConfigurable = ({
     );
 
     React.useEffect(() => {
-        // first render, or the preference have been cleared
-        const inputs = React.Children.map(props.children, (child, index) =>
-            React.isValidElement(child)
-                ? {
-                      index: String(index),
-                      source: child.props.source,
-                      label:
-                          child.props.source || child.props.label
-                              ? child.props.label
-                              : translate(
-                                    'ra.configurable.SimpleForm.unlabeled',
-                                    {
-                                        input: index,
-                                        _: `Unlabeled input #%{input}`,
-                                    }
-                                ),
-                  }
-                : null
-        ).filter(column => column != null);
-        if (JSON.stringify(inputs) !== JSON.stringify(availableInputs)) {
+        if (availableInputs.length === 0) {
+            // first render, or the preference have been cleared
+            const inputs = React.Children.map(props.children, (child, index) =>
+                React.isValidElement(child)
+                    ? {
+                          index: String(index),
+                          source: child.props.source,
+                          label:
+                              child.props.source || child.props.label
+                                  ? child.props.label
+                                  : translate(
+                                        'ra.configurable.SimpleForm.unlabeled',
+                                        {
+                                            input: index,
+                                            _: `Unlabeled input #%{input}`,
+                                        }
+                                    ),
+                      }
+                    : null
+            ).filter(column => column != null);
             setAvailableInputs(inputs);
             setOmit(omit);
         }

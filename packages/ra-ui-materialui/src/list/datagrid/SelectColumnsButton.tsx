@@ -43,10 +43,9 @@ export const SelectColumnsButton = props => {
     const preferenceKey =
         props.preferenceKey || `preferences.${resource}.datagrid`;
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const [availableColumns] = useStore<ConfigurableDatagridColumn[]>(
-        `${preferenceKey}.availableColumns`,
-        []
-    );
+    const [availableColumns, setAvailableColumns] = useStore<
+        ConfigurableDatagridColumn[]
+    >(`${preferenceKey}.availableColumns`, []);
     const [omit] = useStore<string[]>(`${preferenceKey}.omit`, []);
     const [columns, setColumns] = useStore<string[]>(
         `${preferenceKey}.columns`,
@@ -84,6 +83,43 @@ export const SelectColumnsButton = props => {
         } else {
             setColumns(columns.filter(index => index !== event.target.name));
         }
+    };
+
+    const handleMove = (index1, index2) => {
+        const index1Pos = availableColumns.findIndex(
+            // eslint-disable-next-line eqeqeq
+            field => field.index == index1
+        );
+        const index2Pos = availableColumns.findIndex(
+            // eslint-disable-next-line eqeqeq
+            field => field.index == index2
+        );
+        if (index1Pos === -1 || index2Pos === -1) {
+            return;
+        }
+        let newAvailableColumns;
+        if (index1Pos > index2Pos) {
+            newAvailableColumns = [
+                ...availableColumns.slice(0, index2Pos),
+                availableColumns[index1Pos],
+                ...availableColumns.slice(index2Pos, index1Pos),
+                ...availableColumns.slice(index1Pos + 1),
+            ];
+        } else {
+            newAvailableColumns = [
+                ...availableColumns.slice(0, index1Pos),
+                ...availableColumns.slice(index1Pos + 1, index2Pos + 1),
+                availableColumns[index1Pos],
+                ...availableColumns.slice(index2Pos + 1),
+            ];
+        }
+        setAvailableColumns(newAvailableColumns);
+        setColumns(columns =>
+            newAvailableColumns
+                .filter(column => !omit?.includes(column.source))
+                .filter(column => columns.includes(column.index))
+                .map(column => column.index)
+        );
     };
 
     return (
@@ -130,6 +166,7 @@ export const SelectColumnsButton = props => {
                             index={column.index}
                             selected={columns.includes(column.index)}
                             onToggle={handleToggle}
+                            onMove={handleMove}
                         />
                     ))}
                 </Box>

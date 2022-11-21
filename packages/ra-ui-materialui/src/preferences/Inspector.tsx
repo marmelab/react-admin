@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
     useStore,
     usePreferencesEditor,
@@ -24,6 +24,7 @@ export const Inspector = () => {
         preferenceKey,
     } = usePreferencesEditor();
 
+    const isDragging = useRef(false);
     const removeItems = useRemoveItemsFromStore(preferenceKey);
     const theme = useTheme();
     const translate = useTranslate();
@@ -52,8 +53,9 @@ export const Inspector = () => {
         // exit if the user drags on anything but the title
         const draggedElement = document?.elementFromPoint(e.clientX, e.clientY);
         if (draggedElement.id !== 'inspector-dialog-title') {
-            return e.preventDefault();
+            return;
         }
+        isDragging.current = true;
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setData('inspector', '');
         setTimeout(() => {
@@ -65,11 +67,14 @@ export const Inspector = () => {
         });
     };
     const handleDragEnd = e => {
-        setDialogPosition({
-            x: e.clientX - clickPosition.x,
-            y: e.clientY - clickPosition.y,
-        });
-        e.target.classList.remove('hide');
+        if (isDragging.current) {
+            setDialogPosition({
+                x: e.clientX - clickPosition.x,
+                y: e.clientY - clickPosition.y,
+            });
+            e.target.classList.remove('hide');
+            isDragging.current = false;
+        }
     };
 
     // prevent "back to base" animation when the inspector is dropped
@@ -177,7 +182,7 @@ const StyledPaper = styled(Paper, {
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     position: 'fixed',
-    zIndex: theme.zIndex.modal,
+    zIndex: theme.zIndex.modal + 1,
     width: theme.breakpoints.values.sm / 2,
     transition: theme.transitions.create(['height', 'width']),
     '&.hide': {
