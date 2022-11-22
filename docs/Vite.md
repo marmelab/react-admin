@@ -64,7 +64,7 @@ export default App;
 Then, change the `index.css` file to look like this:
 
 ```css
-# in src/index.css
+/* in src/index.css */
 body {
     margin: 0;
 }
