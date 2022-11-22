@@ -156,10 +156,13 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput, FormDataConsumer,
     <SimpleFormIterator disableRemove >
         <DateInput source="date" />
         <FormDataConsumer>
-            {({ getSource }) => {
+            {({ getSource, scopedFormData }) => {
                 return (
                     <Labeled label="Url">
-                        <TextField source={getSource('url')} />
+                        <TextField 
+                            source={getSource('url')}
+                            record={scopedFormData}
+                        />
                     </Labeled>
                 );
             }}
