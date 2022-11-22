@@ -160,7 +160,7 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput, FormDataConsumer,
                 return (
                     <Labeled label="Url">
                         <TextField 
-                            source={getSource('url')}
+                            source="url"
                             record={scopedFormData}
                         />
                     </Labeled>
