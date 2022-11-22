@@ -7,6 +7,8 @@ import { AdminContext } from '../AdminContext';
 import { SaveButton } from '../button';
 import { SimpleForm, Toolbar } from '../form';
 import { required } from 'ra-core';
+import { SelectInput } from './SelectInput';
+import userEvent from '@testing-library/user-event';
 
 describe('<NumberInput />', () => {
     const defaultProps = {
@@ -198,7 +200,7 @@ describe('<NumberInput />', () => {
     });
 
     describe('format and parse', () => {
-        it('should get the same value as injected value ', async () => {
+        it('should get the same value as injected value', async () => {
             const onSubmit = jest.fn();
 
             render(
@@ -289,6 +291,47 @@ describe('<NumberInput />', () => {
                 );
             });
             expect(onSubmit.mock.calls[0][0].views).toBeNull();
+        });
+
+        it('should use custom format function prop', async () => {
+            const ValueInput = props => {
+                const unit = useWatch({ name: 'unit' });
+                const formatFunction = v => (unit === 'radian' ? 1 : 2);
+
+                return (
+                    <NumberInput
+                        format={formatFunction}
+                        {...props}
+                        defaultValue={1}
+                    />
+                );
+            };
+
+            const units = ['degree', 'radian'];
+            const toChoices = items =>
+                items.map(item => ({ id: item, name: item }));
+
+            render(
+                <AdminContext>
+                    <SimpleForm>
+                        <SelectInput source="unit" choices={toChoices(units)} />
+                        <ValueInput {...defaultProps} />
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            userEvent.click(
+                screen.getByLabelText('resources.undefined.fields.unit')
+            );
+            userEvent.click(screen.getByRole('option', { name: /^radian/i }));
+
+            await waitFor(() => {
+                expect(
+                    (screen.getByLabelText(
+                        'resources.posts.fields.views'
+                    ) as HTMLInputElement).value
+                ).toEqual('1');
+            });
         });
     });
 
