@@ -800,7 +800,7 @@ const PostList = () => (
 
 ## Showing / Hiding Columns
 
-The [`<SelectColumnsButton>`](./SelectColumnsButton.md) lets users hide or show datagrid columns. 
+The [`<SelectColumnsButton>`](./SelectColumnsButton.md) component lets users hide, show, and reorder datagrid columns. 
 
 ![SelectColumnsButton](./img/SelectColumnsButton.gif)
 
