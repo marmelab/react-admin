@@ -61,7 +61,7 @@ const App = () => <MyAdmin />;
 export default App;
 ```
 
-Then, change the default Vite CSS file to look like this:
+Then, change the `index.css` file to look like this:
 
 ```diff
 // in src/index.css
