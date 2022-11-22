@@ -89,7 +89,7 @@ body {
 }
 ```
 
-In order to have the project using `Roboto` font, you have to add it to your index.html file
+Lastly, add the `Roboto` font to the `index.html` file:
 
 ```diff
 // in ./index.html
