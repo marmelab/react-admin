@@ -6,6 +6,7 @@ import { NumberInput } from './NumberInput';
 import { AdminContext } from '../AdminContext';
 import { SaveButton } from '../button';
 import { SimpleForm, Toolbar } from '../form';
+import { required } from 'ra-core';
 
 describe('<NumberInput />', () => {
     const defaultProps = {
@@ -381,6 +382,37 @@ describe('<NumberInput />', () => {
             const input = screen.getByLabelText('resources.posts.fields.views');
             fireEvent.blur(input);
             expect(onBlur).toHaveBeenCalled();
+        });
+
+        it('should display error message onBlur if required', async () => {
+            const onBlur = jest.fn();
+
+            render(
+                <AdminContext>
+                    <SimpleForm
+                        defaultValues={{ views: 12 }}
+                        onSubmit={jest.fn()}
+                        mode="onBlur"
+                    >
+                        <NumberInput
+                            {...defaultProps}
+                            onBlur={onBlur}
+                            validate={required()}
+                        />
+                    </SimpleForm>
+                </AdminContext>
+            );
+            const input = screen.getByLabelText(
+                'resources.posts.fields.views *'
+            );
+
+            fireEvent.change(input, { target: { value: '' } });
+            fireEvent.blur(input);
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('ra.validation.required')
+                ).not.toBeNull();
+            });
         });
     });
 
