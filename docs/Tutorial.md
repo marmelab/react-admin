@@ -80,7 +80,13 @@ const App = () => <Admin dataProvider={dataProvider} />;
 export default App;
 ```
 
-Also, change the default Vite CSS file to look like this:
+That's enough for react-admin to render an empty app and confirm that the setup is done: 
+
+[![Empty Admin](./img/tutorial_empty.png)](./img/tutorial_empty.png)
+
+The `<App>` component renders an `<Admin>` component, which is the root component of a react-admin application. This component expects a `dataProvider` prop - a function capable of fetching data from an API. Since there is no standard for data exchanges between computers, you will probably have to write a custom provider to connect react-admin to your own APIs - but we'll dive into Data Providers later. For now, let's take advantage of the `ra-data-json-server` data provider, which speaks the same REST dialect as JSONPlaceholder.
+
+Also, you should change the default Vite CSS file to look like this:
 
 ```diff
 // in src/index.css
@@ -110,12 +116,6 @@ Lastly, add the `Roboto` font to the `index.html` file:
   </body>
 </html>
 ```
-
-That's enough for react-admin to render an empty app and confirm that the setup is done: 
-
-[![Empty Admin](./img/tutorial_empty.png)](./img/tutorial_empty.png)
-
-The `<App>` component renders an `<Admin>` component, which is the root component of a react-admin application. This component expects a `dataProvider` prop - a function capable of fetching data from an API. Since there is no standard for data exchanges between computers, you will probably have to write a custom provider to connect react-admin to your own APIs - but we'll dive into Data Providers later. For now, let's take advantage of the `ra-data-json-server` data provider, which speaks the same REST dialect as JSONPlaceholder.
 
 Now it's time to add features!
 
