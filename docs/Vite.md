@@ -61,19 +61,35 @@ const App = () => <MyAdmin />;
 export default App;
 ```
 
-Finally, remove the `index.css` from the `main.tsx` folder:
+Then, change the `index.css` file to look like this:
 
 ```diff
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
--import './index.css';
+// in src/index.css
+body {
+    margin: 0;
+}
+```
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+Finally, add the `Roboto` font to your `index.html` file:
+
+```diff
+// in ./index.html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React Admin</title>
++   <link
++     rel="stylesheet"
++     href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
++   />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/index.tsx"></script>
+  </body>
+</html>
 ```
 
 Now, start the server with `yarn dev`, browse to `http://localhost:5173/`, and you should see the working admin:
