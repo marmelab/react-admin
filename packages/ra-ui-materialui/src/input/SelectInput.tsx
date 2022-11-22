@@ -404,6 +404,7 @@ const sanitizeRestProps = ({
     setFilter,
     setPagination,
     setSort,
+    shouldUnregister,
     sort,
     subscription,
     type,
