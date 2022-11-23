@@ -21642,7 +21642,7 @@ __metadata:
     rimraf: ^3.0.2
     typescript: ^4.4.0
   peerDependencies:
-    graphql: ^15.6.0
+    graphql: ^15.6.0 || ^16
     ra-core: ^4.0.0
   languageName: unknown
   linkType: soft
