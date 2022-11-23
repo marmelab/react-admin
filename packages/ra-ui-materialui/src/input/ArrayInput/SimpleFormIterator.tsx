@@ -185,9 +185,9 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                 {!disabled &&
                     !Boolean(disableAdd && (disableClear || disableRemove)) && (
                         <div className={SimpleFormIteratorClasses.buttons}>
-                            <div className={SimpleFormIteratorClasses.add}>
-                                {!disableAdd &&
-                                    cloneElement(addButton, {
+                            {!disableAdd && (
+                                <div className={SimpleFormIteratorClasses.add}>
+                                    {cloneElement(addButton, {
                                         className: clsx(
                                             'button-add',
                                             `button-add-${source}`
@@ -196,35 +196,40 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                                             addButton.props.onClick
                                         ),
                                     })}
-                                {fields.length > 0 &&
-                                    !disableClear &&
-                                    !disableRemove && (
-                                        <>
-                                            <Confirm
-                                                isOpen={confirmIsOpen}
-                                                title={translate(
-                                                    'ra.action.clear_array_input'
-                                                )}
-                                                content={translate(
-                                                    'ra.message.clear_array_input'
-                                                )}
-                                                onConfirm={handleArrayClear}
-                                                onClose={() =>
-                                                    setConfirmIsOpen(false)
-                                                }
-                                            />
-                                            <ClearArrayButton
-                                                className={clsx(
-                                                    'button-clear',
-                                                    `button-clear-${source}`
-                                                )}
-                                                onClick={() =>
-                                                    setConfirmIsOpen(true)
-                                                }
-                                            />
-                                        </>
-                                    )}
-                            </div>
+                                </div>
+                            )}
+                            {fields.length > 0 &&
+                                !disableClear &&
+                                !disableRemove && (
+                                    <div
+                                        className={
+                                            SimpleFormIteratorClasses.clear
+                                        }
+                                    >
+                                        <Confirm
+                                            isOpen={confirmIsOpen}
+                                            title={translate(
+                                                'ra.action.clear_array_input'
+                                            )}
+                                            content={translate(
+                                                'ra.message.clear_array_input'
+                                            )}
+                                            onConfirm={handleArrayClear}
+                                            onClose={() =>
+                                                setConfirmIsOpen(false)
+                                            }
+                                        />
+                                        <ClearArrayButton
+                                            className={clsx(
+                                                'button-clear',
+                                                `button-clear-${source}`
+                                            )}
+                                            onClick={() =>
+                                                setConfirmIsOpen(true)
+                                            }
+                                        />
+                                    </div>
+                                )}
                         </div>
                     )}
             </Root>
@@ -334,6 +339,9 @@ const Root = styled('div', {
         display: 'flex',
     },
     [`& .${SimpleFormIteratorClasses.add}`]: {
+        borderBottom: 'none',
+    },
+    [`& .${SimpleFormIteratorClasses.clear}`]: {
         borderBottom: 'none',
     },
     [`& .${SimpleFormIteratorClasses.line}:hover > .${SimpleFormIteratorClasses.action}`]: {
