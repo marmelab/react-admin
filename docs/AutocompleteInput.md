@@ -366,7 +366,7 @@ When dealing with a large amount of `choices` you may need to limit the number o
 />
 ```
 
-This prop is passed to the underlying `react-autosuggest` component and is documented [in their respository](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
+This prop is passed to the underlying `MUI Autocomplete` component and is documented [in their respository](https://mui.com/material-ui/api/autocomplete/#props).
 
 ## `suggestionLimit`
 
