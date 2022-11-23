@@ -7,8 +7,7 @@ import { AdminContext } from '../AdminContext';
 import { SaveButton } from '../button';
 import { SimpleForm, Toolbar } from '../form';
 import { required } from 'ra-core';
-import { SelectInput } from './SelectInput';
-import userEvent from '@testing-library/user-event';
+import { Format, Parse } from './NumberInput.stories';
 
 describe('<NumberInput />', () => {
     const defaultProps = {
@@ -294,43 +293,27 @@ describe('<NumberInput />', () => {
         });
 
         it('should use custom format function prop', async () => {
-            const ValueInput = props => {
-                const unit = useWatch({ name: 'unit' });
-                const formatFunction = v => (unit === 'radian' ? 1 : 2);
+            render(<Format />);
 
-                return (
-                    <NumberInput
-                        format={formatFunction}
-                        {...props}
-                        defaultValue={1}
-                    />
-                );
-            };
-
-            const units = ['degree', 'radian'];
-            const toChoices = items =>
-                items.map(item => ({ id: item, name: item }));
-
-            render(
-                <AdminContext>
-                    <SimpleForm>
-                        <SelectInput source="unit" choices={toChoices(units)} />
-                        <ValueInput {...defaultProps} />
-                    </SimpleForm>
-                </AdminContext>
-            );
-
-            userEvent.click(
-                screen.getByLabelText('resources.undefined.fields.unit')
-            );
-            userEvent.click(screen.getByRole('option', { name: /^radian/i }));
+            const input = screen.getByLabelText('resources.posts.fields.views');
+            fireEvent.change(input, { target: { value: 5.6356487 } });
 
             await waitFor(() => {
+                expect((input as HTMLInputElement).value).toEqual('5.6356487');
                 expect(
-                    (screen.getByLabelText(
-                        'resources.posts.fields.views'
-                    ) as HTMLInputElement).value
-                ).toEqual('1');
+                    (screen.getByDisplayValue('5.64') as HTMLInputElement).value
+                ).toEqual('5.64');
+            });
+        });
+
+        it('should use custom parse function prop', async () => {
+            render(<Parse />);
+
+            const input = screen.getByLabelText('Parse to two decimal');
+            fireEvent.change(input, { target: { value: 5.6356487 } });
+
+            await waitFor(() => {
+                expect((input as HTMLInputElement).value).toEqual('5.64');
             });
         });
     });
