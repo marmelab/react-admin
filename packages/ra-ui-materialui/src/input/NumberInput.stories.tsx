@@ -313,3 +313,49 @@ export const FieldState = () => (
         </Create>
     </AdminContext>
 );
+
+export const Format = () => (
+    <AdminContext>
+        <Create
+            resource="posts"
+            record={{ id: 123, views: 3.7594157 }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <NumberInput source="views" />
+                <NumberInput
+                    source="views"
+                    label="Two decimals"
+                    format={v =>
+                        isNaN(v) ? 0 : Number(parseFloat(v).toFixed(2))
+                    }
+                    disabled
+                />
+                <FormInspector name="views" />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+export const Parse = () => (
+    <AdminContext>
+        <Create
+            resource="posts"
+            record={{ id: 123, views: 3.77 }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <NumberInput
+                    source="views"
+                    label="Parse to two decimal"
+                    format={v => (v ? String(v) : '0')}
+                    parse={v => {
+                        const float = Number(parseFloat(v).toFixed(2));
+                        return isNaN(float) ? null : float;
+                    }}
+                />
+                <FormInspector name="views" />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
