@@ -183,17 +183,18 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                     ))}
                 </ul>
                 <div className={SimpleFormIteratorClasses.buttons}>
-                    {!disabled && !disableAdd && (
+                    {!disabled && (
                         <div className={SimpleFormIteratorClasses.add}>
-                            {cloneElement(addButton, {
-                                className: clsx(
-                                    'button-add',
-                                    `button-add-${source}`
-                                ),
-                                onClick: handleAddButtonClick(
-                                    addButton.props.onClick
-                                ),
-                            })}
+                            {!disableAdd &&
+                                cloneElement(addButton, {
+                                    className: clsx(
+                                        'button-add',
+                                        `button-add-${source}`
+                                    ),
+                                    onClick: handleAddButtonClick(
+                                        addButton.props.onClick
+                                    ),
+                                })}
                             {fields.length > 0 &&
                                 !disableClear &&
                                 !disableRemove && (
