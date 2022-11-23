@@ -44,13 +44,13 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         addButton = <DefaultAddItemButton />,
         removeButton = <DefaultRemoveItemButton />,
         reOrderButtons = <DefaultReOrderButtons />,
-        clearButton = true,
         children,
         className,
         resource,
         source,
         disabled,
         disableAdd,
+        disableClear,
         disableRemove,
         disableReordering,
         inline,
@@ -195,7 +195,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                                 ),
                             })}
                             {fields.length > 0 &&
-                                clearButton &&
+                                !disableClear &&
                                 !disableRemove && (
                                     <>
                                         <Confirm
@@ -259,11 +259,11 @@ type GetItemLabelFunc = (index: number) => string | ReactElement;
 
 export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
     addButton?: ReactElement;
-    clearButton?: boolean;
     children?: ReactNode;
     className?: string;
     disabled?: boolean;
     disableAdd?: boolean;
+    disableClear?: boolean;
     disableRemove?: boolean | DisableRemoveFunction;
     disableReordering?: boolean;
     fullWidth?: boolean;
