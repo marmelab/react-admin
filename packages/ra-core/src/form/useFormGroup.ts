@@ -79,9 +79,9 @@ export const useFormGroup = (name: string): FormGroupState => {
                 return {
                     name: field,
                     error: get(errors, field, undefined),
-                    isDirty: get(dirtyFields, field, false),
+                    isDirty: Boolean(get(dirtyFields, field, false)),
                     isValid: get(errors, field, undefined) == undefined, // eslint-disable-line
-                    isTouched: get(touchedFields, field, false),
+                    isTouched: Boolean(get(touchedFields, field, false)),
                 };
             })
             .filter(fieldState => fieldState != undefined); // eslint-disable-line
