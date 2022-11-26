@@ -8,9 +8,11 @@ import { CommonInputProps } from './CommonInputProps';
 import { TextInput, TextInputProps } from './TextInput';
 
 export const SearchInput = (props: SearchInputProps) => {
+    const { label, ...rest } = props;
+
     const translate = useTranslate();
 
-    if (props.label) {
+    if (label) {
         throw new Error(
             "<SearchInput> isn't designed to be used with a label prop. Use <TextInput> if you need a label."
         );
@@ -18,7 +20,6 @@ export const SearchInput = (props: SearchInputProps) => {
 
     return (
         <StyledTextInput
-            hiddenLabel
             label=""
             resettable
             placeholder={translate('ra.action.search')}
@@ -30,7 +31,7 @@ export const SearchInput = (props: SearchInputProps) => {
                 ),
             }}
             size="small"
-            {...props}
+            {...rest}
         />
     );
 };
