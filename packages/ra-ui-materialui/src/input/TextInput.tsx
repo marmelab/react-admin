@@ -64,15 +64,14 @@ export const TextInput = (props: TextInputProps) => {
             {...field}
             className={clsx('ra-input', `ra-input-${source}`, className)}
             label={
-                label !== '' &&
-                label !== false && (
+                label !== '' && label !== false ? (
                     <FieldTitle
                         label={label}
                         source={source}
                         resource={resource}
                         isRequired={isRequired}
                     />
-                )
+                ) : undefined
             }
             error={(isTouched || isSubmitted) && invalid}
             helperText={

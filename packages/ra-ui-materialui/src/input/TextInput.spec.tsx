@@ -166,4 +166,36 @@ describe('<TextInput />', () => {
             expect(input.value).toEqual('bar');
         });
     });
+
+    describe('label', () => {
+        it('should not render label when `label` prop is `false`', () => {
+            const { container } = render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{ title: 'hello' }}
+                        onSubmit={jest.fn}
+                    >
+                        <TextInput {...defaultProps} label={false} />
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            expect(container.querySelector(`label`)).toBeNull();
+        });
+
+        it('should not render label when `label` prop is empty string', () => {
+            const { container } = render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{ title: 'hello' }}
+                        onSubmit={jest.fn}
+                    >
+                        <TextInput {...defaultProps} label="" />
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            expect(container.querySelector(`label`)).toBeNull();
+        });
+    });
 });
