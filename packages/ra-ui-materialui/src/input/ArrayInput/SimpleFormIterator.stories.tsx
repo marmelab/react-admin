@@ -122,6 +122,21 @@ export const DisableAdd = () => (
     </AdminContext>
 );
 
+export const DisableClear = () => (
+    <AdminContext dataProvider={dataProvider}>
+        <Edit resource="books" id="1">
+            <SimpleForm>
+                <ArrayInput source="authors">
+                    <SimpleFormIterator disableClear>
+                        <TextInput source="name" />
+                        <TextInput source="role" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        </Edit>
+    </AdminContext>
+);
+
 export const DisableRemove = () => (
     <AdminContext dataProvider={dataProvider}>
         <Edit resource="books" id="1">

@@ -9,6 +9,7 @@ const frenchMessages: TranslationMessages = {
             bulk_actions:
                 '%{smart_count} sélectionné |||| %{smart_count} sélectionnés',
             cancel: 'Annuler',
+            clear_array_input: 'Vider la liste',
             clear_input_value: 'Vider le champ',
             clone: 'Dupliquer',
             confirm: 'Confirmer',
@@ -94,6 +95,8 @@ const frenchMessages: TranslationMessages = {
                 'Êtes-vous sûr(e) de vouloir modifier cet élément ? |||| Êtes-vous sûr(e) de vouloir modifier ces %{smart_count} éléments ?',
             bulk_update_title:
                 'Modifier %{name} |||| Modifier %{smart_count} %{name}',
+            clear_array_input:
+                'Êtes-vous sûr(e) de vouloir supprimer tous les éléments de la liste ?',
             delete_content:
                 'Êtes-vous sûr(e) de vouloir supprimer cet élément ?',
             delete_title: 'Supprimer %{name} #%{id}',
