@@ -122,7 +122,7 @@ ReferenceArrayInput.defaultProps = {
 export interface ReferenceArrayInputProps
     extends InputProps,
         UseReferenceArrayInputParams {
-    children: ReactElement;
+    children?: ReactElement;
     label?: string;
     [key: string]: any;
 }
