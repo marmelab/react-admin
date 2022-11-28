@@ -285,8 +285,7 @@ describe('Edit Page', () => {
         );
     });
 
-    // FIXME unskip me when useGetList uses the react-query API
-    it.skip('should refresh the list when the update fails', () => {
+    it('should refresh the list when the update fails', () => {
         ListPagePosts.navigate();
         ListPagePosts.nextPage(); // Ensure the record is visible in the table
 
