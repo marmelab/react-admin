@@ -71,7 +71,7 @@ export const TextInput = (props: TextInputProps) => {
                         resource={resource}
                         isRequired={isRequired}
                     />
-                ) : undefined
+                ) : null
             }
             error={(isTouched || isSubmitted) && invalid}
             helperText={
