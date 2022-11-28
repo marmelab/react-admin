@@ -111,7 +111,7 @@ TabbedFormView.propTypes = {
     // @ts-ignore
     resource: PropTypes.string,
     tabs: PropTypes.element,
-    toolbar: PropTypes.element,
+    toolbar: PropTypes.oneOfType([PropTypes.element, PropTypes.oneOf([false])]),
     validate: PropTypes.func,
     value: PropTypes.number,
 };

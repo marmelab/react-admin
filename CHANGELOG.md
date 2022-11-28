@@ -1,5 +1,20 @@
 # Changelog
 
+## v4.5.3
+
+* Fix `<TabbedFormView toolbar>` prop type validation ([#8436](https://github.com/marmelab/react-admin/pull/8436)) ([kosmotema](https://github.com/kosmotema))
+* Fix `<NumberInput>` does not pass `format` and `parse` props to `useInput` ([#8422](https://github.com/marmelab/react-admin/pull/8422)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<NumberInput>` does not show `helperText` with an `onBlur` prop and `mode='onBlur'` ([#8403](https://github.com/marmelab/react-admin/pull/8403)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<SelectInput>` does not sanitize the `shouldUnregister` prop ([#8413](https://github.com/marmelab/react-admin/pull/8413)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<SimpleForm>` and `<TabbedForm>` use outdated prop types ([#8414](https://github.com/marmelab/react-admin/pull/8414)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `<AutocompleteInput>` wrongly references react-autosuggest props ([#8424](https://github.com/marmelab/react-admin/pull/8424)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `<SelectColumnsButton>` usage example in List view ([#8417](https://github.com/marmelab/react-admin/pull/8417)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `useList` `filterCallback` prop description ([#8404](https://github.com/marmelab/react-admin/pull/8404)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `<FormDataConsumer>` usage example for `<SimpleFormIterator>` ([#8359](https://github.com/marmelab/react-admin/pull/8359)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix Vite tutorial misses Roboto font ([#8419](https://github.com/marmelab/react-admin/pull/8419)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix Vite tutorial CSS setup ([#8415](https://github.com/marmelab/react-admin/pull/8415)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix Next.js tutorial uses CamelCase for folder name ([#8437](https://github.com/marmelab/react-admin/pull/8437)) ([jayenashar](https://github.com/jayenashar))
+
 ## v4.5.2
 
 * Fix `authProvider` hooks support for redirectTo: absolute URL ([#8382](https://github.com/marmelab/react-admin/pull/8382)) ([fzaninotto](https://github.com/fzaninotto))
