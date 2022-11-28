@@ -10,7 +10,6 @@ describe('Edit Page', () => {
     const EditCommentPage = editPageFactory('/#/comments/5');
     const LoginPage = loginPageFactory('/#/login');
     const EditUserPage = editPageFactory('/#/users/3');
-    const ListPageUsers = listPageFactory('/#/users');
     const CreateUserPage = createPageFactory('/#/users/create');
 
     describe('Title', () => {
