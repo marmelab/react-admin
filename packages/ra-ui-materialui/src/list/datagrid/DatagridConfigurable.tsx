@@ -76,7 +76,7 @@ export const DatagridConfigurable = ({
                   }
                 : null
         ).filter(column => column != null);
-        if (JSON.stringify(columns) !== JSON.stringify(availableColumns)) {
+        if (columns.length !== availableColumns.length) {
             setAvailableColumns(columns);
             setOmit(omit);
         }

@@ -49,7 +49,7 @@ export const SimpleFormConfigurable = ({
                   }
                 : null
         ).filter(column => column != null);
-        if (JSON.stringify(inputs) !== JSON.stringify(availableInputs)) {
+        if (inputs.length !== availableInputs.length) {
             setAvailableInputs(inputs);
             setOmit(omit);
         }

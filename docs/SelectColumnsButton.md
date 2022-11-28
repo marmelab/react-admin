@@ -9,6 +9,10 @@ This button lets users show or hide columns in a Datagrid. It must be used in co
 
 ![SelectColumnsButton](./img/SelectColumnsButton.gif)
 
+## Usage 
+
+Add the `<SelectColumnsButton>` component to the `<List actions>` prop:
+ 
 ```jsx
 import {
     DatagridConfigurable,
@@ -36,7 +40,7 @@ const PostList = () => (
 );
 ```
 
-**Note**: `<SelectColumnsButton>` doesn't work with `<Datagrid>` - you must use `<DatagridConfigurable>` instead.
+**Note**: `<SelectColumnsButton>` doesn't work with `<Datagrid>` - you must use [`<DatagridConfigurable>`](./Datagrid.md#configurable) instead.
 
 If you want to add the `<SelectColumnsButton>` to the usual List Actions, use the following snippet:
 
