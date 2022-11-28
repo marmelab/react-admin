@@ -20,6 +20,7 @@ export const SearchInput = (props: SearchInputProps) => {
 
     return (
         <StyledTextInput
+            hiddenLabel
             label=""
             resettable
             placeholder={translate('ra.action.search')}
