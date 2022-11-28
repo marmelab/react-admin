@@ -8,9 +8,9 @@ import {
     TextInput,
 } from 'ra-ui-materialui';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { testDataProvider } from '../../dist/cjs';
 import expect from 'expect';
 import { FormGroupContextProvider } from './FormGroupContextProvider';
+import { testDataProvider } from '../dataProvider';
 
 describe('useFormGroup', () => {
     test.each([
