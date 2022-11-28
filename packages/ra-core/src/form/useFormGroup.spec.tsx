@@ -1,4 +1,16 @@
-import { getFormGroupState } from './useFormGroup';
+import React from 'react';
+import { getFormGroupState, useFormGroup } from './useFormGroup';
+import {
+    AdminContext,
+    ArrayInput,
+    SimpleForm,
+    SimpleFormIterator,
+    TextInput,
+} from 'ra-ui-materialui';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { testDataProvider } from '../../dist/cjs';
+import expect from 'expect';
+import { FormGroupContextProvider } from './FormGroupContextProvider';
 
 describe('useFormGroup', () => {
     test.each([
@@ -80,4 +92,60 @@ describe('useFormGroup', () => {
             expect(getFormGroupState(fieldStates)).toEqual(expectedGroupState);
         }
     );
+
+    it('should return correct group state when an ArrayInput is in the group', async () => {
+        let state;
+        const IsDirty = () => {
+            state = useFormGroup('backlinks');
+            return null;
+        };
+
+        const backlinksDefaultValue = [
+            {
+                date: '2012-08-22T00:00:00.000Z',
+                url: 'https://foo.bar.com/lorem/ipsum',
+            },
+        ];
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm>
+                    <FormGroupContextProvider name="backlinks">
+                        <IsDirty />
+                        <ArrayInput
+                            defaultValue={backlinksDefaultValue}
+                            source="backlinks"
+                        >
+                            <SimpleFormIterator>
+                                <TextInput source="url" />
+                                <TextInput source="date" />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </FormGroupContextProvider>
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        await waitFor(() => {
+            expect(state).toEqual({
+                errors: {},
+                isDirty: false,
+                isTouched: false,
+                isValid: true,
+            });
+        });
+
+        const addItemElement = screen
+            .getByLabelText('ra.action.add')
+            .closest('button') as HTMLButtonElement;
+
+        fireEvent.click(addItemElement);
+        await waitFor(() => {
+            expect(state).toEqual({
+                errors: {},
+                isDirty: true,
+                isTouched: false,
+                isValid: true,
+            });
+        });
+    });
 });
