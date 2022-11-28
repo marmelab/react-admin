@@ -281,10 +281,9 @@ describe('Edit Page', () => {
         );
         EditUserPage.setInputValue('textbox', 'name', 'Annamarie Mayer!');
         EditUserPage.submit();
-        ListPageUsers.waitUntilDataLoaded();
-
-        cy.get(ListPageUsers.elements.recordRows).should(el =>
-            expect(el).to.contain('Annamarie Mayer!')
+        EditUserPage.navigate();
+        cy.get(EditUserPage.elements.input('name')).should(el =>
+            expect(el).to.have.value('Annamarie Mayer!')
         );
     });
 
