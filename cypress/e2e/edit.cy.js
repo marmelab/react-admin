@@ -10,6 +10,7 @@ describe('Edit Page', () => {
     const EditCommentPage = editPageFactory('/#/comments/5');
     const LoginPage = loginPageFactory('/#/login');
     const EditUserPage = editPageFactory('/#/users/3');
+    const ListPageUsers = listPageFactory('/#/users');
     const CreateUserPage = createPageFactory('/#/users/create');
 
     describe('Title', () => {
@@ -205,7 +206,7 @@ describe('Edit Page', () => {
             expect(el).to.have.value('')
         );
 
-        // This validate the old record values are not kept after we navigated
+        // This validates the old record values are not kept after we navigated
         const currentDate = new Date();
         const currentDateString = currentDate.toISOString().slice(0, 10);
 
@@ -267,6 +268,24 @@ describe('Edit Page', () => {
         cy.get(CreateUserPage.elements.input('name')).then(el => {
             expect(el).to.have.value('Annamarie Mayer');
         });
+    });
+
+    it('should save edited user values', () => {
+        EditPostPage.navigate();
+        EditPostPage.logout();
+        LoginPage.navigate();
+        LoginPage.login('admin', 'password');
+        EditUserPage.navigate();
+        cy.get(EditUserPage.elements.input('name')).should(el =>
+            expect(el).to.have.value('Annamarie Mayer')
+        );
+        EditUserPage.setInputValue('textbox', 'name', 'Annamarie Mayer!');
+        EditUserPage.submit();
+        ListPageUsers.waitUntilDataLoaded();
+
+        cy.get(ListPageUsers.elements.recordRows).should(el =>
+            expect(el).to.contain('Annamarie Mayer!')
+        );
     });
 
     it('should persit emptied inputs', () => {
