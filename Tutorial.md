@@ -80,25 +80,40 @@ const App = () => <Admin dataProvider={dataProvider} />;
 export default App;
 ```
 
-Also, remove the default Vite CSS fom the `main.tsx` file:
-
-```diff
-// in src/main.tsx
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
--import './index.css'
-
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-)
-```
-
 That's enough for react-admin to render an empty app and confirm that the setup is done: 
 
 [![Empty Admin](./img/tutorial_empty.png)](./img/tutorial_empty.png)
+
+Also, you should change the default Vite CSS file to look like this:
+
+```css
+// in src/index.css
+body {
+    margin: 0;
+}
+```
+
+Lastly, add the `Roboto` font to the `index.html` file:
+
+```diff
+// in ./index.html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React Admin</title>
++   <link
++     rel="stylesheet"
++     href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
++   />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/index.tsx"></script>
+  </body>
+</html>
+```
 
 The `<App>` component renders an `<Admin>` component, which is the root component of a react-admin application. This component expects a `dataProvider` prop - a function capable of fetching data from an API. Since there is no standard for data exchanges between computers, you will probably have to write a custom provider to connect react-admin to your own APIs - but we'll dive into Data Providers later. For now, let's take advantage of the `ra-data-json-server` data provider, which speaks the same REST dialect as JSONPlaceholder.
 

@@ -29,7 +29,7 @@ Add the `react-admin` npm package, as well as a data provider package. In this e
 yarn add react-admin ra-data-json-server
 ```
 
-Next, create the admin app component in `src/Admin/App.jsx`:
+Next, create the admin app component in `src/admin/App.jsx`:
 
 ```jsx
 // in src/admin/App.jsx

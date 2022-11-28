@@ -70,6 +70,7 @@ The `useGetList` parameter accepts the following options:
 * [`page`](#page)
 * [`perPage`](#perpage)
 * [`sort`](#sort)
+* [`filterCallback`](#filtercallback)
 
 ## `filter`
 
@@ -242,9 +243,10 @@ const {
     refetch, // a function that throws an error, as refetch doesn't make sense for local data
 } = getGetList({ data });
 ```
+
 ## `filterCallback`
 
-Property for custom filter definition. Being able to apply more complex filters using operators
+Property for custom filter definition. Lets you apply local filters to the fetched data.
 
 ```jsx
 const { data } = useList({
@@ -260,3 +262,4 @@ const { data } = useList({
 // [
 //    { id: 2, name: 'Sylvester' }, 
 // ]
+```
