@@ -30,26 +30,26 @@ export const SimpleFormConfigurable = ({
     );
 
     React.useEffect(() => {
-        if (availableInputs.length === 0) {
-            // first render, or the preference have been cleared
-            const inputs = React.Children.map(props.children, (child, index) =>
-                React.isValidElement(child)
-                    ? {
-                          index: String(index),
-                          source: child.props.source,
-                          label:
-                              child.props.source || child.props.label
-                                  ? child.props.label
-                                  : translate(
-                                        'ra.configurable.SimpleForm.unlabeled',
-                                        {
-                                            input: index,
-                                            _: `Unlabeled input #%{input}`,
-                                        }
-                                    ),
-                      }
-                    : null
-            ).filter(column => column != null);
+        // first render, or the preference have been cleared
+        const inputs = React.Children.map(props.children, (child, index) =>
+            React.isValidElement(child)
+                ? {
+                      index: String(index),
+                      source: child.props.source,
+                      label:
+                          child.props.source || child.props.label
+                              ? child.props.label
+                              : translate(
+                                    'ra.configurable.SimpleForm.unlabeled',
+                                    {
+                                        input: index,
+                                        _: `Unlabeled input #%{input}`,
+                                    }
+                                ),
+                  }
+                : null
+        ).filter(column => column != null);
+        if (inputs.length !== availableInputs.length) {
             setAvailableInputs(inputs);
             setOmit(omit);
         }

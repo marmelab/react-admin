@@ -57,26 +57,26 @@ export const DatagridConfigurable = ({
     );
 
     React.useEffect(() => {
-        if (availableColumns.length === 0) {
-            // first render, or the preference have been cleared
-            const columns = React.Children.map(props.children, (child, index) =>
-                React.isValidElement(child)
-                    ? {
-                          index: String(index),
-                          source: child.props.source,
-                          label:
-                              child.props.source || child.props.label
-                                  ? child.props.label
-                                  : translate(
-                                        'ra.configurable.Datagrid.unlabeled',
-                                        {
-                                            column: index,
-                                            _: `Unlabeled column #%{column}`,
-                                        }
-                                    ),
-                      }
-                    : null
-            ).filter(column => column != null);
+        // first render, or the preference have been cleared
+        const columns = React.Children.map(props.children, (child, index) =>
+            React.isValidElement(child)
+                ? {
+                      index: String(index),
+                      source: child.props.source,
+                      label:
+                          child.props.source || child.props.label
+                              ? child.props.label
+                              : translate(
+                                    'ra.configurable.Datagrid.unlabeled',
+                                    {
+                                        column: index,
+                                        _: `Unlabeled column #%{column}`,
+                                    }
+                                ),
+                  }
+                : null
+        ).filter(column => column != null);
+        if (columns.length !== availableColumns.length) {
             setAvailableColumns(columns);
             setOmit(omit);
         }

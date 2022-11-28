@@ -73,7 +73,6 @@ export const FieldsSelector = ({
         setAvailableFields(newAvailableFields);
         setFields(fields =>
             newAvailableFields
-                .filter(field => !omit?.includes(field.source))
                 .filter(field => fields.includes(field.index))
                 .map(field => field.index)
         );

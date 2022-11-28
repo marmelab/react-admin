@@ -116,7 +116,6 @@ export const SelectColumnsButton = props => {
         setAvailableColumns(newAvailableColumns);
         setColumns(columns =>
             newAvailableColumns
-                .filter(column => !omit?.includes(column.source))
                 .filter(column => columns.includes(column.index))
                 .map(column => column.index)
         );
