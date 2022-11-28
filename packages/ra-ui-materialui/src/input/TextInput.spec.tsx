@@ -168,6 +168,36 @@ describe('<TextInput />', () => {
     });
 
     describe('label', () => {
+        it('should render label when `label` prop not specified', () => {
+            const { container } = render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{ title: 'hello' }}
+                        onSubmit={jest.fn}
+                    >
+                        <TextInput {...defaultProps} />
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            expect(container.querySelector(`label`)).not.toBeNull();
+        });
+
+        it('should render label when `label` prop is non-empty string', () => {
+            const { container } = render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{ title: 'hello' }}
+                        onSubmit={jest.fn}
+                    >
+                        <TextInput {...defaultProps} label="label" />
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            expect(container.querySelector(`label`)).not.toBeNull();
+        });
+
         it('should not render label when `label` prop is `false`', () => {
             const { container } = render(
                 <AdminContext dataProvider={testDataProvider()}>
