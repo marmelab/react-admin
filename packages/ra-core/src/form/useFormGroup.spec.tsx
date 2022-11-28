@@ -93,6 +93,48 @@ describe('useFormGroup', () => {
         }
     );
 
+    it('should return correct group state', async () => {
+        let state;
+        const IsDirty = () => {
+            state = useFormGroup('simplegroup');
+            return null;
+        };
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm>
+                    <FormGroupContextProvider name="simplegroup">
+                        <IsDirty />
+                        <TextInput source="url" />
+                    </FormGroupContextProvider>
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        await waitFor(() => {
+            expect(state).toEqual({
+                errors: {},
+                isDirty: false,
+                isTouched: false,
+                isValid: true,
+            });
+        });
+
+        const input = screen.getByLabelText('resources.undefined.fields.url');
+        fireEvent.change(input, {
+            target: { value: 'test' },
+        });
+        fireEvent.blur(input);
+        await waitFor(() => {
+            expect(state).toEqual({
+                errors: {},
+                isDirty: true,
+                isTouched: true,
+                isValid: true,
+            });
+        });
+    });
+
     it('should return correct group state when an ArrayInput is in the group', async () => {
         let state;
         const IsDirty = () => {
