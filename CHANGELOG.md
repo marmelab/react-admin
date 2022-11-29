@@ -3,6 +3,7 @@
 ## v4.5.4
 
 * Fix `<NumberInput>` applies `format` and `parse` twice ([#8442](https://github.com/marmelab/react-admin/pull/8442)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix `<ReferenceArrayInput>` props type marks children as required ([##8440](https://github.com/marmelab/react-admin/pull/#8440)) ([fzaninotto](https://github.com/fzaninotto))
 
 ## v4.5.3
 
