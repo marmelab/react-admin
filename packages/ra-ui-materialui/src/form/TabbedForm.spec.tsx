@@ -256,4 +256,29 @@ describe('<TabbedForm />', () => {
             )
         ).toEqual(true);
     });
+
+    it('should not warn for `toolbar` prop of type `false`', () => {
+        const history = createMemoryHistory({ initialEntries: ['/'] });
+
+        const consoleSpy = jest
+            .spyOn(console, 'error')
+            .mockImplementation(() => {});
+
+        render(
+            <AdminContext dataProvider={testDataProvider()} history={history}>
+                <ResourceContextProvider value="posts">
+                    <TabbedForm toolbar={false}>
+                        <FormTab label="tab1"></FormTab>
+                    </TabbedForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+
+        expect(consoleSpy).not.toBeCalledWith(
+            'Warning: Failed %s type: %s%s',
+            'prop',
+            expect.stringContaining('Invalid prop `toolbar` of type `boolean`'),
+            expect.stringContaining(`at ${TabbedForm.name}`)
+        );
+    });
 });

@@ -809,6 +809,9 @@ import {
     DatagridConfigurable,
     List,
     SelectColumnsButton,
+    FilterButton,
+    CreateButton,
+    ExportButton,
     TextField,
     TopToolbar,
 } from "react-admin";
@@ -816,6 +819,9 @@ import {
 const PostListActions = () => (
     <TopToolbar>
         <SelectColumnsButton />
+        <FilterButton />
+        <CreateButton />
+        <ExportButton />
     </TopToolbar>
 );
 

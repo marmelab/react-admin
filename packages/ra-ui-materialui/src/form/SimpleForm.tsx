@@ -31,7 +31,6 @@ import { Toolbar } from './Toolbar';
  * @prop {ReactElement[]} children Input elements
  * @prop {Object} defaultValues
  * @prop {Function} validate
- * @prop {string} redirect
  * @prop {ReactElement} toolbar The element displayed at the bottom of the form, containing the SaveButton
  *
  * @param {Props} props
@@ -62,11 +61,6 @@ SimpleForm.propTypes = {
     defaultValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     // @ts-ignore
     record: PropTypes.object,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
     toolbar: PropTypes.oneOfType([PropTypes.element, PropTypes.oneOf([false])]),
     validate: PropTypes.func,
 };

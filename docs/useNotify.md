@@ -22,7 +22,7 @@ const NotifyButton = () => {
 The callback takes 2 arguments:
 - The message to display
 - an `options` object with the following keys:
-    - `type`: The notification type (`info`, `success` or `warning` - the default is `info`)
+    - `type`: The notification type (`info`, `success`, `error` or `warning` - the default is `info`)
     - `messageArgs`: options to pass to the `translate` function (because notification messages are translated if your admin has an `i18nProvider`). It is useful for inserting variables into the translation.
     - `undoable`: Set it to `true` if the notification should contain an "undo" button
     - `autoHideDuration`: Duration (in milliseconds) after which the notification hides. Set it to `0` if the notification should not be dismissible.

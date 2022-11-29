@@ -7,13 +7,7 @@ import {
     HtmlHTMLAttributes,
 } from 'react';
 import PropTypes from 'prop-types';
-import {
-    Form,
-    FormProps,
-    MutationMode,
-    RaRecord,
-    RedirectionSideEffect,
-} from 'ra-core';
+import { Form, FormProps, MutationMode, RaRecord } from 'ra-core';
 import get from 'lodash/get';
 
 import { TabbedFormView, TabbedFormViewProps } from './TabbedFormView';
@@ -77,7 +71,6 @@ import { useFormRootPath } from './useFormRootPath';
  * @prop {ReactElement[]} FormTab elements
  * @prop {Object} defaultValues
  * @prop {Function} validate
- * @prop {string} redirect
  * @prop {ReactElement} toolbar The element displayed at the bottom of the form, containing the SaveButton
  *
  * @param {Props} props
@@ -122,11 +115,6 @@ TabbedForm.propTypes = {
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     // @ts-ignore
     record: PropTypes.object,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
     saving: PropTypes.bool,
     validate: PropTypes.func,
 };
@@ -144,7 +132,6 @@ export interface TabbedFormProps
     formRootPathname?: string;
     mutationMode?: MutationMode;
     record?: RaRecord;
-    redirect?: RedirectionSideEffect;
     resource?: string;
     syncWithLocation?: boolean;
     tabs?: ReactElement;
