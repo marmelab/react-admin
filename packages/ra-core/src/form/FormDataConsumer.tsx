@@ -3,7 +3,6 @@ import { ReactNode } from 'react';
 import { useWatch, useFormContext, FieldValues } from 'react-hook-form';
 import get from 'lodash/get';
 
-import warning from '../util/warning';
 /**
  * Get the current (edited) value of the record from the form and pass it
  * to a child function
