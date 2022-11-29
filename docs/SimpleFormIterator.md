@@ -147,7 +147,7 @@ const PostEdit = () => (
 );
 ```
 
-**Note**: `<SimpleFormIterator>` only accepts `Input` components as children. If you want to use some `Fields` instead, you have to use a `<FormDataConsumer>` to get the correct source, as follows:
+**Note**: `<SimpleFormIterator>` only accepts `Input` components as children. If you want to use some `Fields` instead, you have to use a `<FormDataConsumer>`, as follows:
 
 ```jsx
 import { ArrayInput, SimpleFormIterator, DateInput, TextField, FormDataConsumer, Labeled } from 'react-admin';
@@ -156,9 +156,9 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextField, FormDataConsumer,
     <SimpleFormIterator disableRemove>
         <DateInput source="date" />
         <FormDataConsumer>
-            {({ getSource }) => (
+            {({ scopedFormData }) => (
                 <Labeled label="Url">
-                    <TextField source={getSource('url')} />
+                    <TextField source="url" record={scopedFormData} />
                 </Labeled>
             )}
         </FormDataConsumer>
