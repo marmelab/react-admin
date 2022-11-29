@@ -57,48 +57,16 @@ const FormDataConsumer = (props: ConnectedProps) => {
 
 export const FormDataConsumerView = (props: Props) => {
     const { children, form, formData, source, index, ...rest } = props;
-    let getSourceHasBeenCalled = false;
     let ret;
 
     // If we have an index, we are in an iterator like component (such as the SimpleFormIterator)
     if (typeof index !== 'undefined' && source) {
         const scopedFormData = get(formData, source);
-        const getSource = (scopedSource: string) => {
-            getSourceHasBeenCalled = true;
-            return `${source}.${scopedSource}`;
-        };
+        const getSource = (scopedSource: string) => `${source}.${scopedSource}`;
         ret = children({ formData, scopedFormData, getSource, ...rest });
     } else {
         ret = children({ formData, ...rest });
     }
-
-    warning(
-        typeof index !== 'undefined' && ret && !getSourceHasBeenCalled,
-        `You're using a FormDataConsumer inside an ArrayInput and you did not call the getSource function supplied by the FormDataConsumer component. This is required for your inputs to get the proper source.
-
-<ArrayInput source="users">
-    <SimpleFormIterator>
-        <TextInput source="name" />
-
-        <FormDataConsumer>
-            {({
-                formData, // The whole form data
-                scopedFormData, // The data for this item of the ArrayInput
-                getSource, // A function to get the valid source inside an ArrayInput
-                ...rest,
-            }) =>
-                scopedFormData.name ? (
-                    <SelectInput
-                        source={getSource('role')} // Will translate to "users[0].role"
-                        choices={[{id: 1, name: 'Admin'}, {id: 2, name: 'User'},
-                        {...rest}
-                    />
-                ) : null
-            }
-        </FormDataConsumer>
-    </SimpleFormIterator>
-</ArrayInput>`
-    );
 
     return ret === undefined ? null : ret;
 };
