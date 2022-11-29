@@ -66,3 +66,28 @@ export const Basic = () => (
         </PreferencesEditorContextProvider>
     </ThemeProvider>
 );
+
+export const WithPreferenceKey = () => (
+    <ThemeProvider theme={theme}>
+        <PreferencesEditorContextProvider>
+            <MemoryRouter>
+                <Box p={2}>
+                    <Box textAlign="right">
+                        <SelectColumnsButton preferenceKey="just-a-key.to_test_with" />
+                    </Box>
+                    <DatagridConfigurable
+                        preferenceKey="just-a-key.to_test_with"
+                        data={data}
+                        sort={{ field: 'title', order: 'ASC' }}
+                        bulkActionButtons={false}
+                    >
+                        <TextField source="id" />
+                        <TextField source="title" label="Original title" />
+                        <TextField source="author" />
+                        <TextField source="year" />
+                    </DatagridConfigurable>
+                </Box>
+            </MemoryRouter>
+        </PreferencesEditorContextProvider>
+    </ThemeProvider>
+);

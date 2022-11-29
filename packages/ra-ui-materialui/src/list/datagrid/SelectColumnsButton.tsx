@@ -40,15 +40,19 @@ import { styled } from '@mui/material/styles';
  */
 export const SelectColumnsButton = props => {
     const resource = useResourceContext(props);
-    const preferenceKey =
-        props.preferenceKey || `preferences.${resource}.datagrid`;
+    const finalPreferenceKey = props.preferenceKey || `${resource}.datagrid`;
+
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const [availableColumns, setAvailableColumns] = useStore<
-        ConfigurableDatagridColumn[]
-    >(`${preferenceKey}.availableColumns`, []);
-    const [omit] = useStore<string[]>(`${preferenceKey}.omit`, []);
+    const [availableColumns, setAvailableColumns] = useStore<ConfigurableDatagridColumn[]>(
+        `preferences.${finalPreferenceKey}.availableColumns`,
+        []
+    );
+    const [omit] = useStore<string[]>(
+        `preferences.${finalPreferenceKey}.omit`,
+        []
+    );
     const [columns, setColumns] = useStore<string[]>(
-        `${preferenceKey}.columns`,
+        `preferences.${finalPreferenceKey}.columns`,
         availableColumns
             .filter(column => !omit?.includes(column.source))
             .map(column => column.index)
