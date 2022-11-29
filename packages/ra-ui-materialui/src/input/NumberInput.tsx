@@ -47,8 +47,6 @@ export const NumberInput = ({
         isRequired,
     } = useInput({
         defaultValue,
-        format,
-        parse,
         onBlur,
         resource,
         source,
@@ -60,7 +58,7 @@ export const NumberInput = ({
 
     // This is a controlled input that renders directly the string typed by the user.
     // This string is converted to a number on change, and stored in the form state,
-    // but that number is not displayed.
+    // but that number is not not displayed.
     // This is to allow transitory values like '1.0' that will lead to '1.02'
 
     // text typed by the user and displayed in the input, unparsed
