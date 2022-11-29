@@ -7,7 +7,6 @@ import { AdminContext } from '../AdminContext';
 import { SaveButton } from '../button';
 import { SimpleForm, Toolbar } from '../form';
 import { required } from 'ra-core';
-import { Format, Parse } from './NumberInput.stories';
 
 describe('<NumberInput />', () => {
     const defaultProps = {
@@ -199,7 +198,7 @@ describe('<NumberInput />', () => {
     });
 
     describe('format and parse', () => {
-        it('should get the same value as injected value', async () => {
+        it('should get the same value as injected value ', async () => {
             const onSubmit = jest.fn();
 
             render(
@@ -290,31 +289,6 @@ describe('<NumberInput />', () => {
                 );
             });
             expect(onSubmit.mock.calls[0][0].views).toBeNull();
-        });
-
-        it('should use custom format function prop', async () => {
-            render(<Format />);
-
-            const input = screen.getByLabelText('resources.posts.fields.views');
-            fireEvent.change(input, { target: { value: 5.6356487 } });
-
-            await waitFor(() => {
-                expect((input as HTMLInputElement).value).toEqual('5.6356487');
-                expect(
-                    (screen.getByDisplayValue('5.64') as HTMLInputElement).value
-                ).toEqual('5.64');
-            });
-        });
-
-        it('should use custom parse function prop', async () => {
-            render(<Parse />);
-
-            const input = screen.getByLabelText('Parse to two decimal');
-            fireEvent.change(input, { target: { value: 5.6356487 } });
-
-            await waitFor(() => {
-                expect((input as HTMLInputElement).value).toEqual('5.64');
-            });
         });
     });
 
