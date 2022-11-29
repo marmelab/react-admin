@@ -205,7 +205,7 @@ describe('Edit Page', () => {
             expect(el).to.have.value('')
         );
 
-        // This validate the old record values are not kept after we navigated
+        // This validates the old record values are not kept after we navigated
         const currentDate = new Date();
         const currentDateString = currentDate.toISOString().slice(0, 10);
 
@@ -269,6 +269,23 @@ describe('Edit Page', () => {
         });
     });
 
+    it('should save edited user values', () => {
+        EditPostPage.navigate();
+        EditPostPage.logout();
+        LoginPage.navigate();
+        LoginPage.login('admin', 'password');
+        EditUserPage.navigate();
+        cy.get(EditUserPage.elements.input('name')).should(el =>
+            expect(el).to.have.value('Annamarie Mayer')
+        );
+        EditUserPage.setInputValue('textbox', 'name', 'Annamarie Mayer!');
+        EditUserPage.submit();
+        EditUserPage.navigate();
+        cy.get(EditUserPage.elements.input('name')).should(el =>
+            expect(el).to.have.value('Annamarie Mayer!')
+        );
+    });
+
     it('should persit emptied inputs', () => {
         EditPostPage.navigate();
         EditPostPage.gotoTab(3);
@@ -285,8 +302,7 @@ describe('Edit Page', () => {
         );
     });
 
-    // FIXME unskip me when useGetList uses the react-query API
-    it.skip('should refresh the list when the update fails', () => {
+    it('should refresh the list when the update fails', () => {
         ListPagePosts.navigate();
         ListPagePosts.nextPage(); // Ensure the record is visible in the table
 
