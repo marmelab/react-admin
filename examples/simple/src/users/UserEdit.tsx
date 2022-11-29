@@ -14,6 +14,7 @@ import {
     Toolbar,
     TopToolbar,
     usePermissions,
+    useSaveContext,
 } from 'react-admin';
 
 import Aside from './Aside';
@@ -42,8 +43,10 @@ const EditActions = () => (
     </TopToolbar>
 );
 
-const UserEditForm = ({ save, ...props }: { save?: any }) => {
+const UserEditForm = () => {
     const { permissions } = usePermissions();
+    const { save } = useSaveContext();
+
     const newSave = values =>
         new Promise((resolve, reject) => {
             if (values.name === 'test') {
@@ -61,7 +64,6 @@ const UserEditForm = ({ save, ...props }: { save?: any }) => {
         <TabbedForm
             defaultValues={{ role: 'user' }}
             toolbar={<UserEditToolbar />}
-            {...props}
             onSubmit={newSave}
         >
             <FormTab label="user.form.summary" path="">
