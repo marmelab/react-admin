@@ -90,7 +90,6 @@ export const ResettableTextField = forwardRef(
                                     'ra.action.clear_input_value'
                                 )}
                                 title={translate('ra.action.clear_input_value')}
-                                disableRipple
                                 disabled={true}
                                 size="large"
                             >
@@ -135,7 +134,6 @@ export const ResettableTextField = forwardRef(
                                 'ra.action.clear_input_value'
                             )}
                             title={translate('ra.action.clear_input_value')}
-                            disableRipple
                             onClick={handleClickClearButton}
                             onMouseDown={handleMouseDownClearButton}
                             disabled={disabled}
