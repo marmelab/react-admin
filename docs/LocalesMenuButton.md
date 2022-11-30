@@ -11,7 +11,7 @@ The `<LocalesMenuButton>` component, also known as the "language switcher", disp
 
 ## Usage
 
-Add the `<LocalesMenuButton>` to a custom `<AppBar>`:
+Add the `<LocalesMenuButton>` manually to a custom `<AppBar>`:
 
 ```jsx
 import { LocalesMenuButton, AppBar } from 'react-admin';
@@ -20,7 +20,11 @@ import { Typography } from '@mui/material';
 export const MyAppBar = (props) => (
     <AppBar {...props}>
         <Typography flex="1" variant="h6" id="react-admin-title"></Typography>
-        <LocalesMenuButton />
+        {/* Pass `availableLocales` as `languages` prop to `<LocalesMenuButton />` here */}
+        <LocalesMenuButton languages={[
+            { locale: 'en', name: 'English' },
+            { locale: 'fr', name: 'Français' },
+        ]} />
     </AppBar>
 );
 ```
@@ -39,8 +43,8 @@ const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
 
 const i18nProvider = polyglotI18nProvider(
     locale => (locale === 'fr' ? frenchMessages : englishMessages),
-    getLocales: () => [{ locale: 'en', name: 'English' }, { locale: 'fr', name: 'Français' }],
     'en' // Default locale
+    // Skip `availableLocales` here so we don't have duplicate `<LocalesMenuButton />`
 );
 
 const App = () => (
@@ -54,7 +58,7 @@ const App = () => (
 );
 ```
 
-**Tip**: the `<LocalesMenuButton>` will be added to the `<AppBar>` automatically if you have multiple locales declared in the `getLocales` method of your `i18nProvider`.
+**Tip**: the `<LocalesMenuButton>` will be added to the `<AppBar>` automatically if you have multiple locales declared in the `getLocales` method of your `i18nProvider`, or `availableLocales` parameter if you are using `polyglotI18nProvider`.
 
 ## `languages`
 
