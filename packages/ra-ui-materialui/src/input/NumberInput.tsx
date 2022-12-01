@@ -83,13 +83,16 @@ export const NumberInput = ({
         }
         const target = event.target;
         setValue(target.value);
-        const newValue = target.valueAsNumber
-            ? parse
-                ? parse(target.valueAsNumber)
-                : target.valueAsNumber
-            : parse
-            ? parse(target.value)
-            : convertStringToNumber(target.value);
+        const newValue =
+            target.valueAsNumber !== undefined &&
+            target.valueAsNumber !== null &&
+            !isNaN(target.valueAsNumber)
+                ? parse
+                    ? parse(target.valueAsNumber)
+                    : target.valueAsNumber
+                : parse
+                ? parse(target.value)
+                : convertStringToNumber(target.value);
         field.onChange(newValue);
     };
 
