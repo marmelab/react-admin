@@ -3,6 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
 import { NumberInput } from './NumberInput';
+import { TextInput } from './TextInput';
 import { AdminContext } from '../AdminContext';
 import { SaveButton } from '../button';
 import { SimpleForm, Toolbar } from '../form';
@@ -289,6 +290,45 @@ describe('<NumberInput />', () => {
                 );
             });
             expect(onSubmit.mock.calls[0][0].views).toBeNull();
+        });
+
+        it('should reformat if format function gets changed', async () => {
+            const AngleInput = props => {
+                const unit = useWatch({ name: 'unit' });
+                return (
+                    <NumberInput
+                        format={v =>
+                            unit === 'radian' ? v : (v / Math.PI) * 180
+                        }
+                        {...props}
+                    />
+                );
+            };
+
+            const onSubmit = jest.fn();
+
+            render(
+                <AdminContext>
+                    <SimpleForm
+                        defaultValues={{ unit: 'radian', value: Math.PI / 2 }}
+                        onSubmit={onSubmit}
+                    >
+                        <AngleInput resource="posts" source="value" />
+                        <TextInput resource="posts" source="unit" />
+                    </SimpleForm>
+                </AdminContext>
+            );
+            const valueInput = screen.getByLabelText(
+                'resources.posts.fields.value'
+            );
+            const unitInput = screen.getByLabelText(
+                'resources.posts.fields.unit'
+            );
+            fireEvent.change(unitInput, { target: { value: 'degree' } });
+
+            await waitFor(() => {
+                expect((valueInput as HTMLInputElement).value).toEqual('90');
+            });
         });
     });
 
