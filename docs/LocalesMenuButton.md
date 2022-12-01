@@ -11,20 +11,39 @@ The `<LocalesMenuButton>` component, also known as the "language switcher", disp
 
 ## Usage
 
-Add the `<LocalesMenuButton>` manually to a custom `<AppBar>`:
+For most users, this component will be automatically added to `<AppBar>` if the `i18nProvider` is configured properly to return a list of available locales. React-admin will use the optional `getLocales` method of your `i18nProvider` (or the `availableLocales` parameter if you are using `polyglotI18nProvider`) to generate a list of locale menu items for this component.
+
+For advanced users who wish to add `<LocalesMenuButton>` elsewhere on the `<AppBar>` or in some custom configuation page, they can do the following:
+
+Define an `i18nProvider` (or `polyglotI18nProvider`) with `getLocales` (or `availableLocales`) omitted.
 
 ```jsx
+// in src/i18nProvider.js
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
+import frenchMessages from 'ra-language-french';
+
+export const i18nProvider = polyglotI18nProvider(
+    locale => (locale === 'fr' ? frenchMessages : englishMessages),
+    'en' // Default locale
+    // Omit optional `availableLocales` parameter here so we don't have duplicate `<LocalesMenuButton />` in `<AppBar>`
+);
+```
+
+Pass a list of supported locals as `languages` prop to `<LocalesMenuButton>` and then add to the `<AppBar>`.
+
+```jsx
+// in src/MyAppBar.js
 import { LocalesMenuButton, AppBar } from 'react-admin';
 import { Typography } from '@mui/material';
 
 export const MyAppBar = (props) => (
     <AppBar {...props}>
-        <Typography flex="1" variant="h6" id="react-admin-title"></Typography>
-        {/* Pass `availableLocales` as `languages` prop to `<LocalesMenuButton />` here */}
         <LocalesMenuButton languages={[
             { locale: 'en', name: 'English' },
             { locale: 'fr', name: 'Français' },
         ]} />
+        <Typography flex="1" variant="h6" id="react-admin-title"></Typography>
     </AppBar>
 );
 ```
@@ -32,20 +51,13 @@ export const MyAppBar = (props) => (
 Then, pass the custom App Bar in a custom `<Layout>`, and the `<Layout>` to your `<Admin>`:
 
 ```jsx
-import polyglotI18nProvider from 'ra-i18n-polyglot';
-import englishMessages from 'ra-language-english';
-import frenchMessages from 'ra-language-french';
+// in src/App.js
 import { Admin, Resource, Layout } from 'react-admin';
 
 import { MyAppBar } from './MyAppBar';
+import { i18nProvider } from './i18nProvider'
 
 const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
-
-const i18nProvider = polyglotI18nProvider(
-    locale => (locale === 'fr' ? frenchMessages : englishMessages),
-    'en' // Default locale
-    // Skip `availableLocales` here so we don't have duplicate `<LocalesMenuButton />`
-);
 
 const App = () => (
     <Admin
@@ -57,8 +69,6 @@ const App = () => (
     </Admin>
 );
 ```
-
-**Tip**: the `<LocalesMenuButton>` will be added to the `<AppBar>` automatically if you have multiple locales declared in the `getLocales` method of your `i18nProvider`, or `availableLocales` parameter if you are using `polyglotI18nProvider`.
 
 ## `languages`
 
