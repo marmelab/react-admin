@@ -34,6 +34,8 @@ What's an `authProvider`? Just like a `dataProvider`, an `authProvider` is an ob
 const authProvider = {
     // send username and password to the auth server and get back credentials
     login: params => Promise.resolve(),
+    // validate authentication from an external service (e.g. OAuth)
+    handleLoginCallback: () => Promise.resolve(),
     // when the dataProvider returns an error, check if this is an authentication error
     checkError: error => Promise.resolve(),
     // when the user navigates, make sure that their credentials are still valid
@@ -81,6 +83,15 @@ const App = () => (
 Now the admin is secured: The user can be authenticated and use their credentials to communicate with a secure API. 
 
 If you have a custom REST client, don't forget to add credentials yourself.
+
+## Handling External Authentication Services Callbacks
+
+When using external authentication services such as those implementing OAuth, you usually need a callback route. React-admin provides a default one at `/login-callback`. It will call the `AuthProvider.handleLoginCallback` method
+that may validate the params received from the URL and redirect users to any page (the home page by default) afterwards.
+
+It's up to you to decide when to redirect users to the third party authentication service, for instance:
+    - Directly in the `AuthProvider.checkAuth` method;
+    - After a user interaction on the login page;
 
 ## Allowing Anonymous Access
 
