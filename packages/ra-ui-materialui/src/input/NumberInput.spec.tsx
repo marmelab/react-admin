@@ -290,6 +290,50 @@ describe('<NumberInput />', () => {
             });
             expect(onSubmit.mock.calls[0][0].views).toBeNull();
         });
+
+        it('should cast value to a numeric with a custom parse function', async () => {
+            const onSubmit = jest.fn();
+
+            render(
+                <AdminContext>
+                    <SimpleForm toolbar={<MyToolbar />} onSubmit={onSubmit}>
+                        <NumberInput {...defaultProps} parse={value => value} />
+                    </SimpleForm>
+                </AdminContext>
+            );
+            const input = screen.getByLabelText('resources.posts.fields.views');
+            fireEvent.change(input, { target: { value: '12' } });
+            fireEvent.click(screen.getByText('ra.action.save'));
+            await waitFor(() => {
+                expect(onSubmit).toHaveBeenCalledWith(
+                    { views: 12 },
+                    expect.anything()
+                );
+            });
+            expect(typeof onSubmit.mock.calls[0][0].views).toEqual('number');
+        });
+
+        it('should cast 0 to a numeric with a custom parse function', async () => {
+            const onSubmit = jest.fn();
+
+            render(
+                <AdminContext>
+                    <SimpleForm toolbar={<MyToolbar />} onSubmit={onSubmit}>
+                        <NumberInput {...defaultProps} parse={value => value} />
+                    </SimpleForm>
+                </AdminContext>
+            );
+            const input = screen.getByLabelText('resources.posts.fields.views');
+            fireEvent.change(input, { target: { value: '0' } });
+            fireEvent.click(screen.getByText('ra.action.save'));
+            await waitFor(() => {
+                expect(onSubmit).toHaveBeenCalledWith(
+                    { views: 0 },
+                    expect.anything()
+                );
+            });
+            expect(typeof onSubmit.mock.calls[0][0].views).toEqual('number');
+        });
     });
 
     describe('onChange event', () => {
