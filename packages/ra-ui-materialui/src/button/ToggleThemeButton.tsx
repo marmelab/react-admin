@@ -25,7 +25,7 @@ import { RaThemeOptions } from '..';
 export const ToggleThemeButton = (props: ToggleThemeButtonProps) => {
     const translate = useTranslate();
     const { darkTheme, lightTheme } = props;
-    const [theme, setTheme] = useTheme(lightTheme);
+    const [theme, setTheme] = useTheme();
 
     const handleTogglePaletteType = (): void => {
         setTheme(theme?.palette.mode === 'dark' ? lightTheme : darkTheme);
