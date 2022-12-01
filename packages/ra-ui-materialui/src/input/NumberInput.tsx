@@ -83,8 +83,11 @@ export const NumberInput = ({
         }
         const target = event.target;
         setValue(target.value);
+        console.log(target.valueAsNumber);
         const newValue =
-            target.valueAsNumber !== undefined
+            target.valueAsNumber !== undefined &&
+            target.valueAsNumber !== null &&
+            !isNaN(target.valueAsNumber)
                 ? parse
                     ? parse(target.valueAsNumber)
                     : target.valueAsNumber
