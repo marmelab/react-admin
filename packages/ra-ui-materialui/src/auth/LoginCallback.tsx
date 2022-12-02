@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useHandleLoginCallback, useTimeout } from 'ra-core';
+import { useHandleAuthCallback, useTimeout } from 'ra-core';
 import { Loading } from '..';
 
 /**
@@ -10,15 +10,15 @@ import { Loading } from '..';
  * (e.g. to show a different waiting screen, start onboarding procedures, etc.).
  *
  * @example
- *     import MyLoginCallbackPage from './MyLoginCallbackPage';
+ *     import MyAuthCallbackPage from './MyAuthCallbackPage';
  *     const App = () => (
- *         <Admin loginCallbackPage={MyLoginCallbackPage} authProvider={authProvider}>
+ *         <Admin authCallbackPage={MyAuthCallbackPage} authProvider={authProvider}>
  *             ...
  *        </Admin>
  *     );
  */
-export const LoginCallback = () => {
-    useHandleLoginCallback();
+export const AuthCallback = () => {
+    useHandleAuthCallback();
     const hasOneSecondPassed = useTimeout(1000);
 
     return hasOneSecondPassed ? <Loading /> : null;

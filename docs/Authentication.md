@@ -34,8 +34,6 @@ What's an `authProvider`? Just like a `dataProvider`, an `authProvider` is an ob
 const authProvider = {
     // send username and password to the auth server and get back credentials
     login: params => Promise.resolve(),
-    // validate authentication from an external service (e.g. OAuth)
-    handleLoginCallback: () => Promise.resolve(),
     // when the dataProvider returns an error, check if this is an authentication error
     checkError: error => Promise.resolve(),
     // when the user navigates, make sure that their credentials are still valid
@@ -86,12 +84,56 @@ If you have a custom REST client, don't forget to add credentials yourself.
 
 ## Handling External Authentication Services Callbacks
 
-When using external authentication services such as those implementing OAuth, you usually need a callback route. React-admin provides a default one at `/login-callback`. It will call the `AuthProvider.handleLoginCallback` method
-that may validate the params received from the URL and redirect users to any page (the home page by default) afterwards.
+When using external authentication services such as those implementing OAuth, you usually need a callback route. React-admin provides a default one at `/login-callback`. It will call the `AuthProvider.handleLoginCallback` method that may validate the params received from the URL and redirect users to any page (the home page by default) afterwards.
 
 It's up to you to decide when to redirect users to the third party authentication service, for instance:
-    - Directly in the `AuthProvider.checkAuth` method;
+    - Directly in the `AuthProvider.checkAuth` method when users are not yet authenticated;
     - After a user interaction on the login page;
+
+For instance, here's what a simple authProvider for Auth0 might look like:
+
+```js
+import { Auth0Client } from './Auth0Client';
+
+export const authProvider = {
+    async checkAuth() {
+        const isAuthenticated = await Auth0Client.isAuthenticated();
+        if (isAuthenticated) {
+            return;
+        }
+
+        Auth0Client.loginWithRedirect({
+            authorizationParams: {
+                redirect_uri: `${window.location.origin}/login-callback`,
+            },
+        });
+    },
+    async handleLoginCallback() {
+        const query = window.location.search;
+        if (query.includes('code=') && query.includes('state=')) {
+            try {
+                await Auth0Client.handleRedirectCallback();
+                return;
+            } catch (error) {
+                console.log('error', error);
+                throw error;
+            }
+        }
+        throw new Error('Failed to handle login callback.');
+    },
+    async logout() {
+        const isAuthenticated = await client.isAuthenticated();
+        if (isAuthenticated) {
+            // need to check for this as react-admin calls logout in case checkAuth failed
+            return client.logout({
+                returnTo: window.location.origin,
+            });
+        }
+    },
+    async login() => { /* Nothing to do here, this function will never be called */ },
+    ...
+}
+```
 
 ## Allowing Anonymous Access
 

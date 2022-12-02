@@ -1,14 +1,12 @@
 import * as React from 'react';
 import expect from 'expect';
-import { screen, render, waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { createMemoryHistory } from 'history';
 
-import { useHandleLoginCallback } from './useHandleLoginCallback';
+import { useHandleAuthCallback } from './useHandleAuthCallback';
 import AuthContext from './AuthContext';
-
-import { BasenameContextProvider } from '../routing';
 import { useRedirect } from '../routing/useRedirect';
 import { AuthProvider } from '../types';
 
@@ -20,7 +18,7 @@ useRedirect.mockImplementation(() => redirect);
 
 const TestComponent = ({ customError }: { customError?: boolean }) => {
     const [error, setError] = React.useState<string>();
-    useHandleLoginCallback(
+    useHandleAuthCallback(
         customError
             ? {
                   onError: error => {
@@ -50,7 +48,7 @@ const authProvider: AuthProvider = {
 
 const queryClient = new QueryClient();
 
-describe('useHandleLoginCallback', () => {
+describe('useHandleAuthCallback', () => {
     afterEach(() => {
         redirect.mockClear();
     });
@@ -155,24 +153,6 @@ describe('useHandleLoginCallback', () => {
         );
         await waitFor(() => {
             expect(redirect).toHaveBeenCalledWith('/test');
-        });
-    });
-
-    it('should take basename into account when redirecting to home route', async () => {
-        const history = createMemoryHistory({ initialEntries: ['/foo'] });
-        render(
-            <HistoryRouter history={history}>
-                <BasenameContextProvider basename="/foo">
-                    <AuthContext.Provider value={authProvider}>
-                        <QueryClientProvider client={queryClient}>
-                            <TestComponent />
-                        </QueryClientProvider>
-                    </AuthContext.Provider>
-                </BasenameContextProvider>
-            </HistoryRouter>
-        );
-        await waitFor(() => {
-            expect(redirect).toHaveBeenCalledWith('/foo/');
         });
     });
 });

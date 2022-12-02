@@ -1,27 +1,25 @@
 import { useQuery, UseQueryOptions } from 'react-query';
-import { useBasename, useRedirect } from '../routing';
-import { removeDoubleSlashes } from '../routing/useCreatePath';
+import { useRedirect } from '../routing';
 import { AuthRedirectResult } from '../types';
 import useAuthProvider from './useAuthProvider';
 
 /**
  * This hook calls the `authProvider.handleLoginCallback()` method. This is meant to be used in a route called
  * by an external authentication service (e.g. Auth0) after the user has logged in.
- * By default, it redirects to the `redirectTo` location, home page if undefined.
+ * By default, it redirects to application home page upon success, or to the `redirectTo` location returned by `authProvider. handleLoginCallback`.
  *
- * @returns The result of the `handleLoginCallback` call. Destructure as { isLoading, data, error, refetch }.
+ * @returns An object containing { isLoading, data, error, refetch }.
  */
-export const useHandleLoginCallback = <
+export const useHandleAuthCallback = <
     HandleLoginCallbackResult = AuthRedirectResult | void
 >(
     options?: UseQueryOptions<HandleLoginCallbackResult>
 ) => {
     const authProvider = useAuthProvider();
     const redirect = useRedirect();
-    const basename = useBasename();
 
     return useQuery(
-        ['handleLoginCallback', 'auth'],
+        ['auth', 'handleLoginCallback'],
         () => authProvider.handleLoginCallback<HandleLoginCallbackResult>(),
         {
             retry: false,
@@ -33,9 +31,7 @@ export const useHandleLoginCallback = <
                 }
 
                 redirect(
-                    data == null || redirectTo === true
-                        ? removeDoubleSlashes(`${basename}/`)
-                        : redirectTo
+                    data == null || redirectTo === true ? '/' : redirectTo
                 );
             },
             onError: err => {
@@ -45,11 +41,7 @@ export const useHandleLoginCallback = <
                     return;
                 }
 
-                redirect(
-                    err == null || redirectTo === true
-                        ? removeDoubleSlashes(`${basename}/`)
-                        : redirectTo
-                );
+                redirect(err == null || redirectTo === true ? '/' : redirectTo);
             },
             ...options,
         }

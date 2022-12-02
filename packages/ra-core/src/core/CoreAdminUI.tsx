@@ -26,7 +26,7 @@ export interface CoreAdminUIProps {
     disableTelemetry?: boolean;
     layout?: LayoutComponent;
     loading?: LoadingComponent;
-    loginCallbackPage?: LoginComponent | boolean;
+    authCallbackPage?: ComponentType | boolean;
     loginPage?: LoginComponent | boolean;
     /**
      * @deprecated use a custom layout instead
@@ -46,7 +46,7 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
         layout = DefaultLayout,
         loading = Noop,
         loginPage: LoginPage = false,
-        loginCallbackPage: LoginCallbackPage = false,
+        authCallbackPage: LoginCallbackPage = false,
         menu, // deprecated, use a custom layout instead
         ready = Ready,
         title = 'React Admin',
