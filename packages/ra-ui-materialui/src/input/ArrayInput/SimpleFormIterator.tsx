@@ -9,12 +9,18 @@ import {
     useCallback,
     useMemo,
     useRef,
+    useState,
 } from 'react';
 import { styled, SxProps } from '@mui/material';
 import clsx from 'clsx';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
-import { FormDataConsumer, RaRecord, useRecordContext } from 'ra-core';
+import {
+    FormDataConsumer,
+    RaRecord,
+    useRecordContext,
+    useTranslate,
+} from 'ra-core';
 import { UseFieldArrayReturn } from 'react-hook-form';
 
 import { useArrayInput } from './useArrayInput';
@@ -30,6 +36,8 @@ import {
 import { AddItemButton as DefaultAddItemButton } from './AddItemButton';
 import { RemoveItemButton as DefaultRemoveItemButton } from './RemoveItemButton';
 import { ReOrderButtons as DefaultReOrderButtons } from './ReOrderButtons';
+import { ClearArrayButton } from './ClearArrayButton';
+import { Confirm } from '../../layout';
 
 export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     const {
@@ -42,6 +50,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         source,
         disabled,
         disableAdd,
+        disableClear,
         disableRemove,
         disableReordering,
         inline,
@@ -49,7 +58,9 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         fullWidth,
         sx,
     } = props;
-    const { append, fields, move, remove } = useArrayInput(props);
+    const [confirmIsOpen, setConfirmIsOpen] = useState<boolean>(false);
+    const { append, fields, move, remove, replace } = useArrayInput(props);
+    const translate = useTranslate();
     const record = useRecordContext(props);
     const initialDefaultValue = useRef({});
 
@@ -120,6 +131,11 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         [move]
     );
 
+    const handleArrayClear = useCallback(() => {
+        replace([]);
+        setConfirmIsOpen(false);
+    }, [replace]);
+
     const records = get(record, source);
 
     const context = useMemo(
@@ -166,17 +182,39 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                         </SimpleFormIteratorItem>
                     ))}
                 </ul>
-                {!disabled && !disableAdd && (
-                    <div className={SimpleFormIteratorClasses.add}>
-                        {cloneElement(addButton, {
-                            className: clsx(
-                                'button-add',
-                                `button-add-${source}`
-                            ),
-                            onClick: handleAddButtonClick(
-                                addButton.props.onClick
-                            ),
-                        })}
+                {!disabled && !(disableAdd && (disableClear || disableRemove)) && (
+                    <div className={SimpleFormIteratorClasses.buttons}>
+                        {!disableAdd && (
+                            <div className={SimpleFormIteratorClasses.add}>
+                                {cloneElement(addButton, {
+                                    className: clsx(
+                                        'button-add',
+                                        `button-add-${source}`
+                                    ),
+                                    onClick: handleAddButtonClick(
+                                        addButton.props.onClick
+                                    ),
+                                })}
+                            </div>
+                        )}
+                        {fields.length > 0 && !disableClear && !disableRemove && (
+                            <div className={SimpleFormIteratorClasses.clear}>
+                                <Confirm
+                                    isOpen={confirmIsOpen}
+                                    title={translate(
+                                        'ra.action.clear_array_input'
+                                    )}
+                                    content={translate(
+                                        'ra.message.clear_array_input'
+                                    )}
+                                    onConfirm={handleArrayClear}
+                                    onClose={() => setConfirmIsOpen(false)}
+                                />
+                                <ClearArrayButton
+                                    onClick={() => setConfirmIsOpen(true)}
+                                />
+                            </div>
+                        )}
                     </div>
                 )}
             </Root>
@@ -217,6 +255,7 @@ export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
     className?: string;
     disabled?: boolean;
     disableAdd?: boolean;
+    disableClear?: boolean;
     disableRemove?: boolean | DisableRemoveFunction;
     disableReordering?: boolean;
     fullWidth?: boolean;
@@ -281,7 +320,13 @@ const Root = styled('div', {
             visibility: 'visible',
         },
     },
+    [`& .${SimpleFormIteratorClasses.buttons}`]: {
+        display: 'flex',
+    },
     [`& .${SimpleFormIteratorClasses.add}`]: {
+        borderBottom: 'none',
+    },
+    [`& .${SimpleFormIteratorClasses.clear}`]: {
         borderBottom: 'none',
     },
     [`& .${SimpleFormIteratorClasses.line}:hover > .${SimpleFormIteratorClasses.action}`]: {

@@ -492,3 +492,64 @@ export const UserCreate = () => {
 }
 ```
 {% endraw %}
+
+## Configurable
+
+You can let end users customize the fields displayed in the `<SimpleForm>` by using the `<SimpleFormConfigurable>` component instead.
+
+![SimpleFormConfigurable](./img/SimpleFormConfigurable.gif)
+
+```diff
+import {
+    Edit,
+-   SimpleForm,
++   SimpleFormConfigurable,
+    TextInput,
+} from 'react-admin';
+
+const PostEdit = () => (
+    <Edit>
+-       <SimpleForm>
++       <SimpleFormConfigurable>
+            <TextInput source="title" />
+            <TextInput source="author" />
+            <TextInput source="year" />
+-       </SimpleForm>
++       </SimpleFormConfigurable>
+    </Edit>
+);
+```
+
+When users enter the configuration mode and select the `<SimpleForm>`, they can show / hide SimpleForm inputs.
+
+By default, `<SimpleFormConfigurable>` renders all child inputs. But you can also omit some of them by passing an `omit` prop containing an array of input sources:
+
+```jsx
+// By default, hide the author input
+// users can choose to show it in configuration mode
+const PostEdit = () => (
+    <Edit>
+        <SimpleFormConfigurable omit={['author']}>
+            <TextInput source="title" />
+            <TextInput source="author" />
+            <TextInput source="year" />
+        </SimpleFormConfigurable>
+    </Edit>
+);
+```
+
+If you render more than one `<SimpleFormConfigurable>` in the same page, you must pass a unique `preferenceKey` prop to each one:
+
+```jsx
+const PostEdit = () => (
+    <Edit>
+        <SimpleFormConfigurable preferenceKey="posts.simpleForm">
+            <TextInput source="title" />
+            <TextInput source="author" />
+            <TextInput source="year" />
+        </SimpleFormConfigurable>
+    </Edit>
+);
+```
+
+`<SimpleFormConfigurable>` accepts the same props as `<SimpleForm>`.

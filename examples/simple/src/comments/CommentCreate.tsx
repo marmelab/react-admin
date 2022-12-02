@@ -4,7 +4,7 @@ import {
     Create,
     DateInput,
     TextInput,
-    SimpleForm,
+    SimpleFormConfigurable,
     required,
     minLength,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
@@ -15,7 +15,7 @@ const defaultSort = { field: 'title', order: 'ASC' };
 
 const CommentCreate = () => (
     <Create redirect={false}>
-        <SimpleForm>
+        <SimpleFormConfigurable>
             <PostReferenceInput
                 source="post_id"
                 reference="posts"
@@ -26,7 +26,7 @@ const CommentCreate = () => (
             <TextInput source="author.name" validate={minLength(10)} />
             <DateInput source="created_at" defaultValue={now} />
             <TextInput fullWidth source="body" multiline />
-        </SimpleForm>
+        </SimpleFormConfigurable>
     </Create>
 );
 

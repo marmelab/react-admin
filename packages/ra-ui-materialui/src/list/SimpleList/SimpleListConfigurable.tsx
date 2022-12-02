@@ -14,11 +14,7 @@ export const SimpleListConfigurable = ({
         <Configurable
             editor={<SimpleListEditor />}
             preferenceKey={preferenceKey || `${resource}.SimpleList`}
-            sx={{
-                display: 'block',
-                '& .MuiBadge-root': { display: 'flex' },
-                '& ul': { flex: 1 },
-            }}
+            sx={{ display: 'block' }}
         >
             <SimpleListWithPreferences {...props} />
         </Configurable>

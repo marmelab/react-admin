@@ -11,23 +11,19 @@ This component renders a menu, with one menu item per resource by default. You c
 
 ## Usage
 
-You can create a custom menu component using react-admin's `<Menu>` and `<Menu.Item>` components:
+You can create a custom menu component using react-admin's `<Menu>`, `<Menu.ResourceItem>`, and `<Menu.Item>` components:
 
 ```jsx
 // in src/MyMenu.js
 import { Menu } from 'react-admin';
-
-import BookIcon from '@mui/icons-material/Book';
-import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
-import PeopleIcon from '@mui/icons-material/People';
 import LabelIcon from '@mui/icons-material/Label';
 
 export const MyMenu = () => (
     <Menu>
         <Menu.DashboardItem />
-        <Menu.Item to="/posts" primaryText="Posts" leftIcon={<BookIcon />}/>
-        <Menu.Item to="/comments" primaryText="Comments" leftIcon={<ChatBubbleIcon />}/>
-        <Menu.Item to="/users" primaryText="Users" leftIcon={<PeopleIcon />}/>
+        <Menu.ResourceItem name="posts" />
+        <Menu.ResourceItem name="comments" >
+        <Menu.ResourceItem name="users" />
         <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
     </Menu>
 );
@@ -95,23 +91,19 @@ const App = () => (
 
 ![standard menu with dashboard](./img/menu-with-dashboard.webp)
 
-If you pass children to `<Menu>`, they will override the default menu items. Use `<Menu.Item>` to add custom menu items, and `<Menu.DashboardItem>` to add a menu item for the dashboard.
+If you pass children to `<Menu>`, they will override the default menu items. Use `<Menu.DashboardItem>` to add a menu item for the dashboard, `<Menu.ResourceItem>` to add menu items for a resource list, and `<Menu.Item>` to add custom menu items.
 
 ```jsx
 // in src/MyMenu.js
 import { Menu } from 'react-admin';
-
-import BookIcon from '@mui/icons-material/Book';
-import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
-import PeopleIcon from '@mui/icons-material/People';
 import LabelIcon from '@mui/icons-material/Label';
 
 export const MyMenu = () => (
     <Menu>
         <Menu.DashboardItem />
-        <Menu.Item to="/posts" primaryText="Posts" leftIcon={<BookIcon />}/>
-        <Menu.Item to="/comments" primaryText="Comments" leftIcon={<ChatBubbleIcon />}/>
-        <Menu.Item to="/users" primaryText="Users" leftIcon={<PeopleIcon />}/>
+        <Menu.ResourceItem name="posts" />
+        <Menu.ResourceItem name="comments" >
+        <Menu.ResourceItem name="users" />
         <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
     </Menu>
 );
@@ -217,31 +209,74 @@ export const MyMenu = () => (
 
 Clicking on the dashboard menu item leads to the `/` route and renders the component defined in [the `<Admin dashboard>` prop](./Admin.md#dashboard).
 
+## `<Menu.ResourceItem>`
+
+The `<Menu.ResourceItem>` component displays a menu item for the list page of a resource, based on the resource name.
+
+```jsx
+import { Menu } from 'react-admin';
+
+export const MyMenu = () => (
+    <Menu>
+        <Menu.ResourceItem name="posts" />
+        <Menu.ResourceItem name="comments" />
+        <Menu.ResourceItem name="tags" />
+        <Menu.ResourceItem name="users" />
+    </Menu>
+);
+```
+
+`<Menu.ResourceItem>` renders a menu item for a resource based on its name, using the resource label and icon defined in the corresponding `<Resource>` component.
+
+So the following code:
+
+```jsx
+<Menu.ResourceItem name="posts" />
+```
+
+uses the following resource definition:
+
+```jsx
+<Resource name="posts" list={PostList} icon={BookIcon} />
+```
+
+and translates to:
+
+```jsx
+<Menu.Item to="/posts" primaryText="Posts" leftIcon={<BookIcon />}/>
+```
+
 ## Creating Menu Items For Resources
 
-Developers often want to *add* custom menu items in addition to the default ones. But passing `children` to `<Menu>` actually *replaces* the default menu items.
-
-If you want to render a custom menu item and the default resource menu items, use the `useResourceDefinitions` hook to retrieve the list of resources and create one menu item per resource.
+If you want to reorder the default menu, create a new Menu and use `<Menu.ResourceItem>` components as children.
 
 ```jsx
 // in src/MyMenu.js
-import * as React from 'react';
-import { createElement } from 'react';
+import { Menu } from 'react-admin';
+
+export const MyMenu = () => (
+    <Menu>
+        <Menu.ResourceItem name="posts" />
+        <Menu.ResourceItem name="comments" />
+        <Menu.ResourceItem name="tags" />
+        <Menu.ResourceItem name="users" />
+    </Menu>
+);
+```
+
+Passing `children` to `<Menu>` actually *replaces* the default menu items. If you want to render a custom menu item **in addition to** the default resource menu items, use the `useResourceDefinitions` hook to retrieve the list of resources, and the `<Menu.ResourceItem>` component to create one menu item per resource.
+
+```jsx
+// in src/MyMenu.js
 import { Menu, useResourceDefinitions } from 'react-admin';
 import LabelIcon from '@mui/icons-material/Label';
 
 export const MyMenu = () => {
     const resources = useResourceDefinitions();
-    
     return (
         <Menu>
             {Object.keys(resources).map(name => (
-                <Menu.Item
-                    key={name}
-                    to={`/${name}`}
-                    primaryText={resources[name].options && resources[name].options.label || name}
-                    leftIcon={createElement(resources[name].icon)}
-                />
+                <Menu.ResourceItem key={name} name={name} />
             ))}
             <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />} />
         </Menu>

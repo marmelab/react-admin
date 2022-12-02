@@ -8,6 +8,7 @@ const englishMessages: TranslationMessages = {
             back: 'Go Back',
             bulk_actions: '1 item selected |||| %{smart_count} items selected',
             cancel: 'Cancel',
+            clear_array_input: 'Clear the list',
             clear_input_value: 'Clear value',
             clone: 'Clone',
             confirm: 'Confirm',
@@ -92,6 +93,7 @@ const englishMessages: TranslationMessages = {
                 'Are you sure you want to update this %{name}? |||| Are you sure you want to update these %{smart_count} items?',
             bulk_update_title:
                 'Update %{name} |||| Update %{smart_count} %{name}',
+            clear_array_input: 'Are you sure you want to clear the whole list?',
             delete_content: 'Are you sure you want to delete this item?',
             delete_title: 'Delete %{name} #%{id}',
             details: 'Details',
@@ -180,15 +182,23 @@ const englishMessages: TranslationMessages = {
         configurable: {
             customize: 'Customize',
             configureMode: 'Configure this page',
-            Datagrid: {
-                unlabeled: 'Unlabeled column #%{column}',
-            },
             inspector: {
                 title: 'Inspector',
                 content: 'Hover the application UI elements to configure them',
                 reset: 'Reset Settings',
+                hideAll: 'Hide All',
+                showAll: 'Show All',
+            },
+            Datagrid: {
+                title: 'Datagrid',
+                unlabeled: 'Unlabeled column #%{column}',
+            },
+            SimpleForm: {
+                title: 'Form',
+                unlabeled: 'Unlabeled input #%{input}',
             },
             SimpleList: {
+                title: 'List',
                 primaryText: 'Primary text',
                 secondaryText: 'Secondary text',
                 tertiaryText: 'Tertiary text',

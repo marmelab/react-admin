@@ -11,7 +11,9 @@ This component makes another component configurable by the end user. When users 
 
 Some react-admin components are already configurable - or rather they have a configurable counterpart:
 
+- [`<DatagridConfigurable>`](./Datagrid.md#configurable)
 - [`<SimpleListConfigurable>`](./SimpleList.md#configurable)
+- [`<SimpleFormConfigurable>`](./SimpleForm.md#configurable)
 - `<PageTitleConfigurable>` - used by the `<Title>` component
 
 ## Usage

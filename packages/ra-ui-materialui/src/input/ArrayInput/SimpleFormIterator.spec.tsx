@@ -226,6 +226,37 @@ describe('<SimpleFormIterator />', () => {
         expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(0);
     });
 
+    it('should remove all children row on clear action button click', async () => {
+        render(
+            <Wrapper>
+                <SimpleForm
+                    record={{
+                        id: 'whatever',
+                        emails: [{ email: '' }, { email: '' }],
+                    }}
+                >
+                    <ArrayInput source="emails">
+                        <SimpleFormIterator>
+                            <TextInput source="email" />
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </Wrapper>
+        );
+        const clearActionElements = screen
+            .getByLabelText('ra.action.clear_array_input')
+            .closest('button') as HTMLButtonElement;
+
+        fireEvent.click(clearActionElements);
+        fireEvent.click(screen.getByText('ra.action.confirm'));
+        await waitFor(() => {
+            const inputElements = screen.queryAllByLabelText(
+                'resources.undefined.fields.emails.email'
+            );
+            expect(inputElements.length).toBe(0);
+        });
+    });
+
     it('should add children row on add button click', async () => {
         render(
             <Wrapper>

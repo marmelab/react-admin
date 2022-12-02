@@ -73,6 +73,7 @@ const OrderEdit = () => (
 | `children` | Optional | `ReactElement` | - | List of inputs to display for each row |
 | `className` | Optional | `string` | - | Applied to the root element (`<ul>`) |
 | `disableAdd` | Optional | `boolean` | `false` | When true, the user cannot add new rows |
+| `disableClear` | Optional | `boolean` | `false` | When true, the user cannot clear the array |
 | `disableRemove` | Optional | `boolean` | `false` | When true, the user cannot remove rows |
 | `disableReordering` | Optional | `boolean` | `false` | When true, the user cannot reorder rows |
 | `fullWidth` | Optional | `boolean` | `false` | Set to true to push the actions to the right |
@@ -193,6 +194,19 @@ When true, the Add button isn't rendered, so users cannot add new rows.
     <NumberInput source="quantity" />
 </SimpleFormIterator>
 ```
+
+## `disableClear`
+
+When true, the array clear button isn't rendered, so the user cannot clear the array.
+
+```jsx
+<SimpleFormIterator disableClear>
+    <TextInput source="name" />
+    <NumberInput source="price" />
+    <NumberInput source="quantity" />
+</SimpleFormIterator>
+```
+
 
 ## `disableRemove`
 

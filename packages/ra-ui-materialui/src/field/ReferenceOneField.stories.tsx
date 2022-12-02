@@ -205,11 +205,13 @@ const ListWrapper = ({ children }) => (
     <ThemeProvider theme={createTheme()}>
         <Wrapper>
             <ListContextProvider
-                value={{
-                    total: 1,
-                    data: [{ id: 1, title: 'War and Peace' }],
-                    sort: { field: 'title', order: 'ASC' },
-                }}
+                value={
+                    {
+                        total: 1,
+                        data: [{ id: 1, title: 'War and Peace' }],
+                        sort: { field: 'title', order: 'ASC' },
+                    } as any
+                }
             >
                 {children}
             </ListContextProvider>
@@ -309,4 +311,16 @@ export const RecordRepresentation = () => (
             </RecordContextProvider>
         </ResourceContextProvider>
     </CoreAdminContext>
+);
+
+export const QueryOptions = ({ dataProvider = defaultDataProvider }) => (
+    <Wrapper dataProvider={dataProvider}>
+        <ReferenceOneField
+            reference="book_details"
+            target="book_id"
+            queryOptions={{ meta: { foo: 'bar' } }}
+        >
+            <TextField source="ISBN" />
+        </ReferenceOneField>
+    </Wrapper>
 );

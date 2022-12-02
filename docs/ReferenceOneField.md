@@ -73,13 +73,14 @@ const BookShow = () => (
 
 ## Properties
 
-| Prop         | Required | Type               | Default                          | Description                                                                         |
-| ------------ | -------- | ------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------- |
-| `children`   | Optional | `Element`                                   | -                                | The Field element used to render the referenced record                              |
-| `link`       | Optional | `string | Function`                         | `edit`                           | Target of the link wrapping the rendered child. Set to `false` to disable the link.                                 |
-| `reference`  | Required | `string`                                    | -                                | The name of the resource for the referenced records, e.g. 'book_details'                   |
-| `target`     | Required | string                                      | -                                | Target field carrying the relationship on the referenced resource, e.g. 'book_id'   |
-| `sort`       | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'ASC' }`  | Used to order referenced records                                                           |
-| `filter`     | Optional | `Object`                                    | `{}`                             | Used to filter referenced records                                                           |
+| Prop           | Required | Type               | Default                          | Description                                                                                                  |
+| -------------- | -------- | ------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------- |
+| `reference`    | Required | `string`                                    | -                                | The name of the resource for the referenced records, e.g. 'book_details'            |
+| `target`       | Required | string                                      | -                                | Target field carrying the relationship on the referenced resource, e.g. 'book_id'   |
+| `children`     | Optional | `Element`                                   | -                                | The Field element used to render the referenced record                              |
+| `filter`       | Optional | `Object`                                    | `{}`                             | Used to filter referenced records                                                   |
+| `link`         | Optional | `string | Function`                         | `edit`                           | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
+| `queryOptions` | Optional | [`UseQueryOptions`](https://tanstack.com/query/v4/docs/reference/useQuery?from=reactQueryV3&original=https://react-query-v3.tanstack.com/reference/useQuery) | `{}` | `react-query` client options |
+| `sort`         | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'ASC' }`  | Used to order referenced records                                                    |
 
 `<ReferenceOneField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).

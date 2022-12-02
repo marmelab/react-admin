@@ -179,15 +179,23 @@ export interface TranslationMessages extends StringMap {
         configurable?: {
             customize: string;
             configureMode: string;
-            Datagrid: {
-                unlabeled: string;
-            };
             inspector: {
                 title: string;
                 content: string;
                 reset: string;
+                hideAll: string;
+                showAll: string;
+            };
+            Datagrid: {
+                title: string;
+                unlabeled: string;
+            };
+            SimpleForm: {
+                title: string;
+                unlabeled: string;
             };
             SimpleList: {
+                title: string;
                 primaryText: string;
                 secondaryText: string;
                 tertiaryText: string;

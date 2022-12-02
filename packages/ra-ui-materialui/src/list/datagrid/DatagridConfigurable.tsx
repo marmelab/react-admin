@@ -41,10 +41,10 @@ export const DatagridConfigurable = ({
             'DatagridConfigurable does not support the optimized prop'
         );
     }
-    const resource = useResourceContext(props);
-    const finalPreferenceKey = preferenceKey || `${resource}.datagrid`;
 
     const translate = useTranslate();
+    const resource = useResourceContext(props);
+    const finalPreferenceKey = preferenceKey || `${resource}.datagrid`;
 
     const [availableColumns, setAvailableColumns] = useStore<
         ConfigurableDatagridColumn[]
@@ -76,7 +76,7 @@ export const DatagridConfigurable = ({
                   }
                 : null
         ).filter(column => column != null);
-        if (JSON.stringify(columns) !== JSON.stringify(availableColumns)) {
+        if (columns.length !== availableColumns.length) {
             setAvailableColumns(columns);
             setOmit(omit);
         }
@@ -86,13 +86,7 @@ export const DatagridConfigurable = ({
         <Configurable
             editor={<DatagridEditor />}
             preferenceKey={finalPreferenceKey}
-            sx={{
-                display: 'block',
-                '& .MuiBadge-root': { display: 'flex' },
-                '& .RaDatagrid-root': { flex: 1 },
-                '& .MuiBadge-badge': { zIndex: 2 },
-                minHeight: 2,
-            }}
+            sx={{ display: 'block', minHeight: 2 }}
         >
             <DatagridWithPreferences {...props} />
         </Configurable>
