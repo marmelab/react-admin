@@ -20,7 +20,7 @@
         />
         <link
             rel="stylesheet"
-            href="{{ '/css/style-v12.css' | relative_url }}"
+            href="{{ '/css/style-v13.css' | relative_url }}"
         />
         <link rel="stylesheet" href="{{ '/css/syntax.css' | relative_url }}" />
         <link rel="stylesheet" href="{{ '/css/prism.css' | relative_url }}" />
@@ -111,11 +111,8 @@
             });
         </script>
         <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
-        {% if page.dir contains "doc" %}
-        {% assign version = page.dir | split: '/' | last %}
-        {% else %}
-        {% assign version = "latest" %}
-        {% endif %}
+        {% if page.dir contains "doc" %} {% assign version = page.dir | split:
+        '/' | last %} {% else %} {% assign version = "latest" %} {% endif %}
         <script type="text/javascript">
             docsearch({
                 container: '#docsearch',
