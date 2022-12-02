@@ -444,7 +444,7 @@ See The [Authentication documentation](./Authentication.md#customizing-the-login
 
 ## `authCallbackPage`
 
-If you want to customize the `AuthCallback` page, pass a component of your own as the `authCallbackPage` prop. React-admin will display this component whenever the `/auth-callback` route is called.
+Used for external authentication services callbacks, the `AuthCallback` page can be customized by passing a component of your own as the `authCallbackPage` prop. React-admin will display this component whenever the `/auth-callback` route is called.
 
 ```jsx
 import MyAuthCallbackPage from './MyAuthCallbackPage';
