@@ -1,5 +1,26 @@
 # Changelog
 
+## 4.6.0
+
+* Add UI to reorder fields in `<DatagridConfigurable>` and `<SimpleFormConfigurable>` ([#8416](https://github.com/marmelab/react-admin/pull/8416)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<SimpleFormConfigurable>` component ([#8395](https://github.com/marmelab/react-admin/pull/8395)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<Menu.ResourceItem>` component to facilitate menu customization ([#8392](https://github.com/marmelab/react-admin/pull/8392)) ([fzaninotto](https://github.com/fzaninotto))
+* Add "clear all" button in `<SimpleFormIterator>` ([#8302](https://github.com/marmelab/react-admin/pull/8302)) ([Seojun-Park](https://github.com/Seojun-Park))
+* Add ability to refresh the user identity in `useGetIdentity` ([#8372](https://github.com/marmelab/react-admin/pull/8372)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<ReferenceOneField queryOptions>` support ([#8348](https://github.com/marmelab/react-admin/pull/8348)) ([fzaninotto](https://github.com/fzaninotto))
+* Add support for GraphQL v16 in ra-data-graphql  ([#8421](https://github.com/marmelab/react-admin/pull/8421)) ([arjunyel](https://github.com/arjunyel))
+* Fix `<SavedQueryFilterListItem>` sets wrong value for displayedFilters query parameter  ([#8459](https://github.com/marmelab/react-admin/pull/8459)) ([groomain](https://github.com/groomain))
+* Fix `<ToggleThemeButton>` requires an extra click when initial value is dark ([#8455](https://github.com/marmelab/react-admin/pull/8455)) ([septentrion-730n](https://github.com/septentrion-730n))
+* Fix` <NumberInput parse>` parses 0 as string ([#8454](https://github.com/marmelab/react-admin/pull/8454)) ([slax57](https://github.com/slax57))
+* Fix `<NumberInput format>` does not get triggered after function change ([#8453](https://github.com/marmelab/react-admin/pull/8453)) ([smeng9](https://github.com/smeng9))
+* Fix `<ArrayInput>` doesn't allow `null` as value ([#8449](https://github.com/marmelab/react-admin/pull/8449)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<ResettableTextfield>` does not show focus on clear buttons ([#8447](https://github.com/marmelab/react-admin/pull/8447)) ([septentrion-730n](https://github.com/septentrion-730n))
+* Fix `<FormDataConsumer>` usage with Field children ([#8445](https://github.com/marmelab/react-admin/pull/8445)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<UserEdit>` save usage in simple example ([#8435](https://github.com/marmelab/react-admin/pull/8435)) ([WiXSL](https://github.com/WiXSL))
+* Fix `useFormGroup` isDirty / isTouched state cannot have non-boolean values ([#8433](https://github.com/marmelab/react-admin/pull/8433)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `<Datagrid>` expand screen capture with expand all button ([#8456](https://github.com/marmelab/react-admin/pull/8456)) ([slax57](https://github.com/slax57))
+* [Doc] Fix `useEditContext` example typo ([#8444](https://github.com/marmelab/react-admin/pull/8444)) ([guilbill](https://github.com/guilbill))
+
 ## v4.5.4
 
 * Fix `<NumberInput>` applies `format` and `parse` twice ([#8442](https://github.com/marmelab/react-admin/pull/8442)) ([fzaninotto](https://github.com/fzaninotto))
