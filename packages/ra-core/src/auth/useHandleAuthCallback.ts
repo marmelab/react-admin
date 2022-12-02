@@ -1,10 +1,11 @@
 import { useQuery, UseQueryOptions } from 'react-query';
+import { useLocation } from 'react-router';
 import { useRedirect } from '../routing';
 import { AuthRedirectResult } from '../types';
 import useAuthProvider from './useAuthProvider';
 
 /**
- * This hook calls the `authProvider.handleLoginCallback()` method. This is meant to be used in a route called
+ * This hook calls the `authProvider.handleLoginCallback()` method on mount. This is meant to be used in a route called
  * by an external authentication service (e.g. Auth0) after the user has logged in.
  * By default, it redirects to application home page upon success, or to the `redirectTo` location returned by `authProvider. handleLoginCallback`.
  *
@@ -17,6 +18,11 @@ export const useHandleAuthCallback = <
 ) => {
     const authProvider = useAuthProvider();
     const redirect = useRedirect();
+    const location = useLocation();
+    const locationState = location.state as any;
+    const nextPathName = locationState && locationState.nextPathname;
+    const nextSearch = locationState && locationState.nextSearch;
+    const defaultRedirectUrl = nextPathName ? nextPathName + nextSearch : '/';
 
     return useQuery(
         ['auth', 'handleLoginCallback'],
@@ -31,7 +37,9 @@ export const useHandleAuthCallback = <
                 }
 
                 redirect(
-                    data == null || redirectTo === true ? '/' : redirectTo
+                    data == null || redirectTo === true
+                        ? defaultRedirectUrl
+                        : redirectTo
                 );
             },
             onError: err => {
