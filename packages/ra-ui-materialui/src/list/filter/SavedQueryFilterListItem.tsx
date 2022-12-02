@@ -50,7 +50,9 @@ export const SavedQueryFilterListItem = memo(
                     order: value.sort.order,
                     page: 1,
                     perPage: value.perPage,
-                    displayedFilters: value.displayedFilters,
+                    displayedFilters: JSON.stringify(
+                        value.displayedFilters
+                    ),
                 }),
             });
         };
