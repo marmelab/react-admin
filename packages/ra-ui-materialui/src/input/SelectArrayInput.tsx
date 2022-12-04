@@ -22,6 +22,7 @@ import {
 } from 'ra-core';
 import { InputHelperText } from './InputHelperText';
 import { FormControlProps } from '@mui/material/FormControl';
+import OutlinedInput from '@mui/material/OutlinedInput';
 
 import { LinearProgress } from '../layout';
 import { CommonInputProps } from './CommonInputProps';
@@ -253,6 +254,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                 <Select
                     autoWidth
                     labelId={`${label}-outlined-label`}
+                    input={<OutlinedInput label={label} />}
                     multiple
                     error={
                         !!fetchError || ((isTouched || isSubmitted) && invalid)
