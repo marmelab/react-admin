@@ -12,6 +12,7 @@ export interface TranslationMessages extends StringMap {
             back: string;
             bulk_actions: string;
             cancel: string;
+            clear_array_input: string;
             clear_input_value: string;
             clone: string;
             confirm: string;
@@ -95,6 +96,7 @@ export interface TranslationMessages extends StringMap {
             bulk_delete_title: string;
             bulk_update_content: string;
             bulk_update_title: string;
+            clear_array_input: string;
             delete_content: string;
             delete_title: string;
             details: string;
