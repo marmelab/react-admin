@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useHandleAuthCallback, useTimeout } from 'ra-core';
 import { Loading } from '..';
+import { AuthError } from './AuthError';
 
 /**
  * A standalone page to be used in a route called by external authentication services (e.g. OAuth)
@@ -18,8 +19,18 @@ import { Loading } from '..';
  *     );
  */
 export const AuthCallback = () => {
-    useHandleAuthCallback();
+    const { error } = useHandleAuthCallback();
     const hasOneSecondPassed = useTimeout(1000);
+
+    if (error) {
+        return (
+            <AuthError
+                message={
+                    (error as Error) ? (error as Error).message : undefined
+                }
+            />
+        );
+    }
 
     return hasOneSecondPassed ? <Loading /> : null;
 };
