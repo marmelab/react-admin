@@ -73,7 +73,7 @@ DatagridHeaderCell.propTypes = {
     field: PropTypes.element,
     sort: PropTypes.shape({
         field: PropTypes.string,
-        order: PropTypes.string,
+        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
     }).isRequired,
     isSorting: PropTypes.bool,
     resource: PropTypes.string,

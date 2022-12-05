@@ -205,7 +205,7 @@ export interface ListControllerProps<RecordType extends RaRecord = any> {
 const defaultSort = {
     field: 'id',
     order: SORT_ASC,
-};
+} as const;
 
 export interface ListControllerResult<RecordType extends RaRecord = any> {
     sort: SortPayload;
