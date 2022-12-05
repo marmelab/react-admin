@@ -25,7 +25,7 @@ describe('Data Simple REST Client', () => {
             });
 
             expect(httpClient).toHaveBeenCalledWith(
-                'http://localhost:3000/posts?filter=%7B%7D&range=%5B0%2C9%5D&sort=%5B%22title%22%2C%22desc%22%5D',
+                'http://localhost:3000/posts?filter=%7B%7D&range=%5B0%2C9%5D&sort=%5B%22title%22%2C%22DESC%22%5D',
                 {
                     headers: {
                         map: {
