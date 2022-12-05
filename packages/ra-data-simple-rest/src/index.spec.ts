@@ -20,7 +20,7 @@ describe('Data Simple REST Client', () => {
                 },
                 sort: {
                     field: 'title',
-                    order: 'desc',
+                    order: 'DESC',
                 },
             });
 
@@ -61,7 +61,7 @@ describe('Data Simple REST Client', () => {
                 },
                 sort: {
                     field: 'title',
-                    order: 'desc',
+                    order: 'DESC',
                 },
             });
 
