@@ -50,6 +50,8 @@ export const useHandleAuthCallback = <
                 if (redirectTo === false) {
                     return;
                 }
+
+                redirect(redirectTo);
             },
             ...options,
         }

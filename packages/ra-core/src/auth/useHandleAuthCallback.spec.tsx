@@ -8,13 +8,19 @@ import { createMemoryHistory } from 'history';
 import { useHandleAuthCallback } from './useHandleAuthCallback';
 import AuthContext from './AuthContext';
 import { useRedirect } from '../routing/useRedirect';
+import useLogout from './useLogout';
 import { AuthProvider } from '../types';
 
 jest.mock('../routing/useRedirect');
+jest.mock('./useLogout');
 
 const redirect = jest.fn();
 // @ts-ignore
 useRedirect.mockImplementation(() => redirect);
+
+const logout = jest.fn();
+// @ts-ignore
+useLogout.mockImplementation(() => logout);
 
 const TestComponent = ({ customError }: { customError?: boolean }) => {
     const [error, setError] = React.useState<string>();
@@ -91,7 +97,7 @@ describe('useHandleAuthCallback', () => {
         });
     });
 
-    it('should redirect to the home route by default when the callback was not successfully handled', async () => {
+    it('should logout and not redirect to any page when the callback was not successfully handled', async () => {
         const history = createMemoryHistory({ initialEntries: ['/'] });
         render(
             <HistoryRouter history={history}>
@@ -108,7 +114,8 @@ describe('useHandleAuthCallback', () => {
             </HistoryRouter>
         );
         await waitFor(() => {
-            expect(redirect).toHaveBeenCalledWith('/');
+            expect(logout).toHaveBeenCalled();
+            expect(redirect).not.toHaveBeenCalled();
         });
     });
 
