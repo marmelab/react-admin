@@ -6,9 +6,9 @@ import useAuthProvider from './useAuthProvider';
 import useLogout from './useLogout';
 
 /**
- * This hook calls the `authProvider.handleLoginCallback()` method on mount. This is meant to be used in a route called
+ * This hook calls the `authProvider.handleCallback()` method on mount. This is meant to be used in a route called
  * by an external authentication service (e.g. Auth0) after the user has logged in.
- * By default, it redirects to application home page upon success, or to the `redirectTo` location returned by `authProvider. handleLoginCallback`.
+ * By default, it redirects to application home page upon success, or to the `redirectTo` location returned by `authProvider. handleCallback`.
  *
  * @returns An object containing { isLoading, data, error, refetch }.
  */
@@ -27,8 +27,8 @@ export const useHandleAuthCallback = <
     const defaultRedirectUrl = nextPathName ? nextPathName + nextSearch : '/';
 
     return useQuery(
-        ['auth', 'handleLoginCallback'],
-        () => authProvider.handleLoginCallback<HandleLoginCallbackResult>(),
+        ['auth', 'handleCallback'],
+        () => authProvider.handleCallback<HandleLoginCallbackResult>(),
         {
             retry: false,
             onSuccess: data => {

@@ -49,7 +49,7 @@ const authProvider: AuthProvider = {
         return Promise.resolve();
     },
     getPermissions: () => Promise.reject('not authenticated'),
-    handleLoginCallback: () => Promise.resolve(),
+    handleCallback: () => Promise.resolve(),
 };
 
 const queryClient = new QueryClient();
@@ -82,7 +82,7 @@ describe('useHandleAuthCallback', () => {
                 <AuthContext.Provider
                     value={{
                         ...authProvider,
-                        handleLoginCallback: () =>
+                        handleCallback: () =>
                             Promise.resolve({ redirectTo: '/test' }),
                     }}
                 >
@@ -104,7 +104,7 @@ describe('useHandleAuthCallback', () => {
                 <AuthContext.Provider
                     value={{
                         ...authProvider,
-                        handleLoginCallback: () => Promise.reject(),
+                        handleCallback: () => Promise.reject(),
                     }}
                 >
                     <QueryClientProvider client={queryClient}>
@@ -126,7 +126,7 @@ describe('useHandleAuthCallback', () => {
                 <AuthContext.Provider
                     value={{
                         ...authProvider,
-                        handleLoginCallback: () =>
+                        handleCallback: () =>
                             Promise.reject({ redirectTo: '/test' }),
                     }}
                 >
@@ -148,7 +148,7 @@ describe('useHandleAuthCallback', () => {
                 <AuthContext.Provider
                     value={{
                         ...authProvider,
-                        handleLoginCallback: () =>
+                        handleCallback: () =>
                             Promise.resolve({ redirectTo: '/test' }),
                     }}
                 >

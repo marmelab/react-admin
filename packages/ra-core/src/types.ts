@@ -67,9 +67,9 @@ export type AuthProvider = {
     checkError: (error: any) => Promise<void>;
     getIdentity?: () => Promise<UserIdentity>;
     getPermissions: (params: any) => Promise<any>;
-    handleLoginCallback?: <
-        HandleLoginCallbackResult = AuthRedirectResult
-    >() => Promise<HandleLoginCallbackResult | void>;
+    handleCallback?: <
+        HandleCallbackResult = AuthRedirectResult
+    >() => Promise<HandleCallbackResult | void>;
     [key: string]: any;
 };
 
