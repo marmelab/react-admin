@@ -133,7 +133,7 @@ describe('Permissions', () => {
         });
     });
 
-    it.only('refreshes permissions after logging out and back in with a different user', () => {
+    it('refreshes permissions after logging out and back in with a different user', () => {
         ShowPage.navigate();
         ShowPage.logout();
         LoginPage.login('login', 'password');
