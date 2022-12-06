@@ -41,7 +41,7 @@ Here are all the props accepted by the component:
 - [`theme`](#theme)
 - [`layout`](#layout)
 - [`loginPage`](#loginpage)
-- [`loginCallbackPage`](#logincallbackpage)
+- [`authCallbackPage`](#authcallbackpage)
 - [`history`](#history)
 - [`basename`](#basename)
 - [`ready`](#ready)
