@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import { SxProps } from '@mui/material';
+import { styled, SxProps } from '@mui/material';
+import LockIcon from '@mui/icons-material/Lock';
 import PropTypes from 'prop-types';
 import { useTranslate } from 'ra-core';
+import { Button } from '../button';
 
 export const AuthError = (props: AuthErrorProps) => {
     const {
@@ -18,6 +19,9 @@ export const AuthError = (props: AuthErrorProps) => {
             <div className={AuthErrorClasses.message}>
                 <h1>{translate(title, { _: title })}</h1>
                 <div>{translate(message, { _: message })}</div>
+                <Button label="ra.auth.sign_in">
+                    <LockIcon />
+                </Button>
             </div>
         </Root>
     );
