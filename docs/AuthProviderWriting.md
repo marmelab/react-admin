@@ -395,6 +395,33 @@ React-admin doesn't use permissions by default, but it provides [the `usePermiss
 
 [The Role-Based Access Control (RBAC) module](./AuthRBAC.md) allows fined-grained permissions in react-admin apps, and specifies a custom return format for `authProvider.getPermissions()`. Check [the RBAC documentation](./AuthRBAC.md#authprovider-methods) for more information.
 
+### `handleCallback`
+
+This is used when integrating a third party authentication service such as [Auth0](https://auth0.com/). React-admin provides a route at the `/login-callback` path you can configure as the callback in the authentication service. After logging in using the authentication service page, users will be redirected to this page. The `/login-callback` route will then call the AuthProvider `handleCallback` method where you can validate users are indeed authenticated. Here's an example using Auth0:
+
+```js
+import { Auth0Client } from './Auth0Client';
+
+export const authProvider = {
+    async handleCallback() {
+        const query = window.location.search;
+        // If we did receive the Auth0 parameters
+        if (query.includes('code=') && query.includes('state=')) {
+            try {
+                // Request the Auth0 client to validate them
+                await Auth0Client.handleRedirectCallback();
+                return;
+            } catch (error) {
+                console.log('error', error);
+                throw error;
+            }
+        }
+        throw new Error('Failed to handle login callback.');
+    },
+    ...
+}
+```
+
 ## Request Format
 
 React-admin calls the `authProvider` methods with the following params:
@@ -407,6 +434,7 @@ React-admin calls the `authProvider` methods with the following params:
 | `logout`         | Log a user out                                  |                    |
 | `getIdentity`    | Get the current user identity                   |                    | 
 | `getPermissions` | Get the current user credentials                | `Object` whatever params passed to `usePermissions()` - empty for react-admin default routes |
+| `handleCallback` | Validate users after third party authentication service redirection                |  |
 
 ## Response Format
 
@@ -420,6 +448,7 @@ React-admin calls the `authProvider` methods with the following params:
 | `logout`         | Auth backend acknowledged logout  | `string | false | void` route to redirect to after logout, defaults to `/login` |
 | `getIdentity`    | Auth backend returned identity    | `{ id: string | number, fullName?: string, avatar?: string }`  | 
 | `getPermissions` | Auth backend returned permissions | `Object | Array` free format - the response will be returned when `usePermissions()` is called |
+| `handleCallback` | User is authenticated   | `void | { redirectTo?: string | boolean  }` route to redirect to after login |
 
 ## Error Format
 
@@ -433,4 +462,5 @@ When the auth backend returns an error, the Auth Provider should return a reject
 | `logout`         | Auth backend failed to log the user out   | `void` |
 | `getIdentity`    | Auth backend failed to return identity    | `Object` free format - returned as `error` when `useGetIdentity()` is called | 
 | `getPermissions` | Auth backend failed to return permissions | `Object` free format - returned as `error` when `usePermissions()` is called |
+| `handleCallback` | Failed to authenticate users after redirection | `void | { redirectTo?: string, logoutOnFailure?: boolean, message?: string }` |
 
