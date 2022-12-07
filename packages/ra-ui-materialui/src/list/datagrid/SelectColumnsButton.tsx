@@ -53,7 +53,7 @@ export const SelectColumnsButton = (props: SelectColumnsButtonProps) => {
         []
     );
     const [columns, setColumns] = useStore<string[]>(
-        `preferences.${preferenceKey}.columns`,
+        `preferences.${finalPreferenceKey}.columns`,
         availableColumns
             .filter(column => !omit?.includes(column.source))
             .map(column => column.index)
