@@ -82,8 +82,9 @@ describe('useHandleAuthCallback', () => {
                 <AuthContext.Provider
                     value={{
                         ...authProvider,
-                        handleCallback: () =>
-                            Promise.resolve({ redirectTo: '/test' }),
+                        handleCallback() {
+                            return Promise.resolve({ redirectTo: '/test' });
+                        },
                     }}
                 >
                     <QueryClientProvider client={queryClient}>
