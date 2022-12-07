@@ -19,7 +19,7 @@ export const AuthError = (props: AuthErrorProps) => {
             <div className={AuthErrorClasses.message}>
                 <h1>{translate(title, { _: title })}</h1>
                 <div>{translate(message, { _: message })}</div>
-                <Button label="ra.auth.sign_in">
+                <Button to="/login" label="ra.auth.sign_in">
                     <LockIcon />
                 </Button>
             </div>
@@ -44,7 +44,6 @@ const PREFIX = 'RaAuthError';
 
 export const AuthErrorClasses = {
     root: `${PREFIX}-root`,
-    icon: `${PREFIX}-icon`,
     message: `${PREFIX}-message`,
 };
 
@@ -61,11 +60,6 @@ const Root = styled('div', {
     [theme.breakpoints.down('xl')]: {
         height: '100vh',
         marginTop: '-3em',
-    },
-
-    [`& .${AuthErrorClasses.icon}`]: {
-        width: '9em',
-        height: '9em',
     },
 
     [`& .${AuthErrorClasses.message}`]: {
