@@ -76,6 +76,7 @@ export type AuthProvider = {
 export type AuthRedirectResult = {
     redirectTo?: string | false;
     logoutOnFailure?: boolean;
+    message?: string;
 };
 
 export type LegacyAuthProvider = (
