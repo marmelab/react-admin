@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { createMemoryHistory } from 'history';
@@ -28,7 +28,7 @@ const TestComponent = ({ customError }: { customError?: boolean }) => {
         customError
             ? {
                   onError: error => {
-                      setError(error as string);
+                      setError((error as Error).message);
                   },
               }
             : undefined
@@ -44,7 +44,7 @@ const authProvider: AuthProvider = {
     checkAuth: params => (params.token ? Promise.resolve() : Promise.reject()),
     checkError: params => {
         if (params instanceof Error && params.message === 'denied') {
-            return Promise.reject(new Error('logout'));
+            return Promise.reject(new Error('Custom Error'));
         }
         return Promise.resolve();
     },
@@ -149,7 +149,7 @@ describe('useHandleAuthCallback', () => {
                     value={{
                         ...authProvider,
                         handleCallback: () =>
-                            Promise.resolve({ redirectTo: '/test' }),
+                            Promise.reject(new Error('Custom Error')),
                     }}
                 >
                     <QueryClientProvider client={queryClient}>
@@ -159,7 +159,8 @@ describe('useHandleAuthCallback', () => {
             </HistoryRouter>
         );
         await waitFor(() => {
-            expect(redirect).toHaveBeenCalledWith('/test');
+            screen.getByText('Custom Error');
         });
+        expect(redirect).not.toHaveBeenCalledWith('/test');
     });
 });
