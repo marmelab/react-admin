@@ -8,6 +8,7 @@ import { Inspector, InspectorButton } from '../../preferences';
 import { TextField } from '../../field';
 import { EditButton } from '../../button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { SelectColumnsButton } from './SelectColumnsButton';
 
 export default { title: 'ra-ui-materialui/list/DatagridConfigurable' };
 
@@ -96,38 +97,44 @@ export const Omit = () => (
 );
 
 export const PreferenceKey = () => (
-    <PreferencesEditorContextProvider>
-        <MemoryRouter>
-            <Inspector />
-            <Box display="flex" justifyContent="flex-end">
-                <InspectorButton />
-            </Box>
-            <Box p={2} display="flex" justifyContent="space-between">
-                <DatagridConfigurable
-                    resource="books3"
-                    data={data}
-                    sort={{ field: 'title', order: 'ASC' }}
-                    bulkActionButtons={false}
-                    preferenceKey="pref1"
-                >
-                    <TextField source="id" />
-                    <TextField source="title" label="Original title" />
-                    <TextField source="author" />
-                    <TextField source="year" />
-                </DatagridConfigurable>
-                <DatagridConfigurable
-                    resource="books3"
-                    data={data}
-                    sort={{ field: 'title', order: 'ASC' }}
-                    bulkActionButtons={false}
-                    preferenceKey="pref2"
-                >
-                    <TextField source="id" />
-                    <TextField source="title" label="Original title" />
-                    <TextField source="author" />
-                    <TextField source="year" />
-                </DatagridConfigurable>
-            </Box>
-        </MemoryRouter>
-    </PreferencesEditorContextProvider>
+    <ThemeProvider theme={theme}>
+        <PreferencesEditorContextProvider>
+            <MemoryRouter>
+                <Inspector />
+                <Box display="flex" justifyContent="space-around">
+                    <SelectColumnsButton
+                        resource="books3"
+                        preferenceKey="pref1"
+                    />
+                    <InspectorButton color="primary" />
+                </Box>
+                <Box p={2} display="flex" justifyContent="space-between">
+                    <DatagridConfigurable
+                        resource="books3"
+                        data={data}
+                        sort={{ field: 'title', order: 'ASC' }}
+                        bulkActionButtons={false}
+                        preferenceKey="pref1"
+                    >
+                        <TextField source="id" />
+                        <TextField source="title" label="Original title" />
+                        <TextField source="author" />
+                        <TextField source="year" />
+                    </DatagridConfigurable>
+                    <DatagridConfigurable
+                        resource="books3"
+                        data={data}
+                        sort={{ field: 'title', order: 'ASC' }}
+                        bulkActionButtons={false}
+                        preferenceKey="pref2"
+                    >
+                        <TextField source="id" />
+                        <TextField source="title" label="Original title" />
+                        <TextField source="author" />
+                        <TextField source="year" />
+                    </DatagridConfigurable>
+                </Box>
+            </MemoryRouter>
+        </PreferencesEditorContextProvider>
+    </ThemeProvider>
 );
