@@ -75,4 +75,25 @@ describe('setSubmissionErrors', () => {
             type: 'server',
         });
     });
+    it('calls setError for form schema containing nested arrays', () => {
+        const setError = jest.fn();
+
+        setSubmissionErrors(
+            {
+                user: {
+                    friends: [
+                        {
+                            name: 'invalid name',
+                        },
+                    ],
+                },
+            },
+            setError
+        );
+
+        expect(setError).toHaveBeenCalledWith('user.friends.0.name', {
+            message: 'invalid name',
+            type: 'server',
+        });
+    });
 });
