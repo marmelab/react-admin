@@ -84,7 +84,7 @@ If you have a custom REST client, don't forget to add credentials yourself.
 
 ## Handling External Authentication Services Callbacks
 
-When using external authentication services such as those implementing OAuth, you usually need a callback route. React-admin provides a default one at `/login-callback`. It will call the `AuthProvider.handleCallback` method that may validate the params received from the URL and redirect users to any page (the home page by default) afterwards.
+When using external authentication services such as those implementing OAuth, you usually need a callback route. React-admin provides a default one at `/auth-callback`. It will call the `AuthProvider.handleCallback` method that may validate the params received from the URL and redirect users to any page (the home page by default) afterwards.
 
 It's up to you to decide when to redirect users to the third party authentication service, for instance:
 * Directly in the `AuthProvider.checkAuth` method when users are not yet authenticated;
@@ -104,7 +104,7 @@ export const authProvider = {
 
         Auth0Client.loginWithRedirect({
             authorizationParams: {
-                redirect_uri: `${window.location.origin}/login-callback`,
+                redirect_uri: `${window.location.origin}/auth-callback`,
             },
         });
     },

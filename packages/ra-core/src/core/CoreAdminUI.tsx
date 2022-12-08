@@ -75,7 +75,7 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
 
             {LoginCallbackPage !== false && LoginCallbackPage !== true ? (
                 <Route
-                    path="/login-callback"
+                    path="/auth-callback"
                     element={createOrGetElement(LoginCallbackPage)}
                 />
             ) : null}
