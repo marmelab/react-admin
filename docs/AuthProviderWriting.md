@@ -397,12 +397,31 @@ React-admin doesn't use permissions by default, but it provides [the `usePermiss
 
 ### `handleCallback`
 
-This is used when integrating a third party authentication service such as [Auth0](https://auth0.com/). React-admin provides a route at the `/auth-callback` path you can configure as the callback in the authentication service. After logging in using the authentication service page, users will be redirected to this page. The `/auth-callback` route will then call the AuthProvider `handleCallback` method where you can validate users are indeed authenticated. Here's an example using Auth0:
+This is used when integrating a third party authentication service such as [Auth0](https://auth0.com/). React-admin provides a route at the `/auth-callback` path you can configure as the callback in the authentication service. After logging in using the authentication service page, users will be redirected to this page. The `/auth-callback` route will then call the AuthProvider `handleCallback` method where you can validate users are indeed authenticated.
+
+**Tip**: if you want to redirect users to the page they were on before logging in, you can store the location in localStorage under the key provided by the `PreviousLocationStorageKey` constant.
+
+Here's an example using Auth0:
 
 ```js
 import { Auth0Client } from './Auth0Client';
+import { PreviousLocationStorageKey } from 'react-admin';
 
 export const authProvider = {
+    async checkAuth() {
+        const isAuthenticated = await client.isAuthenticated();
+        if (isAuthenticated) {
+            return;
+        }
+
+        localStorage.setItem(PreviousLocationStorageKey, window.location.href);
+
+        client.loginWithRedirect({
+            authorizationParams: {
+                redirect_uri: `${window.location.origin}/auth-callback`,
+            },
+        });
+    },
     async handleCallback() {
         const query = window.location.search;
         // If we did receive the Auth0 parameters
