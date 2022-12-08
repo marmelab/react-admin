@@ -30,7 +30,7 @@ export const i18nProvider = polyglotI18nProvider(
 );
 ```
 
-Pass a list of supported locals as `languages` prop to `<LocalesMenuButton>` and then add to the `<AppBar>`.
+Pass a list of supported locales as `languages` prop to `<LocalesMenuButton>` and then add to the `<AppBar>`.
 
 ```jsx
 // in src/MyAppBar.js
