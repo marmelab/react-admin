@@ -30,13 +30,21 @@ export const useHandleAuthCallback = (
         {
             retry: false,
             onSuccess: data => {
-                const redirectTo = (data as AuthRedirectResult)?.redirectTo;
+                // AuthProviders relying on a third party services redirect back to the app can't
+                // use the location state to store the path on which the user was before the login.
+                // So we support a fallback on the localStorage.
+                const previousLocation = localStorage.getItem(
+                    PreviousLocationStorageKey
+                );
+                const redirectTo =
+                    (data as AuthRedirectResult)?.redirectTo ??
+                    previousLocation;
 
                 if (redirectTo === false) {
                     return;
                 }
 
-                redirect(data == null ? defaultRedirectUrl : redirectTo);
+                redirect(redirectTo ?? defaultRedirectUrl);
             },
             onError: err => {
                 const { redirectTo = false, logoutOnFailure = true } = (err ??
@@ -55,3 +63,9 @@ export const useHandleAuthCallback = (
         }
     );
 };
+
+/**
+ * Key used to store the previous location in localStorage.
+ * Used by the useHandleAuthCallback hook to redirect the user to their previous location after a successful login.
+ */
+export const PreviousLocationStorageKey = '@react-admin/nextPathname';
