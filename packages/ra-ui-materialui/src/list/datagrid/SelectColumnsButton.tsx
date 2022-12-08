@@ -38,15 +38,16 @@ import { styled } from '@mui/material/styles';
  *   </List>
  * );
  */
-export const SelectColumnsButton = props => {
+export const SelectColumnsButton = (props: SelectColumnsButtonProps) => {
+    const { preferenceKey } = props;
+
     const resource = useResourceContext(props);
-    const finalPreferenceKey = props.preferenceKey || `${resource}.datagrid`;
+    const finalPreferenceKey = preferenceKey || `${resource}.datagrid`;
 
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const [availableColumns, setAvailableColumns] = useStore<ConfigurableDatagridColumn[]>(
-        `preferences.${finalPreferenceKey}.availableColumns`,
-        []
-    );
+    const [availableColumns, setAvailableColumns] = useStore<
+        ConfigurableDatagridColumn[]
+    >(`preferences.${finalPreferenceKey}.availableColumns`, []);
     const [omit] = useStore<string[]>(
         `preferences.${finalPreferenceKey}.omit`,
         []
@@ -134,6 +135,7 @@ export const SelectColumnsButton = props => {
                         color="primary"
                         onClick={handleClick}
                         size="large"
+                        {...sanitizeRestProps(props)}
                     >
                         <ViewWeekIcon />
                     </IconButton>
@@ -143,6 +145,7 @@ export const SelectColumnsButton = props => {
                     size="small"
                     onClick={handleClick}
                     startIcon={<ViewWeekIcon />}
+                    {...sanitizeRestProps(props)}
                 >
                     {title}
                 </StyledButton>
@@ -188,6 +191,14 @@ const StyledButton = styled(Button, {
     },
 });
 
-export interface SelectColumnsButtonProps {
-    preferenceKey: string;
+const sanitizeRestProps = ({
+    resource = null,
+    preferenceKey = null,
+    ...rest
+}) => rest;
+
+export interface SelectColumnsButtonProps
+    extends React.HtmlHTMLAttributes<HTMLDivElement> {
+    resource?: string;
+    preferenceKey?: string;
 }
