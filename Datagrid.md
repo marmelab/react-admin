@@ -450,7 +450,7 @@ const PostEdit = () => {
     return (
         <Edit
             resource={resource}
-            id={id}
+            id={record.id}
             /* disable the app title change when shown */
             title=" "
         >
