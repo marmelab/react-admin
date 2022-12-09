@@ -1,5 +1,18 @@
 # Changelog
 
+## 4.6.1
+
+* Fix `<SelectColumnsButton referenceKey>` prop handling ([#8432](https://github.com/marmelab/react-admin/pull/8432)) ([wcoppens](https://github.com/wcoppens))
+* Fix `<TextInput>` missing placeholder with MUI v5.4 ([#8439](https://github.com/marmelab/react-admin/pull/8439)) ([kosmotema](https://github.com/kosmotema))
+* Fix `<ResourceMenuItem>` throws an error when used with only `<Resource>` as `<Admin>` children ([#8473](https://github.com/marmelab/react-admin/pull/8473)) ([slax57](https://github.com/slax57))
+* Fix `useReferenceInputController` does not pass meta to `useReference` ([#8477](https://github.com/marmelab/react-admin/pull/8477)) ([stesie](https://github.com/stesie))
+* Fix `ra-input-richtext` TipTap dependencies on prosemirror ([#8470](https://github.com/marmelab/react-admin/pull/8470)) ([slax57](https://github.com/slax57))
+* Fix `setSubmissionErrors` contains unused code ([#8482](https://github.com/marmelab/react-admin/pull/8482)) ([slax57](https://github.com/slax57))
+* [Doc] Fix `<Datagrid>` doc contains invalid code example ([#8474](https://github.com/marmelab/react-admin/pull/8474)) ([Aikain](https://github.com/Aikain))
+* [Doc] Fix `<ArrayInput>` preview misses clear all button ([#8467](https://github.com/marmelab/react-admin/pull/8467)) ([slax57](https://github.com/slax57))
+* [TypeScript] Fiw `TranslationMessages` missing types ([#8462](https://github.com/marmelab/react-admin/pull/8462)) ([Aikain](https://github.com/Aikain))
+* Bump decode-uri-component from 0.2.0 to 0.2.2  dependenciesPull requests that update a dependency file ([#8460](https://github.com/marmelab/react-admin/pull/8460)) ([dependabot](https://github.com/dependabot))
+
 ## 4.6.0
 
 * Add UI to reorder fields in `<DatagridConfigurable>` and `<SimpleFormConfigurable>` ([#8416](https://github.com/marmelab/react-admin/pull/8416)) ([fzaninotto](https://github.com/fzaninotto))
