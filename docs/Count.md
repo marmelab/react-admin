@@ -96,9 +96,11 @@ If you want to wrap the count in a `<Link>` to the list view, pass `true` to the
 
 When used in conjunction to the `filter` prop, the link will point to the list view with the filter applied.
 
+{% raw %}
 ```jsx
 <Count link filter={{ is_published: true }} link />
 ```
+{% endraw %}
 
 ## `resource`
 

@@ -109,6 +109,51 @@ export const WithFilter = () => (
     </Wrapper>
 );
 
+export const Link = () => (
+    <Wrapper
+        dataProvider={{
+            getManyReference: () =>
+                Promise.resolve({
+                    data: [comments.filter(c => c.post_id === 1)[0]],
+                    total: comments.filter(c => c.post_id === 1).length,
+                }),
+        }}
+    >
+        <ReferenceManyCount reference="comments" target="post_id" link />
+    </Wrapper>
+);
+
+export const LinkWithFilter = () => (
+    <Wrapper
+        dataProvider={{
+            getManyReference: (resource, params) =>
+                Promise.resolve({
+                    data: comments
+                        .filter(c => c.post_id === 1)
+                        .filter(post =>
+                            Object.keys(params.filter).every(
+                                key => post[key] === params.filter[key]
+                            )
+                        ),
+                    total: comments
+                        .filter(c => c.post_id === 1)
+                        .filter(post =>
+                            Object.keys(params.filter).every(
+                                key => post[key] === params.filter[key]
+                            )
+                        ).length,
+                }),
+        }}
+    >
+        <ReferenceManyCount
+            reference="comments"
+            target="post_id"
+            filter={{ is_published: true }}
+            link
+        />
+    </Wrapper>
+);
+
 export const WithCustomVariant = () => (
     <Wrapper
         dataProvider={{

@@ -17,6 +17,7 @@ export const messages = {
                 commentable: 'Commentable',
                 notifications: 'Notifications recipients',
                 nb_view: 'Nb views',
+                nb_comments: 'Nb comments',
                 password: 'Password (if protected post)',
                 pictures: 'Related Pictures',
             },

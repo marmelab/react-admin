@@ -66,6 +66,7 @@ export const Count = (props: CountProps) => {
                 search: filter ? `filter=${JSON.stringify(filter)}` : undefined,
             }}
             variant="body2"
+            onClick={e => e.stopPropagation()}
             {...rest}
         >
             {body}
