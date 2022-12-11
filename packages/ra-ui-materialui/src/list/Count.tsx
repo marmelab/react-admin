@@ -1,7 +1,14 @@
 import * as React from 'react';
-import { useResourceContext, useGetList, useTimeout } from 'ra-core';
+import {
+    useResourceContext,
+    useGetList,
+    useTimeout,
+    useCreatePath,
+} from 'ra-core';
 import { Typography, TypographyProps, CircularProgress } from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Error';
+
+import { Link } from '../Link';
 
 /**
  * Fetch and render the number of records of a given resource
@@ -25,37 +32,54 @@ import ErrorIcon from '@mui/icons-material/Error';
 export const Count = (props: CountProps) => {
     const {
         filter,
+        link,
         resource: resourceFromProps,
         timeout = 1000,
         ...rest
     } = props;
     const resource = useResourceContext(props);
     const oneSecondHasPassed = useTimeout(timeout);
+    const createPath = useCreatePath();
 
     const { total, isLoading, error } = useGetList(resource, {
         filter,
         pagination: { perPage: 1, page: 1 },
     });
 
-    return (
+    const body = isLoading ? (
+        oneSecondHasPassed ? (
+            <CircularProgress size={14} />
+        ) : (
+            ''
+        )
+    ) : error ? (
+        <ErrorIcon color="error" fontSize="small" titleAccess="error" />
+    ) : (
+        total
+    );
+
+    return link ? (
+        // @ts-ignore TypeScript complains that the props for <a> aren't the same as for <span>
+        <Link
+            to={{
+                pathname: createPath({ resource, type: 'list' }),
+                search: filter ? `filter=${JSON.stringify(filter)}` : undefined,
+            }}
+            variant="body2"
+            {...rest}
+        >
+            {body}
+        </Link>
+    ) : (
         <Typography component="span" variant="body2" {...rest}>
-            {isLoading ? (
-                oneSecondHasPassed ? (
-                    <CircularProgress size={14} />
-                ) : (
-                    ''
-                )
-            ) : error ? (
-                <ErrorIcon color="error" fontSize="small" titleAccess="error" />
-            ) : (
-                total
-            )}
+            {body}
         </Typography>
     );
 };
 
 export interface CountProps extends TypographyProps {
     filter?: any;
+    link?: Boolean;
     resource?: string;
     timeout?: number;
 }

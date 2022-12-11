@@ -87,6 +87,42 @@ export const WithFilter = () => (
     </Wrapper>
 );
 
+export const Link = () => (
+    <Wrapper
+        dataProvider={{
+            getList: () =>
+                Promise.resolve({
+                    data: [posts[0]],
+                    total: posts.length,
+                }),
+        }}
+    >
+        <Count resource="posts" link />
+    </Wrapper>
+);
+
+export const LinkWithFilter = () => (
+    <Wrapper
+        dataProvider={{
+            getList: (resource, params) =>
+                Promise.resolve({
+                    data: posts.filter(post =>
+                        Object.keys(params.filter).every(
+                            key => post[key] === params.filter[key]
+                        )
+                    ),
+                    total: posts.filter(post =>
+                        Object.keys(params.filter).every(
+                            key => post[key] === params.filter[key]
+                        )
+                    ).length,
+                }),
+        }}
+    >
+        <Count resource="posts" filter={{ is_published: true }} link />
+    </Wrapper>
+);
+
 export const WithCustomVariant = () => (
     <Wrapper
         dataProvider={{
