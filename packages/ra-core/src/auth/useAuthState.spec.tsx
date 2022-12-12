@@ -5,23 +5,21 @@ import { CoreAdminContext } from '../core/CoreAdminContext';
 
 import useAuthState from './useAuthState';
 
-const UseAuth = ({ children, authParams }: any) => {
-    const res = useAuthState(authParams);
-    return children(res);
+const UseAuth = (authParams: any) => {
+    const state = useAuthState(authParams);
+    return (
+        <div>
+            <span>{state.isLoading && 'LOADING'}</span>
+            <span>{state.authenticated && 'AUTHENTICATED'}</span>
+        </div>
+    );
 };
-
-const stateInpector = state => (
-    <div>
-        <span>{state.isLoading && 'LOADING'}</span>
-        <span>{state.authenticated && 'AUTHENTICATED'}</span>
-    </div>
-);
 
 describe('useAuthState', () => {
     it('should return a loading state on mount', () => {
         render(
             <CoreAdminContext>
-                <UseAuth>{stateInpector}</UseAuth>
+                <UseAuth />
             </CoreAdminContext>
         );
         expect(screen.queryByText('LOADING')).not.toBeNull();
@@ -31,7 +29,7 @@ describe('useAuthState', () => {
     it('should return authenticated by default after a tick', async () => {
         render(
             <CoreAdminContext>
-                <UseAuth>{stateInpector}</UseAuth>
+                <UseAuth />
             </CoreAdminContext>
         );
         await waitFor(() => {
@@ -50,9 +48,7 @@ describe('useAuthState', () => {
         };
         render(
             <CoreAdminContext authProvider={authProvider}>
-                <UseAuth options={{ logoutOnFailure: false }}>
-                    {stateInpector}
-                </UseAuth>
+                <UseAuth options={{ logoutOnFailure: false }} />
             </CoreAdminContext>
         );
         await waitFor(() => {

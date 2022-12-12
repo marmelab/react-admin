@@ -5,9 +5,14 @@ import { createMemoryHistory } from 'history';
 import { Routes, Route, useLocation } from 'react-router-dom';
 
 import { memoryStore } from '../store';
-import { Authenticated } from './Authenticated';
 import { useNotificationContext } from '../notification';
 import { CoreAdminContext } from '../core';
+import { useAuthenticated } from '.';
+
+const Authenticated = ({ children, ...params }) => {
+    useAuthenticated({ params });
+    return children;
+};
 
 describe('useAuthenticated', () => {
     const Foo = () => <div>Foo</div>;
@@ -24,6 +29,12 @@ describe('useAuthenticated', () => {
         const reset = jest.spyOn(store, 'reset');
         render(
             <CoreAdminContext authProvider={authProvider} store={store}>
+                <Authenticated>
+                    <Foo />
+                </Authenticated>
+                <Authenticated>
+                    <Foo />
+                </Authenticated>
                 <Authenticated>
                     <Foo />
                 </Authenticated>
@@ -53,7 +64,7 @@ describe('useAuthenticated', () => {
             </CoreAdminContext>
         );
         const { rerender } = render(<FooWrapper />);
-        rerender(<FooWrapper authParams={{ foo: 'bar' }} />);
+        rerender(<FooWrapper foo="bar" />);
         expect(authProvider.checkAuth).toBeCalledTimes(2);
         expect(authProvider.checkAuth.mock.calls[1][0]).toEqual({ foo: 'bar' });
         expect(reset).toHaveBeenCalledTimes(0);
@@ -132,19 +143,21 @@ describe('useAuthenticated', () => {
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({});
-            expect(authProvider.logout.mock.calls[0][0]).toEqual({});
-            expect(reset).toHaveBeenCalledTimes(1);
-            expect(notificationsSpy).toEqual([
-                {
-                    message: 'ra.auth.auth_check_error',
-                    type: 'warning',
-                    notificationOptions: {},
-                },
-            ]);
-            expect(screen.getByLabelText('nextPathname').innerHTML).toEqual(
-                '/'
-            );
+            expect(authProvider.checkAuth).toHaveBeenCalledTimes(1);
         });
+        expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({});
+        await waitFor(() => {
+            expect(authProvider.logout).toHaveBeenCalledTimes(1);
+        });
+        expect(authProvider.logout.mock.calls[0][0]).toEqual({});
+        expect(reset).toHaveBeenCalledTimes(1);
+        expect(notificationsSpy).toEqual([
+            {
+                message: 'ra.auth.auth_check_error',
+                type: 'warning',
+                notificationOptions: {},
+            },
+        ]);
+        expect(screen.getByLabelText('nextPathname').innerHTML).toEqual('/');
     });
 });

@@ -1,7 +1,9 @@
-import { useEffect } from 'react';
-
-import { useCheckAuth } from './useCheckAuth';
-import { useSafeSetState } from '../util/hooks';
+import { useMemo } from 'react';
+import { useQuery, UseQueryOptions } from 'react-query';
+import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
+import useLogout from './useLogout';
+import { removeDoubleSlashes, useBasename } from '../routing';
+import { useNotify } from '../notification';
 
 interface State {
     isLoading: boolean;
@@ -49,19 +51,62 @@ const emptyParams = {};
  */
 const useAuthState = (
     params: any = emptyParams,
-    logoutOnFailure: boolean = false
+    logoutOnFailure: boolean = false,
+    queryOptions?: UseQueryOptions<boolean, any>
 ): State => {
-    const [state, setState] = useSafeSetState({
-        isLoading: true,
-        authenticated: true, // optimistic
-    });
-    const checkAuth = useCheckAuth();
-    useEffect(() => {
-        checkAuth(params, logoutOnFailure)
-            .then(() => setState({ isLoading: false, authenticated: true }))
-            .catch(() => setState({ isLoading: false, authenticated: false }));
-    }, [checkAuth, params, logoutOnFailure, setState]);
-    return state;
+    const authProvider = useAuthProvider();
+    const logout = useLogout();
+    const basename = useBasename();
+    const notify = useNotify();
+
+    const result = useQuery<boolean, any>(
+        ['auth', 'checkAuth', params],
+        () => {
+            // The authProvider is optional in react-admin
+            return authProvider?.checkAuth(params).then(() => true);
+        },
+        {
+            onError: error => {
+                const loginUrl = removeDoubleSlashes(
+                    `${basename}/${defaultAuthParams.loginUrl}`
+                );
+                if (logoutOnFailure) {
+                    logout(
+                        {},
+                        error && error.redirectTo != null
+                            ? error.redirectTo
+                            : loginUrl
+                    );
+                    const shouldSkipNotify = error && error.message === false;
+                    !shouldSkipNotify &&
+                        notify(
+                            getErrorMessage(error, 'ra.auth.auth_check_error'),
+                            { type: 'warning' }
+                        );
+                }
+            },
+            retry: false,
+            ...queryOptions,
+        }
+    );
+
+    return useMemo(() => {
+        return {
+            // If the data is undefined and the query isn't loading anymore, it means the query failed.
+            // In that case, we set authenticated to false unless there's no authProvider.
+            authenticated:
+                result.data ?? result.isLoading ? true : authProvider == null, // Optimisic
+            isLoading: result.isLoading,
+            error: result.error,
+        };
+    }, [authProvider, result]);
 };
 
 export default useAuthState;
+
+const getErrorMessage = (error, defaultMessage) =>
+    typeof error === 'string'
+        ? error
+        : typeof error === 'undefined' || !error.message
+        ? defaultMessage
+        : error.message;

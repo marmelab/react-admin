@@ -15,7 +15,7 @@ describe('<CustomRoutes>', () => {
         expect(screen.queryByText('Password recovery')).not.toBeNull();
     });
 
-    test('should render custom routes that need authentication only when authenticated', async () => {
+    test.only('should render custom routes that need authentication only when authenticated', async () => {
         const history = createMemoryHistory({
             initialEntries: ['/authenticated'],
         });
