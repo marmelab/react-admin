@@ -41,6 +41,7 @@ Here are all the props accepted by the component:
 - [`theme`](#theme)
 - [`layout`](#layout)
 - [`loginPage`](#loginpage)
+- [`authCallbackPage`](#authcallbackpage)
 - [`history`](#history)
 - [`basename`](#basename)
 - [`ready`](#ready)
@@ -440,6 +441,24 @@ You can also disable it completely along with the `/login` route by passing `fal
 See The [Authentication documentation](./Authentication.md#customizing-the-login-component) for more details.
 
 **Tip**: Before considering writing your own login page component, please take a look at how to change the default [background image](./Theming.md#using-a-custom-login-page) or the [MUI theme](#theme). See the [Authentication documentation](./Authentication.md#customizing-the-login-component) for more details.
+
+## `authCallbackPage`
+
+Used for external authentication services callbacks, the `AuthCallback` page can be customized by passing a component of your own as the `authCallbackPage` prop. React-admin will display this component whenever the `/auth-callback` route is called.
+
+```jsx
+import MyAuthCallbackPage from './MyAuthCallbackPage';
+
+const App = () => (
+    <Admin authCallbackPage={MyAuthCallbackPage}>
+        ...
+    </Admin>
+);
+```
+
+You can also disable it completely along with the `/auth-callback` route by passing `false` to this prop.
+
+See The [Authentication documentation](./Authentication.md#handling-external-authentication-services-callbacks) for more details.
 
 ## ~~`history`~~
 

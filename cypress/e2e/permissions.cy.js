@@ -132,4 +132,18 @@ describe('Permissions', () => {
             cy.contains('Role');
         });
     });
+
+    it('refreshes permissions after logging out and back in with a different user', () => {
+        ShowPage.navigate();
+        ShowPage.logout();
+        LoginPage.login('login', 'password');
+        cy.contains('Posts');
+        cy.contains('Comments');
+        cy.contains('Users').should(el => expect(el).to.not.exist);
+        ShowPage.logout();
+        LoginPage.login('user', 'password');
+        cy.contains('Posts');
+        cy.contains('Comments');
+        cy.contains('Users');
+    });
 });

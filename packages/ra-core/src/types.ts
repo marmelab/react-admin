@@ -67,7 +67,13 @@ export type AuthProvider = {
     checkError: (error: any) => Promise<void>;
     getIdentity?: () => Promise<UserIdentity>;
     getPermissions: (params: any) => Promise<any>;
+    handleCallback?: () => Promise<AuthRedirectResult | void | any>;
     [key: string]: any;
+};
+
+export type AuthRedirectResult = {
+    redirectTo?: string | false;
+    logoutOnFailure?: boolean;
 };
 
 export type LegacyAuthProvider = (
