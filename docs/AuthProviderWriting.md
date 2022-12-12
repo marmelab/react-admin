@@ -398,7 +398,7 @@ React-admin doesn't use permissions by default, but it provides [the `usePermiss
 
 ### `handleCallback`
 
-This method is used when integrating a third-party authentication providers such as [Auth0](https://auth0.com/). React-admin provides a route at the `/auth-callback` path, to be used as the callback URL in the authentication service. After logging in using the authentication service, users will be redirected to this route. The `/auth-callback` route calls the `authProvider.handleCallback` method on mount. 
+This method is used when integrating a third-party authentication provider such as [Auth0](https://auth0.com/). React-admin provides a route at the `/auth-callback` path, to be used as the callback URL in the authentication service. After logging in using the authentication service, users will be redirected to this route. The `/auth-callback` route calls the `authProvider.handleCallback` method on mount. 
 
 So `handleCallback` lets you process query parameters passed by the third-party authentication service, e.g. to retrieve an authentication token.
 
