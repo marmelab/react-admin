@@ -444,7 +444,9 @@ See The [Authentication documentation](./Authentication.md#customizing-the-login
 
 ## `authCallbackPage`
 
-Used for external authentication services callbacks, the `AuthCallback` page can be customized by passing a component of your own as the `authCallbackPage` prop. React-admin will display this component whenever the `/auth-callback` route is called.
+React-admin apps contain a special route called `/auth-callback` to let external authentication providers (like Auth0, Cognito, OIDC servers) redirect users after login. This route renders the `AuthCallback` component by default, which in turn calls `authProvider.handleCallback`. 
+
+If you need a different behavior for this route, you can render a custom component by passing it as the `authCallbackPage` prop.
 
 ```jsx
 import MyAuthCallbackPage from './MyAuthCallbackPage';
@@ -456,9 +458,11 @@ const App = () => (
 );
 ```
 
-You can also disable it completely along with the `/auth-callback` route by passing `false` to this prop.
+**Note**: You should seldom use this option, even when using an external authentication provider. Since you can already define the `/auth-callback` route controller via `authProvider.handleCallback`, the `authCallbackPage` prop is only useful when you need the user's feedback after they logged in.
 
-See The [Authentication documentation](./Authentication.md#handling-external-authentication-services-callbacks) for more details.
+You can also disable the `/auth-callback` route altogether by passing `authCallbackPage={false}`.
+
+See The [Authentication documentation](./Authentication.md#using-external-authentication-providers) for more details.
 
 ## ~~`history`~~
 
