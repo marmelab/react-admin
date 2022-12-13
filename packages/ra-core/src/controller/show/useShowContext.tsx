@@ -24,7 +24,7 @@ import { ShowControllerResult } from './useShowController';
  */
 export const useShowContext = <RecordType extends RaRecord = any>(
     props?: Partial<ShowControllerResult<RecordType>>
-): Partial<ShowControllerResult<RecordType>> => {
+): ShowControllerResult<RecordType> => {
     // Can't find a way to specify the RecordType when ShowContext is declared
     // @ts-ignore
     const context = useContext<ShowControllerResult<RecordType>>(ShowContext);
