@@ -21,6 +21,7 @@ import { DatagridInput } from './DatagridInput';
 import { TextField } from '../field';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { SelectArrayInput } from './SelectArrayInput';
+import { HandlingIdsDiscrepencies } from './ReferenceArrayInput.stories';
 
 describe('<ReferenceArrayInput />', () => {
     const defaultProps = {
@@ -243,5 +244,9 @@ describe('<ReferenceArrayInput />', () => {
                 meta: { foo: 'bar' },
             });
         });
+    });
+
+    it('should handle ids type discrepencies', async () => {
+        render(<HandlingIdsDiscrepencies />);
     });
 });

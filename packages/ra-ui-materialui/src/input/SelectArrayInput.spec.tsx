@@ -11,6 +11,7 @@ import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { SelectArrayInput } from './SelectArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
+import { HandlingIdsDiscrepencies } from './SelectArrayInput.stories';
 
 describe('<SelectArrayInput />', () => {
     const defaultProps = {
@@ -573,6 +574,42 @@ describe('<SelectArrayInput />', () => {
 
         await waitFor(() => {
             expect(onChange).toHaveBeenCalledWith(['js_fatigue']);
+        });
+    });
+
+    it('should show selected values when ids type are inconsistant', async () => {
+        render(<HandlingIdsDiscrepencies />);
+        await waitFor(() => {
+            expect(screen.queryByText('artist_1')).not.toBeNull();
+        });
+        expect(screen.queryByText('artist_2')).not.toBeNull();
+        expect(screen.queryByText('artist_3')).toBeNull();
+    });
+
+    it.only('should desselect values when ids type are inconsistant', async () => {
+        render(<HandlingIdsDiscrepencies />);
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText('resources.bands.fields.members')
+            ).not.toBeNull();
+        });
+
+        fireEvent.mouseDown(
+            screen.getByLabelText('resources.bands.fields.members')
+        );
+
+        fireEvent.click(
+            screen.getByText('artist_2', {
+                selector: '.MuiMenuItem-root',
+            })
+        );
+        await waitFor(() => {
+            expect(
+                screen.getByText('artist_2', {
+                    selector: '.MuiChip-label',
+                })
+            ).toBeNull();
         });
     });
 });
