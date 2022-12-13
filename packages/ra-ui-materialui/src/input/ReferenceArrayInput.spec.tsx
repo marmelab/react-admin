@@ -1,4 +1,5 @@
 import * as React from 'react';
+import expect from 'expect';
 import {
     render,
     screen,
@@ -12,6 +13,7 @@ import {
     CoreAdminContext,
     Form,
     useInput,
+    GetListResult,
 } from 'ra-core';
 import { QueryClient } from 'react-query';
 
@@ -21,7 +23,7 @@ import { DatagridInput } from './DatagridInput';
 import { TextField } from '../field';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { SelectArrayInput } from './SelectArrayInput';
-import { HandlingIdsDiscrepencies } from './ReferenceArrayInput.stories';
+import { HandlingTypesDiscrepencies } from './ReferenceArrayInput.stories';
 
 describe('<ReferenceArrayInput />', () => {
     const defaultProps = {
@@ -86,7 +88,10 @@ describe('<ReferenceArrayInput />', () => {
         const dataProvider = testDataProvider({
             getList: () =>
                 // @ts-ignore
-                Promise.resolve({ data: [{ id: 1 }, { id: 2 }], total: 2 }),
+                Promise.resolve({
+                    data: [{ id: 1 }, { id: 2 }],
+                    total: 2,
+                }),
         });
         render(
             <AdminContext dataProvider={dataProvider}>
@@ -188,32 +193,32 @@ describe('<ReferenceArrayInput />', () => {
                 .querySelector('input');
 
         await waitFor(() => {
-            expect(getCheckbox1().checked).toEqual(true);
-            expect(getCheckbox2().checked).toEqual(false);
+            expect(getCheckbox1()?.checked).toEqual(true);
+            expect(getCheckbox2()?.checked).toEqual(false);
         });
 
         fireEvent.click(getCheckbox2());
 
         await waitFor(() => {
-            expect(getCheckbox1().checked).toEqual(true);
-            expect(getCheckbox2().checked).toEqual(true);
-            expect(getCheckboxAll().checked).toEqual(true);
+            expect(getCheckbox1()?.checked).toEqual(true);
+            expect(getCheckbox2()?.checked).toEqual(true);
+            expect(getCheckboxAll()?.checked).toEqual(true);
         });
 
         fireEvent.click(getCheckboxAll());
 
         await waitFor(() => {
-            expect(getCheckbox1().checked).toEqual(false);
-            expect(getCheckbox2().checked).toEqual(false);
-            expect(getCheckboxAll().checked).toEqual(false);
+            expect(getCheckbox1()?.checked).toEqual(false);
+            expect(getCheckbox2()?.checked).toEqual(false);
+            expect(getCheckboxAll()?.checked).toEqual(false);
         });
 
         fireEvent.click(getCheckboxAll());
 
         await waitFor(() => {
-            expect(getCheckbox1().checked).toEqual(true);
-            expect(getCheckbox2().checked).toEqual(true);
-            expect(getCheckboxAll().checked).toEqual(true);
+            expect(getCheckbox1()?.checked).toEqual(true);
+            expect(getCheckbox2()?.checked).toEqual(true);
+            expect(getCheckboxAll()?.checked).toEqual(true);
         });
     });
 
@@ -246,7 +251,51 @@ describe('<ReferenceArrayInput />', () => {
         });
     });
 
-    it('should handle ids type discrepencies', async () => {
-        render(<HandlingIdsDiscrepencies />);
+    it('should show selected values when ids type are inconsistant', async () => {
+        render(<HandlingTypesDiscrepencies />);
+        await waitFor(() => {
+            expect(
+                screen.queryByText('#1', {
+                    selector: 'div.MuiChip-root .MuiChip-label',
+                })
+            ).not.toBeNull();
+        });
+        expect(
+            screen.queryByText('#2', {
+                selector: 'div.MuiChip-root .MuiChip-label',
+            })
+        ).not.toBeNull();
+        expect(
+            screen.queryByText('artist_3', { selector: 'div.MuiChip-root' })
+        ).toBeNull();
+    });
+
+    it('should unselect a value whose id type is inconsistant', async () => {
+        render(<HandlingTypesDiscrepencies />);
+
+        const unselect = (queriedText: string) => () => {
+            const chip = screen.queryByText(queriedText, {
+                selector: '.MuiChip-label',
+            })?.nextSibling;
+            fireEvent.click(chip);
+        };
+
+        await waitFor(unselect('#1'));
+        await waitFor(unselect('#2'));
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText('#1', {
+                    selector: '.MuiChip-label',
+                })
+            ).toBeNull();
+        });
+        await waitFor(() => {
+            expect(
+                screen.queryByText('#2', {
+                    selector: '.MuiChip-label',
+                })
+            ).toBeNull();
+        });
     });
 });

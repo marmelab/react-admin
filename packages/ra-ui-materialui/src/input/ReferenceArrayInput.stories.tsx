@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createMemoryHistory } from 'history';
-import { Form, testDataProvider } from 'ra-core';
+import { Form, GetManyResult, testDataProvider } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { Admin, Resource } from 'react-admin';
@@ -9,7 +9,7 @@ import fakeRestProvider from 'ra-data-fakerest';
 import { AdminContext } from '../AdminContext';
 import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
-import { AutocompleteInput, DatagridInput, TextInput } from '../input';
+import { DatagridInput, TextInput } from '../input';
 import { TextField } from '../field';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
@@ -196,7 +196,9 @@ export const ErrorDatagridInput = () => (
         dataProvider={{
             getList: () => Promise.reject(new Error('fetch error')),
             getMany: () =>
-                Promise.resolve({ data: [{ id: 5, name: 'test1' }] }),
+                Promise.resolve({
+                    data: [{ id: 5, name: 'test1' }],
+                }),
         }}
         i18nProvider={i18nProvider}
     >
@@ -214,7 +216,7 @@ export const ErrorDatagridInput = () => (
     </AdminContext>
 );
 
-export const HandlingIdsDiscrepencies = () => {
+export const HandlingTypesDiscrepencies = () => {
     const fakeData = {
         bands: [{ id: 1, name: 'band_1', members: [1, '2'] }],
         artists: [
