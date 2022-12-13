@@ -4,11 +4,12 @@ import { Form, testDataProvider } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { Admin, Resource } from 'react-admin';
+import fakeRestProvider from 'ra-data-fakerest';
 
 import { AdminContext } from '../AdminContext';
-import { Create } from '../detail';
+import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
-import { DatagridInput } from '../input';
+import { AutocompleteInput, DatagridInput, TextInput } from '../input';
 import { TextField } from '../field';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
@@ -212,3 +213,24 @@ export const ErrorDatagridInput = () => (
         </Form>
     </AdminContext>
 );
+
+export const HandlingIdsDiscrepencies = () => {
+    const fakeData = {
+        bands: [{ id: 1, name: 'band_1', members: [1, '2'] }],
+        artists: [
+            { id: 1, name: 'artist_1' },
+            { id: 2, name: 'artist_2' },
+            { id: 3, name: 'artist_3' },
+        ],
+    };
+    return (
+        <AdminContext dataProvider={fakeRestProvider(fakeData, false)}>
+            <Edit resource="bands" id={1} sx={{ width: 600 }}>
+                <SimpleForm>
+                    <TextInput source="name" fullWidth />
+                    <ReferenceArrayInput source="members" reference="artists" />
+                </SimpleForm>
+            </Edit>
+        </AdminContext>
+    );
+};

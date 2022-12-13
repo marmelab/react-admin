@@ -159,6 +159,16 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
             // We might receive an event from the mui component
             // In this case, it will be the choice id
             if (eventOrChoice?.target) {
+                eventOrChoice.target.value = eventOrChoice.target.value.reduce(
+                    (acc, value) => {
+                        // eslint-disable-next-line eqeqeq
+                        const index = acc.findIndex(v => v == value);
+                        return index < 0
+                            ? [...acc, value]
+                            : [...acc.slice(0, index), ...acc.slice(index + 1)];
+                    },
+                    []
+                );
                 field.onChange(eventOrChoice);
             } else {
                 // Or we might receive a choice directly, for instance a newly created one
@@ -193,7 +203,8 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
     const renderMenuItemOption = useCallback(
         choice =>
             !!createItem &&
-            choice?.id === createItem.id &&
+            // eslint-disable-next-line eqeqeq
+            choice?.id == createItem.id &&
             typeof optionText === 'function'
                 ? createItem.name
                 : getChoiceText(choice),
@@ -209,7 +220,8 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     disabled={getDisableValue(choice)}
                 >
                     {renderMenuItemOption(
-                        !!createItem && choice?.id === createItem.id
+                        // eslint-disable-next-line eqeqeq
+                        !!createItem && choice?.id == createItem.id
                             ? createItem
                             : choice
                     )}
@@ -262,8 +274,8 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                             {selected
                                 .map(item =>
                                     (allChoices || []).find(
-                                        choice =>
-                                            getChoiceValue(choice) === item
+                                        // eslint-disable-next-line eqeqeq
+                                        choice => getChoiceValue(choice) == item
                                     )
                                 )
                                 .filter(item => !!item)

@@ -8,12 +8,14 @@ import {
     DialogContent,
     TextField,
 } from '@mui/material';
+import fakeRestProvider from 'ra-data-fakerest';
 
 import { AdminContext } from '../AdminContext';
-import { Create } from '../detail';
+import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { SelectArrayInput } from './SelectArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
+import { TextInput } from './TextInput';
 
 export default { title: 'ra-ui-materialui/input/SelectArrayInput' };
 
@@ -99,3 +101,29 @@ export const CreateProp = () => (
         </Create>
     </AdminContext>
 );
+
+export const HandlingIdsDiscrepencies = () => {
+    const fakeData = {
+        bands: [{ id: 1, name: 'band_1', members: [1, '2'] }],
+        artists: [
+            { id: 1, name: 'artist_1' },
+            { id: 2, name: 'artist_2' },
+            { id: 3, name: 'artist_3' },
+        ],
+    };
+    const dataProvider = fakeRestProvider(fakeData, false);
+    return (
+        <AdminContext dataProvider={dataProvider}>
+            <Edit resource="bands" id={1} sx={{ width: 600 }}>
+                <SimpleForm>
+                    <TextInput source="name" fullWidth />
+                    <SelectArrayInput
+                        fullWidth
+                        source="members"
+                        choices={fakeData.artists}
+                    ></SelectArrayInput>
+                </SimpleForm>
+            </Edit>
+        </AdminContext>
+    );
+};
