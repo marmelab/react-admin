@@ -482,7 +482,7 @@ See [Using React-Admin In A Sub Path](./Routing.md#using-react-admin-in-a-sub-pa
 
 ## `ready`
 
-When you run an `<Admin>` with no child `<Resource>` or `<CustomRoutes>`, react-admin displays a "ready" screen:
+When you run an `<Admin>` with no child `<Resource>` nor `<CustomRoutes>`, react-admin displays a "ready" screen:
 
 ![Empty Admin](./img/tutorial_empty.png)
 
