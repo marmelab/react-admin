@@ -22,6 +22,7 @@ export default {
                 created_at: 'Créé le',
                 notifications: 'Destinataires de notifications',
                 nb_view: 'Nb de vues',
+                nb_comments: 'Nb de commentaires',
                 password: 'Mot de passe (si protégé)',
                 pictures: 'Photos associées',
                 'pictures.url': 'URL',
