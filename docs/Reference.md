@@ -31,6 +31,7 @@ title: "Reference"
 * [`<CompleteCalendar>`](https://marmelab.com/ra-enterprise/modules/ra-calendar#completecalendar)<img class="icon" src="./img/premium.svg" />
 * [`<Confirm>`](./Confirm.md)
 * [`<ContainerLayout>`](./ContainerLayout.md)<img class="icon" src="./img/premium.svg" />
+* [`<Count>`](./Count.md)
 * [`<Create>`](./Create.md)
 * `<CreateActions>`
 * [`<CreateButton>`](./Buttons.md#createbutton)
@@ -106,6 +107,7 @@ title: "Reference"
 * [`<ReferenceArrayInput>`](./ReferenceArrayInput.md)
 * [`<ReferenceField>`](./ReferenceField.md)
 * [`<ReferenceInput>`](./ReferenceInput.md)
+* [`<ReferenceManyCount>`](./ReferenceManyCount.md)
 * [`<ReferenceManyField>`](./ReferenceManyField.md)
 * [`<ReferenceManyInput>`](./ReferenceManyInput.md)<img class="icon" src="./img/premium.svg" />
 * [`<ReferenceManyToManyField>`](https://marmelab.com/ra-enterprise/modules/ra-relationships#referencemanytomanyfield)<img class="icon" src="./img/premium.svg" />
