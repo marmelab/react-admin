@@ -82,59 +82,6 @@ Now the admin is secured: The user can be authenticated and use their credential
 
 If you have a custom REST client, don't forget to add credentials yourself.
 
-## Handling External Authentication Services Callbacks
-
-When using external authentication services such as those implementing OAuth, you usually need a callback route. React-admin provides a default one at `/auth-callback`. It will call the `AuthProvider.handleCallback` method that may validate the params received from the URL and redirect users to any page (the home page by default) afterwards.
-
-It's up to you to decide when to redirect users to the third party authentication service, for instance:
-* Directly in the `AuthProvider.checkAuth` method when users are not yet authenticated;
-* When users click a button on a [custom login page](#customizing-the-login-component)
-
-For instance, here's what a simple authProvider for Auth0 might look like:
-
-```js
-import { Auth0Client } from './Auth0Client';
-
-export const authProvider = {
-    async checkAuth() {
-        const isAuthenticated = await Auth0Client.isAuthenticated();
-        if (isAuthenticated) {
-            return;
-        }
-
-        Auth0Client.loginWithRedirect({
-            authorizationParams: {
-                redirect_uri: `${window.location.origin}/auth-callback`,
-            },
-        });
-    },
-    async handleCallback() {
-        const query = window.location.search;
-        if (query.includes('code=') && query.includes('state=')) {
-            try {
-                await Auth0Client.handleRedirectCallback();
-                return;
-            } catch (error) {
-                console.log('error', error);
-                throw error;
-            }
-        }
-        throw new Error('Failed to handle login callback.');
-    },
-    async logout() {
-        const isAuthenticated = await client.isAuthenticated();
-        if (isAuthenticated) {
-            // need to check for this as react-admin calls logout in case checkAuth failed
-            return client.logout({
-                returnTo: window.location.origin,
-            });
-        }
-    },
-    async login() => { /* Nothing to do here, this function will never be called */ },
-    ...
-}
-```
-
 ## Allowing Anonymous Access
 
 As long as you add an `authProvider`, react-admin restricts access to all the pages declared in the `<Resource>` components. If you want to allow anonymous access, you can set the `disableAuthentication` prop in the page components. 
@@ -224,6 +171,66 @@ const App = () => (
     </Admin>
 );
 ```
+
+## Using External Authentication Providers
+
+Instead of the built-in Login page, you can opt for an external authentication provider, such as Auth0, Cognito, or any other OAuth-based service. These services all require a callback URL in the app, to redirect users after login.
+
+React-admin provides a default callback URL at `/auth-callback`. This route calls the `authProvider.handleCallback` method on mount. This means it's the `authProvider`'s job to use the params received from the callback URL to authenticate future API calls.
+
+For instance, here's what a simple authProvider for Auth0 might look like:
+
+```js
+import { Auth0Client } from './Auth0Client';
+
+export const authProvider = {
+    async login() => { /* Nothing to do here, this function will never be called */ },
+    async checkAuth() {
+        const isAuthenticated = await Auth0Client.isAuthenticated();
+        if (isAuthenticated) {
+            return;
+        }
+        // not authenticated: redirect the user to the Auth0 service,
+        // where they will be redirected back to the app after login
+        Auth0Client.loginWithRedirect({
+            authorizationParams: {
+                redirect_uri: `${window.location.origin}/auth-callback`,
+            },
+        });
+    },
+    // A user logged successfully on the Auth0 service
+    // and was redirected back to the /auth-callback route on the app
+    async handleCallback() {
+        const query = window.location.search;
+        if (query.includes('code=') && query.includes('state=')) {
+            try {
+                // get an access token based on the query paramaters
+                await Auth0Client.handleRedirectCallback();
+                return;
+            } catch (error) {
+                console.log('error', error);
+                throw error;
+            }
+        }
+        throw new Error('Failed to handle login callback.');
+    },
+    async logout() {
+        const isAuthenticated = await client.isAuthenticated();
+            // need to check for this as react-admin calls logout in case checkAuth failed
+        if (isAuthenticated) {
+            return client.logout({
+                returnTo: window.location.origin,
+            });
+        }
+    },
+    ...
+}
+```
+
+It's up to you to decide when to redirect users to the third party authentication service, for instance:
+
+* Directly in the `AuthProvider.checkAuth()` method as above;
+* When users click a button on a [custom login page](#customizing-the-login-component)
 
 ## Customizing The Login Component
 
