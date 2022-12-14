@@ -12,7 +12,7 @@ import {
     ResourceConfigurationPage,
     ResourceConfigurationProvider,
 } from './ResourceConfiguration';
-import { Layout, Ready } from './ui';
+import { Layout } from './ui';
 import { Route } from 'react-router';
 import { useApplication } from './ApplicationContext';
 
