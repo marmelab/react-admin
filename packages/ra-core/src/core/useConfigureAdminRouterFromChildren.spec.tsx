@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
+import { Route } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
+
 import { useResourceDefinitions } from './useResourceDefinitions';
 import { CoreAdminContext } from './CoreAdminContext';
 import { CoreAdminRoutes } from './CoreAdminRoutes';
 import { Resource } from './Resource';
+import { CustomRoutes } from './CustomRoutes';
 import { CoreLayoutProps } from '../types';
 import { AuthProvider, ResourceProps } from '..';
 
@@ -31,6 +34,7 @@ const MyLayout = ({ children }: CoreLayoutProps) => (
 );
 const CatchAll = () => <div />;
 const Loading = () => <>Loading</>;
+const Ready = () => <>Ready</>;
 
 const TestedComponent = ({ role }) => {
     const history = createMemoryHistory();
@@ -185,6 +189,30 @@ const TestedComponentWithPermissions = () => {
     );
 };
 
+const TestedComponentWithLazyCustomRoutes = ({ history }) => {
+    const [lazyRoutes, setLazyRoutes] = React.useState([]);
+
+    React.useEffect(() => {
+        setLazyRoutes([<Route path="/bar" element={<div>Bar</div>} />]);
+    }, [setLazyRoutes]);
+
+    return (
+        <CoreAdminContext history={history}>
+            <CoreAdminRoutes
+                layout={MyLayout}
+                catchAll={CatchAll}
+                loading={Loading}
+                ready={Ready}
+            >
+                <CustomRoutes noLayout>
+                    <Route path="/foo" element={<div>Foo</div>} />
+                </CustomRoutes>
+                <CustomRoutes>{...lazyRoutes}</CustomRoutes>
+            </CoreAdminRoutes>
+        </CoreAdminContext>
+    );
+};
+
 const expectResource = (resource: string) =>
     expect(screen.queryByText(`"name":"${resource}"`, { exact: false }));
 
@@ -279,5 +307,15 @@ describe('useConfigureAdminRouterFromChildren', () => {
         expectResource('comments').not.toBeNull();
         expectResource('user').not.toBeNull();
         expectResource('admin').toBeNull();
+    });
+    it('should allow lazily loaded custom routes without any resources', async () => {
+        const history = createMemoryHistory();
+        render(<TestedComponentWithLazyCustomRoutes history={history} />);
+        history.push('/foo');
+        expect(screen.queryByText('Foo')).not.toBeNull();
+        expect(screen.queryByText('Ready')).toBeNull();
+        history.push('/bar');
+        expect(screen.queryByText('Bar')).not.toBeNull();
+        expect(screen.queryByText('Ready')).toBeNull();
     });
 });
