@@ -252,12 +252,8 @@ describe('<ReferenceArrayInput />', () => {
 
     it('should support different types of ids', async () => {
         render(<HandlingTypesDiscrepencies />);
-        await waitFor(() => {
-            expect(
-                screen.queryByText('#1', {
-                    selector: 'div.MuiChip-root .MuiChip-label',
-                })
-            ).not.toBeNull();
+        await screen.findByText('#1', {
+            selector: 'div.MuiChip-root .MuiChip-label',
         });
         expect(
             screen.queryByText('#2', {
