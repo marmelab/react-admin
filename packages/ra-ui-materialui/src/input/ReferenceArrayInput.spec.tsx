@@ -13,7 +13,6 @@ import {
     CoreAdminContext,
     Form,
     useInput,
-    GetListResult,
 } from 'ra-core';
 import { QueryClient } from 'react-query';
 

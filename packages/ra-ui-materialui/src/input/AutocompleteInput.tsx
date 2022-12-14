@@ -525,6 +525,7 @@ If you provided a React element for the optionText prop, you must also provide t
     ]);
 
     const isOptionEqualToValue = (option, value) => {
+        // eslint-disable-next-line eqeqeq
         return getChoiceValue(option) == getChoiceValue(value);
     };
 

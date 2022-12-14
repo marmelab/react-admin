@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createMemoryHistory } from 'history';
-import { Form, GetManyResult, testDataProvider } from 'ra-core';
+import { DataProvider, Form, testDataProvider } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { Admin, Resource } from 'react-admin';
@@ -86,11 +86,13 @@ export const WithAutocompleteInput = () => (
 
 export const ErrorAutocomplete = () => (
     <AdminContext
-        dataProvider={{
-            getList: () => Promise.reject(new Error('fetch error')),
-            getMany: () =>
-                Promise.resolve({ data: [{ id: 5, name: 'test1' }] }),
-        }}
+        dataProvider={
+            ({
+                getList: () => Promise.reject(new Error('fetch error')),
+                getMany: () =>
+                    Promise.resolve({ data: [{ id: 5, name: 'test1' }] }),
+            } as unknown) as DataProvider
+        }
         i18nProvider={i18nProvider}
     >
         <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>
@@ -121,11 +123,13 @@ export const WithSelectArrayInput = () => (
 
 export const ErrorSelectArray = () => (
     <AdminContext
-        dataProvider={{
-            getList: () => Promise.reject(new Error('fetch error')),
-            getMany: () =>
-                Promise.resolve({ data: [{ id: 5, name: 'test1' }] }),
-        }}
+        dataProvider={
+            ({
+                getList: () => Promise.reject(new Error('fetch error')),
+                getMany: () =>
+                    Promise.resolve({ data: [{ id: 5, name: 'test1' }] }),
+            } as unknown) as DataProvider
+        }
         i18nProvider={i18nProvider}
     >
         <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>
@@ -156,11 +160,13 @@ export const WithCheckboxGroupInput = () => (
 
 export const ErrorCheckboxGroupInput = () => (
     <AdminContext
-        dataProvider={{
-            getList: () => Promise.reject(new Error('fetch error')),
-            getMany: () =>
-                Promise.resolve({ data: [{ id: 5, name: 'test1' }] }),
-        }}
+        dataProvider={
+            ({
+                getList: () => Promise.reject(new Error('fetch error')),
+                getMany: () =>
+                    Promise.resolve({ data: [{ id: 5, name: 'test1' }] }),
+            } as unknown) as DataProvider
+        }
         i18nProvider={i18nProvider}
     >
         <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>
@@ -193,13 +199,15 @@ export const WithDatagridInput = () => (
 
 export const ErrorDatagridInput = () => (
     <AdminContext
-        dataProvider={{
-            getList: () => Promise.reject(new Error('fetch error')),
-            getMany: () =>
-                Promise.resolve({
-                    data: [{ id: 5, name: 'test1' }],
-                }),
-        }}
+        dataProvider={
+            ({
+                getList: () => Promise.reject(new Error('fetch error')),
+                getMany: () =>
+                    Promise.resolve({
+                        data: [{ id: 5, name: 'test1' }],
+                    }),
+            } as unknown) as DataProvider
+        }
         i18nProvider={i18nProvider}
     >
         <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>

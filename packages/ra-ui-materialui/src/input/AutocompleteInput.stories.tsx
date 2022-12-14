@@ -1,16 +1,17 @@
 import * as React from 'react';
-import { Admin, AdminContext } from 'react-admin';
+import { Admin, AdminContext, List } from 'react-admin';
 import { Resource, required, useCreate, useRecordContext } from 'ra-core';
 import { createMemoryHistory } from 'history';
 import {
     Dialog,
     DialogContent,
-    TextField,
     DialogActions,
     Button,
     Stack,
+    TextField,
     Typography,
 } from '@mui/material';
+import fakeRestProvider from 'ra-data-fakerest';
 
 import { Edit } from '../detail';
 import { SimpleForm } from '../form';
@@ -18,6 +19,7 @@ import { AutocompleteInput } from './AutocompleteInput';
 import { ReferenceInput } from './ReferenceInput';
 import { TextInput } from './TextInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
+import { Datagrid } from '../../dist/cjs/list/datagrid/Datagrid';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteInput' };
 
@@ -791,3 +793,45 @@ export const EmptyText = () => (
         <Resource name="books" edit={BookEditWithEmptyText} />
     </Admin>
 );
+
+export const WithZeroKey = () => {
+    const fakeData = {
+        fans: [
+            { id: 1, name: 'null', prefers: null },
+            { id: 2, name: '0', prefers: 0 },
+            { id: 3, name: '0', prefers: '0' },
+            { id: 4, name: 'undefined', prefers: undefined },
+            { id: 5, name: 'empty string', prefers: '' },
+            { id: 6, name: '1', prefers: 1 },
+        ],
+        artists: [{ id: 0 }, { id: 1 }],
+    };
+    const FanField = () => {
+        const record = useRecordContext();
+        return (
+            <span>
+                Fan #{record.id} prefers: <code>{record.name}</code>,{' '}
+                <code>{typeof record.prefers}</code>
+            </span>
+        );
+    };
+    return (
+        <AdminContext dataProvider={fakeRestProvider(fakeData, false)}>
+            <List resource="fans">
+                <Datagrid>
+                    <SimpleForm>
+                        <FanField />
+                        <AutocompleteInput
+                            fullWidth
+                            source="prefers"
+                            optionText={option =>
+                                `Artist id: ${option.id}, ${typeof option.id}`
+                            }
+                            choices={fakeData.artists}
+                        />
+                    </SimpleForm>
+                </Datagrid>
+            </List>
+        </AdminContext>
+    );
+};
