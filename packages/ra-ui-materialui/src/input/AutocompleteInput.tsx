@@ -526,8 +526,8 @@ If you provided a React element for the optionText prop, you must also provide t
 
     const isOptionEqualToValue = (option, value) => {
         return (
-            getChoiceValue(option).toString() ===
-            getChoiceValue(value).toString()
+            String(getChoiceValue(option)) ===
+            String(getChoiceValue(value))
         );
     };
 
