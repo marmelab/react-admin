@@ -856,9 +856,9 @@ export const NullishValuesHandling = () => {
                 Test nullish values
             </Typography>
             <Typography variant="body2">
-                Story demonstrates the handling of nullish values ; here listed
-                fans specify a prefered artist. <code>prefer</code> value is
-                evaluated again artists IDs.
+                Story demonstrating nullish values support: each
+                fan specify a preferred artist. The <code>prefer</code> value is
+                evaluated against artist IDs.
             </Typography>
             <List resource="fans" actions={<></>}>
                 <Datagrid
