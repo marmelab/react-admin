@@ -17,7 +17,7 @@ import {
     InsideReferenceInput,
     InsideReferenceInputDefaultValue,
     Nullable,
-    NullishValuesHandling,
+    NullishValuesSupport,
     VeryLargeOptionsNumber,
 } from './AutocompleteInput.stories';
 import { act } from '@testing-library/react-hooks';
@@ -1480,7 +1480,7 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should handle nullish values', async () => {
-        render(<NullishValuesHandling />);
+        render(<NullishValuesSupport />);
 
         const checkInputValue = async (label: string, expected: any) => {
             const input = (await screen.findByLabelText(
