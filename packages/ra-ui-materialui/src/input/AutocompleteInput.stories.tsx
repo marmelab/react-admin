@@ -864,7 +864,9 @@ export const NullishValuesHandling = () => {
                 <Datagrid
                     body={<NullishValuesDatagridBody />}
                     bulkActionButtons={false}
-                />
+                >
+                    <></>
+                </Datagrid>
             </List>
         </AdminContext>
     );
