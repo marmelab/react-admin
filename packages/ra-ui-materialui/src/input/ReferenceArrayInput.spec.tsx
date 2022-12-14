@@ -250,7 +250,7 @@ describe('<ReferenceArrayInput />', () => {
         });
     });
 
-    it('should show selected values when ids type are inconsistant', async () => {
+    it('should support different types of ids', async () => {
         render(<HandlingTypesDiscrepencies />);
         await waitFor(() => {
             expect(
