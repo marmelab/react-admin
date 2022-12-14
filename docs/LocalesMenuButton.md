@@ -13,7 +13,7 @@ The `<LocalesMenuButton>` component, also known as the "language switcher", disp
 
 **Tip**: For most users, this component will be automatically added to react-admin's `<AppBar>` if the `i18nProvider` is configured properly to return a list of available locales. React-admin will use the optional `getLocales` method of your `i18nProvider` (or the `availableLocales` parameter if you are using `polyglotI18nProvider`) to generate a list of locale menu items for this component.
 
-For advanced users who wish to use the customized `<AppBar>` from MUI package or place `<LocalesMenuButton>` elsewhere on the a custom configuration page, they can do the following:
+For advanced users who wish to use the customized `<AppBar>` from MUI package or place `<LocalesMenuButton>` elsewhere e.g. on a custom configuration page, they can do the following:
 
 ```jsx
 // in src/MyAppBar.js
