@@ -11,7 +11,7 @@ import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { SelectArrayInput } from './SelectArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
-import { HandlingTypesDiscrepencies } from './SelectArrayInput.stories';
+import { DifferentIdTypes } from './SelectArrayInput.stories';
 
 describe('<SelectArrayInput />', () => {
     const defaultProps = {
@@ -578,7 +578,7 @@ describe('<SelectArrayInput />', () => {
     });
 
     it('should show selected values when ids type are inconsistant', async () => {
-        render(<HandlingTypesDiscrepencies />);
+        render(<DifferentIdTypes />);
         await waitFor(() => {
             expect(screen.queryByText('artist_1')).not.toBeNull();
         });
@@ -587,7 +587,7 @@ describe('<SelectArrayInput />', () => {
     });
 
     it('should unselect values when ids type are inconsistant', async () => {
-        render(<HandlingTypesDiscrepencies />);
+        render(<DifferentIdTypes />);
 
         await waitFor(() => {
             expect(

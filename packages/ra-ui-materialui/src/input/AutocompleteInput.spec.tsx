@@ -1,5 +1,4 @@
 import * as React from 'react';
-import expect from 'expect';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
@@ -1480,7 +1479,7 @@ describe('<AutocompleteInput />', () => {
         });
     });
 
-    it.only('should handle nullish values', async () => {
+    it('should handle nullish values', async () => {
         render(<NullishValuesHandling />);
 
         const checkInputValue = async (label: string, expected: any) => {

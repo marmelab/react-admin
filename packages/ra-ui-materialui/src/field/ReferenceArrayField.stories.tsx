@@ -2,9 +2,11 @@ import * as React from 'react';
 import fakeRestProvider from 'ra-data-fakerest';
 
 import { AdminContext } from '../AdminContext';
-import { Datagrid, List } from '../list';
+import { Datagrid } from '../list';
 import { ReferenceArrayField } from './ReferenceArrayField';
 import { TextField } from './TextField';
+import { Show } from '../detail';
+import { CardContent } from '@mui/material';
 
 const fakeData = {
     bands: [{ id: 1, name: 'band_1', members: [1, '2', '3'] }],
@@ -15,28 +17,27 @@ const fakeData = {
         { id: 4, name: 'artist_4' },
     ],
 };
-const dataProvider = fakeRestProvider(fakeData, true);
 
 export default { title: 'ra-ui-materialui/fields/ReferenceArrayField' };
 
-export const HandlingIdsDiscrependies = () => {
+export const DifferentIdTypes = () => {
     return (
-        <AdminContext dataProvider={dataProvider}>
-            <List resource="bands" sx={{ width: 600 }}>
-                <Datagrid>
+        <AdminContext dataProvider={fakeRestProvider(fakeData, false)}>
+            <CardContent>
+                <Show resource="bands" id={1} sx={{ width: 600 }}>
                     <TextField source="name" fullWidth />
                     <ReferenceArrayField
                         fullWidth
                         source="members"
                         reference="artists"
                     >
-                        <Datagrid>
+                        <Datagrid bulkActionButtons={false}>
                             <TextField source="id" />
                             <TextField source="name" />
                         </Datagrid>
                     </ReferenceArrayField>
-                </Datagrid>
-            </List>
+                </Show>
+            </CardContent>
         </AdminContext>
     );
 };

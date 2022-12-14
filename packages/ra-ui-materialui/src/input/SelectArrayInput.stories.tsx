@@ -102,7 +102,7 @@ export const CreateProp = () => (
     </AdminContext>
 );
 
-export const HandlingTypesDiscrepencies = () => {
+export const DifferentIdTypes = () => {
     const fakeData = {
         bands: [{ id: 1, name: 'band_1', members: [1, '2'] }],
         artists: [

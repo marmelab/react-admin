@@ -18,6 +18,7 @@ import {
 import { TextField } from './TextField';
 import { SingleFieldList } from '../list';
 import { AdminContext } from '../AdminContext';
+import { DifferentIdTypes } from './ReferenceArrayField.stories';
 
 const theme = createTheme({});
 
@@ -78,7 +79,7 @@ describe('<ReferenceArrayField />', () => {
             </MemoryRouter>
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
-        expect(container.firstChild.textContent).not.toBeUndefined();
+        expect(container.firstChild?.textContent).not.toBeUndefined();
         expect(getByText('hello')).not.toBeNull();
         expect(getByText('world')).not.toBeNull();
     });
@@ -106,7 +107,7 @@ describe('<ReferenceArrayField />', () => {
             </ThemeProvider>
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
-        expect(container.firstChild.textContent).toBe('');
+        expect(container.firstChild?.textContent).toBe('');
     });
 
     it('should support record with string identifier', () => {
@@ -138,7 +139,7 @@ describe('<ReferenceArrayField />', () => {
             </MemoryRouter>
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
-        expect(container.firstChild.textContent).not.toBeUndefined();
+        expect(container.firstChild?.textContent).not.toBeUndefined();
         expect(getByText('hello')).not.toBeNull();
         expect(getByText('world')).not.toBeNull();
     });
@@ -300,5 +301,13 @@ describe('<ReferenceArrayField />', () => {
         await screen.findByText('tag:programming');
         await screen.findByText('tag:management');
         await screen.findByText('tag:design');
+    });
+
+    it('should handle IDs of different types', async () => {
+        render(<DifferentIdTypes />);
+
+        expect(screen.findByText('artist_1')).not.toBeNull();
+        expect(screen.findByText('artist_2')).not.toBeNull();
+        expect(screen.findByText('artist_3')).not.toBeNull();
     });
 });
