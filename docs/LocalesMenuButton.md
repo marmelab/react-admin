@@ -43,7 +43,7 @@ import { MyAppBar } from './MyAppBar';
 
 const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
 
-export const i18nProvider = polyglotI18nProvider(
+const i18nProvider = polyglotI18nProvider(
     locale => (locale === 'fr' ? frenchMessages : englishMessages),
     'en', // Default locale
     [{ locale: 'en', name: 'English' }, { locale: 'fr', name: 'Français' }]
