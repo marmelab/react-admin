@@ -830,12 +830,11 @@ const NullishValuesDatagridRow = props => {
                 <TableCell>
                     <SimpleForm toolbar={<></>}>
                         <AutocompleteInput
+                            id={`prefers_${id}`}
                             label={`prefers_${id}`}
                             fullWidth
                             source="prefers"
-                            optionText={option =>
-                                `Artist id: ${option.id} [${typeof option.id}]`
-                            }
+                            optionText={option => option.id}
                             choices={nullishValuesFakeData.artists}
                             helperText={false}
                         />

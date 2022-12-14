@@ -1487,23 +1487,16 @@ describe('<AutocompleteInput />', () => {
             const input = (await screen.findByLabelText(
                 label
             )) as HTMLInputElement;
-            if (!input) return;
-            console.log({
-                prout: input.outerHTML,
-                label: label,
-                value: input.value,
-                typeofvalue: typeof input.value,
+            await waitFor(() => {
+                expect(input.value).toStrictEqual(expected);
             });
-            expect(input.value).toStrictEqual(expected);
         };
 
-        await waitFor(() => checkInputValue('prefers_valid-value', 1), {
-            timeout: 4000,
-        });
-        // await waitFor(() => checkInputValue('prefers_empty-string', ''));
-        // await waitFor(() => checkInputValue('prefers_null', ''));
-        // await waitFor(() => checkInputValue('prefers_undefined', ''));
-        // await waitFor(() => checkInputValue('prefers_zero-string', 0));
-        // await waitFor(() => checkInputValue('prefers_zero-number', 0));
+        await checkInputValue('prefers_empty-string', '');
+        await checkInputValue('prefers_null', '');
+        await checkInputValue('prefers_undefined', '');
+        await checkInputValue('prefers_zero-string', '0');
+        await checkInputValue('prefers_zero-number', '0');
+        await checkInputValue('prefers_valid-value', '1');
     });
 });
