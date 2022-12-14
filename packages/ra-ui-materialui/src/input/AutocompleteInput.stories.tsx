@@ -847,7 +847,7 @@ const NullishValuesDatagridBody = props => (
     <DatagridBody {...props} row={<NullishValuesDatagridRow />} />
 );
 
-export const NullishValuesHandling = () => {
+export const NullishValuesSupport = () => {
     return (
         <AdminContext
             dataProvider={fakeRestProvider(nullishValuesFakeData, false)}
