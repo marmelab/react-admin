@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Admin, AdminContext, DatagridBody, List } from 'react-admin';
+import { Admin, AdminContext, Datagrid, DatagridBody, List } from 'react-admin';
 import {
     Resource,
     required,
@@ -27,7 +27,6 @@ import { AutocompleteInput } from './AutocompleteInput';
 import { ReferenceInput } from './ReferenceInput';
 import { TextInput } from './TextInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
-import { Datagrid } from '../../dist/cjs/list/datagrid/Datagrid';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteInput' };
 
@@ -865,9 +864,7 @@ export const NullishValuesHandling = () => {
                 <Datagrid
                     body={<NullishValuesDatagridBody />}
                     bulkActionButtons={false}
-                >
-                    <></>
-                </Datagrid>
+                />
             </List>
         </AdminContext>
     );
