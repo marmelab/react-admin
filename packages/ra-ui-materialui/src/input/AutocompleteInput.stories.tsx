@@ -1,6 +1,12 @@
 import * as React from 'react';
-import { Admin, AdminContext, List } from 'react-admin';
-import { Resource, required, useCreate, useRecordContext } from 'ra-core';
+import { Admin, AdminContext, DatagridBody, List } from 'react-admin';
+import {
+    Resource,
+    required,
+    useCreate,
+    useRecordContext,
+    RecordContextProvider,
+} from 'ra-core';
 import { createMemoryHistory } from 'history';
 import {
     Dialog,
@@ -10,6 +16,8 @@ import {
     Stack,
     TextField,
     Typography,
+    TableRow,
+    TableCell,
 } from '@mui/material';
 import fakeRestProvider from 'ra-data-fakerest';
 
@@ -794,42 +802,72 @@ export const EmptyText = () => (
     </Admin>
 );
 
-export const WithZeroKey = () => {
-    const fakeData = {
-        fans: [
-            { id: 1, name: 'null', prefers: null },
-            { id: 2, name: '0', prefers: 0 },
-            { id: 3, name: '0', prefers: '0' },
-            { id: 4, name: 'undefined', prefers: undefined },
-            { id: 5, name: 'empty string', prefers: '' },
-            { id: 6, name: '1', prefers: 1 },
-        ],
-        artists: [{ id: 0 }, { id: 1 }],
-    };
-    const FanField = () => {
-        const record = useRecordContext();
-        return (
-            <span>
-                Fan #{record.id} prefers: <code>{record.name}</code>,{' '}
-                <code>{typeof record.prefers}</code>
-            </span>
-        );
-    };
+const nullishValuesFakeData = {
+    fans: [
+        { id: 'null', name: 'null', prefers: null },
+        { id: 'undefined', name: 'undefined', prefers: undefined },
+        { id: 'empty-string', name: 'empty string', prefers: '' },
+        { id: 'zero-string', name: '0', prefers: 0 },
+        { id: 'zero-number', name: '0', prefers: '0' },
+        { id: 'valid-value', name: '1', prefers: 1 },
+    ],
+    artists: [{ id: 0 }, { id: 1 }],
+};
+
+const NullishValuesDatagridRow = props => {
+    const { record, id } = props;
     return (
-        <AdminContext dataProvider={fakeRestProvider(fakeData, false)}>
-            <List resource="fans">
-                <Datagrid>
-                    <SimpleForm>
-                        <FanField />
+        <RecordContextProvider value={record}>
+            <TableRow>
+                <TableCell>
+                    <span>
+                        <b>Fan #{record.id}</b>
+                        <br />
+                        <code>{record.name}</code> [
+                        <code>{typeof record.prefers}</code>]
+                    </span>
+                </TableCell>
+                <TableCell>
+                    <SimpleForm toolbar={<></>}>
                         <AutocompleteInput
+                            label={`prefers_${id}`}
                             fullWidth
                             source="prefers"
                             optionText={option =>
-                                `Artist id: ${option.id}, ${typeof option.id}`
+                                `Artist id: ${option.id} [${typeof option.id}]`
                             }
-                            choices={fakeData.artists}
+                            choices={nullishValuesFakeData.artists}
+                            helperText={false}
                         />
                     </SimpleForm>
+                </TableCell>
+            </TableRow>
+        </RecordContextProvider>
+    );
+};
+const NullishValuesDatagridBody = props => (
+    <DatagridBody {...props} row={<NullishValuesDatagridRow />} />
+);
+
+export const NullishValuesHandling = () => {
+    return (
+        <AdminContext
+            dataProvider={fakeRestProvider(nullishValuesFakeData, false)}
+        >
+            <Typography variant="h6" gutterBottom>
+                Test nullish values
+            </Typography>
+            <Typography variant="body2">
+                Story demonstrates the handling of nullish values ; here listed
+                fans specify a prefered artist. <code>prefer</code> value is
+                evaluated again artists IDs.
+            </Typography>
+            <List resource="fans" actions={<></>}>
+                <Datagrid
+                    body={<NullishValuesDatagridBody />}
+                    bulkActionButtons={false}
+                >
+                    <></>
                 </Datagrid>
             </List>
         </AdminContext>
