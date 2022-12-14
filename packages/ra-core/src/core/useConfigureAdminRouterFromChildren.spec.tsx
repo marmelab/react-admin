@@ -189,11 +189,20 @@ const TestedComponentWithPermissions = () => {
     );
 };
 
-const TestedComponentWithLazyCustomRoutes = ({ history }) => {
-    const [lazyRoutes, setLazyRoutes] = React.useState([]);
+const TestedComponentWithOnlyLazyCustomRoutes = ({ history }) => {
+    const [lazyRoutes, setLazyRoutes] = React.useState(null);
 
     React.useEffect(() => {
-        setLazyRoutes([<Route path="/bar" element={<div>Bar</div>} />]);
+        const timer = setTimeout(
+            () =>
+                setLazyRoutes(
+                    <CustomRoutes>
+                        <Route path="/foo" element={<div>Foo</div>} />
+                    </CustomRoutes>
+                ),
+            500
+        );
+        return () => clearTimeout(timer);
     }, [setLazyRoutes]);
 
     return (
@@ -204,10 +213,7 @@ const TestedComponentWithLazyCustomRoutes = ({ history }) => {
                 loading={Loading}
                 ready={Ready}
             >
-                <CustomRoutes noLayout>
-                    <Route path="/foo" element={<div>Foo</div>} />
-                </CustomRoutes>
-                <CustomRoutes>{...lazyRoutes}</CustomRoutes>
+                {lazyRoutes}
             </CoreAdminRoutes>
         </CoreAdminContext>
     );
@@ -308,14 +314,14 @@ describe('useConfigureAdminRouterFromChildren', () => {
         expectResource('user').not.toBeNull();
         expectResource('admin').toBeNull();
     });
-    it('should allow lazily loaded custom routes without any resources', async () => {
+    it('should allow dynamically loaded custom routes without any resources', async () => {
         const history = createMemoryHistory();
-        render(<TestedComponentWithLazyCustomRoutes history={history} />);
+        render(<TestedComponentWithOnlyLazyCustomRoutes history={history} />);
+        expect(screen.queryByText('Ready')).not.toBeNull();
+
+        await new Promise(resolve => setTimeout(resolve, 1010));
+        expect(screen.queryByText('Ready')).toBeNull();
         history.push('/foo');
         expect(screen.queryByText('Foo')).not.toBeNull();
-        expect(screen.queryByText('Ready')).toBeNull();
-        history.push('/bar');
-        expect(screen.queryByText('Bar')).not.toBeNull();
-        expect(screen.queryByText('Ready')).toBeNull();
     });
 });
