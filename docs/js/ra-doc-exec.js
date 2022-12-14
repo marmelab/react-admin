@@ -72,7 +72,6 @@ function replaceContent(text) {
 }
 
 function changeSelectedMenu() {
-    console.log('changeSelectedMenu');
     var activeMenu = document.querySelector(`.sidenav li.active`);
     activeMenu && activeMenu.classList.remove('active');
     allMenus
@@ -84,7 +83,6 @@ function changeSelectedMenu() {
 // so that the side navigation keeps its state
 // use a global event listener to also catch links inside the content area
 document.addEventListener('click', event => {
-    console.log('catchedNavigation click');
     var link = event.target.closest('a');
     if (!link) {
         return; // click not on a link
