@@ -159,6 +159,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
             // We might receive an event from the mui component
             // In this case, it will be the choice id
             if (eventOrChoice?.target) {
+                // when used with different IDs types, unselection leads to double selection with both types
                 eventOrChoice.target.value = eventOrChoice.target.value.reduce(
                     (acc, value) => {
                         // eslint-disable-next-line eqeqeq
