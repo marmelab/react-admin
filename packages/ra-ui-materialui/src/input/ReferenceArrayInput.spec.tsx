@@ -191,32 +191,32 @@ describe('<ReferenceArrayInput />', () => {
                 .querySelector('input');
 
         await waitFor(() => {
-            expect(getCheckbox1()?.checked).toEqual(true);
-            expect(getCheckbox2()?.checked).toEqual(false);
+            expect(getCheckbox1().checked).toEqual(true);
+            expect(getCheckbox2().checked).toEqual(false);
         });
 
         fireEvent.click(getCheckbox2());
 
         await waitFor(() => {
-            expect(getCheckbox1()?.checked).toEqual(true);
-            expect(getCheckbox2()?.checked).toEqual(true);
-            expect(getCheckboxAll()?.checked).toEqual(true);
+            expect(getCheckbox1().checked).toEqual(true);
+            expect(getCheckbox2().checked).toEqual(true);
+            expect(getCheckboxAll().checked).toEqual(true);
         });
 
         fireEvent.click(getCheckboxAll());
 
         await waitFor(() => {
-            expect(getCheckbox1()?.checked).toEqual(false);
-            expect(getCheckbox2()?.checked).toEqual(false);
-            expect(getCheckboxAll()?.checked).toEqual(false);
+            expect(getCheckbox1().checked).toEqual(false);
+            expect(getCheckbox2().checked).toEqual(false);
+            expect(getCheckboxAll().checked).toEqual(false);
         });
 
         fireEvent.click(getCheckboxAll());
 
         await waitFor(() => {
-            expect(getCheckbox1()?.checked).toEqual(true);
-            expect(getCheckbox2()?.checked).toEqual(true);
-            expect(getCheckboxAll()?.checked).toEqual(true);
+            expect(getCheckbox1().checked).toEqual(true);
+            expect(getCheckbox2().checked).toEqual(true);
+            expect(getCheckboxAll().checked).toEqual(true);
         });
     });
 
