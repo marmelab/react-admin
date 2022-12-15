@@ -203,8 +203,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
     const renderMenuItemOption = useCallback(
         choice =>
             !!createItem &&
-            // eslint-disable-next-line eqeqeq
-            choice?.id == createItem.id &&
+            choice?.id === createItem.id &&
             typeof optionText === 'function'
                 ? createItem.name
                 : getChoiceText(choice),
@@ -220,8 +219,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     disabled={getDisableValue(choice)}
                 >
                     {renderMenuItemOption(
-                        // eslint-disable-next-line eqeqeq
-                        !!createItem && choice?.id == createItem.id
+                        !!createItem && choice?.id === createItem.id
                             ? createItem
                             : choice
                     )}
