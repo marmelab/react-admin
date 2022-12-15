@@ -22,7 +22,7 @@ import { DatagridInput } from './DatagridInput';
 import { TextField } from '../field';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { SelectArrayInput } from './SelectArrayInput';
-import { HandlingTypesDiscrepencies } from './ReferenceArrayInput.stories';
+import { DifferentIdTypes } from './ReferenceArrayInput.stories';
 
 describe('<ReferenceArrayInput />', () => {
     const defaultProps = {
@@ -251,7 +251,7 @@ describe('<ReferenceArrayInput />', () => {
     });
 
     it('should support different types of ids', async () => {
-        render(<HandlingTypesDiscrepencies />);
+        render(<DifferentIdTypes />);
         await screen.findByText('#1', {
             selector: 'div.MuiChip-root .MuiChip-label',
         });
@@ -261,12 +261,12 @@ describe('<ReferenceArrayInput />', () => {
             })
         ).not.toBeNull();
         expect(
-            screen.queryByText('artist_3', { selector: 'div.MuiChip-root' })
+            screen.queryByText('#3', { selector: 'div.MuiChip-root' })
         ).toBeNull();
     });
 
     it('should unselect a value whose id type is inconsistant', async () => {
-        render(<HandlingTypesDiscrepencies />);
+        render(<DifferentIdTypes />);
 
         const unselect = (queriedText: string) => () => {
             const chip = screen.queryByText(queriedText, {
