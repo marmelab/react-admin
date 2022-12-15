@@ -306,8 +306,8 @@ describe('<ReferenceArrayField />', () => {
     it('should handle IDs of different types', async () => {
         render(<DifferentIdTypes />);
 
-        expect(screen.findByText('artist_1')).not.toBeNull();
-        expect(screen.findByText('artist_2')).not.toBeNull();
-        expect(screen.findByText('artist_3')).not.toBeNull();
+        expect(await screen.findByText('artist_1')).not.toBeNull();
+        expect(await screen.findByText('artist_2')).not.toBeNull();
+        expect(await screen.findByText('artist_3')).not.toBeNull();
     });
 });
