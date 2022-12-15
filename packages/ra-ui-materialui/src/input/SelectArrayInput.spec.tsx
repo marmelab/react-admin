@@ -586,25 +586,21 @@ describe('<SelectArrayInput />', () => {
         expect(screen.queryByText('artist_3')).toBeNull();
     });
 
-    it('should unselect values when ids type are inconsistant', async () => {
+    it('should unselect values when ids type are different', async () => {
         render(<DifferentIdTypes />);
 
-        await waitFor(() => {
-            expect(
-                screen.queryByText('resources.bands.fields.members')
-            ).not.toBeNull();
-        });
+        expect(
+            await screen.findByText('resources.bands.fields.members')
+        ).not.toBeNull();
 
         fireEvent.mouseDown(
             screen.getByLabelText('resources.bands.fields.members')
         );
 
-        await waitFor(() => {
-            const option = screen.getByText('artist_2', {
-                selector: '.MuiMenuItem-root',
-            });
-            fireEvent.click(option);
+        const option = await screen.findByText('artist_2', {
+            selector: '.MuiMenuItem-root',
         });
+        fireEvent.click(option);
 
         expect(
             screen.queryByText('artist_2', {

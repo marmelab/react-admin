@@ -1,5 +1,4 @@
 import * as React from 'react';
-import expect from 'expect';
 import {
     render,
     screen,
@@ -265,32 +264,28 @@ describe('<ReferenceArrayInput />', () => {
         ).toBeNull();
     });
 
-    it('should unselect a value whose id type is inconsistant', async () => {
+    it('should unselect a value when types of ids are different', async () => {
         render(<DifferentIdTypes />);
 
-        const unselect = (queriedText: string) => () => {
-            const chip = screen.queryByText(queriedText, {
+        const chip1 = await screen.findByText('#1', {
+            selector: '.MuiChip-label',
+        });
+        const chip2 = await screen.findByText('#2', {
+            selector: '.MuiChip-label',
+        });
+
+        if (chip2.nextSibling) fireEvent.click(chip2.nextSibling);
+        expect(
+            screen.queryByText('#2', {
                 selector: '.MuiChip-label',
-            })?.nextSibling;
-            fireEvent.click(chip);
-        };
+            })
+        ).toBeNull();
 
-        await waitFor(unselect('#1'));
-        await waitFor(unselect('#2'));
-
-        await waitFor(() => {
-            expect(
-                screen.queryByText('#1', {
-                    selector: '.MuiChip-label',
-                })
-            ).toBeNull();
-        });
-        await waitFor(() => {
-            expect(
-                screen.queryByText('#2', {
-                    selector: '.MuiChip-label',
-                })
-            ).toBeNull();
-        });
+        if (chip1.nextSibling) fireEvent.click(chip1.nextSibling);
+        expect(
+            screen.queryByText('#1', {
+                selector: '.MuiChip-label',
+            })
+        ).toBeNull();
     });
 });
