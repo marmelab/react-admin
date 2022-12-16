@@ -38,9 +38,14 @@ export const useWarnWhenUnsavedChanges = (
         }
 
         let unblock = navigator.block((tx: Transition) => {
-            const newLocationIsInsideForm = tx.location.pathname.startsWith(
+            const newLocationIsInsideCurrentLocation = tx.location.pathname.startsWith(
                 initialLocation.current
             );
+            const newLocationIsShowView = tx.location.pathname.startsWith(
+                `${initialLocation.current}/show`
+            );
+            const newLocationIsInsideForm =
+                newLocationIsInsideCurrentLocation && !newLocationIsShowView;
 
             if (
                 !isSubmitting &&
