@@ -1,5 +1,20 @@
 # Changelog
 
+## 4.6.2
+
+* Fix `<ReferenceArrayInput>` and `<AutoCompleteInput>` when identifiers have the wrong type ([#8500](https://github.com/marmelab/react-admin/pull/8500)) ([septentrion-730n](https://github.com/septentrion-730n))
+* Fix `warnWhenUnsavedChanges` when navigating to the Show view ([#8512](https://github.com/marmelab/react-admin/pull/8512)) ([slax57](https://github.com/slax57))
+* Fix `useGetIdentity` throws an error when no `authProvider.getIdentity` is defined ([#8509](https://github.com/marmelab/react-admin/pull/8509)) ([slax57](https://github.com/slax57))
+* Fix `<Datagrid>` positioning of bulk action buttons ([#8504](https://github.com/marmelab/react-admin/pull/8504)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix incorrect `<Ready>` page when dynamically load routes with no resources ([#8490](https://github.com/marmelab/react-admin/pull/8490)) ([smeng9](https://github.com/smeng9))
+* Fix `<Ready>` page points to the wrong documentation URL ([#8495](https://github.com/marmelab/react-admin/pull/8495)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix return type of `useShowContext`, `useEditContext`, and `useCreateContext` ([#8497](https://github.com/marmelab/react-admin/pull/8497)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix `useReferenceManyFieldController` argument type ([#8491](https://github.com/marmelab/react-admin/pull/8491)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<LocalesMenuButton>`'s custom AppBar example and `polyglotI18nProvider` documentation ([#8452](https://github.com/marmelab/react-admin/pull/8452)) ([smeng9](https://github.com/smeng9))
+* [Doc] Fix `<Menu>` donc contains invalid code example ([#8502](https://github.com/marmelab/react-admin/pull/8502)) ([Aikain](https://github.com/Aikain))
+* [Doc] Fix `<Menu>` example misses JSX closing tag  ([#8493](https://github.com/marmelab/react-admin/pull/8493)) ([the133448](https://github.com/the133448))
+* Bump express from 4.16.4 to 4.17.3 ([#8487](https://github.com/marmelab/react-admin/pull/8487)) ([dependabot](https://github.com/dependabot))
+
 ## 4.6.1
 
 * Fix `<SelectColumnsButton referenceKey>` prop handling ([#8432](https://github.com/marmelab/react-admin/pull/8432)) ([wcoppens](https://github.com/wcoppens))
