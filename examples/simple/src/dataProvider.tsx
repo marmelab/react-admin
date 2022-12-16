@@ -1,10 +1,31 @@
 import fakeRestProvider from 'ra-data-fakerest';
-import { DataProvider } from 'react-admin';
+import { DataProvider, withLifecycleCallbacks } from 'react-admin';
 import get from 'lodash/get';
 import data from './data';
 import addUploadFeature from './addUploadFeature';
 
-const dataProvider = fakeRestProvider(data, true);
+const baseDataProvider = fakeRestProvider(data, true);
+
+const dataProvider = withLifecycleCallbacks(baseDataProvider, [
+    {
+        resource: 'posts',
+        beforeDelete: async ({ id }) => {
+            // delete related comments
+            const { data: comments } = await baseDataProvider.getList(
+                'comments',
+                {
+                    filter: { post_id: id },
+                    pagination: { page: 1, perPage: 100 },
+                    sort: { field: 'id', order: 'DESC' },
+                }
+            );
+            await baseDataProvider.deleteMany('comments', {
+                ids: comments.map(comment => comment.id),
+            });
+            return { id };
+        },
+    },
+]);
 
 const addTagsSearchSupport = (dataProvider: DataProvider) => ({
     ...dataProvider,
