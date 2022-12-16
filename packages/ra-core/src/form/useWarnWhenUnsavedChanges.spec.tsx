@@ -42,6 +42,9 @@ const Form = ({ onSubmit }) => {
             <button type="button" onClick={() => navigate('/form/part2')}>
                 Form part 2
             </button>
+            <button type="button" onClick={() => navigate('/form/show')}>
+                Go to Show view
+            </button>
             <button type="button" onClick={onLeave}>
                 Leave
             </button>
@@ -73,6 +76,7 @@ const App = ({ initialEntries = ['/form'] }) => (
     <MemoryRouter initialEntries={initialEntries} initialIndex={0}>
         <Routes>
             <Route path="/form" element={<FormUnderTest />} />
+            <Route path="/form/show" element={<span>Show</span>} />
             <Route path="/form/:part" element={<FormUnderTest />} />
             <Route path="/submitted" element={<span>Submitted</span>} />
             <Route path="/somewhere" element={<span>Somewhere</span>} />
@@ -221,6 +225,39 @@ describe('useWarnWhenUnsavedChanges', () => {
             screen.getByText('Somewhere');
         }
     );
+
+    it('should warn when navigating from root to the show view with unsaved changes', () => {
+        // mock click on "cancel" in the confirm dialog
+        window.confirm = jest.fn().mockReturnValue(false);
+        render(<App />);
+        const input = screen.getByLabelText('First Name') as HTMLInputElement;
+        fireEvent.change(input, { target: { value: 'John Doe' } });
+        fireEvent.blur(input);
+        expect(screen.queryByDisplayValue('John Doe')).not.toBeNull();
+        fireEvent.click(screen.getByText('Go to Show view'));
+        expect(window.confirm).toHaveBeenCalledWith(
+            'ra.message.unsaved_changes'
+        );
+        // check that we're still in the form and that the unsaved changes are here
+        expect(screen.queryByDisplayValue('John Doe')).not.toBeNull();
+        expect(screen.queryByText('Show')).toBeNull();
+    });
+    it('should warn when navigating from a sub page to the show view with unsaved changes', () => {
+        // mock click on "cancel" in the confirm dialog
+        window.confirm = jest.fn().mockReturnValue(false);
+        render(<App initialEntries={['/form/part1']} />);
+        const input = screen.getByLabelText('First Name') as HTMLInputElement;
+        fireEvent.change(input, { target: { value: 'John Doe' } });
+        fireEvent.blur(input);
+        expect(screen.queryByDisplayValue('John Doe')).not.toBeNull();
+        fireEvent.click(screen.getByText('Go to Show view'));
+        expect(window.confirm).toHaveBeenCalledWith(
+            'ra.message.unsaved_changes'
+        );
+        // check that we're still in the form and that the unsaved changes are here
+        expect(screen.queryByDisplayValue('John Doe')).not.toBeNull();
+        expect(screen.queryByText('Show')).toBeNull();
+    });
 
     afterAll(() => delete window.confirm);
 });
