@@ -525,7 +525,7 @@ If you provided a React element for the optionText prop, you must also provide t
     ]);
 
     const isOptionEqualToValue = (option, value) => {
-        return getChoiceValue(option) === getChoiceValue(value);
+        return String(getChoiceValue(option)) === String(getChoiceValue(value));
     };
 
     return (
@@ -740,11 +740,17 @@ const getSelectedItems = (
     if (multiple) {
         return (value || [])
             .map(item =>
-                choices.find(choice => item === get(choice, optionValue))
+                choices.find(
+                    choice => String(item) === String(get(choice, optionValue))
+                )
             )
             .filter(item => !!item);
     }
-    return choices.find(choice => get(choice, optionValue) === value) || '';
+    return (
+        choices.find(
+            choice => String(get(choice, optionValue)) === String(value)
+        ) || ''
+    );
 };
 
 const DefaultFilterToQuery = searchText => ({ q: searchText });
