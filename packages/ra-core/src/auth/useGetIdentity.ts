@@ -52,7 +52,7 @@ export const useGetIdentity = (
             ? () => authProvider.getIdentity()
             : async () => defaultIdentity,
         {
-            enabled: typeof authProvider.getIdentity === 'function',
+            enabled: typeof authProvider?.getIdentity === 'function',
             ...queryParams,
         }
     );
