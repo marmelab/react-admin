@@ -489,131 +489,80 @@ export const withLifecycleCallbacks = (
     };
 };
 
-export type BeforteGetListCallback = (
-    params: GetListParams,
-    dataProvider: DataProvider
-) => Promise<GetListParams>;
-
-export type AfterGetListCallback<T extends RaRecord = any> = (
-    result: GetListResult<T>,
-    dataProvider: DataProvider
-) => Promise<GetListResult<T>>;
-
-export type BeforeGetOneCallback<T extends RaRecord = any> = (
-    params: GetOneParams<T>,
-    dataProvider: DataProvider
-) => Promise<GetOneParams<T>>;
-
-export type AfterGetOneCallback<T extends RaRecord = any> = (
-    result: GetOneResult<T>,
-    dataProvider: DataProvider
-) => Promise<GetOneResult<T>>;
-
-export type BeforeGetManyCallback = (
-    params: GetManyParams,
-    dataProvider: DataProvider
-) => Promise<GetManyParams>;
-
-export type AfterGetManyCallback<T extends RaRecord = any> = (
-    result: GetManyResult<T>,
-    dataProvider: DataProvider
-) => Promise<GetManyResult<T>>;
-
-export type BeforeGetManyReferenceCallback = (
-    params: GetManyReferenceParams,
-    dataProvider: DataProvider
-) => Promise<GetManyReferenceParams>;
-
-export type AfterGetManyReferenceCallback<T extends RaRecord = any> = (
-    result: GetManyReferenceResult<T>,
-    dataProvider: DataProvider
-) => Promise<GetManyReferenceResult<T>>;
-
-export type BeforeUpdateCallback<T extends RaRecord = any> = (
-    params: UpdateParams<T>,
-    dataProvider: DataProvider
-) => Promise<UpdateParams<T>>;
-
-export type BeforeUpdateManyCallback<T extends RaRecord = any> = (
-    params: UpdateManyParams<T>,
-    dataProvider: DataProvider
-) => Promise<UpdateManyParams<T>>;
-
-export type AfterUpdateManyCallback<T extends RaRecord = any> = (
-    result: UpdateManyResult<T>,
-    dataProvider: DataProvider
-) => Promise<UpdateManyResult<T>>;
-
-export type AfterUpdateCallback<T extends RaRecord = any> = (
-    result: UpdateResult<T>,
-    dataProvider: DataProvider
-) => Promise<UpdateResult<T>>;
-
-export type BeforeCreateCallback<T extends RaRecord = any> = (
-    params: CreateParams<T>,
-    dataProvider: DataProvider
-) => Promise<CreateParams<T>>;
-
-export type AfterCreateCallback<T extends RaRecord = any> = (
-    result: CreateResult<T>,
-    dataProvider: DataProvider
-) => Promise<CreateResult<T>>;
-
-export type BeforeDeleteCallback<T extends RaRecord = any> = (
-    params: DeleteParams<T>,
-    dataProvider: DataProvider
-) => Promise<DeleteParams<T>>;
-
-export type AfterDeleteCallback<T extends RaRecord = any> = (
-    result: DeleteResult<T>,
-    dataProvider: DataProvider
-) => Promise<DeleteResult<T>>;
-
-export type BeforeDeleteManyCallback<T extends RaRecord = any> = (
-    params: DeleteManyParams<T>,
-    dataProvider: DataProvider
-) => Promise<DeleteManyParams<T>>;
-
-export type AfterDeleteManyCallback<T extends RaRecord = any> = (
-    result: DeleteManyResult<T>,
-    dataProvider: DataProvider
-) => Promise<DeleteManyResult<T>>;
-
-export type AfterReadCallback<T extends RaRecord = any> = (
-    record: T,
-    dataProvider: DataProvider
-) => Promise<T>;
-
-export type BeforeSaveCallback<T extends RaRecord = any> = (
-    data: Partial<T>,
-    dataProvider: DataProvider
-) => Promise<T>;
-
-export type AfterSaveCallback<T extends RaRecord = any> = (
-    record: T,
-    dataProvider: DataProvider
-) => Promise<T>;
-
 export type ResourceCallbacks<T extends RaRecord = any> = {
     resource: string;
-    afterCreate?: AfterCreateCallback<T>;
-    afterDelete?: AfterDeleteCallback<T>;
-    afterDeleteMany?: AfterDeleteManyCallback<T>;
-    afterGetList?: AfterGetListCallback<T>;
-    afterGetMany?: AfterGetManyCallback<T>;
-    afterGetManyReference?: AfterGetManyReferenceCallback<T>;
-    afterGetOne?: AfterGetOneCallback<T>;
-    afterUpdate?: AfterUpdateCallback<T>;
-    afterUpdateMany?: AfterUpdateManyCallback<T>;
-    beforeCreate?: BeforeCreateCallback<T>;
-    beforeDelete?: BeforeDeleteCallback<T>;
-    beforeDeleteMany?: BeforeDeleteManyCallback<T>;
-    beforeGetList?: BeforteGetListCallback;
-    beforeGetMany?: BeforeGetManyCallback;
-    beforeGetManyReference?: BeforeGetManyReferenceCallback;
-    beforeGetOne?: BeforeGetOneCallback<T>;
-    beforeUpdate?: BeforeUpdateCallback<T>;
-    beforeUpdateMany?: BeforeUpdateManyCallback<T>;
+    afterCreate?: (
+        result: CreateResult<T>,
+        dataProvider: DataProvider
+    ) => Promise<CreateResult<T>>;
+    afterDelete?: (
+        result: DeleteResult<T>,
+        dataProvider: DataProvider
+    ) => Promise<DeleteResult<T>>;
+    afterDeleteMany?: (
+        result: DeleteManyResult<T>,
+        dataProvider: DataProvider
+    ) => Promise<DeleteManyResult<T>>;
+    afterGetList?: (
+        result: GetListResult<T>,
+        dataProvider: DataProvider
+    ) => Promise<GetListResult<T>>;
+    afterGetMany?: (
+        result: GetManyResult<T>,
+        dataProvider: DataProvider
+    ) => Promise<GetManyResult<T>>;
+    afterGetManyReference?: (
+        result: GetManyReferenceResult<T>,
+        dataProvider: DataProvider
+    ) => Promise<GetManyReferenceResult<T>>;
+    afterGetOne?: (
+        result: GetOneResult<T>,
+        dataProvider: DataProvider
+    ) => Promise<GetOneResult<T>>;
+    afterUpdate?: (
+        result: UpdateResult<T>,
+        dataProvider: DataProvider
+    ) => Promise<UpdateResult<T>>;
+    afterUpdateMany?: (
+        result: UpdateManyResult<T>,
+        dataProvider: DataProvider
+    ) => Promise<UpdateManyResult<T>>;
+    beforeCreate?: (
+        params: CreateParams<T>,
+        dataProvider: DataProvider
+    ) => Promise<CreateParams<T>>;
+    beforeDelete?: (
+        params: DeleteParams<T>,
+        dataProvider: DataProvider
+    ) => Promise<DeleteParams<T>>;
+    beforeDeleteMany?: (
+        params: DeleteManyParams<T>,
+        dataProvider: DataProvider
+    ) => Promise<DeleteManyParams<T>>;
+    beforeGetList?: (
+        params: GetListParams,
+        dataProvider: DataProvider
+    ) => Promise<GetListParams>;
+    beforeGetMany?: (
+        params: GetManyParams,
+        dataProvider: DataProvider
+    ) => Promise<GetManyParams>;
+    beforeGetManyReference?: (
+        params: GetManyReferenceParams,
+        dataProvider: DataProvider
+    ) => Promise<GetManyReferenceParams>;
+    beforeGetOne?: (
+        params: GetOneParams<T>,
+        dataProvider: DataProvider
+    ) => Promise<GetOneParams<T>>;
+    beforeUpdate?: (
+        params: UpdateParams<T>,
+        dataProvider: DataProvider
+    ) => Promise<UpdateParams<T>>;
+    beforeUpdateMany?: (
+        params: UpdateManyParams<T>,
+        dataProvider: DataProvider
+    ) => Promise<UpdateManyParams<T>>;
 
     // The following hooks don't match a dataProvider method
 
@@ -625,17 +574,17 @@ export type ResourceCallbacks<T extends RaRecord = any> = {
      * Note: This callback doesn't modify the record itself, but the data argument
      * (which may be a diff, especially when called with updateMany).
      */
-    beforeSave?: BeforeSaveCallback<T>;
+    beforeSave?: (data: Partial<T>, dataProvider: DataProvider) => Promise<T>;
     /**
      * Update a record after it has been read from the dataProvider
      *
      * Used in getOne, getList, getMany, and getManyReference
      */
-    afterRead?: AfterReadCallback<T>;
+    afterRead?: (record: T, dataProvider: DataProvider) => Promise<T>;
     /**
      * Modify the record after it is returned by the dataProvider.
      *
      * Used in create, update, and updateMany
      */
-    afterSave?: AfterSaveCallback<T>;
+    afterSave?: (record: T, dataProvider: DataProvider) => Promise<T>;
 };
