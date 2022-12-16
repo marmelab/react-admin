@@ -160,6 +160,9 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
             // In this case, it will be the choice id
             if (eventOrChoice?.target) {
                 // when used with different IDs types, unselection leads to double selection with both types
+                // instead of the value being removed from the array
+                // e.g. we receive eventOrChoice.target.value = [1, '2', 2] instead of [1] after removing 2
+                // this snippet removes a value if it is present twice
                 eventOrChoice.target.value = eventOrChoice.target.value.reduce(
                     (acc, value) => {
                         // eslint-disable-next-line eqeqeq
