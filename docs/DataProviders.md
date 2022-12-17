@@ -211,6 +211,120 @@ Access-Control-Expose-Headers: X-Custom-Header
 
 This must be done on the server side.
 
+## Adding Lifecycle Callbacks
+
+It often happens that you need specific data logic to be executed before or after a dataProvider call. For instance, you may want to delete the comments related to a post before deleting the post itself. The general advice is to **put that code on the server-side**. If you can't, the next best place to put this logic is the `dataProvider`. 
+
+You can, of course, use `if` statements in the `dataProvider` methods to execute the logic only for the resources that need it, like so:
+
+```jsx
+const dataProvider = {
+    // ...
+    delete: async (resource, params) => {
+        if (resource === 'posts') {
+            // delete all comments related to the post
+            // first, fetch the comments
+            const { data: comments } = await httpClient(`${apiUrl}/comments?post_id=${params.id}`);
+            // then, delete them
+            await Promise.all(comments.map(comment => httpClient(`${apiUrl}/comments/${comment.id}`, {
+                method: 'DELETE',
+            })));
+        }
+        // fallback to the default implementation
+        return httpClient(`${apiUrl}/${resource}/${params.id}`, {
+            method: 'DELETE',
+        });
+    },
+    // ...
+}
+```
+
+But the `dataProvider` code quickly becomes hard to read and maintain. React-admin provides a helper function to make it easier to add lifecycle callbacks to the dataProvider: `withLifecycleCallbacks`:
+
+```jsx
+const dataProvider = withLifecycleCallbacks(baseDataProvider, [
+    {
+        resource: 'posts',
+        beforeDelete: async (params, dataProvider) => {
+            // delete all comments related to the post
+            // first, fetch the comments
+            const { data: comments } = await dataProvider.getList('comments', {
+                filter: { post_id: params.id },
+                pagination: { page: 1, perPage: 1000 },
+                sort: { field: 'id', order: 'DESC' },
+            });
+            // then, delete them
+            await dataProvider.deleteMany('comments', { ids: comments.map(comment => comment.id) });
+
+            return params;
+        },
+    },
+]);
+```
+
+The `withLifecycleCallbacks` function takes two arguments:
+
+- The base dataProvider
+- An array of lifecycle callbacks
+
+A lifecycle callback object can have the following properties:
+
+```jsx
+const myLifecycleCallback = {
+  resource: /* resource name (required) */,
+  // before callbacks
+  beforeGetList: /* async (params, dataProvider) => params */,
+  beforeGetOne: /* async (params, dataProvider) => params */,
+  beforeGetMany : /* async (params, dataProvider) => params */,
+  beforeGetManyReference: /* async (params, dataProvider) => params */,
+  beforeCreate: /* async (params, dataProvider) => params */,
+  beforeUpdate: /* async (params, dataProvider) => params */,
+  beforeUpdateMany: /* async (params, dataProvider) => params */,
+  beforeDelete: /* async (params, dataProvider) => params */,
+  beforeDeleteMany: /* async (params, dataProvider) => params */,
+  // after callbacks
+  afterGetList: /* async (result, dataProvider) => result */,
+  afterGetOne: /* async (result, dataProvider) => result */,
+  afterGetMany: /* async (result, dataProvider) => result */,
+  afterGetManyReference: /* async (result, dataProvider) => result */,
+  afterCreate: /* async (result, dataProvider) => result */,
+  afterUpdate: /* async (result, dataProvider) => result */,
+  afterUpdateMany: /* async (result, dataProvider) => result */,
+  afterDelete: /* async (result, dataProvider) => result */,
+  afterDeleteMany: /* async (result, dataProvider) => result */,
+  // special callbacks
+  afterRead: /* async (record, dataProvider) => record */,
+  beforeSave: /* async (data, dataProvider) => data */,
+  afterSave: /* async (record, dataProvider) => record */,
+}
+```
+
+The callbacks have different parameters:
+
+- before callbacks receive the following arguments:
+    - `params`: the parameters passed to the dataProvider method
+    - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
+- after callbacks receive the following arguments:
+    - `response`: the response returned by the dataProvider method
+    - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
+- `afterRead` is called after any dataProvider method that reads data (`getList`, `getOne`, `getMany`, `getManyReference`), letting you modify the records before react-admin uses them. It receives the following arguments:
+    - `record`: the record returned by the backend 
+    - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
+- `beforeSave` is called before any dataProvider method that saves data (`create`, `update`, `updateMany`), letting you modify the records before they are sent to the backend. It receives the following arguments:
+    - `data`: the record update to be sent to the backend (often, a diff of the record)
+    - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
+- `afterSave` is called after any dataProvider method that saves data (`create`, `update`, `updateMany`), letting you updte related records. It receives the following arguments:
+    - `record`: the record returned by the backend 
+    - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
+
+Use lifecycle callbacks with caution:
+
+- They execute outside of the React context, and therefore cannot use hooks. 
+- As queries issued in the callbacks are not done through react-query, any change in the data will not be automatically reflected in the UI. If you need to update the UI, prefer putting the logic in the `onSuccess` property of the mutation. 
+- The callbacks are not executed in a transaction. In case of error, the backend may be left in an inconsistent state.
+- When another client than react-admin calls the API, the callbacks will not be executed, leaving the backend in a possiblly inconsistent state.
+- If a callback triggers the query it's listening to, this will lead to a infinite loop.
+
 ## Handling File Uploads
 
 As Data Providers are just objects, you can extend them with custom logic for a given method. 
