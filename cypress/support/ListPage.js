@@ -34,6 +34,7 @@ export default url => ({
         headroomUnfixed: '.headroom--unfixed',
         headroomUnpinned: '.headroom--unpinned',
         skipNavButton: '.skip-nav-button',
+        mainContent: '#main-content',
     },
 
     navigate() {
