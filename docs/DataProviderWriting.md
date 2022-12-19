@@ -848,7 +848,7 @@ export const dataProvider = {
 If you need to add custom business logic to a generic `dataProvider` for a specific resource, you can use the `withLifecycleCallbacks` helper:
 
 ```jsx
-// in scr/dataProvider.js
+// in src/dataProvider.js
 import { withLifecycleCallbacks } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 
