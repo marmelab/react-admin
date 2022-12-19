@@ -241,7 +241,7 @@ const {
     defaultTitle, // empty string
     resource, // undefined
     refetch, // a function that throws an error, as refetch doesn't make sense for local data
-} = getGetList({ data });
+} = useList({ data });
 ```
 
 ## `filterCallback`
