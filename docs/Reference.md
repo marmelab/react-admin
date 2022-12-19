@@ -226,5 +226,6 @@ title: "Reference"
 * [`useUnselect`](./useUnselect.md)
 * [`useUnselectAll`](./useUnselectAll.md)
 * [`useWarnWhenUnsavedChanges`](./EditTutorial.md#warning-about-unsaved-changes)
+* [ `withLifecycleCallbacks`](./withLifecycleCallbacks.md)
 
 </div>

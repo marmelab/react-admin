@@ -242,6 +242,8 @@ const dataProvider = {
 But the `dataProvider` code quickly becomes hard to read and maintain. React-admin provides a helper function to make it easier to add lifecycle callbacks to the dataProvider: `withLifecycleCallbacks`:
 
 ```jsx
+import { withLifecycleCallbacks } from 'react-admin';
+
 const dataProvider = withLifecycleCallbacks(baseDataProvider, [
     {
         resource: 'posts',
@@ -262,68 +264,7 @@ const dataProvider = withLifecycleCallbacks(baseDataProvider, [
 ]);
 ```
 
-The `withLifecycleCallbacks` function takes two arguments:
-
-- The base dataProvider
-- An array of lifecycle callbacks
-
-A lifecycle callback object can have the following properties:
-
-```jsx
-const myLifecycleCallback = {
-  resource: /* resource name (required) */,
-  // before callbacks
-  beforeGetList: /* async (params, dataProvider) => params */,
-  beforeGetOne: /* async (params, dataProvider) => params */,
-  beforeGetMany : /* async (params, dataProvider) => params */,
-  beforeGetManyReference: /* async (params, dataProvider) => params */,
-  beforeCreate: /* async (params, dataProvider) => params */,
-  beforeUpdate: /* async (params, dataProvider) => params */,
-  beforeUpdateMany: /* async (params, dataProvider) => params */,
-  beforeDelete: /* async (params, dataProvider) => params */,
-  beforeDeleteMany: /* async (params, dataProvider) => params */,
-  // after callbacks
-  afterGetList: /* async (result, dataProvider) => result */,
-  afterGetOne: /* async (result, dataProvider) => result */,
-  afterGetMany: /* async (result, dataProvider) => result */,
-  afterGetManyReference: /* async (result, dataProvider) => result */,
-  afterCreate: /* async (result, dataProvider) => result */,
-  afterUpdate: /* async (result, dataProvider) => result */,
-  afterUpdateMany: /* async (result, dataProvider) => result */,
-  afterDelete: /* async (result, dataProvider) => result */,
-  afterDeleteMany: /* async (result, dataProvider) => result */,
-  // special callbacks
-  afterRead: /* async (record, dataProvider) => record */,
-  beforeSave: /* async (data, dataProvider) => data */,
-  afterSave: /* async (record, dataProvider) => record */,
-}
-```
-
-The callbacks have different parameters:
-
-- before callbacks receive the following arguments:
-    - `params`: the parameters passed to the dataProvider method
-    - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
-- after callbacks receive the following arguments:
-    - `response`: the response returned by the dataProvider method
-    - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
-- `afterRead` is called after any dataProvider method that reads data (`getList`, `getOne`, `getMany`, `getManyReference`), letting you modify the records before react-admin uses them. It receives the following arguments:
-    - `record`: the record returned by the backend 
-    - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
-- `beforeSave` is called before any dataProvider method that saves data (`create`, `update`, `updateMany`), letting you modify the records before they are sent to the backend. It receives the following arguments:
-    - `data`: the record update to be sent to the backend (often, a diff of the record)
-    - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
-- `afterSave` is called after any dataProvider method that saves data (`create`, `update`, `updateMany`), letting you updte related records. It receives the following arguments:
-    - `record`: the record returned by the backend 
-    - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
-
-Use lifecycle callbacks with caution:
-
-- They execute outside of the React context, and therefore cannot use hooks. 
-- As queries issued in the callbacks are not done through react-query, any change in the data will not be automatically reflected in the UI. If you need to update the UI, prefer putting the logic in the `onSuccess` property of the mutation. 
-- The callbacks are not executed in a transaction. In case of error, the backend may be left in an inconsistent state.
-- When another client than react-admin calls the API, the callbacks will not be executed, leaving the backend in a possiblly inconsistent state.
-- If a callback triggers the query it's listening to, this will lead to a infinite loop.
+Check the [withLifecycleCallbacks](./withLifecycleCallbacks.md) documentation for more details.
 
 ## Handling File Uploads
 

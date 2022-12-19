@@ -582,7 +582,7 @@ export type ResourceCallbacks<T extends RaRecord = any> = {
      */
     afterRead?: (record: T, dataProvider: DataProvider) => Promise<T>;
     /**
-     * Modify the record after it is returned by the dataProvider.
+     * Use the record after it is returned by the dataProvider.
      *
      * Used in create, update, and updateMany
      */
