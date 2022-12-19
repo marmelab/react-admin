@@ -231,9 +231,11 @@ const dataProvider = {
             })));
         }
         // fallback to the default implementation
-        return httpClient(`${apiUrl}/${resource}/${params.id}`, {
+        const { data } = await httpClient(`${apiUrl}/${resource}/${params.id}`, {
             method: 'DELETE',
         });
+
+        return { data };
     },
     // ...
 }

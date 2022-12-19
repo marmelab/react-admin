@@ -187,9 +187,9 @@ describe('withLifecycleCallbacks', () => {
             const dataProvider = withLifecycleCallbacks(base, [
                 {
                     resource: 'posts',
-                    afterGetMany: jest.fn(() =>
+                    afterGetMany: jest.fn(result =>
                         Promise.resolve({
-                            data: [{ id: 1, title: 'bar' }],
+                            data: [{ ...result.data[0], title: 'bar' }],
                         })
                     ),
                 },
@@ -248,9 +248,9 @@ describe('withLifecycleCallbacks', () => {
             const dataProvider = withLifecycleCallbacks(base, [
                 {
                     resource: 'posts',
-                    afterGetManyReference: jest.fn(() =>
+                    afterGetManyReference: jest.fn(result =>
                         Promise.resolve({
-                            data: [{ id: 1, title: 'bar' }],
+                            data: [{ ...result.data[0], title: 'bar' }],
                             total: 1,
                         })
                     ),
