@@ -259,7 +259,7 @@ export const postLifecycleCallbacks = {
 Then, import the callbacks into your data provider:
 
 ```jsx
-// in scr/dataProvider.js
+// in src/dataProvider.js
 import simpleRestProvider from 'ra-data-simple-rest';
 
 import { postLifecycleCallbacks } from './posts';
