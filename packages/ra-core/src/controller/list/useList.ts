@@ -49,6 +49,7 @@ const refetch = () => {
  * @param {Number} props.perPage: Optional. The initial page size
  * @param {SortPayload} props.sort: Optional. The initial sort (field and order)
  * @param {filterCallback} prop.filterCallback Optional. A function that allows you to make a custom filter
+ * @param {sortOverride} prop.sortOverride Optional. A function that allows you to make a custom sort
  */
 export const useList = <RecordType extends RaRecord = any>(
     props: UseListOptions<RecordType>
@@ -63,6 +64,7 @@ export const useList = <RecordType extends RaRecord = any>(
         perPage: initialPerPage = 1000,
         sort: initialSort,
         filterCallback = (record: RecordType) => Boolean(record),
+        sortOverride,
     } = props;
     const resource = useResourceContext(props);
 
@@ -188,6 +190,9 @@ export const useList = <RecordType extends RaRecord = any>(
             // 2. sort
             if (sort.field) {
                 tempData = tempData.sort((a, b) => {
+                    const customizedSort = sortOverride?.(sort, a, b);
+                    if (typeof customizedSort === 'number')
+                        return customizedSort;
                     if (get(a, sort.field) > get(b, sort.field)) {
                         return sort.order === 'ASC' ? 1 : -1;
                     }
@@ -274,6 +279,11 @@ export interface UseListOptions<RecordType extends RaRecord = any> {
     sort?: SortPayload;
     resource?: string;
     filterCallback?: (record: RecordType) => boolean;
+    sortOverride?: (
+        sort: SortPayload,
+        a: RecordType,
+        b: RecordType
+    ) => number | undefined;
 }
 
 export type UseListValue<
