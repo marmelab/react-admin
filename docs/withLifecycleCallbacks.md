@@ -203,21 +203,85 @@ const fooLifecycleCallback = {
 
 The callbacks have different parameters:
 
-- before callbacks receive the following arguments:
-    - `params`: the parameters passed to the dataProvider method
-    - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
-- after callbacks receive the following arguments:
-    - `response`: the response returned by the dataProvider method
-    - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
-- `afterRead` is called after any dataProvider method that reads data (`getList`, `getOne`, `getMany`, `getManyReference`), letting you modify the records before react-admin uses them. It receives the following arguments:
-    - `record`: the record returned by the backend 
-    - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
-- `beforeSave` is called before any dataProvider method that saves data (`create`, `update`, `updateMany`), letting you modify the records before they are sent to the backend. It receives the following arguments:
-    - `data`: the record update to be sent to the backend (often, a diff of the record)
-    - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
-- `afterSave` is called after any dataProvider method that saves data (`create`, `update`, `updateMany`), letting you update related records. It receives the following arguments:
-    - `record`: the record returned by the backend 
-    - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
+### Before callbacks
+
+The `beforeGetList`, `beforeGetOne`, `beforeGetMany `, `beforeGetManyReference`, `beforeCreate`, `beforeUpdate`, `beforeUpdateMany`, `beforeDelete`, and `beforeDeleteMany` callbacks receive the following arguments:
+
+- `params`: the parameters passed to the dataProvider method
+- `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
+
+### After callbacks 
+
+The `afterGetList`, `afterGetOne`, `afterGetMany `, `afterGetManyReference`, `afterCreate`, `afterUpdate`, `afterUpdateMany`, `afterDelete`, and `afterDeleteMany` callbacks receive the following arguments:
+
+- `response`: the response returned by the dataProvider method
+- `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
+
+### `afterRead` 
+
+Called after any dataProvider method that reads data (`getList`, `getOne`, `getMany`, `getManyReference`), letting you modify the records before react-admin uses them. It receives the following arguments:
+
+- `record`: the record returned by the backend 
+- `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
+
+For methods that return many records (`getList`, `getMany`, `getManyReference`), the callback is called once for each record.
+
+```jsx
+const postLifecycleCallbacls = {
+  resource: "posts",
+  afterRead: async (record, dataProvider) => {
+    // rename field to the record
+    record.user_id = record.userId;
+    return data;
+  },
+};
+```
+
+### `beforeSave`
+
+Called before any dataProvider method that saves data (`create`, `update`, `updateMany`), letting you modify the records before they are sent to the backend. It receives the following arguments:
+
+- `data`: the record update to be sent to the backend (often, a diff of the record)
+- `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
+
+```jsx
+const postLifecycleCallbacls = {
+  resource: "posts",
+  beforeSave: async (data, dataProvider) => {
+    data.update_at = Date.now();
+    return data;
+  },
+};
+```
+
+### `afterSave`
+
+Called after any dataProvider method that saves data (`create`, `update`, `updateMany`), letting you update related records. It receives the following arguments:
+
+- `record`: the record returned by the backend 
+- `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
+
+```jsx
+const postLifecycleCallback = {
+  resource: "posts",
+  // executed after create, update and updateMany
+  afterSave: async (record, dataProvider) => {
+    // update the author's nb_posts
+    const { total } = await dataProvider.getList("users", {
+      filter: { id: record.user_id },
+      pagination: { page: 1, perPage: 1 },
+    });
+    await dataProvider.update("users", {
+      id: user.id,
+      data: { nb_posts: total },
+      previousData: user,
+    });
+    return record;
+  },
+}
+```
+
+For methods that return many records (`updateMany`), the callback is called once for each record.
 
 ## Limitations
 
