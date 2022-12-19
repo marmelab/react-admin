@@ -60,8 +60,8 @@ Lifecycle callbacks are a good way to:
 
 - Add custom parameters before a `dataProvider` method is called (e.g. to set the query `meta` parameter based on the user profile),
 - Clean up the data before it's sent to the API (e.g. to transform two `lat` and `long` values into a single `location` field),
-- Add or rename fields in the data returned by the API before using it in react-dmin (e.g. to add a `fullName` field based on the `firstName` and `lastName` fields),
-- Update related records when a record is created, updated or deleted (e.g. update the `post.nb_comments` field after a `comment` is created or deleted)
+- Add or rename fields in the data returned by the API before using it in react-admin (e.g. to add a `fullName` field based on the `firstName` and `lastName` fields),
+- Update related records when a record is created, updated, or deleted (e.g. update the `post.nb_comments` field after a `comment` is created or deleted)
 - Remove related records when a record is deleted (similar to a server-side `ON DELETE CASCADE`)
 
 Here is another usage example:
@@ -158,7 +158,7 @@ export const dataProvider = withLifecycleCallbacks(
     {
         resource: "comments",
         beforeRead: async (data, dataProvider) => { /* ... */ },
-        afterCreate: async (resul, dataProvider) => { /* ... */ },
+        afterCreate: async (result, dataProvider) => { /* ... */ },
     },
     {
         resource: "users",
@@ -215,26 +215,26 @@ The callbacks have different parameters:
 - `beforeSave` is called before any dataProvider method that saves data (`create`, `update`, `updateMany`), letting you modify the records before they are sent to the backend. It receives the following arguments:
     - `data`: the record update to be sent to the backend (often, a diff of the record)
     - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
-- `afterSave` is called after any dataProvider method that saves data (`create`, `update`, `updateMany`), letting you updte related records. It receives the following arguments:
+- `afterSave` is called after any dataProvider method that saves data (`create`, `update`, `updateMany`), letting you update related records. It receives the following arguments:
     - `record`: the record returned by the backend 
     - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
 
 ## Limitations
 
-As explained above, lifecycle callbacks are a fallback for business logic that you can't put on the server-side. But they have some serious limitations:
+As explained above, lifecycle callbacks are a fallback for business logic that you can't put on the server side. But they have some serious limitations:
 
 - They execute outside of the React context, and therefore cannot use hooks. 
 - As queries issued in the callbacks are not done through `react-query`, any change in the data will not be automatically reflected in the UI. If you need to update the UI, prefer putting the logic in [the `onSuccess` property of the mutation](./Actions.md#success-and-error-side-effects). 
-- The callbacks are not executed in a transaction. In case of error, the backend may be left in an inconsistent state.
+- The callbacks are not executed in a transaction. In case of an error, the backend may be left in an inconsistent state.
 - When another client than react-admin calls the API, the callbacks will not be executed. If you depend on these callbacks for data consistency, this prevents you from exposing the API to other clients
-- If a callback triggers the event it's listening to (e.g. if you update the record received in an `afterSave`), this will lead to a infinite loop.
-- Do not use lifecycle callbacks to implement authorization logic, as the JS code can be altered in the browser using development tools. Check this [tutorial on multi-tenant single page apps](https://marmelab.com/blog/2022/12/14/multitenant-spa.html) for more details.
+- If a callback triggers the event it's listening to (e.g. if you update the record received in an `afterSave`), this will lead to an infinite loop.
+- Do not use lifecycle callbacks to implement authorization logic, as the JS code can be altered in the browser using development tools. Check this [tutorial on multi-tenant single-page apps](https://marmelab.com/blog/2022/12/14/multitenant-spa.html) for more details.
 
 In short: use lifecycle callbacks with caution!
 
 ## Code Organization
 
-Lifecycle callbacks receive the `dataProvider` as second argument, so you don't actually neeed to define them in the same file as the main data provider code. In fact, it's a good practice to put the lifecycle callbacks for a resource in the same directory as the other business logic code for that resource.  
+Lifecycle callbacks receive the `dataProvider` as the second argument, so you don't actually need to define them in the same file as the main data provider code. It's a good practice to put the lifecycle callbacks for a resource in the same directory as the other business logic code for that resource.  
 
 ```jsx
 // in src/posts/index.js
@@ -256,7 +256,7 @@ export const postLifecycleCallbacks = {
 };
 ```
 
-Then, import the callbacks in your data provider:
+Then, import the callbacks into your data provider:
 
 ```jsx
 // in scr/dataProvider.js
@@ -279,7 +279,7 @@ You can test isolated lifecycle callbacks by mocking the `dataProvider`:
 
 ```jsx
 // in src/posts/index.test.js
-import { withLifecycleCallbacks } from 'react-admin';
+import { withLifecycleCallbacks } from 'react-admin';
 
 import { postLifecycleCallbacks } from './index';
 
