@@ -16,7 +16,7 @@ Use `withLifecycleCallbacks` to decorate an existing data provider. In addition 
 For instance, to delete the comments related to a post before deleting the post itself:
 
 ```jsx
-// in scr/dataProvider.js
+// in src/dataProvider.js
 import { withLifecycleCallbacks } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 
