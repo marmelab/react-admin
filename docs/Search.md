@@ -27,7 +27,7 @@ This requires a valid subscription to [React-admin Enterprise Edition](https://m
 
 ### Implement `dataProvider.search()`
 
-Your `dataProvider` should support the `search()` method. It should return a Promise for `data` containing an array of `SearchResult` objects. A `SearchResult` contains at least the following fields:
+Your `dataProvider` should support the `search()` method. It should return a Promise for `data` containing an array of `SearchResult` objects and a `total`. A `SearchResult` contains at least the following fields:
 
 - `id`: Identifier The unique identifier of the search result
 - `type`: An arbitrary string which enables grouping
