@@ -15,7 +15,6 @@ import {
     ShowContextProvider,
     ShowView,
     SingleFieldList,
-    Tab,
     TabbedShowLayout,
     TextField,
     UrlField,
@@ -43,7 +42,7 @@ const PostShow = () => {
         <ShowContextProvider value={controllerProps}>
             <ShowView title={<PostTitle />}>
                 <TabbedShowLayout>
-                    <Tab label="post.form.summary">
+                    <TabbedShowLayout.Tab label="post.form.summary">
                         <TextField source="id" />
                         <TextField source="title" />
                         {controllerProps.record &&
@@ -57,15 +56,15 @@ const PostShow = () => {
                                 <UrlField source="url" />
                             </Datagrid>
                         </ArrayField>
-                    </Tab>
-                    <Tab label="post.form.body">
+                    </TabbedShowLayout.Tab>
+                    <TabbedShowLayout.Tab label="post.form.body">
                         <RichTextField
                             source="body"
                             stripTags={false}
                             label={false}
                         />
-                    </Tab>
-                    <Tab label="post.form.miscellaneous">
+                    </TabbedShowLayout.Tab>
+                    <TabbedShowLayout.Tab label="post.form.miscellaneous">
                         <ReferenceArrayField
                             reference="tags"
                             source="tags"
@@ -87,8 +86,8 @@ const PostShow = () => {
                         <BooleanField source="commentable" />
                         <TextField source="views" />
                         <CloneButton />
-                    </Tab>
-                    <Tab label="post.form.comments">
+                    </TabbedShowLayout.Tab>
+                    <TabbedShowLayout.Tab label="post.form.comments">
                         <ReferenceManyField
                             reference="comments"
                             target="post_id"
@@ -102,7 +101,7 @@ const PostShow = () => {
                             </Datagrid>
                         </ReferenceManyField>
                         <CreateRelatedComment />
-                    </Tab>
+                    </TabbedShowLayout.Tab>
                 </TabbedShowLayout>
             </ShowView>
         </ShowContextProvider>

@@ -17,7 +17,6 @@ import {
 import { AdminContext } from '../AdminContext';
 import { TabbedForm } from './TabbedForm';
 import { TabbedFormClasses } from './TabbedFormView';
-import { FormTab } from './FormTab';
 import { TextInput } from '../input';
 
 describe('<TabbedForm />', () => {
@@ -26,8 +25,8 @@ describe('<TabbedForm />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()} history={history}>
                 <TabbedForm>
-                    <FormTab label="tab1" />
-                    <FormTab label="tab2" />
+                    <TabbedForm.Tab label="tab1" />
+                    <TabbedForm.Tab label="tab2" />
                 </TabbedForm>
             </AdminContext>
         );
@@ -42,20 +41,20 @@ describe('<TabbedForm />', () => {
             <AdminContext dataProvider={testDataProvider()} history={history}>
                 <ResourceContextProvider value="posts">
                     <TabbedForm mode="onBlur">
-                        <FormTab label="tab1">
+                        <TabbedForm.Tab label="tab1">
                             <TextInput
                                 defaultValue=""
                                 source="title"
                                 validate={required()}
                             />
-                        </FormTab>
-                        <FormTab label="tab2">
+                        </TabbedForm.Tab>
+                        <TabbedForm.Tab label="tab2">
                             <TextInput
                                 defaultValue=""
                                 source="description"
                                 validate={minLength(10)}
                             />
-                        </FormTab>
+                        </TabbedForm.Tab>
                     </TabbedForm>
                 </ResourceContextProvider>
             </AdminContext>
@@ -87,20 +86,20 @@ describe('<TabbedForm />', () => {
             <AdminContext dataProvider={testDataProvider()} history={history}>
                 <ResourceContextProvider value="posts">
                     <TabbedForm mode="onBlur">
-                        <FormTab label="tab1">
+                        <TabbedForm.Tab label="tab1">
                             <TextInput
                                 defaultValue=""
                                 source="title"
                                 validate={required()}
                             />
-                        </FormTab>
-                        <FormTab label="tab2">
+                        </TabbedForm.Tab>
+                        <TabbedForm.Tab label="tab2">
                             <TextInput
                                 defaultValue=""
                                 source="description"
                                 validate={required()}
                             />
-                        </FormTab>
+                        </TabbedForm.Tab>
                     </TabbedForm>
                 </ResourceContextProvider>
             </AdminContext>
@@ -128,20 +127,20 @@ describe('<TabbedForm />', () => {
             <AdminContext dataProvider={testDataProvider()} history={history}>
                 <ResourceContextProvider value="posts">
                     <TabbedForm mode="onBlur">
-                        <FormTab label="tab1">
+                        <TabbedForm.Tab label="tab1">
                             <TextInput
                                 defaultValue=""
                                 source="title"
                                 validate={required()}
                             />
-                        </FormTab>
-                        <FormTab label="tab2">
+                        </TabbedForm.Tab>
+                        <TabbedForm.Tab label="tab2">
                             <TextInput
                                 defaultValue=""
                                 source="description"
                                 validate={minLength(10)}
                             />
-                        </FormTab>
+                        </TabbedForm.Tab>
                     </TabbedForm>
                 </ResourceContextProvider>
             </AdminContext>
@@ -171,20 +170,20 @@ describe('<TabbedForm />', () => {
             <AdminContext dataProvider={testDataProvider()} history={history}>
                 <ResourceContextProvider value="posts">
                     <TabbedForm>
-                        <FormTab label="tab1">
+                        <TabbedForm.Tab label="tab1">
                             <TextInput
                                 defaultValue=""
                                 source="title"
                                 validate={required()}
                             />
-                        </FormTab>
-                        <FormTab label="tab2">
+                        </TabbedForm.Tab>
+                        <TabbedForm.Tab label="tab2">
                             <TextInput
                                 defaultValue=""
                                 source="description"
                                 validate={minLength(10)}
                             />
-                        </FormTab>
+                        </TabbedForm.Tab>
                     </TabbedForm>
                 </ResourceContextProvider>
             </AdminContext>
@@ -220,15 +219,15 @@ describe('<TabbedForm />', () => {
             <AdminContext dataProvider={testDataProvider()} history={history}>
                 <ResourceContextProvider value="posts">
                     <TabbedForm syncWithLocation={false}>
-                        <FormTab label="tab1">
+                        <TabbedForm.Tab label="tab1">
                             <TextInput source="title" validate={required()} />
-                        </FormTab>
-                        <FormTab label="tab2">
+                        </TabbedForm.Tab>
+                        <TabbedForm.Tab label="tab2">
                             <TextInput
                                 source="description"
                                 validate={minLength(10)}
                             />
-                        </FormTab>
+                        </TabbedForm.Tab>
                     </TabbedForm>
                 </ResourceContextProvider>
             </AdminContext>
@@ -268,7 +267,7 @@ describe('<TabbedForm />', () => {
             <AdminContext dataProvider={testDataProvider()} history={history}>
                 <ResourceContextProvider value="posts">
                     <TabbedForm toolbar={false}>
-                        <FormTab label="tab1"></FormTab>
+                        <TabbedForm.Tab label="tab1"></TabbedForm.Tab>
                     </TabbedForm>
                 </ResourceContextProvider>
             </AdminContext>
