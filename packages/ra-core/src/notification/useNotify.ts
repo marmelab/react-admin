@@ -12,7 +12,7 @@ import { NotificationType, NotificationOptions } from './types';
  * // simple message (info level)
  * notify('Level complete');
  * // specify level
- * notify('A problem occurred', { type: 'warning' })
+ * notify('A problem occurred', { type: 'error' })
  * // pass arguments to the translation function
  * notify('Deleted %{count} elements', { type: 'info', messageArgs: { smart_count: 23 } })
  * // show the action as undoable in the notification

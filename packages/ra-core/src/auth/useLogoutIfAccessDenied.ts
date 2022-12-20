@@ -84,7 +84,7 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                                             e,
                                             'ra.notification.logged_out'
                                         ),
-                                        { type: 'warning' }
+                                        { type: 'error' }
                                     );
                                 } else {
                                     notify(
@@ -92,7 +92,7 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                                             e,
                                             'ra.notification.not_authorized'
                                         ),
-                                        { type: 'warning' }
+                                        { type: 'error' }
                                     );
                                 }
                             })
