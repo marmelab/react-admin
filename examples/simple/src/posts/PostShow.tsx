@@ -15,7 +15,6 @@ import {
     ShowContextProvider,
     ShowView,
     SingleFieldList,
-    Tab,
     TabbedShowLayout,
     TextField,
     UrlField,

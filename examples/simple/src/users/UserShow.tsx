@@ -1,12 +1,6 @@
 /* eslint react/jsx-key: off */
 import * as React from 'react';
-import {
-    Show,
-    Tab,
-    TabbedShowLayout,
-    TextField,
-    usePermissions,
-} from 'react-admin';
+import { Show, TabbedShowLayout, TextField, usePermissions } from 'react-admin';
 
 import Aside from './Aside';
 
