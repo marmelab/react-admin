@@ -372,7 +372,7 @@ const ApproveButton = () => {
             },
             onError: (error) => {
                 // failure side effects go here 
-                notify(`Comment approval error: ${error.message}`, { type: 'warning' });
+                notify(`Comment approval error: ${error.message}`, { type: 'error' });
             },
         }
     );
@@ -410,7 +410,7 @@ const ApproveButton = () => {
                 notify('Comment approved');
             },
             onError: (error) => {
-                notify(`Comment approval error: ${error.message}`, { type: 'warning' });
+                notify(`Comment approval error: ${error.message}`, { type: 'error' });
             },
         }
     );
@@ -462,7 +462,7 @@ const ApproveButton = () => {
 -               notify('Comment approved');
 +               notify('Comment approved', { undoable: true });
             },
-            onError: (error) => notify(`Error: ${error.message}`, { type: 'warning' }),
+            onError: (error) => notify(`Error: ${error.message}`, { type: 'error' }),
         }
     );
     return <Button label="Approve" onClick={() => approve()} disabled={isLoading} />;
@@ -504,7 +504,7 @@ const ApproveButton = () => {
                 redirect('/comments');
             })
             .catch((e) => {
-                notify('Error: comment not approved', { type: 'warning' })
+                notify('Error: comment not approved', { type: 'error' })
             })
             .finally(() => {
                 setLoading(false);
