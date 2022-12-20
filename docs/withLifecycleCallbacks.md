@@ -227,7 +227,7 @@ Called after any dataProvider method that reads data (`getList`, `getOne`, `getM
 For methods that return many records (`getList`, `getMany`, `getManyReference`), the callback is called once for each record.
 
 ```jsx
-const postLifecycleCallbacls = {
+const postLifecycleCallbacks = {
   resource: "posts",
   afterRead: async (record, dataProvider) => {
     // rename field to the record
@@ -245,7 +245,7 @@ Called before any dataProvider method that saves data (`create`, `update`, `upda
 - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
 
 ```jsx
-const postLifecycleCallbacls = {
+const postLifecycleCallbacks = {
   resource: "posts",
   beforeSave: async (data, dataProvider) => {
     data.update_at = Date.now();
