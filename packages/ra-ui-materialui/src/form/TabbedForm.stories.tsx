@@ -5,7 +5,6 @@ import { AdminContext } from '../AdminContext';
 import { Edit } from '../detail';
 import { NumberInput, TextInput } from '../input';
 import { TabbedForm } from './TabbedForm';
-import { FormTab } from './FormTab';
 import { Stack } from '@mui/material';
 
 export default { title: 'ra-ui-materialui/forms/TabbedForm' };
@@ -41,11 +40,11 @@ const Wrapper = ({ children }) => (
 export const Basic = () => (
     <Wrapper>
         <TabbedForm>
-            <FormTab label="main">
+            <TabbedForm.Tab label="main">
                 <TextInput source="title" fullWidth />
                 <TextInput source="author" />
                 <NumberInput source="year" />
-            </FormTab>
+            </TabbedForm.Tab>
         </TabbedForm>
     </Wrapper>
 );
@@ -53,14 +52,14 @@ export const Basic = () => (
 export const MultipleTabs = () => (
     <Wrapper>
         <TabbedForm>
-            <FormTab label="main">
+            <TabbedForm.Tab label="main">
                 <TextInput source="title" fullWidth />
                 <TextInput source="author" />
                 <NumberInput source="year" />
-            </FormTab>
-            <FormTab label="details">
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="details">
                 <TextInput multiline source="bio" fullWidth />
-            </FormTab>
+            </TabbedForm.Tab>
         </TabbedForm>
     </Wrapper>
 );
@@ -68,13 +67,13 @@ export const MultipleTabs = () => (
 export const CustomLayout = () => (
     <Wrapper>
         <TabbedForm>
-            <FormTab label="main">
+            <TabbedForm.Tab label="main">
                 <TextInput source="title" fullWidth />
                 <Stack direction="row" gap={1} width="100%">
                     <TextInput source="author" sx={{ width: '50%' }} />
                     <NumberInput source="year" sx={{ width: '50%' }} />
                 </Stack>
-            </FormTab>
+            </TabbedForm.Tab>
         </TabbedForm>
     </Wrapper>
 );
@@ -82,11 +81,11 @@ export const CustomLayout = () => (
 export const NoToolbar = () => (
     <Wrapper>
         <TabbedForm toolbar={false}>
-            <FormTab label="main">
+            <TabbedForm.Tab label="main">
                 <TextInput source="title" fullWidth />
                 <TextInput source="author" sx={{ width: '50%' }} />
                 <NumberInput source="year" sx={{ width: '50%' }} />
-            </FormTab>
+            </TabbedForm.Tab>
         </TabbedForm>
     </Wrapper>
 );

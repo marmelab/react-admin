@@ -18,23 +18,25 @@ import { Labeled } from '../Labeled';
  * - icon: The icon to show before the label (optional). Must be a component.
  * - path: The string used for custom urls
  *
+ * It is also available as TabbedShowLayout.Tab.
+ *
  * @example
  *     // in src/posts.js
  *     import * as React from "react";
  *     import FavoriteIcon from '@mui/icons-material/Favorite';
  *     import PersonPinIcon from '@mui/icons-material/PersonPin';
- *     import { Show, TabbedShowLayout, Tab, TextField } from 'react-admin';
+ *     import { Show, TabbedShowLayout, TextField } from 'react-admin';
  *
  *     export const PostShow = (props) => (
  *         <Show {...props}>
  *             <TabbedShowLayout>
- *                 <Tab label="Content" icon={<FavoriteIcon />}>
+ *                 <TabbedShowLayout.Tab label="Content" icon={<FavoriteIcon />}>
  *                     <TextField source="title" />
  *                     <TextField source="subtitle" />
- *                </Tab>
- *                 <Tab label="Metadata" icon={<PersonIcon />} path="metadata">
+ *                </TabbedShowLayout.Tab>
+ *                 <TabbedShowLayout.Tab label="Metadata" icon={<PersonIcon />} path="metadata">
  *                     <TextField source="category" />
- *                </Tab>
+ *                </TabbedShowLayout.Tab>
  *             </TabbedShowLayout>
  *         </Show>
  *     );

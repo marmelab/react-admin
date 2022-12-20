@@ -4,7 +4,6 @@ import {
     DateField,
     Edit,
     EditButton,
-    FormTab,
     Pagination,
     ReferenceManyField,
     required,
@@ -31,28 +30,28 @@ const ProductTitle = () => {
 const ProductEdit = () => (
     <Edit title={<ProductTitle />}>
         <TabbedForm>
-            <FormTab
+            <TabbedForm.Tab
                 label="resources.products.tabs.image"
                 sx={{ maxWidth: '40em' }}
             >
                 <Poster />
                 <TextInput source="image" fullWidth validate={req} />
                 <TextInput source="thumbnail" fullWidth validate={req} />
-            </FormTab>
-            <FormTab
+            </TabbedForm.Tab>
+            <TabbedForm.Tab
                 label="resources.products.tabs.details"
                 path="details"
                 sx={{ maxWidth: '40em' }}
             >
                 <ProductEditDetails />
-            </FormTab>
-            <FormTab
+            </TabbedForm.Tab>
+            <TabbedForm.Tab
                 label="resources.products.tabs.description"
                 path="description"
                 sx={{ maxWidth: '40em' }}
             >
                 <RichTextInput source="description" label="" validate={req} />
-            </FormTab>
+            </TabbedForm.Tab>
             <ReviewsFormTab path="reviews">
                 <ReferenceManyField
                     reference="reviews"
@@ -104,7 +103,7 @@ const ReviewsFormTab = (props: any) => {
     if (!isLoading) {
         label += ` (${total})`;
     }
-    return <FormTab label={label} {...props} />;
+    return <TabbedForm.Tab label={label} {...props} />;
 };
 
 export default ProductEdit;

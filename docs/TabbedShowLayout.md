@@ -5,39 +5,39 @@ title: "TabbedShowLayout"
 
 # `<TabbedShowLayout>`
 
-The `<TabbedShowLayout>` pulls the `record` from the `RecordContext`. It renders a set of `<Tabs>`, each of which contains a list of record fields in a single-column layout (via MUI's `<Stack>` component). `<TabbedShowLayout>` delegates the actual rendering of fields to its children, which should be `<Tab>` components. `<Tab>`  wraps each field inside a `<Labeled>` component to add a label.
+The `<TabbedShowLayout>` pulls the `record` from the `RecordContext`. It renders a set of `<Tabs>`, each of which contains a list of record fields in a single-column layout (via MUI's `<Stack>` component). `<TabbedShowLayout>` delegates the actual rendering of fields to its children, which should be `<TabbedShowLayout.Tab>` elements. `<TabbedShowLayout.Tab>`  wraps each field inside a `<Labeled>` component to add a label.
 
-Switching tabs will update the current url. By default, it uses the tabs indexes and the first tab will be displayed at the root url. You can customize the path by providing a `path` prop to each `Tab` component. If you'd like the first one to act as an index page, just omit the `path` prop.
+Switching tabs will update the current url. By default, it uses the tabs indexes and the first tab will be displayed at the root url. You can customize the path by providing a `path` prop to each `<TabbedShowLayout.Tab>` component. If you'd like the first one to act as an index page, just omit the `path` prop.
 
 ![tabbed show](./img/tabbed-show.gif)
 
 ## Usage 
 
-Use `<TabbedShowLayout>` as descendant of a `<Show>` component (or any component creating a `<RecordContext>`), define the tabs via `<Tab>` children, and set the fields to be displayed as children of each tab:
+Use `<TabbedShowLayout>` as descendant of a `<Show>` component (or any component creating a `<RecordContext>`), define the tabs via `<TabbedShowLayout.Tab>` children, and set the fields to be displayed as children of each tab:
 
 {% raw %}
 ```jsx
-import { Show, TabbedShowLayout, Tab } from 'react-admin'
+import { Show, TabbedShowLayout } from 'react-admin'
 
 export const PostShow = () => (
     <Show>
         <TabbedShowLayout>
-            <Tab label="summary">
+            <TabbedShowLayout.Tab label="summary">
                 <TextField label="Id" source="id" />
                 <TextField source="title" />
                 <TextField source="teaser" />
-            </Tab>
-            <Tab label="body" path="body">
+            </TabbedShowLayout.Tab>
+            <TabbedShowLayout.Tab label="body" path="body">
                 <RichTextField source="body" label={false} />
-            </Tab>
-            <Tab label="Miscellaneous" path="miscellaneous">
+            </TabbedShowLayout.Tab>
+            <TabbedShowLayout.Tab label="Miscellaneous" path="miscellaneous">
                 <TextField label="Password (if protected post)" source="password" type="password" />
                 <DateField label="Publication date" source="published_at" />
                 <NumberField source="average_note" />
                 <BooleanField label="Allow comments?" source="commentable" defaultValue />
                 <TextField label="Nb views" source="views" />
-            </Tab>
-            <Tab label="comments" path="comments">
+            </TabbedShowLayout.Tab>
+            <TabbedShowLayout.Tab label="comments" path="comments">
                 <ReferenceManyField reference="comments" target="post_id" label={false}>
                     <Datagrid>
                         <TextField source="body" />
@@ -45,7 +45,7 @@ export const PostShow = () => (
                         <EditButton />
                     </Datagrid>
                 </ReferenceManyField>
-            </Tab>
+            </TabbedShowLayout.Tab>
         </TabbedShowLayout>
     </Show>
 );
@@ -67,9 +67,9 @@ Additional props are passed to the root component (`<div>`).
 
 ## Tabs
 
-Children of `<TabbedShowLayout>` must be `<Tab>` components.
+Children of `<TabbedShowLayout>` must be `<TabbedShowLayout.Tab>` components.
 
-The `<Tab>` component renders tabs headers and the active tab. It manages the tab change, either via the URL, or an internal state.
+The `<TabbedShowLayout.Tab>` component renders tabs headers and the active tab. It manages the tab change, either via the URL, or an internal state.
 
 It accepts the following props:
 
@@ -82,18 +82,18 @@ It accepts the following props:
 import * as React from "react";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
-import { Show, TabbedShowLayout, Tab, TextField } from 'react-admin';
+import { Show, TabbedShowLayout, TextField } from 'react-admin';
 
 export const PostShow = () => (
     <Show>
         <TabbedShowLayout>
-            <Tab label="Content" icon={<FavoriteIcon />}>
+            <TabbedShowLayout.Tab label="Content" icon={<FavoriteIcon />}>
                 <TextField source="title" />
                 <TextField source="subtitle" />
-            </Tab>
-            <Tab label="Metadata" icon={<PersonIcon />} path="metadata">
+            </TabbedShowLayout.Tab>
+            <TabbedShowLayout.Tab label="Metadata" icon={<PersonIcon />} path="metadata">
                 <TextField source="category" />
-            </Tab>
+            </TabbedShowLayout.Tab>
         </TabbedShowLayout>
     </Show>
 );
@@ -101,15 +101,15 @@ export const PostShow = () => (
 
 ## Tab Fields
 
-`<Tab>` renders each child inside a `<Labeled>` component. This component uses the humanized source as label by default. You can customize it by passing a `label` prop to the fields:
+`<TabbedShowLayout.Tab>` renders each child inside a `<Labeled>` component. This component uses the humanized source as label by default. You can customize it by passing a `label` prop to the fields:
 
 ```jsx
 const PostShow = () => (
     <Show>
         <TabbedShowLayout>
-            <Tab label="main">
+            <TabbedShowLayout.Tab label="main">
                 <TextField label="My Custom Title" source="title" />
-            </Tab>
+            </TabbedShowLayout.Tab>
         </TabbedShowLayout>
     </Show>
 );
@@ -122,10 +122,10 @@ The `<Labeled label>` uses the humanized source by default. You can customize it
 const PostShow = () => (
     <Show>
         <TabbedShowLayout>
-            <Tab label="main">
+            <TabbedShowLayout.Tab label="main">
                 <TextField label="My Custom Title" source="title" />
                 <TextField label="my.custom.translationKey" source="description" />
-            </Tab>
+            </TabbedShowLayout.Tab>
         </TabbedShowLayout>
     </Show>
 );
@@ -151,15 +151,15 @@ You can disable the `<Labeled>` decoration by passing setting `label={false}` on
 const PostShow = () => (
     <Show>
         <TabbedShowLayout>
-            <Tab label="main">
+            <TabbedShowLayout.Tab label="main">
                 <TextField label={false} source="title" />
-            </Tab>
+            </TabbedShowLayout.Tab>
         </TabbedShowLayout>
     </Show>
 );
 ```
 
-`<Tab>` children can be anything you want. Try passing your own components:
+`<TabbedShowLayout.Tab>` children can be anything you want. Try passing your own components:
 
 ```jsx
 const PostTitle = () => {
@@ -170,9 +170,9 @@ const PostTitle = () => {
 const PostShow = () => (
     <Show>
         <TabbedShowLayout>
-            <Tab label="main">
+            <TabbedShowLayout.Tab label="main">
                 <PostTitle label="title" />
-            </Tab>
+            </TabbedShowLayout.Tab>
         </TabbedShowLayout>
     </Show>
 );
@@ -189,22 +189,22 @@ import { TabbedShowLayout, Tab } from 'react-admin'
 export const PostShow = () => (
     <Show>
         <TabbedShowLayout syncWithLocation={false}>
-            <Tab label="summary">
+            <TabbedShowLayout.Tab label="summary">
                 <TextField label="Id" source="id" />
                 <TextField source="title" />
                 <TextField source="teaser" />
-            </Tab>
-            <Tab label="body" path="body">
+            </TabbedShowLayout.Tab>
+            <TabbedShowLayout.Tab label="body" path="body">
                 <RichTextField source="body" label={false} />
-            </Tab>
-            <Tab label="Miscellaneous" path="miscellaneous">
+            </TabbedShowLayout.Tab>
+            <TabbedShowLayout.Tab label="Miscellaneous" path="miscellaneous">
                 <TextField label="Password (if protected post)" source="password" type="password" />
                 <DateField label="Publication date" source="published_at" />
                 <NumberField source="average_note" />
                 <BooleanField label="Allow comments?" source="commentable" defaultValue />
                 <TextField label="Nb views" source="views" />
-            </Tab>
-            <Tab label="comments" path="comments">
+            </TabbedShowLayout.Tab>
+            <TabbedShowLayout.Tab label="comments" path="comments">
                 <ReferenceManyField reference="comments" target="post_id" label={false}>
                     <Datagrid>
                         <TextField source="body" />
@@ -212,26 +212,26 @@ export const PostShow = () => (
                         <EditButton />
                     </Datagrid>
                 </ReferenceManyField>
-            </Tab>
+            </TabbedShowLayout.Tab>
         </TabbedShowLayout>
     </Show>
 );
 ```
 {% endraw %}
 
-**Tip**: When `syncWithLocation` is `false`, the `path` prop of the `<Tab>` components is ignored.
+**Tip**: When `syncWithLocation` is `false`, the `path` prop of the `<TabbedShowLayout.Tab>` components is ignored.
 
 ## Spacing
 
-`<Tab>` renders a MUI `<Stack>`. You can customize the spacing of each row by passing a `spacing` prop:
+`<TabbedShowLayout.Tab>` renders a MUI `<Stack>`. You can customize the spacing of each row by passing a `spacing` prop:
 
 ```jsx
 const PostShow = () => (
     <Show>
         <TabbedShowLayout spacing={2}>
-            <Tab label="main">
+            <TabbedShowLayout.Tab label="main">
                 <PostTitle label="title" />
-            </Tab>
+            </TabbedShowLayout.Tab>
         </TabbedShowLayout>
     </Show>
 );
@@ -249,9 +249,9 @@ import { Divider } from '@mui/material';
 const PostShow = () => (
     <Show>
         <TabbedShowLayout divider={<Divider flexItem />}>
-            <Tab label="main">
+            <TabbedShowLayout.Tab label="main">
                 <PostTitle label="title" />
-            </Tab>
+            </TabbedShowLayout.Tab>
         </TabbedShowLayout>
     </Show>
 );
@@ -289,9 +289,9 @@ By default, `<TabbedShowLayout>` reads the record from the `ResourceContext`. Bu
 ```jsx
 const StaticPostShow = () => (
     <TabbedShowLayout record={{ id: 123, title: 'Hello world' }}>
-        <Tab label="main">
+        <TabbedShowLayout.Tab label="main">
             <TextField source="title" />
-        </Tab>
+        </TabbedShowLayout.Tab>
     </TabbedShowLayout>
 );
 ```
@@ -309,7 +309,7 @@ The `<TabbedShowLayout>` component accepts the usual `className` prop but you ca
 
 To override the style of all instances of `<TabbedShowLayout>` using the [MUI style overrides](https://mui.com/customization/theme-components/), use the `RaTabbedShowLayout` key.
 
-To style the tabs, the `<Tab>` component accepts two props:
+To style the tabs, the `<TabbedShowLayout.Tab>` component accepts two props:
 
 - `className` is passed to the tab *header*
 - `contentClassName` is passed to the tab *content*
@@ -318,16 +318,16 @@ To style the tabs, the `<Tab>` component accepts two props:
 
 * [Field components](./Fields.md)
 * [Show Guesser](./ShowGuesser.md) guesses the fields based on the record type
-* [SimpleShowLayout](./SimpleShowLayout.md) provides a simpler layout with no tabs
+* [SimpleShowLayout](./TabbedShowLayout.md) provides a simpler layout with no tabs
 
 ## API
 
 * [`<TabbedShowLayout>`]
-* [`<Tab>`]
+* [`<TabbedShowLayout.Tab>`]
 * [`<Labeled>`]
 * [`useRecordContext`]
 
 [`<Labeled>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/Labeled.tsx
 [`<TabbedShowLayout>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/TabbedShowLayout.tsx
-[`<Tab>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/Tab.tsx
+[`<TabbedShowLayout.Tab>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/Tab.tsx
 [`useRecordContext`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/record/useRecordContext.ts

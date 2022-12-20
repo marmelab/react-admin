@@ -5,7 +5,7 @@ title: "TabbedForm"
 
 # `<TabbedForm>`
 
-`<TabbedForm>` creates a `<form>` to edit a record, and renders inputs grouped by tab. The tabs are set by using `<FormTab>` components. It is useful for forms with a lot of inputs, to reduce the time taken to change a subset of the fields.
+`<TabbedForm>` creates a `<form>` to edit a record, and renders inputs grouped by tab. The tabs are set by using `<TabbedForm.Tab>` components. It is useful for forms with a lot of inputs, to reduce the time taken to change a subset of the fields.
 
 ![tabbed form](./img/tabbed-form.gif)
 
@@ -13,14 +13,13 @@ title: "TabbedForm"
 
 `<TabbedForm>` reads the `record` from the `RecordContext`, uses it to initialize the defaultValues of a `<Form>`, renders its children in a MUI `<Stack>`, and renders a toolbar with a `<SaveButton>` that calls the `save` callback prepared by the edit or the create controller when pressed. 
 
-`<TabbedForm>` is often used as child of `<Create>` or `<Edit>`. It accepts `<FormTab>` elements as children. It relies on [react-hook-form](https://react-hook-form.com/) for form handling. It requires no prop by default.
+`<TabbedForm>` is often used as child of `<Create>` or `<Edit>`. It accepts `<TabbedForm.Tab>` elements as children. It relies on [react-hook-form](https://react-hook-form.com/) for form handling. It requires no prop by default.
 
 {% raw %}
 ```jsx
 import * as React from "react";
 import {
     TabbedForm,
-    FormTab,
     Edit,
     Datagrid,
     TextField,
@@ -36,22 +35,22 @@ import {
 export const PostEdit = () => (
     <Edit>
         <TabbedForm>
-            <FormTab label="summary">
+            <TabbedForm.Tab label="summary">
                 <TextInput disabled label="Id" source="id" />
                 <TextInput source="title" validate={required()} />
                 <TextInput multiline source="teaser" validate={required()} />
-            </FormTab>
-            <FormTab label="body">
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="body">
                 <RichTextInput source="body" validate={required()} label={false} />
-            </FormTab>
-            <FormTab label="Miscellaneous">
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="Miscellaneous">
                 <TextInput label="Password (if protected post)" source="password" type="password" />
                 <DateInput label="Publication date" source="published_at" />
                 <NumberInput source="average_note" validate={[ number(), minValue(0) ]} />
                 <BooleanInput label="Allow comments?" source="commentable" defaultValue />
                 <TextInput disabled label="Nb views" source="views" />
-            </FormTab>
-            <FormTab label="comments">
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="comments">
                 <ReferenceManyField reference="comments" target="post_id" label={false}>
                     <Datagrid>
                         <TextField source="body" />
@@ -59,7 +58,7 @@ export const PostEdit = () => (
                         <EditButton />
                     </Datagrid>
                 </ReferenceManyField>
-            </FormTab>
+            </TabbedForm.Tab>
         </TabbedForm>
     </Edit>
 );
@@ -187,7 +186,7 @@ export const PostCreate = () => (
 ```
 {% endraw %}
 
-**Tip:** If you want to customize the _content_ of the tabs instead, for example to limit the width of the form, you should rather add an `sx` prop to the [`<FormTab>` component](#formtab).
+**Tip:** If you want to customize the _content_ of the tabs instead, for example to limit the width of the form, you should rather add an `sx` prop to the [`<TabbedForm.Tab>` component](#formtab).
 
 ## `sanitizeEmptyValues`
 
@@ -241,22 +240,22 @@ However, this makes `<TabbedForm>` impossible to use in pages where the state is
 export const PostEdit = () => (
     <Edit>
         <TabbedForm syncWithLocation={false}>
-            <FormTab label="summary">
+            <TabbedForm.Tab label="summary">
                 <TextInput disabled label="Id" source="id" />
                 <TextInput source="title" validate={required()} />
                 <TextInput multiline source="teaser" validate={required()} />
-            </FormTab>
-            <FormTab label="body">
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="body">
                 <RichTextInput source="body" validate={required()} label={false} />
-            </FormTab>
-            <FormTab label="Miscellaneous">
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="Miscellaneous">
                 <TextInput label="Password (if protected post)" source="password" type="password" />
                 <DateInput label="Publication date" source="published_at" />
                 <NumberInput source="average_note" validate={[ number(), minValue(0) ]} />
                 <BooleanInput label="Allow comments?" source="commentable" defaultValue />
                 <TextInput disabled label="Nb views" source="views" />
-            </FormTab>
-            <FormTab label="comments">
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="comments">
                 <ReferenceManyField reference="comments" target="post_id" label={false}>
                     <Datagrid>
                         <TextField source="body" />
@@ -264,18 +263,18 @@ export const PostEdit = () => (
                         <EditButton />
                     </Datagrid>
                 </ReferenceManyField>
-            </FormTab>
+            </TabbedForm.Tab>
         </TabbedForm>
     </Edit>
 );
 ```
 {% endraw %}
 
-**Tip**: When `syncWithLocation` is `false`, the `path` prop of the `<FormTab>` components is ignored.
+**Tip**: When `syncWithLocation` is `false`, the `path` prop of the `<TabbedForm.Tab>` components is ignored.
 
 ## `tabs`
 
-By default, `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin component, to renders the tab headers. You can pass a custom component as the `tabs` prop to tweak th UX of these headers. Besides, props from `<TabbedFormTabs>` are passed down to MUI's `<Tabs>` component.
+By default, `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin component, to render the tab headers. You can pass a custom component as the `tabs` prop to tweak th UX of these headers. Besides, props from `<TabbedFormTabs>` are passed down to MUI's `<Tabs>` component.
 
 The following example shows how to make use of scrollable `<Tabs>`. Pass `variant="scrollable"` and `scrollButtons="auto"` props to `<TabbedFormTabs>` and use it in the `tabs` prop from `<TabbedForm>`.
 
@@ -470,16 +469,16 @@ export const TagEdit = () => (
 
 **Warning**: This feature only works if you have a dependency on react-router 6.3.0 **at most**. The react-router team disabled this possibility in react-router 6.4, so `warnWhenUnsavedChanges` will silently fail with react-router 6.4 or later.
 
-## `<FormTab>`
+## `<TabbedForm.Tab>`
 
-`<TabbedForm>` expect `<FormTab>` elements as children. `<FormTab>` elements accept four props:
+`<TabbedForm>` expect `<TabbedForm.Tab>` elements as children. `<TabbedForm.Tab>` elements accept four props:
 
 - `label`: the label of the tab
 - `path`: the path of the tab in the URL (ignored when `syncWithLocation={false}`)
 - `sx`: custom styles to apply to the tab
 - `children`: the content of the tab (usually a list of inputs)
 
-`<FormTab>` renders its children in a MUI `<Stack>` component, i.e. one child per row.
+`<TabbedForm.Tab>` renders its children in a MUI `<Stack>` component, i.e. one child per row.
 
 The `sx` prop allows to style the content of the tab, e.g. to limit its width:
 
@@ -488,12 +487,12 @@ The `sx` prop allows to style the content of the tab, e.g. to limit its width:
 const ProductEdit = () => (
     <Edit title={<ProductTitle />}>
         <TabbedForm>
-            <FormTab
+            <TabbedForm.Tab
                 label="resources.products.tabs.image"
                 sx={{ maxWidth: '40em' }}
             >
                 ...
-            </FormTab>
+            </TabbedForm.Tab>
         </TabbedForm>
     </Edit>
 );
@@ -506,25 +505,25 @@ React-admin passes the `label` through the `translate()` function, so you can us
 const ProductEdit = () => (
     <Edit title={<ProductTitle />}>
         <TabbedForm>
-            <FormTab label="resources.products.tabs.image">
+            <TabbedForm.Tab label="resources.products.tabs.image">
                 ...
-            </FormTab>
-            <FormTab label="resources.products.tabs.details">
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="resources.products.tabs.details">
                 ...
-            </FormTab>
-            <FormTab label="resources.products.tabs.description">
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="resources.products.tabs.description">
                 ...
-            </FormTab>
+            </TabbedForm.Tab>
         </TabbedForm>
     </Edit>
 );
 ```
 
-**Tip**: React-admin renders each tab *twice*: once to get the tab header, and once to get the tab content. If you use a custom component instead of a `<FormTab>`, make sure that it accepts an `intent` prop, and renders differently when the value of that prop is 'header' or 'content'.
+**Tip**: React-admin renders each tab *twice*: once to get the tab header, and once to get the tab content. If you use a custom component instead of a `<TabbedForm.Tab>`, make sure that it accepts an `intent` prop, and renders differently when the value of that prop is 'header' or 'content'.
 
-## Using Fields As FormTab Children
+## Using Fields As Children
 
-The basic usage of `<TabbedForm>` is to pass [Input components](./Inputs.md) as children of `<FormTab>`. For non-editable fields, you can pass `disabled` inputs, or even [Field components](./Fields.md). But since `<Field>` components have no label by default, you'll have to wrap your inputs in a `<Labeled>` component in that case:
+The basic usage of `<TabbedForm>` is to pass [Input components](./Inputs.md) as children of `<TabbedForm.Tab>`. For non-editable fields, you can pass `disabled` inputs, or even [Field components](./Fields.md). But since `<Field>` components have no label by default, you'll have to wrap your inputs in a `<Labeled>` component in that case:
 
 ```jsx
 import { Edit, TabbedForm, TextInput, Labeled, TextField } from 'react-admin';
@@ -532,13 +531,13 @@ import { Edit, TabbedForm, TextInput, Labeled, TextField } from 'react-admin';
 const PostEdit = () => (
     <Edit>
         <TabbedForm>
-            <FormTab label="main">
+            <TabbedForm.Tab label="main">
                 <TextInput source="id" />
                 <Labeled label="Title">
                     <TextField source="title" />
                 </Labeled>
                 <TextInput source="body" />
-            </FormTab>
+            </TabbedForm.Tab>
         </TabbedForm>
     </Edit>
 );
@@ -550,25 +549,25 @@ const PostEdit = () => (
 
 ![complex form layout](./img/TabbedForm-layout.png)
 
-By default, `<FormTab>` renders one child per row. But a given child can be a layout element (e.g. `<Grid>`, `<Stack>`, `<Box>`) and contain several input elements. This lets you build form layouts of any complexity:
+By default, `<TabbedForm.Tab>` renders one child per row. But a given child can be a layout element (e.g. `<Grid>`, `<Stack>`, `<Box>`) and contain several input elements. This lets you build form layouts of any complexity:
 
 {% raw %}
 ```jsx
 const ProductEdit = () => (
     <Edit title={<ProductTitle />}>
         <TabbedForm>
-            <FormTab label="resources.products.tabs.image">
+            <TabbedForm.Tab label="resources.products.tabs.image">
                 ...
-            </FormTab>
-            <FormTab label="resources.products.tabs.details">
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="resources.products.tabs.details">
                 <ProductEditDetails />
-            </FormTab>
-            <FormTab label="resources.products.tabs.description">
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="resources.products.tabs.description">
                 ...
-            </FormTab>
-            <FormTab path="reviews">
+            </TabbedForm.Tab>
+            <TabbedForm.Tab path="reviews">
                 ...
-            </FormTab>
+            </TabbedForm.Tab>
         </TabbedForm>
     </Edit>
 );
@@ -637,7 +636,7 @@ const ProductEditDetails = () => (
 
 ![dynamic tab label](./img/FormTab-dynamic-label.png)
 
-To achieve that, create a custom commponent that renders a `<FormTab>` with a dynamic `label`:
+To achieve that, create a custom commponent that renders a `<TabbedForm.Tab>` with a dynamic `label`:
 
 ```jsx
 const ReviewsFormTab = props => {
@@ -657,7 +656,7 @@ const ReviewsFormTab = props => {
     if (!isLoading) {
         label += ` (${total})`;
     }
-    return <FormTab label={label} {...props} />;
+    return <TabbedForm.Tab label={label} {...props} />;
 };
 ```
 
@@ -668,15 +667,15 @@ Then, use this custom component in a `<TabbedForm>`:
 const ProductEdit = () => (
     <Edit title={<ProductTitle />}>
         <TabbedForm>
-            <FormTab label="resources.products.tabs.image">
+            <TabbedForm.Tab label="resources.products.tabs.image">
                 ...
-            </FormTab>
-            <FormTab label="resources.products.tabs.details">
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="resources.products.tabs.details">
                 ...
-            </FormTab>
-            <FormTab label="resources.products.tabs.description">
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="resources.products.tabs.description">
                 ...
-            </FormTab>
+            </TabbedForm.Tab>
             <ReviewsFormTab path="reviews">
                 <ReferenceManyField
                     reference="reviews"
@@ -724,13 +723,13 @@ const UserEdit = () => {
     return (
         <Edit>
             <TabbedForm>
-                <FormTab label="summary">
+                <TabbedForm.Tab label="summary">
                     ...
-                </FormTab>
+                </TabbedForm.Tab>
                 {permissions === 'admin' &&
-                    <FormTab label="Security">
+                    <TabbedForm.Tab label="Security">
                         ...
-                    </FormTab>
+                    </TabbedForm.Tab>
                 }
             </TabbedForm>
         </Edit>
