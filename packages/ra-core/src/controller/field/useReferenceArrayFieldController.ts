@@ -74,7 +74,7 @@ export const useReferenceArrayFieldController = (
                         ? error
                         : error.message || 'ra.notification.http_error',
                     {
-                        type: 'warning',
+                        type: 'error',
                         messageArgs: {
                             _:
                                 typeof error === 'string'

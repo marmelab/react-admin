@@ -68,7 +68,7 @@ export const BulkExportButton = (props: BulkExportButtonProps) => {
                     .catch(error => {
                         console.error(error);
                         notify('ra.notification.http_error', {
-                            type: 'warning',
+                            type: 'error',
                         });
                     });
             if (typeof onClick === 'function') {

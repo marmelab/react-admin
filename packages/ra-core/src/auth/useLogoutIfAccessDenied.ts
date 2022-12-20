@@ -32,7 +32,7 @@ let timer;
  *         dataProvider.getOne('secret', { id: 123 })
  *             .catch(error => {
  *                  logoutIfAccessDenied(error);
- *                  notify('server error', 'warning');
+ *                  notify('server error',  { type: 'error' });
  *              })
  *     }, []);
  *     // ...
