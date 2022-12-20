@@ -16,6 +16,7 @@ import {
     MutationMode,
     GetListResult as OriginalGetListResult,
 } from '../types';
+import { useEvent } from '../util';
 
 /**
  * Get a callback to call the dataProvider.update() method, the result and the loading state.
@@ -418,7 +419,7 @@ export const useUpdate = <
         }
     };
 
-    return [update, mutation];
+    return [useEvent(update), mutation];
 };
 
 type Snapshot = [key: QueryKey, value: any][];
