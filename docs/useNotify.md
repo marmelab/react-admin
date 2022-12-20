@@ -34,7 +34,7 @@ Here are more examples of `useNotify` calls:
 // notify an error
 notify(`This is an error`, { type: 'error' });
 // notify a warning
-notify(`This is a warning`, { type: 'error' });
+notify(`This is a warning`, { type: 'warning' });
 // pass translation arguments
 notify('item.created', { type: 'info', messageArgs: { resource: 'post' } });
 // send an undoable notification
