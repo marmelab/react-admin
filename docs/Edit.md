@@ -390,7 +390,7 @@ The default `onError` function is:
 
 ```jsx
 (error) => {
-    notify(typeof error === 'string' ? error : error.message || 'ra.notification.http_error', { type: 'warning' });
+    notify(typeof error === 'string' ? error : error.message || 'ra.notification.http_error', { type: 'error' });
     if (mutationMode === 'undoable' || mutationMode === 'pessimistic') {
         refresh();
     }

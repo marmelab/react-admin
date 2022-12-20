@@ -87,7 +87,7 @@ export const useEditController = <
         {
             onError: () => {
                 notify('ra.notification.item_doesnt_exist', {
-                    type: 'warning',
+                    type: 'error',
                 });
                 redirect('list', resource);
                 refresh();
@@ -181,7 +181,7 @@ export const useEditController = <
                                           : error.message ||
                                                 'ra.notification.http_error',
                                       {
-                                          type: 'warning',
+                                          type: 'error',
                                           messageArgs: {
                                               _:
                                                   typeof error === 'string'

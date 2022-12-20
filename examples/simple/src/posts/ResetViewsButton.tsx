@@ -23,7 +23,7 @@ const ResetViewsButton = ({ resource, selectedIds }) => {
                     typeof error === 'string'
                         ? error
                         : error.message || 'ra.notification.http_error',
-                    { type: 'warning' }
+                    { type: 'error' }
                 ),
             mutationMode: 'undoable',
         }
