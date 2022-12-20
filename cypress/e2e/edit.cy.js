@@ -8,6 +8,7 @@ describe('Edit Page', () => {
     const ListPagePosts = listPageFactory('/#/posts');
     const CreatePostPage = createPageFactory('/#/posts/create');
     const EditCommentPage = editPageFactory('/#/comments/5');
+    const ListCommentPage = listPageFactory('/#/comments');
     const LoginPage = loginPageFactory('/#/login');
     const EditUserPage = editPageFactory('/#/users/3');
     const CreateUserPage = createPageFactory('/#/users/create');
@@ -285,8 +286,7 @@ describe('Edit Page', () => {
         );
     });
 
-    // FIXME unskip me when useGetList uses the react-query API
-    it.skip('should refresh the list when the update fails', () => {
+    it('should refresh the list when the update fails', () => {
         ListPagePosts.navigate();
         ListPagePosts.nextPage(); // Ensure the record is visible in the table
 
@@ -327,5 +327,26 @@ describe('Edit Page', () => {
         // If the update succeeded without display a warning about unsaved changes,
         // we should have been redirected to the list
         cy.url().then(url => expect(url).to.contain('/#/posts'));
+    });
+
+    describe('lifecycle callbacks', () => {
+        it('should delete related comments when deleting a post', () => {
+            ListCommentPage.navigate();
+            ListCommentPage.waitUntilDataLoaded();
+            cy.get('[data-testid="postLink"]').should('have.length', 6);
+            ListCommentPage.nextPage();
+            ListCommentPage.waitUntilDataLoaded();
+            cy.get('[data-testid="postLink"]').should('have.length', 5);
+
+            EditPostPage.navigate();
+            EditPostPage.delete();
+
+            ListCommentPage.navigate(); // go back to the list, on page 2
+            ListCommentPage.waitUntilDataLoaded();
+            cy.get('[data-testid="postLink"]').should('have.length', 3);
+            ListCommentPage.previousPage();
+            ListCommentPage.waitUntilDataLoaded();
+            cy.get('[data-testid="postLink"]').should('have.length', 6);
+        });
     });
 });
