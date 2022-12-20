@@ -3,7 +3,7 @@ import { Location } from 'react-router-dom';
 
 import warning from '../util/warning';
 import { useAuthenticated } from './useAuthenticated';
-import usePermissionsOptimized from './usePermissionsOptimized';
+import usePermissions from './usePermissions';
 
 export interface WithPermissionsChildrenParams {
     permissions: any;
@@ -76,7 +76,7 @@ const WithPermissions = (props: WithPermissionsProps) => {
     );
 
     useAuthenticated(authParams);
-    const { permissions } = usePermissionsOptimized(authParams);
+    const { permissions } = usePermissions(authParams);
     // render even though the usePermissions() call isn't finished (optimistic rendering)
     if (component) {
         return createElement(component, { permissions, ...rest });
