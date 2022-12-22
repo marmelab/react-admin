@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useEffect, useState, useRef } from 'react';
+import { useCallback, useMemo, useEffect, useRef } from 'react';
 import { parse, stringify } from 'query-string';
 import lodashDebounce from 'lodash/debounce';
 import pickBy from 'lodash/pickBy';
@@ -87,7 +87,6 @@ export const useListParams = ({
 }: ListParamsOptions): [Parameters, Modifiers] => {
     const location = useLocation();
     const navigate = useNavigate();
-    const [localParams, setLocalParams] = useState(defaultParams);
     const [params, setParams] = useStore(storeKey, defaultParams);
     const tempParams = useRef<ListParams>();
     const isMounted = useIsMounted();
@@ -96,7 +95,7 @@ export const useListParams = ({
         location.search,
         resource,
         storeKey,
-        JSON.stringify(disableSyncWithLocation ? localParams : params),
+        JSON.stringify(params),
         JSON.stringify(filterDefaultValues),
         JSON.stringify(sort),
         perPage,
@@ -111,7 +110,7 @@ export const useListParams = ({
         () =>
             getQuery({
                 queryFromLocation,
-                params: disableSyncWithLocation ? localParams : params,
+                params,
                 filterDefaultValues,
                 sort,
                 perPage,
@@ -142,7 +141,7 @@ export const useListParams = ({
                 // schedule side effects for next tick
                 setTimeout(() => {
                     if (disableSyncWithLocation) {
-                        setLocalParams(tempParams.current);
+                        setParams(tempParams.current);
                     } else {
                         // the useEffect above will apply the changes to the params in the store
                         navigate(
