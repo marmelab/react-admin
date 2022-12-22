@@ -97,7 +97,7 @@ List.propTypes = {
     // @ts-ignore-line
     actions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     aside: PropTypes.element,
-    children: PropTypes.element.isRequired,
+    children: PropTypes.node.isRequired,
     className: PropTypes.string,
     emptyWhileLoading: PropTypes.bool,
     filter: PropTypes.object,
