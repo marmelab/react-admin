@@ -46,7 +46,7 @@ All input components accept the following props:
 | `disabled`      | Optional | `boolean`                 | -       | If true, the input is disabled.                                                                                                                                     |
 | `format`        | Optional | `Function`                | `value => value == null ? '' : value` | Callback taking the value from the form state, and returning the input value.                                                                                       |
 | `fullWidth`     | Optional | `boolean`                 | `false` | If `true`, the input will expand to fill the form width                                                                                                             |
-| `helperText`    | Optional | `string`                  | -       | Text to be displayed under the input                                                                                                                                |
+| `helperText`    | Optional | `string`                  | -       | Text to be displayed under the input (cannot be used inside a filter)                                                                                                          |
 | `label`         | Optional | `string`                  | -       | Input label. In i18n apps, the label is passed to the `translate` function. Defaults to the humanized `source` when omitted. Set `label={false}` to hide the label. |
 | `parse`         | Optional | `Function`                | `value => value === '' ? null : value` | Callback taking the input value, and returning the value you want stored in the form state.                                                                         |
 | `sx`            | Optional | `SxProps`                 | -       | MUI shortcut for defining custom styles                                                                                                                             |
@@ -201,6 +201,8 @@ Most inputs accept a `helperText` prop to display a text below the input.
 ```
 
 Set `helperText` to `false` to remove the empty line below the input. Beware that the form may "jump" visually when the input contains an error, as the error message will appear below the input.
+
+**Tip:** It is not possible to set a `helperText` for inputs used inside a [filter](./List.md#filters-filter-inputs).
 
 ## `label`
 
