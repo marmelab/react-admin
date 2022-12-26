@@ -115,11 +115,12 @@ export type DateInputProps = CommonInputProps &
  */
 const convertDateToString = (value: Date) => {
     if (!(value instanceof Date) || isNaN(value.getDate())) return '';
+    const yearsDigitsLength = 4;
     const pad = '00';
     const yyyy = value.getFullYear().toString();
     const MM = (value.getMonth() + 1).toString();
     const dd = value.getDate().toString();
-    return `${yyyy}-${(pad + MM).slice(-2)}-${(pad + dd).slice(-2)}`;
+    return `${yyyy.slice(yyyy.length - yearsDigitsLength)}-${(pad + MM).slice(-2)}-${(pad + dd).slice(-2)}`;
 };
 
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
