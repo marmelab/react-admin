@@ -120,7 +120,9 @@ const convertDateToString = (value: Date) => {
     const yyyy = value.getFullYear().toString();
     const MM = (value.getMonth() + 1).toString();
     const dd = value.getDate().toString();
-    return `${yyyy.slice(yyyy.length - yearsDigitsLength)}-${(pad + MM).slice(-2)}-${(pad + dd).slice(-2)}`;
+    return `${yyyy.slice(yyyy.length - yearsDigitsLength)}-${(pad + MM).slice(
+        -2
+    )}-${(pad + dd).slice(-2)}`;
 };
 
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
