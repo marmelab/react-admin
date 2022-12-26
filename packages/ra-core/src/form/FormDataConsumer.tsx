@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import { useWatch, useFormContext, FieldValues } from 'react-hook-form';
+import {
+    useWatch,
+    useFormContext,
+    FieldValues,
+    PathValue,
+    Path,
+} from 'react-hook-form';
 import get from 'lodash/get';
 
 /**
