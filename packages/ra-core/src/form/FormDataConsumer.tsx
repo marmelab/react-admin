@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ReactNode } from 'react';
 import { useWatch, useFormContext, FieldValues } from 'react-hook-form';
 import get from 'lodash/get';
+
 /**
  * Get the current (edited) value of the record from the form and pass it
  * to a child function
@@ -52,7 +53,9 @@ const FormDataConsumer = <TFieldValues extends FieldValues = FieldValues>(
         (formData as FieldValues) = getValues();
     }
 
-    return <FormDataConsumerView<TFieldValues> formData={formData} {...props} />
+    return (
+        <FormDataConsumerView<TFieldValues> formData={formData} {...props} />
+    );
 };
 export const FormDataConsumerView = <
     TFieldValues extends FieldValues = FieldValues,
