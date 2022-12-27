@@ -1,12 +1,6 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import {
-    useWatch,
-    useFormContext,
-    FieldValues,
-    PathValue,
-    Path,
-} from 'react-hook-form';
+import { useWatch, useFormContext, FieldValues } from 'react-hook-form';
 import get from 'lodash/get';
 
 /**
@@ -50,13 +44,13 @@ import get from 'lodash/get';
 const FormDataConsumer = <TFieldValues extends FieldValues = FieldValues>(
     props: ConnectedProps<TFieldValues>
 ) => {
-    const { getValues } = useFormContext();
-    const formData = useWatch<TFieldValues>();
+    const { getValues } = useFormContext<TFieldValues>();
+    let formData = (useWatch<TFieldValues>() as unknown) as TFieldValues;
 
     //useWatch will initially return the provided defaultValues of the form.
     //We must get the initial formData from getValues
     if (Object.keys(formData).length === 0) {
-        (formData as FieldValues) = getValues();
+        formData = getValues();
     }
 
     return (
@@ -65,10 +59,9 @@ const FormDataConsumer = <TFieldValues extends FieldValues = FieldValues>(
 };
 
 export const FormDataConsumerView = <
-    TFieldValues extends FieldValues = FieldValues,
-    TPathValue = PathValue<TFieldValues, Path<TFieldValues>>[]
+    TFieldValues extends FieldValues = FieldValues
 >(
-    props: Props<TPathValue>
+    props: Props<TFieldValues>
 ) => {
     const { children, form, formData, source, index, ...rest } = props;
     let ret;
