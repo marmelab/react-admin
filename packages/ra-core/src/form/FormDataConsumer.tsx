@@ -63,6 +63,7 @@ const FormDataConsumer = <TFieldValues extends FieldValues = FieldValues>(
         <FormDataConsumerView<TFieldValues> formData={formData} {...props} />
     );
 };
+
 export const FormDataConsumerView = <
     TFieldValues extends FieldValues = FieldValues,
     TPathValue = PathValue<TFieldValues, Path<TFieldValues>>[]
@@ -85,6 +86,7 @@ export const FormDataConsumerView = <
 };
 
 export default FormDataConsumer;
+
 export interface FormDataConsumerRenderParams<
     TFieldValues extends FieldValues = FieldValues
 > {
@@ -92,9 +94,11 @@ export interface FormDataConsumerRenderParams<
     scopedFormData?: any;
     getSource?: (source: string) => string;
 }
+
 export type FormDataConsumerRender<
     TFieldValues extends FieldValues = FieldValues
 > = (params: FormDataConsumerRenderParams<TFieldValues>) => ReactNode;
+
 interface ConnectedProps<TFieldValues extends FieldValues = FieldValues> {
     children: FormDataConsumerRender<TFieldValues>;
     form?: string;
@@ -102,6 +106,7 @@ interface ConnectedProps<TFieldValues extends FieldValues = FieldValues> {
     source?: string;
     [key: string]: any;
 }
+
 interface Props<TFieldValues extends FieldValues> extends ConnectedProps {
     formData: TFieldValues;
     index?: number;
