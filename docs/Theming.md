@@ -1071,14 +1071,14 @@ const MyError = ({
             {process.env.NODE_ENV !== 'production' && (
                 <details>
                     <h2>{translate(error.toString())}</h2>
-                    {errorInfo.componentStack}
+                    {error.componentStack}
                 </details>
             )}
             <div>
                 <Button
                     variant="contained"
                     startIcon={<History />}
-                    onClick={() => history.go(-1)}
+                    onClick={() => window.history.go(-1)}
                 >
                     Back
                 </Button>
@@ -1114,6 +1114,8 @@ const App = () => (
     </Admin>
 );
 ```
+
+**Tip:** [React's Error Boundaries](https://reactjs.org/docs/error-boundaries.html) are used internally to display the Error Page whenever an error occurs. Error Boundaries only catch errors during rendering, in lifecycle methods, and in constructors of the components tree. This implies in particular that errors during event callbacks (such as 'onClick') are not concerned. Also note that the Error Boundary component is only set around the main container of React Admin. In particular, you won't see it for errors thrown by the [sidebar Menu](./Menu.md), nor the [AppBar](#customizing-the-appbar-content). This ensures the user is always able to navigate away from the Error Page.
 
 ## Loading
 
