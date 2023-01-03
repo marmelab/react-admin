@@ -10,6 +10,7 @@ import {
     NumberField,
     ReferenceArrayField,
     ReferenceManyField,
+    ReferenceManyCount,
     RichTextField,
     SelectField,
     ShowContextProvider,
@@ -87,7 +88,16 @@ const PostShow = () => {
                         <TextField source="views" />
                         <CloneButton />
                     </TabbedShowLayout.Tab>
-                    <TabbedShowLayout.Tab label="post.form.comments">
+                    <TabbedShowLayout.Tab
+                        label="post.form.comments"
+                        count={
+                            <ReferenceManyCount
+                                reference="comments"
+                                target="post_id"
+                                sx={{ lineHeight: 'inherit' }}
+                            />
+                        }
+                    >
                         <ReferenceManyField
                             reference="comments"
                             target="post_id"

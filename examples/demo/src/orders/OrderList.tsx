@@ -3,6 +3,7 @@ import { Fragment, useCallback } from 'react';
 import {
     AutocompleteInput,
     BooleanField,
+    Count,
     DatagridConfigurable,
     DateField,
     DateInput,
@@ -72,37 +73,12 @@ const tabs = [
     { id: 'cancelled', name: 'cancelled' },
 ];
 
-const useGetTotals = (filterValues: any) => {
-    const { total: totalOrdered } = useGetList('commands', {
-        pagination: { perPage: 1, page: 1 },
-        sort: { field: 'id', order: 'ASC' },
-        filter: { ...filterValues, status: 'ordered' },
-    });
-    const { total: totalDelivered } = useGetList('commands', {
-        pagination: { perPage: 1, page: 1 },
-        sort: { field: 'id', order: 'ASC' },
-        filter: { ...filterValues, status: 'delivered' },
-    });
-    const { total: totalCancelled } = useGetList('commands', {
-        pagination: { perPage: 1, page: 1 },
-        sort: { field: 'id', order: 'ASC' },
-        filter: { ...filterValues, status: 'cancelled' },
-    });
-
-    return {
-        ordered: totalOrdered,
-        delivered: totalDelivered,
-        cancelled: totalCancelled,
-    };
-};
-
 const TabbedDatagrid = () => {
     const listContext = useListContext();
     const { filterValues, setFilters, displayedFilters } = listContext;
     const isXSmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('sm')
     );
-    const totals = useGetTotals(filterValues) as any;
 
     const handleChange = useCallback(
         (event: React.ChangeEvent<{}>, value: any) => {
@@ -129,9 +105,14 @@ const TabbedDatagrid = () => {
                     <Tab
                         key={choice.id}
                         label={
-                            totals[choice.name]
-                                ? `${choice.name} (${totals[choice.name]})`
-                                : choice.name
+                            <span>
+                                {choice.name} (
+                                <Count
+                                    filter={{ status: choice.name }}
+                                    sx={{ lineHeight: 'inherit' }}
+                                />
+                                )
+                            </span>
                         }
                         value={choice.id}
                     />

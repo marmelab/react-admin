@@ -58,6 +58,7 @@ export const Tab = ({
     children,
     contentClassName,
     context,
+    count,
     className,
     divider,
     icon,
@@ -75,21 +76,29 @@ export const Tab = ({
         to: { ...location, pathname: value },
     };
 
-    const renderHeader = () => (
-        <MuiTab
-            key={`tab-header-${value}`}
-            label={
-                typeof label === 'string'
-                    ? translate(label, { _: label })
-                    : label
-            }
-            value={value}
-            icon={icon}
-            className={clsx('show-tab', className)}
-            {...(syncWithLocation ? propsForLink : {})} // to avoid TypeScript screams, see https://github.com/mui-org/material-ui/issues/9106#issuecomment-451270521
-            {...rest}
-        />
-    );
+    const renderHeader = () => {
+        let tabLabel =
+            typeof label === 'string' ? translate(label, { _: label }) : label;
+        if (count) {
+            tabLabel = (
+                <span>
+                    {tabLabel} ({count})
+                </span>
+            );
+        }
+
+        return (
+            <MuiTab
+                key={`tab-header-${value}`}
+                label={tabLabel}
+                value={value}
+                icon={icon}
+                className={clsx('show-tab', className)}
+                {...(syncWithLocation ? propsForLink : {})} // to avoid TypeScript screams, see https://github.com/mui-org/material-ui/issues/9106#issuecomment-451270521
+                {...rest}
+            />
+        );
+    };
 
     const renderContent = () => (
         <Stack className={contentClassName} spacing={spacing} divider={divider}>
@@ -115,10 +124,11 @@ export const Tab = ({
 };
 
 Tab.propTypes = {
+    children: PropTypes.node,
     className: PropTypes.string,
     contentClassName: PropTypes.string,
-    children: PropTypes.node,
     context: PropTypes.oneOf(['header', 'content']),
+    count: PropTypes.node,
     icon: PropTypes.element,
     label: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
         .isRequired,
@@ -131,6 +141,7 @@ export interface TabProps extends Omit<MuiTabProps, 'children'> {
     children: ReactNode;
     contentClassName?: string;
     context?: 'header' | 'content';
+    count?: ReactNode;
     className?: string;
     divider?: ReactNode;
     icon?: ReactElement;

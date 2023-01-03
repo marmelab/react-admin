@@ -471,10 +471,11 @@ export const TagEdit = () => (
 
 ## `<TabbedForm.Tab>`
 
-`<TabbedForm>` expect `<TabbedForm.Tab>` elements as children. `<TabbedForm.Tab>` elements accept four props:
+`<TabbedForm>` expect `<TabbedForm.Tab>` elements as children. `<TabbedForm.Tab>` elements accept five props:
 
 - `label`: the label of the tab
 - `path`: the path of the tab in the URL (ignored when `syncWithLocation={false}`)
+- `count`: the number of items in the tab (dislayed close to the label)
 - `sx`: custom styles to apply to the tab
 - `children`: the content of the tab (usually a list of inputs)
 
