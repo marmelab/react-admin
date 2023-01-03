@@ -6,7 +6,7 @@ import pullAt from 'lodash/pullAt';
 /**
  * Respond to react-admin data queries using a local database persisted in localStorage
  *
- * Useful for local-first web apps.
+ * Useful for local-first web apps. The storage is shared between tabs.
  *
  * @example // initialize with no data
  *
@@ -37,7 +37,7 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
         localStorageUpdateDelay = 10, // milliseconds
     } = params || {};
     const localStorageData = localStorage.getItem(localStorageKey);
-    const data = localStorageData ? JSON.parse(localStorageData) : defaultData;
+    let data = localStorageData ? JSON.parse(localStorageData) : defaultData;
 
     // change data by executing callback, then persist in localStorage
     const updateLocalStorage = callback => {
@@ -48,10 +48,21 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
         }, localStorageUpdateDelay);
     };
 
-    const baseDataProvider = fakeRestProvider(
+    let baseDataProvider = fakeRestProvider(
         data,
         loggingEnabled
     ) as DataProvider;
+
+    window?.addEventListener('storage', event => {
+        if (event.key === localStorageKey) {
+            const newData = JSON.parse(event.newValue);
+            data = newData;
+            baseDataProvider = fakeRestProvider(
+                newData,
+                loggingEnabled
+            ) as DataProvider;
+        }
+    });
 
     return {
         // read methods are just proxies to FakeRest
@@ -88,7 +99,7 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
         // update methods need to persist changes in localStorage
         update: <RecordType extends RaRecord = any>(resource, params) => {
             updateLocalStorage(() => {
-                const index = data[resource].findIndex(
+                const index = data[resource]?.findIndex(
                     record => record.id == params.id
                 );
                 data[resource][index] = {
@@ -101,7 +112,7 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
         updateMany: (resource, params) => {
             updateLocalStorage(() => {
                 params.ids.forEach(id => {
-                    const index = data[resource].findIndex(
+                    const index = data[resource]?.findIndex(
                         record => record.id == id
                     );
                     data[resource][index] = {
@@ -128,7 +139,7 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
         },
         delete: <RecordType extends RaRecord = any>(resource, params) => {
             updateLocalStorage(() => {
-                const index = data[resource].findIndex(
+                const index = data[resource]?.findIndex(
                     record => record.id == params.id
                 );
                 pullAt(data[resource], [index]);
@@ -138,7 +149,7 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
         deleteMany: (resource, params) => {
             updateLocalStorage(() => {
                 const indexes = params.ids.map(id =>
-                    data[resource].findIndex(record => record.id == id)
+                    data[resource]?.findIndex(record => record.id == id)
                 );
                 pullAt(data[resource], indexes);
             });

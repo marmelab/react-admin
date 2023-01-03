@@ -2,7 +2,7 @@
 
 A dataProvider for [react-admin](https://github.com/marmelab/react-admin) that uses a local database, persisted in localStorage.
 
-The provider issues no HTTP requests, every operation happens locally in the browser. User editions are persisted across refreshes and between sessions. This allows local-first apps, and can be useful in tests.
+The provider issues no HTTP requests; every CRUD query happens locally in the browser. User editions are shared between tabs, and persisted even after a user session ends. This allows local-first apps, and can be useful in tests.
 
 ## Installation
 
@@ -11,6 +11,10 @@ npm install --save ra-data-local-storage
 ```
 
 ## Usage
+
+The default export is a function that returns a data provider.
+
+When used without parameters, the data provider uses a local database with no data. You can then use the `useDataProvider` hook to populate it. The changes are persisted in localStorage (in the `ra-data-local-storage` key), so they will be available on the next page load.
 
 ```jsx
 // in src/App.js
@@ -30,11 +34,18 @@ const App = () => (
 export default App;
 ```
 
-### defaultData
+The function accepts an options object as parameter, with the following keys:
+
+- `defaultData`: an object literal with one key for each resource type, and an array of resources as value. See below for more details.
+- `loggingEnabled`: a boolean to enable logging of all calls to the data provider in the console. Defaults to `false`.
+- `localStorageKey`: the key to use in localStorage to store the data. Defaults to `ra-data-local-storage`.
+- `localStorageUpdateDelay`: the delay (in milliseconds) between a change in the data and the update of localStorage. Defaults to 10 milliseconds.
+
+## `defaultData`
 
 By default, the data provider starts with no resource. To set default data if the storage is empty, pass a JSON object as the `defaultData` argument:
 
-```js
+```jsx
 const dataProvider = localStorageDataProvider({
     defaultData: {
         posts: [
@@ -53,13 +64,33 @@ The `defaultData` parameter must be an object literal with one key for each reso
 
 Foreign keys are also supported: just name the field `{related_resource_name}_id` and give an existing value.
 
-### loggingEnabled
+## `loggingEnabled`
 
 As this data provider doesn't use the network, you can't debug it using the network tab of your browser developer tools. However, it can log all calls (input and output) in the console, provided you set the `loggingEnabled` parameter:
 
-```js
+```jsx
 const dataProvider = localStorageDataProvider({
     loggingEnabled: true
+});
+```
+
+## `localStorageKey`
+
+By default, the data provider uses the `ra-data-local-storage` key in localStorage. You can change this key by passing a `localStorageKey` parameter:
+
+```jsx
+const dataProvider = localStorageDataProvider({
+    localStorageKey: 'my-app-data'
+});
+```
+
+## `localStorageUpdateDelay`
+
+By default, the data provider updates localStorage 10 milliseconds after every change. This can be slow if you have a lot of data. You can change this behavior by passing a `localStorageUpdateDelay` parameter:
+
+```jsx
+const dataProvider = localStorageDataProvider({
+    localStorageUpdateDelay: 2
 });
 ```
 
