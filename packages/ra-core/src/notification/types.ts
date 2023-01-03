@@ -9,6 +9,7 @@ export interface NotificationOptions {
     multiLine?: boolean;
     // If true, the notification shows an Undo button
     undoable?: boolean;
+    [key: string]: any;
 }
 
 export interface NotificationPayload {
