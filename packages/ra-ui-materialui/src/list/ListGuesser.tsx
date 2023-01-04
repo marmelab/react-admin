@@ -122,7 +122,7 @@ ${inferredChild.getRepresentation()}
 );`
             );
         }
-    }, [data, child, resource]);
+    }, [data, child, resource, hasEdit, hasShow]);
 
     return <ListView {...props}>{child}</ListView>;
 };
