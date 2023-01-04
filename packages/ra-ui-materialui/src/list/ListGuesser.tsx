@@ -8,6 +8,7 @@ import {
     useListContext,
     useResourceContext,
     RaRecord,
+    useResourceDefinition,
 } from 'ra-core';
 
 import { ListProps } from './List';
@@ -71,6 +72,7 @@ export const ListGuesser = <RecordType extends RaRecord = any>(
 const ListViewGuesser = (props: Omit<ListViewProps, 'children'>) => {
     const { data } = useListContext(props);
     const resource = useResourceContext();
+    const { hasEdit, hasShow } = useResourceDefinition(props);
     const [child, setChild] = useState(null);
 
     useEffect(() => {
@@ -85,7 +87,7 @@ const ListViewGuesser = (props: Omit<ListViewProps, 'children'>) => {
             );
             const inferredChild = new InferredElement(
                 listFieldTypes.table,
-                null,
+                { hasEdit, hasShow },
                 inferredElements
             );
             setChild(inferredChild.getElement());
