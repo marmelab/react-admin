@@ -58,8 +58,9 @@ function replaceContent(text) {
     var tmpElement = document.createElement('div');
     tmpElement.innerHTML = text;
 
+    toggleDockBlocks(false);
+
     var content = document.querySelector('.DocSearch-content');
-    document.querySelector('.docBlocks').style.display = 'none';
     content.innerHTML = tmpElement.querySelector(
         '.DocSearch-content'
     ).innerHTML;
@@ -77,6 +78,12 @@ function changeSelectedMenu() {
     allMenus
         .find(menuEl => menuEl.href === window.location.href)
         .parentNode.classList.add('active');
+}
+
+function toggleDockBlocks(status) {
+    var docBlock = document.querySelector('.docBlocks');
+    if (!docBlock) return;
+    docBlock.style.display = status ? 'grid' : 'none';
 }
 
 // Replace full page reloads by a fill of the content area
@@ -125,7 +132,7 @@ window.addEventListener('popstate', event => {
     }
     if (window.location.pathname === '/documentation.html') {
         document.querySelector('.DocSearch-content').innerHTML = '';
-        document.querySelector('.docBlocks').style.display = 'grid';
+        toggleDockBlocks(true);
     } else {
         // fetch the new content
         fetch(window.location.pathname)
