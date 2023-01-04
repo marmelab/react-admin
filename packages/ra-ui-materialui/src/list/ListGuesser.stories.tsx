@@ -5,6 +5,7 @@ import defaultMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import { ListGuesser } from './ListGuesser';
+import { ShowGuesser } from '../detail';
 import { AdminUI } from '../AdminUI';
 import { AdminContext } from '../AdminContext';
 
@@ -86,6 +87,24 @@ export const Basic = () => (
             <Resource
                 name="products"
                 list={ListGuesser}
+                recordRepresentation="name"
+            />
+            <Resource name="categories" recordRepresentation="name" />
+            <Resource name="tags" recordRepresentation="name" />
+        </AdminUI>
+    </AdminContext>
+);
+
+export const LinkedShow = () => (
+    <AdminContext
+        dataProvider={dataProvider}
+        i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+    >
+        <AdminUI>
+            <Resource
+                name="products"
+                list={ListGuesser}
+                show={ShowGuesser}
                 recordRepresentation="name"
             />
             <Resource name="categories" recordRepresentation="name" />
