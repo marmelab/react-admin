@@ -79,7 +79,7 @@ export const Tab = ({
     const renderHeader = () => {
         let tabLabel =
             typeof label === 'string' ? translate(label, { _: label }) : label;
-        if (count) {
+        if (count !== undefined) {
             tabLabel = (
                 <span>
                     {tabLabel} ({count})

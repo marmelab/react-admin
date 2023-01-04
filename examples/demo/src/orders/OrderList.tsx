@@ -7,20 +7,19 @@ import {
     DatagridConfigurable,
     DateField,
     DateInput,
+    ExportButton,
+    FilterButton,
     List,
     NullableBooleanInput,
     NumberField,
-    ReferenceInput,
     ReferenceField,
+    ReferenceInput,
     SearchInput,
+    SelectColumnsButton,
     TextField,
     TextInput,
-    useGetList,
-    useListContext,
     TopToolbar,
-    SelectColumnsButton,
-    FilterButton,
-    ExportButton,
+    useListContext,
 } from 'react-admin';
 import { useMediaQuery, Divider, Tabs, Tab, Theme } from '@mui/material';
 
@@ -108,7 +107,10 @@ const TabbedDatagrid = () => {
                             <span>
                                 {choice.name} (
                                 <Count
-                                    filter={{ status: choice.name }}
+                                    filter={{
+                                        ...filterValues,
+                                        status: choice.name,
+                                    }}
                                     sx={{ lineHeight: 'inherit' }}
                                 />
                                 )
