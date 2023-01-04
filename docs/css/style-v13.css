@@ -484,6 +484,7 @@ ul.sidenav code {
 .docBlocks a:hover {
     border: #c0c0c0 1px solid;
     box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
 }
 
 .docBlocks a .docBlock {
