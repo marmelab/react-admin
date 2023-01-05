@@ -18,6 +18,7 @@ import {
     ImageInput,
     NumberInput,
     ReferenceManyField,
+    ReferenceManyCount,
     ReferenceInput,
     SelectInput,
     SimpleFormIterator,
@@ -239,7 +240,16 @@ const PostEdit = () => {
                         </SimpleFormIterator>
                     </ArrayInput>
                 </TabbedForm.Tab>
-                <TabbedForm.Tab label="post.form.comments">
+                <TabbedForm.Tab
+                    label="post.form.comments"
+                    count={
+                        <ReferenceManyCount
+                            reference="comments"
+                            target="post_id"
+                            sx={{ lineHeight: 'inherit' }}
+                        />
+                    }
+                >
                     <ReferenceManyField
                         reference="comments"
                         target="post_id"

@@ -76,6 +76,7 @@ export const ReferenceManyCount = (props: ReferenceManyCountProps) => {
                 })}`,
             }}
             variant="body2"
+            component="span"
             onClick={e => e.stopPropagation()}
             {...rest}
         >

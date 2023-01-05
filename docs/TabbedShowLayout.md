@@ -76,6 +76,7 @@ It accepts the following props:
 - `label`: The string displayed for each tab
 - `icon`: The icon to show before the label (optional). Must be a component.
 - `path`: The string used for custom urls (optional)
+- `count`: the number of items in the tab (dislayed close to the label)
 
 ```jsx
 // in src/posts.js

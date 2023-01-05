@@ -42,6 +42,29 @@ export const Basic = () => (
     </MemoryRouter>
 );
 
+export const Count = () => (
+    <MemoryRouter>
+        <ResourceContext.Provider value="books">
+            <RecordContextProvider value={record}>
+                <TabbedShowLayout>
+                    <TabbedShowLayout.Tab label="Main">
+                        <TextField source="id" />
+                        <TextField source="title" />
+                    </TabbedShowLayout.Tab>
+                    <TabbedShowLayout.Tab label="Details">
+                        <TextField source="author" />
+                        <TextField source="summary" />
+                        <NumberField source="year" />
+                    </TabbedShowLayout.Tab>
+                    <TabbedShowLayout.Tab label="Reviews" count={27}>
+                        <TextField source="reviews" />
+                    </TabbedShowLayout.Tab>
+                </TabbedShowLayout>
+            </RecordContextProvider>
+        </ResourceContext.Provider>
+    </MemoryRouter>
+);
+
 const BookTitle = () => {
     const record = useRecordContext();
     return record ? <span>{record.title}</span> : null;

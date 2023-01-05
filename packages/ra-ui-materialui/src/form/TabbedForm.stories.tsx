@@ -89,3 +89,18 @@ export const NoToolbar = () => (
         </TabbedForm>
     </Wrapper>
 );
+
+export const Count = () => (
+    <Wrapper>
+        <TabbedForm>
+            <TabbedForm.Tab label="main">
+                <TextInput source="title" fullWidth />
+                <TextInput source="author" />
+                <NumberInput source="year" />
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="comments" count={3}>
+                <TextInput multiline source="bio" fullWidth />
+            </TabbedForm.Tab>
+        </TabbedForm>
+    </Wrapper>
+);
