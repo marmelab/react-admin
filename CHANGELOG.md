@@ -1,5 +1,19 @@
 # Changelog
 
+## 4.6.3
+
+* Fix `<ListGuesser>` links to Edit view even though there is only a ShowView ([#8546](https://github.com/marmelab/react-admin/pull/8546)) ([WiXSL](https://github.com/WiXSL))
+* Fix notifications with type 'warning' should use the warning text color from the MUI palette ([#8532](https://github.com/marmelab/react-admin/pull/8532)) ([Seojun-Park](https://github.com/Seojun-Park))
+* Fix notifications with type 'warning' should use the warning color from the MUI palette ([#8519](https://github.com/marmelab/react-admin/pull/8519)) ([Seojun-Park](https://github.com/Seojun-Park))
+* [Doc] Improve Index/Reference page ([#8550](https://github.com/marmelab/react-admin/pull/8550)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Improve `<Search>` usage documentation ([#8527](https://github.com/marmelab/react-admin/pull/8527)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<ContainerLayout>` is hard to find ([#8547](https://github.com/marmelab/react-admin/pull/8547)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix Theming doc does not mention limitations of custom error page ([#8538](https://github.com/marmelab/react-admin/pull/8538)) ([slax57](https://github.com/slax57))
+* [Doc] Fix `<XXXInput helperText>` description to explain that it cannot be used inside a filter ([#8531](https://github.com/marmelab/react-admin/pull/8531)) ([slax57](https://github.com/slax57))
+* [Doc] Fix `useList` hook doc contains wrong examples ([#8524](https://github.com/marmelab/react-admin/pull/8524)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<ImageInput accept>` prop examples ([#8514](https://github.com/marmelab/react-admin/pull/8514)) ([slax57](https://github.com/slax57))
+* [Doc] Show nav sidebar on main navigation page ([#8461](https://github.com/marmelab/react-admin/pull/8461)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## 4.6.2
 
 * Fix `<ReferenceArrayInput>` and `<AutoCompleteInput>` when identifiers have the wrong type ([#8500](https://github.com/marmelab/react-admin/pull/8500)) ([septentrion-730n](https://github.com/septentrion-730n))
