@@ -36,6 +36,8 @@ The hook takes no argument and returns a callback. The callback takes 2 argument
 Here are more examples of `notify` calls: 
 
 ```js
+// notify an error
+notify(`This is an error`, { type: 'error' });
 // notify a warning
 notify(`This is a warning`, { type: 'warning' });
 // pass translation arguments

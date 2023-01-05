@@ -20,7 +20,7 @@
         />
         <link
             rel="stylesheet"
-            href="{{ '/css/style-v12.css' | relative_url }}"
+            href="{{ '/css/style-v13.css' | relative_url }}"
         />
         <link rel="stylesheet" href="{{ '/css/syntax.css' | relative_url }}" />
         <link rel="stylesheet" href="{{ '/css/prism.css' | relative_url }}" />
@@ -36,6 +36,9 @@
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.css"
+            integrity="sha512-2kqK5bWDwdrluTn6Wkj+jgiwyzvAHLirVp08Kz7kN5I8PWQ0tUtEMxfhyWDCrnws91BJ9PfrUy6ImfA7Qb22TA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
         />
         <link
             rel="stylesheet"
@@ -76,46 +79,18 @@
 
         <script src="{{ '/js/materialize.min.js' | relative_url }}"></script>
         <script src="{{ 'js/prism.js' | relative_url }}"></script>
-        <script>
-            function slugify(text) {
-                return text
-                    .toString()
-                    .toLowerCase()
-                    .replace(/\s+/g, '-') // Replace spaces with -
-                    .replace(/[^\w\-]+/g, '') // Remove all non-word chars
-                    .replace(/\-\-+/g, '-') // Replace multiple - with single -
-                    .replace(/^-+/, '') // Trim - from start of text
-                    .replace(/-+$/, ''); // Trim - from end of text
-            }
-            function buildPageToC() {
-                M.Sidenav.init(document.querySelectorAll('.sidenav'));
-                // Initialize version selector
-                M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
-                /* Generate table of contents */
-                tocbot.init({
-                    // Where to render the table of contents
-                    tocSelector: '.toc',
-                    positionFixedSelector: '.toc',
-                    // Where to grab the headings to build the table of contents
-                    contentSelector: '.toc-content',
-                    // More options
-                    headingSelector: 'h2, h3, h4',
-                    includeHtml: true,
-                    collapseDepth: 2,
-                    hasInnerContainers: true,
-                });
-            }
-            // build ToC on page load
-            document.addEventListener('DOMContentLoaded', function () {
-                buildPageToC();
-            });
-        </script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js"
+            defer
+            integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script src="{{ 'js/ra-doc-exec.js' | relative_url }}"></script>
+
         <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
-        {% if page.dir contains "doc" %}
-        {% assign version = page.dir | split: '/' | last %}
-        {% else %}
-        {% assign version = "latest" %}
-        {% endif %}
+        {% if page.dir contains "doc" %} {% assign version = page.dir | split:
+        '/' | last %} {% else %} {% assign version = "latest" %} {% endif %}
         <script type="text/javascript">
             docsearch({
                 container: '#docsearch',
@@ -125,10 +100,7 @@
                 searchParameters: { facetFilters: ['version:  {{ version }}'] },
             });
         </script>
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js"
-            defer
-        ></script>
+
         <!--
         React-admin protects your privacy!
         We use our own self-hosted tracking solution to collect some raw metrics,

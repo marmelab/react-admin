@@ -58,7 +58,7 @@ import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
  *    ...
  * </ReferenceManyField>
  */
-export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
+export const ReferenceManyField = (props: ReferenceManyFieldProps) => {
     const {
         children,
         filter,

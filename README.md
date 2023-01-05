@@ -2,7 +2,7 @@
 
 A frontend Framework for building data-driven applications running in the browser on top of REST/GraphQL APIs, using ES6, [React](https://facebook.github.io/react/) and [Material Design](https://material.io/). Open sourced and maintained by [marmelab](https://marmelab.com/).
 
-[Home page](https://marmelab.com/react-admin/) - [Documentation](https://marmelab.com/react-admin/Tutorial.html) - [Demo](https://marmelab.com/react-admin-demo/) - [Blog](https://marmelab.com/en/blog/#react-admin) - [Releases](https://github.com/marmelab/react-admin/releases) - [Support](https://stackoverflow.com/questions/tagged/react-admin)
+[Home page](https://marmelab.com/react-admin/) - [Documentation](https://marmelab.com/react-admin/Tutorial.html) - [Examples](#examples) - [Blog](https://marmelab.com/en/blog/#react-admin) - [Releases](https://github.com/marmelab/react-admin/releases) - [Support](#support)
 
 [![react-admin-demo](https://marmelab.com/react-admin/img/react-admin-demo-still.png)](https://vimeo.com/474999017)
 
@@ -37,7 +37,7 @@ yarn add react-admin
 
 ## Documentation
 
-Read the [Tutorial](https://marmelab.com/react-admin/Tutorial.html) for a 30 minutes introduction. After that, head to the [Documentation](https://marmelab.com/react-admin/Readme.html), or checkout the [source code of the demo](https://github.com/marmelab/react-admin-demo) for an example usage.
+Read the [Tutorial](https://marmelab.com/react-admin/Tutorial.html) for a 30 minutes introduction. After that, head to the [Documentation](https://marmelab.com/react-admin/documentation.html), or checkout the source code of the examples ([e-commerce](https://github.com/marmelab/react-admin/tree/master/examples/demo), [CRM](https://github.com/marmelab/react-admin/tree/master/examples/crm), [blog](https://github.com/marmelab/react-admin/tree/master/examples/simple), [media player](https://github.com/navidrome/navidrome/tree/master/ui)).
 
 ## At a Glance
 
@@ -118,7 +118,7 @@ Yes.
 
 React-admin uses an adapter approach, with a concept called *Data Providers*. Existing providers can be used as a blueprint to design your API, or you can write your own Data Provider to query an existing API. Writing a custom Data Provider is a matter of hours.
 
-![Data Provider architecture](https://marmelab.com/react-admin/img/data-provider.png)
+![Data provider architecture](https://marmelab.com/react-admin/img/data-provider.png)
 
 See the [Data Providers documentation](https://marmelab.com/react-admin/DataProviders.html) for details.
 
@@ -159,7 +159,8 @@ And then browse to the URL displayed in your console.
 
 ## Support
 
-You can get professional support from Marmelab via [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise), or community support via [StackOverflow](https://stackoverflow.com/questions/tagged/react-admin). 
+- Get commercial support from Marmelab via [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise#support)
+- Get community support via [Discord](https://discord.gg/GeZF9sqh3N) and [StackOverflow](https://stackoverflow.com/questions/tagged/react-admin). 
 
 ## Versions In This Repository
 

@@ -17,6 +17,7 @@ import {
     InsideReferenceInput,
     InsideReferenceInputDefaultValue,
     Nullable,
+    NullishValuesSupport,
     VeryLargeOptionsNumber,
 } from './AutocompleteInput.stories';
 import { act } from '@testing-library/react-hooks';
@@ -1476,5 +1477,25 @@ describe('<AutocompleteInput />', () => {
         await waitFor(() => {
             expect(input.value).toEqual('');
         });
+    });
+
+    it('should handle nullish values', async () => {
+        render(<NullishValuesSupport />);
+
+        const checkInputValue = async (label: string, expected: any) => {
+            const input = (await screen.findByLabelText(
+                label
+            )) as HTMLInputElement;
+            await waitFor(() => {
+                expect(input.value).toStrictEqual(expected);
+            });
+        };
+
+        await checkInputValue('prefers_empty-string', '');
+        await checkInputValue('prefers_null', '');
+        await checkInputValue('prefers_undefined', '');
+        await checkInputValue('prefers_zero-string', '0');
+        await checkInputValue('prefers_zero-number', '0');
+        await checkInputValue('prefers_valid-value', '1');
     });
 });

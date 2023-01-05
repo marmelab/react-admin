@@ -19,7 +19,7 @@
         />
         <link
             rel="stylesheet"
-            href="{{ '/css/style-v12.css' | relative_url }}"
+            href="{{ '/css/style-v13.css' | relative_url }}"
         />
         <link rel="stylesheet" href="{{ '/css/syntax.css' | relative_url }}" />
         <link rel="stylesheet" href="{{ '/css/prism.css' | relative_url }}" />
@@ -39,8 +39,20 @@
         <link rel="stylesheet" href="css/docsearch.css" />
     </head>
 
-    <body class="no-sidebar">
-        {% include nav.html %}
+    <body>
+        <header>
+            {% include nav.html %}
+            <ul id="slide-out" class="sidenav sidenav-fixed">
+                <li class="logo">
+                    <a href="{{ site.url }}"
+                        ><img src="{{ site.url }}/assets/logo_white.png"
+                    /></a>
+                </li>
+                <li class="version">{% include versions.html %}</li>
+                {% include_relative navigation.html %}
+            </ul>
+        </header>
+
         <main>
             <div class="container">
                 <div class="row nav_root">
@@ -129,7 +141,7 @@
                             <div class="material-icons">&#xe8f4;</div>
                         </a>
 
-                        <a href="./Inputs.html">
+                        <a class="nav-link" href="./Inputs.html">
                             <div class="docBlock">
                                 <h2>Inputs</h2>
                                 <code>&lt;TextInput&gt;</code>,
@@ -181,17 +193,32 @@
                             <div class="material-icons">&#xe1bd;</div>
                         </a>
                     </div>
+                    <div class="col s12 m9">
+                        <div
+                            class="markdown-section DocSearch-content toc-content"
+                        ></div>
+                    </div>
+                    <div class="toc-container">
+                        <div class="toc"></div>
+                    </div>
                 </div>
             </div>
         </main>
 
         <script src="js/materialize.min.js"></script>
+        <script src="js/prism.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js"
+            defer
+            integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script src="js/ra-doc-exec.js"></script>
+
         <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
-        {% if page.dir contains "doc" %}
-        {% assign version = page.dir | split: '/' | last %}
-        {% else %}
-        {% assign version = "latest" %}
-        {% endif %}
+        {% if page.dir contains "doc" %} {% assign version = page.dir | split:
+        '/' | last %} {% else %} {% assign version = "latest" %} {% endif %}
         <script type="text/javascript">
             docsearch({
                 container: '#docsearch',
@@ -201,6 +228,7 @@
                 searchParameters: { facetFilters: ['version:  {{ version }}'] },
             });
         </script>
+
         <!--
         React-admin protects your privacy!
         We use our own self-hosted tracking solution to collect some raw metrics,

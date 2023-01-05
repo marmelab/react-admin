@@ -68,7 +68,7 @@ export const NumberInput = ({
     React.useEffect(() => {
         const stringValue = format(field.value);
         setValue(value => (value !== stringValue ? stringValue : value));
-    }, [field.value]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [field.value, format]); // eslint-disable-line react-hooks/exhaustive-deps
 
     // update the input text when the user types in the input
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,13 +83,16 @@ export const NumberInput = ({
         }
         const target = event.target;
         setValue(target.value);
-        const newValue = target.valueAsNumber
-            ? parse
-                ? parse(target.valueAsNumber)
-                : target.valueAsNumber
-            : parse
-            ? parse(target.value)
-            : convertStringToNumber(target.value);
+        const newValue =
+            target.valueAsNumber !== undefined &&
+            target.valueAsNumber !== null &&
+            !isNaN(target.valueAsNumber)
+                ? parse
+                    ? parse(target.valueAsNumber)
+                    : target.valueAsNumber
+                : parse
+                ? parse(target.value)
+                : convertStringToNumber(target.value);
         field.onChange(newValue);
     };
 

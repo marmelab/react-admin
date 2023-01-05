@@ -32,7 +32,7 @@ let timer;
  *         dataProvider.getOne('secret', { id: 123 })
  *             .catch(error => {
  *                  logoutIfAccessDenied(error);
- *                  notify('server error', 'warning');
+ *                  notify('server error',  { type: 'error' });
  *              })
  *     }, []);
  *     // ...
@@ -84,7 +84,7 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                                             e,
                                             'ra.notification.logged_out'
                                         ),
-                                        { type: 'warning' }
+                                        { type: 'error' }
                                     );
                                 } else {
                                     notify(
@@ -92,7 +92,7 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                                             e,
                                             'ra.notification.not_authorized'
                                         ),
-                                        { type: 'warning' }
+                                        { type: 'error' }
                                     );
                                 }
                             })

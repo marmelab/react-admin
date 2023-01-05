@@ -120,7 +120,7 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
                                 ? error
                                 : error.message || 'ra.notification.http_error',
                             {
-                                type: 'warning',
+                                type: 'error',
                                 messageArgs: {
                                     _:
                                         typeof error === 'string'

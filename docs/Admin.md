@@ -388,39 +388,49 @@ For more details on predefined themes and custom themes, refer to [the Theming c
 
 If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. 
 
-Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point, and check [the Theming documentation](./Theming.md#using-a-custom-layout) for examples.
+React-admin offers predefined layouts for you to use:
+
+- [`<Layout>`](./Layout.md): The default layout. It renders a top app bar and the navigation menu in a side bar.
+- [`<ContainerLayout>`](./ContainerLayout.md): A centered layout with horizontal navigation.
 
 ```jsx
-// in src/App.js
-import MyLayout from './MyLayout';
+import { Admin } from 'react-admin';
+import { ContainerLayout } from '@react-admin/ra-navigation';
 
-const App = () => (
-    <Admin layout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+export const App = () => (
+    <Admin dataProvider={dataProvider} layout={ContainerLayout}>
         // ...
     </Admin>
 );
 ```
 
-Your custom layout can simply extend [the default `<Layout>` component](./Layout.md) if you only want to override the appBar, the menu, or the error page. For instance:
+These layouts can be customized by passing props to them. For instance, you can pass a custom `appBar` prop to `<Layout>` to override the default app bar:
 
 ```jsx
 // in src/MyLayout.js
 import { Layout } from 'react-admin';
 import MyAppBar from './MyAppBar';
-import MyMenu from './MyMenu';
-import MyError from './MyError';
 
-const MyLayout = (props) => <Layout
-    {...props}
-    appBar={MyAppBar}
-    menu={MyMenu}
-    error={MyError}
-/>;
-
-export default MyLayout;
+export const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
 ```
 
-For more details on custom layouts, check [the Theming documentation](./Theming.md#using-a-custom-layout).
+Then, pass it to the `<Admin>` component as the `layout` prop:
+
+```jsx
+// in src/App.js
+import { Admin } from 'react-admin';
+import { MyLayout } from './MyLayout';
+
+const App = () => (
+    <Admin dataProvider={dataProvider} layout={MyLayout}>
+        // ...
+    </Admin>
+);
+```
+
+Refer to each component documentation to understand the props it accepts.
+
+Finally, you can also pass a custom component as the `layout` prop. It must contain a `{children}` placeholder, where react-admin will render the content. Use the [default `<Layout>`](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point, and check [the Theming documentation](./Theming.md#using-a-custom-layout) for examples.
 
 ## `loginPage`
 
@@ -505,7 +515,7 @@ See [Using React-Admin In A Sub Path](./Routing.md#using-react-admin-in-a-sub-pa
 
 ## `ready`
 
-When you run an `<Admin>` with no child `<Resource>`, react-admin displays a "ready" screen:
+When you run an `<Admin>` with no child `<Resource>` nor `<CustomRoutes>`, react-admin displays a "ready" screen:
 
 ![Empty Admin](./img/tutorial_empty.png)
 

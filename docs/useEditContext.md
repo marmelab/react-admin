@@ -36,7 +36,7 @@ const Aside = () => {
         <div>
             <Typography variant="h6">Posts stats</Typography>
             <Typography variant="body2">
-                Last edition: {post.updated_at}
+                Last edition: {record.updated_at}
             </Typography>
         </div>
     );

@@ -184,7 +184,7 @@ const PostShow = props => {
     const redirect = useRedirect();
 
     const onError = (error) => {
-        notify(`Could not load post: ${error.message}`, { type: 'warning' });
+        notify(`Could not load post: ${error.message}`, { type: 'error' });
         redirect('/posts');
         refresh();
     };
@@ -205,7 +205,7 @@ The default `onError` function is:
 
 ```jsx
 (error) => {
-    notify('ra.notification.item_doesnt_exist', { type: 'warning' });
+    notify('ra.notification.item_doesnt_exist', { type: 'error' });
     redirect('list', resource);
     refresh();
 }

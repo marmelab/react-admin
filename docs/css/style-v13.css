@@ -28,9 +28,6 @@ main > .container .markdown-section {
         font-size: 16px;
         -webkit-font-smoothing: antialiased;
     }
-    main .markdown-section {
-        padding-left: 2em;
-    }
     main > .container {
         width: 100%;
         padding-left: 1em;
@@ -484,6 +481,7 @@ ul.sidenav code {
 .docBlocks a:hover {
     border: #c0c0c0 1px solid;
     box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
 }
 
 .docBlocks a .docBlock {
@@ -583,4 +581,19 @@ body.no-sidebar .sidenav-trigger {
 .container .style .token.string {
     color: #9a6e3a;
     background: none;
+}
+
+
+.pages-index {
+    column-count: 3;
+}
+.pages-index ul {
+    padding-left: 0;
+}
+.pages-index ul > li {
+    list-style-type: none;
+}
+
+.pages-index code {
+    font-size: 0.8em;
 }

@@ -142,13 +142,13 @@ const StyledSnackbar = styled(Snackbar, {
     },
 
     [`& .${NotificationClasses.error}`]: {
-        backgroundColor: theme.palette.error.dark,
+        backgroundColor: theme.palette.error.main,
         color: theme.palette.error.contrastText,
     },
 
     [`& .${NotificationClasses.warning}`]: {
-        backgroundColor: theme.palette.error.light,
-        color: theme.palette.error.contrastText,
+        backgroundColor: theme.palette.warning.main,
+        color: theme.palette.warning.contrastText,
     },
 
     [`& .${NotificationClasses.undo}`]: {

@@ -128,7 +128,9 @@ const useRoutesAndResourcesFromChildren = (
             setStatus(
                 !!functionChild
                     ? 'loading'
-                    : newRoutesAndResources.resources.length > 0
+                    : newRoutesAndResources.resources.length > 0 ||
+                      newRoutesAndResources.customRoutesWithLayout.length > 0 ||
+                      newRoutesAndResources.customRoutesWithoutLayout.length > 0
                     ? 'ready'
                     : 'empty'
             );
