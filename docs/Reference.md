@@ -5,6 +5,8 @@ title: "Index"
 
 # Index
 
+## Components
+
 <div class="pages-index" markdown="1">
 
 **- A -**
@@ -186,23 +188,41 @@ title: "Index"
 * [`<WithPermissions>`](./WithPermissions.md)
 * [`<WithRecord>`](./WithRecord.md)
 * [`<WizardForm>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#wizardform)<img class="icon" src="./img/premium.svg" />
+
+</div>
+
+## Hooks
+
+<div class="pages-index" markdown="1">
+
+**- A -**
 * [`useAppLocationState`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useapplocationstate-retrieve-and-define-app-location)<img class="icon" src="./img/premium.svg" />
 * [`useAppLocationMatcher`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useapplocationmatcher-apply-a-matching-on-the-current-app-location)<img class="icon" src="./img/premium.svg" />
 * [`useAuthenticated`](./useAuthenticated.md)
 * [`useAuthProvider`](./useAuthProvider.md)
 * [`useAuthState`](./useAuthState.md)
+
+**- C -**
 * [`useCanAccess`](./useCanAccess.md)<img class="icon" src="./img/premium.svg" />
 * `useCheckAuth`
 * `useChoices`
 * [`useChoicesContext`](./useChoicesContext.md)
 * [`useCreate`](./useCreate.md)
 * [`useCreateController`](./useCreateController.md)
+
+**- D -**
 * [`useDataProvider`](./useDataProvider.md#usedataprovider)
 * [`useDelete`](./useDelete.md)
 * [`useDeleteMany`](./useDeleteMany.md)
+
+**- E -**
 * [`useEditController`](./useEditController.md)
 * `useExpanded`
+
+**- F -**
 * `useFilterState`
+
+**- G -**
 * [`useGetIdentity`](./useGetIdentity.md)
 * [`useGetList`](./useGetList.md)
 * [`useGetMany`](./useGetMany.md)
@@ -210,9 +230,15 @@ title: "Index"
 * [`useGetManyReference`](./useGetManyReference.md)
 * [`useGetOne`](./useGetOne.md)
 * [`useGetPermissions`](./WithPermissions.md)
+
+**- H -**
 * [`useHasLock`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
 * [`useHasLocks`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
+
+**- I -**
 * [`useInput`](./useInput.md)
+
+**- L -**
 * [`useList`](./useList.md)
 * [`useListContext`](./useListContext.md)
 * [`useListController`](./useListController.md)
@@ -223,11 +249,19 @@ title: "Index"
 * [`useLogin`](./useLogin.md)
 * [`useLogout`](./useLogout.md)
 * `useLogoutIfAccessDenied`
+
+**- M -**
 * [`useMediaQuery`](./Theming.md#usemediaquery-hook)
+
+**- N -**
 * [`useNotify`](./useNotify.md)
+
+**- P -**
 * `usePaginationState`
 * [`usePermissions`](./usePermissions.md)
 * [`usePreferences`](https://marmelab.com/ra-enterprise/modules/ra-preferences#usepreferences-reading-and-writing-user-preferences)<img class="icon" src="./img/premium.svg" />
+
+**- R -**
 * [`useRecordContext`](./useRecordContext.md)
 * `useRecordSelection`
 * [`useRedirect`](./useRedirect.md)
@@ -240,6 +274,8 @@ title: "Index"
 * [`useRemoveFromStore`](./useRemoveFromStore.md)
 * [`useResetStore`](./useResetStore.md)
 * [`useResourceAppLocation`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useresourceapplocation-access-current-resource-app-location)<img class="icon" src="./img/premium.svg" />
+
+**- S -**
 * [`useSearch`](https://marmelab.com/ra-enterprise/modules/ra-search#the-usesearch-hook)<img class="icon" src="./img/premium.svg" />
 * `useSidebarState`
 * [`useShowController`](./useShowController.md#useshowcontroller)
@@ -247,13 +283,19 @@ title: "Index"
 * [`useStore`](./useStore.md)
 * [`useStoreContext`](./useStoreContext.md)
 * `useSuggestions`
+
+**- T -**
 * [`useTheme`](./Theming.md#changing-the-theme-programmatically)
 * [`useTour`](https://marmelab.com/ra-enterprise/modules/ra-tour)<img class="icon" src="./img/premium.svg" />
 * [`useTranslate`](./useTranslate.md)
+
+**- U -**
 * [`useUpdate`](./useUpdate.md)
 * [`useUpdateMany`](./useUpdateMany.md)
 * [`useUnselect`](./useUnselect.md)
 * [`useUnselectAll`](./useUnselectAll.md)
+
+**- W -**
 * [`useWarnWhenUnsavedChanges`](./EditTutorial.md#warning-about-unsaved-changes)
 
 </div>
