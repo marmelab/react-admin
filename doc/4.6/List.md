@@ -690,7 +690,7 @@ const PostList = () => {
     const redirect = useRedirect();
 
     const onError = (error) => {
-        notify(`Could not load list: ${error.message}`, { type: 'warning' });
+        notify(`Could not load list: ${error.message}`, { type: 'error' });
         redirect('/dashboard');
     };
 

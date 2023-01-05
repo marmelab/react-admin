@@ -22,7 +22,7 @@ export const MyMenu = () => (
     <Menu>
         <Menu.DashboardItem />
         <Menu.ResourceItem name="posts" />
-        <Menu.ResourceItem name="comments" >
+        <Menu.ResourceItem name="comments" />
         <Menu.ResourceItem name="users" />
         <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
     </Menu>
@@ -102,7 +102,7 @@ export const MyMenu = () => (
     <Menu>
         <Menu.DashboardItem />
         <Menu.ResourceItem name="posts" />
-        <Menu.ResourceItem name="comments" >
+        <Menu.ResourceItem name="comments" />
         <Menu.ResourceItem name="users" />
         <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
     </Menu>

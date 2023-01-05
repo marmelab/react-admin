@@ -38,7 +38,7 @@ const DeleteCommentButton = () => {
                 notify('Comment deleted');
             },
             onError: (error) => {
-                notify(`Comment deletion error: ${error.message}`, { type: 'warning' });
+                notify(`Comment deletion error: ${error.message}`, { type: 'error' });
             },
         }
     );

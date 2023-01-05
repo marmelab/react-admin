@@ -320,3 +320,11 @@ export const MyLayout = (props) => (
 ```
 
 ![React-Query DevTools](./img/react-query-devtools.png)
+
+## Alternative Layouts
+
+If you can't configure `<Layout>` to render the layout you want, you can use an alternative layout component, such as [`<ContainerLayout>`](./ContainerLayout.md): A centered layout with horizontal navigation.
+
+![Container layout](https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/container-layout.png)
+
+You can also write your own layout component from scratch. Check [the Theming documentation](./Theming.md#using-a-custom-layout) for examples

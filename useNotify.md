@@ -31,6 +31,8 @@ The callback takes 2 arguments:
 Here are more examples of `useNotify` calls: 
 
 ```js
+// notify an error
+notify(`This is an error`, { type: 'error' });
 // notify a warning
 notify(`This is a warning`, { type: 'warning' });
 // pass translation arguments
