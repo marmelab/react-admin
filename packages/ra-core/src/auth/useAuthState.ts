@@ -81,7 +81,7 @@ const useAuthState = (
                     !shouldSkipNotify &&
                         notify(
                             getErrorMessage(error, 'ra.auth.auth_check_error'),
-                            { type: 'warning' }
+                            { type: 'error' }
                         );
                 }
             },
