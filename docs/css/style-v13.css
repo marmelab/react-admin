@@ -592,6 +592,7 @@ body.no-sidebar .sidenav-trigger {
 }
 .pages-index ul > li {
     list-style-type: none;
+    line-height: 1.2em;
 }
 
 .pages-index code {

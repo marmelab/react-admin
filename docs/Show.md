@@ -406,6 +406,28 @@ export const PostShow = () => (
 ```
 {% endraw %}
 
+## Live Updates 
+
+If you want to subscribe to live updates on the record (topic: `resource/[resource]/[id]`), use [the `<ShowLive>` component](./ShowLive.md) instead.
+
+```diff
+-import { Show, SimpleShowLayout, TextField } from 'react-admin';
++import { SimpleShowLayout, TextField } from 'react-admin';
++import { ShowLive } from '@react-admin/ra-realtime';
+
+const PostShow = () => (
+-   <Show>
++   <ShowLive>
+        <SimpleShowLayout>
+            <TextField source="title" />
+        </SimpleShowLayout>
+-   </Show>
++   </ShowLive>
+);
+```
+
+It shows a notification and refreshes the page when the record is updated by another user. Also, it displays a warning when the record is deleted by another user.
+
 ## API
 
 * [`<Show>`]

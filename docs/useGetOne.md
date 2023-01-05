@@ -105,3 +105,26 @@ const UserProfile = () => {
     return <div>User {data.username}</div>;
 };
 ```
+
+## Live Updates
+
+If you want to subscribe to live updates on the record (topic: `resource/[resource]/[id]`), use [the `useGetOneLive` hook](./useGetOneLive.md) instead.
+
+```diff
+-import { useGetOne, useRecordContext } from 'react-admin';
++import { useRecordContext } from 'react-admin';
++import { useGetOneLive } from '@react-admin/ra-realtime';
+
+const UserProfile = () => {
+    const record = useRecordContext();
+-   const { data, isLoading, error } = useGetOne('users', { id: record.userId });
++   const { data, isLoading, error } = useGetOneLive('users', { id: record.userId });
+    if (isLoading) {
+        return <Loading />;
+    }
+    if (error) {
+        return <p>ERROR</p>;
+    }
+    return <div>User {data.username}</div>;
+};
+```
