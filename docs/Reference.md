@@ -1,12 +1,13 @@
 ---
 layout: default
-title: "Reference"
+title: "Index"
 ---
 
-# Reference
+# Index
 
-<div style="column-count:3" markdown="1">
+<div class="pages-index" markdown="1">
 
+**- A -**
 * [`<AccordionForm>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#accordionform)<img class="icon" src="./img/premium.svg" />
 * `<Actions>`
 * [`<Admin>`](./Admin.md)
@@ -17,6 +18,8 @@ title: "Reference"
 * [`<Authenticated>`](./Authenticated.md)
 * [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md)
 * [`<AutocompleteInput>`](./AutocompleteInput.md)
+
+**- B -**
 * [`<Breadcrumb>`](./Breadcrumb.md)<img class="icon" src="./img/premium.svg" />
 * [`<BreadcrumbItem>`](./Breadcrumb.md#breadcrumbitem)<img class="icon" src="./img/premium.svg" />
 * [`<BooleanField>`](./BooleanField.md)
@@ -24,6 +27,8 @@ title: "Reference"
 * [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton)
 * [`<BulkExportButton>`](./Buttons.md#bulkexportbutton)
 * [`<BulkUpdateButton>`](./Buttons.md#bulkupdatebutton)
+
+**- C -**
 * [`<Calendar>`](https://marmelab.com/ra-enterprise/modules/ra-calendar#calendar)<img class="icon" src="./img/premium.svg" />
 * [`<CheckboxGroupInput>`](./CheckboxGroupInput.md)
 * [`<ChipField>`](./ChipField.md)
@@ -36,6 +41,8 @@ title: "Reference"
 * [`<CreateButton>`](./Buttons.md#createbutton)
 * [`<CreateDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog-editdialog--showdialog)<img class="icon" src="./img/premium.svg" />
 * [`<CreateInDialogButton>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createindialogbutton-editindialogbutton-and-showindialogbutton)<img class="icon" src="./img/premium.svg" />
+
+**- D -**
 * [`<DashboardMenuItem>`](./Theming.md#using-a-custom-menu)
 * [`<Datagrid>`](./Datagrid.md)
 * [`<DatagridBody>`](./Datagrid.md#body)
@@ -48,6 +55,8 @@ title: "Reference"
 * [`<DateTimeInput>`](./DateTimeInput.md)
 * `<DeleteButton>`
 * [`<DualListInput>`](https://marmelab.com/ra-enterprise/modules/ra-relationships#duallistinput)<img class="icon" src="./img/premium.svg" />
+
+**- E -**
 * [`<Edit>`](./Edit.md)
 * [`<EditableDatagrid>`](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid)<img class="icon" src="./img/premium.svg" />
 * [`<EditGuesser>`](./EditGuesser.md)
@@ -56,7 +65,9 @@ title: "Reference"
 * [`<EditDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog-editdialog--showdialog)<img class="icon" src="./img/premium.svg" />
 * [`<EditInDialogButton>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createindialogbutton-editindialogbutton-and-showindialogbutton)<img class="icon" src="./img/premium.svg" />
 * [`<EmailField>`](./EmailField.md)
-* [`<Empty>`](./List.md#empty-empty-page-component)  
+* [`<Empty>`](./List.md#empty-empty-page-component)
+
+**- F -**
 * [`<FileField>`](./FileField.md)
 * [`<FileInput>`](./FileInput.md)
 * [`<Filter>`](./List.md#filters-filter-inputs)
@@ -69,12 +80,18 @@ title: "Reference"
 * [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs)
 * [`<FormTab>`](./TabbedForm.md)
 * [`<FunctionField>`](./FunctionField.md)
+
+**- H -**
 * [`<HorizontalMenu>`](./HorizontalMenu.md)<img class="icon" src="./img/premium.svg" />
+
+**- I -**
 * [`<IfCanAccess>`](./IfCanAccess.md)<img class="icon" src="./img/premium.svg" />
 * [`<ImageField>`](./ImageField.md)
 * [`<ImageInput>`](./ImageInput.md)
 * [`<ImageInputPreview>`](./ImageInput.md#imageinput)
 * [`<InspectorButton>`](./Configurable.md#inspectorbutton)
+
+**- L -**
 * [`<Labeled>`](./Labeled.md)
 * [`<Layout>`](./Theming.md#using-a-custom-layout)
 * [`<Loading>`](./Theming.md#loading)
@@ -86,17 +103,25 @@ title: "Reference"
 * [`<ListGuesser>`](./ListGuesser.md#usage)
 * [`<ListButton>`](./Buttons.md#listbutton)
 * [`<LocalesMenuButton>`](./LocalesMenuButton.md)
+
+**- M -**
 * [`<MarkdownField>`](https://marmelab.com/ra-enterprise/modules/ra-markdown#markdownfield)<img class="icon" src="./img/premium.svg" />
 * [`<MarkdownInput>`](https://marmelab.com/ra-enterprise/modules/ra-markdown#markdowninput)<img class="icon" src="./img/premium.svg" />
 * [`<Menu>`](./Theming.md#using-a-custom-menu)
 * [`<MultiLevelMenu>`](https://marmelab.com/ra-enterprise/modules/ra-navigation#multilevelmenu-replacing-the-default-menu-by-a-multi-level-one)<img class="icon" src="./img/premium.svg" />
+
+**- N -**
 * [`<Notification>`](./Theming.md#notifications)
 * [`<NullableBooleanInput>`](./NullableBooleanInput.md)
 * [`<NumberField>`](./NumberField.md)
 * [`<NumberInput>`](./NumberInput.md)
+
+**- P -**
 * [`<Pagination>`](./List.md#pagination-pagination-component)
 * [`<PasswordInput>`](./PasswordInput.md)
 * [`<PreferencesSetter>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#preferencessetter-setting-preferences-declaratively)<img class="icon" src="./img/premium.svg" />
+
+**- R -**
 * [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md)
 * [`<RealTimeEdit>`](https://marmelab.com/ra-enterprise/modules/ra-realtime#real-time-views-list-edit-show)<img class="icon" src="./img/premium.svg" />
 * [`<RealTimeList>`](https://marmelab.com/ra-enterprise/modules/ra-realtime#real-time-views-list-edit-show)<img class="icon" src="./img/premium.svg" />
@@ -116,6 +141,8 @@ title: "Reference"
 * [`<RichTextField>`](./RichTextField.md)
 * [`<RichTextInput>`](./RichTextInput.md)
 * [`<RowForm>`](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid#rowform)<img class="icon" src="./img/premium.svg" />
+
+**- S -**
 * [`<SaveButton>`](./SaveButton.md)
 * [`<SavedQueriesList>`](./SavedQueriesList.md)
 * [`<Search>`](https://marmelab.com/ra-enterprise/modules/ra-search#the-search-component)<img class="icon" src="./img/premium.svg" />
@@ -137,6 +164,8 @@ title: "Reference"
 * [`<SimpleShowLayout>`](./SimpleShowLayout.md)
 * [`<SingleFieldList>`](./SingleFieldList.md)
 * [`<SortButton>`](./SortButton.md)
+
+**- T -**
 * `<Tab>`
 * [`<TabbedForm>`](./TabbedForm.md)
 * [`<TabbedShowLayout>`](./TabbedShowLayout.md)
@@ -150,6 +179,8 @@ title: "Reference"
 * [`<TreeWithDetails>`](https://marmelab.com/ra-enterprise/modules/ra-tree#treewithdetails-component)<img class="icon" src="./img/premium.svg" />
 * [`<Toolbar>`](./Toolbar.md)
 * `<TopToolbar>`
+
+**- U -**
 * [`<UrlField>`](./UrlField.md)
 * [`<UserMenu>`](./Theming.md#usermenu-customization)
 * [`<WithPermissions>`](./WithPermissions.md)
