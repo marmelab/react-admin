@@ -91,7 +91,7 @@ describe('<Authenticated>', () => {
             expect(notificationsSpy).toEqual([
                 {
                     message: 'ra.auth.auth_check_error',
-                    type: 'error',
+                    type: 'warning',
                     notificationOptions: {},
                 },
             ]);
