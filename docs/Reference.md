@@ -151,11 +151,11 @@ title: "Index"
 * [`<ShowGuesser`](./ShowGuesser.md#showguesser)
 * [`<ShowButton>`](./Buttons.md#showbutton)
 * [`<ShowDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog-editdialog--showdialog)<img class="icon" src="./img/premium.svg" />
-* [`<ShowInDialogButton>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createindialogbutton-editindialogbutton-and-showindialogbutton)<img class="icon" src="./img/premium.svg" />
+* [`<ShowInDialogButton>`](./ShowInDialogButton.md)<img class="icon" src="./img/premium.svg" />
 * [`<Sidebar>`](./Theming.md#sidebar-customization)
 * [`<SidebarOpenPreferenceSync>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#sidebaropenpreferencesync-store-the-sidebar-openclose-state-in-preferences)<img class="icon" src="./img/premium.svg" />
 * [`<SimpleForm>`](./SimpleForm.md)
-* [`<SimpleFormIterator>`](./ArrayInput.md#usage)
+* [`<SimpleFormIterator>`](./SimpleFormIterator.md)
 * [`<SimpleList>`](./SimpleList.md)
 * [`<SimpleShowLayout>`](./SimpleShowLayout.md)
 * [`<SingleFieldList>`](./SingleFieldList.md)
@@ -167,9 +167,11 @@ title: "Index"
 * [`<TabbedShowLayout>`](./TabbedShowLayout.md)
 * [`<TextField>`](./TextField.md)
 * [`<TextInput>`](./TextInput.md)
+* [`<TimeInput>`](./TimeInput.md)
 * [`<ToggleThemeButton>`](./ToggleThemeButton.md)
 * [`<TourProvider>`](https://marmelab.com/ra-enterprise/modules/ra-tour)<img class="icon" src="./img/premium.svg" />
 * [`<TranslatableFields>`](./TranslatableFields.md)
+* [`<TranslatableInputs>`](./TranslatableInputs.md)
 * [`<Tree>`](https://marmelab.com/ra-enterprise/modules/ra-tree#tree-component)<img class="icon" src="./img/premium.svg" />
 * [`<TreeWithDetails>`](./TreeWithDetails.md)<img class="icon" src="./img/premium.svg" />
 * [`<Toolbar>`](./Toolbar.md)
@@ -182,6 +184,7 @@ title: "Index"
 * [`<WithPermissions>`](./WithPermissions.md)
 * [`<WithRecord>`](./WithRecord.md)
 * [`<WizardForm>`](./WizardForm.md)<img class="icon" src="./img/premium.svg" />
+* [`<WrapperField>`](./WrapperField.md)
 
 </div>
 
@@ -218,6 +221,7 @@ title: "Index"
 * [`useGetManyReference`](./useGetManyReference.md)
 * [`useGetOne`](./useGetOne.md)
 * [`useGetPermissions`](./WithPermissions.md)
+* [`useGetRecordId`](./useGetRecordId.md)
 
 **- H -**
 * [`useHasLock`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
@@ -256,7 +260,9 @@ title: "Index"
 * [`useResourceAppLocation`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useresourceapplocation-access-current-resource-app-location)<img class="icon" src="./img/premium.svg" />
 
 **- S -**
+* [`useSaveContext`](./useSaveContext.md)
 * [`useSearch`](https://marmelab.com/ra-enterprise/modules/ra-search#the-usesearch-hook)<img class="icon" src="./img/premium.svg" />
+* [`useShowContext`](./useShowContext.md)
 * [`useShowController`](./useShowController.md#useshowcontroller)
 * [`useStore`](./useStore.md)
 * [`useStoreContext`](./useStoreContext.md)
