@@ -14,7 +14,7 @@ function slugify(text) {
 
 function navigationFitScroll() {
     var scrollIntoView = window.sessionStorage.getItem('scrollIntoView');
-    if (true || scrollIntoView !== 'false') {
+    if (scrollIntoView !== 'false') {
         var activeMenu = document.querySelector('.sidenav li.active');
         if (activeMenu) activeMenu.parentNode.scrollIntoView();
     }
