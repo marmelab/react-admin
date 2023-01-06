@@ -145,7 +145,7 @@ You can make the `getList()` call lazy by using the `enableGetChoices` prop. Thi
 <ReferenceInput
      source="company_id"
      reference="companies"
-     enableGetChoices={({ q }) => q.length >= 2}
+     enableGetChoices={({ q }) => q && q.length >= 2}
 />
 ```
 
