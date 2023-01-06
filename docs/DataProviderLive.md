@@ -16,7 +16,7 @@ React-admin offers powerful realtime features to help you build collaborative ap
 
 ## Realtime Data Provider
 
-The realtime features are backend agnostic. Just like for CRUD oprations,realtime operations rely on the data provider, using additional methods:
+The realtime features are backend agnostic. Just like for CRUD operations,realtime operations rely on the data provider, using additional methods:
 
 - `dataProvider.subscribe(topic, callback)`
 - `dataProvider.unsubscribe(topic, callback)`

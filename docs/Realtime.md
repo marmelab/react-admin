@@ -97,19 +97,19 @@ And the following components:
 
 Ra-realtime also provides **badge notifications in the Menu**, so that users can see that something new happened to a resource list while working on another one.
 
-![RealTimeMenu](./img/RealtimeMenu.png)
+![MenuLive](./img/RealtimeMenu.png)
 
-Use `<RealTimeMenu>` instead of react-admin's `<Menu>` to get this feature:
+Use `<MenuLive>` instead of react-admin's `<Menu>` to get this feature:
 
 ```jsx
 import React from 'react';
 import { Admin, Layout, Resource } from 'react-admin';
-import { RealTimeMenu } from '@react-admin/ra-realtime';
+import { MenuLive } from '@react-admin/ra-realtime';
 
 import { PostList, PostShow, PostEdit, realTimeDataProvider } from '.';
 
 const CustomLayout = (props) => (
-    <Layout {...props} menu={RealTimeMenu} />
+    <Layout {...props} menu={MenuLive} />
 );
 
 const MyReactAdmin = () => (
@@ -121,8 +121,8 @@ const MyReactAdmin = () => (
 
 This feature leverages the following components:
 
--   [`<RealTimeMenu>`](./RealTimeMenu.md)
--   [`<RealTimeMenuItemLink>`](./RealTimeMenuItemLink.md)
+-   [`<MenuLive>`](./MenuLive.md)
+-   [`<MenuLiveItemLink>`](./MenuLive.md)
 
 ## Locks
 
