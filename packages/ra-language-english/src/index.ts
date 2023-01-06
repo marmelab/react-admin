@@ -85,6 +85,8 @@ const englishMessages: TranslationMessages = {
         message: {
             about: 'About',
             are_you_sure: 'Are you sure?',
+            auth_error:
+                'A error occurred while validating the authentication token.',
             bulk_delete_content:
                 'Are you sure you want to delete this %{name}? |||| Are you sure you want to delete these %{smart_count} items?',
             bulk_delete_title:
@@ -99,6 +101,7 @@ const englishMessages: TranslationMessages = {
             details: 'Details',
             error:
                 "A client error occurred and your request couldn't be completed.",
+
             invalid_form: 'The form is not valid. Please check for errors',
             loading: 'The page is loading, just a moment please',
             no: 'No',

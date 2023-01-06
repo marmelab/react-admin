@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isValidElement, ReactElement } from 'react';
+import { isValidElement, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import { Tab as MuiTab, TabProps as MuiTabProps } from '@mui/material';
@@ -10,6 +10,7 @@ import { useFormState } from 'react-hook-form';
 import { TabbedFormClasses } from './TabbedFormView';
 
 export const FormTabHeader = ({
+    count,
     label,
     value,
     icon,
@@ -28,11 +29,19 @@ export const FormTabHeader = ({
         to: { ...location, pathname: value },
     };
 
+    let tabLabel = isValidElement(label)
+        ? label
+        : translate(label, { _: label });
+    if (count !== undefined) {
+        tabLabel = (
+            <span>
+                {tabLabel} ({count})
+            </span>
+        );
+    }
     return (
         <MuiTab
-            label={
-                isValidElement(label) ? label : translate(label, { _: label })
-            }
+            label={tabLabel}
             value={value}
             icon={icon}
             className={clsx('form-tab', className, {
@@ -52,6 +61,7 @@ export const FormTabHeader = ({
 
 interface FormTabHeaderProps extends Omit<MuiTabProps, 'children'> {
     className?: string;
+    count?: ReactNode;
     hidden?: boolean;
     icon?: ReactElement;
     intent?: 'header' | 'content';
@@ -68,6 +78,7 @@ interface FormTabHeaderProps extends Omit<MuiTabProps, 'children'> {
 FormTabHeader.propTypes = {
     className: PropTypes.string,
     contentClassName: PropTypes.string,
+    count: PropTypes.node,
     children: PropTypes.node,
     intent: PropTypes.oneOf(['header', 'content']),
     hidden: PropTypes.bool,

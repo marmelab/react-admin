@@ -85,3 +85,36 @@ const LatestNews = () => {
 ```
 
 Alternately, you can use [the `useInfiniteGetList` hook](./useInfiniteGetList.md) to keep the previous pages on screen while loading new pages - just like users see older content when they scroll down their feed on social media. 
+
+## Live Updates
+
+If you want to subscribe to live updates on the list of records (topic: `resource/[resource]`), use [the `useGetListLive` hook](./useGetListLive.md) instead.
+
+```diff
+-import { useGetList } from 'react-admin';
++import { useGetListLive } from '@react-admin/ra-realtime';
+
+const LatestNews = () => {
+-   const { data, total, isLoading, error } = useGetList('posts', {
++   const { data, total, isLoading, error } = useGetListLive('posts', {
+        pagination: { page: 1, perPage: 10 },
+        sort: { field: 'published_at', order: 'DESC' },
+    });
+    if (isLoading) {
+        return <Loading />;
+    }
+    if (error) {
+        return <p>ERROR</p>;
+    }
+
+    return (
+        <ul>
+            {data.map(item => (
+                <li key={item.id}>{item.title}</li>
+            ))}
+        </ul>
+    );
+};
+```
+
+The `data` will automatically update when a new record is created, or an existing record is updated or deleted.

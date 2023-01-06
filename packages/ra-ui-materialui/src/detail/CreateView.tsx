@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { Card } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -48,13 +48,13 @@ export const CreateView = (props: CreateViewProps) => {
 interface CreateViewProps<RecordType extends RaRecord = any>
     extends CreateProps<RecordType>,
         Omit<CreateControllerProps<RecordType>, 'resource'> {
-    children: ReactElement;
+    children: ReactNode;
 }
 
 CreateView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     aside: PropTypes.element,
-    children: PropTypes.element,
+    children: PropTypes.node,
     className: PropTypes.string,
     defaultTitle: PropTypes.any,
     hasList: PropTypes.bool,

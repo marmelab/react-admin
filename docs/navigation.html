@@ -22,6 +22,7 @@
   <li {% if page.path == 'DataProviders.md' %} class="active" {% endif %}><a class="nav-link" href="./DataProviders.html">Setting Up</a></li>
   <li {% if page.path == 'DataProviderWriting.md' %} class="active" {% endif %}><a class="nav-link" href="./DataProviderWriting.html">Writing A Data Provider</a></li>
   <li {% if page.path == 'Actions.md' %} class="active" {% endif %}><a class="nav-link" href="./Actions.html">Querying the API</a></li>
+  <li {% if page.path == 'DataProviderLive.md' %} class="active" {% endif %}><a class="nav-link" href="./DataProviderLive.html">Real-time Updates &amp; Locks<img class="premium" src="./img/premium.svg" /></a></li>
   <li {% if page.path == 'useDataProvider.md' %} class="active" {% endif %}><a class="nav-link" href="./useDataProvider.html"><code>useDataProvider</code></a></li>
   <li {% if page.path == 'useGetList.md' %} class="active" {% endif %}><a class="nav-link" href="./useGetList.html"><code>useGetList</code></a></li>
   <li {% if page.path == 'useInfiniteGetList.md' %} class="active" {% endif %}><a class="nav-link" href="./useInfiniteGetList.html"><code>useInfiniteGetList</code></a></li>
@@ -33,8 +34,8 @@
   <li {% if page.path == 'useUpdateMany.md' %} class="active" {% endif %}><a class="nav-link" href="./useUpdateMany.html"><code>useUpdateMany</code></a></li>
   <li {% if page.path == 'useDelete.md' %} class="active" {% endif %}><a class="nav-link" href="./useDelete.html"><code>useDelete</code></a></li>
   <li {% if page.path == 'useDeleteMany.md' %} class="active" {% endif %}><a class="nav-link" href="./useDeleteMany.html"><code>useDeleteMany</code></a></li>
-  <li><a class="nav-link external" href="https://marmelab.com/ra-enterprise/modules/ra-realtime#real-time-hooks.html" target="_blank"><code>useSubscribe</code><img class="premium" src="./img/premium.svg" /></a></li>
   <li {% if page.path == 'useGetTree.md' %} class="active" {% endif %}><a class="nav-link" href="./useGetTree.html"><code>useGetTree</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'withLifecycleCallbacks.md' %} class="active" {% endif %}><a class="nav-link" href="./withLifecycleCallbacks.html"><code>withLifecycleCallbacks</code></a></li>
 </ul>
 
 <ul><div>Auth Provider and Security</div>
@@ -76,6 +77,7 @@
   <li {% if page.path == 'Pagination.md' %} class="active" {% endif %}><a class="nav-link" href="./Pagination.html"><code>&lt;Pagination&gt;</code></a></li>
   <li {% if page.path == 'SortButton.md' %} class="active" {% endif %}><a class="nav-link" href="./SortButton.html"><code>&lt;SortButton&gt;</code></a></li>
   <li {% if page.path == 'SelectColumnsButton.md' %} class="active" {% endif %}><a class="nav-link" href="./SelectColumnsButton.html"><code>&lt;SelectColumnsButton&gt;</code></a></li>
+  <li {% if page.path == 'Count.md' %} class="active" {% endif %}><a class="nav-link" href="./Count.html"><code>&lt;Count&gt;</code></a></li>
   <li {% if page.path == 'useList.md' %} class="active" {% endif %}><a class="nav-link" href="./useList.html"><code>useList</code></a></li>
   <li {% if page.path == 'useListContext.md' %} class="active" {% endif %}><a class="nav-link" href="./useListContext.html"><code>useListContext</code></a></li>
   <li {% if page.path == 'useListController.md' %} class="active" {% endif %}><a class="nav-link" href="./useListController.html"><code>useListController</code></a></li>
@@ -149,6 +151,7 @@
   <li {% if page.path == 'ReferenceField.md' %} class="active" {% endif %}><a class="nav-link" href="./ReferenceField.html"><code>&lt;ReferenceField&gt;</code></a></li>
   <li {% if page.path == 'ReferenceArrayField.md' %} class="active" {% endif %}><a class="nav-link" href="./ReferenceArrayField.html"><code>&lt;ReferenceArrayField&gt;</code></a></li>
   <li {% if page.path == 'ReferenceManyField.md' %} class="active" {% endif %}><a class="nav-link" href="./ReferenceManyField.html"><code>&lt;ReferenceManyField&gt;</code></a></li>
+  <li {% if page.path == 'ReferenceManyCount.md' %} class="active" {% endif %}><a class="nav-link" href="./ReferenceManyCount.html"><code>&lt;ReferenceManyCount&gt;</code></a></li>
   <li {% if page.path == 'ReferenceManyToManyField.md' %} class="active" {% endif %}><a class="nav-link" href="./ReferenceManyToManyField.html"><code>&lt;ReferenceManyToManyField&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
   <li {% if page.path == 'ReferenceOneField.md' %} class="active" {% endif %}><a class="nav-link" href="./ReferenceOneField.html"><code>&lt;ReferenceOneField&gt;</code></a></li>
   <li {% if page.path == 'RichTextField.md' %} class="active" {% endif %}><a class="nav-link" href="./RichTextField.html"><code>&lt;RichTextField&gt;</code></a></li>
@@ -222,6 +225,30 @@
   <li {% if page.path == 'Search.md' %} class="active" {% endif %}><a class="nav-link" href="./Search.html"><code>&lt;Search&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
   <li {% if page.path == 'Buttons.md' %} class="active" {% endif %}><a class="nav-link" href="./Buttons.html">Buttons</a></li>
   <li {% if page.path == 'Confirm.md' %} class="active" {% endif %}><a class="nav-link" href="./Confirm.html">Confirm</a></li>
+</ul>
+
+<ul><div>Realtime</div>
+  <li {% if page.path == 'Realtime.md' %} class="active" {% endif %}><a class="nav-link" href="./Realtime.html">Introduction</a></li>
+  <li {% if page.path == 'RealtimeDataProvider.md' %} class="active" {% endif %}><a class="nav-link" href="./RealtimeDataProvider.html">Data Provider Requirements</a></li>
+  <li {% if page.path == 'usePublish.md' %} class="active" {% endif %}><a class="nav-link" href="./usePublish.html"><code>usePublish</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'useSubscribe.md' %} class="active" {% endif %}><a class="nav-link" href="./useSubscribe.html"><code>useSubscribe</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'useSubscribeCallback.md' %} class="active" {% endif %}><a class="nav-link" href="./useSubscribeCallback.html"><code>useSubscribeCallback</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'useSubscribeToRecord.md' %} class="active" {% endif %}><a class="nav-link" href="./useSubscribeToRecord.html"><code>useSubscribeToRecord</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'useSubscribeToRecordList.md' %} class="active" {% endif %}><a class="nav-link" href="./useSubscribeToRecordList.html"><code>useSubscribeToRecordList</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'useLock.md' %} class="active" {% endif %}><a class="nav-link" href="./useLock.html"><code>useLock</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'useUnlock.md' %} class="active" {% endif %}><a class="nav-link" href="./useUnlock.html"><code>useUnlock</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'useGetLock.md' %} class="active" {% endif %}><a class="nav-link" href="./useGetLock.html"><code>useGetLock</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'useGetLockLive.md' %} class="active" {% endif %}><a class="nav-link" href="./useGetLockLive.html"><code>useGetLockLive</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'useGetLocks.md' %} class="active" {% endif %}><a class="nav-link" href="./useGetLocks.html"><code>useGetLocks</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'useGetLocksLive.md' %} class="active" {% endif %}><a class="nav-link" href="./useGetLocksLive.html"><code>useGetLocksLive</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'useLockOnMount.md' %} class="active" {% endif %}><a class="nav-link" href="./useLockOnMount.html"><code>useLockOnMount</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'useLockOnCall.md' %} class="active" {% endif %}><a class="nav-link" href="./useLockOnCall.html"><code>useLockOnCall</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'useGetListLive.md' %} class="active" {% endif %}><a class="nav-link" href="./useGetListLive.html"><code>useGetListLive</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'useGetOneLive.md' %} class="active" {% endif %}><a class="nav-link" href="./useGetOneLive.html"><code>useGetOneLive</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'ListLive.md' %} class="active" {% endif %}><a class="nav-link" href="./ListLive.html"><code>&lt;ListLive&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'EditLive.md' %} class="active" {% endif %}><a class="nav-link" href="./EditLive.html"><code>&lt;EditLive&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'ShowLive.md' %} class="active" {% endif %}><a class="nav-link" href="./ShowLive.html"><code>&lt;ShowLive&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path == 'MenuLive.md' %} class="active" {% endif %}><a class="nav-link" href="./MenuLive.html"><code>&lt;MenuLive&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
 </ul>
 
 <ul><div>Recipes</div>

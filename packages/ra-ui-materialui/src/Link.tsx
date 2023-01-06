@@ -2,19 +2,24 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Link as RRLink, LinkProps as RRLinkProps } from 'react-router-dom';
-import { styled, Link as MuiLink } from '@mui/material';
+import {
+    styled,
+    Link as MuiLink,
+    LinkProps as MuiLinkProps,
+} from '@mui/material';
 
 export const Link = (props: LinkProps) => {
     const { to, children, className, ...rest } = props;
 
     return (
-        <StyledLink
+        <StyledMuiLink
+            component={RRLink}
             to={to}
             className={clsx(LinkClasses.link, className)}
             {...rest}
         >
             {children}
-        </StyledLink>
+        </StyledMuiLink>
     );
 };
 
@@ -24,17 +29,15 @@ export const LinkClasses = {
     link: `${PREFIX}-link`,
 };
 
-const MuiRouterLink = (props: RRLinkProps) => (
-    <MuiLink component={RRLink} {...props} />
-);
-
-const StyledLink = styled(MuiRouterLink)(({ theme }) => ({
+const StyledMuiLink = styled(MuiLink)(({ theme }) => ({
     [`&.${LinkClasses.link}`]: {
         textDecoration: 'none',
     },
-}));
+})) as typeof MuiLink; // @see https://mui.com/material-ui/guides/typescript/#complications-with-the-component-prop
 
-export interface LinkProps extends RRLinkProps {
+// @see https://mui.com/material-ui/guides/composition/#with-typescript
+export interface LinkProps
+    extends MuiLinkProps<React.ElementType<any>, RRLinkProps> {
     className?: string;
 }
 

@@ -21,6 +21,7 @@ import {
     List,
     NumberField,
     ReferenceArrayField,
+    ReferenceManyCount,
     SearchInput,
     ShowButton,
     SimpleList,
@@ -140,6 +141,12 @@ const PostList = () => {
                         source="published_at"
                         sortByOrder="DESC"
                         cellClassName="publishedAt"
+                    />
+                    <ReferenceManyCount
+                        label="resources.posts.fields.nb_comments"
+                        reference="comments"
+                        target="post_id"
+                        link
                     />
                     <BooleanField
                         source="commentable"

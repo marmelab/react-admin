@@ -3,19 +3,18 @@ import expect from 'expect';
 import { testDataProvider } from 'ra-core';
 import { render, screen, waitFor } from '@testing-library/react';
 import { TabbedForm } from './TabbedForm';
-import { FormTab } from './FormTab';
 import { TextInput } from '../input';
 import { AdminContext } from '../AdminContext';
 
-describe('<FormTab label="foo" />', () => {
+describe('<TabbedForm.Tab label="foo" />', () => {
     it('should display <Toolbar />', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <TabbedForm>
-                    <FormTab label="foo">
+                    <TabbedForm.Tab label="foo">
                         <TextInput source="name" />
                         <TextInput source="city" />
-                    </FormTab>
+                    </TabbedForm.Tab>
                 </TabbedForm>
             </AdminContext>
         );
@@ -24,7 +23,7 @@ describe('<FormTab label="foo" />', () => {
         });
     });
 
-    it('should render a TabbedForm with FormTabs having custom props without warnings', async () => {
+    it('should render a TabbedForm with TabbedForm.Tabs having custom props without warnings', async () => {
         let countWarnings = 0;
         const spy = jest
             .spyOn(console, 'error')
@@ -39,7 +38,7 @@ describe('<FormTab label="foo" />', () => {
         const { container } = render(
             <AdminContext dataProvider={testDataProvider()}>
                 <TabbedForm>
-                    <FormTab
+                    <TabbedForm.Tab
                         label="First"
                         resource="posts"
                         record={record}
@@ -47,8 +46,8 @@ describe('<FormTab label="foo" />', () => {
                         variant="standard"
                     >
                         <TextInput source="name" />
-                    </FormTab>
-                    <FormTab
+                    </TabbedForm.Tab>
+                    <TabbedForm.Tab
                         label="Second"
                         resource="posts"
                         record={record}
@@ -56,8 +55,8 @@ describe('<FormTab label="foo" />', () => {
                         variant="filled"
                     >
                         <TextInput source="name" />
-                    </FormTab>
-                    <FormTab
+                    </TabbedForm.Tab>
+                    <TabbedForm.Tab
                         label="Third"
                         resource="posts"
                         record={record}
@@ -65,7 +64,7 @@ describe('<FormTab label="foo" />', () => {
                         variant="outlined"
                     >
                         <TextInput source="name" />
-                    </FormTab>
+                    </TabbedForm.Tab>
                 </TabbedForm>
             </AdminContext>
         );

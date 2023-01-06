@@ -1,12 +1,6 @@
 /* eslint react/jsx-key: off */
 import * as React from 'react';
-import {
-    Show,
-    Tab,
-    TabbedShowLayout,
-    TextField,
-    usePermissions,
-} from 'react-admin';
+import { Show, TabbedShowLayout, TextField, usePermissions } from 'react-admin';
 
 import Aside from './Aside';
 
@@ -15,14 +9,17 @@ const UserShow = () => {
     return (
         <Show>
             <TabbedShowLayout>
-                <Tab label="user.form.summary">
+                <TabbedShowLayout.Tab label="user.form.summary">
                     <TextField source="id" />
                     <TextField source="name" />
-                </Tab>
+                </TabbedShowLayout.Tab>
                 {permissions === 'admin' && (
-                    <Tab label="user.form.security" path="security">
+                    <TabbedShowLayout.Tab
+                        label="user.form.security"
+                        path="security"
+                    >
                         <TextField source="role" />
-                    </Tab>
+                    </TabbedShowLayout.Tab>
                 )}
             </TabbedShowLayout>
             <Aside />

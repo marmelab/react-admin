@@ -87,6 +87,8 @@ const frenchMessages: TranslationMessages = {
         message: {
             about: 'Au sujet de',
             are_you_sure: 'Êtes-vous sûr ?',
+            auth_error:
+                "Une erreur est survenue lors de la validation de votre jeton d'authentification.",
             bulk_delete_content:
                 'Êtes-vous sûr(e) de vouloir supprimer cet élément ? |||| Êtes-vous sûr(e) de vouloir supprimer ces %{smart_count} éléments ?',
             bulk_delete_title:
@@ -103,6 +105,7 @@ const frenchMessages: TranslationMessages = {
             details: 'Détails',
             error:
                 "En raison d'une erreur côté navigateur, votre requête n'a pas pu aboutir.",
+
             invalid_form: "Le formulaire n'est pas valide.",
             loading:
                 'La page est en cours de chargement, merci de bien vouloir patienter.',

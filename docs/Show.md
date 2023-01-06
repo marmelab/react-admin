@@ -80,12 +80,12 @@ export const PostShow = () => (
     <Show>
 -       <SimpleShowLayout>
 +       <TabbedShowLayout>
-+           <Tab label="Main>
++           <TabbedShowLayout.Tab label="Main>
                 <TextField source="title" />
                 <TextField source="teaser" />
                 <RichTextField source="body" />
                 <DateField label="Publication date" source="created_at" />
-+           </Tab>
++           </TabbedShowLayout.Tab>
 -       </SimpleShowLayout>
 +       </TabbedShowLayout>
     </Show>
@@ -362,25 +362,25 @@ export const PostShow = () => {
 ```
 {% endraw %}
 
-This also works inside a `TabbedShowLayout`, and you can hide a `Tab` completely:
+This also works inside a `<TabbedShowLayout>`, and you can hide a `TabbedShowLayout.Tab` completely:
 
 {% raw %}
 ```jsx
-import { Show, TabbedShowLayout, Tab, TextField } from 'react-admin';
+import { Show, TabbedShowLayout, TextField } from 'react-admin';
 
 export const UserShow = () => {
     const { permissions } = usePermissions();
     return (
         <Show>
             <TabbedShowLayout>
-                <Tab label="user.form.summary">
+                <TabbedShowLayout.Tab label="user.form.summary">
                     {permissions === 'admin' && <TextField source="id" />}
                     <TextField source="name" />
-                </Tab>
+                </TabbedShowLayout.Tab>
                 {permissions === 'admin' &&
-                    <Tab label="user.form.security">
+                    <TabbedShowLayout.Tab label="user.form.security">
                         <TextField source="role" />
-                    </Tab>}
+                    </TabbedShowLayout.Tab>}
             </TabbedShowLayout>
         </Show>
     );
@@ -405,6 +405,28 @@ export const PostShow = () => (
 );
 ```
 {% endraw %}
+
+## Live Updates 
+
+If you want to subscribe to live updates on the record (topic: `resource/[resource]/[id]`), use [the `<ShowLive>` component](./ShowLive.md) instead.
+
+```diff
+-import { Show, SimpleShowLayout, TextField } from 'react-admin';
++import { SimpleShowLayout, TextField } from 'react-admin';
++import { ShowLive } from '@react-admin/ra-realtime';
+
+const PostShow = () => (
+-   <Show>
++   <ShowLive>
+        <SimpleShowLayout>
+            <TextField source="title" />
+        </SimpleShowLayout>
+-   </Show>
++   </ShowLive>
+);
+```
+
+It shows a notification and refreshes the page when the record is updated by another user. Also, it displays a warning when the record is deleted by another user.
 
 ## API
 

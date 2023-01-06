@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { RaRecord, useCheckMinimumRequiredProps } from 'ra-core';
 
@@ -51,7 +51,7 @@ import { CreateBase } from 'ra-core';
  * export default App;
  */
 export const Create = <RecordType extends RaRecord = any>(
-    props: CreateProps<RecordType> & { children: ReactElement }
+    props: CreateProps<RecordType> & { children: ReactNode }
 ): ReactElement => {
     useCheckMinimumRequiredProps('Create', ['children'], props);
     const {
@@ -84,7 +84,7 @@ export const Create = <RecordType extends RaRecord = any>(
 Create.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     aside: PropTypes.element,
-    children: PropTypes.element,
+    children: PropTypes.node,
     className: PropTypes.string,
     disableAuthentication: PropTypes.bool,
     hasEdit: PropTypes.bool,

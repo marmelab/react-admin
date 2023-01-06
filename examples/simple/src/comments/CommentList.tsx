@@ -111,7 +111,11 @@ const CommentGrid = () => {
                             />
                         </CardContent>
                         <CardContent sx={{ flexGrow: 1 }}>
-                            <Typography component="span" variant="body2">
+                            <Typography
+                                component="span"
+                                variant="body2"
+                                data-testid="postLink"
+                            >
                                 {translate('comment.list.about')}&nbsp;
                             </Typography>
                             <ReferenceField

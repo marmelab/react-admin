@@ -10,7 +10,6 @@ import {
 import { Labeled } from '../Labeled';
 import { TextField, NumberField } from '../field';
 import { TabbedShowLayout } from './TabbedShowLayout';
-import { Tab } from './Tab';
 
 export default { title: 'ra-ui-materialui/detail/TabbedShowLayout' };
 
@@ -28,15 +27,38 @@ export const Basic = () => (
         <ResourceContext.Provider value="books">
             <RecordContextProvider value={record}>
                 <TabbedShowLayout>
-                    <Tab label="First">
+                    <TabbedShowLayout.Tab label="First">
                         <TextField source="id" />
                         <TextField source="title" />
-                    </Tab>
-                    <Tab label="Second">
+                    </TabbedShowLayout.Tab>
+                    <TabbedShowLayout.Tab label="Second">
                         <TextField source="author" />
                         <TextField source="summary" />
                         <NumberField source="year" />
-                    </Tab>
+                    </TabbedShowLayout.Tab>
+                </TabbedShowLayout>
+            </RecordContextProvider>
+        </ResourceContext.Provider>
+    </MemoryRouter>
+);
+
+export const Count = () => (
+    <MemoryRouter>
+        <ResourceContext.Provider value="books">
+            <RecordContextProvider value={record}>
+                <TabbedShowLayout>
+                    <TabbedShowLayout.Tab label="Main">
+                        <TextField source="id" />
+                        <TextField source="title" />
+                    </TabbedShowLayout.Tab>
+                    <TabbedShowLayout.Tab label="Details">
+                        <TextField source="author" />
+                        <TextField source="summary" />
+                        <NumberField source="year" />
+                    </TabbedShowLayout.Tab>
+                    <TabbedShowLayout.Tab label="Reviews" count={27}>
+                        <TextField source="reviews" />
+                    </TabbedShowLayout.Tab>
                 </TabbedShowLayout>
             </RecordContextProvider>
         </ResourceContext.Provider>
@@ -53,12 +75,12 @@ export const CustomChild = () => (
         <ResourceContext.Provider value="books">
             <RecordContextProvider value={record}>
                 <TabbedShowLayout>
-                    <Tab label="First">
+                    <TabbedShowLayout.Tab label="First">
                         <BookTitle />
                         <WithRecord
                             render={record => <span>{record.author}</span>}
                         />
-                    </Tab>
+                    </TabbedShowLayout.Tab>
                 </TabbedShowLayout>
             </RecordContextProvider>
         </ResourceContext.Provider>
@@ -70,7 +92,7 @@ export const CustomLabel = () => (
         <ResourceContext.Provider value="books">
             <RecordContextProvider value={record}>
                 <TabbedShowLayout>
-                    <Tab label="First">
+                    <TabbedShowLayout.Tab label="First">
                         <TextField label="Identifier" source="id" />
                         <TextField source="title" />
                         <Labeled label="Author name">
@@ -78,7 +100,7 @@ export const CustomLabel = () => (
                         </Labeled>
                         <TextField label={false} source="summary" />
                         <NumberField source="year" />
-                    </Tab>
+                    </TabbedShowLayout.Tab>
                 </TabbedShowLayout>
             </RecordContextProvider>
         </ResourceContext.Provider>
@@ -90,13 +112,13 @@ export const Spacing = () => (
         <ResourceContext.Provider value="books">
             <RecordContextProvider value={record}>
                 <TabbedShowLayout spacing={3}>
-                    <Tab label="First">
+                    <TabbedShowLayout.Tab label="First">
                         <TextField source="id" />
                         <TextField source="title" />
                         <TextField source="author" />
                         <TextField source="summary" />
                         <NumberField source="year" />
-                    </Tab>
+                    </TabbedShowLayout.Tab>
                 </TabbedShowLayout>
             </RecordContextProvider>
         </ResourceContext.Provider>
@@ -108,13 +130,13 @@ export const Divider = () => (
         <ResourceContext.Provider value="books">
             <RecordContextProvider value={record}>
                 <TabbedShowLayout divider={<MuiDivider />}>
-                    <Tab label="First">
+                    <TabbedShowLayout.Tab label="First">
                         <TextField source="id" />
                         <TextField source="title" />
                         <TextField source="author" />
                         <TextField source="summary" />
                         <NumberField source="year" />
-                    </Tab>
+                    </TabbedShowLayout.Tab>
                 </TabbedShowLayout>
             </RecordContextProvider>
         </ResourceContext.Provider>
@@ -132,13 +154,13 @@ export const SX = () => (
                         bgcolor: 'text.disabled',
                     }}
                 >
-                    <Tab label="First">
+                    <TabbedShowLayout.Tab label="First">
                         <TextField source="id" />
                         <TextField source="title" />
                         <TextField source="author" />
                         <TextField source="summary" />
                         <NumberField source="year" />
-                    </Tab>
+                    </TabbedShowLayout.Tab>
                 </TabbedShowLayout>
             </RecordContextProvider>
         </ResourceContext.Provider>

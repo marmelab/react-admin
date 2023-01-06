@@ -41,6 +41,7 @@ Here are all the props accepted by the component:
 - [`theme`](#theme)
 - [`layout`](#layout)
 - [`loginPage`](#loginpage)
+- [`authCallbackPage`](#authcallbackpage)
 - [`history`](#history)
 - [`basename`](#basename)
 - [`ready`](#ready)
@@ -450,6 +451,28 @@ You can also disable it completely along with the `/login` route by passing `fal
 See The [Authentication documentation](./Authentication.md#customizing-the-login-component) for more details.
 
 **Tip**: Before considering writing your own login page component, please take a look at how to change the default [background image](./Theming.md#using-a-custom-login-page) or the [MUI theme](#theme). See the [Authentication documentation](./Authentication.md#customizing-the-login-component) for more details.
+
+## `authCallbackPage`
+
+React-admin apps contain a special route called `/auth-callback` to let external authentication providers (like Auth0, Cognito, OIDC servers) redirect users after login. This route renders the `AuthCallback` component by default, which in turn calls `authProvider.handleCallback`. 
+
+If you need a different behavior for this route, you can render a custom component by passing it as the `authCallbackPage` prop.
+
+```jsx
+import MyAuthCallbackPage from './MyAuthCallbackPage';
+
+const App = () => (
+    <Admin authCallbackPage={MyAuthCallbackPage}>
+        ...
+    </Admin>
+);
+```
+
+**Note**: You should seldom use this option, even when using an external authentication provider. Since you can already define the `/auth-callback` route controller via `authProvider.handleCallback`, the `authCallbackPage` prop is only useful when you need the user's feedback after they logged in.
+
+You can also disable the `/auth-callback` route altogether by passing `authCallbackPage={false}`.
+
+See The [Authentication documentation](./Authentication.md#using-external-authentication-providers) for more details.
 
 ## ~~`history`~~
 

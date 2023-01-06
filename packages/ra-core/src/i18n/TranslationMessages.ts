@@ -92,6 +92,7 @@ export interface TranslationMessages extends StringMap {
             [key: string]: StringMap | string;
             about: string;
             are_you_sure: string;
+            auth_error: string;
             bulk_delete_content: string;
             bulk_delete_title: string;
             bulk_update_content: string;

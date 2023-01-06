@@ -322,3 +322,25 @@ Just use an empty `filter` query parameter to force empty filters:
 If you need to display a menu item with a submenu, you should use [the `<MultiLevelMenu>` component](./MultiLevelMenu.md) instead of `<Menu>`.
 
 ![multilevel menu](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.gif)
+
+## Live Updates
+
+You can display a badge on the menu item to indicate that new data is available. Use [the `<MenuLive>` component](./MenuLive.md) instead of `<Menu>` to enable this feature.
+
+```jsx
+import { Admin, Layout, LayoutProps, Resource } from 'react-admin';
+import { MenuLive } from '@react-admin/ra-realtime';
+import { PostList, PostShow, PostEdit, realTimeDataProvider } from '.';
+
+const CustomLayout = (props: LayoutProps) => (
+    <Layout {...props} menu={MenuLive} />
+);
+
+const MyReactAdmin = () => (
+    <Admin dataProvider={realTimeDataProvider} layout={CustomLayout}>
+        <Resource name="posts" list={PostList} show={PostShow} edit={PostEdit} />
+    </Admin>
+);
+```
+
+![MenuLive](./img/MenuLive.png)
