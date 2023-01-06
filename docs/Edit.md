@@ -639,3 +639,24 @@ You can do the same for error notifications, by passing a custom `onError`  call
 * If you want to allow edition from the `list` page, use [the `<EditDialog>` component](./EditDialog.md)
 * If you want to allow edition from another page, use [the `<EditInDialogButton>` component](./EditInDialogButton.md)
 
+## Live Updates
+
+If you want to subscribe to live updates on the record (topic: `resource/[resource]/[id]`), use [the `<EditLive>` component](./EditLive.md) instead.
+
+```diff
+-import { Edit, SimpleForm, TextInput } from 'react-admin';
++import { SimpleForm, TextInput } from 'react-admin';
++import { EditLive } from '@react-admin/ra-realtime';
+
+const PostEdit = () => (
+-   <Edit>
++   <EditLive>
+        <SimpleForm>
+            <TextInput source="title" />
+        </SimpleForm>
+-   </Edit>
++   </EditLive>
+);
+```
+
+The user will see alerts when other users update or delete the record.
