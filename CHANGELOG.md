@@ -1,5 +1,23 @@
 # Changelog
 
+## v4.7.0
+
+* Add lifecycle callbacks (`beforeDelete`, `afterUpdate`, etc.) to facilitate dataProvider customization ([#8511](https://github.com/marmelab/react-admin/pull/8511)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<Count>` and `<ReferenceManyCount>` components ([#8492](https://github.com/marmelab/react-admin/pull/8492)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `/login-callback` route and new optional `authProvider.handleLoginCalback()` method ([#8457](https://github.com/marmelab/react-admin/pull/8457)) ([djhi](https://github.com/djhi))
+* Add ability to set `anchorOrigin` in `useNotify` ([#8541](https://github.com/marmelab/react-admin/pull/8541)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to pass multiple children to `<List>` and `<Create>` ([#8533](https://github.com/marmelab/react-admin/pull/8533)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<TabbedForm.Tab>` and `<TabbedShowLayout.Tab>` shortcuts ([#8525](https://github.com/marmelab/react-admin/pull/8525)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to pass a tab count in `<TabbedForm.Tab>` and `<TabbedShowLayout.Tab>` ([#8543](https://github.com/marmelab/react-admin/pull/8543)) ([fzaninotto](https://github.com/fzaninotto))
+* Add data sharing across tabs in `ra-data-local-storage` ([#8542](https://github.com/marmelab/react-admin/pull/8542)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<AutocompleteInput create>` does not support nested `optionText` ([#8556](https://github.com/marmelab/react-admin/pull/8556)) ([slax57](https://github.com/slax57))
+* Use react-query for `useAuthState` and `useAuthenticated` ([#8496](https://github.com/marmelab/react-admin/pull/8496)) ([djhi](https://github.com/djhi))
+* Deprecate `usePermissionsOptimised` ([#8521](https://github.com/marmelab/react-admin/pull/8521)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Add ability to to extend the authProvider ([#8551](https://github.com/marmelab/react-admin/pull/8551)) ([djhi](https://github.com/djhi))
+* [Doc] Add Realtime documentation ([#8555](https://github.com/marmelab/react-admin/pull/8555)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add `<DataTimeInput>` section about how to build a parse function ([#8553](https://github.com/marmelab/react-admin/pull/8553)) ([slax57](https://github.com/slax57))
+* [Doc] Fix instructions for setting up a redirection url for third-party auth ([#8494](https://github.com/marmelab/react-admin/pull/8494)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## 4.6.3
 
 * Fix `<ListGuesser>` links to Edit view even though there is only a ShowView ([#8546](https://github.com/marmelab/react-admin/pull/8546)) ([WiXSL](https://github.com/WiXSL))
