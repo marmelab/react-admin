@@ -381,13 +381,17 @@ If you provided a React element for the optionText prop, you must also provide t
             }
 
             if (option?.id === createId) {
-                return option?.name;
+                return get(
+                    option,
+                    typeof optionText === 'string' ? optionText : 'name'
+                );
             }
 
             if (!isListItem && option[optionValue || 'id'] === emptyValue) {
-                return option[
+                return get(
+                    option,
                     typeof optionText === 'string' ? optionText : 'name'
-                ];
+                );
             }
 
             if (!isListItem && inputText !== undefined) {

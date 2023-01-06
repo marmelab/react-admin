@@ -806,6 +806,49 @@ describe('<AutocompleteArrayInput />', () => {
         expect(screen.getByText('Programming')).not.toBeNull();
     });
 
+    it('should use optionText with a string value including "." as text identifier when a create element is passed', () => {
+        const choices = [
+            { id: 't', foobar: { name: 'Technical' } },
+            { id: 'p', foobar: { name: 'Programming' } },
+        ];
+        const newChoice = {
+            id: 'js_fatigue',
+            foobar: { name: 'New Kid On The Block' },
+        };
+
+        const Create = () => {
+            const context = useCreateSuggestionContext();
+            const handleClick = () => {
+                choices.push(newChoice);
+                context.onCreate(newChoice);
+            };
+
+            return <button onClick={handleClick}>Get the kid</button>;
+        };
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <AutocompleteArrayInput
+                        {...defaultProps}
+                        create={<Create />}
+                        optionText="foobar.name"
+                        choices={choices}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        userEvent.type(
+            screen.getByLabelText('resources.posts.fields.tags'),
+            'a'
+        );
+        expect(screen.queryAllByRole('option')).toHaveLength(3);
+        expect(screen.getByText('Technical')).not.toBeNull();
+        expect(screen.getByText('Programming')).not.toBeNull();
+        expect(screen.getByText('ra.action.create_item')).not.toBeNull();
+    });
+
     it('should support creation of a new choice through the onCreate event when optionText is a function', async () => {
         const choices = [
             { id: 'ang', name: 'Angular' },
