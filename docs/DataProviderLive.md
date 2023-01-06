@@ -14,6 +14,8 @@ Teams where several people work in parallel on a common task need to allow live 
 
 React-admin offers powerful realtime features to help you build collaborative applications, based on the Publish / Subscribe (PubSub) pattern. The [Realtime documentation](./Realtime.md) explains how to use them.
 
+These features are part of the [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" />.
+
 ## Realtime Data Provider
 
 The realtime features are backend agnostic. Just like for CRUD operations,realtime operations rely on the data provider, using additional methods:
