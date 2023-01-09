@@ -189,7 +189,7 @@ const fetchJson = (url, options = {}) => {
         options.headers = new Headers({ Accept: 'application/json' });
     }
     // add your own headers here
-    options.headers.set('X-Custom-Header', 'foobar');
+    options.headers['X-Custom-Header'] = 'foobar';
     return fetchUtils.fetchJson(url, options);
 }
 const dataProvider = simpleRestProvider('http://path.to.my.api/', fetchJson);
