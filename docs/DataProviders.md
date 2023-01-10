@@ -189,7 +189,7 @@ const fetchJson = (url, options = {}) => {
         options.headers = new Headers({ Accept: 'application/json' });
     }
     // add your own headers here
-    options.headers['X-Custom-Header'] = 'foobar';
+    options.headers.set('X-Custom-Header', 'foobar');
     return fetchUtils.fetchJson(url, options);
 }
 const dataProvider = simpleRestProvider('http://path.to.my.api/', fetchJson);
@@ -199,6 +199,21 @@ const App = () => (
         <Resource name="posts" list={PostList} />
     </Admin>
 );
+```
+
+**Tip**: For TypeScript users, here is a typed version of the `fetchJson` function:
+
+```ts
+const fetchJson = (url: string, options: fetchUtils.Options = {}) => {
+    const customHeaders = (options.headers ||
+        new Headers({
+            Accept: 'application/json',
+        })) as Headers;
+    // add your own headers here
+    customHeaders.set('X-Custom-Header', 'foobar');
+    options.headers = customHeaders;
+    return fetchUtils.fetchJson(url, options);
+}
 ```
 
 Now all the requests to the REST API will contain the `X-Custom-Header: foobar` header.
