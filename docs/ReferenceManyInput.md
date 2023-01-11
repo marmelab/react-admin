@@ -9,7 +9,7 @@ Use `<ReferenceManyInput>` in an `<Edit>` or `<Create>` view to edit one-to-many
 
 ![ReferenceManyInput](./img/reference-many-input.gif)
 
-`<ReferenceManyInput>` fetches the related records, and renders them in a sub-form. When users add, remove of update related records, the `<ReferenceManyInput>` component stores these changes locally. When the users actually submit the form, `<ReferenceManyInput>` computes a diff with the existing relationship, and sends the related changes (additions, deletions, and updates) to the server.
+`<ReferenceManyInput>` fetches the related records, and renders them in a sub-form. When users add, remove or update related records, the `<ReferenceManyInput>` component stores these changes locally. When the users actually submit the form, `<ReferenceManyInput>` computes a diff with the existing relationship, and sends the related changes (additions, deletions, and updates) to the server.
 
 ## Usage
 
