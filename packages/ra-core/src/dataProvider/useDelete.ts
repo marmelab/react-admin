@@ -16,6 +16,7 @@ import {
     MutationMode,
     GetListResult as OriginalGetListResult,
 } from '../types';
+import { useEvent } from '../util';
 
 /**
  * Get a callback to call the dataProvider.delete() method, the result and the loading state.
@@ -387,7 +388,7 @@ export const useDelete = <
         }
     };
 
-    return [mutate, mutation];
+    return [useEvent(mutate), mutation];
 };
 
 type Snapshot = [key: QueryKey, value: any][];

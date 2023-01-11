@@ -9,6 +9,7 @@ import {
 
 import { useDataProvider } from './useDataProvider';
 import { RaRecord, CreateParams } from '../types';
+import { useEvent } from '../util';
 
 /**
  * Get a callback to call the dataProvider.create() method, the result and the loading state.
@@ -142,7 +143,7 @@ export const useCreate = <
         );
     };
 
-    return [create, mutation];
+    return [useEvent(create), mutation];
 };
 
 export interface UseCreateMutateParams<RecordType extends RaRecord = any> {
