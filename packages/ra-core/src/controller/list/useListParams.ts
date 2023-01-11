@@ -96,7 +96,7 @@ export const useListParams = ({
         location.search,
         resource,
         storeKey,
-        JSON.stringify(disableSyncWithLocation ? localParams : params),
+        JSON.stringify(disableSyncWithLocation && storeKey === '' ? localParams : params),
         JSON.stringify(filterDefaultValues),
         JSON.stringify(sort),
         perPage,
@@ -111,7 +111,7 @@ export const useListParams = ({
         () =>
             getQuery({
                 queryFromLocation,
-                params: disableSyncWithLocation ? localParams : params,
+                params: disableSyncWithLocation && storeKey === '' ? localParams : params,
                 filterDefaultValues,
                 sort,
                 perPage,
@@ -141,8 +141,10 @@ export const useListParams = ({
                 tempParams.current = queryReducer(query, action);
                 // schedule side effects for next tick
                 setTimeout(() => {
-                    if (disableSyncWithLocation) {
+                    if (disableSyncWithLocation && storeKey === '') {
                         setLocalParams(tempParams.current);
+                    } else if (disableSyncWithLocation && storeKey !== '') {
+                        setParams(tempParams.current);
                     } else {
                         // the useEffect above will apply the changes to the params in the store
                         navigate(
