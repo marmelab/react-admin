@@ -3,9 +3,8 @@ import unset from 'lodash/unset';
 import get from 'lodash/get';
 import { Store } from './types';
 
-type Subscription = {
-    key: string;
-    callback: (value: any) => void;
+type Subscriptions = {
+    [key: string]: Set<(value: any) => void>;
 };
 
 /**
@@ -22,14 +21,13 @@ type Subscription = {
  * );
  */
 export const memoryStore = (storage: any = {}): Store => {
-    const subscriptions: { [key: string]: Subscription } = {};
+    const subscriptions: Subscriptions = {};
     const publish = (key: string, value: any) => {
-        Object.keys(subscriptions).forEach(id => {
-            if (!subscriptions[id]) return; // may happen if a component unmounts after a first subscriber was notified
-            if (subscriptions[id].key === key) {
-                subscriptions[id].callback(value);
-            }
-        });
+        if (subscriptions.hasOwnProperty(key)) {
+            subscriptions[key].forEach(callback => {
+                callback(value);
+            });
+        }
     };
     return {
         setup: () => {},
@@ -65,13 +63,12 @@ export const memoryStore = (storage: any = {}): Store => {
             });
         },
         subscribe: (key: string, callback: (value: string) => void) => {
-            const id = Math.random().toString();
-            subscriptions[id] = {
-                key,
-                callback,
-            };
+            if (!subscriptions[key]) {
+                subscriptions[key] = new Set();
+            }
+            subscriptions[key].add(callback);
             return () => {
-                delete subscriptions[id];
+                subscriptions[key].delete(callback);
             };
         },
     };

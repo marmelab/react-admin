@@ -1,8 +1,7 @@
 import { Store } from './types';
 
-type Subscription = {
-    key: string;
-    callback: (value: any) => void;
+type Subscriptions = {
+    [key: string]: Set<(value: any) => void>;
 };
 
 const RA_STORE = 'RaStore';
@@ -44,12 +43,13 @@ export const localStorageStore = (
 ): Store => {
     const prefix = `${RA_STORE}${appKey}`;
     const prefixLength = prefix.length;
-    const subscriptions: { [key: string]: Subscription } = {};
+    const subscriptions: Subscriptions = {};
     const publish = (key: string, value: any) => {
         Object.keys(subscriptions).forEach(id => {
-            if (!subscriptions[id]) return; // may happen if a component unmounts after a first subscriber was notified
-            if (subscriptions[id].key === key) {
-                subscriptions[id].callback(value);
+            if (subscriptions.hasOwnProperty(key)) {
+                subscriptions[key].forEach(callback => {
+                    callback(value);
+                });
             }
         });
     };
@@ -62,20 +62,11 @@ export const localStorageStore = (
         }
         const key = event.key.substring(prefixLength + 1);
         const value = event.newValue ? tryParse(event.newValue) : undefined;
-        Object.keys(subscriptions).forEach(id => {
-            if (!subscriptions[id]) return; // may happen if a component unmounts after a first subscriber was notified
-            if (subscriptions[id].key === key) {
-                if (value === null) {
-                    // an event with a null value is sent when the key is deleted.
-                    // to enable default value, we need to call setValue(undefined) instead of setValue(null)
-                    subscriptions[id].callback(undefined);
-                } else {
-                    subscriptions[id].callback(
-                        value == null ? undefined : value
-                    );
-                }
-            }
-        });
+        if (subscriptions.hasOwnProperty(key)) {
+            subscriptions[key].forEach(callback => {
+                callback(value == null ? undefined : value);
+            });
+        }
     };
 
     return {
@@ -140,13 +131,12 @@ export const localStorageStore = (
             });
         },
         subscribe: (key: string, callback: (value: string) => void) => {
-            const id = Math.random().toString();
-            subscriptions[id] = {
-                key,
-                callback,
-            };
+            if (!subscriptions[key]) {
+                subscriptions[key] = new Set();
+            }
+            subscriptions[key].add(callback);
             return () => {
-                delete subscriptions[id];
+                subscriptions[key].delete(callback);
             };
         },
     };
