@@ -2494,9 +2494,9 @@ export default LatLngInput;
 
 Just like all inputs, `useInput` now only accept `defaultValue` and will ignore `initialValue`.
 
-Besides, `useInput` used to return `final-form` properties such as `input ` and `meta`. It now returns `field`, `fieldState` and `formState` (see https://react-hook-form.com/api/usecontroller).
+Besides, `useInput` used to return `final-form` properties such as `input` and `meta`. It now returns `field`, `fieldState` and `formState` (see https://react-hook-form.com/api/usecontroller).
 
-Note that the `error` returned by `fieldState` is a not just a simple string anymore but an object with a `message` property.
+Note that the `error` returned by `fieldState` is not just a simple string anymore but an object with a `message` property.
 
 ```diff
 import TextField from 'mui/material/TextField';
