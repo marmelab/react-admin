@@ -2529,8 +2529,8 @@ const MyInput = ({ helperText, ...props }) => {
 
 const UserForm = () => (
     <SimpleForm>
--        <MyInput initialValue="John" />
-+        <MyInput defaultValue="John" />
+-       <MyInput initialValue="John" />
++       <MyInput defaultValue="John" />
     </SimpleForm>
 )
 ```
