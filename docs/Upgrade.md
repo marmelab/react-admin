@@ -2545,7 +2545,7 @@ If you used the `addLabel` prop to hide inputs label by passing `false`, you can
 
 We migrated both the `AutocompleteInput` and `AutocompleteArrayInput` components so that they leverage MUI [`<Autocomplete>`](https://mui.com/components/autocomplete/). If you relied on [Downshift](https://www.downshift-js.com/) options, you'll have to update your component.
 
-Besides, some props supported by the previous implementation aren't anymore:
+Besides, some props aren't available anymore:
 - `allowDuplicates`: This is not supported by MUI Autocomplete.
 - `clearAlwaysVisible`: the clear button is now always visible, either while hovering the input or when it has focus. You can hide it using the `<Autocomplete>` `disableClearable` prop though.
 - `resettable`: Removed for the same reason as `clearAlwaysVisible`
