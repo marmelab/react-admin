@@ -1531,7 +1531,7 @@ The same happens for `<Datagrid>`: when used in standalone, it used to accept a 
     <TextField source="year" />
 </Datagrid>
 ```
-{% raw %}
+{% endraw %}
 
 ### `setSort()` Signature Changed
 
