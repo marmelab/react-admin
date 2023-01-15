@@ -2238,7 +2238,7 @@ const MyCustomCreate = () => {
 
 ### `<FormContext>`, `<FormContextProvider>` and `useFormContext` Have Been Removed
 
-These changes only concerns you if you had custom forms not built with `<FormWithRedirect>`, or custom components relying on the form groups management (accordions or collapsible sections for instance).
+These changes only concern you if you had custom forms not built with `<FormWithRedirect>`, or custom components relying on the form groups management (accordions or collapsible sections for instance).
 
 As the `save` and `saving` properties are already available through the `<SaveContext>` component and its `useSaveContext` hook, we removed the `<FormContext>`, `<FormContextProvider>` components as well the `useFormContext` hook. The functions around form groups management have been extracted into the `<FormGroupsProvider>` component:
 
