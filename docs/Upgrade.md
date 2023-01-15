@@ -2214,14 +2214,14 @@ The `save` function signature no longer takes a redirection side effect as the s
 const MyCustomCreate = () => {
     const createControllerProps = useCreateController();
     const notify = useNotify();
-+    const redirect = useRedirect();
++   const redirect = useRedirect();
 
     const handleSubmit = (values) => {
 -        createControllerProps.save(values, 'show', {
 +        createControllerProps.save(values, {
             onSuccess: (data) => {
                 notify('Success');
-+                redirect('show', '/posts', data.id);
++               redirect('show', '/posts', data.id);
             }
         })
     }
