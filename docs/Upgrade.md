@@ -2699,10 +2699,10 @@ It is now the responsibility of the child input to call the `setFilters` functio
 const UserListFilter = [
     <ReferenceInput
         source="email"
--        filterToQuery={search => ({ email: search })}
+-       filterToQuery={search => ({ email: search })}
     >
--        <AutocompleteInput />
-+        <AutocompleteInput filterToQuery={search => ({ email: search })} />
+-       <AutocompleteInput />
++       <AutocompleteInput filterToQuery={search => ({ email: search })} />
     </ReferenceInput>
 ]
 ```
