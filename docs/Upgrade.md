@@ -2014,7 +2014,7 @@ export const PostEdit = () => (
 );
 ```
 
-The `<Toolbar>` component used to receive the `width` prop also, that allowed to display the mobile or desktop version depending on its value. This is handle internally in version 4 and you can safely remove this prop.
+The `<Toolbar>` component used to receive the `width` prop also, that allowed to display the mobile or desktop version depending on its value. This is handled internally in version 4 and you can safely remove this prop.
 
 ```diff
 import { Toolbar } from 'react-admin';
