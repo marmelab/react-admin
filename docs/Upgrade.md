@@ -2285,8 +2285,8 @@ If you had the `redirect` prop set on the `SaveButton`, provide a `onSuccess` pr
 
 ```diff
 const PostCreateToolbar = props => {
-+    const notify = useNotify();
-+    const redirect = useRedirect();
++   const notify = useNotify();
++   const redirect = useRedirect();
     return (
         <Toolbar {...props}>
             <SaveButton
