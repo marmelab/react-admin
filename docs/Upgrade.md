@@ -2504,23 +2504,23 @@ import { useInput, required } from 'react-admin';
 
 const MyInput = ({ helperText, ...props }) => {
     const {
--        input,
-+        field,
--        meta: { touched, error },
-+        fieldState: { isTouched, invalid, error },
-+        formState: { isSubmitted }
+-       input,
++       field,
+-       meta: { touched, error },
++       fieldState: { isTouched, invalid, error },
++       formState: { isSubmitted }
         isRequired
     } = useInput(props);
 
     return (
         <TextField
--            {...input}
-+            {...field}
+-           {...input}
++           {...field}
             label={props.label}
--            error={touched && !!error}
-+            error={(isTouched || isSubmitted) && invalid}
--            helperText={touched && !!error ? error : helperText}
-+            helperText={(isTouched || isSubmitted) && invalid ? error?.message : helperText}
+-           error={touched && !!error}
++           error={(isTouched || isSubmitted) && invalid}
+-           helperText={touched && !!error ? error : helperText}
++           helperText={(isTouched || isSubmitted) && invalid ? error?.message : helperText}
             required={isRequired}
             {...rest}
         />
