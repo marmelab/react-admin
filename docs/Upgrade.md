@@ -2403,7 +2403,7 @@ const PostShow = () => (
 
 ### `addLabel` Prop No Longer Considered For Show Labelling 
 
-`<SimpleShowLayout>` and `<TabbedShowLayout>` used to look for an `addLabel` prop to decide whether they needed to add a label or not. this relied on `defaultProps`, which will soon be removed from React. 
+`<SimpleShowLayout>` and `<TabbedShowLayout>` used to look for an `addLabel` prop to decide whether they needed to add a label or not. This relied on `defaultProps`, which will soon be removed from React. 
 
 The Show layout components now render a label for their children as soon as they have a `source` or a `label` prop. If you don't want a field to have a label in the show view, pass the `label={false}` prop.
 
