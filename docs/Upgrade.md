@@ -2625,25 +2625,25 @@ import {
 const MyRichTextInput = (props) => (
     <RichTextInput
         {...props}
--        configureQuill={configureQuill}
-+        toolbar={
-+			<RichTextInputToolbar>
-+				<LevelSelect size={size} />
-+				<FormatButtons size={size} />
-+				<AlignmentButtons {size} />
-+				<ListButtons size={size} />
-+				<LinkButtons size={size} />
-+				<QuoteButtons size={size} />
-+				<ClearButtons size={size} />
-+				<ToggleButton
-+					aria-label="Add a smile"
-+					title="Add a smile"
-+					onClick={() => editor.insertContent(':-)')}
-+				>
-+					<Remove fontSize="inherit" />
-+			</ToggleButton>
-+			</RichTextInputToolbar>
-		}
+-       configureQuill={configureQuill}
++       toolbar={
++           <RichTextInputToolbar>
++               <LevelSelect size={size} />
++	        <FormatButtons size={size} />
++	        <AlignmentButtons {size} />
++	        <ListButtons size={size} />
++	        <LinkButtons size={size} />
++	        <QuoteButtons size={size} />
++	        <ClearButtons size={size} />
++               <ToggleButton
++                   aria-label="Add a smile"
++	            title="Add a smile"
++                   onClick={() => editor.insertContent(':-)')}
++	        >
++                   <Remove fontSize="inherit" />
++	        </ToggleButton>
++           </RichTextInputToolbar>
+	}
     />
 }
 ```
