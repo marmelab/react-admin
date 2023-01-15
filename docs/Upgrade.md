@@ -423,17 +423,17 @@ Note that `<CustomRoutes>` handles `null` elements and fragments correctly, so y
     }
 ```
 
-See [https://reactrouter.com/docs/en/v6/upgrading/v5#advantages-of-route-element](https://reactrouter.com/docs/en/v6/upgrading/v5#advantages-of-route-element) for more details about the new `<Route>` element
+See [https://reactrouter.com/en/6.6.2/upgrading/v5#advantages-of-route-element](https://reactrouter.com/en/6.6.2/upgrading/v5#advantages-of-route-element) for more details about the new `<Route>` element
 
 ### Use `useNavigate` instead of `useHistory`
 
-See [https://reactrouter.com/docs/en/v6/upgrading/v5#use-usenavigate-instead-of-usehistory](https://reactrouter.com/docs/en/v6/upgrading/v5#use-usenavigate-instead-of-usehistory) to upgrade.
+See [https://reactrouter.com/en/v6/upgrading/v5#use-usenavigate-instead-of-usehistory](https://reactrouter.com/en/v6/upgrading/v5#use-usenavigate-instead-of-usehistory) to upgrade.
 
 ### Change The `<Route>` Syntax
 
 If your admin contains components that add new sub routes (like react-admin's `<TabbedForm>` and `<TabbedShowLayout>`), you'll need to update the `<Route>` syntax. 
 
-See [https://reactrouter.com/docs/en/v6/upgrading/v5](https://reactrouter.com/docs/en/v6/upgrading/v5) for details.
+See [https://reactrouter.com/en/v6/upgrading/v5](https://reactrouter.com/en/v6/upgrading/v5) for details.
 
 ### Using A Custom History
 
