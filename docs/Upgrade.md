@@ -2291,15 +2291,15 @@ const PostCreateToolbar = props => {
         <Toolbar {...props}>
             <SaveButton
                 label="post.action.save_and_edit"
--                redirect="edit"
-+                onSuccess={data => {
-+                    notify('ra.notification.updated', {
-+                        type: 'info',
-+                        messageArgs: { smart_count: 1 },
-+                        undoable: true,
-+                    });
-+                    redirect('edit', '/posts', data.id)
-+                }}
+-               redirect="edit"
++               onSuccess={data => {
++                   notify('ra.notification.updated', {
++                       type: 'info',
++                       messageArgs: { smart_count: 1 },
++                       undoable: true,
++                   });
++                   redirect('edit', '/posts', data.id)
++               }}
             />
         </Toolbar>
     );
