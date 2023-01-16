@@ -37,22 +37,26 @@ Here is how to display all the backlinks of the current post as a `<Datagrid>`:
 
 ```jsx
 <ArrayField source="backlinks">
-    <Datagrid>
+    <Datagrid empty={false}>
         <DateField source="date" />
         <UrlField source="url" />
     </Datagrid>
 </ArrayField>
 ```
 
+**Tip**: Note that we passed [`empty={false}`](./Datagrid.md#empty) to the `<Datagrid>` to avoid having the default empty component.
+
 And here is how to display all the tags of the current post as `<Chip>` components:
 
 ```jsx
 <ArrayField source="tags">
-    <SingleFieldList>
+    <SingleFieldList empty={false}>
         <ChipField source="name" />
     </SingleFieldList>
 </ArrayField>
 ```
+
+**Tip**: Note that we passed [`empty={false}`](./SingleFieldList.md#empty) to the `<SingleFieldList>` to avoid having the default empty component.
 
 ## Properties
 

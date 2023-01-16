@@ -212,8 +212,8 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
 
     const shouldRenderEmptyPage =
         (data == null || data.length === 0 || total === 0) &&
-        filterValues != null && // Can be null when outside a <ListContext>
-        !Object.keys(filterValues).length &&
+        (filterValues == null || // Can be null when outside a <ListContext>
+            !Object.keys(filterValues).length) &&
         empty !== false;
 
     /**
