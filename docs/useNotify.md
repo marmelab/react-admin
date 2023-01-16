@@ -172,7 +172,7 @@ const PostEdit = () => {
 
 ## Custom Notification Content
 
-You may want to notification message that contains HTML or other React components. To do so, you can pass a React node as the first argument of the `notify` function.
+You may want a notification message that contains HTML or other React components. To do so, you can pass a React node as the first argument of the `notify` function.
 
 This allows e.g. using [MUI's `<Alert>` component](https://mui.com/material-ui/react-snackbar/#customization) to display a notification with a custom icon, color, or action.
 
@@ -214,4 +214,4 @@ export const ConnectionWatcher = () => {
 };
 ```
 
-Note that if you use this ability to pass a React node, the massage will not be translated - you'll have to translate it yourself using [`useTranslate`](./useTranslate.md).
+Note that if you use this ability to pass a React node, the message will not be translated - you'll have to translate it yourself using [`useTranslate`](./useTranslate.md).
