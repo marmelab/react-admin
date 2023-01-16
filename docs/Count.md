@@ -128,7 +128,7 @@ The `<Count>` component displays a loading indicator after 1 second. This is use
 
 If you need to count the number of records related to the current one via a one-to-many relationship, use [the `<ReferenceManyCount>` component](./ReferenceManyCount.md) instead.
 
-![ReferenceManyCount](./img/ReferenceManyCount.webp)
+![ReferenceManyCount](./img/reference_many_count.webp)
 
 ```jsx
 import { 
