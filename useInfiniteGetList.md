@@ -108,7 +108,7 @@ The second parameter is the query passed to `dataProvider.getList()`. It is an o
     pagination: { page, perPage },
     sort: { field, order },
     filter: { ... },
-    meta: { ...}
+    meta: { ... }
 }
 ```
 
@@ -158,7 +158,7 @@ const { data } = useInfiniteGetList(
         pagination: { page: 1, perPage: 25 }, 
         sort: { field: 'published_at', order: 'DESC' },
         filter: { user_id: user && user.id },
-    }
+    },
     { enabled: !!user }
 );
 ```

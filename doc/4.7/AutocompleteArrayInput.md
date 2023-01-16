@@ -434,6 +434,8 @@ In that case, set the `translateChoice` prop to `false`.
 
 **Tip**: Like many other inputs, `<AutocompleteArrayInput>` accept a `fullWidth` prop.
 
+**Tip**: To use the `disableCloseOnSelect` prop, you must also set `blurOnSelect={false}`, since this is enabled by default.
+
 ## Using In A ReferenceArrayInput
 
 If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteArrayInput>` with [`<ReferenceArrayInput>`](./ReferenceArrayInput.md), and leave the `choices` empty:

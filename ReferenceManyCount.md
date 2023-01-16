@@ -18,7 +18,7 @@ Use `<ReferenceManyCount>` as a regular Field in a `<Datagrid>` or `<SimpleShowL
 
 ```jsx
 import { 
-    ChipField
+    ChipField,
     Datagrid,
     DateField,
     List,

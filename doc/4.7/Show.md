@@ -59,6 +59,7 @@ That's enough to display the post show view:
 * `className`: passed to the root component
 * [`children`](#layout): the components that render the record fields
 * [`component`](#component): overrides the root component
+* [`disableAuthentication`](#`disableauthentication`): disable the authentication check
 * [`emptyWhileLoading`](#loading-state)
 * [`queryOptions`](#queryoptions): options to pass to the react-query client
 * [`sx`](#sx-css-api): Override the styles
@@ -230,6 +231,20 @@ const ShowWrapper = ({ children }) => (
 // use a ShowWrapper as root component
 const PostShow = props => (
     <Show component={ShowWrapper} {...props}>
+        ...
+    </Show>
+);
+```
+{% endraw %}
+
+## `disableAuthentication`
+
+By default, the `<Show>` component will automatically redirect the user to the login page if the user is not authenticated. If you want to disable this behavior and allow anonymous access to a show page, set the `disableAuthentication` prop to `true`.
+
+{% raw %}
+```jsx
+const PostShow = () => (
+    <Show disableAuthentication>
         ...
     </Show>
 );
