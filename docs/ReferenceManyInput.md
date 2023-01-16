@@ -214,12 +214,12 @@ By default, related records appear ordered by id desc. You can change this order
 
 ```jsx
 <ReferenceManyInput
-  reference="variants"
-  target="product_id"
-  sort={{ field: 'sku', order: 'ASC' }}
+    reference="variants"
+    target="product_id"
+    sort={{ field: 'sku', order: 'ASC' }}
 >
    ...
-</ReferenceManyField>
+</ReferenceManyInput>
 ```
 
 {% endraw %}
@@ -242,12 +242,12 @@ You can override the style of the root component (a MUI [`<FormControl>`](https:
 
 ```jsx
 <ReferenceManyInput
-  reference="variants"
-  target="product_id"
-  sx={{ marginLeft: 2 }}
+    reference="variants"
+    target="product_id"
+    sx={{ marginLeft: 2 }}
 >
    ...
-</ReferenceManyField>
+</ReferenceManyInput>
 ```
 
 {% endraw %}
