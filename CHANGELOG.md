@@ -1,5 +1,17 @@
 # Changelog
 
+## v4.7.1
+
+* Fix `<LoginForm>` logs a warning in latest Chrome ([#8559](https://github.com/marmelab/react-admin/pull/8559)) ([fayazpn](https://github.com/fayazpn))
+* [Doc] Add new authProviders (auth0, cognito) ([#8558](https://github.com/marmelab/react-admin/pull/8558)) ([djhi](https://github.com/djhi))
+* [Doc] Fix typos in v4 Upgrade instructions ([#8577](https://github.com/marmelab/react-admin/pull/8577)) ([harryghgim](https://github.com/harryghgim))
+* [Doc] Fix `<AutoCompleteArrayInput>` doc about `disableCloseOnSelect` ([#8569](https://github.com/marmelab/react-admin/pull/8569)) ([TurtIeSocks](https://github.com/TurtIeSocks))
+* [Doc] Fix various typos ([#8568](https://github.com/marmelab/react-admin/pull/8568)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix missing `<Show disableAuthentication>` prop description ([#8565](https://github.com/marmelab/react-admin/pull/8565)) ([septentrion-730n](https://github.com/septentrion-730n))
+* [Doc] Fix Data Providers doc about typed `fetchJson` utility ([#8563](https://github.com/marmelab/react-admin/pull/8563)) ([slax57](https://github.com/slax57))
+* [TypeScript] Fix `<DatagridRowR rowClick>` type ([#8561](https://github.com/marmelab/react-admin/pull/8561)) ([stesie](https://github.com/stesie))
+* Bump json5 from 1.0.1 to 1.0.2  dependenciesPull requests that update a dependency([#8552](https://github.com/marmelab/react-admin/pull/8552)) ([dependabot](https://github.com/dependabot))
+
 ## v4.7.0
 
 * Add lifecycle callbacks (`beforeDelete`, `afterUpdate`, etc.) to facilitate dataProvider customization ([#8511](https://github.com/marmelab/react-admin/pull/8511)) ([fzaninotto](https://github.com/fzaninotto))
