@@ -368,18 +368,46 @@ const CustomResetViewsButton = () => {
 
 ## `empty`
 
-It's possible that a Datagrid will have no records to display. If the Datagrid's parent component handles the loading state, the Datagrid will return `null` and render nothing.
-Passing through a component to the `empty` prop will cause the Datagrid to render the `empty` component instead of `null`.
+When there is no result, and there is no active filter, and the resource has a create page, react-admin displays a special page inviting the user to create the first record.
+
+![Empty invite](./img/list-empty.png)
+
+You can use the `empty` prop to replace that page by a custom component:
 
 ```jsx
-const CustomEmpty = () => <div>No books found</div>;
+const Empty = () => (
+    <Box textAlign="center" m={1}>
+        <Typography variant="h4" paragraph>
+            No products available
+        </Typography>
+        <Typography variant="body1">
+            Create one or import from a file
+        </Typography>
+        <CreateButton />
+        <Button onClick={/* ... */}>Import</Button>
+    </Box>
+);
 
-const PostList = () => (
+const ProductList = () => (
     <List>
         <Datagrid empty={<CustomEmpty />}>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="views" />
+            ...
+        </Datagrid>
+    </List>
+);
+```
+
+The `empty` component can call the `useListContext()` hook to receive the same props as the `Datagrid` component. 
+
+You can also set the `empty` props value to `false` to bypass the empty page display and render an empty `Datagrid` instead.
+
+```jsx
+import { List, Datagrid } from 'react-admin';
+
+const ProductList = () => (
+    <List>
+        <Datagrid empty={false}>
+            ...
         </Datagrid>
     </List>
 );

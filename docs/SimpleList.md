@@ -44,6 +44,7 @@ It accepts the following props:
 * [`rightAvatar`](#rightavatar)
 * [`rightIcon`](#righticon)
 * [`rowStyle`](#rowstyle)
+* [`empty`](#empty)
 
 ## `leftAvatar`
 
@@ -206,6 +207,53 @@ export const PostList = props => {
         </List>
     );
 }
+```
+
+## `empty`
+
+When there is no result, and there is no active filter, and the resource has a create page, react-admin displays a special page inviting the user to create the first record.
+
+![Empty invite](./img/list-empty.png)
+
+You can use the `empty` prop to replace that page by a custom component:
+
+```jsx
+const Empty = () => (
+    <Box textAlign="center" m={1}>
+        <Typography variant="h4" paragraph>
+            No products available
+        </Typography>
+        <Typography variant="body1">
+            Create one or import from a file
+        </Typography>
+        <CreateButton />
+        <Button onClick={/* ... */}>Import</Button>
+    </Box>
+);
+
+const ProductList = () => (
+    <List>
+        <SimpleList empty={<CustomEmpty />}>
+            ...
+        </SimpleList>
+    </List>
+);
+```
+
+The `empty` component can call the `useListContext()` hook to receive the same props as the `SimpleList` component. 
+
+You can also set the `empty` props value to `false` to bypass the empty page display and render an empty `SimpleList` instead.
+
+```jsx
+import { List, Datagrid } from 'react-admin';
+
+const ProductList = () => (
+    <List>
+        <SimpleList empty={false}>
+            ...
+        </SimpleList>
+    </List>
+);
 ```
 
 ## Configurable

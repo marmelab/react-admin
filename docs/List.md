@@ -328,54 +328,6 @@ const Dashboard = () => (
 
 Please note that the selection state is not synced in the URL but in a global store using the resource as key. Thus, all lists in the page using the same resource will share the same selection state. This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. If you want the selection state to be local, you will have to implement your own `useListController` hook and pass a custom key to the `useRecordSelection` hook. You will then need to implement your own `DeleteButton` and `BulkDeleteButton` to manually unselect rows when deleting records.
 
-## `empty`: Empty Page Component
-
-When there is no result, and there is no active filter, and the resource has a create page, react-admin displays a special page inviting the user to create the first record.
-
-![Empty invite](./img/list-empty.png)
-
-You can use the `empty` prop to replace that page by a custom component:
-
-{% raw %}
-```jsx
-import { Box, Button, Typography } from '@mui/material';
-import { CreateButton, List } from 'react-admin';
-
-const Empty = () => (
-    <Box textAlign="center" m={1}>
-        <Typography variant="h4" paragraph>
-            No products available
-        </Typography>
-        <Typography variant="body1">
-            Create one or import from a file
-        </Typography>
-        <CreateButton />
-        <Button onClick={/* ... */}>Import</Button>
-    </Box>
-);
-
-const ProductList = () => (
-    <List empty={<Empty />}>
-        ...
-    </List>
-);
-```
-{% endraw %}
-
-The `empty` component can call the `useListContext()` hook to receive the same props as the `List` child component. 
-
-You can also set the `empty` props value to `false` to bypass the empty page display and render an empty list instead.
-
-```jsx
-import { List } from 'react-admin';
-
-const ProductList = () => (
-    <List empty={false}>
-        ...
-    </List>
-);
-```
-
 ## `emptyWhileLoading`
 
 Default layout components (`<Datagrid>` and `<SimpleList>`) return null when the data is loading. If you use a custom layout component instead, you'll have to handle the case where the `data` is not yet defined.
