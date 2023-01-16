@@ -89,7 +89,7 @@ export const ArrayField: FC<ArrayFieldProps> = memo(props => {
                 selectedIds: [],
                 sort: { field: null, order: null },
                 displayedFilters: null,
-                filterValues: null,
+                filterValues: {},
                 hasNextPage: null,
                 hasPreviousPage: null,
                 hideFilter: null,

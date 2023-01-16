@@ -27,6 +27,9 @@ import {
 } from 'ra-core';
 
 import { SimpleListLoading } from './SimpleListLoading';
+import { Empty } from '../Empty';
+
+const defaultEmpty = <Empty />;
 
 /**
  * The <SimpleList> component renders a list of records as a MUI <List>.
@@ -67,6 +70,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
 ) => {
     const {
         className,
+        empty = defaultEmpty,
         hasBulkActions,
         leftAvatar,
         leftIcon,
@@ -79,7 +83,9 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         rowStyle,
         ...rest
     } = props;
-    const { data, isLoading, total } = useListContext<RecordType>(props);
+    const { data, filterValues, isLoading, total } = useListContext<RecordType>(
+        props
+    );
     const resource = useResourceContext(props);
     const translate = useTranslate();
 
@@ -93,6 +99,20 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                 hasTertiaryText={!!tertiaryText}
             />
         );
+    }
+
+    const shouldRenderEmptyPage =
+        (data == null || data.length === 0 || total === 0) &&
+        filterValues != null && // Can be null when outside a <ListContext>
+        !Object.keys(filterValues).length &&
+        empty !== false;
+
+    /**
+     * Once loaded, the data for the list may be empty. Instead of
+     * displaying nothing, the SimpleList the empty component.
+     */
+    if (shouldRenderEmptyPage) {
+        return empty;
     }
 
     const renderAvatar = (
@@ -110,9 +130,9 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         }
     };
 
-    return (total == null && data?.length > 0) || total > 0 ? (
+    return (
         <Root className={className} {...sanitizeListRestProps(rest)}>
-            {data.map((record, rowIndex) => (
+            {data?.map((record, rowIndex) => (
                 <RecordContextProvider key={record.id} value={record}>
                     <ListItem disablePadding>
                         <LinkOrNot
@@ -205,7 +225,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                 </RecordContextProvider>
             ))}
         </Root>
-    ) : null;
+    );
 };
 
 SimpleList.propTypes = {
@@ -261,6 +281,7 @@ export interface SimpleListProps<RecordType extends RaRecord = any>
     isLoading?: boolean;
     isLoaded?: boolean;
     total?: number;
+    empty?: ReactElement | false;
 }
 
 const LinkOrNot = (

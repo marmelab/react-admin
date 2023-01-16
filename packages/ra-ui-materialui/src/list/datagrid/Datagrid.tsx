@@ -32,8 +32,10 @@ import DatagridContextProvider from './DatagridContextProvider';
 import { DatagridClasses, DatagridRoot } from './useDatagridStyles';
 import { BulkActionsToolbar } from '../BulkActionsToolbar';
 import { BulkDeleteButton } from '../../button';
+import { Empty } from '../Empty';
 
 const defaultBulkActionButtons = <BulkDeleteButton />;
+const defaultEmpty = <Empty />;
 
 /**
  * The Datagrid component renders a list of records as a table.
@@ -120,7 +122,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         header = DatagridHeader,
         children,
         className,
-        empty,
+        empty = defaultEmpty,
         expand,
         bulkActionButtons = defaultBulkActionButtons,
         hover,
@@ -138,6 +140,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     const {
         sort,
         data,
+        filterValues,
         isLoading,
         onSelect,
         onToggleItem,
@@ -207,17 +210,19 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         );
     }
 
+    const shouldRenderEmptyPage =
+        (data == null || data.length === 0 || total === 0) &&
+        filterValues != null && // Can be null when outside a <ListContext>
+        !Object.keys(filterValues).length &&
+        empty !== false;
+
     /**
      * Once loaded, the data for the list may be empty. Instead of
      * displaying the table header with zero data rows,
-     * the datagrid displays nothing or a custom empty component.
+     * the Datagrid displays the empty component.
      */
-    if (data == null || data.length === 0 || total === 0) {
-        if (empty) {
-            return empty;
-        }
-
-        return null;
+    if (shouldRenderEmptyPage) {
+        return empty;
     }
 
     /**
@@ -332,7 +337,7 @@ export interface DatagridProps<RecordType extends RaRecord = any>
           }>;
     header?: ReactElement | ComponentType;
     hover?: boolean;
-    empty?: ReactElement;
+    empty?: ReactElement | false;
     isRowSelectable?: (record: RecordType) => boolean;
     isRowExpandable?: (record: RecordType) => boolean;
     optimized?: boolean;

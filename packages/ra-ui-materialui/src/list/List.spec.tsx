@@ -82,7 +82,7 @@ describe('<List />', () => {
         expect(screen.queryAllByText('Hello')).toHaveLength(1);
     });
 
-    it('should render an invite when the list is empty', async () => {
+    it('should render nothing when the list is empty', async () => {
         const Dummy = () => {
             const { isLoading } = useListContext();
             return <div>{isLoading ? 'loading' : 'dummy'}</div>;
@@ -100,7 +100,6 @@ describe('<List />', () => {
             </CoreAdminContext>
         );
         await waitFor(() => {
-            screen.getByText('resources.posts.empty');
             expect(screen.queryByText('dummy')).toBeNull();
         });
     });
@@ -146,7 +145,6 @@ describe('<List />', () => {
             </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(screen.queryByText('resources.posts.empty')).toBeNull();
             screen.getByText('dummy');
         });
     });

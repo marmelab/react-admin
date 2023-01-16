@@ -5,6 +5,7 @@ import {
     testDataProvider,
     ListContextProvider,
     useRecordContext,
+    ResourceContextProvider,
 } from 'ra-core';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { Datagrid } from './Datagrid';
@@ -17,9 +18,11 @@ const TitleField = (): JSX.Element => {
 const Wrapper = ({ children, listContext }) => (
     <ThemeProvider theme={createTheme()}>
         <CoreAdminContext dataProvider={testDataProvider()}>
-            <ListContextProvider value={listContext}>
-                {children}
-            </ListContextProvider>
+            <ResourceContextProvider value={listContext.resource}>
+                <ListContextProvider value={listContext}>
+                    {children}
+                </ListContextProvider>
+            </ResourceContextProvider>
         </CoreAdminContext>
     </ThemeProvider>
 );
@@ -40,6 +43,7 @@ describe('<Datagrid />', () => {
         sort: { field: 'title', order: 'ASC' },
         onToggleItem: jest.fn(),
         onSelect: jest.fn(),
+        filterValues: {},
     };
 
     afterEach(() => {
@@ -60,7 +64,77 @@ describe('<Datagrid />', () => {
         expect(contextValue.onSelect).toHaveBeenCalledTimes(0);
     });
 
-    it('should display the correct empty component', () => {
+    it('should display the default empty component when no data is available', () => {
+        const emptyData = {
+            ...contextValue,
+            data: [],
+            ids: [],
+        };
+
+        const { rerender } = render(
+            <Wrapper listContext={emptyData}>
+                <Datagrid>
+                    <TitleField />
+                </Datagrid>
+            </Wrapper>
+        );
+
+        expect(screen.queryByText('resources.posts.empty')).not.toBeNull();
+
+        const undefinedData = {
+            ...contextValue,
+            data: undefined,
+            ids: [],
+        };
+
+        rerender(
+            <Wrapper listContext={undefinedData}>
+                <Datagrid>
+                    <TitleField />
+                </Datagrid>
+            </Wrapper>
+        );
+
+        expect(screen.queryByText('resources.posts.empty')).not.toBeNull();
+    });
+
+    it('should not display the empty component when no data is available but a filter is active', () => {
+        const emptyData = {
+            ...contextValue,
+            data: [],
+            ids: [],
+            filterValues: { q: 'foo' },
+        };
+
+        const { rerender } = render(
+            <Wrapper listContext={emptyData}>
+                <Datagrid>
+                    <TitleField />
+                </Datagrid>
+            </Wrapper>
+        );
+
+        expect(screen.queryByText('resources.posts.empty')).toBeNull();
+
+        const undefinedData = {
+            ...contextValue,
+            data: undefined,
+            ids: [],
+            filterValues: { q: 'foo' },
+        };
+
+        rerender(
+            <Wrapper listContext={undefinedData}>
+                <Datagrid>
+                    <TitleField />
+                </Datagrid>
+            </Wrapper>
+        );
+
+        expect(screen.queryByText('resources.posts.empty')).toBeNull();
+    });
+
+    it('should display the custom empty component when no data is available', () => {
         const Empty = () => <div>No records to show</div>;
 
         const emptyData = {

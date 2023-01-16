@@ -62,6 +62,7 @@ const SubWrapper = ({ children }) => {
                         onSelect: selectionModifiers.select,
                         onToggleItem: selectionModifiers.toggle,
                         onUnselectItems: selectionModifiers.clearSelection,
+                        filterValues: {},
                     }}
                 >
                     <Box sx={{ pt: 7, px: 4 }}>{children}</Box>

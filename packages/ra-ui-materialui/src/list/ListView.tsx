@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import {
-    Children,
     cloneElement,
     ReactElement,
     ReactNode,
     ElementType,
+    isValidElement,
 } from 'react';
 import PropTypes from 'prop-types';
 import { SxProps } from '@mui/system';
@@ -17,12 +17,11 @@ import { Title, TitlePropType } from '../layout/Title';
 import { ListToolbar } from './ListToolbar';
 import { Pagination as DefaultPagination } from './pagination';
 import { ListActions as DefaultActions } from './ListActions';
-import { Empty } from './Empty';
 import { Error } from '../layout';
+import { EmptyProps } from './Empty';
 
 const defaultActions = <DefaultActions />;
 const defaultPagination = <DefaultPagination />;
-const defaultEmpty = <Empty />;
 const DefaultComponent = Card;
 
 export const ListView = <RecordType extends RaRecord = any>(
@@ -40,7 +39,7 @@ export const ListView = <RecordType extends RaRecord = any>(
         className,
         component: Content = DefaultComponent,
         title,
-        empty = defaultEmpty,
+        empty = null,
         ...rest
     } = props;
     const {
@@ -84,8 +83,21 @@ export const ListView = <RecordType extends RaRecord = any>(
         </div>
     );
 
-    const renderEmpty = () =>
-        empty !== false && cloneElement(empty, { hasCreate });
+    const renderEmpty = () => {
+        if (empty != null) {
+            if (process.env.NODE_ENV === 'development') {
+                console.warn(
+                    'The empty prop is deprecated, use the empty prop of the child component you passed to the <List> instead.'
+                );
+            }
+            if (empty !== false && isValidElement(empty)) {
+                return cloneElement<EmptyProps>(empty, { hasCreate });
+            }
+        }
+        // We still render the list as it is now the responsibility of the children
+        // to render the empty state
+        return renderList();
+    };
 
     const shouldRenderEmptyPage =
         !isLoading &&
@@ -163,6 +175,9 @@ export interface ListViewProps {
     className?: string;
     children: ReactNode;
     component?: ElementType;
+    /**
+     * @deprecated pass the empty prop to the List child (Datagrid or SimpleList) instead
+     */
     empty?: ReactElement | false;
     emptyWhileLoading?: boolean;
     filters?: ReactElement | ReactElement[];
