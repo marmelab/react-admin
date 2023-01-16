@@ -17,13 +17,12 @@ import {
 } from 'ra-core';
 
 import { PaginationActions } from './PaginationActions';
-import { PaginationLimit } from './PaginationLimit';
 
 export const Pagination: FC<PaginationProps> = memo(props => {
     const {
         rowsPerPageOptions = DefaultRowsPerPageOptions,
         actions,
-        limit = DefaultLimit,
+        limit = null,
         ...rest
     } = props;
     const {
@@ -97,7 +96,15 @@ export const Pagination: FC<PaginationProps> = memo(props => {
 
     // Avoid rendering TablePagination if "page" value is invalid
     if (total === 0 || page < 1 || (total != null && page > totalPages)) {
-        return limit;
+        if (limit != null) {
+            if (process.env.NODE_ENV === 'development') {
+                console.log(
+                    '<Pagination> now renders null when there is no data. It is now the <List> child responsibility to render handle the empty state.'
+                );
+            }
+            return limit;
+        }
+        return null;
     }
 
     if (isSmall) {
@@ -145,11 +152,11 @@ export const Pagination: FC<PaginationProps> = memo(props => {
 
 Pagination.propTypes = {
     actions: ComponentPropType,
+    /* @deprecated. <Pagination> renders null when there is no data */
     limit: PropTypes.element,
     rowsPerPageOptions: PropTypes.arrayOf(PropTypes.number),
 };
 
-const DefaultLimit = <PaginationLimit />;
 const DefaultRowsPerPageOptions = [5, 10, 25, 50];
 const emptyArray = [];
 
@@ -158,5 +165,6 @@ export interface PaginationProps
         Partial<ListPaginationContextValue> {
     rowsPerPageOptions?: number[];
     actions?: FC;
+    /* @deprecated. <Pagination> renders null when there is no data */
     limit?: ReactElement;
 }
