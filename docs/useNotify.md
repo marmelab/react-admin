@@ -24,7 +24,8 @@ const NotifyButton = () => {
 ```
 
 The hook takes no argument and returns a callback. The callback takes 2 arguments:
-- The message to display
+
+- The message to display (a string, or a React node)
 - an `options` object with the following keys:
     - `type`: The notification type (`info`, `success`, `error` or `warning` - the default is `info`)
     - `messageArgs`: options to pass to the `translate` function (because notification messages are translated if your admin has an `i18nProvider`). It is useful for inserting variables into the translation.
@@ -168,3 +169,49 @@ const PostEdit = () => {
     );
 }
 ```
+
+## Custom Notification Content
+
+You may want to notification message that contains HTML or other React components. To do so, you can pass a React node as the first argument of the `notify` function.
+
+This allows e.g. using [MUI's `<Alert>` component](https://mui.com/material-ui/react-snackbar/#customization) to display a notification with a custom icon, color, or action.
+
+![useNotify with node](./img/use-notify-node.png)
+
+```jsx
+import { useSubscribe } from "@react-admin/ra-realtime";
+import { useNotify, useDataProvider } from "react-admin";
+import { Alert } from "@mui/material";
+
+export const ConnectionWatcher = () => {
+  const notify = useNotify();
+  const dataProvider = useDataProvider();
+  useSubscribe("connectedUsers", (event) => {
+    if (event.type === "connected") {
+      dataProvider
+        .getOne("agents", { id: event.payload.agentId })
+        .then(({ data }) => {
+          notify(
+            <Alert severity="info">
+                Agent ${data.firstName} ${data.lastName} just logged in
+            </Alert>
+            );
+        });
+    }
+    if (event.type === "disconnected") {
+      dataProvider
+        .getOne("agents", { id: event.payload.agentId })
+        .then(({ data }) => {
+          notify(
+            <Alert severity="info">
+                Agent ${data.firstName} ${data.lastName} just logged out
+            </Alert>
+          );
+        });
+    }
+  });
+  return null;
+};
+```
+
+Note that if you use this ability to pass a React node, the massage will not be translated - you'll have to translate it yourself using [`useTranslate`](./useTranslate.md).

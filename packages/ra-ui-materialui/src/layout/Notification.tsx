@@ -86,7 +86,11 @@ export const Notification = (props: NotificationProps) => {
         <StyledSnackbar
             className={className}
             open={open}
-            message={message && translate(message, messageArgs)}
+            message={
+                message &&
+                typeof message === 'string' &&
+                translate(message, messageArgs)
+            }
             autoHideDuration={autoHideDurationFromMessage || autoHideDuration}
             disableWindowBlurListener={undoable}
             TransitionProps={{ onExited: handleExited }}
@@ -112,7 +116,9 @@ export const Notification = (props: NotificationProps) => {
             anchorOrigin={anchorOrigin}
             {...rest}
             {...options}
-        />
+        >
+            {message && typeof message !== 'string' && message}
+        </StyledSnackbar>
     );
 };
 
