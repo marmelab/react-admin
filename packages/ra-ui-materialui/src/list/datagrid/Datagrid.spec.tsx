@@ -268,4 +268,13 @@ describe('<Datagrid />', () => {
             expect(contextValue.onSelect).toHaveBeenCalledTimes(1);
         });
     });
+
+    it('should display a message when there is no result', () => {
+        render(
+            <Wrapper listContext={{ ...contextValue, data: [], total: 0 }}>
+                <Datagrid />
+            </Wrapper>
+        );
+        expect(screen.queryByText('ra.navigation.no_results')).not.toBeNull();
+    });
 });
