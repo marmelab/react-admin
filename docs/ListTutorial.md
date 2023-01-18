@@ -19,7 +19,7 @@ The List view fetches a list of records and renders them, together with UI contr
 
 To better understand how to use the various react-admin hooks and components dedicated to editing and creating, let's start by building such an edition view by hand.
 
-### A List View Build By Hand
+### A List View Built By Hand
 
 You've probably developed it a dozen times, and in fact you don't need react-admin to build, say, a book List view:
 
