@@ -104,6 +104,7 @@ This list is a bit rough in the edges (for instance, typing in the search input 
 
 Table layouts usually require a lot of code to define the table head, row, columns, etc. React-admin `<Datagrid>` component, together with Field components, can help remove that boilerplate:
 
+{% raw %}
 ```diff
 import { useState } from 'react';
 -import { Title, useGetList } from 'react-admin';
@@ -179,6 +180,7 @@ const BookList = () => {
     );
 };
 ```
+{% endraw %}
 
 `<Datagrid>` does more than the previous table: it renders table headers depending on the current sort, and allows you to change the sort order by clicking a column header. Also, for each row, `<Datagrid>` creates a `RecordContext`, which lets you use react-admin Field and Buttons without explicitly passing the row data.
 
@@ -255,6 +257,7 @@ const BookList = () => {
 
 The initial logic that grabs the records from the API, handles the filter and pagination state, and creates callbacks to change them is also common, and react-admin exposes [the `useListController` hook](./useListController.md) to do it. It returns an object that fits perfectly the format expected by `<ListContextProvider>`:
 
+{% raw %}
 ```diff
 -import { useState } from 'react';
 import { 
@@ -310,6 +313,7 @@ const BookList = () => {
     );
 };
 ```
+{% endraw %}
 
 Notice that `useListController` doesn't need the 'books' resource name - it relies on the `ResourceContext`, set by the `<Resource>` component, to guess it.
 
@@ -328,37 +332,48 @@ React-admin's List controller does much, much more than the code it replaces abo
 
 As calling the List controller and putting its result into a context is also common, react-admin provides [the `<ListBase>` component](./ListBase.md) to do it. So the example can be further simplified to the following: 
 
-```jsx
+```diff
 import { 
     Title,
-    ListBase,
+    useListController,
     Datagrid,
     TextField,
+-   ListContextProvider,
++   ListBase,
     FilterForm,
     Pagination,
     TextInput
 } from 'react-admin';
 import { Card } from '@mui/material';
 
-const filters = [<TextInput label="Search" source="q" size="small" alwaysOn />];
++const filters = [<TextInput label="Search" source="q" size="small" alwaysOn />];
 
-const BookList = () => (
-    <ListBase>
-        <div>
-            <Title title="Book list" />
-            <FilterForm filters={filters} />
-            <Card>
-                <Datagrid>
-                    <TextField source="id" />
-                    <TextField source="title" />
-                    <TextField source="author" />
-                    <TextField source="year" />
-                </Datagrid>
-            </Card>
-            <Pagination />
-        </div>
-    </ListBase>
-);
+const BookList = () => {
+-   const listContext = useListController();
+-   if (listContext.isLoading) {
+-       return <div>Loading...</div>;
+-   }
+-   const filters = [<TextInput label="Search" source="q" size="small" alwaysOn />];
+    return (
+-       <ListContextProvider value={listContext}>
++       <ListBase>
+            <div>
+                <Title title="Book list" />
+                <FilterForm filters={filters} />
+                <Card>
+                    <Datagrid>
+                        <TextField source="id" />
+                        <TextField source="title" />
+                        <TextField source="author" />
+                        <TextField source="year" />
+                    </Datagrid>
+                </Card>
+                <Pagination />
+            </div>
+-       </ListContextProvider>
++       </ListBase>
+    );
+};
 ```
 
 Notice that we're not handling the loading state manually anymore. In fact, the `<Datagrid>` component can render a skeleton while the data is being fetched.
@@ -388,6 +403,46 @@ const Pagination = () => {
 
 `<ListBase>` is a headless component: it renders only its children. But almost every List view needs a wrapping `<div>`, a title, filters, pagination, a MUI `<Card>`, etc. That's why react-admin provides [the `<List>` component](./List.md), which includes the `<ListBase>` component and a "classic" layout to reduce the boilerplate even further:
 
+```diff
+import { 
+-   Title,
+-   ListBase,
++   List,
+    Datagrid,
+    TextField,
+-   FilterForm,
+-   Pagination,
+    TextInput
+} from 'react-admin';
+-import { Card } from '@mui/material';
+
+const filters = [<TextInput label="Search" source="q" size="small" alwaysOn />];
+
+const BookList = () => (
+-   <ListBase>
+-       <div>
+-           <Title title="Book list" />
+-           <FilterForm filters={filters} />
+-           <Card>
++    <List filters={filters}>
+                <Datagrid>
+                    <TextField source="id" />
+                    <TextField source="title" />
+                    <TextField source="author" />
+                    <TextField source="year" />
+                </Datagrid>
+-           </Card>
+-           <Pagination />
+-       </div>
+-   </ListBase>
++   </List>
+);
+```
+
+## A Typical React-Admin List View
+
+Remember the first snippet in this page? The react-admin version is much shorter, and more expressive:
+
 ```jsx
 import { 
     List,
@@ -411,7 +466,7 @@ const BookList = () => (
 );
 ```
 
-Now compare this code snippet with the first snippet in this page: it's much shorter, and more expressive! By encapsulating common CRUD logic, react-admin reduces the amount of code you need to write, and lets you focus on the business logic. As you've seen with the List controller and context, there is no magic: it's just standard React hooks and components designed for B2B apps and web developers with deadlines.
+By encapsulating common CRUD logic, react-admin reduces the amount of code you need to write, and lets you focus on the business logic. As you've seen with the List controller and context, there is no magic: it's just standard React hooks and components designed for B2B apps and web developers with deadlines.
 
 ## `<ListGuesser>`: Zero-Configuration List
 
