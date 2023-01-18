@@ -104,26 +104,30 @@ This list is a bit rough in the edges (for instance, typing in the search input 
 
 Table layouts usually require a lot of code to define the table head, row, columns, etc. React-admin `<Datagrid>` component, together with Field components, can help remove that boilerplate:
 
-```jsx
+```diff
 import { useState } from 'react';
-import { Title, useGetList, Datagrid, TextField } from 'react-admin';
+-import { Title, useGetList } from 'react-admin';
++import { Title, useGetList, Datagrid, TextField } from 'react-admin';
 import {
     Card,
     TextField,
     Button,
     Toolbar,
+-   Table,
+-   TableHead,
+-   TableRow,
+-   TableBody,
+-   TableCell,
 } from '@mui/material';
-
 
 const BookList = () => {
     const [filter, setFilter] = useState('');
     const [page, setPage] = useState(1);
     const perPage = 10;
-    const sort = { field: 'id', order: 'ASC' };
     const { data, total, isLoading } = useGetList('books', {
         filter: { q: filter },
         pagination: { page, perPage },
-        sort,
+        sort: { field: 'id', order: 'ASC' }
     });
     if (isLoading) {
         return <div>Loading...</div>;
@@ -140,12 +144,32 @@ const BookList = () => {
                 margin="dense"
             />
             <Card>
-                <Datagrid data={data} sort={sort}>
-                    <TextField source="id" />
-                    <TextField source="title" />
-                    <TextField source="author" />
-                    <TextField source="year" />
-                </Datagrid>
+-               <Table sx={{ padding: 2 }} size="small">
+-                   <TableHead>
+-                       <TableRow>
+-                           <TableCell>Id</TableCell>
+-                           <TableCell>Title</TableCell>
+-                           <TableCell>Author</TableCell>
+-                           <TableCell>Year</TableCell>
+-                       </TableRow>
+-                   </TableHead>
+-                   <TableBody>
+-                       {data.map(book => (
+-                           <TableRow key={book.id}>
+-                               <TableCell>{book.id}</TableCell>
+-                               <TableCell>{book.title}</TableCell>
+-                               <TableCell>{book.author}</TableCell>
+-                               <TableCell>{book.year}</TableCell>
+-                           </TableRow>
+-                       ))}
+-                   </TableBody>
+-               </Table>
++               <Datagrid data={data} sort={sort}>
++                   <TextField source="id" />
++                   <TextField source="title" />
++                   <TextField source="author" />
++                   <TextField source="year" />
++               </Datagrid>
             </Card>
             <Toolbar>
                 {page > 1 && <Button onClick={() => setPage(page - 1)}>Previous page</Button>}
@@ -163,19 +187,20 @@ const BookList = () => {
 `<Datagrid>` requires a `data` prop to render, but it can grab it from a `ListContext` instead. Creating such a context with `<ListContextProvider>` also allows to use other react-admin components specialized in filtering (`<FilterForm>`) and pagination (`<Pagination>`), and to reduce the boilerplate code even further:
 
 {% raw %}
-```jsx
+```diff
 import { useState } from 'react';
 import { 
     Title,
     useGetList,
     Datagrid,
     TextField,
-    ListContextProvider,
-    FilterForm,
-    Pagination,
-    TextInput
++   ListContextProvider,
++   FilterForm,
++   Pagination,
++   TextInput
 } from 'react-admin';
-import { Card } from '@mui/material';
+-import { Card, TextField, Button, Toolbar } from '@mui/material';
++import { Card } from '@mui/material';
 
 const BookList = () => {
     const [filter, setFilter] = useState('');
@@ -190,25 +215,37 @@ const BookList = () => {
     if (isLoading) {
         return <div>Loading...</div>;
     }
-    const filters = [<TextInput label="Search" source="q" size="small" alwaysOn />];
-    const filterValues = { q: filter };
-    const setFilters = filters => setFilter(filters.q);
++   const filters = [<TextInput label="Search" source="q" size="small" alwaysOn />];
++   const filterValues = { q: filter };
++   const setFilters = filters => setFilter(filters.q);
     return (
-        <ListContextProvider value={{ data, total, page, perPage, setPage, filterValues, setFilters, sort }}>
-            <div>
-                <Title title="Book list" />
-                <FilterForm filters={filters} />
-                <Card>
-                    <Datagrid>
-                        <TextField source="id" />
-                        <TextField source="title" />
-                        <TextField source="author" />
-                        <TextField source="year" />
-                    </Datagrid>
-                </Card>
-                <Pagination />
-            </div>
-        </ListContextProvider>
++       <ListContextProvider value={{ data, total, page, perPage, setPage, filterValues, setFilters, sort }}>
+        <div>
+            <Title title="Book list" />
+-           <TextField
+-               label="Search"
+-               value={filter}
+-               onChange={e => setFilter(e.target.value)}
+-               variant="filled"
+-               size="small"
+-               margin="dense"
+-           />
++           <FilterForm filters={filters} />
+            <Card>
+                <Datagrid data={data} sort={sort}>
+                    <TextField source="id" />
+                    <TextField source="title" />
+                    <TextField source="author" />
+                    <TextField source="year" />
+                </Datagrid>
+            </Card>
+-           <Toolbar>
+-               {page > 1 && <Button onClick={() => setPage(page - 1)}>Previous page</Button>}
+-               {page < total / perPage && <Button onClick={() => setPage(page + 1)}>Next page</Button>}
+-           </Toolbar>
++           <Pagination />
+        </div>
++       </ListContextProvider>
     );
 };
 ```
@@ -218,10 +255,12 @@ const BookList = () => {
 
 The initial logic that grabs the records from the API, handles the filter and pagination state, and creates callbacks to change them is also common, and react-admin exposes [the `useListController` hook](./useListController.md) to do it. It returns an object that fits perfectly the format expected by `<ListContextProvider>`:
 
-```jsx
+```diff
+-import { useState } from 'react';
 import { 
     Title,
-    useListController,
+-   useGetList,
++   useListController,
     Datagrid,
     TextField,
     ListContextProvider,
@@ -232,13 +271,28 @@ import {
 import { Card } from '@mui/material';
 
 const BookList = () => {
-    const listContext = useListController();
-    if (listContext.isLoading) {
-        return <div>Loading...</div>;
-    }
+-   const [filter, setFilter] = useState('');
+-   const [page, setPage] = useState(1);
+-   const perPage = 10;
+-   const sort = { field: 'id', order: 'ASC' };
+-   const { data, total, isLoading } = useGetList('books', {
+-       filter: { q: filter },
+-       pagination: { page, perPage },
+-       sort,
+-   });
+-   if (isLoading) {
+-       return <div>Loading...</div>;
+-   }
++   const listContext = useListController();
++   if (listContext.isLoading) {
++       return <div>Loading...</div>;
++   }
     const filters = [<TextInput label="Search" source="q" size="small" alwaysOn />];
+-   const filterValues = { q: filter };
+-   const setFilters = filters => setFilter(filters.q);
     return (
-        <ListContextProvider value={listContext}>
+-       <ListContextProvider value={{ data, total, page, perPage, setPage, filterValues, setFilters, sort }}>
++       <ListContextProvider value={listContext}>
             <div>
                 <Title title="Book list" />
                 <FilterForm filters={filters} />
