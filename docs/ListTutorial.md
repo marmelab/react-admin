@@ -11,9 +11,17 @@ The List view displays a list of records, and lets users search for specific rec
 
 This tutorial explains the List view from first principles, and shows how react-admin allows you to reduce the amount of boilerplate code to focus on the business logic. 
 
-## Building A List View By Hand
+## From Pure React To React-Admin
 
-The List view fetches a list of records and renders them, together with UI controls for filter, sort and pagination. You've probably developed it a dozen times, and in fact you don't need react-admin to build, say, a book List view:
+The List view fetches a list of records and renders them, together with UI controls for filter, sort and pagination. 
+
+[![From Pure React To React-Admin](./img/list-from-react-to-react-admin.webp)](./img/list-from-react-to-react-admin.webp)
+
+To better understand how to use the various react-admin hooks and components dedicated to editing and creating, let's start by building such an edition view by hand.
+
+### A List View Build By Hand
+
+You've probably developed it a dozen times, and in fact you don't need react-admin to build, say, a book List view:
 
 {% raw %}
 ```jsx
@@ -92,7 +100,7 @@ This example uses the `useGetList` hook instead of `fetch` because `useGetList` 
 
 This list is a bit rough in the edges (for instance, typing in the search input makes one call to the dataProvider per character), but it's good enough for the purpose of this chapter. 
 
-## `<Datagrid>` Displays Fields In A Table
+### `<Datagrid>` Displays Fields In A Table
 
 Table layouts usually require a lot of code to define the table head, row, columns, etc. React-admin `<Datagrid>` component, together with Field components, can help remove that boilerplate:
 
@@ -150,7 +158,7 @@ const BookList = () => {
 
 `<Datagrid>` does more than the previous table: it renders table headers depending on the current sort, and allows you to change the sort order by clicking a column header. Also, for each row, `<Datagrid>` creates a `RecordContext`, which lets you use react-admin Field and Buttons without explicitly passing the row data.
 
-## `ListContext` Exposes List Data To Descendants
+### `ListContext` Exposes List Data To Descendants
 
 `<Datagrid>` requires a `data` prop to render, but it can grab it from a `ListContext` instead. Creating such a context with `<ListContextProvider>` also allows to use other react-admin components specialized in filtering (`<FilterForm>`) and pagination (`<Pagination>`), and to reduce the boilerplate code even further:
 
@@ -206,7 +214,7 @@ const BookList = () => {
 ```
 {% endraw %}
 
-## `useListController` Handles Controller Logic
+### `useListController` Handles Controller Logic
 
 The initial logic that grabs the records from the API, handles the filter and pagination state, and creates callbacks to change them is also common, and react-admin exposes [the `useListController` hook](./useListController.md) to do it. It returns an object that fits perfectly the format expected by `<ListContextProvider>`:
 
@@ -262,7 +270,7 @@ React-admin's List controller does much, much more than the code it replaces abo
 - it changes the current page if it's empty,
 - it translates the title 
 
-## `<ListBase>`: Component Version Of The Controller
+### `<ListBase>`: Component Version Of The Controller
 
 As calling the List controller and putting its result into a context is also common, react-admin provides [the `<ListBase>` component](./ListBase.md) to do it. So the example can be further simplified to the following: 
 
@@ -301,7 +309,7 @@ const BookList = () => (
 
 Notice that we're not handling the loading state manually anymore. In fact, the `<Datagrid>` component can render a skeleton while the data is being fetched.
 
-## `useListContext` Accesses The List Context
+### `useListContext` Accesses The List Context
 
 Using the `<ListBase>` component has one drawback: you can no longer access the list context (`data`, `total`, etc.) in the component. Instead, you have to access it from the `ListContext` using [the `useListContext` hook](./useListContext.md).
 
@@ -322,7 +330,7 @@ const Pagination = () => {
 }
 ```
 
-## `<List>` Renders Title, Filters, And Pagination
+### `<List>` Renders Title, Filters, And Pagination
 
 `<ListBase>` is a headless component: it renders only its children. But almost every List view needs a wrapping `<div>`, a title, filters, pagination, a MUI `<Card>`, etc. That's why react-admin provides [the `<List>` component](./List.md), which includes the `<ListBase>` component and a "classic" layout to reduce the boilerplate even further:
 
