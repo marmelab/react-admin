@@ -49,6 +49,67 @@ describe('<useList />', () => {
         );
     });
 
+    it('Should clear nested filterValues', async () => {
+        const callback = jest.fn();
+
+        const displayedFilters = { 'title[abc]': true, 'title[xyz]': true };
+        const filterValues = { title: { abc: 'hello', xyz: 'world' } };
+
+        const ShowHideFilterButtons = () => {
+            const listContext = useListContext();
+            return (
+                <>
+                    <button
+                        onClick={() =>
+                            listContext.setFilters(
+                                filterValues,
+                                displayedFilters
+                            )
+                        }
+                    >
+                        Show Filter
+                    </button>
+                    <button
+                        onClick={() => listContext.hideFilter('title[abc]')}
+                    >
+                        Hide Filter
+                    </button>
+                </>
+            );
+        };
+
+        const { getByText } = render(
+            <UseList data={[]} callback={callback}>
+                <ShowHideFilterButtons />
+            </UseList>
+        );
+
+        fireEvent.click(getByText('Show Filter'));
+
+        await waitFor(() => {
+            expect(callback).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    displayedFilters: {
+                        'title[abc]': true,
+                        'title[xyz]': true,
+                    },
+                    filterValues: { title: { abc: 'hello', xyz: 'world' } },
+                })
+            );
+        });
+
+        fireEvent.click(getByText('Hide Filter'));
+
+        await waitFor(() => {
+            expect(callback).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    displayedFilters: { 'title[xyz]': true },
+                    filterValues: { title: { xyz: 'world' } },
+                })
+            );
+        });
+    });
+
     it('should filter array data based on the filter props', async () => {
         const callback = jest.fn();
         const data = [

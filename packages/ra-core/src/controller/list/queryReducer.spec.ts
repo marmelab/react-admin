@@ -163,6 +163,23 @@ describe('Query Reducer', () => {
             });
         });
 
+        it('should remove filter values and displayed filters when brackets were used', () => {
+            const updatedState = queryReducer(
+                {
+                    filter: { foo: { xyz: 2 }, bar: 1 },
+                    displayedFilters: { 'foo[xyz]': true, bar: true },
+                },
+                {
+                    type: 'HIDE_FILTER',
+                    payload: 'foo[xyz]',
+                }
+            );
+            expect(updatedState.filter).toEqual({ bar: 1 });
+            expect(updatedState.displayedFilters).toEqual({
+                bar: true,
+            });
+        });
+
         it('should do nothing if the filter is already hidden', () => {
             const updatedState = queryReducer(
                 {

@@ -2,13 +2,12 @@ import get from 'lodash/get';
 import { useCallback, useEffect, useRef } from 'react';
 import isEqual from 'lodash/isEqual';
 
-import { useSafeSetState, removeEmpty } from '../../util';
+import { useSafeSetState, removeEmpty, removeKey } from '../../util';
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
 import { RaRecord, SortPayload } from '../../types';
-import { ListControllerResult } from '../list';
+import { ListControllerResult, useRecordSelection } from '../list';
 import usePaginationState from '../usePaginationState';
-import { useRecordSelection } from '../list/useRecordSelection';
 import useSortState from '../useSortState';
 import { useResourceContext } from '../../core';
 
@@ -104,8 +103,7 @@ export const useReferenceManyFieldController = (
                 return newState;
             });
             setFilterValues(previousState => {
-                const { [filterName]: _, ...newState } = previousState;
-                return newState;
+                return removeEmpty(removeKey(previousState, filterName));
             });
         },
         [setDisplayedFilters, setFilterValues]

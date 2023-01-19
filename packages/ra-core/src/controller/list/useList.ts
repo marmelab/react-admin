@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
-import { removeEmpty, useSafeSetState } from '../../util';
+import { removeEmpty, useSafeSetState, removeKey } from '../../util';
 import { FilterPayload, RaRecord, SortPayload } from '../../types';
 import { useResourceContext } from '../../core';
 import usePaginationState from '../usePaginationState';
@@ -116,8 +116,7 @@ export const useList = <RecordType extends RaRecord = any>(
                 return newState;
             });
             setFilterValues(previousState => {
-                const { [filterName]: _, ...newState } = previousState;
-                return newState;
+                return removeEmpty(removeKey(previousState, filterName));
             });
         },
         [setDisplayedFilters, setFilterValues]
