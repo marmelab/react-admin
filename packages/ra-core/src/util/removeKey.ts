@@ -8,7 +8,7 @@ const removeKey = (target, path) =>
     }, {});
 
 const deepRemoveKey = (target, path) => {
-    const paths = path.split('.');
+    const paths = path.replace(/\[/g, '.').replace(/]/g, '').split('.');
 
     if (paths.length === 1) {
         return removeKey(target, path);
