@@ -48,6 +48,39 @@ The source shows how to implement the following features:
 - [Filter by "my favorites" in the company list](https://github.com/marmelab/react-admin/blob/7c60db09aea34a90607a4e7560e9e4b51bd7b9a3/examples/crm/src/deals/OnlyMineInput.tsx)
 - [Trello-like board for the deals pipeline](https://github.com/marmelab/react-admin/blob/7c60db09aea34a90607a4e7560e9e4b51bd7b9a3/examples/crm/src/deals/DealListContent.tsx)
 
+## Help Desk
+
+A simple help desk app allowing to manage tickets, users, and tags. Built by the core team.
+
+<video src="https://user-images.githubusercontent.com/99944/212743583-a4ee135f-f55b-4305-86c4-a3da1c49bb98.mov" controls="controls" style="max-width: 100%"></video>
+
+* Demo: [https://marmelab.com/react-admin-helpdesk/](https://marmelab.com/react-admin-helpdesk/)
+* Source code: [https://github.com/marmelab/react-admin-helpdesk](https://github.com/marmelab/react-admin-helpdesk)
+
+The source shows how to implement the following features:
+
+* [Real-time notifications](https://github.com/marmelab/react-admin-helpdesk/blob/main/src/ConnectionWatcher.tsx)
+* [Real-time reads and locks](https://github.com/marmelab/react-admin-helpdesk/blob/6208ab49597544f0e8d7e238c5c676f73f30c114/src/tickets/ActivityField.tsx)
+* [Site search](https://github.com/marmelab/react-admin-helpdesk/blob/6208ab49597544f0e8d7e238c5c676f73f30c114/src/App.tsx#L22)
+* [Reference counting](https://github.com/marmelab/react-admin-helpdesk/blob/main/src/products/ProductList.tsx)
+* [Show Aside](https://github.com/marmelab/react-admin-helpdesk/blob/6208ab49597544f0e8d7e238c5c676f73f30c114/src/customers/CustomerShowAside.tsx#L10-L20)
+* [Lifecycle callbacks](https://github.com/marmelab/react-admin-helpdesk/blob/6208ab49597544f0e8d7e238c5c676f73f30c114/src/dataProvider/dataProvider.tsx#L32-L71)
+* [Tabs with count](https://github.com/marmelab/react-admin-helpdesk/blob/6208ab49597544f0e8d7e238c5c676f73f30c114/src/products/ProductShow.tsx#L30)
+* [Custom list layout with side filters](https://github.com/marmelab/react-admin-helpdesk/blob/6208ab49597544f0e8d7e238c5c676f73f30c114/src/tickets/TicketList.tsx)
+* [Custom List layout for messages](https://github.com/marmelab/react-admin-helpdesk/blob/6208ab49597544f0e8d7e238c5c676f73f30c114/src/tickets/MessageList.tsx)
+* [Custom creation form](https://github.com/marmelab/react-admin-helpdesk/blob/6208ab49597544f0e8d7e238c5c676f73f30c114/src/tickets/NewMessageForm.tsx)
+* [Latest Reference Field](https://github.com/marmelab/react-admin-helpdesk/blob/6208ab49597544f0e8d7e238c5c676f73f30c114/src/tickets/SubjectField.tsx#L14-L21)
+* [Mark as read on visit](https://github.com/marmelab/react-admin-helpdesk/blob/6208ab49597544f0e8d7e238c5c676f73f30c114/src/tickets/TicketShow.tsx#L18)
+* [List with live updates](https://github.com/marmelab/react-admin-helpdesk/blob/6208ab49597544f0e8d7e238c5c676f73f30c114/src/tickets/useGetTicketReadsForRecord.ts)
+
+## Music Player
+
+Navidrome is a Spotify clone allowing to manage songs, artists, playlists, and favorites.
+
+![Navidrome](./img/navidrome.png)
+
+* Demo: [https://demo.navidrome.org/app/](https://demo.navidrome.org/app/)
+* Source code: [https://github.com/navidrome/navidrome/](https://github.com/navidrome/navidrome/)
 
 ## Blog
 
@@ -58,20 +91,7 @@ A simple application with posts, comments and users that we use for our e2e test
 * Demo: [https://iuxnw.sse.codesandbox.io/](https://iuxnw.sse.codesandbox.io/)
 * Source code: [https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/simple](https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/simple)
 
-## Other Apps
-
-Check out [Issue #4027](https://github.com/marmelab/react-admin/issues/4027) on the react-admin GitHub for a list of apps built by other people.
-
-### Navidrome
-
-A Spotify clone, allowing to manage songs, artists, playlists, and favorites.
-
-![Navidrome](./img/navidrome.png)
-
-* Demo: [https://demo.navidrome.org/app/](https://demo.navidrome.org/app/)
-* Source code: [https://github.com/navidrome/navidrome/](https://github.com/navidrome/navidrome/)
-
-### Broadcom Layer 7 API Hub
+## Broadcom Layer 7 API Hub
 
 A framework built on top of react-admin for building developer portals.
 
@@ -79,6 +99,10 @@ A framework built on top of react-admin for building developer portals.
 
 * Source code: [https://github.com/CAAPIM/APIHub](https://github.com/CAAPIM/APIHub)
 
-### Your App Here / showcase
+## Other Apps
+
+Check out [Issue #4027](https://github.com/marmelab/react-admin/issues/4027) on the react-admin GitHub for a list of apps built by other people.
+
+## Your App Here / showcase
 
 Did you publish an app built with react-admin with open-source code? Open a PR on this page to add it to this list.
