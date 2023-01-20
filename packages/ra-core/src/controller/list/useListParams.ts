@@ -83,7 +83,7 @@ export const useListParams = ({
     perPage = 10,
     resource,
     sort = defaultSort,
-    storeKey = `${resource}.listParams`,
+    storeKey = disableSyncWithLocation ? '' : `${resource}.listParams`,
 }: ListParamsOptions): [Parameters, Modifiers] => {
     const location = useLocation();
     const navigate = useNavigate();
