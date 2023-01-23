@@ -335,7 +335,7 @@ As calling the List controller and putting its result into a context is also com
 ```diff
 import { 
     Title,
-    useListController,
+-   useListController,
     Datagrid,
     TextField,
 -   ListContextProvider,
