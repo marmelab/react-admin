@@ -111,7 +111,7 @@ import { useState } from 'react';
 +import { Title, useGetList, Datagrid, TextField } from 'react-admin';
 import {
     Card,
-    TextField,
+    TextField as MuiTextField,
     Button,
     Toolbar,
 -   Table,
@@ -136,7 +136,7 @@ const BookList = () => {
     return (
         <div>
             <Title title="Book list" />
-            <TextField
+            <MuiTextField
                 label="Search"
                 value={filter}
                 onChange={e => setFilter(e.target.value)}
@@ -201,7 +201,7 @@ import {
 +   Pagination,
 +   TextInput
 } from 'react-admin';
--import { Card, TextField, Button, Toolbar } from '@mui/material';
+-import { Card, TextField as MuiTextField, Button, Toolbar } from '@mui/material';
 +import { Card } from '@mui/material';
 
 const BookList = () => {
@@ -224,7 +224,7 @@ const BookList = () => {
 +       <ListContextProvider value={{ data, total, page, perPage, setPage, filterValues, setFilters, sort }}>
         <div>
             <Title title="Book list" />
--           <TextField
+-           <MuiTextField
 -               label="Search"
 -               value={filter}
 -               onChange={e => setFilter(e.target.value)}
