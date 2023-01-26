@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Auth Providers"
+title: "security"
 ---
 
-# Auth Providers
+# Security
 
 ![Login](./img/login.gif)
 
