@@ -485,6 +485,8 @@ const cities = {
     France: ['Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice'],
 };
 const toChoices = items => items.map(item => ({ id: item, name: item }));
+// toChoices(coutries) should be [{ id: 'USA', name: 'USA' }, ...]
+
 
 const CityInput = props => {
     const country = useWatch({ name: 'country' });
@@ -619,7 +621,9 @@ Optimistic updates and undo require no specific code on the API side - react-adm
 
 ## Roles & Permissions
 
-You can easily secure a react-admin app to restrict access to authenticated users, and to **enable or disable actions based on the user's role**. This uses the same adapter approach as for the `dataProvider`, which means you can use any authentication backend you want.
+It's the server's responsibility to check that an action is allowed for a given user, and to filter the content based on user permissions. But roles and permissions are also a client-side concern, because you want to hide or disable actions based on the user's role. For example, you may not want to show a "Delete" button for users who don't have the `admin` role.
+
+React-admin lets you **customize the user interface based on a simple set of rules**, and to define the permissions for each role in a centralized place. Whether you need to have custom pages for specific roles, or to change the props of a component based on the user's role, react-admin lets you do it. This feature uses the same adapter approach as for the `dataProvider`, which means you can use any authentication backend you want.
 
 <video controls="controls" style="max-width: 100%">
     <source src="./img/ra-rbac.mp4" type="video/mp4" />
