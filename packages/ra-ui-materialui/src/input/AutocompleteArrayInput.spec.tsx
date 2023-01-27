@@ -11,6 +11,7 @@ import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
+import { InsideReferenceArrayInput } from './AutocompleteArrayInput.stories';
 
 describe('<AutocompleteArrayInput />', () => {
     const defaultProps = {
@@ -930,5 +931,61 @@ describe('<AutocompleteArrayInput />', () => {
             'a'
         );
         expect(screen.queryAllByRole('option')).toHaveLength(2);
+    });
+
+    it('should display "No options" and not throw any error inside a ReferenceArrayInput field when referenced list is empty', async () => {
+        render(<InsideReferenceArrayInput />);
+        // Give time for the (previously thrown) error to happen
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await waitFor(() => {
+            screen.getByText('Author');
+        });
+        screen.getByRole('textbox').focus();
+        fireEvent.click(screen.getByLabelText('Clear value'));
+        fireEvent.change(screen.getByRole('textbox'), {
+            target: { value: 'plop' },
+        });
+        await waitFor(
+            () => {
+                screen.getByText('No options');
+            },
+            { timeout: 2000 }
+        );
+    });
+
+    it('should not display "No options" inside a ReferenceArrayInput field when referenced list loading', async () => {
+        render(<InsideReferenceArrayInput />);
+        // Give time for the (previously thrown) error to happen
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await waitFor(() => {
+            screen.getByText('Author');
+        });
+        screen.getByRole('textbox').focus();
+        fireEvent.click(screen.getByLabelText('Clear value'));
+        fireEvent.change(screen.getByRole('textbox'), {
+            target: { value: 'Vic' },
+        });
+
+        // As the No options message might only be displayed after a small delay,
+        // we need to check for its presence for a few seconds.
+        // This test failed before the fix
+        const noOptionsAppeared = await new Promise(resolve => {
+            let noOptionsAppeared = false;
+            const checkForNoOptions = () => {
+                noOptionsAppeared = screen.queryByText('No options') != null;
+                if (noOptionsAppeared) {
+                    clearInterval(interval);
+                    resolve(noOptionsAppeared);
+                }
+            };
+
+            const interval = setInterval(checkForNoOptions, 100);
+            setTimeout(() => {
+                clearInterval(interval);
+                resolve(noOptionsAppeared);
+            }, 2000);
+        });
+
+        expect(noOptionsAppeared).toBe(false);
     });
 });
