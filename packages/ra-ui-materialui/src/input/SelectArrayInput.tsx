@@ -247,6 +247,13 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         );
     }
 
+    // Here wen ensure we always have an array and this array does not contain the default value (empty string)
+    const finalValue = Array.isArray(field.value ?? [])
+        ? field.value
+        : field.value
+        ? [field.value]
+        : [];
+
     return (
         <>
             <StyledFormControl
@@ -273,7 +280,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     }
                     renderValue={(selected: any[]) => (
                         <div className={SelectArrayInputClasses.chips}>
-                            {selected
+                            {(Array.isArray(selected) ? selected : [])
                                 .map(item =>
                                     (allChoices || []).find(
                                         // eslint-disable-next-line eqeqeq
@@ -296,7 +303,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     {...field}
                     {...options}
                     onChange={handleChangeWithCreateSupport}
-                    value={field.value || []}
+                    value={finalValue}
                 >
                     {finalChoices.map(renderMenuItem)}
                 </Select>
