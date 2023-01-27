@@ -121,6 +121,7 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
                 });
             },
             retry: false,
+            keepPreviousData: true,
             ...options,
         }
     );
