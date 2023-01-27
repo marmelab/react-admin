@@ -1,5 +1,17 @@
 # Changelog
 
+## v4.7.2
+
+* Fix `useGetManyAggregate` error when ids is not an array ([#8603](https://github.com/marmelab/react-admin/pull/8603)) ([djhi](https://github.com/djhi))
+* Fix `<AutocompleteInput>` when multiple is true and value is not an array ([#8602](https://github.com/marmelab/react-admin/pull/8602)) ([djhi](https://github.com/djhi))
+* Fix `<SelectArrayInput>` error when value is not an array ([#8601](https://github.com/marmelab/react-admin/pull/8601)) ([djhi](https://github.com/djhi))
+* Fix `<AutocompleteInput>` flickers inside `<ReferenceInput>` ([#8599](https://github.com/marmelab/react-admin/pull/8599)) ([djhi](https://github.com/djhi))
+* [Doc] Fix typo in `<Search>` example ([#8579](https://github.com/marmelab/react-admin/pull/8579)) ([AdamMcquiff](https://github.com/AdamMcquiff))
+* [Doc] Add Features chapter ([#8598](https://github.com/marmelab/react-admin/pull/8598)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add illustration to list and edit tutorials ([#8588](https://github.com/marmelab/react-admin/pull/8588)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add HelpDesk demo ([#8583](https://github.com/marmelab/react-admin/pull/8583)) ([fzaninotto](https://github.com/fzaninotto))
+* Bump ua-parser-js from 0.7.31 to 0.7.33 ([#8600](https://github.com/marmelab/react-admin/pull/8600)) ([dependabot](https://github.com/dependabot))
+
 ## v4.7.1
 
 * Fix `<LoginForm>` logs a warning in latest Chrome ([#8559](https://github.com/marmelab/react-admin/pull/8559)) ([fayazpn](https://github.com/fayazpn))
