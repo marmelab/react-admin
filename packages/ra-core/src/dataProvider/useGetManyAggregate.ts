@@ -75,7 +75,7 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
     const queryCache = queryClient.getQueryCache();
     const { ids, meta } = params;
     const placeholderData = useMemo(() => {
-        const records = ids.map(id => {
+        const records = (Array.isArray(ids) ? ids : [ids]).map(id => {
             const queryHash = hashQueryKey([
                 resource,
                 'getOne',
@@ -91,7 +91,14 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
     }, [ids, queryCache, resource, meta]);
 
     return useQuery<RecordType[], Error, RecordType[]>(
-        [resource, 'getMany', { ids: ids.map(id => String(id)), meta }],
+        [
+            resource,
+            'getMany',
+            {
+                ids: (Array.isArray(ids) ? ids : [ids]).map(id => String(id)),
+                meta,
+            },
+        ],
         () =>
             new Promise((resolve, reject) => {
                 if (!ids || ids.length === 0) {
