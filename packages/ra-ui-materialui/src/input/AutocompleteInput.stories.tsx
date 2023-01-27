@@ -819,7 +819,7 @@ const FanList = props => {
     return data ? (
         <>
             {data.map(fan => (
-                <RecordContextProvider value={fan}>
+                <RecordContextProvider value={fan} key={fan.id}>
                     <Stack
                         direction="row"
                         alignItems="center"
