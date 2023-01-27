@@ -108,8 +108,8 @@ const PostList = () => {
     if (error) { return <p>ERROR</p>; }
     return (
         <ul>
-            {ids.map(id => (
-                <li key={id}>{data[id].title}</li>
+            {data.map(post => (
+                <li key={post.id}>{post.title}</li>
             ))}
         </ul>
     );
@@ -289,8 +289,7 @@ Check the following components to learn more about guessers:
 
 ## Search & Filtering
 
-In most admin and B2B apps, the most common task is to look for a record. React-admin many 
-features to help you **build a user experience that streamlines the search workflow**.
+In most admin and B2B apps, the most common task is to look for a record. React-admin includes many features to help you **build a user experience that streamlines the search workflow**.
 
 The most basic search feature is [the Filter Button/Form combo](./FilteringTutorial.md#the-filter-buttonform-combo): an inline form displayed on top of the list. Users also see a dropdown button allowing them to add more inputs to that form.
 
@@ -448,7 +447,7 @@ React-admin offers, out of the box, several **form layouts**:
 - [`EditInDialog`](./EditInDialog.md) for sub-forms in a modal dialog
 - and [`Form`](./Form.md), a headless component to use as a base for your custom layouts
 
-Inside forms, you can use [react-admin input components](http://0.0.0.0:4000/Inputs.html), designed for many types of data: 
+Inside forms, you can use [react-admin input components](./Inputs.md), designed for many types of data: 
 
 | Data Type             | Example value                                                | Input Components                                                                                                                                                                                     |
 |-----------------------|--------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -509,7 +508,7 @@ const OrderEdit = () => (
 export default OrderEdit;
 ```
 
-For validation, you can use react-admin's [per field validators](https://marmelab.com/react-admin/Validation.html#per-input-validation-built-in-field-validators), or a [validation schema powered by yup](https://marmelab.com/react-admin/Validation.html#schema-validation). Here is an example of per-field validation:
+For validation, you can use react-admin's [per field validators](https://marmelab.com/react-admin/Validation.html#per-input-validation-built-in-field-validators), or a [validation schema powered by yup or zod](https://marmelab.com/react-admin/Validation.html#schema-validation). Here is an example of per-field validation:
 
 ```jsx
 import {
@@ -1366,4 +1365,4 @@ The core team is fortunate to be able to work full-time on react-admin, and this
 - stay up-to-date with the latest React and libraries versions
 - contribute to the open-source community
 
-At Marmelab, "sustainable" also means **low carbon footprint**. React-admin is regularly audited with [GreenFrame](https://greenframe.io/), a tool that measures the carbon footprint of software projects. Technical choices are also made with the environment in mind. For instance, the use of [React Query](https://react-query-v3.tanstack.com//) for caching data in react-admin reduces the number of HTTP requests, and thus reduces the carbon footprint of the application.
+At Marmelab, "sustainable" also means **low carbon footprint**. React-admin is regularly audited with [GreenFrame](https://greenframe.io/), a tool that measures the carbon footprint of software projects. Technical choices are also made with the environment in mind. For instance, the use of [React Query](https://react-query-v3.tanstack.com/) for caching data in react-admin reduces the number of HTTP requests, and thus reduces the carbon footprint of the application.

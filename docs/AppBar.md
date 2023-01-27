@@ -13,7 +13,7 @@ By default, the `<AppBar>` component displays:
 
 - a hamburger icon to toggle the sidebar width,
 - the application title,
-- a button to change locales (it the application uses [i18n](./Translation.md)),
+- a button to change locales (if the application uses [i18n](./Translation.md)),
 - a loading indicator,
 - a button to display the user menu.
 
@@ -69,7 +69,7 @@ const App = () => (
 | Prop                | Required | Type           | Default  | Description                                         |
 | ------------------- | -------- | -------------- | -------- | --------------------------------------------------- |
 | `children`          | Optional | `ReactElement` | -        | What to display in the central part of the app bar  |
-| `color`             | Optional | `string`       | -        | The backgroubd color of the app bar                 |
+| `color`             | Optional | `string`       | -        | The background color of the app bar                 |
 | `enableColorOnDark` | Optional | `boolean`      | -        | If true, the `color` prop is applied in dark mode   |
 | `position`          | Optional | `string`       | -        | The positioning type.                               |
 | `sx`                | Optional | `SxProps`      | -        | Style overrides, powered by MUI System              |
