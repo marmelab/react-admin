@@ -64,7 +64,7 @@ import { addSearchMethod } from '@react-admin/ra-search';
 
 const baseDataProvider = simpleRestProvider('http://path.to.my.api/');
 
-export const dataProvider = addSearchMethod(dataProvider, [
+export const dataProvider = addSearchMethod(baseDataProvider, [
     // search across these resources
     'artists',
     'tracks',

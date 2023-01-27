@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Data Providers"
+title: "Data Fetching"
 ---
 
-# Data Providers
+# Data Fetching
 
 Whenever react-admin needs to communicate with your APIs, it does it through an object called the `dataProvider`. The `dataProvider` exposes a predefined interface that allows react-admin to query any API in a normalized way. 
 

@@ -1038,15 +1038,6 @@ const App = () => (
 
 React-admin was built with customization in mind. You can replace any react-admin component with a component of your own, for instance to display a custom list layout, or a different edit form for a given resource.
 
-Now that you've completed the tutorial, the best way to learn react-admin is by reading the introduction chapters to each of its major parts:
+Now that you've completed the tutorial, continue your journey with [the Features chapter](./Features.md), which lists all the features of react-admin.
 
-- [Data Provider and API Calls](./DataProviderIntroduction.md)
-- [Auth Provider and Security](./Authentication.md)
-- [List Page](./ListTutorial.md)
-- [Creation & Edition Pages](./EditTutorial.md)
-- [Show Pages](./ShowTutorial.md)
-- [Fields](./Fields.md)
-- [Inputs](./Inputs.md)
-- [The Store](./Store.md)
-
-To help you close the gap between theoritical knowledge and practical experience, take advantage of the react-admin [Demos](./Demos.md). They are great examples of how to use react-admin in a real world application. They also show the best practices for going beyond simple CRUD apps.
+**Tip**: To help you close the gap between theoritical knowledge and practical experience, take advantage of the react-admin [Demos](./Demos.md). They are great examples of how to use react-admin in a real world application. They also show the best practices for going beyond simple CRUD apps.
