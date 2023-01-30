@@ -46,7 +46,7 @@ If you can't find a Data Provider for your backend below, no worries! [Writing a
 * **[OpenCRUD](https://www.opencrud.org/)**: [weakky/ra-data-opencrud](https://github.com/Weakky/ra-data-opencrud)
 * **[Parse](https://parseplatform.org/)**: [almahdi/ra-data-parse](https://github.com/almahdi/ra-data-parse)
 * **[PostGraphile](https://www.graphile.org/postgraphile/)**: [bowlingx/ra-postgraphile](https://github.com/BowlingX/ra-postgraphile)
-* **[Postgres](https://github.com/mingfang/ra-postgres-dataprovider)
+* **[Postgres](https://www.postgresql.org)**: [ra-postgres-dataprovider](https://github.com/mingfang/ra-postgres-dataprovider)
 * **[PostgREST](https://postgrest.org/)**: [raphiniert-com/ra-data-postgrest](https://github.com/raphiniert-com/ra-data-postgrest)
 * **[Prisma v1](https://v1.prisma.io/docs/1.34)**: [weakky/ra-data-prisma](https://github.com/weakky/ra-data-prisma)
 * **[Prisma v2 (GraphQL)](https://www.prisma.io/)**: [panter/ra-data-prisma](https://github.com/panter/ra-data-prisma)
