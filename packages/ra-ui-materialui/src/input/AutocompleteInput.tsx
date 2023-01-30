@@ -742,8 +742,7 @@ const getSelectedItems = (
     multiple
 ) => {
     if (multiple) {
-        const coalesced = value || [];
-        return (Array.isArray(coalesced) ? coalesced : [coalesced])
+        return (Array.isArray(value ?? []) ? value : [value])
             .map(item =>
                 choices.find(
                     choice => String(item) === String(get(choice, optionValue))

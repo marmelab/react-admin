@@ -988,4 +988,43 @@ describe('<AutocompleteArrayInput />', () => {
 
         expect(noOptionsAppeared).toBe(false);
     });
+
+    it('should not crash if its value is not an array', () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    onSubmit={jest.fn()}
+                    defaultValues={{ tags: 'programming' }}
+                >
+                    <AutocompleteArrayInput
+                        choices={[
+                            { id: 'programming', name: 'Programming' },
+                            { id: 'lifestyle', name: 'Lifestyle' },
+                            { id: 'photography', name: 'Photography' },
+                        ]}
+                        {...defaultProps}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+        expect(screen.queryByRole('textbox')).not.toBeNull();
+    });
+
+    it('should not crash if its value is not an array and is empty', () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()} defaultValues={{ tags: '' }}>
+                    <AutocompleteArrayInput
+                        choices={[
+                            { id: 'programming', name: 'Programming' },
+                            { id: 'lifestyle', name: 'Lifestyle' },
+                            { id: 'photography', name: 'Photography' },
+                        ]}
+                        {...defaultProps}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+        expect(screen.queryByRole('textbox')).not.toBeNull();
+    });
 });
