@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { useFormContext, useWatch } from 'react-hook-form';
 
 import { NumberInput } from './NumberInput';
@@ -112,6 +113,24 @@ describe('<NumberInput />', () => {
         screen.getByText('views:12');
         fireEvent.click(screen.getByText('Update views'));
         screen.getByText('views:45');
+    });
+
+    it('should support entering a decimal number with transitory invalid value (using dot)', async () => {
+        render(
+            <AdminContext>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <NumberInput {...defaultProps} />
+                    <RecordWatcher />
+                </SimpleForm>
+            </AdminContext>
+        );
+        const input = screen.getByLabelText(
+            'resources.posts.fields.views'
+        ) as HTMLInputElement;
+        fireEvent.focus(input);
+        await userEvent.type(input, '0.01', { delay: 100 });
+        fireEvent.blur(input);
+        screen.getByText('views:0.01');
     });
 
     describe('field state', () => {

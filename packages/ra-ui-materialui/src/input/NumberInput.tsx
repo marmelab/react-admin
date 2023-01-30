@@ -28,6 +28,7 @@ export const NumberInput = ({
     margin,
     onChange,
     onBlur,
+    onFocus,
     parse,
     resource,
     source,
@@ -53,6 +54,7 @@ export const NumberInput = ({
         validate,
         ...rest,
     });
+    const { onBlur: onBlurFromField } = field;
 
     const inputProps = { ...overrideInputProps, step, min, max };
 
@@ -64,10 +66,14 @@ export const NumberInput = ({
     // text typed by the user and displayed in the input, unparsed
     const [value, setValue] = React.useState(format(field.value));
 
+    const hasFocus = React.useRef(false);
+
     // update the input text when the record changes
     React.useEffect(() => {
-        const stringValue = format(field.value);
-        setValue(value => (value !== stringValue ? stringValue : value));
+        if (!hasFocus.current) {
+            const stringValue = format(field.value);
+            setValue(value => (value !== stringValue ? stringValue : value));
+        }
     }, [field.value, format]); // eslint-disable-line react-hooks/exhaustive-deps
 
     // update the input text when the user types in the input
@@ -96,6 +102,22 @@ export const NumberInput = ({
         field.onChange(newValue);
     };
 
+    const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+        if (onFocus) {
+            onFocus(event);
+        }
+        hasFocus.current = true;
+    };
+
+    const handleBlur = () => {
+        if (onBlurFromField) {
+            onBlurFromField();
+        }
+        hasFocus.current = false;
+        const stringValue = format(field.value);
+        setValue(value => (value !== stringValue ? stringValue : value));
+    };
+
     return (
         <TextField
             id={id}
@@ -103,6 +125,8 @@ export const NumberInput = ({
             // use the locally controlled state instead of the react-hook-form field state
             value={value}
             onChange={handleChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             className={clsx('ra-input', `ra-input-${source}`, className)}
             type="number"
             size="small"
