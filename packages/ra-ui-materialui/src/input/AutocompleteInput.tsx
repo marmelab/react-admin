@@ -742,7 +742,7 @@ const getSelectedItems = (
     multiple
 ) => {
     if (multiple) {
-        const coalesced = value || []
+        const coalesced = value || [];
         return (Array.isArray(coalesced) ? coalesced : [coalesced])
             .map(item =>
                 choices.find(
