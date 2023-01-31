@@ -283,7 +283,7 @@ nav {
 }
 
 #syntax-highlighter {
-  width: 52%;
+  max-width: 52%;
   font-size: 12px;
   display: flex;
   justify-content: center;
