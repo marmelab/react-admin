@@ -133,7 +133,7 @@ There are several examples inside the `examples` folder:
 * `simple` ([CodeSandbox](https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/simple), [StackBlitz](https://stackblitz.com/github/marmelab/react-admin/tree/master/examples/simple?file=src%2Findex.tsx)): a simple blog with posts, comments and users that we use for our e2e tests.
 * `e-commerce`: ([demo](https://marmelab.com/react-admin-demo/), [source](https://github.com/marmelab/react-admin/tree/master/examples/demo)) A fictional poster shop admin, serving as the official react-admin demo.
 * `CRM`: ([demo](https://marmelab.com/react-admin-crm/), [source](https://github.com/marmelab/react-admin/tree/master/examples/crm)) A customer relationship management application
-* `helpdesk: ([demo](https://marmelab.com/react-admin-helpdesk/), [source](https://github.com/marmelab/react-admin-helpdesk)) A ticketing application with realtime locks and notifications
+* `helpdesk`: ([demo](https://marmelab.com/react-admin-helpdesk/), [source](https://github.com/marmelab/react-admin-helpdesk)) A ticketing application with realtime locks and notifications
 * `tutorial` ([CodeSandbox](https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/tutorial)): the application built while following the [tutorial](https://marmelab.com/react-admin/Tutorial.html).
 
 You can run those example applications by calling:
