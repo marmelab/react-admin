@@ -4,7 +4,7 @@ import PostIcon from '@mui/icons-material/Book';
 import UserIcon from '@mui/icons-material/Group';
 
 import { PostList, PostEdit, PostCreate } from './posts';
-import { UserList } from './users';
+import { UserList, UserShow } from './users';
 import { Dashboard } from './Dashboard';
 import { authProvider } from './authProvider';
 
@@ -26,6 +26,7 @@ const App = () => (
         <Resource
             name="users"
             list={UserList}
+            show={UserShow}
             icon={UserIcon}
             recordRepresentation="name"
         />

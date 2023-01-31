@@ -478,7 +478,7 @@ import { List, Datagrid, TextField, ReferenceField } from "react-admin";
 export const PostList = () => (
   <List>
     <Datagrid rowClick="edit">
-      <ReferenceField source="userId" reference="users" />
+      <ReferenceField source="userId" reference="users" link="show" />
       <TextField source="id" />
       <TextField source="title" />
       <TextField source="body" />
@@ -506,12 +506,49 @@ const App = () => (
 When displaying the posts list, the app displays the `id` of the post author. This doesn't mean much - we should use the user `name` instead. For that purpose, set the `recordRepresentation` prop of the "users" Resource:
 
 ```diff
+// in src/users.tsx
+import { useMediaQuery } from '@mui/material';
+-import { List, SimpleList, Datagrid, TextField, EmailField } from "react-admin";
++import {
++    List,
++    SimpleList,
++    Datagrid,
++    TextField,
++    EmailField,
++    Show,
++    SimpleShowLayout,
++} from 'react-admin';
+import MyUrlField from './MyUrlField';
+
+//...
+
++export const UserShow = () => {
++    return (
++        <Show>
++            <SimpleShowLayout>
++                <TextField source="id" />
++                <TextField source="name" />
++                <EmailField source="email" />
++                <TextField source="phone" />
++                <MyUrlField source="website" />
++                <TextField source="company.name" />
++            </SimpleShowLayout>
++        </Show>
++    )
++}
+
+```
+
+```diff
 // in src/App.tsx
+-import { UserList } from "./users"
++import { UserList, UserShow } from "./users";
+
 const App = () => (
     <Admin dataProvider={dataProvider}>
         <Resource name="posts" list={PostList} />
 -       <Resource name="users" list={UserList} />
-+       <Resource name="users" list={UserList} recordRepresentation="name" />
++       <Resource name="users" list={UserList}  show={UserShow} recordRepresentation="name" />
     </Admin>
 );
 ```
