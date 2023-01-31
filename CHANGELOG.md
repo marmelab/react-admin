@@ -1,5 +1,10 @@
 # Changelog
 
+## v4.7.3
+
+* Fix `<AutocompleteArrayInput>` when value is not an array ([#8608](https://github.com/marmelab/react-admin/pull/8608)) ([djhi](https://github.com/djhi))
+* Fix `<NumberInput>` should support entering a decimal number with a transitory invalid value ([#8610](https://github.com/marmelab/react-admin/pull/8610)) ([slax57](https://github.com/slax57))
+
 ## v4.7.2
 
 * Fix `useGetManyAggregate` error when ids is not an array ([#8603](https://github.com/marmelab/react-admin/pull/8603)) ([djhi](https://github.com/djhi))
