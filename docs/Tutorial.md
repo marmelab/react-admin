@@ -459,8 +459,8 @@ import { UserList } from "./users";
 
 const App = () => (
   <Admin dataProvider={dataProvider}>
-+   <Resource name="users" list={UserList} />
-    <Resource name="posts" list={ListGuesser} />
+    <Resource name="users" list={UserList} />
++   <Resource name="posts" list={ListGuesser} />
   </Admin>
 );
 
@@ -755,7 +755,7 @@ export const PostEdit = () => (
 
 [![Post Edit Title](./img/tutorial_post_title.png)](./img/tutorial_post_title.png)
 
-This component uses the same `useRecordContext` hook as the custom `<UrlField>` commponent described earlier.
+This component uses the same `useRecordContext` hook as the custom `<UrlField>` component described earlier.
 
 As users can access the post editing page directly by its url, the `<PostTitle>` component may render *without a record* while the `<Edit>` component is fetching it. That's why you must always check that the `record` returned by `useRecordContext` is defined before using it - as in `PostTitle` above.
 
@@ -845,9 +845,11 @@ For this tutorial, since there is no public authentication API, we can use a fak
 
 The `authProvider` must expose 5 methods, each returning a `Promise`:
 
-```jsx
+```js
 // in src/authProvider.ts
-export const authProvider = {
+import {AuthProvider} from "react-admin";
+
+export const authProvider: AuthProvider = {
   // called when the user attempts to log in
   login: ({ username }) => {
     localStorage.setItem("username", username);
@@ -924,13 +926,13 @@ React-admin calls the Data Provider with one method for each of the actions of t
 The code for a Data Provider for the `my.api.url` API is as follows:
 
 ```js
-import { fetchUtils } from "react-admin";
+import { DataProvider, fetchUtils } from "react-admin";
 import { stringify } from "query-string";
 
 const apiUrl = 'https://my.api.com/';
 const httpClient = fetchUtils.fetchJson;
 
-export const dataProvider= {
+export const dataProvider: DataProvider = {
     getList: (resource, params) => {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
@@ -943,7 +945,7 @@ export const dataProvider= {
 
         return httpClient(url).then(({ headers, json }) => ({
             data: json,
-            total: parseInt(headers.get('content-range').split('/').pop(), 10),
+            total: parseInt((headers.get('content-range') || "0").split('/').pop()!, 10),
         }));
     },
 
@@ -975,7 +977,7 @@ export const dataProvider= {
 
         return httpClient(url).then(({ headers, json }) => ({
             data: json,
-            total: parseInt(headers.get('content-range').split('/').pop(), 10),
+          total: parseInt((headers.get('content-range') || "0").split('/').pop()!, 10),
         }));
     },
 
@@ -1040,4 +1042,4 @@ React-admin was built with customization in mind. You can replace any react-admi
 
 Now that you've completed the tutorial, continue your journey with [the Features chapter](./Features.md), which lists all the features of react-admin.
 
-**Tip**: To help you close the gap between theoritical knowledge and practical experience, take advantage of the react-admin [Demos](./Demos.md). They are great examples of how to use react-admin in a real world application. They also show the best practices for going beyond simple CRUD apps.
+**Tip**: To help you close the gap between theoretical knowledge and practical experience, take advantage of the react-admin [Demos](./Demos.md). They are great examples of how to use react-admin in a real world application. They also show the best practices for going beyond simple CRUD apps.

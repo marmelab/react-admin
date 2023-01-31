@@ -1,4 +1,6 @@
-export const authProvider = {
+import { AuthProvider } from 'react-admin';
+
+export const authProvider: AuthProvider = {
     // called when the user attempts to log in
     login: ({ username }: { username: string }) => {
         localStorage.setItem('username', username);
