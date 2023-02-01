@@ -478,7 +478,7 @@ import { List, Datagrid, TextField, ReferenceField } from "react-admin";
 export const PostList = () => (
   <List>
     <Datagrid rowClick="edit">
-      <ReferenceField source="userId" reference="users" link="show" />
+      <ReferenceField source="userId" reference="users" />
       <TextField source="id" />
       <TextField source="title" />
       <TextField source="body" />
@@ -504,6 +504,23 @@ const App = () => (
 ```
 
 When displaying the posts list, the app displays the `id` of the post author. This doesn't mean much - we should use the user `name` instead. For that purpose, set the `recordRepresentation` prop of the "users" Resource:
+
+
+```diff
+// in src/App.tsx
+import { UserList } from "./users";
+
+const App = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource name="posts" list={PostList} />
+-       <Resource name="users" list={UserList} />
++       <Resource name="users" list={UserList} recordRepresentation="name" />
+    </Admin>
+);
+```
+The post list now displays usernames on each line. To add a deep link to display a detailed view of that user you will need to follow these steps:
+
+Create a screen to display the details of a user's information
 
 ```diff
 // in src/users.tsx
@@ -539,6 +556,27 @@ import MyUrlField from './MyUrlField';
 
 ```
 
+Use the link property to inform that this reference will link to a show screen
+
+```diff
+// in src/posts.tsx
+import { List, Datagrid, TextField, ReferenceField } from "react-admin";
+
+export const PostList = () => (
+  <List>
+    <Datagrid rowClick="edit">
+--      <ReferenceField source="userId" reference="users" />
+++      <ReferenceField source="userId" reference="users" link="show"/>
+      <TextField source="id" />
+      <TextField source="title" />
+      <TextField source="body" />
+    </Datagrid>
+  </List>
+);
+```
+
+Import your component and use it in the show property of the user resource
+
 ```diff
 // in src/App.tsx
 -import { UserList } from "./users"
@@ -547,13 +585,12 @@ import MyUrlField from './MyUrlField';
 const App = () => (
     <Admin dataProvider={dataProvider}>
         <Resource name="posts" list={PostList} />
--       <Resource name="users" list={UserList} />
-+       <Resource name="users" list={UserList}  show={UserShow} recordRepresentation="name" />
+-       <Resource name="users" list={UserList} recordRepresentation="name" />
++       <Resource name="users" list={UserList} show={UserShow} recordRepresentation="name" />
     </Admin>
 );
 ```
-
-The post list now displays the user names on each line.
+See how the result looks like:
 
 [![Post List With User Names](./img/tutorial_list_user_name.png)](./img/tutorial_list_user_name.png)
 
