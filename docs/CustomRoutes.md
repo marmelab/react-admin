@@ -216,4 +216,6 @@ const BookList = () => {
 ```
 {% endraw %}
 
+**Tip**: In the above example, the `resource="books"` prop is required in `<List>` because the `ResourceContext` defaults to `authors` inside the `<Resource name="authors">`.
+
 Check [the `<Resource>` element documentation](./Resource.md#children) for more information.
