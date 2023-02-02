@@ -5,13 +5,19 @@ title: "Community"
 
 # Community
 
-Thousands of new react-admin applications are created every month. Many, many developers use react-admin on a day-to-day bais. We're excited that you're a part of this large and friendly community.
+Thousands of new react-admin applications are created every month. [Many developers](https://github.com/marmelab/react-admin/network/dependents) use react-admin on a day-to-day basis. We're excited that you're a part of this large and friendly community.
 
 We're doing our best to keep it a convivial place where people want to hang out and help/be helped. 
 
+## Discord
+
+The [React-admin Discord Server](https://discord.gg/GeZF9sqh3N) is a great place to have conversations, answer and ask questions, all about react-admin.
+
+<iframe src="https://discord.com/widget?id=830711057643208724&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+
 ## Support
 
-You can get help from various channels:
+If you're stuck with a problem in your react-admin code, you can get help from various channels:
 
 ### Paid Support
 
@@ -21,109 +27,39 @@ You can get help from various channels:
 
 The [#react-admin](https://stackoverflow.com/questions/tagged/react-admin) tag counts a large number of questions and answers by the community, so it's a good place to search for answers.
 
-### Discord
+### Discord Server
 
-The [React-admin Discord Server](https://discord.gg/GeZF9sqh3N) is a great place to have conversations, answer and ask questions, all about react-admin.
+See the [Discord](#discord) section above.
 
-<iframe src="https://discord.com/widget?id=830711057643208724&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+### Dependencies
 
-## Examples
+If your problem is related to a library used by react-admin, you should ask for help on the dependency's support channel:
 
-There are several examples inside [the `examples/` folder](https://github.com/marmelab/react-admin/tree/master/examples):
+* MUI: [Documentation](https://mui.com/material-ui/getting-started/overview/), [Support](https://mui.com/material-ui/getting-started/support/)
+* react-router: [Documentation](https://reactrouter.com/en/main), [Discord](https://rmx.as/discord)
+* react-query: [Documentation](https://tanstack.com/query/v3/docs/react/overview), [Discord](https://tlinz.com/discord)
+* react-hook-form: [Documentation](https://react-hook-form.com/get-started), [Discord](https://discord.gg/yYv7GZ8)
+* emotion: [Documentation](https://emotion.sh/docs/introduction), [Slack](https://join.slack.com/t/emotion-slack/shared_invite/zt-rmtwsy74-2uvyFdz5uxa8OiMguJJeuQ), [Community](https://emotion.sh/docs/community)
 
-* **Blog Engine** ([CodeSandbox](https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/simple), [StackBlitz](https://stackblitz.com/github/marmelab/react-admin/tree/master/examples/simple?file=src%2Findex.tsx), [source](https://github.com/marmelab/react-admin/tree/master/examples/simple)): Admin for a simple blog with posts, comments and users.
-* **Ecommerce Admin** ([demo](https://marmelab.com/react-admin-demo/), [source](https://github.com/marmelab/react-admin/tree/master/examples/demo)): A fictional poster shop admin with products, invoices, customers, reviews, etc.
-* **CRM** ([demo](https://marmelab.com/react-admin-crm/), [source](https://github.com/marmelab/react-admin/tree/master/examples/crm)): A customer relationship management application, complete with contacts, companies and deals. Designed as a customer-facing B2B app. 
-* **Tutorial** ([CodeSandbox](https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/tutorial), [source](https://github.com/marmelab/react-admin/tree/master/examples/tutorial)): The application built while following the [tutorial](./Tutorial.md).
+## Reporting a Bug
 
-Check out [the Demos page](./Demos.md) for more details.
+If you think you've found a bug, please [open an issue on the GitHub repository](https://github.com/marmelab/react-admin/issues).
 
-## Articles & Tutorials
+Make sure you follow the issue template and provide a way to reproduce the bug. The more information you provide, the easier it is for us to fix it.
 
-Marmelab is the company that created and sponsors react-admin. The Marmelab blog regularly publishes articles about react-admin.
+Please note that we don't provide support via GitHub issues - use them only for bug reports.
 
-* [https://marmelab.com/en/blog/#react-admin](https://marmelab.com/en/blog/#react-admin)
+## Learn With Examples
 
-Here are some of the tutorials you can find there:
-
-### Creating a Record Related to the Current One
-
-This tutorial explains how to add a button on a show or edit page to create a new resource related to the one displayed.
-
-![Screencast](https://marmelab.com/images/blog/react-admin/react-admin-tutorials-form-for-related-records.gif)
-
-* [Article](https://marmelab.com/blog/2020/09/16/react-admin-tutorials-form-for-related-records.html)
-* [Codesandbox](https://codesandbox.io/s/2393m2k5rj)
-
-### Custom Forms and UI for related records
-
-This tutorial explains how to have a `create`, `show` or `edit` view of a referenced resource inside a modal or a sliding side panel.
-
-![Screencast](https://marmelab.com/dd58004986d3bb98a32972ba8fd25fc8/screencast.gif)
-
-* [Article](https://marmelab.com/blog/2020/04/27/react-admin-tutorials-custom-forms-related-records.html)
-* [Codesandbox](https://codesandbox.io/s/react-admin-v3-advanced-recipes-quick-createpreview-voyci)
-
-### Build a Timeline as a replacement for a List component
-
-This tutorial shows how to use pure react to implement a custom component replacing react-admin default List.
-
-![Screencast](https://marmelab.com/d9b4cf0e7faf3ed208c102f8b2334409/storybook_App5.gif)
-
-* [Article](https://marmelab.com/blog/2019/01/17/react-timeline.html)
-* [Repository](https://github.com/marmelab/timeline-react-admin)
-
-### Creating and Editing a Record From the List Page
-
-This tutorial shows how to display Creation and Edition forms in a drawer or a dialog from the List page.
-
-![Screencast](https://marmelab.com/07b25da5494055c4306dd7e7a48fd010/end-result.gif)
-
-* [Article](https://marmelab.com/blog/2019/02/07/react-admin-advanced-recipes-creating-and-editing-a-record-from-the-list-page.html)
-* [Codesandbox](https://codesandbox.io/s/lrm6kl00nl)
-
-### Add a User Profile Page
-
-This tutorial explains how to create a profile page based on an `<Edit>` component, and accessible as a standalone page.
-
-![Screencast](https://marmelab.com/668056e9d8273ff5ce75dfc641151a90/end_result.gif)
-
-* [Article](https://marmelab.com/blog/2019/03/07/react-admin-advanced-recipes-user-profile.html)
-* [Codesandbox](https://codesandbox.io/s/o1jmj4lwv9)
-
-### Supplying your own Defaults to React Admin
-
-This article shows how you can customize many parts of the framework without repeating yourself.
-
-![Screencast](https://marmelab.com/54d42faced9043f7933df212cbda0f1b/react-admin-edit-defaults.gif)
-
-* [Article](https://marmelab.com/blog/2019/03/27/supplying-your-own-defaults-to-react-admin.html)
-* [Codesandbox](https://codesandbox.io/s/qzxx4mjl59)
-
-### OpenID Connect Authentication with React Admin
-
-![OpenID Connect on React Admin with a button "Login With Google"](./img/openid-connect-example.png)
-
-* [Live Example](https://marmelab.com/ra-example-oauth)
-* [Code Repository](https://github.com/marmelab/ra-example-oauth)
-
-### Changing The Look And Feel Of React-Admin Without JSX
-
-This article shows how to customize react-admin look and feel using only the MUI theme.
-
-![Screencast](https://marmelab.com/097bee867a1d1dc55dec5456732fe94a/screencast.gif)
-
-* [Article](https://marmelab.com/blog/2020/09/11/react-admin-tutorials-build-your-own-theme.html)
-* [Code Repository](https://github.com/Luwangel/react-admin-tutorials-build-your-own-theme)
-
+Check out [the Demos page](./Demos.md) for a list of open-source react-admin applications with real-world features.
 
 ## Contributing
 
-If you want to give a hand: Thank you! There are many things you can do to help making react-admin better. 
+If you want to give a hand: Thank you! There are many things you can do to help make react-admin better. 
 
-The easiest task is **bug triaging**. Check that new issues on GitHub follow the issue template and give a way to reproduce the issue. If not, comment on the issue to ask precisions. Then, try and reproduce the issue following the description. If you managed to reproduce the issue, add a comment to say it. Otherwise, add a comment to say that something is missing. 
+The easiest task is **bug triaging**. Check that new issues on GitHub follow the issue template and give a way to reproduce the issue. If not, comment on the issue to ask for precisions. Then, try and reproduce the issue following the description. If you managed to reproduce the issue, add a comment to say it. Otherwise, add a comment to say that something is missing. 
 
-The second way to contribute is to **answer support questions on [StackOverflow](https://stackoverflow.com/questions/tagged/react-admin) and [Discord](https://discord.com/channels/830711057643208724/1022443113391853578)**. There are many beginner questions there, so even if you're not super experienced with react-admin, there is someone you can help there. 
+The second way to contribute is to **answer support questions on [StackOverflow](https://stackoverflow.com/questions/tagged/react-admin) and [Discord](https://discord.com/channels/830711057643208724/1022443113391853578)**. There are many beginner questions there, so even if you're not super experienced with react-admin, your contribution will be appreciated. 
 
 Pull requests for **bug fixes** are welcome on the [GitHub repository](https://github.com/marmelab/react-admin). There is always a bunch of [issues labeled "Good First Issue"](https://github.com/marmelab/react-admin/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22) in the bug tracker - start with these. 
 
