@@ -49,6 +49,10 @@ The Marmelab blog has more than 70 articles about react-admin:
 
 Tutorials, tips and tricks, version highlights, real-world use cases, and more.
 
+## Learn With Examples
+
+Check out [the Demos page](./Demos.md) for a list of open-source react-admin applications with real-world features.
+
 ## Reporting a Bug
 
 If you think you've found a bug, please [open an issue on the GitHub repository](https://github.com/marmelab/react-admin/issues).
@@ -56,10 +60,6 @@ If you think you've found a bug, please [open an issue on the GitHub repository]
 Make sure you follow the issue template and provide a way to reproduce the bug. The more information you provide, the easier it is for us to fix it.
 
 Please note that we don't provide support via GitHub issues - use them only for bug reports.
-
-## Learn With Examples
-
-Check out [the Demos page](./Demos.md) for a list of open-source react-admin applications with real-world features.
 
 ## Contributing
 
