@@ -41,6 +41,14 @@ If your problem is related to a library used by react-admin, you should ask for 
 * react-hook-form: [Documentation](https://react-hook-form.com/get-started), [Discord](https://discord.gg/yYv7GZ8)
 * emotion: [Documentation](https://emotion.sh/docs/introduction), [Slack](https://join.slack.com/t/emotion-slack/shared_invite/zt-rmtwsy74-2uvyFdz5uxa8OiMguJJeuQ), [Community](https://emotion.sh/docs/community)
 
+## Articles
+
+The Marmelab blog has more than 70 articles about react-admin:
+
+* [https://marmelab.com/en/blog/#react-admin](https://marmelab.com/en/blog/#react-admin)
+
+Tutorials, tips and tricks, version highlights, real-world use cases, and more.
+
 ## Reporting a Bug
 
 If you think you've found a bug, please [open an issue on the GitHub repository](https://github.com/marmelab/react-admin/issues).
