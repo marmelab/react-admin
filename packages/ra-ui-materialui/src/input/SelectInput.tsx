@@ -111,6 +111,7 @@ export const SelectInput = (props: SelectInputProps) => {
         choices: choicesProp,
         className,
         create,
+        createAlwaysVisible,
         createLabel,
         createValue,
         defaultValue,
