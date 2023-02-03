@@ -11,13 +11,13 @@ In react-admin terms, a *resource* is a string that refers to an entity type (li
 
 A `<Resource>` component has 3 responsibilities:
 
-- It defines the components for the CRUD routes of a given resource (to display a list of records, the details of a record, or to create a new one).
+- It defines the CRUD routes of a given resource (to display a list of records, the details of a record, or to create a new one).
 - It creates a context that lets every descendant component know the current resource name (this context is called `ResourceContext`).
 - It stores the resource definition (its name, icon, and label) inside a shared context (this context is called `ResourceDefinitionContext`).
 
 `<Resource>` components can only be used as children of [the `<Admin>` component](./Admin.md).
 
-## Basic Usage
+## Usage
 
 For instance, the following admin app offers an interface to the resources exposed by the JSONPlaceholder API ([posts](https://jsonplaceholder.typicode.com/posts), [users](https://jsonplaceholder.typicode.com/users), [comments](https://jsonplaceholder.typicode.com/comments), and [tags](https://jsonplaceholder.typicode.com/tags)):
 
@@ -92,6 +92,87 @@ The routing will map the component as follows:
 * [`icon`](#icon)
 * [`options`](#icon)
 * [`recordRepresentation`](#recordrepresentation)
+
+## `children`
+
+`<Resource>` defines the CRUD routes of your application. So `<Resource name="posts">` defines a set of routes starting with `/posts`. 
+
+`<Resource>` accepts `<Route>` components as `children`, to let you define sub routes for the resource. 
+
+For instance, the following code creates an `authors` resource, and adds an `/authors/:authorId/books` route displaying the books of the given author:
+
+```jsx
+// in src/App.jsx
+import { Admin, Resource } from 'react-admin';
+import { Route } from 'react-router-dom';
+
+import { AuthorList } from './AuthorList';
+import { BookList } from './BookList';
+
+export const App = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource name="authors" list={AuthorList}>
+            <Route path=":authorId/books" element={<BookList />} />
+        </Resource>
+    </Admin>
+);
+```
+
+The `BookList` component can grab the `authorId` parameter from the URL using the `useParams` hook, and pass it as a `<List filter>` parameter to display a list of books for the given author:
+
+{% raw %}
+```jsx
+// in src/BookList.jsx
+import { List, Datagrid, TextField } from 'react-admin';
+import { useParams } from 'react-router-dom';
+
+export const BookList = () => {
+    const { authorId } = useParams();
+    return (
+        <List resource="books" filter={{ authorId }}>
+            <Datagrid rowClick="edit">
+                <TextField source="id" />
+                <TextField source="title" />
+                <TextField source="year" />
+            </Datagrid>
+        </List>
+    );
+};
+```
+{% endraw %}
+
+**Tip**: In the above example, the `resource="books"` prop is required in `<List>` because the `ResourceContext` defaults to `authors` inside the `<Resource name="authors">`.
+
+It's your responsibility to route to the `/authors/:id/books` route, e.g. from each line of the `AuthorList` component:
+
+```jsx
+// in src/AuthorList.jsx
+const BooksButton = () => {
+    const record = useRecordContext();
+    return (
+        <Button
+            component={Link}
+            to={`/authors/${record.id}/books`}
+            color="primary"
+        >
+            Books
+        </Button>
+    );
+};
+
+export const AuthorList = () => (
+    <List>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="firstName" />
+            <TextField source="lastName" />
+            <BooksButton />
+        </Datagrid>
+    </List>
+);
+```
+
+**Tip**: As the `/authors/:authorId/books` route is a sub-route of the `/authors` route, the active menu item will be "Authors". 
 
 ## `icon`
 
@@ -186,3 +267,73 @@ const MyComponent = () => (
 );
 ```
 
+## Nested Resources
+
+React-admin doesn't support nested resources, but you can use [the `children` prop](#children) to render a custom component for a given sub-route. For instance, to display a list of posts for a given user:
+
+```jsx
+import { Admin, Resource } from 'react-admin';
+import { Route } from 'react-router-dom';
+
+export const App = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource name="users" list={UserList} edit={UserDetail}>
+            <Route path=":id/posts" element={<PostList />} />
+            <Route path=":id/posts/:postId" element={<PostDetail />} />
+        </Resource>
+    </Admin>
+);
+```
+
+This setup creates four routes:
+
+- `/users` renders the `<UserList>` element
+- `/users/:id` renders the `<UserDetail>` element
+- `/users/:id/posts` renders the `<PostList>` element
+- `/users/:id/posts/:postId` renders the `<PostDetail>` element
+
+In order to display a list of posts for the selected user, `<PostList>` should filter the posts by the `id` parameter. To do so, use the `useParams` hook from `react-router-dom`:
+
+{% raw %}
+```jsx
+// in src/PostList.jsx
+import { List, Datagrid, TextField } from 'react-admin';
+import { useParams } from 'react-router-dom';
+
+export const PostList = () => {
+    const { id } = useParams();
+    return (
+        <List resource="posts" filter={{ userId: id }}>
+            <Datagrid rowClick="edit">
+                <TextField source="id" />
+                <TextField source="title" />
+                <TextField source="year" />
+            </Datagrid>
+        </List>
+    );
+};
+```
+{% endraw %}
+
+In the `<PostDetail>` component, you must also use the `useParams` hook to get the `postId` parameter and display the post with the corresponding `id`:
+
+{% raw %}
+```jsx
+// in src/PostDetail.jsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { useParams } from 'react-router-dom';
+
+export const PostDetail = () => {
+    const { postId } = useParams();
+    return (
+        <Edit resource="posts" id={postId}>
+            <SimpleForm>
+                <TextInput source="id" />
+                <TextInput source="title" />
+                <TextInput source="year" />
+            </SimpleForm>
+        </Edit>
+    );
+};
+```
+{% endraw %}
