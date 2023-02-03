@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ReactElement, useCallback, useEffect, ChangeEvent } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { MenuItem, TextFieldProps } from '@mui/material';
+import { MenuItem } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import {
     useChoicesContext,
@@ -18,6 +18,7 @@ import {
 import { CommonInputProps } from './CommonInputProps';
 import {
     ResettableTextField,
+    ResettableTextFieldProps,
     ResettableTextFieldStyles,
 } from './ResettableTextField';
 import { InputHelperText } from './InputHelperText';
@@ -428,7 +429,10 @@ const StyledResettableTextField = styled(ResettableTextField, {
 export type SelectInputProps = Omit<CommonInputProps, 'source'> &
     ChoicesProps &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
-    Omit<TextFieldProps, 'label' | 'helperText' | 'classes' | 'onChange'> & {
+    Omit<
+        ResettableTextFieldProps,
+        'label' | 'helperText' | 'classes' | 'onChange'
+    > & {
         disableValue?: string;
         emptyText?: string | ReactElement;
         emptyValue?: any;
