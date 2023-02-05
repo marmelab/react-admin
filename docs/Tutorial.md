@@ -505,11 +505,8 @@ const App = () => (
 
 When displaying the posts list, the app displays the `id` of the post author. This doesn't mean much - we should use the user `name` instead. For that purpose, set the `recordRepresentation` prop of the "users" Resource:
 
-
 ```diff
 // in src/App.tsx
-import { UserList } from "./users";
-
 const App = () => (
     <Admin dataProvider={dataProvider}>
         <Resource name="posts" list={PostList} />
@@ -518,9 +515,24 @@ const App = () => (
     </Admin>
 );
 ```
-The post list now displays usernames on each line. To add a deep link to display a detailed view of that user you will need to follow these steps:
 
-Create a screen to display the details of a user's information
+The post list now displays the user names on each line.
+
+[![Post List With User Names](./img/tutorial_list_user_name.png)](./img/tutorial_list_user_name.png)
+
+The `<ReferenceField>` component fetches the reference data, creates a `RecordContext` with the result, and renders the record representation (or its children).
+
+**Tip**: Look at the network tab of your browser again: react-admin deduplicates requests for users, and aggregates them in order to make only *one* HTTP request to the `/users` endpoint for the whole Datagrid. That's one of many optimizations that keep the UI fast and responsive.
+
+To add a deep link to display a detailed view of that user you will need to follow these steps:
+
+
+
+## Adding Showing Capabilities
+
+In addition to creating listings, you can also choose to get a detailed view of your resource. For this, react-admin provides a `<Show>` component which will display in a single screen the details of that resource. To implement this detailed view follow the instructions:
+
+Copy the <UserShow> code dumped by the guesser in the console to the users.tsx file so that you can customize the view:
 
 ```diff
 // in src/users.tsx
@@ -553,29 +565,9 @@ import MyUrlField from './MyUrlField';
 +        </Show>
 +    )
 +}
-
 ```
 
-Use the link property to inform that this reference will link to a show screen
-
-```diff
-// in src/posts.tsx
-import { List, Datagrid, TextField, ReferenceField } from "react-admin";
-
-export const PostList = () => (
-  <List>
-    <Datagrid rowClick="edit">
---      <ReferenceField source="userId" reference="users" />
-++      <ReferenceField source="userId" reference="users" link="show"/>
-      <TextField source="id" />
-      <TextField source="title" />
-      <TextField source="body" />
-    </Datagrid>
-  </List>
-);
-```
-
-Import your component and use it in the show property of the user resource
+Import your component and use that component as the show prop of the “user” Resource instead of the guesser:
 
 ```diff
 // in src/App.tsx
@@ -590,15 +582,38 @@ const App = () => (
     </Admin>
 );
 ```
-See how the result looks like:
 
-[![Post List With User Names](./img/tutorial_list_user_name.png)](./img/tutorial_list_user_name.png)
+Now if you click on an item in the list of users it will direct you to a detailed view
 
-The `<ReferenceField>` component fetches the reference data, creates a `RecordContext` with the result, and renders the record representation (or its children).
+[![User show resource](./img/tutorial_show_user.png)](./img/tutorial_show_user.png)
 
-**Tip**: Look at the network tab of your browser again: react-admin deduplicates requests for users, and aggregates them in order to make only *one* HTTP request to the `/users` endpoint for the whole Datagrid. That's one of many optimizations that keep the UI fast and responsive.
 
-To finish the post list, place the post `id` field as first column, and remove the `body` field. From a UX point of view, fields containing large chunks of text should not appear in a Datagrid, only in detail views. Also, to make the Edit action stand out, let's replace the `rowClick` action by an explicit action button:
+With the creation of this view, we are now able to create a direct link from the list of posts to directly access other user information. For that, we need to add a property to our reference component, see the details below:
+
+Use the link property to inform that this reference will link to a show screen:
+
+```diff
+// in src/posts.tsx
+import { List, Datagrid, TextField, ReferenceField } from "react-admin";
+
+export const PostList = () => (
+  <List>  
+    <Datagrid rowClick="edit">
+--      <ReferenceField source="userId" reference="users" />
+++      <ReferenceField source="userId" reference="users" link="show"/>
+      <TextField source="id" />
+      <TextField source="title" />
+      <TextField source="body" />
+    </Datagrid>
+  </List>
+);
+```
+
+Your link to this view will automatically display for each item in the listing
+
+[![Post List With User Names link](./img/tutorial_list_user_name_link.png)](./img/tutorial_list_user_name_link.png)  
+
+Now post list is almost finished, place the post `id` field as first column, and remove the `body` field. From a UX point of view, fields containing large chunks of text should not appear in a Datagrid, only in detail views. Also, to make the Edit action stand out, let's replace the `rowClick` action by an explicit action button:
 
 ```diff
 // in src/posts.tsx
@@ -610,7 +625,7 @@ export const PostList = () => (
 -   <Datagrid rowClick="edit">
 +   <Datagrid>
 +     <TextField source="id" />
-      <ReferenceField source="userId" reference="users" />
+      <ReferenceField source="userId" reference="users" link="show" />
 -     <TextField source="id" />
       <TextField source="title" />
 -     <TextField source="body" />
@@ -621,6 +636,7 @@ export const PostList = () => (
 ```
 
 [![Post List With Less Columns](./img/tutorial_post_list_less_columns.png)](./img/tutorial_post_list_less_columns.png)
+
 
 ## Adding Editing Capabilities
 
