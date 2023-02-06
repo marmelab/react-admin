@@ -1,5 +1,11 @@
 # Changelog
 
+## v4.7.4
+
+* [Doc] Improve the community page ([#8617](https://github.com/marmelab/react-admin/pull/8617)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix nested routes explanation and add more examples ([#8616](https://github.com/marmelab/react-admin/pull/8616)) ([fzaninotto](https://github.com/fzaninotto))
+* [Demo] Fix useless `useEffect` in CRM demo ([#8614](https://github.com/marmelab/react-admin/pull/8614)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v4.7.3
 
 * Fix `<AutocompleteArrayInput>` when value is not an array ([#8608](https://github.com/marmelab/react-admin/pull/8608)) ([djhi](https://github.com/djhi))
