@@ -6,23 +6,20 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { Error } from 'react-admin';
 import Header from './Header';
 
-const Layout = (props: LayoutProps) => {
-    const { children } = props;
-    return (
-        <>
-            <CssBaseline />
-            <Header />
-            <Container sx={{ maxWidth: { xl: 1280 } }}>
-                <main id="main-content">
-                    {/* @ts-ignore */}
-                    <ErrorBoundary FallbackComponent={Error}>
-                        {children}
-                    </ErrorBoundary>
-                </main>
-            </Container>
-        </>
-    );
-};
+const Layout = ({ children }: LayoutProps) => (
+    <>
+        <CssBaseline />
+        <Header />
+        <Container sx={{ maxWidth: { xl: 1280 } }}>
+            <main id="main-content">
+                {/* @ts-ignore */}
+                <ErrorBoundary FallbackComponent={Error}>
+                    {children}
+                </ErrorBoundary>
+            </main>
+        </Container>
+    </>
+);
 
 export interface LayoutProps
     extends CoreLayoutProps,
