@@ -59,8 +59,8 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
  * const postRowStyle = (record, index) => ({
  *     backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
  * });
- * export const PostList = (props) => (
- *     <List {...props}>
+ * export const PostList = () => (
+ *     <List>
  *         <Datagrid rowStyle={postRowStyle}>
  *             <TextField source="id" />
  *             <TextField source="title" />

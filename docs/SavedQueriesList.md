@@ -35,8 +35,8 @@ const SongFilterSidebar = () => (
     </Card>
 );
 
-const SongList = props => (
-    <List {...props} aside={<SongFilterSidebar />}>
+const SongList = () => (
+    <List aside={<SongFilterSidebar />}>
         <Datagrid>
             ...
         </Datagrid>
@@ -72,8 +72,8 @@ const SongFilterSidebar = () => (
     </Card>
 );
 
-const SongList = props => (
-    <List {...props} aside={<SongFilterSidebar />}>
+const SongList = () => (
+    <List aside={<SongFilterSidebar />}>
         <Datagrid>
             ...
         </Datagrid>

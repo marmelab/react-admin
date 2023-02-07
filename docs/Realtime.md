@@ -59,7 +59,6 @@ For instance, replace `<List>` with `<ListLive>` to have a list refreshing autom
 ```diff
 import {
 -   List,
-    ListProps,
     Datagrid,
     TextField,
     NumberField,
@@ -67,9 +66,9 @@ import {
 } from 'react-admin';
 +import { ListLive } from '@react-admin/ra-realtime';
 
-const PostList = (props: ListProps) => (
--   <List {...props}>
-+   <ListLive {...props}>
+const PostList = () => (
+-   <List>
++   <ListLive>
         <Datagrid>
             <TextField source="title" />
             <NumberField source="views" />

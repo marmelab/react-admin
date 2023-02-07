@@ -18,11 +18,11 @@ import { useStoreContext } from './useStoreContext';
  * @example
  * import { useStore } from 'react-admin';
  *
- * const PostList = props => {
+ * const PostList = () => {
  *     const [density] = useStore('posts.list.density', 'small');
  *
  *     return (
- *         <List {...props}>
+ *         <List>
  *             <Datagrid size={density}>
  *                 ...
  *             </Datagrid>

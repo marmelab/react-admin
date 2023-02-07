@@ -784,8 +784,8 @@ const PostPagination = () => {
     );
 }
 
-export const PostList = (props) => (
-    <List {...props} pagination={<PostPagination />}>
+export const PostList = () => (
+    <List pagination={<PostPagination />}>
         ...
     </List>
 );
@@ -810,10 +810,10 @@ export const PaginationActions = props => (
     />
 );
 
-export const Pagination = props => <RaPagination {...props} ActionsComponent={PaginationActions} />;
+export const Pagination = () => <RaPagination ActionsComponent={PaginationActions} />;
 
-export const UserList = props => (
-    <List {...props} pagination={<Pagination />} >
+export const UserList = () => (
+    <List pagination={<Pagination />} >
         //...
     </List>
 );
