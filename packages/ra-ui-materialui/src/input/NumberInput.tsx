@@ -197,7 +197,7 @@ const convertStringToNumber = value => {
         return value;
     }
     
-    const float = value === '-0' ? '-0' : parseFloat(value);
+    const float = parseFloat(value);
 
     return isNaN(float) ? 0 : float;
 };
