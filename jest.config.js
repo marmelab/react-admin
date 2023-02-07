@@ -2,19 +2,22 @@ const path = require('path');
 const fs = require('fs');
 
 const packages = fs.readdirSync(path.resolve(__dirname, './packages'));
-const moduleNameMapper = packages.reduce((mapper, dirName) => {
-    const package = require(path.resolve(
-        __dirname,
-        './packages',
-        dirName,
-        'package.json'
-    ));
-    mapper[`^${package.name}(.*)$`] = path.join(
-        __dirname,
-        `./packages/${dirName}/src$1`
-    );
-    return mapper;
-}, {});
+const moduleNameMapper = packages.reduce(
+    (mapper, dirName) => {
+        const package = require(path.resolve(
+            __dirname,
+            './packages',
+            dirName,
+            'package.json'
+        ));
+        mapper[`^${package.name}(.*)$`] = path.join(
+            __dirname,
+            `./packages/${dirName}/src$1`
+        );
+        return mapper;
+    },
+    { '^lodash-es$': 'lodash' }
+);
 
 module.exports = {
     globalSetup: './test-global-setup.js',
