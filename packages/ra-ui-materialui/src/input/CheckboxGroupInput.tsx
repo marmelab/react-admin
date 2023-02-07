@@ -235,7 +235,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                     />
                 ))}
             </FormGroup>
-            <FormHelperText error={fetchError || (isTouched && !!error)}>
+            <FormHelperText error={fetchError || ((isTouched || isSubmitted) && !!error)}>
                 <InputHelperText
                     touched={isTouched || isSubmitted || fetchError}
                     error={error?.message || fetchError?.message}
