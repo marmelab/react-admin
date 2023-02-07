@@ -19,7 +19,7 @@ import {
     RaRecord,
     SortPayload,
 } from 'ra-core';
-import { Table, TableProps } from '@mui/material';
+import { Table, TableProps, SxProps } from '@mui/material';
 import clsx from 'clsx';
 import union from 'lodash/union';
 import difference from 'lodash/difference';
@@ -50,6 +50,7 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
  *  - isRowExpandable
  *  - isRowSelectable
  *  - optimized
+ *  - rowSx
  *  - rowStyle
  *  - rowClick
  *  - size
@@ -128,6 +129,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         isRowExpandable,
         resource,
         rowClick,
+        rowSx,
         rowStyle,
         size = 'small',
         sx,
@@ -269,6 +271,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                                 onToggleItem: handleToggleItem,
                                 resource,
                                 rowStyle,
+                                rowSx,
                                 selectedIds,
                                 isRowSelectable,
                             },
@@ -309,6 +312,7 @@ Datagrid.propTypes = {
     onToggleItem: PropTypes.func,
     resource: PropTypes.string,
     rowClick: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+    rowSx: PropTypes.func,
     rowStyle: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     setSort: PropTypes.func,
@@ -338,6 +342,7 @@ export interface DatagridProps<RecordType extends RaRecord = any>
     optimized?: boolean;
     rowClick?: string | RowClickFunction;
     rowStyle?: (record: RecordType, index: number) => any;
+    rowSx?: (record: RecordType, index: number) => SxProps;
     size?: 'medium' | 'small';
     // can be injected when using the component without context
     sort?: SortPayload;
