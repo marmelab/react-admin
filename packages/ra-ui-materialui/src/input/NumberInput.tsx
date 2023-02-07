@@ -192,11 +192,11 @@ const convertStringToNumber = value => {
     if (value == null || value === '') {
         return null;
     }
-    
+
     if (value === '-0') {
         return value;
     }
-    
+
     const float = parseFloat(value);
 
     return isNaN(float) ? 0 : float;
