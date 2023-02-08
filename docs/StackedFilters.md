@@ -14,7 +14,7 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 ## Usage
 
-Create a filter configuration object by speficying the operators and UI for each source that can be used as a filter. Then, pass it to the `<StackedFilters>` component, and pass that component to the `filters` prop of the `<List>` component.
+Create a filter configuration object by specifying the operators and UI for each source that can be used as a filter. Then, pass it to the `<StackedFilters>` component, and pass that component to the `filters` prop of the `<List>` component.
 
 ```jsx
 import { Datagrid, List, TextField, NumberField, BooleanField, ReferenceArrayField } from 'react-admin';
@@ -42,7 +42,7 @@ const PostList = () => (
 
 The `config` prop accepts an object with the following structure:
 
-```js
+```jsx
 {
     [source]: {
         operators: [operator],
@@ -57,7 +57,7 @@ Check the [built-in filters](#built-in-filters) section for more information abo
 
 Upon user interaction, `<StackedFilters>` sets the list `filter` with keys concatenating the selected source with the selected operator, separated by an underscore (`_`). In the screencast above, the user selection triggers a call to the `dataProvider` with the following filter:
 
-```js
+```jsx
 dataProvider.getList('posts', {
     filter: {
         title_contains: 'volup',
@@ -70,7 +70,7 @@ dataProvider.getList('posts', {
 
 It's your responsibility to handle these compound keys in your data provider. For instance, to handle the `title_contains` filter, you can use the following code:
 
-```js
+```jsx
 // in dataProvider.js
 const dataProvider = {
     getList: (resource, params) => {
@@ -155,9 +155,9 @@ An operator is an object with the shape `{ label, value, input }`.
 - `value`: used as a suffix to the `source` when creating the list filters.
 - `input`: a component accepting a `source` prop. React-admin will pass the source of the filter to the input component ('views' in the above example)
 
-For instance, with the source `views`, the operator `eq` and value set to `0`, the dataProvider will receive the following `filter` parameter:
+For instance, with the source `views`, the operator `eq`, and value set to `0`, the dataProvider will receive the following `filter` parameter:
 
-```js
+```jsx
 { views_eq: 0 }
 ```
 
@@ -186,13 +186,13 @@ const postListFilters = {
 
 To facilitate the creation of filter configurations, react-admin provides some helpers for common filter types. Each of them has predefined operators and inputs. They accept an array of operators if you want to remove some of them.
 
-- `textFilter`: A filter for text fields. Defines the following operator: `eq`, `neq` and `q`.
-- `numberFilter`: A filter for number fields. Defines the following operator: `eq`, `neq`, `lt` and `gt`.
-- `dateFilter`: A filter for date fields. Defines the following operator: `eq`, `neq`, `lt` and `gt`.
+- `textFilter`: A filter for text fields. Defines the following operator: `eq`, `neq`, and `q`.
+- `numberFilter`: A filter for number fields. Defines the following operator: `eq`, `neq`, `lt`, and `gt`.
+- `dateFilter`: A filter for date fields. Defines the following operator: `eq`, `neq`, `lt`, and `gt`.
 - `booleanFilter`: A filter for boolean fields. Defines the following operator: `eq`.
-- `choicesFilter`: A filter for fields that accept a value from a list of choices. Defines the following operator: `eq`, `neq`, `eq_any` and `neq_any`.
-- `choicesArrayFilter`: A filter for array fields. Defines the following operator: `inc`, `inc_any` and `ninc_any`.
-- `referenceFilter`: A filter for reference fields. Defines the following operator: `eq`, `neq`, `eq_any` and `neq_any`.
+- `choicesFilter`: A filter for fields that accept a value from a list of choices. Defines the following operator: `eq`, `neq`, `eq_any`, and `neq_any`.
+- `choicesArrayFilter`: A filter for array fields. Defines the following operator: `inc`, `inc_any`, and `ninc_any`.
+- `referenceFilter`: A filter for reference fields. Defines the following operator: `eq`, `neq`, `eq_any`, and `neq_any`.
 
 The operators are defined as follows:
 
@@ -239,7 +239,7 @@ With the configuration above, the possible filter keys are:
 
 React-admin uses the keys of the filter configuration to display the field names. Each key goes through the standard [resource and field name translation system](./Translation.md#translating-resource-and-field-names), so you can customize them using a translation file.
 
-```js
+```jsx
 // in i18n/en.js
 export default {
     resources: {
@@ -280,7 +280,7 @@ const MyFilterConfig = {
 
 Then translate the operators in the translation messages:
 
-```js
+```jsx
 // in i18n/en.js
 export default {
     resources: {
@@ -296,4 +296,3 @@ export default {
     },
 };
 ```
-
