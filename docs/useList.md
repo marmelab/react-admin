@@ -48,7 +48,7 @@ import { useGetList, useList } from 'react-admin';
 const MyComponent = () => {
     const { data, isLoading } = useGetList(
         'posts',
-        { page: 1, perPage: 10 }
+        pagination: { page: 1, perPage: 10 },
     );
     const listContext = useList({ data, isLoading });
     return (
