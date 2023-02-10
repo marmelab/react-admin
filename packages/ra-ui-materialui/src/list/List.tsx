@@ -42,8 +42,8 @@ import { ListView, ListViewProps } from './ListView';
  *     <TextInput label="Search" source="q" alwaysOn />,
  *     <TextInput label="Title" source="title" />
  * ];
- * export const PostList = (props) => (
- *     <List {...props}
+ * export const PostList = () => (
+ *     <List
  *         title="List of posts"
  *         sort={{ field: 'published_at' }}
  *         filter={{ is_published: true }}

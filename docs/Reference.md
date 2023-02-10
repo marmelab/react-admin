@@ -162,6 +162,7 @@ title: "Index"
 * [`<SimpleShowLayout>`](./SimpleShowLayout.md)
 * [`<SingleFieldList>`](./SingleFieldList.md)
 * [`<SortButton>`](./SortButton.md)
+* [`<StackedFilters>`](./StackedFilters.md)<img class="icon" src="./img/premium.svg" />
 
 **- T -**
 * `<Tab>`
