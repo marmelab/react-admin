@@ -145,6 +145,40 @@ For instance, to change the default representation of "users" records to render 
 - a function (e.g. `(record) => record.title`) to specify a custom string representation
 - a React component (e.g. `<MyCustomRecordRepresentation />`). In such components, use [`useRecordContext`](./useRecordContext.md) to access the record.
 
+## `hasCreate`, `hasEdit`, `hasShow`
+
+Some components, like [`<CreateDialog>`](./CreateDialog.md), [`<EditDialog>`](./EditDialog.md) or [`<ShowDialog>`](./ShowDialog.md) need to declare the CRUD components outside of the `<Resource>` component. In such cases, you can use the `hasCreate`, `hasEdit` and `hasShow` props to tell react-admin which CRUD components are available for a given resource.
+
+This is useful, for instance, to have the `<ReferenceField>` component display a link to the edit or show view of the referenced record.
+
+```jsx
+// in src/App.js
+import { Admin, Resource } from 'react-admin';
+import { dataProvider } from './dataProvider';
+
+import { PostList } from './posts';
+import { CommentEdit } from './commentEdit';
+
+const App = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource name="posts" list={PostList} hasEdit />
+        <Resource name="comment" edit={CommentEdit} />
+    </Admin>
+);
+
+// in src/commentEdit.js
+import { Edit, SimpleForm, ReferenceField } from 'react-admin';
+
+const CommentEdit = () => (
+    <Edit>
+        <SimpleForm>
+            {/* renders a link to the edit view only because `hasEdit` has been set on `<Resource>` */}
+            <ReferenceField source="post_id" reference="posts" />
+        </SimpleForm>
+    </Edit>
+);
+```
+
 ## Resource Context
 
 `<Resource>` also creates a `ResourceContext`, that gives access to the current resource name to all descendants of the main page components (`list`, `create`, `edit`, `show`). 
