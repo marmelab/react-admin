@@ -21821,7 +21821,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-input-rich-text@^4.0.0, ra-input-rich-text@^4.7.4, ra-input-rich-text@workspace:packages/ra-input-rich-text":
+"ra-input-rich-text@^4.0.0, ra-input-rich-text@^4.7.5, ra-input-rich-text@workspace:packages/ra-input-rich-text":
   version: 0.0.0-use.local
   resolution: "ra-input-rich-text@workspace:packages/ra-input-rich-text"
   dependencies:
@@ -21844,7 +21844,7 @@ __metadata:
     data-generator-retail: ^4.7.2
     ra-core: ^4.7.2
     ra-data-fakerest: ^4.7.2
-    ra-ui-materialui: ^4.7.4
+    ra-ui-materialui: ^4.7.5
     react: ^17.0.0
     react-dom: ^17.0.0
     react-hook-form: ^7.40.0
@@ -21897,7 +21897,7 @@ __metadata:
     prop-types: ^15.6.1
     ra-data-local-storage: ^4.7.2
     react: ^17.0.0
-    react-admin: ^4.7.4
+    react-admin: ^4.7.5
     react-dom: ^17.0.0
     react-dropzone: ^12.0.4
     react-query: ^3.32.1
@@ -21911,7 +21911,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-ui-materialui@^4.7.4, ra-ui-materialui@workspace:packages/ra-ui-materialui":
+"ra-ui-materialui@^4.7.5, ra-ui-materialui@workspace:packages/ra-ui-materialui":
   version: 0.0.0-use.local
   resolution: "ra-ui-materialui@workspace:packages/ra-ui-materialui"
   dependencies:
@@ -22118,7 +22118,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-admin@^4.0.0, react-admin@^4.5.0, react-admin@^4.7.4, react-admin@workspace:packages/react-admin":
+"react-admin@^4.0.0, react-admin@^4.5.0, react-admin@^4.7.5, react-admin@workspace:packages/react-admin":
   version: 0.0.0-use.local
   resolution: "react-admin@workspace:packages/react-admin"
   dependencies:
@@ -22132,7 +22132,7 @@ __metadata:
     ra-core: ^4.7.2
     ra-i18n-polyglot: ^4.7.2
     ra-language-english: ^4.7.2
-    ra-ui-materialui: ^4.7.4
+    ra-ui-materialui: ^4.7.5
     react-hook-form: ^7.40.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
@@ -24135,11 +24135,11 @@ __metadata:
     proxy-polyfill: ^0.3.0
     ra-data-fakerest: ^4.7.2
     ra-i18n-polyglot: ^4.7.2
-    ra-input-rich-text: ^4.7.4
+    ra-input-rich-text: ^4.7.5
     ra-language-english: ^4.7.2
     ra-language-french: ^4.7.2
     react: ^17.0.0
-    react-admin: ^4.7.4
+    react-admin: ^4.7.5
     react-app-polyfill: ^1.0.4
     react-dom: ^17.0.0
     react-hook-form: ^7.40.0
