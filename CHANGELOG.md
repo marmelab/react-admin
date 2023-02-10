@@ -1,5 +1,13 @@
 # Changelog
 
+## v4.7.5
+
+* Fix `<FileInput>` label color ([#8625](https://github.com/marmelab/react-admin/pull/8625)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix cannot override `<CreateButton>` and `<EditButton>` style with a theme ([#8624](https://github.com/marmelab/react-admin/pull/8624)) ([IAmVisco](https://github.com/IAmVisco))
+* Fix `ra-input-rich-text` dependencies on tiptap ([#8622](https://github.com/marmelab/react-admin/pull/8622)) ([slax57](https://github.com/slax57))
+* [Doc] Fix `useList` with `useGetList` example ([#8634](https://github.com/marmelab/react-admin/pull/8634)) ([slax57](https://github.com/slax57))
+* Bump http-cache-semantics from 4.1.0 to 4.1.1 ([#8620](https://github.com/marmelab/react-admin/pull/8620)) ([dependabot](https://github.com/dependabot))
+
 ## v4.7.4
 
 * [Doc] Improve the community page ([#8617](https://github.com/marmelab/react-admin/pull/8617)) ([fzaninotto](https://github.com/fzaninotto))
