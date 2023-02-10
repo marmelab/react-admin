@@ -27,6 +27,7 @@ import {
 } from 'ra-core';
 
 import { SimpleListLoading } from './SimpleListLoading';
+import { ListNoResults } from '../ListNoResults';
 
 /**
  * The <SimpleList> component renders a list of records as a MUI <List>.
@@ -67,6 +68,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
 ) => {
     const {
         className,
+        empty = DefaultEmpty,
         hasBulkActions,
         leftAvatar,
         leftIcon,
@@ -95,6 +97,18 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         );
     }
 
+    /**
+     * Once loaded, the data for the list may be empty. Instead of
+     * displaying the table header with zero data rows,
+     * the SimpleList the empty component.
+     */
+    if (data == null || data.length === 0 || total === 0) {
+        if (empty) {
+            return empty;
+        }
+
+        return null;
+    }
     const renderAvatar = (
         record: RecordType,
         avatarCallback: FunctionToElement<RecordType>
@@ -245,6 +259,7 @@ export type FunctionToElement<RecordType extends RaRecord = any> = (
 export interface SimpleListProps<RecordType extends RaRecord = any>
     extends Omit<ListProps, 'classes'> {
     className?: string;
+    empty?: ReactElement;
     hasBulkActions?: boolean;
     leftAvatar?: FunctionToElement<RecordType>;
     leftIcon?: FunctionToElement<RecordType>;
@@ -321,3 +336,5 @@ const Root = styled(List, {
 })({
     [`& .${SimpleListClasses.tertiary}`]: { float: 'right', opacity: 0.541176 },
 });
+
+const DefaultEmpty = <ListNoResults />;

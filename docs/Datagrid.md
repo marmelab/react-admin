@@ -368,8 +368,9 @@ const CustomResetViewsButton = () => {
 
 ## `empty`
 
-It's possible that a Datagrid will have no records to display. If the Datagrid's parent component handles the loading state, the Datagrid will return `null` and render nothing.
-Passing through a component to the `empty` prop will cause the Datagrid to render the `empty` component instead of `null`.
+It's possible that a Datagrid will have no records to display. If the Datagrid's parent component does not handle the empty state, the Datagrid will display a message indicating there are no results. This message is translatable and its key is `ra.navigation.no_results`.
+
+You can customize the empty state by passing  a component to the `empty` prop:
 
 ```jsx
 const CustomEmpty = () => <div>No books found</div>;

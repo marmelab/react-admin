@@ -32,6 +32,7 @@ import DatagridContextProvider from './DatagridContextProvider';
 import { DatagridClasses, DatagridRoot } from './useDatagridStyles';
 import { BulkActionsToolbar } from '../BulkActionsToolbar';
 import { BulkDeleteButton } from '../../button';
+import { ListNoResults } from '../ListNoResults';
 
 const defaultBulkActionButtons = <BulkDeleteButton />;
 
@@ -120,7 +121,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         header = DatagridHeader,
         children,
         className,
-        empty,
+        empty = DefaultEmpty,
         expand,
         bulkActionButtons = defaultBulkActionButtons,
         hover,
@@ -210,7 +211,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     /**
      * Once loaded, the data for the list may be empty. Instead of
      * displaying the table header with zero data rows,
-     * the datagrid displays nothing or a custom empty component.
+     * the Datagrid displays the empty component.
      */
     if (data == null || data.length === 0 || total === 0) {
         if (empty) {
@@ -369,3 +370,5 @@ const sanitizeRestProps = props =>
         .reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
 
 Datagrid.displayName = 'Datagrid';
+
+const DefaultEmpty = <ListNoResults />;

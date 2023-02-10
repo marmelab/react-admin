@@ -44,6 +44,7 @@ It accepts the following props:
 * [`rightAvatar`](#rightavatar)
 * [`rightIcon`](#righticon)
 * [`rowStyle`](#rowstyle)
+* [`empty`](#empty)
 
 ## `leftAvatar`
 
@@ -178,6 +179,25 @@ See [`primaryText`](#primarytext)
 ## `tertiaryText`
 
 See [`primaryText`](#primarytext)
+
+## `empty`
+
+It's possible that a SimpleList will have no records to display. If the SimpleList's parent component does not handle the empty state, the SimpleList will display a message indicating there are no results. This message is translatable and its key is `ra.navigation.no_results`.
+
+You can customize the empty state by passing  a component to the `empty` prop:
+
+```jsx
+const CustomEmpty = () => <div>No books found</div>;
+
+const PostList = () => (
+    <List>
+        <SimpleList
+            primaryText={record => record.title}
+            empty={<CustomEmpty />}
+        />
+    </List>
+);
+```
 
 ## Using `<SimpleList>` On Small Screens
 
