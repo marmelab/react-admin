@@ -291,94 +291,105 @@ Check the following components to learn more about guessers:
 
 In most admin and B2B apps, the most common task is to look for a record. React-admin includes many features to help you **build a user experience that streamlines the search workflow**.
 
-The most basic search feature is [the Filter Button/Form combo](./FilteringTutorial.md#the-filter-buttonform-combo): an inline form displayed on top of the list. Users also see a dropdown button allowing them to add more inputs to that form.
+<table><tbody>
+<tr style="border:none">
+    <td style="width:50%;border:none;text-align:center">
+        <a title="Filter Button/Form Combo" href="./img/list_filter.gif"><img src="./img/list_filter.gif" /></a>
+        <a href="./FilteringTutorial.html#the-filter-buttonform-combo" style="display: block;transform: translateY(-10px);">Filter Button/Form Combo</a>
+    </td>
+    <td style="width:50%;border:none;text-align:center">
+        <a title="<FilterList> Sidebar" href="./img/filter-sidebar.gif"><img src="./img/filter-sidebar.gif" /></a>
+        <a href="./FilteringTutorial.html#the-filterlist-sidebar" style="display: block;transform: translateY(-10px);"><code>&lt;FilterList&gt;</code> Sidebar</a>
+    </td>
+</tr>
+<tr style="border:none;background-color:#fff;">
+    <td style="width:50%;border:none;text-align:center">
+        <a title="Stacked Filters" href="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm">
+            <video controls autoplay muted loop width="90%" style="margin:1rem;box-shadow:0px 4px 4px 0px rgb(0 0 0 / 24%);">
+                <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4">
+                    Your browser does not support the video tag.
+            </video>
+        </a>
+        <a href="./FilteringTutorial.html#the-stackedfilters-component" style="display: block;transform: translateY(-10px);"><code>&lt;StackedFilters&gt;</code> Dialog</a>
+    </td>
+    <td style="width:50%;border:none;text-align:center;vertical-align:top;">
+        <a title="<Search> input" href="https://marmelab.com/ra-enterprise/modules/assets/ra-search-overview.gif"><img src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-overview.gif" /></a>
+        <a href="./FilteringTutorial.html#global-search" style="display: block;transform: translateY(-10px);">Global <code>&lt;Search&gt;</code></a>
+    </td>
+</tr>
+</tbody></table>
 
-![List Filters](./img/list_filter.gif)
-
-This functionality relies on the `<List filters>` prop: 
+These features rely on powerful components with an intuitive API. For instance, you can set the Filter Button/Form Combo with the `<List filters>` prop, using the same input components as in edition forms: 
 
 ```jsx
-import { TextInput } from 'react-admin';
+import { List, TextInput } from 'react-admin';
 
 const postFilters = [
     <TextInput label="Search" source="q" alwaysOn />,
     <TextInput label="Title" source="title" defaultValue="Hello, World!" />,
 ];
 
-export const PostList = (props) => (
-    <List {...props} filters={postFilters}>
-        ...
+export const PostList = () => (
+    <List filters={postFilters}>
+        {/* ... */}
     </List>
 );
 ```
 
-An alternative UI to the Filter Button/Form Combo is [the FilterList Sidebar](./FilteringTutorial.md#the-filterlist-sidebar). Similar to what users usually see on e-commerce websites, it's **a panel with many simple filters that can be enabled and combined** using the mouse. The user experience is better than the Button/Form Combo, because the filter values are explicit, and it doesn't require typing anything in a form. But it's a bit less powerful, as only filters with a finite set of values (or intervals) can be used in the `<FilterList>`.
+Check the following chapters to learn more about each search and filtering component:
 
-![Filter Sidebar](./img/filter-sidebar.gif)
+- [The Filter Button/Form Combo](./FilteringTutorial.md#the-filter-buttonform-combo)
+- [`<FilterList>`](./FilterList.md)
+- [`<StackedFilters>`](./StackedFilters.md)
+- [`<Search>`](./Search.md)
 
-Here is an example FilterList sidebar:
+Users often apply the same filters over and over again. Saved Queries **let users save a combination of filters** and sort parameters into a new, personal filter, that persists between sessions. 
 
-{% raw %}
+[![Saved Queries in FilterList](./img/SavedQueriesList.gif)](./img/SavedQueriesList.gif)
+
+Here is an example `<FilterList>` sidebar with saved queries:
+
 ```jsx
-import { SavedQueriesList, FilterLiveSearch, FilterList, FilterListItem } from 'react-admin';
+import { FilterList, FilterListItem, List, Datagrid } from 'react-admin';
 import { Card, CardContent } from '@mui/material';
-import MailIcon from '@mui/icons-material/MailOutline';
-import CategoryIcon from '@mui/icons-material/LocalOffer';
 
-export const PostFilterSidebar = () => (
-    <Card sx={{ order: -1, mr: 2, mt: 9, width: 200 }}>
+import { SavedQueriesList } from 'react-admin';
+
+const SongFilterSidebar = () => (
+    <Card>
         <CardContent>
             <SavedQueriesList />
-            <FilterLiveSearch >
-            <FilterList label="Subscribed to newsletter" icon={<MailIcon />}>
-                <FilterListItem label="Yes" value={{ has_newsletter: true }} />
-                <FilterListItem label="No" value={{ has_newsletter: false }} />
+            <FilterList label="Record Company" icon={<BusinessIcon />}>
+                ...
             </FilterList>
-            <FilterList label="Category" icon={<CategoryIcon />}>
-                <FilterListItem label="Tests" value={{ category: 'tests' }} />
-                <FilterListItem label="News" value={{ category: 'news' }} />
-                <FilterListItem label="Deals" value={{ category: 'deals' }} />
-                <FilterListItem label="Tutorials" value={{ category: 'tutorials' }} />
+            <FilterList label="Released" icon={<DateRangeeIcon />}>
+               ...
             </FilterList>
         </CardContent>
     </Card>
 );
-```
-{% endraw %}
 
-React-admin also offers a **site-wide, full-text search input**, designed to be displayed on every page.
-
-![ra-search basic](https://marmelab.com/ra-enterprise/modules/assets/ra-search-overview.gif)
-
-Use [the `<Search>` component](./Search.md) to add a global search input to your app:
-
-{% raw %}
-```jsx
-// in src/MyAppBar.jsx
-import { AppBar } from "react-admin";
-import { Typography } from "@mui/material";
-import { Search } from "@react-admin/ra-search";
-
-export const MyAppbar = (props) => (
-  <AppBar {...props}>
-    <Typography
-      variant="h6"
-      color="inherit"
-      sx={{
-        flex: 1,
-        textOverflow: "ellipsis",
-        whiteSpace: "nowrap",
-        overflow: "hidden",
-      }}
-      id="react-admin-title"
-    />
-    <Search />
-  </AppBar>
+const SongList = () => (
+    <List aside={<SongFilterSidebar />}>
+        <Datagrid>
+            ...
+        </Datagrid>
+    </List>
 );
 ```
-{% endraw %}
 
-Finally, react-admin offers low-level hooks and components to build your own search UI. Check the [Building A Custom Filter Tutorial](./FilteringTutorial.md#building-a-custom-filter) to learn more.
+Check [the Saved Queries Tutorial](./FilteringTutorial.md##saved-queries-let-users-save-filter-and-sort) to learn more.
+
+Finally, react-admin offers low-level components and hooks to **build your own search UI**:
+
+- [`<FilterButton>`](./FilterButton.md)
+- [`<SearchInput>`](./FilteringTutorial.md#searchinput)
+- [`<FilterLiveSearch>`](./FilterLiveSearch.md)
+- [`<SavedQueriesList>`](./SavedQueriesList.md)
+- [`useListContext()`](./useListContext.md)
+- [`useList()`](./useList.md)
+
+Check the [Building A Custom Filter Tutorial](./FilteringTutorial.md#building-a-custom-filter) to learn more.
 
 ## Forms & Validation
 
@@ -876,7 +887,6 @@ For instance, replace `<List>` with `<ListLive>` to have a list refreshing autom
 ```diff
 import {
 -   List,
-    ListProps,
     Datagrid,
     TextField,
     NumberField,
@@ -884,9 +894,9 @@ import {
 } from 'react-admin';
 +import { ListLive } from '@react-admin/ra-realtime';
 
-const PostList = (props: ListProps) => (
--   <List {...props}>
-+   <ListLive {...props}>
+const PostList = () => (
+-   <List>
++   <ListLive>
         <Datagrid>
             <TextField source="title" />
             <NumberField source="views" />
@@ -1023,8 +1033,8 @@ const SongFilterSidebar = () => (
     </Card>
 );
 
-const SongList = props => (
-    <List {...props} aside={<SongFilterSidebar />}>
+const SongList = () => (
+    <List aside={<SongFilterSidebar />}>
         <Datagrid>
             ...
         </Datagrid>

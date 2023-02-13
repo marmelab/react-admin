@@ -59,8 +59,8 @@ const productFilters = [
     <TextInput label="Stock less than" source="stock_lte" type="number" parse={convertStringToNumber} />,
 ];
 
-export const ProductList = (props) => (
-    <List {...props} filters={productFilters}>
+export const ProductList = () => (
+    <List filters={productFilters}>
         ...
     </List>
 );

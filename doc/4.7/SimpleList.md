@@ -164,8 +164,8 @@ const postRowStyle = (record, index) => ({
     backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
 });
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <SimpleList primaryText={record => record.title} rowStyle={postRowStyle} />
     </List>
 );
@@ -187,10 +187,10 @@ To use `<SimpleList>` on small screens and a `<Datagrid>` on larger screens, use
 import { useMediaQuery } from '@mui/material';
 import { List, SimpleList, Datagrid } from 'react-admin';
 
-export const PostList = props => {
+export const PostList = () => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
     return (
-        <List {...props}>
+        <List>
             {isSmall ? (
                 <SimpleList
                     primaryText={record => record.title}
