@@ -1,9 +1,10 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render } from '@testing-library/react';
+import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import { RecordContextProvider } from 'ra-core';
 
 import { RichTextField, removeTags } from './RichTextField';
+import { Secure } from './RichTextField.stories';
 
 describe('stripTags', () => {
     it('should strip HTML tags from input', () => {
@@ -135,4 +136,16 @@ describe('<RichTextField />', () => {
             expect(queryByText('NA')).not.toBeNull();
         }
     );
+
+    it('should be safe by default', async () => {
+        const { container } = render(<Secure />);
+        fireEvent.mouseOver(
+            screen.getByText(
+                "It is regarded as one of Tolstoy's finest literary achievements and remains a classic of world literature."
+            )
+        );
+        expect(
+            (container.querySelector('#stolendata') as HTMLInputElement)?.value
+        ).toEqual('none');
+    });
 });
