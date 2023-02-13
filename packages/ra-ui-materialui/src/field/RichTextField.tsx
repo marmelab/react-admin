@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 import { useRecordContext } from 'ra-core';
+import purify from 'dompurify';
 
 import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { InjectedFieldProps, PublicFieldProps, fieldPropTypes } from './types';
@@ -29,7 +30,11 @@ const RichTextField: FC<RichTextFieldProps> = memo<RichTextFieldProps>(
                 ) : stripTags ? (
                     removeTags(value)
                 ) : (
-                    <span dangerouslySetInnerHTML={{ __html: value }} />
+                    <span
+                        dangerouslySetInnerHTML={{
+                            __html: purify.sanitize(value),
+                        }}
+                    />
                 )}
             </Typography>
         );
