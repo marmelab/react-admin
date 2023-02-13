@@ -76,4 +76,4 @@ export interface RichTextFieldProps
 RichTextField.displayName = 'RichTextField';
 
 export const removeTags = (input: string) =>
-    input ? input.replace(/<.+?>/gm, '') : '';
+    input ? input.replace(/<[^>]+>/gm, '') : '';
