@@ -13,7 +13,6 @@ import {
     useResourceContext,
 } from 'ra-core';
 import { Button, ButtonProps } from './Button';
-import { UseQueryOptions } from 'react-query';
 
 export const ExportButton = (props: ExportButtonProps) => {
     const {
