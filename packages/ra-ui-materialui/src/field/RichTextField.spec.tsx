@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, waitFor, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { RecordContextProvider } from 'ra-core';
 
 import { RichTextField, removeTags } from './RichTextField';
