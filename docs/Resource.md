@@ -269,7 +269,7 @@ const MyComponent = () => (
 
 ## Nested Resources
 
-React-admin doesn't support nested resources, but you can use [the `children` prop](#children) to render a custom component for a given sub-route. For instance, to display a list of posts for a given user:
+React-admin doesn't support nested resources, but you can use [the `children` prop](#children) to render a custom component for a given sub-route. For instance, to display a list of songs for a given artist:
 
 ```jsx
 import { Admin, Resource } from 'react-admin';
@@ -277,63 +277,89 @@ import { Route } from 'react-router-dom';
 
 export const App = () => (
     <Admin dataProvider={dataProvider}>
-        <Resource name="users" list={UserList} edit={UserDetail}>
-            <Route path=":id/posts" element={<PostList />} />
-            <Route path=":id/posts/:postId" element={<PostDetail />} />
+        <Resource name="artists" list={ArtistList} edit={ArtistDetail}>
+            <Route path=":id/songs" element={<SongList />} />
+            <Route path=":id/songs/:songId" element={<SongDetail />} />
         </Resource>
     </Admin>
 );
 ```
 
+<video controls autoplay muted loop width="100%">
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/breadcumb-nested-resource.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 This setup creates four routes:
 
-- `/users` renders the `<UserList>` element
-- `/users/:id` renders the `<UserDetail>` element
-- `/users/:id/posts` renders the `<PostList>` element
-- `/users/:id/posts/:postId` renders the `<PostDetail>` element
+- `/artists` renders the `<ArtistList>` element
+- `/artists/:id` renders the `<ArtistDetail>` element
+- `/artists/:id/songs` renders the `<SongList>` element
+- `/artists/:id/songs/:songId` renders the `<SongDetail>` element
 
-In order to display a list of posts for the selected user, `<PostList>` should filter the posts by the `id` parameter. To do so, use the `useParams` hook from `react-router-dom`:
+In order to display a list of songs for the selected artist, `<SongList>` should filter the postssongs by the `id` parameter. To do so, use the `useParams` hook from `react-router-dom`:
 
 {% raw %}
 ```jsx
-// in src/PostList.jsx
-import { List, Datagrid, TextField } from 'react-admin';
+// in src/SongList.jsx
+import { List, Datagrid, TextField, useRecordContext } from 'react-admin';
 import { useParams } from 'react-router-dom';
+import { Button } from '@mui/material';
 
-export const PostList = () => {
+export const SongList = () => {
     const { id } = useParams();
     return (
-        <List resource="posts" filter={{ userId: id }}>
+        <List resource="songs" filter={{ artistId: id }}>
             <Datagrid rowClick="edit">
-                <TextField source="id" />
                 <TextField source="title" />
-                <TextField source="year" />
+                <DateField source="released" />
+                <TextField source="writer" />
+                <TextField source="producer" />
+                <TextField source="recordCompany" label="Label" />
+                <EditSongButton />
             </Datagrid>
         </List>
+    );
+};
+
+const EditSongButton = () => {
+    const song = useRecordContext();
+    return (
+        <Button
+            component={Link}
+            to={`/artists/${song?.artist_id}/songs/${song?.id}`}
+            startIcon={<EditIcon />}
+        >
+            Edit
+        </Button>
     );
 };
 ```
 {% endraw %}
 
-In the `<PostDetail>` component, you must also use the `useParams` hook to get the `postId` parameter and display the post with the corresponding `id`:
+In the `<SongDetail>` component, you must also use the `useParams` hook to get the `songId` parameter and display the song with the corresponding `id`:
 
 {% raw %}
 ```jsx
-// in src/PostDetail.jsx
+// in src/SongDetail.jsx
 import { Edit, SimpleForm, TextInput } from 'react-admin';
 import { useParams } from 'react-router-dom';
 
-export const PostDetail = () => {
-    const { postId } = useParams();
+export const SongDetail = () => {
+    const { id, songId } = useParams();
     return (
-        <Edit resource="posts" id={postId}>
+        <Edit resource="posts" id={songId} redirect={`/artists/${id}/songs`}>
             <SimpleForm>
-                <TextInput source="id" />
                 <TextInput source="title" />
-                <TextInput source="year" />
+                <DateInput source="released" />
+                <TextInput source="writer" />
+                <TextInput source="producer" />
+                <TextInput source="recordCompany" label="Label" />
             </SimpleForm>
         </Edit>
     );
 };
 ```
 {% endraw %}
+
+**Tip**: As seen in the screencast above, when browsing to nested resources, users can get lost unless they have a breadcrumb path displayed on screen. Check [the `<Breadcrumb>` component](./Breadcrumb.md#nested-resources) for more details about how to set up this navigation element.
