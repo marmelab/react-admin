@@ -11655,6 +11655,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dompurify@npm:^2.4.3":
+  version: 2.4.3
+  resolution: "dompurify@npm:2.4.3"
+  checksum: 4c93f5bc8855bbe7dcb33487c0b252a00309fbd8a6d0ec280abbc3af695b43d1bf7f526c2f323fa697314b0b3de3511c756005dddc6ed90d1a1440a3d6ff89d9
+  languageName: node
+  linkType: hard
+
 "domutils@npm:^1.7.0":
   version: 1.7.0
   resolution: "domutils@npm:1.7.0"
@@ -21922,6 +21929,7 @@ __metadata:
     clsx: ^1.1.1
     cross-env: ^5.2.0
     css-mediaquery: ^0.1.2
+    dompurify: ^2.4.3
     expect: ^27.4.6
     file-api: ~0.10.4
     history: ^5.1.0
