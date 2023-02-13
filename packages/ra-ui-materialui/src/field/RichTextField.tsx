@@ -10,7 +10,7 @@ import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 import { InjectedFieldProps, PublicFieldProps, fieldPropTypes } from './types';
 
 export const removeTags = (input: string) =>
-    input ? input.replace(/<.+?>/gm, '') : '';
+    input ? input.replace(/<[^>]+>/gm, '') : '';
 
 const RichTextField: FC<RichTextFieldProps> = memo<RichTextFieldProps>(
     props => {
