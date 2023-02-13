@@ -1,5 +1,11 @@
 # Changelog
 
+## v4.7.6
+
+**This release contains a security fix.** You must upgrade to this version if you use `<RichTextField>` with rich text data that isn't sanitized server-side.
+
+* [Security] Fix XSS vulnerability in `<RichTextField>` ([#8644](https://github.com/marmelab/react-admin/pull/8644)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v4.7.5
 
 * Fix `<FileInput>` label color ([#8625](https://github.com/marmelab/react-admin/pull/8625)) ([fzaninotto](https://github.com/fzaninotto))
