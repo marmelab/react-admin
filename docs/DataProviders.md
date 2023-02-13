@@ -390,7 +390,6 @@ import { useMutation } from 'react-query';
 const BanUserButton = ({ userId }) => {
     const dataProvider = useDataProvider();
     const { mutate, isLoading } = useMutation(
-        ['banUser', userId],
         () => dataProvider.banUser(userId)
     );
     return <Button label="Ban" onClick={() => mutate()} disabled={isLoading} />;
