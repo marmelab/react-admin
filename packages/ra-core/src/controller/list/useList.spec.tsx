@@ -263,4 +263,32 @@ describe('<useList />', () => {
             );
         });
     });
+
+    it('should filter data based on a custom filter with nested objects', () => {
+        const callback = jest.fn();
+        const data = [
+            { id: 1, title: { name: 'hello' } },
+            { id: 2, title: { name: 'world' } },
+        ];
+
+        render(
+            <UseList
+                data={data}
+                filter={{ title: { name: 'world' } }}
+                sort={{ field: 'id', order: 'ASC' }}
+                callback={callback}
+            />
+        );
+
+        expect(callback).toHaveBeenCalledWith(
+            expect.objectContaining({
+                sort: { field: 'id', order: 'ASC' },
+                isFetching: false,
+                isLoading: false,
+                data: [{ id: 2, title: { name: 'world' } }],
+                error: undefined,
+                total: 1,
+            })
+        );
+    });
 });
