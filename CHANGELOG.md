@@ -5,6 +5,8 @@
 **This release contains a security fix.** You must upgrade to this version if you use `<RichTextField>` with rich text data that isn't sanitized server-side.
 
 * [Security] Fix XSS vulnerability in `<RichTextField>` ([#8644](https://github.com/marmelab/react-admin/pull/8644)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<FilterForm>` cannot clear filter with complex object value ([#8637](https://github.com/marmelab/react-admin/pull/8637)) ([slax57](https://github.com/slax57))
+* [Doc] Add `<StackedFilters>` chapter ([#8631](https://github.com/marmelab/react-admin/pull/8631)) ([fzaninotto](https://github.com/fzaninotto))
 
 ## v4.7.5
 
