@@ -297,7 +297,7 @@ This setup creates four routes:
 - `/artists/:id/songs` renders the `<SongList>` element
 - `/artists/:id/songs/:songId` renders the `<SongDetail>` element
 
-In order to display a list of songs for the selected artist, `<SongList>` should filter the postssongs by the `id` parameter. To do so, use the `useParams` hook from `react-router-dom`:
+In order to display a list of songs for the selected artist, `<SongList>` should filter the songs by the `id` parameter. To do so, use the `useParams` hook from `react-router-dom`:
 
 {% raw %}
 ```jsx

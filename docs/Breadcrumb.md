@@ -170,7 +170,7 @@ const MyBreadcrumb = () => (
 )
 ```
 
-See [the `<Breadcrumb.Item>` section](#breadcrumb.item) for more infiormation.
+See [the `<Breadcrumb.Item>` section](#breadcrumbitem) for more information.
 
 ## `separator`
 
@@ -206,7 +206,7 @@ const MyBreadcrumb = () => (
 
 This component renders a single breadcrumb item if the app location matches its `name`.
 
-![A breadcrumb item](https://marmelab.com/ra-enterprise/modules/assets/breadcrumb.Item.png)
+![A breadcrumb item](https://marmelab.com/ra-enterprise/modules/assets/breadcrumbItem.png)
 
 It requires the following props:
 
@@ -331,7 +331,7 @@ const MyBreadcrumb = () => (
 
 When using [nested resources](./Resource.md#nested-resources), create breadcrumb items for the sub-resources. 
 
-For intance, the screencast at the top of this page shows a `songs` resource nested in an `artists` resources.
+For instance, the screencast at the top of this page shows a `songs` resource nested in an `artists` resources.
 
 ```jsx
 import { Admin, Resource } from 'react-admin';
@@ -366,7 +366,7 @@ Let's see how the components for the songs list and detail pages define their ap
 {% raw %}
 ```jsx
 // in src/songs/SongList.js
-import { useGetOne, List; SearchInput, Datagrid, TextField, DateField } from 'react-admin';
+import { useGetOne, List, SearchInput, Datagrid, TextField, DateField } from 'react-admin';
 import { useDefineAppLocation } from '@react-admin/ra-navigation';
 import { useParams } from 'react-router-dom';
 
@@ -434,7 +434,7 @@ export const SongDetail = () => {
 
 **Tip**: The `<Edit>` component will call `dataProvider.getOne("songs", { id: songId })` to fetch the song record. Since the `<SongDetail>` component makes the same request, React-admin will deduplicate the calls and only make one request to the dataProvider.
 
-**Tip**: You don't need to call `useDefineAppLocation` for the pages of the parent resource (artists) as this resource uses the default URLs (`/artists`, `/artists/:id/edit`). The app location will be deduced automatically from these URLs (i.e. `artists` and `artists.edit`).
+**Tip**: You don't need to call `useDefineAppLocation` for the pages of the parent resource (artists) as this resource uses the default URLs (`/artists`, `/artists/:id`). The app location will be deduced automatically from these URLs (i.e. `artists` and `artists.edit`).
 
 Once the app locations are properly set up, the Breadcrumb code comes naturally as:
 
