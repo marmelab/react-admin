@@ -1,5 +1,17 @@
 # Changelog
 
+## v3.19.12
+
+**This release contains a security fix.** You must upgrade to this version if you use `<RichTextField>` with rich text data that isn't sanitized server-side.
+
+* [Security] Fix XSS vulnerability in `<RichTextField>` ([#8645](https://github.com/marmelab/react-admin/pull/8645)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Pagination>` cannot be used outside a `ListContext` ([#7957](https://github.com/marmelab/react-admin/pull/7957)) ([schirrel](https://github.com/schirrel))
+* Fix `<ArrayField fullWidth>` throws DOM error ([#7549](https://github.com/marmelab/react-admin/pull/7549)) ([WiXSL](https://github.com/WiXSL))
+* Fix `useSimpleFormIterator` is not exported ([#7515](https://github.com/marmelab/react-admin/pull/7515)) ([WiXSL](https://github.com/WiXSL))
+* [TypeScript] Fix `useRecordContext` may return `undefined` ([#7495](https://github.com/marmelab/react-admin/pull/7495)) ([KoltesDigital](https://github.com/KoltesDigital))
+* [Doc] Fix Fields doc reference to `getMany` usage ([#7773](https://github.com/marmelab/react-admin/pull/7773)) ([mfaywu](https://github.com/mfaywu))
+* Bump moment from 2.24.0 to 2.29.2 ([#7512](https://github.com/marmelab/react-admin/pull/7512)) ([dependabot](https://github.com/dependabot))
+
 ## v3.19.11
 
 * Fix `history` dependency ([#7481](https://github.com/marmelab/react-admin/pull/7481)) ([WiXSL](https://github.com/WiXSL))
