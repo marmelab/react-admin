@@ -29,6 +29,7 @@ import useListSortContext from './useListSortContext';
 
 export type {
     ListControllerProps,
+    ListPaginationContextValue,
     PaginationHookResult,
     SortProps,
     UseReferenceProps,
@@ -42,7 +43,6 @@ export {
     ListContext,
     ListFilterContext,
     ListPaginationContext,
-    ListPaginationContextValue,
     ListSortContext,
     ListContextProvider,
     useCheckMinimumRequiredProps,

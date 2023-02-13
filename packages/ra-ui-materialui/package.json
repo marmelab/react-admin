@@ -70,6 +70,7 @@
         "classnames": "~2.2.5",
         "connected-react-router": "^6.5.2",
         "css-mediaquery": "^0.1.2",
+        "dompurify": "^2.4.3",
         "downshift": "3.2.7",
         "inflection": "~1.13.1",
         "jsonexport": "^2.4.1",
