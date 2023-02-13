@@ -42,6 +42,7 @@ export const BulkExportButton = (props: BulkExportButtonProps) => {
         label = 'ra.action.export',
         icon = defaultIcon,
         exporter: customExporter,
+        meta,
         ...rest
     } = props;
     const {
@@ -56,7 +57,7 @@ export const BulkExportButton = (props: BulkExportButtonProps) => {
         event => {
             exporter &&
                 dataProvider
-                    .getMany(resource, { ids: selectedIds })
+                    .getMany(resource, { ids: selectedIds, meta })
                     .then(({ data }) =>
                         exporter(
                             data,
@@ -75,7 +76,7 @@ export const BulkExportButton = (props: BulkExportButtonProps) => {
                 onClick(event);
             }
         },
-        [dataProvider, exporter, notify, onClick, resource, selectedIds]
+        [dataProvider, exporter, notify, onClick, resource, selectedIds, meta]
     );
 
     return (
@@ -96,7 +97,7 @@ const sanitizeRestProps = ({
     selectedIds,
     resource,
     ...rest
-}: Omit<BulkExportButtonProps, 'exporter' | 'label'>) => rest;
+}: Omit<BulkExportButtonProps, 'exporter' | 'label' | 'meta'>) => rest;
 
 interface Props {
     exporter?: Exporter;
@@ -106,6 +107,7 @@ interface Props {
     onClick?: (e: Event) => void;
     selectedIds?: Identifier[];
     resource?: string;
+    meta?: any;
 }
 
 export type BulkExportButtonProps = Props & ButtonProps;
@@ -116,4 +118,5 @@ BulkExportButton.propTypes = {
     resource: PropTypes.string,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     icon: PropTypes.element,
+    meta: PropTypes.any,
 };

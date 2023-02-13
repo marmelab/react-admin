@@ -21,6 +21,7 @@ export const ExportButton = (props: ExportButtonProps) => {
         label = 'ra.action.export',
         icon = defaultIcon,
         exporter: customExporter,
+        meta,
         ...rest
     } = props;
     const {
@@ -43,6 +44,7 @@ export const ExportButton = (props: ExportButtonProps) => {
                         ? { ...filterValues, ...filter }
                         : filterValues,
                     pagination: { page: 1, perPage: maxResults },
+                    meta,
                 })
                 .then(
                     ({ data }) =>
@@ -72,6 +74,7 @@ export const ExportButton = (props: ExportButtonProps) => {
             onClick,
             resource,
             sort,
+            meta,
         ]
     );
 
@@ -93,8 +96,10 @@ const sanitizeRestProps = ({
     filterValues,
     resource,
     ...rest
-}: Omit<ExportButtonProps, 'sort' | 'maxResults' | 'label' | 'exporter'>) =>
-    rest;
+}: Omit<
+    ExportButtonProps,
+    'sort' | 'maxResults' | 'label' | 'exporter' | 'meta'
+>) => rest;
 
 interface Props {
     exporter?: Exporter;
@@ -105,6 +110,7 @@ interface Props {
     onClick?: (e: Event) => void;
     resource?: string;
     sort?: SortPayload;
+    meta?: any;
 }
 
 export type ExportButtonProps = Props & ButtonProps;
@@ -120,4 +126,5 @@ ExportButton.propTypes = {
         order: PropTypes.string,
     }),
     icon: PropTypes.element,
+    meta: PropTypes.any,
 };
