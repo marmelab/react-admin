@@ -151,6 +151,7 @@ const CutomBulkActionButtons = () => (
         <BulkDeleteButton />
     </>
 );
+
 export const BulkActionButtons = () => (
     <Wrapper>
         <Box sx={{ mt: -7 }}>
@@ -170,6 +171,13 @@ export const BulkActionButtons = () => (
             </Datagrid>
             <h1>Custom</h1>
             <Datagrid bulkActionButtons={<CutomBulkActionButtons />}>
+                <TextField source="id" />
+                <TextField source="title" />
+                <TextField source="author" />
+                <TextField source="year" />
+            </Datagrid>
+            <h1>Unselectable Rows</h1>
+            <Datagrid isRowSelectable={record => record.id % 2 === 0}>
                 <TextField source="id" />
                 <TextField source="title" />
                 <TextField source="author" />
