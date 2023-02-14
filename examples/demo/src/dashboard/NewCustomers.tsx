@@ -53,7 +53,10 @@ const NewCustomers = () => {
                               key={record.id}
                           >
                               <ListItemAvatar>
-                                  <Avatar src={`${record.avatar}?size=32x32`} />
+                                  <Avatar
+                                      src={`${record.avatar}?size=32x32`}
+                                      alt={`${record.first_name} ${record.last_name}`}
+                                  />
                               </ListItemAvatar>
                               <ListItemText
                                   primary={`${record.first_name} ${record.last_name}`}

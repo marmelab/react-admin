@@ -32,9 +32,8 @@ export const PendingOrder = (props: Props) => {
                 ) : (
                     <Avatar
                         src={`${customer?.avatar}?size=32x32`}
-                        sx={{
-                            bgcolor: 'background.paper',
-                        }}
+                        sx={{ bgcolor: 'background.paper' }}
+                        alt={`${customer?.first_name} ${customer?.last_name}`}
                     />
                 )}
             </ListItemAvatar>

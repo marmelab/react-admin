@@ -16,6 +16,7 @@ const AvatarField = ({ size = '25', sx }: Props) => {
             src={`${record.avatar}?size=${size}x${size}`}
             style={{ width: parseInt(size, 10), height: parseInt(size, 10) }}
             sx={sx}
+            alt={`${record.first_name} ${record.last_name}`}
         />
     );
 };
