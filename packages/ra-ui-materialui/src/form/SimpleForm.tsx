@@ -3,6 +3,8 @@ import { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { Form, FormProps } from 'ra-core';
 import { Stack, CardContent, SxProps, StackProps } from '@mui/material';
+import { styled } from '@mui/material/styles';
+
 import { Toolbar } from './Toolbar';
 
 /**
@@ -76,11 +78,17 @@ export interface SimpleFormProps
     sx?: SxProps;
 }
 
-const DefaultComponent = ({ children, sx, className }) => (
-    <CardContent sx={sx} className={className}>
-        {children}
-    </CardContent>
-);
+const PREFIX = 'RaSimpleForm';
+
+const DefaultComponent = styled(CardContent, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    [theme.breakpoints.down('sm')]: {
+        paddingBottom: '5em',
+    },
+}));
+
 const DefaultToolbar = <Toolbar />;
 
 const sanitizeRestProps = ({

@@ -51,6 +51,7 @@ const PostCreateToolbar = props => {
                         redirect('show', 'posts', data.id);
                     },
                 }}
+                sx={{ display: { xs: 'none', sm: 'flex' } }}
             />
             <SaveButton
                 label="post.action.save_and_add"
@@ -81,6 +82,7 @@ const PostCreateToolbar = props => {
                     },
                 }}
                 transform={data => ({ ...data, average_note: 10 })}
+                sx={{ display: { xs: 'none', sm: 'flex' } }}
             />
         </Toolbar>
     );
