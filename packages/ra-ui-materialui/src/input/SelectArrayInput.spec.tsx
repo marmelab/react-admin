@@ -608,4 +608,18 @@ describe('<SelectArrayInput />', () => {
             })
         ).toBeNull();
     });
+
+    it('should not crash if its value is not an array', () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    onSubmit={jest.fn()}
+                    defaultValues={{ categories: 1 }}
+                >
+                    <SelectArrayInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
+        );
+        expect(screen.queryByTestId('selectArray')).toBeDefined();
+    });
 });

@@ -13,6 +13,8 @@ React-admin provides many hooks and components to let you build custom user expe
 
 Edition views are very common in single-page apps. The most usual way to allow a user to update a record is to fetch the record from an API based on the URL parameters, initialize a form with the record, update the inputs as the user changes the values, and call the API to update the record with the new values upon submission. 
 
+[![From Pure React To React-Admin](./img/edit-from-react-to-react-admin.webp)](./img/edit-from-react-to-react-admin.webp)
+
 To better understand how to use the various react-admin hooks and components dedicated to editing and creating, let's start by building such an edition view by hand.
 
 ### An Edition View Built By Hand

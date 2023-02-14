@@ -30,8 +30,8 @@ import { Button, ButtonProps } from './Button';
  *     </Fragment>
  * );
  *
- * export const PostList = (props) => (
- *     <List {...props} bulkActionButtons={<PostBulkActionButtons />}>
+ * export const PostList = () => (
+ *     <List bulkActionButtons={<PostBulkActionButtons />}>
  *         ...
  *     </List>
  * );

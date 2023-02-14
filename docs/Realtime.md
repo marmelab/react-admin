@@ -7,7 +7,7 @@ title: "Realtime"
 
 React-admin provides hooks and UI components for collaborative applications where several people work in parallel. It allows publishing and subscribing to real-time events, updating views when another user pushes a change, notifying end users of events, and preventing data loss when two editors work on the same resource concurrently.
 
-<video controls autoplay muted>
+<video controls autoplay muted width="100%">
   <source src="./img/CollaborativeDemo.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
@@ -59,7 +59,6 @@ For instance, replace `<List>` with `<ListLive>` to have a list refreshing autom
 ```diff
 import {
 -   List,
-    ListProps,
     Datagrid,
     TextField,
     NumberField,
@@ -67,9 +66,9 @@ import {
 } from 'react-admin';
 +import { ListLive } from '@react-admin/ra-realtime';
 
-const PostList = (props: ListProps) => (
--   <List {...props}>
-+   <ListLive {...props}>
+const PostList = () => (
+-   <List>
++   <ListLive>
         <Datagrid>
             <TextField source="title" />
             <NumberField source="views" />

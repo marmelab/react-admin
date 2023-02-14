@@ -50,8 +50,8 @@ import { ListNoResults } from '../ListNoResults';
  * const postRowStyle = (record, index) => ({
  *     backgroundColor: record.views >= 500 ? '#efe' : 'white',
  * });
- * export const PostList = (props) => (
- *     <List {...props}>
+ * export const PostList = () => (
+ *     <List>
  *         <SimpleList
  *             primaryText={record => record.title}
  *             secondaryText={record => `${record.views} views`}

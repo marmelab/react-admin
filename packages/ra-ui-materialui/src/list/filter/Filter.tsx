@@ -18,8 +18,8 @@ import { FilterContext } from '../FilterContext';
  *     </Filter>
  * );
  *
- * export const PostList = (props) => (
- *     <List {...props} filters={<PostFilter />}>
+ * export const PostList = () => (
+ *     <List filters={<PostFilter />}>
  *         ...
  *     </List>
  * );

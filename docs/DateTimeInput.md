@@ -29,3 +29,8 @@ After modification by the user, the value is stored as a `Date` object, using th
 
 `<DateTimeInput>` accepts the [common input props](./Inputs.md#common-input-props).
 
+## Custom `format` and `parse`
+
+Internally, `<DateTimeInput>` renders an [`<input type="datetime-local">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local).
+
+If you need to implement your own `format` and `parse` functions, make sure the **format** function actually formats the input into [a valid local date and time string](https://developer.mozilla.org/en-US/docs/Web/HTML/Date_and_time_formats#local_date_and_time_strings).

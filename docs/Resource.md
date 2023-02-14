@@ -11,13 +11,13 @@ In react-admin terms, a *resource* is a string that refers to an entity type (li
 
 A `<Resource>` component has 3 responsibilities:
 
-- It defines the components for the CRUD routes of a given resource (to display a list of records, the details of a record, or to create a new one).
+- It defines the CRUD routes of a given resource (to display a list of records, the details of a record, or to create a new one).
 - It creates a context that lets every descendant component know the current resource name (this context is called `ResourceContext`).
 - It stores the resource definition (its name, icon, and label) inside a shared context (this context is called `ResourceDefinitionContext`).
 
 `<Resource>` components can only be used as children of [the `<Admin>` component](./Admin.md).
 
-## Basic Usage
+## Usage
 
 For instance, the following admin app offers an interface to the resources exposed by the JSONPlaceholder API ([posts](https://jsonplaceholder.typicode.com/posts), [users](https://jsonplaceholder.typicode.com/users), [comments](https://jsonplaceholder.typicode.com/comments), and [tags](https://jsonplaceholder.typicode.com/tags)):
 
@@ -92,6 +92,87 @@ The routing will map the component as follows:
 * [`icon`](#icon)
 * [`options`](#icon)
 * [`recordRepresentation`](#recordrepresentation)
+
+## `children`
+
+`<Resource>` defines the CRUD routes of your application. So `<Resource name="posts">` defines a set of routes starting with `/posts`. 
+
+`<Resource>` accepts `<Route>` components as `children`, to let you define sub routes for the resource. 
+
+For instance, the following code creates an `authors` resource, and adds an `/authors/:authorId/books` route displaying the books of the given author:
+
+```jsx
+// in src/App.jsx
+import { Admin, Resource } from 'react-admin';
+import { Route } from 'react-router-dom';
+
+import { AuthorList } from './AuthorList';
+import { BookList } from './BookList';
+
+export const App = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource name="authors" list={AuthorList}>
+            <Route path=":authorId/books" element={<BookList />} />
+        </Resource>
+    </Admin>
+);
+```
+
+The `BookList` component can grab the `authorId` parameter from the URL using the `useParams` hook, and pass it as a `<List filter>` parameter to display a list of books for the given author:
+
+{% raw %}
+```jsx
+// in src/BookList.jsx
+import { List, Datagrid, TextField } from 'react-admin';
+import { useParams } from 'react-router-dom';
+
+export const BookList = () => {
+    const { authorId } = useParams();
+    return (
+        <List resource="books" filter={{ authorId }}>
+            <Datagrid rowClick="edit">
+                <TextField source="id" />
+                <TextField source="title" />
+                <TextField source="year" />
+            </Datagrid>
+        </List>
+    );
+};
+```
+{% endraw %}
+
+**Tip**: In the above example, the `resource="books"` prop is required in `<List>` because the `ResourceContext` defaults to `authors` inside the `<Resource name="authors">`.
+
+It's your responsibility to route to the `/authors/:id/books` route, e.g. from each line of the `AuthorList` component:
+
+```jsx
+// in src/AuthorList.jsx
+const BooksButton = () => {
+    const record = useRecordContext();
+    return (
+        <Button
+            component={Link}
+            to={`/authors/${record.id}/books`}
+            color="primary"
+        >
+            Books
+        </Button>
+    );
+};
+
+export const AuthorList = () => (
+    <List>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="firstName" />
+            <TextField source="lastName" />
+            <BooksButton />
+        </Datagrid>
+    </List>
+);
+```
+
+**Tip**: As the `/authors/:authorId/books` route is a sub-route of the `/authors` route, the active menu item will be "Authors". 
 
 ## `icon`
 
@@ -220,3 +301,99 @@ const MyComponent = () => (
 );
 ```
 
+## Nested Resources
+
+React-admin doesn't support nested resources, but you can use [the `children` prop](#children) to render a custom component for a given sub-route. For instance, to display a list of songs for a given artist:
+
+```jsx
+import { Admin, Resource } from 'react-admin';
+import { Route } from 'react-router-dom';
+
+export const App = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource name="artists" list={ArtistList} edit={ArtistDetail}>
+            <Route path=":id/songs" element={<SongList />} />
+            <Route path=":id/songs/:songId" element={<SongDetail />} />
+        </Resource>
+    </Admin>
+);
+```
+
+<video controls autoplay muted loop width="100%">
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/breadcumb-nested-resource.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
+This setup creates four routes:
+
+- `/artists` renders the `<ArtistList>` element
+- `/artists/:id` renders the `<ArtistDetail>` element
+- `/artists/:id/songs` renders the `<SongList>` element
+- `/artists/:id/songs/:songId` renders the `<SongDetail>` element
+
+In order to display a list of songs for the selected artist, `<SongList>` should filter the songs by the `id` parameter. To do so, use the `useParams` hook from `react-router-dom`:
+
+{% raw %}
+```jsx
+// in src/SongList.jsx
+import { List, Datagrid, TextField, useRecordContext } from 'react-admin';
+import { useParams } from 'react-router-dom';
+import { Button } from '@mui/material';
+
+export const SongList = () => {
+    const { id } = useParams();
+    return (
+        <List resource="songs" filter={{ artistId: id }}>
+            <Datagrid rowClick="edit">
+                <TextField source="title" />
+                <DateField source="released" />
+                <TextField source="writer" />
+                <TextField source="producer" />
+                <TextField source="recordCompany" label="Label" />
+                <EditSongButton />
+            </Datagrid>
+        </List>
+    );
+};
+
+const EditSongButton = () => {
+    const song = useRecordContext();
+    return (
+        <Button
+            component={Link}
+            to={`/artists/${song?.artist_id}/songs/${song?.id}`}
+            startIcon={<EditIcon />}
+        >
+            Edit
+        </Button>
+    );
+};
+```
+{% endraw %}
+
+In the `<SongDetail>` component, you must also use the `useParams` hook to get the `songId` parameter and display the song with the corresponding `id`:
+
+{% raw %}
+```jsx
+// in src/SongDetail.jsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { useParams } from 'react-router-dom';
+
+export const SongDetail = () => {
+    const { id, songId } = useParams();
+    return (
+        <Edit resource="posts" id={songId} redirect={`/artists/${id}/songs`}>
+            <SimpleForm>
+                <TextInput source="title" />
+                <DateInput source="released" />
+                <TextInput source="writer" />
+                <TextInput source="producer" />
+                <TextInput source="recordCompany" label="Label" />
+            </SimpleForm>
+        </Edit>
+    );
+};
+```
+{% endraw %}
+
+**Tip**: As seen in the screencast above, when browsing to nested resources, users can get lost unless they have a breadcrumb path displayed on screen. Check [the `<Breadcrumb>` component](./Breadcrumb.md#nested-resources) for more details about how to set up this navigation element.

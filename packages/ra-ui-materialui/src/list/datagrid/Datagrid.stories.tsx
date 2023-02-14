@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { TextField } from '../../field';
 import { BulkDeleteButton, BulkExportButton } from '../../button';
 import { Datagrid } from './Datagrid';
+import { SimpleShowLayout } from '../../detail';
 
 export default { title: 'ra-ui-materialui/list/Datagrid' };
 
@@ -347,4 +348,36 @@ export const Standalone = () => (
             <MyCustomListInteractive />
         </CoreAdminContext>
     </ThemeProvider>
+);
+
+export const IsRowSelectable = () => (
+    <Wrapper>
+        <Datagrid isRowSelectable={record => Boolean(record.id % 2)}>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </Wrapper>
+);
+
+export const IsRowExpandable = () => (
+    <Wrapper>
+        <Datagrid
+            isRowExpandable={record => Boolean(record.id % 2)}
+            expand={
+                <SimpleShowLayout>
+                    <TextField source="id" />
+                    <TextField source="title" />
+                    <TextField source="author" />
+                    <TextField source="year" />
+                </SimpleShowLayout>
+            }
+        >
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </Wrapper>
 );

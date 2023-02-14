@@ -8,6 +8,7 @@ import usePaginationState from '../usePaginationState';
 import useSortState from '../useSortState';
 import { useRecordSelection } from './useRecordSelection';
 import { ListControllerResult } from './useListController';
+import { flattenObject } from '../../dataProvider/fetch';
 
 const refetch = () => {
     throw new Error(
@@ -163,9 +164,10 @@ export const useList = <RecordType extends RaRecord = any>(
 
             // 1. filter
             if (filterValues) {
+                const flattenFilterValues = flattenObject(filterValues);
                 tempData = data
                     .filter(record =>
-                        Object.entries(filterValues).every(
+                        Object.entries(flattenFilterValues).every(
                             ([filterName, filterValue]) => {
                                 const recordValue = get(record, filterName);
                                 const result = Array.isArray(recordValue)
