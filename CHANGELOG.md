@@ -1,5 +1,20 @@
 # Changelog
 
+## v4.8.0
+
+* Add ability for `<List>` children to handle the empty state ([#8585](https://github.com/marmelab/react-admin/pull/8585)) ([djhi](https://github.com/djhi))
+* Add ability to override available routes for a `<Resource>` ([#8640](https://github.com/marmelab/react-admin/pull/8640)) ([slax57](https://github.com/slax57))
+* Add support for `<ExportButton meta>` and `<BulkExportButton meta>` ([#8636](https://github.com/marmelab/react-admin/pull/8636)) ([fkowal](https://github.com/fkowal))
+* Add ability to use a React Node as `useNotify` message ([#8580](https://github.com/marmelab/react-admin/pull/8580)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability for `<Datagrid isRowSelectable>` to show a disabled checkbox for unselectable rows ([#8650](https://github.com/marmelab/react-admin/pull/8650)) ([WiXSL](https://github.com/WiXSL))
+* Improve performance by memoizing mutation callbacks ([#8526](https://github.com/marmelab/react-admin/pull/8526)) ([rkfg](https://github.com/rkfg))
+* Fix `shouldUnregister` prop used in an Input logs a DOM warning ([#8653](https://github.com/marmelab/react-admin/pull/8653)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<CheckboxGroupInput helperText>` placement and color ([#8652](https://github.com/marmelab/react-admin/pull/8652)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `useList` filter option not working with nested objects ([#8646](https://github.com/marmelab/react-admin/pull/8646)) ([WiXSL](https://github.com/WiXSL))
+* [TypeScript] Make `<FormDataConsumer>` generic ([#8389](https://github.com/marmelab/react-admin/pull/8389)) ([Gabriel-Malenowitch](https://github.com/Gabriel-Malenowitch))
+* [Doc] Add section in `<Breadcrumb>` documentation about nested resources ([#8648](https://github.com/marmelab/react-admin/pull/8648)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `useMutation` usage examples use the wrong syntax ([#8647](https://github.com/marmelab/react-admin/pull/8647)) ([WiXSL](https://github.com/WiXSL))
+
 ## v4.7.6
 
 **This release contains a security fix.** You must upgrade to this version if you use `<RichTextField>` with rich text data that isn't sanitized server-side.
