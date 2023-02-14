@@ -1277,7 +1277,7 @@ The react-admin core team has a **strong commitment to accessibility**. React-ad
 
 We routinely test react-admin with the [WAVE](https://wave.webaim.org/) and [Axe](https://www.deque.com/axe/) accessibility tools.
 
-![Accessibility](./img/Accessibility.webp)
+![Accessibility](./img/accessibility.webp)
 
 ## Responsive
 
