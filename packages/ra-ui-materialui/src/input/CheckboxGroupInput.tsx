@@ -235,7 +235,10 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                     />
                 ))}
             </FormGroup>
-            <FormHelperText error={fetchError || (isTouched && !!error)}>
+            <FormHelperText
+                error={fetchError || ((isTouched || isSubmitted) && !!error)}
+                className={CheckboxGroupInputClasses.helperText}
+            >
                 <InputHelperText
                     touched={isTouched || isSubmitted || fetchError}
                     error={error?.message || fetchError?.message}
@@ -286,6 +289,7 @@ const PREFIX = 'RaCheckboxGroupInput';
 
 export const CheckboxGroupInputClasses = {
     label: `${PREFIX}-label`,
+    helperText: `${PREFIX}-helperText`,
 };
 
 const StyledFormControl = styled(FormControl, {
@@ -295,5 +299,9 @@ const StyledFormControl = styled(FormControl, {
     [`& .${CheckboxGroupInputClasses.label}`]: {
         transform: 'translate(0, 4px) scale(0.75)',
         transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
+    },
+    [`& .${CheckboxGroupInputClasses.helperText}`]: {
+        marginLeft: 0,
+        marginRight: 0,
     },
 }));
