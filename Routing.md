@@ -56,6 +56,56 @@ const Dashboard = () => {
 }
 ```
 
+## Reacting To A Page Change
+
+Use `react-router-dom`'s [`useLocation` hook](https://reactrouter.com/en/main/hooks/use-location) to perform some side effect whenever the current location changes. For instance, if you want to add an analytics event when the user visits a page, you can do it like this:
+
+```jsx
+import * as React from 'react';
+import { useLocation } from 'react-router-dom';
+
+export const usePageTracking = () => {
+  const location = useLocation();
+
+  React.useEffect(() => {
+    // track pageview with gtag / react-ga / react-ga4, for example:
+    window.gtag("event", "page_view", {
+      page_path: location.pathname + location.search,
+    });
+  }, [location]);
+}
+```
+
+Then, use that hook in a [custom layout](./Admin.md#layout):
+
+```jsx
+import { Layout } from 'react-admin';
+
+import { usePageTracking } from './usePageTracking';
+
+export const MyLayout = (props) => {
+    usePageTracking();
+    return <Layout {...props} />;
+}
+```
+
+**Tip*: When using `useLocation`, you may get an error saying:
+
+> `useLocation()` may be used only in the context of a `<Router>` component
+
+... or a location that doesn't reflect the actual app location. It's caused by duplicate `react-router` packages in your dependencies. If you added `react-router` and/or `react-router-dom` to your dependencies, make sure to use the same version as react-admin, and deduplicate them using yarn's `resolutions` or npm's `overrides`.
+
+```js
+// in packages.json
+{
+    // ...
+  "resolutions": {
+    "react-router-dom": "6.7.0",
+    "react-router": "6.7.0"
+  }
+}
+```
+
 ## Adding Custom Pages
 
 In addition to CRUD pages for resources, you can create as many routes as you want for your custom pages. Use [the `<CustomRoutes>` component](./CustomRoutes.md) to do so.
