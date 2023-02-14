@@ -33,6 +33,7 @@ export const sanitizeInputRestProps = ({
     setFilter,
     setPagination,
     setSort,
+    shouldUnregister,
     source,
     submitError,
     subscription,

@@ -313,3 +313,17 @@ export const FieldState = () => (
         </Create>
     </AdminContext>
 );
+
+export const ShouldUnregister = () => (
+    <AdminContext>
+        <Create
+            resource="posts"
+            record={{ id: 123, views: 23 }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <NumberInput source="views" shouldUnregister />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
