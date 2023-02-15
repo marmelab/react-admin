@@ -36,6 +36,24 @@ cd remix-supabase-react-admin
 yarn add react-admin ra-data-json-server
 ```
 
+Remix and react-admin both install `react-router`, and due to the way each library handles its dependency, this results in duplicate packages. To avoid this, use [yarn resolutions](https://classic.yarnpkg.com/en/docs/selective-version-resolutions/) to force Remix to use the same version of `react-router` as react-admin. So add the following to the `package.json` file:
+
+```js
+{
+  // ...
+  "resolutions": {
+    "react-router": "6.8.1",
+    "react-router-dom": "6.8.1"
+  }
+}
+```
+
+And call `yarn` again to install the dependencies:
+
+```sh
+yarn
+```
+
 Next, create the admin app component in `app/components/App.tsx`:
 
 ```jsx
