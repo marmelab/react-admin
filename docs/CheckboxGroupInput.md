@@ -234,10 +234,10 @@ The choices are translated by default, so you can use translation identifiers as
 
 ```jsx
 const choices = [
-    { id: 'admin', label: 'myroot.roles.admin' },
-    { id: 'u001', label: 'myroot.roles.u001' },
-    { id: 'u002', label: 'myroot.roles.u002' },
-    { id: 'u003', label: 'myroot.roles.u003' },
+    { id: 'admin', name: 'myroot.roles.admin' },
+    { id: 'u001', name: 'myroot.roles.u001' },
+    { id: 'u002', name: 'myroot.roles.u002' },
+    { id: 'u003', name: 'myroot.roles.u003' },
 ];
 ```
 
