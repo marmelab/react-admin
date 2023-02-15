@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
 export interface NotificationOptions {
@@ -13,7 +15,7 @@ export interface NotificationOptions {
 }
 
 export interface NotificationPayload {
-    readonly message: string;
+    readonly message: string | ReactNode;
     readonly type: NotificationType;
     readonly notificationOptions?: NotificationOptions;
 }

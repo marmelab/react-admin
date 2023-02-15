@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useNotify, NotificationContextProvider } from 'ra-core';
+import { Alert } from '@mui/material';
 
 import { Notification } from './Notification';
 
@@ -116,5 +117,21 @@ const AnchorOriginNotification = () => {
 export const AnchorOrigin = () => (
     <Wrapper>
         <AnchorOriginNotification />
+    </Wrapper>
+);
+
+const CustomNodeNotification = () => {
+    const notify = useNotify();
+    React.useEffect(() => {
+        notify(
+            <Alert severity="info">Agent Lauren Smith just logged in</Alert>
+        );
+    }, [notify]);
+    return null;
+};
+
+export const CustomNode = () => (
+    <Wrapper>
+        <CustomNodeNotification />
     </Wrapper>
 );

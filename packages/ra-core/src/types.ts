@@ -346,6 +346,9 @@ export interface ResourceProps {
     create?: ComponentType<any> | ReactElement;
     edit?: ComponentType<any> | ReactElement;
     show?: ComponentType<any> | ReactElement;
+    hasCreate?: boolean;
+    hasEdit?: boolean;
+    hasShow?: boolean;
     icon?: ComponentType<any>;
     recordRepresentation?: ReactElement | RecordToStringFunction | string;
     options?: ResourceOptions;

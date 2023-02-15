@@ -201,6 +201,21 @@ const App = () => (
 );
 ```
 
+**Tip**: For TypeScript users, here is a typed version of the `fetchJson` function:
+
+```ts
+const fetchJson = (url: string, options: fetchUtils.Options = {}) => {
+    const customHeaders = (options.headers ||
+        new Headers({
+            Accept: 'application/json',
+        })) as Headers;
+    // add your own headers here
+    customHeaders.set('X-Custom-Header', 'foobar');
+    options.headers = customHeaders;
+    return fetchUtils.fetchJson(url, options);
+}
+```
+
 Now all the requests to the REST API will contain the `X-Custom-Header: foobar` header.
 
 **Warning**: If your API is on another domain as the JS code, you'll need to whitelist this header with an `Access-Control-Expose-Headers` [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) header.
@@ -375,7 +390,6 @@ import { useMutation } from 'react-query';
 const BanUserButton = ({ userId }) => {
     const dataProvider = useDataProvider();
     const { mutate, isLoading } = useMutation(
-        ['banUser', userId],
         () => dataProvider.banUser(userId)
     );
     return <Button label="Ban" onClick={() => mutate()} disabled={isLoading} />;

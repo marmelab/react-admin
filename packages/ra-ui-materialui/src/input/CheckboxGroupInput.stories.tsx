@@ -3,13 +3,14 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { Typography } from '@mui/material';
 import { FavoriteBorder, Favorite } from '@mui/icons-material';
-import { testDataProvider, useRecordContext } from 'ra-core';
+import { required, testDataProvider, useRecordContext } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
 import { SimpleForm } from '../form';
 import { CheckboxGroupInput } from './CheckboxGroupInput';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
+import { TextInput } from './TextInput';
 
 export default { title: 'ra-ui-materialui/input/CheckboxGroupInput' };
 
@@ -47,7 +48,9 @@ export const Basic = () => (
 );
 
 const dataProvider = testDataProvider({
+    // @ts-ignore
     getList: () => Promise.resolve({ data: choices, total: choices.length }),
+    // @ts-ignore
     getMany: (resource, params) =>
         Promise.resolve({
             data: choices.filter(choice => params.ids.includes(choice.id)),
@@ -181,3 +184,33 @@ const OptionText = () => {
         </>
     );
 };
+
+export const Validate = () => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <Create resource="posts" sx={{ width: 600 }}>
+            <SimpleForm>
+                <CheckboxGroupInput
+                    source="options"
+                    choices={choices}
+                    validate={[required()]}
+                />
+                <TextInput source="foo" />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+export const HelperText = () => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <Create resource="posts" sx={{ width: 600 }}>
+            <SimpleForm>
+                <CheckboxGroupInput
+                    source="options"
+                    choices={choices}
+                    validate={[required()]}
+                    helperText="Helper text"
+                />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);

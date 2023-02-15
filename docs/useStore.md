@@ -35,11 +35,11 @@ When one component calls `setValue` on a key, all the components that read the s
 ```jsx
 import { List, Datagrid } from 'react-admin';
 
-const PostList = props => {
+const PostList = () => {
     const [density] = useStore('posts.list.density', 'small');
 
     return (
-        <List {...props}>
+        <List>
             <Datagrid size={density}>
                 ...
             </Datagrid>

@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, ReactNode } from 'react';
 
 import { useAddNotificationContext } from './useAddNotificationContext';
 import { NotificationType, NotificationOptions } from './types';
@@ -22,7 +22,7 @@ export const useNotify = () => {
     const addNotification = useAddNotificationContext();
     return useCallback(
         (
-            message: string,
+            message: string | ReactNode,
             options: NotificationOptions & { type?: NotificationType } = {}
         ) => {
             const {

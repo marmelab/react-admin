@@ -56,11 +56,10 @@ const CustomToolbar = () => {
 
 ## Parameters
 
-
--   `resource`: the resource name (e.g. `'posts'`)
--   `params`: an object with the following properties:
-    -   `id`: the record id (e.g. `123`)
-    -   `meta`: Optional. an object that will be forwarded to the dataProvider (optional)
+- `resource`: the resource name (e.g. `'posts'`)
+- `params`: an object with the following properties:
+    - `id`: the record id (e.g. `123`)
+    - `meta`: Optional. an object that will be forwarded to the dataProvider
 
 ## Live Version
 

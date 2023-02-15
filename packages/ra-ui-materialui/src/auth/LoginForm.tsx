@@ -60,6 +60,7 @@ export const LoginForm = (props: LoginFormProps) => {
                     autoFocus
                     source="username"
                     label={translate('ra.auth.username')}
+                    autoComplete="username"
                     validate={required()}
                     fullWidth
                 />

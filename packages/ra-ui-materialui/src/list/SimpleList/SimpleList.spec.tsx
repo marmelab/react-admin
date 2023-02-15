@@ -130,4 +130,20 @@ describe('<SimpleList />', () => {
             expect(screen.getByText('2').closest('a')).toBeNull();
         });
     });
+
+    it('should display a message when there is no result', () => {
+        render(
+            <ListContext.Provider
+                value={{
+                    isLoading: false,
+                    data: [],
+                    total: 0,
+                    resource: 'posts',
+                }}
+            >
+                <SimpleList />
+            </ListContext.Provider>
+        );
+        expect(screen.queryByText('ra.navigation.no_results')).not.toBeNull();
+    });
 });

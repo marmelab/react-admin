@@ -183,6 +183,7 @@ export const PostList = () => (
 | `label`      | Optional | `string`        | 'ra.action.export' | label or translation message to use |
 | `icon`       | Optional | `ReactElement`  | `<DownloadIcon>`   | iconElement, e.g. `<CommentIcon />` |
 | `exporter`   | Optional | `Function`      | -                  | Override the List exporter function |
+| `meta`       | Optional | `any`           | undefined          | Metadata passed to the dataProvider |
 
 ### `<BulkExportButton>`
 
@@ -216,6 +217,7 @@ export const PostList = () => (
 | `label`      | Optional | `string`        | 'ra.action.export' | label or translation message to use |
 | `icon`       | Optional | `ReactElement`  | `<DownloadIcon>`   | iconElement, e.g. `<CommentIcon />` |
 | `exporter`   | Optional | `Function`      | -                  | Override the List exporter function |
+| `meta`       | Optional | `any`           | undefined          | Metadata passed to the dataProvider |
 
 ### `<BulkDeleteButton>`
 

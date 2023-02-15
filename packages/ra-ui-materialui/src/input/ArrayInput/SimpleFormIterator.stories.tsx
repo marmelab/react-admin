@@ -7,6 +7,7 @@ import { ArrayInput } from './ArrayInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
 import { TextInput } from '../TextInput';
 import { AdminContext } from '../../AdminContext';
+import { defaultTheme } from '../../defaultTheme';
 
 export default { title: 'ra-ui-materialui/input/SimpleFormIterator' };
 
@@ -184,6 +185,43 @@ export const Sx = () => (
                             },
                         }}
                     >
+                        <TextInput source="name" />
+                        <TextInput source="role" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        </Edit>
+    </AdminContext>
+);
+
+export const Theming = () => (
+    <AdminContext
+        dataProvider={dataProvider}
+        theme={{
+            ...defaultTheme,
+            components: {
+                ...defaultTheme.components,
+                RaSimpleFormIterator: {
+                    styleOverrides: {
+                        root: {
+                            border: 'solid lightgrey 1px',
+                            borderRadius: 2,
+                            marginTop: 24,
+                            padding: 8,
+                            '& .RaSimpleFormIterator-form': {
+                                flexDirection: 'row',
+                                gap: '1em',
+                            },
+                        },
+                    },
+                },
+            },
+        }}
+    >
+        <Edit resource="books" id="1">
+            <SimpleForm>
+                <ArrayInput source="authors">
+                    <SimpleFormIterator>
                         <TextInput source="name" />
                         <TextInput source="role" />
                     </SimpleFormIterator>

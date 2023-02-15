@@ -107,7 +107,12 @@ export const useReferenceArrayInputController = <
             filter: { ...params.filter, ...filter },
             meta,
         },
-        { retry: false, enabled: isGetMatchingEnabled, ...otherQueryOptions }
+        {
+            retry: false,
+            enabled: isGetMatchingEnabled,
+            keepPreviousData: true,
+            ...otherQueryOptions,
+        }
     );
 
     // We merge the currently selected records with the matching ones, otherwise
