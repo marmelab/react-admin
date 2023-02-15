@@ -72,7 +72,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
     reference: {
         component: ReferenceField,
         representation: (props: ReferenceFieldProps) =>
-            `<ReferenceField source="${props.source}" reference="${props.reference}"><TextField source="id" /></ReferenceField>`,
+            `<ReferenceField source="${props.source}" reference="${props.reference}" />`,
     },
     referenceChild: {
         component: (props: { children: ReactNode } & InputProps) => (

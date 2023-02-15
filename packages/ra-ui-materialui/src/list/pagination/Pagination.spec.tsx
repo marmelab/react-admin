@@ -21,86 +21,6 @@ describe('<Pagination />', () => {
         hasPreviousPage: undefined,
     };
 
-    describe('no results mention', () => {
-        it('should display a pagination limit when there is no result', () => {
-            render(
-                <ThemeProvider theme={theme}>
-                    <ListPaginationContext.Provider
-                        value={{ ...defaultProps, total: 0 }}
-                    >
-                        <Pagination />
-                    </ListPaginationContext.Provider>
-                </ThemeProvider>
-            );
-            expect(
-                screen.queryByText('ra.navigation.no_results')
-            ).not.toBeNull();
-        });
-
-        it('should not display a pagination limit when there are results', () => {
-            render(
-                <ThemeProvider theme={theme}>
-                    <ListPaginationContext.Provider
-                        value={{ ...defaultProps, total: 1 }}
-                    >
-                        <Pagination />
-                    </ListPaginationContext.Provider>
-                </ThemeProvider>
-            );
-            expect(screen.queryByText('ra.navigation.no_results')).toBeNull();
-        });
-
-        it('should display a pagination limit on an out of bounds page (more than total pages)', async () => {
-            jest.spyOn(console, 'error').mockImplementationOnce(() => {});
-            const setPage = jest.fn().mockReturnValue(null);
-            render(
-                <ThemeProvider theme={theme}>
-                    <ListPaginationContext.Provider
-                        value={{
-                            ...defaultProps,
-                            total: 10,
-                            page: 2, // Query the page 2 but there is only 1 page
-                            perPage: 10,
-                            setPage,
-                        }}
-                    >
-                        <Pagination />
-                    </ListPaginationContext.Provider>
-                </ThemeProvider>
-            );
-            // mui TablePagination displays no more a warning in that case
-            // Then useEffect fallbacks on a valid page
-            expect(
-                screen.queryByText('ra.navigation.no_results')
-            ).not.toBeNull();
-        });
-
-        it('should display a pagination limit on an out of bounds page (less than 0)', async () => {
-            jest.spyOn(console, 'error').mockImplementationOnce(() => {});
-            const setPage = jest.fn().mockReturnValue(null);
-            render(
-                <ThemeProvider theme={theme}>
-                    <ListPaginationContext.Provider
-                        value={{
-                            ...defaultProps,
-                            total: 10,
-                            page: -2, // Query the page -2 😱
-                            perPage: 10,
-                            setPage,
-                        }}
-                    >
-                        <Pagination />
-                    </ListPaginationContext.Provider>
-                </ThemeProvider>
-            );
-            // mui TablePagination displays no more a warning in that case
-            // Then useEffect fallbacks on a valid page
-            expect(
-                screen.queryByText('ra.navigation.no_results')
-            ).not.toBeNull();
-        });
-    });
-
     describe('Total pagination', () => {
         it('should display a next button when there are more results', () => {
             render(
@@ -118,7 +38,7 @@ describe('<Pagination />', () => {
                 </ThemeProvider>
             );
             const nextButton = screen.queryByLabelText(
-                'ra.navigation.next'
+                'Go to next page'
             ) as HTMLButtonElement;
             expect(nextButton).not.toBeNull();
             expect(nextButton.disabled).toBe(false);
@@ -139,7 +59,7 @@ describe('<Pagination />', () => {
                 </ThemeProvider>
             );
             const nextButton = screen.queryByLabelText(
-                'ra.navigation.next'
+                'Go to next page'
             ) as HTMLButtonElement;
             expect(nextButton).not.toBeNull();
             expect(nextButton.disabled).toBe(true);
@@ -160,7 +80,7 @@ describe('<Pagination />', () => {
                 </ThemeProvider>
             );
             const prevButton = screen.queryByLabelText(
-                'ra.navigation.previous'
+                'Go to previous page'
             ) as HTMLButtonElement;
             expect(prevButton).not.toBeNull();
             expect(prevButton.disabled).toBe(false);
@@ -181,7 +101,7 @@ describe('<Pagination />', () => {
                 </ThemeProvider>
             );
             const prevButton = screen.queryByLabelText(
-                'ra.navigation.previous'
+                'Go to previous page'
             ) as HTMLButtonElement;
             expect(prevButton).not.toBeNull();
             expect(prevButton.disabled).toBe(true);
@@ -206,7 +126,7 @@ describe('<Pagination />', () => {
                 </ThemeProvider>
             );
             const nextButton = screen.queryByLabelText(
-                'ra.navigation.next'
+                'Go to next page'
             ) as HTMLButtonElement;
             expect(nextButton).not.toBeNull();
             expect(nextButton.disabled).toBe(false);
@@ -228,7 +148,7 @@ describe('<Pagination />', () => {
                 </ThemeProvider>
             );
             const nextButton = screen.queryByLabelText(
-                'ra.navigation.next'
+                'Go to next page'
             ) as HTMLButtonElement;
             expect(nextButton).not.toBeNull();
             expect(nextButton.disabled).toBe(true);
@@ -250,7 +170,7 @@ describe('<Pagination />', () => {
                 </ThemeProvider>
             );
             const prevButton = screen.queryByLabelText(
-                'ra.navigation.previous'
+                'Go to previous page'
             ) as HTMLButtonElement;
             expect(prevButton).not.toBeNull();
             expect(prevButton.disabled).toBe(false);
@@ -272,7 +192,7 @@ describe('<Pagination />', () => {
                 </ThemeProvider>
             );
             const prevButton = screen.queryByLabelText(
-                'ra.navigation.previous'
+                'Go to previous page'
             ) as HTMLButtonElement;
             expect(prevButton).not.toBeNull();
             expect(prevButton.disabled).toBe(true);
@@ -322,5 +242,34 @@ describe('<Pagination />', () => {
                 screen.queryByText('ra.navigation.page_rows_per_page')
             ).not.toBeNull();
         });
+    });
+
+    it('should work outside of a ListContext', () => {
+        render(
+            <ThemeProvider theme={theme}>
+                <Pagination
+                    resource="posts"
+                    setPage={() => null}
+                    isLoading={false}
+                    setPerPage={() => {}}
+                    hasNextPage={undefined}
+                    hasPreviousPage={undefined}
+                    perPage={1}
+                    total={2}
+                    page={1}
+                    rowsPerPageOptions={[1]}
+                />
+            </ThemeProvider>
+        );
+        const nextButton = screen.queryByLabelText(
+            'Go to next page'
+        ) as HTMLButtonElement;
+        expect(nextButton).not.toBeNull();
+        expect(nextButton.disabled).toBe(false);
+        const prevButton = screen.queryByLabelText(
+            'Go to previous page'
+        ) as HTMLButtonElement;
+        expect(prevButton).not.toBeNull();
+        expect(prevButton.disabled).toBe(true);
     });
 });

@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import PropTypes from 'prop-types';
+import { UseQueryOptions } from 'react-query';
 import { Typography } from '@mui/material';
 import {
     useReferenceOneFieldController,
@@ -7,6 +8,9 @@ import {
     ResourceContextProvider,
     LinkToType,
     useCreatePath,
+    useTranslate,
+    SortPayload,
+    RaRecord,
 } from 'ra-core';
 
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
@@ -22,17 +26,23 @@ import { ReferenceFieldView } from './ReferenceField';
  *     <TextField source="body" />
  * </ReferenceOneField>
  */
-export const ReferenceOneField = (props: ReferenceOneFieldProps) => {
+export const ReferenceOneField = <RecordType extends RaRecord = any>(
+    props: ReferenceOneFieldProps<RecordType>
+) => {
     const {
         children,
         reference,
         source,
         target,
         emptyText,
+        sort,
+        filter,
         link = false,
+        queryOptions,
     } = props;
     const record = useRecordContext(props);
     const createPath = useCreatePath();
+    const translate = useTranslate();
 
     const {
         isLoading,
@@ -40,11 +50,14 @@ export const ReferenceOneField = (props: ReferenceOneFieldProps) => {
         referenceRecord,
         error,
         refetch,
-    } = useReferenceOneFieldController({
+    } = useReferenceOneFieldController<RecordType>({
         record,
         reference,
         source,
         target,
+        sort,
+        filter,
+        queryOptions,
     });
 
     const resourceLinkPath =
@@ -62,7 +75,7 @@ export const ReferenceOneField = (props: ReferenceOneFieldProps) => {
     return !record || (!isLoading && referenceRecord == null) ? (
         emptyText ? (
             <Typography component="span" variant="body2">
-                {emptyText}
+                {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
         ) : null
     ) : (
@@ -82,23 +95,30 @@ export const ReferenceOneField = (props: ReferenceOneFieldProps) => {
     );
 };
 
-export interface ReferenceOneFieldProps
+export interface ReferenceOneFieldProps<RecordType extends RaRecord = any>
     extends PublicFieldProps,
         InjectedFieldProps {
-    children: ReactNode;
+    children?: ReactNode;
     reference: string;
     target: string;
+    sort?: SortPayload;
+    filter?: any;
     link?: LinkToType;
+    queryOptions?: UseQueryOptions<{
+        data: RecordType[];
+        total: number;
+    }> & { meta?: any };
 }
 
 ReferenceOneField.propTypes = {
-    children: PropTypes.node.isRequired,
+    children: PropTypes.node,
     className: PropTypes.string,
     label: fieldPropTypes.label,
     record: PropTypes.any,
     reference: PropTypes.string.isRequired,
     source: PropTypes.string.isRequired,
     target: PropTypes.string.isRequired,
+    queryOptions: PropTypes.any,
 };
 
 ReferenceOneField.defaultProps = {

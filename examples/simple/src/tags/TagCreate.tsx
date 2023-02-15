@@ -2,8 +2,7 @@
 import * as React from 'react';
 import {
     Create,
-    SimpleForm,
-    TextField,
+    SimpleFormConfigurable,
     TextInput,
     required,
     TranslatableInputs,
@@ -11,12 +10,11 @@ import {
 
 const TagCreate = () => (
     <Create redirect="list">
-        <SimpleForm>
-            <TextField source="id" />
+        <SimpleFormConfigurable>
             <TranslatableInputs locales={['en', 'fr']}>
                 <TextInput source="name" validate={[required()]} />
             </TranslatableInputs>
-        </SimpleForm>
+        </SimpleFormConfigurable>
     </Create>
 );
 

@@ -43,6 +43,7 @@ export const BulkUpdateWithConfirmButton = (
             notify('ra.notification.updated', {
                 type: 'info',
                 messageArgs: { smart_count: selectedIds.length },
+                undoable: mutationMode === 'undoable',
             });
             unselectAll();
             setOpen(false);
@@ -53,7 +54,7 @@ export const BulkUpdateWithConfirmButton = (
                     ? error
                     : error.message || 'ra.notification.http_error',
                 {
-                    type: 'warning',
+                    type: 'error',
                     messageArgs: {
                         _:
                             typeof error === 'string'

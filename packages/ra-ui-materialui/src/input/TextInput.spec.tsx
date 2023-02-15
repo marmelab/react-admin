@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
-
 import { required, testDataProvider } from 'ra-core';
+
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { TextInput } from './TextInput';
+import { ValueNull, Parse } from './TextInput.stories';
 
 describe('<TextInput />', () => {
     const defaultProps = {
@@ -110,6 +111,121 @@ describe('<TextInput />', () => {
                     screen.queryByText('ra.validation.required')
                 ).not.toBeNull();
             });
+        });
+    });
+
+    it('should keep null values', async () => {
+        const onSuccess = jest.fn();
+        render(<ValueNull onSuccess={onSuccess} />);
+        const input = (await screen.findByLabelText(
+            'resources.posts.fields.title'
+        )) as HTMLInputElement;
+        const saveBtn = screen.getByText('ra.action.save');
+
+        expect(input.value).toEqual('');
+        fireEvent.click(saveBtn);
+        await waitFor(() => {
+            expect(onSuccess).toHaveBeenCalledWith(
+                { id: 123, title: null },
+                expect.anything(),
+                expect.anything()
+            );
+        });
+
+        fireEvent.change(input, { target: { value: 'test' } });
+        expect(input.value).toEqual('test');
+        fireEvent.click(saveBtn);
+        await waitFor(() => {
+            expect(onSuccess).toHaveBeenCalledWith(
+                { id: 123, title: 'test' },
+                expect.anything(),
+                expect.anything()
+            );
+        });
+
+        fireEvent.change(input, { target: { value: '' } });
+        expect(input.value).toEqual('');
+        fireEvent.click(saveBtn);
+        await waitFor(() => {
+            expect(onSuccess).toHaveBeenCalledWith(
+                { id: 123, title: null },
+                expect.anything(),
+                expect.anything()
+            );
+        });
+    });
+
+    describe('parse', () => {
+        it('should transform the value before storing it in the form state', () => {
+            render(<Parse />);
+            const input = screen.getByLabelText(
+                'resources.posts.fields.title'
+            ) as HTMLInputElement;
+            expect(input.value).toEqual('Lorem ipsum');
+            fireEvent.change(input, { target: { value: 'foo' } });
+            expect(input.value).toEqual('bar');
+        });
+    });
+
+    describe('label', () => {
+        it('should render label when `label` prop not specified', () => {
+            const { container } = render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{ title: 'hello' }}
+                        onSubmit={jest.fn}
+                    >
+                        <TextInput {...defaultProps} />
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            expect(container.querySelector(`label`)).not.toBeNull();
+        });
+
+        it('should render label when `label` prop is non-empty string', () => {
+            const { container } = render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{ title: 'hello' }}
+                        onSubmit={jest.fn}
+                    >
+                        <TextInput {...defaultProps} label="label" />
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            expect(container.querySelector(`label`)).not.toBeNull();
+        });
+
+        it('should not render label when `label` prop is `false`', () => {
+            const { container } = render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{ title: 'hello' }}
+                        onSubmit={jest.fn}
+                    >
+                        <TextInput {...defaultProps} label={false} />
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            expect(container.querySelector(`label`)).toBeNull();
+        });
+
+        it('should not render label when `label` prop is empty string', () => {
+            const { container } = render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{ title: 'hello' }}
+                        onSubmit={jest.fn}
+                    >
+                        <TextInput {...defaultProps} label="" />
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            expect(container.querySelector(`label`)).toBeNull();
         });
     });
 });

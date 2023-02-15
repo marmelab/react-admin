@@ -16,8 +16,18 @@ import {
 
 export const listFieldTypes = {
     table: {
-        component: props => <Datagrid rowClick="edit" {...props} />, // eslint-disable-line react/display-name
-        representation: (_, children) => `        <Datagrid rowClick="edit">
+        component: props => {
+            const { hasEdit, hasShow, ...rest } = props;
+            return (
+                <Datagrid
+                    rowClick={!hasEdit && hasShow ? 'show' : 'edit'}
+                    {...rest}
+                />
+            );
+        }, // eslint-disable-line react/display-name
+        representation: (props, children) => `        <Datagrid rowClick="${
+            !props.hasEdit && props.hasShow ? 'show' : 'edit'
+        }">
 ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
         </Datagrid>`,
     },
@@ -62,20 +72,25 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
     reference: {
         component: ReferenceField,
         representation: props =>
-            `<ReferenceField source="${props.source}" reference="${props.reference}"><TextField source="id" /></ReferenceField>`,
+            `<ReferenceField source="${props.source}" reference="${props.reference}" />`,
     },
     referenceChild: {
-        component: props => <TextField source="id" {...props} />, // eslint-disable-line react/display-name
+        component: () => <TextField source="id" />, // eslint-disable-line react/display-name
         representation: () => `<TextField source="id" />`,
     },
     referenceArray: {
         component: ReferenceArrayField,
         representation: props =>
-            `<ReferenceArrayField source="${props.source}" reference="${props.reference}"><TextField source="id" /></ReferenceArrayField>`,
+            `<ReferenceArrayField source="${props.source}" reference="${props.reference}" />`,
     },
     referenceArrayChild: {
-        component: props => <TextField source="id" {...props} />, // eslint-disable-line react/display-name
-        representation: () => `<TextField source="id" />`,
+        component: () => (
+            <SingleFieldList>
+                <ChipField source="id" />
+            </SingleFieldList>
+        ), // eslint-disable-line react/display-name
+        representation: () =>
+            `<SingleFieldList><ChipField source="id" /></SingleFieldList>`,
     },
     richText: undefined, // never display a rich text field in a datagrid
     string: {

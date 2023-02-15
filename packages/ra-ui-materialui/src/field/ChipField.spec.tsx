@@ -2,7 +2,26 @@ import * as React from 'react';
 import expect from 'expect';
 import { ChipField } from './ChipField';
 import { render } from '@testing-library/react';
-import { RecordContextProvider } from 'ra-core';
+import { RecordContextProvider, I18nContextProvider } from 'ra-core';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+
+const i18nProvider = polyglotI18nProvider(
+    _locale => ({
+        resources: {
+            books: {
+                name: 'Books',
+                fields: {
+                    id: 'Id',
+                    title: 'Title',
+                    author: 'Author',
+                    year: 'Year',
+                },
+                not_found: 'Not found',
+            },
+        },
+    }),
+    'en'
+);
 
 describe('<ChipField />', () => {
     it('should display the record value added as source', () => {
@@ -54,4 +73,18 @@ describe('<ChipField />', () => {
             expect(getByText('NA')).not.toBeNull();
         }
     );
+
+    it('should translate emptyText', () => {
+        const { getByText } = render(
+            <I18nContextProvider value={i18nProvider}>
+                <ChipField
+                    record={{ id: 123 }}
+                    source="foo.bar"
+                    emptyText="resources.books.not_found"
+                />
+            </I18nContextProvider>
+        );
+
+        expect(getByText('Not found')).not.toBeNull();
+    });
 });

@@ -9,6 +9,7 @@ import {
 
 import { useDataProvider } from './useDataProvider';
 import { RaRecord, CreateParams } from '../types';
+import { useEvent } from '../util';
 
 /**
  * Get a callback to call the dataProvider.create() method, the result and the loading state.
@@ -35,13 +36,14 @@ import { RaRecord, CreateParams } from '../types';
  * This hook uses react-query useMutation under the hood.
  * This means the state object contains mutate, isIdle, reset and other react-query methods.
  *
- * @see https://react-query.tanstack.com/reference/useMutation
+ * @see https://react-query-v3.tanstack.com/reference/useMutation
  *
  * @example // set params when calling the create callback
  *
- * import { useCreate } from 'react-admin';
+ * import { useCreate, useRecordContext } from 'react-admin';
  *
- * const LikeButton = ({ record }) => {
+ * const LikeButton = () => {
+ *     const record = useRecordContext();
  *     const like = { postId: record.id };
  *     const [create, { isLoading, error }] = useCreate();
  *     const handleClick = () => {
@@ -53,9 +55,10 @@ import { RaRecord, CreateParams } from '../types';
  *
  * @example // set params when calling the hook
  *
- * import { useCreate } from 'react-admin';
+ * import { useCreate, useRecordContext } from 'react-admin';
  *
- * const LikeButton = ({ record }) => {
+ * const LikeButton = () => {
+ *     const record = useRecordContext();
  *     const like = { postId: record.id };
  *     const [create, { isLoading, error }] = useCreate('likes', { data: like });
  *     if (error) { return <p>ERROR</p>; }
@@ -143,7 +146,7 @@ export const useCreate = <
         );
     };
 
-    return [create, mutation];
+    return [useEvent(create), mutation];
 };
 
 export interface UseCreateMutateParams<RecordType extends RaRecord = any> {

@@ -41,11 +41,13 @@ Here are all the props accepted by the component:
 - [`theme`](#theme)
 - [`layout`](#layout)
 - [`loginPage`](#loginpage)
+- [`authCallbackPage`](#authcallbackpage)
 - [`history`](#history)
 - [`basename`](#basename)
 - [`ready`](#ready)
 - [`requireAuth`](#requireauth)
 - [`store`](#store)
+- [`notification`](#notification)
 
 ## `dataProvider`
 
@@ -120,7 +122,7 @@ The [Translation Documentation](./Translation.md) details this process.
 
 ## `queryClient`
 
-React-admin uses [react-query](https://react-query.tanstack.com/) to fetch, cache and update data. Internally, the `<Admin>` component creates a react-query [`QueryClient`](https://react-query.tanstack.com/reference/QueryClient) on mount, using [react-query's "aggressive but sane" defaults](https://react-query.tanstack.com/guides/important-defaults):
+React-admin uses [react-query](https://react-query-v3.tanstack.com/) to fetch, cache and update data. Internally, the `<Admin>` component creates a react-query [`QueryClient`](https://react-query-v3.tanstack.com/reference/QueryClient) on mount, using [react-query's "aggressive but sane" defaults](https://react-query-v3.tanstack.com/guides/important-defaults):
 
 * Queries consider cached data as stale
 * Stale queries are refetched automatically in the background when:
@@ -158,7 +160,7 @@ const App = () => (
 );
 ```
 
-To know which options you can pass to the `QueryClient` constructor, check the [react-query documentation](https://react-query.tanstack.com/reference/QueryClient) and the [query options](https://react-query.tanstack.com/reference/useQuery) and [mutation options](https://react-query.tanstack.com/reference/useMutation) sections.
+To know which options you can pass to the `QueryClient` constructor, check the [react-query documentation](https://react-query-v3.tanstack.com/reference/QueryClient) and the [query options](https://react-query-v3.tanstack.com/reference/useQuery) and [mutation options](https://react-query-v3.tanstack.com/reference/useMutation) sections.
 
 The common settings that react-admin developers often overwrite are:
 
@@ -313,54 +315,43 @@ React-admin uses the list of `<Resource>` components passed as children of `<Adm
 If you want to add or remove menu items, for instance to link to non-resources pages, you can create your own menu component:
 
 ```jsx
-// in src/Menu.js
+// in src/MyMenu.js
 import * as React from 'react';
 import { createElement } from 'react';
 import { useMediaQuery } from '@mui/material';
-import { MenuItemLink, useResourceDefinitions, useSidebarState } from 'react-admin';
+import { Menu, useResourceDefinitions } from 'react-admin';
 import LabelIcon from '@mui/icons-material/Label';
 
-const Menu = ({ onMenuClick }) => {
+export const MyMenu = () => {
     const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
-    const [open] = useSidebarState();
     const resources = useResourceDefinitions();
     
     return (
-        <div>
+        <Menu>
             {Object.keys(resources).map(name => (
-                <MenuItemLink
+                <Menu.Item
                     key={name}
                     to={`/${name}`}
                     primaryText={resources[name].options && resources[name].options.label || name}
                     leftIcon={createElement(resources[name].icon)}
-                    onClick={onMenuClick}
-                    sidebarIsOpen={open}
                 />
             ))}
-            <MenuItemLink
-                to="/custom-route"
-                primaryText="Miscellaneous"
-                leftIcon={<LabelIcon />}
-                onClick={onMenuClick}
-                sidebarIsOpen={open}
-            />
-        </div>
+            <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />} />
+        </Menu>
     );
-}
-
-export default Menu;
+};
 ```
 
-**Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views. It supports a custom text and icon (which must be a MUI `<SvgIcon>`).
+**Tip**: `<Menu.Item>` must be used to avoid unwanted side effects in mobile views. It supports a custom text and icon (which must be a MUI `<SvgIcon>`).
 
 Then, pass it to the `<Admin>` component as the `menu` prop:
 
 ```jsx
 // in src/App.js
-import Menu from './Menu';
+import { MyMenu } from './Menu';
 
 const App = () => (
-    <Admin menu={Menu} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin menu={MyMenu} dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );
@@ -378,7 +369,7 @@ import { defaultTheme } from 'react-admin';
 const theme = {
     ...defaultTheme,
     palette: {
-        type: 'dark', // Switching the dark mode on is a single property value change.
+        mode: 'dark', // Switching the dark mode on is a single property value change.
     },
 };
 
@@ -397,39 +388,49 @@ For more details on predefined themes and custom themes, refer to [the Theming c
 
 If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. 
 
-Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point, and check [the Theming documentation](./Theming.md#using-a-custom-layout) for examples.
+React-admin offers predefined layouts for you to use:
+
+- [`<Layout>`](./Layout.md): The default layout. It renders a top app bar and the navigation menu in a side bar.
+- [`<ContainerLayout>`](./ContainerLayout.md): A centered layout with horizontal navigation.
 
 ```jsx
-// in src/App.js
-import MyLayout from './MyLayout';
+import { Admin } from 'react-admin';
+import { ContainerLayout } from '@react-admin/ra-navigation';
 
-const App = () => (
-    <Admin layout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+export const App = () => (
+    <Admin dataProvider={dataProvider} layout={ContainerLayout}>
         // ...
     </Admin>
 );
 ```
 
-Your custom layout can simply extend the default `<Layout>` component if you only want to override the appBar, the menu, the notification component, or the error page. For instance:
+These layouts can be customized by passing props to them. For instance, you can pass a custom `appBar` prop to `<Layout>` to override the default app bar:
 
 ```jsx
 // in src/MyLayout.js
 import { Layout } from 'react-admin';
 import MyAppBar from './MyAppBar';
-import MyMenu from './MyMenu';
-import MyNotification from './MyNotification';
 
-const MyLayout = (props) => <Layout
-    {...props}
-    appBar={MyAppBar}
-    menu={MyMenu}
-    notification={MyNotification}
-/>;
-
-export default MyLayout;
+export const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
 ```
 
-For more details on custom layouts, check [the Theming documentation](./Theming.md#using-a-custom-layout).
+Then, pass it to the `<Admin>` component as the `layout` prop:
+
+```jsx
+// in src/App.js
+import { Admin } from 'react-admin';
+import { MyLayout } from './MyLayout';
+
+const App = () => (
+    <Admin dataProvider={dataProvider} layout={MyLayout}>
+        // ...
+    </Admin>
+);
+```
+
+Refer to each component documentation to understand the props it accepts.
+
+Finally, you can also pass a custom component as the `layout` prop. It must contain a `{children}` placeholder, where react-admin will render the content. Use the [default `<Layout>`](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point, and check [the Theming documentation](./Theming.md#using-a-custom-layout) for examples.
 
 ## `loginPage`
 
@@ -450,6 +451,28 @@ You can also disable it completely along with the `/login` route by passing `fal
 See The [Authentication documentation](./Authentication.md#customizing-the-login-component) for more details.
 
 **Tip**: Before considering writing your own login page component, please take a look at how to change the default [background image](./Theming.md#using-a-custom-login-page) or the [MUI theme](#theme). See the [Authentication documentation](./Authentication.md#customizing-the-login-component) for more details.
+
+## `authCallbackPage`
+
+React-admin apps contain a special route called `/auth-callback` to let external authentication providers (like Auth0, Cognito, OIDC servers) redirect users after login. This route renders the `AuthCallback` component by default, which in turn calls `authProvider.handleCallback`. 
+
+If you need a different behavior for this route, you can render a custom component by passing it as the `authCallbackPage` prop.
+
+```jsx
+import MyAuthCallbackPage from './MyAuthCallbackPage';
+
+const App = () => (
+    <Admin authCallbackPage={MyAuthCallbackPage}>
+        ...
+    </Admin>
+);
+```
+
+**Note**: You should seldom use this option, even when using an external authentication provider. Since you can already define the `/auth-callback` route controller via `authProvider.handleCallback`, the `authCallbackPage` prop is only useful when you need the user's feedback after they logged in.
+
+You can also disable the `/auth-callback` route altogether by passing `authCallbackPage={false}`.
+
+See The [Authentication documentation](./Authentication.md#using-external-authentication-providers) for more details.
 
 ## ~~`history`~~
 
@@ -474,7 +497,7 @@ const App = () => (
 
 ## `basename`
 
-Use this prop to make all routes and links in your Admin relative to a "base" portion of the URL pathname that they all share. This is only needed when using the [`BrowserHistory`](https://github.com/remix-run/history/blob/main/docs/api-reference.md#createbrowserhistory) to serve the application under a sub-path of your domain (for example https://marmelab.com/ra-enterprise-demo), or when embedding react-admin inside a single-page app with its own routing. See https://reactrouter.com/docs/en/v6/api#router for more information.
+Use this prop to make all routes and links in your Admin relative to a "base" portion of the URL pathname that they all share. This is required when using the [`BrowserHistory`](https://github.com/remix-run/history/blob/main/docs/api-reference.md#createbrowserhistory) to serve the application under a sub-path of your domain (for example https://marmelab.com/ra-enterprise-demo), or when embedding react-admin inside a single-page app with its own routing.
 
 ```jsx
 import { Admin } from 'react-admin';
@@ -488,9 +511,11 @@ const App = () => (
 );
 ```
 
+See [Using React-Admin In A Sub Path](./Routing.md#using-react-admin-in-a-sub-path) for more usage examples.
+
 ## `ready`
 
-When you run an `<Admin>` with no child `<Resource>`, react-admin displays a "ready" screen:
+When you run an `<Admin>` with no child `<Resource>` nor `<CustomRoutes>`, react-admin displays a "ready" screen:
 
 ![Empty Admin](./img/tutorial_empty.png)
 
@@ -542,13 +567,40 @@ const App = () => (
 );
 ```
 
+## `notification`
+
+You can override the notification component, for instance to change the notification duration. A common use case is to change the `autoHideDuration`, and force the notification to remain on screen longer than the default 4 seconds. For instance, to create a custom Notification component with a 5 seconds default:
+
+```jsx
+// in src/MyNotification.js
+import { Notification } from 'react-admin';
+
+const MyNotification = () => <Notification autoHideDuration={5000} />;
+
+export default MyNotification;
+```
+
+To use this custom notification component, pass it to the `<Admin>` component as the `notification` prop:
+
+```jsx
+// in src/App.js
+import MyNotification from './MyNotification';
+import dataProvider from './dataProvider';
+
+const App = () => (
+    <Admin notification={MyNotification} dataProvider={dataProvider}>
+        // ...
+    </Admin>
+);
+```
+
 ## Declaring resources at runtime
 
 You might want to dynamically define the resources when the app starts. To do so, you have two options: using a function as `<Admin>` child, or unplugging it to use a combination of `AdminContext` and `<AdminUI>` instead.
 
 ### Using a Function As `<Admin>` Child
 
-The `<Admin>` component accepts a function as one of its children and this function can return a Promise. If you also defined an `authProvider`, the child function will receive the result of a call to `authProvider.getPermissions()` (you can read more about this in the [Auth Provider](./Authentication.md#authorization) chapter).
+The `<Admin>` component accepts a function as one of its children and this function can return a Promise. If you also defined an `authProvider`, the child function will receive the result of a call to `authProvider.getPermissions()` (you can read more about this in the [Auth Provider](./Authentication.md#enabling-auth-features) chapter).
 
 For instance, getting the resource from an API might look like:
 

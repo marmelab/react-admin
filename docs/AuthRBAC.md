@@ -630,7 +630,7 @@ const ProductShow = () => (
 
 ### `<Tab>`
 
-Replacement for the show `<Tab>` that only renders a tab if the user has the right permissions.
+Replacement for the `<TabbedShowLayout.Tab>` that only renders a tab if the user has the right permissions.
 
 Add a `name` prop to the Tab to define the resource on which the user needs to have the 'read' permissions for.
 

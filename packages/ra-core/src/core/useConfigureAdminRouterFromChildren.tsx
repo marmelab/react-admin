@@ -10,7 +10,7 @@ import {
     useEffect,
     useState,
 } from 'react';
-import { useLogout, usePermissions, useAuthState } from '../auth';
+import { useLogout, usePermissions } from '../auth';
 import { useSafeSetState } from '../util';
 import {
     AdminChildren,
@@ -79,7 +79,6 @@ const useRoutesAndResourcesFromChildren = (
     // We need to know right away wether some resources were declared to correctly
     // initialize the status at the next stop
     const doLogout = useLogout();
-    const { authenticated } = useAuthState();
     const [
         routesAndResources,
         setRoutesAndResources,
@@ -129,7 +128,9 @@ const useRoutesAndResourcesFromChildren = (
             setStatus(
                 !!functionChild
                     ? 'loading'
-                    : newRoutesAndResources.resources.length > 0
+                    : newRoutesAndResources.resources.length > 0 ||
+                      newRoutesAndResources.customRoutesWithLayout.length > 0 ||
+                      newRoutesAndResources.customRoutesWithoutLayout.length > 0
                     ? 'ready'
                     : 'empty'
             );
@@ -142,7 +143,6 @@ const useRoutesAndResourcesFromChildren = (
             updateFromChildren();
         }
     }, [
-        authenticated,
         children,
         doLogout,
         isLoading,

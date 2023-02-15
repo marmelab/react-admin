@@ -36,14 +36,14 @@ describe('<EditGuesser />', () => {
         });
         expect(logSpy).toHaveBeenCalledWith(`Guessed Edit:
 
-import { DateInput, Edit, NumberInput, ReferenceInput, SelectInput, SimpleForm, TextInput } from 'react-admin';
+import { DateInput, Edit, NumberInput, ReferenceInput, SimpleForm, TextInput } from 'react-admin';
 
 export const CommentEdit = () => (
     <Edit>
         <SimpleForm>
             <TextInput source="id" />
             <TextInput source="author" />
-            <ReferenceInput source="post_id" reference="posts"><SelectInput optionText="id" /></ReferenceInput>
+            <ReferenceInput source="post_id" reference="posts" />
             <NumberInput source="score" />
             <TextInput source="body" />
             <DateInput source="created_at" />

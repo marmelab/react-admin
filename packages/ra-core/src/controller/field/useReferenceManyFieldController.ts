@@ -10,6 +10,7 @@ import { ListControllerResult } from '../list';
 import usePaginationState from '../usePaginationState';
 import { useRecordSelection } from '../list/useRecordSelection';
 import useSortState from '../useSortState';
+import { useResourceContext } from '../../core';
 
 export interface UseReferenceManyFieldControllerParams {
     filter?: any;
@@ -17,7 +18,7 @@ export interface UseReferenceManyFieldControllerParams {
     perPage?: number;
     record?: RaRecord;
     reference: string;
-    resource: string;
+    resource?: string;
     sort?: SortPayload;
     source?: string;
     target: string;
@@ -28,33 +29,26 @@ const defaultFilter = {};
 /**
  * Fetch reference records, and return them when available
  *
- * The reference prop should be the name of one of the <Resource> components
- * added as <Admin> child.
+ * Uses dataProvider.getManyReference() internally.
  *
- * @example
- *
+ * @example // fetch the comments related to the current post
  * const { isLoading, data } = useReferenceManyFieldController({
- *     resource
- *     reference: 'users',
- *     record: {
- *         userId: 7
- *     }
- *     target: 'comments',
- *     source: 'userId',
- *     page: 1,
- *     perPage: 25,
+ *     reference: 'comments',
+ *     target: 'post_id',
+ *     record: { id: 123, title: 'hello, world' },
+ *     resource: 'posts',
  * });
  *
  * @param {Object} props
- * @param {string} props.resource The current resource name
- * @param {string} props.reference The linked resource name
- * @param {Object} props.record The current resource record
- * @param {string} props.target The target resource key
+ * @param {string} props.reference The linked resource name. Required.
+ * @param {string} props.target The target resource key. Required.
  * @param {Object} props.filter The filter applied on the recorded records list
- * @param {string} props.source The key of the linked resource identifier
  * @param {number} props.page the page number
  * @param {number} props.perPage the number of item per page
+ * @param {Object} props.record The current resource record
+ * @param {string} props.resource The current resource name
  * @param {Object} props.sort the sort to apply to the referenced records
+ * @param {string} props.source The key of the linked resource identifier
  *
  * @returns {ListControllerResult} The reference many props
  */
@@ -72,6 +66,7 @@ export const useReferenceManyFieldController = (
         sort: initialSort = { field: 'id', order: 'DESC' },
     } = props;
     const notify = useNotify();
+    const resource = useResourceContext(props);
 
     // pagination logic
     const { page, setPage, perPage, setPerPage } = usePaginationState({
@@ -90,7 +85,9 @@ export const useReferenceManyFieldController = (
     );
 
     // selection logic
-    const [selectedIds, selectionModifiers] = useRecordSelection(reference);
+    const [selectedIds, selectionModifiers] = useRecordSelection(
+        `${resource}.${record?.id}.${reference}`
+    );
 
     // filter logic
     const filterRef = useRef(filter);
@@ -167,7 +164,7 @@ export const useReferenceManyFieldController = (
                         ? error
                         : error.message || 'ra.notification.http_error',
                     {
-                        type: 'warning',
+                        type: 'error',
                         messageArgs: {
                             _:
                                 typeof error === 'string'

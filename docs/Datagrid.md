@@ -32,8 +32,7 @@ export const PostList = () => (
 
 You can find more advanced examples of `<Datagrid>` usage in the [demos](./Demos.md). 
 
-
-**Tip**: To let users hide or show columns at will, check the [`<SelectColumnsButton>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#selectcolumnsbutton-store-datagrid-columns-in-preferences)<img class="icon" src="./img/premium.svg" />, an [Enterprise Edition](https://marmelab.com/ra-enterprise) component.
+**Tip**: To let users edit the content right in the datagrid, check [`<EditableDatagrid>`](./EditableDatagrid.md)<img class="icon" src="./img/premium.svg" />, an [Enterprise Edition](https://marmelab.com/ra-enterprise) component.
 
 The `<Datagrid>` is an **iterator** component: it gets an array of records from the `ListContext`, and iterates to display each record in a row. Other examples of iterator component are [`<SimpleList>`](./SimpleList.md) and [`<SingleFieldList>`](./SingleFieldList.md).
 
@@ -236,7 +235,7 @@ const CustomResetViewsButton = () => {
                 notify('Posts updated');
                 unselectAll();
             },
-            onError: error => notify('Error: posts not updated', { type: 'warning' }),
+            onError: error => notify('Error: posts not updated', { type: 'error' }),
         }
     );
 
@@ -284,7 +283,7 @@ const CustomResetViewsButton = () => {
                 notify('Posts updated');
                 unselectAll();
             },
-            onError: error => notify('Error: posts not updated', { type: 'warning' }),
+            onError: error => notify('Error: posts not updated', { type: 'error' }),
         }
     );
     const handleClick = () => setOpen(true);
@@ -350,7 +349,7 @@ const CustomResetViewsButton = () => {
 +               notify('Posts updated', { undoable: true }); // the last argument forces the display of 'undo' in the notification
                 unselectAll();
             },
-            onError: error => notify('Error: posts not updated', { type: 'warning' }),
+            onError: error => notify('Error: posts not updated', { type: 'error' }),
 +           mutationMode: 'undoable'
         }
     );
@@ -369,8 +368,9 @@ const CustomResetViewsButton = () => {
 
 ## `empty`
 
-It's possible that a Datagrid will have no records to display. If the Datagrid's parent component handles the loading state, the Datagrid will return `null` and render nothing.
-Passing through a component to the `empty` prop will cause the Datagrid to render the `empty` component instead of `null`.
+It's possible that a Datagrid will have no records to display. If the Datagrid's parent component does not handle the empty state, the Datagrid will display a message indicating there are no results. This message is translatable and its key is `ra.navigation.no_results`.
+
+You can customize the empty state by passing  a component to the `empty` prop:
 
 ```jsx
 const CustomEmpty = () => <div>No books found</div>;
@@ -451,7 +451,7 @@ const PostEdit = () => {
     return (
         <Edit
             resource={resource}
-            id={id}
+            id={record.id}
             /* disable the app title change when shown */
             title=" "
         >
@@ -477,12 +477,12 @@ const PostList = () => (
 
 ## `expandSingle`
 
-The `expandSingle` allows a single row to be expanded at a time.
+By default, when using [an `expand` panel](#expand), users can expand as many rows as they want. The `expandSingle` prop changes that behavior: when a user clicks on the expand button of a row, other expanded rows collapse. As a consequence, only a single row can be expanded at a time.
 
 ```jsx
 export const PostList = () => (
     <List>
-        <Datagrid expandSingle>
+        <Datagrid expand={<PostPanel />} expandSingle>
             ...
         </Datagrid>
     </List>
@@ -696,6 +696,7 @@ The `<Datagrid>` component accepts the usual `className` prop. You can also over
 
 | Rule name                      | Description                                      |
 | ------------------------------ |--------------------------------------------------|
+| `& .RaDatagrid-root`           | Applied to the root div element                  |
 | `& .RaDatagrid-tableWrapper`   | Applied to the div that wraps table element      |
 | `& .RaDatagrid-table`          | Applied to the table element                     |
 | `& .RaDatagrid-thead`          | Applied to the table header                      |
@@ -797,6 +798,176 @@ const PostList = () => (
 );
 ```
 {% endraw %}
+
+## Showing / Hiding Columns
+
+The [`<SelectColumnsButton>`](./SelectColumnsButton.md) component lets users hide, show, and reorder datagrid columns. 
+
+![SelectColumnsButton](./img/SelectColumnsButton.gif)
+
+```jsx
+import {
+    DatagridConfigurable,
+    List,
+    SelectColumnsButton,
+    FilterButton,
+    CreateButton,
+    ExportButton,
+    TextField,
+    TopToolbar,
+} from "react-admin";
+
+const PostListActions = () => (
+    <TopToolbar>
+        <SelectColumnsButton />
+        <FilterButton />
+        <CreateButton />
+        <ExportButton />
+    </TopToolbar>
+);
+
+const PostList = () => (
+    <List actions={<PostListActions />}>
+        <DatagridConfigurable>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </DatagridConfigurable>
+    </List>
+);
+```
+
+`<SelectColumnsButton>` must be used in conjunction with `<DatagridConfigurable>`, the configurable version of `<Datagrid>`, described in the next section.
+
+## Configurable
+
+You can let end users customize the fields displayed in the `<Datagrid>` by using the `<DatagridConfigurable>` component instead.
+
+![DatagridConfigurable](./img/DatagridConfigurable.gif)
+
+```diff
+import {
+    List,
+-   Datagrid,
++   DatagridConfigurable,
+    TextField,
+} from 'react-admin';
+
+const PostList = () => (
+    <List>
+-       <Datagrid>
++       <DatagridConfigurable>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+-       </Datagrid>
++       </DatagridConfigurable>
+    </List>
+);
+```
+
+When users enter the configuration mode and select the `<Datagrid>`, they can show / hide datagrid columns. They can also use the [`<SelectColumnsButton>`](./SelectColumnsButton.md)
+
+By default, `<DatagridConfigurable>` renders all child fields. But you can also omit some of them by passing an `omit` prop containing an array of field sources:
+
+```jsx
+// by default, hide the id and author columns
+// users can choose to show them in configuration mode
+const PostList = () => (
+    <List>
+        <DatagridConfigurable omit={['id', 'author']}>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </DatagridConfigurable>
+    </List>
+);
+```
+
+If you render more than one `<DatagridConfigurable>` in the same page, you must pass a unique `preferenceKey` prop to each one:
+
+```jsx
+const PostList = () => (
+    <List>
+        <DatagridConfigurable preferenceKey="posts.datagrid">
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </DatagridConfigurable>
+    </List>
+);
+```
+
+`<DatagridConfigurable>` accepts the same props as `<Datagrid>`.
+
+## Editable Spreadsheet
+
+You can combine a datagrid and an edition form into a unified spreadsheet view, "à la" Excel. This is useful when you want to let users edit a large number of records at once.
+
+![Editable Datagrid](https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.gif)
+
+`<EditableDatagrid>` is a drop-in replacement for `<Datagrid>`. It expects 2 additional props: `createForm` and `editForm`, the components to be displayed when a user creates or edits a row. The `<RowForm>` component allows to create such forms using react-admin Input components. 
+
+```jsx
+import {
+    List,
+    TextField,
+    TextInput,
+    DateField,
+    DateInput,
+    SelectField,
+    SelectInput,
+    required,
+} from 'react-admin';
+import { EditableDatagrid, RowForm } from '@react-admin/ra-editable-datagrid';
+
+const professionChoices = [
+    { id: 'actor', name: 'Actor' },
+    { id: 'singer', name: 'Singer' },
+    { id: 'other', name: 'Other' },
+];
+
+const ArtistList = () => (
+    <List hasCreate empty={false}>
+        <EditableDatagrid
+            mutationMode="undoable"
+            createForm={<ArtistForm />}
+            editForm={<ArtistForm />}
+        >
+            <TextField source="id" />
+            <TextField source="firstname" />
+            <TextField source="name" />
+            <DateField source="dob" label="born" />
+            <SelectField
+                source="prof"
+                label="Profession"
+                choices={professionChoices}
+            />
+        </EditableDatagrid>
+    </List>
+);
+
+const ArtistForm = () => (
+    <RowForm>
+        <TextField source="id" />
+        <TextInput source="firstname" validate={required()} />
+        <TextInput source="name" validate={required()} />
+        <DateInput source="dob" label="born" validate={required()} />
+        <SelectInput
+            source="prof"
+            label="Profession"
+            choices={professionChoices}
+        />
+    </RowForm>
+);
+```
+
+Check [the `ra-editable-datagrid` documentation](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid) for more details.
+
 
 ## Customizing Column Sort
 

@@ -26,7 +26,6 @@ import { Status } from '../misc/Status';
 export const Note = ({
     showStatus,
     note,
-    isLast,
     reference,
 }: {
     showStatus?: boolean;

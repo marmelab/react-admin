@@ -15,7 +15,11 @@ import {
     HttpError,
 } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
-import { useResourceContext, useGetResourceLabel } from '../../core';
+import {
+    useResourceContext,
+    useGetResourceLabel,
+    useGetRecordRepresentation,
+} from '../../core';
 import { SaveContextValue, useMutationMiddlewares } from '../saveContext';
 
 /**
@@ -57,6 +61,7 @@ export const useEditController = <
     } = props;
     useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
+    const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
@@ -83,7 +88,7 @@ export const useEditController = <
         {
             onError: () => {
                 notify('ra.notification.item_doesnt_exist', {
-                    type: 'warning',
+                    type: 'error',
                 });
                 redirect('list', resource);
                 refresh();
@@ -103,10 +108,15 @@ export const useEditController = <
     }
 
     const getResourceLabel = useGetResourceLabel();
+    const recordRepresentation = getRecordRepresentation(record);
     const defaultTitle = translate('ra.page.edit', {
         name: getResourceLabel(resource, 1),
         id,
         record,
+        recordRepresentation:
+            typeof recordRepresentation === 'string'
+                ? recordRepresentation
+                : '',
     });
 
     const recordCached = { id, previousData: record };
@@ -178,7 +188,7 @@ export const useEditController = <
                                               : error.message ||
                                                     'ra.notification.http_error',
                                           {
-                                              type: 'warning',
+                                              type: 'error',
                                               messageArgs: {
                                                   _:
                                                       typeof error === 'string'
@@ -223,7 +233,7 @@ export const useEditController = <
         isLoading,
         mutationMode,
         record,
-        redirect: DefaultRedirect,
+        redirect: redirectTo,
         refetch,
         registerMutationMiddleware,
         resource,

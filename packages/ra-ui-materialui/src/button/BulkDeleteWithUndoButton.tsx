@@ -8,13 +8,15 @@ import {
     useDeleteMany,
     useRefresh,
     useNotify,
-    useUnselectAll,
     useResourceContext,
     useListContext,
+    RaRecord,
+    DeleteManyParams,
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
+import { UseMutationOptions } from 'react-query';
 
 export const BulkDeleteWithUndoButton = (
     props: BulkDeleteWithUndoButtonProps
@@ -23,20 +25,21 @@ export const BulkDeleteWithUndoButton = (
         label = 'ra.action.delete',
         icon = defaultIcon,
         onClick,
+        mutationOptions = {},
         ...rest
     } = props;
-    const { selectedIds } = useListContext(props);
+    const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
+    const { selectedIds, onUnselectItems } = useListContext(props);
 
     const notify = useNotify();
     const resource = useResourceContext(props);
-    const unselectAll = useUnselectAll(resource);
     const refresh = useRefresh();
     const [deleteMany, { isLoading }] = useDeleteMany();
 
     const handleClick = e => {
         deleteMany(
             resource,
-            { ids: selectedIds },
+            { ids: selectedIds, meta: mutationMeta },
             {
                 onSuccess: () => {
                     notify('ra.notification.deleted', {
@@ -44,7 +47,7 @@ export const BulkDeleteWithUndoButton = (
                         messageArgs: { smart_count: selectedIds.length },
                         undoable: true,
                     });
-                    unselectAll();
+                    onUnselectItems();
                 },
                 onError: (error: Error) => {
                     notify(
@@ -52,7 +55,7 @@ export const BulkDeleteWithUndoButton = (
                             ? error
                             : error.message || 'ra.notification.http_error',
                         {
-                            type: 'warning',
+                            type: 'error',
                             messageArgs: {
                                 _:
                                     typeof error === 'string'
@@ -66,6 +69,7 @@ export const BulkDeleteWithUndoButton = (
                     refresh();
                 },
                 mutationMode: 'undoable',
+                ...otherMutationOptions,
             }
         );
         if (typeof onClick === 'function') {
@@ -95,10 +99,17 @@ const sanitizeRestProps = ({
     ...rest
 }: Omit<BulkDeleteWithUndoButtonProps, 'resource' | 'icon'>) => rest;
 
-export interface BulkDeleteWithUndoButtonProps
-    extends BulkActionProps,
+export interface BulkDeleteWithUndoButtonProps<
+    RecordType extends RaRecord = any,
+    MutationOptionsError = unknown
+> extends BulkActionProps,
         ButtonProps {
     icon?: ReactElement;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        MutationOptionsError,
+        DeleteManyParams<RecordType>
+    > & { meta?: any };
 }
 
 const PREFIX = 'RaBulkDeleteWithUndoButton';

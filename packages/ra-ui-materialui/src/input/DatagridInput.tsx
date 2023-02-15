@@ -8,11 +8,9 @@ import {
     useChoicesContext,
     useInput,
 } from 'ra-core';
-import {
-    CommonInputProps,
-    InputHelperText,
-    SupportCreateSuggestionOptions,
-} from '.';
+import { CommonInputProps } from './CommonInputProps';
+import { InputHelperText } from './InputHelperText';
+import { SupportCreateSuggestionOptions } from './useSupportCreateSuggestion';
 import { Datagrid, DatagridProps } from '../list/datagrid';
 import { FilterButton, FilterForm } from '../list/filter';
 import { FilterContext } from '../list/FilterContext';
@@ -66,6 +64,7 @@ export const DatagridInput = (props: DatagridInputProps) => {
         allChoices,
         availableChoices,
         selectedChoices,
+        error: fetchError,
         source,
         ...choicesContext
     } = useChoicesContext({
@@ -141,11 +140,19 @@ export const DatagridInput = (props: DatagridInputProps) => {
                         </>
                     )
                 ) : null}
-                <Datagrid {...rest} />
-                {pagination !== false && pagination}
+                {!fieldState.error && !fetchError && (
+                    <>
+                        <Datagrid {...rest} />
+                        {pagination !== false && pagination}
+                    </>
+                )}
                 <InputHelperText
-                    touched={fieldState.isTouched || formState.isSubmitted}
-                    error={fieldState.error?.message}
+                    touched={
+                        fieldState.isTouched ||
+                        formState.isSubmitted ||
+                        fetchError
+                    }
+                    error={fieldState.error?.message || fetchError?.message}
                 />
             </ListContextProvider>
         </div>

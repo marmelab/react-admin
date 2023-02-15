@@ -110,7 +110,6 @@ export const UserMenu = (props: UserMenuProps) => {
                         aria-haspopup={true}
                         color="inherit"
                         onClick={handleMenu}
-                        size="large"
                     >
                         {!isLoading && identity?.avatar ? (
                             <Avatar

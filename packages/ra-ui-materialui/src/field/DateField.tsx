@@ -3,7 +3,7 @@ import { memo, FC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import { Typography, TypographyProps } from '@mui/material';
-import { useRecordContext } from 'ra-core';
+import { useRecordContext, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
@@ -39,13 +39,23 @@ export const DateField: FC<DateFieldProps> = memo(props => {
         locales,
         options,
         showTime = false,
+        showDate = true,
         source,
         ...rest
     } = props;
+    const translate = useTranslate();
+
+    if (!showTime && !showDate) {
+        throw new Error(
+            '<DateField> cannot have showTime and showDate false at the same time'
+        );
+    }
+
     const record = useRecordContext(props);
     if (!record) {
         return null;
     }
+
     const value = get(record, source);
     if (value == null || value === '') {
         return emptyText ? (
@@ -55,7 +65,7 @@ export const DateField: FC<DateFieldProps> = memo(props => {
                 className={className}
                 {...sanitizeFieldRestProps(rest)}
             >
-                {emptyText}
+                {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
         ) : null;
     }
@@ -73,13 +83,20 @@ export const DateField: FC<DateFieldProps> = memo(props => {
         // who may see a different date when calling toLocaleDateString().
         dateOptions = { timeZone: 'UTC' };
     }
-    const dateString = showTime
-        ? toLocaleStringSupportsLocales
+    let dateString = '';
+    if (showTime && showDate) {
+        dateString = toLocaleStringSupportsLocales
             ? date.toLocaleString(locales, options)
-            : date.toLocaleString()
-        : toLocaleStringSupportsLocales
-        ? date.toLocaleDateString(locales, dateOptions)
-        : date.toLocaleDateString();
+            : date.toLocaleString();
+    } else if (showDate) {
+        dateString = toLocaleStringSupportsLocales
+            ? date.toLocaleDateString(locales, dateOptions)
+            : date.toLocaleDateString();
+    } else if (showTime) {
+        dateString = toLocaleStringSupportsLocales
+            ? date.toLocaleTimeString(locales, options)
+            : date.toLocaleTimeString();
+    }
 
     return (
         <Typography
@@ -103,6 +120,7 @@ DateField.propTypes = {
     ]),
     options: PropTypes.object,
     showTime: PropTypes.bool,
+    showDate: PropTypes.bool,
 };
 
 DateField.displayName = 'DateField';
@@ -114,6 +132,7 @@ export interface DateFieldProps
     locales?: string | string[];
     options?: object;
     showTime?: boolean;
+    showDate?: boolean;
 }
 
 const toLocaleStringSupportsLocales = (() => {

@@ -12,3 +12,4 @@ export * from './useResourceDefinitionContext';
 export * from './useResourceContext';
 export * from './useResourceDefinition';
 export * from './useResourceDefinitions';
+export * from './useGetRecordRepresentation';

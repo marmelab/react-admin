@@ -49,9 +49,10 @@ import { useDataProvider } from './useDataProvider';
  *
  * @example
  *
- * import { useGetManyAggregate } from 'react-admin';
+ * import { useGetManyAggregate, useRecordContext } from 'react-admin';
  *
- * const PostTags = ({ record }) => {
+ * const PostTags = () => {
+ *     const record = useRecordContext();
  *     const { data, isLoading, error } = useGetManyAggregate('tags', { ids: record.tagIds });
  *     if (isLoading) { return <Loading />; }
  *     if (error) { return <p>ERROR</p>; }
@@ -74,7 +75,7 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
     const queryCache = queryClient.getQueryCache();
     const { ids, meta } = params;
     const placeholderData = useMemo(() => {
-        const records = ids.map(id => {
+        const records = (Array.isArray(ids) ? ids : [ids]).map(id => {
             const queryHash = hashQueryKey([
                 resource,
                 'getOne',
@@ -85,12 +86,19 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
         if (records.some(record => record === undefined)) {
             return undefined;
         } else {
-            return records;
+            return records as RecordType[];
         }
     }, [ids, queryCache, resource, meta]);
 
     return useQuery<RecordType[], Error, RecordType[]>(
-        [resource, 'getMany', { ids: ids.map(id => String(id)), meta }],
+        [
+            resource,
+            'getMany',
+            {
+                ids: (Array.isArray(ids) ? ids : [ids]).map(id => String(id)),
+                meta,
+            },
+        ],
         () =>
             new Promise((resolve, reject) => {
                 if (!ids || ids.length === 0) {
@@ -138,9 +146,9 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
  * // and sum will be equal to 10
  */
 const batch = fn => {
-    let capturedArgs = [];
-    let timeout = null;
-    return arg => {
+    let capturedArgs: any[] = [];
+    let timeout: ReturnType<typeof setTimeout> | null = null;
+    return (arg: any) => {
         capturedArgs.push(arg);
         if (timeout) clearTimeout(timeout);
         timeout = setTimeout(() => {

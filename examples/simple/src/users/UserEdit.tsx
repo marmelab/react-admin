@@ -4,7 +4,6 @@ import {
     CloneButton,
     DeleteWithConfirmButton,
     Edit,
-    FormTab,
     required,
     SaveButton,
     SelectInput,
@@ -14,9 +13,9 @@ import {
     Toolbar,
     TopToolbar,
     usePermissions,
+    useSaveContext,
 } from 'react-admin';
 
-import UserTitle from './UserTitle';
 import Aside from './Aside';
 
 /**
@@ -43,8 +42,10 @@ const EditActions = () => (
     </TopToolbar>
 );
 
-const UserEditForm = ({ save, ...props }: { save?: any }) => {
+const UserEditForm = () => {
     const { permissions } = usePermissions();
+    const { save } = useSaveContext();
+
     const newSave = values =>
         new Promise((resolve, reject) => {
             if (values.name === 'test') {
@@ -62,19 +63,18 @@ const UserEditForm = ({ save, ...props }: { save?: any }) => {
         <TabbedForm
             defaultValues={{ role: 'user' }}
             toolbar={<UserEditToolbar />}
-            {...props}
             onSubmit={newSave}
         >
-            <FormTab label="user.form.summary" path="">
+            <TabbedForm.Tab label="user.form.summary" path="">
                 {permissions === 'admin' && <TextInput disabled source="id" />}
                 <TextInput
                     source="name"
                     defaultValue="slim shady"
                     validate={required()}
                 />
-            </FormTab>
+            </TabbedForm.Tab>
             {permissions === 'admin' && (
-                <FormTab label="user.form.security" path="security">
+                <TabbedForm.Tab label="user.form.security" path="security">
                     <SelectInput
                         source="role"
                         validate={required()}
@@ -85,14 +85,14 @@ const UserEditForm = ({ save, ...props }: { save?: any }) => {
                         ]}
                         defaultValue={'user'}
                     />
-                </FormTab>
+                </TabbedForm.Tab>
             )}
         </TabbedForm>
     );
 };
 const UserEdit = () => {
     return (
-        <Edit title={<UserTitle />} aside={<Aside />} actions={<EditActions />}>
+        <Edit aside={<Aside />} actions={<EditActions />}>
             <UserEditForm />
         </Edit>
     );

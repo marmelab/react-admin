@@ -10,6 +10,7 @@ import {
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { RadioButtonGroupInput } from './RadioButtonGroupInput';
+import { InsideReferenceArrayInput } from './RadioButtonGroupInput.stories';
 
 describe('<RadioButtonGroupInput />', () => {
     const defaultProps = {
@@ -450,5 +451,15 @@ describe('<RadioButtonGroupInput />', () => {
         );
 
         expect(screen.queryByRole('progressbar')).toBeNull();
+    });
+
+    describe('inside ReferenceArrayInput', () => {
+        it('should use the recordRepresentation as optionText', async () => {
+            render(<InsideReferenceArrayInput />);
+
+            await screen.findByText('Lifestyle');
+            await screen.findByText('Tech');
+            await screen.findByText('People');
+        });
     });
 });

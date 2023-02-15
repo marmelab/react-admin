@@ -1,14 +1,16 @@
 import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
+import { Typography } from '@mui/material';
+import { FavoriteBorder, Favorite } from '@mui/icons-material';
+import { required, testDataProvider, useRecordContext } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
 import { SimpleForm } from '../form';
 import { CheckboxGroupInput } from './CheckboxGroupInput';
-import { Typography } from '@mui/material';
-import { testDataProvider, useRecordContext } from 'ra-core';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
+import { TextInput } from './TextInput';
 
 export default { title: 'ra-ui-materialui/input/CheckboxGroupInput' };
 
@@ -27,18 +29,28 @@ export const Basic = () => (
     <AdminContext i18nProvider={i18nProvider}>
         <Create
             resource="posts"
-            record={{ options: [1, 2] }}
+            record={{ roles: ['u001', 'u003'] }}
             sx={{ width: 600 }}
         >
             <SimpleForm>
-                <CheckboxGroupInput source="options" choices={choices} />
+                <CheckboxGroupInput
+                    source="roles"
+                    choices={[
+                        { id: 'admin', name: 'Admin' },
+                        { id: 'u001', name: 'Editor' },
+                        { id: 'u002', name: 'Moderator' },
+                        { id: 'u003', name: 'Reviewer' },
+                    ]}
+                />
             </SimpleForm>
         </Create>
     </AdminContext>
 );
 
 const dataProvider = testDataProvider({
+    // @ts-ignore
     getList: () => Promise.resolve({ data: choices, total: choices.length }),
+    // @ts-ignore
     getMany: (resource, params) =>
         Promise.resolve({
             data: choices.filter(choice => params.ids.includes(choice.id)),
@@ -80,6 +92,24 @@ export const Disabled = () => (
     </AdminContext>
 );
 
+export const LabelPlacement = () => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <Create
+            resource="posts"
+            record={{ options: [1, 2] }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <CheckboxGroupInput
+                    source="options"
+                    choices={choices}
+                    labelPlacement="bottom"
+                />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
 export const Column = () => (
     <AdminContext i18nProvider={i18nProvider}>
         <Create
@@ -92,6 +122,27 @@ export const Column = () => (
                     source="options"
                     choices={choices}
                     row={false}
+                />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+export const Options = () => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <Create
+            resource="posts"
+            record={{ options: [1, 2] }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <CheckboxGroupInput
+                    source="options"
+                    choices={choices}
+                    options={{
+                        icon: <FavoriteBorder />,
+                        checkedIcon: <Favorite />,
+                    }}
                 />
             </SimpleForm>
         </Create>
@@ -133,3 +184,33 @@ const OptionText = () => {
         </>
     );
 };
+
+export const Validate = () => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <Create resource="posts" sx={{ width: 600 }}>
+            <SimpleForm>
+                <CheckboxGroupInput
+                    source="options"
+                    choices={choices}
+                    validate={[required()]}
+                />
+                <TextInput source="foo" />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+export const HelperText = () => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <Create resource="posts" sx={{ width: 600 }}>
+            <SimpleForm>
+                <CheckboxGroupInput
+                    source="options"
+                    choices={choices}
+                    validate={[required()]}
+                    helperText="Helper text"
+                />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);

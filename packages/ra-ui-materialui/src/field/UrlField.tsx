@@ -3,13 +3,14 @@ import { AnchorHTMLAttributes, memo, FC } from 'react';
 import get from 'lodash/get';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { Typography, Link } from '@mui/material';
-import { useRecordContext } from 'ra-core';
+import { useRecordContext, useTranslate } from 'ra-core';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 export const UrlField: FC<UrlFieldProps> = memo(props => {
     const { className, emptyText, source, ...rest } = props;
     const record = useRecordContext(props);
     const value = get(record, source);
+    const translate = useTranslate();
 
     if (value == null) {
         return (
@@ -19,7 +20,7 @@ export const UrlField: FC<UrlFieldProps> = memo(props => {
                 className={className}
                 {...sanitizeFieldRestProps(rest)}
             >
-                {emptyText}
+                {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
         );
     }

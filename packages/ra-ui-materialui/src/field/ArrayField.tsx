@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState, memo, FC, ReactElement } from 'react';
+import { memo, FC, ReactElement } from 'react';
 import get from 'lodash/get';
 import { ListContextProvider, useRecordContext } from 'ra-core';
 
@@ -61,23 +61,21 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  * to write your own component:
  *
  * @example
- *     const TagsField = ({ record }) => (
- *          <ul>
- *              {record.tags.map(item => (
- *                  <li key={item.name}>{item.name}</li>
- *              ))}
- *          </ul>
- *     );
+ *   const TagsField = () => {
+ *       const record = useRecordContext();
+ *       return (
+ *           <ul>
+ *               {record.tags.map(item => (
+ *                   <li key={item.name}>{item.name}</li>
+ *               ))}
+ *           </ul>
+ *       );
+ *   };
  */
 export const ArrayField: FC<ArrayFieldProps> = memo(props => {
     const { children, resource, source } = props;
     const record = useRecordContext(props);
-    const [data, setData] = useState(initialState);
-
-    useEffect(() => {
-        const data = get(record, source) || initialState;
-        setData(data);
-    }, [record, source]);
+    const data = get(record, source, emptyArray);
 
     return (
         <ListContextProvider
@@ -87,7 +85,8 @@ export const ArrayField: FC<ArrayFieldProps> = memo(props => {
                 sort: { field: null, order: null },
                 displayedFilters: null,
                 filterValues: null,
-                hasCreate: null,
+                hasNextPage: null,
+                hasPreviousPage: null,
                 hideFilter: null,
                 isFetching: false,
                 isLoading: false,
@@ -96,6 +95,7 @@ export const ArrayField: FC<ArrayFieldProps> = memo(props => {
                 onUnselectItems: null,
                 page: null,
                 perPage: null,
+                refetch: null,
                 resource,
                 setFilters: null,
                 setPage: null,
@@ -120,4 +120,4 @@ export interface ArrayFieldProps extends PublicFieldProps, InjectedFieldProps {
 
 ArrayField.displayName = 'ArrayField';
 
-const initialState = [];
+const emptyArray = [];

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { useLocation, useNavigate, Path } from 'react-router-dom';
+import { useQueryClient } from 'react-query';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import { useResetStore } from '../store';
@@ -26,6 +27,7 @@ import { removeDoubleSlashes } from '../routing/useCreatePath';
  */
 const useLogout = (): Logout => {
     const authProvider = useAuthProvider();
+    const queryClient = useQueryClient();
     const resetStore = useResetStore();
     const navigate = useNavigate();
     // useNavigate forces rerenders on every navigation, even if we don't use the result
@@ -55,23 +57,33 @@ const useLogout = (): Logout => {
         navigateRef.current = navigate;
     }, [location, navigate]);
 
-    const logout = useCallback(
+    const logout: Logout = useCallback(
         (
             params = {},
             redirectTo = loginUrl,
             redirectToCurrentLocationAfterLogin = true
         ) =>
             authProvider.logout(params).then(redirectToFromProvider => {
-                if (redirectToFromProvider === false) {
+                if (redirectToFromProvider === false || redirectTo === false) {
                     resetStore();
+                    queryClient.clear();
                     // do not redirect
                     return;
                 }
-                // redirectTo can contain a query string, e.g. '/login?foo=bar'
-                // we must split the redirectTo to pass a structured location to navigate()
-                const redirectToParts = (
-                    redirectToFromProvider || redirectTo
-                ).split('?');
+
+                const finalRedirectTo = redirectToFromProvider || redirectTo;
+
+                if (finalRedirectTo?.startsWith('http')) {
+                    // absolute link (e.g. https://my.oidc.server/login)
+                    resetStore();
+                    queryClient.clear();
+                    window.location.href = finalRedirectTo;
+                    return finalRedirectTo;
+                }
+
+                // redirectTo is an internal location that may contain a query string, e.g. '/login?foo=bar'
+                // we must split it to pass a structured location to navigate()
+                const redirectToParts = finalRedirectTo.split('?');
                 const newLocation: Partial<Path> = {
                     pathname: redirectToParts[0],
                 };
@@ -94,10 +106,11 @@ const useLogout = (): Logout => {
                 }
                 navigateRef.current(newLocation, newLocationOptions);
                 resetStore();
+                queryClient.clear();
 
                 return redirectToFromProvider;
             }),
-        [authProvider, resetStore, loginUrl]
+        [authProvider, resetStore, loginUrl, queryClient]
     );
 
     const logoutWithoutProvider = useCallback(
@@ -113,9 +126,10 @@ const useLogout = (): Logout => {
                 }
             );
             resetStore();
+            queryClient.clear();
             return Promise.resolve();
         },
-        [resetStore, location, navigate, loginUrl]
+        [resetStore, location, navigate, loginUrl, queryClient]
     );
 
     return authProvider ? logout : logoutWithoutProvider;
@@ -133,7 +147,7 @@ const useLogout = (): Logout => {
  */
 type Logout = (
     params?: any,
-    redirectTo?: string,
+    redirectTo?: string | false,
     redirectToCurrentLocationAfterLogin?: boolean
 ) => Promise<any>;
 

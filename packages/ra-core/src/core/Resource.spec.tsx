@@ -5,12 +5,15 @@ import { createMemoryHistory } from 'history';
 
 import { CoreAdminContext } from './CoreAdminContext';
 import { Resource } from './Resource';
+import { Route } from 'react-router';
 
 const PostList = () => <div>PostList</div>;
 const PostEdit = () => <div>PostEdit</div>;
 const PostCreate = () => <div>PostCreate</div>;
 const PostShow = () => <div>PostShow</div>;
 const PostIcon = () => <div>PostIcon</div>;
+
+const PostCustomRoute = () => <div>PostCustomRoute</div>;
 
 const resource = {
     name: 'posts',
@@ -20,6 +23,7 @@ const resource = {
     create: PostCreate,
     show: PostShow,
     icon: PostIcon,
+    children: <Route path="customroute" element={<PostCustomRoute />} />,
 };
 
 describe('<Resource>', () => {
@@ -40,5 +44,7 @@ describe('<Resource>', () => {
         expect(screen.getByText('PostShow')).not.toBeNull();
         history.push('/create');
         expect(screen.getByText('PostCreate')).not.toBeNull();
+        history.push('/customroute');
+        expect(screen.getByText('PostCustomRoute')).not.toBeNull();
     });
 });

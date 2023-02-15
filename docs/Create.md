@@ -19,7 +19,7 @@ For instance, the following component will render a creation form with 4 inputs 
 
 ```jsx
 // in src/posts.js
-import * as React from "react";
+import * as React from 'react';
 import { Create, SimpleForm, TextInput, DateInput, required } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
 
@@ -27,7 +27,7 @@ export const PostCreate = () => (
     <Create>
         <SimpleForm>
             <TextInput source="title" validate={[required()]} fullWidth />
-            <TextInput source="teaser" multiLine={true} label="Short description" />
+            <TextInput source="teaser" multiline={true} label="Short description" />
             <RichTextInput source="body" />
             <DateInput label="Publication date" source="published_at" defaultValue={new Date()} />
         </SimpleForm>
@@ -35,7 +35,7 @@ export const PostCreate = () => (
 );
 
 // in src/App.js
-import * as React from "react";
+import * as React from 'react';
 import { Admin, Resource } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
@@ -71,7 +71,7 @@ You can customize the `<Create>` component using the following props:
 You can replace the list of default actions by your own elements using the `actions` prop:
 
 ```jsx
-import * as React from "react";
+import * as React from 'react';
 import Button from '@mui/material/Button';
 import { TopToolbar, Create } from 'react-admin';
 
@@ -168,7 +168,7 @@ const PostCreate = () => (
 ```
 {% endraw %}
 
-You can also use `mutationOptions` to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://react-query.tanstack.com/reference/useMutation) in the react-query website for a list of the possible options.
+You can also use `mutationOptions` to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://react-query-v3.tanstack.com/reference/useMutation) in the react-query website for a list of the possible options.
 
 Let's see an example with the success side effect. By default, when the save action succeeds, react-admin shows a notification, and redirects to the new record edit page. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
 
@@ -241,7 +241,7 @@ The default `onError` function is:
 
 ```jsx
 (error) => {
-    notify(typeof error === 'string' ? error : error.message || 'ra.notification.http_error', { type: 'warning' });
+    notify(typeof error === 'string' ? error : error.message || 'ra.notification.http_error', { type: 'error' });
 }
 ```
 
@@ -336,7 +336,40 @@ export const UserCreate = (props) => {
 
 The `transform` function can also return a `Promise`, which allows you to do all sorts of asynchronous calls (e.g. to the `dataProvider`) during the transformation.
 
-**Tip**: If you want to have different transformations based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save", and another to "save and notify other admins"), you can set the `transform` prop on [the `<SaveButton>` component](./SaveButton.md), too. 
+**Tip**: If you want to have different transformations based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save", and another to "save and notify other admins"), you can set the `transform` prop on [the `<SaveButton>` component](./SaveButton.md), too.
+
+## Cleaning Up Empty Strings
+
+As a reminder, HTML form inputs always return strings, even for numbers and booleans. So the empty value for a text input is the empty string, not `null` or `undefined`. This means that the data sent to `dataProvider.create()` will contain empty strings:
+
+```js
+{
+    title: '',
+    average_note: '',
+    body: '',
+    // etc.
+}
+```
+
+If you prefer to have `null` values, or to omit the key for empty values, use [the `transform` prop](#transform) to sanitize the form data before submission:
+
+```jsx
+export const UserCreate = (props) => {
+    const transform = (data) => {
+        const sanitizedData = {};
+        for (const key in data) {
+            if (typeof data[key] === "string" && data[key].length === 0) continue;
+            sanitizedData[key] = data[key]; 
+        }
+        return sanitizedData;
+    };
+    return (
+        <Create {...props} transform={transform}>
+            ...
+        </Create>
+    );
+}
+```
 
 ## Adding `meta` To The DataProvider Call
 
@@ -400,21 +433,24 @@ That means that if you want to create a link to a creation form, presetting *som
 {% raw %}
 ```jsx
 import * as React from 'react';
-import { Datagrid } from 'react-admin';
+import { Datagrid, useRecordContext } from 'react-admin';
 import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-const CreateRelatedCommentButton = ({ record }) => (
-    <Button
-        component={Link}
-        to={{
-            pathname: '/comments/create',
-        }}
-        state={{ record: { post_id: record.id } }}
-    >
-        Write a comment for that post
-    </Button>
-);
+const CreateRelatedCommentButton = () => {
+    const record = useRecordContext();
+    return (
+        <Button
+            component={Link}
+            to={{
+                pathname: '/comments/create',
+            }}
+            state={{ record: { post_id: record.id } }}
+        >
+            Write a comment for that post
+        </Button>
+    );
+};
 
 export default PostList = () => (
     <List>
@@ -433,21 +469,25 @@ export default PostList = () => (
 
 {% raw %}
 ```jsx
-import * as React from "react";
+import * as React from 'react';
+import { useRecordContext } from 'react-admin';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 
-const CreateRelatedCommentButton = ({ record }) => (
-    <Button
-        component={Link}
-        to={{
-            pathname: '/comments/create',
-            search: `?source=${JSON.stringify({ post_id: record.id })}`,
-        }}
-    >
-        Write a comment for that post
-    </Button>
-);
+const CreateRelatedCommentButton = () => {
+    const record = useRecordContext();
+    return (
+        <Button
+            component={Link}
+            to={{
+                pathname: '/comments/create',
+                search: `?source=${JSON.stringify({ post_id: record.id })}`,
+            }}
+        >
+            Write a comment for that post
+        </Button>
+    );
+};
 ```
 {% endraw %}
 
@@ -515,3 +555,13 @@ const PostCreate = () => {
 You can also leave the choice to the user, by supplying two submit buttons: one with a redirect, and one with a form reset. The same technique applies: use the `mutationOptions` prop on the `<SaveButton>` component.
 
 Note: In order to get the `mutationOptions` being considered, you have to set the `type` prop of the `SaveButton` to `button`.
+
+## Creating A New Record In A Modal
+
+`<Create>` is designed to be a page component, passed to the `create` prop of the `<Resource>` component. But you may want to let users create a record from another page. 
+
+![CreateDialog](https://marmelab.com/ra-enterprise/modules/assets/create-dialog.gif)
+
+* If you want to allow creation from the `list` page, use [the `<CreateDialog>` component](./CreateDialog.md)
+* If you want to allow creation from another page, use [the `<CreateInDialogButton>` component](./CreateInDialogButton.md)
+

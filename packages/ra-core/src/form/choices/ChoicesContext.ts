@@ -1,4 +1,5 @@
 import { createContext } from 'react';
+import { UseGetListHookValue } from '../../dataProvider/useGetList';
 import { FilterPayload, RaRecord, SortPayload } from '../../types';
 
 /**
@@ -6,7 +7,9 @@ import { FilterPayload, RaRecord, SortPayload } from '../../types';
  *
  * Use the useChoicesContext() hook to read the context.
  */
-export const ChoicesContext = createContext<ChoicesContextValue>(undefined);
+export const ChoicesContext = createContext<ChoicesContextValue | undefined>(
+    undefined
+);
 
 export type ChoicesContextValue<RecordType extends RaRecord = any> = {
     allChoices: RecordType[];
@@ -22,7 +25,7 @@ export type ChoicesContextValue<RecordType extends RaRecord = any> = {
     isLoading: boolean;
     page: number;
     perPage: number;
-    refetch: () => void;
+    refetch: (() => void) | UseGetListHookValue<RecordType>['refetch'];
     resource: string;
     selectedChoices: RecordType[];
     setFilters: (
@@ -37,4 +40,5 @@ export type ChoicesContextValue<RecordType extends RaRecord = any> = {
     sort: SortPayload;
     source: string;
     total: number;
+    isFromReference: boolean;
 };

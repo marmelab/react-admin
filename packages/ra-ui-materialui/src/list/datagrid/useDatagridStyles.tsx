@@ -3,6 +3,7 @@ import { styled } from '@mui/material';
 const PREFIX = 'RaDatagrid';
 
 export const DatagridClasses = {
+    root: `${PREFIX}-root`,
     table: `${PREFIX}-table`,
     tableWrapper: `${PREFIX}-tableWrapper`,
     thead: `${PREFIX}-thead`,

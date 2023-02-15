@@ -6,14 +6,22 @@ import {
     within,
     fireEvent,
 } from '@testing-library/react';
-import { testDataProvider, useChoicesContext } from 'ra-core';
+import {
+    testDataProvider,
+    useChoicesContext,
+    CoreAdminContext,
+    Form,
+    useInput,
+} from 'ra-core';
+import { QueryClient } from 'react-query';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { DatagridInput } from './DatagridInput';
 import { TextField } from '../field';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
-import { QueryClient } from 'react-query';
+import { SelectArrayInput } from './SelectArrayInput';
+import { DifferentIdTypes } from './ReferenceArrayInput.stories';
 
 describe('<ReferenceArrayInput />', () => {
     const defaultProps = {
@@ -29,7 +37,6 @@ describe('<ReferenceArrayInput />', () => {
 
     it('should display an error if error is defined', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
-        const MyComponent = () => <span id="mycomponent" />;
         render(
             <AdminContext
                 queryClient={
@@ -43,13 +50,13 @@ describe('<ReferenceArrayInput />', () => {
             >
                 <SimpleForm onSubmit={jest.fn()}>
                     <ReferenceArrayInput {...defaultProps}>
-                        <MyComponent />
+                        <SelectArrayInput optionText="name" />
                     </ReferenceArrayInput>
                 </SimpleForm>
             </AdminContext>
         );
         await waitFor(() => {
-            expect(screen.queryByDisplayValue('fetch error')).not.toBeNull();
+            expect(screen.queryByText('fetch error')).not.toBeNull();
         });
     });
     it('should pass the correct resource down to child component', async () => {
@@ -78,7 +85,11 @@ describe('<ReferenceArrayInput />', () => {
         };
         const dataProvider = testDataProvider({
             getList: () =>
-                Promise.resolve({ data: [{ id: 1 }, { id: 2 }], total: 2 }),
+                // @ts-ignore
+                Promise.resolve({
+                    data: [{ id: 1 }, { id: 2 }],
+                    total: 2,
+                }),
         });
         render(
             <AdminContext dataProvider={dataProvider}>
@@ -94,9 +105,41 @@ describe('<ReferenceArrayInput />', () => {
         });
     });
 
+    it('should apply default values', async () => {
+        const MyComponent = () => {
+            useInput({ source: 'tag_ids', defaultValue: [1, 2] });
+            const { allChoices } = useChoicesContext();
+            return <div>{allChoices?.map(item => item.id).join()}</div>;
+        };
+        const dataProvider = testDataProvider({
+            getMany: jest
+                .fn()
+                .mockResolvedValue({ data: [{ id: 1 }, { id: 2 }] }),
+        });
+
+        render(
+            <AdminContext dataProvider={dataProvider}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <ReferenceArrayInput {...defaultProps}>
+                        <MyComponent />
+                    </ReferenceArrayInput>
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        await waitFor(() => {
+            expect(dataProvider.getMany).toHaveBeenCalled();
+        });
+
+        await waitFor(() => {
+            expect(screen.queryByText('1,2')).not.toBeNull();
+        });
+    });
+
     it('should allow to use a Datagrid', async () => {
         const dataProvider = testDataProvider({
             getList: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: [
                         { id: 5, name: 'test1' },
@@ -105,6 +148,7 @@ describe('<ReferenceArrayInput />', () => {
                     total: 2,
                 }),
             getMany: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: [{ id: 5, name: 'test1' }],
                 }),
@@ -174,5 +218,74 @@ describe('<ReferenceArrayInput />', () => {
             expect(getCheckbox2().checked).toEqual(true);
             expect(getCheckboxAll().checked).toEqual(true);
         });
+    });
+
+    it('should accept meta in queryOptions', async () => {
+        const getList = jest
+            .fn()
+            .mockImplementationOnce(() =>
+                Promise.resolve({ data: [], total: 25 })
+            );
+        const dataProvider = testDataProvider({ getList });
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Form>
+                    <ReferenceArrayInput
+                        {...defaultProps}
+                        queryOptions={{ meta: { foo: 'bar' } }}
+                    >
+                        <SelectArrayInput optionText="name" />
+                    </ReferenceArrayInput>
+                </Form>
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(getList).toHaveBeenCalledWith('tags', {
+                filter: {},
+                pagination: { page: 1, perPage: 25 },
+                sort: { field: 'id', order: 'DESC' },
+                meta: { foo: 'bar' },
+            });
+        });
+    });
+
+    it('should support different types of ids', async () => {
+        render(<DifferentIdTypes />);
+        await screen.findByText('#1', {
+            selector: 'div.MuiChip-root .MuiChip-label',
+        });
+        expect(
+            screen.queryByText('#2', {
+                selector: 'div.MuiChip-root .MuiChip-label',
+            })
+        ).not.toBeNull();
+        expect(
+            screen.queryByText('#3', { selector: 'div.MuiChip-root' })
+        ).toBeNull();
+    });
+
+    it('should unselect a value when types of ids are different', async () => {
+        render(<DifferentIdTypes />);
+
+        const chip1 = await screen.findByText('#1', {
+            selector: '.MuiChip-label',
+        });
+        const chip2 = await screen.findByText('#2', {
+            selector: '.MuiChip-label',
+        });
+
+        if (chip2.nextSibling) fireEvent.click(chip2.nextSibling);
+        expect(
+            screen.queryByText('#2', {
+                selector: '.MuiChip-label',
+            })
+        ).toBeNull();
+
+        if (chip1.nextSibling) fireEvent.click(chip1.nextSibling);
+        expect(
+            screen.queryByText('#1', {
+                selector: '.MuiChip-label',
+            })
+        ).toBeNull();
     });
 });

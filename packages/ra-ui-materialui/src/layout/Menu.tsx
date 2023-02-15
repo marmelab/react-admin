@@ -1,54 +1,52 @@
 import * as React from 'react';
-import { ReactNode, createElement } from 'react';
+import { ReactNode } from 'react';
+import { MenuList } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import lodashGet from 'lodash/get';
-import DefaultIcon from '@mui/icons-material/ViewList';
 import clsx from 'clsx';
-import {
-    useResourceDefinitions,
-    useGetResourceLabel,
-    useCreatePath,
-} from 'ra-core';
+import { useResourceDefinitions } from 'ra-core';
 
 import { DRAWER_WIDTH, CLOSED_DRAWER_WIDTH } from './Sidebar';
 import { useSidebarState } from './useSidebarState';
 import { DashboardMenuItem } from './DashboardMenuItem';
 import { MenuItemLink } from './MenuItemLink';
+import { ResourceMenuItem } from './ResourceMenuItem';
 
+/**
+ * Renders a menu with one menu item per resource by default. You can also set menu items by hand.
+ *
+ * @example
+ * import * as React from 'react';
+ * import { Menu } from 'react-admin';
+ *
+ * import BookIcon from '@mui/icons-material/Book';
+ * import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+ * import PeopleIcon from '@mui/icons-material/People';
+ * import LabelIcon from '@mui/icons-material/Label';
+ *
+ * export const MyMenu = () => (
+ *     <Menu>
+ *         <Menu.DashboardItem />
+ *         <Menu.Item to="/posts" primaryText="Posts" leftIcon={<BookIcon />}/>
+ *         <Menu.Item to="/comments" primaryText="Comments" leftIcon={<ChatBubbleIcon />}/>
+ *         <Menu.Item to="/users" primaryText="Users" leftIcon={<PeopleIcon />}/>
+ *         <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
+ *     </Menu>
+ * );
+ */
 export const Menu = (props: MenuProps) => {
     const resources = useResourceDefinitions();
-    const getResourceLabel = useGetResourceLabel();
-    const createPath = useCreatePath();
     const {
         hasDashboard,
-        dense,
-        children = (
-            <>
-                {hasDashboard && <DashboardMenuItem dense={dense} />}
-                {Object.keys(resources)
-                    .filter(name => resources[name].hasList)
-                    .map(name => (
-                        <MenuItemLink
-                            key={name}
-                            to={createPath({
-                                resource: name,
-                                type: 'list',
-                            })}
-                            state={{ _scrollToTop: true }}
-                            primaryText={getResourceLabel(name, 2)}
-                            leftIcon={
-                                resources[name].icon ? (
-                                    createElement(resources[name].icon)
-                                ) : (
-                                    <DefaultIcon />
-                                )
-                            }
-                            dense={dense}
-                        />
-                    ))}
-            </>
-        ),
+        children = [
+            hasDashboard ? (
+                <DashboardMenuItem key="default-dashboard-menu-item" />
+            ) : null,
+            ...Object.keys(resources)
+                .filter(name => resources[name].hasList)
+                .map(name => <ResourceMenuItem key={name} name={name} />),
+        ],
         className,
         ...rest
     } = props;
@@ -71,11 +69,13 @@ export const Menu = (props: MenuProps) => {
     );
 };
 
+// NOTE: We don't extends MenuListProps here to avoid breaking changes
 export interface MenuProps {
     children?: ReactNode;
     className?: string;
     dense?: boolean;
     hasDashboard?: boolean;
+    [key: string]: any;
 }
 
 Menu.propTypes = {
@@ -84,6 +84,11 @@ Menu.propTypes = {
     hasDashboard: PropTypes.bool,
 };
 
+// re-export MenuItem commponents for convenience
+Menu.Item = MenuItemLink;
+Menu.DashboardItem = DashboardMenuItem;
+Menu.ResourceItem = ResourceMenuItem;
+
 const PREFIX = 'RaMenu';
 
 export const MenuClasses = {
@@ -91,7 +96,7 @@ export const MenuClasses = {
     closed: `${PREFIX}-closed`,
 };
 
-const Root = styled('div', {
+const Root = styled(MenuList, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({

@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import { FormProvider, FieldValues, UseFormProps } from 'react-hook-form';
+import {
+    FormProvider,
+    FieldValues,
+    UseFormProps,
+    SubmitHandler,
+} from 'react-hook-form';
 
 import { FormGroupsProvider } from './FormGroupsProvider';
 import { RaRecord } from '../types';
@@ -77,6 +82,7 @@ export interface FormOwnProps {
     id?: string;
     record?: Partial<RaRecord>;
     resource?: string;
-    onSubmit?: (data: FieldValues) => any | Promise<any>;
+    onSubmit?: SubmitHandler<FieldValues>;
     warnWhenUnsavedChanges?: boolean;
+    sanitizeEmptyValues?: boolean;
 }

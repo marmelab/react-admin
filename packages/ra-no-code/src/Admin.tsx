@@ -12,7 +12,7 @@ import {
     ResourceConfigurationPage,
     ResourceConfigurationProvider,
 } from './ResourceConfiguration';
-import { Layout, Ready } from './ui';
+import { Layout } from './ui';
 import { Route } from 'react-router';
 import { useApplication } from './ApplicationContext';
 
@@ -43,7 +43,7 @@ const InnerAdmin = (props: AdminProps) => {
     const hasResources = !!resources && Object.keys(resources).length > 0;
 
     return (
-        <RaAdmin layout={Layout} ready={Ready} {...props}>
+        <RaAdmin layout={Layout} {...props}>
             <CustomRoutes>
                 <Route
                     path="/configure/:resource"

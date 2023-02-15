@@ -28,7 +28,7 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 export const TextInput = (props: TextInputProps) => {
     const {
         className,
-        defaultValue = '',
+        defaultValue,
         label,
         format,
         helperText,
@@ -64,15 +64,14 @@ export const TextInput = (props: TextInputProps) => {
             {...field}
             className={clsx('ra-input', `ra-input-${source}`, className)}
             label={
-                label !== '' &&
-                label !== false && (
+                label !== '' && label !== false ? (
                     <FieldTitle
                         label={label}
                         source={source}
                         resource={resource}
                         isRequired={isRequired}
                     />
-                )
+                ) : null
             }
             error={(isTouched || isSubmitted) && invalid}
             helperText={
@@ -89,7 +88,11 @@ export const TextInput = (props: TextInputProps) => {
 
 TextInput.propTypes = {
     className: PropTypes.string,
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    label: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.element,
+    ]),
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,

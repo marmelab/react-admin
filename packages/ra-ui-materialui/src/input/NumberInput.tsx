@@ -11,9 +11,6 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 /**
  * An Input component for a number
  *
- * Due to limitations in React controlled components and number formatting,
- * this input only updates the form value on blur.
- *
  * @example
  * <NumberInput source="nb_views" />
  *
@@ -29,8 +26,9 @@ export const NumberInput = ({
     helperText,
     label,
     margin,
-    onBlur,
     onChange,
+    onBlur,
+    onFocus,
     parse,
     resource,
     source,
@@ -50,26 +48,33 @@ export const NumberInput = ({
         isRequired,
     } = useInput({
         defaultValue,
+        onBlur,
         resource,
         source,
         validate,
         ...rest,
     });
+    const { onBlur: onBlurFromField } = field;
 
     const inputProps = { ...overrideInputProps, step, min, max };
 
-    // This is a controlled input that doesn't transform the user input on change.
-    // The user input is only turned into a number on blur.
+    // This is a controlled input that renders directly the string typed by the user.
+    // This string is converted to a number on change, and stored in the form state,
+    // but that number is not not displayed.
     // This is to allow transitory values like '1.0' that will lead to '1.02'
 
     // text typed by the user and displayed in the input, unparsed
     const [value, setValue] = React.useState(format(field.value));
 
+    const hasFocus = React.useRef(false);
+
     // update the input text when the record changes
     React.useEffect(() => {
-        const stringValue = format(field.value);
-        setValue(value => (value !== stringValue ? stringValue : value));
-    }, [field.value]); // eslint-disable-line react-hooks/exhaustive-deps
+        if (!hasFocus.current) {
+            const stringValue = format(field.value);
+            setValue(value => (value !== stringValue ? stringValue : value));
+        }
+    }, [field.value, format]); // eslint-disable-line react-hooks/exhaustive-deps
 
     // update the input text when the user types in the input
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,47 +87,46 @@ export const NumberInput = ({
         ) {
             return;
         }
-        setValue(event.target.value);
-    };
-
-    // set the numeric value on the form on blur
-    const handleBlur = (...event: any[]) => {
-        if (onBlur) {
-            onBlur(...event);
-        }
-        const eventParam = event[0] as React.FocusEvent<HTMLInputElement>;
-        if (
-            typeof eventParam.target === 'undefined' ||
-            typeof eventParam.target.value === 'undefined'
-        ) {
-            return;
-        }
-        const target = eventParam.target;
-        const newValue = target.valueAsNumber
-            ? parse
-                ? parse(target.valueAsNumber)
-                : target.valueAsNumber
-            : parse
-            ? parse(target.value)
-            : convertStringToNumber(target.value);
+        const target = event.target;
+        setValue(target.value);
+        const newValue =
+            target.valueAsNumber !== undefined &&
+            target.valueAsNumber !== null &&
+            !isNaN(target.valueAsNumber)
+                ? parse
+                    ? parse(target.valueAsNumber)
+                    : target.valueAsNumber
+                : parse
+                ? parse(target.value)
+                : convertStringToNumber(target.value);
         field.onChange(newValue);
     };
 
-    const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') {
-            handleBlur(event);
+    const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+        if (onFocus) {
+            onFocus(event);
         }
+        hasFocus.current = true;
+    };
+
+    const handleBlur = () => {
+        if (onBlurFromField) {
+            onBlurFromField();
+        }
+        hasFocus.current = false;
+        const stringValue = format(field.value);
+        setValue(value => (value !== stringValue ? stringValue : value));
     };
 
     return (
         <TextField
             id={id}
             {...field}
-            // override the react-hook-form value, onChange and onBlur props
+            // use the locally controlled state instead of the react-hook-form field state
             value={value}
             onChange={handleChange}
+            onFocus={handleFocus}
             onBlur={handleBlur}
-            onKeyUp={handleKeyUp}
             className={clsx('ra-input', `ra-input-${source}`, className)}
             type="number"
             size="small"
@@ -151,7 +155,11 @@ export const NumberInput = ({
 };
 
 NumberInput.propTypes = {
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    label: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.element,
+    ]),
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,

@@ -31,9 +31,10 @@ import { useDataProvider } from './useDataProvider';
  *
  * @example
  *
- * import { useGetOne } from 'react-admin';
+ * import { useGetOne, useRecordContext } from 'react-admin';
  *
- * const UserProfile = ({ record }) => {
+ * const UserProfile = () => {
+ *     const record = useRecordContext();
  *     const { data, isLoading, error } = useGetOne('users', { id: record.id });
  *     if (isLoading) { return <Loading />; }
  *     if (error) { return <p>ERROR</p>; }

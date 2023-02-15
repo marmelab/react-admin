@@ -38,6 +38,7 @@ Here are all the props you can set on the `<SimpleForm>` component:
 * [`id`](#id)
 * [`noValidate`](#novalidate)
 * [`onSubmit`](#onsubmit)
+* [`sanitizeEmptyValues`](#sanitizeemptyvalues)
 * [`sx`](#sx-css-api)
 * [`toolbar`](#toolbar)
 * [`validate`](#validate)
@@ -124,10 +125,9 @@ By default, the `<SimpleForm>` calls the `save` callback passed to it by the edi
 
 ```jsx
 export const PostCreate = () => {
-    const { id } = useParams();
     const [create] = useCreate();
     const postSave = (data) => {
-        create('posts', { id, data });
+        create('posts', { data });
     };
     return (
         <Create>
@@ -140,6 +140,47 @@ export const PostCreate = () => {
     );
 };
 ```
+
+## `sanitizeEmptyValues`
+
+In HTML, the value of empty form inputs is the empty string (`''`). React-admin inputs (like `<TextInput>`, `<NumberInput>`, etc.) automatically transform these empty values into `null`.
+
+But for your own input components based on react-hook-form, this is not the default. React-hook-form doesn't transform empty values by default. This leads to unexpected `create` and `update` payloads like:
+
+```jsx
+{
+    id: 1234,
+    title: 'Lorem Ipsum',
+    is_published: '',
+    body: '',
+    // etc.
+}
+```
+
+If you prefer to omit the keys for empty values, set the `sanitizeEmptyValues` prop to `true`. This will sanitize the form data before passing it to the `dataProvider`, i.e. remove empty strings from the form state, unless the record actually had a value for that field before edition.
+
+```jsx
+const PostCreate = () =>  (
+    <Create>
+        <SimpleForm sanitizeEmptyValues>
+            ...
+        </SimpleForm>
+    </Create>
+);
+```
+
+For the previous example, the data sent to the `dataProvider` will be:
+
+```jsx
+{
+    id: 1234,
+    title: 'Lorem Ipsum',
+}
+```
+
+**Note:** Setting the `sanitizeEmptyValues` prop to `true` will also have a (minor) impact on react-admin inputs (like `<TextInput>`, `<NumberInput>`, etc.): empty values (i.e. values equal to `null`) will be removed from the form state on submit, unless the record actually had a value for that field.
+
+If you need a more fine-grained control over the sanitization, you can use [the `transform` prop](./Edit.md#transform) of `<Edit>` or `<Create>` components, or [the `parse` prop](./Inputs.md#parse) of individual inputs.
 
 ## `sx`: CSS API
 
@@ -334,6 +375,8 @@ export const TagEdit = () => (
 );
 ```
 
+**Warning**: This feature only works if you have a dependency on react-router 6.3.0 **at most**. The react-router team disabled this possibility in react-router 6.4, so `warnWhenUnsavedChanges` will silently fail with react-router 6.4 or later.
+
 ## Using Fields As Children
 
 The basic usage of `<SimpleForm>` is to pass [Input components](./Inputs.md) as children. For non-editable fields, you can pass `disabled` inputs, or even [Field components](./Fields.md). But since `<Field>` components have no label by default, you'll have to wrap your inputs in a `<Labeled>` component in that case:
@@ -449,3 +492,64 @@ export const UserCreate = () => {
 }
 ```
 {% endraw %}
+
+## Configurable
+
+You can let end users customize the fields displayed in the `<SimpleForm>` by using the `<SimpleFormConfigurable>` component instead.
+
+![SimpleFormConfigurable](./img/SimpleFormConfigurable.gif)
+
+```diff
+import {
+    Edit,
+-   SimpleForm,
++   SimpleFormConfigurable,
+    TextInput,
+} from 'react-admin';
+
+const PostEdit = () => (
+    <Edit>
+-       <SimpleForm>
++       <SimpleFormConfigurable>
+            <TextInput source="title" />
+            <TextInput source="author" />
+            <TextInput source="year" />
+-       </SimpleForm>
++       </SimpleFormConfigurable>
+    </Edit>
+);
+```
+
+When users enter the configuration mode and select the `<SimpleForm>`, they can show / hide SimpleForm inputs.
+
+By default, `<SimpleFormConfigurable>` renders all child inputs. But you can also omit some of them by passing an `omit` prop containing an array of input sources:
+
+```jsx
+// By default, hide the author input
+// users can choose to show it in configuration mode
+const PostEdit = () => (
+    <Edit>
+        <SimpleFormConfigurable omit={['author']}>
+            <TextInput source="title" />
+            <TextInput source="author" />
+            <TextInput source="year" />
+        </SimpleFormConfigurable>
+    </Edit>
+);
+```
+
+If you render more than one `<SimpleFormConfigurable>` in the same page, you must pass a unique `preferenceKey` prop to each one:
+
+```jsx
+const PostEdit = () => (
+    <Edit>
+        <SimpleFormConfigurable preferenceKey="posts.simpleForm">
+            <TextInput source="title" />
+            <TextInput source="author" />
+            <TextInput source="year" />
+        </SimpleFormConfigurable>
+    </Edit>
+);
+```
+
+`<SimpleFormConfigurable>` accepts the same props as `<SimpleForm>`.

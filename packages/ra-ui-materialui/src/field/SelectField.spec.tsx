@@ -5,9 +5,29 @@ import {
     RecordContextProvider,
     TestTranslationProvider,
     useRecordContext,
+    I18nContextProvider,
 } from 'ra-core';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import { SelectField } from './SelectField';
+
+const i18nProvider = polyglotI18nProvider(
+    _locale => ({
+        resources: {
+            books: {
+                name: 'Books',
+                fields: {
+                    id: 'Id',
+                    title: 'Title',
+                    author: 'Author',
+                    year: 'Year',
+                },
+                not_found: 'Not found',
+            },
+        },
+    }),
+    'en'
+);
 
 describe('<SelectField />', () => {
     const defaultProps = {
@@ -159,5 +179,20 @@ describe('<SelectField />', () => {
         );
         expect(screen.queryAllByText('hello')).toHaveLength(1);
         expect(screen.queryAllByText('bonjour')).toHaveLength(0);
+    });
+
+    it('should translate emptyText', () => {
+        const { getByText } = render(
+            <I18nContextProvider value={i18nProvider}>
+                <SelectField
+                    {...defaultProps}
+                    record={{ id: 123 }}
+                    source="foo.bar"
+                    emptyText="resources.books.not_found"
+                />
+            </I18nContextProvider>
+        );
+
+        expect(getByText('Not found')).not.toBeNull();
     });
 });

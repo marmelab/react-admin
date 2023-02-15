@@ -15,6 +15,7 @@ const authProvider = {
     checkAuth: params => Promise.resolve(/* ... */),
     logout: () => Promise.resolve(/* ... */),
     getIdentity: () => Promise.resolve(/* ... */),
+    handleCallback: () => Promise.resolve(/* ... */), // for third-party authentication only
     // authorization
     getPermissions: () => Promise.resolve(/* ... */),
 };
@@ -123,6 +124,32 @@ Once the promise resolves, the login form redirects to the previous page, or to 
 
 **Tip**: It's a good idea to store credentials in `localStorage`, as in this example, to avoid reconnection when opening a new browser tab. But this makes your application [open to XSS attacks](https://www.redotheweb.com/2015/11/09/api-security.html), so you'd better double down on security, and add an `httpOnly` cookie on the server side, too.
 
+After login, react-admin redirects the user to the location returned by `authProvider.login()` - or to the previous page if the method returns nothing. You can customize the redirection url by returning an object with a `redirectTo` key containing a string or false to disable redirection after login.
+
+```js
+// in src/authProvider.js
+const authProvider = {
+    login: ({ username, password }) =>  {
+        const request = new Request('https://mydomain.com/authenticate', {
+            method: 'POST',
+            body: JSON.stringify({ username, password }),
+            headers: new Headers({ 'Content-Type': 'application/json' }),
+        });
+        return fetch(request)
+            .then(response => {
+                // ...
+                return { redirectTo: false };
+            })
+            .catch(() => {
+                throw new Error('Network error')
+            });
+    },
+    checkAuth: () => { /* ... */ },
+    getPermissions: () => { /* ... */ },
+    // ...
+};
+
+```
 If the login fails, `authProvider.login()` should return a rejected Promise with an Error object. React-admin displays the Error message to the user in a notification.
 
 ### `checkError`
@@ -369,6 +396,66 @@ React-admin doesn't use permissions by default, but it provides [the `usePermiss
 
 [The Role-Based Access Control (RBAC) module](./AuthRBAC.md) allows fined-grained permissions in react-admin apps, and specifies a custom return format for `authProvider.getPermissions()`. Check [the RBAC documentation](./AuthRBAC.md#authprovider-methods) for more information.
 
+### `handleCallback`
+
+This method is used when integrating a third-party authentication provider such as [Auth0](https://auth0.com/). React-admin provides a route at the `/auth-callback` path, to be used as the callback URL in the authentication service. After logging in using the authentication service, users will be redirected to this route. The `/auth-callback` route calls the `authProvider.handleCallback` method on mount. 
+
+So `handleCallback` lets you process query parameters passed by the third-party authentication service, e.g. to retrieve an authentication token.
+
+Here's an example using Auth0:
+
+```jsx
+import { PreviousLocationStorageKey } from 'react-admin';
+import { Auth0Client } from './Auth0Client';
+
+export const authProvider = {
+    async login() => { /* Nothing to do here, this function will never be called */ },
+    async checkAuth() {
+        const isAuthenticated = await client.isAuthenticated();
+        if (isAuthenticated) {
+            return;
+        }
+        // not authenticated: save the location that the user tried to access
+        localStorage.setItem(PreviousLocationStorageKey, window.location.href);
+        // then redirect the user to the Auth0 service
+        client.loginWithRedirect({
+            authorizationParams: {
+                // after login, Auth0 will redirect users back to this page
+                redirect_uri: `${window.location.origin}/auth-callback`,
+            },
+        });
+    },
+    // A user logged in successfully on the Auth0 service
+    // and was redirected back to the /auth-callback route on the app
+    async handleCallback() {
+        const query = window.location.search;
+        if (!query.includes('code=') && ¡query.includes('state=')) {
+            throw new Error('Failed to handle login callback.');
+        }
+        // If we did receive the Auth0 parameters,
+        // get an access token based on the query paramaters
+        await Auth0Client.handleRedirectCallback();
+    },
+    ...
+}
+```
+
+Once `handleCallback` returns a resolved Promise, react-admin redirects the user to the home page, or to the location found in `localStorage.getItem(PreviousLocationStorageKey)`. In the above example, `authProvider.checkAuth()` sets this location to the page the user was trying to access. 
+
+You can override this behavior by returning an object with a `redirectTo` property, as follows:
+
+```jsx
+async handleCallback() {
+    if (!query.includes('code=') && ¡query.includes('state=')) {
+        throw new Error('Failed to handle login callback.');
+    }
+    // If we did receive the Auth0 parameters,
+    // get an access token based on the query paramaters
+    await Auth0Client.handleRedirectCallback();
+    return { redirectTo: '/posts' };
+},
+```
+
 ## Request Format
 
 React-admin calls the `authProvider` methods with the following params:
@@ -380,6 +467,7 @@ React-admin calls the `authProvider` methods with the following params:
 | `checkAuth`      | Check credentials before moving to a new route  | `Object` whatever params passed to `useCheckAuth()` - empty for react-admin default routes |
 | `logout`         | Log a user out                                  |                    |
 | `getIdentity`    | Get the current user identity                   |                    | 
+| `handleCallback` | Validate users after third party authentication service redirection                |  |
 | `getPermissions` | Get the current user credentials                | `Object` whatever params passed to `usePermissions()` - empty for react-admin default routes |
 
 ## Response Format
@@ -388,11 +476,12 @@ React-admin calls the `authProvider` methods with the following params:
 
 | Method           | Resolve if                        | Response format |
 | ---------------- | --------------------------------- | --------------- |
-| `login`          | Login credentials were accepted   | `void`          |
+| `login`          | Login credentials were accepted   | `void | { redirectTo?: string | boolean  }` route to redirect to after login |
 | `checkError`     | Error is not an auth error        | `void`          |
 | `checkAuth`      | User is authenticated             | `void`          |
 | `logout`         | Auth backend acknowledged logout  | `string | false | void` route to redirect to after logout, defaults to `/login` |
 | `getIdentity`    | Auth backend returned identity    | `{ id: string | number, fullName?: string, avatar?: string }`  | 
+| `handleCallback` | User is authenticated   | `void | { redirectTo?: string | boolean  }` route to redirect to after login |
 | `getPermissions` | Auth backend returned permissions | `Object | Array` free format - the response will be returned when `usePermissions()` is called |
 
 ## Error Format
@@ -406,5 +495,6 @@ When the auth backend returns an error, the Auth Provider should return a reject
 | `checkAuth`      | User is not authenticated                 | `void | { redirectTo?: string, message?: string }` route to redirect to after logout, message to notify the user |
 | `logout`         | Auth backend failed to log the user out   | `void` |
 | `getIdentity`    | Auth backend failed to return identity    | `Object` free format - returned as `error` when `useGetIdentity()` is called | 
+| `handleCallback` | Failed to authenticate users after redirection | `void | { redirectTo?: string, logoutOnFailure?: boolean, message?: string }` |
 | `getPermissions` | Auth backend failed to return permissions | `Object` free format - returned as `error` when `usePermissions()` is called |
 

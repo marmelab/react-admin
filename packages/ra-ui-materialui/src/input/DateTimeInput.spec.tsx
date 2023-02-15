@@ -105,9 +105,12 @@ describe('<DateTimeInput />', () => {
         ).not.toBeNull();
         fireEvent.click(screen.getByLabelText('ra.action.save'));
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({
-                publishedAt,
-            });
+            expect(onSubmit).toHaveBeenCalledWith(
+                {
+                    publishedAt,
+                },
+                expect.anything()
+            );
         });
     });
 
@@ -138,9 +141,44 @@ describe('<DateTimeInput />', () => {
         ).not.toBeNull();
         fireEvent.click(screen.getByLabelText('ra.action.save'));
         await waitFor(() => {
-            expect(onSubmit).toHaveBeenCalledWith({
-                publishedAt,
-            });
+            expect(onSubmit).toHaveBeenCalledWith(
+                {
+                    publishedAt,
+                },
+                expect.anything()
+            );
+        });
+    });
+
+    it('should return null when datetime is empty', async () => {
+        const onSubmit = jest.fn();
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    onSubmit={onSubmit}
+                    defaultValues={{ publishedAt: new Date('2021-09-11') }}
+                >
+                    <DateTimeInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
+        );
+        const input = screen.getByLabelText(
+            'resources.posts.fields.publishedAt'
+        ) as HTMLInputElement;
+        expect(input.value).toBe(
+            format(new Date('2021-09-11'), "yyyy-MM-dd'T'HH:mm")
+        );
+        fireEvent.change(input, {
+            target: { value: '' },
+        });
+        fireEvent.click(screen.getByLabelText('ra.action.save'));
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith(
+                {
+                    publishedAt: null,
+                },
+                expect.anything()
+            );
         });
     });
 
@@ -185,7 +223,7 @@ describe('<DateTimeInput />', () => {
             const onSubmit = jest.fn();
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={onSubmit}>
+                    <SimpleForm mode="onBlur" onSubmit={onSubmit}>
                         <DateTimeInput
                             {...defaultProps}
                             validate={required()}
@@ -207,7 +245,6 @@ describe('<DateTimeInput />', () => {
                 target: { value: '' },
             });
             fireEvent.blur(input);
-            fireEvent.click(screen.getByText('ra.action.save'));
             await waitFor(() => {
                 expect(
                     screen.queryByText('ra.validation.required')

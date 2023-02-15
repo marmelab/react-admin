@@ -11,6 +11,7 @@ import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { SelectArrayInput } from './SelectArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
+import { DifferentIdTypes } from './SelectArrayInput.stories';
 
 describe('<SelectArrayInput />', () => {
     const defaultProps = {
@@ -574,5 +575,51 @@ describe('<SelectArrayInput />', () => {
         await waitFor(() => {
             expect(onChange).toHaveBeenCalledWith(['js_fatigue']);
         });
+    });
+
+    it('should show selected values when ids type are inconsistant', async () => {
+        render(<DifferentIdTypes />);
+        await waitFor(() => {
+            expect(screen.queryByText('artist_1')).not.toBeNull();
+        });
+        expect(screen.queryByText('artist_2')).not.toBeNull();
+        expect(screen.queryByText('artist_3')).toBeNull();
+    });
+
+    it('should unselect values when ids type are different', async () => {
+        render(<DifferentIdTypes />);
+
+        expect(
+            await screen.findByText('resources.bands.fields.members')
+        ).not.toBeNull();
+
+        fireEvent.mouseDown(
+            screen.getByLabelText('resources.bands.fields.members')
+        );
+
+        const option = await screen.findByText('artist_2', {
+            selector: '.MuiMenuItem-root',
+        });
+        fireEvent.click(option);
+
+        expect(
+            screen.queryByText('artist_2', {
+                selector: '.MuiChip-label',
+            })
+        ).toBeNull();
+    });
+
+    it('should not crash if its value is not an array', () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    onSubmit={jest.fn()}
+                    defaultValues={{ categories: 1 }}
+                >
+                    <SelectArrayInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
+        );
+        expect(screen.queryByTestId('selectArray')).toBeDefined();
     });
 });

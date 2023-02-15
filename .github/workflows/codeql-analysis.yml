@@ -9,6 +9,9 @@ on:
 jobs:
   CodeQL-Build:
 
+    permissions:
+      security-events: write  # for github/codeql-action/autobuild to send a status report
+
     # CodeQL runs on ubuntu-latest and windows-latest
     runs-on: ubuntu-latest
 

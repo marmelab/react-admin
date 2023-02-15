@@ -50,6 +50,23 @@ describe('<List />', () => {
         expect(screen.queryAllByText('datagrid')).toHaveLength(1);
     });
 
+    it('should accept more than one child', () => {
+        const Filter = () => <div>filter</div>;
+        const Datagrid = () => <div>datagrid</div>;
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <ThemeProvider theme={theme}>
+                    <List resource="posts">
+                        <Filter />
+                        <Datagrid />
+                    </List>
+                </ThemeProvider>
+            </CoreAdminContext>
+        );
+        expect(screen.queryAllByText('filter')).toHaveLength(1);
+        expect(screen.queryAllByText('datagrid')).toHaveLength(1);
+    });
+
     it('should display aside component', () => {
         const Dummy = () => <div />;
         const Aside = () => <div id="aside">Hello</div>;
@@ -205,6 +222,28 @@ describe('<List />', () => {
             expect(
                 screen.queryAllByLabelText('resources.posts.fields.bar')
             ).toHaveLength(1);
+        });
+    });
+
+    it('should render a list page with an error message when there is an error', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        const Datagrid = () => <div>datagrid</div>;
+        const dataProvider = {
+            getList: jest.fn(() =>
+                Promise.reject({ error: { key: 'error.unknown' } })
+            ),
+        } as any;
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <ThemeProvider theme={theme}>
+                    <List resource="posts">
+                        <Datagrid />
+                    </List>
+                </ThemeProvider>
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(screen.getByText('ra.page.error'));
         });
     });
 });

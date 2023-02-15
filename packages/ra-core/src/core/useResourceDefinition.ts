@@ -31,7 +31,8 @@ export const useResourceDefinition = (
 ): ResourceDefinition => {
     const resource = useResourceContext(props);
     const resourceDefinitions = useResourceDefinitions();
-    const { hasCreate, hasEdit, hasList, hasShow } = props || {};
+    const { hasCreate, hasEdit, hasList, hasShow, recordRepresentation } =
+        props || {};
 
     const definition = useMemo(() => {
         return defaults(
@@ -41,10 +42,19 @@ export const useResourceDefinition = (
                 hasEdit,
                 hasList,
                 hasShow,
+                recordRepresentation,
             },
             resourceDefinitions[resource]
         );
-    }, [resource, resourceDefinitions, hasCreate, hasEdit, hasList, hasShow]);
+    }, [
+        resource,
+        resourceDefinitions,
+        hasCreate,
+        hasEdit,
+        hasList,
+        hasShow,
+        recordRepresentation,
+    ]);
 
     return definition;
 };
@@ -55,4 +65,8 @@ export interface UseResourceDefinitionOptions {
     readonly hasEdit?: boolean;
     readonly hasShow?: boolean;
     readonly hasCreate?: boolean;
+    readonly recordRepresentation?:
+        | string
+        | React.ReactElement
+        | ((record: any) => string);
 }

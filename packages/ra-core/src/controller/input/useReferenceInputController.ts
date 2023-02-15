@@ -59,6 +59,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         reference,
         source,
     } = props;
+    const { meta, ...otherQueryOptions } = queryOptions;
 
     const [params, paramsModifiers] = useReferenceParams({
         resource: reference,
@@ -94,10 +95,12 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
             },
             sort: { field: params.sort, order: params.order },
             filter: { ...params.filter, ...filter },
+            meta,
         },
         {
             enabled: isGetMatchingEnabled,
-            ...queryOptions,
+            keepPreviousData: true,
+            ...otherQueryOptions,
         }
     );
 
@@ -113,13 +116,14 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         reference,
         options: {
             enabled: currentValue != null && currentValue !== '',
+            meta,
         },
     });
     // add current value to possible sources
     let finalData: RecordType[], finalTotal: number;
     if (
         !referenceRecord ||
-        possibleValuesData.find(record => record.id === currentValue)
+        possibleValuesData.find(record => record.id === referenceRecord.id)
     ) {
         finalData = possibleValuesData;
         finalTotal = total;
@@ -169,6 +173,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
             ? params.page * params.perPage < total
             : undefined,
         hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : params.page > 1,
+        isFromReference: true,
     };
 };
 
@@ -184,7 +189,7 @@ export interface UseReferenceInputControllerParams<
             hasNextPage?: boolean;
             hasPreviousPage?: boolean;
         };
-    }>;
+    }> & { meta?: any };
     page?: number;
     perPage?: number;
     record?: RaRecord;

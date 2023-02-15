@@ -2,11 +2,12 @@ import * as React from 'react';
 import { ReactElement } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
-import { useTranslate, RaRecord, warning } from 'ra-core';
+import { RaRecord, warning } from 'ra-core';
+
+import { PageTitleConfigurable } from './PageTitleConfigurable';
 
 export const Title = (props: TitleProps) => {
-    const { className, defaultTitle, title, ...rest } = props;
-    const translate = useTranslate();
+    const { defaultTitle, title, preferenceKey, ...rest } = props;
     const container =
         typeof document !== 'undefined'
             ? document.getElementById('react-admin-title')
@@ -16,18 +17,15 @@ export const Title = (props: TitleProps) => {
 
     warning(!defaultTitle && !title, 'Missing title prop in <Title> element');
 
-    const titleElement = !title ? (
-        <span className={className} {...rest}>
-            {defaultTitle}
-        </span>
-    ) : typeof title === 'string' ? (
-        <span className={className} {...rest}>
-            {translate(title, { _: title })}
-        </span>
-    ) : (
-        title
+    return createPortal(
+        <PageTitleConfigurable
+            title={title}
+            defaultTitle={defaultTitle}
+            preferenceKey={preferenceKey}
+            {...rest}
+        />,
+        container
     );
-    return createPortal(titleElement, container);
 };
 
 export const TitlePropType = PropTypes.oneOfType([
@@ -47,4 +45,5 @@ export interface TitleProps {
     defaultTitle?: string;
     record?: Partial<RaRecord>;
     title?: string | ReactElement;
+    preferenceKey?: string;
 }

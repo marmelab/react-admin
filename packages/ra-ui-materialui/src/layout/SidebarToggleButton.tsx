@@ -10,7 +10,6 @@ import { useSidebarState } from './useSidebarState';
  * A button that toggles the sidebar. Used by default in the <AppBar>.
  * @param props The component props
  * @param {String} props.className An optional class name to apply to the button
-
  */
 export const SidebarToggleButton = (props: SidebarToggleButtonProps) => {
     const translate = useTranslate();
@@ -23,17 +22,11 @@ export const SidebarToggleButton = (props: SidebarToggleButtonProps) => {
             className={className}
             title={translate(
                 open ? 'ra.action.close_menu' : 'ra.action.open_menu',
-                {
-                    _: 'Open/Close menu',
-                }
+                { _: 'Open/Close menu' }
             )}
             enterDelay={500}
         >
-            <StyledIconButton
-                color="inherit"
-                onClick={() => setOpen(!open)}
-                size="large"
-            >
+            <StyledIconButton color="inherit" onClick={() => setOpen(!open)}>
                 <MenuIcon
                     classes={{
                         root: open

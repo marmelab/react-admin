@@ -44,6 +44,7 @@ It accepts the following props:
 * [`rightAvatar`](#rightavatar)
 * [`rightIcon`](#righticon)
 * [`rowStyle`](#rowstyle)
+* [`empty`](#empty)
 
 ## `leftAvatar`
 
@@ -72,11 +73,54 @@ export const PostList = () => (
 );
 ```
 
-Setting the `linkType` prop to `false` (boolean, not string) removes the link in all list items.
+
+`linkType` accepts the following values:
+
+* `linkType="edit"`: links to the edit page. This is the default behavior.
+* `linkType="show"`: links to the show page.
+* `linkType={false}`: does not create any link.
+
+
 
 ## `primaryText`
 
-The `primaryText`, `secondaryText` and `tertiaryText` functions can be either a function returning a string, or a React element. This means you can use any react-admin field, including reference fields:
+The `primaryText`, `secondaryText` and `tertiaryText` props can accept 3 types of values:
+
+1. a function returning a string, 
+2. a string, 
+3. a React element. 
+
+If it's a **function**, react-admin passes the current record as parameter:
+
+```jsx
+import { List, SimpleList } from 'react-admin';
+
+export const PostList = () => (
+    <List>
+        <SimpleList
+            primaryText={record => record.title}
+            secondaryText={record => `${record.views} views`}
+        />
+    </List>
+);
+```
+
+If it's a **string**, react-admin passes it to [the `translate` function](./useTranslate.md), together with the `record` so you can use substitutions with the `%{token}` syntax:
+
+```jsx
+import { List, SimpleList } from 'react-admin';
+
+export const PostList = () => (
+    <List>
+        <SimpleList
+            primaryText="%{title}"
+            secondaryText="%{views} views"
+        />
+    </List>
+);
+```
+
+If it's a **React element**, react-admin renders it. This means you can use any react-admin field, including reference fields:
 
 ```jsx
 import {
@@ -90,8 +134,7 @@ export const PostList = () => (
     <List>
         <SimpleList
             primaryText={<TextField source="title" />}
-            secondaryText={record => `${record.views} views`}
-            tertiaryText={
+            secondaryText={
                 <ReferenceField reference="categories" source="category_id">
                     <TextField source="name" />
                 </ReferenceField>
@@ -122,8 +165,8 @@ const postRowStyle = (record, index) => ({
     backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
 });
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <SimpleList primaryText={record => record.title} rowStyle={postRowStyle} />
     </List>
 );
@@ -137,6 +180,25 @@ See [`primaryText`](#primarytext)
 
 See [`primaryText`](#primarytext)
 
+## `empty`
+
+It's possible that a SimpleList will have no records to display. If the SimpleList's parent component does not handle the empty state, the SimpleList will display a message indicating there are no results. This message is translatable and its key is `ra.navigation.no_results`.
+
+You can customize the empty state by passing  a component to the `empty` prop:
+
+```jsx
+const CustomEmpty = () => <div>No books found</div>;
+
+const PostList = () => (
+    <List>
+        <SimpleList
+            primaryText={record => record.title}
+            empty={<CustomEmpty />}
+        />
+    </List>
+);
+```
+
 ## Using `<SimpleList>` On Small Screens
 
 To use `<SimpleList>` on small screens and a `<Datagrid>` on larger screens, use MUI's `useMediaQuery` hook:
@@ -145,10 +207,10 @@ To use `<SimpleList>` on small screens and a `<Datagrid>` on larger screens, use
 import { useMediaQuery } from '@mui/material';
 import { List, SimpleList, Datagrid } from 'react-admin';
 
-export const PostList = props => {
+export const PostList = () => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
     return (
-        <List {...props}>
+        <List>
             {isSmall ? (
                 <SimpleList
                     primaryText={record => record.title}
@@ -165,3 +227,35 @@ export const PostList = props => {
     );
 }
 ```
+
+## Configurable
+
+You can let end users customize the fields displayed in the `<SimpleList>` by using the `<SimpleListConfigurable>` component instead.
+
+![SimpleListConfigurable](./img/SimpleListConfigurable.gif)
+
+```diff
+import {
+    List,
+-   SimpleList,
++   SimpleListConfigurable,
+} from 'react-admin';
+
+export const BookList = () => (
+    <List>
+-       <SimpleList
++       <SimpleListConfigurable
+            primaryText={record => record.title}
+            secondaryText={record => record.author}
+            tertiaryText={record => record.date}
+        />
+    </List>
+);
+```
+
+When users enter the configuration mode and select the `<SimpleList>`, they can set the `primaryText`, `secondaryText`, and `tertiaryText` fields via the inspector. `<SimpleList>` uses [the `useTranslate` hook](./useTranslate.md) to render the fields. The `translate` function receives the current record as parameter. This means users can access the record field using the `%{field}` syntax, e.g.:
+
+```
+Title: %{title} (by %{author})
+```
+

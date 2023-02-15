@@ -5,7 +5,7 @@ title: "Querying the API"
 
 # Querying the API
 
-React-admin provides special hooks to emit read and write queries to the [`dataProvider`](./DataProviders.md), which in turn sends requests to your API. Under the hood, it uses [react-query](https://react-query.tanstack.com/) to call the `dataProvider` and cache the results.
+React-admin provides special hooks to emit read and write queries to the [`dataProvider`](./DataProviders.md), which in turn sends requests to your API. Under the hood, it uses [react-query](https://react-query-v3.tanstack.com/) to call the `dataProvider` and cache the results.
 
 ## Getting The `dataProvider` Instance
 
@@ -84,10 +84,11 @@ The mutation hooks execute the query when you call a callback. They return an ar
 For instance, here is an example using `useUpdate()`:
 
 ```jsx
-import * as React from "react";
-import { useUpdate, Button } from 'react-admin';
+import * as React from 'react';
+import { useUpdate, useRecordContext, Button } from 'react-admin';
 
-const ApproveButton = ({ record }) => {
+const ApproveButton = () => {
+    const record = useRecordContext();
     const [approve, { isLoading }] = useUpdate('comments', { id: record.id, data: { isApproved: true }, previousData: record });
     return <Button label="Approve" onClick={() => approve()} disabled={isLoading} />;
 };
@@ -118,7 +119,7 @@ It's up to the Data Provider to interpret this parameter.
 
 ## `useQuery` and `useMutation`
 
-Internally, react-admin uses [react-query](https://react-query.tanstack.com/) to call the dataProvider. When fetching data from the dataProvider in your components, if you can't use any of the dataProvider method hooks, you should use that library, too. It brings several benefits:
+Internally, react-admin uses [react-query](https://react-query-v3.tanstack.com/) to call the dataProvider. When fetching data from the dataProvider in your components, if you can't use any of the dataProvider method hooks, you should use that library, too. It brings several benefits:
 
 1. It triggers the loader in the AppBar when the query is running.
 2. It reduces the boilerplate code since you don't need to use `useState`.
@@ -127,15 +128,15 @@ Internally, react-admin uses [react-query](https://react-query.tanstack.com/) to
 
 React-query offers 2 main hooks to interact with the dataProvider:
 
-* [`useQuery`](https://react-query.tanstack.com/reference/useQuery): fetches the dataProvider on mount. This is for *read* queries.
-* [`useMutation`](https://react-query.tanstack.com/reference/useMutation): fetches the dataProvider when you call a callback. This is for *write* queries, and *read* queries that execute on user interaction.
+* [`useQuery`](https://react-query-v3.tanstack.com/reference/useQuery): fetches the dataProvider on mount. This is for *read* queries.
+* [`useMutation`](https://react-query-v3.tanstack.com/reference/useMutation): fetches the dataProvider when you call a callback. This is for *write* queries, and *read* queries that execute on user interaction.
 
 Both these hooks accept a query *key* (identifying the query in the cache), and a query *function* (executing the query and returning a Promise). Internally, react-admin uses an array of arguments as the query key.
 
 For instance, the initial code snippet of this chapter can be rewritten with `useQuery` as follows:
 
 ```jsx
-import * as React from "react";
+import * as React from 'react';
 import { useQuery } from 'react-query';
 import { useDataProvider, Loading, Error } from 'react-admin';
 
@@ -152,8 +153,8 @@ const UserProfile = ({ userId }) => {
 
     return (
         <ul>
-            <li>Name: {data.name}</li>
-            <li>Email: {data.email}</li>
+            <li>Name: {data.data.name}</li>
+            <li>Email: {data.data.email}</li>
         </ul>
     )
 };
@@ -162,21 +163,21 @@ const UserProfile = ({ userId }) => {
 To illustrate the usage of `useMutation`, here is an implementation of an "Approve" button for a comment:
 
 ```jsx
-import * as React from "react";
+import * as React from 'react';
 import { useMutation } from 'react-query';
-import { useDataProvider, Button } from 'react-admin';
+import { useDataProvider, useRecordContext, Button } from 'react-admin';
 
-const ApproveButton = ({ record }) => {
+const ApproveButton = () => {
+    const record = useRecordContext();
     const dataProvider = useDataProvider();
     const { mutate, isLoading } = useMutation(
-        ['comments', 'update', { id: record.id, data: { isApproved: true } }],
         () => dataProvider.update('comments', { id: record.id, data: { isApproved: true } })
     );
     return <Button label="Approve" onClick={() => mutate()} disabled={isLoading} />;
 };
 ```
 
-If you want to go beyond data provider method hooks, we recommend that you read [the react-query documentation](https://react-query.tanstack.com/overview).
+If you want to go beyond data provider method hooks, we recommend that you read [the react-query documentation](https://react-query-v3.tanstack.com/overview).
 
 ## `isLoading` vs `isFetching`
 
@@ -184,7 +185,7 @@ Data fetching hooks return two loading state variables: `isLoading` and `isFetch
 
 The short answer is: use `isLoading`. Read on to understand why.
 
-The source of these two variables is [react-query](https://react-query.tanstack.com/guides/queries#query-basics). Here is how they defined these two variables:
+The source of these two variables is [react-query](https://react-query-v3.tanstack.com/guides/queries#query-basics). Here is how they defined these two variables:
 
 - `isLoading`:  The query has no data and is currently fetching
 - `isFetching`: In any state, if the query is fetching at any time (including background refetching) isFetching will be true.
@@ -200,9 +201,10 @@ Let's see how what these variables contain in a typical usage scenario:
 Components use the loading state to show a loading indicator when there is no data to show. In the example above, the loading indicator is necessary for step 2, but not in step 4, because you can display the stale data while fresh data is being loaded.
 
 ```jsx
-import { useGetOne } from 'react-admin';
+import { useGetOne, useRecordContext } from 'react-admin';
 
-const UserProfile = ({ record }) => {
+const UserProfile = () => {
+    const record = useRecordContext();
     const { data, isLoading, error } = useGetOne('users', { id: record.id });
     if (isLoading) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
@@ -244,7 +246,6 @@ You can call it inside a `<BanUser>` button component as follows:
 const BanUserButton = ({ userId }) => {
     const dataProvider = useDataProvider();
     const { mutate, isLoading } = useMutation(
-        ['banUser', userId],
         () => dataProvider.banUser(userId)
     );
     return <Button label="Ban" onClick={() => mutate()} disabled={isLoading} />;
@@ -253,7 +254,7 @@ const BanUserButton = ({ userId }) => {
 
 ## Query Options
 
-The data provider method hooks (like `useGetOne`) and react-query's hooks (like `useQuery`) accept a query options object as the last argument. This object can be used to modify the way the query is executed. There are many options, all documented [in the react-query documentation](https://react-query.tanstack.com/reference/useQuery):
+The data provider method hooks (like `useGetOne`) and react-query's hooks (like `useQuery`) accept a query options object as the last argument. This object can be used to modify the way the query is executed. There are many options, all documented [in the react-query documentation](https://react-query-v3.tanstack.com/reference/useQuery):
 
 - `cacheTime`
 - `enabled`
@@ -285,9 +286,10 @@ The data provider method hooks (like `useGetOne`) and react-query's hooks (like 
 For instance, if you want to execute a callback when the query completes (whether it's successful or failed), you can use the `onSettled` option. this can be useful e.g. to log all calls to the dataProvider:
 
 ```jsx
-import { useGetOne } from 'react-admin';
+import { useGetOne, useRecordContext } from 'react-admin';
 
-const UserProfile = ({ record }) => {
+const UserProfile = () => {
+    const record = useRecordContext();
     const { data, isLoading, error } = useGetOne(
         'users',
         { id: record.id },
@@ -350,10 +352,11 @@ To execute some logic after a query or a mutation is complete, use the `onSucces
 This is very common when using mutation hooks like `useUpdate`, e.g. to display a notification, or redirect to another page. For instance, here is an `<ApproveButton>` that notifies the user of success or failure using the bottom notification banner:
 
 ```jsx
-import * as React from "react";
-import { useUpdate, useNotify, useRedirect, Button } from 'react-admin';
+import * as React from 'react';
+import { useUpdate, useNotify, useRedirect, useRecordContext, Button } from 'react-admin';
 
-const ApproveButton = ({ record }) => {
+const ApproveButton = () => {
+    const record = useRecordContext();
     const notify = useNotify();
     const redirect = useRedirect();
     const [approve, { isLoading }] = useUpdate(
@@ -367,7 +370,7 @@ const ApproveButton = ({ record }) => {
             },
             onError: (error) => {
                 // failure side effects go here 
-                notify(`Comment approval error: ${error.message}`, { type: 'warning' });
+                notify(`Comment approval error: ${error.message}`, { type: 'error' });
             },
         }
     );
@@ -389,10 +392,11 @@ React-admin provides the following hooks to handle the most common side effects:
 In the following example, after clicking on the "Approve" button, a loading spinner appears while the data provider is fetched. Then, users are redirected to the comments list. 
 
 ```jsx
-import * as React from "react";
-import { useUpdate, useNotify, useRedirect, Button } from 'react-admin';
+import * as React from 'react';
+import { useUpdate, useNotify, useRedirect, useRecordContext, Button } from 'react-admin';
 
-const ApproveButton = ({ record }) => {
+const ApproveButton = () => {
+    const record = useRecordContext();
     const notify = useNotify();
     const redirect = useRedirect();
     const [approve, { isLoading }] = useUpdate(
@@ -404,7 +408,7 @@ const ApproveButton = ({ record }) => {
                 notify('Comment approved');
             },
             onError: (error) => {
-                notify(`Comment approval error: ${error.message}`, { type: 'warning' });
+                notify(`Comment approval error: ${error.message}`, { type: 'error' });
             },
         }
     );
@@ -438,10 +442,11 @@ By default, react-admin uses the `undoable` mode for the Edit view. As for the d
 You can benefit from optimistic and undoable modes when you call the `useUpdate` hook, too. You just need to pass a `mutationMode` option:
 
 ```diff
-import * as React from "react";
-import { useUpdate, useNotify, useRedirect, Button } from 'react-admin';
+import * as React from 'react';
+import { useUpdate, useNotify, useRedirect, useRecordContext, Button } from 'react-admin';
 
-const ApproveButton = ({ record }) => {
+const ApproveButton = () => {
+    const record = useRecordContext();
     const notify = useNotify();
     const redirect = useRedirect();
     const [approve, { isLoading }] = useUpdate(
@@ -455,7 +460,7 @@ const ApproveButton = ({ record }) => {
 -               notify('Comment approved');
 +               notify('Comment approved', { undoable: true });
             },
-            onError: (error) => notify(`Error: ${error.message}`, { type: 'warning' }),
+            onError: (error) => notify(`Error: ${error.message}`, { type: 'error' }),
         }
     );
     return <Button label="Approve" onClick={() => approve()} disabled={isLoading} />;
@@ -481,9 +486,10 @@ There is no special react-admin sauce in that case. Here is an example implement
 // in src/comments/ApproveButton.js
 import * as React from 'react';
 import { useState } from 'react';
-import { useNotify, useRedirect, fetchStart, fetchEnd, Button } from 'react-admin';
+import { useNotify, useRedirect, useRecordContext, Button } from 'react-admin';
 
-const ApproveButton = ({ record }) => {
+const ApproveButton = () => {
+    const record = useRecordContext();
     const redirect = useRedirect();
     const notify = useNotify();
     const [loading, setLoading] = useState(false);
@@ -496,7 +502,7 @@ const ApproveButton = ({ record }) => {
                 redirect('/comments');
             })
             .catch((e) => {
-                notify('Error: comment not approved', { type: 'warning' })
+                notify('Error: comment not approved', { type: 'error' })
             })
             .finally(() => {
                 setLoading(false);

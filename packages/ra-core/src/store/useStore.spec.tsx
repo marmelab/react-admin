@@ -116,4 +116,35 @@ describe('useStore', () => {
         expect(innerValue).toBe('hello');
         expect(result.current[0]).toBe('world');
     });
+
+    it('should clear its value when the key changes', () => {
+        const StoreConsumer = ({ storeKey }: { storeKey: string }) => {
+            const [value, setValue] = useStore(storeKey);
+            return (
+                <>
+                    <p>{value}</p>
+                    <button onClick={() => setValue('hello')}>
+                        change value
+                    </button>
+                </>
+            );
+        };
+        const MyComponent = () => {
+            const [storeKey, setStoreKey] = React.useState('list1');
+            return (
+                <StoreContextProvider value={memoryStore({})}>
+                    <StoreConsumer storeKey={storeKey} />
+                    <button onClick={() => setStoreKey('list2')}>
+                        change key
+                    </button>
+                </StoreContextProvider>
+            );
+        };
+        render(<MyComponent />);
+        expect(screen.queryByText('hello')).toBeNull();
+        fireEvent.click(screen.getByText('change value'));
+        screen.getByText('hello');
+        fireEvent.click(screen.getByText('change key'));
+        expect(screen.queryByText('hello')).toBeNull();
+    });
 });

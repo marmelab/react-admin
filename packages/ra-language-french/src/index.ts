@@ -9,6 +9,7 @@ const frenchMessages: TranslationMessages = {
             bulk_actions:
                 '%{smart_count} sélectionné |||| %{smart_count} sélectionnés',
             cancel: 'Annuler',
+            clear_array_input: 'Vider la liste',
             clear_input_value: 'Vider le champ',
             clone: 'Dupliquer',
             confirm: 'Confirmer',
@@ -20,6 +21,7 @@ const frenchMessages: TranslationMessages = {
             list: 'Liste',
             refresh: 'Actualiser',
             remove_filter: 'Supprimer ce filtre',
+            remove_all_filters: 'Supprimer tous les filtres',
             remove: 'Supprimer',
             save: 'Enregistrer',
             select_all: 'Tout sélectionner',
@@ -38,6 +40,7 @@ const frenchMessages: TranslationMessages = {
             move_down: 'Déplacer vers le bas',
             open: 'Ouvrir',
             toggle_theme: 'Thème clair/sombre',
+            select_columns: 'Colonnes',
         },
         boolean: {
             true: 'Oui',
@@ -47,12 +50,12 @@ const frenchMessages: TranslationMessages = {
         page: {
             create: 'Créer %{name}',
             dashboard: 'Tableau de bord',
-            edit: '%{name} #%{id}',
+            edit: '%{name} %{recordRepresentation}',
             error: 'Un problème est survenu',
             list: '%{name}',
             loading: 'Chargement',
             not_found: 'Page manquante',
-            show: '%{name} #%{id}',
+            show: '%{name} %{recordRepresentation}',
             empty: 'Pas encore de %{name}.',
             invite: 'Voulez-vous en créer un ?',
         },
@@ -84,6 +87,8 @@ const frenchMessages: TranslationMessages = {
         message: {
             about: 'Au sujet de',
             are_you_sure: 'Êtes-vous sûr ?',
+            auth_error:
+                "Une erreur est survenue lors de la validation de votre jeton d'authentification.",
             bulk_delete_content:
                 'Êtes-vous sûr(e) de vouloir supprimer cet élément ? |||| Êtes-vous sûr(e) de vouloir supprimer ces %{smart_count} éléments ?',
             bulk_delete_title:
@@ -92,12 +97,15 @@ const frenchMessages: TranslationMessages = {
                 'Êtes-vous sûr(e) de vouloir modifier cet élément ? |||| Êtes-vous sûr(e) de vouloir modifier ces %{smart_count} éléments ?',
             bulk_update_title:
                 'Modifier %{name} |||| Modifier %{smart_count} %{name}',
+            clear_array_input:
+                'Êtes-vous sûr(e) de vouloir supprimer tous les éléments de la liste ?',
             delete_content:
                 'Êtes-vous sûr(e) de vouloir supprimer cet élément ?',
             delete_title: 'Supprimer %{name} #%{id}',
             details: 'Détails',
             error:
                 "En raison d'une erreur côté navigateur, votre requête n'a pas pu aboutir.",
+
             invalid_form: "Le formulaire n'est pas valide.",
             loading:
                 'La page est en cours de chargement, merci de bien vouloir patienter.',
@@ -143,9 +151,9 @@ const frenchMessages: TranslationMessages = {
         },
         notification: {
             updated:
-                'Élément mis à jour |||| %{smart_count} élements mis à jour',
+                'Élément mis à jour |||| %{smart_count} éléments mis à jour',
             created: 'Élément créé',
-            deleted: 'Élément supprimé |||| %{smart_count} élements supprimés',
+            deleted: 'Élément supprimé |||| %{smart_count} éléments supprimés',
             bad_item: 'Élément inconnu',
             item_doesnt_exist: "L'élément n'existe pas",
             http_error: 'Erreur de communication avec le serveur',
@@ -180,6 +188,31 @@ const frenchMessages: TranslationMessages = {
             remove_message:
                 'Etes-vous sûr(e) de vouloir supprimer cette requête de votre liste de requêtes ?',
             help: 'Filtrez la liste et ajoutez cette requête à votre liste',
+        },
+        configurable: {
+            customize: 'Personnaliser',
+            configureMode: 'Configurer cette page',
+            inspector: {
+                title: 'Inspecteur',
+                content: 'Sélectionner un composant pour le configurer',
+                reset: 'Réinitialiser',
+                hideAll: 'Masquer tout',
+                showAll: 'Afficher tout',
+            },
+            Datagrid: {
+                title: 'Tableau',
+                unlabeled: 'Colonne #%{column}',
+            },
+            SimpleForm: {
+                title: 'Formulaire',
+                unlabeled: 'Champ #%{input}',
+            },
+            SimpleList: {
+                title: 'Liste',
+                primaryText: 'Texte principal',
+                secondaryText: 'Texte secondaire',
+                tertiaryText: 'Texte annexe',
+            },
         },
     },
 };

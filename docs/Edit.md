@@ -281,7 +281,7 @@ const PostEdit = () => (
 ```
 {% endraw %}
 
-You can also use `mutationOptions` to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://react-query.tanstack.com/reference/useMutation) in the react-query website for a list of the possible options.
+You can also use `mutationOptions` to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://react-query-v3.tanstack.com/reference/useMutation) in the react-query website for a list of the possible options.
 
 Let's see an example with the success side effect. By default, when the save action succeeds, react-admin shows a notification, and redirects to the list page. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
 
@@ -390,7 +390,7 @@ The default `onError` function is:
 
 ```jsx
 (error) => {
-    notify(typeof error === 'string' ? error : error.message || 'ra.notification.http_error', { type: 'warning' });
+    notify(typeof error === 'string' ? error : error.message || 'ra.notification.http_error', { type: 'error' });
     if (mutationMode === 'undoable' || mutationMode === 'pessimistic') {
         refresh();
     }
@@ -431,7 +431,7 @@ const PostEdit = () => (
 ```
 {% endraw %}
 
-Refer to the [useQuery documentation](https://react-query.tanstack.com/reference/useQuery) in the react-query website for a list of the possible options.
+Refer to the [useQuery documentation](https://react-query-v3.tanstack.com/reference/useQuery) in the react-query website for a list of the possible options.
 
 ## `redirect`
 
@@ -523,7 +523,7 @@ The `transform` function can also return a `Promise`, which allows you to do all
 
 **Tip**: If you want to have different transformations based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save", and another to "save and notify other admins"), you can set the `transform` prop on [the `<SaveButton>` component](./SaveButton.md), too.
 
-**Tip**: `<Edit>`’s transform prop function also get the `previousData` in its second argument:
+**Tip**: The `transform` function also get the `previousData` in its second argument:
 
 ```jsx
 export const UserEdit = (props) => {
@@ -538,6 +538,41 @@ export const UserEdit = (props) => {
     );
 }
 ```
+
+## Cleaning Up Empty Strings
+
+As a reminder, HTML form inputs always return strings, even for numbers and booleans. So the empty value for a text input is the empty string, not `null` or `undefined`. This means that the data sent to `dataProvider.update()` will contain empty strings:
+
+```js
+{
+    title: '',
+    average_note: '',
+    body: '',
+    // etc.
+}
+```
+
+If you prefer to have `null` values, or to omit the key for empty values, use [the `transform` prop](#transform) to sanitize the form data before submission:
+
+```jsx
+export const UserEdit = (props) => {
+    const transform = (data) => {
+        const sanitizedData = {};
+        for (const key in data) {
+            if (typeof data[key] === "string" && data[key].trim().length === 0) continue;
+            sanitizedData[key] = data[key]; 
+        }
+        return sanitizedData;
+    };
+    return (
+        <Edit {...props} transform={transform}>
+            ...
+        </Edit>
+    );
+}
+```
+
+As an alternative, you can clean up empty values at the input level, using [the `parse` prop](./Inputs.md#transforming-input-value-tofrom-record).
 
 ## Adding `meta` To The DataProvider Call
 
@@ -595,3 +630,33 @@ You can do the same for error notifications, by passing a custom `onError`  call
 
 **Tip**: The notification message will be translated.
 
+## Editing A Record In A Modal
+
+`<Edit>` is designed to be a page component, passed to the `edit` prop of the `<Resource>` component. But you may want to let users edit a record from another page. 
+
+![EditDialog](https://marmelab.com/ra-enterprise/modules/assets/edit-dialog.gif)
+
+* If you want to allow edition from the `list` page, use [the `<EditDialog>` component](./EditDialog.md)
+* If you want to allow edition from another page, use [the `<EditInDialogButton>` component](./EditInDialogButton.md)
+
+## Live Updates
+
+If you want to subscribe to live updates on the record (topic: `resource/[resource]/[id]`), use [the `<EditLive>` component](./EditLive.md) instead.
+
+```diff
+-import { Edit, SimpleForm, TextInput } from 'react-admin';
++import { SimpleForm, TextInput } from 'react-admin';
++import { EditLive } from '@react-admin/ra-realtime';
+
+const PostEdit = () => (
+-   <Edit>
++   <EditLive>
+        <SimpleForm>
+            <TextInput source="title" />
+        </SimpleForm>
+-   </Edit>
++   </EditLive>
+);
+```
+
+The user will see alerts when other users update or delete the record.

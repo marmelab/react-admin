@@ -8,6 +8,7 @@ const englishMessages: TranslationMessages = {
             back: 'Go Back',
             bulk_actions: '1 item selected |||| %{smart_count} items selected',
             cancel: 'Cancel',
+            clear_array_input: 'Clear the list',
             clear_input_value: 'Clear value',
             clone: 'Clone',
             confirm: 'Confirm',
@@ -19,6 +20,7 @@ const englishMessages: TranslationMessages = {
             list: 'List',
             refresh: 'Refresh',
             remove_filter: 'Remove this filter',
+            remove_all_filters: 'Remove all filters',
             remove: 'Remove',
             save: 'Save',
             search: 'Search',
@@ -37,6 +39,7 @@ const englishMessages: TranslationMessages = {
             move_down: 'Move down',
             open: 'Open',
             toggle_theme: 'Toggle Theme',
+            select_columns: 'Columns',
         },
         boolean: {
             true: 'Yes',
@@ -46,12 +49,12 @@ const englishMessages: TranslationMessages = {
         page: {
             create: 'Create %{name}',
             dashboard: 'Dashboard',
-            edit: '%{name} #%{id}',
+            edit: '%{name} %{recordRepresentation}',
             error: 'Something went wrong',
             list: '%{name}',
             loading: 'Loading',
             not_found: 'Not Found',
-            show: '%{name} #%{id}',
+            show: '%{name} %{recordRepresentation}',
             empty: 'No %{name} yet.',
             invite: 'Do you want to add one?',
         },
@@ -82,6 +85,8 @@ const englishMessages: TranslationMessages = {
         message: {
             about: 'About',
             are_you_sure: 'Are you sure?',
+            auth_error:
+                'A error occurred while validating the authentication token.',
             bulk_delete_content:
                 'Are you sure you want to delete this %{name}? |||| Are you sure you want to delete these %{smart_count} items?',
             bulk_delete_title:
@@ -90,11 +95,13 @@ const englishMessages: TranslationMessages = {
                 'Are you sure you want to update this %{name}? |||| Are you sure you want to update these %{smart_count} items?',
             bulk_update_title:
                 'Update %{name} |||| Update %{smart_count} %{name}',
+            clear_array_input: 'Are you sure you want to clear the whole list?',
             delete_content: 'Are you sure you want to delete this item?',
             delete_title: 'Delete %{name} #%{id}',
             details: 'Details',
             error:
                 "A client error occurred and your request couldn't be completed.",
+
             invalid_form: 'The form is not valid. Please check for errors',
             loading: 'The page is loading, just a moment please',
             no: 'No',
@@ -174,6 +181,31 @@ const englishMessages: TranslationMessages = {
             remove_message:
                 'Are you sure you want to remove that item from your list of saved queries?',
             help: 'Filter the list and save this query for later',
+        },
+        configurable: {
+            customize: 'Customize',
+            configureMode: 'Configure this page',
+            inspector: {
+                title: 'Inspector',
+                content: 'Hover the application UI elements to configure them',
+                reset: 'Reset Settings',
+                hideAll: 'Hide All',
+                showAll: 'Show All',
+            },
+            Datagrid: {
+                title: 'Datagrid',
+                unlabeled: 'Unlabeled column #%{column}',
+            },
+            SimpleForm: {
+                title: 'Form',
+                unlabeled: 'Unlabeled input #%{input}',
+            },
+            SimpleList: {
+                title: 'List',
+                primaryText: 'Primary text',
+                secondaryText: 'Secondary text',
+                tertiaryText: 'Tertiary text',
+            },
         },
     },
 };

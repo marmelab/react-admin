@@ -78,6 +78,35 @@ describe('useListController', () => {
                 });
             });
         });
+
+        it('should reset page when enabled is set to false', async () => {
+            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const dataProvider = testDataProvider();
+            const props = { ...defaultProps, children };
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ListController
+                        disableSyncWithLocation
+                        resource="posts"
+                        queryOptions={{ enabled: false }}
+                        {...props}
+                    />
+                </CoreAdminContext>
+            );
+
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].setPage(3);
+            });
+
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        page: 1,
+                    })
+                );
+            });
+        });
     });
 
     describe('setFilters', () => {
@@ -235,6 +264,7 @@ describe('useListController', () => {
             clock.uninstall();
         });
     });
+
     describe('showFilter', () => {
         it('Does not remove previously shown filter when adding a new one', async () => {
             let currentDisplayedFilters;
@@ -409,6 +439,7 @@ describe('useListController', () => {
             });
         });
     });
+
     describe('getListControllerProps', () => {
         it('should only pick the props injected by the ListController', () => {
             expect(
@@ -449,6 +480,7 @@ describe('useListController', () => {
             });
         });
     });
+
     describe('sanitizeListRestProps', () => {
         it('should omit the props injected by the ListController', () => {
             expect(

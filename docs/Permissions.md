@@ -178,14 +178,14 @@ export const UserEdit = () => {
     return (
         <Edit title={<UserTitle />}>
             <TabbedForm defaultValue={{ role: 'user' }}>
-                <FormTab label="user.form.summary">
+                <TabbedForm.Tab label="user.form.summary">
                     {permissions === 'admin' && <TextInput disabled source="id" />}
                     <TextInput source="name" validate={required()} />
-                </FormTab>
+                </TabbedForm.Tab>
                 {permissions === 'admin' &&
-                    <FormTab label="user.form.security">
+                    <TabbedForm.Tab label="user.form.security">
                         <TextInput source="role" validate={required()} />
-                    </FormTab>}
+                    </TabbedForm.Tab>}
             </TabbedForm>
         </Edit>
     );

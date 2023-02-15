@@ -13,7 +13,7 @@ type FieldState = {
 };
 
 type FormGroupState = {
-    errors: object;
+    errors?: object;
     isDirty: boolean;
     isTouched: boolean;
     isValid: boolean;
@@ -79,9 +79,9 @@ export const useFormGroup = (name: string): FormGroupState => {
                 return {
                     name: field,
                     error: get(errors, field, undefined),
-                    isDirty: get(dirtyFields, field, false),
+                    isDirty: get(dirtyFields, field, false) !== false,
                     isValid: get(errors, field, undefined) == undefined, // eslint-disable-line
-                    isTouched: get(touchedFields, field, false),
+                    isTouched: get(touchedFields, field, false) !== false,
                 };
             })
             .filter(fieldState => fieldState != undefined); // eslint-disable-line
@@ -128,7 +128,7 @@ export const useFormGroup = (name: string): FormGroupState => {
 export const getFormGroupState = (
     fieldStates: FieldState[]
 ): FormGroupState => {
-    return fieldStates.reduce(
+    return fieldStates.reduce<FormGroupState>(
         (acc, fieldState) => {
             let errors = acc.errors || {};
 

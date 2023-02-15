@@ -32,6 +32,7 @@ import DatagridContextProvider from './DatagridContextProvider';
 import { DatagridClasses, DatagridRoot } from './useDatagridStyles';
 import { BulkActionsToolbar } from '../BulkActionsToolbar';
 import { BulkDeleteButton } from '../../button';
+import { ListNoResults } from '../ListNoResults';
 
 const defaultBulkActionButtons = <BulkDeleteButton />;
 
@@ -59,8 +60,8 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
  * const postRowStyle = (record, index) => ({
  *     backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
  * });
- * export const PostList = (props) => (
- *     <List {...props}>
+ * export const PostList = () => (
+ *     <List>
  *         <Datagrid rowStyle={postRowStyle}>
  *             <TextField source="id" />
  *             <TextField source="title" />
@@ -120,7 +121,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         header = DatagridHeader,
         children,
         className,
-        empty,
+        empty = DefaultEmpty,
         expand,
         bulkActionButtons = defaultBulkActionButtons,
         hover,
@@ -210,9 +211,9 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     /**
      * Once loaded, the data for the list may be empty. Instead of
      * displaying the table header with zero data rows,
-     * the datagrid displays nothing or a custom empty component.
+     * the Datagrid displays the empty component.
      */
-    if (data.length === 0 || total === 0) {
+    if (data == null || data.length === 0 || total === 0) {
         if (empty) {
             return empty;
         }
@@ -227,7 +228,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
      */
     return (
         <DatagridContextProvider value={contextValue}>
-            <DatagridRoot sx={sx}>
+            <DatagridRoot sx={sx} className={DatagridClasses.root}>
                 {bulkActionButtons !== false ? (
                     <BulkActionsToolbar selectedIds={selectedIds}>
                         {isValidElement(bulkActionButtons)
@@ -369,3 +370,5 @@ const sanitizeRestProps = props =>
         .reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
 
 Datagrid.displayName = 'Datagrid';
+
+const DefaultEmpty = <ListNoResults />;

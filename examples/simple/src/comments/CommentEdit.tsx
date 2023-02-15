@@ -21,7 +21,6 @@ import {
     TextInput,
     Title,
     minLength,
-    RaRecord,
     ShowButton,
     TopToolbar,
     useCreateSuggestionContext,
@@ -30,7 +29,8 @@ import {
     useRecordContext,
 } from 'react-admin';
 
-const LinkToRelatedPost = ({ record }: { record?: RaRecord }) => {
+const LinkToRelatedPost = () => {
+    const record = useRecordContext();
     const createPath = useCreatePath();
     return (
         <RaLink
@@ -113,7 +113,7 @@ const CommentEdit = props => {
     return (
         <EditContextProvider value={controllerProps}>
             <div className="edit-page">
-                <Title defaultTitle={`Comment #${record ? record.id : ''}`} />
+                <Title defaultTitle={controllerProps.defaultTitle} />
                 <Box sx={{ float: 'right' }}>
                     <TopToolbar>
                         <ShowButton record={record} />

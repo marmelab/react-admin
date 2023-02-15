@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
     Select,
+    SelectProps,
     MenuItem,
     InputLabel,
     FormHelperText,
@@ -71,7 +72,10 @@ import {
  *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
  *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
  * ];
- * const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
+ * const FullNameField = () => {
+ *     const record = useRecordContext();
+ *     return (<span>{record.first_name} {record.last_name}</span>)
+ * };
  * <SelectArrayInput source="authors" choices={choices} optionText={<FullNameField />}/>
  *
  * The choices are translated by default, so you can use translation identifiers as choices:
@@ -99,6 +103,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         onBlur,
         onChange,
         onCreate,
+        options,
         optionText,
         optionValue,
         parse,
@@ -112,7 +117,13 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
 
     const inputLabel = useRef(null);
 
-    const { allChoices, isLoading, source, resource } = useChoicesContext({
+    const {
+        allChoices,
+        isLoading,
+        error: fetchError,
+        source,
+        resource,
+    } = useChoicesContext({
         choices: choicesProp,
         isLoading: isLoadingProp,
         isFetching: isFetchingProp,
@@ -148,6 +159,20 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
             // We might receive an event from the mui component
             // In this case, it will be the choice id
             if (eventOrChoice?.target) {
+                // when used with different IDs types, unselection leads to double selection with both types
+                // instead of the value being removed from the array
+                // e.g. we receive eventOrChoice.target.value = [1, '2', 2] instead of [1] after removing 2
+                // this snippet removes a value if it is present twice
+                eventOrChoice.target.value = eventOrChoice.target.value.reduce(
+                    (acc, value) => {
+                        // eslint-disable-next-line eqeqeq
+                        const index = acc.findIndex(v => v == value);
+                        return index < 0
+                            ? [...acc, value]
+                            : [...acc.slice(0, index), ...acc.slice(index + 1)];
+                    },
+                    []
+                );
                 field.onChange(eventOrChoice);
             } else {
                 // Or we might receive a choice directly, for instance a newly created one
@@ -222,20 +247,23 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         );
     }
 
+    // Here wen ensure we always have an array and this array does not contain the default value (empty string)
+    const finalValue = Array.isArray(field.value ?? [])
+        ? field.value
+        : field.value
+        ? [field.value]
+        : [];
+
     return (
         <>
             <StyledFormControl
                 margin={margin}
                 className={clsx('ra-input', `ra-input-${source}`, className)}
-                error={(isTouched || isSubmitted) && invalid}
+                error={fetchError || ((isTouched || isSubmitted) && invalid)}
                 variant={variant}
                 {...sanitizeRestProps(rest)}
             >
-                <InputLabel
-                    ref={inputLabel}
-                    id={`${label}-outlined-label`}
-                    error={(isTouched || isSubmitted) && invalid}
-                >
+                <InputLabel ref={inputLabel} id={`${label}-outlined-label`}>
                     <FieldTitle
                         label={label}
                         source={source}
@@ -247,14 +275,16 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     autoWidth
                     labelId={`${label}-outlined-label`}
                     multiple
-                    error={(isTouched || isSubmitted) && invalid}
+                    error={
+                        !!fetchError || ((isTouched || isSubmitted) && invalid)
+                    }
                     renderValue={(selected: any[]) => (
                         <div className={SelectArrayInputClasses.chips}>
-                            {selected
+                            {(Array.isArray(selected) ? selected : [])
                                 .map(item =>
                                     (allChoices || []).find(
-                                        choice =>
-                                            getChoiceValue(choice) === item
+                                        // eslint-disable-next-line eqeqeq
+                                        choice => getChoiceValue(choice) == item
                                     )
                                 )
                                 .filter(item => !!item)
@@ -271,15 +301,16 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     data-testid="selectArray"
                     size="small"
                     {...field}
+                    {...options}
                     onChange={handleChangeWithCreateSupport}
-                    value={field.value || []}
+                    value={finalValue}
                 >
                     {finalChoices.map(renderMenuItem)}
                 </Select>
-                <FormHelperText error={isTouched && !!error}>
+                <FormHelperText error={fetchError || (isTouched && !!error)}>
                     <InputHelperText
-                        touched={isTouched || isSubmitted}
-                        error={error?.message}
+                        touched={isTouched || isSubmitted || fetchError}
+                        error={error?.message || fetchError?.message}
                         helperText={helperText}
                     />
                 </FormHelperText>
@@ -293,6 +324,7 @@ export type SelectArrayInputProps = ChoicesProps &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
     Omit<CommonInputProps, 'source'> &
     Omit<FormControlProps, 'defaultValue' | 'onBlur' | 'onChange'> & {
+        options?: SelectProps;
         disableValue?: string;
         source?: string;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
@@ -302,7 +334,11 @@ SelectArrayInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
     className: PropTypes.string,
     children: PropTypes.node,
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    label: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.element,
+    ]),
     options: PropTypes.object,
     optionText: PropTypes.oneOfType([
         PropTypes.string,

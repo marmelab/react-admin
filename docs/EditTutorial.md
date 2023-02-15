@@ -13,6 +13,8 @@ React-admin provides many hooks and components to let you build custom user expe
 
 Edition views are very common in single-page apps. The most usual way to allow a user to update a record is to fetch the record from an API based on the URL parameters, initialize a form with the record, update the inputs as the user changes the values, and call the API to update the record with the new values upon submission. 
 
+[![From Pure React To React-Admin](./img/edit-from-react-to-react-admin.webp)](./img/edit-from-react-to-react-admin.webp)
+
 To better understand how to use the various react-admin hooks and components dedicated to editing and creating, let's start by building such an edition view by hand.
 
 ### An Edition View Built By Hand
@@ -224,7 +226,7 @@ export const BookEdit = () => {
 };
 ```
 
-React-admin proposes alternative form layouts ([`<TabbedForm>`](./TabbedForm.md), [`<AccordionForm>`](./AccordionForm.md), [`<WizardForm>`](./WizardForm.md), [`<DialogForm>`](./DialogForm.md)) as well as a headless [`<Form>`](./Form.md) component.
+React-admin proposes alternative form layouts ([`<TabbedForm>`](./TabbedForm.md), [`<AccordionForm>`](./AccordionForm.md), [`<WizardForm>`](./WizardForm.md), [`<CreateDialog>, <EditDialog> & <ShowDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog-editdialog--showdialog) as well as a headless [`<Form>`](./Form.md) component.
 
 ### Using Input Components
 
@@ -291,7 +293,7 @@ export const BookEdit = () => {
 
 ### `<EditContext>` Exposes Data And Callbacks
 
-Instead of passing the `record` and `onSubmit` callback to the `<SimpleForm>` element, react-admin prefers putting them in an [`<EditContext>`](./EditContext.md) context. This allows any descendant element to "pull" the data and callback from the context.
+Instead of passing the `record` and `onSubmit` callback to the `<SimpleForm>` element, react-admin prefers putting them in an [`<EditContext>`](./useEditContext.md) context. This allows any descendant element to "pull" the data and callback from the context.
 
 {% raw %}
 ```diff
@@ -672,13 +674,15 @@ const Form = ({ onSubmit }) => {
 
 **Tip**: You can customize the message displayed in the confirm dialog by setting the `ra.message.unsaved_changes` message in your i18nProvider.
 
+**Warning**: This feature only works if you have a dependency on react-router 6.3.0 **at most**. The react-router team disabled this possibility in react-router 6.4, so `warnWhenUnsavedChanges` will silently fail with react-router 6.4 or later.
+
 ## Submit On Enter
 
 By default, pressing `ENTER` in any of the form inputs submits the form - this is the expected behavior in most cases. To disable the automated form submission on enter, set the `type` prop of the `SaveButton` component to `button`.
 
 ```jsx
-const MyToolbar = props => (
-    <Toolbar {...props}>
+const MyToolbar = () => (
+    <Toolbar>
         <SaveButton type="button" />
         <DeleteButton />
     </Toolbar>
@@ -712,6 +716,41 @@ export const PostEdit = () => (
 );
 ```
 
+**Tip**: `<SaveButton type="button">` does not take into account a custom `onSubmit` prop passed to the enclosing `<Form>`. If you need to override the default submit callback for a `<SaveButton type="button">`, you should include an `onClick` prop in the button.
+
+```jsx
+const MyToolbar = () => {
+    const [update] = useUpdate();
+    const { getValues } = useFormContext();
+    const redirect = useRedirect();
+
+    const handleClick = e => {
+        e.preventDefault(); // necessary to prevent default SaveButton submit logic
+        const { id, ...data } = getValues();
+        update(
+            'posts',
+            { id, data },
+            { onSuccess: () => { redirect('list'); }}
+        );
+    };
+
+    return (
+        <Toolbar>
+            <SaveButton type="button" onClick={handleClick} />
+            <DeleteButton />
+        </Toolbar>
+    );
+};
+
+export const PostEdit = () => (
+    <Edit>
+        <SimpleForm toolbar={<MyToolbar/>}>
+          ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
 ## Adding Fields With Labels
 
 All react-admin inputs handle the display of their label by wrapping their content inside a `<Labeled>` component.
@@ -719,21 +758,27 @@ All react-admin inputs handle the display of their label by wrapping their conte
 You can wrap your own components inside the `<Labeled>` component too. You can either provide it the `label` prop directly or leverage the automatic label inference by providing it the `source` prop:
 
 ```jsx
-const IdentifierField = ({ label, record }) => (
-    <Labeled label={label}>
-        <Typography>{record.id}</Typography>
-    </Labeled>
-);
+const IdentifierField = ({ label }) => {
+    const record = useRecordContext();
+    return (
+        <Labeled label={label}>
+            <Typography>{record.id}</Typography>
+        </Labeled>
+    );
+};
 
 // Here Labeled will try to translate the label with the translation key `resources.posts.fields.body`
 // and with an inferred default of `Body`
-const BodyField = ({ record }) => (
-    <Labeled source="body">
-        <Typography>
-            {record.body}
-        </Typography>
-    </Labeled>
-);
+const BodyField = () => {
+    const record = useRecordContext();
+    return (
+        <Labeled source="body">
+            <Typography>
+                {record.body}
+            </Typography>
+        </Labeled>
+    )
+};
 
 const PostEdit = () => (
     <Create>
@@ -839,3 +884,14 @@ This affects both the submit button, and the form submission when the user press
 
 **Tip**: The `redirect` prop is ignored if you've set the `onSuccess` prop in the `<Edit>`/`<Create>` component, or in the `<SaveButton>` component.
 
+## Nested Forms
+
+Users often need to edit data from several resources in the same form. React-admin doesn't support nested forms, but provides ways to edit related data in a user-friendly way:
+
+- [`<EditInDialogButton>`](./EditInDialogButton.md) lets users open a modal to edit a related record
+- [`<ReferenceManyInput>`](./ReferenceManyInput.md) lets users edit a list of related records
+- [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md) lets users edit a list of related records via an associative table
+
+![EditInDialogButton](https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.gif)
+
+![ReferenceManyInput](./img/reference-many-input.gif)

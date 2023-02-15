@@ -13,16 +13,16 @@ import {
     useListPaginationContext,
     sanitizeListRestProps,
     ComponentPropType,
+    ListPaginationContextValue,
 } from 'ra-core';
 
 import { PaginationActions } from './PaginationActions';
-import { PaginationLimit } from './PaginationLimit';
 
 export const Pagination: FC<PaginationProps> = memo(props => {
     const {
         rowsPerPageOptions = DefaultRowsPerPageOptions,
         actions,
-        limit = DefaultLimit,
+        limit = null,
         ...rest
     } = props;
     const {
@@ -96,7 +96,12 @@ export const Pagination: FC<PaginationProps> = memo(props => {
 
     // Avoid rendering TablePagination if "page" value is invalid
     if (total === 0 || page < 1 || (total != null && page > totalPages)) {
-        return limit;
+        if (limit != null && process.env.NODE_ENV === 'development') {
+            console.warn(
+                'The Pagination limit prop is deprecated. Empty state should be handled by the component displaying data (Datagrid, SimpleList).'
+            );
+        }
+        return null;
     }
 
     if (isSmall) {
@@ -148,11 +153,12 @@ Pagination.propTypes = {
     rowsPerPageOptions: PropTypes.arrayOf(PropTypes.number),
 };
 
-const DefaultLimit = <PaginationLimit />;
-const DefaultRowsPerPageOptions = [5, 10, 25];
+const DefaultRowsPerPageOptions = [5, 10, 25, 50];
 const emptyArray = [];
 
-export interface PaginationProps extends TablePaginationBaseProps {
+export interface PaginationProps
+    extends TablePaginationBaseProps,
+        Partial<ListPaginationContextValue> {
     rowsPerPageOptions?: number[];
     actions?: FC;
     limit?: ReactElement;

@@ -5,6 +5,7 @@ import { defaultDataProvider } from './defaultDataProvider';
 import validateResponseFormat from './validateResponseFormat';
 import { DataProvider } from '../types';
 import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
+import { reactAdminFetchActions } from './dataFetchActions';
 
 /**
  * Hook for getting a dataProvider
@@ -71,6 +72,9 @@ import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
  *     )
  * }
  */
+
+const arrayReturnTypes = ['getList', 'getMany', 'getManyReference'];
+
 export const useDataProvider = <
     TDataProvider extends DataProvider = DataProvider
 >(): TDataProvider => {
@@ -98,7 +102,10 @@ export const useDataProvider = <
                         return dataProvider[type]
                             .apply(dataProvider, args)
                             .then(response => {
-                                if (process.env.NODE_ENV !== 'production') {
+                                if (
+                                    process.env.NODE_ENV !== 'production' &&
+                                    reactAdminFetchActions.includes(type)
+                                ) {
                                     validateResponseFormat(response, type);
                                 }
                                 return response;
@@ -109,7 +116,14 @@ export const useDataProvider = <
                                 }
                                 return logoutIfAccessDenied(error).then(
                                     loggedOut => {
-                                        if (loggedOut) return { data: {} };
+                                        if (loggedOut)
+                                            return {
+                                                data: arrayReturnTypes.includes(
+                                                    type
+                                                )
+                                                    ? []
+                                                    : {},
+                                            };
                                         throw error;
                                     }
                                 );

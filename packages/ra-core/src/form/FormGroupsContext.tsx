@@ -1,8 +1,8 @@
 import { createContext } from 'react';
 
-export const FormGroupsContext = createContext<FormGroupsContextValue>(
-    undefined
-);
+export const FormGroupsContext = createContext<
+    FormGroupsContextValue | undefined
+>(undefined);
 
 export type FormGroupSubscriber = () => void;
 

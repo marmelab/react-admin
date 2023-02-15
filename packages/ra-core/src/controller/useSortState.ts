@@ -31,8 +31,13 @@ const sortReducer = (state: SortPayload, action: Action): SortPayload => {
         }
         case 'SET_SORT_ORDER': {
             const order = action.payload;
+            if (!state.field) {
+                throw new Error(
+                    'cannot change the order on an undefined sort field'
+                );
+            }
             return {
-                ...state,
+                field: state.field,
                 order,
             };
         }
@@ -41,7 +46,7 @@ const sortReducer = (state: SortPayload, action: Action): SortPayload => {
     }
 };
 
-export const defaultSort = { field: 'id', order: 'DESC' };
+export const defaultSort = { field: '', order: 'ASC' };
 
 /**
  * Set the sort { field, order }

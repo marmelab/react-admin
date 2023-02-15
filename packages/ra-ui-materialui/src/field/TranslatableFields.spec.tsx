@@ -42,11 +42,9 @@ describe('<TranslatableFields />', () => {
             </ThemeProvider>
         );
 
+        expect(screen.getByLabelText('En').getAttribute('hidden')).toBeNull();
         expect(
-            screen.getByLabelText('ra.locales.en').getAttribute('hidden')
-        ).toBeNull();
-        expect(
-            screen.getByLabelText('ra.locales.fr').getAttribute('hidden')
+            screen.getByLabelText('Fr').getAttribute('hidden')
         ).not.toBeNull();
 
         expect(screen.queryByText('english name')).not.toBeNull();
@@ -57,13 +55,11 @@ describe('<TranslatableFields />', () => {
         expect(screen.queryByText('french description')).not.toBeNull();
         expect(screen.queryByText('french nested field')).not.toBeNull();
 
-        fireEvent.click(screen.getByText('ra.locales.fr'));
+        fireEvent.click(screen.getByText('Fr'));
         expect(
-            screen.getByLabelText('ra.locales.en').getAttribute('hidden')
+            screen.getByLabelText('En').getAttribute('hidden')
         ).not.toBeNull();
-        expect(
-            screen.getByLabelText('ra.locales.fr').getAttribute('hidden')
-        ).toBeNull();
+        expect(screen.getByLabelText('Fr').getAttribute('hidden')).toBeNull();
     });
 
     it('should allow to customize the locale selector', () => {

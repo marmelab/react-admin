@@ -54,9 +54,9 @@ export const Button = (props: ButtonProps) => {
                     aria-label={translatedLabel}
                     className={className}
                     color={color}
+                    size="large"
                     {...rest}
                     {...linkParams}
-                    size="large"
                 >
                     {children}
                 </IconButton>
@@ -66,9 +66,9 @@ export const Button = (props: ButtonProps) => {
                 className={className}
                 color={color}
                 disabled={disabled}
+                size="large"
                 {...rest}
                 {...linkParams}
-                size="large"
             >
                 {children}
             </IconButton>

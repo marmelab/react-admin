@@ -1,22 +1,24 @@
 import * as React from 'react';
-import { Fragment, useCallback, useEffect, useState } from 'react';
+import { Fragment, useCallback } from 'react';
 import {
     AutocompleteInput,
     BooleanField,
-    Datagrid,
+    Count,
+    DatagridConfigurable,
     DateField,
     DateInput,
-    RaRecord,
+    ExportButton,
+    FilterButton,
     List,
-    ListContextProvider,
     NullableBooleanInput,
     NumberField,
-    ReferenceInput,
     ReferenceField,
+    ReferenceInput,
     SearchInput,
+    SelectColumnsButton,
     TextField,
     TextInput,
-    useGetList,
+    TopToolbar,
     useListContext,
 } from 'react-admin';
 import { useMediaQuery, Divider, Tabs, Tab, Theme } from '@mui/material';
@@ -27,12 +29,21 @@ import AddressField from '../visitors/AddressField';
 import MobileGrid from './MobileGrid';
 import { Customer } from '../types';
 
+const ListActions = () => (
+    <TopToolbar>
+        <SelectColumnsButton />
+        <FilterButton />
+        <ExportButton />
+    </TopToolbar>
+);
+
 const OrderList = () => (
     <List
         filterDefaultValues={{ status: 'ordered' }}
         sort={{ field: 'date', order: 'DESC' }}
         perPage={25}
         filters={orderFilters}
+        actions={<ListActions />}
     >
         <TabbedDatagrid />
     </List>
@@ -61,63 +72,12 @@ const tabs = [
     { id: 'cancelled', name: 'cancelled' },
 ];
 
-const useGetTotals = (filterValues: any) => {
-    const { total: totalOrdered } = useGetList('commands', {
-        pagination: { perPage: 1, page: 1 },
-        sort: { field: 'id', order: 'ASC' },
-        filter: { ...filterValues, status: 'ordered' },
-    });
-    const { total: totalDelivered } = useGetList('commands', {
-        pagination: { perPage: 1, page: 1 },
-        sort: { field: 'id', order: 'ASC' },
-        filter: { ...filterValues, status: 'delivered' },
-    });
-    const { total: totalCancelled } = useGetList('commands', {
-        pagination: { perPage: 1, page: 1 },
-        sort: { field: 'id', order: 'ASC' },
-        filter: { ...filterValues, status: 'cancelled' },
-    });
-
-    return {
-        ordered: totalOrdered,
-        delivered: totalDelivered,
-        cancelled: totalCancelled,
-    };
-};
-
 const TabbedDatagrid = () => {
     const listContext = useListContext();
-    const {
-        data,
-        filterValues,
-        setFilters,
-        displayedFilters,
-        isLoading,
-    } = listContext;
+    const { filterValues, setFilters, displayedFilters } = listContext;
     const isXSmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('sm')
     );
-    const [ordered, setOrdered] = useState<RaRecord[]>([]);
-    const [delivered, setDelivered] = useState<RaRecord[]>([]);
-    const [cancelled, setCancelled] = useState<RaRecord[]>([]);
-    const totals = useGetTotals(filterValues) as any;
-
-    useEffect(() => {
-        if (isLoading) {
-            return;
-        }
-        switch (filterValues.status) {
-            case 'ordered':
-                setOrdered(data);
-                break;
-            case 'delivered':
-                setDelivered(data);
-                break;
-            case 'cancelled':
-                setCancelled(data);
-                break;
-        }
-    }, [data, isLoading, filterValues.status]);
 
     const handleChange = useCallback(
         (event: React.ChangeEvent<{}>, value: any) => {
@@ -130,13 +90,6 @@ const TabbedDatagrid = () => {
         },
         [displayedFilters, filterValues, setFilters]
     );
-
-    const selectedData =
-        filterValues.status === 'ordered'
-            ? ordered
-            : filterValues.status === 'delivered'
-            ? delivered
-            : cancelled;
 
     return (
         <Fragment>
@@ -151,9 +104,17 @@ const TabbedDatagrid = () => {
                     <Tab
                         key={choice.id}
                         label={
-                            totals[choice.name]
-                                ? `${choice.name} (${totals[choice.name]})`
-                                : choice.name
+                            <span>
+                                {choice.name} (
+                                <Count
+                                    filter={{
+                                        ...filterValues,
+                                        status: choice.name,
+                                    }}
+                                    sx={{ lineHeight: 'inherit' }}
+                                />
+                                )
+                            </span>
                         }
                         value={choice.id}
                     />
@@ -161,104 +122,156 @@ const TabbedDatagrid = () => {
             </Tabs>
             <Divider />
             {isXSmall ? (
-                <ListContextProvider
-                    value={{ ...listContext, data: selectedData }}
-                >
-                    <MobileGrid data={selectedData} />
-                </ListContextProvider>
+                <MobileGrid />
             ) : (
                 <>
                     {filterValues.status === 'ordered' && (
-                        <ListContextProvider
-                            value={{ ...listContext, ids: ordered }}
+                        <DatagridConfigurable
+                            rowClick="edit"
+                            omit={['total_ex_taxes', 'delivery_fees', 'taxes']}
                         >
-                            <Datagrid optimized rowClick="edit">
-                                <DateField source="date" showTime />
-                                <TextField source="reference" />
-                                <CustomerReferenceField />
-                                <ReferenceField
-                                    source="customer_id"
-                                    reference="customers"
-                                    link={false}
-                                    label="resources.commands.fields.address"
-                                >
-                                    <AddressField />
-                                </ReferenceField>
-                                <NbItemsField />
-                                <NumberField
-                                    source="total"
-                                    options={{
-                                        style: 'currency',
-                                        currency: 'USD',
-                                    }}
-                                    sx={{ fontWeight: 'bold' }}
-                                />
-                            </Datagrid>
-                        </ListContextProvider>
+                            <DateField source="date" showTime />
+                            <TextField source="reference" />
+                            <CustomerReferenceField />
+                            <ReferenceField
+                                source="customer_id"
+                                reference="customers"
+                                link={false}
+                                label="resources.commands.fields.address"
+                            >
+                                <AddressField />
+                            </ReferenceField>
+                            <NbItemsField />
+                            <NumberField
+                                source="total_ex_taxes"
+                                options={{
+                                    style: 'currency',
+                                    currency: 'USD',
+                                }}
+                            />
+                            <NumberField
+                                source="delivery_fees"
+                                options={{
+                                    style: 'currency',
+                                    currency: 'USD',
+                                }}
+                            />
+                            <NumberField
+                                source="taxes"
+                                options={{
+                                    style: 'currency',
+                                    currency: 'USD',
+                                }}
+                            />
+                            <NumberField
+                                source="total"
+                                options={{
+                                    style: 'currency',
+                                    currency: 'USD',
+                                }}
+                                sx={{ fontWeight: 'bold' }}
+                            />
+                        </DatagridConfigurable>
                     )}
                     {filterValues.status === 'delivered' && (
-                        <ListContextProvider
-                            value={{ ...listContext, ids: delivered }}
+                        <DatagridConfigurable
+                            rowClick="edit"
+                            omit={['total_ex_taxes', 'delivery_fees', 'taxes']}
                         >
-                            <Datagrid rowClick="edit">
-                                <DateField source="date" showTime />
-                                <TextField source="reference" />
-                                <CustomerReferenceField />
-                                <ReferenceField
-                                    source="customer_id"
-                                    reference="customers"
-                                    link={false}
-                                    label="resources.commands.fields.address"
-                                >
-                                    <AddressField />
-                                </ReferenceField>
-                                <NbItemsField />
-                                <NumberField
-                                    source="total"
-                                    options={{
-                                        style: 'currency',
-                                        currency: 'USD',
-                                    }}
-                                    sx={{ fontWeight: 'bold' }}
-                                />
-                                <BooleanField
-                                    source="returned"
-                                    sx={{ mt: -0.5, mb: -0.5 }}
-                                />
-                            </Datagrid>
-                        </ListContextProvider>
+                            <DateField source="date" showTime />
+                            <TextField source="reference" />
+                            <CustomerReferenceField />
+                            <ReferenceField
+                                source="customer_id"
+                                reference="customers"
+                                link={false}
+                                label="resources.commands.fields.address"
+                            >
+                                <AddressField />
+                            </ReferenceField>
+                            <NbItemsField />
+                            <NumberField
+                                source="total_ex_taxes"
+                                options={{
+                                    style: 'currency',
+                                    currency: 'USD',
+                                }}
+                            />
+                            <NumberField
+                                source="delivery_fees"
+                                options={{
+                                    style: 'currency',
+                                    currency: 'USD',
+                                }}
+                            />
+                            <NumberField
+                                source="taxes"
+                                options={{
+                                    style: 'currency',
+                                    currency: 'USD',
+                                }}
+                            />
+                            <NumberField
+                                source="total"
+                                options={{
+                                    style: 'currency',
+                                    currency: 'USD',
+                                }}
+                                sx={{ fontWeight: 'bold' }}
+                            />
+                            <BooleanField
+                                source="returned"
+                                sx={{ mt: -0.5, mb: -0.5 }}
+                            />
+                        </DatagridConfigurable>
                     )}
                     {filterValues.status === 'cancelled' && (
-                        <ListContextProvider
-                            value={{ ...listContext, ids: cancelled }}
+                        <DatagridConfigurable
+                            rowClick="edit"
+                            omit={['total_ex_taxes', 'delivery_fees', 'taxes']}
                         >
-                            <Datagrid rowClick="edit">
-                                <DateField source="date" showTime />
-                                <TextField source="reference" />
-                                <CustomerReferenceField />
-                                <ReferenceField
-                                    source="customer_id"
-                                    reference="customers"
-                                    link={false}
-                                    label="resources.commands.fields.address"
-                                >
-                                    <AddressField />
-                                </ReferenceField>
-                                <NbItemsField />
-                                <NumberField
-                                    source="total"
-                                    options={{
-                                        style: 'currency',
-                                        currency: 'USD',
-                                    }}
-                                    sx={{ fontWeight: 'bold' }}
-                                />
-                                <BooleanField
-                                    source="returned"
-                                    sx={{ mt: -0.5, mb: -0.5 }}
-                                />
-                            </Datagrid>
-                        </ListContextProvider>
+                            <DateField source="date" showTime />
+                            <TextField source="reference" />
+                            <CustomerReferenceField />
+                            <ReferenceField
+                                source="customer_id"
+                                reference="customers"
+                                link={false}
+                                label="resources.commands.fields.address"
+                            >
+                                <AddressField />
+                            </ReferenceField>
+                            <NbItemsField />
+                            <NumberField
+                                source="total_ex_taxes"
+                                options={{
+                                    style: 'currency',
+                                    currency: 'USD',
+                                }}
+                            />
+                            <NumberField
+                                source="delivery_fees"
+                                options={{
+                                    style: 'currency',
+                                    currency: 'USD',
+                                }}
+                            />
+                            <NumberField
+                                source="taxes"
+                                options={{
+                                    style: 'currency',
+                                    currency: 'USD',
+                                }}
+                            />
+                            <NumberField
+                                source="total"
+                                options={{
+                                    style: 'currency',
+                                    currency: 'USD',
+                                }}
+                                sx={{ fontWeight: 'bold' }}
+                            />
+                        </DatagridConfigurable>
                     )}
                 </>
             )}

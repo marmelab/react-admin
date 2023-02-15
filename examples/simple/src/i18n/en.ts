@@ -17,6 +17,7 @@ export const messages = {
                 commentable: 'Commentable',
                 notifications: 'Notifications recipients',
                 nb_view: 'Nb views',
+                nb_comments: 'Nb comments',
                 password: 'Password (if protected post)',
                 pictures: 'Related Pictures',
             },
@@ -67,9 +68,6 @@ export const messages = {
         form: {
             summary: 'Summary',
             security: 'Security',
-        },
-        edit: {
-            title: 'User "%{title}"',
         },
         action: {
             save_and_add: 'Save and Add',

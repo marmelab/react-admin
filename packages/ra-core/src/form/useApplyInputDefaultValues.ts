@@ -8,16 +8,24 @@ import { InputProps } from './useInput';
  * This hook updates the input default value whenever the record changes
  * It applies either the record value if it has one or the defaultValue if it was specified
  */
-export const useApplyInputDefaultValues = (props: Partial<InputProps>) => {
+export const useApplyInputDefaultValues = (
+    props: Partial<InputProps> & { source: string }
+) => {
     const { defaultValue, source } = props;
     const record = useRecordContext(props);
-    const { getValues, resetField } = useFormContext();
+    const {
+        getValues,
+        resetField,
+        getFieldState,
+        formState,
+    } = useFormContext();
     const recordValue = get(record, source);
     const formValue = get(getValues(), source);
+    const { isDirty } = getFieldState(source, formState);
 
     useEffect(() => {
         if (defaultValue == null) return;
-        if (formValue == null && recordValue == null) {
+        if (formValue == null && recordValue == null && !isDirty) {
             // special case for ArrayInput: since we use get(record, source),
             // if source is like foo.23.bar, this effect will run.
             // but we only want to set the default value for the subfield bar

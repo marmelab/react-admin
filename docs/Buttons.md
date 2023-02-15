@@ -183,6 +183,7 @@ export const PostList = () => (
 | `label`      | Optional | `string`        | 'ra.action.export' | label or translation message to use |
 | `icon`       | Optional | `ReactElement`  | `<DownloadIcon>`   | iconElement, e.g. `<CommentIcon />` |
 | `exporter`   | Optional | `Function`      | -                  | Override the List exporter function |
+| `meta`       | Optional | `any`           | undefined          | Metadata passed to the dataProvider |
 
 ### `<BulkExportButton>`
 
@@ -216,6 +217,7 @@ export const PostList = () => (
 | `label`      | Optional | `string`        | 'ra.action.export' | label or translation message to use |
 | `icon`       | Optional | `ReactElement`  | `<DownloadIcon>`   | iconElement, e.g. `<CommentIcon />` |
 | `exporter`   | Optional | `Function`      | -                  | Override the List exporter function |
+| `meta`       | Optional | `any`           | undefined          | Metadata passed to the dataProvider |
 
 ### `<BulkDeleteButton>`
 
@@ -244,11 +246,11 @@ export const PostList = () => (
 
 ![Bulk Delete button](./img/bulk-delete-button.png)
 
-| Prop         | Required | Type            | Default            | Description                         |
-| ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
-| `label`      | Optional | `string`        | 'ra.action.delete' | label or translation message to use |
-| `icon`       | Optional | `ReactElement`  | `<DeleteIcon>`     | iconElement, e.g. `<CommentIcon />` |
-| `exporter`   | Optional | `Function`      | -                  | Override the List exporter function |
+| Prop                | Required | Type            | Default            | Description                                        |
+| --------------------| -------- | --------------- | ------------------ | ---------------------------------------------------|
+| `label`             | Optional | `string`        | 'ra.action.delete' | label or translation message to use                |
+| `icon`              | Optional | `ReactElement`  | `<DeleteIcon>`     | iconElement, e.g. `<CommentIcon />`                |
+| `mutationOptions`   | Optional | `object`        | null               | options for react-query `useMutation` hook         |
 
 ### `<FilterButton>`
 
@@ -277,6 +279,7 @@ Delete the current record after a confirm dialog has been accepted. To be used i
 | `confirmContent`                                           | Optional | `ReactNode`                      | 'ra.message.delete_content' | Message or React component to be used as the body of the confirm dialog |
 | `redirect`                                                 | Optional | `string | false | Function`      | 'list'                      | Custom redirection after success side effect                            |
 | `translateOptions`                                         | Optional | `{ id?: string, name?: string }` | {}                          | Custom id and name to be used in the confirm dialog's title             |
+| `mutationOptions`                                          | Optional |                                  | null                        | options for react-query `useMutation` hook                              |
 
 {% raw %}
 ```jsx
@@ -315,7 +318,7 @@ The ripple effect can cause [performance issues](https://github.com/marmelab/rea
 
 It's worth noting that removing the ripple will cause accessibility issues, including a lack of focus states during tab navigating for components like `BooleanInput` and `CheckboxGroupInput`. 
 
-Note: The `disableRipple` was set to `true` in React Admin for a time, but was reimplement due to accessibility concerns. If you'd like to reimplement the static ripple colour effect, you can use the [React Admin's previous implementation](https://github.com/marmelab/react-admin/blob/994079cbca810a2e74d85329e684811645b04ae2/packages/ra-ui-materialui/src/defaultTheme.ts#L31) as a starting point. [The MUI docs](https://mui.com/material-ui/api/button-base/#props) also gives details on how to reimplement focus styles using the `Mui-focusVisible` class.
+Note: The `disableRipple` was set to `true` in React Admin for a time, but was reimplemented due to accessibility concerns. If you'd like to reimplement the static ripple colour effect, you can use the [React Admin's previous implementation](https://github.com/marmelab/react-admin/blob/994079cbca810a2e74d85329e684811645b04ae2/packages/ra-ui-materialui/src/defaultTheme.ts#L31) as a starting point. [The MUI docs](https://mui.com/material-ui/api/button-base/#props) also gives details on how to reimplement focus styles using the `Mui-focusVisible` class.
 
 ## Miscellaneous
 
@@ -429,7 +432,7 @@ See [The theming documentation](./Theming.md#menuitemlink) for more details.
 
 | Rule name                   | Description                                                         |
 |-----------------------------|---------------------------------------------------------------------|
-| `& .RaMenuItemLink-active`  | Applied to the underlying `MuiMenuItem`'s `activeClassName` prop    |
+| `&.RaMenuItemLink-active`  | Applied to the underlying `MuiMenuItem`'s `activeClassName` prop    |
 | `& .RaMenuItemLink-icon`    | Applied to the `ListItemIcon` component when `leftIcon` prop is set |
 
 To override the style of all instances of `<MenuItemLink>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaMenuItemLink` key.
@@ -450,3 +453,5 @@ To override the style of all instances of `<MenuItemLink>` using the [MUI style 
 | `& .RaUserMenu-avatar`     | Applied to the underlying `MuiAvatar` component when `useGetIdentity().avatar` is `true`                                                 |
 
 To override the style of all instances of `<UserMenu>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaUserMenu` key.
+
+See [The theming documentation](./Theming.md#usermenu-customization) for more details.

@@ -65,7 +65,7 @@ import { useTranslate, useBasename } from 'ra-core';
  *     </Admin>
  * );
  */
-export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
+export const MenuItemLink = forwardRef<any, MenuItemLinkProps>((props, ref) => {
     const {
         className,
         primaryText,
@@ -101,8 +101,8 @@ export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
                 className={clsx(className, {
                     [MenuItemLinkClasses.active]: !!match,
                 })}
-                component={LinkRef}
                 // @ts-ignore
+                component={LinkRef}
                 ref={ref}
                 tabIndex={0}
                 {...rest}
@@ -137,17 +137,16 @@ export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
     );
 });
 
-interface Props {
-    leftIcon?: ReactElement;
-    primaryText?: ReactNode;
-    /**
-     * @deprecated
-     */
-    sidebarIsOpen?: boolean;
-    tooltipProps?: TooltipProps;
-}
-
-export type MenuItemLinkProps = Props & LinkProps & MenuItemProps<'li'>;
+export type MenuItemLinkProps = LinkProps &
+    MenuItemProps<'li'> & {
+        leftIcon?: ReactElement;
+        primaryText?: ReactNode;
+        /**
+         * @deprecated
+         */
+        sidebarIsOpen?: boolean;
+        tooltipProps?: TooltipProps;
+    };
 
 MenuItemLink.propTypes = {
     className: PropTypes.string,

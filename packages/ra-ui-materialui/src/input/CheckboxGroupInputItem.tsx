@@ -16,6 +16,7 @@ export const CheckboxGroupInputItem = props => {
         options,
         translateChoice,
         value,
+        labelPlacement,
         ...rest
     } = props;
 
@@ -50,6 +51,7 @@ export const CheckboxGroupInputItem = props => {
                 />
             }
             label={choiceName}
+            labelPlacement={labelPlacement}
         />
     );
 };

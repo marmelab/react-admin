@@ -61,11 +61,16 @@ And here is how to display all the tags of the current post as `<Chip>` componen
 **Tip**: If you need to render a custom collection, it's often simpler to write your own component:
 
 ```jsx
-const TagsField = ({ record }) => (
-    <ul>
-        {record.tags.map(item => (
-            <li key={item.name}>{item.name}</li>
-        ))}
-    </ul>
-)
+import { useRecordContext } from 'react-admin';
+
+const TagsField = () => {
+    const record = useRecordContext();
+    return (
+        <ul>
+            {record.tags.map(item => (
+                <li key={item.name}>{item.name}</li>
+            ))}
+        </ul>
+    )
+};
 ```

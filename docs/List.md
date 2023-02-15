@@ -137,7 +137,7 @@ const PostList = () => (
 ```
 {% endraw %}
 
-The `aside` component can call the `useListContext()` hook to receive the same props as the `List` child component. This means you can display additional details of the current list in the aside component:
+The `aside` component can call the `useListContext()` hook to receive the same props as the `<List>` child component. This means you can display additional details of the current list in the aside component:
 
 {% raw %}
 ```jsx
@@ -158,6 +158,50 @@ const Aside = () => {
 };
 ```
 {% endraw %}
+
+The `aside` prop is also the preferred way to add a [Filter Sidebar](./FilteringTutorial.md#the-filterlist-sidebar) to a list view: 
+
+{% raw %}
+```jsx
+// in src/PostFilterSidebar.js
+import { SavedQueriesList, FilterLiveSearch, FilterList, FilterListItem } from 'react-admin';
+import { Card, CardContent } from '@mui/material';
+import MailIcon from '@mui/icons-material/MailOutline';
+import CategoryIcon from '@mui/icons-material/LocalOffer';
+
+export const PostFilterSidebar = () => (
+    <Card sx={{ order: -1, mr: 2, mt: 9, width: 200 }}>
+        <CardContent>
+            <SavedQueriesList />
+            <FilterLiveSearch >
+            <FilterList label="Subscribed to newsletter" icon={<MailIcon />}>
+                <FilterListItem label="Yes" value={{ has_newsletter: true }} />
+                <FilterListItem label="No" value={{ has_newsletter: false }} />
+            </FilterList>
+            <FilterList label="Category" icon={<CategoryIcon />}>
+                <FilterListItem label="Tests" value={{ category: 'tests' }} />
+                <FilterListItem label="News" value={{ category: 'news' }} />
+                <FilterListItem label="Deals" value={{ category: 'deals' }} />
+                <FilterListItem label="Tutorials" value={{ category: 'tutorials' }} />
+            </FilterList>
+        </CardContent>
+    </Card>
+);
+```
+{% endraw %}
+
+```jsx
+// in src/PostList.js
+import { PostFilterSidebar } from './PostFilterSidebar';
+
+export const PostList = () => (
+    <List aside={<PostFilterSidebar />}>
+        ...
+    </List>
+);
+```
+
+**Tip**: the `<Card sx>` prop in the `PostFilterSidebar` component above is here to put the sidebar on the left side of the screen, instead of the default right side.
 
 ## `children`: List Layout
 
@@ -282,7 +326,7 @@ const Dashboard = () => (
 ```
 {% endraw %}
 
-Please note that the selection state is not synced in the URL but in a global store using the resource as key. Thus all lists in the page using the same resource will share the same selection state. This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. If you want the selection state to be local, you will have to implement your own `useListController` hook and pass a custom key to the `useRecordSelection` hook. You will then need to implement your own `DeleteButton` and `BulkDeleteButton` to manually unselect rows when deleting records.
+Please note that the selection state is not synced in the URL but in a global store using the resource as key. Thus, all lists in the page using the same resource will share the same selection state. This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. If you want the selection state to be local, you will have to implement your own `useListController` hook and pass a custom key to the `useRecordSelection` hook. You will then need to implement your own `DeleteButton` and `BulkDeleteButton` to manually unselect rows when deleting records.
 
 ## `empty`: Empty Page Component
 
@@ -598,6 +642,21 @@ export const PostList = () => (
 );
 ```
 
+**Note**: The default pagination component's `rowsPerPageOptions` includes options of 5, 10, 25 and 50. If you set your List `perPage` to a value not in that set, you must also customize the pagination so that it allows this value, or else there will be an error.
+
+```diff
+// in src/MyPagination.js
+-import { List } from 'react-admin';
++import { List, Pagination } from 'react-admin';
+
+export const PostList = () => (
+-    <List perPage={6}>
++    <List perPage={6} pagination={<Pagination rowsPerPageOptions={[6, 12, 24, 36]} />}>
+        ...
+    </List>
+);
+```
+
 ## `queryOptions`
 
 `<List>` accepts a `queryOptions` prop to pass options to the react-query client. 
@@ -631,7 +690,7 @@ const PostList = () => {
     const redirect = useRedirect();
 
     const onError = (error) => {
-        notify(`Could not load list: ${error.message}`, { type: 'warning' });
+        notify(`Could not load list: ${error.message}`, { type: 'error' });
         redirect('/dashboard');
     };
 
@@ -675,6 +734,74 @@ export const PostList = () => (
 `sort` defines the *default* sort order ; the list remains sortable by clicking on column headers.
 
 For more details on list sort, see the [Sorting The List](./ListTutorial.md#sorting-the-list) section below. 
+
+## `storeKey`
+
+To display multiple lists of the same resource and keep distinct store states for each of them (filters, sorting and pagination), specify unique keys with the `storeKey` property.
+
+In case no `storeKey` is provided, the states will be stored with the following key: `${resource}.listParams`.
+
+**Note:** Please note that selection state will remain linked to a resource-based key as described [here](./List.md#disablesyncwithlocation).
+
+In the example below, both lists `NewerBooks` and `OlderBooks` use the same resource ('books'), but their controller states are stored separately (under the store keys `'newerBooks'` and `'olderBooks'` respectively). This allows to use both components in the same app, each having its own state (filters, sorting and pagination).
+
+{% raw %}
+```jsx
+import {
+    Admin,
+    CustomRoutes,
+    Resource,
+    List,
+    Datagrid,
+    TextField,
+} from 'react-admin';
+import { Route } from 'react-router-dom';
+
+const NewerBooks = () => (
+    <List
+        resource="books"
+        storeKey="newerBooks"
+        sort={{ field: 'year', order: 'DESC' }}
+    >
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </List>
+);
+
+const OlderBooks = () => (
+    <List
+        resource="books"
+        storeKey="olderBooks"
+        sort={{ field: 'year', order: 'ASC' }}
+    >
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </List>
+);
+
+const Admin = () => {
+    return (
+        <Admin dataProvider={dataProvider}>
+            <CustomRoutes>
+                <Route path="/newerBooks" element={<NewerBooks />} />
+                <Route path="/olderBooks" element={<OlderBooks />} />
+            </CustomRoutes>
+            <Resource name="books" />
+        </Admin>
+    );
+};
+```
+{% endraw %}
+
+**Tip:** The `storeKey` is actually passed to the underlying `useListController` hook, which you can use directly for more complex scenarios. See the [`useListController` doc](./useListController.md#storekey) for more info.
 
 ## `title`
 
@@ -737,3 +864,25 @@ const PostList = () => (
 );
 ```
 {% endraw %}
+
+## Live Updates
+
+If you want to subscribe to live updates on the list of records (topic: `resource/[resource]`), use [the `<ListLive>` component](./ListLive.md) instead.
+
+```diff
+-import { List, Datagrid, TextField } from 'react-admin';
++import { Datagrid, TextField } from 'react-admin';
++import { ListLive } from '@react-admin/ra-realtime';
+
+const PostList = () => (
+-   <List>
++   <ListLive>
+        <Datagrid>
+            <TextField source="title" />
+        </Datagrid>
+-   </List>
++   </ListLive>
+);
+```
+
+The list will automatically update when a new record is created, or an existing record is updated or deleted.

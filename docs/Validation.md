@@ -14,6 +14,22 @@ React-admin relies on [react-hook-form](https://react-hook-form.com/) for the va
 
 You can’t use both form level validation and input level validation - this is a `react-hook-form` limitation.
 
+## Validation Mode
+
+By default, the validation mode is `onSubmit`, and the re-validation mode is `onChange`.
+
+Since [`<Form>`](./Form.md) actually passes all additional props to react-hook-form's [`useForm` hook](https://react-hook-form.com/api/useform/), this can easily be changed by setting the `mode` and `reValidateMode` props.
+
+```jsx
+export const UserCreate = () => (
+    <Create>
+        <SimpleForm mode="onBlur" reValidateMode="onBlur">
+            <TextInput label="First Name" source="firstName" validate={required()} />
+        </SimpleForm>
+    </Create>
+);
+```
+
 ## Global Validation
 
 The value of the form `validate` prop must be a function taking the record as input, and returning an object with error messages indexed by field. For instance:
@@ -34,14 +50,40 @@ const validateUserCreation = (values) => {
             args: { min: 18 }
         };
     }
+    // You can add a message for a whole ArrayInput
+    if (!values.children || !values.children.length) {
+        errors.children = 'ra.validation.required';
+    } else {
+        // Or target each child of an ArrayInput by returning an array of error objects
+        errors.children = values.children.map(child => {
+            const childErrors = {};
+            if (!child || !child.firstName) {
+                childErrors.firstName = 'The firstName is required';
+            }
+            if (!child || !child.age) {
+                childErrors.age = 'ra.validation.required'; // Translation keys are supported here too
+            }
+            return childErrors;
+        });
+    }
     return errors
 };
 
 export const UserCreate = () => (
     <Create>
         <SimpleForm validate={validateUserCreation}>
-            <TextInput label="First Name" source="firstName" />
-            <TextInput label="Age" source="age" />
+            {/* 
+                We need to add `validate={required()}` on required fields to append a '*' symbol 
+                to the label, but the real validation still happens in `validateUserCreation`
+            */}
+            <TextInput label="First Name" source="firstName" validate={required()} />
+            <TextInput label="Age" source="age" validate={required()} />
+            <ArrayInput label="Children" source="children" fullWidth validate={required()}>
+                <SimpleFormIterator>
+                    <TextInput label="First Name" source="firstName" validate={required()} />
+                    <TextInput label="Age" source="age" validate={required()} />
+                </SimpleFormIterator>
+            </ArrayInput>
         </SimpleForm>
     </Create>
 );

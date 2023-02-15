@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import clsx from 'clsx';
-import { styled } from '@mui/material/styles';
+import { styled, SxProps } from '@mui/material/styles';
 import { CoreLayoutProps } from 'ra-core';
 
 import { AppBar as DefaultAppBar, AppBarProps } from './AppBar';
@@ -16,6 +16,7 @@ import { Menu as DefaultMenu, MenuProps } from './Menu';
 import { Error, ErrorProps } from './Error';
 import { SkipNavigationButton } from '../button';
 import { useSidebarState } from './useSidebarState';
+import { Inspector } from '../preferences';
 
 export const Layout = (props: LayoutProps) => {
     const {
@@ -63,6 +64,7 @@ export const Layout = (props: LayoutProps) => {
                         </ErrorBoundary>
                     </div>
                 </main>
+                <Inspector />
             </div>
         </StyledLayout>
     );
@@ -76,6 +78,7 @@ export interface LayoutProps
     error?: ComponentType<ErrorProps>;
     menu?: ComponentType<MenuProps>;
     sidebar?: ComponentType<{ children: ReactNode }>;
+    sx?: SxProps;
 }
 
 export interface LayoutState {
@@ -109,9 +112,7 @@ const StyledLayout = styled('div', {
         display: 'flex',
         flexDirection: 'column',
         flexGrow: 1,
-        [theme.breakpoints.up('xs')]: {
-            marginTop: theme.spacing(6),
-        },
+        marginTop: theme.spacing(6),
         [theme.breakpoints.down('sm')]: {
             marginTop: theme.spacing(7),
         },
@@ -119,6 +120,10 @@ const StyledLayout = styled('div', {
     [`& .${LayoutClasses.contentWithSidebar}`]: {
         display: 'flex',
         flexGrow: 1,
+        transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
     },
     [`& .${LayoutClasses.content}`]: {
         backgroundColor: theme.palette.background.default,
@@ -127,12 +132,10 @@ const StyledLayout = styled('div', {
         flexDirection: 'column',
         flexGrow: 1,
         flexBasis: 0,
+        padding: 0,
         [theme.breakpoints.up('xs')]: {
             paddingRight: theme.spacing(2),
             paddingLeft: theme.spacing(1),
-        },
-        [theme.breakpoints.down('md')]: {
-            padding: 0,
         },
     },
 }));

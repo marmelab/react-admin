@@ -11,16 +11,21 @@ The `<LocalesMenuButton>` component, also known as the "language switcher", disp
 
 ## Usage
 
-Add the `<LocalesMenuButton>` to a custom `<AppBar>`:
+**Tip**: For most users, this component will be automatically added to react-admin's `<AppBar>` if the `i18nProvider` is configured properly to return a list of available locales. React-admin will use the optional `getLocales` method of your `i18nProvider` (or the `availableLocales` parameter if you are using `polyglotI18nProvider`) to generate a list of locale menu items for this component.
+
+For advanced users who wish to use the customized `<AppBar>` from MUI package or place `<LocalesMenuButton>` elsewhere e.g. on a custom configuration page, they can do the following:
 
 ```jsx
-import { LocalesMenuButton, AppBar } from 'react-admin';
-import { Typography } from '@mui/material';
+// in src/MyAppBar.js
+import { LocalesMenuButton } from 'react-admin';
+import { AppBar, Toolbar, Typography } from '@mui/material';
 
 export const MyAppBar = (props) => (
     <AppBar {...props}>
-        <Typography flex="1" variant="h6" id="react-admin-title"></Typography>
-        <LocalesMenuButton />
+        <Toolbar>
+            <Typography flex="1" variant="h6" id="react-admin-title"></Typography>
+            <LocalesMenuButton />
+        </Toolbar>
     </AppBar>
 );
 ```
@@ -28,6 +33,7 @@ export const MyAppBar = (props) => (
 Then, pass the custom App Bar in a custom `<Layout>`, and the `<Layout>` to your `<Admin>`:
 
 ```jsx
+// in src/App.js
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
@@ -39,8 +45,8 @@ const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
 
 const i18nProvider = polyglotI18nProvider(
     locale => (locale === 'fr' ? frenchMessages : englishMessages),
-    getLocales: () => [{ locale: 'en', name: 'English' }, { locale: 'fr', name: 'Français' }],
-    'en' // Default locale
+    'en', // Default locale
+    [{ locale: 'en', name: 'English' }, { locale: 'fr', name: 'Français' }]
 );
 
 const App = () => (
@@ -53,8 +59,6 @@ const App = () => (
     </Admin>
 );
 ```
-
-**Tip**: the `<LocalesMenuButton>` will be added to the `<AppBar>` automatically if you have multiple locales declared in the `getLocales` method of your `i18nProvider`.
 
 ## `languages`
 
@@ -71,11 +75,7 @@ The `locale` will be passed to `setLocale` when the user selects the language, a
 
 ## `sx`: CSS API
 
-The `<LocalesMenuButton>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
-
-| Rule name                 | Description                                             |
-|---------------------------|---------------------------------------------------------|
-| `& .RaLocalesMenuButton-selectedLanguage`      | Applied to the current language element |
+The `<LocalesMenuButton>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)).
 
 To override the style of all instances of `<LocalesMenuButton>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaLocalesMenuButton` key.
 

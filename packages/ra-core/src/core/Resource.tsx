@@ -35,6 +35,7 @@ export const Resource = (props: ResourceProps) => {
                         element={isValidElement(List) ? List : <List />}
                     />
                 )}
+                {props.children}
             </Routes>
         </ResourceContextProvider>
     );
@@ -50,12 +51,17 @@ Resource.registerResource = ({
     name,
     options,
     show,
+    recordRepresentation,
+    hasCreate,
+    hasEdit,
+    hasShow,
 }: ResourceProps) => ({
     name,
     options,
     hasList: !!list,
-    hasCreate: !!create,
-    hasEdit: !!edit,
-    hasShow: !!show,
+    hasCreate: !!create || !!hasCreate,
+    hasEdit: !!edit || !!hasEdit,
+    hasShow: !!show || !!hasShow,
     icon,
+    recordRepresentation,
 });

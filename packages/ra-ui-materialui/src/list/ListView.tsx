@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { Children, cloneElement, ReactElement, ElementType } from 'react';
+import { cloneElement, ReactElement, ReactNode, ElementType } from 'react';
 import PropTypes from 'prop-types';
 import { SxProps } from '@mui/system';
 import Card from '@mui/material/Card';
@@ -12,6 +12,7 @@ import { ListToolbar } from './ListToolbar';
 import { Pagination as DefaultPagination } from './pagination';
 import { ListActions as DefaultActions } from './ListActions';
 import { Empty } from './Empty';
+import { Error } from '../layout';
 
 const defaultActions = <DefaultActions />;
 const defaultPagination = <DefaultPagination />;
@@ -43,13 +44,10 @@ export const ListView = <RecordType extends RaRecord = any>(
         total,
         isLoading,
         filterValues,
+        resource,
     } = useListContext<RecordType>(props);
 
     if (!children || (!data && isLoading && emptyWhileLoading)) {
-        return null;
-    }
-
-    if (error) {
         return null;
     }
 
@@ -63,13 +61,20 @@ export const ListView = <RecordType extends RaRecord = any>(
                 />
             )}
             <Content className={ListClasses.content}>
-                {bulkActionButtons && children
-                    ? cloneElement(Children.only(children), {
+                {bulkActionButtons &&
+                children &&
+                React.isValidElement<any>(children)
+                    ? // FIXME remove in 5.0
+                      cloneElement(children, {
                           bulkActionButtons,
                       })
                     : children}
             </Content>
-            {pagination !== false && pagination}
+            {error ? (
+                <Error error={error} resetErrorBoundary={null} />
+            ) : (
+                pagination !== false && pagination
+            )}
         </div>
     );
 
@@ -84,7 +89,11 @@ export const ListView = <RecordType extends RaRecord = any>(
 
     return (
         <Root className={clsx('list-page', className)} {...rest}>
-            <Title title={title} defaultTitle={defaultTitle} />
+            <Title
+                title={title}
+                defaultTitle={defaultTitle}
+                preferenceKey={`${resource}.list.title`}
+            />
             {shouldRenderEmptyPage ? renderEmpty() : renderList()}
             {aside}
         </Root>
@@ -95,7 +104,7 @@ ListView.propTypes = {
     // @ts-ignore-line
     actions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     aside: PropTypes.element,
-    children: PropTypes.element,
+    children: PropTypes.node,
     className: PropTypes.string,
     component: ComponentPropType,
     // @ts-ignore-line
@@ -146,7 +155,7 @@ export interface ListViewProps {
      */
     bulkActionButtons?: ReactElement | false;
     className?: string;
-    children: ReactElement;
+    children: ReactNode;
     component?: ElementType;
     empty?: ReactElement | false;
     emptyWhileLoading?: boolean;

@@ -285,4 +285,62 @@ describe('useGetList', () => {
             expect(onError.mock.calls.pop()[0]).toEqual(new Error('failed'));
         });
     });
+
+    it('should pre-populate getOne Query Cache', async () => {
+        const callback = jest.fn();
+        const queryClient = new QueryClient();
+        const dataProvider = {
+            getList: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, title: 'live' }], total: 1 })
+            ),
+        };
+        render(
+            <CoreAdminContext
+                queryClient={queryClient}
+                dataProvider={dataProvider}
+            >
+                <UseGetList callback={callback} />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(callback).toHaveBeenCalledWith(
+                expect.objectContaining({ data: [{ id: 1, title: 'live' }] })
+            );
+        });
+        expect(
+            queryClient.getQueryData(['posts', 'getOne', { id: '1' }])
+        ).toEqual({ id: 1, title: 'live' });
+    });
+
+    it('should still pre-populate getOne Query Cache with custom onSuccess', async () => {
+        const callback = jest.fn();
+        const onSuccess = jest.fn();
+        const queryClient = new QueryClient();
+        const dataProvider = {
+            getList: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, title: 'live' }], total: 1 })
+            ),
+        };
+        render(
+            <CoreAdminContext
+                queryClient={queryClient}
+                dataProvider={dataProvider}
+            >
+                <UseGetList callback={callback} options={{ onSuccess }} />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(callback).toHaveBeenCalledWith(
+                expect.objectContaining({ data: [{ id: 1, title: 'live' }] })
+            );
+        });
+        await waitFor(() => {
+            expect(onSuccess).toHaveBeenCalledWith(
+                expect.objectContaining({ data: [{ id: 1, title: 'live' }] })
+            );
+        });
+        expect(
+            queryClient.getQueryData(['posts', 'getOne', { id: '1' }])
+        ).toEqual({ id: 1, title: 'live' });
+    });
 });

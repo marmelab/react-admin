@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import {
     useQuery,
     UseQueryOptions,
@@ -38,14 +39,14 @@ import { useDataProvider } from './useDataProvider';
  * @prop params.filter The request filters, e.g. { title: 'hello, world' }
  * @prop params.meta Optional meta parameters
  *
- *
  * @returns The current request state. Destructure as { data, total, error, isLoading, refetch }.
  *
  * @example
  *
- * import { useGetManyReference } from 'react-admin';
+ * import { useGetManyReference, useRecordContext } from 'react-admin';
  *
- * const PostComments = ({ record }) => {
+ * const PostComments = () => {
+ *     const record = useRecordContext();
  *     // fetch all comments related to the current record
  *     const { data, isLoading, error } = useGetManyReference(
  *         'comments',
@@ -83,8 +84,12 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
             'getManyReference',
             { target, id, pagination, sort, filter, meta },
         ],
-        () =>
-            dataProvider
+        () => {
+            if (!target || id == null) {
+                // check at runtime to support partial parameters with the enabled option
+                return Promise.reject(new Error('target and id are required'));
+            }
+            return dataProvider
                 .getManyReference<RecordType>(resource, {
                     target,
                     id,
@@ -97,7 +102,8 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
                     data,
                     total,
                     pageInfo,
-                })),
+                }));
+        },
         {
             onSuccess: ({ data }) => {
                 // optimistically populate the getOne cache
@@ -112,14 +118,18 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
         }
     );
 
-    return (result.data
-        ? {
-              ...result,
-              data: result.data?.data,
-              total: result.data?.total,
-              pageInfo: result.data?.pageInfo,
-          }
-        : result) as UseQueryResult<RecordType[], Error> & {
+    return useMemo(
+        () =>
+            result.data
+                ? {
+                      ...result,
+                      data: result.data?.data,
+                      total: result.data?.total,
+                      pageInfo: result.data?.pageInfo,
+                  }
+                : result,
+        [result]
+    ) as UseQueryResult<RecordType[], Error> & {
         total?: number;
         pageInfo?: {
             hasNextPage?: boolean;

@@ -12,6 +12,7 @@ export interface TranslationMessages extends StringMap {
             back: string;
             bulk_actions: string;
             cancel: string;
+            clear_array_input: string;
             clear_input_value: string;
             clone: string;
             confirm: string;
@@ -23,6 +24,7 @@ export interface TranslationMessages extends StringMap {
             list: string;
             refresh: string;
             remove_filter: string;
+            remove_all_filters: string;
             remove: string;
             save: string;
             search: string;
@@ -41,6 +43,7 @@ export interface TranslationMessages extends StringMap {
             move_down: string;
             open: string;
             toggle_theme: string;
+            select_columns: string;
         };
         boolean: {
             [key: string]: StringMap | string;
@@ -89,10 +92,12 @@ export interface TranslationMessages extends StringMap {
             [key: string]: StringMap | string;
             about: string;
             are_you_sure: string;
+            auth_error: string;
             bulk_delete_content: string;
             bulk_delete_title: string;
             bulk_update_content: string;
             bulk_update_title: string;
+            clear_array_input: string;
             delete_content: string;
             delete_title: string;
             details: string;
@@ -173,6 +178,31 @@ export interface TranslationMessages extends StringMap {
             remove_dialog_title: string;
             remove_message: string;
             help: string;
+        };
+        configurable?: {
+            customize: string;
+            configureMode: string;
+            inspector: {
+                title: string;
+                content: string;
+                reset: string;
+                hideAll: string;
+                showAll: string;
+            };
+            Datagrid: {
+                title: string;
+                unlabeled: string;
+            };
+            SimpleForm: {
+                title: string;
+                unlabeled: string;
+            };
+            SimpleList: {
+                title: string;
+                primaryText: string;
+                secondaryText: string;
+                tertiaryText: string;
+            };
         };
     };
 }

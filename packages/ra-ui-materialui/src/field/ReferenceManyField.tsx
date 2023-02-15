@@ -58,12 +58,12 @@ import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
  *    ...
  * </ReferenceManyField>
  */
-export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
+export const ReferenceManyField = (props: ReferenceManyFieldProps) => {
     const {
         children,
         filter,
         page = 1,
-        pagination,
+        pagination = null,
         perPage,
         reference,
         resource,
@@ -89,9 +89,7 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
         <ResourceContextProvider value={reference}>
             <ListContextProvider value={controllerProps}>
                 {children}
-                {pagination && controllerProps.total !== undefined
-                    ? pagination
-                    : null}
+                {pagination}
             </ListContextProvider>
         </ResourceContextProvider>
     );

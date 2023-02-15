@@ -6,6 +6,7 @@ import {
     ListPaginationContext,
     usePickPaginationContext,
 } from './ListPaginationContext';
+import { ListControllerResult } from './useListController';
 
 /**
  * Create a List Context and several thematic List subcontext.
@@ -34,7 +35,13 @@ import {
  * @see ListContext
  * @see ListFilterContext
  */
-export const ListContextProvider = ({ value, children }) => (
+export const ListContextProvider = ({
+    value,
+    children,
+}: {
+    value: ListControllerResult;
+    children: React.ReactNode;
+}) => (
     <ListContext.Provider value={value}>
         <ListFilterContext.Provider value={usePickFilterContext(value)}>
             <ListSortContext.Provider value={usePickSortContext(value)}>

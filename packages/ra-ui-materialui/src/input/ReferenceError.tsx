@@ -14,7 +14,7 @@ export const ReferenceError = ({
         error
         disabled
         label={label}
-        value={error?.message}
+        helperText={error?.message}
         margin="normal"
     />
 );

@@ -2,7 +2,12 @@ import * as React from 'react';
 import { memo, FC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { ChoicesProps, useChoices, useRecordContext } from 'ra-core';
+import {
+    ChoicesProps,
+    useChoices,
+    useRecordContext,
+    useTranslate,
+} from 'ra-core';
 import { Typography, TypographyProps } from '@mui/material';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
@@ -50,7 +55,10 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
  *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
  * ];
- * const FullNameField = ({ record }) => <Chip>{record.first_name} {record.last_name}</Chip>;
+ * const FullNameField = () => {
+ *     const record = useRecordContext();
+ *     return (<Chip>{record.first_name} {record.last_name}</Chip>)
+ * };
  * <SelectField source="gender" choices={choices} optionText={<FullNameField />}/>
  *
  * The current choice is translated by default, so you can use translation identifiers as choices:
@@ -85,6 +93,7 @@ export const SelectField: FC<SelectFieldProps> = memo(props => {
         optionValue,
         translateChoice,
     });
+    const translate = useTranslate();
 
     const choice = choices.find(choice => getChoiceValue(choice) === value);
 
@@ -96,7 +105,7 @@ export const SelectField: FC<SelectFieldProps> = memo(props => {
                 className={className}
                 {...sanitizeFieldRestProps(rest)}
             >
-                {emptyText}
+                {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
         ) : null;
     }

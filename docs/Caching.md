@@ -110,7 +110,7 @@ const App = () => {
 
 With this setting, all queries will be considered valid for 5 minutes. That means that react-admin *won't refetch* data from the API if the data is already in the cache and younger than 5 minutes.
 
-Check the details about this cache [in the react-query documentation](https://react-query.tanstack.com/guides/caching).
+Check the details about this cache [in the react-query documentation](https://react-query-v3.tanstack.com/guides/caching).
 
 It especially fits admins for API backends with a small number of users (because with a large number of users, there is a high chance that a record kept in the client-side cache for a few minutes may be updated on the backend by another user). It also works with GraphQL APIs. 
 

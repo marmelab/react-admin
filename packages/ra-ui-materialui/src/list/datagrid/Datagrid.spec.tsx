@@ -69,7 +69,7 @@ describe('<Datagrid />', () => {
             ids: [],
         };
 
-        render(
+        const { rerender } = render(
             <Wrapper listContext={emptyData}>
                 <Datagrid empty={<Empty />}>
                     <TitleField />
@@ -78,6 +78,35 @@ describe('<Datagrid />', () => {
         );
 
         expect(screen.queryByText('No records to show')).toBeTruthy();
+
+        const undefinedData = {
+            ...contextValue,
+            data: undefined,
+            ids: [],
+        };
+
+        rerender(
+            <Wrapper listContext={undefinedData}>
+                <Datagrid empty={<Empty />}>
+                    <TitleField />
+                </Datagrid>
+            </Wrapper>
+        );
+
+        expect(screen.queryByText('No records to show')).toBeTruthy();
+    });
+
+    it('should not allow to expand all rows when `expandSingle` prop is true', () => {
+        render(
+            <Wrapper listContext={contextValue}>
+                <Datagrid expand={<div>Expanded panel</div>} expandSingle>
+                    <TitleField />
+                </Datagrid>
+            </Wrapper>
+        );
+        expect(screen.queryAllByTestId('ExpandMoreIcon')).toHaveLength(
+            defaultData.length
+        );
     });
 
     describe('selecting items with the shift key', () => {
@@ -199,9 +228,9 @@ describe('<Datagrid />', () => {
             );
             render(<Test />);
             const checkboxes = screen.queryAllByRole('checkbox');
-            expect(checkboxes.length).toBe(4); // 1 for the header, 3 for the rows
+            expect(checkboxes.length).toBe(5); // 1 for the header, 4 for the rows
             fireEvent.click(checkboxes[1], { checked: true }); // first row, id = 1
-            fireEvent.click(checkboxes[2], {
+            fireEvent.click(checkboxes[3], {
                 // third row, id = 3
                 shiftKey: true,
                 checked: true,
@@ -238,5 +267,14 @@ describe('<Datagrid />', () => {
             expect(contextValue.onToggleItem).toHaveBeenCalledTimes(3);
             expect(contextValue.onSelect).toHaveBeenCalledTimes(1);
         });
+    });
+
+    it('should display a message when there is no result', () => {
+        render(
+            <Wrapper listContext={{ ...contextValue, data: [], total: 0 }}>
+                <Datagrid />
+            </Wrapper>
+        );
+        expect(screen.queryByText('ra.navigation.no_results')).not.toBeNull();
     });
 });

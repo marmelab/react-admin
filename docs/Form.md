@@ -47,6 +47,7 @@ Here are all the props you can set on the `<Form>` component:
 * [`id`](#id)
 * [`noValidate`](#novalidate)
 * [`onSubmit`](#onsubmit)
+* [`sanitizeEmptyValues`](#sanitizeemptyvalues)
 * [`validate`](#validate)
 * [`warnWhenUnsavedChanges`](#warnwhenunsavedchanges)
 
@@ -79,7 +80,7 @@ export const PostCreate = () => (
 
 ## `id`
 
-Normally, a submit button only works when placed inside a `<form>` tag. However, you can place a submit button outside of the form if the submit button `form` matches the form `id`.
+Normally, a submit button only works when placed inside a `<form>` tag. However, you can place a submit button outside the form if the submit button `form` matches the form `id`.
 
 Set this form `id` via the `id` prop.
 
@@ -118,10 +119,9 @@ By default, the `<Form>` calls the `save` callback passed to it by the edit or c
 
 ```jsx
 export const PostCreate = () => {
-    const { id } = useParams();
     const [create] = useCreate();
     const postSave = (data) => {
-        create('posts', { id, data });
+        create('posts', { data });
     };
     return (
         <Create>
@@ -132,6 +132,47 @@ export const PostCreate = () => {
     );
 };
 ```
+
+## `sanitizeEmptyValues`
+
+In HTML, the value of empty form inputs is the empty string (`''`). React-admin inputs (like `<TextInput>`, `<NumberInput>`, etc.) automatically transform these empty values into `null`.
+
+But for your own input components based on react-hook-form, this is not the default. React-hook-form doesn't transform empty values by default. This leads to unexpected `create` and `update` payloads like:
+
+```jsx
+{
+    id: 1234,
+    title: 'Lorem Ipsum',
+    is_published: '',
+    body: '',
+    // etc.
+}
+```
+
+If you prefer to omit the keys for empty values, set the `sanitizeEmptyValues` prop to `true`. This will sanitize the form data before passing it to the `dataProvider`, i.e. remove empty strings from the form state, unless the record actually had a value for that field before edition.
+
+```jsx
+const PostCreate = () =>  (
+    <Create>
+        <Form sanitizeEmptyValues>
+            ...
+        </Form>
+    </Create>
+);
+```
+
+For the previous example, the data sent to the `dataProvider` will be:
+
+```jsx
+{
+    id: 1234,
+    title: 'Lorem Ipsum',
+}
+```
+
+**Note:** Setting the `sanitizeEmptyValues` prop to `true` will also have a (minor) impact on react-admin inputs (like `<TextInput>`, `<NumberInput>`, etc.): empty values (i.e. values equal to `null`) will be removed from the form state on submit, unless the record actually had a value for that field.
+
+If you need a more fine-grained control over the sanitization, you can use [the `transform` prop](./Edit.md#transform) of `<Edit>` or `<Create>` components, or [the `parse` prop](./Inputs.md#parse) of individual inputs.
 
 ## `validate`
 
@@ -188,3 +229,4 @@ export const TagEdit = () => (
 );
 ```
 
+**Warning**: This feature only works if you have a dependency on react-router 6.3.0 **at most**. The react-router team disabled this possibility in react-router 6.4, so `warnWhenUnsavedChanges` will silently fail with react-router 6.4 or later.

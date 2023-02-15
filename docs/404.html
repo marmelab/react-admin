@@ -1,0 +1,90 @@
+---
+layout: default
+title: 'Page not found'
+permalink: /404.html
+---
+
+<pre>
+    d8888   .d8888b.      d8888  
+   d8P888  d88P  Y88b    d8P888  
+  d8P 888  888    888   d8P 888  
+ d8P  888  888    888  d8P  888  
+d88   888  888    888 d88   888  
+8888888888 888    888 8888888888 
+      888  Y88b  d88P       888  
+      888   "Y8888P"        888  
+</pre>
+
+<p>You know the deal: it's the "<strong>Page not found</strong>" page.</p>
+
+<div id="doc-version" style="display: none">
+    <p>
+        The page you requested does not exist in version
+        <span class="doc-version-number">XX</span>. The organization of the
+        react-admin documentation changes across versions.
+    </p>
+
+    <p>
+        <a href="#" onClick="document.location.pathname = docPageRoot"
+            >Go to the <span class="doc-version-number">XX</span> documentation
+            home page</a
+        >.
+    </p>
+</div>
+
+<p>
+    If you come from another page in this website, please
+    <a href="https://github.com/marmelab/react-admin"
+        >report the broken link on GitHub</a
+    >.
+</p>
+
+<p>If you come from another website, please report the broken link to them!</p>
+
+<p><a href="#" onClick="history.go(-1); return false;">Go back</a></p>
+
+<script>
+    // helper function to replace the Navigation content
+    function replaceNavigationContent(text) {
+        var tmpElement = document.createElement('div');
+        tmpElement.innerHTML = text;
+        var content = document.querySelector('.sidenav');
+        content.innerHTML = tmpElement.querySelector('.sidenav').innerHTML;
+        buildPageToC();
+    }
+
+    // helper function to fetch the Navigation content for the current version and
+    // replace it in the DOM
+    function replaceNavigationWithVersion(version) {
+        var location = document.location.href.split('#')[0];
+        var locationSlices = location.split('/');
+        var href = [...locationSlices.slice(0, locationSlices.length - 2), version, 'Readme.html'].join('/');
+        // fetch the new content
+        fetch(href)
+            .then(res => res.text())
+            .then(replaceNavigationContent);
+    }
+
+    let docPageRoot;
+    const docPageRegexp = /(.*\/doc\/\d+\.\d+\/).*/;
+    const versionRegexp = /.*\/doc\/(\d+\.\d+)\/.*/;
+    const match = docPageRegexp.test(document.location.pathname);
+    if (match) {
+        // the user was on a doc page and changed the version
+        // but this page doesn't exist in the new version
+        // so we redirect them to the root of the doc page
+        docPageRoot =
+            document.location.pathname.match(docPageRegexp)[1] + 'Readme.html';
+        const version = document.location.pathname.match(versionRegexp)[1];
+        document.getElementsByClassName(
+            'doc-version-number'
+        )[0].innerText = version;
+        document.getElementsByClassName(
+            'doc-version-number'
+        )[1].innerText = version;
+        document.getElementById('doc-version').style.display = 'block';
+
+        // Replace the Navigation content with the one for the current version
+        replaceNavigationWithVersion(version);
+    }
+</script>

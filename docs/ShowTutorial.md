@@ -196,6 +196,7 @@ const BookShow = () => {
 The initial logic that grabs the id from the location and fetches the record from the API is also common, and react-admin exposes [the `useShowController` hook](./useShowController.md) to do it: 
 
 ```diff
+-import { useParams } from 'react-router-dom';
 -import { useGetOne, useRedirect, RecordContextProvider, SimpleShowLayout, Title, TextField, DateField } from 'react-admin';
 +import { useShowController, RecordContextProvider, SimpleShowLayout, Title, TextField, DateField } from 'react-admin';
 import { Card } from '@mui/material';
@@ -357,7 +358,7 @@ const BookShow = () => (
 When a Show view has to display a lot of fields, the `<SimpleShowLayout>` component ends up in very long page that is not user-friendly. You can use [the `<TabbedShowLayout>` component](./TabbedShowLayout.md) instead, which is a variant of the `<SimpleShowLayout>` component that displays the fields in tabs. 
 
 ```jsx
-import { Show, TabbedShowLayout, Tab, TextField, DateField, WithRecord } from 'react-admin';
+import { Show, TabbedShowLayout, TextField, DateField, WithRecord } from 'react-admin';
 import StarIcon from '@mui/icons-material/Star';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
@@ -365,19 +366,19 @@ import PersonPinIcon from '@mui/icons-material/PersonPin';
 const BookShow = () => (
     <Show>
         <TabbedShowLayout>
-            <Tab label="Description" icon={<FavoriteIcon />}>
+            <TabbedShowLayout.Tab label="Description" icon={<FavoriteIcon />}>
                 <TextField label="Title" source="title" />
                 <ReferenceField label="Author" source="author_id">
                     <TextField source="name" />
                 </ReferenceField>
                 <DateField label="Publication Date" source="published_at" />
-            </Tab>
-            <Tab label="User ratings" icon={<PersonPinIcon />}>
+            </TabbedShowLayout.Tab>
+            <TabbedShowLayout.Tab label="User ratings" icon={<PersonPinIcon />}>
                 <WithRecord label="Rating" render={record => <>
                     {[...Array(record.rating)].map((_, index) => <StarIcon key={index} />)}
                 </>} />
                 <DateField label="Last rating" source="last_rated_at" />
-            </Tab>
+            </TabbedShowLayout.Tab>
         </TabbedShowLayout>
     </Show>
 );

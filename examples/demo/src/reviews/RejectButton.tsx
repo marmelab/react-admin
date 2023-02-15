@@ -34,7 +34,7 @@ const RejectButton = () => {
             },
             onError: () => {
                 notify('resources.reviews.notification.rejected_error', {
-                    type: 'warning',
+                    type: 'error',
                 });
             },
         }

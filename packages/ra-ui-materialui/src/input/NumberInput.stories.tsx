@@ -1,25 +1,14 @@
 import * as React from 'react';
 import { required } from 'ra-core';
-import { useWatch } from 'react-hook-form';
+import { useFormState, useFormContext } from 'react-hook-form';
 
 import { NumberInput } from './NumberInput';
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
 import { SimpleForm } from '../form';
+import { FormInspector } from './common.stories';
 
 export default { title: 'ra-ui-materialui/input/NumberInput' };
-
-const FormInspector = ({ name = 'views' }) => {
-    const value = useWatch({ name });
-    return (
-        <div style={{ backgroundColor: 'lightgrey' }}>
-            {name} value in form:&nbsp;
-            <code>
-                {JSON.stringify(value)} ({typeof value})
-            </code>
-        </div>
-    );
-};
 
 export const Basic = () => (
     <AdminContext>
@@ -30,7 +19,7 @@ export const Basic = () => (
         >
             <SimpleForm>
                 <NumberInput source="views" />
-                <FormInspector />
+                <FormInspector name="views" />
             </SimpleForm>
         </Create>
     </AdminContext>
@@ -266,6 +255,74 @@ export const Sx = () => (
                         '& .MuiInputLabel-root': { fontWeight: 'bold' },
                     }}
                 />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+const FormStateInspector = () => {
+    const {
+        touchedFields,
+        isDirty,
+        dirtyFields,
+        isValid,
+        errors,
+    } = useFormState();
+    return (
+        <div>
+            form state:&nbsp;
+            <code style={{ backgroundColor: 'lightgrey' }}>
+                {JSON.stringify({
+                    touchedFields,
+                    isDirty,
+                    dirtyFields,
+                    isValid,
+                    errors,
+                })}
+            </code>
+        </div>
+    );
+};
+
+const FieldStateInspector = ({ name = 'views' }) => {
+    const formContext = useFormContext();
+    return (
+        <div>
+            {name}:
+            <code style={{ backgroundColor: 'lightgrey' }}>
+                {JSON.stringify(
+                    formContext.getFieldState(name, formContext.formState)
+                )}
+            </code>
+        </div>
+    );
+};
+
+export const FieldState = () => (
+    <AdminContext>
+        <Create
+            resource="posts"
+            record={{ id: 123, views: 23 }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <NumberInput source="views" />
+                <FormStateInspector />
+                <FieldStateInspector />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+export const ShouldUnregister = () => (
+    <AdminContext>
+        <Create
+            resource="posts"
+            record={{ id: 123, views: 23 }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <NumberInput source="views" shouldUnregister />
             </SimpleForm>
         </Create>
     </AdminContext>

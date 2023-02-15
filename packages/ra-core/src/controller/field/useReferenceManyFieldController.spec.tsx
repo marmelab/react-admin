@@ -32,6 +32,7 @@ describe('useReferenceManyFieldController', () => {
                     source="items"
                     reference="bar"
                     target="foo_id"
+                    record={{ id: 1, items: [1, 2] }}
                 >
                     {props => <ComponentToTest {...props} />}
                 </ReferenceManyFieldController>
@@ -66,6 +67,7 @@ describe('useReferenceManyFieldController', () => {
                     source="items"
                     reference="bar"
                     target="foo_id"
+                    record={{ id: 1, items: [1, 2] }}
                 >
                     {props => <ComponentToTest {...props} />}
                 </ReferenceManyFieldController>

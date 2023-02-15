@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import {
     useQuery,
     UseQueryOptions,
@@ -83,7 +84,9 @@ export const useGetList = <RecordType extends RaRecord = any>(
                     pageInfo,
                 })),
         {
-            onSuccess: ({ data }) => {
+            ...options,
+            onSuccess: value => {
+                const { data } = value;
                 // optimistically populate the getOne cache
                 data.forEach(record => {
                     queryClient.setQueryData(
@@ -91,19 +94,26 @@ export const useGetList = <RecordType extends RaRecord = any>(
                         oldRecord => oldRecord ?? record
                     );
                 });
+                // execute call-time onSuccess if provided
+                if (options?.onSuccess) {
+                    options.onSuccess(value);
+                }
             },
-            ...options,
         }
     );
 
-    return (result.data
-        ? {
-              ...result,
-              data: result.data?.data,
-              total: result.data?.total,
-              pageInfo: result.data?.pageInfo,
-          }
-        : result) as UseQueryResult<RecordType[], Error> & {
+    return useMemo(
+        () =>
+            result.data
+                ? {
+                      ...result,
+                      data: result.data?.data,
+                      total: result.data?.total,
+                      pageInfo: result.data?.pageInfo,
+                  }
+                : result,
+        [result]
+    ) as UseQueryResult<RecordType[], Error> & {
         total?: number;
         pageInfo?: {
             hasNextPage?: boolean;

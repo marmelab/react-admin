@@ -62,7 +62,7 @@ export const useCheckAuth = (): CheckAuth => {
                 if (logoutOnFailure) {
                     logout(
                         {},
-                        error && error.redirectTo
+                        error && error.redirectTo != null
                             ? error.redirectTo
                             : redirectTo
                     );
@@ -72,7 +72,7 @@ export const useCheckAuth = (): CheckAuth => {
                     !shouldSkipNotify &&
                         notify(
                             getErrorMessage(error, 'ra.auth.auth_check_error'),
-                            { type: 'warning' }
+                            { type: 'error' }
                         );
                 }
                 throw error;

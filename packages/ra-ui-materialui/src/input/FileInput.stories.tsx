@@ -7,6 +7,8 @@ import { Create } from '../detail';
 import { SimpleForm } from '../form';
 import { FileInput } from './FileInput';
 import { FileField } from '../field';
+import { required } from 'ra-core';
+import { FormInspector } from './common.stories';
 
 export default { title: 'ra-ui-materialui/input/FileInput' };
 
@@ -15,6 +17,28 @@ export const Basic = () => (
         <FileInput source="attachment">
             <FileField source="src" title="title" />
         </FileInput>
+        <FormInspector name="attachment" />
+    </Wrapper>
+);
+
+export const DefaultValue = () => (
+    <Wrapper>
+        <FileInput
+            source="attachment"
+            defaultValue={[
+                {
+                    title: 'Image1',
+                    src: 'https://picsum.photos/200/300',
+                },
+                {
+                    title: 'Image2',
+                    src: 'https://picsum.photos/200/300',
+                },
+            ]}
+        >
+            <FileField source="src" title="title" />
+        </FileInput>
+        <FormInspector name="attachment" />
     </Wrapper>
 );
 
@@ -23,6 +47,16 @@ export const LimitByFileType = () => (
         <FileInput source="attachment" accept="application/pdf">
             <FileField source="src" title="title" />
         </FileInput>
+        <FormInspector name="attachment" />
+    </Wrapper>
+);
+
+export const Required = () => (
+    <Wrapper>
+        <FileInput source="attachment" isRequired validate={required()}>
+            <FileField source="src" title="title" />
+        </FileInput>
+        <FormInspector name="attachment" />
     </Wrapper>
 );
 
@@ -39,6 +73,7 @@ export const CustomPreview = () => (
                 title="title"
             />
         </FileInput>
+        <FormInspector name="attachment" />
     </Wrapper>
 );
 
@@ -47,6 +82,7 @@ export const Multiple = () => (
         <FileInput source="attachments" multiple>
             <FileField source="src" title="title" />
         </FileInput>
+        <FormInspector name="attachments" />
     </Wrapper>
 );
 
@@ -55,14 +91,16 @@ export const FullWidth = () => (
         <FileInput source="attachment" fullWidth>
             <FileField source="src" title="title" />
         </FileInput>
+        <FormInspector name="attachment" />
     </Wrapper>
 );
 
 export const Disabled = () => (
     <Wrapper>
-        <FileInput source="attachment" disabled>
+        <FileInput source="attachment" options={{ disabled: true }}>
             <FileField source="src" title="title" />
         </FileInput>
+        <FormInspector name="attachment" />
     </Wrapper>
 );
 

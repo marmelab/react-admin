@@ -32,7 +32,7 @@ let timer;
  *         dataProvider.getOne('secret', { id: 123 })
  *             .catch(error => {
  *                  logoutIfAccessDenied(error);
- *                  notify('server error', 'warning');
+ *                  notify('server error',  { type: 'error' });
  *              })
  *     }, []);
  *     // ...
@@ -60,10 +60,18 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                         timer = undefined;
                     }, 0);
 
+                    const redirectTo =
+                        e && e.redirectTo != null
+                            ? e.redirectTo
+                            : error && error.redirectTo
+                            ? error.redirectTo
+                            : undefined;
+
                     const shouldNotify = !(
                         disableNotification ||
                         (e && e.message === false) ||
-                        (error && error.message === false)
+                        (error && error.message === false) ||
+                        redirectTo?.startsWith('http')
                     );
                     if (shouldNotify) {
                         // notify only if not yet logged out
@@ -76,7 +84,7 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                                             e,
                                             'ra.notification.logged_out'
                                         ),
-                                        { type: 'warning' }
+                                        { type: 'error' }
                                     );
                                 } else {
                                     notify(
@@ -84,23 +92,23 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                                             e,
                                             'ra.notification.not_authorized'
                                         ),
-                                        { type: 'warning' }
+                                        { type: 'error' }
                                     );
                                 }
                             })
                             .catch(() => {});
                     }
-                    const redirectTo =
-                        e && e.redirectTo
-                            ? e.redirectTo
-                            : error && error.redirectTo
-                            ? error.redirectTo
-                            : undefined;
 
                     if (logoutUser) {
                         logout({}, redirectTo);
                     } else {
-                        navigate(redirectTo);
+                        if (redirectTo.startsWith('http')) {
+                            // absolute link (e.g. https://my.oidc.server/login)
+                            window.location.href = redirectTo;
+                        } else {
+                            // internal location
+                            navigate(redirectTo);
+                        }
                     }
 
                     return true;

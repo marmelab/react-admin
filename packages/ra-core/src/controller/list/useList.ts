@@ -8,6 +8,7 @@ import usePaginationState from '../usePaginationState';
 import useSortState from '../useSortState';
 import { useRecordSelection } from './useRecordSelection';
 import { ListControllerResult } from './useListController';
+import { flattenObject } from '../../dataProvider/fetch';
 
 const refetch = () => {
     throw new Error(
@@ -48,6 +49,7 @@ const refetch = () => {
  * @param {Number} props.page: Optional. The initial page index
  * @param {Number} props.perPage: Optional. The initial page size
  * @param {SortPayload} props.sort: Optional. The initial sort (field and order)
+ * @param {filterCallback} prop.filterCallback Optional. A function that allows you to make a custom filter
  */
 export const useList = <RecordType extends RaRecord = any>(
     props: UseListOptions<RecordType>
@@ -60,18 +62,22 @@ export const useList = <RecordType extends RaRecord = any>(
         isLoading = false,
         page: initialPage = 1,
         perPage: initialPerPage = 1000,
-        sort: initialSort = defaultSort,
+        sort: initialSort,
+        filterCallback = (record: RecordType) => Boolean(record),
     } = props;
     const resource = useResourceContext(props);
 
     const [fetchingState, setFetchingState] = useSafeSetState<boolean>(
         isFetching
-    );
-    const [loadingState, setLoadingState] = useSafeSetState<boolean>(isLoading);
+    ) as [boolean, (isFetching: boolean) => void];
+
+    const [loadingState, setLoadingState] = useSafeSetState<boolean>(
+        isLoading
+    ) as [boolean, (isFetching: boolean) => void];
 
     const [finalItems, setFinalItems] = useSafeSetState<{
         data?: RecordType[];
-        total: number;
+        total?: number;
     }>(() => ({
         data,
         total: data ? data.length : undefined,
@@ -154,26 +160,31 @@ export const useList = <RecordType extends RaRecord = any>(
     useEffect(
         () => {
             if (isLoading || !data) return;
+            let tempData = data;
 
             // 1. filter
-            let tempData = data.filter(record =>
-                Object.entries(filterValues).every(
-                    ([filterName, filterValue]) => {
-                        const recordValue = get(record, filterName);
-                        const result = Array.isArray(recordValue)
-                            ? Array.isArray(filterValue)
-                                ? recordValue.some(item =>
-                                      filterValue.includes(item)
-                                  )
-                                : recordValue.includes(filterValue)
-                            : Array.isArray(filterValue)
-                            ? filterValue.includes(recordValue)
-                            : filterValue == recordValue; // eslint-disable-line eqeqeq
-                        return result;
-                    }
-                )
-            );
-
+            if (filterValues) {
+                const flattenFilterValues = flattenObject(filterValues);
+                tempData = data
+                    .filter(record =>
+                        Object.entries(flattenFilterValues).every(
+                            ([filterName, filterValue]) => {
+                                const recordValue = get(record, filterName);
+                                const result = Array.isArray(recordValue)
+                                    ? Array.isArray(filterValue)
+                                        ? recordValue.some(item =>
+                                              filterValue.includes(item)
+                                          )
+                                        : recordValue.includes(filterValue)
+                                    : Array.isArray(filterValue)
+                                    ? filterValue.includes(recordValue)
+                                    : filterValue == recordValue; // eslint-disable-line eqeqeq
+                                return result;
+                            }
+                        )
+                    )
+                    .filter(filterCallback);
+            }
             const filteredLength = tempData.length;
 
             // 2. sort
@@ -224,12 +235,15 @@ export const useList = <RecordType extends RaRecord = any>(
 
     return {
         sort,
-        data: finalItems.data,
+        data: finalItems?.data,
         defaultTitle: '',
         error,
         displayedFilters,
         filterValues,
-        hasNextPage: page * perPage < finalItems.total,
+        hasNextPage:
+            finalItems?.total == null
+                ? false
+                : page * perPage < finalItems.total,
         hasPreviousPage: page > 1,
         hideFilter,
         isFetching: fetchingState,
@@ -247,7 +261,7 @@ export const useList = <RecordType extends RaRecord = any>(
         setPerPage,
         setSort,
         showFilter,
-        total: finalItems.total,
+        total: finalItems?.total,
     };
 };
 
@@ -261,6 +275,7 @@ export interface UseListOptions<RecordType extends RaRecord = any> {
     perPage?: number;
     sort?: SortPayload;
     resource?: string;
+    filterCallback?: (record: RecordType) => boolean;
 }
 
 export type UseListValue<
@@ -268,4 +283,3 @@ export type UseListValue<
 > = ListControllerResult<RecordType>;
 
 const defaultFilter = {};
-const defaultSort = { field: null, order: null };

@@ -228,4 +228,67 @@ describe('<useList />', () => {
             })
         );
     });
+
+    it('should filter array data based on the custom filter', async () => {
+        const callback = jest.fn();
+        const data = [
+            { id: 1, items: ['one', 'two'] },
+            { id: 2, items: ['three'] },
+            { id: 3, items: 'four' },
+            { id: 4, items: ['five'] },
+        ];
+
+        render(
+            <UseList
+                data={data}
+                sort={{ field: 'id', order: 'ASC' }}
+                filterCallback={record => record.id > 2}
+                callback={callback}
+            />
+        );
+
+        await waitFor(() => {
+            expect(callback).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    sort: { field: 'id', order: 'ASC' },
+                    isFetching: false,
+                    isLoading: false,
+                    data: [
+                        { id: 3, items: 'four' },
+                        { id: 4, items: ['five'] },
+                    ],
+                    error: undefined,
+                    total: 2,
+                })
+            );
+        });
+    });
+
+    it('should filter data based on a custom filter with nested objects', () => {
+        const callback = jest.fn();
+        const data = [
+            { id: 1, title: { name: 'hello' } },
+            { id: 2, title: { name: 'world' } },
+        ];
+
+        render(
+            <UseList
+                data={data}
+                filter={{ title: { name: 'world' } }}
+                sort={{ field: 'id', order: 'ASC' }}
+                callback={callback}
+            />
+        );
+
+        expect(callback).toHaveBeenCalledWith(
+            expect.objectContaining({
+                sort: { field: 'id', order: 'ASC' },
+                isFetching: false,
+                isLoading: false,
+                data: [{ id: 2, title: { name: 'world' } }],
+                error: undefined,
+                total: 1,
+            })
+        );
+    });
 });

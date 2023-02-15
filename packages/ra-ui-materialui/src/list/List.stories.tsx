@@ -1,18 +1,20 @@
 import * as React from 'react';
-import { Admin } from 'react-admin';
-import { Resource, useListContext } from 'ra-core';
+import { Admin, AutocompleteInput } from 'react-admin';
+import { CustomRoutes, Resource, useListContext } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { createMemoryHistory } from 'history';
-import { Box, Card, Stack, Typography } from '@mui/material';
+import { Box, Card, Stack, Typography, Button } from '@mui/material';
 
 import { List } from './List';
 import { Datagrid } from './datagrid';
 import { TextField } from '../field';
 import { SearchInput, TextInput } from '../input';
+import { Route } from 'react-router';
+import { Link } from 'react-router-dom';
 
 export default { title: 'ra-ui-materialui/list/List' };
 
-const dataProvider = fakeRestDataProvider({
+const data = {
     books: [
         {
             id: 1,
@@ -80,9 +82,22 @@ const dataProvider = fakeRestDataProvider({
             author: 'James Joyce',
             year: 1922,
         },
+        {
+            id: 12,
+            title: 'One Hundred Years of Solitude',
+            author: 'Gabriel García Márquez',
+            year: 1967,
+        },
+        {
+            id: 13,
+            title: 'Snow Country',
+            author: 'Yasunari Kawabata',
+            year: 1956,
+        },
     ],
     authors: [],
-});
+};
+const dataProvider = fakeRestDataProvider(data);
 
 const history = createMemoryHistory({ initialEntries: ['/books'] });
 
@@ -130,7 +145,19 @@ const BookListWithFilters = () => (
     <List
         filters={[
             <SearchInput source="q" alwaysOn />,
-            <TextInput source="title" />,
+            <AutocompleteInput
+                source="title"
+                optionValue="title"
+                optionText="title"
+                choices={data.books}
+            />,
+            <AutocompleteInput
+                source="author"
+                optionValue="author"
+                optionText="author"
+                choices={data.books}
+            />,
+            <TextInput source="year" />,
         ]}
     >
         <BookList />
@@ -289,3 +316,73 @@ export const Default = () => (
         <Resource name="books" list={BookListWithDatagrid} />
     </Admin>
 );
+
+const NewerBooks = () => (
+    <List
+        resource="books"
+        storeKey="newerBooks"
+        sort={{ field: 'year', order: 'DESC' }}
+    >
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </List>
+);
+
+const OlderBooks = () => (
+    <List
+        resource="books"
+        storeKey="olderBooks"
+        sort={{ field: 'year', order: 'ASC' }}
+    >
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </List>
+);
+
+const StoreKeyDashboard = () => (
+    <>
+        <Box>
+            <Button
+                component={Link}
+                sx={{ margin: 2 }}
+                to="/newerBooks"
+                variant="contained"
+            >
+                See newer books
+            </Button>
+            <Button
+                component={Link}
+                sx={{ margin: 2 }}
+                to="/olderBooks"
+                variant="contained"
+            >
+                See older books
+            </Button>
+        </Box>
+    </>
+);
+
+export const StoreKey = () => {
+    history.push('/');
+    return (
+        <Admin
+            dataProvider={dataProvider}
+            history={history}
+            dashboard={StoreKeyDashboard}
+        >
+            <CustomRoutes>
+                <Route path="/newerBooks" element={<NewerBooks />} />
+                <Route path="/olderBooks" element={<OlderBooks />} />
+            </CustomRoutes>
+            <Resource name="books" />
+        </Admin>
+    );
+};

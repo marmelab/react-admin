@@ -5,80 +5,39 @@ title: "Filtering the List"
 
 # Filtering the List
 
-<table><tbody><tr style="border:none">
-<td style="width:50%;border:none;">
-<a title="Filter Button/Form Combo" href="./img/list_filter.gif"><img src="./img/list_filter.gif" /></a>
-</td>
-<td style="width:50%;border:none;">
-<a title="<FilterList> Sidebar" href="./img/filter-sidebar.gif"><img src="./img/filter-sidebar.gif" /></a>
-</td>
-</tr></tbody></table>
+One of the most important features of the List page is the ability to filter the results. React-admin offers powerful filter components, and gets out of the way when you want to go further. 
 
-One of the most important features of the List page is the ability to filter the results. React-admin does its best to offer a powerful filter functionality, and to get out of the way when you want to go further. 
+## Overview
 
-The next sections explain how to use the filter functionality. And first, a few explanations about the inner workings of filters:
+<table><tbody>
+<tr style="border:none">
+    <td style="width:50%;border:none;text-align:center">
+        <a title="Filter Button/Form Combo" href="./img/list_filter.gif"><img src="./img/list_filter.gif" /></a>
+        <a href="#the-filter-buttonform-combo" style="display: block;transform: translateY(-10px);">The Filter Button/Form Combo</a>
+    </td>
+    <td style="width:50%;border:none;text-align:center">
+        <a title="<FilterList> Sidebar" href="./img/filter-sidebar.gif"><img src="./img/filter-sidebar.gif" /></a>
+        <a href="#the-filterlist-sidebar" style="display: block;transform: translateY(-10px);">The <code>&lt;FilterList&gt;</code> Sidebar</a>
+    </td>
+</tr>
+<tr style="border:none;background-color:#fff;">
+    <td style="width:50%;border:none;text-align:center">
+        <a title="Stacked Filters" href="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm">
+            <video controls autoplay muted loop width="90%" style="margin:1rem;box-shadow:0px 4px 4px 0px rgb(0 0 0 / 24%);">
+                <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4">
+                    Your browser does not support the video tag.
+            </video>
+        </a>
+        <a href="#the-stackedfilters-component" style="display: block;transform: translateY(-10px);">The <code>&lt;StackedFilters&gt;</code> Dialog</a>
+    </td>
+    <td style="width:50%;border:none;text-align:center;vertical-align:top;">
+        <a title="<Search> input" href="https://marmelab.com/ra-enterprise/modules/assets/ra-search-overview.gif"><img src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-overview.gif" /></a>
+        <a href="#global-search" style="display: block;transform: translateY(-10px);">The Global <code>&lt;Search&gt;</code></a>
+    </td>
+</tr>
+</tbody></table>
 
-- [Filter Query Parameter](#filter-query-parameter)
-- [Linking To A Pre-Filtered List](#linking-to-a-pre-filtered-list)
-
-React-admin proposes several UI components to let users see and modify filters, and gives you the tools to build custom ones.
-
-- The Filter Button/Form Combo
-  - [Usage](#the-filter-buttonform-combo)
-  - [Full-Text Search](#searchinput)
-  - [Quick Filters](#quick-filters)
-- [The `<FilterList>` Sidebar](#the-filterlist-sidebar)
-- [Saved Queries: Let Users Save Filter And Sort](#saved-queries-let-users-save-filter-and-sort)
-- [Building A Custom Filter](#building-a-custom-filter)
-
-## Filter Query Parameter
-
-React-admin uses the `filter` query parameter from the URL to determine the filters to apply to the list. To change the filters, react-admin simply changes this `filter` query parameter, and the `<List>` components fetches `dataProvider.getList()` again with the new filters.
-
-Here is a typical List URL:
-
-> https://myadmin.dev/#/posts?displayedFilters=%7B%22commentable%22%3Atrue%7D&filter=%7B%22commentable%22%3Atrue%2C%22q%22%3A%22lorem%20%22%7D&order=DESC&page=1&perPage=10&sort=published_at
-
-Once decoded, the `filter` query parameter reveals as a JSON value:
-
-```
-filter={"commentable":true,"q":"lorem "}
-```
-
-You can change the filters by updating the query parameter, e.g. using the `<Link>` component or the `useNavigate()` hook from `react-router-dom`. 
-
-**Tip**: Once a user sets a filter, react-admin persists the filter value in the application state, so that when the user comes back to the list, they should see the filtered list. That's a design choice.
-
-## Linking To A Pre-Filtered List
-
-As the filter values are taken from the URL, you can link to a pre-filtered list by setting the `filter` query parameter.
-
-For instance, if you have a list of tags, you can display a button for each category to link to the list of posts filtered by that tag:
-
-{% raw %}
-```jsx
-import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
-
-const LinkToRelatedProducts = ({ record }) => {
-    const translate = useTranslate();
-    return record ? (
-        <Button
-            color="primary"
-            component={Link}
-            to={{
-                pathname: '/posts',
-                search: `filter=${JSON.stringify({ category_id: record.id })}`,
-            }}
-        >
-            All posts with the category {record.name} ; 
-        </Button>
-    ) : null;
-};
-```
-{% endraw %}
-
-You can use this button e.g. as a child of `<Datagrid>`. You can also create a custom Menu button with that technique to link to the unfiltered list by setting the filter value to `{}`.
+React-admin offers 4 different ways to filter the list. Depending on the type of data you're displaying, the type and number of filters you have to display, and the device your users are using, you may want to use one or the other.
 
 ## The Filter Button/Form Combo
 
@@ -94,14 +53,14 @@ const postFilters = [
     <TextInput label="Title" source="title" defaultValue="Hello, World!" />,
 ];
 
-export const PostList = (props) => (
-    <List {...props} filters={postFilters}>
+export const PostList = () => (
+    <List filters={postFilters}>
         ...
     </List>
 );
 ```
 
-Elements passed as `filters` are regular inputs. That means you can build sophisticated filters based on references, array values, etc. `<List>` hides all inputs in the filter form by default, except those that have the `alwaysOn` prop.
+Elements passed as `filters` are regular inputs. That means you can build sophisticated filters based on references, array values, etc. `<List>` hides all inputs in the [`Filter Form`](./FilterForm.md) by default, except those that have the `alwaysOn` prop.
 
 **Tip**: For technical reasons, react-admin does not accept Filter inputs having both a `defaultValue` and `alwaysOn`. To set default values for always on filters, use the [`filterDefaultValues`](./List.md#filterdefaultvalues) prop of the `<List>` component instead.
 
@@ -114,7 +73,7 @@ Elements passed as `filters` are regular inputs. That means you can build sophis
 
 ![`<SearchInput>`](./img/search_input.gif)
 
-In addition to [the usual input types](./Inputs.md) (`<TextInput>`, `<SelectInput>`, `<ReferenceInput>`, etc.), you can use the `<SearchInput>` in the `filters` array. This input is designed especially for the filter form. It's like a `<TextInput resettable>` with a magnifier glass icon - exactly the type of input users look for when they want to do a full-text search. 
+In addition to [the usual input types](./Inputs.md) (`<TextInput>`, `<SelectInput>`, `<ReferenceInput>`, etc.), you can use the `<SearchInput>` in the `filters` array. This input is designed especially for the [`Filter Form`](./FilterForm.md). It's like a `<TextInput resettable>` with a magnifier glass icon - exactly the type of input users look for when they want to do a full-text search. 
 
 ```jsx
 import { SearchInput, TextInput } from 'react-admin';
@@ -161,11 +120,186 @@ const postFilters = [
 
 An alternative UI to the Filter Button/Form Combo is the FilterList Sidebar. Similar to what users usually see on e-commerce websites, it's a panel with many simple filters that can be enabled and combined using the mouse. The user experience is better than the Button/Form Combo, because the filter values are explicit, and it doesn't require typing anything in a form. But it's a bit less powerful, as only filters with a finite set of values (or intervals) can be used in the `<FilterList>`.
 
+Here is an example FilterList sidebar:
+
+{% raw %}
+```jsx
+import { SavedQueriesList, FilterLiveSearch, FilterList, FilterListItem } from 'react-admin';
+import { Card, CardContent } from '@mui/material';
+import MailIcon from '@mui/icons-material/MailOutline';
+import CategoryIcon from '@mui/icons-material/LocalOffer';
+
+export const PostFilterSidebar = () => (
+    <Card sx={{ order: -1, mr: 2, mt: 9, width: 200 }}>
+        <CardContent>
+            <SavedQueriesList />
+            <FilterLiveSearch >
+            <FilterList label="Subscribed to newsletter" icon={<MailIcon />}>
+                <FilterListItem label="Yes" value={{ has_newsletter: true }} />
+                <FilterListItem label="No" value={{ has_newsletter: false }} />
+            </FilterList>
+            <FilterList label="Category" icon={<CategoryIcon />}>
+                <FilterListItem label="Tests" value={{ category: 'tests' }} />
+                <FilterListItem label="News" value={{ category: 'news' }} />
+                <FilterListItem label="Deals" value={{ category: 'deals' }} />
+                <FilterListItem label="Tutorials" value={{ category: 'tutorials' }} />
+            </FilterList>
+        </CardContent>
+    </Card>
+);
+```
+{% endraw %}
+
+Add it to the list view using the `<List aside>` prop:
+
+```jsx
+import { PostFilterSidebar } from './PostFilterSidebar';
+
+export const PostList = () => (
+    <List aside={<PostFilterSidebar />}>
+        ...
+    </List>
+);
+```
+
+**Tip**: The `<Card sx>` prop in the `PostFilterSidebar` component above is here to put the sidebar on the left side of the screen, instead of the default right side.
+
 Check [the `<FilterList>` documentation](./FilterList.md) for more information.
 
 If you use the FilterList, you'll probably need a search input. As the FilterList sidebar is not a form, this requires a bit of extra work. Fortunately, react-admin provides a specialized search input component for that purpose: check [the `<FilterLiveSearch>` documentation](./FilterLiveSearch.md) for details.
 
 ![Filter Live Search](./img/filter-live-search.gif)
+
+Finally, a filter sidebar is the ideal place to display the user's favorite filters. Check [the `<SavedQueriesList>` documentation](./SavedQueriesList.md) for more information.
+
+![Filter Sidebar With SavedQueriesList](./img/SavedQueriesList.gif)
+
+## The `<StackedFilters>` Component
+
+<video controls autoplay muted loop width="100%">
+    <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4">
+        Your browser does not support the video tag.
+</video>
+
+Another alternative filter UI is the Stacked Filters dialog, an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> exclusive. It lets users build complex filters by combining a field, an operator, and a value. It's more powerful than the Filter Button/Form Combo, but requires more setup on the data provider.
+
+Here is an example StackedFilters configuration:
+
+```jsx
+import { 
+    List,
+    Datagrid,
+    TextField,
+    NumberField,
+    ReferenceArrayField
+    BooleanField,
+} from 'react-admin';
+import {
+    textFilter,
+    dateFilter,
+    booleanFilter
+    referenceFilter,
+    StackedFilters,
+} from '@react-admin/ra-form-layout';
+
+const postListFilters = {
+    id: textFilter({ operators: ['eq', 'neq'] }),
+    title: textFilter(),
+    published_at: dateFilter(),
+    is_public: booleanFilter(),
+    tags: referenceFilter({ reference: 'tags' }),
+};
+
+const PostList = () => (
+    <List filters={<StackedFilters config={postListFilters} />}>
+        <Datagrid>
+            <TextField source="title" />
+            <NumberField source="views" />
+            <ReferenceArrayField tags="tags" source="tag_ids" />
+            <BooleanField source="published" />
+        </Datagrid>
+    </List>
+)
+```
+
+Check the [`<StackedFilters>` documentation](./StackedFilters.md) for more information.
+
+## Global Search
+
+![ra-search basic](https://marmelab.com/ra-enterprise/modules/assets/ra-search-overview.gif)
+
+Although list filters allow to make precise queries using per-field criteria, users often prefer simpler interfaces like full-text search. After all, that's what they use every day on search engines, email clients, and in their file explorer. 
+
+If you want to display a full-text search allowing to look for any record in the admin using a single form input, check out [the `<Search>` component](./Search.md), an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> exclusive.
+
+`<Search>` can plug to any existing search engine (ElasticSearch, Lucene, or custom search engine), and lets you customize the search results to provide quick navigation to related items, turning the search engine into an "Omnibox": 
+
+![ra-search demo](https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.gif)
+
+For mode details about the global search, check the [`<Search>` documentation](./Search.md). 
+
+## Filter Query Parameter
+
+React-admin uses the `filter` query parameter from the URL to determine the filters to apply to the list. 
+
+Here is a typical List page URL in a react-admin application:
+
+> https://myadmin.dev/#/posts?displayedFilters=%7B%22commentable%22%3Atrue%7D&filter=%7B%22commentable%22%3Atrue%2C%22q%22%3A%22lorem%20%22%7D&order=DESC&page=1&perPage=10&sort=published_at
+
+Once decoded, the `filter` query parameter reveals as a JSON value:
+
+```
+filter={"commentable":true,"q":"lorem "}
+```
+
+This leads to the following data provider call:
+
+```js
+dataProvider.getList('posts', {
+    filter: { commentable: true, q: 'lorem ' },
+    pagination: { page: 1, perPage: 10 },
+    sort: { field: 'published_at', order: 'DESC' },
+});
+```
+
+When a user adds or remove a filter, react-admin changes the `filter` query parameter in the URL, and the `<List>` components fetches `dataProvider.getList()` again with the new filters.
+
+**Tip**: Once a user sets a filter, react-admin persists the filter value in the application state, so that when the user comes back to the list, they should see the filtered list. That's a design choice.
+
+**Tip**: You can change the filters programmatically by updating the query parameter, e.g. using the `<Link>` component or the `useNavigate()` hook from `react-router-dom`. 
+
+## Linking To A Pre-Filtered List
+
+As the filter values are taken from the URL, you can link to a pre-filtered list by setting the `filter` query parameter.
+
+For instance, if you have a list of tags, you can display a button for each category to link to the list of posts filtered by that tag:
+
+{% raw %}
+```jsx
+import { useTranslate, useRecordContext } from 'react-admin';
+import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
+
+const LinkToRelatedProducts = () => {
+    const record = useRecordContext();
+    const translate = useTranslate();
+    return record ? (
+        <Button
+            color="primary"
+            component={Link}
+            to={{
+                pathname: '/posts',
+                search: `filter=${JSON.stringify({ category_id: record.id })}`,
+            }}
+        >
+            All posts with the category {record.name} ; 
+        </Button>
+    ) : null;
+};
+```
+{% endraw %}
+
+You can use this button e.g. as a child of `<Datagrid>`. You can also create a custom Menu button with that technique to link to the unfiltered list by setting the filter value to `{}`.
 
 ## Filter Operators
 
@@ -251,28 +385,14 @@ const SongFilterSidebar = () => (
     </Card>
 );
 
-const SongList = props => (
-    <List {...props} aside={<SongFilterSidebar />}>
+const SongList = () => (
+    <List aside={<SongFilterSidebar />}>
         <Datagrid>
             ...
         </Datagrid>
     </List>
 );
 ```
-
-## Global Search
-
-Although list filters allow to make precise queries using per-field criteria, users often prefer simpler interfaces like full-text search. After all, that's what they use every day on search engines, email clients, and in their file explorer. 
-
-If you want to display a full-text search allowing to look for any record in the admin using a single form input, check out [ra-search](https://marmelab.com/ra-enterprise/modules/ra-search), an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> module.
-
-![ra-search basic](https://marmelab.com/ra-enterprise/modules/assets/ra-search-overview.gif)
-
-`ra-search` can plug to any existing search engine (ElasticSearch, Lucene, or custom search engine), and lets you customize the search results to provide quick navigation to related items, turning the search engine into an "Omnibox": 
-
-![ra-search demo](https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.gif)
-
-For mode details about the global search, check the [`ra-search` module](https://marmelab.com/ra-enterprise/modules/ra-search) in React-Admin Enterprise Edition. 
 
 ## Building a Custom Filter
 
@@ -284,7 +404,7 @@ For instance, by default, the filter button/form combo doesn't provide a submit 
 
 In that case, the solution is to process the filter when users click on a submit button, rather than when they type values in form inputs. React-admin doesn't provide any component for that, but it's a good opportunity to illustrate the internals of the filter functionality. We'll actually provide an alternative implementation to the Filter button/form combo.
 
-To create a custom filter UI, we'll have to override the default List Toolbar component, which will contain both a Filter Button and a Filter Form, interacting with the List filters via the ListContext.
+To create a custom filter UI, we'll have to override the default List Toolbar component, which will contain both a Filter Button and a [`Filter Form`](./FilterForm.md), interacting with the List filters via the ListContext.
 
 ### Filter Callbacks
 
@@ -331,7 +451,7 @@ Next is the filter form component, displayed only when the "main" filter is disp
 {% raw %}
 ```jsx
 import * as React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { Box, Button, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { TextInput, NullableBooleanInput, useListContext } from 'react-admin';
@@ -363,43 +483,45 @@ const PostFilterForm = () => {
     };
 
     return (
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-            <Box display="flex" alignItems="flex-end" mb={1}>
-                <Box component="span" mr={2}>
-                    {/* Full-text search filter. We don't use <SearchFilter> to force a large form input */}
-                    <TextInput
-                        resettable
-                        helperText={false}
-                        source="q"
-                        label="Search"
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment>
-                                    <SearchIcon color="disabled" />
-                                </InputAdornment>
-                            )
-                        }}
-                    />
+        <FormProvider {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+                <Box display="flex" alignItems="flex-end" mb={1}>
+                    <Box component="span" mr={2}>
+                        {/* Full-text search filter. We don't use <SearchFilter> to force a large form input */}
+                        <TextInput
+                            resettable
+                            helperText={false}
+                            source="q"
+                            label="Search"
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment>
+                                        <SearchIcon color="disabled" />
+                                    </InputAdornment>
+                                )
+                            }}
+                        />
+                    </Box>
+                    <Box component="span" mr={2}>
+                        {/* Commentable filter */}
+                        <NullableBooleanInput
+                            helperText={false}
+                            source="commentable"
+                        />
+                    </Box>
+                    <Box component="span" mr={2} mb={1.5}>
+                        <Button variant="outlined" color="primary" type="submit">
+                            Filter
+                        </Button>
+                    </Box>
+                    <Box component="span" mb={1.5}>
+                        <Button variant="outlined" onClick={resetFilter}>
+                            Close
+                        </Button>
+                    </Box>
                 </Box>
-                <Box component="span" mr={2}>
-                    {/* Commentable filter */}
-                    <NullableBooleanInput
-                        helperText={false}
-                        source="commentable"
-                    />
-                </Box>
-                <Box component="span" mr={2} mb={1.5}>
-                    <Button variant="outlined" color="primary" type="submit">
-                        Filter
-                    </Button>
-                </Box>
-                <Box component="span" mb={1.5}>
-                    <Button variant="outlined" onClick={resetFilter}>
-                        Close
-                    </Button>
-                </Box>
-            </Box>
-        </form>
+            </form>
+        </FormProvider>
     );
 };
 ```
@@ -423,8 +545,8 @@ const ListActions = () => (
     </Box>
 );
 
-export const PostList = (props) => (
-    <List {...props} actions={<ListActions />}>
+export const PostList = () => (
+    <List actions={<ListActions />}>
         ...
     </List>
 );

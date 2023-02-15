@@ -72,7 +72,7 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
                 </div>
                 <TopToolbar className={BulkActionsToolbarClasses.topToolbar}>
                     {Children.map(children, child =>
-                        isValidElement(child)
+                        isValidElement<any>(child)
                             ? cloneElement(child, {
                                   filterValues,
                                   resource,
@@ -141,7 +141,7 @@ const Root = styled('div', {
     },
 
     [`& .${BulkActionsToolbarClasses.topToolbar}`]: {
-        paddingBottom: 0,
+        paddingBottom: theme.spacing(1),
         minHeight: 'auto',
     },
 

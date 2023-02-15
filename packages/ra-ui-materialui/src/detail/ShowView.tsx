@@ -23,7 +23,7 @@ export const ShowView = (props: ShowViewProps) => {
         ...rest
     } = props;
 
-    const { defaultTitle, record } = useShowContext(props);
+    const { resource, defaultTitle, record } = useShowContext(props);
     const { hasEdit } = useResourceDefinition(props);
 
     const finalActions =
@@ -37,7 +37,11 @@ export const ShowView = (props: ShowViewProps) => {
             className={clsx('show-page', className)}
             {...sanitizeRestProps(rest)}
         >
-            <Title title={title} defaultTitle={defaultTitle} />
+            <Title
+                title={title}
+                defaultTitle={defaultTitle}
+                preferenceKey={`${resource}.show.title`}
+            />
             {finalActions !== false && finalActions}
             <div
                 className={clsx(ShowClasses.main, {

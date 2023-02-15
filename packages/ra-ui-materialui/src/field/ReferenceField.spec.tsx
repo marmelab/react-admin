@@ -6,12 +6,17 @@ import {
     CoreAdminContext,
     testDataProvider,
     useGetMany,
+    ResourceDefinitionContextProvider,
 } from 'ra-core';
 import { QueryClient } from 'react-query';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { ReferenceField } from './ReferenceField';
-import { Children, MissingReference } from './ReferenceField.stories';
+import {
+    Children,
+    EmptyWithTranslate,
+    MissingReference,
+} from './ReferenceField.stories';
 import { TextField } from './TextField';
 
 const theme = createTheme({});
@@ -38,14 +43,22 @@ describe('<ReferenceField />', () => {
             render(
                 <ThemeProvider theme={theme}>
                     <CoreAdminContext dataProvider={dataProvider}>
-                        <ReferenceField
-                            record={record}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
+                        <ResourceDefinitionContextProvider
+                            definitions={{
+                                posts: {
+                                    hasEdit: true,
+                                },
+                            }}
                         >
-                            <TextField source="title" />
-                        </ReferenceField>
+                            <ReferenceField
+                                record={record}
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                            >
+                                <TextField source="title" />
+                            </ReferenceField>
+                        </ResourceDefinitionContextProvider>
                     </CoreAdminContext>
                 </ThemeProvider>
             );
@@ -72,14 +85,22 @@ describe('<ReferenceField />', () => {
             render(
                 <ThemeProvider theme={theme}>
                     <CoreAdminContext dataProvider={dataProvider}>
-                        <ReferenceField
-                            record={record}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
+                        <ResourceDefinitionContextProvider
+                            definitions={{
+                                posts: {
+                                    hasEdit: true,
+                                },
+                            }}
                         >
-                            <TextField source="title" />
-                        </ReferenceField>
+                            <ReferenceField
+                                record={record}
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                            >
+                                <TextField source="title" />
+                            </ReferenceField>
+                        </ResourceDefinitionContextProvider>
                     </CoreAdminContext>
                 </ThemeProvider>
             );
@@ -131,14 +152,22 @@ describe('<ReferenceField />', () => {
                         dataProvider={slowDataProvider}
                         queryClient={queryClient}
                     >
-                        <ReferenceField
-                            record={record}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
+                        <ResourceDefinitionContextProvider
+                            definitions={{
+                                posts: {
+                                    hasEdit: true,
+                                },
+                            }}
                         >
-                            <TextField source="title" />
-                        </ReferenceField>
+                            <ReferenceField
+                                record={record}
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                            >
+                                <TextField source="title" />
+                            </ReferenceField>
+                        </ResourceDefinitionContextProvider>
                     </CoreAdminContext>
                 </ThemeProvider>
             );
@@ -156,14 +185,22 @@ describe('<ReferenceField />', () => {
             render(
                 <ThemeProvider theme={theme}>
                     <CoreAdminContext dataProvider={dataProvider}>
-                        <ReferenceField
-                            record={record}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
+                        <ResourceDefinitionContextProvider
+                            definitions={{
+                                posts: {
+                                    hasEdit: true,
+                                },
+                            }}
                         >
-                            <TextField source="title" />
-                        </ReferenceField>
+                            <ReferenceField
+                                record={record}
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                            >
+                                <TextField source="title" />
+                            </ReferenceField>
+                        </ResourceDefinitionContextProvider>
                     </CoreAdminContext>
                 </ThemeProvider>
             );
@@ -183,14 +220,22 @@ describe('<ReferenceField />', () => {
             render(
                 <ThemeProvider theme={theme}>
                     <CoreAdminContext dataProvider={dataProvider}>
-                        <ReferenceField
-                            record={record}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
+                        <ResourceDefinitionContextProvider
+                            definitions={{
+                                posts: {
+                                    hasEdit: true,
+                                },
+                            }}
                         >
-                            <TextField source="title" />
-                        </ReferenceField>
+                            <ReferenceField
+                                record={record}
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                            >
+                                <TextField source="title" />
+                            </ReferenceField>
+                        </ResourceDefinitionContextProvider>
                     </CoreAdminContext>
                 </ThemeProvider>
             );
@@ -207,14 +252,22 @@ describe('<ReferenceField />', () => {
             render(
                 <ThemeProvider theme={theme}>
                     <CoreAdminContext dataProvider={dataProvider}>
-                        <ReferenceField
-                            record={record}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
+                        <ResourceDefinitionContextProvider
+                            definitions={{
+                                posts: {
+                                    hasEdit: true,
+                                },
+                            }}
                         >
-                            <TextField source="title" />
-                        </ReferenceField>
+                            <ReferenceField
+                                record={record}
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                            >
+                                <TextField source="title" />
+                            </ReferenceField>
+                        </ResourceDefinitionContextProvider>
                     </CoreAdminContext>
                 </ThemeProvider>
             );
@@ -257,15 +310,58 @@ describe('<ReferenceField />', () => {
         render(
             <ThemeProvider theme={theme}>
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <RecordContextProvider value={record}>
-                        <ReferenceField
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
-                        >
-                            <TextField source="title" />
-                        </ReferenceField>
-                    </RecordContextProvider>
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: {
+                                hasEdit: true,
+                            },
+                        }}
+                    >
+                        <RecordContextProvider value={record}>
+                            <ReferenceField
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                            />
+                        </RecordContextProvider>
+                    </ResourceDefinitionContextProvider>
+                </CoreAdminContext>
+            </ThemeProvider>
+        );
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(screen.queryByRole('progressbar')).toBeNull();
+        expect(screen.getByText('#123')).not.toBeNull();
+        expect(screen.queryAllByRole('link')).toHaveLength(1);
+        expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
+            '#/posts/123'
+        );
+    });
+
+    it('should use recordRepresentation to render the related record', async () => {
+        const dataProvider = testDataProvider({
+            getMany: jest.fn().mockResolvedValue({
+                data: [{ id: 123, title: 'foo' }],
+            }),
+        });
+        render(
+            <ThemeProvider theme={theme}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: {
+                                recordRepresentation: 'title',
+                                hasEdit: true,
+                            },
+                        }}
+                    >
+                        <RecordContextProvider value={record}>
+                            <ReferenceField
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                            />
+                        </RecordContextProvider>
+                    </ResourceDefinitionContextProvider>
                 </CoreAdminContext>
             </ThemeProvider>
         );
@@ -273,7 +369,45 @@ describe('<ReferenceField />', () => {
         expect(screen.queryByRole('progressbar')).toBeNull();
         expect(screen.getByText('foo')).not.toBeNull();
         expect(screen.queryAllByRole('link')).toHaveLength(1);
-        expect(screen.queryByRole('link').getAttribute('href')).toBe(
+        expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
+            '#/posts/123'
+        );
+    });
+
+    it('should render its child component when given', async () => {
+        const dataProvider = testDataProvider({
+            getMany: jest.fn().mockResolvedValue({
+                data: [{ id: 123, title: 'foo' }],
+            }),
+        });
+        render(
+            <ThemeProvider theme={theme}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: {
+                                hasEdit: true,
+                            },
+                        }}
+                    >
+                        <RecordContextProvider value={record}>
+                            <ReferenceField
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                            >
+                                <TextField source="title" />
+                            </ReferenceField>
+                        </RecordContextProvider>
+                    </ResourceDefinitionContextProvider>
+                </CoreAdminContext>
+            </ThemeProvider>
+        );
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(screen.queryByRole('progressbar')).toBeNull();
+        expect(screen.getByText('foo')).not.toBeNull();
+        expect(screen.queryAllByRole('link')).toHaveLength(1);
+        expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
             '#/posts/123'
         );
     });
@@ -328,7 +462,7 @@ describe('<ReferenceField />', () => {
             hidden: true,
         });
         expect(ErrorIcon).not.toBeNull();
-        expect(ErrorIcon.getAttribute('aria-errormessage')).toBe('boo');
+        expect(ErrorIcon?.getAttribute('aria-errormessage')).toBe('boo');
     });
 
     it('should render a link to specified link type', async () => {
@@ -340,24 +474,67 @@ describe('<ReferenceField />', () => {
         render(
             <ThemeProvider theme={theme}>
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <ReferenceField
-                        record={record}
-                        resource="comments"
-                        source="postId"
-                        reference="posts"
-                        link="show"
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: {
+                                hasShow: true,
+                            },
+                        }}
                     >
-                        <TextField source="title" />
-                    </ReferenceField>
+                        <ReferenceField
+                            record={record}
+                            resource="comments"
+                            source="postId"
+                            reference="posts"
+                            link="show"
+                        >
+                            <TextField source="title" />
+                        </ReferenceField>
+                    </ResourceDefinitionContextProvider>
                 </CoreAdminContext>
             </ThemeProvider>
         );
         await waitFor(() =>
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
         );
-        expect(screen.queryByRole('link').getAttribute('href')).toBe(
+        expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
             '#/posts/123/show'
         );
+    });
+
+    it('should render no link when view to link to does not exist', async () => {
+        const dataProvider = testDataProvider({
+            getMany: jest.fn().mockResolvedValue({
+                data: [{ id: 123, title: 'foo' }],
+            }),
+        });
+        render(
+            <ThemeProvider theme={theme}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: {
+                                hasShow: false,
+                            },
+                        }}
+                    >
+                        <ReferenceField
+                            record={record}
+                            resource="comments"
+                            source="postId"
+                            reference="posts"
+                            link="show"
+                        >
+                            <TextField source="title" />
+                        </ReferenceField>
+                    </ResourceDefinitionContextProvider>
+                </CoreAdminContext>
+            </ThemeProvider>
+        );
+        await waitFor(() =>
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
+        );
+        expect(screen.queryAllByRole('link')).toHaveLength(0);
     });
 
     it('should render no link when link is false', async () => {
@@ -369,15 +546,23 @@ describe('<ReferenceField />', () => {
         render(
             <ThemeProvider theme={theme}>
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <ReferenceField
-                        record={record}
-                        resource="comments"
-                        source="postId"
-                        reference="posts"
-                        link={false}
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: {
+                                hasEdit: true,
+                            },
+                        }}
                     >
-                        <TextField source="title" />
-                    </ReferenceField>
+                        <ReferenceField
+                            record={record}
+                            resource="comments"
+                            source="postId"
+                            reference="posts"
+                            link={false}
+                        >
+                            <TextField source="title" />
+                        </ReferenceField>
+                    </ResourceDefinitionContextProvider>
                 </CoreAdminContext>
             </ThemeProvider>
         );
@@ -391,5 +576,11 @@ describe('<ReferenceField />', () => {
         render(<Children />);
         expect(screen.findByText('9780393966473')).not.toBeNull();
         expect(screen.findByText('novel')).not.toBeNull();
+    });
+
+    it('should translate emptyText', () => {
+        render(<EmptyWithTranslate />);
+
+        expect(screen.findByText('Not found')).not.toBeNull();
     });
 });

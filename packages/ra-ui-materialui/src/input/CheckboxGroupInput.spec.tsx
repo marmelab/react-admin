@@ -244,9 +244,12 @@ describe('<CheckboxGroupInput />', () => {
         fireEvent.click(getByLabelText('Save'));
 
         await waitFor(() => {
-            expect(handleSubmit).toHaveBeenCalledWith({
-                notifications: ['31', '42', '12'],
-            });
+            expect(handleSubmit).toHaveBeenCalledWith(
+                {
+                    notifications: ['31', '42', '12'],
+                },
+                expect.anything()
+            );
         });
     });
 
@@ -275,9 +278,12 @@ describe('<CheckboxGroupInput />', () => {
         fireEvent.click(getByLabelText('Save'));
 
         await waitFor(() => {
-            expect(handleSubmit).toHaveBeenCalledWith({
-                notifications: [31, 42, 12],
-            });
+            expect(handleSubmit).toHaveBeenCalledWith(
+                {
+                    notifications: [31, 42, 12],
+                },
+                expect.anything()
+            );
         });
     });
 

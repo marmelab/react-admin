@@ -20,9 +20,10 @@ const { data, total, isLoading, error, refetch } = useGetManyReference(
 ## Usage
 
 ```jsx
-import { useGetManyReference } from 'react-admin';
+import { useGetManyReference, useRecordContext } from 'react-admin';
 
-const PostComments = ({ record }) => {
+const PostComments = () => {
+    const record = useRecordContext();
     // fetch all comments related to the current record
     const { data, isLoading, error } = useGetManyReference(
         'comments',
@@ -51,9 +52,10 @@ If your data provider doesn't return the `total` number of records (see [Partial
 
 ```jsx
 import { useState } from 'react';
-import { useGetManyReference } from 'react-admin';
+import { useGetManyReference, useRecordContext } from 'react-admin';
 
-const PostComments = ({ record }) => {
+const PostComments = () => {
+    const record = useRecordContext();
     const [page, setPage] = useState(1);
     const { data, isLoading, pageInfo, error } = useGetManyReference(
         'comments',

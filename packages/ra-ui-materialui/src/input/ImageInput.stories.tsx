@@ -7,22 +7,26 @@ import { Create } from '../detail';
 import { SimpleForm } from '../form';
 import { ImageInput } from './ImageInput';
 import { ImageField } from '../field';
+import { required } from 'ra-core';
+import { FormInspector } from './common.stories';
 
 export default { title: 'ra-ui-materialui/input/ImageInput' };
 
 export const Basic = () => (
     <Wrapper>
         <ImageInput source="image">
-            <ImageField source="attachment" title="title" />
+            <ImageField source="src" title="title" />
         </ImageInput>
+        <FormInspector name="image" />
     </Wrapper>
 );
 
 export const LimitByFileType = () => (
     <Wrapper>
         <ImageInput source="image" accept="image/png">
-            <ImageField source="attachment" title="title" />
+            <ImageField source="src" title="title" />
         </ImageInput>
+        <FormInspector name="image" />
     </Wrapper>
 );
 
@@ -35,10 +39,11 @@ export const CustomPreview = () => (
                     borderColor: 'blue',
                     borderStyle: 'solid',
                 }}
-                source="attachment"
+                source="src"
                 title="title"
             />
         </ImageInput>
+        <FormInspector name="image" />
     </Wrapper>
 );
 
@@ -47,6 +52,7 @@ export const Multiple = () => (
         <ImageInput source="attachments" multiple>
             <ImageField source="src" title="title" />
         </ImageInput>
+        <FormInspector name="attachments" />
     </Wrapper>
 );
 
@@ -55,14 +61,25 @@ export const FullWidth = () => (
         <ImageInput source="attachment" fullWidth>
             <ImageField source="src" title="title" />
         </ImageInput>
+        <FormInspector name="attachment" />
     </Wrapper>
 );
 
 export const Disabled = () => (
     <Wrapper>
-        <ImageInput source="attachment" disabled>
+        <ImageInput source="attachment" options={{ disabled: true }}>
             <ImageField source="src" title="title" />
         </ImageInput>
+        <FormInspector name="attachment" />
+    </Wrapper>
+);
+
+export const Required = () => (
+    <Wrapper>
+        <ImageInput source="attachment" isRequired validate={required()}>
+            <ImageField source="src" title="title" />
+        </ImageInput>
+        <FormInspector name="attachment" />
     </Wrapper>
 );
 

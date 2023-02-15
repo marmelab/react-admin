@@ -7,22 +7,17 @@ import {
     HtmlHTMLAttributes,
 } from 'react';
 import PropTypes from 'prop-types';
-import {
-    Form,
-    FormProps,
-    MutationMode,
-    RaRecord,
-    RedirectionSideEffect,
-} from 'ra-core';
+import { Form, FormProps, MutationMode, RaRecord } from 'ra-core';
 import get from 'lodash/get';
 
 import { TabbedFormView, TabbedFormViewProps } from './TabbedFormView';
 import { useFormRootPath } from './useFormRootPath';
+import { FormTab } from './FormTab';
 
 /**
  * Form layout where inputs are divided by tab, one input per line.
  *
- * Pass FormTab components as children.
+ * Pass <TabbedForm.Tab> components as children.
  *
  * @example
  *
@@ -30,7 +25,6 @@ import { useFormRootPath } from './useFormRootPath';
  * import {
  *     Edit,
  *     TabbedForm,
- *     FormTab,
  *     Datagrid,
  *     TextField,
  *     DateField,
@@ -45,22 +39,22 @@ import { useFormRootPath } from './useFormRootPath';
  * export const PostEdit = (props) => (
  *     <Edit {...props}>
  *         <TabbedForm>
- *             <FormTab label="summary">
+ *             <TabbedForm.Tab label="summary">
  *                 <TextInput disabled label="Id" source="id" />
  *                 <TextInput source="title" validate={required()} />
  *                 <TextInput multiline source="teaser" validate={required()} />
- *             </FormTab>
- *             <FormTab label="body">
+ *             </TabbedForm.Tab>
+ *             <TabbedForm.Tab label="body">
  *                 <RichTextInput source="body" validate={required()} label={false} />
- *             </FormTab>
- *             <FormTab label="Miscellaneous">
+ *             </TabbedForm.Tab>
+ *             <TabbedForm.Tab label="Miscellaneous">
  *                 <TextInput label="Password (if protected post)" source="password" type="password" />
  *                 <DateInput label="Publication date" source="published_at" />
  *                 <NumberInput source="average_note" validate={[ number(), minValue(0) ]} />
  *                 <BooleanInput label="Allow comments?" source="commentable" defaultValue />
  *                 <TextInput disabled label="Nb views" source="views" />
- *             </FormTab>
- *             <FormTab label="comments">
+ *             </TabbedForm.Tab>
+ *             <TabbedForm.Tab label="comments">
  *                 <ReferenceManyField reference="comments" target="post_id" label={false}>
  *                     <Datagrid>
  *                         <TextField source="body" />
@@ -68,7 +62,7 @@ import { useFormRootPath } from './useFormRootPath';
  *                         <EditButton />
  *                     </Datagrid>
  *                 </ReferenceManyField>
- *             </FormTab>
+ *             </TabbedForm.Tab>
  *         </TabbedForm>
  *     </Edit>
  * );
@@ -77,7 +71,6 @@ import { useFormRootPath } from './useFormRootPath';
  * @prop {ReactElement[]} FormTab elements
  * @prop {Object} defaultValues
  * @prop {Function} validate
- * @prop {string} redirect
  * @prop {ReactElement} toolbar The element displayed at the bottom of the form, containing the SaveButton
  *
  * @param {Props} props
@@ -87,10 +80,35 @@ export const TabbedForm = (props: TabbedFormProps) => {
 
     return (
         <Form formRootPathname={formRootPathname} {...props}>
-            <TabbedFormView formRootPathname={formRootPathname} {...props} />
+            <TabbedFormView
+                formRootPathname={formRootPathname}
+                {...sanitizeRestProps(props)}
+            />
         </Form>
     );
 };
+
+TabbedForm.Tab = FormTab;
+
+const sanitizeRestProps = ({
+    criteriaMode,
+    defaultValues,
+    delayError,
+    formRootPathname,
+    mode,
+    noValidate,
+    onSubmit,
+    record,
+    resolver,
+    reValidateMode,
+    sanitizeEmptyValues,
+    shouldFocusError,
+    shouldUnregister,
+    shouldUseNativeValidation,
+    validate,
+    warnWhenUnsavedChanges,
+    ...rest
+}: TabbedFormProps) => rest;
 
 TabbedForm.propTypes = {
     children: PropTypes.node,
@@ -99,11 +117,6 @@ TabbedForm.propTypes = {
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     // @ts-ignore
     record: PropTypes.object,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
     saving: PropTypes.bool,
     validate: PropTypes.func,
 };
@@ -121,7 +134,6 @@ export interface TabbedFormProps
     formRootPathname?: string;
     mutationMode?: MutationMode;
     record?: RaRecord;
-    redirect?: RedirectionSideEffect;
     resource?: string;
     syncWithLocation?: boolean;
     tabs?: ReactElement;
