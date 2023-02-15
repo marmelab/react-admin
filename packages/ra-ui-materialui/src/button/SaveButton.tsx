@@ -154,7 +154,6 @@ interface Props<
         CreateParams<RecordType> | UpdateParams<RecordType>
     >;
     transform?: TransformData;
-    saving?: boolean;
     variant?: string;
 }
 
@@ -169,7 +168,6 @@ SaveButton.propTypes = {
     className: PropTypes.string,
     invalid: PropTypes.bool,
     label: PropTypes.string,
-    saving: PropTypes.bool,
     variant: PropTypes.oneOf(['text', 'outlined', 'contained']),
     icon: PropTypes.element,
     alwaysEnable: PropTypes.bool,
