@@ -368,7 +368,9 @@ Server-side validation is supported out of the box. It requires that the dataPro
 {
     body: {
         errors: {
-            source: 'error message',
+            title: 'An article with this title already exists. The title must be unique.',
+            date: 'The date is required',
+            tags: { message: "The tag 'agrriculture' doesn't exist" },
         }
     }
 }
@@ -378,11 +380,42 @@ Server-side validation is supported out of the box. It requires that the dataPro
 
 **Tip**: The returned validation errors might have any validation format we support (simple strings or object with message and args) for each key.
 
-**Tip**: If your data provider leverages our [`httpClient`](https://marmelab.com/react-admin/DataProviderWriting.html#example-rest-implementation), this will be handled automatically when your server returns an invalid response with a json body containing the `errors` key.
-
-Here's an example of a dataProvider not using our `httpClient`:
+**Tip**: If your data provider leverages React Admin's [`httpClient`](https://marmelab.com/react-admin/DataProviderWriting.html#example-rest-implementation), all error response bodies are wrapped and thrown as `HttpError`. This means your API only needs to return an invalid response with a json body containing the `errors` key.
 
 ```js
+import { fetchUtils } from "react-admin";
+
+const httpClient = fetchUtils.fetchJson;
+
+const apiUrl = 'https://my.api.com/';
+/*
+  Example response from the API when there are validation errors:
+
+  {
+    "errors": {
+      "title": "An article with this title already exists. The title must be unique.",
+      "date": "The date is required",
+      "tags": { "message": "The tag 'agrriculture' doesn't exist" },
+    }
+  }
+*/
+
+const myDataProvider = {
+    create: (resource, params) =>
+        httpClient(`${apiUrl}/${resource}`, {
+            method: 'POST',
+            body: JSON.stringify(params.data),
+        }).then(({ json }) => ({
+            data: { ...params.data, id: json.id },
+        })),
+}
+```
+
+**Tip:** If you are not using React Admin's `httpClient`, you can still wrap errors in an `HttpError` to return them with the correct shape:
+
+```js
+import { HttpError } from 'react-admin'
+
 const myDataProvider = {
     create: async (resource, { data }) => {
         const response = await fetch(`${process.env.API_URL}/${resource}`, {
@@ -391,11 +424,20 @@ const myDataProvider = {
         });
 
         const body = response.json();
+        /*
+            body should be something like:
+            {
+                errors: {
+                    title: "An article with this title already exists. The title must be unique.",
+                    date: "The date is required",
+                    tags: { message: "The tag 'agrriculture' doesn't exist" },
+                }
+            }
+        */
 
         if (status < 200 || status >= 300) {
-            // Here, we expect the body to contains an `errors` key
             throw new HttpError(
-                (body && body.message) || statusText,
+                (body && body.message) || status,
                 status,
                 body
             );
