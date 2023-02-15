@@ -43,6 +43,16 @@ describe('<ArrayField />', () => {
         );
     });
 
+    it('should not fail when value is null', () => {
+        render(
+            <Wrapper>
+                <ArrayField source="arr" record={{ id: 123, arr: null }}>
+                    <DummyIterator />
+                </ArrayField>
+            </Wrapper>
+        );
+    });
+
     it('should render the alternative empty component', () => {
         const { queryByText } = render(
             <Wrapper>

@@ -75,7 +75,7 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 export const ArrayField: FC<ArrayFieldProps> = memo(props => {
     const { children, resource, source } = props;
     const record = useRecordContext(props);
-    const data = get(record, source, emptyArray);
+    const data = get(record, source, emptyArray) || emptyArray;
 
     return (
         <ListContextProvider
