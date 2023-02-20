@@ -117,7 +117,7 @@ export const Notification = (props: NotificationProps) => {
             {...rest}
             {...options}
         >
-            {message && typeof message !== 'string' && message}
+            {message && typeof message !== 'string' ? message : null}
         </StyledSnackbar>
     );
 };
