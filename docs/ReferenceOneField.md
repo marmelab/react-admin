@@ -80,7 +80,7 @@ For instance, if you want to render both the genre and the ISBN for a book:
 
 You can also use `<ReferenceOneField>` in a one-to-many relationship. In that case, the first record will be displayed. The `filter` prop becomes super useful in that case, as it allows you to select the appropriate record to display.
 
-for instance, if a product has prices in many currencies, and you only want to render the price in euros, you can use:
+For instance, if a product has prices in many currencies, and you only want to render the price in euros, you can use:
 
 {% raw %}
 ```jsx
