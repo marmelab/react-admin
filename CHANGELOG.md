@@ -1,5 +1,18 @@
 # Changelog
 
+## v4.8.1
+
+* Fix `<Notification>` raises a MUI warning when message is not a string ([#8666](https://github.com/marmelab/react-admin/pull/8666)) ([slax57](https://github.com/slax57))
+* Fix `<ArrayField>` breaks when value is `null` ([#8659](https://github.com/marmelab/react-admin/pull/8659)) ([slax57](https://github.com/slax57))
+* Fix `<SimpleForm>` save toolbar hides content on mobile ([#8656](https://github.com/marmelab/react-admin/pull/8656)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix bad type deprecatino on `onError` type ([#8668](https://github.com/marmelab/react-admin/pull/8668)) ([djhi](https://github.com/djhi))
+* [TypeScript] Fix bad casing on `onError` type ([#8667](https://github.com/marmelab/react-admin/pull/8667)) ([djhi](https://github.com/djhi))
+* [Doc] Explain `<ReferenceOneField>` usage with one-to-many relationships ([#8660](https://github.com/marmelab/react-admin/pull/8660)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix Remix installation instructions to avoid react-router error ([#8655](https://github.com/marmelab/react-admin/pull/8655)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix typos, snippets and file extensions in Tutorial ([#8607](https://github.com/marmelab/react-admin/pull/8607)) ([erikvanderwerf](https://github.com/erikvanderwerf))
+* [Doc] Improve `<CheckboxGroupInput translateChoice>` code example ([#8657](https://github.com/marmelab/react-admin/pull/8657)) ([WiXSL](https://github.com/WiXSL))
+* [Demo] Fix Datagrid shows gutter on last row ([#8661](https://github.com/marmelab/react-admin/pull/8661)) ([slax57](https://github.com/slax57))
+
 ## v4.8.0
 
 * Add ability for `<List>` children to handle the empty state ([#8585](https://github.com/marmelab/react-admin/pull/8585)) ([djhi](https://github.com/djhi))
