@@ -237,4 +237,4 @@ To fix this error, make sure to use the same version as react-admin, and dedupli
 }
 ```
 
-This may also happen inside a [Remix](https://remix.run/) application. See [Setting up react-admin for Remix](./Remix.md#setting-up-react-admin) for intructions to overcome that problem.
+This may also happen inside a [Remix](https://remix.run/) application. See [Setting up react-admin for Remix](./Remix.md#setting-up-react-admin) for instructions to overcome that problem.
