@@ -99,5 +99,12 @@ export const lightTheme = {
                 },
             },
         },
+        MuiTableRow: {
+            styleOverrides: {
+                root: {
+                    '&:last-child td': { border: 0 },
+                },
+            },
+        },
     },
 };
