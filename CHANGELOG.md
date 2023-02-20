@@ -2,10 +2,10 @@
 
 ## v4.8.1
 
-* Fix `<Notification>` raises a MUI warning when message is not a string ([#8666](https://github.com/marmelab/react-admin/pull/8666)) ([slax57](https://github.com/slax57))
+* Fix `<Notification>` raises a MUI warning when message is a string ([#8666](https://github.com/marmelab/react-admin/pull/8666)) ([slax57](https://github.com/slax57))
 * Fix `<ArrayField>` breaks when value is `null` ([#8659](https://github.com/marmelab/react-admin/pull/8659)) ([slax57](https://github.com/slax57))
 * Fix `<SimpleForm>` save toolbar hides content on mobile ([#8656](https://github.com/marmelab/react-admin/pull/8656)) ([fzaninotto](https://github.com/fzaninotto))
-* [TypeScript] Fix bad type deprecatino on `onError` type ([#8668](https://github.com/marmelab/react-admin/pull/8668)) ([djhi](https://github.com/djhi))
+* [TypeScript] Fix bad type deprecation on `onError` type ([#8668](https://github.com/marmelab/react-admin/pull/8668)) ([djhi](https://github.com/djhi))
 * [TypeScript] Fix bad casing on `onError` type ([#8667](https://github.com/marmelab/react-admin/pull/8667)) ([djhi](https://github.com/djhi))
 * [Doc] Explain `<ReferenceOneField>` usage with one-to-many relationships ([#8660](https://github.com/marmelab/react-admin/pull/8660)) ([fzaninotto](https://github.com/fzaninotto))
 * [Doc] Fix Remix installation instructions to avoid react-router error ([#8655](https://github.com/marmelab/react-admin/pull/8655)) ([fzaninotto](https://github.com/fzaninotto))
