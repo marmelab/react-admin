@@ -229,3 +229,36 @@ Name of the field carrying the relationship on the referenced resource. For inst
   </Datagrid>
 </ReferenceManyField>
 ```
+
+## Rendering Only One Record
+
+Although you are in a one-to-many relationship, you may want to render only one record. For instance, in a book with several reviews, you may want to display only the last. Or, for a product with many prices, you may want to display only the one in euros. 
+
+In these cases, use [the `<ReferenceOneField>` component](./ReferenceOneField.md) instead of `<ReferenceManyField>`.
+
+{% raw %}
+```jsx
+<ReferenceOneField
+    label="Latest review"
+    reference="book_reviews"
+    target="book_id"
+    sort={{ field: "createdAt", order: "DESC" }}
+>
+    <RatingField />
+    <TextField source="body" />
+</ReferenceOneField>
+```
+{% endraw %}
+
+{% raw %}
+```jsx
+<ReferenceOneField
+    label="Price (€)"
+    reference="product_prices"
+    target="product_id"
+    filter={{ currency: "EUR" }}
+>
+    <NumberField source="price" />
+</ReferenceOneField>
+```
+{% endraw %}
