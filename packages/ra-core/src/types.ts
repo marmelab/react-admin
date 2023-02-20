@@ -249,8 +249,8 @@ export type OnSuccess = (
 ) => void;
 
 // @deprecated - use OnError instead
-export type onError = (error?: any, variables?: any, context?: any) => void;
-export type OnError = onError;
+export type OnError = (error?: any, variables?: any, context?: any) => void;
+export type onError = OnError;
 
 export type TransformData = (
     data: any,
