@@ -38,7 +38,7 @@ const myAuthProvider = {
 export const authProvider = addRefreshAuthToAuthProvider(myAuthProvider, refreshAuth);
 ```
 
-Then, inject the decorated provider in the `<Admin>` component:
+Then, pass the decorated provider to the `<Admin>` component
 
 ```jsx
 // in src/App.js
