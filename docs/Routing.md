@@ -224,7 +224,9 @@ or
 
 These errors can happen if you added `react-router` and/or `react-router-dom` to your dependencies, and didn't use the same version as react-admin. In that case, your application has two versions of react-router, and the calls you add can't see the react-admin routing context.
 
-To fix this error, make sure to use the same version as react-admin, and deduplicate them using yarn's `resolutions` or npm's `overrides`.
+You can use the `npm list react-router` and `npm list react-router-dom` commands to check which versions are installed.
+
+If there are duplicates, you need to make sure to use only the same version as react-admin. You can deduplicate them using yarn's `resolutions` or npm's `overrides`.
 
 ```js
 // in packages.json
