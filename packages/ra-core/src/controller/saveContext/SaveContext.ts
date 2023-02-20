@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 import {
     RaRecord,
-    onError,
+    OnError,
     OnSuccess,
     TransformData,
     MutationMode,
@@ -23,7 +23,7 @@ export type SaveHandler<RecordType> = (
     record: Partial<RecordType>,
     callbacks?: {
         onSuccess?: OnSuccess;
-        onError?: onError;
+        onError?: OnError;
         transform?: TransformData;
     }
 ) => Promise<void | RecordType> | Record<string, string>;
