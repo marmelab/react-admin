@@ -89,22 +89,11 @@ export const MyLayout = (props) => {
 }
 ```
 
-**Tip*: When using `useLocation`, you may get an error saying:
+**Tip**: When using `useLocation`, you may get an error saying:
 
 > `useLocation()` may be used only in the context of a `<Router>` component
 
-... or a location that doesn't reflect the actual app location. It's caused by duplicate `react-router` packages in your dependencies. If you added `react-router` and/or `react-router-dom` to your dependencies, make sure to use the same version as react-admin, and deduplicate them using yarn's `resolutions` or npm's `overrides`.
-
-```js
-// in packages.json
-{
-    // ...
-  "resolutions": {
-    "react-router-dom": "6.7.0",
-    "react-router": "6.7.0"
-  }
-}
-```
+... or a location that doesn't reflect the actual app location. See [the troubleshooting section](#troubleshooting) for a solution.
 
 ## Adding Custom Pages
 
@@ -209,4 +198,45 @@ export const StoreAdmin = () => (
 );
 ```
 
- This will let react-admin build absolute URLs including the sub path.
+This will let react-admin build absolute URLs including the sub path.
+
+## Troubleshooting
+
+When using custom routing configurations, you may encounter strange error messages like:
+
+> `useLocation()` may be used only in the context of a `<Router>` component
+
+or
+
+> `useNavigate()` may be used only in the context of a `<Router>` component
+
+or 
+
+> `useRoutes()` may be used only in the context of a `<Router>` component
+
+or 
+
+> `useHref()` may be used only in the context of a `<Router>` component.
+
+or
+
+> `<Route>` may be used only in the context of a `<Router>` component
+
+These errors can happen if you added `react-router` and/or `react-router-dom` to your dependencies, and didn't use the same version as react-admin. In that case, your application has two versions of react-router, and the calls you add can't see the react-admin routing context.
+
+You can use the `npm list react-router` and `npm list react-router-dom` commands to check which versions are installed.
+
+If there are duplicates, you need to make sure to use only the same version as react-admin. You can deduplicate them using yarn's `resolutions` or npm's `overrides`.
+
+```js
+// in packages.json
+{
+    // ...
+  "resolutions": {
+    "react-router-dom": "6.7.0",
+    "react-router": "6.7.0"
+  }
+}
+```
+
+This may also happen inside a [Remix](https://remix.run/) application. See [Setting up react-admin for Remix](./Remix.md#setting-up-react-admin) for instructions to overcome that problem.
