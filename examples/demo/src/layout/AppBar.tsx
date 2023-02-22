@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { AppBar, Logout, UserMenu, useTranslate } from 'react-admin';
+import {
+    AppBar,
+    Logout,
+    UserMenu,
+    useTranslate,
+    useUserMenu,
+} from 'react-admin';
 import { Link } from 'react-router-dom';
 import {
     Box,
@@ -16,6 +22,8 @@ import Logo from './Logo';
 
 const ConfigurationMenu = React.forwardRef((props, ref) => {
     const translate = useTranslate();
+    const { onClose } = useUserMenu();
+
     return (
         <MenuItem
             component={Link}
@@ -23,6 +31,7 @@ const ConfigurationMenu = React.forwardRef((props, ref) => {
             ref={ref}
             {...props}
             to="/configuration"
+            onClick={onClose}
         >
             <ListItemIcon>
                 <SettingsIcon />
