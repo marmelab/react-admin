@@ -2890,7 +2890,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 +           ref={ref}
             // It's important to pass the props to allow MUI to manage the keyboard navigation
             {...props}
-            component={Link}
++           component={Link}
             to="/configuration"
 -            onClick={props.onClick}
 +            onClick={onClose}
