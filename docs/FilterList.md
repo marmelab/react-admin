@@ -185,3 +185,65 @@ const CustomerList = props => (
 {% endraw %}
 
 **Tip**: The `<FilterList>` Sidebar is not a good UI for small screens. You can choose to hide it on small screens (as in the previous example). A good tradeoff is to use `<FilterList>` on large screens, and the Filter Button/Form combo on Mobile.
+
+## Customize How Filters Are Applied
+
+Sometimes, you may want to customize how filters are applied. For instance, by allowing users to select multiple items such as selecting multiple categories. The `<FilterListItem>` component accepts two props for this purpose:
+
+- `isSelected`: accept a function that receive the item value and the currently applied filters. It must return a boolean.
+- `toggleFilter`: accept a function that receive the item value and the currently applied filters. It is called when user toggle a filter and must return the new filters to apply.
+
+Here's how you can allow users to filter items having one of several categories:
+
+```jsx
+import { FilterList, FilterListItem } from 'react-admin';
+import CategoryIcon from '@mui/icons-material/LocalOffer';
+
+export const CategoriesFilter = () => {
+    const isSelected = (value, filters) => {
+        const category = filters.category || [];
+        return category.includes(value.category);
+    };
+
+    const toggleFilter = (value, filters) => {
+        const category = filters.category || [];
+        return {
+            ...filters,
+            category: category.includes(value.category)
+                // Remove the category if it was already present
+                ? category.filter(v => v !== value.category)
+                // Add the category if it wasn't already present
+                : [...category, value.category],
+        };
+    };
+
+    return (
+        <FilterList label="Categories" icon={<CategoryIcon />}>
+            <FilterListItem
+                label="Tests"
+                value={{ category: 'tests' }}
+                isSelected={isSelected}
+                toggleFilter={toggleFilter}
+            />
+            <FilterListItem
+                label="News"
+                value={{ category: 'news' }}
+                isSelected={isSelected}
+                toggleFilter={toggleFilter}
+            />
+            <FilterListItem
+                label="Deals"
+                value={{ category: 'deals' }}
+                isSelected={isSelected}
+                toggleFilter={toggleFilter}
+            />
+            <FilterListItem
+                label="Tutorials"
+                value={{ category: 'tutorials' }}
+                isSelected={isSelected}
+                toggleFilter={toggleFilter}
+            />
+        </FilterList>
+    )
+}
+```
