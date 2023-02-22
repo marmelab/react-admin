@@ -10,7 +10,12 @@ import {
     ListItemSecondaryAction,
 } from '@mui/material';
 import CancelIcon from '@mui/icons-material/CancelOutlined';
-import { useTranslate, useListFilterContext, shallowEqual } from 'ra-core';
+import {
+    useTranslate,
+    useListFilterContext,
+    shallowEqual,
+    useEvent,
+} from 'ra-core';
 import matches from 'lodash/matches';
 import pickBy from 'lodash/pickBy';
 
@@ -141,36 +146,26 @@ const arePropsEqual = (prevProps, nextProps) =>
  * );
  */
 export const FilterListItem = memo((props: FilterListItemProps) => {
-    const { label, value, ...rest } = props;
+    const {
+        label,
+        value,
+        isSelected: getIsSelected = DefaultIsSelected,
+        toggleFilter: userToggleFilter = DefaultToggleFilter,
+        ...rest
+    } = props;
     const { filterValues, setFilters } = useListFilterContext();
     const translate = useTranslate();
+    const toggleFilter = useEvent(userToggleFilter);
 
-    const isSelected = matches(
-        pickBy(value, val => typeof val !== 'undefined')
-    )(filterValues);
+    // We can't wrap this function with useEvent as it is called in the render phase
+    const isSelected = getIsSelected(value, filterValues);
 
-    const addFilter = () => {
-        setFilters({ ...filterValues, ...value }, null, false);
-    };
-
-    const removeFilter = () => {
-        const keysToRemove = Object.keys(value);
-        const filters = Object.keys(filterValues).reduce(
-            (acc, key) =>
-                keysToRemove.includes(key)
-                    ? acc
-                    : { ...acc, [key]: filterValues[key] },
-            {}
-        );
-
-        setFilters(filters, null, false);
-    };
-
-    const toggleFilter = () => (isSelected ? removeFilter() : addFilter());
+    const handleClick = () =>
+        setFilters(toggleFilter(value, filterValues), null, false);
 
     return (
         <StyledListItem
-            onClick={toggleFilter}
+            onClick={handleClick}
             selected={isSelected}
             disablePadding
             {...rest}
@@ -192,7 +187,7 @@ export const FilterListItem = memo((props: FilterListItemProps) => {
                     <ListItemSecondaryAction
                         onClick={event => {
                             event.stopPropagation();
-                            toggleFilter();
+                            handleClick();
                         }}
                     >
                         <IconButton size="small">
@@ -204,6 +199,28 @@ export const FilterListItem = memo((props: FilterListItemProps) => {
         </StyledListItem>
     );
 }, arePropsEqual);
+
+const DefaultIsSelected = (value, filters) =>
+    matches(pickBy(value, val => typeof val !== 'undefined'))(filters);
+
+const DefaultToggleFilter = (value, filters) => {
+    const isSelected = matches(
+        pickBy(value, val => typeof val !== 'undefined')
+    )(filters);
+
+    if (isSelected) {
+        const keysToRemove = Object.keys(value);
+        return Object.keys(filters).reduce(
+            (acc, key) =>
+                keysToRemove.includes(key)
+                    ? acc
+                    : { ...acc, [key]: filters[key] },
+            {}
+        );
+    }
+
+    return { ...filters, ...value };
+};
 
 const PREFIX = 'RaFilterListItem';
 
@@ -228,4 +245,6 @@ const StyledListItem = styled(ListItem, {
 export interface FilterListItemProps extends Omit<ListItemProps, 'value'> {
     label: string | ReactElement;
     value: any;
+    toggleFilter?: (value: any, filters: any) => any;
+    isSelected?: (value: any, filters: any) => boolean;
 }
