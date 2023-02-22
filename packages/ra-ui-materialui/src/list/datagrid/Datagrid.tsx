@@ -337,7 +337,7 @@ export interface DatagridProps<RecordType extends RaRecord = any>
     isRowSelectable?: (record: RecordType) => boolean;
     isRowExpandable?: (record: RecordType) => boolean;
     optimized?: boolean;
-    rowClick?: string | RowClickFunction;
+    rowClick?: string | RowClickFunction | false;
     rowStyle?: (record: RecordType, index: number) => any;
     size?: 'medium' | 'small';
     // can be injected when using the component without context

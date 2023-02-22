@@ -655,9 +655,10 @@ export const PostList = () => (
 * "show" to redirect to the show vue
 * "expand" to open the `expand` panel
 * "toggleSelection" to trigger the `onToggleItem` function
-* a function `(id, resource, record) => path` to redirect to a custom path
+* `false` to do nothing
+* a function `(id, resource, record) => path` that may return any of the above values or a custom path
 
-**Tip**: If you pass a function, it can return `edit`, `show`; or a router path. This allows to redirect to either `edit` or `show` after checking a condition on the record. For example:
+**Tip**: If you pass a function, it can return `edit`, `show`; `false` or a router path. This allows to redirect to either `edit` or `show` after checking a condition on the record. For example:
 
 ```js
 const postRowClick = (id, resource, record) => record.editable ? 'edit' : 'show';
