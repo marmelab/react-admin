@@ -163,7 +163,7 @@ describe('<FilterListItem/>', () => {
             ).map(item => item.textContent)
         ).toEqual(['News', 'Tutorials']);
 
-        screen.getByText(/"category":.*\[.*"tutorials",.*"news".*\]/);
+        screen.getByText(JSON.stringify({ category: ['tutorials', 'news'] }));
 
         screen.getByText('News').click();
 
@@ -174,7 +174,7 @@ describe('<FilterListItem/>', () => {
                 )
             ).map(item => item.textContent)
         ).toEqual(['Tutorials']);
-        screen.getByText(/"category":.*\[.*"tutorials".*\]/);
+        screen.getByText(JSON.stringify({ category: ['tutorials'] }));
 
         screen.getByText('Tutorials').click();
 
@@ -185,6 +185,17 @@ describe('<FilterListItem/>', () => {
                 )
             ).map(item => item.textContent)
         ).toEqual([]);
-        screen.getByText(/{}/);
+        expect(screen.getAllByText(JSON.stringify({})).length).toBe(2);
+
+        screen.getByText('Tests').click();
+
+        expect(
+            Array.from(
+                container.querySelectorAll<HTMLElement>(
+                    '[data-selected="true"]'
+                )
+            ).map(item => item.textContent)
+        ).toEqual(['Tests']);
+        screen.getByText(JSON.stringify({ category: ['tests'] }));
     });
 });
