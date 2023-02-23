@@ -151,6 +151,9 @@ const FilterValue = () => {
         <Box sx={{ margin: '1em' }}>
             <Typography>Filter values:</Typography>
             <pre>{JSON.stringify(filterValues, null, 2)}</pre>
+            <pre style={{ display: 'none' }}>
+                {JSON.stringify(filterValues)}
+            </pre>
         </Box>
     );
 };
