@@ -190,8 +190,8 @@ const CustomerList = props => (
 
 Sometimes, you may want to customize how filters are applied. For instance, by allowing users to select multiple items such as selecting multiple categories. The `<FilterListItem>` component accepts two props for this purpose:
 
-- `isSelected`: accept a function that receive the item value and the currently applied filters. It must return a boolean.
-- `toggleFilter`: accept a function that receive the item value and the currently applied filters. It is called when user toggle a filter and must return the new filters to apply.
+- `isSelected`: accepts a function that receives the item value and the currently applied filters. It must return a boolean.
+- `toggleFilter`: accepts a function that receives the item value and the currently applied filters. It is called when user toggles a filter and must return the new filters to apply.
 
 Here's how you can allow users to filter items having one of several categories:
 
