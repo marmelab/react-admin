@@ -247,3 +247,5 @@ export const CategoriesFilter = () => {
     )
 }
 ```
+
+![Cumulative filter list items](./img/filter-list-cumulative.gif)
