@@ -155,47 +155,30 @@ describe('<FilterListItem/>', () => {
     it('should allow to customize isSelected and toggleFilter', () => {
         const { container } = render(<Cumulative />);
 
-        expect(
-            Array.from(
-                container.querySelectorAll<HTMLElement>(
-                    '[data-selected="true"]'
-                )
-            ).map(item => item.textContent)
-        ).toEqual(['News', 'Tutorials']);
-
+        expect(getSelectedItemsLabels(container)).toEqual([
+            'News',
+            'Tutorials',
+        ]);
         screen.getByText(JSON.stringify({ category: ['tutorials', 'news'] }));
 
         screen.getByText('News').click();
 
-        expect(
-            Array.from(
-                container.querySelectorAll<HTMLElement>(
-                    '[data-selected="true"]'
-                )
-            ).map(item => item.textContent)
-        ).toEqual(['Tutorials']);
+        expect(getSelectedItemsLabels(container)).toEqual(['Tutorials']);
         screen.getByText(JSON.stringify({ category: ['tutorials'] }));
 
         screen.getByText('Tutorials').click();
 
-        expect(
-            Array.from(
-                container.querySelectorAll<HTMLElement>(
-                    '[data-selected="true"]'
-                )
-            ).map(item => item.textContent)
-        ).toEqual([]);
+        expect(getSelectedItemsLabels(container)).toEqual([]);
         expect(screen.getAllByText(JSON.stringify({})).length).toBe(2);
 
         screen.getByText('Tests').click();
 
-        expect(
-            Array.from(
-                container.querySelectorAll<HTMLElement>(
-                    '[data-selected="true"]'
-                )
-            ).map(item => item.textContent)
-        ).toEqual(['Tests']);
+        expect(getSelectedItemsLabels(container)).toEqual(['Tests']);
         screen.getByText(JSON.stringify({ category: ['tests'] }));
     });
 });
+
+const getSelectedItemsLabels = (container: HTMLElement) =>
+    Array.from(
+        container.querySelectorAll<HTMLElement>('[data-selected="true"]')
+    ).map(item => item.textContent);
