@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { ReactElement } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
@@ -8,10 +9,21 @@ import { PageTitleConfigurable } from './PageTitleConfigurable';
 
 export const Title = (props: TitleProps) => {
     const { defaultTitle, title, preferenceKey, ...rest } = props;
-    const container =
+    const [container, setContainer] = useState(() =>
         typeof document !== 'undefined'
             ? document.getElementById('react-admin-title')
-            : null;
+            : null
+    );
+
+    // on first mount, we don't have the container yet, so we wait for it
+    useEffect(() => {
+        setContainer(container => {
+            if (container) return container;
+            return typeof document !== 'undefined'
+                ? document.getElementById('react-admin-title')
+                : null;
+        });
+    }, []);
 
     if (!container) return null;
 

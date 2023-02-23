@@ -1,15 +1,13 @@
 import * as React from 'react';
-import { memo } from 'react';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { AppBar, Layout, InspectorButton } from 'react-admin';
-import { Typography } from '@mui/material';
+import { AppBar, Layout, InspectorButton, TitlePortal } from 'react-admin';
 
-const MyAppBar = memo(props => (
-    <AppBar {...props}>
-        <Typography flex="1" variant="h6" id="react-admin-title" />
+const MyAppBar = () => (
+    <AppBar>
+        <TitlePortal />
         <InspectorButton />
     </AppBar>
-));
+);
 
 export default props => (
     <>

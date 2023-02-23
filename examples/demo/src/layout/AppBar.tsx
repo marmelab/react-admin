@@ -34,7 +34,7 @@ const ConfigurationMenu = React.forwardRef((props, ref) => {
             onClick={onClose}
         >
             <ListItemIcon>
-                <SettingsIcon />
+                <SettingsIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText>{translate('pos.configuration')}</ListItemText>
         </MenuItem>
@@ -47,17 +47,12 @@ const CustomUserMenu = () => (
     </UserMenu>
 );
 
-const CustomAppBar = (props: any) => {
+const CustomAppBar = () => {
     const isLargeEnough = useMediaQuery<Theme>(theme =>
         theme.breakpoints.up('sm')
     );
     return (
-        <AppBar
-            {...props}
-            color="secondary"
-            elevation={1}
-            userMenu={<CustomUserMenu />}
-        >
+        <AppBar color="secondary" elevation={1} userMenu={<CustomUserMenu />}>
             <Typography
                 variant="h6"
                 color="inherit"

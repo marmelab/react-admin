@@ -577,7 +577,7 @@ const ConfigurationMenu = React.forwardRef((props, ref) => {
             to="/configuration"
         >
             <ListItemIcon>
-                <SettingsIcon />
+                <SettingsIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText>
                Configuration
@@ -603,8 +603,8 @@ const SwitchLanguage = forwardRef((props, ref) => {
                 onClose(); // Close the menu
             }}
         >
-            <ListItemIcon sx={{ minWidth: 5 }}>
-                <LanguageIcon />
+            <ListItemIcon>
+                <LanguageIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText>
                 Switch Language
@@ -613,15 +613,15 @@ const SwitchLanguage = forwardRef((props, ref) => {
     );
 });
 
-const MyUserMenu = props => (
-    <UserMenu {...props}>
+const MyUserMenu = () => (
+    <UserMenu>
         <ConfigurationMenu />
         <SwitchLanguage />
         <Logout />
     </UserMenu>
 );
 
-const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
+const MyAppBar = () => <AppBar userMenu={<MyUserMenu />} />;
 
 const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 ```
@@ -799,31 +799,17 @@ Here is an example customization for `<AppBar>` to include a company logo in the
 ```jsx
 // in src/MyAppBar.js
 import * as React from 'react';
-import { AppBar } from 'react-admin';
-import Typography from '@mui/material/Typography';
+import { AppBar, TitlePortal } from 'react-admin';
+import Box from '@mui/material/Box';
 
 import Logo from './Logo';
 
-const MyAppBar = (props) => (
-    <AppBar
-        sx={{
-            "& .RaAppBar-title": {
-                flex: 1,
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-            },
-        }}
-        {...props}
-    >
-        <Typography
-            variant="h6"
-            color="inherit"
-            className={classes.title}
-            id="react-admin-title"
-        />
+const MyAppBar = () => (
+    <AppBar>
+        <TitlePortal />
+        <Box flex={1} /> 
         <Logo />
-        <span className={classes.spacer} />
+        <Box flex={1} /> 
     </AppBar>
 );
 
@@ -863,21 +849,6 @@ const App = () => (
 
 ## Replacing The AppBar
 
-By default, React-admin uses [MUI's `<AppBar>` component](https://mui.com/api/app-bar/) together with a custom container that internally uses a [Slide](https://mui.com/api/slide) to hide the `AppBar` on scroll. Here is an example of how to change this container with any component:
-
-```jsx
-// in src/MyAppBar.js
-import * as React from 'react';
-import { Fragment } from 'react';
-import { AppBar } from 'react-admin';
-
-const MyAppBar = props => (
-    <AppBar {...props} container={Fragment} />
-);
-
-export default MyAppBar;
-```
-
 For more drastic changes of the top component, you will probably want to create an `<AppBar>` from scratch instead of just passing children to react-admin's `<AppBar>`. Here is an example top bar rebuilt from scratch:
 
 ```jsx
@@ -887,8 +858,8 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-const MyAppBar = props => (
-    <AppBar {...props}>
+const MyAppBar = () => (
+    <AppBar>
         <Toolbar>
             <Typography variant="h6" id="react-admin-title" />
         </Toolbar>

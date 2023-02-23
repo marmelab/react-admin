@@ -48,9 +48,11 @@ export const Logout: FunctionComponent<
             {...rest}
         >
             <ListItemIcon className={LogoutClasses.icon}>
-                {icon ? icon : <ExitIcon />}
+                {icon ? icon : <ExitIcon fontSize="small" />}
             </ListItemIcon>
-            <ListItemText>{translate('ra.auth.logout')}</ListItemText>
+            <ListItemText>
+                {translate('ra.auth.logout', { _: 'Logout' })}
+            </ListItemText>
         </StyledMenuItem>
     );
 });
@@ -71,9 +73,7 @@ const StyledMenuItem = styled(MenuItem, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    color: theme.palette.text.secondary,
-
-    [`& .${LogoutClasses.icon}`]: { minWidth: theme.spacing(5) },
+    [`& .${LogoutClasses.icon}`]: {},
 }));
 
 export interface LogoutProps {

@@ -135,7 +135,7 @@ This property accepts the following subclasses:
 | `&.RaMenu-open`   | Applied the menu when it's open      |
 | `&.RaMenu-closed` | Applied to the menu when it's closed |
 
-To override the style of `<Layout>` using the [MUI style overrides](https://mui.com/customization/theme-components/), use the `RaMenu` key.
+To override the style of `<Menu>` using the [MUI style overrides](https://mui.com/customization/theme-components/), use the `RaMenu` key.
 
 ## `<Menu.Item>`
 
