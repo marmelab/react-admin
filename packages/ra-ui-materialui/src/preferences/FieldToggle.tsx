@@ -20,7 +20,7 @@ export const FieldToggle = props => {
     }, []);
 
     const handleDragStart = () => {
-        document.ondragover = handleDocumentDragOver;
+        document.addEventListener('dragover', handleDocumentDragOver);
     };
 
     const handleDrag = event => {
@@ -51,7 +51,7 @@ export const FieldToggle = props => {
         const selectedItem = event.target;
         onMove(selectedItem.dataset.index, dropIndex.current);
         selectedItem.classList.remove('drag-active');
-        document.ondragover = null;
+        document.removeEventListener('dragover', handleDocumentDragOver);
     };
 
     const handleDragOver = event => {
