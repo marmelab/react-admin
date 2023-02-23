@@ -12,7 +12,7 @@ title: "Index"
 **- A -**
 * [`<AccordionForm>`](./AccordionForm.md)<img class="icon" src="./img/premium.svg" />
 * [`<Admin>`](./Admin.md)
-* [`<AppBar>`](./Theming.md#customizing-the-appbar-content)
+* [`<AppBar>`](./AppBar.md)
 * [`<ArrayField>`](./ArrayField.md)
 * [`<ArrayInput>`](./ArrayInput.md)
 * [`<Authenticated>`](./Authenticated.md)

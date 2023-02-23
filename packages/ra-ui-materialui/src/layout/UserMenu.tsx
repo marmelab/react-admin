@@ -167,6 +167,7 @@ const Root = styled('div', {
 })(({ theme }) => ({
     [`& .${UserMenuClasses.userButton}`]: {
         textTransform: 'none',
+        marginInlineStart: theme.spacing(0.5),
     },
 
     [`& .${UserMenuClasses.avatar}`]: {
