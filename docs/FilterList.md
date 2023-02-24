@@ -193,7 +193,7 @@ Sometimes, you may want to customize how filters are applied. For instance, by a
 - `isSelected`: accepts a function that receives the item value and the currently applied filters. It must return a boolean.
 - `toggleFilter`: accepts a function that receives the item value and the currently applied filters. It is called when user toggles a filter and must return the new filters to apply.
 
-Here's how you can allow users to filter items having one of several categories:
+Here's how you could implement cumulative filters, e.g. allowing users to filter items having one of several categories:
 
 ```jsx
 import { FilterList, FilterListItem } from 'react-admin';
