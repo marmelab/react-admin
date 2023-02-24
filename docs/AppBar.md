@@ -7,7 +7,10 @@ title: "The AppBar Component"
 
 The default react-admin layout renders a horizontal app bar at the top, which is rendered by the `<AppBar>` component.
 
-![standard layout](./img/layout-component.gif)
+<video controls autoplay muted loop width="100%">
+  <source src="./img/AppBar.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
 
 By default, the `<AppBar>` component displays:
 
@@ -83,7 +86,32 @@ const MyAppBar = () => <AppBar alwaysOn />;
 
 ## `children`
 
-The `<AppBar>` component accepts a `children` prop, which is displayed in the central part of the app bar. This is useful to display a logo or a search bar, for example.
+The `<AppBar>` component accepts a `children` prop, which is displayed in the central part of the app bar. This is useful to add buttons to the app bar for instance, like a light/dark theme switcher.
+
+```jsx
+// in src/MyAppBar.js
+import { 
+    AppBar,
+    TitlePortal,
+    ToggleThemeButton,
+    defaultTheme
+} from 'react-admin';
+
+const darkTheme = { palette: { mode: 'dark' } };
+
+export const MyAppBar = () => (
+    <AppBar>
+        <TitlePortal />
+        <ToggleThemeButton lightTheme={defaultTheme} darkTheme={darkTheme} />
+    </AppBar>
+);
+```
+
+![App bar with a toggle theme button](./img/AppBar-children.png)
+
+**Tip**: Whats the `<TitlePortal>`? It's a placeholder for the page title, that components in the page can fill using the `<Title>` component. `<Title>` uses a [React Portal](https://reactjs.org/docs/portals.html) under the hood. `<TitlePortal>` takes all the available space in the app bar, so it "pushes" the following children to the right.
+ 
+If you omit `<PagePortal>`, `<AppBAr>` will no longer display the page title. This can be done on purpose, e.g. if you want to render something completely different in the AppBar, like a company logo and a search engine:
 
 ```jsx
 // in src/MyAppBar.js
@@ -95,29 +123,13 @@ import { Logo } from './Logo';
 
 const MyAppBar = () => (
     <AppBar>
+        <Box component="span" flex={1} />
         <Logo />
         <Box component="span" flex={1} />
         <Search />
-        <Box component="span" flex={1} />
     </AppBar>
 );
 ```
-
-The above example removes the page title from the app bar. Why? Page components like `<List>` and `<Edit>` set the page title via a [React Portal](https://reactjs.org/docs/portals.html). The default `<AppBar>` child is a component called `<TitlePortal>`, which renders this title portal. So if you want to keep the page title in the app bar, you must include the `<TitlePortal>` component in the children.
-
-```jsx
-// in src/MyAppBar.js
-import { AppBar, TitlePortal } from 'react-admin';
-
-const MyAppBar = () => (
-    <AppBar>
-        <TitlePortal />
-        {/* Your custom appbar content here */}
-    </AppBar>
-);
-```
-
-**Tip**: The `<TitlePortal>` component takes all the available space in the app bar, so it "pushes" the following children to the right.
 
 ## `color`
 
@@ -131,6 +143,8 @@ import { AppBar } from 'react-admin';
 
 export const MyAppBar = () => <AppBar color="primary" />;
 ```
+
+![App bar in primary color](./img/AppBar-color.png)
 
 ## `sx`: CSS API
 
@@ -213,6 +227,12 @@ export const MyAppBar = () => (
 
 If your app uses [authentication](./Authentication.md), the `<AppBar>` component displays a button to display the user menu on the right side. By default, the user menu only contains a logout button.
 
+<video controls autoplay muted loop width="100%">
+  <source src="./img/AppBar-user-menu.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
+
 The content of the user menu depends on the return value of `authProvider.getIdentity()`. The user menu icon renders an anonymous avatar, or the `avatar` property of the identity object if present. If the identity object contains a `fullName` property, it is displayed after the avatar. 
 
 You can customize the user menu by passing a `userMenu` prop to the `<AppBar>` component.
@@ -285,6 +305,47 @@ export const MyCustomPage = () => (
 
 **Tip**: The `<Title>` component uses a [React Portal](https://reactjs.org/docs/portals.html) to modify the title in the app bar. This is why you need to [include the `<TitlePortal>` component](#children) when you customize the `<AppBar>` children.
 
+## Displaying The Language Menu
+
+The language menu only appears if you use the [i18n](./Translation.md) feature, and if you have more than one possible language.
+
+The `<AppBar>` calls [`i18nProvider.getLocales()`](./TranslationSetup.md#supporting-multiple-languages) to get the list of available languages. If this list has more than one item, it displays a language menu button on the right side of the app bar.
+
+This means that all you have to do to display the language menu is to setup the i18n provider correctly. For instance, if you're using `ra-i18n-polyglot`:
+
+```jsx
+// in src/i18nProvider.js
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import en from 'ra-language-english';
+import fr from 'ra-language-french';
+
+const translations = { en, fr };
+
+export const i18nProvider = polyglotI18nProvider(
+    locale => translations[locale],
+    'en', // default locale
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' }
+    ],
+);
+```
+
+Or if you're defining your `i18nProvider` by hand:
+
+```jsx
+// in src/i18nProvider.js
+export const i18nProvider = {
+    translate: () => {/* ... */},
+    changeLocale: () => {/* ... */},
+    getLocale: () => 'en',
+    getLocales: () => [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' },
+    ],
+};
+```
+
 ## Adding Buttons
 
 To add buttons to the app bar, you can use the `<AppBar>` [`children` prop](#children).
@@ -314,7 +375,9 @@ export const MyAppBar = () => (
 
 ## Adding a Search Input
 
-A common use case for app bar customization is to add a site-wide search engine. The `<Search>` component is a good starting point for this:
+A common use case for app bar customization is to add a site-wide search engine. The `<Search>` component is a good starting point for this.
+
+![ra-search](https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.gif)
 
 ```jsx
 // in src/MyAppBar.jsx

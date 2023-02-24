@@ -7,53 +7,45 @@ import {
     ListItemIcon,
     ListItemText,
     TextField,
+    Skeleton,
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { MemoryRouter } from 'react-router';
 import { I18nContextProvider, AuthContext } from 'ra-core';
 
+import { AppBar } from './AppBar';
+import { Title } from './Title';
+import { TitlePortal } from './TitlePortal';
+import { UserMenu } from './UserMenu';
+import { useUserMenu } from './useUserMenu';
 import { defaultTheme } from '../defaultTheme';
 import {
     ToggleThemeButton,
     RefreshIconButton,
     LocalesMenuButton,
 } from '../button';
-import { AppBar } from './AppBar';
-import { Title } from './Title';
-import { UserMenu } from './UserMenu';
-import { useUserMenu } from './useUserMenu';
 import { Logout } from '../auth';
-import { TitlePortal } from '..';
 
 export default {
     title: 'ra-ui-materialui/layout/AppBar',
 };
 
-const DummyList = () => (
-    <ul>
-        <li>January</li>
-        <li>February</li>
-        <li>March</li>
-        <li>April</li>
-        <li>May</li>
-        <li>June</li>
-        <li>July</li>
-        <li>August</li>
-        <li>September</li>
-        <li>October</li>
-        <li>November</li>
-        <li>December</li>
-    </ul>
-);
-
 const Content = () => (
-    <Box mt={8}>
-        <DummyList />
-        <DummyList />
-        <DummyList />
-        <DummyList />
-        <DummyList />
+    <Box mt={7}>
+        <Skeleton
+            variant="text"
+            width="auto"
+            sx={{ fontSize: '2rem', mx: 2 }}
+            animation={false}
+        />
+        <Skeleton
+            variant="rectangular"
+            width="auto"
+            height={1500}
+            sx={{ mx: 2 }}
+            animation={false}
+        />
     </Box>
 );
 
@@ -129,7 +121,7 @@ export const WithLocales = () => (
         }}
     >
         <Wrapper>
-            <AppBar alwaysOn />
+            <AppBar />
         </Wrapper>
     </I18nContextProvider>
 );
@@ -251,7 +243,7 @@ export const Complete = () => (
                         { locale: 'en', name: 'English' },
                         { locale: 'fr', name: 'Français' },
                     ],
-                    translate: x => x,
+                    translate: (x, options) => options?._ ?? x,
                     changeLocale: () => Promise.resolve(),
                 }}
             >
