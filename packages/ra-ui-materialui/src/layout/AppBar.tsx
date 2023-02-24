@@ -32,14 +32,7 @@ import { LocalesMenuButton } from '../button';
  *
  * const MyAppBar = () => (
  *   <AppBar>
- *     <Typography
- *       flex="1"
- *       textOverflow="ellipsis"
- *       whiteSpace="nowrap"
- *       overflow="hidden"
- *       variant="h6"
- *       id="react-admin-title"
- *     />
+ *     <TitlePortal />
  *     <MyCustomButton />
  *   </AppBar>
  * );
