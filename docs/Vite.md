@@ -70,7 +70,7 @@ body {
 }
 ```
 
-Finally, add the `Roboto` font to your `index.html` file:
+Next, add the `Roboto` font to your `index.html` file:
 
 ```diff
 // in ./index.html
@@ -91,6 +91,33 @@ Finally, add the `Roboto` font to your `index.html` file:
   </body>
 </html>
 ```
+
+**Tip:** You can also install the `Roboto` font locally by following the instructions from the [MUI starter guide](https://mui.com/material-ui/getting-started/installation/#roboto-font).
+
+Finally, add the following line to the `index.html` file:
+
+```diff
+// in ./index.html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React Admin</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
++   <script>window.global = window</script>
+    <script type="module" src="/src/index.tsx"></script>
+  </body>
+</html>
+```
+
+This helps increase the compatibility of some dependencies used by React Admin with Vite.
 
 Now, start the server with `yarn dev`, browse to `http://localhost:5173/`, and you should see the working admin:
 

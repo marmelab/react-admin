@@ -115,6 +115,8 @@ Lastly, add the `Roboto` font to the `index.html` file:
 </html>
 ```
 
+**Tip:** You can also install the `Roboto` font locally by following the instructions from the [MUI starter guide](https://mui.com/material-ui/getting-started/installation/#roboto-font).
+
 The `<App>` component renders an `<Admin>` component, which is the root component of a react-admin application. This component expects a `dataProvider` prop - a function capable of fetching data from an API. Since there is no standard for data exchanges between computers, you will probably have to write a custom provider to connect react-admin to your own APIs - but we'll dive into Data Providers later. For now, let's take advantage of the `ra-data-json-server` data provider, which speaks the same REST dialect as JSONPlaceholder.
 
 Now it's time to add features!
