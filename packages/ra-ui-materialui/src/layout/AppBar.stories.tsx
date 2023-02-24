@@ -6,6 +6,7 @@ import {
     MenuItem,
     ListItemIcon,
     ListItemText,
+    TextField,
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { QueryClientProvider, QueryClient } from 'react-query';
@@ -23,6 +24,7 @@ import { Title } from './Title';
 import { UserMenu } from './UserMenu';
 import { useUserMenu } from './useUserMenu';
 import { Logout } from '../auth';
+import { TitlePortal } from '..';
 
 export default {
     title: 'ra-ui-materialui/layout/AppBar',
@@ -274,5 +276,33 @@ export const Complete = () => (
                 <Title title='Post "Lorem Ipsum Sic Dolor amet"' />
             </I18nContextProvider>
         </AuthContext.Provider>
+    </Wrapper>
+);
+
+export const WithSearch = () => (
+    <Wrapper>
+        <AppBar>
+            <TitlePortal />
+            <TextField
+                name="search"
+                variant="outlined"
+                size="small"
+                placeholder="Search"
+                sx={{ '& .MuiInputBase-root': { color: 'inherit' } }}
+            />
+        </AppBar>
+    </Wrapper>
+);
+
+export const Children = () => (
+    <Wrapper>
+        <AppBar>
+            <TitlePortal />
+            <ToggleThemeButton
+                darkTheme={{ palette: { mode: 'dark' } }}
+                lightTheme={{ palette: { mode: 'light' } }}
+            />
+            <Title title="Custom title" />
+        </AppBar>
     </Wrapper>
 );
