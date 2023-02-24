@@ -121,7 +121,7 @@ const MyAppBar = () => (
 
 ## `color`
 
-React-admin's `<AppBar>` renders a MUI `<AppBar>`, which supports a `color` prop top set the app bar color depending on the theme. By defaulmt, the app bar color is set to the `secondary` theme color.
+React-admin's `<AppBar>` renders a MUI `<AppBar>`, which supports a `color` prop top set the app bar color depending on the theme. By default, the app bar color is set to the `secondary` theme color.
 
 This means you can set the app bar color to 'default', 'inherit', 'primary', 'secondary', 'transparent', or any string.
 
@@ -164,7 +164,7 @@ To override the style of `<AppBar>` using the [MUI style overrides](https://mui.
 
 ## `toolbar`
 
-By defautl, the `<AppBar>` renders two buttons in addition to the user menu: the language menu and the refresh button.
+By default, the `<AppBar>` renders two buttons in addition to the user menu: the language menu and the refresh button.
 
 If you want to reorder or remove these buttons, you can customize the toolbar by passing a `toolbar` prop.
 
@@ -213,7 +213,7 @@ export const MyAppBar = () => (
 
 If your app uses [authentication](./Authentication.md), the `<AppBar>` component displays a button to display the user menu on the right side. By default, the user menu only contains a logout button.
 
-The appearance of the user menu depends on the return value of `authProvider.getIdentity()`. The user menu icon renders an anonymous avatar, or the `avatar` property of the identity object if present. If the identity object contains a `fullName` property, it is displayed after the avatar. 
+The content of the user menu depends on the return value of `authProvider.getIdentity()`. The user menu icon renders an anonymous avatar, or the `avatar` property of the identity object if present. If the identity object contains a `fullName` property, it is displayed after the avatar. 
 
 You can customize the user menu by passing a `userMenu` prop to the `<AppBar>` component.
 
