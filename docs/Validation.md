@@ -362,7 +362,7 @@ const CustomerCreate = () => (
 
 ## Server-Side Validation
 
-Server-side validation is supported out of the box. It requires that the dataProvider throws an error with the following shape:
+Server-side validation is supported out of the box for `pessimistic` mode only. It requires that the dataProvider throws an error with the following shape:
 
 ```
 {
