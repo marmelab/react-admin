@@ -236,7 +236,7 @@ It's up to you to decide when to redirect users to the third party authenticatio
 
 [Refresh tokens](https://oauth.net/2/refresh-tokens/) are an important security mechanism. In order to leverage them, you should decorate the `dataProvider` and the `authProvider` so that they can check whether the authentication must be refreshed and actually refresh it.
 
-You can use the [`addRefreshAuthToDataProvider`](addRefreshAuthToDataProvider.md) and [`addRefreshAuthToAuthProvider`](./addRefreshAuthToAuthProvider.md) functions for this purpose. They accept a `dataProvider` or `authProvider` respectively and a function that should refresh the authentication token if necessary:
+You can use the [`addRefreshAuthToDataProvider`](./addRefreshAuthToDataProvider.md) and [`addRefreshAuthToAuthProvider`](./addRefreshAuthToAuthProvider.md) functions for this purpose. They accept a `dataProvider` or `authProvider` respectively and a function that should refresh the authentication token if necessary:
 
 ```jsx
 // in src/refreshAuth.js
