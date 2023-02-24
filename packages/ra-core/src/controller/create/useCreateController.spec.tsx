@@ -13,6 +13,7 @@ import {
     SaveContextProvider,
     useRegisterMutationMiddleware,
 } from '../saveContext';
+import { DataProvider } from '../..';
 
 describe('useCreateController', () => {
     describe('getRecordFromLocation', () => {
@@ -501,5 +502,34 @@ describe('useCreateController', () => {
             expect.any(Object),
             expect.any(Function)
         );
+    });
+
+    it('should return errors from the create call', async () => {
+        const create = jest.fn().mockImplementationOnce(() => {
+            return Promise.reject({ body: { errors: { foo: 'invalid' } } });
+        });
+        const dataProvider = ({
+            create,
+        } as unknown) as DataProvider;
+        let saveCallback;
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <CreateController {...defaultProps}>
+                    {({ save, record }) => {
+                        saveCallback = save;
+                        return <div />;
+                    }}
+                </CreateController>
+            </CoreAdminContext>
+        );
+        await new Promise(resolve => setTimeout(resolve, 10));
+        let errors;
+        await act(async () => {
+            errors = await saveCallback({ foo: 'bar' });
+        });
+        expect(errors).toEqual({ foo: 'invalid' });
+        expect(create).toHaveBeenCalledWith('posts', {
+            data: { foo: 'bar' },
+        });
     });
 });

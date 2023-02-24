@@ -12,6 +12,7 @@ import {
     useRefresh,
     UseGetOneHookValue,
     UseUpdateMutateParams,
+    HttpError,
 } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import {
@@ -123,7 +124,11 @@ export const useEditController = <
     const [update, { isLoading: saving }] = useUpdate<
         RecordType,
         MutationOptionsError
-    >(resource, recordCached, { ...otherMutationOptions, mutationMode });
+    >(resource, recordCached, {
+        ...otherMutationOptions,
+        mutationMode,
+        returnPromise: mutationMode === 'pessimistic',
+    });
 
     const save = useCallback(
         (
@@ -144,57 +149,65 @@ export const useEditController = <
                           previousData: recordCached.previousData,
                       })
                     : data
-            ).then((data: Partial<RecordType>) => {
+            ).then(async (data: Partial<RecordType>) => {
                 const mutate = getMutateWithMiddlewares(update);
-                return mutate(
-                    resource,
-                    { id, data, meta: mutationMeta },
-                    {
-                        onSuccess: async (data, variables, context) => {
-                            if (onSuccessFromSave) {
-                                return onSuccessFromSave(
-                                    data,
-                                    variables,
-                                    context
-                                );
-                            }
 
-                            if (onSuccess) {
-                                return onSuccess(data, variables, context);
-                            }
+                try {
+                    await mutate(
+                        resource,
+                        { id, data, meta: mutationMeta },
+                        {
+                            onSuccess: async (data, variables, context) => {
+                                if (onSuccessFromSave) {
+                                    return onSuccessFromSave(
+                                        data,
+                                        variables,
+                                        context
+                                    );
+                                }
 
-                            notify('ra.notification.updated', {
-                                type: 'info',
-                                messageArgs: { smart_count: 1 },
-                                undoable: mutationMode === 'undoable',
-                            });
-                            redirect(redirectTo, resource, data.id, data);
-                        },
-                        onError: onErrorFromSave
-                            ? onErrorFromSave
-                            : onError
-                            ? onError
-                            : (error: Error | string) => {
-                                  notify(
-                                      typeof error === 'string'
-                                          ? error
-                                          : error.message ||
-                                                'ra.notification.http_error',
-                                      {
-                                          type: 'error',
-                                          messageArgs: {
-                                              _:
-                                                  typeof error === 'string'
-                                                      ? error
-                                                      : error && error.message
-                                                      ? error.message
-                                                      : undefined,
-                                          },
-                                      }
-                                  );
-                              },
+                                if (onSuccess) {
+                                    return onSuccess(data, variables, context);
+                                }
+
+                                notify('ra.notification.updated', {
+                                    type: 'info',
+                                    messageArgs: { smart_count: 1 },
+                                    undoable: mutationMode === 'undoable',
+                                });
+                                redirect(redirectTo, resource, data.id, data);
+                            },
+                            onError: onErrorFromSave
+                                ? onErrorFromSave
+                                : onError
+                                ? onError
+                                : (error: Error | string) => {
+                                      notify(
+                                          typeof error === 'string'
+                                              ? error
+                                              : error.message ||
+                                                    'ra.notification.http_error',
+                                          {
+                                              type: 'error',
+                                              messageArgs: {
+                                                  _:
+                                                      typeof error === 'string'
+                                                          ? error
+                                                          : error &&
+                                                            error.message
+                                                          ? error.message
+                                                          : undefined,
+                                              },
+                                          }
+                                      );
+                                  },
+                        }
+                    );
+                } catch (error) {
+                    if ((error as HttpError).body?.errors != null) {
+                        return (error as HttpError).body.errors;
                     }
-                );
+                }
             }),
         [
             id,

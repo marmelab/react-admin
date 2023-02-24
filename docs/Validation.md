@@ -362,52 +362,88 @@ const CustomerCreate = () => (
 
 ## Server-Side Validation
 
-You can use the errors returned by the dataProvider mutation as a source for the validation. In order to display the validation errors, a custom `save` function needs to be used:
+Server-side validation is supported out of the box for `pessimistic` mode only. It requires that the dataProvider throws an error with the following shape:
 
-{% raw %}
-```jsx
-import * as React from 'react';
-import { useCallback } from 'react';
-import { Create, SimpleForm, TextInput, useCreate, useRedirect, useNotify } from 'react-admin';
+```
+{
+    body: {
+        errors: {
+            title: 'An article with this title already exists. The title must be unique.',
+            date: 'The date is required',
+            tags: { message: "The tag 'agrriculture' doesn't exist" },
+        }
+    }
+}
+```
 
-export const UserCreate = () => {
-    const redirect = useRedirect();
-    const notify = useNotify();
+**Tip**: The shape of the returned validation errors must match the form shape: each key needs to match a `source` prop.
 
-    const [create] = useCreate();
-    const save = useCallback(
-        async values => {
-            try {
-                await create(
-                    'users',
-                    { data: values },
-                    { returnPromise: true }
-                );
-                notify('ra.notification.created', {
-                    type: 'info',
-                    messageArgs: { smart_count: 1 },
-                });
-                redirect('list');
-            } catch (error) {
-                if (error.body.errors) {
-                    // The shape of the returned validation errors must match the shape of the form
-                    return error.body.errors;
+**Tip**: The returned validation errors might have any validation format we support (simple strings, translation strings or translation objects with a `message` attribute) for each key.
+
+**Tip**: If your data provider leverages React Admin's [`httpClient`](https://marmelab.com/react-admin/DataProviderWriting.html#example-rest-implementation), all error response bodies are wrapped and thrown as `HttpError`. This means your API only needs to return an invalid response with a json body containing the `errors` key.
+
+```js
+import { fetchUtils } from "react-admin";
+
+const httpClient = fetchUtils.fetchJson;
+
+const apiUrl = 'https://my.api.com/';
+/*
+  Example response from the API when there are validation errors:
+
+  {
+    "errors": {
+      "title": "An article with this title already exists. The title must be unique.",
+      "date": "The date is required",
+      "tags": { "message": "The tag 'agrriculture' doesn't exist" },
+    }
+  }
+*/
+
+const myDataProvider = {
+    create: (resource, params) =>
+        httpClient(`${apiUrl}/${resource}`, {
+            method: 'POST',
+            body: JSON.stringify(params.data),
+        }).then(({ json }) => ({
+            data: { ...params.data, id: json.id },
+        })),
+}
+```
+
+**Tip:** If you are not using React Admin's `httpClient`, you can still wrap errors in an `HttpError` to return them with the correct shape:
+
+```js
+import { HttpError } from 'react-admin'
+
+const myDataProvider = {
+    create: async (resource, { data }) => {
+        const response = await fetch(`${process.env.API_URL}/${resource}`, {
+            method: 'POST',
+            body: JSON.stringify(data),
+        });
+
+        const body = response.json();
+        /*
+            body should be something like:
+            {
+                errors: {
+                    title: "An article with this title already exists. The title must be unique.",
+                    date: "The date is required",
+                    tags: { message: "The tag 'agrriculture' doesn't exist" },
                 }
             }
-        },
-        [create, notify, redirect]
-    );
+        */
 
-    return (
-        <Create>
-            <SimpleForm onSubmit={save}>
-                <TextInput label="First Name" source="firstName" />
-                <TextInput label="Age" source="age" />
-            </SimpleForm>
-        </Create>
-    );
-};
+        if (status < 200 || status >= 300) {
+            throw new HttpError(
+                (body && body.message) || status,
+                status,
+                body
+            );
+        }
+
+        return body;
+    }
+}
 ```
-{% endraw %}
-
-**Tip**: The shape of the returned validation errors must correspond to the form: a key needs to match a `source` prop.
