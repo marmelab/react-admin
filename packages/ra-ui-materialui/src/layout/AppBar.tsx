@@ -16,7 +16,7 @@ import { SidebarToggleButton } from './SidebarToggleButton';
 import { LoadingIndicator } from './LoadingIndicator';
 import { UserMenu } from './UserMenu';
 import { HideOnScroll } from './HideOnScroll';
-import { TitlePortal } from '..';
+import { TitlePortal } from './TitlePortal';
 import { LocalesMenuButton } from '../button';
 
 /**
