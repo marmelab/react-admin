@@ -22,7 +22,7 @@ By default, the `<AppBar>` component displays:
 
 You can customize the App Bar by creating a custom component based on `<AppBar>`, with different props.
 
-**Tip**: Don't mix react-admin's `<AppBar>` component with [MUI's `<AppBar>` component](https://mui.com/material-ui/api/app-bar/). The first one leverages the second, but adds some react-admin-specific features.
+**Tip**: Don't mix react-admin's `<AppBar>` component with [MUI's `<AppBar>` component](https://mui.com/material-ui/api/app-bar/). The first one leverages the second but adds some react-admin-specific features.
 
 ## Usage
 
@@ -86,7 +86,7 @@ const MyAppBar = () => <AppBar alwaysOn />;
 
 ## `children`
 
-The `<AppBar>` component accepts a `children` prop, which is displayed in the central part of the app bar. This is useful to add buttons to the app bar for instance, like a light/dark theme switcher.
+The `<AppBar>` component accepts a `children` prop, which is displayed in the central part of the app bar. This is useful to add buttons to the app bar, for instance, a light/dark theme switcher.
 
 ```jsx
 // in src/MyAppBar.js
@@ -94,7 +94,7 @@ import {
     AppBar,
     TitlePortal,
     ToggleThemeButton,
-    defaultTheme
+    defaultTheme,
 } from 'react-admin';
 
 const darkTheme = { palette: { mode: 'dark' } };
@@ -111,7 +111,7 @@ export const MyAppBar = () => (
 
 **Tip**: Whats the `<TitlePortal>`? It's a placeholder for the page title, that components in the page can fill using the `<Title>` component. `<Title>` uses a [React Portal](https://reactjs.org/docs/portals.html) under the hood. `<TitlePortal>` takes all the available space in the app bar, so it "pushes" the following children to the right.
  
-If you omit `<PagePortal>`, `<AppBAr>` will no longer display the page title. This can be done on purpose, e.g. if you want to render something completely different in the AppBar, like a company logo and a search engine:
+If you omit `<PagePortal>`, `<AppBar>` will no longer display the page title. This can be done on purpose, e.g. if you want to render something completely different in the AppBar, like a company logo and a search engine:
 
 ```jsx
 // in src/MyAppBar.js
@@ -133,7 +133,7 @@ const MyAppBar = () => (
 
 ## `color`
 
-React-admin's `<AppBar>` renders a MUI `<AppBar>`, which supports a `color` prop top set the app bar color depending on the theme. By default, the app bar color is set to the `secondary` theme color.
+React-admin's `<AppBar>` renders an MUI `<AppBar>`, which supports a `color` prop to set the app bar color depending on the theme. By default, the app bar color is set to the `secondary` theme color.
 
 This means you can set the app bar color to 'default', 'inherit', 'primary', 'secondary', 'transparent', or any string.
 
@@ -307,11 +307,11 @@ export const MyCustomPage = () => (
 
 ## Displaying The Language Menu
 
-The language menu only appears if you use the [i18n](./Translation.md) feature, and if you have more than one possible language.
+The language menu only appears if you use the [i18n](./Translation.md) feature and if you have more than one possible language.
 
 The `<AppBar>` calls [`i18nProvider.getLocales()`](./TranslationSetup.md#supporting-multiple-languages) to get the list of available languages. If this list has more than one item, it displays a language menu button on the right side of the app bar.
 
-This means that all you have to do to display the language menu is to setup the i18n provider correctly. For instance, if you're using `ra-i18n-polyglot`:
+This means that all you have to do to display the language menu is to set up the i18n provider correctly. For instance, if you're using `ra-i18n-polyglot`:
 
 ```jsx
 // in src/i18nProvider.js
@@ -358,7 +358,7 @@ import {
     AppBar,
     TitlePortal,
     ToggleThemeButton,
-    defaultTheme
+    defaultTheme,
 } from 'react-admin';
 
 const darkTheme = { palette: { mode: 'dark' } };
