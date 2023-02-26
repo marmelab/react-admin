@@ -183,7 +183,7 @@ title: "Index"
 
 **- U -**
 * [`<UrlField>`](./UrlField.md)
-* [`<UserMenu>`](./Theming.md#usermenu-customization)
+* [`<UserMenu>`](./AppBar.md#usermenu)
 
 **- W -**
 * [`<WithPermissions>`](./WithPermissions.md)

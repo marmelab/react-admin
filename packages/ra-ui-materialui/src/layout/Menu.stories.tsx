@@ -11,16 +11,12 @@ export default { title: 'ra-ui-materialui/layout/Menu' };
 
 const resources = ['Posts', 'Comments', 'Tags', 'Users', 'Orders', 'Reviews'];
 
-const DemoAppBar = props => {
+const DemoAppBar = () => {
     const darkTheme = createTheme({
         palette: { mode: 'dark' },
     });
     return (
-        <AppBar
-            {...props}
-            elevation={1}
-            sx={{ flexDirection: 'row', flexWrap: 'nowrap' }}
-        >
+        <AppBar elevation={1} sx={{ flexDirection: 'row', flexWrap: 'nowrap' }}>
             <Box sx={{ flex: '1 1 100%' }}>
                 <SidebarToggleButton />
             </Box>

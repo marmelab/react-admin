@@ -14,24 +14,17 @@ The `<ToggleThemeButton>` component lets users switch from light to dark mode, a
 You can add the `<ToggleThemeButton>` to a custom App Bar:
 
 ```jsx
-import {
-    AppBar,
-    RefreshIconButton,
-    ToggleThemeButton,
-    defaultTheme
-} from 'react-admin';
+import { AppBar, TitlePortal, ToggleThemeButton, defaultTheme } from 'react-admin';
 
 const darkTheme = {
     palette: { mode: 'dark' },
 };
 
 export const MyAppBar = () => (
-    <AppBar toolbar={
-        <>
-            <ToggleThemeButton lightTheme={defaultTheme} darkTheme={darkTheme} />
-            <RefreshIconButton />
-        </>
-    }/>
+    <AppBar>
+        <TitlePortal />
+        <ToggleThemeButton lightTheme={defaultTheme} darkTheme={darkTheme} />
+    </AppBar>>
 );
 ```
 

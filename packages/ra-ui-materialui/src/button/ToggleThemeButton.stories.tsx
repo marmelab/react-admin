@@ -7,7 +7,7 @@ import { Typography } from '@mui/material';
 
 import { List, Datagrid } from '../list';
 import { TextField } from '../field';
-import { AppBar, Layout } from '../layout';
+import { AppBar, Layout, TitlePortal } from '../layout';
 import { ToggleThemeButton } from './ToggleThemeButton';
 
 export default { title: 'ra-ui-materialui/button/ToggleThemeButton' };
@@ -99,14 +99,10 @@ const BookList = () => {
     );
 };
 
-const MyAppBar = props => (
-    <AppBar {...props}>
-        <Typography flex="1" variant="h6" id="react-admin-title"></Typography>
-        <ToggleThemeButton
-            darkTheme={{
-                palette: { mode: 'dark' },
-            }}
-        />
+const MyAppBar = () => (
+    <AppBar>
+        <TitlePortal />
+        <ToggleThemeButton darkTheme={{ palette: { mode: 'dark' } }} />
     </AppBar>
 );
 const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;

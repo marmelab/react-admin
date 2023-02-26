@@ -56,7 +56,7 @@ const App = () => (
 React-admin injects more props at runtime based on the `<Admin>` props:
 
 * `dashboard`: The dashboard component. Used to enable the dahboard link in the menu
-* `title`: The default page tile, enreder in the AppBar
+* `title`: The default page tile, rendered in the AppBar for error pages
 * `children`: The main content of the page
 
 Any value set for these props in a custom layout will be ignored. That's why you're supposed to pass down the props when creating a layout based on `<Layout>`:

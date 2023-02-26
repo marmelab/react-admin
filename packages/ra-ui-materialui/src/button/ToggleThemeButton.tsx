@@ -10,12 +10,11 @@ import { RaThemeOptions } from '..';
  * Button toggling the theme (light or dark).
  *
  * @example
+ * import { AppBar, TitlePortal, ToggleThemeButton } from 'react-admin';
  *
- * const MyAppBar = props => (
- *     <AppBar {...props}>
- *         <Box flex="1">
- *             <Typography variant="h6" id="react-admin-title"></Typography>
- *         </Box>
+ * const MyAppBar = () => (
+ *     <AppBar>
+ *         <TitlePortal />
  *         <ToggleThemeButton lightTheme={lightTheme} darkTheme={darkTheme} />
  *     </AppBar>
  * );
