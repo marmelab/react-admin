@@ -426,3 +426,13 @@ export const MyLayout = (props) => (
     <Layout {...props} appBar={MyAppBar} />
 );
 ```
+
+## Configurable
+
+By default, users can override the page title [in configurable mode](./Features.md#configurable-ui).
+
+<video controls autoplay muted loop width="100%">
+  <source src="./img/TitleConfigurable.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+

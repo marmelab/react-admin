@@ -106,7 +106,7 @@ const ArticlePage = ({ id }) => {
 
 ## `preferenceKey`
 
-In [Configurable mode](./Configurable.md), users can customize the page title via the inspector. To avoid conflicts, the `<Title>` component uses a preference key based on the current pathname. For example, the `<Title>` component in the `posts` list page will use the `posts.title` preference key.
+In [Configurable mode](./AppBar.md#configurable), users can customize the page title via the inspector. To avoid conflicts, the `<Title>` component uses a preference key based on the current pathname. For example, the `<Title>` component in the `posts` list page will use the `posts.title` preference key.
 
 If you want to use a custom preference key, pass it to the `<Title>` component.
 
@@ -120,3 +120,4 @@ const CustomPage = () => (
     </>
 );
 ```
+
