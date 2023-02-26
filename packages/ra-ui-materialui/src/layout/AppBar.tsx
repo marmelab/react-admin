@@ -39,7 +39,7 @@ import { LocalesMenuButton } from '../button';
  *
  * @example // without a user menu
  *
- * const MyAppBar = () => (<AppBar userMenu={false} />);
+ * const MyAppBar = () => <AppBar userMenu={false} />;
  */
 export const AppBar: FC<AppBarProps> = memo(props => {
     const {

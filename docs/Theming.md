@@ -375,22 +375,17 @@ You can add the `<ToggleThemeButton>` to a custom App Bar:
 
 ```jsx
 import * as React from 'react';
-import { defaultTheme, Layout, AppBar, ToggleThemeButton } from 'react-admin';
+import { defaultTheme, Layout, AppBar, ToggleThemeButton, TitlePortal } from 'react-admin';
 import { createTheme, Box, Typography } from '@mui/material';
 
 const darkTheme = createTheme({
     palette: { mode: 'dark' },
 });
 
-const MyAppBar = props => (
-    <AppBar {...props}>
-        <Box flex="1">
-            <Typography variant="h6" id="react-admin-title"></Typography>
-        </Box>
-        <ToggleThemeButton
-            lightTheme={defaultTheme}
-            darkTheme={darkTheme}
-        />
+const MyAppBar = () => (
+    <AppBar>
+        <TitlePortal />
+        <ToggleThemeButton lightTheme={defaultTheme} darkTheme={darkTheme} />
     </AppBar>
 );
 
@@ -633,7 +628,7 @@ You can also remove the `<UserMenu>` from the `<AppBar>` by passing `false` to t
 import * as React from 'react';
 import { AppBar } from 'react-admin';
 
-const MyAppBar = props => <AppBar {...props} userMenu={false} />;
+const MyAppBar = () => <AppBar userMenu={false} />;
 
 const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 ```
@@ -657,7 +652,7 @@ const MyCustomIcon = () => (
 
 const MyUserMenu = props => (<UserMenu {...props} icon={<MyCustomIcon />} />);
 
-const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
+const MyAppBar = () => <AppBar userMenu={<MyUserMenu />} />;
 ```
 {% endraw %}
 
@@ -715,13 +710,7 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material';
-import {
-    AppBar,
-    Menu,
-    Sidebar,
-    ComponentPropType,
-    useSidebarState,
-} from 'react-admin';
+import { AppBar, Menu, Sidebar } from 'react-admin';
 
 const Root = styled("div")(({ theme }) => ({
     display: "flex",
@@ -752,29 +741,21 @@ const Content = styled("div")(({ theme }) => ({
     paddingLeft: 5,
 }));
 
-const MyLayout = ({
-    children,
-    dashboard,
-    title,
-}) => {
-    const [open] = useSidebarState();
-
-    return (
-        <Root>
-            <AppFrame>
-                <AppBar title={title} open={open} />
-                <ContentWithSidebar>
-                    <Sidebar>
-                        <Menu hasDashboard={!!dashboard} />
-                    </Sidebar>
-                    <Content>
-                        {children}
-                    </Content>
-                </ContentWithSidebar>
-            </AppFrame>
-        </Root>
-    );
-};
+const MyLayout = ({ children, dashboard }) => (
+    <Root>
+        <AppFrame>
+            <AppBar />
+            <ContentWithSidebar>
+                <Sidebar>
+                    <Menu hasDashboard={!!dashboard} />
+                </Sidebar>
+                <Content>
+                    {children}
+                </Content>
+            </ContentWithSidebar>
+        </AppFrame>
+    </Root>
+);
 
 MyLayout.propTypes = {
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
@@ -782,7 +763,6 @@ MyLayout.propTypes = {
         PropTypes.func,
         PropTypes.string,
     ]),
-    title: PropTypes.string.isRequired,
 };
 
 export default MyLayout;

@@ -4,7 +4,6 @@ import merge from 'lodash/merge';
 import {
     Admin,
     AppBar,
-    AppBarProps,
     defaultTheme,
     Layout,
     LayoutProps,
@@ -12,12 +11,13 @@ import {
     Datagrid,
     List,
     TextField,
+    TitlePortal,
     NumberField,
     DateField,
     FilterList,
     FilterListItem,
 } from 'react-admin';
-import { Card, CardContent, Box, Typography, styled } from '@mui/material';
+import { Card, CardContent, styled } from '@mui/material';
 import BusinessIcon from '@mui/icons-material/Business';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
@@ -200,11 +200,9 @@ const darkTheme: RaThemeOptions = {
     },
 };
 
-const MyAppBar = (props: AppBarProps) => (
-    <AppBar {...props}>
-        <Box flex="1">
-            <Typography variant="h6" id="react-admin-title"></Typography>
-        </Box>
+const MyAppBar = () => (
+    <AppBar>
+        <TitlePortal />
         <ToggleThemeButton lightTheme={defaultTheme} darkTheme={darkTheme} />
         <LocalesMenuButton
             languages={[

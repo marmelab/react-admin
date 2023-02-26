@@ -1235,13 +1235,13 @@ If you need to translate to a language not yet supported by react-admin, you can
 If your app needs to support more than one language, you can use the [`<LocalesMenuButton>`](./LocalesMenuButton.md) component to **let users choose their language**:
 
 ```jsx
-import { LocalesMenuButton } from 'react-admin';
-import { AppBar, Toolbar, Typography } from '@mui/material';
+import { LocalesMenuButton, TitlePortal } from 'react-admin';
+import { AppBar, Toolbar } from '@mui/material';
 
-export const MyAppBar = (props) => (
-    <AppBar {...props}>
+export const MyAppBar = () => (
+    <AppBar>
         <Toolbar>
-            <Typography flex="1" variant="h6" id="react-admin-title"></Typography>
+            <TitlePortal />
             <LocalesMenuButton />
         </Toolbar>
     </AppBar>

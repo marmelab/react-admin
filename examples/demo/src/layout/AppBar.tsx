@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
     AppBar,
+    TitlePortal,
     Logout,
     UserMenu,
     useTranslate,
@@ -12,7 +13,6 @@ import {
     MenuItem,
     ListItemIcon,
     ListItemText,
-    Typography,
     useMediaQuery,
     Theme,
 } from '@mui/material';
@@ -53,17 +53,7 @@ const CustomAppBar = () => {
     );
     return (
         <AppBar color="secondary" elevation={1} userMenu={<CustomUserMenu />}>
-            <Typography
-                variant="h6"
-                color="inherit"
-                sx={{
-                    flex: 1,
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                }}
-                id="react-admin-title"
-            />
+            <TitlePortal />
             {isLargeEnough && <Logo />}
             {isLargeEnough && <Box component="span" sx={{ flex: 1 }} />}
         </AppBar>
