@@ -95,7 +95,7 @@ As illustrated above, there can be more than one `<CustomRoutes>` element inside
 
 ## Custom Page Title
 
-To define the page title (displayed in the app bar), your custom pages can use the `<Title>` component from react-admin:
+To define the page title (displayed in the app bar), your custom pages can use [the `<Title>` component](./Title.md) from react-admin:
 
 ```jsx
 // in src/Settings.js
