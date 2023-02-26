@@ -14,7 +14,7 @@ Some react-admin components are already configurable - or rather they have a con
 - [`<DatagridConfigurable>`](./Datagrid.md#configurable)
 - [`<SimpleListConfigurable>`](./SimpleList.md#configurable)
 - [`<SimpleFormConfigurable>`](./SimpleForm.md#configurable)
-- `<PageTitleConfigurable>` - used by the `<Title>` component
+- `<PageTitleConfigurable>` - used by [the `<Title>` component](./Title.md)
 
 ## Usage
 
