@@ -13,29 +13,24 @@ The `<ToggleThemeButton>` component lets users switch from light to dark mode, a
 
 You can add the `<ToggleThemeButton>` to a custom App Bar:
 
-```tsx
-import React from 'react';
-import { ToggleThemeButton, AppBar, defaultTheme } from 'react-admin';
-import { Typography } from '@mui/material';
+```jsx
+import { AppBar, TitlePortal, ToggleThemeButton, defaultTheme } from 'react-admin';
 
 const darkTheme = {
     palette: { mode: 'dark' },
 };
 
-export const MyAppBar = (props) => (
-    <AppBar {...props}>-
-        <Typography flex="1" variant="h6" id="react-admin-title"></Typography>
-        <ToggleThemeButton
-            lightTheme={defaultTheme}
-            darkTheme={darkTheme}
-        />
-    </AppBar>
+export const MyAppBar = () => (
+    <AppBar>
+        <TitlePortal />
+        <ToggleThemeButton lightTheme={defaultTheme} darkTheme={darkTheme} />
+    </AppBar>>
 );
 ```
 
 Then, pass the custom App Bar in a custom `<Layout>`, and the `<Layout>` to your `<Admin>`:
 
-```tsx
+```jsx
 import { Admin, Layout } from 'react-admin';
 
 import { MyAppBar } from './MyAppBar';
@@ -94,5 +89,5 @@ React-admin uses the `<Admin theme>` prop as default theme.
 
 * [`ToggleThemeButton`]
 
-[`ToggleThemeButton`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/button/ToggleThemeButton.tsx
+[`ToggleThemeButton`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/button/ToggleThemeButton.jsx
 

@@ -28,9 +28,9 @@ export const RefreshIconButton = (props: RefreshIconButtonProps) => {
     );
 
     return (
-        <Tooltip title={label && translate(label, { _: label })}>
+        <Tooltip title={label && translate(label, { _: 'Refresh' })}>
             <IconButton
-                aria-label={label && translate(label, { _: label })}
+                aria-label={label && translate(label, { _: 'Refresh' })}
                 className={className}
                 color="inherit"
                 onClick={handleClick}
