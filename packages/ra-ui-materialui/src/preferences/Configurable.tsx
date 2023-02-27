@@ -145,6 +145,7 @@ export const Configurable = (props: ConfigurableProps) => {
                 }}
                 disableAutoFocus
                 disableRestoreFocus
+                disableEnforceFocus
                 disableScrollLock
                 marginThreshold={8}
             >
