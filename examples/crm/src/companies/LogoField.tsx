@@ -19,7 +19,7 @@ export const LogoField = ({
     return (
         <Box
             component="img"
-            src={process.env.PUBLIC_URL + record.logo}
+            src={record.logo}
             alt={record.name}
             title={record.name}
             width={sizeInPixel[size]}
