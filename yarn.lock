@@ -12934,6 +12934,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expect-type@npm:^0.15.0":
+  version: 0.15.0
+  resolution: "expect-type@npm:0.15.0"
+  checksum: d5ffc86df1937290a6555e763f76a8c27d18d9bfa63e18788a79ff52bba3d2a9a518af1163d437854efca6bd8e03768a2c4b10ea29e861c9d6f57ff53f19c3c4
+  languageName: node
+  linkType: hard
+
 "expect@npm:^26.6.0, expect@npm:^26.6.2":
   version: 26.6.2
   resolution: "expect@npm:26.6.2"
@@ -14696,6 +14703,13 @@ __metadata:
   dependencies:
     lru-cache: ^7.5.1
   checksum: d20f24608b2ebf957244d07399dddec85bab8e760bedcc985e20c9153a453401dbc6038fac785f95d73ece8f0b9da62c35542ec532d33a270e90127fee2e2a69
+  languageName: node
+  linkType: hard
+
+"hotscript@npm:^1.0.9":
+  version: 1.0.9
+  resolution: "hotscript@npm:1.0.9"
+  checksum: 7ad459a4e657a568ec2ae2d7b1a6b3e99b45884aa70c2f7cdb775d4580e48e2615990123df600db6afa4a0b0cb72ceb1446617faa868c26fdd2bddf8eec56686
   languageName: node
   linkType: hard
 
@@ -21931,8 +21945,10 @@ __metadata:
     css-mediaquery: ^0.1.2
     dompurify: ^2.4.3
     expect: ^27.4.6
+    expect-type: ^0.15.0
     file-api: ~0.10.4
     history: ^5.1.0
+    hotscript: ^1.0.9
     ignore-styles: ~5.0.1
     inflection: ~1.12.0
     jsonexport: ^3.2.0
