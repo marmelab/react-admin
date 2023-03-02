@@ -11,6 +11,7 @@ import {
     TextField,
     TextInput,
     TopToolbar,
+    SearchInput,
 } from 'react-admin';
 import fakerestDataProvider from 'ra-data-fakerest';
 
@@ -21,6 +22,12 @@ export default {
             control: {
                 type: 'select',
                 options: [false, true],
+            },
+        },
+        size: {
+            control: {
+                type: 'select',
+                options: [undefined, 'small', 'medium'],
             },
         },
     },
@@ -211,6 +218,37 @@ export const Basic = (args: { disableSaveQuery?: boolean }) => {
 export const DisabledFilters = (args: { disableSaveQuery?: boolean }) => {
     const postFilters: React.ReactElement[] = [
         <TextInput label="Title" source="title" disabled={true} />,
+    ];
+    return (
+        <Admin dataProvider={fakerestDataProvider(data)}>
+            <Resource
+                name="posts"
+                list={<PostList postFilters={postFilters} args={args} />}
+            />
+        </Admin>
+    );
+};
+
+export const WithSearchInput = (args: {
+    disableSaveQuery?: boolean;
+    size?: 'small' | 'medium';
+}) => {
+    const postFilters: React.ReactElement[] = [
+        <SearchInput source="q" alwaysOn size={args.size} />,
+        <TextInput
+            label="Title"
+            source="title"
+            defaultValue="Accusantium qui nihil voluptatum quia voluptas maxime ab similique"
+            size={args.size}
+        />,
+        <TextInput
+            label="Nested"
+            source="nested"
+            defaultValue={{ foo: 'bar' }}
+            format={v => v?.foo || ''}
+            parse={v => ({ foo: v })}
+            size={args.size}
+        />,
     ];
     return (
         <Admin dataProvider={fakerestDataProvider(data)}>
