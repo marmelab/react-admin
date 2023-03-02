@@ -13,7 +13,7 @@ Here is an overview of the result:
 
 ## Setting Up
 
-React-admin uses React. We'll use [vite.js](https://vitejs.dev/) to create an empty React app, and install the `react-admin` package:
+React-admin uses React. We'll use [Vite](https://vitejs.dev/) to create an empty React app, and install the `react-admin` package:
 
 ```sh
 yarn create vite test-admin --template react-ts
