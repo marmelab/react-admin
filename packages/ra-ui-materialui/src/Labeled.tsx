@@ -31,22 +31,22 @@ export const Labeled = ({
     resource,
     source,
     ...rest
-}: LabeledProps) =>
-    label !== false &&
-    children.props.label !== false &&
-    typeof children.type !== 'string' &&
-    // @ts-ignore
-    children.type?.displayName !== 'Labeled' &&
-    // @ts-ignore
-    children.type?.displayName !== 'Labeled' ? (
-        <Root
-            // @ts-ignore https://github.com/mui/material-ui/issues/29875
-            component={component}
-            className={clsx(className, {
-                [LabeledClasses.fullWidth]: fullWidth,
-            })}
-            {...rest}
-        >
+}: LabeledProps) => (
+    <Root
+        // @ts-ignore https://github.com/mui/material-ui/issues/29875
+        component={component}
+        className={clsx(className, {
+            [LabeledClasses.fullWidth]: fullWidth,
+        })}
+        {...rest}
+    >
+        {label !== false &&
+        children.props.label !== false &&
+        typeof children.type !== 'string' &&
+        // @ts-ignore
+        children.type?.displayName !== 'Labeled' &&
+        // @ts-ignore
+        children.type?.displayName !== 'Labeled' ? (
             <Typography color={color} className={LabeledClasses.label}>
                 <FieldTitle
                     label={label || children.props.label}
@@ -55,11 +55,10 @@ export const Labeled = ({
                     isRequired={isRequired}
                 />
             </Typography>
-            {children}
-        </Root>
-    ) : (
-        <div className={className}>{children}</div>
-    );
+        ) : null}
+        {children}
+    </Root>
+);
 
 Labeled.displayName = 'Labeled';
 
