@@ -727,7 +727,14 @@ const useSelectedChoice = <
             multiple
         );
 
-        if (!isEqual(selectedChoiceRef.current, newSelectedItems)) {
+        if (
+            !areSelectedItemsEqual(
+                selectedChoiceRef.current,
+                newSelectedItems,
+                optionValue,
+                multiple
+            )
+        ) {
             selectedChoiceRef.current = newSelectedItems;
             setSelectedChoice(newSelectedItems);
         }
@@ -754,6 +761,31 @@ const getSelectedItems = (
         choices.find(
             choice => String(get(choice, optionValue)) === String(value)
         ) || ''
+    );
+};
+
+const areSelectedItemsEqual = (
+    selectedChoice: RaRecord | RaRecord[],
+    newSelectedChoice: RaRecord | RaRecord[],
+    optionValue = 'id',
+    multiple: boolean
+) => {
+    if (multiple) {
+        const selectedChoiceArray = (selectedChoice as RaRecord[]) ?? [];
+        const newSelectedChoiceArray = (newSelectedChoice as RaRecord[]) ?? [];
+        if (selectedChoiceArray.length !== newSelectedChoiceArray.length) {
+            return false;
+        }
+        const equalityArray = selectedChoiceArray.map(choice =>
+            newSelectedChoiceArray.some(
+                newChoice =>
+                    get(newChoice, optionValue) === get(choice, optionValue)
+            )
+        );
+        return !equalityArray.some(item => item === false);
+    }
+    return (
+        get(selectedChoice, optionValue) === get(newSelectedChoice, optionValue)
     );
 };
 

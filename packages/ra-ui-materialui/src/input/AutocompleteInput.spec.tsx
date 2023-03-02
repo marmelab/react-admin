@@ -14,6 +14,7 @@ import { SimpleForm } from '../form';
 import { AutocompleteInput } from './AutocompleteInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import {
+    DifferentShapeInGetMany,
     InsideReferenceInput,
     InsideReferenceInputDefaultValue,
     Nullable,
@@ -1368,6 +1369,29 @@ describe('<AutocompleteInput />', () => {
                     expect.anything()
                 );
             });
+        });
+
+        it('should not reset the filter when typing when getMany returns a different record shape than getList', async () => {
+            render(<DifferentShapeInGetMany />);
+            await screen.findByDisplayValue('Leo Tolstoy');
+            const input = (await screen.findByLabelText(
+                'Author'
+            )) as HTMLInputElement;
+            expect(input.value).toBe('Leo Tolstoy');
+            fireEvent.mouseDown(input);
+            fireEvent.change(input, { target: { value: 'Leo Tolstoy test' } });
+            // Make sure that 'Leo Tolstoy' did not reappear
+            let testFailed = false;
+            try {
+                await waitFor(() => {
+                    expect(input.value).toBe('Leo Tolstoy');
+                });
+                testFailed = true;
+            } catch {
+                // This is expected, nothing to do
+            }
+            expect(testFailed).toBe(false);
+            expect(input.value).toBe('Leo Tolstoy test');
         });
     });
 

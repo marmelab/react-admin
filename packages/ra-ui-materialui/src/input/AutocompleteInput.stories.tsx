@@ -875,3 +875,94 @@ export const NullishValuesSupport = () => {
         </AdminContext>
     );
 };
+
+const dataProviderWithDifferentShapeInGetMany = {
+    getOne: (resource, params) =>
+        Promise.resolve({
+            data: {
+                id: 1,
+                title: 'War and Peace',
+                author: 1,
+                summary:
+                    "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                year: 1869,
+            },
+        }),
+    getMany: (resource, params) =>
+        Promise.resolve({
+            data: authors
+                .filter(author => params.ids.includes(author.id))
+                .map(author => ({
+                    ...author,
+                    newField: 'newField',
+                })),
+        }),
+    getList: (resource, params) =>
+        new Promise(resolve => {
+            // eslint-disable-next-line eqeqeq
+            if (params.filter.q == undefined) {
+                setTimeout(
+                    () =>
+                        resolve({
+                            data: authors,
+                            total: authors.length,
+                        }),
+                    500
+                );
+                return;
+            }
+
+            const filteredAuthors = authors.filter(author =>
+                author.name
+                    .toLowerCase()
+                    .includes(params.filter.q.toLowerCase())
+            );
+
+            setTimeout(
+                () =>
+                    resolve({
+                        data: filteredAuthors,
+                        total: filteredAuthors.length,
+                    }),
+                500
+            );
+        }),
+    update: (resource, params) => Promise.resolve(params),
+    create: (resource, params) => {
+        const newAuthor = {
+            id: authors.length + 1,
+            name: params.data.name,
+            language: params.data.language,
+        };
+        authors.push(newAuthor);
+        return Promise.resolve({ data: newAuthor });
+    },
+} as any;
+
+export const DifferentShapeInGetMany = () => (
+    <Admin
+        dataProvider={dataProviderWithDifferentShapeInGetMany}
+        history={history}
+    >
+        <Resource name="authors" />
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                >
+                    <SimpleForm>
+                        <ReferenceInput reference="authors" source="author">
+                            <AutocompleteInput fullWidth optionText="name" />
+                        </ReferenceInput>
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
+    </Admin>
+);
