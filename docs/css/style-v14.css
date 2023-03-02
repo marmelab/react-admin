@@ -107,10 +107,10 @@ nav ul#nav-mobile a {
 }
 
 .sidenav ul {
-    padding: 0.5em 0 0.5em 1em;
+    padding: 0 0 0.5em 1em;
 }
 
-.sidenav ul div {
+.sidenav div.sidenav-title {
     text-transform: uppercase;
     font-weight: bold;
     font-size: 0.8em;
@@ -598,4 +598,38 @@ body.no-sidebar .sidenav-trigger {
 .pages-index code {
     font-size: 0.8em;
     background: none!important;
+}
+
+#docsearch .DocSearch-Button {
+    transition: width 0.2s ease-in-out;
+}
+
+@media only screen and (max-width: 1500px) {
+        #docsearch .DocSearch-Button {
+            width: 200px !important;
+        }
+}
+
+.news {
+    display: inline;
+    margin: 0 15px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: solid 1px #368fe7;
+    background: #368fe7;
+    color: #fff;
+}
+
+.news-mobile {
+    margin-right: 16px;
+}
+@media only screen and (min-width: 991px) {
+    .news-mobile {
+        display: none;
+    }
+}
+@media only screen and (max-width: 600px) {
+    .news-mobile {
+        display: none;
+    }
 }
