@@ -15,7 +15,7 @@ export const InputHelperText = (props: InputHelperTextProps) => {
         if ((error as ValidationErrorMessageWithArgs).message) {
             return <ValidationError error={error} />;
         }
-        return error;
+        return <>{error}</>;
     }
 
     if (helperText === false) {
