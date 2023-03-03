@@ -1,16 +1,13 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import { Button } from './Button';
-import { useTranslate } from 'ra-core';
 
 export const SkipNavigationButton = () => {
-    const translate = useTranslate();
-
     return (
         <StyledButton
             onClick={skipToContent}
             className={'skip-nav-button'}
-            label={translate('ra.navigation.skip_nav')}
+            label="ra.navigation.skip_nav"
             variant="contained"
         />
     );
