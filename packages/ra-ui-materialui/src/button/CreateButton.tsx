@@ -54,17 +54,17 @@ const CreateButton = (props: CreateButtonProps) => {
             {icon}
         </StyledFab>
     ) : (
-        <Button
+        <StyledButton
             component={Link}
             to={createPath({ resource, type: 'create' })}
             state={scrollStates[String(scrollToTop)]}
-            className={className}
+            className={clsx(CreateButtonClasses.root, className)}
             label={label}
             variant={variant}
             {...(rest as any)}
         >
             {icon}
-        </Button>
+        </StyledButton>
     );
 };
 
@@ -94,6 +94,7 @@ CreateButton.propTypes = {
 const PREFIX = 'RaCreateButton';
 
 export const CreateButtonClasses = {
+    root: `${PREFIX}-root`,
     floating: `${PREFIX}-floating`,
 };
 
@@ -112,6 +113,11 @@ const StyledFab = (styled(Fab, {
         zIndex: 1000,
     },
 })) as unknown) as typeof Fab;
+
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (_props, styles) => styles.root,
+})({});
 
 export default memo(CreateButton, (prevProps, nextProps) => {
     return (

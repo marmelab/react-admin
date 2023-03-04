@@ -24,7 +24,7 @@ import { CreateControllerResult } from './useCreateController';
  */
 export const useCreateContext = <RecordType extends RaRecord = RaRecord>(
     props?: Partial<CreateControllerResult<RecordType>>
-): Partial<CreateControllerResult<RecordType>> => {
+): CreateControllerResult<RecordType> => {
     const context = useContext<CreateControllerResult<RecordType>>(
         // Can't find a way to specify the RecordType when CreateContext is declared
         // @ts-ignore

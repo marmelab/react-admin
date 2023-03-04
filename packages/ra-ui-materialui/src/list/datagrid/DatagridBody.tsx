@@ -105,7 +105,7 @@ export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
     record?: RaRecord;
     resource?: string;
     row?: ReactElement;
-    rowClick?: string | RowClickFunction;
+    rowClick?: string | RowClickFunction | false;
     rowStyle?: (record: RaRecord, index: number) => any;
     selectedIds?: Identifier[];
     isRowSelectable?: (record: RaRecord) => boolean;

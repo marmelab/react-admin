@@ -2,6 +2,7 @@ import * as React from 'react';
 import { RecordContextProvider, ResourceContext } from 'ra-core';
 import { TextField } from './field';
 import { Labeled } from './Labeled';
+import { Box, Stack } from '@mui/material';
 
 export default { title: 'ra-ui-materialui/detail/Labeled' };
 
@@ -70,4 +71,32 @@ export const NoDoubleLabel = () => (
             </Labeled>
         </RecordContextProvider>
     </ResourceContext.Provider>
+);
+
+export const FullWidth = () => (
+    <Stack alignItems="flex-start">
+        <ResourceContext.Provider value="books">
+            <RecordContextProvider value={record}>
+                <Labeled label="title" fullWidth>
+                    <Box border="1px solid">
+                        <TextField source="title" />
+                    </Box>
+                </Labeled>
+            </RecordContextProvider>
+        </ResourceContext.Provider>
+    </Stack>
+);
+
+export const FullWidthNoLabel = () => (
+    <Stack alignItems="flex-start">
+        <ResourceContext.Provider value="books">
+            <RecordContextProvider value={record}>
+                <Labeled label={false} fullWidth>
+                    <Box border="1px solid">
+                        <TextField source="title" />
+                    </Box>
+                </Labeled>
+            </RecordContextProvider>
+        </ResourceContext.Provider>
+    </Stack>
 );

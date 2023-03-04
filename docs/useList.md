@@ -48,7 +48,7 @@ import { useGetList, useList } from 'react-admin';
 const MyComponent = () => {
     const { data, isLoading } = useGetList(
         'posts',
-        { page: 1, perPage: 10 }
+        { pagination: { page: 1, perPage: 10 } },
     );
     const listContext = useList({ data, isLoading });
     return (
@@ -62,15 +62,30 @@ const MyComponent = () => {
 };
 ```
 
-The `useGetList` parameter accepts the following options:
+The `useList` parameter accepts the following options:
 
+* [`data`](#data)
 * [`filter`](#filter)
+* [`filterCallback](#filtercallback)
 * [`isFetching`](#isfetching)
 * [`isLoading`](#isloading)
 * [`page`](#page)
 * [`perPage`](#perpage)
 * [`sort`](#sort)
-* [`filterCallback`](#filtercallback)
+
+## `data`
+
+The data to use to create the `ListContext`. It must be an array of records.
+
+```jsx
+const { data } = useList({
+    data: [
+        { id: 1, name: 'Arnold' },
+        { id: 2, name: 'Sylvester' },
+        { id: 3, name: 'Jean-Claude' },
+    ],
+});
+```
 
 ## `filter`
 
@@ -86,6 +101,26 @@ const { data, total } = useList({
     filter: { name: 'Arnold' },
 });
 // data will be [{ id: 1, name: 'Arnold' }] and total will be 1
+```
+
+## `filterCallback`
+
+Property for custom filter definition. Lets you apply local filters to the fetched data.
+
+```jsx
+const { data } = useList({
+    data: [
+        { id: 1, name: 'Arnold' },
+        { id: 2, name: 'Sylvester' },
+        { id: 3, name: 'Jean-Claude' },
+    ],
+    sort: { field: 'name', order: 'ASC' },
+    filterCallback: (record) => record.id > 1 && record.name !== 'Jean-Claude'
+});
+// data will be
+// [
+//    { id: 2, name: 'Sylvester' }, 
+// ]
 ```
 
 ## `isFetching`
@@ -205,9 +240,7 @@ const { data } = useList({
 
 ## Return Value
 
-`useGetList` returns an object matching the shape of the `ListContext`: 
-
-The `useListContext` hook returns an object with the following keys:
+`useList` returns an object matching the shape of the `ListContext`: 
 
 ```jsx
 const {
@@ -241,25 +274,5 @@ const {
     defaultTitle, // empty string
     resource, // undefined
     refetch, // a function that throws an error, as refetch doesn't make sense for local data
-} = getGetList({ data });
-```
-
-## `filterCallback`
-
-Property for custom filter definition. Lets you apply local filters to the fetched data.
-
-```jsx
-const { data } = useList({
-    data: [
-        { id: 1, name: 'Arnold' },
-        { id: 2, name: 'Sylvester' },
-        { id: 3, name: 'Jean-Claude' },
-    ],
-    sort: { field: 'name', order: 'ASC' },
-    filterCallback: (record) => record.id > 1 && record.name !== 'Jean-Claude'
-});
-// data will be
-// [
-//    { id: 2, name: 'Sylvester' }, 
-// ]
+} = useList({ data });
 ```

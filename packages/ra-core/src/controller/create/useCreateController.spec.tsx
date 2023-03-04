@@ -158,7 +158,7 @@ describe('useCreateController', () => {
         expect(notificationsSpy).toEqual([
             {
                 message: 'not good',
-                type: 'warning',
+                type: 'error',
                 notificationOptions: { messageArgs: { _: 'not good' } },
             },
         ]);

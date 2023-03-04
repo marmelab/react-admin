@@ -13,7 +13,7 @@ Here is an overview of the result:
 
 ## Setting Up
 
-React-admin uses React. We'll use [vite.js](https://vitejs.dev/) to create an empty React app, and install the `react-admin` package:
+React-admin uses React. We'll use [Vite](https://vitejs.dev/) to create an empty React app, and install the `react-admin` package:
 
 ```sh
 yarn create vite test-admin --template react-ts
@@ -87,7 +87,7 @@ That's enough for react-admin to render an empty app and confirm that the setup 
 Also, you should change the default Vite CSS file to look like this:
 
 ```css
-// in src/index.css
+/* in src/index.css */
 body {
     margin: 0;
 }
@@ -114,6 +114,8 @@ Lastly, add the `Roboto` font to the `index.html` file:
   </body>
 </html>
 ```
+
+**Tip:** You can also install the `Roboto` font locally by following the instructions from the [MUI starter guide](https://mui.com/material-ui/getting-started/installation/#roboto-font).
 
 The `<App>` component renders an `<Admin>` component, which is the root component of a react-admin application. This component expects a `dataProvider` prop - a function capable of fetching data from an API. Since there is no standard for data exchanges between computers, you will probably have to write a custom provider to connect react-admin to your own APIs - but we'll dive into Data Providers later. For now, let's take advantage of the `ra-data-json-server` data provider, which speaks the same REST dialect as JSONPlaceholder.
 
@@ -459,8 +461,8 @@ import { UserList } from "./users";
 
 const App = () => (
   <Admin dataProvider={dataProvider}>
-+   <Resource name="users" list={UserList} />
-    <Resource name="posts" list={ListGuesser} />
+    <Resource name="users" list={UserList} />
++   <Resource name="posts" list={ListGuesser} />
   </Admin>
 );
 
@@ -755,7 +757,7 @@ export const PostEdit = () => (
 
 [![Post Edit Title](./img/tutorial_post_title.png)](./img/tutorial_post_title.png)
 
-This component uses the same `useRecordContext` hook as the custom `<UrlField>` commponent described earlier.
+This component uses the same `useRecordContext` hook as the custom `<UrlField>` component described earlier.
 
 As users can access the post editing page directly by its url, the `<PostTitle>` component may render *without a record* while the `<Edit>` component is fetching it. That's why you must always check that the `record` returned by `useRecordContext` is defined before using it - as in `PostTitle` above.
 
@@ -845,8 +847,10 @@ For this tutorial, since there is no public authentication API, we can use a fak
 
 The `authProvider` must expose 5 methods, each returning a `Promise`:
 
-```jsx
+```js
 // in src/authProvider.ts
+
+// TypeScript users must reference the type: `AuthProvider`
 export const authProvider = {
   // called when the user attempts to log in
   login: ({ username }) => {
@@ -924,13 +928,15 @@ React-admin calls the Data Provider with one method for each of the actions of t
 The code for a Data Provider for the `my.api.url` API is as follows:
 
 ```js
+// in src/dataProvider.ts
 import { fetchUtils } from "react-admin";
 import { stringify } from "query-string";
 
 const apiUrl = 'https://my.api.com/';
 const httpClient = fetchUtils.fetchJson;
 
-export const dataProvider= {
+// TypeScript users must reference the type `DataProvider`
+export const dataProvider = {
     getList: (resource, params) => {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
@@ -943,7 +949,7 @@ export const dataProvider= {
 
         return httpClient(url).then(({ headers, json }) => ({
             data: json,
-            total: parseInt(headers.get('content-range').split('/').pop(), 10),
+            total: parseInt((headers.get('content-range') || "0").split('/').pop() || 0, 10),
         }));
     },
 
@@ -975,7 +981,7 @@ export const dataProvider= {
 
         return httpClient(url).then(({ headers, json }) => ({
             data: json,
-            total: parseInt(headers.get('content-range').split('/').pop(), 10),
+            total: parseInt((headers.get('content-range') || "0").split('/').pop() || 0, 10),
         }));
     },
 
@@ -1038,15 +1044,6 @@ const App = () => (
 
 React-admin was built with customization in mind. You can replace any react-admin component with a component of your own, for instance to display a custom list layout, or a different edit form for a given resource.
 
-Now that you've completed the tutorial, the best way to learn react-admin is by reading the introduction chapters to each of its major parts:
+Now that you've completed the tutorial, continue your journey with [the Features chapter](./Features.md), which lists all the features of react-admin.
 
-- [Data Provider and API Calls](./DataProviderIntroduction.md)
-- [Auth Provider and Security](./Authentication.md)
-- [List Page](./ListTutorial.md)
-- [Creation & Edition Pages](./EditTutorial.md)
-- [Show Pages](./ShowTutorial.md)
-- [Fields](./Fields.md)
-- [Inputs](./Inputs.md)
-- [The Store](./Store.md)
-
-To help you close the gap between theoritical knowledge and practical experience, take advantage of the react-admin [Demos](./Demos.md). They are great examples of how to use react-admin in a real world application. They also show the best practices for going beyond simple CRUD apps.
+**Tip**: To help you close the gap between theoretical knowledge and practical experience, take advantage of the react-admin [Demos](./Demos.md). They are great examples of how to use react-admin in a real world application. They also show the best practices for going beyond simple CRUD apps.

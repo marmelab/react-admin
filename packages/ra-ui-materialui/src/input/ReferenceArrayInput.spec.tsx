@@ -21,6 +21,7 @@ import { DatagridInput } from './DatagridInput';
 import { TextField } from '../field';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { SelectArrayInput } from './SelectArrayInput';
+import { DifferentIdTypes } from './ReferenceArrayInput.stories';
 
 describe('<ReferenceArrayInput />', () => {
     const defaultProps = {
@@ -85,7 +86,10 @@ describe('<ReferenceArrayInput />', () => {
         const dataProvider = testDataProvider({
             getList: () =>
                 // @ts-ignore
-                Promise.resolve({ data: [{ id: 1 }, { id: 2 }], total: 2 }),
+                Promise.resolve({
+                    data: [{ id: 1 }, { id: 2 }],
+                    total: 2,
+                }),
         });
         render(
             <AdminContext dataProvider={dataProvider}>
@@ -243,5 +247,45 @@ describe('<ReferenceArrayInput />', () => {
                 meta: { foo: 'bar' },
             });
         });
+    });
+
+    it('should support different types of ids', async () => {
+        render(<DifferentIdTypes />);
+        await screen.findByText('#1', {
+            selector: 'div.MuiChip-root .MuiChip-label',
+        });
+        expect(
+            screen.queryByText('#2', {
+                selector: 'div.MuiChip-root .MuiChip-label',
+            })
+        ).not.toBeNull();
+        expect(
+            screen.queryByText('#3', { selector: 'div.MuiChip-root' })
+        ).toBeNull();
+    });
+
+    it('should unselect a value when types of ids are different', async () => {
+        render(<DifferentIdTypes />);
+
+        const chip1 = await screen.findByText('#1', {
+            selector: '.MuiChip-label',
+        });
+        const chip2 = await screen.findByText('#2', {
+            selector: '.MuiChip-label',
+        });
+
+        if (chip2.nextSibling) fireEvent.click(chip2.nextSibling);
+        expect(
+            screen.queryByText('#2', {
+                selector: '.MuiChip-label',
+            })
+        ).toBeNull();
+
+        if (chip1.nextSibling) fireEvent.click(chip1.nextSibling);
+        expect(
+            screen.queryByText('#1', {
+                selector: '.MuiChip-label',
+            })
+        ).toBeNull();
     });
 });

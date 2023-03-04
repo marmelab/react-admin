@@ -16,6 +16,7 @@ import {
     MutationMode,
     GetListResult as OriginalGetListResult,
 } from '../types';
+import { useEvent } from '../util';
 import { Identifier } from '..';
 
 /**
@@ -420,7 +421,7 @@ export const useUpdateMany = <
         }
     };
 
-    return [updateMany, mutation];
+    return [useEvent(updateMany), mutation];
 };
 
 type Snapshot = [key: QueryKey, value: any][];

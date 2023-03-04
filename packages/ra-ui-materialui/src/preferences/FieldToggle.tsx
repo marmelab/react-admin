@@ -11,18 +11,27 @@ export const FieldToggle = props => {
     const { selected, label, onToggle, onMove, source, index } = props;
     const resource = useResourceContext();
     const dropIndex = React.useRef<number>(null);
+    const x = React.useRef<number>(null);
+    const y = React.useRef<number>(null);
+
+    const handleDocumentDragOver = React.useCallback(event => {
+        x.current = event.clientX;
+        y.current = event.clientY;
+    }, []);
+
+    const handleDragStart = () => {
+        document.addEventListener('dragover', handleDocumentDragOver);
+    };
 
     const handleDrag = event => {
         // imperative DOM manipulations using the native Drag API
         const selectedItem = event.target;
         selectedItem.classList.add('drag-active');
         const list = selectedItem.parentNode;
-        const x = event.clientX;
-        const y = event.clientY;
         let dropItem =
-            document.elementFromPoint(x, y) === null
+            document.elementFromPoint(x.current, y.current) === null
                 ? selectedItem
-                : document.elementFromPoint(x, y);
+                : document.elementFromPoint(x.current, y.current);
         if (dropItem.classList.contains('dragIcon')) {
             dropItem = dropItem.parentNode;
         }
@@ -42,6 +51,7 @@ export const FieldToggle = props => {
         const selectedItem = event.target;
         onMove(selectedItem.dataset.index, dropIndex.current);
         selectedItem.classList.remove('drag-active');
+        document.removeEventListener('dragover', handleDocumentDragOver);
     };
 
     const handleDragOver = event => {
@@ -54,6 +64,7 @@ export const FieldToggle = props => {
             key={source}
             draggable={onMove ? 'true' : undefined}
             onDrag={onMove ? handleDrag : undefined}
+            onDragStart={onMove ? handleDragStart : undefined}
             onDragEnd={onMove ? handleDragEnd : undefined}
             onDragOver={onMove ? handleDragOver : undefined}
             data-index={index}

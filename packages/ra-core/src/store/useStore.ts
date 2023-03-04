@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import isEqual from 'lodash/isEqual';
 
-import { useEventCallback } from '../util';
+import { useEvent } from '../util';
 import { useStoreContext } from './useStoreContext';
 
 /**
@@ -18,11 +18,11 @@ import { useStoreContext } from './useStoreContext';
  * @example
  * import { useStore } from 'react-admin';
  *
- * const PostList = props => {
+ * const PostList = () => {
  *     const [density] = useStore('posts.list.density', 'small');
  *
  *     return (
- *         <List {...props}>
+ *         <List>
  *             <Datagrid size={density}>
  *                 ...
  *             </Datagrid>
@@ -64,26 +64,21 @@ export const useStore = <T = any>(
         return () => unsubscribe();
     }, [key, subscribe, defaultValue, getItem, value]);
 
-    const set = useEventCallback(
-        (valueParam: T, runtimeDefaultValue: T) => {
-            const newValue =
-                typeof valueParam === 'function'
-                    ? valueParam(value)
-                    : valueParam;
-            // we only set the value in the Store;
-            // the value in the local state will be updated
-            // by the useEffect during the next render
-            setItem(
-                key,
-                typeof newValue === 'undefined'
-                    ? typeof runtimeDefaultValue === 'undefined'
-                        ? defaultValue
-                        : runtimeDefaultValue
-                    : newValue
-            );
-        },
-        [key, setItem, defaultValue, value]
-    );
+    const set = useEvent((valueParam: T, runtimeDefaultValue: T) => {
+        const newValue =
+            typeof valueParam === 'function' ? valueParam(value) : valueParam;
+        // we only set the value in the Store;
+        // the value in the local state will be updated
+        // by the useEffect during the next render
+        setItem(
+            key,
+            typeof newValue === 'undefined'
+                ? typeof runtimeDefaultValue === 'undefined'
+                    ? defaultValue
+                    : runtimeDefaultValue
+                : newValue
+        );
+    });
     return [value, set];
 };
 

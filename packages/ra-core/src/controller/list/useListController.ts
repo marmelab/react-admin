@@ -98,7 +98,7 @@ export const useListController = <RecordType extends RaRecord = any>(
             retry: false,
             onError: error =>
                 notify(error?.message || 'ra.notification.http_error', {
-                    type: 'warning',
+                    type: 'error',
                     messageArgs: {
                         _: error?.message,
                     },

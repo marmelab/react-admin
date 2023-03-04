@@ -14,9 +14,11 @@ import { SimpleForm } from '../form';
 import { AutocompleteInput } from './AutocompleteInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import {
+    DifferentShapeInGetMany,
     InsideReferenceInput,
     InsideReferenceInputDefaultValue,
     Nullable,
+    NullishValuesSupport,
     VeryLargeOptionsNumber,
 } from './AutocompleteInput.stories';
 import { act } from '@testing-library/react-hooks';
@@ -1368,6 +1370,29 @@ describe('<AutocompleteInput />', () => {
                 );
             });
         });
+
+        it('should not reset the filter when typing when getMany returns a different record shape than getList', async () => {
+            render(<DifferentShapeInGetMany />);
+            await screen.findByDisplayValue('Leo Tolstoy');
+            const input = (await screen.findByLabelText(
+                'Author'
+            )) as HTMLInputElement;
+            expect(input.value).toBe('Leo Tolstoy');
+            fireEvent.mouseDown(input);
+            fireEvent.change(input, { target: { value: 'Leo Tolstoy test' } });
+            // Make sure that 'Leo Tolstoy' did not reappear
+            let testFailed = false;
+            try {
+                await waitFor(() => {
+                    expect(input.value).toBe('Leo Tolstoy');
+                });
+                testFailed = true;
+            } catch {
+                // This is expected, nothing to do
+            }
+            expect(testFailed).toBe(false);
+            expect(input.value).toBe('Leo Tolstoy test');
+        });
     });
 
     it("should allow to edit the input if it's inside a FormDataConsumer", () => {
@@ -1476,5 +1501,25 @@ describe('<AutocompleteInput />', () => {
         await waitFor(() => {
             expect(input.value).toEqual('');
         });
+    });
+
+    it('should handle nullish values', async () => {
+        render(<NullishValuesSupport />);
+
+        const checkInputValue = async (label: string, expected: any) => {
+            const input = (await screen.findByLabelText(
+                label
+            )) as HTMLInputElement;
+            await waitFor(() => {
+                expect(input.value).toStrictEqual(expected);
+            });
+        };
+
+        await checkInputValue('prefers_empty-string', '');
+        await checkInputValue('prefers_null', '');
+        await checkInputValue('prefers_undefined', '');
+        await checkInputValue('prefers_zero-string', '0');
+        await checkInputValue('prefers_zero-number', '0');
+        await checkInputValue('prefers_valid-value', '1');
     });
 });

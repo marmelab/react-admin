@@ -56,6 +56,45 @@ const Dashboard = () => {
 }
 ```
 
+## Reacting To A Page Change
+
+Use `react-router-dom`'s [`useLocation` hook](https://reactrouter.com/en/main/hooks/use-location) to perform some side effect whenever the current location changes. For instance, if you want to add an analytics event when the user visits a page, you can do it like this:
+
+```jsx
+import * as React from 'react';
+import { useLocation } from 'react-router-dom';
+
+export const usePageTracking = () => {
+  const location = useLocation();
+
+  React.useEffect(() => {
+    // track pageview with gtag / react-ga / react-ga4, for example:
+    window.gtag("event", "page_view", {
+      page_path: location.pathname + location.search,
+    });
+  }, [location]);
+}
+```
+
+Then, use that hook in a [custom layout](./Admin.md#layout):
+
+```jsx
+import { Layout } from 'react-admin';
+
+import { usePageTracking } from './usePageTracking';
+
+export const MyLayout = (props) => {
+    usePageTracking();
+    return <Layout {...props} />;
+}
+```
+
+**Tip**: When using `useLocation`, you may get an error saying:
+
+> `useLocation()` may be used only in the context of a `<Router>` component
+
+... or a location that doesn't reflect the actual app location. See [the troubleshooting section](#troubleshooting) for a solution.
+
 ## Adding Custom Pages
 
 In addition to CRUD pages for resources, you can create as many routes as you want for your custom pages. Use [the `<CustomRoutes>` component](./CustomRoutes.md) to do so.
@@ -159,4 +198,45 @@ export const StoreAdmin = () => (
 );
 ```
 
- This will let react-admin build absolute URLs including the sub path.
+This will let react-admin build absolute URLs including the sub path.
+
+## Troubleshooting
+
+When using custom routing configurations, you may encounter strange error messages like:
+
+> `useLocation()` may be used only in the context of a `<Router>` component
+
+or
+
+> `useNavigate()` may be used only in the context of a `<Router>` component
+
+or 
+
+> `useRoutes()` may be used only in the context of a `<Router>` component
+
+or 
+
+> `useHref()` may be used only in the context of a `<Router>` component.
+
+or
+
+> `<Route>` may be used only in the context of a `<Router>` component
+
+These errors can happen if you added `react-router` and/or `react-router-dom` to your dependencies, and didn't use the same version as react-admin. In that case, your application has two versions of react-router, and the calls you add can't see the react-admin routing context.
+
+You can use the `npm list react-router` and `npm list react-router-dom` commands to check which versions are installed.
+
+If there are duplicates, you need to make sure to use only the same version as react-admin. You can deduplicate them using yarn's `resolutions` or npm's `overrides`.
+
+```js
+// in packages.json
+{
+    // ...
+  "resolutions": {
+    "react-router-dom": "6.7.0",
+    "react-router": "6.7.0"
+  }
+}
+```
+
+This may also happen inside a [Remix](https://remix.run/) application. See [Setting up react-admin for Remix](./Remix.md#setting-up-react-admin) for instructions to overcome that problem.

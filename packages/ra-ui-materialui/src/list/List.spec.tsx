@@ -50,6 +50,23 @@ describe('<List />', () => {
         expect(screen.queryAllByText('datagrid')).toHaveLength(1);
     });
 
+    it('should accept more than one child', () => {
+        const Filter = () => <div>filter</div>;
+        const Datagrid = () => <div>datagrid</div>;
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <ThemeProvider theme={theme}>
+                    <List resource="posts">
+                        <Filter />
+                        <Datagrid />
+                    </List>
+                </ThemeProvider>
+            </CoreAdminContext>
+        );
+        expect(screen.queryAllByText('filter')).toHaveLength(1);
+        expect(screen.queryAllByText('datagrid')).toHaveLength(1);
+    });
+
     it('should display aside component', () => {
         const Dummy = () => <div />;
         const Aside = () => <div id="aside">Hello</div>;

@@ -67,7 +67,13 @@ export type AuthProvider = {
     checkError: (error: any) => Promise<void>;
     getIdentity?: () => Promise<UserIdentity>;
     getPermissions: (params: any) => Promise<any>;
+    handleCallback?: () => Promise<AuthRedirectResult | void | any>;
     [key: string]: any;
+};
+
+export type AuthRedirectResult = {
+    redirectTo?: string | false;
+    logoutOnFailure?: boolean;
 };
 
 export type LegacyAuthProvider = (
@@ -241,7 +247,11 @@ export type OnSuccess = (
     variables?: any,
     context?: any
 ) => void;
-export type onError = (error?: any, variables?: any, context?: any) => void;
+
+export type OnError = (error?: any, variables?: any, context?: any) => void;
+// @deprecated - use OnError instead
+export type onError = OnError;
+
 export type TransformData = (
     data: any,
     options?: { previousData: any }
@@ -340,6 +350,9 @@ export interface ResourceProps {
     create?: ComponentType<any> | ReactElement;
     edit?: ComponentType<any> | ReactElement;
     show?: ComponentType<any> | ReactElement;
+    hasCreate?: boolean;
+    hasEdit?: boolean;
+    hasShow?: boolean;
     icon?: ComponentType<any>;
     recordRepresentation?: ReactElement | RecordToStringFunction | string;
     options?: ResourceOptions;

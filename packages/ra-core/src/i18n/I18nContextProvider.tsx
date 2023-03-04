@@ -39,7 +39,7 @@ export const I18nContextProvider = ({
                 })
                 .catch(error => {
                     setInitialized(true);
-                    notify('ra.notification.i18n_error', { type: 'warning' });
+                    notify('ra.notification.i18n_error', { type: 'error' });
                     console.error(error);
                 });
         } else {

@@ -11,6 +11,7 @@ export * from './ImageField';
 export * from './NumberField';
 export * from './ReferenceArrayField';
 export * from './ReferenceField';
+export * from './ReferenceManyCount';
 export * from './ReferenceManyField';
 export * from './ReferenceOneField';
 export * from './RichTextField';

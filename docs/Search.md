@@ -11,11 +11,72 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 `<Search>` renders a global search input. It's designed to be integrated into the top `<AppBar>`.
 
-It relies on the `dataProvider` to provide a `search()` method, so you can use it with any search engine (Lucene, ElasticSearch, Solr, Algolia, Google Cloud Search, and many others). And if you don't have a search engine, no problem! `<Search>` can also do the search across several resources via parallel `dataProvider.getList()` queries.
+It relies on the `dataProvider` to provide a `search()` method, so you can use it with any search engine (Lucene, ElasticSearch, Solr, Algolia, Google Cloud Search, and many others). And if you don't have a search engine, no problem! `<Search>` can also do the search across several resources [via parallel `dataProvider.getList()` queries](https://marmelab.com/ra-enterprise/modules/ra-search#addsearchmethod-helper).
 
 ## Usage
 
-Include the `<Search>` component inside a custom `<AppBar>` component:
+### Install `ra-search`
+
+The `<Search>` component is part of the `@react-admin/ra-search` package. To install it, run:
+
+```sh
+yarn add '@react-admin/ra-search'
+```
+
+This requires a valid subscription to [React-admin Enterprise Edition](https://marmelab.com/ra-enterprise).
+
+### Implement `dataProvider.search()`
+
+Your `dataProvider` should support the `search()` method. It should return a Promise for `data` containing an array of `SearchResult` objects and a `total`. A `SearchResult` contains at least the following fields:
+
+- `id`: Identifier The unique identifier of the search result
+- `type`: An arbitrary string which enables grouping
+- `url`: The URL where to redirect to on click. It could be a custom page and not a resource if you want to
+- `content`: Can contain any data that will be used to display the result. If used with the default `<SearchResultItem>` component, it must contain at least an `id`, `label`, and a `description`.
+- `matches`: An optional object containing an extract of the data with matches. Can be anything that will be interpreted by a `<SearchResultItem>`
+
+As for the `total`, it can be greater than the number of returned results. This is useful e.g. to show that there are more results.
+
+Here is an example
+
+```jsx
+dataProvider.search("roll").then((response) => console.log(response));
+// {
+//     data: [
+//         { id: 'a7535', type: 'artist', url: '/artists/7535', content: { label: 'The Rolling Stones', description: 'English rock band formed in London in 1962'  } }
+//         { id: 'a5352', type: 'artist', url: '/artists/5352', content: { label: 'Sonny Rollins', description: 'American jazz tenor saxophonist'  } }
+//         { id: 't7524', type: 'track', url: '/tracks/7524', content: { label: 'Like a Rolling Stone', year: 1965, recordCompany: 'Columbia', artistId: 345, albumId: 435456 } }
+//         { id: 't2386', type: 'track', url: '/tracks/2386', content: { label: "It's Only Rock 'N Roll (But I Like It)", year: 1974, artistId: 7535, albumId: 6325 } }
+//         { id: 'a6325', type: 'album', url: '/albums/6325', content: { label: "It's Only rock 'N Roll", year: 1974, artistId: 7535 }}
+//     ],
+//     total: 5
+// }
+```
+
+It is your responsibility to add this search method to your `dataProvider` so that react-admin can send queries to and read responses from the search engine.
+
+If you don't have a search engine, you can use the `addSearchMethod` helper to add a `dataProvider.search()` method that does a parallel `dataProvider.getList()` query for each resource.
+
+```jsx
+// in src/dataProvider.js
+import simpleRestProvider from 'ra-data-simple-rest';
+import { addSearchMethod } from '@react-admin/ra-search';
+
+const baseDataProvider = simpleRestProvider('http://path.to.my.api/');
+
+export const dataProvider = addSearchMethod(baseDataProvider, [
+    // search across these resources
+    'artists',
+    'tracks',
+    'albums',
+]);
+```
+
+Check [the `ra-search` documentation](https://marmelab.com/ra-enterprise/modules/ra-search) to learn more about the input and output format of `dataProvider.search()`, as well as the possibilities to customize the `addSearchMethod`.
+
+### Option 1: With `<Layout>`
+
+If you're using [the `<Layout` component](./Layout.md), include the `<Search>` component inside a custom `<AppBar>` component:
 
 {% raw %}
 ```jsx
@@ -53,18 +114,18 @@ import { MyAppbar } from "./MyAppBar";
 export const MyLayout = (props) => <Layout {...props} appBar={MyAppbar} />;
 ```
 
-Finally, include that custom layout in the `<Admin>`. You'll also need to setup the `i18nProvider`, as the `ra-search` package comes with some new translations.
+Finally, include that custom layout in the `<Admin>`.
 
 ```jsx
 // in src/Admin.ts
 import { Admin } from "react-admin";
 
+import { dataProvider } from "./dataProvider";
 import { MyLayout } from "./MyLayout";
 
 export const App = () => (
   <Admin
-    dataProvider={searchDataProvider}
-    i18nProvider={i18nProvider}
+    dataProvider={dataProvider}
     layout={MyLayout}
   >
     // ...
@@ -72,7 +133,38 @@ export const App = () => (
 );
 ```
 
-Your `dataProvider` should support the `search()` method. Check [the `ra-search` documentation](https://marmelab.com/ra-enterprise/modules/ra-search) to learn its input and output interface, as well as tricks to use `dataProvider.search()` without a search engine.
+### Option 2: With `<ContainerLayout>`
+
+If you're using [the `<ContainerLayout>` component](./ContainerLayout.md), you can use the `<Search>` component directly in the `toolbar` prop:
+
+```jsx
+// in src/MyLayout.jsx
+import { ContainerLayout } from "@react-admin/ra-navigation";
+import { Search } from "@react-admin/ra-search";
+
+const MyLayout = (props: any) => (
+    <ContainerLayout {...props} maxWidth="xl" toolbar={<Search />} />
+);
+```
+
+Then, import that custom layout in the `<Admin>`:
+
+```jsx
+// in src/Admin.ts
+import { Admin } from "react-admin";
+
+import { dataProvider } from "./dataProvider";
+import { MyLayout } from "./MyLayout";
+
+export const App = () => (
+  <Admin
+    dataProvider={dataProvider}
+    layout={MyLayout}
+  >
+    // ...
+  </Admin>
+);
+```
 
 ## Props
 

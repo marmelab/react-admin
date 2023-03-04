@@ -423,17 +423,17 @@ Note that `<CustomRoutes>` handles `null` elements and fragments correctly, so y
     }
 ```
 
-See [https://reactrouter.com/docs/en/v6/upgrading/v5#advantages-of-route-element](https://reactrouter.com/docs/en/v6/upgrading/v5#advantages-of-route-element) for more details about the new `<Route>` element
+See [https://reactrouter.com/en/6.6.2/upgrading/v5#advantages-of-route-element](https://reactrouter.com/en/6.6.2/upgrading/v5#advantages-of-route-element) for more details about the new `<Route>` element
 
 ### Use `useNavigate` instead of `useHistory`
 
-See [https://reactrouter.com/docs/en/v6/upgrading/v5#use-usenavigate-instead-of-usehistory](https://reactrouter.com/docs/en/v6/upgrading/v5#use-usenavigate-instead-of-usehistory) to upgrade.
+See [https://reactrouter.com/en/v6/upgrading/v5#use-usenavigate-instead-of-usehistory](https://reactrouter.com/en/v6/upgrading/v5#use-usenavigate-instead-of-usehistory) to upgrade.
 
 ### Change The `<Route>` Syntax
 
 If your admin contains components that add new sub routes (like react-admin's `<TabbedForm>` and `<TabbedShowLayout>`), you'll need to update the `<Route>` syntax. 
 
-See [https://reactrouter.com/docs/en/v6/upgrading/v5](https://reactrouter.com/docs/en/v6/upgrading/v5) for details.
+See [https://reactrouter.com/en/v6/upgrading/v5](https://reactrouter.com/en/v6/upgrading/v5) for details.
 
 ### Using A Custom History
 
@@ -1531,7 +1531,7 @@ The same happens for `<Datagrid>`: when used in standalone, it used to accept a 
     <TextField source="year" />
 </Datagrid>
 ```
-{% raw %}
+{% endraw %}
 
 ### `setSort()` Signature Changed
 
@@ -2014,7 +2014,7 @@ export const PostEdit = () => (
 );
 ```
 
-The `<Toolbar>` component used to receive the `width` prop also, that allowed to display the mobile or desktop version depending on its value. This is handle internally in version 4 and you can safely remove this prop.
+The `<Toolbar>` component used to receive the `width` prop also, that allowed to display the mobile or desktop version depending on its value. This is handled internally in version 4 and you can safely remove this prop.
 
 ```diff
 import { Toolbar } from 'react-admin';
@@ -2214,14 +2214,14 @@ The `save` function signature no longer takes a redirection side effect as the s
 const MyCustomCreate = () => {
     const createControllerProps = useCreateController();
     const notify = useNotify();
-+    const redirect = useRedirect();
++   const redirect = useRedirect();
 
     const handleSubmit = (values) => {
 -        createControllerProps.save(values, 'show', {
 +        createControllerProps.save(values, {
             onSuccess: (data) => {
                 notify('Success');
-+                redirect('show', '/posts', data.id);
++               redirect('show', '/posts', data.id);
             }
         })
     }
@@ -2238,7 +2238,7 @@ const MyCustomCreate = () => {
 
 ### `<FormContext>`, `<FormContextProvider>` and `useFormContext` Have Been Removed
 
-These changes only concerns you if you had custom forms not built with `<FormWithRedirect>`, or custom components relying on the form groups management (accordions or collapsible sections for instance).
+These changes only concern you if you had custom forms not built with `<FormWithRedirect>`, or custom components relying on the form groups management (accordions or collapsible sections for instance).
 
 As the `save` and `saving` properties are already available through the `<SaveContext>` component and its `useSaveContext` hook, we removed the `<FormContext>`, `<FormContextProvider>` components as well the `useFormContext` hook. The functions around form groups management have been extracted into the `<FormGroupsProvider>` component:
 
@@ -2285,21 +2285,21 @@ If you had the `redirect` prop set on the `SaveButton`, provide a `onSuccess` pr
 
 ```diff
 const PostCreateToolbar = props => {
-+    const notify = useNotify();
-+    const redirect = useRedirect();
++   const notify = useNotify();
++   const redirect = useRedirect();
     return (
         <Toolbar {...props}>
             <SaveButton
                 label="post.action.save_and_edit"
--                redirect="edit"
-+                onSuccess={data => {
-+                    notify('ra.notification.updated', {
-+                        type: 'info',
-+                        messageArgs: { smart_count: 1 },
-+                        undoable: true,
-+                    });
-+                    redirect('edit', '/posts', data.id)
-+                }}
+-               redirect="edit"
++               onSuccess={data => {
++                   notify('ra.notification.updated', {
++                       type: 'info',
++                       messageArgs: { smart_count: 1 },
++                       undoable: true,
++                   });
++                   redirect('edit', '/posts', data.id)
++               }}
             />
         </Toolbar>
     );
@@ -2403,7 +2403,7 @@ const PostShow = () => (
 
 ### `addLabel` Prop No Longer Considered For Show Labelling 
 
-`<SimpleShowLayout>` and `<TabbedShowLayout>` used to look for an `addLabel` prop to decide whether they needed to add a label or not. this relied on `defaultProps`, which will soon be removed from React. 
+`<SimpleShowLayout>` and `<TabbedShowLayout>` used to look for an `addLabel` prop to decide whether they needed to add a label or not. This relied on `defaultProps`, which will soon be removed from React. 
 
 The Show layout components now render a label for their children as soon as they have a `source` or a `label` prop. If you don't want a field to have a label in the show view, pass the `label={false}` prop.
 
@@ -2494,9 +2494,9 @@ export default LatLngInput;
 
 Just like all inputs, `useInput` now only accept `defaultValue` and will ignore `initialValue`.
 
-Besides, `useInput` used to return `final-form` properties such as `input ` and `meta`. It now returns `field`, `fieldState` and `formState` (see https://react-hook-form.com/api/usecontroller).
+Besides, `useInput` used to return `final-form` properties such as `input` and `meta`. It now returns `field`, `fieldState` and `formState` (see https://react-hook-form.com/api/usecontroller).
 
-Note that the `error` returned by `fieldState` is a not just a simple string anymore but an object with a `message` property.
+Note that the `error` returned by `fieldState` is not just a simple string anymore but an object with a `message` property.
 
 ```diff
 import TextField from 'mui/material/TextField';
@@ -2504,23 +2504,23 @@ import { useInput, required } from 'react-admin';
 
 const MyInput = ({ helperText, ...props }) => {
     const {
--        input,
-+        field,
--        meta: { touched, error },
-+        fieldState: { isTouched, invalid, error },
-+        formState: { isSubmitted }
+-       input,
++       field,
+-       meta: { touched, error },
++       fieldState: { isTouched, invalid, error },
++       formState: { isSubmitted }
         isRequired
     } = useInput(props);
 
     return (
         <TextField
--            {...input}
-+            {...field}
+-           {...input}
++           {...field}
             label={props.label}
--            error={touched && !!error}
-+            error={(isTouched || isSubmitted) && invalid}
--            helperText={touched && !!error ? error : helperText}
-+            helperText={(isTouched || isSubmitted) && invalid ? error?.message : helperText}
+-           error={touched && !!error}
++           error={(isTouched || isSubmitted) && invalid}
+-           helperText={touched && !!error ? error : helperText}
++           helperText={(isTouched || isSubmitted) && invalid ? error?.message : helperText}
             required={isRequired}
             {...rest}
         />
@@ -2529,8 +2529,8 @@ const MyInput = ({ helperText, ...props }) => {
 
 const UserForm = () => (
     <SimpleForm>
--        <MyInput initialValue="John" />
-+        <MyInput defaultValue="John" />
+-       <MyInput initialValue="John" />
++       <MyInput defaultValue="John" />
     </SimpleForm>
 )
 ```
@@ -2545,7 +2545,7 @@ If you used the `addLabel` prop to hide inputs label by passing `false`, you can
 
 We migrated both the `AutocompleteInput` and `AutocompleteArrayInput` components so that they leverage MUI [`<Autocomplete>`](https://mui.com/components/autocomplete/). If you relied on [Downshift](https://www.downshift-js.com/) options, you'll have to update your component.
 
-Besides, some props supported by the previous implementation aren't anymore:
+Besides, some props aren't available anymore:
 - `allowDuplicates`: This is not supported by MUI Autocomplete.
 - `clearAlwaysVisible`: the clear button is now always visible, either while hovering the input or when it has focus. You can hide it using the `<Autocomplete>` `disableClearable` prop though.
 - `resettable`: Removed for the same reason as `clearAlwaysVisible`
@@ -2625,25 +2625,25 @@ import {
 const MyRichTextInput = (props) => (
     <RichTextInput
         {...props}
--        configureQuill={configureQuill}
-+        toolbar={
-+			<RichTextInputToolbar>
-+				<LevelSelect size={size} />
-+				<FormatButtons size={size} />
-+				<AlignmentButtons {size} />
-+				<ListButtons size={size} />
-+				<LinkButtons size={size} />
-+				<QuoteButtons size={size} />
-+				<ClearButtons size={size} />
-+				<ToggleButton
-+					aria-label="Add a smile"
-+					title="Add a smile"
-+					onClick={() => editor.insertContent(':-)')}
-+				>
-+					<Remove fontSize="inherit" />
-+			</ToggleButton>
-+			</RichTextInputToolbar>
-		}
+-       configureQuill={configureQuill}
++       toolbar={
++           <RichTextInputToolbar>
++               <LevelSelect size={size} />
++	        <FormatButtons size={size} />
++	        <AlignmentButtons {size} />
++	        <ListButtons size={size} />
++	        <LinkButtons size={size} />
++	        <QuoteButtons size={size} />
++	        <ClearButtons size={size} />
++               <ToggleButton
++                   aria-label="Add a smile"
++	            title="Add a smile"
++                   onClick={() => editor.insertContent(':-)')}
++	        >
++                   <Remove fontSize="inherit" />
++	        </ToggleButton>
++           </RichTextInputToolbar>
+	}
     />
 }
 ```
@@ -2699,10 +2699,10 @@ It is now the responsibility of the child input to call the `setFilters` functio
 const UserListFilter = [
     <ReferenceInput
         source="email"
--        filterToQuery={search => ({ email: search })}
+-       filterToQuery={search => ({ email: search })}
     >
--        <AutocompleteInput />
-+        <AutocompleteInput filterToQuery={search => ({ email: search })} />
+-       <AutocompleteInput />
++       <AutocompleteInput filterToQuery={search => ({ email: search })} />
     </ReferenceInput>
 ]
 ```
@@ -2775,7 +2775,7 @@ const MyCustomInput = () => {
 +        setPerPage,
 +        setSort,
 +        sort,
-+    } = useChoicesContext();
++   } = useChoicesContext();
     return // ...
 }
 ```
@@ -2887,9 +2887,10 @@ import SettingsIcon from '@mui/icons-material/Settings';
     return (
 -       <MenuItemLink
 +       <MenuItem
++           ref={ref}
             // It's important to pass the props to allow MUI to manage the keyboard navigation
             {...props}
-            component={Link}
++           component={Link}
             to="/configuration"
 -            onClick={props.onClick}
 +            onClick={onClose}

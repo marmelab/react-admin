@@ -4,10 +4,26 @@ import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@mui/material/Typography';
 import { useRecordContext } from 'ra-core';
+import purify from 'dompurify';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { InjectedFieldProps, PublicFieldProps, fieldPropTypes } from './types';
 
+/**
+ * Render an HTML string as rich text
+ *
+ * Note: This component leverages the `dangerouslySetInnerHTML` attribute,
+ * but uses the DomPurify library to sanitize the HTML before rendering it.
+ *
+ * It means it is safe from Cross-Site Scripting (XSS) attacks - but it's still
+ * a good practice to sanitize the value server-side.
+ *
+ * @example
+ * <RichTextField source="description" />
+ *
+ * @example // remove all tags and output text only
+ * <RichTextField source="description" stripTags />
+ */
 export const RichTextField: FC<RichTextFieldProps> = memo<RichTextFieldProps>(
     props => {
         const {
@@ -32,7 +48,11 @@ export const RichTextField: FC<RichTextFieldProps> = memo<RichTextFieldProps>(
                 ) : stripTags ? (
                     removeTags(value)
                 ) : (
-                    <span dangerouslySetInnerHTML={{ __html: value }} />
+                    <span
+                        dangerouslySetInnerHTML={{
+                            __html: purify.sanitize(value),
+                        }}
+                    />
                 )}
             </Typography>
         );

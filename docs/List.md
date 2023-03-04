@@ -690,7 +690,7 @@ const PostList = () => {
     const redirect = useRedirect();
 
     const onError = (error) => {
-        notify(`Could not load list: ${error.message}`, { type: 'warning' });
+        notify(`Could not load list: ${error.message}`, { type: 'error' });
         redirect('/dashboard');
     };
 
@@ -864,3 +864,25 @@ const PostList = () => (
 );
 ```
 {% endraw %}
+
+## Live Updates
+
+If you want to subscribe to live updates on the list of records (topic: `resource/[resource]`), use [the `<ListLive>` component](./ListLive.md) instead.
+
+```diff
+-import { List, Datagrid, TextField } from 'react-admin';
++import { Datagrid, TextField } from 'react-admin';
++import { ListLive } from '@react-admin/ra-realtime';
+
+const PostList = () => (
+-   <List>
++   <ListLive>
+        <Datagrid>
+            <TextField source="title" />
+        </Datagrid>
+-   </List>
++   </ListLive>
+);
+```
+
+The list will automatically update when a new record is created, or an existing record is updated or deleted.

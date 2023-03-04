@@ -11,6 +11,7 @@ import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
+import { InsideReferenceArrayInput } from './AutocompleteArrayInput.stories';
 
 describe('<AutocompleteArrayInput />', () => {
     const defaultProps = {
@@ -806,6 +807,49 @@ describe('<AutocompleteArrayInput />', () => {
         expect(screen.getByText('Programming')).not.toBeNull();
     });
 
+    it('should use optionText with a string value including "." as text identifier when a create element is passed', () => {
+        const choices = [
+            { id: 't', foobar: { name: 'Technical' } },
+            { id: 'p', foobar: { name: 'Programming' } },
+        ];
+        const newChoice = {
+            id: 'js_fatigue',
+            foobar: { name: 'New Kid On The Block' },
+        };
+
+        const Create = () => {
+            const context = useCreateSuggestionContext();
+            const handleClick = () => {
+                choices.push(newChoice);
+                context.onCreate(newChoice);
+            };
+
+            return <button onClick={handleClick}>Get the kid</button>;
+        };
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <AutocompleteArrayInput
+                        {...defaultProps}
+                        create={<Create />}
+                        optionText="foobar.name"
+                        choices={choices}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        userEvent.type(
+            screen.getByLabelText('resources.posts.fields.tags'),
+            'a'
+        );
+        expect(screen.queryAllByRole('option')).toHaveLength(3);
+        expect(screen.getByText('Technical')).not.toBeNull();
+        expect(screen.getByText('Programming')).not.toBeNull();
+        expect(screen.getByText('ra.action.create_item')).not.toBeNull();
+    });
+
     it('should support creation of a new choice through the onCreate event when optionText is a function', async () => {
         const choices = [
             { id: 'ang', name: 'Angular' },
@@ -887,5 +931,100 @@ describe('<AutocompleteArrayInput />', () => {
             'a'
         );
         expect(screen.queryAllByRole('option')).toHaveLength(2);
+    });
+
+    it('should display "No options" and not throw any error inside a ReferenceArrayInput field when referenced list is empty', async () => {
+        render(<InsideReferenceArrayInput />);
+        // Give time for the (previously thrown) error to happen
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await waitFor(() => {
+            screen.getByText('Author');
+        });
+        screen.getByRole('textbox').focus();
+        fireEvent.click(screen.getByLabelText('Clear value'));
+        fireEvent.change(screen.getByRole('textbox'), {
+            target: { value: 'plop' },
+        });
+        await waitFor(
+            () => {
+                screen.getByText('No options');
+            },
+            { timeout: 2000 }
+        );
+    });
+
+    it('should not display "No options" inside a ReferenceArrayInput field when referenced list loading', async () => {
+        render(<InsideReferenceArrayInput />);
+        // Give time for the (previously thrown) error to happen
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await waitFor(() => {
+            screen.getByText('Author');
+        });
+        screen.getByRole('textbox').focus();
+        fireEvent.click(screen.getByLabelText('Clear value'));
+        fireEvent.change(screen.getByRole('textbox'), {
+            target: { value: 'Vic' },
+        });
+
+        // As the No options message might only be displayed after a small delay,
+        // we need to check for its presence for a few seconds.
+        // This test failed before the fix
+        const noOptionsAppeared = await new Promise(resolve => {
+            let noOptionsAppeared = false;
+            const checkForNoOptions = () => {
+                noOptionsAppeared = screen.queryByText('No options') != null;
+                if (noOptionsAppeared) {
+                    clearInterval(interval);
+                    resolve(noOptionsAppeared);
+                }
+            };
+
+            const interval = setInterval(checkForNoOptions, 100);
+            setTimeout(() => {
+                clearInterval(interval);
+                resolve(noOptionsAppeared);
+            }, 2000);
+        });
+
+        expect(noOptionsAppeared).toBe(false);
+    });
+
+    it('should not crash if its value is not an array', () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    onSubmit={jest.fn()}
+                    defaultValues={{ tags: 'programming' }}
+                >
+                    <AutocompleteArrayInput
+                        choices={[
+                            { id: 'programming', name: 'Programming' },
+                            { id: 'lifestyle', name: 'Lifestyle' },
+                            { id: 'photography', name: 'Photography' },
+                        ]}
+                        {...defaultProps}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+        expect(screen.queryByRole('textbox')).not.toBeNull();
+    });
+
+    it('should not crash if its value is not an array and is empty', () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()} defaultValues={{ tags: '' }}>
+                    <AutocompleteArrayInput
+                        choices={[
+                            { id: 'programming', name: 'Programming' },
+                            { id: 'lifestyle', name: 'Lifestyle' },
+                            { id: 'photography', name: 'Photography' },
+                        ]}
+                        {...defaultProps}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+        expect(screen.queryByRole('textbox')).not.toBeNull();
     });
 });

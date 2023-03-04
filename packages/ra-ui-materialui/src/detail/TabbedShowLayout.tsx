@@ -23,6 +23,7 @@ import {
     TabbedShowLayoutTabs,
     getShowLayoutTabFullPath,
 } from './TabbedShowLayoutTabs';
+import { Tab } from './Tab';
 
 /**
  * Layout for a Show view showing fields grouped in tabs and laid out in a single column.
@@ -31,24 +32,24 @@ import {
  * each of which contains a list of record fields in a single-column layout
  * (via MUI's `<Stack>` component).
  * `<TabbedShowLayout>` delegates the actual rendering of fields to its children,
- * which should be `<Tab>` components.
- * `<Tab>` wraps each field inside a <Labeled> component to add a label.
+ * which should be `<TabbedShowLayout.Tab>` components.
+ * `<TabbedShowLayout.Tab>` wraps each field inside a `<Labeled>` component to add a label.
  *
  * @example
  * // in src/posts.js
  * import * as React from "react";
- * import { Show, TabbedShowLayout, Tab, TextField } from 'react-admin';
+ * import { Show, TabbedShowLayout, TextField } from 'react-admin';
  *
  * export const PostShow = () => (
  *     <Show>
  *         <TabbedShowLayout>
- *             <Tab label="Content">
+ *             <TabbedShowLayout.Tab label="Content">
  *                 <TextField source="title" />
  *                 <TextField source="subtitle" />
- *            </Tab>
- *             <Tab label="Metadata">
+ *            </TabbedShowLayout.Tab>
+ *             <TabbedShowLayout.Tab label="Metadata">
  *                 <TextField source="category" />
- *            </Tab>
+ *            </TabbedShowLayout.Tab>
  *         </TabbedShowLayout>
  *     </Show>
  * );
@@ -179,6 +180,8 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
         </OptionalRecordContextProvider>
     );
 };
+
+TabbedShowLayout.Tab = Tab;
 
 export interface TabbedShowLayoutProps {
     children: ReactNode;

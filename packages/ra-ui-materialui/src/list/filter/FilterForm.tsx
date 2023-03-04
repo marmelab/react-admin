@@ -256,14 +256,23 @@ const getInputValue = (
         return lodashGet(filterValues, key, '');
     }
     if (typeof formValues[key] === 'object') {
-        return Object.keys(formValues[key]).reduce((acc, innerKey) => {
-            acc[innerKey] = getInputValue(
-                formValues[key],
-                innerKey,
-                (filterValues || {})[key] ?? {}
-            );
-            return acc;
-        }, {});
+        const inputValues = Object.keys(formValues[key]).reduce(
+            (acc, innerKey) => {
+                const nestedInputValue = getInputValue(
+                    formValues[key],
+                    innerKey,
+                    (filterValues || {})[key] ?? {}
+                );
+                if (nestedInputValue === '') {
+                    return acc;
+                }
+                acc[innerKey] = nestedInputValue;
+                return acc;
+            },
+            {}
+        );
+        if (!Object.keys(inputValues).length) return '';
+        return inputValues;
     }
     return lodashGet(filterValues, key, '');
 };

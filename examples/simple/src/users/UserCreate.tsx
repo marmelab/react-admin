@@ -3,7 +3,6 @@ import * as React from 'react';
 import { useFormContext } from 'react-hook-form';
 import {
     Create,
-    FormTab,
     SaveButton,
     AutocompleteInput,
     TabbedForm,
@@ -61,16 +60,16 @@ const UserCreate = () => {
                 warnWhenUnsavedChanges
                 toolbar={<UserEditToolbar permissions={permissions} />}
             >
-                <FormTab label="user.form.summary" path="">
+                <TabbedForm.Tab label="user.form.summary" path="">
                     <TextInput
                         source="name"
                         defaultValue="Slim Shady"
                         autoFocus
                         validate={[required(), isValidName]}
                     />
-                </FormTab>
+                </TabbedForm.Tab>
                 {permissions === 'admin' && (
-                    <FormTab label="user.form.security" path="security">
+                    <TabbedForm.Tab label="user.form.security" path="security">
                         <AutocompleteInput
                             source="role"
                             choices={[
@@ -81,7 +80,7 @@ const UserCreate = () => {
                             ]}
                             validate={[required()]}
                         />
-                    </FormTab>
+                    </TabbedForm.Tab>
                 )}
             </TabbedForm>
         </Create>

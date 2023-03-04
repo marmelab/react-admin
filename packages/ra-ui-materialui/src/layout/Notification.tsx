@@ -70,33 +70,39 @@ export const Notification = (props: NotificationProps) => {
     }, []);
 
     if (!messageInfo) return null;
+    const {
+        message,
+        type: typeFromMessage,
+        notificationOptions: {
+            autoHideDuration: autoHideDurationFromMessage,
+            messageArgs,
+            multiLine: multilineFromMessage,
+            undoable,
+            ...options
+        },
+    } = messageInfo;
 
     return (
         <StyledSnackbar
             className={className}
             open={open}
             message={
-                messageInfo.message &&
-                translate(
-                    messageInfo.message,
-                    messageInfo.notificationOptions.messageArgs
-                )
+                message &&
+                typeof message === 'string' &&
+                translate(message, messageArgs)
             }
-            autoHideDuration={
-                messageInfo.notificationOptions.autoHideDuration ||
-                autoHideDuration
-            }
-            disableWindowBlurListener={messageInfo.notificationOptions.undoable}
+            autoHideDuration={autoHideDurationFromMessage || autoHideDuration}
+            disableWindowBlurListener={undoable}
             TransitionProps={{ onExited: handleExited }}
             onClose={handleRequestClose}
             ContentProps={{
-                className: clsx(NotificationClasses[messageInfo.type || type], {
+                className: clsx(NotificationClasses[typeFromMessage || type], {
                     [NotificationClasses.multiLine]:
-                        messageInfo.notificationOptions.multiLine || multiLine,
+                        multilineFromMessage || multiLine,
                 }),
             }}
             action={
-                messageInfo.notificationOptions.undoable ? (
+                undoable ? (
                     <Button
                         color="primary"
                         className={NotificationClasses.undo}
@@ -109,7 +115,10 @@ export const Notification = (props: NotificationProps) => {
             }
             anchorOrigin={anchorOrigin}
             {...rest}
-        />
+            {...options}
+        >
+            {message && typeof message !== 'string' ? message : null}
+        </StyledSnackbar>
     );
 };
 
@@ -139,13 +148,13 @@ const StyledSnackbar = styled(Snackbar, {
     },
 
     [`& .${NotificationClasses.error}`]: {
-        backgroundColor: theme.palette.error.dark,
+        backgroundColor: theme.palette.error.main,
         color: theme.palette.error.contrastText,
     },
 
     [`& .${NotificationClasses.warning}`]: {
-        backgroundColor: theme.palette.error.light,
-        color: theme.palette.error.contrastText,
+        backgroundColor: theme.palette.warning.main,
+        color: theme.palette.warning.contrastText,
     },
 
     [`& .${NotificationClasses.undo}`]: {

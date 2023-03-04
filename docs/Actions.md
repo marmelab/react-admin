@@ -171,7 +171,6 @@ const ApproveButton = () => {
     const record = useRecordContext();
     const dataProvider = useDataProvider();
     const { mutate, isLoading } = useMutation(
-        ['comments', 'update', { id: record.id, data: { isApproved: true } }],
         () => dataProvider.update('comments', { id: record.id, data: { isApproved: true } })
     );
     return <Button label="Approve" onClick={() => mutate()} disabled={isLoading} />;
@@ -247,7 +246,6 @@ You can call it inside a `<BanUser>` button component as follows:
 const BanUserButton = ({ userId }) => {
     const dataProvider = useDataProvider();
     const { mutate, isLoading } = useMutation(
-        ['banUser', userId],
         () => dataProvider.banUser(userId)
     );
     return <Button label="Ban" onClick={() => mutate()} disabled={isLoading} />;
@@ -372,7 +370,7 @@ const ApproveButton = () => {
             },
             onError: (error) => {
                 // failure side effects go here 
-                notify(`Comment approval error: ${error.message}`, { type: 'warning' });
+                notify(`Comment approval error: ${error.message}`, { type: 'error' });
             },
         }
     );
@@ -410,7 +408,7 @@ const ApproveButton = () => {
                 notify('Comment approved');
             },
             onError: (error) => {
-                notify(`Comment approval error: ${error.message}`, { type: 'warning' });
+                notify(`Comment approval error: ${error.message}`, { type: 'error' });
             },
         }
     );
@@ -462,7 +460,7 @@ const ApproveButton = () => {
 -               notify('Comment approved');
 +               notify('Comment approved', { undoable: true });
             },
-            onError: (error) => notify(`Error: ${error.message}`, { type: 'warning' }),
+            onError: (error) => notify(`Error: ${error.message}`, { type: 'error' }),
         }
     );
     return <Button label="Approve" onClick={() => approve()} disabled={isLoading} />;
@@ -504,7 +502,7 @@ const ApproveButton = () => {
                 redirect('/comments');
             })
             .catch((e) => {
-                notify('Error: comment not approved', { type: 'warning' })
+                notify('Error: comment not approved', { type: 'error' })
             })
             .finally(() => {
                 setLoading(false);

@@ -9,7 +9,7 @@ import warning from './warning';
 import useWhyDidYouUpdate from './useWhyDidYouUpdate';
 import { getMutationMode } from './getMutationMode';
 export * from './mergeRefs';
-export * from './useEventCallback';
+export * from './useEvent';
 
 export {
     escapePath,

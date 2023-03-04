@@ -14,11 +14,11 @@ import {
     CreateButton,
     ShowButton,
     EditButton,
-    FormTab,
     ImageField,
     ImageInput,
     NumberInput,
     ReferenceManyField,
+    ReferenceManyCount,
     ReferenceInput,
     SelectInput,
     SimpleFormIterator,
@@ -107,7 +107,7 @@ const PostEdit = () => {
                 defaultValues={{ average_note: 0 }}
                 warnWhenUnsavedChanges
             >
-                <FormTab label="post.form.summary">
+                <TabbedForm.Tab label="post.form.summary">
                     <SanitizedBox
                         display="flex"
                         flexDirection="column"
@@ -189,16 +189,16 @@ const PostEdit = () => {
                             </SimpleFormIterator>
                         </ArrayInput>
                     )}
-                </FormTab>
-                <FormTab label="post.form.body">
+                </TabbedForm.Tab>
+                <TabbedForm.Tab label="post.form.body">
                     <RichTextInput
                         source="body"
                         label=""
                         validate={required()}
                         fullWidth
                     />
-                </FormTab>
-                <FormTab label="post.form.miscellaneous">
+                </TabbedForm.Tab>
+                <TabbedForm.Tab label="post.form.miscellaneous">
                     <TagReferenceInput
                         reference="tags"
                         source="tags"
@@ -239,8 +239,17 @@ const PostEdit = () => {
                             </ArrayInput>
                         </SimpleFormIterator>
                     </ArrayInput>
-                </FormTab>
-                <FormTab label="post.form.comments">
+                </TabbedForm.Tab>
+                <TabbedForm.Tab
+                    label="post.form.comments"
+                    count={
+                        <ReferenceManyCount
+                            reference="comments"
+                            target="post_id"
+                            sx={{ lineHeight: 'inherit' }}
+                        />
+                    }
+                >
                     <ReferenceManyField
                         reference="comments"
                         target="post_id"
@@ -253,7 +262,7 @@ const PostEdit = () => {
                             <EditButton />
                         </Datagrid>
                     </ReferenceManyField>
-                </FormTab>
+                </TabbedForm.Tab>
             </TabbedForm>
         </Edit>
     );

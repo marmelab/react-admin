@@ -34,7 +34,7 @@ const AcceptButton = () => {
             },
             onError: () => {
                 notify('resources.reviews.notification.approved_error', {
-                    type: 'warning',
+                    type: 'error',
                 });
             },
         }

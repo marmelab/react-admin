@@ -44,6 +44,7 @@ It accepts the following props:
 * [`rightAvatar`](#rightavatar)
 * [`rightIcon`](#righticon)
 * [`rowStyle`](#rowstyle)
+* [`empty`](#empty)
 
 ## `leftAvatar`
 
@@ -164,8 +165,8 @@ const postRowStyle = (record, index) => ({
     backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
 });
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <SimpleList primaryText={record => record.title} rowStyle={postRowStyle} />
     </List>
 );
@@ -179,6 +180,25 @@ See [`primaryText`](#primarytext)
 
 See [`primaryText`](#primarytext)
 
+## `empty`
+
+It's possible that a SimpleList will have no records to display. If the SimpleList's parent component does not handle the empty state, the SimpleList will display a message indicating there are no results. This message is translatable and its key is `ra.navigation.no_results`.
+
+You can customize the empty state by passing  a component to the `empty` prop:
+
+```jsx
+const CustomEmpty = () => <div>No books found</div>;
+
+const PostList = () => (
+    <List>
+        <SimpleList
+            primaryText={record => record.title}
+            empty={<CustomEmpty />}
+        />
+    </List>
+);
+```
+
 ## Using `<SimpleList>` On Small Screens
 
 To use `<SimpleList>` on small screens and a `<Datagrid>` on larger screens, use MUI's `useMediaQuery` hook:
@@ -187,10 +207,10 @@ To use `<SimpleList>` on small screens and a `<Datagrid>` on larger screens, use
 import { useMediaQuery } from '@mui/material';
 import { List, SimpleList, Datagrid } from 'react-admin';
 
-export const PostList = props => {
+export const PostList = () => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
     return (
-        <List {...props}>
+        <List>
             {isSmall ? (
                 <SimpleList
                     primaryText={record => record.title}

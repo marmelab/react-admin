@@ -1,21 +1,22 @@
-import * as React from 'react';
-import expect from 'expect';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import expect from 'expect';
 import {
     ListContext,
     minLength,
     ResourceContextProvider,
     testDataProvider,
 } from 'ra-core';
+import * as React from 'react';
 
+import { AdminContext } from '../../AdminContext';
+import { ReferenceInput, SelectInput, TextInput } from '../../input';
+import { Filter } from './Filter';
+import { Basic } from './FilterButton.stories';
 import {
     FilterForm,
     getFilterFormValues,
     mergeInitialValuesWithDefaultValues,
 } from './FilterForm';
-import { ReferenceInput, SelectInput, TextInput } from '../../input';
-import { AdminContext } from '../../AdminContext';
-import { Filter } from './Filter';
 
 describe('<FilterForm />', () => {
     const defaultProps = {
@@ -172,6 +173,27 @@ describe('<FilterForm />', () => {
         });
     });
 
+    it('should allow to add and clear a filter with a complex object value', async () => {
+        render(<Basic />);
+
+        const addFilterButton = await screen.findByText('Add filter');
+        fireEvent.click(addFilterButton);
+
+        fireEvent.click(await screen.findByText('Nested'));
+        await screen.findByDisplayValue('bar');
+        await screen.findByText('1-7 of 7');
+
+        fireEvent.change(screen.getByLabelText('Nested'), {
+            target: { value: 'baz' },
+        });
+        await screen.findByText('1-6 of 6');
+
+        fireEvent.click(await screen.findByTitle('Remove this filter'));
+        await screen.findByText('1-10 of 13');
+        expect(screen.queryByText('Nested')).toBeNull();
+        expect(screen.queryByLabelText('Nested')).toBeNull();
+    });
+
     describe('mergeInitialValuesWithDefaultValues', () => {
         it('should correctly merge initial values with the default values of the alwaysOn filters', () => {
             const initialValues = {
@@ -233,7 +255,7 @@ describe('<FilterForm />', () => {
                 getFilterFormValues(currentFormValues, newFilterValues)
             ).toEqual({
                 classicToClear: '',
-                nestedToClear: { nestedValue: '' },
+                nestedToClear: '',
                 classicUpdated: 'ghi2',
                 nestedUpdated: { nestedValue: 'jkl2' },
                 published_at: '2022-01-01T03:00:00.000Z',

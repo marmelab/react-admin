@@ -5,7 +5,7 @@ import { createMemoryHistory } from 'history';
 import { InputAdornment } from '@mui/material';
 
 import { Edit, Create } from '../../detail';
-import { SimpleForm, TabbedForm, FormTab } from '../../form';
+import { SimpleForm, TabbedForm } from '../../form';
 import { ArrayInput } from './ArrayInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
 import { TextInput } from '../TextInput';
@@ -442,7 +442,7 @@ const CreateGlobalValidationInFormTab = () => {
                   We still need `validate={required()}` to indicate fields are required 
                   with a '*' symbol after the label, but the real validation happens in `globalValidator`
                 */}
-                <FormTab label="Main">
+                <TabbedForm.Tab label="Main">
                     <TextInput source="title" />
                     <ArrayInput
                         source="authors"
@@ -454,7 +454,7 @@ const CreateGlobalValidationInFormTab = () => {
                             <TextInput source="role" validate={required()} />
                         </SimpleFormIterator>
                     </ArrayInput>
-                </FormTab>
+                </TabbedForm.Tab>
             </TabbedForm>
         </Create>
     );

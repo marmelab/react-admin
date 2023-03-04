@@ -8,16 +8,16 @@ main > .container .markdown-section {
     margin: 0 auto;
 }
 @media only screen and (min-width: 992px) {
-    body:not(.no-sidebar) header,
-    body:not(.no-sidebar) main,
-    body:not(.no-sidebar) footer {
+    body:not(.no-sidebar) > header,
+    body:not(.no-sidebar) > main,
+    body:not(.no-sidebar) > footer {
         padding-left: 300px;
     }
 }
 @media only screen and (max-width: 992px) {
-    body header,
-    body main,
-    body footer {
+    body > header,
+    body > main,
+    body > footer {
         padding-left: 0;
     }
 }
@@ -27,9 +27,6 @@ main > .container .markdown-section {
         line-height: 1.6;
         font-size: 16px;
         -webkit-font-smoothing: antialiased;
-    }
-    main .markdown-section {
-        padding-left: 2em;
     }
     main > .container {
         width: 100%;
@@ -484,6 +481,7 @@ ul.sidenav code {
 .docBlocks a:hover {
     border: #c0c0c0 1px solid;
     box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
 }
 
 .docBlocks a .docBlock {
@@ -583,4 +581,55 @@ body.no-sidebar .sidenav-trigger {
 .container .style .token.string {
     color: #9a6e3a;
     background: none;
+}
+
+
+.pages-index {
+    column-count: 3;
+}
+.pages-index ul {
+    padding-left: 0;
+}
+.pages-index ul > li {
+    list-style-type: none;
+    line-height: 1.2em;
+}
+
+.pages-index code {
+    font-size: 0.8em;
+    background: none!important;
+}
+
+#docsearch .DocSearch-Button {
+    transition: width 0.2s ease-in-out;
+}
+
+@media only screen and (max-width: 1500px) {
+        #docsearch .DocSearch-Button {
+            width: 200px !important;
+        }
+}
+
+.news {
+    display: inline;
+    margin: 0 15px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: solid 1px #368fe7;
+    background: #368fe7;
+    color: #fff;
+}
+
+.news-mobile {
+    margin-right: 16px;
+}
+@media only screen and (min-width: 991px) {
+    .news-mobile {
+        display: none;
+    }
+}
+@media only screen and (max-width: 600px) {
+    .news-mobile {
+        display: none;
+    }
 }

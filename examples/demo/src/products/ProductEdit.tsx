@@ -4,16 +4,14 @@ import {
     DateField,
     Edit,
     EditButton,
-    FormTab,
     Pagination,
     ReferenceManyField,
+    ReferenceManyCount,
     required,
     TabbedForm,
     TextField,
     TextInput,
     useRecordContext,
-    useGetManyReference,
-    useTranslate,
 } from 'react-admin';
 import { RichTextInput } from 'ra-input-rich-text';
 
@@ -31,29 +29,39 @@ const ProductTitle = () => {
 const ProductEdit = () => (
     <Edit title={<ProductTitle />}>
         <TabbedForm>
-            <FormTab
+            <TabbedForm.Tab
                 label="resources.products.tabs.image"
                 sx={{ maxWidth: '40em' }}
             >
                 <Poster />
                 <TextInput source="image" fullWidth validate={req} />
                 <TextInput source="thumbnail" fullWidth validate={req} />
-            </FormTab>
-            <FormTab
+            </TabbedForm.Tab>
+            <TabbedForm.Tab
                 label="resources.products.tabs.details"
                 path="details"
                 sx={{ maxWidth: '40em' }}
             >
                 <ProductEditDetails />
-            </FormTab>
-            <FormTab
+            </TabbedForm.Tab>
+            <TabbedForm.Tab
                 label="resources.products.tabs.description"
                 path="description"
                 sx={{ maxWidth: '40em' }}
             >
                 <RichTextInput source="description" label="" validate={req} />
-            </FormTab>
-            <ReviewsFormTab path="reviews">
+            </TabbedForm.Tab>
+            <TabbedForm.Tab
+                label="resources.products.tabs.reviews"
+                count={
+                    <ReferenceManyCount
+                        reference="reviews"
+                        target="product_id"
+                        sx={{ lineHeight: 'inherit' }}
+                    />
+                }
+                path="reviews"
+            >
                 <ReferenceManyField
                     reference="reviews"
                     target="product_id"
@@ -78,33 +86,11 @@ const ProductEdit = () => (
                         <EditButton />
                     </Datagrid>
                 </ReferenceManyField>
-            </ReviewsFormTab>
+            </TabbedForm.Tab>
         </TabbedForm>
     </Edit>
 );
 
 const req = [required()];
-
-const ReviewsFormTab = (props: any) => {
-    const record = useRecordContext();
-    const { isLoading, total } = useGetManyReference(
-        'reviews',
-        {
-            target: 'product_id',
-            id: record.id,
-            pagination: { page: 1, perPage: 25 },
-            sort: { field: 'id', order: 'DESC' },
-        },
-        {
-            enabled: !!record,
-        }
-    );
-    const translate = useTranslate();
-    let label = translate('resources.products.tabs.reviews');
-    if (!isLoading) {
-        label += ` (${total})`;
-    }
-    return <FormTab label={label} {...props} />;
-};
 
 export default ProductEdit;

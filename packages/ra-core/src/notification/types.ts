@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
 export interface NotificationOptions {
@@ -9,10 +11,11 @@ export interface NotificationOptions {
     multiLine?: boolean;
     // If true, the notification shows an Undo button
     undoable?: boolean;
+    [key: string]: any;
 }
 
 export interface NotificationPayload {
-    readonly message: string;
+    readonly message: string | ReactNode;
     readonly type: NotificationType;
     readonly notificationOptions?: NotificationOptions;
 }

@@ -34,7 +34,7 @@ export const LoginForm = (props: LoginFormProps) => {
                         ? 'ra.auth.sign_in_error'
                         : error.message,
                     {
-                        type: 'warning',
+                        type: 'error',
                         messageArgs: {
                             _:
                                 typeof error === 'string'
@@ -60,6 +60,7 @@ export const LoginForm = (props: LoginFormProps) => {
                     autoFocus
                     source="username"
                     label={translate('ra.auth.username')}
+                    autoComplete="username"
                     validate={required()}
                     fullWidth
                 />

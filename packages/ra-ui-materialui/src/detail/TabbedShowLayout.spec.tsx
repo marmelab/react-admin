@@ -5,7 +5,6 @@ import { createMemoryHistory } from 'history';
 import { CoreAdminContext, testDataProvider } from 'ra-core';
 
 import { TabbedShowLayout } from './TabbedShowLayout';
-import { Tab } from './Tab';
 import { TextField } from '../field';
 
 describe('<TabbedShowLayout />', () => {
@@ -17,12 +16,12 @@ describe('<TabbedShowLayout />', () => {
                 history={history}
             >
                 <TabbedShowLayout record={{ id: 123 }}>
-                    <Tab label="Tab1">
+                    <TabbedShowLayout.Tab label="Tab1">
                         <TextField label="Field On Tab1" source="field1" />
-                    </Tab>
-                    <Tab label="Tab2">
+                    </TabbedShowLayout.Tab>
+                    <TabbedShowLayout.Tab label="Tab2">
                         <TextField label="Field On Tab2" source="field2" />
-                    </Tab>
+                    </TabbedShowLayout.Tab>
                 </TabbedShowLayout>
             </CoreAdminContext>
         );
@@ -40,12 +39,12 @@ describe('<TabbedShowLayout />', () => {
             >
                 <TabbedShowLayout record={{ id: 123 }}>
                     {null}
-                    <Tab label="Tab1">
+                    <TabbedShowLayout.Tab label="Tab1">
                         <TextField label="Field On Tab1" source="field1" />
-                    </Tab>
-                    <Tab label="Tab2">
+                    </TabbedShowLayout.Tab>
+                    <TabbedShowLayout.Tab label="Tab2">
                         <TextField label="Field On Tab2" source="field2" />
-                    </Tab>
+                    </TabbedShowLayout.Tab>
                 </TabbedShowLayout>
             </CoreAdminContext>
         );
@@ -64,12 +63,12 @@ describe('<TabbedShowLayout />', () => {
             >
                 <TabbedShowLayout record={{ id: 123 }}>
                     {null}
-                    <Tab label="Tab1">
+                    <TabbedShowLayout.Tab label="Tab1">
                         <TextField label="Field On Tab1" source="field1" />
-                    </Tab>
-                    <Tab label="Tab2">
+                    </TabbedShowLayout.Tab>
+                    <TabbedShowLayout.Tab label="Tab2">
                         <TextField label="Field On Tab2" source="field2" />
-                    </Tab>
+                    </TabbedShowLayout.Tab>
                 </TabbedShowLayout>
             </CoreAdminContext>
         );
@@ -94,12 +93,12 @@ describe('<TabbedShowLayout />', () => {
             >
                 <TabbedShowLayout record={{ id: 123 }}>
                     {null}
-                    <Tab label="Tab1">
+                    <TabbedShowLayout.Tab label="Tab1">
                         <TextField label="Field On Tab1" source="field1" />
-                    </Tab>
-                    <Tab label="Tab2" path="second">
+                    </TabbedShowLayout.Tab>
+                    <TabbedShowLayout.Tab label="Tab2" path="second">
                         <TextField label="Field On Tab2" source="field2" />
-                    </Tab>
+                    </TabbedShowLayout.Tab>
                 </TabbedShowLayout>
             </CoreAdminContext>
         );
@@ -124,12 +123,12 @@ describe('<TabbedShowLayout />', () => {
             >
                 <TabbedShowLayout record={record} syncWithLocation={false}>
                     {null}
-                    <Tab label="Tab1">
+                    <TabbedShowLayout.Tab label="Tab1">
                         <TextField label="Field On Tab1" source="field1" />
-                    </Tab>
-                    <Tab label="Tab2">
+                    </TabbedShowLayout.Tab>
+                    <TabbedShowLayout.Tab label="Tab2">
                         <TextField label="Field On Tab2" source="field2" />
-                    </Tab>
+                    </TabbedShowLayout.Tab>
                 </TabbedShowLayout>
             </CoreAdminContext>
         );

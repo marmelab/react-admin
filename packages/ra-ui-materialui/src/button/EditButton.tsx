@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
+import { styled } from '@mui/material/styles';
 import ContentCreate from '@mui/icons-material/Create';
 import { Link } from 'react-router-dom';
 import {
@@ -31,6 +33,7 @@ export const EditButton = <RecordType extends RaRecord = any>(
         icon = defaultIcon,
         label = 'ra.action.edit',
         scrollToTop = true,
+        className,
         ...rest
     } = props;
     const resource = useResourceContext(props);
@@ -38,16 +41,17 @@ export const EditButton = <RecordType extends RaRecord = any>(
     const createPath = useCreatePath();
     if (!record) return null;
     return (
-        <Button
+        <StyledButton
             component={Link}
             to={createPath({ type: 'edit', resource, id: record.id })}
             state={scrollStates[String(scrollToTop)]}
             label={label}
             onClick={stopPropagation}
+            className={clsx(EditButtonClasses.root, className)}
             {...(rest as any)}
         >
             {icon}
-        </Button>
+        </StyledButton>
     );
 };
 
@@ -81,3 +85,14 @@ EditButton.propTypes = {
     record: PropTypes.any,
     scrollToTop: PropTypes.bool,
 };
+
+const PREFIX = 'RaEditButton';
+
+export const EditButtonClasses = {
+    root: `${PREFIX}-root`,
+};
+
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (_props, styles) => styles.root,
+})({});

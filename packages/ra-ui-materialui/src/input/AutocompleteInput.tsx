@@ -381,13 +381,17 @@ If you provided a React element for the optionText prop, you must also provide t
             }
 
             if (option?.id === createId) {
-                return option?.name;
+                return get(
+                    option,
+                    typeof optionText === 'string' ? optionText : 'name'
+                );
             }
 
             if (!isListItem && option[optionValue || 'id'] === emptyValue) {
-                return option[
+                return get(
+                    option,
                     typeof optionText === 'string' ? optionText : 'name'
-                ];
+                );
             }
 
             if (!isListItem && inputText !== undefined) {
@@ -525,7 +529,7 @@ If you provided a React element for the optionText prop, you must also provide t
     ]);
 
     const isOptionEqualToValue = (option, value) => {
-        return getChoiceValue(option) === getChoiceValue(value);
+        return String(getChoiceValue(option)) === String(getChoiceValue(value));
     };
 
     return (
@@ -723,7 +727,14 @@ const useSelectedChoice = <
             multiple
         );
 
-        if (!isEqual(selectedChoiceRef.current, newSelectedItems)) {
+        if (
+            !areSelectedItemsEqual(
+                selectedChoiceRef.current,
+                newSelectedItems,
+                optionValue,
+                multiple
+            )
+        ) {
             selectedChoiceRef.current = newSelectedItems;
             setSelectedChoice(newSelectedItems);
         }
@@ -738,13 +749,44 @@ const getSelectedItems = (
     multiple
 ) => {
     if (multiple) {
-        return (value || [])
+        return (Array.isArray(value ?? []) ? value : [value])
             .map(item =>
-                choices.find(choice => item === get(choice, optionValue))
+                choices.find(
+                    choice => String(item) === String(get(choice, optionValue))
+                )
             )
             .filter(item => !!item);
     }
-    return choices.find(choice => get(choice, optionValue) === value) || '';
+    return (
+        choices.find(
+            choice => String(get(choice, optionValue)) === String(value)
+        ) || ''
+    );
+};
+
+const areSelectedItemsEqual = (
+    selectedChoice: RaRecord | RaRecord[],
+    newSelectedChoice: RaRecord | RaRecord[],
+    optionValue = 'id',
+    multiple: boolean
+) => {
+    if (multiple) {
+        const selectedChoiceArray = (selectedChoice as RaRecord[]) ?? [];
+        const newSelectedChoiceArray = (newSelectedChoice as RaRecord[]) ?? [];
+        if (selectedChoiceArray.length !== newSelectedChoiceArray.length) {
+            return false;
+        }
+        const equalityArray = selectedChoiceArray.map(choice =>
+            newSelectedChoiceArray.some(
+                newChoice =>
+                    get(newChoice, optionValue) === get(choice, optionValue)
+            )
+        );
+        return !equalityArray.some(item => item === false);
+    }
+    return (
+        get(selectedChoice, optionValue) === get(newSelectedChoice, optionValue)
+    );
 };
 
 const DefaultFilterToQuery = searchText => ({ q: searchText });

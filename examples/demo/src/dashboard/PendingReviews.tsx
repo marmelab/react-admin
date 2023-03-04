@@ -78,6 +78,7 @@ const PendingReviews = () => {
                                             sx={{
                                                 bgcolor: 'background.paper',
                                             }}
+                                            alt={`${customer.first_name} ${customer.last_name}`}
                                         />
                                     )}
                                 />

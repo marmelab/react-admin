@@ -116,6 +116,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         reference,
         options: {
             enabled: currentValue != null && currentValue !== '',
+            meta,
         },
     });
     // add current value to possible sources

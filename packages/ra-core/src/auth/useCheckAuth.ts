@@ -72,7 +72,7 @@ export const useCheckAuth = (): CheckAuth => {
                     !shouldSkipNotify &&
                         notify(
                             getErrorMessage(error, 'ra.auth.auth_check_error'),
-                            { type: 'warning' }
+                            { type: 'error' }
                         );
                 }
                 throw error;

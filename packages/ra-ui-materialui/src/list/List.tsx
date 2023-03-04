@@ -42,8 +42,8 @@ import { ListView, ListViewProps } from './ListView';
  *     <TextInput label="Search" source="q" alwaysOn />,
  *     <TextInput label="Title" source="title" />
  * ];
- * export const PostList = (props) => (
- *     <List {...props}
+ * export const PostList = () => (
+ *     <List
  *         title="List of posts"
  *         sort={{ field: 'published_at' }}
  *         filter={{ is_published: true }}
@@ -97,7 +97,7 @@ List.propTypes = {
     // @ts-ignore-line
     actions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     aside: PropTypes.element,
-    children: PropTypes.element.isRequired,
+    children: PropTypes.node.isRequired,
     className: PropTypes.string,
     emptyWhileLoading: PropTypes.bool,
     filter: PropTypes.object,

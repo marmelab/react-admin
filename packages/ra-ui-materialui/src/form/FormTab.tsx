@@ -8,9 +8,10 @@ import { FormTabHeader } from './FormTabHeader';
 
 export const FormTab = (props: FormTabProps) => {
     const {
+        children,
         className,
         contentClassName,
-        children,
+        count,
         hidden,
         icon,
         intent,
@@ -26,6 +27,7 @@ export const FormTab = (props: FormTabProps) => {
     const renderHeader = () => (
         <FormTabHeader
             label={label}
+            count={count}
             value={value}
             icon={icon}
             className={className}
@@ -60,6 +62,7 @@ FormTab.propTypes = {
     className: PropTypes.string,
     contentClassName: PropTypes.string,
     children: PropTypes.node,
+    count: PropTypes.node,
     intent: PropTypes.oneOf(['header', 'content']),
     hidden: PropTypes.bool,
     icon: PropTypes.element,
@@ -77,6 +80,7 @@ export interface FormTabProps
     className?: string;
     children?: ReactNode;
     contentClassName?: string;
+    count?: ReactNode;
     hidden?: boolean;
     icon?: ReactElement;
     intent?: 'header' | 'content';

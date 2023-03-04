@@ -1,16 +1,26 @@
 import * as React from 'react';
 import { Admin, AdminContext } from 'react-admin';
-import { Resource, required, useCreate, useRecordContext } from 'ra-core';
+import {
+    Resource,
+    required,
+    useCreate,
+    useRecordContext,
+    ListBase,
+    useListContext,
+    RecordContextProvider,
+} from 'ra-core';
 import { createMemoryHistory } from 'history';
 import {
     Dialog,
     DialogContent,
-    TextField,
     DialogActions,
     Button,
     Stack,
+    TextField,
     Typography,
+    Box,
 } from '@mui/material';
+import fakeRestProvider from 'ra-data-fakerest';
 
 import { Edit } from '../detail';
 import { SimpleForm } from '../form';
@@ -789,5 +799,170 @@ const BookEditWithEmptyText = () => {
 export const EmptyText = () => (
     <Admin dataProvider={dataProviderEmpty} history={history}>
         <Resource name="books" edit={BookEditWithEmptyText} />
+    </Admin>
+);
+
+const nullishValuesFakeData = {
+    fans: [
+        { id: 'null', name: 'null', prefers: null },
+        { id: 'undefined', name: 'undefined', prefers: undefined },
+        { id: 'empty-string', name: 'empty string', prefers: '' },
+        { id: 'zero-string', name: '0', prefers: 0 },
+        { id: 'zero-number', name: '0', prefers: '0' },
+        { id: 'valid-value', name: '1', prefers: 1 },
+    ],
+    artists: [{ id: 0 }, { id: 1 }],
+};
+
+const FanList = props => {
+    const { data } = useListContext();
+    return data ? (
+        <>
+            {data.map(fan => (
+                <RecordContextProvider value={fan} key={fan.id}>
+                    <Stack
+                        direction="row"
+                        alignItems="center"
+                        sx={{ m: 1, width: '90%' }}
+                    >
+                        <Box sx={{ width: '320px' }}>
+                            <Typography variant="body1">
+                                <b>Fan #{fan.id}</b>
+                                <br />
+                                <code>{`${
+                                    fan.name
+                                } [${typeof fan.prefers}]`}</code>
+                            </Typography>
+                        </Box>
+                        <Box sx={{ flex: '1 1 100%' }}>
+                            <SimpleForm toolbar={<></>}>
+                                <AutocompleteInput
+                                    id={`prefers_${fan.id}`}
+                                    label={`prefers_${fan.id}`}
+                                    fullWidth
+                                    source="prefers"
+                                    optionText={option => option.id}
+                                    choices={nullishValuesFakeData.artists}
+                                    helperText={false}
+                                />
+                            </SimpleForm>
+                        </Box>
+                    </Stack>
+                </RecordContextProvider>
+            ))}
+        </>
+    ) : (
+        <>Loading</>
+    );
+};
+
+export const NullishValuesSupport = () => {
+    return (
+        <AdminContext
+            dataProvider={fakeRestProvider(nullishValuesFakeData, false)}
+        >
+            <Typography variant="h6" gutterBottom>
+                Test nullish values
+            </Typography>
+            <Typography variant="body1">
+                Story demonstrating nullish values support: each fan specify a
+                preferred artist. The <code>prefer</code> value is evaluated
+                against artist IDs.
+            </Typography>
+            <ListBase resource="fans">
+                <FanList />
+            </ListBase>
+        </AdminContext>
+    );
+};
+
+const dataProviderWithDifferentShapeInGetMany = {
+    getOne: (resource, params) =>
+        Promise.resolve({
+            data: {
+                id: 1,
+                title: 'War and Peace',
+                author: 1,
+                summary:
+                    "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                year: 1869,
+            },
+        }),
+    getMany: (resource, params) =>
+        Promise.resolve({
+            data: authors
+                .filter(author => params.ids.includes(author.id))
+                .map(author => ({
+                    ...author,
+                    newField: 'newField',
+                })),
+        }),
+    getList: (resource, params) =>
+        new Promise(resolve => {
+            // eslint-disable-next-line eqeqeq
+            if (params.filter.q == undefined) {
+                setTimeout(
+                    () =>
+                        resolve({
+                            data: authors,
+                            total: authors.length,
+                        }),
+                    500
+                );
+                return;
+            }
+
+            const filteredAuthors = authors.filter(author =>
+                author.name
+                    .toLowerCase()
+                    .includes(params.filter.q.toLowerCase())
+            );
+
+            setTimeout(
+                () =>
+                    resolve({
+                        data: filteredAuthors,
+                        total: filteredAuthors.length,
+                    }),
+                500
+            );
+        }),
+    update: (resource, params) => Promise.resolve(params),
+    create: (resource, params) => {
+        const newAuthor = {
+            id: authors.length + 1,
+            name: params.data.name,
+            language: params.data.language,
+        };
+        authors.push(newAuthor);
+        return Promise.resolve({ data: newAuthor });
+    },
+} as any;
+
+export const DifferentShapeInGetMany = () => (
+    <Admin
+        dataProvider={dataProviderWithDifferentShapeInGetMany}
+        history={history}
+    >
+        <Resource name="authors" />
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                >
+                    <SimpleForm>
+                        <ReferenceInput reference="authors" source="author">
+                            <AutocompleteInput fullWidth optionText="name" />
+                        </ReferenceInput>
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
     </Admin>
 );

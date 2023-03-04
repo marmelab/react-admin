@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
+import { Route } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
+
 import { useResourceDefinitions } from './useResourceDefinitions';
 import { CoreAdminContext } from './CoreAdminContext';
 import { CoreAdminRoutes } from './CoreAdminRoutes';
 import { Resource } from './Resource';
+import { CustomRoutes } from './CustomRoutes';
 import { CoreLayoutProps } from '../types';
 import { AuthProvider, ResourceProps } from '..';
 
@@ -31,6 +34,7 @@ const MyLayout = ({ children }: CoreLayoutProps) => (
 );
 const CatchAll = () => <div />;
 const Loading = () => <>Loading</>;
+const Ready = () => <>Ready</>;
 
 const TestedComponent = ({ role }) => {
     const history = createMemoryHistory();
@@ -185,6 +189,60 @@ const TestedComponentWithPermissions = () => {
     );
 };
 
+const TestedComponentWithOnlyLazyCustomRoutes = ({ history }) => {
+    const [lazyRoutes, setLazyRoutes] = React.useState(null);
+
+    React.useEffect(() => {
+        const timer = setTimeout(
+            () =>
+                setLazyRoutes(
+                    <CustomRoutes>
+                        <Route path="/foo" element={<div>Foo</div>} />
+                    </CustomRoutes>
+                ),
+            500
+        );
+        return () => clearTimeout(timer);
+    }, [setLazyRoutes]);
+
+    return (
+        <CoreAdminContext history={history}>
+            <CoreAdminRoutes
+                layout={MyLayout}
+                catchAll={CatchAll}
+                loading={Loading}
+                ready={Ready}
+            >
+                {lazyRoutes}
+            </CoreAdminRoutes>
+        </CoreAdminContext>
+    );
+};
+
+const TestedComponentWithForcedRoutes = () => {
+    const history = createMemoryHistory();
+
+    return (
+        <CoreAdminContext history={history}>
+            <CoreAdminRoutes
+                layout={MyLayout}
+                catchAll={CatchAll}
+                loading={Loading}
+            >
+                <Resource
+                    name="posts"
+                    list={<div />}
+                    hasCreate
+                    hasEdit
+                    hasShow
+                />
+                <Resource name="comments" list={<div />} />
+                {() => [<Resource name="user" list={<div />} hasEdit />]}
+            </CoreAdminRoutes>
+        </CoreAdminContext>
+    );
+};
+
 const expectResource = (resource: string) =>
     expect(screen.queryByText(`"name":"${resource}"`, { exact: false }));
 
@@ -279,5 +337,32 @@ describe('useConfigureAdminRouterFromChildren', () => {
         expectResource('comments').not.toBeNull();
         expectResource('user').not.toBeNull();
         expectResource('admin').toBeNull();
+    });
+    it('should allow dynamically loaded custom routes without any resources', async () => {
+        const history = createMemoryHistory();
+        render(<TestedComponentWithOnlyLazyCustomRoutes history={history} />);
+        expect(screen.queryByText('Ready')).not.toBeNull();
+
+        await new Promise(resolve => setTimeout(resolve, 1010));
+        expect(screen.queryByText('Ready')).toBeNull();
+        history.push('/foo');
+        expect(screen.queryByText('Foo')).not.toBeNull();
+    });
+    it('should support forcing hasEdit hasCreate or hasShow', async () => {
+        render(<TestedComponentWithForcedRoutes />);
+        await waitFor(() => expect(screen.queryByText('Loading')).toBeNull());
+
+        expectResourceView('posts', 'list').not.toBeNull();
+        expectResourceView('posts', 'create').not.toBeNull();
+        expectResourceView('posts', 'edit').not.toBeNull();
+        expectResourceView('posts', 'show').not.toBeNull();
+        expectResourceView('comments', 'list').not.toBeNull();
+        expectResourceView('comments', 'create').toBeNull();
+        expectResourceView('comments', 'edit').toBeNull();
+        expectResourceView('comments', 'show').toBeNull();
+        expectResourceView('user', 'list').not.toBeNull();
+        expectResourceView('user', 'create').toBeNull();
+        expectResourceView('user', 'edit').not.toBeNull();
+        expectResourceView('user', 'show').toBeNull();
     });
 });

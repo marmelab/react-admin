@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { Children, cloneElement, ReactElement, ElementType } from 'react';
+import { cloneElement, ReactElement, ReactNode, ElementType } from 'react';
 import PropTypes from 'prop-types';
 import { SxProps } from '@mui/system';
 import Card from '@mui/material/Card';
@@ -61,8 +61,11 @@ export const ListView = <RecordType extends RaRecord = any>(
                 />
             )}
             <Content className={ListClasses.content}>
-                {bulkActionButtons && children
-                    ? cloneElement(Children.only(children), {
+                {bulkActionButtons &&
+                children &&
+                React.isValidElement<any>(children)
+                    ? // FIXME remove in 5.0
+                      cloneElement(children, {
                           bulkActionButtons,
                       })
                     : children}
@@ -101,7 +104,7 @@ ListView.propTypes = {
     // @ts-ignore-line
     actions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     aside: PropTypes.element,
-    children: PropTypes.element,
+    children: PropTypes.node,
     className: PropTypes.string,
     component: ComponentPropType,
     // @ts-ignore-line
@@ -152,7 +155,7 @@ export interface ListViewProps {
      */
     bulkActionButtons?: ReactElement | false;
     className?: string;
-    children: ReactElement;
+    children: ReactNode;
     component?: ElementType;
     empty?: ReactElement | false;
     emptyWhileLoading?: boolean;

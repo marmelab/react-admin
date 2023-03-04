@@ -59,6 +59,7 @@ That's enough to display the post show view:
 * `className`: passed to the root component
 * [`children`](#layout): the components that render the record fields
 * [`component`](#component): overrides the root component
+* [`disableAuthentication`](#`disableauthentication`): disable the authentication check
 * [`emptyWhileLoading`](#loading-state)
 * [`queryOptions`](#queryoptions): options to pass to the react-query client
 * [`sx`](#sx-css-api): Override the styles
@@ -80,12 +81,12 @@ export const PostShow = () => (
     <Show>
 -       <SimpleShowLayout>
 +       <TabbedShowLayout>
-+           <Tab label="Main>
++           <TabbedShowLayout.Tab label="Main>
                 <TextField source="title" />
                 <TextField source="teaser" />
                 <RichTextField source="body" />
                 <DateField label="Publication date" source="created_at" />
-+           </Tab>
++           </TabbedShowLayout.Tab>
 -       </SimpleShowLayout>
 +       </TabbedShowLayout>
     </Show>
@@ -184,7 +185,7 @@ const PostShow = props => {
     const redirect = useRedirect();
 
     const onError = (error) => {
-        notify(`Could not load post: ${error.message}`, { type: 'warning' });
+        notify(`Could not load post: ${error.message}`, { type: 'error' });
         redirect('/posts');
         refresh();
     };
@@ -205,7 +206,7 @@ The default `onError` function is:
 
 ```jsx
 (error) => {
-    notify('ra.notification.item_doesnt_exist', { type: 'warning' });
+    notify('ra.notification.item_doesnt_exist', { type: 'error' });
     redirect('list', resource);
     refresh();
 }
@@ -230,6 +231,20 @@ const ShowWrapper = ({ children }) => (
 // use a ShowWrapper as root component
 const PostShow = props => (
     <Show component={ShowWrapper} {...props}>
+        ...
+    </Show>
+);
+```
+{% endraw %}
+
+## `disableAuthentication`
+
+By default, the `<Show>` component will automatically redirect the user to the login page if the user is not authenticated. If you want to disable this behavior and allow anonymous access to a show page, set the `disableAuthentication` prop to `true`.
+
+{% raw %}
+```jsx
+const PostShow = () => (
+    <Show disableAuthentication>
         ...
     </Show>
 );
@@ -362,25 +377,25 @@ export const PostShow = () => {
 ```
 {% endraw %}
 
-This also works inside a `TabbedShowLayout`, and you can hide a `Tab` completely:
+This also works inside a `<TabbedShowLayout>`, and you can hide a `TabbedShowLayout.Tab` completely:
 
 {% raw %}
 ```jsx
-import { Show, TabbedShowLayout, Tab, TextField } from 'react-admin';
+import { Show, TabbedShowLayout, TextField } from 'react-admin';
 
 export const UserShow = () => {
     const { permissions } = usePermissions();
     return (
         <Show>
             <TabbedShowLayout>
-                <Tab label="user.form.summary">
+                <TabbedShowLayout.Tab label="user.form.summary">
                     {permissions === 'admin' && <TextField source="id" />}
                     <TextField source="name" />
-                </Tab>
+                </TabbedShowLayout.Tab>
                 {permissions === 'admin' &&
-                    <Tab label="user.form.security">
+                    <TabbedShowLayout.Tab label="user.form.security">
                         <TextField source="role" />
-                    </Tab>}
+                    </TabbedShowLayout.Tab>}
             </TabbedShowLayout>
         </Show>
     );
@@ -405,6 +420,28 @@ export const PostShow = () => (
 );
 ```
 {% endraw %}
+
+## Live Updates 
+
+If you want to subscribe to live updates on the record (topic: `resource/[resource]/[id]`), use [the `<ShowLive>` component](./ShowLive.md) instead.
+
+```diff
+-import { Show, SimpleShowLayout, TextField } from 'react-admin';
++import { SimpleShowLayout, TextField } from 'react-admin';
++import { ShowLive } from '@react-admin/ra-realtime';
+
+const PostShow = () => (
+-   <Show>
++   <ShowLive>
+        <SimpleShowLayout>
+            <TextField source="title" />
+        </SimpleShowLayout>
+-   </Show>
++   </ShowLive>
+);
+```
+
+It shows a notification and refreshes the page when the record is updated by another user. Also, it displays a warning when the record is deleted by another user.
 
 ## API
 

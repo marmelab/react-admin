@@ -160,6 +160,20 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
             // We might receive an event from the mui component
             // In this case, it will be the choice id
             if (eventOrChoice?.target) {
+                // when used with different IDs types, unselection leads to double selection with both types
+                // instead of the value being removed from the array
+                // e.g. we receive eventOrChoice.target.value = [1, '2', 2] instead of [1] after removing 2
+                // this snippet removes a value if it is present twice
+                eventOrChoice.target.value = eventOrChoice.target.value.reduce(
+                    (acc, value) => {
+                        // eslint-disable-next-line eqeqeq
+                        const index = acc.findIndex(v => v == value);
+                        return index < 0
+                            ? [...acc, value]
+                            : [...acc.slice(0, index), ...acc.slice(index + 1)];
+                    },
+                    []
+                );
                 field.onChange(eventOrChoice);
             } else {
                 // Or we might receive a choice directly, for instance a newly created one
@@ -234,6 +248,13 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         );
     }
 
+    // Here wen ensure we always have an array and this array does not contain the default value (empty string)
+    const finalValue = Array.isArray(field.value ?? [])
+        ? field.value
+        : field.value
+        ? [field.value]
+        : [];
+
     return (
         <>
             <StyledFormControl
@@ -261,11 +282,11 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     }
                     renderValue={(selected: any[]) => (
                         <div className={SelectArrayInputClasses.chips}>
-                            {selected
+                            {(Array.isArray(selected) ? selected : [])
                                 .map(item =>
                                     (allChoices || []).find(
-                                        choice =>
-                                            getChoiceValue(choice) === item
+                                        // eslint-disable-next-line eqeqeq
+                                        choice => getChoiceValue(choice) == item
                                     )
                                 )
                                 .filter(item => !!item)
@@ -284,7 +305,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     {...field}
                     {...options}
                     onChange={handleChangeWithCreateSupport}
-                    value={field.value || []}
+                    value={finalValue}
                 >
                     {finalChoices.map(renderMenuItem)}
                 </Select>

@@ -28,37 +28,31 @@ const i18nProvider = polyglotI18nProvider(locale => {
     return englishMessages;
 }, 'en');
 
-const App = () => {
-    return (
-        <Admin
-            title=""
-            dataProvider={dataProviderFactory(
-                process.env.REACT_APP_DATA_PROVIDER || ''
-            )}
-            authProvider={authProvider}
-            dashboard={Dashboard}
-            loginPage={Login}
-            layout={Layout}
-            i18nProvider={i18nProvider}
-            disableTelemetry
-            theme={lightTheme}
-        >
-            <CustomRoutes>
-                <Route path="/configuration" element={<Configuration />} />
-                <Route path="/segments" element={<Segments />} />
-            </CustomRoutes>
-            <Resource name="customers" {...visitors} />
-            <Resource
-                name="commands"
-                {...orders}
-                options={{ label: 'Orders' }}
-            />
-            <Resource name="invoices" {...invoices} />
-            <Resource name="products" {...products} />
-            <Resource name="categories" {...categories} />
-            <Resource name="reviews" {...reviews} />
-        </Admin>
-    );
-};
+const App = () => (
+    <Admin
+        title=""
+        dataProvider={dataProviderFactory(
+            process.env.REACT_APP_DATA_PROVIDER || ''
+        )}
+        authProvider={authProvider}
+        dashboard={Dashboard}
+        loginPage={Login}
+        layout={Layout}
+        i18nProvider={i18nProvider}
+        disableTelemetry
+        theme={lightTheme}
+    >
+        <CustomRoutes>
+            <Route path="/configuration" element={<Configuration />} />
+            <Route path="/segments" element={<Segments />} />
+        </CustomRoutes>
+        <Resource name="customers" {...visitors} />
+        <Resource name="commands" {...orders} options={{ label: 'Orders' }} />
+        <Resource name="invoices" {...invoices} />
+        <Resource name="products" {...products} />
+        <Resource name="categories" {...categories} />
+        <Resource name="reviews" {...reviews} />
+    </Admin>
+);
 
 export default App;

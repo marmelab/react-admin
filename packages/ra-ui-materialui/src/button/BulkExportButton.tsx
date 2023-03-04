@@ -30,8 +30,8 @@ import { Button, ButtonProps } from './Button';
  *     </Fragment>
  * );
  *
- * export const PostList = (props) => (
- *     <List {...props} bulkActionButtons={<PostBulkActionButtons />}>
+ * export const PostList = () => (
+ *     <List bulkActionButtons={<PostBulkActionButtons />}>
  *         ...
  *     </List>
  * );
@@ -42,6 +42,7 @@ export const BulkExportButton = (props: BulkExportButtonProps) => {
         label = 'ra.action.export',
         icon = defaultIcon,
         exporter: customExporter,
+        meta,
         ...rest
     } = props;
     const {
@@ -56,7 +57,7 @@ export const BulkExportButton = (props: BulkExportButtonProps) => {
         event => {
             exporter &&
                 dataProvider
-                    .getMany(resource, { ids: selectedIds })
+                    .getMany(resource, { ids: selectedIds, meta })
                     .then(({ data }) =>
                         exporter(
                             data,
@@ -68,14 +69,14 @@ export const BulkExportButton = (props: BulkExportButtonProps) => {
                     .catch(error => {
                         console.error(error);
                         notify('ra.notification.http_error', {
-                            type: 'warning',
+                            type: 'error',
                         });
                     });
             if (typeof onClick === 'function') {
                 onClick(event);
             }
         },
-        [dataProvider, exporter, notify, onClick, resource, selectedIds]
+        [dataProvider, exporter, notify, onClick, resource, selectedIds, meta]
     );
 
     return (
@@ -96,7 +97,7 @@ const sanitizeRestProps = ({
     selectedIds,
     resource,
     ...rest
-}: Omit<BulkExportButtonProps, 'exporter' | 'label'>) => rest;
+}: Omit<BulkExportButtonProps, 'exporter' | 'label' | 'meta'>) => rest;
 
 interface Props {
     exporter?: Exporter;
@@ -106,6 +107,7 @@ interface Props {
     onClick?: (e: Event) => void;
     selectedIds?: Identifier[];
     resource?: string;
+    meta?: any;
 }
 
 export type BulkExportButtonProps = Props & ButtonProps;
@@ -116,4 +118,5 @@ BulkExportButton.propTypes = {
     resource: PropTypes.string,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     icon: PropTypes.element,
+    meta: PropTypes.any,
 };

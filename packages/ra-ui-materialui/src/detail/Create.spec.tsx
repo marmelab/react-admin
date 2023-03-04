@@ -25,4 +25,19 @@ describe('<Create />', () => {
         );
         expect(screen.queryAllByText('Hello')).toHaveLength(1);
     });
+
+    it('should accept more than one child', () => {
+        const Form = () => <div>form</div>;
+        const HelpText = () => <div>help</div>;
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <Create {...defaultCreateProps}>
+                    <Form />
+                    <HelpText />
+                </Create>
+            </CoreAdminContext>
+        );
+        expect(screen.queryAllByText('form')).toHaveLength(1);
+        expect(screen.queryAllByText('help')).toHaveLength(1);
+    });
 });

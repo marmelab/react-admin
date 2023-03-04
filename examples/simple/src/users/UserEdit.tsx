@@ -4,7 +4,6 @@ import {
     CloneButton,
     DeleteWithConfirmButton,
     Edit,
-    FormTab,
     required,
     SaveButton,
     SelectInput,
@@ -66,16 +65,16 @@ const UserEditForm = () => {
             toolbar={<UserEditToolbar />}
             onSubmit={newSave}
         >
-            <FormTab label="user.form.summary" path="">
+            <TabbedForm.Tab label="user.form.summary" path="">
                 {permissions === 'admin' && <TextInput disabled source="id" />}
                 <TextInput
                     source="name"
                     defaultValue="slim shady"
                     validate={required()}
                 />
-            </FormTab>
+            </TabbedForm.Tab>
             {permissions === 'admin' && (
-                <FormTab label="user.form.security" path="security">
+                <TabbedForm.Tab label="user.form.security" path="security">
                     <SelectInput
                         source="role"
                         validate={required()}
@@ -86,7 +85,7 @@ const UserEditForm = () => {
                         ]}
                         defaultValue={'user'}
                     />
-                </FormTab>
+                </TabbedForm.Tab>
             )}
         </TabbedForm>
     );

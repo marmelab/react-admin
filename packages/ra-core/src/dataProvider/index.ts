@@ -8,6 +8,7 @@ export * from './combineDataProviders';
 export * from './dataFetchActions';
 export * from './defaultDataProvider';
 export * from './testDataProvider';
+export * from './withLifecycleCallbacks';
 export * from './useDataProvider';
 export * from './useIsDataLoaded';
 export * from './useLoading';

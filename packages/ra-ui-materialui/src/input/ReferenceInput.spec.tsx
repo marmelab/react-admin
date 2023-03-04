@@ -131,6 +131,29 @@ describe('<ReferenceInput />', () => {
         });
     });
 
+    it('should use meta when fetching current value', async () => {
+        const getMany = jest
+            .fn()
+            .mockImplementationOnce(() => Promise.resolve({ data: [] }));
+        const dataProvider = testDataProvider({ getMany });
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Form record={{ post_id: 23 }}>
+                    <ReferenceInput
+                        {...defaultProps}
+                        queryOptions={{ meta: { foo: 'bar' } }}
+                    />
+                </Form>
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(getMany).toHaveBeenCalledWith('posts', {
+                ids: [23],
+                meta: { foo: 'bar' },
+            });
+        });
+    });
+
     it('should convert empty values to null with AutocompleteInput', async () => {
         jest.spyOn(console, 'log').mockImplementationOnce(() => {});
         const dataProvider = {

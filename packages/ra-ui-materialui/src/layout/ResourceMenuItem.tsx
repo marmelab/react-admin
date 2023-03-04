@@ -14,6 +14,7 @@ export const ResourceMenuItem = ({ name }: { name: string }) => {
     const resources = useResourceDefinitions();
     const getResourceLabel = useGetResourceLabel();
     const createPath = useCreatePath();
+    if (!resources || !resources[name]) return null;
     return (
         <MenuItemLink
             to={createPath({

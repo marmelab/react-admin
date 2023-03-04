@@ -174,17 +174,16 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                 )}
                 {hasBulkActions && (
                     <TableCell padding="checkbox">
-                        {selectable && (
-                            <Checkbox
-                                aria-label={translate('ra.action.select_row', {
-                                    _: 'Select this row',
-                                })}
-                                color="primary"
-                                className={`select-item ${DatagridClasses.checkbox}`}
-                                checked={selected}
-                                onClick={handleToggleSelection}
-                            />
-                        )}
+                        <Checkbox
+                            aria-label={translate('ra.action.select_row', {
+                                _: 'Select this row',
+                            })}
+                            color="primary"
+                            className={`select-item ${DatagridClasses.checkbox}`}
+                            checked={selectable && selected}
+                            onClick={handleToggleSelection}
+                            disabled={!selectable}
+                        />
                     </TableCell>
                 )}
                 {React.Children.map(children, (field, index) =>
@@ -284,7 +283,7 @@ export type RowClickFunction = (
     id: Identifier,
     resource: string,
     record: RaRecord
-) => string | Promise<string>;
+) => string | false | Promise<string | false>;
 
 const areEqual = (prevProps, nextProps) => {
     const { children: _1, expand: _2, ...prevPropsWithoutChildren } = prevProps;

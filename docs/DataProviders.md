@@ -201,6 +201,21 @@ const App = () => (
 );
 ```
 
+**Tip**: For TypeScript users, here is a typed version of the `fetchJson` function:
+
+```ts
+const fetchJson = (url: string, options: fetchUtils.Options = {}) => {
+    const customHeaders = (options.headers ||
+        new Headers({
+            Accept: 'application/json',
+        })) as Headers;
+    // add your own headers here
+    customHeaders.set('X-Custom-Header', 'foobar');
+    options.headers = customHeaders;
+    return fetchUtils.fetchJson(url, options);
+}
+```
+
 Now all the requests to the REST API will contain the `X-Custom-Header: foobar` header.
 
 **Warning**: If your API is on another domain as the JS code, you'll need to whitelist this header with an `Access-Control-Expose-Headers` [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) header.
@@ -210,6 +225,63 @@ Access-Control-Expose-Headers: X-Custom-Header
 ```
 
 This must be done on the server side.
+
+## Adding Lifecycle Callbacks
+
+It often happens that you need specific data logic to be executed before or after a dataProvider call. For instance, you may want to delete the comments related to a post before deleting the post itself. The general advice is to **put that code on the server-side**. If you can't, the next best place to put this logic is the `dataProvider`. 
+
+You can, of course, use `if` statements in the `dataProvider` methods to execute the logic only for the resources that need it, like so:
+
+```jsx
+const dataProvider = {
+    // ...
+    delete: async (resource, params) => {
+        if (resource === 'posts') {
+            // delete all comments related to the post
+            // first, fetch the comments
+            const { data: comments } = await httpClient(`${apiUrl}/comments?post_id=${params.id}`);
+            // then, delete them
+            await Promise.all(comments.map(comment => httpClient(`${apiUrl}/comments/${comment.id}`, {
+                method: 'DELETE',
+            })));
+        }
+        // fallback to the default implementation
+        const { data } = await httpClient(`${apiUrl}/${resource}/${params.id}`, {
+            method: 'DELETE',
+        });
+
+        return { data };
+    },
+    // ...
+}
+```
+
+But the `dataProvider` code quickly becomes hard to read and maintain. React-admin provides a helper function to make it easier to add lifecycle callbacks to the dataProvider: `withLifecycleCallbacks`:
+
+```jsx
+import { withLifecycleCallbacks } from 'react-admin';
+
+const dataProvider = withLifecycleCallbacks(baseDataProvider, [
+    {
+        resource: 'posts',
+        beforeDelete: async (params, dataProvider) => {
+            // delete all comments related to the post
+            // first, fetch the comments
+            const { data: comments } = await dataProvider.getList('comments', {
+                filter: { post_id: params.id },
+                pagination: { page: 1, perPage: 1000 },
+                sort: { field: 'id', order: 'DESC' },
+            });
+            // then, delete them
+            await dataProvider.deleteMany('comments', { ids: comments.map(comment => comment.id) });
+
+            return params;
+        },
+    },
+]);
+```
+
+Check the [withLifecycleCallbacks](./withLifecycleCallbacks.md) documentation for more details.
 
 ## Handling File Uploads
 
@@ -318,7 +390,6 @@ import { useMutation } from 'react-query';
 const BanUserButton = ({ userId }) => {
     const dataProvider = useDataProvider();
     const { mutate, isLoading } = useMutation(
-        ['banUser', userId],
         () => dataProvider.banUser(userId)
     );
     return <Button label="Ban" onClick={() => mutate()} disabled={isLoading} />;
@@ -462,37 +533,3 @@ export const App = () => (
     </Admin>
 );
 ```
-
-## Real-Time Updates And Locks
-
-Teams where several people work in parallel on a common task need to allow live updates, real-time notifications, and prevent data loss when two editors work on the same resource concurrently. 
-
-[`ra-realtime`](https://marmelab.com/ra-enterprise/modules/ra-realtime) (an [Enterprise Edition <img class="icon" src="./img/premium.svg" />](https://marmelab.com/ra-enterprise) module) provides hooks and UI components to lock records, and update views when the underlying data changes. It's based on the Publish / Subscribe (PubSub) pattern, and requires a backend supporting this pattern (like GraphQL, Mercury). 
-
-For instance, here is how to enable live updates on a List view:
-
-```diff
-import {
--   List,
-    Datagrid,
-    TextField,
-    NumberField,
-    Datefield,
-} from 'react-admin';
-+import { RealTimeList } from '@react-admin/ra-realtime';
-
-const PostList = () => (
--   <List>
-+   <RealTimeList>
-        <Datagrid>
-            <TextField source="title" />
-            <NumberField source="views" />
-            <DateField source="published_at" />
-        </Datagrid>
--   </List>
-+   </RealTimeList>
-);
-```
-
-Check [the `ra-realtime` documentation](https://marmelab.com/ra-enterprise/modules/ra-realtime) for more details.
-

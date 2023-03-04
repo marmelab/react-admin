@@ -23,7 +23,7 @@ export const useNotifyIsFormInvalid = (control?: Control) => {
             submitCountRef.current = submitCount;
 
             if (Object.keys(errors).length > 0) {
-                notify('ra.message.invalid_form', { type: 'warning' });
+                notify('ra.message.invalid_form', { type: 'error' });
             }
         }
     }, [errors, submitCount, notify]);

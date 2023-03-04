@@ -9,7 +9,7 @@ import {
     NotFound,
     Notification,
 } from './layout';
-import { Login } from './auth';
+import { Login, AuthCallback } from './auth';
 
 export const AdminUI = ({ notification, ...props }: AdminUIProps) => (
     <ScopedCssBaseline enableColorScheme>
@@ -27,5 +27,6 @@ AdminUI.defaultProps = {
     catchAll: NotFound,
     loading: LoadingPage,
     loginPage: Login,
+    authCallbackPage: AuthCallback,
     notification: Notification,
 };

@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, ReactNode } from 'react';
 
 import { useAddNotificationContext } from './useAddNotificationContext';
 import { NotificationType, NotificationOptions } from './types';
@@ -12,7 +12,7 @@ import { NotificationType, NotificationOptions } from './types';
  * // simple message (info level)
  * notify('Level complete');
  * // specify level
- * notify('A problem occurred', { type: 'warning' })
+ * notify('A problem occurred', { type: 'error' })
  * // pass arguments to the translation function
  * notify('Deleted %{count} elements', { type: 'info', messageArgs: { smart_count: 23 } })
  * // show the action as undoable in the notification
@@ -22,7 +22,7 @@ export const useNotify = () => {
     const addNotification = useAddNotificationContext();
     return useCallback(
         (
-            message: string,
+            message: string | ReactNode,
             options: NotificationOptions & { type?: NotificationType } = {}
         ) => {
             const {

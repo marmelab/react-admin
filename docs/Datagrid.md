@@ -235,7 +235,7 @@ const CustomResetViewsButton = () => {
                 notify('Posts updated');
                 unselectAll();
             },
-            onError: error => notify('Error: posts not updated', { type: 'warning' }),
+            onError: error => notify('Error: posts not updated', { type: 'error' }),
         }
     );
 
@@ -283,7 +283,7 @@ const CustomResetViewsButton = () => {
                 notify('Posts updated');
                 unselectAll();
             },
-            onError: error => notify('Error: posts not updated', { type: 'warning' }),
+            onError: error => notify('Error: posts not updated', { type: 'error' }),
         }
     );
     const handleClick = () => setOpen(true);
@@ -349,7 +349,7 @@ const CustomResetViewsButton = () => {
 +               notify('Posts updated', { undoable: true }); // the last argument forces the display of 'undo' in the notification
                 unselectAll();
             },
-            onError: error => notify('Error: posts not updated', { type: 'warning' }),
+            onError: error => notify('Error: posts not updated', { type: 'error' }),
 +           mutationMode: 'undoable'
         }
     );
@@ -368,8 +368,9 @@ const CustomResetViewsButton = () => {
 
 ## `empty`
 
-It's possible that a Datagrid will have no records to display. If the Datagrid's parent component handles the loading state, the Datagrid will return `null` and render nothing.
-Passing through a component to the `empty` prop will cause the Datagrid to render the `empty` component instead of `null`.
+It's possible that a Datagrid will have no records to display. If the Datagrid's parent component does not handle the empty state, the Datagrid will display a message indicating there are no results. This message is translatable and its key is `ra.navigation.no_results`.
+
+You can customize the empty state by passing  a component to the `empty` prop:
 
 ```jsx
 const CustomEmpty = () => <div>No books found</div>;
@@ -450,7 +451,7 @@ const PostEdit = () => {
     return (
         <Edit
             resource={resource}
-            id={id}
+            id={record.id}
             /* disable the app title change when shown */
             title=" "
         >
@@ -654,9 +655,10 @@ export const PostList = () => (
 * "show" to redirect to the show vue
 * "expand" to open the `expand` panel
 * "toggleSelection" to trigger the `onToggleItem` function
-* a function `(id, resource, record) => path` to redirect to a custom path
+* `false` to do nothing
+* a function `(id, resource, record) => path` that may return any of the above values or a custom path
 
-**Tip**: If you pass a function, it can return `edit`, `show`; or a router path. This allows to redirect to either `edit` or `show` after checking a condition on the record. For example:
+**Tip**: If you pass a function, it can return `'edit'`, `'show'`, `false` or a router path. This allows to redirect to either the Edit or Show view after checking a condition on the record. For example:
 
 ```js
 const postRowClick = (id, resource, record) => record.editable ? 'edit' : 'show';
@@ -902,6 +904,71 @@ const PostList = () => (
 ```
 
 `<DatagridConfigurable>` accepts the same props as `<Datagrid>`.
+
+## Editable Spreadsheet
+
+You can combine a datagrid and an edition form into a unified spreadsheet view, "à la" Excel. This is useful when you want to let users edit a large number of records at once.
+
+![Editable Datagrid](https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.gif)
+
+`<EditableDatagrid>` is a drop-in replacement for `<Datagrid>`. It expects 2 additional props: `createForm` and `editForm`, the components to be displayed when a user creates or edits a row. The `<RowForm>` component allows to create such forms using react-admin Input components. 
+
+```jsx
+import {
+    List,
+    TextField,
+    TextInput,
+    DateField,
+    DateInput,
+    SelectField,
+    SelectInput,
+    required,
+} from 'react-admin';
+import { EditableDatagrid, RowForm } from '@react-admin/ra-editable-datagrid';
+
+const professionChoices = [
+    { id: 'actor', name: 'Actor' },
+    { id: 'singer', name: 'Singer' },
+    { id: 'other', name: 'Other' },
+];
+
+const ArtistList = () => (
+    <List hasCreate empty={false}>
+        <EditableDatagrid
+            mutationMode="undoable"
+            createForm={<ArtistForm />}
+            editForm={<ArtistForm />}
+        >
+            <TextField source="id" />
+            <TextField source="firstname" />
+            <TextField source="name" />
+            <DateField source="dob" label="born" />
+            <SelectField
+                source="prof"
+                label="Profession"
+                choices={professionChoices}
+            />
+        </EditableDatagrid>
+    </List>
+);
+
+const ArtistForm = () => (
+    <RowForm>
+        <TextField source="id" />
+        <TextInput source="firstname" validate={required()} />
+        <TextInput source="name" validate={required()} />
+        <DateInput source="dob" label="born" validate={required()} />
+        <SelectInput
+            source="prof"
+            label="Profession"
+            choices={professionChoices}
+        />
+    </RowForm>
+);
+```
+
+Check [the `ra-editable-datagrid` documentation](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid) for more details.
+
 
 ## Customizing Column Sort
 

@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { useCheckAuth } from './useCheckAuth';
+import { UseQueryOptions } from 'react-query';
+import useAuthState from './useAuthState';
 
 /**
  * Restrict access to authenticated users.
@@ -26,20 +26,17 @@ import { useCheckAuth } from './useCheckAuth';
  *         </Admin>
  *     );
  */
-export const useAuthenticated = <ParamsType = any>(
-    options: UseAuthenticatedOptions<ParamsType> = {}
-) => {
-    const { enabled = true, params = emptyParams } = options;
-    const checkAuth = useCheckAuth();
-    useEffect(() => {
-        if (enabled) {
-            checkAuth(params).catch(() => {});
-        }
-    }, [checkAuth, enabled, params]);
+export const useAuthenticated = <ParamsType = any>({
+    params,
+    ...options
+}: UseAuthenticatedOptions<ParamsType> = {}) => {
+    useAuthState(params ?? emptyParams, true, options);
 };
 
-export type UseAuthenticatedOptions<ParamsType> = {
-    enabled?: boolean;
+export type UseAuthenticatedOptions<ParamsType> = UseQueryOptions<
+    boolean,
+    any
+> & {
     params?: ParamsType;
 };
 

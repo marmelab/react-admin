@@ -29,13 +29,46 @@ See more details in the [ra-navigation documentation](https://marmelab.com/ra-en
 
 ## Props
 
-`<ContainerLayout>` accepts the following props:
+`<ContainerLayout>` accepts the following props, all optional:
 
--   `menu`: The menu component to use. Defaults to `<HorizontalMenu>`.
 -   `appBar`: The component to use to render the top AppBar. Defaults to `<Header>`
--   `toolbar`: The buttons to render on the top right of the toolbar.
--   `maxWidth`: The maximum width of the content `<Container>`. Defaults to `md`.
 -   `fixed`: Whether the content `<Container>` should be fixed. Defaults to false.
+-   `maxWidth`: The maximum width of the content `<Container>`. Defaults to `md`.
+-   `menu`: The menu component to use. Defaults to `<HorizontalMenu>`.
+-   `sx`: The style of the layout, and the underlying component. 
+-   `toolbar`: The buttons to render on the top right of the toolbar.
+-   `userMenu`: The component to use to render the user menu. Defaults to `<UserMenu>`.
+
+## `appBar`
+
+If you want to use a different color for the AppBar, or to make it sticky, pass a custom `appBar` element based on `<Header>`, which is a simple wrapper around [MUI's `<AppBar>` component](https://mui.com/material-ui/react-app-bar/#main-content).
+
+```jsx
+import { ContainerLayout, Header } from '@react-admin/ra-navigation';
+
+const myAppBar = <Header color="primary" position="sticky" />;
+const MyLayout = props => <ContainerLayout {...props} appBar={myAppBar} />;
+```
+
+## `fixed`
+
+If you prefer to design for a fixed set of sizes instead of trying to accommodate a fully fluid viewport, you can set the `fixed` prop. The max-width matches the min-width of the current breakpoint.
+
+```jsx
+import { ContainerLayout } from '@react-admin/ra-navigation';
+
+const MyLayout = props => <ContainerLayout {...props} fixed />;
+```
+
+## `maxWidth`
+
+This prop allows to set the maximum width of the content [`<Container>`](https://mui.com/material-ui/react-container/#main-content). It accepts a string, one of `xs`, `sm`, `md`, `lg`, `xl`, or `false` to remove side margins and occupy the full width of the screen.
+
+```jsx
+import { ContainerLayout } from '@react-admin/ra-navigation';
+
+const MyLayout = props => <ContainerLayout {...props} maxWidth="md" />;
+```
 
 ## `menu`
 
@@ -86,16 +119,24 @@ export const App = () => (
 );
 ```
 
-## `appBar`
+## `sx`
 
-If you want to use a different color for the AppBar, or to make it sticky, pass a custom `appBar` element based on `<Header>`, which is a simple wrapper around [MUI's `<AppBar>` component](https://mui.com/material-ui/react-app-bar/#main-content).
+The `sx` prop allows to customize the style of the layout, and the underlying component. It accepts a [MUI `sx` prop](https://mui.com/system/the-sx-prop/#main-content).
 
+{% raw %}
 ```jsx
-import { ContainerLayout, Header } from '@react-admin/ra-navigation';
+import { ContainerLayout } from '@react-admin/ra-navigation';
 
-const myAppBar = <Header color="primary" position="sticky" />;
-const MyLayout = props => <ContainerLayout {...props} appBar={myAppBar} />;
+const MyLayout = props => (
+    <ContainerLayout
+        {...props}
+        sx={{
+            '& .MuiToolbar-root': { padding: 0 },
+        }}
+    />
+);
 ```
+{% endraw %}
 
 ## `toolbar`
 
@@ -114,22 +155,46 @@ const toolbar = (
 const MyLayout = props => <ContainerLayout {...props} toolbar={toolbar} />;
 ```
 
-## `maxWidth`
+## `userMenu`
 
-This prop allows to set the maximum width of the content [`<Container>`](https://mui.com/material-ui/react-container/#main-content). It accepts a string, one of `xs`, `sm`, `md`, `lg`, `xl`, or `false` to remove side margins and occupy the full width of the screen.
+By default, the `<ContainerLayout>` shows a user menu with a single item (logout) when the application has an `authProvider`. You can customize the user menu by passing a custom element to the `userMenu` prop.
 
+{% raw %}
 ```jsx
+import { Logout, UserMenu, useUserMenu } from 'react-admin';
+import { MenuList, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { ContainerLayout } from '@react-admin/ra-navigation';
 
-const MyLayout = props => <ContainerLayout {...props} maxWidth="md" />;
+const ConfigurationMenu = React.forwardRef((props, ref) => {
+    const { onClose } = useUserMenu();
+    return (
+        <MenuItem
+            ref={ref}
+            {...props}
+            to="/configuration"
+            onClick={onClose}
+            sx={{ color: 'text.secondary' }}
+        >
+            <ListItemIcon>
+                <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText>Configuration</ListItemText>
+        </MenuItem>
+    );
+});
+
+const CustomUserMenu = () => (
+    <UserMenu>
+        <MenuList>
+            <ConfigurationMenu />
+            <Logout />
+        </MenuList>
+    </UserMenu>
+);
+
+export const MyLayout = props => (
+    <ContainerLayout {...props} userMenu={<CustomUserMenu />} />
+);
 ```
-
-## `fixed`
-
-If you prefer to design for a fixed set of sizes instead of trying to accommodate a fully fluid viewport, you can set the `fixed` prop. The max-width matches the min-width of the current breakpoint.
-
-```jsx
-import { ContainerLayout } from '@react-admin/ra-navigation';
-
-const MyLayout = props => <ContainerLayout {...props} fixed />;
-```
+{% endraw %}
