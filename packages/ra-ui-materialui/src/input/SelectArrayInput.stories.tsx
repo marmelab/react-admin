@@ -39,6 +39,28 @@ export const Basic = () => (
                     ]}
                     sx={{ width: 300 }}
                 />
+                <SelectArrayInput
+                    source="roles"
+                    variant="outlined"
+                    choices={[
+                        { id: 'admin', name: 'Admin' },
+                        { id: 'u001', name: 'Editor' },
+                        { id: 'u002', name: 'Moderator' },
+                        { id: 'u003', name: 'Reviewer' },
+                    ]}
+                    sx={{ width: 300 }}
+                />
+                <SelectArrayInput
+                    source="roles"
+                    variant="standard"
+                    choices={[
+                        { id: 'admin', name: 'Admin' },
+                        { id: 'u001', name: 'Editor' },
+                        { id: 'u002', name: 'Moderator' },
+                        { id: 'u003', name: 'Reviewer' },
+                    ]}
+                    sx={{ width: 300 }}
+                />
             </SimpleForm>
         </Create>
     </AdminContext>
