@@ -8,16 +8,16 @@ main > .container .markdown-section {
     margin: 0 auto;
 }
 @media only screen and (min-width: 992px) {
-    body:not(.no-sidebar) header,
-    body:not(.no-sidebar) main,
-    body:not(.no-sidebar) footer {
+    body:not(.no-sidebar) > header,
+    body:not(.no-sidebar) > main,
+    body:not(.no-sidebar) > footer {
         padding-left: 300px;
     }
 }
 @media only screen and (max-width: 992px) {
-    body header,
-    body main,
-    body footer {
+    body > header,
+    body > main,
+    body > footer {
         padding-left: 0;
     }
 }
