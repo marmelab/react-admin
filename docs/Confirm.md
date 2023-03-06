@@ -7,41 +7,47 @@ title: "The Confirm Component"
 
 `<Confirm>` leverages MUI's [`<Dialog>` component](https://mui.com/components/dialogs) to implement a confirmation popup.
 
-![Confirm dialog](./img/confirm-dialog.png)
+![Confirm dialog](./img/confirm.webp)
+
+## Usage
+
+To ask a confirmation to the user before performing an action, have the action button open a `<Confirm>`.
+
+For instance, here is how to build a delete button that removes the record after asking for confirmation:
 
 ```jsx
 import { useState } from 'react';
 import {
     Button,
     Confirm,
-    useListContext,
-    useUpdateMany,
+    useRecordContext,
+    useDelete,
 } from 'react-admin';
 
-const CustomUpdatePostsButton = () => {
-    const { selectedIds } = useListContext();
+const BulkResetViewsButton = () => {
+    const record = useRecordContext();
     const [open, setOpen] = useState(false);
 
-    const [updateMany, { isLoading }] = useUpdateMany(
+    const [remove, { isLoading }] = useDelete(
         'posts',
-        { ids: selectedIds, data: { views: 0 } }
+        { id: record && record.id }
     );
 
     const handleClick = () => setOpen(true);
     const handleDialogClose = () => setOpen(false);
     const handleConfirm = () => {
-        updateMany();
+        remove();
         setOpen(false);
     };
 
     return (
         <>
-            <Button label="Update Posts" onClick={handleClick} />
+            <Button label="Delete" onClick={handleClick} />
             <Confirm
                 isOpen={open}
                 loading={isLoading}
-                title="Update View Count"
-                content="Are you sure you want to update these posts?"
+                title={`Delete post #${record && record.id}`}
+                content="Are you sure you want to delete this item?"
                 onConfirm={handleConfirm}
                 onClose={handleDialogClose}
             />
@@ -50,20 +56,21 @@ const CustomUpdatePostsButton = () => {
 };
 ```
 
+## Props
+
 | Prop               | Required | Type                             | Default               | Description                                                        |
 |--------------------|----------|----------------------------------|-----------------------|--------------------------------------------------------------------|
-| `className`        | Optional | `string`                         | -                     | Class name to customize the look and feel of the dialog itself     |
+| `title`            | Required | `string`                         | -                     | Title of the dialog                                                |
+| `content`          | Required | `ReactNode`                      | -                     | Body of the dialog                                                 |
+| `onClose`          | Required | `MouseEventHandler`              | -                     | onClick event handler of the cancel button                         |
+| `onConfirm`        | Required | `MouseEventHandler`              | -                     | onClick event handler of the confirm button                        |
 | `isOpen`           | Optional | `boolean`                        | `false`               | `true` to show the dialog, `false` to hide it                      |
 | `loading`          | Optional | `boolean`                        | `false`               | Boolean to be applied to the `disabled` prop of the action buttons |
-| `content`          | Required | `ReactNode`                      | -                     | Body of the dialog                                                 |
 | `cancel`           | Optional | `string`                         | 'ra.action.cancel'    | Label of the cancel button                                         |
 | `confirm`          | Optional | `string`                         | 'ra.action.confirm'   | Label of the confirm button                                        |
 | `confirmColor`     | Optional | `string`                         | 'primary'             | Color of the confirm button                                        |
 | `ConfirmIcon`      | Optional | `ReactElement`                   | `<CheckCircle/>`      | Icon element of the confirm button                                 |
 | `CancelIcon`       | Optional | `ReactElement`                   | `<ErrorOutlineIcon/>` | Icon element of the cancel button                                  |
-| `onClose`          | Required | `MouseEventHandler`              | -                     | onClick event handler of the cancel button                         |
-| `onConfirm`        | Required | `MouseEventHandler`              | -                     | onClick event handler of the confirm button                        |
-| `title`            | Required | `string`                         | -                     | Title of the dialog                                                |
 | `translateOptions` | Optional | `{ id?: string, name?: string }` | {}                    | Custom id and name to be used in the dialog title                  |
 | `sx`               | Optional | `SxProps`                        | ''                    | MUI shortcut for defining custom styles with access to the theme   |
 
@@ -79,3 +86,36 @@ The `<Confirm>` component accepts the usual `className` prop. You can also overr
 | `& .RaConfirm-confirmWarning`   | Applied to the confirm button when `confirmColor` is `warning` |
 
 To override the style of all instances of `<Confirm>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaConfirm` key.
+
+## Delete With Confirmation
+
+React-admin has built-in buttons to delete a record and ask for confirmation before deleting ([`<DeleteWithConfirmButton>`](./Buttons.md#deletewithconfirmbutton)). But yon can also use the `<DeleteButton>` with `mutationMode="pessimistic"` to get the same result:
+
+```jsx
+import { List, Datagrid, TextField, DeleteButton } from 'react-admin';
+
+const PostList = () => (
+    <List>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <DeleteButton mutationMode="pessimistic" />
+        </Datagrid>
+    </List>
+);
+```
+
+The same goes for deleting multiple records: you could use `<BulkDeleteWithConfirmButton>`, but you'd rather use `<BulkDeleteButton mutationMode="pessimistic">` instead.
+
+```jsx
+import { List, Datagrid, TextField, BulkDeleteButton } from 'react-admin';
+
+const PostList = () => (
+    <List>
+        <Datagrid PostBulkActionButtons={<BulkDeleteButton mutationMode="pessimistic" />}>
+            <TextField source="id" />
+            <TextField source="title" />
+        </Datagrid>
+    </List>
+);
+```
