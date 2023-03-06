@@ -274,6 +274,14 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                 <Select
                     autoWidth
                     labelId={`${label}-outlined-label`}
+                    label={
+                        <FieldTitle
+                            label={label}
+                            source={source}
+                            resource={resource}
+                            isRequired={isRequired}
+                        />
+                    }
                     multiple
                     error={
                         !!fetchError || ((isTouched || isSubmitted) && invalid)
