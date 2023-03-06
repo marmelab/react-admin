@@ -1,5 +1,20 @@
 # Changelog
 
+## v4.8.2
+
+* Fix `<Labeled>` ignores `fullWidth` when `label` is false ([#8689](https://github.com/marmelab/react-admin/pull/8689)) ([slax57](https://github.com/slax57))
+* Fix `<AutocompleteInput>` when record has a different shape between `getList` and `getMany` ([#8687](https://github.com/marmelab/react-admin/pull/8687)) ([slax57](https://github.com/slax57))
+* Fix `<Configurable>` elements don't allow to edit a text field ([#8682](https://github.com/marmelab/react-admin/pull/8682)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<DatagridConfigurable>` column ordering feature does not work in Firefox ([#8673](https://github.com/marmelab/react-admin/pull/8673)) ([slax57](https://github.com/slax57))
+* [Typescript] Fix `<Datagrid rowClick>` type and documentation ([#8677](https://github.com/marmelab/react-admin/pull/8677)) ([djhi](https://github.com/djhi))
+* [TypeScript] Add type to `downloadCSV` function ([#8686](https://github.com/marmelab/react-admin/pull/8686)) ([zhujinxuan](https://github.com/zhujinxuan))
+* [Doc] Add `ra-auth-msal` to the authProvider list ([#8703](https://github.com/marmelab/react-admin/pull/8703)) ([slax57](https://github.com/slax57))
+* [Doc] Fix typo in Vite documentation ([#8692](https://github.com/marmelab/react-admin/pull/8692)) ([djhi](https://github.com/djhi))
+* [Doc] Add `global` definition to the Vite example, and offer to install the Roboto font locally ([#8680](https://github.com/marmelab/react-admin/pull/8680)) ([slax57](https://github.com/slax57))
+* [Doc] Fix `<MenuItem>` example usage in Upgrade guide ([#8678](https://github.com/marmelab/react-admin/pull/8678)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Add troubleshooting section to the Routing chapter ([#8669](https://github.com/marmelab/react-admin/pull/8669)) ([fzaninotto](https://github.com/fzaninotto))
+* [Demo] Remove Webpack bundler in simple example ([#8694](https://github.com/marmelab/react-admin/pull/8694)) ([djhi](https://github.com/djhi))
+
 ## v4.8.1
 
 * Fix `<Notification>` raises a MUI warning when message is a string ([#8666](https://github.com/marmelab/react-admin/pull/8666)) ([slax57](https://github.com/slax57))
