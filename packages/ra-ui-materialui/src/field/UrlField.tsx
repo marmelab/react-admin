@@ -29,6 +29,7 @@ export const UrlField: FC<UrlFieldProps> = memo(props => {
         <Link
             className={className}
             href={value}
+            onClick={stopPropagation}
             variant="body2"
             {...sanitizeFieldRestProps(rest)}
         >
@@ -44,3 +45,6 @@ export interface UrlFieldProps
     extends PublicFieldProps,
         InjectedFieldProps,
         AnchorHTMLAttributes<HTMLAnchorElement> {}
+
+// useful to prevent click bubbling in a Datagrid with rowClick
+const stopPropagation = e => e.stopPropagation();
