@@ -89,7 +89,7 @@ To override the style of all instances of `<Confirm>` using the [MUI style overr
 
 ## Delete With Confirmation
 
-React-admin has built-in buttons to delete a record and ask for confirmation before deleting ([`<DeleteWithConfirmButton>`](./Buttons.md#deletewithconfirmbutton)). But yon can also use the `<DeleteButton>` with `mutationMode="pessimistic"` to get the same result:
+React-admin has built-in buttons to delete a record and ask for confirmation before deleting ([`<DeleteWithConfirmButton>`](./Buttons.md#deletewithconfirmbutton)). But you can also use the `<DeleteButton>` with `mutationMode="pessimistic"` to get the same result:
 
 ```jsx
 import { List, Datagrid, TextField, DeleteButton } from 'react-admin';
