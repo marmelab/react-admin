@@ -8,25 +8,39 @@ export default {
 export const FetchJson = () => {
     const [token, setToken] = React.useState('secret');
     const [record, setRecord] = React.useState('');
+    const [headerName, setHeaderName] = React.useState('X-Custom-Header');
+    const [headerValue, setHeaderValue] = React.useState('foobar');
+
     const user = { token: `Bearer ${token}`, authenticated: !!token };
+
+    const getHeaders = () => {
+        const headers = new Headers();
+        if (headerName) headers.set(headerName, headerValue);
+        return headers;
+    };
+
     const doGet = () => {
         fetchJson('https://jsonplaceholder.typicode.com/posts/1', {
             user,
+            headers: getHeaders(),
         }).then(({ status, headers, body, json }) => {
             console.log('GET result', { status, headers, body, json });
             setRecord(body);
         });
     };
+
     const doPut = () => {
         fetchJson('https://jsonplaceholder.typicode.com/posts/1', {
             method: 'PUT',
             body: record,
             user,
+            headers: getHeaders(),
         }).then(({ status, headers, body, json }) => {
             console.log('PUT result', { status, headers, body, json });
             setRecord(body);
         });
     };
+
     return (
         <div
             style={{
@@ -55,6 +69,31 @@ export const FetchJson = () => {
                     onChange={e => setToken(e.target.value)}
                     style={{ flexGrow: 1 }}
                     title="Clear this field to simulate an unauthenticated user"
+                />
+            </div>
+            <div style={{ display: 'flex' }}>
+                <label
+                    htmlFor="header-name"
+                    style={{ flexShrink: 0, marginRight: 10 }}
+                >
+                    Custom header:
+                </label>
+                <input
+                    id="header-name"
+                    placeholder="header name"
+                    type="text"
+                    value={headerName}
+                    onChange={e => setHeaderName(e.target.value)}
+                    style={{ flexGrow: 1, marginRight: 10 }}
+                    title="Clear this field to remove the header"
+                />
+                <input
+                    id="header-value"
+                    placeholder="header value"
+                    type="text"
+                    value={headerValue}
+                    onChange={e => setHeaderValue(e.target.value)}
+                    style={{ flexGrow: 1, minWidth: 100 }}
                 />
             </div>
             <button onClick={doGet}>Send GET request</button>
