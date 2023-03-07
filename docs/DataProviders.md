@@ -218,7 +218,7 @@ const fetchJson = (url: string, options: fetchUtils.Options = {}) => {
 
 Now all the requests to the REST API will contain the `X-Custom-Header: foobar` header.
 
-**Tip:** Have a look at the [fetchJson documentation](./fetchJson.md) to learn more about its features.
+**Tip:** Have a look at the [`fetchJson` documentation](./fetchJson.md) to learn more about its features.
 
 **Warning**: If your API is on another domain as the JS code, you'll need to whitelist this header with an `Access-Control-Expose-Headers` [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) header.
 
