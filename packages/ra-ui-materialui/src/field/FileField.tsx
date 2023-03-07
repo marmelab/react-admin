@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
@@ -23,7 +24,9 @@ import { Link } from '@mui/material';
  *     <a href="doc.pdf" title="Presentation">Presentation</a>
  * </div>
  */
-export const FileField = (props: FileFieldProps) => {
+export const FileField: FunctionComponent<FileFieldProps> = (
+    props: FileFieldProps
+) => {
     const {
         className,
         emptyText,
@@ -41,7 +44,7 @@ export const FileField = (props: FileFieldProps) => {
     const translate = useTranslate();
 
     if (!sourceValue) {
-        return emptyText ? (
+        return <>{emptyText}</> ? (
             <Typography
                 component="span"
                 variant="body2"

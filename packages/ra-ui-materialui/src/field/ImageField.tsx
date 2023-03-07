@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
@@ -9,7 +10,9 @@ import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import { SxProps } from '@mui/system';
 
-export const ImageField = (props: ImageFieldProps) => {
+export const ImageField: FunctionComponent<ImageFieldProps> = (
+    props: ImageFieldProps
+) => {
     const { className, emptyText, source, src, title, ...rest } = props;
     const record = useRecordContext(props);
     const sourceValue = get(record, source);
