@@ -89,7 +89,9 @@ To override the style of all instances of `<Confirm>` using the [MUI style overr
 
 ## Delete With Confirmation
 
-React-admin has built-in buttons to delete a record and ask for confirmation before deleting ([`<DeleteWithConfirmButton>`](./Buttons.md#deletewithconfirmbutton)). But you can also use the `<DeleteButton>` with `mutationMode="pessimistic"` to get the same result:
+React-admin's `<DeleteButton>` lets user delete the current record [in an optimistic way](./Features.md#optimistic-updates-and-undo): after clicking the button, users see a notification for the deletion with an "undo" link to cancel the deletion. 
+
+Alternately, you can force the user to confirm the deletion by using `<DeleteButton mutationMode="pessimistic">`. Under the hood, this leverages the `<Confirm>` component to ask for confirmation before deleting the record.
 
 ```jsx
 import { List, Datagrid, TextField, DeleteButton } from 'react-admin';
@@ -105,7 +107,7 @@ const PostList = () => (
 );
 ```
 
-The same goes for deleting multiple records: you could use `<BulkDeleteWithConfirmButton>`, but you'd rather use `<BulkDeleteButton mutationMode="pessimistic">` instead.
+The same goes for deleting multiple records in a [bulk action](./Datagrid.md#bulkactionbuttons): use `<BulkDeleteButton mutationMode="pessimistic">` to ask a confirmation before the deletion.
 
 ```jsx
 import { List, Datagrid, TextField, BulkDeleteButton } from 'react-admin';
