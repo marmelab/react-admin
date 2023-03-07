@@ -25,12 +25,7 @@ export const ResourceMenuItem = ({ name }: { name: string }) => {
             })}
             state={{ _scrollToTop: true }}
             primaryText={
-                <>
-                    {translate(`resources.${name}.name`, {
-                        smart_count: 2,
-                        _: getResourceLabel(name, 2),
-                    })}
-                </>
+                <>{getResourceLabel(name, 2)}</>
             }
             leftIcon={
                 resources[name].icon ? (
