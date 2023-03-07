@@ -24,9 +24,7 @@ export const ResourceMenuItem = ({ name }: { name: string }) => {
                 type: 'list',
             })}
             state={{ _scrollToTop: true }}
-            primaryText={
-                <>{getResourceLabel(name, 2)}</>
-            }
+            primaryText={<>{getResourceLabel(name, 2)}</>}
             leftIcon={
                 resources[name].icon ? (
                     createElement(resources[name].icon)
