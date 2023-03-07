@@ -6,7 +6,6 @@ import {
     useResourceDefinitions,
     useGetResourceLabel,
     useCreatePath,
-    useTranslate,
 } from 'ra-core';
 
 import { MenuItemLink } from './MenuItemLink';
@@ -14,7 +13,6 @@ import { MenuItemLink } from './MenuItemLink';
 export const ResourceMenuItem = ({ name }: { name: string }) => {
     const resources = useResourceDefinitions();
     const getResourceLabel = useGetResourceLabel();
-    const translate = useTranslate();
     const createPath = useCreatePath();
     if (!resources || !resources[name]) return null;
     return (
