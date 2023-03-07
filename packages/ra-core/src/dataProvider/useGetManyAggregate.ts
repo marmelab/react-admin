@@ -127,6 +127,7 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
                     );
                 });
             },
+            initialData: [],
             retry: false,
             ...options,
         }
