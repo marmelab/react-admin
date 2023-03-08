@@ -136,7 +136,7 @@ export const useUpdate = <
         queryClient.setQueriesData(
             [resource, 'getMany'],
             (coll: RecordType[]) =>
-                coll && coll.length > 0 ? updateColl(coll) : coll,
+                coll && coll.length > 0 ? updateColl(coll) : coll ?? [],
             { updatedAt }
         );
         queryClient.setQueriesData(
