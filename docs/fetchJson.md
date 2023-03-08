@@ -5,7 +5,7 @@ title: "fetchJson"
 
 # `fetchJson`
 
-React-admin includes a `fetchJson` utility function to make HTTP calls. It's a wrapper around the browser's `fetch` function, which adds the following features:
+React-admin includes a `fetchJson` utility function to make HTTP calls. It's a wrapper around the browser's `fetch` function, that adds the following features:
 
 -   It adds the `Content-Type='application/json'` header to all non GET requests
 -   It adds the `Authorization` header with optional parameters
@@ -20,6 +20,7 @@ You can use it to make HTTP calls directly, to build a custom [`dataProvider`](.
 ```jsx
 import { fetchUtils, Admin, Resource } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
+import { PostList } from './posts';
 
 const httpClient = async (url, options = {}) => {
     const { status, headers, body, json } = fetchUtils.fetchJson(url, options);
@@ -35,7 +36,7 @@ const App = () => (
 );
 ```
 
-**Tip:** `fetchJson` is included in the `fetchUtils` member of the `react-admin` package.
+**Tip:** `fetchJson` is included in the `fetchUtils` object exported by the `react-admin` package.
 
 ### Parameters
 
@@ -64,6 +65,7 @@ Here is an example of how to add custom headers to all requests:
 ```jsx
 import { fetchUtils, Admin, Resource } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
+import { PostList } from './posts';
 
 const httpClient = (url, options = {}) => {
     if (!options.headers) {

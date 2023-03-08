@@ -28,7 +28,7 @@ export const createHeadersFromOptions = (options: Options): Headers => {
 };
 
 /**
- * Utility function to make HTTP calls. It's similar to HTML5 `fetch()`, except it handles JSON decoding and HTTP error codes automatically.
+ * Utility function to make HTTP calls. It's similar to the HTML5 `fetch()`, except it handles JSON decoding and HTTP error codes automatically.
  *
  * @param url the URL to call
  * @param options the options to pass to the HTTP call
