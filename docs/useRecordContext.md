@@ -72,7 +72,7 @@ const RecordFetcher = ({ id, resource, children }) => {
     if (isLoading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
     return (
-        <RecordContextProvider record={data}>
+        <RecordContextProvider value={data}>
             {children}
         </RecordContextProvider>
     );
