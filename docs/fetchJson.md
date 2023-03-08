@@ -38,7 +38,7 @@ const App = () => (
 
 **Tip:** `fetchJson` is included in the `fetchUtils` object exported by the `react-admin` package.
 
-### Parameters
+## Parameters
 
 `fetchJson(url, options)` expects the following parameters:
 
@@ -49,7 +49,7 @@ const App = () => (
 -   `options.user.authenticated` **boolean** Whether the user is authenticated or not (the `Authorization` header will be set only if this is true)
 -   `options.headers` **Headers** The headers to pass to the fetch call
 
-### Return Value
+## Return Value
 
 `fetchJson` returns an object with the following properties:
 
