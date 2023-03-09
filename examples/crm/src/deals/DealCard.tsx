@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { ReferenceField, useRedirect } from 'react-admin';
+import { useRedirect } from 'react-admin';
 import { Box, Card, Typography } from '@mui/material';
 import { Draggable } from 'react-beautiful-dnd';
 
 import { LogoField } from '../companies/LogoField';
-import { Deal } from '../types';
+import { Deal, DealFields } from '../types';
 
 export const DealCard = ({ deal, index }: { deal: Deal; index: number }) => {
     const redirect = useRedirect();
@@ -34,13 +34,13 @@ export const DealCard = ({ deal, index }: { deal: Deal; index: number }) => {
                         elevation={snapshot.isDragging ? 3 : 1}
                     >
                         <Box padding={1} display="flex">
-                            <ReferenceField
+                            <DealFields.ReferenceField
                                 source="company_id"
                                 record={deal}
                                 reference="companies"
                             >
                                 <LogoField size="small" />
-                            </ReferenceField>
+                            </DealFields.ReferenceField>
                             <Box sx={{ marginLeft: 1 }}>
                                 <Typography variant="body2" gutterBottom>
                                     {deal.name}

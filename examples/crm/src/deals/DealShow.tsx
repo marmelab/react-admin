@@ -1,13 +1,5 @@
 import * as React from 'react';
-import {
-    ShowBase,
-    TextField,
-    ReferenceField,
-    ReferenceManyField,
-    ReferenceArrayField,
-    useRecordContext,
-    useRedirect,
-} from 'react-admin';
+import { ShowBase, useRecordContext, useRedirect } from 'react-admin';
 import { Box, Dialog, DialogContent, Typography, Divider } from '@mui/material';
 import { format } from 'date-fns';
 
@@ -15,6 +7,7 @@ import { CompanyAvatar } from '../companies/CompanyAvatar';
 import { NotesIterator } from '../notes';
 import { ContactList } from './ContactList';
 import { stageNames } from './stages';
+import { CompanyFields, Deal, DealFields, DealNoteFields } from '../types';
 
 export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
     const redirect = useRedirect();
@@ -48,7 +41,7 @@ export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
 };
 
 const DealShowContent = () => {
-    const record = useRecordContext();
+    const record = useRecordContext<Deal>();
     if (!record) return null;
     return (
         <div>
@@ -59,24 +52,24 @@ const DealShowContent = () => {
                     flexDirection="column"
                     alignItems="center"
                 >
-                    <ReferenceField
+                    <DealFields.ReferenceField
                         source="company_id"
                         reference="companies"
                         link="show"
                     >
                         <CompanyAvatar />
-                    </ReferenceField>
-                    <ReferenceField
+                    </DealFields.ReferenceField>
+                    <DealFields.ReferenceField
                         source="company_id"
                         reference="companies"
                         link="show"
                     >
-                        <TextField
+                        <CompanyFields.TextField
                             source="name"
                             align="center"
                             component="div"
                         />
-                    </ReferenceField>
+                    </DealFields.ReferenceField>
                 </Box>
                 <Box ml={2} flex="1">
                     <Typography variant="h5">{record.name}</Typography>
@@ -136,12 +129,12 @@ const DealShowContent = () => {
                             <Typography color="textSecondary" variant="body2">
                                 Contacts
                             </Typography>
-                            <ReferenceArrayField
+                            <DealFields.ReferenceArrayField
                                 source="contact_ids"
                                 reference="contacts"
                             >
                                 <ContactList />
-                            </ReferenceArrayField>
+                            </DealFields.ReferenceArrayField>
                         </Box>
                     </Box>
 
@@ -155,13 +148,13 @@ const DealShowContent = () => {
                     <Divider />
 
                     <Box mt={2}>
-                        <ReferenceManyField
+                        <DealNoteFields.ReferenceManyField
                             target="deal_id"
                             reference="dealNotes"
                             sort={{ field: 'date', order: 'DESC' }}
                         >
                             <NotesIterator reference="deals" />
-                        </ReferenceManyField>
+                        </DealNoteFields.ReferenceManyField>
                     </Box>
                 </Box>
             </Box>

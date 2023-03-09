@@ -1,20 +1,14 @@
 import * as React from 'react';
 import {
-    TextField,
-    EmailField,
-    DateField,
-    ReferenceManyField,
     EditButton,
     ShowButton,
     useListContext,
-    ReferenceField,
-    FunctionField,
     useRecordContext,
 } from 'react-admin';
 import { Box, Typography, Divider, List, ListItem } from '@mui/material';
 import { TagsListEdit } from './TagsListEdit';
 
-import { Contact, Sale } from '../types';
+import { Contact, ContactFields, SaleFields, TaskFields } from '../types';
 
 export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
     const record = useRecordContext<Contact>();
@@ -29,16 +23,16 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
             </Box>
             <Typography variant="subtitle2">Personal info</Typography>
             <Divider />
-            <EmailField
+            <ContactFields.EmailField
                 sx={{ mt: 2, mb: 1, display: 'block' }}
                 source="email"
             />
-            <TextField source="phone_number1" />{' '}
+            <ContactFields.TextField source="phone_number1" />{' '}
             <Typography variant="body2" color="textSecondary" component="span">
                 Work
             </Typography>
             <Box mb={1}>
-                <TextField source="phone_number2" />{' '}
+                <ContactFields.TextField source="phone_number2" />{' '}
                 <Typography
                     variant="body2"
                     color="textSecondary"
@@ -63,7 +57,7 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                 >
                     Added on
                 </Typography>{' '}
-                <DateField
+                <ContactFields.DateField
                     source="first_seen"
                     options={{ year: 'numeric', month: 'long', day: 'numeric' }}
                     color="textSecondary"
@@ -76,7 +70,7 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                 >
                     Last seen on
                 </Typography>{' '}
-                <DateField
+                <ContactFields.DateField
                     source="last_seen"
                     options={{ year: 'numeric', month: 'long', day: 'numeric' }}
                     color="textSecondary"
@@ -89,8 +83,11 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                 >
                     Followed by
                 </Typography>{' '}
-                <ReferenceField source="sales_id" reference="sales">
-                    <FunctionField<Sale>
+                <ContactFields.ReferenceField
+                    source="sales_id"
+                    reference="sales"
+                >
+                    <SaleFields.FunctionField
                         source="last_name"
                         render={record =>
                             record
@@ -98,16 +95,19 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                                 : ''
                         }
                     />
-                </ReferenceField>
+                </ContactFields.ReferenceField>
             </Box>
             <Box mb={3}>
                 <Typography variant="subtitle2">Tags</Typography>
                 <Divider />
                 <TagsListEdit />
             </Box>
-            <ReferenceManyField target="contact_id" reference="tasks">
+            <TaskFields.ReferenceManyField
+                target="contact_id"
+                reference="tasks"
+            >
                 <TasksIterator />
-            </ReferenceManyField>
+            </TaskFields.ReferenceManyField>
         </Box>
     );
 };
@@ -127,7 +127,10 @@ const TasksIterator = () => {
                             <Typography variant="body2">{task.text}</Typography>
                             <Typography variant="body2" color="textSecondary">
                                 due{' '}
-                                <DateField source="due_date" record={task} />
+                                <TaskFields.DateField
+                                    source="due_date"
+                                    record={task}
+                                />
                             </Typography>
                         </Box>
                     </ListItem>

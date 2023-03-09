@@ -3,12 +3,12 @@ import { useState } from 'react';
 import { Paper, Typography, Link as MuiLink, Box } from '@mui/material';
 import ContactsIcon from '@mui/icons-material/AccountCircle';
 import DealIcon from '@mui/icons-material/MonetizationOn';
-import { useCreatePath, SelectField, useRecordContext } from 'react-admin';
+import { useCreatePath, useRecordContext } from 'react-admin';
 import { Link } from 'react-router-dom';
 
 import { sectors } from './sectors';
 import { CompanyAvatar } from './CompanyAvatar';
-import { Company } from '../types';
+import { Company, CompanyFields } from '../types';
 
 export const CompanyCard = (props: { record?: Company }) => {
     const [elevation, setElevation] = useState(1);
@@ -45,7 +45,7 @@ export const CompanyCard = (props: { record?: Company }) => {
                         <Typography variant="subtitle2">
                             {record.name}
                         </Typography>
-                        <SelectField
+                        <CompanyFields.SelectField
                             color="textSecondary"
                             source="sector"
                             choices={sectors}

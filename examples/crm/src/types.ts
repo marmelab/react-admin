@@ -1,10 +1,11 @@
-import { RaRecord, Identifier } from 'react-admin';
+import { RaRecord, Identifier, getTypedFields } from 'react-admin';
 
 export interface Sale extends RaRecord {
     first_name: string;
     last_name: string;
     email: string;
 }
+export const SaleFields = getTypedFields<Sale>();
 
 export interface Company extends RaRecord {
     name: string;
@@ -23,6 +24,7 @@ export interface Company extends RaRecord {
     sales_id: Identifier;
     created_at: string;
 }
+export const CompanyFields = getTypedFields<Company>();
 
 export interface Contact extends RaRecord {
     first_name: string;
@@ -38,7 +40,12 @@ export interface Contact extends RaRecord {
     gender: string;
     sales_id: Identifier;
     nb_notes: number;
+    status: string;
+    background: string;
+    phone_number1: string;
+    phone_number2: string;
 }
+export const ContactFields = getTypedFields<Contact>();
 
 export interface ContactNote extends RaRecord {
     contact_id: Identifier;
@@ -48,6 +55,7 @@ export interface ContactNote extends RaRecord {
     sales_id: Identifier;
     status: string;
 }
+export const ContactNoteFields = getTypedFields<ContactNote>();
 
 export interface Deal extends RaRecord {
     name: string;
@@ -59,12 +67,36 @@ export interface Deal extends RaRecord {
     amount: number;
     created_at: string;
     updated_at: string;
+    start_at: string;
     sales_id: Identifier;
     index: number;
     nb_notes: number;
 }
 
+export const DealFields = getTypedFields<Deal>();
+
+export interface DealNote extends RaRecord {
+    deal_id: Identifier;
+    type: string;
+    text: string;
+    date: string;
+    sales_id: Identifier;
+}
+
+export const DealNoteFields = getTypedFields<DealNote>();
+
 export interface Tag extends RaRecord {
     name: string;
     color: string;
 }
+export const TagFields = getTypedFields<Tag>();
+
+export interface Task extends RaRecord {
+    contact_id: string;
+    type: string;
+    text: string;
+    due_date: string;
+    sales_id: string;
+}
+
+export const TaskFields = getTypedFields<Task>();

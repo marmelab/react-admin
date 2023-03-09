@@ -2,9 +2,6 @@ import * as React from 'react';
 import { useState, ChangeEvent } from 'react';
 import {
     ShowBase,
-    TextField,
-    ReferenceManyField,
-    SelectField,
     useShowContext,
     useRecordContext,
     useListContext,
@@ -35,7 +32,7 @@ import { TagsList } from '../contacts/TagsList';
 import { sizes } from './sizes';
 import { LogoField } from './LogoField';
 import { CompanyAside } from './CompanyAside';
-import { Company, Deal, Contact } from '../types';
+import { Company, Deal, Contact, CompanyFields, ContactFields } from '../types';
 import { stageNames } from '../deals/stages';
 
 export const CompanyShow = () => (
@@ -63,8 +60,8 @@ const CompanyShowContent = () => {
                                     {record.name}
                                 </Typography>
                                 <Typography variant="body2">
-                                    <TextField source="sector" />,{' '}
-                                    <SelectField
+                                    <CompanyFields.TextField source="sector" />,{' '}
+                                    <CompanyFields.SelectField
                                         source="size"
                                         choices={sizes}
                                     />
@@ -98,22 +95,22 @@ const CompanyShowContent = () => {
                         </Tabs>
                         <Divider />
                         <TabPanel value={tabValue} index={0}>
-                            <ReferenceManyField
+                            <ContactFields.ReferenceManyField
                                 reference="contacts"
                                 target="company_id"
                                 sort={{ field: 'last_name', order: 'ASC' }}
                             >
                                 <ContactsIterator />
-                            </ReferenceManyField>
+                            </ContactFields.ReferenceManyField>
                         </TabPanel>
                         <TabPanel value={tabValue} index={1}>
-                            <ReferenceManyField
+                            <ContactFields.ReferenceManyField
                                 reference="deals"
                                 target="company_id"
                                 sort={{ field: 'name', order: 'ASC' }}
                             >
                                 <DealsIterator />
-                            </ReferenceManyField>
+                            </ContactFields.ReferenceManyField>
                         </TabPanel>
                     </CardContent>
                 </Card>

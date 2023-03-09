@@ -1,16 +1,15 @@
 import * as React from 'react';
 import { Card, CardContent, Typography, Box } from '@mui/material';
 import NoteIcon from '@mui/icons-material/Note';
-import {
-    useGetList,
-    useGetIdentity,
-    ReferenceField,
-    TextField,
-    FunctionField,
-} from 'react-admin';
+import { useGetList, useGetIdentity } from 'react-admin';
 import { formatDistance } from 'date-fns';
 
-import { Contact as ContactType } from '../types';
+import {
+    ContactFields,
+    ContactNoteFields,
+    DealFields,
+    DealNoteFields,
+} from '../types';
 
 export const LatestNotes = () => {
     const { identity } = useGetIdentity();
@@ -111,32 +110,32 @@ export const LatestNotes = () => {
 const Deal = ({ note }: any) => (
     <>
         Deal{' '}
-        <ReferenceField
+        <DealNoteFields.ReferenceField
             record={note}
             source="deal_id"
             reference="deals"
             link="show"
         >
-            <TextField source="name" variant="body2" />
-        </ReferenceField>
+            <DealFields.TextField source="name" variant="body2" />
+        </DealNoteFields.ReferenceField>
     </>
 );
 
 const Contact = ({ note }: any) => (
     <>
         Contact{' '}
-        <ReferenceField
+        <ContactNoteFields.ReferenceField
             record={note}
             source="contact_id"
             reference="contacts"
             link="show"
         >
-            <FunctionField<ContactType>
+            <ContactFields.FunctionField
                 variant="body2"
-                render={(contact?: ContactType) =>
+                render={contact =>
                     contact ? `${contact.first_name} ${contact.last_name}` : ''
                 }
             />
-        </ReferenceField>
+        </ContactNoteFields.ReferenceField>
     </>
 );

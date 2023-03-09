@@ -1,18 +1,17 @@
 import * as React from 'react';
-import {
-    ShowBase,
-    TextField,
-    ReferenceField,
-    ReferenceManyField,
-    useShowContext,
-} from 'react-admin';
+import { ShowBase, useShowContext } from 'react-admin';
 import { Box, Card, CardContent, Typography } from '@mui/material';
 
 import { Avatar } from './Avatar';
 import { ContactAside } from './ContactAside';
 import { LogoField } from '../companies/LogoField';
 import { NotesIterator } from '../notes';
-import { Contact } from '../types';
+import {
+    CompanyFields,
+    Contact,
+    ContactFields,
+    ContactNoteFields,
+} from '../types';
 
 export const ContactShow = () => (
     <ShowBase>
@@ -36,32 +35,32 @@ const ContactShowContent = () => {
                                 </Typography>
                                 <Typography variant="body2">
                                     {record.title} at{' '}
-                                    <ReferenceField
+                                    <ContactFields.ReferenceField
                                         source="company_id"
                                         reference="companies"
                                         link="show"
                                     >
-                                        <TextField source="name" />
-                                    </ReferenceField>
+                                        <CompanyFields.TextField source="name" />
+                                    </ContactFields.ReferenceField>
                                 </Typography>
                             </Box>
                             <Box>
-                                <ReferenceField
+                                <ContactFields.ReferenceField
                                     source="company_id"
                                     reference="companies"
                                     link="show"
                                 >
                                     <LogoField />
-                                </ReferenceField>
+                                </ContactFields.ReferenceField>
                             </Box>
                         </Box>
-                        <ReferenceManyField
+                        <ContactNoteFields.ReferenceManyField
                             target="contact_id"
                             reference="contactNotes"
                             sort={{ field: 'date', order: 'DESC' }}
                         >
                             <NotesIterator showStatus reference="contacts" />
-                        </ReferenceManyField>
+                        </ContactNoteFields.ReferenceManyField>
                     </CardContent>
                 </Card>
             </Box>

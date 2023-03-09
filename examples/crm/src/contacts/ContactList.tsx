@@ -1,10 +1,7 @@
-/* eslint-disable import/no-anonymous-default-export */
 import * as React from 'react';
 import {
     List as RaList,
     SimpleListLoading,
-    ReferenceField,
-    TextField,
     useListContext,
     ExportButton,
     SortButton,
@@ -33,7 +30,7 @@ import { Avatar } from './Avatar';
 import { Status } from '../misc/Status';
 import { TagsList } from './TagsList';
 import { ContactListFilter } from './ContactListFilter';
-import { Contact } from '../types';
+import { CompanyFields, Contact, ContactFields } from '../types';
 
 const ContactListContent = () => {
     const {
@@ -80,13 +77,13 @@ const ContactListContent = () => {
                                 secondary={
                                     <>
                                         {contact.title} at{' '}
-                                        <ReferenceField
+                                        <ContactFields.ReferenceField
                                             source="company_id"
                                             reference="companies"
                                             link={false}
                                         >
-                                            <TextField source="name" />
-                                        </ReferenceField>{' '}
+                                            <CompanyFields.TextField source="name" />
+                                        </ContactFields.ReferenceField>{' '}
                                         {contact.nb_notes &&
                                             `- ${contact.nb_notes} notes `}
                                         <TagsList />

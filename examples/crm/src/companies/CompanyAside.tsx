@@ -1,16 +1,8 @@
 import * as React from 'react';
-import {
-    TextField,
-    DateField,
-    FunctionField,
-    ReferenceField,
-    EditButton,
-    ShowButton,
-    useRecordContext,
-} from 'react-admin';
+import { EditButton, ShowButton, useRecordContext } from 'react-admin';
 import { Box, Typography, Divider, Link } from '@mui/material';
 
-import { Company, Sale } from '../types';
+import { Company, CompanyFields, SaleFields } from '../types';
 
 interface CompanyAsideProps {
     link?: string;
@@ -41,7 +33,7 @@ export const CompanyAside = ({ link = 'edit' }: CompanyAsideProps) => {
             </Box>
 
             <Box mt={1}>
-                <TextField source="phone_number" />{' '}
+                <CompanyFields.TextField source="phone_number" />{' '}
                 <Typography
                     variant="body2"
                     color="textSecondary"
@@ -52,10 +44,11 @@ export const CompanyAside = ({ link = 'edit' }: CompanyAsideProps) => {
             </Box>
 
             <Box mt={1} mb={3}>
-                <TextField source="address" />
+                <CompanyFields.TextField source="address" />
                 <br />
-                <TextField source="city" /> <TextField source="zipcode" />{' '}
-                <TextField source="stateAbbr" />
+                <CompanyFields.TextField source="city" />{' '}
+                <CompanyFields.TextField source="zipcode" />{' '}
+                <CompanyFields.TextField source="stateAbbr" />
             </Box>
 
             <Typography variant="subtitle2">Background</Typography>
@@ -69,7 +62,7 @@ export const CompanyAside = ({ link = 'edit' }: CompanyAsideProps) => {
                 >
                     Added on
                 </Typography>{' '}
-                <DateField
+                <CompanyFields.DateField
                     source="created_at"
                     options={{ year: 'numeric', month: 'long', day: 'numeric' }}
                     color="textSecondary"
@@ -82,8 +75,11 @@ export const CompanyAside = ({ link = 'edit' }: CompanyAsideProps) => {
                 >
                     Followed by
                 </Typography>{' '}
-                <ReferenceField source="sales_id" reference="sales">
-                    <FunctionField<Sale>
+                <CompanyFields.ReferenceField
+                    source="sales_id"
+                    reference="sales"
+                >
+                    <SaleFields.FunctionField
                         source="last_name"
                         render={record =>
                             record
@@ -91,7 +87,7 @@ export const CompanyAside = ({ link = 'edit' }: CompanyAsideProps) => {
                                 : ''
                         }
                     />
-                </ReferenceField>
+                </CompanyFields.ReferenceField>
             </Box>
         </Box>
     );

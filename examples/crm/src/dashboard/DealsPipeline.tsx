@@ -2,16 +2,11 @@ import * as React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Card, Link, Box } from '@mui/material';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
-import {
-    useGetList,
-    SimpleList,
-    useGetIdentity,
-    ReferenceField,
-} from 'react-admin';
+import { useGetList, SimpleList, useGetIdentity } from 'react-admin';
 
 import { CompanyAvatar } from '../companies/CompanyAvatar';
 import { stages, stageNames } from '../deals/stages';
-import { Deal } from '../types';
+import { Deal, DealFields } from '../types';
 
 export const DealsPipeline = () => {
     const { identity } = useGetIdentity();
@@ -75,7 +70,7 @@ export const DealsPipeline = () => {
                         })} , ${stageNames[deal.stage]}`
                     }
                     leftAvatar={deal => (
-                        <ReferenceField
+                        <DealFields.ReferenceField
                             source="company_id"
                             record={deal}
                             reference="companies"
@@ -83,7 +78,7 @@ export const DealsPipeline = () => {
                             link={false}
                         >
                             <CompanyAvatar size="small" />
-                        </ReferenceField>
+                        </DealFields.ReferenceField>
                     )}
                 />
             </Card>
