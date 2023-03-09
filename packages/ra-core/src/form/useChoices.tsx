@@ -9,7 +9,9 @@ import { RecordContextProvider } from '../controller';
 export type OptionTextElement = ReactElement<{
     record: RaRecord;
 }>;
-export type OptionTextFunc = (choice: any) => React.ReactNode;
+export type OptionTextFunc<RecordType = any> = (
+    choice: RecordType
+) => React.ReactNode;
 export type OptionText = OptionTextElement | OptionTextFunc | string;
 
 export interface ChoicesProps {
