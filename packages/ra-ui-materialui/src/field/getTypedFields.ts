@@ -19,6 +19,10 @@ import {
     ReferenceManyCount,
     ReferenceManyCountProps,
 } from './ReferenceManyCount';
+import {
+    ReferenceManyField,
+    ReferenceManyFieldProps,
+} from './ReferenceManyField';
 import { RichTextField, RichTextFieldProps } from './RichTextField';
 import { SelectField, SelectFieldProps } from './SelectField';
 import { TextField, TextFieldProps } from './TextField';
@@ -44,7 +48,9 @@ export const getTypedFields = <TRecord extends RaRecord>() => ({
         FileFieldProps & TypedFieldProps<TRecord>
     >,
     FunctionField: FunctionField as ComponentType<
-        FunctionFieldProps<TRecord> & TypedFieldProps<TRecord>
+        FunctionFieldProps<TRecord> &
+            Omit<TypedFieldProps<TRecord>, 'source'> &
+            Partial<Pick<TypedFieldProps<TRecord>, 'source'>>
     >,
     ImageField: ImageField as ComponentType<
         ImageFieldProps & TypedFieldProps<TRecord>
@@ -60,6 +66,9 @@ export const getTypedFields = <TRecord extends RaRecord>() => ({
     >,
     ReferenceManyCount: ReferenceManyCount as ComponentType<
         ReferenceManyCountProps & TypedManyFieldProps<TRecord>
+    >,
+    ReferenceManyField: ReferenceManyField as ComponentType<
+        ReferenceManyFieldProps & TypedManyFieldProps<TRecord>
     >,
     RichTextField: RichTextField as ComponentType<
         RichTextFieldProps & TypedFieldProps<TRecord>
@@ -77,10 +86,10 @@ export const getTypedFields = <TRecord extends RaRecord>() => ({
 
 export interface TypedFieldProps<TRecord extends RaRecord> {
     source: Call<Objects.AllPaths, TRecord>;
-    sortBy: Call<Objects.AllPaths, TRecord>;
+    sortBy?: Call<Objects.AllPaths, TRecord>;
 }
 
 export interface TypedManyFieldProps<TRecord extends RaRecord> {
-    sortBy: Call<Objects.AllPaths, TRecord>;
+    sortBy?: Call<Objects.AllPaths, TRecord>;
     target: Call<Objects.AllPaths, TRecord>;
 }

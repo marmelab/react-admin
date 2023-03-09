@@ -7,6 +7,7 @@ export * from './DateField';
 export * from './EmailField';
 export * from './FileField';
 export * from './FunctionField';
+export * from './getTypedFields';
 export * from './ImageField';
 export * from './NumberField';
 export * from './ReferenceArrayField';

@@ -460,7 +460,7 @@ If you provided a React element for the optionText prop, you must also provide t
         (filter: string) => {
             let selectedItemTexts;
 
-            if (multiple) {
+            if (multiple && Array.isArray(selectedChoice)) {
                 selectedItemTexts = selectedChoice.map(item =>
                     getOptionLabel(item)
                 );
@@ -713,9 +713,9 @@ const useSelectedChoice = <
     const selectedChoiceRef = useRef(
         getSelectedItems(choices, value, optionValue, multiple)
     );
-    const [selectedChoice, setSelectedChoice] = useState<RaRecord | RaRecord[]>(
-        () => getSelectedItems(choices, value, optionValue, multiple)
-    );
+    const [selectedChoice, setSelectedChoice] = useState<
+        Multiple extends true ? RaRecord[] : RaRecord
+    >(() => getSelectedItems(choices, value, optionValue, multiple));
 
     // As the selected choices are objects, we want to ensure we pass the same
     // reference to the Autocomplete as it would reset its filter value otherwise.

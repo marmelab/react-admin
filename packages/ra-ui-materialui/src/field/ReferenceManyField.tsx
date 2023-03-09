@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, ReactNode } from 'react';
+import React, { FC, FunctionComponent, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import {
     FilterPayload,
@@ -58,7 +58,7 @@ import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
  *    ...
  * </ReferenceManyField>
  */
-export const ReferenceManyField = (props: ReferenceManyFieldProps) => {
+export const ReferenceManyField: FunctionComponent<ReferenceManyFieldProps> = props => {
     const {
         children,
         filter,

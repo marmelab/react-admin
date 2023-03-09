@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { expectTypeOf } from 'expect-type';
 import { getTypedFields } from './getTypedFields';
+import { RaRecord } from 'ra-core';
 
 describe('getTypedFields', () => {
-    type Post = {
-        id: number;
+    interface Post extends RaRecord {
         author: {
             name: string;
         };

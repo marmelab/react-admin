@@ -11,7 +11,6 @@ export type Identifier = string | number;
 
 export interface RaRecord {
     id: Identifier;
-    [key: string]: any;
 }
 
 export interface SortPayload {

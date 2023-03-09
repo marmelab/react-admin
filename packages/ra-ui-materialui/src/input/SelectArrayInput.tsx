@@ -11,6 +11,7 @@ import {
     FormHelperText,
     FormControl,
     Chip,
+    SelectChangeEvent,
 } from '@mui/material';
 import {
     ChoicesProps,
@@ -155,15 +156,16 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
     });
 
     const handleChange = useCallback(
-        (eventOrChoice: ChangeEvent<HTMLInputElement> | RaRecord) => {
+        (eventOrChoice: SelectChangeEvent<string[]> | RaRecord) => {
             // We might receive an event from the mui component
             // In this case, it will be the choice id
-            if (eventOrChoice?.target) {
+            if ((eventOrChoice as SelectChangeEvent<string[]>)?.target) {
+                const event = eventOrChoice as SelectChangeEvent<string[]>;
                 // when used with different IDs types, unselection leads to double selection with both types
                 // instead of the value being removed from the array
                 // e.g. we receive eventOrChoice.target.value = [1, '2', 2] instead of [1] after removing 2
                 // this snippet removes a value if it is present twice
-                eventOrChoice.target.value = eventOrChoice.target.value.reduce(
+                event.target.value = (event.target.value as string[]).reduce(
                     (acc, value) => {
                         // eslint-disable-next-line eqeqeq
                         const index = acc.findIndex(v => v == value);
