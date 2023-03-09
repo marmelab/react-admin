@@ -35,6 +35,7 @@ export interface Customer extends RaRecord {
     groups: string[];
     nb_commands: number;
     total_spent: number;
+    email: string;
 }
 
 export type OrderStatus = 'ordered' | 'delivered' | 'cancelled';
@@ -44,6 +45,12 @@ export interface Order extends RaRecord {
     basket: BasketItem[];
     date: Date;
     total: number;
+    customer_id: Identifier;
+    reference: string;
+    total_ex_taxes: number;
+    delivery_fees: number;
+    tax_rate: number;
+    taxes: number;
 }
 
 export interface BasketItem {
@@ -51,7 +58,9 @@ export interface BasketItem {
     quantity: number;
 }
 
-export interface Invoice extends RaRecord {}
+export interface Invoice extends RaRecord {
+    date: string;
+}
 
 export type ReviewStatus = 'accepted' | 'pending' | 'rejected';
 
@@ -60,6 +69,7 @@ export interface Review extends RaRecord {
     status: ReviewStatus;
     customer_id: Identifier;
     product_id: Identifier;
+    comment: string;
 }
 
 declare global {

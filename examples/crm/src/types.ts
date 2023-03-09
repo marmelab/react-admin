@@ -81,6 +81,7 @@ export interface DealNote extends RaRecord {
     text: string;
     date: string;
     sales_id: Identifier;
+    status: string;
 }
 
 export const DealNoteFields = getTypedFields<DealNote>();

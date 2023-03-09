@@ -31,7 +31,9 @@ import { RecordContext } from './RecordContext';
  * @returns {RaRecord} A record object
  */
 export const useRecordContext = <
-    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord & {
+        [key: string]: any;
+    }
 >(
     props?: UseRecordContextParams<RecordType>
 ): RecordType | undefined => {

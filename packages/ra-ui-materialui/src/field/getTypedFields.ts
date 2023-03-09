@@ -86,16 +86,17 @@ export const getTypedFields = <TRecord extends RaRecord>() => ({
     >,
 });
 
-export interface TypedChoicesFieldProps<TRecord extends RaRecord> {
-    optionText:
-        | Call<Objects.AllPaths, TRecord>
-        | OptionTextElement
-        | OptionTextFunc<TRecord>;
-    optionValue: Call<Objects.AllPaths, TRecord>;
-}
 export interface TypedFieldProps<TRecord extends RaRecord> {
     source: Call<Objects.AllPaths, TRecord>;
     sortBy?: Call<Objects.AllPaths, TRecord>;
+}
+
+export interface TypedChoicesFieldProps<TRecord extends RaRecord> {
+    optionText?:
+        | Call<Objects.AllPaths, TRecord>
+        | OptionTextElement
+        | OptionTextFunc<TRecord>;
+    optionValue?: Call<Objects.AllPaths, TRecord>;
 }
 
 export interface TypedManyFieldProps<TRecord extends RaRecord> {
