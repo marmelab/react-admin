@@ -16,6 +16,7 @@ import {
     Basic,
     WithSelectInput,
     dataProviderWithAuthors,
+    SelfReference,
 } from './ReferenceInput.stories';
 
 describe('<ReferenceInput />', () => {
@@ -216,5 +217,19 @@ describe('<ReferenceInput />', () => {
                 }),
             })
         );
+    });
+
+    it('should not throw an error on save when it is a self reference and the reference is undefined', async () => {
+        jest.spyOn(console, 'log').mockImplementationOnce(() => {});
+        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+        render(<SelfReference />);
+        fireEvent.click(await screen.findByLabelText('Self reference'));
+        expect(await screen.findAllByRole('option')).toHaveLength(5);
+        const titleInput = await screen.findByDisplayValue('War and Peace');
+        fireEvent.change(titleInput, {
+            target: { value: 'War and Peace 2' },
+        });
+        screen.getByLabelText('Save').click();
+        await screen.findByText('Proust', undefined, { timeout: 5000 });
     });
 });

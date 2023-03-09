@@ -120,7 +120,7 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
             placeholderData,
             onSuccess: data => {
                 // optimistically populate the getOne cache
-                data.forEach(record => {
+                (data ?? []).forEach(record => {
                     queryClient.setQueryData(
                         [resource, 'getOne', { id: String(record.id), meta }],
                         oldRecord => oldRecord ?? record
