@@ -13,7 +13,7 @@ export const CompanyAvatar = (props: {
     if (!record) return null;
     return (
         <Avatar
-            src={process.env.PUBLIC_URL + record.logo}
+            src={record.logo}
             alt={record.name}
             sx={{
                 bgcolor: 'aliceblue',
