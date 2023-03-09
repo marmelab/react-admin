@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { createMemoryHistory } from 'history';
-import { Admin, AdminContext } from 'react-admin';
+import { Admin, AdminContext, Datagrid, List, TextField } from 'react-admin';
 import { QueryClient } from 'react-query';
-import { Resource, Form, testDataProvider } from 'ra-core';
+import { Resource, Form, testDataProvider, useRedirect } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { Stack, Divider, Typography } from '@mui/material';
@@ -461,5 +461,50 @@ export const ErrorRadioButtonGroupInput = () => (
                 </Edit>
             )}
         />
+    </Admin>
+);
+
+const AuthorList = () => (
+    <List>
+        <Datagrid>
+            <TextField source="first_name" />
+            <TextField source="last_name" />
+        </Datagrid>
+    </List>
+);
+
+const BookEditWithSelfReference = () => {
+    const redirect = useRedirect();
+    return (
+        <Edit
+            mutationMode="pessimistic"
+            mutationOptions={{
+                onSuccess: data => {
+                    console.log(data);
+                    // Redirecting to another page is an indirect way to make sure that
+                    // no errors happened during the update nor its side effects
+                    // (used by the jest tests)
+                    redirect('/authors');
+                },
+            }}
+        >
+            <SimpleForm>
+                <TextInput source="title" />
+                <ReferenceInput reference="books" source="self_reference" />
+            </SimpleForm>
+        </Edit>
+    );
+};
+
+export const SelfReference = ({ dataProvider = dataProviderWithAuthors }) => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource
+            name="authors"
+            recordRepresentation={record =>
+                `${record.first_name} ${record.last_name}`
+            }
+            list={AuthorList}
+        />
+        <Resource name="books" edit={BookEditWithSelfReference} />
     </Admin>
 );
