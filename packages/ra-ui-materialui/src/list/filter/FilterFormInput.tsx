@@ -33,7 +33,7 @@ export const FilterFormInput = props => {
             {React.cloneElement(filterElement, {
                 resource,
                 record: emptyRecord,
-                size: 'small',
+                size: filterElement.props.size ?? 'small',
                 helperText: false,
                 // ignore defaultValue in Field because it was already set in Form (via mergedInitialValuesWithDefaultValues)
                 defaultValue: undefined,
