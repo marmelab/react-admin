@@ -11,6 +11,7 @@ import {
     FormHelperText,
     FormControl,
     Chip,
+    OutlinedInput,
 } from '@mui/material';
 import {
     ChoicesProps,
@@ -108,6 +109,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         optionValue,
         parse,
         resource: resourceProp,
+        size = 'small',
         source: sourceProp,
         translateChoice,
         validate,
@@ -254,6 +256,25 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         ? [field.value]
         : [];
 
+    const outlinedInputProps =
+        variant === 'outlined'
+            ? {
+                  input: (
+                      <OutlinedInput
+                          id="select-multiple-chip"
+                          label={
+                              <FieldTitle
+                                  label={label}
+                                  source={source}
+                                  resource={resource}
+                                  isRequired={isRequired}
+                              />
+                          }
+                      />
+                  ),
+              }
+            : {};
+
     return (
         <>
             <StyledFormControl
@@ -307,11 +328,12 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                         </div>
                     )}
                     data-testid="selectArray"
-                    size="small"
+                    size={size}
                     {...field}
                     {...options}
                     onChange={handleChangeWithCreateSupport}
                     value={finalValue}
+                    {...outlinedInputProps}
                 >
                     {finalChoices.map(renderMenuItem)}
                 </Select>

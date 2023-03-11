@@ -149,3 +149,50 @@ export const DifferentIdTypes = () => {
         </AdminContext>
     );
 };
+
+export const DifferentSizes = () => {
+    const fakeData = {
+        bands: [{ id: 1, name: 'band_1', members: [1, '2'] }],
+        artists: [
+            { id: 1, name: 'artist_1' },
+            { id: 2, name: 'artist_2' },
+            { id: 3, name: 'artist_3' },
+        ],
+    };
+    const dataProvider = fakeRestProvider(fakeData, false);
+    return (
+        <AdminContext dataProvider={dataProvider}>
+            <Edit resource="bands" id={1} sx={{ width: 600 }}>
+                <SimpleForm>
+                    <TextInput source="name" fullWidth />
+                    <SelectArrayInput
+                        fullWidth
+                        source="members"
+                        choices={fakeData.artists}
+                        size="small"
+                    />
+                    <SelectArrayInput
+                        fullWidth
+                        source="members"
+                        choices={fakeData.artists}
+                        size="medium"
+                    />
+                    <SelectArrayInput
+                        fullWidth
+                        source="members"
+                        choices={fakeData.artists}
+                        size="small"
+                        variant="outlined"
+                    />
+                    <SelectArrayInput
+                        fullWidth
+                        source="members"
+                        choices={fakeData.artists}
+                        size="medium"
+                        variant="outlined"
+                    />
+                </SimpleForm>
+            </Edit>
+        </AdminContext>
+    );
+};
