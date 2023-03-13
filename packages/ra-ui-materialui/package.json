@@ -70,5 +70,6 @@
         "react-error-boundary": "^3.1.4",
         "react-query": "^3.32.1",
         "react-transition-group": "^4.4.1"
-    }
+    },
+    "gitHead": "6eb0f6fcbe3ba237b507f3506d230b3445c0a764"
 }

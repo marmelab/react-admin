@@ -51,5 +51,6 @@
     },
     "peerDependencies": {
         "ra-core": "*"
-    }
+    },
+    "gitHead": "8748248e40742bbd367338e0573a00213e17d3ab"
 }

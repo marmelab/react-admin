@@ -48,5 +48,6 @@
         "react-hook-form": "^7.40.0",
         "react-router": "^6.1.0",
         "react-router-dom": "^6.1.0"
-    }
+    },
+    "gitHead": "6eb0f6fcbe3ba237b507f3506d230b3445c0a764"
 }

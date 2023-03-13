@@ -66,5 +66,6 @@
         "query-string": "^7.1.1",
         "react-is": "^17.0.2",
         "react-query": "^3.32.1"
-    }
+    },
+    "gitHead": "8748248e40742bbd367338e0573a00213e17d3ab"
 }
