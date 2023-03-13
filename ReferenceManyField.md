@@ -104,7 +104,7 @@ export const PostList = () => (
 | `target`     | Required | `string`  | -       | Target field carrying the relationship on the referenced resource, e.g. 'user_id'   |
 | `reference`  | Required | `string`  | -       | The name of the resource for the referenced records, e.g. 'books'                   |
 | `children`   | Required | `Element` | -       | One or several elements that render a list of records based on a `ListContext`      |
-| `source`     | Optional | `string`  | `id`    | Name of the property to display                                                     |
+| `source`     | Optional | `string`  | `id`    | Target field carrying the relationship on the source record (usually 'id')          |
 | `filter`     | Optional | `Object`  | -       | Filters to use when fetching the related records, passed to `getManyReference()`    |
 | `pagination` | Optional | `Element` | -       | Pagination element to display pagination controls. empty by default (no pagination) |
 | `perPage`    | Optional | `number`  | 25      | Maximum number of referenced records to fetch                                       |
@@ -216,6 +216,20 @@ By default, it orders the possible values by id desc. You can change this order 
 </ReferenceManyField>
 ```
 {% endraw %}
+
+## `source`
+
+By default, `ReferenceManyField` uses the `id` field as target for the reference. If the foreign key points to another field of your record, you can select it with the `source` prop.
+
+```jsx
+<ReferenceManyField
+  target="post_id"
+  reference="comments"
+  source="_id"
+>
+   ...
+</ReferenceManyField>
+```
 
 ## `target`
 

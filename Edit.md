@@ -230,7 +230,7 @@ const PostEdit = () => (
 
 **Tip**: When using any other mode than `undoable`, the `<DeleteButton>` displays a confirmation dialog before calling the dataProvider. 
 
-**Tip**: If you want a confirmation dialog for the Delete button but don't mind undoable Edits, then pass a [custom toolbar](./SimpleForm.md#toolbar) to the form, as follows:
+**Tip**: If you want a [confirmation dialog](./Confirm.md) for the Delete button but don't mind undoable Edits, then pass a [custom toolbar](./SimpleForm.md#toolbar) to the form, as follows:
 
 {% raw %}
 ```jsx

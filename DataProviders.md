@@ -176,7 +176,7 @@ In this example, the `simpleRestProvider` accepts a second parameter to set auth
 
 The `dataProvider` doesn't "speak" HTTP, so it doesn't have the notion of HTTP headers. If you need to pass custom headers to the API, the syntax depends on the Data Provider you use. 
 
-For instance, the `simpleRestProvider` function accepts an HTTP client function as second argument. By default, it uses react-admin's `fetchUtils.fetchJson()` function as HTTP client. It's similar to HTML5 `fetch()`, except it handles JSON decoding and HTTP error codes automatically.
+For instance, the `simpleRestProvider` function accepts an HTTP client function as its second argument. By default, it uses react-admin's [`fetchUtils.fetchJson()`](./fetchJson.md) function as the HTTP client. It's similar to the HTML5 `fetch()`, except it handles JSON decoding and HTTP error codes automatically.
 
 That means that if you need to add custom headers to your requests, you can just *wrap* the `fetchJson()` call inside your own function:
 
@@ -217,6 +217,8 @@ const fetchJson = (url: string, options: fetchUtils.Options = {}) => {
 ```
 
 Now all the requests to the REST API will contain the `X-Custom-Header: foobar` header.
+
+**Tip:** Have a look at the [`fetchJson` documentation](./fetchJson.md) to learn more about its features.
 
 **Warning**: If your API is on another domain as the JS code, you'll need to whitelist this header with an `Access-Control-Expose-Headers` [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) header.
 
