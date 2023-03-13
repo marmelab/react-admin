@@ -1,5 +1,19 @@
 # Changelog
 
+## v4.8.3
+
+* Fix `<FilterFormInput>` should not override its children's `size` if they provide one explicitly ([#8693](https://github.com/marmelab/react-admin/pull/8693)) ([slax57](https://github.com/slax57))
+* Fix `<ReferenceInput>` throws an error when referencing the same resource as `<Edit>` and the reference is undefined ([#8719](https://github.com/marmelab/react-admin/pull/8719)) ([slax57](https://github.com/slax57))
+* Fix some components are translating labels twice ([#8700](https://github.com/marmelab/react-admin/pull/8700)) ([djhi](https://github.com/djhi))
+* Fix `<SelectArrayInput>` does not display its label correctly in outlined variant ([#8705](https://github.com/marmelab/react-admin/pull/8705)) ([sebastianbuechler](https://github.com/sebastianbuechler))
+* Fix `<UrlField>` click should cancel Datagrid's row click ([#8708](https://github.com/marmelab/react-admin/pull/8708)) ([slax57](https://github.com/slax57))
+* [Doc] Better document `<ReferenceManyField>`'s `source` prop ([#8726](https://github.com/marmelab/react-admin/pull/8726)) ([slax57](https://github.com/slax57))
+* [Doc] add Strapi v4 provider ([#8725](https://github.com/marmelab/react-admin/pull/8725)) ([garridorafa](https://github.com/garridorafa))
+* [Doc] Add documentation for `fetchJson` ([#8712](https://github.com/marmelab/react-admin/pull/8712)) ([slax57](https://github.com/slax57))
+* [Doc] Fix documentation regarding `<RecordContextProvider>` usage ([#8716](https://github.com/marmelab/react-admin/pull/8716)) ([postor ](https://github.com/postor ))
+* [Doc] Improve `<Confirm>` documentation ([#8711](https://github.com/marmelab/react-admin/pull/8711)) ([fzaninotto](https://github.com/fzaninotto))
+* Use Vite for the CRM demo ([#8696](https://github.com/marmelab/react-admin/pull/8696)) ([djhi](https://github.com/djhi))
+
 ## v4.8.2
 
 * Fix `<Labeled>` ignores `fullWidth` when `label` is false ([#8689](https://github.com/marmelab/react-admin/pull/8689)) ([slax57](https://github.com/slax57))
