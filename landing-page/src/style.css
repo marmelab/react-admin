@@ -1,0 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,600;0,700;1,300&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes slideLeft {
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(-1000px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideRight {
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(+1000px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+body {
+  --scroll: 0;
+}
+
+#hero-bg {
+  --scale-speed: 5;
+  --translate-base: 100px;
+  --translate-speed: 3;
+  transform-origin: bottom center;
+  /* --base-scale and min-scale are defined on the HTML element through tailwind responsive classes */
+  transform:
+    scale(clamp(var(--min-scale), calc(var(--base-scale) - var(--scale-speed) * var(--scroll)), var(--base-scale))) translateY(calc(var(--scroll) * var(--translate-speed) * var(--translate-base)));
+}

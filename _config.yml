@@ -4,3 +4,4 @@ kramdown:
     input: GFM
 highlighter: rouge
 url: https://marmelab.com/react-admin
+exclude: [landing-page]
