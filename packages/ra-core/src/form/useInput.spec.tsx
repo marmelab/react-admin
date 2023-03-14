@@ -106,6 +106,29 @@ describe('useInput', () => {
         expect(handleBlur).toHaveBeenCalled();
     });
 
+    it('sanitizes the source when using as the default name', () => {
+        let inputProps;
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <Form onSubmit={jest.fn()}>
+                    <Input
+                        defaultValue="A title"
+                        source="title||ilike"
+                        resource="posts"
+                        validate={required()}
+                    >
+                        {props => {
+                            inputProps = props;
+                            return <div />;
+                        }}
+                    </Input>
+                </Form>
+            </CoreAdminContext>
+        );
+
+        expect(inputProps.field.name).toEqual('title__ilike');
+    });
+
     describe('defaultValue', () => {
         it('applies the defaultValue when input does not have a value', () => {
             const onSubmit = jest.fn();

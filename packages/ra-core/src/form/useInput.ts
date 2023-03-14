@@ -22,6 +22,8 @@ import { useApplyInputDefaultValues } from './useApplyInputDefaultValues';
 const defaultFormat = (value: any) => (value == null ? '' : value);
 // parse empty string into null as it's more suitable for a majority of backends
 const defaultParse = (value: string) => (value === '' ? null : value);
+// A name with a pipe (|) in it can cause text controllers to break #8721
+const sanitizeName = (value: string) => value.replace(/\|/g, '_');
 
 export const useInput = (props: InputProps): UseInputValue => {
     const {
@@ -37,7 +39,7 @@ export const useInput = (props: InputProps): UseInputValue => {
         validate,
         ...options
     } = props;
-    const finalName = name || source;
+    const finalName = name || sanitizeName(source);
     const formGroupName = useFormGroupContext();
     const formGroups = useFormGroups();
     const record = useRecordContext();
