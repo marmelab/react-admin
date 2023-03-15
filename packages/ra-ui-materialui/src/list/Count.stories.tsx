@@ -7,6 +7,7 @@ import { Count } from './Count';
 
 export default {
     title: 'ra-ui-materialui/list/Count',
+    excludeStories: ['Wrapper'],
 };
 
 const posts = [
@@ -17,7 +18,7 @@ const posts = [
     { id: 5, is_published: false },
 ];
 
-const Wrapper = ({ dataProvider, children }) => (
+export const Wrapper = ({ dataProvider, children }) => (
     <MemoryRouter>
         <DataProviderContext.Provider value={dataProvider}>
             <QueryClientProvider

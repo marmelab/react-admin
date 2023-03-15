@@ -1,7 +1,9 @@
-import * as React from 'react';
 import { render, screen } from '@testing-library/react';
+import * as React from 'react';
 
-import { Basic, ErrorState, WithFilter } from './Count.stories';
+import { ResourceContextProvider } from 'ra-core';
+import { Count } from './Count';
+import { Basic, ErrorState, WithFilter, Wrapper } from './Count.stories';
 
 describe('<Count />', () => {
     it('should return the number of records of a given resource', async () => {
@@ -16,5 +18,23 @@ describe('<Count />', () => {
     it('should accept a filter prop', async () => {
         render(<WithFilter />);
         await screen.findByText('3');
+    });
+    it('should accept a sort prop', async () => {
+        const dataProvider = {
+            getList: jest.fn(),
+        } as any;
+        render(
+            <Wrapper dataProvider={dataProvider}>
+                <ResourceContextProvider value="posts">
+                    <Count sort={{ field: 'custom_id', order: 'ASC' }} />
+                </ResourceContextProvider>
+            </Wrapper>
+        );
+        expect(dataProvider.getList).toHaveBeenCalledWith('posts', {
+            filter: {},
+            pagination: { page: 1, perPage: 1 },
+            sort: { field: 'custom_id', order: 'ASC' },
+            meta: undefined,
+        });
     });
 });

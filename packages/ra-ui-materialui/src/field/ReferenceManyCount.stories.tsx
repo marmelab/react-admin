@@ -11,6 +11,7 @@ import { ReferenceManyCount } from './ReferenceManyCount';
 
 export default {
     title: 'ra-ui-materialui/fields/ReferenceManyCount',
+    excludeStories: ['Wrapper'],
 };
 
 const post = {
@@ -25,7 +26,7 @@ const comments = [
     { id: 5, post_id: 2, is_published: false },
 ];
 
-const Wrapper = ({ dataProvider, children }) => (
+export const Wrapper = ({ dataProvider, children }) => (
     <MemoryRouter>
         <DataProviderContext.Provider value={dataProvider}>
             <QueryClientProvider

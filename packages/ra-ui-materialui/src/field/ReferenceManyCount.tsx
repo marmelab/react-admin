@@ -4,6 +4,7 @@ import {
     useRecordContext,
     useTimeout,
     useCreatePath,
+    SortPayload,
 } from 'ra-core';
 import { Typography, TypographyProps, CircularProgress } from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -31,6 +32,7 @@ export const ReferenceManyCount = (props: ReferenceManyCountProps) => {
         reference,
         target,
         filter,
+        sort,
         link,
         resource,
         source = 'id',
@@ -43,6 +45,7 @@ export const ReferenceManyCount = (props: ReferenceManyCountProps) => {
 
     const { isLoading, error, total } = useReferenceManyFieldController({
         filter,
+        sort,
         page: 1,
         perPage: 1,
         record,
@@ -99,6 +102,7 @@ export interface ReferenceManyCountProps
         Omit<TypographyProps, 'textAlign'> {
     reference: string;
     target: string;
+    sort?: SortPayload;
     filter?: any;
     label?: string;
     link?: boolean;
