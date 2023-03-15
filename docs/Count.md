@@ -73,7 +73,7 @@ const TicketListAside = () => {
 | `filter`   | Optional | Object                                     | -                                 | Filter to apply to the query.                                           |
 | `link`     | Optional | bool                                       | `false`                           | If true, the count is wrapped in a `<Link>` to the list view.           |
 | `resource` | Optional | string                                     | -                                 | Resource to count. Default to the current `ResourceContext`             |
-| `sort`     | Optional | `{ field: string, order: 'ASC' | 'DESC' }` | `{ field: 'id', order: 'DESC' }`  | The sort option sent to `getList`                                       |
+| `sort`     | Optional | `{ field: string, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`  | The sort option sent to `getList`                                       |
 | `timeout`  | Optional | number                                     | 1000                              | Number of milliseconds to wait before displaying the loading indicator. |
 
 Additional props are passed to [the underlying MUI `<Typography>` element](https://mui.com/material-ui/api/typography/).

@@ -67,7 +67,7 @@ export const PostList = () => (
 | `filter`    | Optional | Object                                     | -                                 | Filter to apply to the query.                                             |
 | `link`      | Optional | bool                                       | `false`                           | If true, the count is wrapped in a `<Link>` to the filtered list view.    |
 | `resource`  | Optional | string                                     | -                                 | Resource to count. Default to the current `ResourceContext`               |
-| `sort`      | Optional | `{ field: string, order: 'ASC' | 'DESC' }` | `{ field: 'id', order: 'DESC' }`  | The sort option sent to `getManyReference`                                |
+| `sort`      | Optional | `{ field: string, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`  | The sort option sent to `getManyReference`                                |
 | `timeout`   | Optional | number                                     | 1000                              | Number of milliseconds to wait before displaying the loading indicator.   |
 
 `<ReferenceManyCount>` also accepts the [common field props](./Fields.md#common-field-props).
