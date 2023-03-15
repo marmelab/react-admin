@@ -23,7 +23,7 @@ import simpleRestProvider from 'ra-data-simple-rest';
 import { PostList } from './posts';
 
 const httpClient = async (url, options = {}) => {
-    const { status, headers, body, json } = fetchUtils.fetchJson(url, options);
+    const { status, headers, body, json } = await fetchUtils.fetchJson(url, options);
     console.log('fetchJson result', { status, headers, body, json });
     return { status, headers, body, json };
 }
