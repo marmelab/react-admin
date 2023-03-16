@@ -7,7 +7,6 @@ import {
     WithFilter,
     Wrapper,
 } from './ReferenceManyCount.stories';
-import { ResourceContextProvider } from 'ra-core';
 import { ReferenceManyCount } from './ReferenceManyCount';
 
 describe('<ReferenceManyCount />', () => {
