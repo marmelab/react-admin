@@ -4,6 +4,7 @@ import {
     useGetList,
     useTimeout,
     useCreatePath,
+    SortPayload,
 } from 'ra-core';
 import { Typography, TypographyProps, CircularProgress } from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -32,6 +33,7 @@ import { Link } from '../Link';
 export const Count = (props: CountProps) => {
     const {
         filter,
+        sort,
         link,
         resource: resourceFromProps,
         timeout = 1000,
@@ -43,6 +45,7 @@ export const Count = (props: CountProps) => {
 
     const { total, isLoading, error } = useGetList(resource, {
         filter,
+        sort,
         pagination: { perPage: 1, page: 1 },
     });
 
@@ -80,6 +83,7 @@ export const Count = (props: CountProps) => {
 
 export interface CountProps extends TypographyProps {
     filter?: any;
+    sort?: SortPayload;
     link?: Boolean;
     resource?: string;
     timeout?: number;

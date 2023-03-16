@@ -68,12 +68,13 @@ const TicketListAside = () => {
 
 ## Props
 
-| Prop       | Required | Type   | Default | Description                                                             |
-| ---------- | -------- | ------ | ------- | ----------------------------------------------------------------------- |
-| `filter`   | Optional | Object | -       | Filter to apply to the query.                                           |
-| `link`     | Optional | bool   | `false` | If true, the count is wrapped in a `<Link>` to the list view.           |
-| `resource` | Optional | string | -       | Resource to count. Default to the current `ResourceContext`             |
-| `timeout`  | Optional | number | 1000    | Number of milliseconds to wait before displaying the loading indicator. |
+| Prop       | Required | Type                                       | Default                           | Description                                                             |
+| ---------- | -------- | ------------------------------------------ | --------------------------------- | ----------------------------------------------------------------------- |
+| `filter`   | Optional | Object                                     | -                                 | Filter to apply to the query.                                           |
+| `link`     | Optional | bool                                       | `false`                           | If true, the count is wrapped in a `<Link>` to the list view.           |
+| `resource` | Optional | string                                     | -                                 | Resource to count. Default to the current `ResourceContext`             |
+| `sort`     | Optional | `{ field: string, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`  | The sort option sent to `getList`                                       |
+| `timeout`  | Optional | number                                     | 1000                              | Number of milliseconds to wait before displaying the loading indicator. |
 
 Additional props are passed to [the underlying MUI `<Typography>` element](https://mui.com/material-ui/api/typography/).
 
@@ -115,6 +116,16 @@ If you want to count a different resource, pass it as the `resource` prop.
 ```jsx
 <Count resource="comments" />
 ```
+
+## `sort`
+
+If you want to customize the sort options passed to `getList` (for instance because your table does not have an `id` column), you can pass a custom `sort` prop:
+
+{% raw %}
+```jsx
+<Count resource="posts" sort={{ field: 'custom_id', order: 'ASC' }} />;
+```
+{% endraw %}
 
 ## `timeout`
 
