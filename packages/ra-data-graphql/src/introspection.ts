@@ -9,8 +9,6 @@ import { ApolloClient, gql } from '@apollo/client';
 
 import { ALL_TYPES } from './constants';
 
-let introspectionPromise;
-
 /**
  * @param {ApolloClient} client The Apollo client
  * @param {Object} options The introspection options
@@ -19,11 +17,17 @@ export const introspectSchema = async (
     client: ApolloClient<unknown>,
     options: IntrospectionOptions
 ) => {
-    if (introspectionPromise) {
-        return introspectionPromise;
-    }
-    introspectionPromise = runSchemaIntrospection(client, options);
-    return introspectionPromise;
+    const schema = options.schema ? options.schema : await fetchSchema(client);
+    const queries = getQueriesFromSchema(schema);
+    const types = getTypesFromSchema(schema);
+    const resources = getResources(types, queries, options);
+
+    return {
+        types,
+        queries,
+        resources,
+        schema,
+    };
 };
 
 export type IntrospectionOptions = {
@@ -43,23 +47,6 @@ export type IntrospectionResult = {
     queries: IntrospectionObjectType[];
     resources: IntrospectedResource[];
     schema: IntrospectionSchema;
-};
-
-const runSchemaIntrospection = async (
-    client: ApolloClient<unknown>,
-    options: IntrospectionOptions
-) => {
-    const schema = options.schema ? options.schema : await fetchSchema(client);
-    const queries = getQueriesFromSchema(schema);
-    const types = getTypesFromSchema(schema);
-    const resources = getResources(types, queries, options);
-
-    return {
-        types,
-        queries,
-        resources,
-        schema,
-    };
 };
 
 const fetchSchema = (
