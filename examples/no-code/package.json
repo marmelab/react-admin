@@ -1,6 +1,7 @@
 {
     "name": "no-code",
     "version": "4.8.3",
+    "private": true,
     "scripts": {
         "dev": "yarn vite",
         "build": "tsc && vite build",

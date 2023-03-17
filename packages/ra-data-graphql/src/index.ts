@@ -146,6 +146,7 @@ export default async (options: Options): Promise<DataProvider> => {
     const client = clientObject || buildApolloClient(clientOptions);
 
     let introspectionResults;
+    let introspectionResultsPromise;
 
     const raDataProvider = new Proxy<DataProvider>(defaultDataProvider, {
         get: (target, name) => {
@@ -155,10 +156,14 @@ export default async (options: Options): Promise<DataProvider> => {
             const raFetchMethod = RaFetchMethodMap[name];
             return async (resource, params) => {
                 if (introspection) {
-                    introspectionResults = await resolveIntrospection(
-                        client,
-                        introspection
-                    );
+                    if (!introspectionResultsPromise) {
+                        introspectionResultsPromise = resolveIntrospection(
+                            client,
+                            introspection
+                        );
+                    }
+
+                    introspectionResults = await introspectionResultsPromise;
                 }
 
                 const buildQuery = buildQueryFactory(introspectionResults);
