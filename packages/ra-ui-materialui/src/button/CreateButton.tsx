@@ -7,6 +7,7 @@ import ContentAdd from '@mui/icons-material/Add';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 import { useTranslate, useResourceContext, useCreatePath } from 'ra-core';
+import isEqual from 'lodash/isEqual';
 
 import { Button, ButtonProps } from './Button';
 
@@ -124,6 +125,7 @@ export default memo(CreateButton, (prevProps, nextProps) => {
         prevProps.resource === nextProps.resource &&
         prevProps.label === nextProps.label &&
         prevProps.translate === nextProps.translate &&
-        prevProps.disabled === nextProps.disabled
+        prevProps.disabled === nextProps.disabled &&
+        isEqual(prevProps.to, nextProps.to)
     );
 });
