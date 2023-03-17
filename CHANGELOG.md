@@ -1,5 +1,13 @@
 # Changelog
 
+## v4.8.4
+
+* Include the `to` prop in memoization check of `<CreateButton>` and `<ShowButton>`. ([#8741](https://github.com/marmelab/react-admin/pull/8741)) ([djhi](https://github/djhi))
+* Fix graphql global introspection caching. ([#8740](https://github.com/marmelab/react-admin/pull/8740)) ([djhi](https://github/djhi))
+* Fix `<Count>` and `<ReferenceManyCount>` should allow to override the default `sort`. ([#8732](https://github.com/marmelab/react-admin/pull/8732)) ([slax57](https://github/slax57))
+* [Doc] Add AuthProvider and DataProvider for SurrealDB. ([#8739](https://github.com/marmelab/react-admin/pull/8739)) ([djedi23 ](https://github/djedi23 ))
+* [Doc] Fix missing await in fetchJson doc. ([#8733](https://github.com/marmelab/react-admin/pull/8733)) ([slax57](https://github/slax57))
+
 ## v4.8.3
 
 * Fix `<FilterFormInput>` should not override its children's `size` if they provide one explicitly ([#8693](https://github.com/marmelab/react-admin/pull/8693)) ([slax57](https://github.com/slax57))
