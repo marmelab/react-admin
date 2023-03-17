@@ -60,14 +60,15 @@ export const PostList = () => (
 
 ## Props
 
-| Prop        | Required | Type   | Default | Description                                                               |
-| ----------- | -------- | ------ | ------- | ------------------------------------------------------------------------- |
-| `reference` | Required | string | -       | Name of the related resource to fetch (e.g. `comments`)                   |
-| `target`    | Required | string | -       | Name of the field in the related resource that points to the current one. |
-| `filter`    | Optional | Object | -       | Filter to apply to the query.                                             |
-| `link`      | Optional | bool   | `false` | If true, the count is wrapped in a `<Link>` to the filtered list view.    |
-| `resource`  | Optional | string | -       | Resource to count. Default to the current `ResourceContext`               |
-| `timeout`   | Optional | number | 1000    | Number of milliseconds to wait before displaying the loading indicator.   |
+| Prop        | Required | Type                                       | Default                           | Description                                                               |
+| ----------- | -------- | ------------------------------------------ | --------------------------------- | ------------------------------------------------------------------------- |
+| `reference` | Required | string                                     | -                                 | Name of the related resource to fetch (e.g. `comments`)                   |
+| `target`    | Required | string                                     | -                                 | Name of the field in the related resource that points to the current one. |
+| `filter`    | Optional | Object                                     | -                                 | Filter to apply to the query.                                             |
+| `link`      | Optional | bool                                       | `false`                           | If true, the count is wrapped in a `<Link>` to the filtered list view.    |
+| `resource`  | Optional | string                                     | -                                 | Resource to count. Default to the current `ResourceContext`               |
+| `sort`      | Optional | `{ field: string, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`  | The sort option sent to `getManyReference`                                |
+| `timeout`   | Optional | number                                     | 1000                              | Number of milliseconds to wait before displaying the loading indicator.   |
 
 `<ReferenceManyCount>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -139,6 +140,21 @@ By default, the `<ReferenceManyCount>` component uses the current `ResourceConte
     resource="posts"
 />
 ```
+
+## `sort`
+
+If you want to customize the sort options passed to `getManyReference` (for instance because your relation table does not have an `id` column), you can pass a custom `sort` prop:
+
+{% raw %}
+```jsx
+<ReferenceManyCount 
+    label="Comments"
+    reference="comments"
+    target="post_id"
+    sort={{ field: 'custom_id', order: 'ASC' }}
+/>
+```
+{% endraw %}
 
 ## `target`
 

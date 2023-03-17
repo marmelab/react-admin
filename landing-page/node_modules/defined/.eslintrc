@@ -1,0 +1,19 @@
+{
+    "root": true,
+
+    "extends": "@ljharb",
+
+    "rules": {
+        "consistent-return": 1,
+        "sort-keys": 0,
+    },
+
+    "overrides": [
+        {
+            "files": "example/**",
+            "rules": {
+                "no-console": 0,
+            },
+        },
+    ],
+}
