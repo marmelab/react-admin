@@ -14699,6 +14699,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"hotscript@npm:^1.0.10":
+  version: 1.0.10
+  resolution: "hotscript@npm:1.0.10"
+  checksum: 56f7cebc72a2f75cfe6e18fb2a6373c7546950500fd319481c9bf315b7113b2aa2ce14689aa7a26c9d3a90eb62bf944e18d7788c0dea9f400b043324481d0c7a
+  languageName: node
+  linkType: hard
+
 "hpack.js@npm:^2.1.6":
   version: 2.1.6
   resolution: "hpack.js@npm:2.1.6"
@@ -22137,6 +22144,7 @@ __metadata:
     cross-env: ^5.2.0
     expect: ^27.4.6
     history: ^5.1.0
+    hotscript: ^1.0.10
     ra-core: ^4.7.6
     ra-i18n-polyglot: ^4.7.6
     ra-language-english: ^4.7.6

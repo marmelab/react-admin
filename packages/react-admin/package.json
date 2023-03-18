@@ -41,6 +41,7 @@
         "@mui/icons-material": "^5.0.1",
         "@mui/material": "^5.0.2",
         "history": "^5.1.0",
+        "hotscript": "^1.0.10",
         "ra-core": "^4.7.6",
         "ra-i18n-polyglot": "^4.7.6",
         "ra-language-english": "^4.7.6",
