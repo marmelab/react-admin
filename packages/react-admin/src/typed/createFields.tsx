@@ -80,7 +80,15 @@ export const createFields = <TRecord extends Record<string, unknown>>() => {
             return <TextField {...props} />;
         },
         ReferenceField: function <
-            Source extends string = Call<Objects.AllPaths, TRecord>,
+            Source extends string =
+                | Call<
+                      Objects.AllPaths,
+                      Call<Objects.PickBy<Booleans.Equals<string>>, TRecord>
+                  >
+                | Call<
+                      Objects.AllPaths,
+                      Call<Objects.PickBy<Booleans.Equals<number>>, TRecord>
+                  >,
             SortBy extends string = Source
         >(
             props: ReferenceFieldProps &
@@ -92,7 +100,17 @@ export const createFields = <TRecord extends Record<string, unknown>>() => {
             return <ReferenceField {...props} />;
         },
         ReferenceArrayField: function <
-            Source extends string = Call<Objects.AllPaths, TRecord>,
+            Source extends string = Call<
+                Objects.AllPaths,
+                | Call<
+                      Objects.AllPaths,
+                      Call<Objects.PickBy<Booleans.Equals<string>>, TRecord>
+                  >
+                | Call<
+                      Objects.AllPaths,
+                      Call<Objects.PickBy<Booleans.Equals<number>>, TRecord>
+                  >
+            >,
             SortBy extends string = Source
         >(
             props: ReferenceArrayFieldProps &
@@ -104,15 +122,39 @@ export const createFields = <TRecord extends Record<string, unknown>>() => {
             return <ReferenceArrayField {...props} />;
         },
         ReferenceManyField: function <
-            Reference extends RaRecord & Record<string, unknown>,
-            ReferenceSource extends string = Call<Objects.AllPaths, Reference>,
-            Source extends string = Call<Objects.AllPaths, TRecord>,
+            TReference extends RaRecord & Record<string, unknown>,
+            TReferenceSource extends string =
+                | Call<
+                      Objects.AllPaths,
+                      Call<Objects.PickBy<Booleans.Equals<string>>, TReference>
+                  >
+                | Call<
+                      Objects.AllPaths,
+                      Call<
+                          Objects.AllPaths,
+                          Call<
+                              Objects.PickBy<Booleans.Equals<number>>,
+                              TReference
+                          >
+                      >
+                  >,
+            Source extends string = Call<
+                Objects.AllPaths,
+                | Call<
+                      Objects.AllPaths,
+                      Call<Objects.PickBy<Booleans.Equals<string>>, TRecord>
+                  >
+                | Call<
+                      Objects.AllPaths,
+                      Call<Objects.PickBy<Booleans.Equals<number>>, TRecord>
+                  >
+            >,
             SortBy extends string = Source
         >(
             props: ReferenceManyFieldProps &
                 Partial<TypedFieldProps<Source, SortBy>> & {
                     children: ReactNode;
-                    target: ReferenceSource;
+                    target: TReferenceSource;
                     reference: string;
                 }
         ) {
