@@ -17,7 +17,7 @@ import {
     TextField,
     TextFieldProps,
 } from 'ra-ui-materialui';
-import { Identifier, RaRecord } from 'ra-core';
+import { RaRecord } from 'ra-core';
 
 export type TypedReferenceField<
     TReferenceName extends string,
@@ -80,10 +80,7 @@ export const createFields = <TRecord extends Record<string, unknown>>() => {
             return <TextField {...props} />;
         },
         ReferenceField: function <
-            Source extends string = Call<
-                Objects.AllPaths,
-                Call<Objects.PickBy<Booleans.Equals<Identifier>>, TRecord>
-            >,
+            Source extends string = Call<Objects.AllPaths, TRecord>,
             SortBy extends string = Source
         >(
             props: ReferenceFieldProps &
@@ -95,10 +92,7 @@ export const createFields = <TRecord extends Record<string, unknown>>() => {
             return <ReferenceField {...props} />;
         },
         ReferenceArrayField: function <
-            Source extends string = Call<
-                Objects.AllPaths,
-                Call<Objects.PickBy<Booleans.Equals<Identifier>>, TRecord>
-            >,
+            Source extends string = Call<Objects.AllPaths, TRecord>,
             SortBy extends string = Source
         >(
             props: ReferenceArrayFieldProps &
@@ -110,15 +104,9 @@ export const createFields = <TRecord extends Record<string, unknown>>() => {
             return <ReferenceArrayField {...props} />;
         },
         ReferenceManyField: function <
-            Reference extends RaRecord,
-            ReferenceSource extends string = Call<
-                Objects.AllPaths,
-                Call<Objects.PickBy<Booleans.Equals<Identifier>>, Reference>
-            >,
-            Source extends string = Call<
-                Objects.AllPaths,
-                Call<Objects.PickBy<Booleans.Equals<Identifier>>, TRecord>
-            >,
+            Reference extends RaRecord & Record<string, unknown>,
+            ReferenceSource extends string = Call<Objects.AllPaths, Reference>,
+            Source extends string = Call<Objects.AllPaths, TRecord>,
             SortBy extends string = Source
         >(
             props: ReferenceManyFieldProps &
