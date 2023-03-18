@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import { RaRecord } from 'ra-core';
+import { RaRecord, useRecordContext } from 'ra-core';
 import {
     Datagrid,
     DatagridProps,
@@ -45,6 +45,9 @@ export const createResource = <
         },
         SingleFieldList: function (props: SingleFieldListProps) {
             return <SingleFieldList {...props} />;
+        },
+        useRecordContext: function () {
+            return useRecordContext<TRecord>();
         },
         ...createInputs<TRecord>(),
         ...createFields<TRecord>(),

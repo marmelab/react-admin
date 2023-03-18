@@ -31,5 +31,6 @@ export const createList = <
                 props: ListProps & { filter?: Partial<Filters>; filters?: any }
             ) => <List {...props} />,
             Filters: createInputs<Filters>(),
+            // FIXME we shouldn't need to cast
         })) as unknown) as ComponentType<any>;
 };
