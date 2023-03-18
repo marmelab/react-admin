@@ -60,6 +60,35 @@ As soon as there is a record available, react-admin puts it in a `RecordContext`
 - in descendants of the `<SimpleList>` component
 - in descendants of the `<ReferenceField>` component
 
+## Inside A Form
+
+Inside `<Edit>` and `<Create>`, `useRecordContext` returns the *initial* record, used to set the initial form values. 
+
+If you want to react to the data entered by the user, use [react-hook-form's `useWatch`](https://react-hook-form.com/api/usewatch/) instead of `useRecordContext`. It returns the current form values, including the changes made by the user.
+
+For instance if you want to display an additional input when a user marks an order as returned, you can do the following:
+
+```jsx
+import { Edit, SimpleForm, BooleanInput TextInput } from 'react-admin';
+import { useWatch } from 'react-hook-form';
+
+const ReturnedReason = () => {
+    const isReturned = useWatch({ name: 'returned' });
+    return isReturned ? <TextInput source="reason" /> : null;
+};
+
+const OrderEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="reference" />
+            <BooleanInput source="returned" />
+            <ReturnedReason />
+            ...
+        </SimpleForm>
+    </Edit>
+)
+```
+
 ## Creating a Record Context
 
 If you have fetched a `record` and you want to make it available to descendants, place it inside a `<RecordContextProvider>` component.
