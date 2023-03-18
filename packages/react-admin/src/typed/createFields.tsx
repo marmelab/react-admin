@@ -1,77 +1,92 @@
 import * as React from 'react';
-import { ComponentType } from 'react';
+import { ComponentType, ReactNode } from 'react';
 import { Booleans, Call, Objects } from 'hotscript';
-
-export type TypedTextField<
-    TRecord extends Record<string, unknown>
-> = ComponentType<{
-    source: Call<
-        Objects.AllPaths,
-        Call<Objects.PickBy<Booleans.Equals<string>>, TRecord>
-    >;
-}>;
-
-export type TypedBooleanField<
-    TRecord extends Record<string, unknown>
-> = ComponentType<{
-    source: Call<
-        Objects.AllPaths,
-        Call<Objects.PickBy<Booleans.Equals<boolean>>, TRecord>
-    >;
-}>;
-
-export type TypedNumberField<
-    TRecord extends Record<string, unknown>
-> = ComponentType<{
-    source: Call<
-        Objects.AllPaths,
-        Call<Objects.PickBy<Booleans.Equals<number>>, TRecord>
-    >;
-}>;
-
-export type Fields<TRecord extends Record<string, unknown>> = {
-    TextField: TypedTextField<TRecord>;
-    BooleanField: TypedBooleanField<TRecord>;
-    NumberField: TypedNumberField<TRecord>;
-};
+import {
+    BooleanField,
+    BooleanFieldProps,
+    ChipField,
+    ChipFieldProps,
+    NumberField,
+    NumberFieldProps,
+    ReferenceArrayField,
+    ReferenceArrayFieldProps,
+    ReferenceField,
+    ReferenceFieldProps,
+    ReferenceManyField,
+    ReferenceManyFieldProps,
+    TextField,
+    TextFieldProps,
+} from 'ra-ui-materialui';
 
 export type TypedReferenceField<
     TReferenceName extends string,
     TSource
-> = ComponentType<{
-    reference: TReferenceName;
-    source: TSource;
-}>;
+> = ComponentType<
+    ReferenceFieldProps & {
+        reference: TReferenceName;
+        source: TSource;
+    }
+>;
 
 export type TypedReferenceArrayField<
     TReferenceName extends string,
     TSource
-> = ComponentType<{
-    reference: TReferenceName;
-    source: TSource;
-}>;
+> = ComponentType<
+    ReferenceArrayFieldProps & {
+        reference: TReferenceName;
+        source: TSource;
+    }
+>;
 
-export const createFields = <TRecord extends Record<string, unknown>>(): Fields<
-    TRecord
-> => {
+export const createFields = <TRecord extends Record<string, unknown>>() => {
     return {
-        BooleanField: (props: {
-            source: Call<
-                Objects.AllPaths,
-                Call<Objects.PickBy<Booleans.Equals<boolean>>, TRecord>
-            >;
-        }) => <div>{props.source}</div>,
-        NumberField: (props: {
-            source: Call<
-                Objects.AllPaths,
-                Call<Objects.PickBy<Booleans.Equals<number>>, TRecord>
-            >;
-        }) => <div>{props.source}</div>,
-        TextField: (props: {
-            source: Call<
-                Objects.AllPaths,
-                Call<Objects.PickBy<Booleans.Equals<string>>, TRecord>
-            >;
-        }) => <div>{props.source}</div>,
+        BooleanField: (
+            props: BooleanFieldProps & {
+                source: Call<
+                    Objects.AllPaths,
+                    Call<Objects.PickBy<Booleans.Equals<boolean>>, TRecord>
+                >;
+            }
+        ) => <BooleanField {...props} />,
+        ChipField: (
+            props: ChipFieldProps & { source: Call<Objects.AllPaths, TRecord> }
+        ) => <ChipField {...props} />,
+        NumberField: (
+            props: NumberFieldProps & {
+                source: Call<
+                    Objects.AllPaths,
+                    Call<Objects.PickBy<Booleans.Equals<number>>, TRecord>
+                >;
+            }
+        ) => <NumberField {...props} />,
+        TextField: (
+            props: TextFieldProps & {
+                source: Call<
+                    Objects.AllPaths,
+                    Call<Objects.PickBy<Booleans.Equals<string>>, TRecord>
+                >;
+            }
+        ) => <TextField {...props} />,
+        ReferenceField: (
+            props: ReferenceFieldProps & {
+                children: ReactNode;
+                source: Call<Objects.AllPaths, TRecord>;
+                reference: string;
+            }
+        ) => <ReferenceField {...props} />,
+        ReferenceArrayField: (
+            props: ReferenceArrayFieldProps & {
+                children: ReactNode;
+                source: Call<Objects.AllPaths, TRecord>;
+                reference: string;
+            }
+        ) => <ReferenceArrayField {...props} />,
+        ReferenceManyField: (
+            props: ReferenceManyFieldProps & {
+                children: ReactNode;
+                target: Call<Objects.AllPaths, TRecord>;
+                reference: string;
+            }
+        ) => <ReferenceManyField {...props} />,
     };
 };
