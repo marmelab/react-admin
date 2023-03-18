@@ -180,7 +180,7 @@ const PostList = PostResource.createList<PostFilters>(({ List, Filters }) => {
                             <TagResource.TextField source="name" />
                         </TagResource.DataGrid>
                     </PostResource.ReferenceArrayField>
-                    <CommentResource.ReferenceManyField
+                    <PostResource.ReferenceManyField<Comment>
                         label="Comments"
                         reference="comments"
                         target="post_id"
@@ -188,7 +188,7 @@ const PostList = PostResource.createList<PostFilters>(({ List, Filters }) => {
                         <CommentResource.SingleFieldList>
                             <CommentResource.ChipField source="message" />
                         </CommentResource.SingleFieldList>
-                    </CommentResource.ReferenceManyField>
+                    </PostResource.ReferenceManyField>
                 </PostResource.DataGrid>
             )}
         </List>

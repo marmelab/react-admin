@@ -17,6 +17,7 @@ import {
     TextField,
     TextFieldProps,
 } from 'ra-ui-materialui';
+import { Identifier, RaRecord } from 'ra-core';
 
 export type TypedReferenceField<
     TReferenceName extends string,
@@ -38,55 +39,96 @@ export type TypedReferenceArrayField<
     }
 >;
 
+type TypedFieldProps<Source extends string, SortBy extends string> = {
+    source: Source;
+    sortBy?: SortBy;
+};
+
 export const createFields = <TRecord extends Record<string, unknown>>() => {
     return {
-        BooleanField: (
-            props: BooleanFieldProps & {
-                source: Call<
-                    Objects.AllPaths,
-                    Call<Objects.PickBy<Booleans.Equals<boolean>>, TRecord>
-                >;
-            }
-        ) => <BooleanField {...props} />,
-        ChipField: (
-            props: ChipFieldProps & { source: Call<Objects.AllPaths, TRecord> }
-        ) => <ChipField {...props} />,
-        NumberField: (
-            props: NumberFieldProps & {
-                source: Call<
-                    Objects.AllPaths,
-                    Call<Objects.PickBy<Booleans.Equals<number>>, TRecord>
-                >;
-            }
-        ) => <NumberField {...props} />,
-        TextField: (
-            props: TextFieldProps & {
-                source: Call<
-                    Objects.AllPaths,
-                    Call<Objects.PickBy<Booleans.Equals<string>>, TRecord>
-                >;
-            }
-        ) => <TextField {...props} />,
-        ReferenceField: (
-            props: ReferenceFieldProps & {
-                children: ReactNode;
-                source: Call<Objects.AllPaths, TRecord>;
-                reference: string;
-            }
-        ) => <ReferenceField {...props} />,
-        ReferenceArrayField: (
-            props: ReferenceArrayFieldProps & {
-                children: ReactNode;
-                source: Call<Objects.AllPaths, TRecord>;
-                reference: string;
-            }
-        ) => <ReferenceArrayField {...props} />,
-        ReferenceManyField: (
-            props: ReferenceManyFieldProps & {
-                children: ReactNode;
-                target: Call<Objects.AllPaths, TRecord>;
-                reference: string;
-            }
-        ) => <ReferenceManyField {...props} />,
+        BooleanField: function <
+            Source extends string = Call<
+                Objects.AllPaths,
+                Call<Objects.PickBy<Booleans.Equals<boolean>>, TRecord>
+            >,
+            SortBy extends string = Source
+        >(props: BooleanFieldProps & TypedFieldProps<Source, SortBy>) {
+            return <BooleanField {...props} />;
+        },
+        ChipField: function <
+            Source extends string = Call<Objects.AllPaths, TRecord>,
+            SortBy extends string = Source
+        >(props: ChipFieldProps & TypedFieldProps<Source, SortBy>) {
+            return <ChipField {...props} />;
+        },
+        NumberField: function <
+            Source extends string = Call<
+                Objects.AllPaths,
+                Call<Objects.PickBy<Booleans.Equals<number>>, TRecord>
+            >,
+            SortBy extends string = Source
+        >(props: NumberFieldProps & TypedFieldProps<Source, SortBy>) {
+            return <NumberField {...props} />;
+        },
+        TextField: function <
+            Source extends string = Call<
+                Objects.AllPaths,
+                Call<Objects.PickBy<Booleans.Equals<string>>, TRecord>
+            >,
+            SortBy extends string = Source
+        >(props: TextFieldProps & TypedFieldProps<Source, SortBy>) {
+            return <TextField {...props} />;
+        },
+        ReferenceField: function <
+            Source extends string = Call<
+                Objects.AllPaths,
+                Call<Objects.PickBy<Booleans.Equals<Identifier>>, TRecord>
+            >,
+            SortBy extends string = Source
+        >(
+            props: ReferenceFieldProps &
+                TypedFieldProps<Source, SortBy> & {
+                    children: ReactNode;
+                    reference: string;
+                }
+        ) {
+            return <ReferenceField {...props} />;
+        },
+        ReferenceArrayField: function <
+            Source extends string = Call<
+                Objects.AllPaths,
+                Call<Objects.PickBy<Booleans.Equals<Identifier>>, TRecord>
+            >,
+            SortBy extends string = Source
+        >(
+            props: ReferenceArrayFieldProps &
+                TypedFieldProps<Source, SortBy> & {
+                    children: ReactNode;
+                    reference: string;
+                }
+        ) {
+            return <ReferenceArrayField {...props} />;
+        },
+        ReferenceManyField: function <
+            Reference extends RaRecord,
+            ReferenceSource extends string = Call<
+                Objects.AllPaths,
+                Call<Objects.PickBy<Booleans.Equals<Identifier>>, Reference>
+            >,
+            Source extends string = Call<
+                Objects.AllPaths,
+                Call<Objects.PickBy<Booleans.Equals<Identifier>>, TRecord>
+            >,
+            SortBy extends string = Source
+        >(
+            props: ReferenceManyFieldProps &
+                Partial<TypedFieldProps<Source, SortBy>> & {
+                    children: ReactNode;
+                    target: ReferenceSource;
+                    reference: string;
+                }
+        ) {
+            return <ReferenceManyField {...props} />;
+        },
     };
 };
