@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useMediaQuery } from '@mui/material';
-import { createResource } from './createResource';
+import { TypedResource } from './createResource';
 import fakerestDataProvider from 'ra-data-fakerest';
 import Admin from '../Admin';
 import { Resource } from 'ra-core';
@@ -111,16 +111,17 @@ type PostFilters = {
     'views@gt': number;
     'is_published@eq': boolean;
     'tags_ids@in': string[];
+    'tag.name@like': string;
 };
 
 // in posts/PostResource.ts or resources.ts
-const PostResource = createResource<Post>();
+const PostResource = new TypedResource<Post, PostFilters>();
 // in comments/CommentResource.ts or resources.ts
-const CommentResource = createResource<Comment>();
+const CommentResource = new TypedResource<Comment>();
 // in authors/AuthorResource.ts or resources.ts
-const AuthorResource = createResource<Author>();
+const AuthorResource = new TypedResource<Author>();
 // in tags/TagResource.ts or resources.ts
-const TagResource = createResource<Tag>();
+const TagResource = new TypedResource<Tag>();
 
 // in posts/postList.tsx
 // import { PostResource } from './PostResource';
@@ -129,11 +130,18 @@ const TagResource = createResource<Tag>();
 // import { CommentResource } from '../comments/CommentResource';
 // or
 // import { AuthorResource, CommentResource, PostResource, TagResource } from '../resource';
-const PostList = PostResource.createList<PostFilters>(({ List, Filters }) => {
+const PostListFilters = PostResource.Filters();
+// Can get shortcuts just like in imports
+const { TextField } = PostResource.Fields;
+
+const PostList = () => {
     const isSmall = useMediaQuery('(max-width:600px)');
 
     return (
-        <List filters={[<Filters.TextInput source="title@like" />]}>
+        <PostResource.List
+            filter={{ 'title@like': 'foo' }}
+            filters={[<PostListFilters.TextInput source="title@like" />]}
+        >
             {isSmall ? (
                 /* Those functions receive a Post */
                 <PostResource.SimpleList
@@ -151,19 +159,19 @@ const PostList = PostResource.createList<PostFilters>(({ List, Filters }) => {
                     })}
                 >
                     {/* Only allow sources for string properties of Post */}
-                    <PostResource.TextField source="title" />
+                    <TextField source="title" />
                     {/* Only allow source for boolean properties of Post */}
-                    <PostResource.BooleanField source="is_published" />
+                    <PostResource.Fields.BooleanField source="is_published" />
                     {/* Only allow source for number properties of Post */}
-                    <PostResource.NumberField source="views" />
-                    <PostResource.ReferenceField
+                    <PostResource.Fields.NumberField source="views" />
+                    <PostResource.Fields.ReferenceField
                         reference="authors"
                         source="author_id"
                     >
                         {/* Only allow sources for string properties of Author */}
-                        <AuthorResource.TextField source="name" />
-                    </PostResource.ReferenceField>
-                    <PostResource.ReferenceArrayField
+                        <AuthorResource.Fields.TextField source="name" />
+                    </PostResource.Fields.ReferenceField>
+                    <PostResource.Fields.ReferenceArrayField
                         reference="tags"
                         source="tags_ids"
                     >
@@ -177,20 +185,20 @@ const PostList = PostResource.createList<PostFilters>(({ List, Filters }) => {
                             })}
                         >
                             {/* Only allow sources for string properties of Tag */}
-                            <TagResource.TextField source="name" />
+                            <TagResource.Fields.TextField source="name" />
                         </TagResource.DataGrid>
-                    </PostResource.ReferenceArrayField>
-                    <PostResource.ReferenceManyField<Comment>
+                    </PostResource.Fields.ReferenceArrayField>
+                    <PostResource.Fields.ReferenceManyField<Comment>
                         label="Comments"
                         reference="comments"
                         target="post_id"
                     >
                         <CommentResource.SingleFieldList>
-                            <CommentResource.ChipField source="message" />
+                            <CommentResource.Fields.ChipField source="message" />
                         </CommentResource.SingleFieldList>
-                    </PostResource.ReferenceManyField>
+                    </PostResource.Fields.ReferenceManyField>
                 </PostResource.DataGrid>
             )}
-        </List>
+        </PostResource.List>
     );
-});
+};
