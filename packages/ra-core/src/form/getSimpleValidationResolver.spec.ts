@@ -15,26 +15,29 @@ describe('getSimpleValidationResolver', () => {
         expect(result).toEqual({
             values: {},
             errors: {
-                title: { type: 'manual', message: 'title too short' },
+                title: {
+                    type: 'manual',
+                    message: { message: 'title too short' },
+                },
                 backlinks: [
                     {
                         url: {
                             type: 'manual',
-                            message: 'url too short',
+                            message: { message: 'url too short' },
                         },
                         id: {
                             type: 'manual',
-                            message: 'missing id',
+                            message: { message: 'missing id' },
                         },
                     },
                     {
                         url: {
                             type: 'manual',
-                            message: 'url too short',
+                            message: { message: 'url too short' },
                         },
                         id: {
                             type: 'manual',
-                            message: 'missing id',
+                            message: { message: 'missing id' },
                         },
                     },
                 ],
@@ -51,7 +54,10 @@ describe('getSimpleValidationResolver', () => {
         expect(result).toEqual({
             values: {},
             errors: {
-                title: { type: 'manual', message: 'title too short' },
+                title: {
+                    type: 'manual',
+                    message: { message: 'title too short' },
+                },
             },
         });
     });
@@ -65,7 +71,10 @@ describe('getSimpleValidationResolver', () => {
         expect(result).toEqual({
             values: {},
             errors: {
-                title: { type: 'manual', message: 'title too short' },
+                title: {
+                    type: 'manual',
+                    message: { message: 'title too short' },
+                },
             },
         });
     });
@@ -79,7 +88,10 @@ describe('getSimpleValidationResolver', () => {
         expect(result).toEqual({
             values: {},
             errors: {
-                title: { type: 'manual', message: 'title too short' },
+                title: {
+                    type: 'manual',
+                    message: { message: 'title too short' },
+                },
             },
         });
     });
@@ -95,11 +107,14 @@ describe('getSimpleValidationResolver', () => {
         expect(result).toEqual({
             values: {},
             errors: {
-                title: { type: 'manual', message: 'title too short' },
+                title: {
+                    type: 'manual',
+                    message: { message: 'title too short' },
+                },
                 comment: {
                     author: {
                         type: 'manual',
-                        message: 'author is required',
+                        message: { message: 'author is required' },
                     },
                 },
             },
@@ -118,7 +133,10 @@ describe('getSimpleValidationResolver', () => {
         expect(result).toEqual({
             values: {},
             errors: {
-                title: { type: 'manual', message: 'title too short' },
+                title: {
+                    type: 'manual',
+                    message: { message: 'title too short' },
+                },
                 average_note: {
                     type: 'manual',
                     message: {
@@ -147,7 +165,10 @@ describe('getSimpleValidationResolver', () => {
         expect(result).toEqual({
             values: {},
             errors: {
-                title: { type: 'manual', message: 'title too short' },
+                title: {
+                    type: 'manual',
+                    message: { message: 'title too short' },
+                },
                 backlinks: [
                     {
                         average_note: {
@@ -161,7 +182,7 @@ describe('getSimpleValidationResolver', () => {
                     {
                         id: {
                             type: 'manual',
-                            message: 'missing id',
+                            message: { message: 'missing id' },
                         },
                     },
                 ],
