@@ -19,7 +19,35 @@
           <div class="flex">
             <div class="flex flex-shrink-0 items-center gap-4">
               <img src="./img/ra-oe.svg" class="h-12 w-auto md:h-16 lg:h-20" />
-
+            </div>
+          </div>
+          <div
+            class="hidden gap-4 text-[14px] font-semibold leading-[18px] md:flex lg:text-[16px] lg:leading-[21px]"
+          >
+            <a
+              class="inline-flex items-center hover:underline"
+              href="https://marmelab.com/react-admin/documentation.html"
+              >Documentation</a
+            >
+            <a
+              class="inline-flex items-center hover:underline"
+              href="https://marmelab.com/react-admin/Demos.html"
+              >Demo</a
+            >
+            <a
+              class="inline-flex items-center hover:underline"
+              href="https://marmelab.com/en/blog/#react-admin"
+              >Blog</a
+            >
+            <a
+              href="https://marmelab.com/ra-enterprise"
+              class="inline-flex items-center"
+              ><span
+                class="rounded border border-[#1bceb9] px-2 py-0.5 text-[#1bceb9] hover:border-[#00023b] hover:bg-[#1bceb9] hover:text-[#00023b]"
+                >Enterprise Edition</span
+              ></a
+            >
+            <div class="flex flex-shrink-0 items-center gap-4">
               <a
                 class="inline-block rounded border border-[#ea1763] px-2 py-0.5 text-[14px] font-semibold leading-[21px] text-[#ea1763]"
                 href="https://github.com/marmelab/react-admin"
@@ -49,33 +77,6 @@
                 <img src="./img/discord.svg" />
               </a>
             </div>
-          </div>
-          <div
-            class="hidden gap-4 text-[12px] font-semibold leading-[18px] md:flex lg:text-[14px] lg:leading-[21px]"
-          >
-            <a
-              class="inline-flex items-center hover:underline"
-              href="https://marmelab.com/react-admin/documentation.html"
-              >Documentation</a
-            >
-            <a
-              class="inline-flex items-center hover:underline"
-              href="https://marmelab.com/react-admin/Demos.html"
-              >Demo</a
-            >
-            <a
-              class="inline-flex items-center hover:underline"
-              href="https://marmelab.com/en/blog/#react-admin"
-              >Blog</a
-            >
-            <a
-              href="https://marmelab.com/ra-enterprise"
-              class="inline-flex items-center"
-              ><span
-                class="rounded border border-[#1bceb9] px-2 py-0.5 text-[#1bceb9] hover:border-[#00023b] hover:bg-[#1bceb9] hover:text-[#00023b]"
-                >Enterprise Edition</span
-              ></a
-            >
           </div>
           <div class="-mr-2 flex items-center md:hidden">
             <button
@@ -253,7 +254,7 @@
           </h2>
           <div class="pt-4 md:pt-8">
             <a
-              class="inline-block rounded-full bg-[hsl(338,83%,50%)] hover:bg-[hsl(338,83%,60%)] px-14 py-6 text-center text-[21px] font-semibold leading-[31.5px] text-white md:px-12 md:py-7"
+              class="inline-block rounded-full bg-[hsl(338,83%,50%)] hover:bg-[hsl(338,83%,60%)] px-5 py-4 text-center text-[18px] font-semibold leading-[26px] text-white md:px-7"
               href="https://marmelab.com/react-admin/documentation.html"
             >
               <svg
@@ -504,9 +505,9 @@
 <span class="text-[#ffa939]">const</span> dataProvider = simpleRestProvider(<span class="text-[#1bceb9]">'https://domain.tld/api'</span>);
 
 <span class="text-[#ffa939]">const</span> App <span class="text-[#1bceb9]">=</span> <span class="text-white">()</span> <span class="text-[#1bceb9]">=&gt;</span> (
-<span class="text-[#1bceb9]">&lt;</span>Admin dataProvider={<span class="text-[#9870b7]">dataProvider</span>}<span class="text-[#1bceb9]">&gt;</span>
+  <span class="text-[#1bceb9]">&lt;</span>Admin dataProvider={<span class="text-[#9870b7]">dataProvider</span>}<span class="text-[#1bceb9]">&gt;</span>
 	<span class="text-[#1bceb9]">&lt;</span>Resource name="users" list={<span class="text-[#9870b7]">ListGuesser</span>} <span class="text-[#1bceb9]">/&gt;</span>
-<span class="text-[#1bceb9]">&lt;/</span>Admin<span class="text-[#1bceb9]">&gt;</span>
+  <span class="text-[#1bceb9]">&lt;/</span>Admin<span class="text-[#1bceb9]">&gt;</span>
 );
 
 <span class="text-[#00b3da]">export default</span> App;</code
@@ -750,9 +751,9 @@
             class="break-inside-avoid-column rounded-xl bg-[#e7e8f3] p-8"
           >
             <p class="text-[21px] font-light italic leading-[28px]">
-              “ We have recommended react-admin to several organizations. We are
+              “We have recommended react-admin to several organizations. We are
               more than satisfied with react-admin and we are excited to
-              continue using react-admin in the future! ”
+              continue using react-admin in the future!”
             </p>
             <div class="mt-8 flex justify-between">
               <div>
@@ -772,9 +773,9 @@
             class="break-inside-avoid-column rounded-xl bg-[#e7e8f3] p-8"
           >
             <p class="text-[21px] font-light italic leading-[28px]">
-              “ I am definitely enjoying using react-admin. I was exposed to it
-              a few years ago on a product/project I inherited and maintain, and
-              now am using it for two other projects. ”
+              “I am definitely enjoying using react-admin. I was exposed to it a
+              few years ago on a product/project I inherited and maintain, and
+              now am using it for two other projects.”
             </p>
             <div class="mt-8 flex justify-between">
               <div>
@@ -796,9 +797,9 @@
             class="break-inside-avoid-column rounded-xl bg-[#e7e8f3] p-8"
           >
             <p class="text-[21px] font-light italic leading-[28px]">
-              “ React-admin is simpler to setup and more customizable than
-              forest admin. Support is great, documentation is rich of examples
-              and explain well the philosophy of the library. ”
+              “React-admin is simpler to setup and more customizable than forest
+              admin. Support is great, documentation is rich of examples and
+              explain well the philosophy of the library.”
             </p>
             <div class="mt-8 flex justify-between">
               <div>
@@ -815,12 +816,12 @@
             </div>
           </blockquote>
           <blockquote
-            class="break-inside-avoid-column rounded-xl bg-[#7a7c96] p-8"
+            class="break-inside-avoid-column rounded-xl bg-[#e7e8f3] p-8"
           >
             <p class="text-[21px] font-light italic leading-[28px]">
-              “ React-admin has allowed us to quickly create and evolve a
+              “React-admin has allowed us to quickly create and evolve a
               powerful tool that otherwise would have taken months of time and
-              effort to develop. ”
+              effort to develop.”
             </p>
             <div class="mt-8 flex justify-between">
               <div>
@@ -840,9 +841,9 @@
             class="break-inside-avoid-column rounded-xl bg-[#e7e8f3] p-8"
           >
             <p class="text-[21px] font-light italic leading-[28px]">
-              “ We've been using react admin in our company project for quite
+              “We've been using react admin in our company project for quite
               some time now and we loved it. We really appreciate your hard work
-              and we wish all the best for the react-admin project. ”
+              and we wish all the best for the react-admin project.”
             </p>
             <div class="mt-8 flex justify-between">
               <div>
@@ -864,9 +865,9 @@
             class="break-inside-avoid-column rounded-xl bg-[#e7e8f3] p-8"
           >
             <p class="text-[21px] font-light italic leading-[28px]">
-              “ We where looking to improve the graphic interface of our custom
+              “We where looking to improve the graphic interface of our custom
               made web admins. We ended up changing our entire client-side
-              infrastructure to one based on React-admin in record time! ”
+              infrastructure to one based on React-admin in record time!”
             </p>
             <div class="mt-8 flex justify-between">
               <div>
@@ -886,10 +887,10 @@
             class="break-inside-avoid-column rounded-xl bg-[#e7e8f3] p-8"
           >
             <p class="text-[21px] font-light italic leading-[28px]">
-              “ Having built React Admin into our products, it's allowed us to
+              “Having built React Admin into our products, it's allowed us to
               develop simplistic CMS's right through to complex, highly
               integrated web apps, with confidence and repeated success, it's an
-              incredible framework. ”
+              incredible framework.”
             </p>
             <div class="mt-8 flex justify-between">
               <div>
@@ -923,29 +924,33 @@
         </h1>
         <div class="flex justify-center">
           <ul
-            class="grid grid-cols-2 gap-6 text-[12px] font-light leading-[20px] md:grid-cols-6"
+            class="grid grid-cols-2 gap-6 text-[16px] font-light leading-[20px] md:grid-cols-6"
           >
-            <li class="flex flex-col items-center justify-end">
+            <li class="flex flex-col items-center justify-end gap-2">
               <img src="./img/react.png" alt="React" class="h-16" />
               <span class="text-center">React</span>
             </li>
-            <li class="flex flex-col items-center justify-end">
+            <li class="flex flex-col items-center justify-end gap-2">
               <img src="./img/material-ui.png" alt="MUI" />
               <span class="text-center">MUI</span>
             </li>
-            <li class="flex flex-col items-center justify-end">
-              <img src="./img/react-router.png" alt="React Router" />
+            <li class="flex flex-col items-center justify-end gap-2">
+              <img
+                src="./img/react-router.png"
+                alt="React Router"
+                class="mb-2"
+              />
               <span class="text-center">React Router</span>
             </li>
-            <li class="flex flex-col items-center justify-end">
+            <li class="flex flex-col items-center justify-end gap-2">
               <img src="./img/react-query.png" alt="React-query" />
               <span class="text-center">React-query</span>
             </li>
-            <li class="flex flex-col items-center justify-end">
+            <li class="flex flex-col items-center justify-end gap-2">
               <img src="./img/react-hook-form.png" alt="React-hook-form" />
               <span class="text-center">React-hook-form</span>
             </li>
-            <li class="flex flex-col items-center justify-end">
+            <li class="flex flex-col items-center justify-end gap-2">
               <img src="./img/typescript.png" alt="Typescript" />
               <span class="text-center">Typescript</span>
             </li>
@@ -1066,7 +1071,7 @@
       <div
         class="mx-auto flex max-w-screen-xl flex-col items-start justify-between px-4 py-8 text-[18px] font-light leading-[26px] md:flex-row md:items-end md:px-12 md:py-16 lg:px-24 lg:pt-20 lg:pb-20"
       >
-        <div  
+        <div
           class="order-2 mt-8 flex flex-col justify-center gap-8 md:mt-0 md:flex-row md:gap-16"
         >
           <a
@@ -1085,13 +1090,16 @@
             >Terms & Conditions</a
           >
         </div>
-        <div class="order-1 flex gap-8 items-end">
-          <img src="./img/marmelab.png" class="pb-4" />
+        <div class="order-1 flex items-end gap-8">
+          <img alt="" src="./img/marmelab.png" role="presentation" />
           <p>
             Copyright
-            <a href="https://marmelab.com/" class="underline hover:no-underline"
-              >Marmelab</a
+            <a
+              href="https://marmelab.com/"
+              class="underline hover:no-underline"
             >
+              Marmelab
+            </a>
           </p>
         </div>
       </div>

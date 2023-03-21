@@ -37,7 +37,7 @@ body {
 }
 
 #hero-bg {
-  --scale-speed: 5;
+  --scale-speed: 1;
   --translate-base: 100px;
   --translate-speed: 3;
   transform-origin: bottom center;
