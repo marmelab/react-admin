@@ -58,7 +58,7 @@ render(
 );
 ```
 
-The `<Resource>` component is a configuration component that allows to define sub components for each of the admin view: `list`, `edit`, and `create`. These components use MUI and custom components from react-admin:
+The `<Resource>` component is a configuration component that allows you to define sub components for each of the admin view: `list`, `edit`, and `create`. These components use MUI and custom components from react-admin:
 
 ```jsx
 // in posts.js
@@ -124,7 +124,7 @@ See the [Data Providers documentation](https://marmelab.com/react-admin/DataProv
 
 ## Batteries Included But Removable
 
-React-admin is designed as a library of loosely coupled React components and hooks exposing reusable controller logic. It is very easy to replace any part of react-admin with your own, e.g. to use a custom datagrid, GraphQL instead of REST, or Bootstrap instead of Material Design.
+React-admin is designed as a library of loosely coupled React components and hooks exposing reusable controller logic. It is very easy to replace any part of react-admin with your own, e.g. using a custom datagrid, GraphQL instead of REST, or Bootstrap instead of Material Design.
 
 ## Examples
 
@@ -169,7 +169,7 @@ And then browse to the URL displayed in your console.
 
 * [next](https://github.com/marmelab/react-admin/commits/next) - commits that will be included in the next _major_ or _minor_ release
 
-Bugfix PRs that don't break BC should be made against **master**. All other PRs (new features, bugfix with BC break) should be made against **next**.
+Bugfix PRs that don't break BC should be made against **master**. All other PRs (new features, BC breaking bugfixes) should be made against **next**.
 
 ## Contributing
 
@@ -179,11 +179,11 @@ The easiest task is **bug triaging**. Check that new issues on GitHub follow the
 
 The second way to contribute is to **answer support questions on [StackOverflow](https://stackoverflow.com/questions/tagged/react-admin)**. There are many beginner questions there, so even if you're not super experienced with react-admin, there is someone you can help there. 
 
-Pull requests for **bug fixes** are welcome on the [GitHub repository](https://github.com/marmelab/react-admin). There is always a bunch of [issues labeled "Good First Issue"](https://github.com/marmelab/react-admin/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22) in the bug tracker - start with these. 
+Pull requests for **bug fixes** are welcome on the [GitHub repository](https://github.com/marmelab/react-admin). There is always a bunch of [issues labeled "Good First Issue"](https://github.com/marmelab/react-admin/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22) in the bug tracker—start with these. 
 
-If you want to **add a feature**, you can open a Pull request on the `next` branch. We don't accept all features - we try to keep the react-admin code small and manageable. Try and see if your feature can't be built as an additional `npm` package. If you're in doubt, open a "Feature Request" issue to see if the core team would accept your feature before developing it.
+If you want to **add a feature**, you can open a Pull request on the `next` branch. We don't accept all features—we try to keep the react-admin code small and manageable. Try and see if your feature can't be built as an additional `npm` package. If you're in doubt, open a "Feature Request" issue to see if the core team would accept your feature before developing it.
 
-For all Pull requests, you must follow the coding style of the existing files (based on [prettier](https://github.com/prettier/prettier)), and include unit tests and documentation. Be prepared for a thorough code review, and be patient for the merge - this is an open-source initiative.
+For all Pull requests, you must follow the coding style of the existing files (based on [prettier](https://github.com/prettier/prettier)), and include unit tests and documentation. Be prepared for a thorough code review, and be patient for the merge—this is an open-source initiative.
 
 **Tip**: Most of the commands used by the react-admin developers are automated in the `makefile`. Feel free to type `make` without argument to see a list of the available commands. 
 
@@ -193,7 +193,7 @@ Clone this repository and run `make install` to grab the dependencies, then `mak
 
 ### Online one-click Setup
 
-You can use Gitpod(An Online Open Source VS Code like IDE which is free for Open Source) for working on issues and making PRs. With a single click it will launch a workspace and automatically clone the repo, run `make install` and `make start` so that you can start straight away.
+You can use Gitpod (an open source, online VS Code-like IDE) for working on issues and making PRs. With a single click it will launch a workspace and automatically clone the repo, run `make install` and `make start` so that you can start straight away.
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
 
@@ -203,7 +203,7 @@ When developing, most of the time we use the **simple example** to do visual che
 
 However, the simple example is sometimes too limited. You can use the **demo example** (the source for https://marmelab.com/react-admin-demo/), which is more complete. The source is located under `examples/demo/`. Call `make run-demo` to launch the demo example with a REST dataProvider, or `make run-graphql-demo` to run it with a GraphQL dataProvider. Unfortunately, due to the fact that we use Create React App for this demo, these commands don't watch the changes made in the packages. You'll have to rebuild the react-admin packages after a change (using `make build`, or the more targeted `make build-ra-core`, `make build-ra-ui-materialui`, etc.) to see the effect in the demo app.
 
-Both of these examples work without server - the API is simulated on the client-side. 
+Both of these examples work without server—the API is simulated on the client-side. 
 
 ### Testing Your Changes In Your App
 
