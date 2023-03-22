@@ -286,8 +286,6 @@
 		&lt;Resource <span class="text-[#1bceb9]">name</span><span class="text-[#e7e8f3]">=</span>"deals" <span class="text-[#1bceb9]">{...deals}</span> /&gt;
 		&lt;Resource <span class="text-[#1bceb9]">name</span><span class="text-[#e7e8f3]">=</span>"contacts" <span class="text-[#1bceb9]">{...contacts}</span> /&gt;
 		&lt;Resource <span class="text-[#1bceb9]">name</span><span class="text-[#e7e8f3]">=</span>"companies" <span class="text-[#1bceb9]">{...companies}</span> /&gt;
-		&lt;Resource <span class="text-[#1bceb9]">name</span><span class="text-[#e7e8f3]">=</span>"contactNotes" /&gt;
-		&lt;Resource <span class="text-[#1bceb9]">name</span><span class="text-[#e7e8f3]">=</span>"dealNotes" /&gt;
 	&lt;/Admin&gt;
 );
 </code></pre>
@@ -493,10 +491,10 @@
           <b class="font-bold">13 lines of code</b>.
         </p>
         <div class="relative">
-          <div class="flex flex-col gap-8 md:flex-row">
-            <div class="w-full flex-shrink flex-grow self-end md:w-1/2">
+          <div class="flex flex-col gap-8 md:flex-row md:items-stretch">
+            <div class="w-full flex flex-col md:flex-row flex-shrink flex-grow md:w-1/2">
               <pre
-                class="overflow-x-auto rounded-lg bg-[#00023b] p-4 pb-16 text-[11px] font-normal leading-[14px] md:pb-8 lg:pb-4 lg:text-[14px] lg:leading-[20px] xl:pb-16"
+                class="w-full overflow-x-auto rounded-lg bg-[#00023b] p-4 text-[11px] font-normal leading-[14px] lg:text-[14px] lg:leading-[20px]"
               ><code
 							><span class="text-[#00b3da]">import</span> React <span class="text-[#00b3da]">from</span> <span class="text-[#1bceb9]">'react'</span>;
 <span class="text-[#00b3da]">import</span> { Admin, Resource, ListGuesser } <span class="text-[#00b3da]">from</span> <span class="text-[#1bceb9]">'react-admin'</span>;
@@ -537,7 +535,7 @@
               </svg>
               <a
                 class="inline-block rounded-full bg-[hsl(338,83%,50%)] hover:bg-[hsl(338,83%,60%)] px-14 py-6 text-center text-[21px] font-semibold leading-[31.5px] text-white md:px-12 md:py-7"
-                href="https://marmelab.com/react-admin/documentation.html"
+                href="https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/tutorial"
                 >Try me</a
               >
             </div>
@@ -750,14 +748,14 @@
           <blockquote
             class="break-inside-avoid-column rounded-xl bg-[#e7e8f3] p-8"
           >
-            <p class="text-[21px] font-light italic leading-[28px]">
+            <p class="text-[18px] font-light leading-[26px] lg:text-[21px] lg:leading-[28px] italic">
               “We have recommended react-admin to several organizations. We are
               more than satisfied with react-admin and we are excited to
               continue using react-admin in the future!”
             </p>
             <div class="mt-8 flex justify-between">
               <div>
-                <p class="mb-2 text-[24px] font-bold leading-[28px]">
+                <p class="mb-2 font-bold text-[21px] leading-[24px] lg:text-[24px] lg:leading-[28px]">
                   Alexander Rees, Head of Web Development
                 </p>
                 <p class="text-[18px] font-light leading-[26px]">Caritas</p>
@@ -772,14 +770,14 @@
           <blockquote
             class="break-inside-avoid-column rounded-xl bg-[#e7e8f3] p-8"
           >
-            <p class="text-[21px] font-light italic leading-[28px]">
+            <p class="text-[18px] font-light leading-[26px] lg:text-[21px] lg:leading-[28px] italic">
               “I am definitely enjoying using react-admin. I was exposed to it a
               few years ago on a product/project I inherited and maintain, and
               now am using it for two other projects.”
             </p>
             <div class="mt-8 flex justify-between">
               <div>
-                <p class="mb-2 text-[24px] font-bold leading-[28px]">
+                <p class="mb-2 font-bold text-[21px] leading-[24px] lg:text-[24px] lg:leading-[28px]">
                   Jeff Israel, Head of Engineering
                 </p>
                 <p class="text-[18px] font-light leading-[26px]">
@@ -796,14 +794,14 @@
           <blockquote
             class="break-inside-avoid-column rounded-xl bg-[#e7e8f3] p-8"
           >
-            <p class="text-[21px] font-light italic leading-[28px]">
+            <p class="text-[18px] font-light leading-[26px] lg:text-[21px] lg:leading-[28px] italic">
               “React-admin is simpler to setup and more customizable than forest
               admin. Support is great, documentation is rich of examples and
               explain well the philosophy of the library.”
             </p>
             <div class="mt-8 flex justify-between">
               <div>
-                <p class="mb-2 text-[24px] font-bold leading-[28px]">
+                <p class="mb-2 font-bold text-[21px] leading-[24px] lg:text-[24px] lg:leading-[28px]">
                   Nicolas Girault, Software Engineer
                 </p>
                 <p class="text-[18px] font-light leading-[26px]">lalilo</p>
@@ -818,14 +816,14 @@
           <blockquote
             class="break-inside-avoid-column rounded-xl bg-[#e7e8f3] p-8"
           >
-            <p class="text-[21px] font-light italic leading-[28px]">
+            <p class="text-[18px] font-light leading-[26px] lg:text-[21px] lg:leading-[28px] italic">
               “React-admin has allowed us to quickly create and evolve a
               powerful tool that otherwise would have taken months of time and
               effort to develop.”
             </p>
             <div class="mt-8 flex justify-between">
               <div>
-                <p class="mb-2 text-[24px] font-bold leading-[28px]">
+                <p class="mb-2 font-bold text-[21px] leading-[24px] lg:text-[24px] lg:leading-[28px]">
                   Guillermo Noain, Tech Lead
                 </p>
                 <p class="text-[18px] font-light leading-[26px]">Iron Hack</p>
@@ -840,14 +838,14 @@
           <blockquote
             class="break-inside-avoid-column rounded-xl bg-[#e7e8f3] p-8"
           >
-            <p class="text-[21px] font-light italic leading-[28px]">
+            <p class="text-[18px] font-light leading-[26px] lg:text-[21px] lg:leading-[28px] italic">
               “We've been using react admin in our company project for quite
               some time now and we loved it. We really appreciate your hard work
               and we wish all the best for the react-admin project.”
             </p>
             <div class="mt-8 flex justify-between">
               <div>
-                <p class="mb-2 text-[24px] font-bold leading-[28px]">
+                <p class="mb-2 font-bold text-[21px] leading-[24px] lg:text-[24px] lg:leading-[28px]">
                   Patrick André TOLOJANAHARY, FullStack Software Developer
                 </p>
                 <p class="text-[18px] font-light leading-[26px]">
@@ -864,14 +862,14 @@
           <blockquote
             class="break-inside-avoid-column rounded-xl bg-[#e7e8f3] p-8"
           >
-            <p class="text-[21px] font-light italic leading-[28px]">
+            <p class="text-[18px] font-light leading-[26px] lg:text-[21px] lg:leading-[28px] italic">
               “We where looking to improve the graphic interface of our custom
               made web admins. We ended up changing our entire client-side
               infrastructure to one based on React-admin in record time!”
             </p>
             <div class="mt-8 flex justify-between">
               <div>
-                <p class="mb-2 text-[24px] font-bold leading-[28px]">
+                <p class="mb-2 font-bold text-[21px] leading-[24px] lg:text-[24px] lg:leading-[28px]">
                   Aníbal Svarcas, Senior Developer
                 </p>
                 <p class="text-[18px] font-light leading-[26px]">Metiri</p>
@@ -886,7 +884,7 @@
           <blockquote
             class="break-inside-avoid-column rounded-xl bg-[#e7e8f3] p-8"
           >
-            <p class="text-[21px] font-light italic leading-[28px]">
+            <p class="text-[18px] font-light leading-[26px] lg:text-[21px] lg:leading-[28px] italic">
               “Having built React Admin into our products, it's allowed us to
               develop simplistic CMS's right through to complex, highly
               integrated web apps, with confidence and repeated success, it's an
@@ -894,7 +892,7 @@
             </p>
             <div class="mt-8 flex justify-between">
               <div>
-                <p class="mb-2 text-[24px] font-bold leading-[28px]">
+                <p class="mb-2 font-bold text-[21px] leading-[24px] lg:text-[24px] lg:leading-[28px]">
                   Anthony Main, Founder
                 </p>
                 <a
