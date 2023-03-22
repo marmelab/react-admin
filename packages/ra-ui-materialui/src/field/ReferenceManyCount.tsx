@@ -79,7 +79,7 @@ export const ReferenceManyCount = (props: ReferenceManyCountProps) => {
             }}
             variant="body2"
             onClick={e => e.stopPropagation()}
-            {...rest}
+            {...sanitizeFieldRestProps(rest)}
         >
             {body}
         </Link>
