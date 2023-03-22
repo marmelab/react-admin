@@ -163,18 +163,21 @@ const rowsPerPageOptionsValidator: React.Validator<rowsPerPageOptionsTypes> = (
         return null;
     }
 
-    if (Array.isArray(prop)) {
-        const isNumberArray = prop.every(value => typeof value === 'number');
-        const isObjectArray = prop.every(
-            value =>
-                typeof value === 'object' &&
-                value !== null &&
-                'label' in value &&
-                'value' in value
-        );
-        if (isNumberArray || isObjectArray) {
-            return null;
-        }
+    if (!Array.isArray(prop)) {
+        return;
+    }
+
+    const isNumberArray = prop.every(value => typeof value === 'number');
+    const isObjectArray = prop.every(
+        value =>
+            typeof value === 'object' &&
+            value !== null &&
+            'label' in value &&
+            'value' in value
+    );
+
+    if (isNumberArray || isObjectArray) {
+        return null;
     }
 
     return new Error(
