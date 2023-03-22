@@ -168,6 +168,7 @@ export const AutocompleteInput = <
         size,
         source: sourceProp,
         suggestionLimit = Infinity,
+        renderTextField,
         TextFieldProps,
         translateChoice,
         validate,
@@ -544,36 +545,41 @@ If you provided a React element for the optionText prop, you must also provide t
                 id={id}
                 isOptionEqualToValue={isOptionEqualToValue}
                 filterSelectedOptions
-                renderInput={params => (
-                    <TextField
-                        name={field.name}
-                        label={
+                renderInput={params => {
+                    const newParams: TextFieldProps = {
+                        ...params,
+                        name: field.name,
+                        label: (
                             <FieldTitle
                                 label={label}
                                 source={source}
                                 resource={resourceProp}
                                 isRequired={isRequired}
                             />
-                        }
-                        error={
+                        ),
+                        error:
                             !!fetchError ||
-                            ((isTouched || isSubmitted) && invalid)
-                        }
-                        helperText={
+                            ((isTouched || isSubmitted) && invalid),
+                        helperText: (
                             <InputHelperText
                                 touched={isTouched || isSubmitted || fetchError}
                                 error={error?.message || fetchError?.message}
                                 helperText={helperText}
                             />
-                        }
-                        margin={margin}
-                        variant={variant}
-                        className={AutocompleteInputClasses.textField}
-                        {...TextFieldProps}
-                        {...params}
-                        size={size}
-                    />
-                )}
+                        ),
+                        margin: margin,
+                        variant: variant,
+                        className: AutocompleteInputClasses.textField,
+                        ...TextFieldProps,
+                        ...params,
+                        size: size,
+                    };
+
+                    if (!!renderTextField) {
+                        return renderTextField(newParams, selectedChoice);
+                    }
+                    return <TextField {...newParams} />;
+                }}
                 multiple={multiple}
                 renderTags={(value, getTagProps) =>
                     value.map((option, index) => (
@@ -682,6 +688,10 @@ export interface AutocompleteInputProps<
     emptyValue?: any;
     filterToQuery?: (searchText: string) => any;
     inputText?: (option: any) => string;
+    renderTextField?: (
+        props: TextFieldProps,
+        selectedChoice: any
+    ) => React.ReactNode;
     setFilter?: (value: string) => void;
     shouldRenderSuggestions?: any;
     // Source is optional as AutocompleteInput can be used inside a ReferenceInput that already defines the source

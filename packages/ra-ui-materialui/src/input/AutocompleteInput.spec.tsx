@@ -23,6 +23,7 @@ import {
 import { act } from '@testing-library/react-hooks';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
+import { TextField } from '@mui/material';
 
 describe('<AutocompleteInput />', () => {
     const defaultProps = {
@@ -1497,5 +1498,27 @@ describe('<AutocompleteInput />', () => {
         await checkInputValue('prefers_zero-string', '0');
         await checkInputValue('prefers_zero-number', '0');
         await checkInputValue('prefers_valid-value', '1');
+    });
+
+    it('should use a custom renderTextFieldFunction', async () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: null }}>
+                    <AutocompleteInput
+                        {...defaultProps}
+                        renderTextField={props => (
+                            <div>
+                                <TextField {...props} />
+                                <p>Hello Helpertext</p>
+                            </div>
+                        )}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        await waitFor(() => {
+            expect(screen.queryByText('Hello Helpertext')).not.toBeNull();
+        });
     });
 });
