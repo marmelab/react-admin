@@ -1,13 +1,14 @@
 import * as React from 'react';
+import { ReactNode, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
-import { useEffect, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import RemoveCircle from '@mui/icons-material/RemoveCircle';
 import IconButton from '@mui/material/IconButton';
 import { useTranslate } from 'ra-core';
+import { SvgIconProps } from '@mui/material';
 
 export const FileInputPreview = (props: FileInputPreviewProps) => {
-    const { children, className, onRemove, file, ...rest } = props;
+    const { children, className, onRemove, file, removeIcon, ...rest } = props;
 
     const translate = useTranslate();
 
@@ -30,7 +31,11 @@ export const FileInputPreview = (props: FileInputPreviewProps) => {
                 title={translate('ra.action.delete')}
                 size="small"
             >
-                <RemoveCircle className={FileInputPreviewClasses.removeIcon} />
+                {removeIcon ?? (
+                    <RemoveCircle
+                        className={FileInputPreviewClasses.removeIcon}
+                    />
+                )}
             </IconButton>
             {children}
         </Root>
@@ -42,6 +47,7 @@ FileInputPreview.propTypes = {
     className: PropTypes.string,
     file: PropTypes.object,
     onRemove: PropTypes.func.isRequired,
+    removeIcon: PropTypes.element,
 };
 
 FileInputPreview.defaultProps = {
@@ -71,4 +77,5 @@ export interface FileInputPreviewProps {
     className?: string;
     onRemove: () => void;
     file: any;
+    removeIcon?: React.ReactElement<SvgIconProps>;
 }
