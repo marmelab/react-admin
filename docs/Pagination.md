@@ -44,4 +44,21 @@ import { Pagination } from 'react-admin';
 const PostPagination = () => <Pagination rowsPerPageOptions={[10, 25, 50, 100]} />;
 ```
 
+## `add label to rowsPerPage `
+
+The `<Pagination>` has customizable label in rowsPerPageOptions prop. You can customize the options of this dropdown by passing a `rowsPerPageOptions` prop as an object array.
+
+```jsx 
+
+import { Pagination } from 'react-admin';
+
+<Pagination
+    rowsPerPageOptions={[
+        { label: '6 items per page', value: 6 },
+        { label: '9 items per page', value: 9 },
+        { label: '12 items per page', value: 12 },
+    ]}
+/>
+```
+
 **Tip**: Pass an empty array to `rowsPerPageOptions` to disable the rows per page selection.

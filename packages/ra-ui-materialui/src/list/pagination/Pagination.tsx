@@ -147,10 +147,44 @@ export const Pagination: FC<PaginationProps> = memo(props => {
     );
 });
 
+type rowsPerPageOptions = {
+    label: string;
+    value: number;
+};
+type rowsPerPageOptionsTypes = number[] | rowsPerPageOptions[];
+
+const rowsPerPageOptionsValidator: React.Validator<rowsPerPageOptionsTypes> = (
+    props,
+    propName,
+    componentName
+) => {
+    const prop = props[propName];
+    if (!prop) {
+        return null;
+    }
+
+    if (Array.isArray(prop)) {
+        const isNumberArray = prop.every(value => typeof value === 'number');
+        const isObjectArray = prop.every(
+            value =>
+                typeof value === 'object' &&
+                value !== null &&
+                'label' in value &&
+                'value' in value
+        );
+        if (isNumberArray || isObjectArray) {
+            return null;
+        }
+    }
+
+    return new Error(
+        `Invalid prop ${propName} supplied to ${componentName}. Expected an array of numbers or an array of objects with 'label' and 'value' properties.`
+    );
+};
 Pagination.propTypes = {
     actions: ComponentPropType,
     limit: PropTypes.element,
-    rowsPerPageOptions: PropTypes.arrayOf(PropTypes.number),
+    rowsPerPageOptions: rowsPerPageOptionsValidator,
 };
 
 const DefaultRowsPerPageOptions = [5, 10, 25, 50];
@@ -159,7 +193,7 @@ const emptyArray = [];
 export interface PaginationProps
     extends TablePaginationBaseProps,
         Partial<ListPaginationContextValue> {
-    rowsPerPageOptions?: number[];
+    rowsPerPageOptions?: rowsPerPageOptionsTypes;
     actions?: FC;
     limit?: ReactElement;
 }
