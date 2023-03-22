@@ -6,7 +6,12 @@ import {
     useCreatePath,
     SortPayload,
 } from 'ra-core';
-import { Typography, TypographyProps, CircularProgress } from '@mui/material';
+import {
+    Typography,
+    TypographyProps,
+    CircularProgress,
+    Box,
+} from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Error';
 
 import { PublicFieldProps, InjectedFieldProps } from './types';
@@ -69,22 +74,21 @@ export const ReferenceManyCount = (props: ReferenceManyCountProps) => {
     );
 
     return link ? (
-        // @ts-ignore TypeScript complains that the props for <a> aren't the same as for <span>
-        <Link
-            to={{
-                pathname: createPath({ resource: reference, type: 'list' }),
-                search: `filter=${JSON.stringify({
-                    ...(filter || {}),
-                    [target]: record[source],
-                })}`,
-            }}
-            variant="body2"
-            component="span"
-            onClick={e => e.stopPropagation()}
-            {...rest}
-        >
-            {body}
-        </Link>
+        <Box component="span" {...rest}>
+            <Link
+                to={{
+                    pathname: createPath({ resource: reference, type: 'list' }),
+                    search: `filter=${JSON.stringify({
+                        ...(filter || {}),
+                        [target]: record[source],
+                    })}`,
+                }}
+                variant="body2"
+                onClick={e => e.stopPropagation()}
+            >
+                {body}
+            </Link>
+        </Box>
     ) : (
         <Typography
             component="span"
