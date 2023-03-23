@@ -1,0 +1,31 @@
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	width="33"
+	height="32"
+	fill="none"
+	viewBox="0 0 33 32"
+>
+	<circle cx="17" cy="16.5" r="4.5" stroke="#EA1763" stroke-width="2" />
+	<path
+		stroke="#EA1763"
+		stroke-linejoin="round"
+		stroke-width="2"
+		d="m14.5 19-5 5m5-10-6-6"
+	/>
+	<circle cx="26.5" cy="28" r="2" stroke="#EA1763" stroke-width="2" />
+	<path
+		stroke="#EA1763"
+		stroke-linejoin="round"
+		stroke-width="2"
+		d="m19.5 19 6 8"
+	/>
+	<circle cx="27" cy="6.5" r="3.5" stroke="#EA1763" stroke-width="2" />
+	<path
+		stroke="#EA1763"
+		stroke-linejoin="round"
+		stroke-width="2"
+		d="m24.5 9-5 5"
+	/>
+	<circle cx="7.5" cy="7" r="4" fill="#EA1763" />
+	<circle cx="7.5" cy="26" r="4" stroke="#EA1763" stroke-width="2" />
+</svg>
