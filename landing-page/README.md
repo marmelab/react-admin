@@ -17,11 +17,13 @@ npm run dev
 ## Including in the main Jekyll
 
 Run:
+
 ```sh
 npm run build
 ```
 
-Test everything works by running Jekill:
+This builds and copies the built HTML, CSS and JS files to the root repository. Test that everything works by running Jekyll:
+
 ```sh
 jekyll server .
 ```
