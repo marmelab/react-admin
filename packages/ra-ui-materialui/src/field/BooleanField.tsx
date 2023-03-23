@@ -46,9 +46,15 @@ export const BooleanField: FunctionComponent<BooleanFieldProps> = memo(
                 >
                     <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
                         {isTruthyValue ? (
-                            <TrueIcon data-testid="true" fontSize="small" />
-                        ) : (
+                            TrueIcon ? (
+                                <TrueIcon data-testid="true" fontSize="small" />
+                            ) : (
+                                <></>
+                            )
+                        ) : FalseIcon ? (
                             <FalseIcon data-testid="false" fontSize="small" />
+                        ) : (
+                            <></>
                         )}
                     </Tooltip>
                 </StyledTypography>
@@ -87,8 +93,8 @@ export interface BooleanFieldProps
         Omit<TypographyProps, 'textAlign'> {
     valueLabelTrue?: string;
     valueLabelFalse?: string;
-    TrueIcon?: SvgIconComponent;
-    FalseIcon?: SvgIconComponent;
+    TrueIcon?: SvgIconComponent | null;
+    FalseIcon?: SvgIconComponent | null;
     looseValue?: boolean;
 }
 
