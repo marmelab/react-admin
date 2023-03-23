@@ -127,6 +127,7 @@ const frenchMessages: TranslationMessages = {
             partial_page_range_info:
                 '%{offsetBegin}-%{offsetEnd} sur plus de %{offsetEnd}',
             page_rows_per_page: 'Lignes par page :',
+            items_per_page_lable: '%{value} éléments par page',
             current_page: 'Page %{page}',
             page: 'Aller à la page %{page}',
             first: 'Aller à la première page',

@@ -119,6 +119,7 @@ export interface TranslationMessages extends StringMap {
             page_range_info: string;
             partial_page_range_info: string;
             page_rows_per_page: string;
+            items_per_page_lable: string;
             current_page: string;
             page: string;
             first: string;

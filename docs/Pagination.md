@@ -60,5 +60,34 @@ import { Pagination } from 'react-admin';
     ]}
 />
 ```
+The label is automatically translated, so you can use translation identifiers.
+```jsx 
+import { useTranslate } from 'react-admin'; 
+import { Pagination } from 'react-admin';
 
+const translate = useTranslate();
+
+<Pagination
+    rowsPerPageOptions={[
+        {
+            label: translate('ra.navigation.items_per_page_lable', {
+                value: 6,
+            }),
+            value: 6,
+        },
+        {
+            label: translate('ra.navigation.items_per_page_lable', {
+                value: 9,
+            }),
+            value: 9,
+        },
+        {
+            label: translate('ra.navigation.items_per_page_lable', {
+                value: 12,
+            }),
+            value: 12,
+        },
+    ]}
+/>
+```
 **Tip**: Pass an empty array to `rowsPerPageOptions` to disable the rows per page selection.

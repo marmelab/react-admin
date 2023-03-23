@@ -158,6 +158,7 @@ const CommentList = () => (
 );
 
 const ListView = () => {
+    const translate = useTranslate();
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     const { defaultTitle } = useListContext();
     return (
@@ -165,7 +166,28 @@ const ListView = () => {
             <Title defaultTitle={defaultTitle} />
             <ListToolbar filters={commentFilters} actions={<ListActions />} />
             {isSmall ? <CommentMobileList /> : <CommentGrid />}
-            <Pagination rowsPerPageOptions={[6, 9, 12]} />
+            <Pagination
+                rowsPerPageOptions={[
+                    {
+                        label: translate('ra.navigation.items_per_page_lable', {
+                            value: 6,
+                        }),
+                        value: 6,
+                    },
+                    {
+                        label: translate('ra.navigation.items_per_page_lable', {
+                            value: 9,
+                        }),
+                        value: 9,
+                    },
+                    {
+                        label: translate('ra.navigation.items_per_page_lable', {
+                            value: 12,
+                        }),
+                        value: 12,
+                    },
+                ]}
+            />
         </>
     );
 };

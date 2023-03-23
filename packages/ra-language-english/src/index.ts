@@ -128,6 +128,7 @@ const englishMessages: TranslationMessages = {
             next: 'Go to next page',
             previous: 'Go to previous page',
             page_rows_per_page: 'Rows per page:',
+            items_per_page_lable: '%{value} items per page',
             skip_nav: 'Skip to content',
         },
         sort: {
