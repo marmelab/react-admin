@@ -69,7 +69,6 @@ export const ReferenceManyCount = (props: ReferenceManyCountProps) => {
     );
 
     return link ? (
-        // @ts-ignore TypeScript complains that the props for <a> aren't the same as for <span>
         <Link
             to={{
                 pathname: createPath({ resource: reference, type: 'list' }),
@@ -79,9 +78,8 @@ export const ReferenceManyCount = (props: ReferenceManyCountProps) => {
                 })}`,
             }}
             variant="body2"
-            component="span"
             onClick={e => e.stopPropagation()}
-            {...rest}
+            {...sanitizeFieldRestProps(rest)}
         >
             {body}
         </Link>

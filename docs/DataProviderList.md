@@ -14,6 +14,7 @@ If you can't find a Data Provider for your backend below, no worries! [Writing a
 * **[Blitz-js](https://blitzjs.com/docs)**: [theapexlab/ra-data-blitz](https://github.com/theapexlab/ra-data-blitz)
 * **[Configurable Identity Property REST Client](https://github.com/zachrybaker/ra-data-rest-client)**: [zachrybaker/ra-data-rest-client](https://github.com/zachrybaker/ra-data-rest-client)
 * **[coreBOS](https://corebos.com/)**: [React-Admin coreBOS Integration](https://github.com/coreBOS/reactadminportal)
+* **[Directus](https://directus.io/)**: [marmelab/ra-directus](https://github.com/marmelab/ra-directus)
 * **[Django Rest Framework](https://www.django-rest-framework.org/)**: [bmihelac/ra-data-django-rest-framework](https://github.com/bmihelac/ra-data-django-rest-framework)
 * **[Eve](https://docs.python-eve.org/en/stable/)**: [smeng9/ra-data-eve](https://github.com/smeng9/ra-data-eve)
 * **[Express & Mongoose](https://github.com/NathanAdhitya/express-mongoose-ra-json-server)**: [NathanAdhitya/express-mongoose-ra-json-server](https://github.com/NathanAdhitya/express-mongoose-ra-json-server)

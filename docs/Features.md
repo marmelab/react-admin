@@ -167,11 +167,13 @@ const BookList = () => (
 
 ![ReferenceField](./img/reference-field-link.png)
 
-This component is smart enough to **aggregate the calls for related authors** into one single API call: 
+You don't need anything fancy on the API side to support that. Simple CRUD routes for both the `books` and `authors` resources are enough. `<ReferenceField>` will fetch the book authors via one single API call: 
 
 ```
 GET https://my.api.url/authors?filter={ids:[1,2,3,4,5,6,7]}
 ```
+
+`<ReferenceField>` is smart enough to **aggregate the calls for related authors** and avoid [the N+1 query problem](https://stackoverflow.com/questions/97197/what-is-the-n1-selects-problem-in-orm-object-relational-mapping), without the need for embeddings or sub-queries on the server-side.
 
 Similarly, reference Input components let users edit related records together with the main record. For instance, to edit the variants of a product:
 
