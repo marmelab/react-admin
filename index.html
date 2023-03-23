@@ -1,14 +1,53 @@
 <!DOCTYPE html>
+
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>React-admin Open-source Edition</title>
-
-    <link rel="modulepreload" crossorigin href="data:video/mp2t;base64,aW1wb3J0ICIuL3N0eWxlLmNzcyI7Cgpjb25zdCBHSVRIVUJfQVBJX1VSTCA9ICJodHRwczovL2FwaS5naXRodWIuY29tL3JlcG9zL21hcm1lbGFiL3JlYWN0LWFkbWluIjsKCmNvbnN0IGdldEdpdGh1YlN0YXRzID0gKCkgPT4gewogIGNvbnN0IGhlYWRlcnMgPSBuZXcgSGVhZGVycygpOwogIGhlYWRlcnMuYXBwZW5kKCJDb250ZW50LVR5cGUiLCAiYXBwbGljYXRpb24veC13d3ctZm9ybS11cmxlbmNvZGVkIik7CgogIGNvbnN0IHJlcXVlc3QgPSBuZXcgUmVxdWVzdChHSVRIVUJfQVBJX1VSTCwgewogICAgaGVhZGVycywKICB9KTsKCiAgcmV0dXJuIGZldGNoKHJlcXVlc3QpLnRoZW4oKHJlc3BvbnNlKSA9PiByZXNwb25zZS5qc29uKCkpOwp9OwoKY29uc3QgZ2l0aHViU3RhcnNDb250ZW50ID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoImdpdGh1Yi1zdGFycy1jb250ZW50Iik7CgppZiAoZ2l0aHViU3RhcnNDb250ZW50ID09PSBudWxsKSB7CiAgdGhyb3cgbmV3IEVycm9yKCJnaXRodWItc3RhcnMtY29udGVudCBlbGVtZW50IG5vdCBmb3VuZCIpOwp9CgpnZXRHaXRodWJTdGF0cygpLnRoZW4oKHsgc3RhcmdhemVyc19jb3VudCB9KSA9PiB7CiAgZ2l0aHViU3RhcnNDb250ZW50LmlubmVyVGV4dCA9IHN0YXJnYXplcnNfY291bnQ7Cn0pOwoKd2luZG93LmFkZEV2ZW50TGlzdGVuZXIoCiAgInNjcm9sbCIsCiAgKCkgPT4gewogICAgY29uc3Qgc2Nyb2xsID0KICAgICAgd2luZG93LnBhZ2VZT2Zmc2V0IC8gKGRvY3VtZW50LmJvZHkub2Zmc2V0SGVpZ2h0IC0gd2luZG93LmlubmVySGVpZ2h0KTsKICAgIGRvY3VtZW50LmJvZHkuc3R5bGUuc2V0UHJvcGVydHkoIi0tc2Nyb2xsIiwgYCR7c2Nyb2xsfWApOwogIH0sCiAgZmFsc2UKKTsKCmNvbnN0IG5hdkJ1dHRvbiA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3I8SFRNTEJ1dHRvbkVsZW1lbnQ+KCJuYXYgYnV0dG9uIik7CmlmIChuYXZCdXR0b24gPT09IG51bGwpIHsKICB0aHJvdyBuZXcgRXJyb3IoIm5hdkJ1dHRvbiBub3QgZm91bmQiKTsKfQoKY29uc3QgbW9iaWxlTWVudSA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3I8SFRNTERpdkVsZW1lbnQ+KCIjbW9iaWxlLW1lbnUiKTsKaWYgKG1vYmlsZU1lbnUgPT09IG51bGwpIHsKICB0aHJvdyBuZXcgRXJyb3IoIm1vYmlsZU1lbnUgbm90IGZvdW5kIik7Cn0KCmxldCBvcGVuZWQgPSBmYWxzZTsKCm5hdkJ1dHRvbi5hZGRFdmVudExpc3RlbmVyKCJjbGljayIsICgpID0+IHsKICBjb25zdCBbY2xvc2VJY29uLCBvcGVuSWNvbl0gPSBBcnJheS5mcm9tKAogICAgbmF2QnV0dG9uLnF1ZXJ5U2VsZWN0b3JBbGw8U1ZHRWxlbWVudD4oInN2ZyIpCiAgKTsKCiAgaWYgKG9wZW5lZCkgewogICAgY2xvc2VJY29uLmNsYXNzTGlzdC5yZW1vdmUoImhpZGRlbiIpOwogICAgb3Blbkljb24uY2xhc3NMaXN0LmFkZCgiaGlkZGVuIik7CiAgICBtb2JpbGVNZW51LmNsYXNzTGlzdC5hZGQoImhpZGRlbiIpOwogIH0gZWxzZSB7CiAgICBvcGVuSWNvbi5jbGFzc0xpc3QucmVtb3ZlKCJoaWRkZW4iKTsKICAgIGNsb3NlSWNvbi5jbGFzc0xpc3QuYWRkKCJoaWRkZW4iKTsKICAgIG1vYmlsZU1lbnUuY2xhc3NMaXN0LnJlbW92ZSgiaGlkZGVuIik7CiAgfQogIG9wZW5lZCA9ICFvcGVuZWQ7Cn0pOwoKY29uc3QgYnVpbGRpbmdCbG9ja3NVTHMgPSBbCiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvcjxIVE1MVUxpc3RFbGVtZW50PigiI2J1aWxkaW5nLWJsb2NrcyA+IHVsIiksCl07CmlmIChidWlsZGluZ0Jsb2Nrc1VMc1swXSA9PT0gbnVsbCkgewogIHRocm93IG5ldyBFcnJvcigiYnVpbGRpbmdCbG9ja3NVTHMgaXMgZW1wdHkiKTsKfQoKZm9yIChsZXQgaSA9IDA7IGkgPCA1OyBpKyspIHsKICBidWlsZGluZ0Jsb2Nrc1VMcy5wdXNoKAogICAgYnVpbGRpbmdCbG9ja3NVTHNbMF0uY2xvbmVOb2RlKHRydWUpIGFzIHR5cGVvZiBidWlsZGluZ0Jsb2Nrc1VMc1swXQogICk7CgogIGZvciAobGV0IGogPSAwOyBqIDwgYnVpbGRpbmdCbG9ja3NVTHNbaV0hLmNoaWxkRWxlbWVudENvdW50OyBqKyspIHsKICAgIGNvbnN0IHJhbmRvbUluZGV4ID0gTWF0aC5mbG9vcigKICAgICAgTWF0aC5yYW5kb20oKSAqIGJ1aWxkaW5nQmxvY2tzVUxzW2ldIS5jaGlsZEVsZW1lbnRDb3VudAogICAgKTsKICAgIGNvbnN0IHJhbmRvbUNoaWxkID0gYnVpbGRpbmdCbG9ja3NVTHNbaV0hLmNoaWxkcmVuW3JhbmRvbUluZGV4XTsKICAgIGJ1aWxkaW5nQmxvY2tzVUxzW2ldIS5yZW1vdmVDaGlsZChyYW5kb21DaGlsZCk7CiAgICBidWlsZGluZ0Jsb2Nrc1VMc1tpXSEuYXBwZW5kQ2hpbGQocmFuZG9tQ2hpbGQpOwogIH0KCiAgaWYgKGkgPiAyKSB7CiAgICBidWlsZGluZ0Jsb2Nrc1VMc1tpXSEuY2xhc3NMaXN0LmFkZCgibWQ6aGlkZGVuIik7CiAgfQoKICBidWlsZGluZ0Jsb2Nrc1VMc1swXS5wYXJlbnRFbGVtZW50IS5hcHBlbmRDaGlsZChidWlsZGluZ0Jsb2Nrc1VMc1tpXSEpOwp9Cgpmb3IgKGxldCBpID0gMDsgaSA8IGJ1aWxkaW5nQmxvY2tzVUxzLmxlbmd0aDsgaSsrKSB7CiAgYnVpbGRpbmdCbG9ja3NVTHNbaV0hLmNsYXNzTGlzdC5hZGQoCiAgICBpICUgMiA9PT0gMCA/ICJqdXN0aWZ5LXN0YXJ0IiA6ICJqdXN0aWZ5LWVuZCIKICApOwoKICBidWlsZGluZ0Jsb2Nrc1VMc1tpXSEuc3R5bGUuYW5pbWF0aW9uID0KICAgICJzbGlkZSIgKyAoaSAlIDIgPT09IDAgPyAiTGVmdCIgOiAiUmlnaHQiKSArICIgOTBzIGxpbmVhciBpbmZpbml0ZSI7Cn0KCmV4cG9ydCB7fTsK" />
-    
-    <link rel="shortcut icon" href="/img/ra-oe.svg" />
+    <title>React Admin - Open-Source Framework for B2B applications</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="shortcut icon" href="icons/icon-48x48.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="apple-touch-icon" sizes="48x48" href="icons/icon-48x48.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="96x96" href="icons/icon-96x96.png" />
+    <link
+      rel="apple-touch-icon"
+      sizes="144x144"
+      href="icons/icon-144x144.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="192x192"
+      href="icons/icon-192x192.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="256x256"
+      href="icons/icon-256x256.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="384x384"
+      href="icons/icon-384x384.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="512x512"
+      href="icons/icon-512x512.png"
+    />
+    <link href="assets/styles.css" rel="stylesheet" />
+    <link href="assets/prism.css" rel="stylesheet" />
+    <link href="assets/carousel.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:400,700|Source+Sans+Pro:400,600,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="shortcut icon" href="./assets/favicon.ico" />
     <meta
       name="description"
       content="A frontend Framework for building B2B applications running in the browser on top of REST/GraphQL APIs, using ES6, React and Material Design"
@@ -22,1079 +61,1196 @@
     <meta property="og:url" content="https://marmelab.com/react-admin" />
     <meta
       property="og:image"
-      content="https://marmelab.com/react-admin/img/ra-oe.svg"
+      content="https://marmelab.com/react-admin/assets/logo.png"
     />
-    <script type="module" crossorigin src="/assets/index-0ff9a8fb.js"></script>
-    <link rel="stylesheet" href="/assets/index-4c1a78a2.css">
   </head>
 
   <body>
-    <nav class="bg-[#00023b] text-white">
-      <div
-        class="mx-auto max-w-screen-xl px-4 py-2 md:px-8 md:py-5 lg:px-16 lg:py-8"
-      >
-        <div class="flex h-16 justify-between">
-          <div class="flex">
-            <div class="flex flex-shrink-0 items-center gap-4">
-              <img src="./img/ra-oe.svg" class="h-12 w-auto md:h-16 lg:h-20" />
-            </div>
-          </div>
-          <div
-            class="hidden gap-4 text-[14px] font-semibold leading-[18px] md:flex lg:text-[16px] lg:leading-[21px]"
-          >
-            <a
-              class="inline-flex items-center hover:underline"
-              href="https://marmelab.com/react-admin/documentation.html"
-              >Documentation</a
-            >
-            <a
-              class="inline-flex items-center hover:underline"
-              href="https://marmelab.com/react-admin/Demos.html"
-              >Demo</a
-            >
-            <a
-              class="inline-flex items-center hover:underline"
-              href="https://marmelab.com/en/blog/#react-admin"
-              >Blog</a
-            >
-            <a
-              href="https://marmelab.com/ra-enterprise"
-              class="inline-flex items-center"
-              ><span
-                class="rounded border border-[#1bceb9] px-2 py-0.5 text-[#1bceb9] hover:border-[#00023b] hover:bg-[#1bceb9] hover:text-[#00023b]"
-                >Enterprise Edition</span
-              ></a
-            >
-            <div class="flex flex-shrink-0 items-center gap-4">
+    <header>
+      <div class="container">
+        <img src="./assets/lego.svg" id="lego" alt="" />
+        <nav>
+          <a href="." id="logo">
+            <img
+              src="./assets/logo.svg"
+              class="lego"
+              alt="React Admin Home Page"
+            />
+          </a>
+          <div id="menu">
+            <label for="hamburger"> &#9776; </label>
+            <input type="checkbox" id="hamburger" />
+
+            <div id="menu-content">
+              <a href="./documentation.html" class="menu-item">
+                Documentation
+              </a>
               <a
-                class="inline-block rounded border border-[#ea1763] px-2 py-0.5 text-[14px] font-semibold leading-[21px] text-[#ea1763]"
-                href="https://github.com/marmelab/react-admin"
+                href="https://marmelab.com/react-admin/Demos.html"
+                class="menu-item"
+              >
+                Demos
+              </a>
+              <a
+                href="https://marmelab.com/en/blog/#react-admin"
+                class="menu-item"
+              >
+                Blog
+              </a>
+              <a
+                href="https://marmelab.com/ra-enterprise/"
+                class="menu-item enterprise-edition"
+              >
+                Enterprise Edition
+              </a>
+              <a
+                href="https://discord.gg/GeZF9sqh3N"
+                class="menu-item discord"
+                title="Discord"
               >
                 <svg
-                  aria-hidden="true"
-                  class="inline-block h-5 w-5"
-                  fill="currentColor"
+                  height="25px"
+                  width="25px"
+                  viewBox="0 -28.5 256 256"
+                  preserveAspectRatio="xMidYMid"
+                  style="width: 25px; vertical-align: text-bottom"
                 >
                   <path
-                    d="M8.61 1.245a1 1 0 0 1 1.78 0l2.026 3.97a1 1 0 0 0 .734.533l4.4.7a1 1 0 0 1 .551 1.694l-3.149 3.153a1 1 0 0 0-.28.862l.694 4.402a1 1 0 0 1-1.44 1.047l-3.973-2.02a1 1 0 0 0-.906 0l-3.972 2.02a1 1 0 0 1-1.441-1.047l.694-4.402a1 1 0 0 0-.28-.862L.898 8.142a1 1 0 0 1 .551-1.694l4.401-.7a1 1 0 0 0 .734-.533l2.025-3.97Z"
-                  />
+                    d="M216.856339,16.5966031 C200.285002,8.84328665 182.566144,3.2084988 164.041564,0 C161.766523,4.11318106 159.108624,9.64549908 157.276099,14.0464379 C137.583995,11.0849896 118.072967,11.0849896 98.7430163,14.0464379 C96.9108417,9.64549908 94.1925838,4.11318106 91.8971895,0 C73.3526068,3.2084988 55.6133949,8.86399117 39.0420583,16.6376612 C5.61752293,67.146514 -3.4433191,116.400813 1.08711069,164.955721 C23.2560196,181.510915 44.7403634,191.567697 65.8621325,198.148576 C71.0772151,190.971126 75.7283628,183.341335 79.7352139,175.300261 C72.104019,172.400575 64.7949724,168.822202 57.8887866,164.667963 C59.7209612,163.310589 61.5131304,161.891452 63.2445898,160.431257 C105.36741,180.133187 151.134928,180.133187 192.754523,160.431257 C194.506336,161.891452 196.298154,163.310589 198.110326,164.667963 C191.183787,168.842556 183.854737,172.420929 176.223542,175.320965 C180.230393,183.341335 184.861538,190.991831 190.096624,198.16893 C211.238746,191.588051 232.743023,181.531619 254.911949,164.955721 C260.227747,108.668201 245.831087,59.8662432 216.856339,16.5966031 Z M85.4738752,135.09489 C72.8290281,135.09489 62.4592217,123.290155 62.4592217,108.914901 C62.4592217,94.5396472 72.607595,82.7145587 85.4738752,82.7145587 C98.3405064,82.7145587 108.709962,94.5189427 108.488529,108.914901 C108.508531,123.290155 98.3405064,135.09489 85.4738752,135.09489 Z M170.525237,135.09489 C157.88039,135.09489 147.510584,123.290155 147.510584,108.914901 C147.510584,94.5396472 157.658606,82.7145587 170.525237,82.7145587 C183.391518,82.7145587 193.761324,94.5189427 193.539891,108.914901 C193.539891,123.290155 183.391518,135.09489 170.525237,135.09489 Z"
+                  ></path>
                 </svg>
-                <svg
-                  aria-hidden="true"
-                  class="ml-2 inline-block h-5 w-5"
-                  stroke="currentColor"
-                >
-                  <path d="M1 .5v21" />
-                </svg>
-                <span id="github-stars-content" class="-ml-3 text-[#e7e8f3]"
-                  >20000</span
-                ></a
-              >
-              <a href="https://github.com/marmelab/react-admin">
-                <img src="./img/github.svg" />
               </a>
-              <a href="https://discord.gg/GeZF9sqh3N">
-                <img src="./img/discord.svg" />
-              </a>
-            </div>
-          </div>
-          <div class="-mr-2 flex items-center md:hidden">
-            <button
-              class="inline-flex items-center justify-center rounded-md p-2 hover:bg-white hover:text-[#ea1763] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#ea1763]"
-              aria-controls="mobile-menu"
-              aria-expanded="false"
-            >
-              <span class="sr-only">Open main menu</span>
-              <svg
-                class="block h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                />
-              </svg>
-              <svg
-                class="hidden h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="hidden md:hidden" id="mobile-menu">
-        <div class="text-[14px] font-semibold leading-[21px]">
-          <a
-            class="block px-4 py-2 hover:underline"
-            href="/react-admin/documentation.html"
-            >Documentation</a
-          >
-          <a
-            class="block px-4 py-2 hover:underline"
-            href="/react-admin/Demos.html"
-            >Demo</a
-          >
-          <a
-            class="block px-4 py-2 hover:underline"
-            href="/en/blog/#react-admin"
-            >Blog</a
-          >
-          <a href="./enterprise.html" class="block px-4 py-2"
-            ><span
-              class="rounded border border-[#1bceb9] px-2 py-0.5 text-[#1bceb9] hover:border-[#00023b] hover:bg-[#1bceb9] hover:text-[#00023b]"
-              >Enterprise Edition</span
-            ></a
-          >
-        </div>
-      </div>
-    </nav>
-
-    <section
-      class="relative overflow-hidden bg-[#00023b] bg-bottom bg-no-repeat text-white max-lg:bg-[length:2484px_440px] max-md:bg-[length:2145px_380px]"
-    >
-      <svg
-        id="hero-bg"
-        fill="none"
-        class="absolute bottom-20 left-0 right-0 z-0 [--base-scale:2] [--min-scale:0.5] sm:bottom-0 sm:[--base-scale:2] sm:[--min-scale:0.5] md:[--base-scale:2.3] md:[--min-scale:0.5] lg:[--base-scale:2.1] lg:[--min-scale:0.3] xl:[--base-scale:1.8] xl:[--min-scale:0.3]"
-        viewBox="0 0 2937 520"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M1846.22 518.145L1915.39 260L1210.12 71.0229L1090.31 518.147"
-          fill="#00023B"
-        />
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M1848.01 518.625C1847.74 519.613 1846.73 520.199 1845.74 519.935C1844.75 519.67 1844.17 518.654 1844.43 517.667L1913.12 261.31L1211.43 73.2918L1092.1 518.627C1091.84 519.614 1090.82 520.201 1089.83 519.937C1088.85 519.672 1088.26 518.656 1088.52 517.669L1208.33 70.5446C1208.6 69.5569 1209.61 68.9708 1210.6 69.2354L1915.87 258.212C1916.86 258.477 1917.44 259.492 1917.18 260.48L1848.01 518.626L1848.01 518.625Z"
-          fill="#EA1763"
-          fill-opacity="0.2"
-        />
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M1889.82 518.145L1966.97 384.519L1334.64 19.4436L1046.71 518.146"
-          fill="#00023B"
-        />
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M1891.42 519.072C1890.91 519.957 1889.78 520.261 1888.89 519.75C1888.01 519.239 1887.7 518.105 1888.21 517.22L1964.44 385.197C1929.5 365.025 1335.32 21.9753 1335.32 21.9753L1048.32 519.073C1047.81 519.958 1046.67 520.262 1045.79 519.751C1044.9 519.24 1044.6 518.107 1045.11 517.222L1333.04 18.5194C1333.55 17.6337 1334.68 17.3304 1335.57 17.8417L1967.89 382.917C1968.78 383.428 1969.08 384.56 1968.57 385.446L1891.42 519.073L1891.42 519.072Z"
-          fill="#EA1763"
-          fill-opacity="0.3"
-        />
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M1984.56 518.145L1468.26 1.85107L951.97 518.145"
-          fill="#00023B"
-        />
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M1985.87 516.837C1986.59 517.559 1986.59 518.733 1985.87 519.455C1985.15 520.178 1983.97 520.178 1983.25 519.455L1468.27 4.46992L953.282 519.455C952.56 520.178 951.386 520.178 950.664 519.455C949.941 518.733 949.941 517.559 950.664 516.837L1466.96 0.542456C1467.68 -0.180819 1468.85 -0.180819 1469.58 0.542456L1985.87 516.837H1985.87Z"
-          fill="#EA1763"
-          fill-opacity="0.4"
-        />
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M1889.82 518.145L1601.89 19.4431L969.563 384.518L1046.71 518.145"
-          fill="#00023B"
-        />
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M1891.42 517.221C1891.93 518.106 1891.63 519.239 1890.74 519.75C1889.86 520.261 1888.72 519.958 1888.21 519.073L1601.21 21.9747L972.094 385.197L1048.32 517.22C1048.83 518.105 1048.52 519.238 1047.64 519.749C1046.75 520.26 1045.62 519.956 1045.11 519.071L967.961 385.445C967.449 384.559 967.753 383.427 968.638 382.915L1600.97 17.8402C1601.85 17.3289 1602.98 17.6322 1603.49 18.5179L1891.42 517.22L1891.42 517.221Z"
-          fill="#EA1763"
-          fill-opacity="0.5"
-        />
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M1846.22 518.145L1726.41 71.0212L1021.14 259.998L1090.31 518.144"
-          fill="#00023B"
-        />
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M1848.01 517.668C1848.27 518.655 1847.69 519.671 1846.7 519.936C1845.71 520.2 1844.69 519.613 1844.43 518.626L1725.1 73.2907L1023.41 261.309L1092.1 517.666C1092.37 518.653 1091.78 519.669 1090.79 519.934C1089.81 520.198 1088.79 519.612 1088.52 518.624L1019.35 260.478C1019.09 259.49 1019.68 258.475 1020.66 258.21L1725.93 69.234C1726.92 68.9693 1727.94 69.5555 1728.2 70.5432L1848.01 517.667L1848.01 517.668Z"
-          fill="#EA1763"
-          fill-opacity="0.7"
-        />
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M0 518.207C140.949 233.788 745.099 19.7241 1468.1 19.7241C2191.11 19.7241 2795.25 233.788 2936.21 518.207"
-          fill="url(#paint0_radial_458_539)"
-        />
-        <defs>
-          <radialGradient
-            id="paint0_radial_458_539"
-            cx="0"
-            cy="0"
-            r="1"
-            gradientUnits="userSpaceOnUse"
-            gradientTransform="translate(1398.83 591.493) rotate(-0.163042) scale(1217.82 571.765)"
-          >
-            <stop stop-color="#EA1763" stop-opacity="0.4" />
-            <stop offset="1" stop-color="#EA1763" stop-opacity="0" />
-          </radialGradient>
-        </defs>
-      </svg>
-      <div class="relative mx-auto max-w-screen-xl px-4 pt-8 md:px-16">
-        <div class="text-center">
-          <h1
-            class="px-4 text-[36px] font-bold leading-[42px] md:px-0 md:text-[48px] md:leading-[54px] lg:text-[60px] lg:leading-[64px]"
-          >
-            The React Framework<br />for B2B Apps
-          </h1>
-          <h2
-            class="mt-4 px-8 text-[18px] font-light leading-[26px] md:mt-8 md:px-8 lg:px-44 lg:text-[21px] lg:leading-[28px] xl:px-64"
-          >
-            React-admin offers the best developer experience, lets you focus on
-            business needs, and build delightful user interfaces.
-          </h2>
-          <div class="pt-4 md:pt-8">
-            <a
-              class="inline-block rounded-full bg-[hsl(338,83%,50%)] hover:bg-[hsl(338,83%,60%)] px-5 py-4 text-center text-[18px] font-semibold leading-[26px] text-white md:px-7"
-              href="https://marmelab.com/react-admin/documentation.html"
-            >
-              <svg
-                aria-hidden="true"
-                class="-mr-0.5 inline-block h-5 w-5"
-                fill="currentColor"
-              >
-                <path
-                  d="M10.014 9.297 3.64 15.672a1.12 1.12 0 0 1-1.589 0l-1.06-1.06a1.12 1.12 0 0 1 0-1.588l4.52-4.52L.99 3.987a1.12 1.12 0 0 1 0-1.59l1.055-1.068a1.12 1.12 0 0 1 1.59 0l6.374 6.375c.446.44.446 1.153.005 1.594Z"
-                />
-              </svg>
-              Get started</a
-            >
-          </div>
-        </div>
-        <div
-          class="mt-8 flex justify-center text-white max-md:mx-auto max-md:flex max-md:max-w-sm max-md:flex-col md:relative"
-        >
-          <div
-            class="relative mt-4 md:mt-7 md:-ml-36 md:h-[364px] md:w-[519px] lg:-ml-44 lg:mt-0 lg:h-[441px] lg:w-[627px]"
-          >
-            <img
-              src="./img/Screen_oss.png"
-              class="rounded-t-lg w-full h-full"
-            />
-            <div
-              class="absolute top-0 left-0 rounded-t-lg w-full h-full bg-gradient-to-t via-transparent from-[#9ca3af99]"
-            />
-          </div>
-          <pre
-            class="overflow-x-auto rounded-md border bg-[#00023b] p-2 pr-8 text-[9px] font-normal leading-[11px] text-[#00b3da] md:absolute md:top-[48%] md:left-[48%] lg:top-[34%] lg:left-[48%] lg:p-4 lg:text-[12px] lg:leading-[16px]"
-          ><code
-						>const App <span class="text-[#ffa939]">=</span> () <span class="text-[#ffa939]">=&gt;</span> (
-	&lt;Admin
-		<span class="text-[#1bceb9]">dataProvider</span><span class="text-[#e7e8f3]">=</span><span class="text-[#1bceb9]">{dataProvider}</span>
-		<span class="text-[#1bceb9]">authProvider</span><span class="text-[#e7e8f3]">=</span><span class="text-[#1bceb9]">{authProvider}</span>
-		<span class="text-[#1bceb9]">layout</span><span class="text-[#e7e8f3]">=</span><span class="text-[#1bceb9]">{Layout}</span>
-		<span class="text-[#1bceb9]">dashboard</span><span class="text-[#e7e8f3]">=</span><span class="text-[#1bceb9]">{Dashboard}</span>
-	&gt;
-		&lt;Resource <span class="text-[#1bceb9]">name</span><span class="text-[#e7e8f3]">=</span>"deals" <span class="text-[#1bceb9]">{...deals}</span> /&gt;
-		&lt;Resource <span class="text-[#1bceb9]">name</span><span class="text-[#e7e8f3]">=</span>"contacts" <span class="text-[#1bceb9]">{...contacts}</span> /&gt;
-		&lt;Resource <span class="text-[#1bceb9]">name</span><span class="text-[#e7e8f3]">=</span>"companies" <span class="text-[#1bceb9]">{...companies}</span> /&gt;
-	&lt;/Admin&gt;
-);
-</code></pre>
-        </div>
-      </div>
-    </section>
-
-    <section class="bg-[#e7e8f3] text-[#00023b]">
-      <div
-        class="mx-auto max-w-screen-xl px-4 py-8 md:px-12 md:py-16 lg:px-24 lg:py-24"
-      >
-        <h1
-          class="text-center text-[28px] font-bold leading-[34px] lg:text-[32px] lg:leading-[40px]"
-        >
-          Build internal tools / ERPs / B2B apps, fast
-        </h1>
-        <h2
-          class="mt-8 text-center text-[18px] font-light leading-[26px] lg:text-[21px] lg:leading-[28px]"
-        >
-          Developer time is expensive, so react-admin focuses on productivity
-          and maintainability.<br />
-          See what you can build in a week.
-        </h2>
-        <ul
-          class="mt-8 grid grid-cols-1 gap-x-8 gap-y-8 text-center md:grid-cols-2 lg:gap-x-16 lg:gap-y-8"
-        >
-          <li>
-            <iframe
-              src="https://player.vimeo.com/video/474999017/?h=4557e43b02&color=EA1763&title=0&byline=0&portrait=0"
-              class="aspect-video w-full shadow-xl"
-              allow="autoplay; fullscreen; picture-in-picture"
-              allowfullscreen
-            ></iframe>
-            <h3
-              class="mt-8 text-[24px] font-bold leading-[28px] text-[#00023b]"
-            >
-              E-commerce Admin
-            </h3>
-            <ul
-              class="m-2 flex justify-center gap-4 text-[18px] font-semibold leading-[27px] text-[#ea1763]"
-            >
-              <li>
-                <a
-                  class="inline-flex hover:underline"
-                  href="https://marmelab.com/react-admin-demo/"
-                  >Demo<img src="./img/arrow-right.svg"
-                /></a>
-              </li>
-              <li>
-                <a
-                  class="inline-flex hover:underline"
-                  href="https://github.com/marmelab/react-admin/tree/master/examples/demo"
-                  >Source<img src="./img/arrow-right.svg"
-                /></a>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <video
-              src="https://marmelab.com/react-admin-crm/assets/react-admin-crm.mp4"
-              controls
-              class="aspect-video w-full shadow-xl"
-            ></video>
-            <h3
-              class="mt-8 text-[24px] font-bold leading-[28px] text-[#00023b]"
-            >
-              CRM
-            </h3>
-            <ul
-              class="m-2 flex justify-center gap-4 text-[18px] font-semibold leading-[27px] text-[#ea1763]"
-            >
-              <li>
-                <a
-                  class="inline-flex hover:underline"
-                  href="https://marmelab.com/react-admin-crm/"
-                  >Demo<img src="./img/arrow-right.svg"
-                /></a>
-              </li>
-              <li>
-                <a
-                  class="inline-flex hover:underline"
-                  href="https://github.com/marmelab/react-admin/tree/master/examples/crm"
-                  >Source<img src="./img/arrow-right.svg"
-                /></a>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <video
-              src="https://user-images.githubusercontent.com/99944/212743583-a4ee135f-f55b-4305-86c4-a3da1c49bb98.mov"
-              controls
-              class="aspect-video w-full shadow-xl"
-            ></video>
-            <h3
-              class="mt-8 text-[24px] font-bold leading-[28px] text-[#00023b]"
-            >
-              HelpDesk
-            </h3>
-            <ul
-              class="m-2 flex justify-center gap-4 text-[18px] font-semibold leading-[27px] text-[#ea1763]"
-            >
-              <li>
-                <a
-                  class="inline-flex hover:underline"
-                  href="https://marmelab.com/react-admin-helpdesk/"
-                  >Demo<img src="./img/arrow-right.svg"
-                /></a>
-              </li>
-              <li>
-                <a
-                  class="inline-flex hover:underline"
-                  href="https://github.com/marmelab/react-admin-helpdesk"
-                  >Source<img src="./img/arrow-right.svg"
-                /></a>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <img
-              class="aspect-video w-full shadow-xl"
-              src="https://marmelab.com/react-admin/img/navidrome.png"
-            />
-            <h3
-              class="mt-8 text-[24px] font-bold leading-[28px] text-[#00023b]"
-            >
-              Media player
-            </h3>
-            <ul
-              class="m-2 flex justify-center gap-4 text-[18px] font-semibold leading-[27px] text-[#ea1763]"
-            >
-              <li>
-                <a
-                  class="inline-flex hover:underline"
-                  href="https://demo.navidrome.org/app/"
-                  >Demo<img src="./img/arrow-right.svg"
-                /></a>
-              </li>
-              <li>
-                <a
-                  class="inline-flex hover:underline"
-                  href="https://github.com/navidrome/navidrome/"
-                  >Source<img src="./img/arrow-right.svg"
-                /></a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="bg-white text-[#00023b]">
-      <div
-        class="mx-auto max-w-screen-xl px-4 py-8 md:py-16 md:px-4 lg:px-32 lg:py-24 xl:px-52 xl:py-24"
-      >
-        <h1
-          class="mb-8 text-center text-[28px] font-bold leading-[34px] lg:text-[32px] lg:leading-[40px]"
-        >
-          Used by more than 10,000 companies worldwide
-        </h1>
-        <p
-          class="mb-8 text-center text-[18px] font-light leading-[26px] lg:text-[21px] lg:leading-[28px]"
-        >
-          That's because react-admin is easy to learn, robust, stable, and a joy
-          to code with.
-        </p>
-        <ul
-          class="mx-auto flex flex-wrap items-center justify-center gap-x-8 gap-y-4"
-        >
-          <li><img src="./img/users/activision.png" alt="Activision" /></li>
-          <li><img src="./img/users/adobe.png" alt="Adobe" /></li>
-          <li><img src="./img/users/cdiscount.png" alt="Cdiscount" /></li>
-          <li><img src="./img/users/decathlon.png" alt="Decathlon" /></li>
-          <li><img src="./img/users/ford.png" alt="Ford" /></li>
-          <li><img src="./img/users/ibm.png" alt="IBM" /></li>
-          <li><img src="./img/users/intel.png" alt="Intel" /></li>
-          <li><img src="./img/users/nvidia.png" alt="NVIDIA" /></li>
-          <li><img src="./img/users/puma.png" alt="Puma" /></li>
-          <li><img src="./img/users/xiaomi.png" alt="Xiaomi" /></li>
-          <li><img src="./img/users/yves-rocher.png" alt="Yves Rocher" /></li>
-          <li><img src="./img/users/zalando.png" alt="Zalando" /></li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="bg-[#2e3062] text-white">
-      <div
-        class="mx-auto max-w-screen-xl px-4 py-8 pb-14 md:px-12 md:py-16 lg:p-24"
-      >
-        <h1
-          class="text-[28px] font-bold leading-[34px] lg:text-[32px] lg:leading-[40px]"
-        >
-          Get started in minutes
-        </h1>
-        <p
-          class="mt-8 mb-8 text-[18px] font-light leading-[26px] lg:text-[21px] lg:leading-[28px]"
-        >
-          Build API-based applications using modern React and Material Design.
-          Your first admin only needs
-          <b class="font-bold">13 lines of code</b>.
-        </p>
-        <div class="relative">
-          <div class="flex flex-col gap-8 md:flex-row md:items-stretch">
-            <div
-              class="w-full flex flex-col md:flex-row flex-shrink flex-grow md:w-1/2"
-            >
-              <pre
-                class="w-full overflow-x-auto rounded-lg bg-[#00023b] p-4 text-[11px] font-normal leading-[14px] lg:text-[14px] lg:leading-[20px]"
-              ><code
-							><span class="text-[#00b3da]">import</span> React <span class="text-[#00b3da]">from</span> <span class="text-[#1bceb9]">'react'</span>;
-<span class="text-[#00b3da]">import</span> { Admin, Resource, ListGuesser } <span class="text-[#00b3da]">from</span> <span class="text-[#1bceb9]">'react-admin'</span>;
-<span class="text-[#00b3da]">import</span> simpleRestProvider <span class="text-[#00b3da]">from</span> <span class="text-[#1bceb9]">'ra-data-simple-rest'</span>;
-
-<span class="text-[#ffa939]">const</span> dataProvider = simpleRestProvider(<span class="text-[#1bceb9]">'https://domain.tld/api'</span>);
-
-<span class="text-[#ffa939]">const</span> App <span class="text-[#1bceb9]">=</span> <span class="text-white">()</span> <span class="text-[#1bceb9]">=&gt;</span> (
-  <span class="text-[#1bceb9]">&lt;</span>Admin dataProvider={<span class="text-[#9870b7]">dataProvider</span>}<span class="text-[#1bceb9]">&gt;</span>
-	<span class="text-[#1bceb9]">&lt;</span>Resource name="users" list={<span class="text-[#9870b7]">ListGuesser</span>} <span class="text-[#1bceb9]">/&gt;</span>
-  <span class="text-[#1bceb9]">&lt;/</span>Admin<span class="text-[#1bceb9]">&gt;</span>
-);
-
-<span class="text-[#00b3da]">export default</span> App;</code
-				></pre>
-            </div>
-            <div class="w-full flex-shrink flex-grow self-end md:w-1/2">
-              <img
-                src="./img/screen_get_started.png"
-                class="rounded-lg drop-shadow-xl"
-              />
-            </div>
-          </div>
-          <div
-            class="absolute top-1/2 flex w-full -translate-y-1/2 transform items-center justify-center"
-          >
-            <div
-              class="relative mt-20 flex items-center justify-center md:mt-56 md:ml-4 lg:mt-72 xl:mt-80"
-            >
-              <svg
-                aria-hidden="true"
-                class="absolute left-[calc(50%-9rem)] top-[-2rem] inline-block h-12 w-12"
-                fill="currentColor"
-              >
-                <path
-                  d="M5.328 7.336a3 3 0 0 0-3.604 4.797l3.604-4.797Zm41.4 22.281a3 3 0 0 0 1.098-4.098l-13.5-23.383a3 3 0 1 0-5.196 3l12 20.785-20.785 12a3 3 0 0 0 3 5.196l23.383-13.5ZM1.724 12.133c13.178 9.9 27.916 13.815 42.727 17.784l1.553-5.796c-14.968-4.01-28.569-7.689-40.676-16.785l-3.604 4.797Z"
-                />
-              </svg>
               <a
-                class="inline-block rounded-full bg-[hsl(338,83%,50%)] hover:bg-[hsl(338,83%,60%)] px-14 py-6 text-center text-[21px] font-semibold leading-[31.5px] text-white md:px-12 md:py-7"
-                href="https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/tutorial"
+                href="https://github.com/marmelab/react-admin"
+                class="menu-item github"
+                title="GitHub"
+              >
+                <svg viewBox="0 0 256 250" preserveAspectRatio="xMidYMid">
+                  <path
+                    d="M128.001 0C57.317 0 0 57.307 0 128.001c0 56.554 36.676 104.535 87.535 121.46 6.397 1.185 8.746-2.777 8.746-6.158 0-3.052-.12-13.135-.174-23.83-35.61 7.742-43.124-15.103-43.124-15.103-5.823-14.795-14.213-18.73-14.213-18.73-11.613-7.944.876-7.78.876-7.78 12.853.902 19.621 13.19 19.621 13.19 11.417 19.568 29.945 13.911 37.249 10.64 1.149-8.272 4.466-13.92 8.127-17.116-28.431-3.236-58.318-14.212-58.318-63.258 0-13.975 5-25.394 13.188-34.358-1.329-3.224-5.71-16.242 1.24-33.874 0 0 10.749-3.44 35.21 13.121 10.21-2.836 21.16-4.258 32.038-4.307 10.878.049 21.837 1.47 32.066 4.307 24.431-16.56 35.165-13.12 35.165-13.12 6.967 17.63 2.584 30.65 1.255 33.873 8.207 8.964 13.173 20.383 13.173 34.358 0 49.163-29.944 59.988-58.447 63.157 4.591 3.972 8.682 11.762 8.682 23.704 0 17.126-.148 30.91-.148 35.126 0 3.407 2.304 7.398 8.792 6.14C219.37 232.5 256 184.537 256 128.002 256 57.307 198.691 0 128.001 0zm-80.06 182.34c-.282.636-1.283.827-2.194.39-.929-.417-1.45-1.284-1.15-1.922.276-.655 1.279-.838 2.205-.399.93.418 1.46 1.293 1.139 1.931zm6.296 5.618c-.61.566-1.804.303-2.614-.591-.837-.892-.994-2.086-.375-2.66.63-.566 1.787-.301 2.626.591.838.903 1 2.088.363 2.66zm4.32 7.188c-.785.545-2.067.034-2.86-1.104-.784-1.138-.784-2.503.017-3.05.795-.547 2.058-.055 2.861 1.075.782 1.157.782 2.522-.019 3.08zm7.304 8.325c-.701.774-2.196.566-3.29-.49-1.119-1.032-1.43-2.496-.726-3.27.71-.776 2.213-.558 3.315.49 1.11 1.03 1.45 2.505.701 3.27zm9.442 2.81c-.31 1.003-1.75 1.459-3.199 1.033-1.448-.439-2.395-1.613-2.103-2.626.301-1.01 1.747-1.484 3.207-1.028 1.446.436 2.396 1.602 2.095 2.622zm10.744 1.193c.036 1.055-1.193 1.93-2.715 1.95-1.53.034-2.769-.82-2.786-1.86 0-1.065 1.202-1.932 2.733-1.958 1.522-.03 2.768.818 2.768 1.868zm10.555-.405c.182 1.03-.875 2.088-2.387 2.37-1.485.271-2.861-.365-3.05-1.386-.184-1.056.893-2.114 2.376-2.387 1.514-.263 2.868.356 3.061 1.403z"
+                  ></path>
+                </svg>
+              </a>
+              <a
+                class="github-stars"
+                href="https://github.com/marmelab/react-admin"
+              >
+                <div>
+                  <svg
+                    viewBox="0 0 500 625"
+                    style="height: 15px; margin-top: 5px"
+                  >
+                    <path
+                      d="M382.4 307.1c-2.7 2.7-3.6 6.2-3.6 9.8l19.6 112.3c1.8 10.7-2.7 22.3-11.6 28.5s-20.5 7.1-31.2 2.7l-100.8-52.6c-3.6-1.8-7.1-1.8-10.7 0l-100.8 52.6c-4.5 2.7-8.9 3.6-13.4 3.6-6.2 0-11.6-1.8-16.9-5.3-8.9-6.2-13.4-17.8-11.6-28.5L121 317.8c.9-3.6-.9-7.1-3.6-9.8l-82-80.2c-8-8-10.7-19.6-7.1-30.3 3.6-10.7 12.5-17.8 23.2-19.6L164 160.8c3.6-.9 7.1-2.7 8.9-6.2l50.8-102.5C229 42.2 238.9 36 249.6 36c11.6 0 21.4 6.2 25.9 16.1l50.8 102.5c1.8 3.6 4.5 5.4 8.9 6.2l112.4 16c11.6 1.8 20.5 8.9 24.1 19.6 3.6 10.7.9 22.3-7.1 30.3l-82.2 80.4z"
+                    ></path>
+                  </svg>
+                </div>
+                <div id="github-stars-content">20000</div>
+              </a>
+            </div>
+          </div>
+        </nav>
+        <div id="header-content">
+          <div id="intro-text">
+            <h1 id="page-title">The React Framework For B2B Apps</h1>
+            <h2 id="page-subtitle">
+              React-admin offers the best developer experience, lets you focus
+              on business needs, and build delightful user interfaces.
+            </h2>
+            <a class="call-to-action" href="./documentation.html"
+              >Get started</a
+            >
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="super-container white">
+        <div class="container">
+          <h3 class="title has-subtitle">
+            Build internal tools / ERPs / B2B apps, fast
+          </h3>
+          <p class="subtitle">
+            Developer time is expensive, so react-admin focuses on productivity
+            and maintainability.<br />See what you can build in a week.
+          </p>
+          <style scoped>
+            .responsiveGrid {
+              display: grid;
+              grid-template-columns: repeat(2, 1fr);
+              grid-gap: 2rem;
+              margin-bottom: 4em;
+            
+            }
+            @media (max-width: 768px) {
+              .responsiveGrid {
+                grid-template-columns: repeat(1, 1fr);
+                margin-bottom: 2em;
+              }
+            }
+          </style>
+          <div class="responsiveGrid">
+            <div>
+              <div
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  margin-bottom: 1em;
+                "
+              >
+                E-commerce Admin (<a
+                  href="https://marmelab.com/react-admin-demo/"
+                  >demo</a
+                >,
+                <a
+                  href="https://github.com/marmelab/react-admin/tree/master/examples/demo"
+                  >source</a
+                >)
+              </div>
+              <div id="laptop">
+                <img src="assets/laptop.svg" alt="" />
+                <div>
+                  <iframe
+                    title="React Admin features demonstration"
+                    src="https://player.vimeo.com/video/474999017?title=0&byline=0&portrait=0"
+                    width="100%"
+                    height="100%"
+                    frameborder="0"
+                    allow="autoplay; fullscreen"
+                    allowfullscreen
+                  ></iframe>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  margin-bottom: 1em;
+                "
+              >
+                CRM (<a href="https://marmelab.com/react-admin-crm/">demo</a>,
+                <a
+                  href="https://github.com/marmelab/react-admin/tree/master/examples/crm"
+                  >source</a
+                >)
+              </div>
+              <div id="laptop">
+                <img src="assets/laptop.svg" alt="" />
+                <div>
+                  <video
+                    src="https://marmelab.com/react-admin-crm/assets/react-admin-crm.mp4"
+                    data-canonical-src="https://marmelab.com/react-admin-crm/assets/react-admin-crm.mp4"
+                    controls=""
+                    class="d-block rounded-bottom-2 width-fit"
+                    style="max-width: 100%"
+                  ></video>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  margin-bottom: 1em;
+                "
+              >
+                HelpDesk (<a href="https://marmelab.com/react-admin-helpdesk/"
+                  >demo</a
+                >,
+                <a href="https://github.com/marmelab/react-admin-helpdesk"
+                  >source</a
+                >)
+              </div>
+              <div id="laptop">
+                <img src="assets/laptop.svg" alt="" />
+                <div>
+                  <video
+                    src="https://user-images.githubusercontent.com/99944/212743583-a4ee135f-f55b-4305-86c4-a3da1c49bb98.mov"
+                    data-canonical-src="https://user-images.githubusercontent.com/99944/212743583-a4ee135f-f55b-4305-86c4-a3da1c49bb98.mov"
+                    controls=""
+                    class="d-block rounded-bottom-2 width-fit"
+                    style="max-width: 100%"
+                  ></video>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  margin-bottom: 1em;
+                "
+              >
+                Media player (<a href="https://demo.navidrome.org/app/">demo</a>,
+                <a
+                  href="https://github.com/navidrome/navidrome/"
+                  >source</a
+                >)
+              </div>
+              <div id="laptop">
+                <img src="assets/laptop.svg" alt="" />
+                <div>
+                  <a href="https://demo.navidrome.org/app/"><img src="https://marmelab.com/react-admin/img/navidrome.png"  style="max-width: 100%"/></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="super-container lightgrey">
+        <div class="container">
+          <h3 class="title">
+            <a name="testimonials">
+              Used by more than 10,000 companies worldwide
+            </a>
+          </h3>
+          <p class="subtitle">
+            That's because react-admin is easy to learn, robust, stable, and a
+            joy to code with.
+          </p>
+          <div>
+            <ul class="clients">
+              <li class="reveal-on-hover">
+                <div class="client">
+                  <div class="image">
+                    <img
+                      src="./assets/users/decathlon.png"
+                      alt="Decathlon"
+                      title="Decathlon"
+                    />
+                  </div>
+                </div>
+              </li>
+              <li class="reveal-on-hover">
+                <div class="client">
+                  <div class="image">
+                    <img
+                      src="./assets/users/nvidia.png"
+                      alt="Nvidia"
+                      title="Nvidia"
+                    />
+                  </div>
+                </div>
+              </li>
+              <li class="reveal-on-hover">
+                <div class="client">
+                  <div class="image">
+                    <img
+                      src="./assets/users/ford.png"
+                      alt="Ford Motor Company"
+                      title="Ford Motor Company"
+                    />
+                  </div>
+                </div>
+              </li>
+              <li class="reveal-on-hover">
+                <div class="client">
+                  <div class="image">
+                    <img
+                      src="./assets/users/puma.png"
+                      alt="Puma"
+                      title="Puma"
+                    />
+                  </div>
+                </div>
+              </li>
+              <li class="reveal-on-hover">
+                <div class="client">
+                  <div class="image">
+                    <img
+                      src="./assets/users/adobe.png"
+                      alt="Adobe"
+                      title="Adobe"
+                    />
+                  </div>
+                </div>
+              </li>
+              <li class="reveal-on-hover">
+                <div class="client">
+                  <div class="image">
+                    <img
+                      src="./assets/users/intel.png"
+                      alt="Intel Corporation"
+                      title="Intel Corporation"
+                    />
+                  </div>
+                </div>
+              </li>
+              <li class="reveal-on-hover">
+                <div class="client">
+                  <div class="image">
+                    <img
+                      src="./assets/users/xiaomi.png"
+                      alt="Xiaomi Technology"
+                      title="Xiaomi Technology"
+                    />
+                  </div>
+                </div>
+              </li>
+              <li class="reveal-on-hover">
+                <div class="client">
+                  <div class="image">
+                    <img
+                      src="./assets/users/zalando.png"
+                      alt="Zalando"
+                      title="Zalando"
+                    />
+                  </div>
+                </div>
+              </li>
+              <li class="reveal-on-hover">
+                <div class="client">
+                  <div class="image">
+                    <img src="./assets/users/ibm.png" alt="IBM" title="IBM" />
+                  </div>
+                </div>
+              </li>
+              <li class="reveal-on-hover">
+                <div class="client" title="Cdiscount">
+                  <div class="image">
+                    <img
+                      src="./assets/users/cdiscount.png"
+                      alt="Cdiscount"
+                      title="Cdiscount"
+                    />
+                  </div>
+                </div>
+              </li>
+              <li class="reveal-on-hover">
+                <div class="client">
+                  <div class="image">
+                    <img
+                      src="./assets/users/yves-rocher.png"
+                      alt="Yves Rocher"
+                      title="Yves Rocher"
+                    />
+                  </div>
+                </div>
+              </li>
+              <li class="reveal-on-hover">
+                <div class="client">
+                  <div class="image">
+                    <img
+                      src="./assets/users/activision.png"
+                      alt="Activision"
+                      title="Activision"
+                    />
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="super-container white">
+        <div class="container">
+          <h3 class="title has-subtitle">Get started in minutes</h3>
+          <p class="subtitle">
+            Build API-based applications using modern React and Material Design.
+            <br />
+            Your first admin only needs
+            <span style="font-weight: bold">13 lines of code</span>
+          </p>
+          <div class="split-horizontal">
+            <div id="syntax-highlighter">
+              <pre><code class="language-jsx">import React from 'react';
+import { Admin, Resource, ListGuesser } from 'react-admin';
+import simpleRestProvider from 'ra-data-simple-rest';
+
+const dataProvider = simpleRestProvider('https://domain.tld/api');
+
+const App = () => (
+    &lt;Admin dataProvider={dataProvider}&gt;
+        &lt;Resource name="users" list={ListGuesser} /&gt;
+    &lt;/Admin&gt;
+);
+
+export default App;</code></pre>
+            </div>
+            <div id="preview">
+              <a
+                href="https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/simple?hidenavigation=1&editorsize=0"
+                target="_blank"
+                title="Test simple example live"
+              >
+                <img src="./assets/preview.png" alt="React-admin preview" />
+              </a>
+              <a
+                href="https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/simple?hidenavigation=1&editorsize=0"
+                target="_blank"
+                class="tryme"
                 >Try me</a
               >
+              <svg
+                class="arrow"
+                xmlns="http://www.w3.org/2000/svg"
+                width="752pt"
+                height="752pt"
+                version="1.1"
+                viewBox="0 0 752 752"
+              >
+                <g>
+                  <path
+                    d="m295.61 474.53c-63.719 0-112.9-19.676-113.64-19.98-2.4219-0.98828-3.5742-3.75-2.5859-6.1758 0.98438-2.4219 3.7539-3.5664 6.1758-2.5898 1.0742 0.44141 108.58 43.352 209.87-0.17188 62.645-26.91 110.14-80.902 141.16-160.48 0.94531-2.4375 3.6953-3.6406 6.1328-2.6914 2.4375 0.95312 3.6406 3.6953 2.6914 6.1328-31.992 82.066-81.223 137.84-146.33 165.78-35.273 15.129-71.238 20.176-103.47 20.176z"
+                  />
+                  <path
+                    d="m563.84 359.5c-2.0117 0-3.8789-1.293-4.5195-3.3203l-20.754-66.047-59.492 48.461c-2.0273 1.6484-5.0117 1.3438-6.6641-0.68359-1.6523-2.0273-1.3438-5.0117 0.68359-6.6641l64.91-52.859c1.2227-0.98437 2.8555-1.3164 4.3477-0.86719 1.5078 0.44922 2.6836 1.6211 3.1602 3.1172l22.844 72.707c0.78516 2.4961-0.60156 5.1523-3.0977 5.9375-0.47266 0.14844-0.94922 0.21875-1.418 0.21875z"
+                  />
+                </g>
+              </svg>
             </div>
           </div>
         </div>
       </div>
-    </section>
 
-    <section class="bg-[#00023b] text-[#999bba]">
-      <div class="mx-auto max-w-screen-xl py-8 text-white md:py-16 lg:py-24">
-        <div class="px-4 md:px-12 lg:px-16 xl:px-24">
-          <h1
-            class="text-center text-[28px] font-bold leading-[34px] lg:text-[32px] lg:leading-[40px]"
-          >
-            All the building blocks you need
-          </h1>
-          <p
-            class="mt-8 mb-8 text-center text-[18px] font-light leading-[26px] md:mb-16 lg:text-[21px] lg:leading-[28px]"
-          >
-            Focus on business logic and let react-admin handle common features.
-            The vast library of hooks and components covers most use cases.
+      <div class="super-container deepblue" style="padding-top: 70px">
+        <div class="container">
+          <div class="featured">
+            <style scoped>
+              a, a:hover, a:visited {
+                color: inherit;
+              }
+            </style>
+            <h3 class="title">All the building blocks you need</h3>
+            <p class="subtitle">
+              Focus on business logic and let react-admin handle <a href="https://marmelab.com/react-admin/Features.html">common
+              features</a>.<br />
+              The vast library of hooks and components covers most use cases.
+            </p>
+          </div>
+
+          <div class="grid">
+            <div class="grid-item">
+              <svg
+                version="1.1"
+                viewBox="0 0 752 752"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g>
+                  <path
+                    d="m210.09 254.04c-6.4727 21.727-9.7188 44.289-9.6289 66.961 0.30469 33.371 6.2852 66.453 17.691 97.816 15.41 43.578 39.43 83.605 70.633 117.71 12.738 13.977 27.348 26.133 43.406 36.117 13.086 8.5234 28.211 13.395 43.809 14.102 10.07-0.21875 19.988-2.457 29.172-6.5898 19.074-8.8711 36.348-21.188 50.949-36.332 27.629-28.078 50.066-60.836 66.258-96.75 18.59-39.465 28.531-82.449 29.16-126.07 0.089844-22.672-3.1523-45.234-9.6289-66.961-1.5078-5-6.1133-8.418-11.332-8.418-37.398 0.007812-66.438-5.4648-89.164-16.883h-0.003906c-11.199-5.582-21.391-12.992-30.152-21.93-9.4258-9.7852-17.379-20.883-23.617-32.949-0.51172-0.94922-0.79688-1.5039-0.79688-1.5234-1.8906-4.3047-6.1445-7.082-10.844-7.082-4.6953 0-8.9492 2.7773-10.84 7.082 0 0.023437-0.28906 0.57422-0.79688 1.5234-6.2383 12.066-14.195 23.164-23.617 32.949-13.48 13.625-30.109 23.719-48.418 29.383-22.996 6.832-46.922 10.012-70.902 9.4297-5.2227 0-9.8242 3.418-11.336 8.418zm111.11-4.1328h0.003906c13.531-6.7539 25.844-15.711 36.43-26.504 6.8438-7.0625 12.992-14.762 18.363-23 5.375 8.2383 11.523 15.938 18.363 23 16.148 16.328 36.055 28.453 57.977 35.305 22.43 6.832 45.738 10.355 69.188 10.465 4.2578 16.945 6.3867 34.355 6.332 51.828-0.30469 30.672-5.8242 61.074-16.324 89.895-14.328 40.504-36.633 77.719-65.602 109.45-11.234 12.359-24.109 23.117-38.27 31.973-9.4297 6.293-20.348 10-31.664 10.75-6.875-0.22656-13.637-1.8242-19.891-4.6953-16.316-7.7188-31.086-18.355-43.582-31.387-25.59-26.07-46.367-56.461-61.375-89.766-17.168-36.379-26.375-75.996-27.012-116.21-0.054687-17.488 2.0781-34.914 6.3438-51.871 35.559-0.83984 65.531-6.6094 90.723-19.223z"
+                  />
+                  <path
+                    d="m295.41 405.64 49.766 49.766c4.625 4.625 12.121 4.625 16.742 0l94.676-94.676c4.625-4.6211 4.625-12.117 0-16.742-4.6211-4.625-12.121-4.625-16.742 0l-86.305 86.301-41.395-41.395c-4.625-4.625-12.121-4.625-16.746 0-4.6211 4.625-4.6211 12.121 0.003906 16.746z"
+                  />
+                </g>
+              </svg>
+
+              <p>Roles &amp; Permissions</p>
+            </div>
+            <div class="grid-item">
+              <svg
+                version="1.1"
+                viewBox="0 0 752 752"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m505.96 257.61-25.512-25.512c-7.707-7.707-7.707-20.199 0-27.906 7.7031-7.707 20.199-7.707 27.906 0l59.195 59.199c7.707 7.7031 7.707 20.199 0 27.906l-59.195 59.195c-7.707 7.707-20.203 7.707-27.906 0-7.707-7.7031-7.707-20.199 0-27.906l25.512-25.512h-11.559c-54.492 0-98.664 44.172-98.664 98.664v157.86c0 10.898-8.8359 19.734-19.734 19.734s-19.73-8.8359-19.73-19.734v-157.86c0-54.492-44.172-98.664-98.664-98.664h-11.559l25.512 25.512c7.707 7.707 7.707 20.203 0 27.906-7.707 7.707-20.199 7.707-27.906 0l-59.195-59.195c-7.707-7.707-7.707-20.203 0-27.906l59.195-59.199c7.707-7.707 20.199-7.707 27.906 0 7.707 7.707 7.707 20.199 0 27.906l-25.512 25.512h11.559c50.246 0 94.227 26.828 118.39 66.941 24.172-40.113 68.152-66.941 118.4-66.941z"
+                />
+              </svg>
+
+              <p>Routing</p>
+            </div>
+            <div class="grid-item">
+              <svg viewBox="0 0 66 66">
+                <path
+                  d="M45.2 9.4h-5.3c-.4-2.1-2.2-3.7-4.4-3.7h-4C31 3 28.6 1 25.8 1c-2.8 0-5.2 2-5.7 4.7h-4c-2.2 0-4 1.6-4.4 3.7H6.4c-.6 0-1 .4-1 1V64c0 .6.4 1 1 1h38.7c.6 0 1-.4 1-1V10.4c.1-.6-.4-1-.9-1zm-31.6.8c0-1.4 1.1-2.5 2.5-2.5H21c.6 0 1-.4 1-1C22 4.6 23.7 3 25.8 3c2.1 0 3.7 1.7 3.7 3.7 0 .6.4 1 1 1h4.9c1.4 0 2.5 1.1 2.5 2.5v2.5H13.6v-2.5zM44.2 63H7.4V11.4h4.2v2.3c0 .6.4 1 1 1H39c.6 0 1-.4 1-1v-2.3h4.2V63z"
+                ></path>
+                <path
+                  d="M19.1 18.9c-2 .9-3.8 2.7-5 4.9L13 22.6c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4l2.2 2.2c.5.5 1.4.3 1.6-.3 1-2.4 2.7-4.2 4.6-5.2.5-.2.7-.8.5-1.3-.3-.5-.9-.8-1.4-.5zM19.1 40.4c-2 .9-3.8 2.7-5 4.9L13 44.1c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4l2.2 2.2c.5.5 1.4.3 1.6-.3 1-2.4 2.7-4.2 4.6-5.2.5-.2.7-.8.5-1.3-.3-.5-.9-.7-1.4-.5zM39.3 21.3H25.5c-.6 0-1 .4-1 1s.4 1 1 1h13.9c.6 0 1-.4 1-1-.1-.5-.5-1-1.1-1zM39.3 32.2H25.5c-.6 0-1 .4-1 1s.4 1 1 1h13.9c.6 0 1-.4 1-1-.1-.5-.5-1-1.1-1zM39.3 43.1H25.5c-.6 0-1 .4-1 1s.4 1 1 1h13.9c.6 0 1-.4 1-1-.1-.5-.5-1-1.1-1zM39.3 54H25.5c-.6 0-1 .4-1 1s.4 1 1 1h13.9c.6 0 1-.4 1-1-.1-.5-.5-1-1.1-1zM12 36.2c.4.4 1 .4 1.4 0l1.5-1.5 1.5 1.5c.4.4 1 .4 1.4 0 .4-.4.4-1 0-1.4l-1.5-1.5 1.5-1.5c.4-.4.4-1 0-1.4-.4-.4-1-.4-1.4 0l-1.5 1.5-1.5-1.5c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4l1.5 1.5-1.5 1.5c-.4.4-.4 1 0 1.4zM17.9 52.1c-.4-.4-1-.4-1.4 0L15 53.6l-1.5-1.5c-.4-.4-1-.4-1.4 0-.4.4-.4 1 0 1.4l1.5 1.5-1.6 1.6c-.4.4-.4 1 0 1.4.4.4 1 .4 1.4 0l1.5-1.5 1.5 1.5c.4.4 1 .4 1.4 0 .4-.4.4-1 0-1.4L16.3 55l1.5-1.5c.5-.4.5-1 .1-1.4zM58.4 9.4h-6.8c-1.2 0-2.1.9-2.1 2 0 .1 0 47.2.1 44.1l4.5 9c.4.7 1.4.7 1.8 0 4.9-9.8 4.6-9.1 4.6-9.4V11.4c.1-1.1-.9-2-2.1-2zM56.1 54V18h2.5v36h-2.5zm-4.5 0V18h2.5v36h-2.5zm.1-42.6H58.6V16h-7v-4.6c0 .1 0 0 .1 0zm3.4 50.4L52.2 56H58l-2.9 5.8z"
+                ></path>
+              </svg>
+              <p>Forms &amp validation</p>
+            </div>
+            <div class="grid-item">
+              <svg viewBox="0 0 90 90">
+                <path
+                  d="M87.059 13.325H2.941A2.941 2.941 0 0 0 0 16.266V73.734a2.94 2.94 0 0 0 2.941 2.941H87.06a2.94 2.94 0 0 0 2.941-2.941V16.266a2.943 2.943 0 0 0-2.942-2.941zM44.117 30.487v13.63H23.824v-13.63h20.293zm-20.293-1.766v-13.63h20.293v13.63H23.824zm20.293 17.162v13.631H23.824V45.883h20.293zm0 15.395v13.631H23.824V61.278h20.293zm22.059-15.395v13.631H45.883V45.883h20.293zm-20.293-1.766v-13.63h20.293v13.63H45.883zm20.293 17.161v13.631H45.883V61.278h20.293zm0-32.557H45.883v-13.63h20.293v13.63zM1.765 16.266c0-.647.525-1.172 1.172-1.175h19.122v13.63H1.765V16.266zm0 14.221h20.294v13.63H1.765v-13.63zm0 15.396h20.294v13.631H1.765V45.883zm0 27.85V61.278h20.294v13.631H2.937a1.177 1.177 0 0 1-1.172-1.176zm86.469 0c0 .647-.524 1.173-1.172 1.176H67.941V61.278h20.293v12.455zm0-14.219H67.941V45.883h20.293v13.631zm0-15.397H67.941v-13.63h20.293v13.63zm0-15.396H67.941v-13.63h19.121a1.177 1.177 0 0 1 1.172 1.175v12.455z"
+                ></path>
+                <path
+                  d="M17.813 18.121H6.012a.884.884 0 0 0-.883.883v5.805c0 .487.396.883.883.883h11.801a.884.884 0 0 0 .883-.883v-5.805a.884.884 0 0 0-.883-.883zM17.813 33.517H6.012a.882.882 0 0 0-.883.882v5.805c0 .487.396.882.883.882h11.801a.883.883 0 0 0 .883-.882v-5.805a.883.883 0 0 0-.883-.882zM17.813 48.913H6.012a.883.883 0 0 0-.883.883v5.805c0 .487.396.883.883.883h11.801a.884.884 0 0 0 .883-.883v-5.805a.884.884 0 0 0-.883-.883zM17.813 64.309H6.012a.883.883 0 0 0-.883.883v5.805c0 .487.396.883.883.883h11.801a.884.884 0 0 0 .883-.883v-5.805a.883.883 0 0 0-.883-.883zM39.871 18.121H28.07a.884.884 0 0 0-.883.883v5.805c0 .487.396.883.883.883h11.801a.884.884 0 0 0 .883-.883v-5.805a.883.883 0 0 0-.883-.883zM50.129 25.691H61.93a.884.884 0 0 0 .883-.883v-5.805a.884.884 0 0 0-.883-.883H50.129a.884.884 0 0 0-.883.883v5.805c0 .487.396.883.883.883zM83.988 18.121h-11.8a.884.884 0 0 0-.883.883v5.805c0 .487.396.883.883.883h11.801a.884.884 0 0 0 .883-.883v-5.805a.884.884 0 0 0-.884-.883z"
+                ></path>
+              </svg>
+              <p>Full-featured datagrid</p>
+            </div>
+            <div class="grid-item">
+              <svg viewBox="7 3 34 43">
+                <g data-name="Your Icons">
+                  <path
+                    d="M8 23a3 3 0 0 0 2.54 3L20 35.41V43a1 1 0 0 0 .53.88 1 1 0 0 0 1-.05l6-4A1 1 0 0 0 28 39v-3.59L37.46 26a2.93 2.93 0 0 0 1.65-.83A3 3 0 0 0 40 23a3 3 0 0 0-3-3h-9.11a5.57 5.57 0 0 0 .11-1 5 5 0 0 0-10 0 5.57 5.57 0 0 0 .11 1H11a3 3 0 0 0-3 3zm18.29 11.29A1 1 0 0 0 26 35v3.46l-4 2.67V35a1 1 0 0 0-.29-.71L13.41 26h21.18zM20 19a3 3 0 0 1 6 0 3.09 3.09 0 0 1-.17 1h-5.66a3.09 3.09 0 0 1-.17-1zm-9.69 3.29A.93.93 0 0 1 11 22h26a1 1 0 0 1 1 1 1 1 0 0 1-.31.71.93.93 0 0 1-.69.29H11a1 1 0 0 1-1-1 1 1 0 0 1 .31-.71zM15 14a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0-8a3 3 0 1 1-3 3 3 3 0 0 1 3-3z"
+                  ></path>
+                  <path
+                    d="M38 12a5 5 0 1 0-5 5 5 5 0 0 0 5-5zm-8 0a3 3 0 1 1 3 3 3 3 0 0 1-3-3z"
+                  ></path>
+                  <circle cx="20" cy="29" r="1"></circle>
+                  <circle cx="24" cy="29" r="1"></circle>
+                  <circle cx="28" cy="29" r="1"></circle>
+                </g>
+              </svg>
+              <p>Search &amp; Filter</p>
+            </div>
+            <div class="grid-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="3 3 20 18">
+                <title>_</title>
+                <path
+                  d="M19.562 13.902a2.967 2.967 0 0 0-.595-.246c.02-.216.033-.434.033-.656a6.995 6.995 0 0 0-4.074-6.353 3 3 0 1 0-5.852 0A6.995 6.995 0 0 0 5 13c0 .222.013.44.033.656a2.963 2.963 0 0 0-.595.246A3 3 0 1 0 7.96 18.71a6.972 6.972 0 0 0 8.078 0 2.998 2.998 0 1 0 3.523-4.81zM15.464 15a2.99 2.99 0 0 0-.036 2.917 5.968 5.968 0 0 1-6.856 0 2.98 2.98 0 0 0-2.546-4.406A6.015 6.015 0 0 1 6 13a6.002 6.002 0 0 1 3.456-5.426 2.982 2.982 0 0 0 5.088 0A6.002 6.002 0 0 1 18 13c0 .173-.012.342-.026.511A2.99 2.99 0 0 0 15.464 15z"
+                ></path>
+              </svg>
+              <p>Relationships</p>
+            </div>
+            <div class="grid-item">
+              <svg viewBox="0 0 100 100">
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M28.125 81.554a2 2 0 01-2-2V27.449l11.688-.136s2.188-.188 3-.875.75-2.375.75-2.375v-8.795H71.25a2 2 0 012 2v37.258c1.494 1.119 3.158 2.645 4.5 4.604V15.375a4 4 0 00-4-4H41.621l-3.871 3.648v6.227a2 2 0 01-2 2h-9.981l-.207.218-3.813 4.024v54.811a4 4 0 004 4h38.377c1.509-.264 2.877-.535 2.848-.773a194.078 194.078 0 00-.532-3.977H28.125z"
+                ></path>
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M62.063 54.938c-6.219 0-11.577 3.628-14.115 8.875h5.037c2.057-2.764 5.338-4.563 9.047-4.563 6.23 0 11.281 5.051 11.281 11.281s-5.051 11.281-11.281 11.281c-.031 0-.063-.005-.094-.005v.38H51.486c2.791 2.554 6.495 4.125 10.576 4.125 8.664 0 15.688-7.023 15.688-15.688s-7.023-15.686-15.687-15.686z"
+                ></path>
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M65.186 66.914c-.16-.734-.768-1.476-1.393-1.701l-11.074-3.984 2.863-12.321c.067-.646.191-1.516-.455-1.969-.647-.452-1.252-.326-1.369.285l-6.084 15.643c-.077.404.074.946.405 1.421a.083.083 0 00.008.012c.327.469.775.804 1.181.88l15.139 2.838c.599.111.94-.37.779-1.104z"
+                ></path>
+              </svg>
+              <p>Undo</p>
+            </div>
+            <div class="grid-item">
+              <svg viewBox="0 0 16 16">
+                <g>
+                  <path
+                    d="M0 14h16v1H0zM3.269 9.221h2.41L4.495 5.286 3.269 9.221zM3.39 3h2.244L9 13H6.847l-.613-2.056h-3.5L2.076 13H0L3.391 3zM12.442 8.151c.36-.046.62-.104.774-.174.28-.12.419-.308.419-.563 0-.31-.107-.525-.32-.644-.212-.118-.524-.177-.935-.177-.462 0-.788.116-.98.348-.138.171-.229.403-.275.696H9.24c.041-.664.224-1.209.548-1.635C10.305 5.334 11.192 5 12.448 5c.819 0 1.545.165 2.18.494.636.33.954.95.954 1.864v3.479c0 .24.004.533.013.876.014.26.053.436.117.529.064.092.16.169.288.23v.291h-2.125c-.06-.153-.1-.296-.124-.43a5.273 5.273 0 01-.055-.46c-.27.297-.58.55-.932.758-.42.246-.896.369-1.426.369-.677 0-1.235-.196-1.676-.588C9.22 12.02 9 11.465 9 10.746c0-.932.354-1.607 1.063-2.024.388-.228.96-.39 1.714-.487l.665-.084zm1.186.926a2.112 2.112 0 01-.374.19 3.089 3.089 0 01-.517.136l-.44.084c-.41.074-.705.165-.884.271-.301.181-.452.462-.452.842 0 .339.092.583.277.734.186.15.41.226.676.226.42 0 .808-.125 1.162-.376.354-.25.538-.707.552-1.37v-.737z"
+                  ></path>
+                </g>
+              </svg>
+              <p>Rich text editor</p>
+            </div>
+            <div class="grid-item">
+              <svg viewBox="0 0 100 100">
+                <title>language</title>
+                <g data-name="Layer 9">
+                  <path d="M27.08 43h5.85L30 33.49 27.08 43z"></path>
+                  <path
+                    d="M38 14H18a8 8 0 0 0-8 8v68l24-24h18zm-3.84 33h-8.31L24 53h-4l8-26h4l8 26h-4zM82 14H42l14 52h26a8 8 0 0 0 8-8V22a8 8 0 0 0-8-8zM68 27h4v4h-4zm12 26a26.81 26.81 0 0 1-10.64-2.1A21.79 21.79 0 0 1 60 53v-4a17.9 17.9 0 0 0 5-.7c-3.09-2.46-5-5.69-5-9.3h4c0 2.88 2.08 5.51 5.32 7.36A13.54 13.54 0 0 0 76 35H60v-4h20v4a17.15 17.15 0 0 1-6.37 13.13A23.34 23.34 0 0 0 80 49z"
+                  ></path>
+                </g>
+              </svg>
+              <p>i18n</p>
+            </div>
+            <div class="grid-item">
+              <svg viewBox="0 0 100 100">
+                <path
+                  d="M37.3 85.2c-10 0-18.1-8.1-18.1-18.1 0-4 1.3-7.7 3.5-10.7l-2.8-2.8c-2.9 3.7-4.6 8.4-4.6 13.5 0 12.2 9.9 22.1 22.1 22.1 5.1 0 9.8-1.7 13.5-4.6L48 81.7c-3 2.2-6.7 3.5-10.7 3.5zM73.4 10.8c-6.3 0-11.4 5.1-11.4 11.4s5.1 11.4 11.4 11.4c6.3 0 11.4-5.1 11.4-11.4s-5.1-11.4-11.4-11.4zm0 18.8c-4.1 0-7.4-3.3-7.4-7.4s3.3-7.4 7.4-7.4 7.4 3.3 7.4 7.4-3.3 7.4-7.4 7.4z"
+                ></path>
+                <path
+                  d="M57.6 53.3l8.7-11c1.4-1.7 1.9-4 1.6-6.2-.4-2.2-1.6-4.1-3.5-5.3L38.9 14.6 25.9 28l2.9 2.8 10.7-11 17 10.8-12.7 15.3c-2-.6-4.2-1-6.5-1-5.7 0-10.9 2.2-14.8 5.7l2.8 2.8c3.2-2.8 7.4-4.5 12-4.5 10 0 18.2 8.1 18.2 18.2 0 4.6-1.7 8.8-4.5 12l2.8 2.8c3.5-3.9 5.7-9.1 5.7-14.8 0-3.5-.8-6.8-2.3-9.7h8.6l3.8 24.5 4-.6-4.3-27.9H57.6zm-9.9-5.8l12.2-14.8 2.3 1.5c.9.6 1.5 1.5 1.7 2.6.2 1.1-.1 2.2-.8 3L53.6 52c-1.7-1.8-3.7-3.4-5.9-4.5z"
+                ></path>
+              </svg>
+              <p>Accessibility</p>
+            </div>
+            <div class="grid-item">
+              <svg
+                version="1.1"
+                viewBox="0 0 752 752"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g>
+                  <path
+                    d="m575.79 353.8h-37v-133.19c-0.003907-5.8867-2.3438-11.531-6.5078-15.691-4.1602-4.1602-9.8047-6.5039-15.688-6.5078h-340.39c-5.8867 0.003906-11.531 2.3477-15.691 6.5078-4.1602 4.1602-6.5039 9.8047-6.5078 15.691v221.99c0.003906 5.8867 2.3477 11.531 6.5078 15.691 4.1602 4.1602 9.8047 6.5039 15.691 6.5078h133.19v29.598l-18.496 0.003907c-6.8672 0.007812-13.449 2.7383-18.305 7.5938-4.8555 4.8555-7.5859 11.438-7.5938 18.305v7.3984c0.007813 6.8672 2.7383 13.449 7.5938 18.305 4.8555 4.8555 11.438 7.5859 18.305 7.5938h111-0.003906c6.8672-0.007812 13.449-2.7383 18.305-7.5938s7.5898-11.438 7.5977-18.305v-7.3984c-0.007812-6.8672-2.7422-13.449-7.5977-18.305-4.8555-4.8555-11.438-7.5859-18.305-7.5938h-18.496v-29.602h66.598v66.598c0.003906 5.8867 2.3477 11.527 6.5078 15.691 4.1602 4.1602 9.8047 6.5 15.691 6.5078h103.59c5.8867-0.007812 11.527-2.3477 15.691-6.5078 4.1602-4.1641 6.5-9.8047 6.5078-15.691v-155.39c-0.007813-5.8828-2.3477-11.527-6.5078-15.688-4.1641-4.1641-9.8047-6.5039-15.691-6.5117zm-162.79 166.5v7.3984c-0.007812 6.1289-4.9727 11.094-11.102 11.098h-111 0.003906c-6.1289-0.003907-11.094-4.9688-11.102-11.098v-7.3984c0.007812-6.1289 4.9727-11.094 11.102-11.102h19.863c1.5195 4.3164 4.3359 8.0547 8.0664 10.707 3.7305 2.6484 8.1914 4.0781 12.766 4.0938h29.602c4.5742-0.015625 9.0352-1.4453 12.766-4.0938 3.7305-2.6523 6.5469-6.3906 8.0703-10.707h19.859c6.1289 0.007813 11.094 4.9727 11.102 11.102zm-44.398-18.5c-0.003906 4.0859-3.3164 7.3945-7.3984 7.3984h-29.602c-4.082-0.003906-7.3945-3.3125-7.3984-7.3984v-37h44.398zm-192.39-51.797c-4.0859-0.007812-7.3945-3.3164-7.4023-7.4023v-221.99c0.007812-4.0859 3.3164-7.3945 7.4023-7.4023h340.39c4.082 0.007813 7.3906 3.3164 7.3984 7.4023v133.19h-51.797c-5.8867 0.007813-11.531 2.3477-15.691 6.5117-4.1602 4.1602-6.5039 9.8047-6.5078 15.688v74zm406.98 81.395c-0.003906 4.0859-3.3125 7.3945-7.3984 7.3984h-103.59c-4.0859-0.003907-7.3945-3.3125-7.4023-7.3984v-155.39c0.007813-4.082 3.3164-7.3945 7.4023-7.3984h103.59c4.0859 0.003907 7.3945 3.3164 7.3984 7.3984z"
+                  />
+                  <path
+                    d="m538.79 509.2h-29.598c-4.0312 0.078126-7.2578 3.3711-7.2578 7.4023 0.003906 4.0312 3.2266 7.3203 7.2578 7.3984h29.598c4.0312-0.078125 7.2578-3.3672 7.2578-7.3984s-3.2266-7.3242-7.2578-7.4023z"
+                  />
+                </g>
+              </svg>
+              <p>Responsive</p>
+            </div>
+            <div class="grid-item">
+              <svg
+                version="1.1"
+                viewBox="0 0 752 752"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g>
+                  <path
+                    d="m176.2 256.14h107.93c4.1016 20.234 17.355 37.422 35.883 46.531 18.527 9.1094 40.23 9.1094 58.758 0s31.781-26.297 35.879-46.531h161.02c7.3477 0 13.309-5.957 13.309-13.305 0-7.3516-5.9609-13.309-13.309-13.309h-161.02c-4.0977-20.234-17.352-37.422-35.879-46.531-18.527-9.1094-40.23-9.1094-58.758 0-18.527 9.1094-31.781 26.297-35.883 46.531h-107.93c-7.3633 0-13.332 5.9688-13.332 13.332s5.9688 13.328 13.332 13.328zm173.19-53.277c10.602 0 20.766 4.2109 28.262 11.707 7.4961 7.4961 11.707 17.664 11.707 28.266 0 10.598-4.2109 20.766-11.707 28.262-7.4961 7.4961-17.66 11.707-28.262 11.707-10.602 0-20.77-4.2109-28.266-11.707-7.4922-7.4961-11.707-17.664-11.707-28.262 0.015626-10.598 4.2305-20.758 11.723-28.25 7.4922-7.4922 17.652-11.711 28.25-11.723z"
+                  />
+                  <path
+                    d="m575.8 495.86h-227.79c-4.0977-20.234-17.352-37.422-35.879-46.531-18.527-9.1094-40.23-9.1094-58.758 0s-31.781 26.297-35.883 46.531h-41.293c-7.3633 0-13.332 5.9688-13.332 13.332 0 7.3633 5.9688 13.332 13.332 13.332h41.297-0.003906c4.1016 20.234 17.355 37.422 35.883 46.531s40.23 9.1094 58.758 0c18.527-9.1094 31.781-26.297 35.879-46.531h227.79c7.3516 0 13.309-5.957 13.309-13.309 0-7.3477-5.957-13.305-13.309-13.305zm-293.05 53.281c-10.602 0-20.77-4.2148-28.266-11.707-7.4922-7.4961-11.707-17.664-11.707-28.266s4.2148-20.766 11.707-28.262c7.4961-7.4961 17.664-11.707 28.266-11.707 10.602 0 20.766 4.2109 28.262 11.707s11.707 17.66 11.707 28.262c-0.011718 10.598-4.2266 20.758-11.719 28.25-7.4961 7.4922-17.652 11.707-28.25 11.723z"
+                  />
+                  <path
+                    d="m575.8 362.7h-27.988c-4.0977-20.234-17.352-37.422-35.879-46.531-18.527-9.1094-40.234-9.1094-58.758 0-18.527 9.1094-31.781 26.297-35.883 46.531h-241.1c-7.3633 0-13.332 5.9688-13.332 13.328 0 7.3633 5.9688 13.332 13.332 13.332h241.1c4.1016 20.234 17.355 37.422 35.883 46.531 18.523 9.1094 40.23 9.1094 58.758 0s31.781-26.297 35.879-46.531h27.988c7.3516 0 13.309-5.957 13.309-13.309 0-7.3477-5.957-13.305-13.309-13.305zm-93.246 53.277c-10.602 0-20.77-4.2109-28.266-11.707-7.4961-7.4961-11.707-17.664-11.707-28.266 0-10.598 4.2109-20.766 11.707-28.262 7.4961-7.4961 17.664-11.707 28.266-11.707 10.598 0 20.766 4.2109 28.262 11.707 7.4961 7.4961 11.707 17.664 11.707 28.262-0.011719 10.598-4.2266 20.758-11.723 28.25-7.4922 7.4922-17.652 11.711-28.246 11.723z"
+                  />
+                </g>
+              </svg>
+              <p>Preferences</p>
+            </div>
+            <div class="grid-item">
+              <svg
+                version="1.1"
+                viewBox="0 0 752 752"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m461.05 174.73c-49.016 0-89.02 39.961-89.02 88.949 0 23.586 9.3828 46.219 26.078 62.898 16.691 16.676 39.344 26.047 62.941 26.047 23.605 0 46.25-9.3711 62.945-26.047 16.691-16.676 26.074-39.312 26.074-62.898 0-23.59-9.3828-46.223-26.074-62.902-16.695-16.676-39.344-26.047-62.945-26.047zm-105.8 19.359c-69.926 5.5117-124.8 63.789-124.8 134.91v108.93l-27.375 57.559h-0.003907c-1.7422 3.668-1.4844 7.9727 0.6875 11.406 2.168 3.4336 5.9453 5.5156 10.008 5.5156h83.348c2.1484 36.125 32.352 64.863 69.062 64.863 36.711 0 66.898-28.738 69.059-64.863h83.355c4.0586 0 7.8359-2.082 10.004-5.5156 2.1719-3.4336 2.4297-7.7383 0.68359-11.406l-27.371-57.559v-58.164c0-3.1406-1.2461-6.1523-3.4688-8.375-2.2188-2.2188-5.2305-3.4648-8.3711-3.4648s-6.1523 1.2461-8.3711 3.4648c-2.2227 2.2227-3.4688 5.2344-3.4688 8.375v60.836-0.003906c0.003907 1.7617 0.40234 3.5 1.1641 5.0859l20.477 43.051h-64.48v-0.003906h-23.68v0.003906h-91.023v-0.003906h-23.68v0.003906h-64.477l20.473-43.051h-0.003906c0.76172-1.5859 1.1602-3.3242 1.1641-5.0859v-111.6c0-59.004 45.066-106.74 102.99-111.31 6.5195-0.51172 11.387-6.2109 10.875-12.73-0.25-3.1289-1.7266-6.0352-4.1172-8.0742-2.3867-2.0391-5.4883-3.0469-8.6211-2.7969zm105.8 4.2969c17.34 0 33.953 6.8789 46.211 19.125 12.258 12.242 19.133 28.836 19.133 46.148 0 17.309-6.8789 33.902-19.133 46.148-12.258 12.242-28.871 19.121-46.211 19.121-17.336 0-33.949-6.8789-46.207-19.121-12.258-12.246-19.133-28.84-19.133-46.148 0-36.184 29.109-65.273 65.34-65.273zm-140.21 314h90.656c-2.0586 23.305-21.297 41.188-45.324 41.188-24.031 0-43.27-17.883-45.328-41.188z"
+                />
+              </svg>
+              <p>Notifications</p>
+            </div>
+            <div class="grid-item">
+              <svg
+                version="1.1"
+                viewBox="0 0 752 752"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g>
+                  <path
+                    d="m373.94 568.39-6.8906-0.60938c-26.48-2.5352-46.133-25.98-43.809-52.266l8.9414-62.562c0.69531-8.0156-5.4414-15.598-14.039-16.715l-41.012-4.7969c-28.059-3.6445-49.121-27.453-49.121-55.383v-33.203c0-5.6406 4.6055-10.215 10.297-10.215h275.37c5.6914 0 10.297 4.5742 10.297 10.215v33.203c0 27.93-21.059 51.73-48.98 55.367l-41.285 4.8281c-8.4688 1.1016-14.602 8.6836-13.848 17.242l8.832 61.477c2.375 26.832-17.277 50.273-43.758 52.809zm-125.33-215.32v22.988c0 17.711 13.355 32.809 31.066 35.109l41.012 4.7969c19.703 2.5586 33.684 19.824 31.953 39.316l-8.9414 62.562c-1.2773 14.617 10.059 28.141 25.324 29.598l5.9023 0.5625 8.0352-0.5625c15.266-1.457 26.602-14.984 25.273-30.145l-8.832-61.473c-1.7891-20.035 12.188-37.301 31.762-39.848l41.285-4.8281c17.57-2.2852 30.926-17.383 30.926-35.094v-22.988z"
+                  />
+                  <path
+                    d="m391.06 517.98c0 8.2852-6.7734 15-15.125 15-8.3555 0-15.129-6.7148-15.129-15 0-8.2891 6.7734-15.004 15.129-15.004 8.3516 0 15.125 6.7148 15.125 15.004"
+                  />
+                  <path
+                    d="m375.94 536.81c-10.469 0-18.988-8.4492-18.988-18.832 0-10.383 8.5195-18.832 18.988-18.832s18.988 8.4492 18.988 18.832c0 10.383-8.5195 18.832-18.988 18.832zm0-30.008c-6.2148 0-11.266 5.0117-11.266 11.172s5.0469 11.172 11.266 11.172c6.2148 0 11.266-5.0117 11.266-11.172-0.003906-6.1602-5.0508-11.172-11.266-11.172z"
+                  />
+                  <path
+                    d="m503.39 351.85h-255.82c-5.4414 0-9.9375-4.1953-10.277-9.582l-9.2734-147.81c-0.17969-2.8125 0.82422-5.5742 2.7773-7.625 1.9414-2.0547 4.6562-3.2227 7.5039-3.2227h275.39c2.8555 0 5.582 1.1758 7.5312 3.2461 1.9414 2.0703 2.9375 4.8477 2.7461 7.6719l-10.297 147.81c-0.38281 5.3555-4.8711 9.5117-10.281 9.5117zm-246.14-20.43h236.53l8.8789-127.38h-253.39z"
+                  />
+                  <path
+                    d="m283.56 271.62c-5.3203 0-9.8242-4.0547-10.258-9.4062l-5.4102-67.578c-0.45312-5.6211 3.7812-10.543 9.4531-10.992 5.6133-0.42969 10.629 3.75 11.082 9.375l5.4102 67.578c0.45312 5.6211-3.7812 10.543-9.4531 10.992-0.26953 0.019531-0.55078 0.03125-0.82422 0.03125z"
+                  />
+                  <path
+                    d="m320.4 271.62c-5.4492 0-10.008-4.25-10.277-9.7109l-3.3477-67.578c-0.28125-5.6367 4.1016-10.43 9.7852-10.707 5.5312-0.17969 10.512 4.0664 10.793 9.6992l3.3477 67.578c0.28125 5.6367-4.1016 10.43-9.7852 10.707-0.17188 0.007812-0.34375 0.011719-0.51562 0.011719z"
+                  />
+                  <path
+                    d="m356.23 271.62c-5.6719 0-10.277-4.5469-10.297-10.176l-0.25-67.578c-0.019532-5.6445 4.5742-10.234 10.258-10.254h0.039062c5.6719 0 10.277 4.5469 10.297 10.176l0.25 67.578c0.019531 5.6445-4.5742 10.234-10.258 10.254h-0.039063z"
+                  />
+                  <path
+                    d="m395.13 271.62c-5.6719 0-10.277-4.5469-10.297-10.176l-0.25-67.578c-0.019531-5.6445 4.5742-10.234 10.258-10.254h0.039062c5.6719 0 10.277 4.5469 10.297 10.176l0.25 67.578c0.019531 5.6445-4.5742 10.234-10.258 10.254h-0.039063z"
+                  />
+                  <path
+                    d="m430.95 271.62c-0.15234 0-0.29297-0.003907-0.44141-0.011719-5.6836-0.23438-10.098-4.9922-9.8555-10.629l2.8359-67.578c0.24219-5.6406 5.1992-9.8594 10.723-9.7812 5.6836 0.23437 10.098 4.9922 9.8555 10.629l-2.8359 67.578c-0.23438 5.4922-4.7891 9.793-10.281 9.793z"
+                  />
+                  <path
+                    d="m468.83 271.62c-0.19922 0-0.39062-0.003907-0.59375-0.015626-5.6836-0.32031-10.016-5.1484-9.6953-10.777l3.8633-67.578c0.32031-5.6367 5.1992-9.9414 10.863-9.6211 5.6836 0.32031 10.016 5.1484 9.6953 10.777l-3.8633 67.578c-0.3125 5.4375-4.8477 9.6367-10.27 9.6367z"
+                  />
+                </g>
+              </svg>
+              <p>Theming</p>
+            </div>
+            <div class="grid-item">
+              <svg
+                version="1.1"
+                viewBox="0 0 752 752"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g>
+                  <path
+                    d="m594.29 436.98h-22.199c0-52.008-20.66-101.89-57.434-138.66-36.773-36.773-86.652-57.434-138.66-57.434-52.004 0-101.88 20.66-138.66 57.434-36.773 36.773-57.434 86.652-57.434 138.66h-22.199c0-57.895 22.996-113.42 63.934-154.36s96.461-63.938 154.36-63.938 113.42 23 154.36 63.938 63.938 96.461 63.938 154.36z"
+                  />
+                  <path
+                    d="m376 533.32c-12.23-0.042968-23.797-5.582-31.492-15.09-7.6992-9.5078-10.711-21.973-8.207-33.945 2.5039-11.973 10.262-22.184 21.125-27.805 10.863-5.625 23.68-6.0664 34.902-1.1992s19.66 14.523 22.98 26.297c3.3203 11.773 1.168 24.414-5.8594 34.426-7.6289 10.914-20.133 17.387-33.449 17.316zm0-59.199h-3.2578 0.003906c-5.6719 0.96875-10.57 4.5234-13.254 9.6133-2.6797 5.0898-2.8398 11.141-0.43359 16.367 2.4102 5.2266 7.1133 9.0312 12.727 10.301 5.6133 1.2656 11.496-0.14844 15.918-3.832 4.4219-3.6836 6.875-9.2148 6.6406-14.965s-3.1289-11.062-7.8359-14.375c-3.1016-2.082-6.7695-3.168-10.508-3.1094z"
+                  />
+                  <path
+                    d="m383.57 462 84.887-121.23 18.184 12.734-84.887 121.23z"
+                  />
+                </g>
+              </svg>
+              <p>Caching</p>
+            </div>
+            <div class="grid-item">
+              <svg
+                version="1.1"
+                viewBox="0 0 752 752"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m145.25 376.01c0-61.574 29.695-117.04 77.191-155.25l13.766 17.105c-42.281 34.012-68.934 83.301-68.934 138.12 0 54.828 26.652 104.13 68.934 138.12l-13.766 17.105c-47.496-38.203-77.191-93.672-77.191-155.25zm230.76-37.254c20.574 0 37.254 16.68 37.254 37.254 0 20.574-16.68 37.254-37.254 37.254-20.574 0-37.254-16.68-37.254-37.254 0-20.574 16.68-37.254 37.254-37.254zm0 22.023c-8.4258 0-15.23 6.8203-15.23 15.23 0 8.4102 6.8203 15.23 15.23 15.23 8.4102 0 15.23-6.8203 15.23-15.23 0-8.4258-6.8203-15.23-15.23-15.23zm-94.297 15.23c0-25.43 12.203-48.375 31.812-64.148l13.766 17.121c-14.406 11.578-23.555 28.344-23.555 47.043 0 18.684 9.1484 35.449 23.555 47.043l-13.766 17.105c-19.621-15.785-31.812-38.715-31.812-64.148zm188.58 0c0 25.43-12.203 48.363-31.812 64.148l-13.766-17.105c14.406-11.578 23.555-28.344 23.555-47.043 0-18.695-9.1484-35.449-23.555-47.043l13.766-17.121c19.621 15.785 31.812 38.73 31.812 64.148zm-256.86 0c0-43.52 20.957-82.73 54.516-109.73l13.766 17.121c-28.359 22.805-46.262 55.836-46.262 92.621 0 36.785 17.902 69.801 46.262 92.621l-13.766 17.121c-33.574-26.996-54.516-66.223-54.516-109.73zm325.14 0c0 43.52-20.957 82.73-54.516 109.73l-13.766-17.121c28.359-22.805 46.262-55.836 46.262-92.621 0-36.785-17.902-69.801-46.262-92.621l13.766-17.121c33.574 26.996 54.516 66.223 54.516 109.73zm68.184 0c0 61.574-29.695 117.04-77.191 155.25l-13.766-17.105c42.281-34.012 68.934-83.301 68.934-138.12 0-54.84-26.652-104.13-68.934-138.12l13.766-17.105c47.496 38.203 77.191 93.672 77.191 155.25z"
+                />
+              </svg>
+              <p>Realtime</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="super-container white">
+        <div class="container">
+          <h3 class="title has-subtitle">Already works with your API</h3>
+          <p class="subtitle">
+            Find adapters for most REST and GraphQL dialects, or write your own
+            in minutes. <br />
+            React-admin is backend agnostic.
           </p>
-        </div>
-        <div class="relative">
-          <div
-            class="lg:w-30 absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-[#00023b] to-transparent md:w-20"
-          ></div>
-          <div
-            class="lg:w-30 absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-[#00023b] to-transparent md:w-20"
-          ></div>
-          <div
-            id="building-blocks"
-            class="space-y-2 overflow-hidden whitespace-nowrap text-[21px] font-bold leading-[24px] text-white lg:space-y-4 lg:text-[24px] lg:leading-[28px]"
-          >
-            <ul class="flex flex-nowrap gap-2 lg:gap-4">
-              <li
-                class="flex items-center rounded-3xl bg-[#2e3062] py-3 px-5 pr-12 lg:px-6 lg:py-4 lg:pr-14"
-              >
-                <img
-                  class="mr-2 -ml-1"
-                  src="./img/features/roles-and-permissions.svg"
-                />
-                Roles &amp; Permissions
-              </li>
-              <li
-                class="flex items-center rounded-3xl bg-[#2e3062] py-3 px-5 pr-12 lg:px-6 lg:py-4 lg:pr-14"
-              >
-                <img
-                  class="mr-2 -ml-1"
-                  src="./img/features/forms-and-validation.svg"
-                />Forms &amp; validation
-              </li>
-              <li
-                class="flex items-center rounded-3xl bg-[#2e3062] py-3 px-5 pr-12 lg:px-6 lg:py-4 lg:pr-14"
-              >
-                <img
-                  class="mr-2 -ml-1"
-                  src="./img/features/full-featured-datagrid.svg"
-                />
-                Full-featured datagrid
-              </li>
-              <li
-                class="flex items-center rounded-3xl bg-[#2e3062] py-3 px-5 pr-12 lg:px-6 lg:py-4 lg:pr-14"
-              >
-                <img
-                  class="mr-2 -ml-1"
-                  src="./img/features/relationships.svg"
-                />
-                Relationships
-              </li>
-              <li
-                class="flex items-center rounded-3xl bg-[#2e3062] py-3 px-5 pr-12 lg:px-6 lg:py-4 lg:pr-14"
-              >
-                <img class="mr-2 -ml-1" src="./img/features/i18n.svg" />
-                i18n
-              </li>
-              <li
-                class="flex items-center rounded-3xl bg-[#2e3062] py-3 px-5 pr-12 lg:px-6 lg:py-4 lg:pr-14"
-              >
-                <img class="mr-2 -ml-1" src="./img/features/responsive.svg" />
-                Responsive
-              </li>
-              <li
-                class="flex items-center rounded-3xl bg-[#2e3062] py-3 px-5 pr-12 lg:px-6 lg:py-4 lg:pr-14"
-              >
-                <img class="mr-2 -ml-1" src="./img/features/preferences.svg" />
-                Preferences
-              </li>
-              <li
-                class="flex items-center rounded-3xl bg-[#2e3062] py-3 px-5 pr-12 lg:px-6 lg:py-4 lg:pr-14"
-              >
-                <img class="mr-2 -ml-1" src="./img/features/theming.svg" />
-                Theming
-              </li>
-              <li
-                class="flex items-center rounded-3xl bg-[#2e3062] py-3 px-5 pr-12 lg:px-6 lg:py-4 lg:pr-14"
-              >
-                <img class="mr-2 -ml-1" src="./img/features/undo.svg" />
-                Undo
-              </li>
-              <li
-                class="flex items-center rounded-3xl bg-[#2e3062] py-3 px-5 pr-12 lg:px-6 lg:py-4 lg:pr-14"
-              >
-                <img class="mr-2 -ml-1" src="./img/features/caching.svg" />
-                Caching
-              </li>
-              <li
-                class="flex items-center rounded-3xl bg-[#2e3062] py-3 px-5 pr-12 lg:px-6 lg:py-4 lg:pr-14"
-              >
-                <img class="mr-2 -ml-1" src="./img/features/routing.svg" />
-                Routing
-              </li>
-              <li
-                class="flex items-center rounded-3xl bg-[#2e3062] py-3 px-5 pr-12 lg:px-6 lg:py-4 lg:pr-14"
-              >
-                <img
-                  class="mr-2 -ml-1"
-                  src="./img/features/rich-text-editor.svg"
-                />
-                Rich text editor
-              </li>
-              <li
-                class="flex items-center rounded-3xl bg-[#2e3062] py-3 px-5 pr-12 lg:px-6 lg:py-4 lg:pr-14"
-              >
-                <img
-                  class="mr-2 -ml-1"
-                  src="./img/features/notifications.svg"
-                />
-                Notifications
-              </li>
-              <li
-                class="flex items-center rounded-3xl bg-[#2e3062] py-3 px-5 pr-12 lg:px-6 lg:py-4 lg:pr-14"
-              >
-                <img class="mr-2 -ml-1" src="./img/features/realtime.svg" />
-                Realtime
-              </li>
-              <li
-                class="flex items-center rounded-3xl bg-[#2e3062] py-3 px-5 pr-12 lg:px-6 lg:py-4 lg:pr-14"
-              >
-                <img
-                  class="mr-2 -ml-1"
-                  src="./img/features/search-and-filter.svg"
-                />
-                Search &amp; Filter
-              </li>
-              <li
-                class="flex items-center rounded-3xl bg-[#2e3062] py-3 px-5 pr-12 lg:px-6 lg:py-4 lg:pr-14"
-              >
-                <img
-                  class="mr-2 -ml-1"
-                  src="./img/features/accessibility.svg"
-                />
-                Accessibility
-              </li>
-            </ul>
+          <div class="grid clickable">
+            <a
+              target="openapi"
+              href="https://swagger.io/specification/"
+              rel="noreferrer noopener"
+            >
+              <img src="assets/adapters/openapi.png" alt="Open API" />
+            </a>
+            <a
+              target="jsonapi"
+              href="https://github.com/henvo/ra-jsonapi-client"
+              rel="noreferrer noopener"
+            >
+              <img src="assets/adapters/jsonapi.png" alt="Json API" />
+            </a>
+            <a
+              target="graphql"
+              href="https://github.com/marmelab/react-admin/tree/master/packages/ra-data-graphql"
+              rel="noreferrer noopener"
+            >
+              <img src="assets/adapters/graphql.png" alt="GraphQL" />
+            </a>
+            <a
+              target="apiplatform"
+              href="https://api-platform.com/docs/admin/"
+              rel="noreferrer noopener"
+            >
+              <img src="assets/adapters/apiplatform.png" alt="API Platform" />
+            </a>
+            <a
+              target="django"
+              href="https://github.com/synaptic-cl/ra-data-drf"
+              rel="noreferrer noopener"
+            >
+              <img src="assets/adapters/django.png" alt="Django" />
+            </a>
+            <a
+              target="firebase"
+              href="https://github.com/aymendhaya/ra-data-firebase-client"
+              rel="noreferrer noopener"
+            >
+              <img src="assets/adapters/firebase.png" alt="Firebase" />
+            </a>
+            <a
+              target="hasura"
+              href="https://github.com/hasura/graphql-engine/tree/master/community/tools/ra-data-hasura"
+              rel="noreferrer noopener"
+            >
+              <img src="assets/adapters/hasura.png" alt="Hasura" />
+            </a>
+            <a
+              target="prisma"
+              href="https://github.com/weakky/ra-data-prisma"
+              rel="noreferrer noopener"
+            >
+              <img src="assets/adapters/prisma.png" alt="Prisma" />
+            </a>
+            <a
+              target="spring"
+              href="https://github.com/vishpat/ra-data-springboot-rest"
+              rel="noreferrer noopener"
+            >
+              <img src="assets/adapters/spring.png" alt="Spring" />
+            </a>
+            <a
+              target="supabase"
+              href="https://github.com/marmelab/ra-supabase"
+              rel="noreferrer noopener"
+            >
+              <img src="assets/adapters/supabase.png" alt="Supabase" />
+            </a>
+            <!--
+            <a
+              target="amplify"
+              href="https://github.com/MrHertal/react-admin-amplify"
+              rel="noreferrer noopener"
+            >
+              <img src="assets/adapters/amplify.jpeg" alt="Amplify" />
+            </a>
+            -->
           </div>
         </div>
       </div>
-    </section>
 
-    <section
-      class="bg-[#e7e8f3] text-[#00023b] max-md:bg-[url:url('/img/group_31.svg'),url('/img/group_31.svg')] max-md:bg-[length:200px_200px,200px_200px] max-md:bg-[position:top_-100px_center,bottom_-100px_center] max-md:bg-no-repeat"
-    >
-      <div
-        class="p_y-24 md:p_y-24 lg:p_y-40 mx-auto max-w-screen-xl px-4 md:px-12 lg:px-24"
-      >
-        <div class="grid grid-cols-1 gap-0 md:grid-cols-2">
-          <div
-            class="pt-24 pb-10 text-center md:pb-24 md:pr-16 md:text-left lg:py-40"
-          >
-            <h1
-              class="text-[28px] font-bold leading-[34px] lg:text-[32px] lg:leading-[40px]"
-            >
-              Already works with your API
-            </h1>
-            <p
-              class="mt-8 text-[18px] font-light leading-[26px] lg:text-[21px] lg:leading-[28px]"
-            >
-              Find adapters for most REST and GraphQL dialects, or write your
-              own in minutes. React-admin is backend agnostic.<br /><br />For
-              example :
-              <b class="font-bold"
-                >Open API, json:api, GraphQL, API Platform, Django, Firebase,
-                Prisma....</b
-              >
-            </p>
+      <div class="super-container crowd"></div>
+
+      <div class="super-container lightgrey">
+        <div class="container">
+          <h3 class="title">Read what people say about it...</h3>
+          <div style="overflow: hidden">
+            <div class="carousel my-carousel carousel--translate">
+              <input
+                class="carousel__activator"
+                type="radio"
+                name="carousel"
+                id="F"
+                checked="checked"
+              />
+              <input
+                class="carousel__activator"
+                type="radio"
+                name="carousel"
+                id="G"
+              />
+              <input
+                class="carousel__activator"
+                type="radio"
+                name="carousel"
+                id="H"
+              />
+              <input
+                class="carousel__activator"
+                type="radio"
+                name="carousel"
+                id="I"
+              />
+              <input
+                class="carousel__activator"
+                type="radio"
+                name="carousel"
+                id="J"
+              />
+              <input
+                class="carousel__activator"
+                type="radio"
+                name="carousel"
+                id="K"
+              />
+              <div class="carousel__controls">
+                <label
+                  class="carousel__control carousel__control--backward"
+                  for="K"
+                ></label>
+                <label
+                  class="carousel__control carousel__control--forward"
+                  for="G"
+                ></label>
+              </div>
+              <div class="carousel__controls">
+                <label
+                  class="carousel__control carousel__control--backward"
+                  for="F"
+                ></label>
+                <label
+                  class="carousel__control carousel__control--forward"
+                  for="H"
+                ></label>
+              </div>
+              <div class="carousel__controls">
+                <label
+                  class="carousel__control carousel__control--backward"
+                  for="G"
+                ></label>
+                <label
+                  class="carousel__control carousel__control--forward"
+                  for="I"
+                ></label>
+              </div>
+              <div class="carousel__controls">
+                <label
+                  class="carousel__control carousel__control--backward"
+                  for="H"
+                ></label>
+                <label
+                  class="carousel__control carousel__control--forward"
+                  for="J"
+                ></label>
+              </div>
+              <div class="carousel__controls">
+                <label
+                  class="carousel__control carousel__control--backward"
+                  for="I"
+                ></label>
+                <label
+                  class="carousel__control carousel__control--forward"
+                  for="K"
+                ></label>
+              </div>
+              <div class="carousel__controls">
+                <label
+                  class="carousel__control carousel__control--backward"
+                  for="J"
+                ></label>
+                <label
+                  class="carousel__control carousel__control--forward"
+                  for="F"
+                ></label>
+              </div>
+              <div class="carousel__track">
+                <li class="carousel__slide">
+                  <div class="testimonial">
+                    <img
+                      src="assets/testimonials/greg-fodor.jpg"
+                      alt="Greg Fodor"
+                    />
+                    <div>
+                      <blockquote>
+                        <p>
+                          We've had a great experience with React Admin, it's
+                          worked very well so far in helping us quickly build a
+                          usable administrative interface without a lot of
+                          effort.”
+                        </p>
+                      </blockquote>
+                      <cite
+                        ><span>Greg Fodor - Engineering Manager</span
+                        ><br />Mozilla</cite
+                      >
+                    </div>
+                  </div>
+                </li>
+                <li class="carousel__slide">
+                  <div class="testimonial">
+                    <img
+                      src="assets/testimonials/tony-wshannon.jpg"
+                      alt="Tony Shannon"
+                    />
+                    <div>
+                      <blockquote>
+                        <p>
+                          The development team involved have been very impressed
+                          by the React Admin framework and it has been capable
+                          of handling the complex challenges we have had for it
+                          thusfar.” -
+                          <a
+                            class="source"
+                            target="_blank"
+                            href="https://github.com/marmelab/react-admin/issues/4027#issuecomment-561606381"
+                            >[source]</a
+                          >
+                        </p>
+                      </blockquote>
+                      <cite
+                        ><span>Tony Shannon - Director</span><br />Ripple
+                        Foundation</cite
+                      >
+                    </div>
+                  </div>
+                </li>
+                <li class="carousel__slide">
+                  <div class="testimonial">
+                    <img
+                      src="assets/testimonials/sencrop.png"
+                      alt="Nicolas Delperdange"
+                    />
+                    <div>
+                      <blockquote>
+                        <p>
+                          React-admin has highly speed up the development of our
+                          internal tooling and we can build simple, as expert,
+                          interfaces for the rest of the team to communicate
+                          with our business database.” -
+                          <a
+                            class="source"
+                            target="_blank"
+                            href="https://github.com/marmelab/react-admin/issues/4027#issuecomment-559935948"
+                            >[source]</a
+                          >
+                        </p>
+                      </blockquote>
+                      <cite
+                        ><span>Nicolas Delperdange - Developer</span
+                        ><br />Sencrop</cite
+                      >
+                    </div>
+                  </div>
+                </li>
+                <li class="carousel__slide">
+                  <div class="testimonial">
+                    <img
+                      src="assets/testimonials/nicolas-girault.jpg"
+                      alt="Nicolas Girault"
+                    />
+                    <div>
+                      <blockquote>
+                        <p>
+                          React-admin is simpler to setup and more customizable
+                          than forest admin. Support is great, documentation is
+                          rich of examples and explain well the philosophy of
+                          the library.” -
+                          <a
+                            class="source"
+                            target="_blank"
+                            href="https://github.com/marmelab/react-admin/issues/4027#issuecomment-564948391"
+                            >[source]</a
+                          >
+                        </p>
+                      </blockquote>
+                      <cite
+                        ><span>Nicolas Girault - CTO</span><br />Lalilo</cite
+                      >
+                    </div>
+                  </div>
+                </li>
+                <li class="carousel__slide">
+                  <div class="testimonial">
+                    <img src="assets/testimonials/loggi.png" alt="Loggi" />
+                    <div>
+                      <blockquote>
+                        <p>
+                          We are using React-Admin in production at Loggi for
+                          internal management tools and it has been a delight. -
+                          <a
+                            class="source"
+                            target="_blank"
+                            href="https://github.com/marmelab/react-admin/issues/4027#issuecomment-610970238"
+                            >[source]</a
+                          >
+                        </p>
+                      </blockquote>
+                      <cite>
+                        <span>Leonidas Villeneuve - Software Engineer</span
+                        ><br />Loggi
+                      </cite>
+                    </div>
+                  </div>
+                </li>
+                <li class="carousel__slide">
+                  <div class="testimonial">
+                    <img
+                      src="assets/testimonials/ironhack.png"
+                      class="noborder"
+                      alt="IronHack"
+                    />
+                    <div>
+                      <blockquote>
+                        <p>
+                          React-admin has allowed us to quickly create and
+                          evolve a powerful tool that otherwise would have taken
+                          months of time and effort to develop.” -
+                          <a
+                            class="source"
+                            target="_blank"
+                            href="https://github.com/marmelab/react-admin/issues/4027#issuecomment-582308959"
+                            >[source]</a
+                          >
+                        </p>
+                      </blockquote>
+                      <cite><span>Guillermo Noain</span><br />Ironhack</cite>
+                    </div>
+                  </div>
+                </li>
+              </div>
+              <div class="carousel__indicators">
+                <label class="carousel__indicator" for="F"></label>
+                <label class="carousel__indicator" for="G"></label>
+                <label class="carousel__indicator" for="H"></label>
+                <label class="carousel__indicator" for="I"></label>
+                <label class="carousel__indicator" for="J"></label>
+                <label class="carousel__indicator" for="K"></label>
+              </div>
+            </div>
           </div>
-          <div
-            class="flex items-center justify-center bg-no-repeat pb-28 md:bg-[url:url('/img/group_31.svg'),url('/img/group_31.svg')] md:bg-[length:320px_320px,320px_320px] md:bg-[position:top_-160px_center,bottom_-160px_center] md:pb-0 lg:bg-[length:366px_366px,366px_366px] lg:bg-[position:top_-183px_center,bottom_-183px_center]"
-          >
-            <img
-              src="./img/your-api.svg"
-              class="h-[90px] w-[320px] md:h-[110px] md:w-[410px] lg:h-[135px] lg:w-[500px] xl:h-[150px] xl:w-[560px]"
-            />
+        </div>
+      </div>
+
+      <div class="super-container deepblue">
+        <div class="container">
+          <h3 class="title">Built with state-of-the-art libraries</h3>
+          <div class="grid tech clickable" style="max-width: none">
+            <a
+              target="react"
+              href="https://reactjs.org/"
+              rel="noreferrer noopener"
+            >
+              <div class="grid-item">
+                <img src="assets/techs/react.png" alt="React" />
+                <p>React</p>
+              </div>
+            </a>
+            <a target="mui" href="https://mui.com/" rel="noreferrer noopener">
+              <div class="grid-item">
+                <img src="assets/techs/material-ui.png" alt="Material UI" />
+                <p>MUI</p>
+              </div>
+            </a>
+            <a
+              target="reactrouter"
+              href="https://reacttraining.com/react-router/"
+              rel="noreferrer noopener"
+            >
+              <div class="grid-item">
+                <img src="assets/techs/react-router.png" alt="React Router" />
+                <p>React Router</p>
+              </div>
+            </a>
+            <a
+              target="reactquery"
+              href="https://react-query.tanstack.com/"
+              rel="noreferrer noopener"
+            >
+              <div class="grid-item">
+                <img src="assets/techs/react-query.png" alt="React Query" />
+                <p>React-query</p>
+              </div>
+            </a>
+            <a
+              target="reacthookform"
+              href="https://react-hook-form.com/"
+              rel="noreferrer noopener"
+            >
+              <div class="grid-item">
+                <img
+                  src="assets/techs/react-hook-form.jpeg"
+                  alt="React Hook Form"
+                />
+                <p>React-hook-form</p>
+              </div>
+            </a>
+            <a
+              target="typescript"
+              href="https://www.typescriptlang.org/"
+              rel="noreferrer noopener"
+            >
+              <div class="grid-item">
+                <img src="assets/techs/typescript.png" alt="TypeScript" />
+                <p>TypeScript</p>
+              </div>
+            </a>
           </div>
         </div>
       </div>
-    </section>
 
-    <section class="bg-white text-[#00023b]">
-      <div class="mx-auto max-w-screen-xl py-8 px-4 md:px-12 md:py-16 lg:p-24">
-        <h1
-          class="mb-16 text-center text-[28px] font-bold leading-[34px] lg:text-[32px] lg:leading-[40px]"
-        >
-          Read what people say about it...
-        </h1>
-        <div
-          class="columns-1 gap-8 space-y-8 md:columns-2 lg:columns-3 lg:gap-16"
-        >
-          <blockquote
-            class="break-inside-avoid-column rounded-xl bg-[#e7e8f3] p-8"
-          >
-            <p
-              class="text-[18px] font-light leading-[26px] lg:text-[21px] lg:leading-[28px] italic"
-            >
-              “We have recommended react-admin to several organizations. We are
-              more than satisfied with react-admin and we are excited to
-              continue using react-admin in the future!”
-            </p>
-            <div class="mt-8 flex justify-between">
-              <div>
-                <p
-                  class="mb-2 font-bold text-[21px] leading-[24px] lg:text-[24px] lg:leading-[28px]"
-                >
-                  Alexander Rees, Head of Web Development
-                </p>
-                <p class="text-[18px] font-light leading-[26px]">Caritas</p>
-              </div>
-              <img
-                class="inline-block h-24 w-24 rounded-full"
-                src="./img/users/caritas.jpg"
-                alt=""
-              />
-            </div>
-          </blockquote>
-          <blockquote
-            class="break-inside-avoid-column rounded-xl bg-[#e7e8f3] p-8"
-          >
-            <p
-              class="text-[18px] font-light leading-[26px] lg:text-[21px] lg:leading-[28px] italic"
-            >
-              “I am definitely enjoying using react-admin. I was exposed to it a
-              few years ago on a product/project I inherited and maintain, and
-              now am using it for two other projects.”
-            </p>
-            <div class="mt-8 flex justify-between">
-              <div>
-                <p
-                  class="mb-2 font-bold text-[21px] leading-[24px] lg:text-[24px] lg:leading-[28px]"
-                >
-                  Jeff Israel, Head of Engineering
-                </p>
-                <p class="text-[18px] font-light leading-[26px]">
-                  Code Finds a Way
-                </p>
-              </div>
-              <img
-                class="inline-block h-24 w-24 rounded-full"
-                src="./img/users/code-finds-a-way.jpg"
-                alt=""
-              />
-            </div>
-          </blockquote>
-          <blockquote
-            class="break-inside-avoid-column rounded-xl bg-[#e7e8f3] p-8"
-          >
-            <p
-              class="text-[18px] font-light leading-[26px] lg:text-[21px] lg:leading-[28px] italic"
-            >
-              “React-admin is simpler to setup and more customizable than forest
-              admin. Support is great, documentation is rich of examples and
-              explain well the philosophy of the library.”
-            </p>
-            <div class="mt-8 flex justify-between">
-              <div>
-                <p
-                  class="mb-2 font-bold text-[21px] leading-[24px] lg:text-[24px] lg:leading-[28px]"
-                >
-                  Nicolas Girault, Software Engineer
-                </p>
-                <p class="text-[18px] font-light leading-[26px]">lalilo</p>
-              </div>
-              <img
-                class="inline-block h-24 w-24 rounded-full"
-                src="./img/users/lalilo.jpg"
-                alt=""
-              />
-            </div>
-          </blockquote>
-          <blockquote
-            class="break-inside-avoid-column rounded-xl bg-[#e7e8f3] p-8"
-          >
-            <p
-              class="text-[18px] font-light leading-[26px] lg:text-[21px] lg:leading-[28px] italic"
-            >
-              “React-admin has allowed us to quickly create and evolve a
-              powerful tool that otherwise would have taken months of time and
-              effort to develop.”
-            </p>
-            <div class="mt-8 flex justify-between">
-              <div>
-                <p
-                  class="mb-2 font-bold text-[21px] leading-[24px] lg:text-[24px] lg:leading-[28px]"
-                >
-                  Guillermo Noain, Tech Lead
-                </p>
-                <p class="text-[18px] font-light leading-[26px]">Iron Hack</p>
-              </div>
-              <img
-                class="inline-block h-24 w-24 rounded-full"
-                src="./img/users/iron-hack.jpg"
-                alt=""
-              />
-            </div>
-          </blockquote>
-          <blockquote
-            class="break-inside-avoid-column rounded-xl bg-[#e7e8f3] p-8"
-          >
-            <p
-              class="text-[18px] font-light leading-[26px] lg:text-[21px] lg:leading-[28px] italic"
-            >
-              “We've been using react admin in our company project for quite
-              some time now and we loved it. We really appreciate your hard work
-              and we wish all the best for the react-admin project.”
-            </p>
-            <div class="mt-8 flex justify-between">
-              <div>
-                <p
-                  class="mb-2 font-bold text-[21px] leading-[24px] lg:text-[24px] lg:leading-[28px]"
-                >
-                  Patrick André TOLOJANAHARY, FullStack Software Developer
-                </p>
-                <p class="text-[18px] font-light leading-[26px]">
-                  SmartPredict
-                </p>
-              </div>
-              <img
-                class="inline-block h-24 w-24 rounded-full"
-                src="./img/users/smartpredict.jpeg"
-                alt=""
-              />
-            </div>
-          </blockquote>
-          <blockquote
-            class="break-inside-avoid-column rounded-xl bg-[#e7e8f3] p-8"
-          >
-            <p
-              class="text-[18px] font-light leading-[26px] lg:text-[21px] lg:leading-[28px] italic"
-            >
-              “We where looking to improve the graphic interface of our custom
-              made web admins. We ended up changing our entire client-side
-              infrastructure to one based on React-admin in record time!”
-            </p>
-            <div class="mt-8 flex justify-between">
-              <div>
-                <p
-                  class="mb-2 font-bold text-[21px] leading-[24px] lg:text-[24px] lg:leading-[28px]"
-                >
-                  Aníbal Svarcas, Senior Developer
-                </p>
-                <p class="text-[18px] font-light leading-[26px]">Metiri</p>
-              </div>
-              <img
-                class="inline-block h-24 w-24 rounded-full"
-                src="./img/users/metiri.jpg"
-                alt=""
-              />
-            </div>
-          </blockquote>
-          <blockquote
-            class="break-inside-avoid-column rounded-xl bg-[#e7e8f3] p-8"
-          >
-            <p
-              class="text-[18px] font-light leading-[26px] lg:text-[21px] lg:leading-[28px] italic"
-            >
-              “Having built React Admin into our products, it's allowed us to
-              develop simplistic CMS's right through to complex, highly
-              integrated web apps, with confidence and repeated success, it's an
-              incredible framework.”
-            </p>
-            <div class="mt-8 flex justify-between">
-              <div>
-                <p
-                  class="mb-2 font-bold text-[21px] leading-[24px] lg:text-[24px] lg:leading-[28px]"
-                >
-                  Anthony Main, Founder
-                </p>
-                <a
-                  href="https://thedistance.co.uk/"
-                  class="underline hover:no-underline text-[18px] font-light leading-[26px]"
-                >
-                  The Distance
-                </a>
-              </div>
-              <img
-                class="inline-block h-24 w-24 rounded-full"
-                src="./img/users/the-distance.jpg"
-                alt=""
-              />
-            </div>
-          </blockquote>
-        </div>
-      </div>
-    </section>
-
-    <section class="bg-[#e7e8f3] text-[#00023b]">
-      <div class="mx-auto max-w-screen-xl p-8 md:py-24">
-        <h1
-          class="mb-8 text-center text-[28px] font-bold leading-[34px] lg:text-[32px] lg:leading-[40px]"
-        >
-          Built with state-of-the-art libraries
-        </h1>
-        <div class="flex justify-center">
-          <ul
-            class="grid grid-cols-2 gap-6 text-[16px] font-light leading-[20px] md:grid-cols-6"
-          >
-            <li class="flex flex-col items-center justify-end gap-2">
-              <img src="./img/react.png" alt="React" class="h-16" />
-              <span class="text-center">React</span>
-            </li>
-            <li class="flex flex-col items-center justify-end gap-2">
-              <img src="./img/material-ui.png" alt="MUI" />
-              <span class="text-center">MUI</span>
-            </li>
-            <li class="flex flex-col items-center justify-end gap-2">
-              <img
-                src="./img/react-router.png"
-                alt="React Router"
-                class="mb-2"
-              />
-              <span class="text-center">React Router</span>
-            </li>
-            <li class="flex flex-col items-center justify-end gap-2">
-              <img src="./img/react-query.png" alt="React-query" />
-              <span class="text-center">React-query</span>
-            </li>
-            <li class="flex flex-col items-center justify-end gap-2">
-              <img src="./img/react-hook-form.png" alt="React-hook-form" />
-              <span class="text-center">React-hook-form</span>
-            </li>
-            <li class="flex flex-col items-center justify-end gap-2">
-              <img src="./img/typescript.png" alt="Typescript" />
-              <span class="text-center">Typescript</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section
-      class="bg-[#2e3062] bg-[url:url('/img/group_4.svg'),url('/img/ellipse_51.svg')] bg-[position:bottom_-714px_center,center] bg-no-repeat text-white max-lg:bg-[length:700px_700px,200px_200px] max-lg:bg-[position:bottom_-584px_center,center] max-md:bg-[length:400px_400px,200px_200px] max-md:bg-[position:bottom_-284px_center,center]"
-    >
-      <div
-        class="mx-auto max-w-screen-xl px-4 pb-52 pt-8 md:px-12 md:pt-16 lg:px-16 lg:pt-24"
-      >
-        <h1
-          class="mb-8 text-center text-[28px] font-bold leading-[34px] lg:text-[32px] lg:leading-[40px]"
-        >
-          React Admin is Open-Source (MIT License)
-        </h1>
-        <p class="text-center text-[21px] leading-[28px]">
-          Sponsored and supported by
-          <a
-            class="font-bold underline hover:no-underline"
-            href="https://marmelab.com/"
-            >Marmelab</a
-          >
-          since 2016
-        </p>
-        <div
-          class="isolate mx-0 mt-8 grid grid-cols-1 gap-8 px-0 md:mt-16 md:grid-cols-2 lg:px-32"
-        >
-          <div class="flex flex-col justify-between rounded-xl bg-[#e7e8f3]">
-            <div>
-              <div class="rounded-xl rounded-b-none bg-[#00023b] p-8">
-                <h2
-                  class="flex items-center justify-center gap-4 text-[24px] font-bold leading-[28px] text-[#ea1763]"
-                >
-                  <img src="./img/ra-oe.svg" />
-                  Open-source Edition
-                </h2>
-              </div>
-              <ul
-                role="list"
-                class="list-disc space-y-8 bg-[#e7e8f3] p-7 pl-14 text-[18px] font-light leading-[26px] text-[#00023b] md:pl-16 md:text-[21px] md:leading-[28px]"
-              >
+      <div class="super-container lightgrey">
+        <div class="container">
+          <h3 class="title has-subtitle">
+            React Admin is Open-Source (MIT License)
+          </h3>
+          <p class="subtitle">
+            Sponsored and supported by
+            <a href="https://marmelab.com">Marmelab</a> since 2016
+          </p>
+          <div class="support-grid">
+            <div class="card">
+              <img src="assets/osi.png" alt="" />
+              <div class="title" id="community-edition">Community Edition</div>
+              <ul>
                 <li>Code and Documentation</li>
                 <li>
                   Community support via
-                  <a class="underline hover:no-underline" href=""
+                  <a
+                    href="https://stackoverflow.com/questions/tagged/react-admin"
                     >Stack Overflow</a
                   >
-                  and
-                  <a class="underline hover:no-underline" href="">Discord</a>.
+                  and <a href="https://discord.gg/GeZF9sqh3N">Discord</a>.
                 </li>
               </ul>
+              <a href="https://www.npmjs.com/package/react-admin">Free</a>
+              <p>Forever. This is open-source</p>
             </div>
-            <div
-              class="rounded-xl rounded-t-none bg-[#e7e8f3] px-4 pt-0 text-center md:p-8 lg:pt-16"
-            >
-              <a
-                href="https://www.npmjs.com/package/react-admin"
-                class="inline-block rounded-full bg-[hsl(338,83%,50%)] hover:bg-[hsl(338,83%,60%)] px-14 py-6 text-center text-[21px] font-semibold leading-[31.5px] text-white md:px-12 md:py-7"
-                >Free</a
-              >
-              <p
-                class="p-6 text-center text-[18px] font-light leading-[26px] text-[#00023b] md:text-[21px] md:leading-[28px]"
-              >
-                Forever. This is open-source
-              </p>
-            </div>
-          </div>
-          <div class="flex flex-col justify-between rounded-xl bg-[#e7e8f3]">
-            <div>
-              <div class="rounded-xl rounded-b-none bg-[#00023b] p-8">
-                <h2
-                  class="flex items-center justify-center gap-4 text-[24px] font-bold leading-[28px] text-[#1bceb9]"
-                >
-                  <img src="./img/ra-ee.svg" />
-                  Enterprise Edition
-                </h2>
+            <div class="card">
+              <img src="assets/marmelab.png" alt="" />
+              <div class="title" id="enterprise-edition">
+                Enterprise Edition
               </div>
-              <ul
-                role="list"
-                class="list-disc space-y-8 bg-[#e7e8f3] p-7 pl-14 text-[18px] font-light leading-[26px] text-[#00023b] md:pl-16 md:text-[21px] md:leading-[28px]"
-              >
+              <ul>
                 <li>Code and Documentation</li>
                 <li>
                   Professional support from
-                  <a class="underline hover:no-underline" href="">Marmelab</a>
+                  <a href="https://marmelab.com">marmelab</a>
                 </li>
                 <li>
                   Access to private modules (rbac, editable datagrid, realtime,
@@ -1102,64 +1258,146 @@
                 </li>
                 <li>50% discount on Professional Services</li>
               </ul>
-            </div>
-            <div
-              class="rounded-xl rounded-t-none bg-[#e7e8f3] px-4 pt-0 text-center md:p-8 lg:pt-16"
-            >
-              <a
-                href="./enterprise.html"
-                class="inline-block rounded-full bg-[hsl(173,77%,46%)] px-6 py-4 text-center text-[18px] font-semibold leading-[26px] text-[#00023b] hover:bg-[hsl(173,77%,60%)] lg:px-12 lg:py-6 lg:text-[21px] lg:leading-[31.5px]"
-                >Discover</a
-              >
-              <p
-                class="p-6 text-center text-[18px] font-light leading-[26px] text-[#00023b] md:text-[21px] md:leading-[28px]"
-              >
-                Starts from 135€/month
-              </p>
+              <a href="https://marmelab.com/ra-enterprise/">Discover</a>
+              <p>Starts from 135€/month</p>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </main>
 
-    <footer class="bg-[#00023b] text-white">
-      <div
-        class="mx-auto flex max-w-screen-xl flex-col items-start justify-between px-4 py-8 text-[18px] font-light leading-[26px] md:flex-row md:items-end md:px-12 md:py-16 lg:px-24 lg:pt-20 lg:pb-20"
-      >
-        <div
-          class="order-2 mt-8 flex flex-col justify-center gap-8 md:mt-0 md:flex-row md:gap-16"
-        >
-          <a
-            href="mailto:react-admin-ee@marmelab.com"
-            class="underline hover:no-underline"
-            >Contact</a
-          >
-          <a
-            href="https://marmelab.com/fr/legal"
-            class="underline hover:no-underline"
-            >Legal</a
-          >
-          <a
-            href="https://marmelab.com/ra-enterprise/assets/MARMELAB_Services_Terms_2022_11_22.pdf"
-            class="underline hover:no-underline"
-            >Terms & Conditions</a
-          >
-        </div>
-        <div class="order-1 flex items-end gap-8">
-          <img alt="" src="./img/marmelab.png" role="presentation" />
-          <p>
-            Copyright
-            <a
-              href="https://marmelab.com/"
-              class="underline hover:no-underline"
+    <footer>
+      <div class="super-container white" style="padding: 0">
+        <div class="container">
+          <p class="copy">
+            <a href="https://twitter.com/ReactAdmin">
+              <svg
+                version="1.1"
+                id="svg3626"
+                viewBox="0 0 300.00006 244.18703"
+                style="width: 20px; vertical-align: middle"
+              >
+                <g transform="translate(-539.17946,-568.85777)" id="layer1">
+                  <path
+                    id="path3611"
+                    style="
+                      fill: #1da1f2;
+                      fill-opacity: 1;
+                      fill-rule: nonzero;
+                      stroke: none;
+                    "
+                    d="m 633.89823,812.04479 c 112.46038,0 173.95627,-93.16765 173.95627,-173.95625 0,-2.64628 -0.0539,-5.28062 -0.1726,-7.90305 11.93799,-8.63016 22.31446,-19.39999 30.49762,-31.65984 -10.95459,4.86937 -22.74358,8.14741 -35.11071,9.62551 12.62341,-7.56929 22.31446,-19.54304 26.88583,-33.81739 -11.81284,7.00307 -24.89517,12.09297 -38.82383,14.84055 -11.15723,-11.88436 -27.04079,-19.31655 -44.62892,-19.31655 -33.76374,0 -61.14426,27.38052 -61.14426,61.13233 0,4.79784 0.5364,9.46458 1.58538,13.94057 -50.81546,-2.55686 -95.87353,-26.88582 -126.02546,-63.87991 -5.25082,9.03545 -8.27852,19.53111 -8.27852,30.73006 0,21.21186 10.79366,39.93837 27.20766,50.89296 -10.03077,-0.30992 -19.45363,-3.06348 -27.69044,-7.64676 -0.009,0.25652 -0.009,0.50661 -0.009,0.78077 0,29.60957 21.07478,54.3319 49.0513,59.93435 -5.13757,1.40062 -10.54335,2.15158 -16.12196,2.15158 -3.93364,0 -7.76596,-0.38716 -11.49099,-1.1026 7.78383,24.2932 30.35457,41.97073 57.11525,42.46543 -20.92578,16.40207 -47.28712,26.17062 -75.93712,26.17062 -4.92898,0 -9.79834,-0.28036 -14.58427,-0.84634 27.05868,17.34379 59.18936,27.46396 93.72193,27.46396"
+                  />
+                </g>
+              </svg>
+              Twitter</a
             >
-              Marmelab
-            </a>
+              
+            <a href="https://www.linkedin.com/products/marmelab-reactadmin">
+              <svg
+                version="1.1"
+                viewBox="0 0 256 256"
+                xml:space="preserve"
+                style="width: 16px; vertical-align: middle"
+              >
+                <g transform="translate(128 128) scale(0.72 0.72)" style="">
+                  <g
+                    style="
+                      stroke: none;
+                      stroke-width: 0;
+                      stroke-dasharray: none;
+                      stroke-linecap: butt;
+                      stroke-linejoin: miter;
+                      stroke-miterlimit: 10;
+                      fill: none;
+                      fill-rule: nonzero;
+                      opacity: 1;
+                    "
+                    transform="translate(-175.05 -175.05000000000004) scale(3.89 3.89)"
+                  >
+                    <path
+                      d="M 1.48 29.91 h 18.657 v 60.01 H 1.48 V 29.91 z M 10.809 0.08 c 5.963 0 10.809 4.846 10.809 10.819 c 0 5.967 -4.846 10.813 -10.809 10.813 C 4.832 21.712 0 16.866 0 10.899 C 0 4.926 4.832 0.08 10.809 0.08"
+                      style="
+                        stroke: none;
+                        stroke-width: 1;
+                        stroke-dasharray: none;
+                        stroke-linecap: butt;
+                        stroke-linejoin: miter;
+                        stroke-miterlimit: 10;
+                        fill: rgb(0, 0, 0);
+                        fill-rule: nonzero;
+                        opacity: 1;
+                      "
+                      transform=" matrix(1 0 0 1 0 0) "
+                      stroke-linecap="round"
+                    />
+                    <path
+                      d="M 31.835 29.91 h 17.89 v 8.206 h 0.255 c 2.49 -4.72 8.576 -9.692 17.647 -9.692 C 86.514 28.424 90 40.849 90 57.007 V 89.92 H 71.357 V 60.737 c 0 -6.961 -0.121 -15.912 -9.692 -15.912 c -9.706 0 -11.187 7.587 -11.187 15.412 V 89.92 H 31.835 V 29.91 z"
+                      style="
+                        stroke: none;
+                        stroke-width: 1;
+                        stroke-dasharray: none;
+                        stroke-linecap: butt;
+                        stroke-linejoin: miter;
+                        stroke-miterlimit: 10;
+                        fill: rgb(0, 0, 0);
+                        fill-rule: nonzero;
+                        opacity: 1;
+                      "
+                      transform=" matrix(1 0 0 1 0 0) "
+                      stroke-linecap="round"
+                    />
+                  </g>
+                </g>
+              </svg>
+              LinkedIn</a
+            >
+              
+            <a href="https://github.com/marmelab/react-admin">
+              <svg
+                viewBox="0 0 256 250"
+                preserveAspectRatio="xMidYMid"
+                style="width: 20px; vertical-align: middle"
+              >
+                <path
+                  d="M128.001 0C57.317 0 0 57.307 0 128.001c0 56.554 36.676 104.535 87.535 121.46 6.397 1.185 8.746-2.777 8.746-6.158 0-3.052-.12-13.135-.174-23.83-35.61 7.742-43.124-15.103-43.124-15.103-5.823-14.795-14.213-18.73-14.213-18.73-11.613-7.944.876-7.78.876-7.78 12.853.902 19.621 13.19 19.621 13.19 11.417 19.568 29.945 13.911 37.249 10.64 1.149-8.272 4.466-13.92 8.127-17.116-28.431-3.236-58.318-14.212-58.318-63.258 0-13.975 5-25.394 13.188-34.358-1.329-3.224-5.71-16.242 1.24-33.874 0 0 10.749-3.44 35.21 13.121 10.21-2.836 21.16-4.258 32.038-4.307 10.878.049 21.837 1.47 32.066 4.307 24.431-16.56 35.165-13.12 35.165-13.12 6.967 17.63 2.584 30.65 1.255 33.873 8.207 8.964 13.173 20.383 13.173 34.358 0 49.163-29.944 59.988-58.447 63.157 4.591 3.972 8.682 11.762 8.682 23.704 0 17.126-.148 30.91-.148 35.126 0 3.407 2.304 7.398 8.792 6.14C219.37 232.5 256 184.537 256 128.002 256 57.307 198.691 0 128.001 0zm-80.06 182.34c-.282.636-1.283.827-2.194.39-.929-.417-1.45-1.284-1.15-1.922.276-.655 1.279-.838 2.205-.399.93.418 1.46 1.293 1.139 1.931zm6.296 5.618c-.61.566-1.804.303-2.614-.591-.837-.892-.994-2.086-.375-2.66.63-.566 1.787-.301 2.626.591.838.903 1 2.088.363 2.66zm4.32 7.188c-.785.545-2.067.034-2.86-1.104-.784-1.138-.784-2.503.017-3.05.795-.547 2.058-.055 2.861 1.075.782 1.157.782 2.522-.019 3.08zm7.304 8.325c-.701.774-2.196.566-3.29-.49-1.119-1.032-1.43-2.496-.726-3.27.71-.776 2.213-.558 3.315.49 1.11 1.03 1.45 2.505.701 3.27zm9.442 2.81c-.31 1.003-1.75 1.459-3.199 1.033-1.448-.439-2.395-1.613-2.103-2.626.301-1.01 1.747-1.484 3.207-1.028 1.446.436 2.396 1.602 2.095 2.622zm10.744 1.193c.036 1.055-1.193 1.93-2.715 1.95-1.53.034-2.769-.82-2.786-1.86 0-1.065 1.202-1.932 2.733-1.958 1.522-.03 2.768.818 2.768 1.868zm10.555-.405c.182 1.03-.875 2.088-2.387 2.37-1.485.271-2.861-.365-3.05-1.386-.184-1.056.893-2.114 2.376-2.387 1.514-.263 2.868.356 3.061 1.403z"
+                ></path>
+              </svg>
+              GitHub</a
+            >
+              
+            <a href="mailto:info@marmelab.com">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                version="1.1"
+                id="Capa_1"
+                x="0px"
+                y="0px"
+                viewBox="0 0 75.294 75.294"
+                style="width: 20px; vertical-align: middle"
+                xml:space="preserve"
+              >
+                <g>
+                  <path
+                    d="M66.097,12.089h-56.9C4.126,12.089,0,16.215,0,21.286v32.722c0,5.071,4.126,9.197,9.197,9.197h56.9   c5.071,0,9.197-4.126,9.197-9.197V21.287C75.295,16.215,71.169,12.089,66.097,12.089z M61.603,18.089L37.647,33.523L13.691,18.089   H61.603z M66.097,57.206h-56.9C7.434,57.206,6,55.771,6,54.009V21.457l29.796,19.16c0.04,0.025,0.083,0.042,0.124,0.065   c0.043,0.024,0.087,0.047,0.131,0.069c0.231,0.119,0.469,0.215,0.712,0.278c0.025,0.007,0.05,0.01,0.075,0.016   c0.267,0.063,0.537,0.102,0.807,0.102c0.001,0,0.002,0,0.002,0c0.002,0,0.003,0,0.004,0c0.27,0,0.54-0.038,0.807-0.102   c0.025-0.006,0.05-0.009,0.075-0.016c0.243-0.063,0.48-0.159,0.712-0.278c0.044-0.022,0.088-0.045,0.131-0.069   c0.041-0.023,0.084-0.04,0.124-0.065l29.796-19.16v32.551C69.295,55.771,67.86,57.206,66.097,57.206z"
+                  />
+                </g>
+              </svg>
+              Contact Us</a
+            >
+          </p>
+          <p class="copy">
+            Copyright &copy;2016-<span id="copyright-date">2022</span>
+            <a href="https://marmelab.com">Marmelab</a>
           </p>
         </div>
       </div>
     </footer>
-    
+
+    <script src="assets/prism.js" async></script>
+    <script src="assets/githubstars.js" defer></script>
+    <script src="assets/generate-copyright-date.js" defer></script>
     <script
       async
       defer
