@@ -78,31 +78,18 @@ Check [the `ra-search` documentation](https://marmelab.com/ra-enterprise/modules
 
 If you're using [the `<Layout` component](./Layout.md), include the `<Search>` component inside a custom `<AppBar>` component:
 
-{% raw %}
 ```jsx
 // in src/MyAppBar.jsx
-import { AppBar } from "react-admin";
-import { Typography } from "@mui/material";
+import { AppBar, TitlePortal } from "react-admin";
 import { Search } from "@react-admin/ra-search";
 
-export const MyAppbar = (props) => (
-  <AppBar {...props}>
-    <Typography
-      variant="h6"
-      color="inherit"
-      sx={{
-        flex: 1,
-        textOverflow: "ellipsis",
-        whiteSpace: "nowrap",
-        overflow: "hidden",
-      }}
-      id="react-admin-title"
-    />
+export const MyAppbar = () => (
+  <AppBar>
+    <TitlePortal />
     <Search />
   </AppBar>
 );
 ```
-{% endraw %}
 
 Include that AppBar in [a custom layout component](./Layout.md):
 

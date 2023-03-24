@@ -209,7 +209,7 @@ const App = () => (
 
 ## `dashboard`
 
-By default, the homepage of an admin app is the `list` of the first child `<Resource>`. But you can also specify a custom component instead. To fit in the general design, use MUI's `<Card>` component, and react-admin's `<Title>` component to set the title in the AppBar:
+By default, the homepage of an admin app is the `list` of the first child `<Resource>`. But you can also specify a custom component instead. To fit in the general design, use MUI's `<Card>` component, and [react-admin's `<Title>` component](./Title.md) to set the title in the AppBar:
 
 ```jsx
 // in src/Dashboard.js
@@ -270,7 +270,7 @@ When users type URLs that don't match any of the children `<Resource>` component
 
 ![Not Found](./img/not-found.png)
 
-You can customize this page to use the component of your choice by passing it as the `catchAll` prop. To fit in the general design, use MUI's `<Card>` component, and react-admin's `<Title>` component:
+You can customize this page to use the component of your choice by passing it as the `catchAll` prop. To fit in the general design, use MUI's `<Card>` component, and [react-admin's `<Title>` component](./Title.md):
 
 ```jsx
 // in src/NotFound.js

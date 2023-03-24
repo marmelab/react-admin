@@ -20,6 +20,7 @@ export * from './Sidebar';
 export * from './SidebarToggleButton';
 export * from './Theme';
 export * from './Title';
+export * from './TitlePortal';
 export * from './TopToolbar';
 export * from './UserMenu';
 export * from './UserMenuContext';

@@ -232,6 +232,42 @@ It's up to you to decide when to redirect users to the third party authenticatio
 * Directly in the `AuthProvider.checkAuth()` method as above;
 * When users click a button on a [custom login page](#customizing-the-login-component)
 
+## Handling Refresh Tokens
+
+[Refresh tokens](https://oauth.net/2/refresh-tokens/) are an important security mechanism. In order to leverage them, you should decorate the `dataProvider` and the `authProvider` so that they can check whether the authentication must be refreshed and actually refresh it.
+
+You can use the [`addRefreshAuthToDataProvider`](./addRefreshAuthToDataProvider.md) and [`addRefreshAuthToAuthProvider`](./addRefreshAuthToAuthProvider.md) functions for this purpose. They accept a `dataProvider` or `authProvider` respectively and a function that should refresh the authentication token if necessary:
+
+```jsx
+// in src/refreshAuth.js
+import { getAuthTokensFromLocalStorage } from './getAuthTokensFromLocalStorage';
+import { refreshAuthTokens } from './refreshAuthTokens';
+
+export const refreshAuth = () => {
+    const { accessToken, refreshToken } = getAuthTokensFromLocalStorage();
+    if (accessToken.exp < Date.now().getTime() / 1000) {
+        // This function will fetch the new tokens from the authentication service and update them in localStorage
+        return refreshAuthTokens(refreshToken);
+    }
+    return Promise.resolve();
+}
+
+// in src/authProvider.js
+import { addRefreshAuthToAuthProvider } from 'react-admin';
+import { refreshAuth } from 'refreshAuth';
+const myAuthProvider = {
+    // ...Usual AuthProvider methods
+};
+export const authProvider = addRefreshAuthToAuthProvider(myAuthProvider, refreshAuth);
+
+// in src/dataProvider.js
+import { addRefreshAuthToDataProvider } from 'react-admin';
+import simpleRestProvider from 'ra-data-simple-rest';
+import { refreshAuth } from 'refreshAuth';
+const baseDataProvider = simpleRestProvider('http://path.to.my.api/');
+export const dataProvider = addRefreshAuthToDataProvider(baseDataProvider, refreshAuth);
+```
+
 ## Customizing The Login Component
 
 Using `authProvider` is enough to implement a full-featured authorization system if the authentication relies on a username and password.

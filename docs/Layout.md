@@ -56,7 +56,7 @@ const App = () => (
 React-admin injects more props at runtime based on the `<Admin>` props:
 
 * `dashboard`: The dashboard component. Used to enable the dahboard link in the menu
-* `title`: The default page tile, enreder in the AppBar
+* `title`: The default page tile, rendered in the AppBar for error pages
 * `children`: The main content of the page
 
 Any value set for these props in a custom layout will be ignored. That's why you're supposed to pass down the props when creating a layout based on `<Layout>`:
@@ -84,7 +84,7 @@ import { MyAppBar } from './MyAppBar';
 export const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
 ```
 
-You can use react-admin's `<AppBar>` as a base for your custom app bar, or the component of your choice. 
+You can use [react-admin's `<AppBar>` component](./AppBar.md) as a base for your custom app bar, or the component of your choice. 
 
 By default, react-admin's `<AppBar>` displays the page title. You can override this default by passing children to `<AppBar>` - they will replace the default title. And if you still want to include the page title, make sure you include an element with id `react-admin-title` in the top bar (this uses [React Portals](https://reactjs.org/docs/portals.html)).
 
@@ -94,31 +94,17 @@ Here is a custom app bar component extending `<AppBar>` to include a company log
 ```jsx
 // in src/MyAppBar.js
 import * as React from 'react';
-import { AppBar } from 'react-admin';
-import Typography from '@mui/material/Typography';
+import { AppBar, TitlePortal } from 'react-admin';
+import Box from '@mui/material/Box';
 
 import Logo from './Logo';
 
-export const MyAppBar = (props) => (
-    <AppBar
-        sx={{
-            "& .RaAppBar-title": {
-                flex: 1,
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-            },
-        }}
-        {...props}
-    >
-        <Typography
-            variant="h6"
-            color="inherit"
-            className={classes.title}
-            id="react-admin-title"
-        />
+export const MyAppBar = () => (
+    <AppBar color="primary">
+        <TitlePortal />
+        <Box flex="1" />
         <Logo />
-        <span className={classes.spacer} />
+        <Box flex="1" />
     </AppBar>
 );
 ```
@@ -126,14 +112,7 @@ export const MyAppBar = (props) => (
 
 ![custom AppBar](./img/custom_appbar.png)
 
-**Tip**: You can change the color of the `<AppBar>` by setting the `color` prop to `default`, `inherit`, `primary`, `secondary` or `transparent`. The default value is `secondary`.
-
-When react-admin renders the App BAr, it passes two props:
-
-* `open`: a boolean indicating if the sidebar is open or not
-* `title`: the page title (if set by the `<Admin>` component)
-
-Your custom AppBar component is free to use these props. 
+Check out the [`<AppBar>` documentation](./AppBar.md) for more information, and for instructions on building your own AppBar.
 
 ## `className`
 

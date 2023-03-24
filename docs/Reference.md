@@ -12,7 +12,7 @@ title: "Index"
 **- A -**
 * [`<AccordionForm>`](./AccordionForm.md)<img class="icon" src="./img/premium.svg" />
 * [`<Admin>`](./Admin.md)
-* [`<AppBar>`](./Theming.md#customizing-the-appbar-content)
+* [`<AppBar>`](./AppBar.md)
 * [`<ArrayField>`](./ArrayField.md)
 * [`<ArrayInput>`](./ArrayInput.md)
 * [`<Authenticated>`](./Authenticated.md)
@@ -171,6 +171,8 @@ title: "Index"
 * [`<TextField>`](./TextField.md)
 * [`<TextInput>`](./TextInput.md)
 * [`<TimeInput>`](./TimeInput.md)
+* [<`Title>`](./Title.md)
+* [<`TitlePortal>`](./AppBar.md#children)
 * [`<ToggleThemeButton>`](./ToggleThemeButton.md)
 * [`<TourProvider>`](https://marmelab.com/ra-enterprise/modules/ra-tour)<img class="icon" src="./img/premium.svg" />
 * [`<TranslatableFields>`](./TranslatableFields.md)
@@ -181,7 +183,7 @@ title: "Index"
 
 **- U -**
 * [`<UrlField>`](./UrlField.md)
-* [`<UserMenu>`](./Theming.md#usermenu-customization)
+* [`<UserMenu>`](./AppBar.md#usermenu)
 
 **- W -**
 * [`<WithPermissions>`](./WithPermissions.md)

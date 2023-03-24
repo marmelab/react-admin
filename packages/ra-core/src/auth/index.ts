@@ -16,6 +16,8 @@ export * from './useAuthenticated';
 export * from './useCheckAuth';
 export * from './useGetIdentity';
 export * from './useHandleAuthCallback';
+export * from './addRefreshAuthToAuthProvider';
+export * from './addRefreshAuthToDataProvider';
 
 export {
     AuthContext,

@@ -17,13 +17,13 @@ For advanced users who wish to use the customized `<AppBar>` from MUI package or
 
 ```jsx
 // in src/MyAppBar.js
-import { LocalesMenuButton } from 'react-admin';
-import { AppBar, Toolbar, Typography } from '@mui/material';
+import { LocalesMenuButton, TitlePortal } from 'react-admin';
+import { AppBar, Toolbar } from '@mui/material';
 
-export const MyAppBar = (props) => (
-    <AppBar {...props}>
+export const MyAppBar = () => (
+    <AppBar>
         <Toolbar>
-            <Typography flex="1" variant="h6" id="react-admin-title"></Typography>
+            <TitlePortal />
             <LocalesMenuButton />
         </Toolbar>
     </AppBar>

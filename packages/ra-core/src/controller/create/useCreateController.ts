@@ -6,7 +6,11 @@ import { Location } from 'history';
 import { UseMutationOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
-import { useCreate, UseCreateMutateParams } from '../../dataProvider';
+import {
+    HttpError,
+    useCreate,
+    UseCreateMutateParams,
+} from '../../dataProvider';
 import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
 import { SaveContextValue, useMutationMiddlewares } from '../saveContext';
@@ -74,7 +78,7 @@ export const useCreateController = <
     const [create, { isLoading: saving }] = useCreate<
         RecordType,
         MutationOptionsError
-    >(resource, undefined, otherMutationOptions);
+    >(resource, undefined, { ...otherMutationOptions, returnPromise: true });
 
     const save = useCallback(
         (
@@ -91,55 +95,67 @@ export const useCreateController = <
                     : transform
                     ? transform(data)
                     : data
-            ).then((data: Partial<RecordType>) => {
+            ).then(async (data: Partial<RecordType>) => {
                 const mutate = getMutateWithMiddlewares(create);
-                mutate(
-                    resource,
-                    { data, meta },
-                    {
-                        onSuccess: async (data, variables, context) => {
-                            if (onSuccessFromSave) {
-                                return onSuccessFromSave(
-                                    data,
-                                    variables,
-                                    context
-                                );
-                            }
-                            if (onSuccess) {
-                                return onSuccess(data, variables, context);
-                            }
+                try {
+                    await mutate(
+                        resource,
+                        { data, meta },
+                        {
+                            onSuccess: async (data, variables, context) => {
+                                if (onSuccessFromSave) {
+                                    return onSuccessFromSave(
+                                        data,
+                                        variables,
+                                        context
+                                    );
+                                }
+                                if (onSuccess) {
+                                    return onSuccess(data, variables, context);
+                                }
 
-                            notify('ra.notification.created', {
-                                type: 'info',
-                                messageArgs: { smart_count: 1 },
-                            });
-                            redirect(finalRedirectTo, resource, data.id, data);
-                        },
-                        onError: onErrorFromSave
-                            ? onErrorFromSave
-                            : onError
-                            ? onError
-                            : (error: Error | string) => {
-                                  notify(
-                                      typeof error === 'string'
-                                          ? error
-                                          : error.message ||
-                                                'ra.notification.http_error',
-                                      {
-                                          type: 'error',
-                                          messageArgs: {
-                                              _:
-                                                  typeof error === 'string'
-                                                      ? error
-                                                      : error && error.message
-                                                      ? error.message
-                                                      : undefined,
-                                          },
-                                      }
-                                  );
-                              },
+                                notify('ra.notification.created', {
+                                    type: 'info',
+                                    messageArgs: { smart_count: 1 },
+                                });
+                                redirect(
+                                    finalRedirectTo,
+                                    resource,
+                                    data.id,
+                                    data
+                                );
+                            },
+                            onError: onErrorFromSave
+                                ? onErrorFromSave
+                                : onError
+                                ? onError
+                                : (error: Error) => {
+                                      notify(
+                                          typeof error === 'string'
+                                              ? error
+                                              : error.message ||
+                                                    'ra.notification.http_error',
+                                          {
+                                              type: 'error',
+                                              messageArgs: {
+                                                  _:
+                                                      typeof error === 'string'
+                                                          ? error
+                                                          : error &&
+                                                            error.message
+                                                          ? error.message
+                                                          : undefined,
+                                              },
+                                          }
+                                      );
+                                  },
+                        }
+                    );
+                } catch (error) {
+                    if ((error as HttpError).body?.errors != null) {
+                        return (error as HttpError).body.errors;
                     }
-                );
+                }
             }),
         [
             create,

@@ -103,9 +103,9 @@ export const UserMenu = (props: UserMenuProps) => {
                     {identity.fullName}
                 </Button>
             ) : (
-                <Tooltip title={label && translate(label, { _: label })}>
+                <Tooltip title={label && translate(label, { _: 'Profile' })}>
                     <IconButton
-                        aria-label={label && translate(label, { _: label })}
+                        aria-label={label && translate(label, { _: 'Profile' })}
                         aria-owns={open ? 'menu-appbar' : null}
                         aria-haspopup={true}
                         color="inherit"
@@ -167,6 +167,7 @@ const Root = styled('div', {
 })(({ theme }) => ({
     [`& .${UserMenuClasses.userButton}`]: {
         textTransform: 'none',
+        marginInlineStart: theme.spacing(0.5),
     },
 
     [`& .${UserMenuClasses.avatar}`]: {

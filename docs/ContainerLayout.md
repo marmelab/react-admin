@@ -174,10 +174,9 @@ const ConfigurationMenu = React.forwardRef((props, ref) => {
             {...props}
             to="/configuration"
             onClick={onClose}
-            sx={{ color: 'text.secondary' }}
         >
             <ListItemIcon>
-                <SettingsIcon />
+                <SettingsIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText>Configuration</ListItemText>
         </MenuItem>

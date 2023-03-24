@@ -34,9 +34,7 @@ const MyUserMenu = () => (
     </UserMenu>
 );
 
-const MyAppBar = () => (
-    <AppBar userMenu={<UserMenu />} />
-);
+const MyAppBar = () => <AppBar userMenu={<UserMenu />} />;
 
 const MyLayout = (props) => (
     <Layout {...props} appBar={MyAppBar} />

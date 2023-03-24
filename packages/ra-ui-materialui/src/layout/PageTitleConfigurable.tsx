@@ -28,6 +28,11 @@ export const PageTitleConfigurable = ({ preferenceKey, ...props }) => {
         <Configurable
             editor={<PageTitleEditor />}
             preferenceKey={preferenceKey || `${pathname}.title`}
+            sx={{
+                '&.RaConfigurable-editMode': {
+                    margin: '2px',
+                },
+            }}
         >
             <PageTitle {...props} />
         </Configurable>
