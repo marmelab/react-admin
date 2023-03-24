@@ -10,10 +10,13 @@ export interface FieldProps<RecordType extends RaRecord = any>
     extends PublicFieldProps,
         InjectedFieldProps<RecordType> {}
 
-export interface PublicFieldProps {
-    sortBy?: string;
+export interface PublicFieldProps<
+    Source extends string = string,
+    SortBy extends string = Source
+> {
+    sortBy?: SortBy;
     sortByOrder?: SortOrder;
-    source?: string;
+    source?: Source;
     label?: string | ReactElement | boolean;
     sortable?: boolean;
     className?: string;

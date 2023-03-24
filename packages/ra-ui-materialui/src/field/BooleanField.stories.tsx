@@ -5,7 +5,7 @@ import { BooleanField, BooleanFieldProps } from './BooleanField';
 
 export default { title: 'ra-ui-materialui/fields/BooleanField' };
 
-export const Basic = (props: BooleanFieldProps) => {
+export const Basic = (props: Omit<BooleanFieldProps, 'source'>) => {
     const [value, setValue] = React.useState(true);
     return (
         <Stack direction="row">
@@ -15,6 +15,31 @@ export const Basic = (props: BooleanFieldProps) => {
                 onChange={e => setValue(e.target.checked)}
             />
             <BooleanField record={{ value }} source="value" {...props} />
+        </Stack>
+    );
+};
+
+type Post = {
+    published: boolean;
+    reported: boolean;
+    title: string;
+};
+
+export const Typed = (props: Omit<BooleanFieldProps, 'source' | 'sortBy'>) => {
+    const [value, setValue] = React.useState(true);
+    return (
+        <Stack direction="row">
+            <input
+                type="checkbox"
+                checked={value}
+                onChange={e => setValue(e.target.checked)}
+            />
+            <BooleanField<Post>
+                record={{ value }}
+                source="published"
+                sortBy="published"
+                {...props}
+            />
         </Stack>
     );
 };

@@ -6,6 +6,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormGroup, { FormGroupProps } from '@mui/material/FormGroup';
 import Switch, { SwitchProps } from '@mui/material/Switch';
+import { Booleans, Call, Objects } from 'hotscript';
 import { FieldTitle, useInput } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
@@ -13,7 +14,22 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 import { InputPropTypes } from './InputPropTypes';
 
-export const BooleanInput = (props: BooleanInputProps) => {
+export const BooleanInput = <
+    RecordType extends Record<string, any> = Record<string, any>,
+    // By default, Source should allow all possible paths for RecordType (author, author.name, etc.)
+    Source extends string = Call<
+        Objects.AllPaths,
+        // Here we pick only the paths that contain a boolean
+        Call<Objects.PickBy<Booleans.Equals<boolean>>, RecordType>
+    > extends never // But if RecordType is not provided explicitly, Source would be never
+        ? string // So we default to string in this case
+        : Call<
+              Objects.AllPaths,
+              Call<Objects.PickBy<Booleans.Equals<boolean>>, RecordType>
+          >
+>(
+    props: BooleanInputProps<RecordType, Source>
+) => {
     const {
         className,
         row = false,
@@ -40,7 +56,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
         isRequired,
         fieldState: { error, invalid, isTouched },
         formState: { isSubmitted },
-    } = useInput({
+    } = useInput<Source, boolean>({
         defaultValue,
         format,
         parse,
@@ -113,7 +129,20 @@ BooleanInput.defaultProps = {
     options: {},
 };
 
-export type BooleanInputProps = CommonInputProps &
+export type BooleanInputProps<
+    RecordType extends Record<string, any> = Record<string, any>,
+    // By default, Source should allow all possible paths for RecordType (author, author.name, etc.)
+    Source extends string = Call<
+        Objects.AllPaths,
+        // Here we pick only the paths that contain a boolean
+        Call<Objects.PickBy<Booleans.Equals<boolean>>, RecordType>
+    > extends never // But if RecordType is not provided explicitly, Source would be never
+        ? string // So we default to string in this case
+        : Call<
+              Objects.AllPaths,
+              Call<Objects.PickBy<Booleans.Equals<boolean>>, RecordType>
+          >
+> = CommonInputProps<Source, boolean> &
     SwitchProps &
     Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'> & {
         options: SwitchProps;

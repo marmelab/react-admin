@@ -1,6 +1,9 @@
 import { InputProps } from 'ra-core';
 
-export type CommonInputProps = InputProps & {
+export type CommonInputProps<
+    Source extends string = string,
+    ValueType = any
+> = InputProps<Source, ValueType> & {
     cellClassName?: string;
     /*
      * @deprecated this property is not used anymore

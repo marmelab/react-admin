@@ -16,6 +16,18 @@ export const Basic = () => (
     </Wrapper>
 );
 
+type Post = {
+    published: boolean;
+    reported: boolean;
+    title: string;
+};
+
+export const Typed = () => (
+    <Wrapper>
+        <BooleanInput<Post> source="published" />
+    </Wrapper>
+);
+
 export const Disabled = () => (
     <Wrapper>
         <BooleanInput source="published" disabled />
