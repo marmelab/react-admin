@@ -171,8 +171,8 @@ title: "Index"
 * [`<TextField>`](./TextField.md)
 * [`<TextInput>`](./TextInput.md)
 * [`<TimeInput>`](./TimeInput.md)
-* [<`Title>`](./Title.md)
-* [<`TitlePortal>`](./AppBar.md#children)
+* [`<Title>`](./Title.md)
+* [`<TitlePortal>`](./AppBar.md#children)
 * [`<ToggleThemeButton>`](./ToggleThemeButton.md)
 * [`<TourProvider>`](https://marmelab.com/ra-enterprise/modules/ra-tour)<img class="icon" src="./img/premium.svg" />
 * [`<TranslatableFields>`](./TranslatableFields.md)
