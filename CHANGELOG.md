@@ -2,17 +2,17 @@
 
 ## v4.9.0
 
-- Add ability to pass `null` to `TrueIcon` or `FalseIcon` in `<BooleanField>` ([#8760](https://github.com/marmelab/react-admin/pull/#8760)) ([slax57](https://github.com/slax57))
-- Improve `AppBar` Customization ([#8681](https://github.com/marmelab/react-admin/pull/#8681)) ([fzaninotto](https://(github.com/fzaninotto))
-- Allow to customize how `<FilterListItem>` applies filters ([#8676](https://github.com/marmelab/react-admin/pull/#8676)) ([djhi](https://github.com/djhi))
-- Introduce `withRefreshAuth` ([#8574](https://github.com/marmelab/react-admin/pull/#8574)) ([djhi](https://github.com/djhi))
-- Add ability to change `<SelectArrayInput>`'s `size` prop and fix `outlined` variant ([#8562](https://github.com/marmelab/react-admin/pull/#8562)) ([amilosmanli](https://github.com/amilosmanli))
-- Add server side validation support ([#7938](https://github.com/marmelab/react-admin/pull/#7938)) ([djhi](https://github.com/djhi))
-- Add a codesandbox config for the tutorial ([#8753](https://github.com/marmelab/react-admin/pull/#8753)) ([djhi](https://github.com/djhi))
-- Fix `<ReferenceManyCount>` rendering link incorrectly ([#8752](https://github.com/marmelab/react-admin/pull/#8752)) ([oleg-semyonov](https://github.com/oleg-semyonov))
-- [Doc] Update grammar in README.md ([#8747](https://github.com/marmelab/react-admin/pull/#8747)) ([tylertyssedal](https://github.com/tylertyssedal))
-- [Doc] Fix `useRecordContext` explanation for forms ([#8743](https://github.com/marmelab/react-admin/pull/#8743)) ([fzaninotto ](https://github.com/fzaninotto))
-- [Doc] Add Directus data and auth providers ([#8759](https://github.com/marmelab/react-admin/pull/#8759)) ([djhi](https://github.com/djhi))
+- Add ability to pass `null` to `TrueIcon` or `FalseIcon` in `<BooleanField>` ([#8760](https://github.com/marmelab/react-admin/pull/8760)) ([slax57](https://github.com/slax57))
+- Improve `AppBar` Customization ([#8681](https://github.com/marmelab/react-admin/pull/8681)) ([fzaninotto](https://(github.com/fzaninotto))
+- Allow to customize how `<FilterListItem>` applies filters ([#8676](https://github.com/marmelab/react-admin/pull/8676)) ([djhi](https://github.com/djhi))
+- Introduce `withRefreshAuth` ([#8574](https://github.com/marmelab/react-admin/pull/8574)) ([djhi](https://github.com/djhi))
+- Add ability to change `<SelectArrayInput>`'s `size` prop and fix `outlined` variant ([#8562](https://github.com/marmelab/react-admin/pull/8562)) ([amilosmanli](https://github.com/amilosmanli))
+- Add server side validation support ([#7938](https://github.com/marmelab/react-admin/pull/7938)) ([djhi](https://github.com/djhi))
+- Add a codesandbox config for the tutorial ([#8753](https://github.com/marmelab/react-admin/pull/8753)) ([djhi](https://github.com/djhi))
+- Fix `<ReferenceManyCount>` rendering link incorrectly ([#8752](https://github.com/marmelab/react-admin/pull/8752)) ([oleg-semyonov](https://github.com/oleg-semyonov))
+- [Doc] Update grammar in README.md ([#8747](https://github.com/marmelab/react-admin/pull/8747)) ([tylertyssedal](https://github.com/tylertyssedal))
+- [Doc] Fix `useRecordContext` explanation for forms ([#8743](https://github.com/marmelab/react-admin/pull/8743)) ([fzaninotto ](https://github.com/fzaninotto))
+- [Doc] Add Directus data and auth providers ([#8759](https://github.com/marmelab/react-admin/pull/8759)) ([djhi](https://github.com/djhi))
 
 We released [`ra-directus`](https://github.com/marmelab/ra-directus/) that contains a `DataProvider` and an `AuthProvider` to work with [Directus](https://directus.io/).
 
