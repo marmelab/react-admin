@@ -14,13 +14,20 @@ const getGithubStats = () => {
 };
 
 const githubStarsContent = document.getElementById("github-stars-content");
-
 if (githubStarsContent === null) {
   throw new Error("github-stars-content element not found");
 }
 
+const githubStarsContentMobile = document.getElementById(
+  "github-stars-content-mobile"
+);
+if (githubStarsContentMobile === null) {
+  throw new Error("github-stars-content-mobile element not found");
+}
+
 getGithubStats().then(({ stargazers_count }) => {
   githubStarsContent.innerText = stargazers_count;
+  githubStarsContentMobile.innerText = stargazers_count;
 });
 
 window.addEventListener(
