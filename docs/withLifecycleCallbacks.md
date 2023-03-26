@@ -157,7 +157,7 @@ export const dataProvider = withLifecycleCallbacks(
     },
     {
         resource: "comments",
-        beforeRead: async (data, dataProvider) => { /* ... */ },
+        beforeSave: async (data, dataProvider) => { /* ... */ },
         afterCreate: async (result, dataProvider) => { /* ... */ },
     },
     {
@@ -195,7 +195,6 @@ const fooLifecycleCallback = {
   afterDelete: /* async (result, dataProvider) => result */,
   afterDeleteMany: /* async (result, dataProvider) => result */,
   // special callbacks
-  beforeRead: /* async (data, dataProvider) => data */,
   afterRead: /* async (record, dataProvider) => record */,
   beforeSave: /* async (data, dataProvider) => data */,
   afterSave: /* async (record, dataProvider) => record */,
