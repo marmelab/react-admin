@@ -195,6 +195,7 @@ const fooLifecycleCallback = {
   afterDelete: /* async (result, dataProvider) => result */,
   afterDeleteMany: /* async (result, dataProvider) => result */,
   // special callbacks
+  beforeRead: /* async (data, dataProvider) => data */,
   afterRead: /* async (record, dataProvider) => record */,
   beforeSave: /* async (data, dataProvider) => data */,
   afterSave: /* async (record, dataProvider) => record */,
