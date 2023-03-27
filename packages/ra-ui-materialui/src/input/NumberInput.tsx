@@ -2,6 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
+import { Booleans, Call, Objects } from 'hotscript';
 import { useInput, FieldTitle } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
@@ -19,7 +20,7 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
  * <NumberInput source="nb_views" step={1} />
  *
  */
-export const NumberInput = ({
+export const NumberInput = <RecordType extends Record<string, any> = never>({
     className,
     defaultValue = null,
     format = convertNumberToString,
@@ -39,7 +40,7 @@ export const NumberInput = ({
     variant,
     inputProps: overrideInputProps,
     ...rest
-}: NumberInputProps) => {
+}: NumberInputProps<RecordType>) => {
     const {
         field,
         fieldState: { error, invalid, isTouched },
@@ -172,8 +173,9 @@ NumberInput.defaultProps = {
     textAlign: 'right',
 };
 
-export interface NumberInputProps
-    extends CommonInputProps,
+export interface NumberInputProps<
+    RecordType extends Record<string, any> = never
+> extends CommonInputProps,
         Omit<
             TextFieldProps,
             | 'label'
@@ -186,6 +188,13 @@ export interface NumberInputProps
     step?: string | number;
     min?: string | number;
     max?: string | number;
+    source: [RecordType] extends [never]
+        ? string
+        : Call<
+              Objects.AllPaths,
+              // Here we pick only the paths that contain a boolean
+              Call<Objects.PickBy<Booleans.Equals<number>>, RecordType>
+          >;
 }
 
 const convertStringToNumber = value => {
