@@ -27,6 +27,28 @@ export const Basic = () => (
     </AdminContext>
 );
 
+type Post = {
+    id: number;
+    title: string;
+    views: number;
+    body: string;
+};
+
+export const Typed = () => (
+    <AdminContext>
+        <Create
+            resource="posts"
+            record={{ id: 123, title: 'Lorem ipsum' }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <TextInput<Post> source="title" />
+                <FormInspector />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
 export const DefaultValue = () => (
     <AdminContext>
         <Create

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import { Booleans, Call, Objects } from 'hotscript';
 import { useInput, FieldTitle } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
@@ -25,7 +26,9 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
  *
  * The object passed as `options` props is passed to the <ResettableTextField> component
  */
-export const TextInput = (props: TextInputProps) => {
+export const TextInput = <RecordType extends Record<string, any> = never>(
+    props: TextInputProps<RecordType>
+) => {
     const {
         className,
         defaultValue,
@@ -102,5 +105,15 @@ TextInput.defaultProps = {
     options: {},
 };
 
-export type TextInputProps = CommonInputProps &
-    Omit<ResettableTextFieldProps, 'label' | 'helperText'>;
+export type TextInputProps<
+    RecordType extends Record<string, any> = never
+> = CommonInputProps &
+    Omit<ResettableTextFieldProps, 'label' | 'helperText'> & {
+        source: [RecordType] extends [never]
+            ? string
+            : Call<
+                  Objects.AllPaths,
+                  // Here we pick only the paths that contain a string
+                  Call<Objects.PickBy<Booleans.Equals<string>>, RecordType>
+              >;
+    };
