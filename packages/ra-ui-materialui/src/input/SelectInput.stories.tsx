@@ -28,6 +28,23 @@ export const Basic = () => (
     </Wrapper>
 );
 
+type Post = {
+    title: string;
+    category: string;
+};
+
+export const Typed = () => (
+    <Wrapper>
+        <SelectInput<Post>
+            source="category"
+            choices={[
+                { id: 'M', name: 'Male ' },
+                { id: 'F', name: 'Female' },
+            ]}
+        />
+    </Wrapper>
+);
+
 export const DefaultValue = () => (
     <Wrapper>
         <SelectInput

@@ -118,7 +118,9 @@ export const useSupportCreateSuggestion = (
     };
 };
 
-export interface SupportCreateSuggestionOptions {
+export interface SupportCreateSuggestionOptions<
+    RecordType extends Record<string, unknown> = any
+> {
     create?: ReactElement;
     createValue?: string;
     createLabel?: string;
@@ -126,7 +128,7 @@ export interface SupportCreateSuggestionOptions {
     filter?: string;
     handleChange: (value: any) => void;
     onCreate?: OnCreateHandler;
-    optionText?: OptionText;
+    optionText?: OptionText<RecordType>;
 }
 
 export interface UseSupportCreateValue {

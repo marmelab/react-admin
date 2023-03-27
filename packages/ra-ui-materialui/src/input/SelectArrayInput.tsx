@@ -13,6 +13,7 @@ import {
     Chip,
     OutlinedInput,
 } from '@mui/material';
+import { Call, Objects } from 'hotscript';
 import {
     ChoicesProps,
     FieldTitle,
@@ -87,7 +88,12 @@ import {
  *    { id: 'photography', name: 'myroot.tags.photography' },
  * ];
  */
-export const SelectArrayInput = (props: SelectArrayInputProps) => {
+export const SelectArrayInput = <
+    RecordType extends Record<string, any> = never,
+    ChoiceType extends Record<string, any> = never
+>(
+    props: SelectArrayInputProps<RecordType, ChoiceType>
+) => {
     const {
         choices: choicesProp,
         className,
@@ -350,14 +356,19 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
     );
 };
 
-export type SelectArrayInputProps = ChoicesProps &
-    Omit<SupportCreateSuggestionOptions, 'handleChange'> &
+export type SelectArrayInputProps<
+    RecordType extends Record<string, any> = never,
+    ChoiceType extends Record<string, any> = never
+> = ChoicesProps<ChoiceType> &
+    Omit<SupportCreateSuggestionOptions<ChoiceType>, 'handleChange'> &
     Omit<CommonInputProps, 'source'> &
     Omit<FormControlProps, 'defaultValue' | 'onBlur' | 'onChange'> & {
         options?: SelectProps;
         disableValue?: string;
-        source?: string;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
+        source?: [RecordType] extends [never]
+            ? string
+            : Call<Objects.AllPaths, RecordType>;
     };
 
 SelectArrayInput.propTypes = {

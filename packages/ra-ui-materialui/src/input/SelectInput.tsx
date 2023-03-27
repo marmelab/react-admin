@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { MenuItem, TextFieldProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { Call, Objects } from 'hotscript';
 import {
     useChoicesContext,
     useInput,
@@ -105,7 +106,12 @@ import { LoadingInput } from './LoadingInput';
  * <SelectInput source="gender" choices={choices} disableValue="not_available" />
  *
  */
-export const SelectInput = (props: SelectInputProps) => {
+export const SelectInput = <
+    RecordType extends Record<string, any> = never,
+    ChoiceType extends Record<string, any> = never
+>(
+    props: SelectInputProps<RecordType, ChoiceType>
+) => {
     const {
         choices: choicesProp,
         className,
@@ -425,15 +431,20 @@ const StyledResettableTextField = styled(ResettableTextField, {
     '& .MuiFilledInput-root': { paddingRight: 0 },
 }));
 
-export type SelectInputProps = Omit<CommonInputProps, 'source'> &
-    ChoicesProps &
-    Omit<SupportCreateSuggestionOptions, 'handleChange'> &
+export type SelectInputProps<
+    RecordType extends Record<string, any> = never,
+    ChoiceType extends Record<string, any> = never
+> = Omit<CommonInputProps, 'source'> &
+    ChoicesProps<ChoiceType> &
+    Omit<SupportCreateSuggestionOptions<ChoiceType>, 'handleChange'> &
     Omit<TextFieldProps, 'label' | 'helperText' | 'classes' | 'onChange'> & {
         disableValue?: string;
         emptyText?: string | ReactElement;
         emptyValue?: any;
         resettable?: boolean;
         // Source is optional as AutocompleteInput can be used inside a ReferenceInput that already defines the source
-        source?: string;
+        source?: [RecordType] extends [never]
+            ? string
+            : Call<Objects.AllPaths, RecordType>;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
     };

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ReactElement, isValidElement, useCallback } from 'react';
 import get from 'lodash/get';
+import { Call, Objects } from 'hotscript';
 
 import { useTranslate } from '../i18n';
 import { RaRecord } from '../types';
@@ -9,15 +10,27 @@ import { RecordContextProvider } from '../controller';
 export type OptionTextElement = ReactElement<{
     record: RaRecord;
 }>;
-export type OptionTextFunc = (choice: any) => React.ReactNode;
-export type OptionText = OptionTextElement | OptionTextFunc | string;
+export type OptionTextFunc<RecordType extends Record<string, unknown> = any> = (
+    choice: RecordType
+) => React.ReactNode;
 
-export interface ChoicesProps {
+export type OptionText<RecordType extends Record<string, unknown> = any> =
+    | OptionTextElement
+    | OptionTextFunc<RecordType>
+    | ([RecordType] extends [never]
+          ? string
+          : Call<Objects.AllPaths, RecordType>);
+
+export interface ChoicesProps<
+    RecordType extends Record<string, unknown> = any
+> {
     choices?: any[];
     isFetching?: boolean;
     isLoading?: boolean;
-    optionValue?: string;
-    optionText?: OptionText;
+    optionValue?: [RecordType] extends [never]
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
+    optionText?: OptionText<RecordType>;
     translateChoice?: boolean;
 }
 
