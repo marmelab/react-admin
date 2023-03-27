@@ -114,12 +114,12 @@ export type DateInputProps<
             :
                   | Call<
                         Objects.AllPaths,
-                        // Here we pick only the paths that contain a boolean
+                        // Here we pick only the paths that contain a Date
                         Call<Objects.PickBy<Booleans.Equals<Date>>, RecordType>
                     >
                   | Call<
                         Objects.AllPaths,
-                        // Here we pick only the paths that contain a boolean
+                        // Here we pick only the paths that contain a string
                         Call<
                             Objects.PickBy<Booleans.Equals<string>>,
                             RecordType

@@ -192,7 +192,7 @@ export interface NumberInputProps<
         ? string
         : Call<
               Objects.AllPaths,
-              // Here we pick only the paths that contain a boolean
+              // Here we pick only the paths that contain a number
               Call<Objects.PickBy<Booleans.Equals<number>>, RecordType>
           >;
 }
