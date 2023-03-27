@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
+import { Call, Objects } from 'hotscript';
 import {
     InputProps,
     useReferenceArrayInputController,
@@ -77,7 +78,11 @@ import { AutocompleteArrayInput } from './AutocompleteArrayInput';
  * The enclosed component may filter results. ReferenceArrayInput create a ChoicesContext which provides
  * a `setFilters` function. You can call this function to filter the results.
  */
-export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
+export const ReferenceArrayInput = <
+    RecordType extends Record<string, any> = never
+>(
+    props: ReferenceArrayInputProps<RecordType>
+) => {
     const { children, reference } = props;
     if (React.Children.count(children) !== 1) {
         throw new Error(
@@ -119,10 +124,14 @@ ReferenceArrayInput.defaultProps = {
     children: <AutocompleteArrayInput />,
 };
 
-export interface ReferenceArrayInputProps
-    extends InputProps,
+export interface ReferenceArrayInputProps<
+    RecordType extends Record<string, any> = never
+> extends InputProps,
         UseReferenceArrayInputParams {
     children?: ReactElement;
     label?: string;
+    source: [RecordType] extends [never]
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
     [key: string]: any;
 }

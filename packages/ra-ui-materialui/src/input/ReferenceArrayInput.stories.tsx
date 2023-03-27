@@ -70,6 +70,37 @@ export const Basic = () => (
     </Admin>
 );
 
+type Post = {
+    id: number;
+    title: string;
+    published: boolean;
+    tags_ids: number[];
+};
+
+export const Typed = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource name="tags" recordRepresentation={'name'} />
+        <Resource
+            name="posts"
+            create={() => (
+                <Create
+                    resource="posts"
+                    record={{ tags_ids: [1, 3] }}
+                    sx={{ width: 600 }}
+                >
+                    <SimpleForm>
+                        <ReferenceArrayInput<Post>
+                            reference="tags"
+                            resource="posts"
+                            source="tags_ids"
+                        />
+                    </SimpleForm>
+                </Create>
+            )}
+        />
+    </Admin>
+);
+
 export const WithAutocompleteInput = () => (
     <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
         <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>
