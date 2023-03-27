@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { RaRecord } from 'ra-core';
 import { AutocompleteInput, AutocompleteInputProps } from './AutocompleteInput';
 
 /**
@@ -67,18 +66,26 @@ import { AutocompleteInput, AutocompleteInputProps } from './AutocompleteInput';
  */
 
 export const AutocompleteArrayInput = <
-    OptionType extends RaRecord = RaRecord,
+    RecordType extends Record<string, unknown> = never,
+    OptionType extends Record<string, unknown> = never,
     DisableClearable extends boolean | undefined = boolean | undefined,
     SupportCreate extends boolean | undefined = false
 >({
     defaultValue,
     ...props
 }: AutocompleteArrayInputProps<
+    RecordType,
     OptionType,
     DisableClearable,
     SupportCreate
 >) => (
-    <AutocompleteInput<OptionType, true, DisableClearable, SupportCreate>
+    <AutocompleteInput<
+        RecordType,
+        OptionType,
+        true,
+        DisableClearable,
+        SupportCreate
+    >
         {...props}
         multiple
         defaultValue={defaultValue ?? []}
@@ -86,11 +93,18 @@ export const AutocompleteArrayInput = <
 );
 
 export type AutocompleteArrayInputProps<
-    OptionType extends any = RaRecord,
+    RecordType extends Record<string, unknown> = never,
+    OptionType extends Record<string, unknown> = never,
     DisableClearable extends boolean | undefined = false,
     SupportCreate extends boolean | undefined = false
 > = Omit<
-    AutocompleteInputProps<OptionType, true, DisableClearable, SupportCreate>,
+    AutocompleteInputProps<
+        RecordType,
+        OptionType,
+        true,
+        DisableClearable,
+        SupportCreate
+    >,
     'defaultValue'
 > & {
     defaultValue?: any[];

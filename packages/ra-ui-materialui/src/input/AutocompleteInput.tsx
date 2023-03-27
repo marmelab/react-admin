@@ -21,6 +21,7 @@ import {
     createFilterOptions,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { Call, Objects } from 'hotscript';
 import {
     ChoicesProps,
     FieldTitle,
@@ -112,12 +113,14 @@ const defaultFilterOptions = createFilterOptions();
  * <AutocompleteInput source="author_id" options={{ color: 'secondary', InputLabelProps: { shrink: true } }} />
  */
 export const AutocompleteInput = <
-    OptionType extends RaRecord = RaRecord,
+    RecordType extends Record<string, unknown> = never,
+    OptionType extends Record<string, unknown> = never,
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
     SupportCreate extends boolean | undefined = false
 >(
     props: AutocompleteInputProps<
+        RecordType,
         OptionType,
         Multiple,
         DisableClearable,
@@ -244,6 +247,7 @@ export const AutocompleteInput = <
     );
 
     const selectedChoice = useSelectedChoice<
+        RecordType,
         OptionType,
         Multiple,
         DisableClearable,
@@ -659,12 +663,13 @@ const StyledAutocomplete = styled(Autocomplete, {
 
 // @ts-ignore
 export interface AutocompleteInputProps<
-    OptionType extends any = RaRecord,
+    RecordType extends Record<string, any> = never,
+    OptionType extends Record<string, any> = never,
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
     SupportCreate extends boolean | undefined = false
 > extends Omit<CommonInputProps, 'source'>,
-        ChoicesProps,
+        ChoicesProps<OptionType>,
         UseSuggestionsOptions,
         Omit<SupportCreateSuggestionOptions, 'handleChange' | 'optionText'>,
         Omit<
@@ -685,7 +690,9 @@ export interface AutocompleteInputProps<
     setFilter?: (value: string) => void;
     shouldRenderSuggestions?: any;
     // Source is optional as AutocompleteInput can be used inside a ReferenceInput that already defines the source
-    source?: string;
+    source?: [RecordType] extends [never]
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
     TextFieldProps?: TextFieldProps;
 }
 
@@ -693,7 +700,8 @@ export interface AutocompleteInputProps<
  * Returns the selected choice (or choices if multiple) by matching the input value with the choices.
  */
 const useSelectedChoice = <
-    OptionType extends any = RaRecord,
+    RecordType extends Record<string, any> = never,
+    OptionType extends Record<string, unknown> = never,
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
     SupportCreate extends boolean | undefined = false
@@ -704,6 +712,7 @@ const useSelectedChoice = <
         multiple,
         optionValue,
     }: AutocompleteInputProps<
+        RecordType,
         OptionType,
         Multiple,
         DisableClearable,

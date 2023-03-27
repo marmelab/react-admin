@@ -101,6 +101,55 @@ export const Basic = () => (
     </Admin>
 );
 
+type Book = {
+    id: number;
+    title: string;
+    author: number;
+};
+
+type Author = {
+    id: number;
+    name: string;
+    disabled: boolean;
+};
+
+const TypedBookEdit = () => {
+    const choices = [
+        { id: 1, name: 'Leo Tolstoy' },
+        { id: 2, name: 'Victor Hugo' },
+        { id: 3, name: 'William Shakespeare' },
+        { id: 4, name: 'Charles Baudelaire' },
+        { id: 5, name: 'Marcel Proust' },
+    ];
+    return (
+        <Edit
+            mutationMode="pessimistic"
+            mutationOptions={{
+                onSuccess: data => {
+                    console.log(data);
+                },
+            }}
+        >
+            <SimpleForm>
+                <AutocompleteInput<Book, Author>
+                    source="author"
+                    optionValue="id"
+                    optionText="name"
+                    choices={choices}
+                    validate={required()}
+                    fullWidth
+                />
+            </SimpleForm>
+        </Edit>
+    );
+};
+
+export const Typed = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource name="books" edit={TypedBookEdit} />
+    </Admin>
+);
+
 export const Nullable = ({ onSuccess = console.log }) => {
     const choices = [
         { id: 1, name: 'Leo Tolstoy' },
