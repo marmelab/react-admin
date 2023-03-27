@@ -21,6 +21,20 @@ export const Basic = () => (
     </Wrapper>
 );
 
+type Post = {
+    attachment: string;
+    title: string;
+};
+
+export const Typed = () => (
+    <Wrapper>
+        <FileInput<Post> source="attachment">
+            <FileField<Post> source="src" title="title" />
+        </FileInput>
+        <FormInspector name="image" />
+    </Wrapper>
+);
+
 export const DefaultValue = () => (
     <Wrapper>
         <FileInput

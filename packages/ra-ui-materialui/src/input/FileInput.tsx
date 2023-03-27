@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { useDropzone, DropzoneOptions } from 'react-dropzone';
 import FormHelperText from '@mui/material/FormHelperText';
+import { Call, Objects } from 'hotscript';
 import {
     useInput,
     useTranslate,
@@ -23,7 +24,9 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 import { SxProps } from '@mui/system';
 
-export const FileInput = (props: FileInputProps) => {
+export const FileInput = <RecordType extends Record<string, any> = never>(
+    props: FileInputProps<RecordType>
+) => {
     const {
         accept,
         children,
@@ -252,7 +255,9 @@ const StyledLabeled = styled(Labeled, {
     [`& .${FileInputClasses.removeButton}`]: {},
 }));
 
-export type FileInputProps = CommonInputProps & {
+export type FileInputProps<
+    RecordType extends Record<string, any> = never
+> = CommonInputProps & {
     accept?: DropzoneOptions['accept'];
     className?: string;
     children?: ReactNode;
@@ -267,4 +272,7 @@ export type FileInputProps = CommonInputProps & {
     inputProps?: any;
     validateFileRemoval?(file): boolean | Promise<boolean>;
     sx?: SxProps;
+    source: [RecordType] extends [never]
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
 };

@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography from '@mui/material/Typography';
+import { Call, Objects } from 'hotscript';
 import { useRecordContext, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
@@ -23,7 +24,9 @@ import { Link } from '@mui/material';
  *     <a href="doc.pdf" title="Presentation">Presentation</a>
  * </div>
  */
-export const FileField = (props: FileFieldProps) => {
+export const FileField = <RecordType extends Record<string, any> = never>(
+    props: FileFieldProps<RecordType>
+) => {
     const {
         className,
         emptyText,
@@ -101,14 +104,24 @@ export const FileField = (props: FileFieldProps) => {
     );
 };
 
-export interface FileFieldProps extends PublicFieldProps, InjectedFieldProps {
+export interface FileFieldProps<RecordType extends Record<string, any> = never>
+    extends PublicFieldProps,
+        InjectedFieldProps {
     src?: string;
-    title?: string;
     target?: string;
     download?: boolean | string;
     ping?: string;
     rel?: string;
     sx?: SxProps;
+    title: [RecordType] extends [never]
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
+    source: [RecordType] extends [never]
+        ? string
+        : Call<Objects.AllPaths, RecordType> | 'src';
+    sortBy?: [RecordType] extends [never]
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
 }
 
 FileField.propTypes = {

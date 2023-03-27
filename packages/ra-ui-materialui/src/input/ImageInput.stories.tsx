@@ -21,6 +21,20 @@ export const Basic = () => (
     </Wrapper>
 );
 
+type Post = {
+    image: string;
+    title: string;
+};
+
+export const Typed = () => (
+    <Wrapper>
+        <ImageInput<Post> source="image">
+            <ImageField<Post> source="src" title="title" />
+        </ImageInput>
+        <FormInspector name="image" />
+    </Wrapper>
+);
+
 export const LimitByFileType = () => (
     <Wrapper>
         <ImageInput source="image" accept="image/png">

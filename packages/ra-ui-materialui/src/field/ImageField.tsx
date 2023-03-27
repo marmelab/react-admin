@@ -3,13 +3,16 @@ import { styled } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
+import { Call, Objects } from 'hotscript';
 import { useRecordContext, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import { SxProps } from '@mui/system';
 
-export const ImageField = (props: ImageFieldProps) => {
+export const ImageField = <RecordType extends Record<string, any> = never>(
+    props: ImageFieldProps<RecordType>
+) => {
     const { className, emptyText, source, src, title, ...rest } = props;
     const record = useRecordContext(props);
     const sourceValue = get(record, source);
@@ -100,8 +103,18 @@ const Root = styled(Box, {
     },
 });
 
-export interface ImageFieldProps extends PublicFieldProps, InjectedFieldProps {
+export interface ImageFieldProps<RecordType extends Record<string, any> = never>
+    extends PublicFieldProps,
+        InjectedFieldProps {
     src?: string;
-    title?: string;
     sx?: SxProps;
+    title: [RecordType] extends [never]
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
+    source: [RecordType] extends [never]
+        ? string
+        : Call<Objects.AllPaths, RecordType> | 'src';
+    sortBy?: [RecordType] extends [never]
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
 }
