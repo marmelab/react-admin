@@ -11,6 +11,7 @@ import {
 import { RadioGroupProps } from '@mui/material/RadioGroup';
 import { FormControlProps } from '@mui/material/FormControl';
 import get from 'lodash/get';
+import { Call, Objects } from 'hotscript';
 import { useInput, FieldTitle, ChoicesProps, useChoicesContext } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
@@ -80,7 +81,11 @@ import { LinearProgress } from '../layout';
  *
  * The object passed as `options` props is passed to the MUI <RadioButtonGroup> component
  */
-export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
+export const RadioButtonGroupInput = <
+    RecordType extends Record<string, any> = never
+>(
+    props: RadioButtonGroupInputProps<RecordType>
+) => {
     const {
         choices: choicesProp,
         className,
@@ -268,12 +273,16 @@ const sanitizeRestProps = ({
     ...rest
 }: any) => sanitizeInputRestProps(rest);
 
-export type RadioButtonGroupInputProps = Omit<CommonInputProps, 'source'> &
+export type RadioButtonGroupInputProps<
+    RecordType extends Record<string, any> = never
+> = Omit<CommonInputProps, 'source'> &
     ChoicesProps &
     FormControlProps &
     RadioGroupProps & {
         options?: RadioGroupProps;
-        source?: string;
+        source?: [RecordType] extends [never]
+            ? string
+            : Call<Objects.AllPaths, RecordType>;
     };
 
 const PREFIX = 'RaRadioButtonGroupInput';

@@ -24,6 +24,17 @@ export const Basic = () => (
     </Wrapper>
 );
 
+type Post = {
+    category: string;
+    title: string;
+};
+
+export const Typed = () => (
+    <Wrapper>
+        <RadioButtonGroupInput<Post> source="category" choices={choices} />
+    </Wrapper>
+);
+
 export const Row = () => (
     <Wrapper>
         <RadioButtonGroupInput
