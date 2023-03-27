@@ -15,6 +15,15 @@ export const Basic = () => (
         <TimeInput source="published" />
     </Wrapper>
 );
+type Post = {
+    id: number;
+    published: string;
+};
+export const Typed = () => (
+    <Wrapper>
+        <TimeInput<Post> source="published" />
+    </Wrapper>
+);
 
 export const FullWidth = () => (
     <Wrapper>

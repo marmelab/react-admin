@@ -2,6 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
+import { Booleans, Call, Objects } from 'hotscript';
 import { useInput, FieldTitle } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
@@ -44,7 +45,7 @@ const parseTime = (value: string) => {
  *     </Edit>
  * );
  */
-export const TimeInput = ({
+export const TimeInput = <RecordType extends Record<string, any> = never>({
     className,
     defaultValue,
     format = formatTime,
@@ -59,7 +60,7 @@ export const TimeInput = ({
     validate,
     variant,
     ...rest
-}: TimeInputProps) => {
+}: TimeInputProps<RecordType>) => {
     const { field, fieldState, formState, id, isRequired } = useInput({
         defaultValue,
         format,
@@ -112,8 +113,18 @@ TimeInput.propTypes = {
     source: PropTypes.string,
 };
 
-export type TimeInputProps = CommonInputProps &
-    Omit<TextFieldProps, 'helperText' | 'label'>;
+export type TimeInputProps<
+    RecordType extends Record<string, any> = never
+> = CommonInputProps &
+    Omit<TextFieldProps, 'helperText' | 'label'> & {
+        source: [RecordType] extends [never]
+            ? string
+            : Call<
+                  Objects.AllPaths,
+                  // Here we pick only the paths that contain a string
+                  Call<Objects.PickBy<Booleans.Equals<string>>, RecordType>
+              >;
+    };
 
 const leftPad = (nb = 2) => value => ('0'.repeat(nb) + value).slice(-nb);
 const leftPad2 = leftPad(2);
