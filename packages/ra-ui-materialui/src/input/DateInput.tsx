@@ -2,6 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
+import { Booleans, Call, Objects } from 'hotscript';
 import { useInput, FieldTitle } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
@@ -30,7 +31,7 @@ import { InputHelperText } from './InputHelperText';
  * // (which is always a date string) back to a Date object.
  * <DateInput source="published_at" parse={val => new Date(val)} />
  */
-export const DateInput = ({
+export const DateInput = <RecordType extends Record<string, any> = never>({
     className,
     defaultValue,
     format = getStringFromDate,
@@ -46,7 +47,7 @@ export const DateInput = ({
     validate,
     variant,
     ...rest
-}: DateInputProps) => {
+}: DateInputProps<RecordType>) => {
     const { field, fieldState, formState, id, isRequired } = useInput({
         defaultValue,
         name,
@@ -104,8 +105,27 @@ DateInput.propTypes = {
     source: PropTypes.string,
 };
 
-export type DateInputProps = CommonInputProps &
-    Omit<TextFieldProps, 'helperText' | 'label'>;
+export type DateInputProps<
+    RecordType extends Record<string, any> = never
+> = CommonInputProps &
+    Omit<TextFieldProps, 'helperText' | 'label'> & {
+        source: [RecordType] extends [never]
+            ? string
+            :
+                  | Call<
+                        Objects.AllPaths,
+                        // Here we pick only the paths that contain a boolean
+                        Call<Objects.PickBy<Booleans.Equals<Date>>, RecordType>
+                    >
+                  | Call<
+                        Objects.AllPaths,
+                        // Here we pick only the paths that contain a boolean
+                        Call<
+                            Objects.PickBy<Booleans.Equals<string>>,
+                            RecordType
+                        >
+                    >;
+    };
 
 /**
  * Convert Date object to String

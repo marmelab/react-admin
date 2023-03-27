@@ -2,6 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
+import { Booleans, Call, Objects } from 'hotscript';
 import { useInput, FieldTitle } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
@@ -21,7 +22,7 @@ const parseDateTime = (value: string) =>
 /**
  * Input component for entering a date and a time with timezone, using the browser locale
  */
-export const DateTimeInput = ({
+export const DateTimeInput = <RecordType extends Record<string, any> = never>({
     className,
     defaultValue,
     format = formatDateTime,
@@ -36,7 +37,7 @@ export const DateTimeInput = ({
     validate,
     variant,
     ...rest
-}: DateTimeInputProps) => {
+}: DateTimeInputProps<RecordType>) => {
     const { field, fieldState, formState, id, isRequired } = useInput({
         defaultValue,
         format,
@@ -93,8 +94,27 @@ DateTimeInput.propTypes = {
     source: PropTypes.string,
 };
 
-export type DateTimeInputProps = CommonInputProps &
-    Omit<TextFieldProps, 'helperText' | 'label'>;
+export type DateTimeInputProps<
+    RecordType extends Record<string, any> = never
+> = CommonInputProps &
+    Omit<TextFieldProps, 'helperText' | 'label'> & {
+        source: [RecordType] extends [never]
+            ? string
+            :
+                  | Call<
+                        Objects.AllPaths,
+                        // Here we pick only the paths that contain a boolean
+                        Call<Objects.PickBy<Booleans.Equals<Date>>, RecordType>
+                    >
+                  | Call<
+                        Objects.AllPaths,
+                        // Here we pick only the paths that contain a boolean
+                        Call<
+                            Objects.PickBy<Booleans.Equals<string>>,
+                            RecordType
+                        >
+                    >;
+    };
 
 const leftPad = (nb = 2) => value => ('0'.repeat(nb) + value).slice(-nb);
 const leftPad4 = leftPad(4);

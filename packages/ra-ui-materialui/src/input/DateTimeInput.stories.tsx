@@ -16,6 +16,18 @@ export const Basic = () => (
     </Wrapper>
 );
 
+type Post = {
+    publishedAt: string;
+    reportedAt: string;
+    views: number;
+};
+
+export const Typed = () => (
+    <Wrapper>
+        <DateTimeInput<Post> source="publishedAt" />
+    </Wrapper>
+);
+
 export const FullWidth = () => (
     <Wrapper>
         <DateTimeInput source="published" fullWidth />
