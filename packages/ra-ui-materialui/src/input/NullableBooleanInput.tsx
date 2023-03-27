@@ -4,13 +4,18 @@ import PropTypes from 'prop-types';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import clsx from 'clsx';
+import { Booleans, Call, Objects } from 'hotscript';
 import { useInput, useTranslate, FieldTitle } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 
-export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
+export const NullableBooleanInput = <
+    RecordType extends Record<string, any> = never
+>(
+    props: NullableBooleanInputProps<RecordType>
+) => {
     const {
         className,
         format = getStringFromBoolean,
@@ -129,9 +134,18 @@ const getStringFromBoolean = (value?: boolean | null): string => {
     return '';
 };
 
-export type NullableBooleanInputProps = CommonInputProps &
+export type NullableBooleanInputProps<
+    RecordType extends Record<string, any> = never
+> = CommonInputProps &
     Omit<TextFieldProps, 'label' | 'helperText'> & {
         nullLabel?: string;
         falseLabel?: string;
         trueLabel?: string;
+        source: [RecordType] extends [never]
+            ? string
+            : Call<
+                  Objects.AllPaths,
+                  // Here we pick only the paths that contain a boolean
+                  Call<Objects.PickBy<Booleans.Equals<boolean>>, RecordType>
+              >;
     };
