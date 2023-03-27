@@ -19,6 +19,7 @@ import {
     FormControlProps,
     styled,
 } from '@mui/material';
+import { Call, Objects } from 'hotscript';
 
 import { LinearProgress } from '../../layout';
 import { CommonInputProps } from '../CommonInputProps';
@@ -68,7 +69,9 @@ import { ArrayInputContext } from './ArrayInputContext';
  *
  * @see {@link https://react-hook-form.com/api/usefieldarray}
  */
-export const ArrayInput = (props: ArrayInputProps) => {
+export const ArrayInput = <RecordType extends Record<string, any> = never>(
+    props: ArrayInputProps<RecordType>
+) => {
     const {
         className,
         defaultValue,
@@ -103,7 +106,12 @@ export const ArrayInput = (props: ArrayInputProps) => {
         unregister,
     } = useFormContext();
 
-    const fieldProps = useFieldArray({
+    const fieldProps = useFieldArray<
+        any,
+        [RecordType] extends [never]
+            ? string
+            : Call<Objects.AllPaths, RecordType>
+    >({
         name: source,
         rules: {
             validate: async value => {
@@ -171,6 +179,8 @@ export const ArrayInput = (props: ArrayInputProps) => {
                     isRequired={isRequired(validate)}
                 />
             </InputLabel>
+            {/* FIXME: Find a way to make the context accept generics */}
+            {/* @ts-ignore */}
             <ArrayInputContext.Provider value={fieldProps}>
                 {cloneElement(Children.only(children), {
                     ...fieldProps,
@@ -209,7 +219,7 @@ export const getArrayInputError = error => {
     return error;
 };
 
-export interface ArrayInputProps
+export interface ArrayInputProps<RecordType extends Record<string, any> = never>
     extends CommonInputProps,
         Omit<FormControlProps, 'defaultValue' | 'onBlur' | 'onChange'> {
     className?: string;
@@ -218,6 +228,9 @@ export interface ArrayInputProps
     isFetching?: boolean;
     isLoading?: boolean;
     record?: Partial<RaRecord>;
+    source: [RecordType] extends [never]
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
 }
 
 const PREFIX = 'RaArrayInput';

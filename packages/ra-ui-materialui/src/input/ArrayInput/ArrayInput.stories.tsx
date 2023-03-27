@@ -71,6 +71,46 @@ export const Basic = () => (
     </Admin>
 );
 
+type Book = {
+    id: number;
+    title: string;
+    authors: [];
+};
+
+type Author = {
+    name: string;
+    role: string;
+};
+
+const TypedBookEdit = () => {
+    return (
+        <Edit
+            mutationMode="pessimistic"
+            mutationOptions={{
+                onSuccess: data => {
+                    console.log(data);
+                },
+            }}
+        >
+            <SimpleForm>
+                <TextInput source="title" />
+                <ArrayInput<Book> source="authors">
+                    <SimpleFormIterator>
+                        <TextInput<Author> source="name" />
+                        <TextInput<Author> source="role" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        </Edit>
+    );
+};
+
+export const Typed = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource name="books" edit={TypedBookEdit} />
+    </Admin>
+);
+
 export const Disabled = () => (
     <Admin dataProvider={dataProvider} history={history}>
         <Resource
