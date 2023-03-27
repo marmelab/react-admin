@@ -114,7 +114,7 @@ const defaultFilterOptions = createFilterOptions();
  */
 export const AutocompleteInput = <
     RecordType extends Record<string, unknown> = never,
-    OptionType extends Record<string, unknown> = never,
+    OptionType extends Record<string, unknown> = any,
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
     SupportCreate extends boolean | undefined = false
@@ -664,7 +664,7 @@ const StyledAutocomplete = styled(Autocomplete, {
 // @ts-ignore
 export interface AutocompleteInputProps<
     RecordType extends Record<string, any> = never,
-    OptionType extends Record<string, any> = never,
+    OptionType extends Record<string, any> = any,
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
     SupportCreate extends boolean | undefined = false
