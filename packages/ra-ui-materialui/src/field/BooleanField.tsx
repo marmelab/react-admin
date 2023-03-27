@@ -15,22 +15,8 @@ import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 
 const genericMemo: <T>(component: T) => T = memo;
 
-const BooleanFieldImpl = <
-    RecordType extends Record<string, any> = Record<string, any>,
-    // By default, Source should allow all possible paths for RecordType (author, author.name, etc.)
-    Source extends string = Call<
-        Objects.AllPaths,
-        // Here we pick only the paths that contain a boolean
-        Call<Objects.PickBy<Booleans.Equals<boolean>>, RecordType>
-    > extends never // But if RecordType is not provided explicitly, Source would be never
-        ? string // So we default to string in this case
-        : Call<
-              Objects.AllPaths,
-              Call<Objects.PickBy<Booleans.Equals<boolean>>, RecordType>
-          >,
-    SortBy extends string = Source
->(
-    props: BooleanFieldProps<RecordType, Source, SortBy>
+const BooleanFieldImpl = <RecordType extends Record<string, any> = never>(
+    props: BooleanFieldProps<RecordType>
 ) => {
     const {
         className,
@@ -109,20 +95,8 @@ BooleanField.propTypes = {
 BooleanField.displayName = 'BooleanField';
 
 export interface BooleanFieldProps<
-    RecordType extends Record<string, any> = Record<string, any>,
-    // By default, Source should allow all possible paths for RecordType (author, author.name, etc.)
-    Source extends string = Call<
-        Objects.AllPaths,
-        // Here we pick only the paths that contain a boolean
-        Call<Objects.PickBy<Booleans.Equals<boolean>>, RecordType>
-    > extends never // But if RecordType is not provided explicitly, Source would be never
-        ? string // So we default to string in this case
-        : Call<
-              Objects.AllPaths,
-              Call<Objects.PickBy<Booleans.Equals<boolean>>, RecordType>
-          >,
-    SortBy extends string = Source
-> extends PublicFieldProps<Source, SortBy>,
+    RecordType extends Record<string, any> = never
+> extends PublicFieldProps,
         InjectedFieldProps,
         Omit<TypographyProps, 'textAlign'> {
     valueLabelTrue?: string;
@@ -130,6 +104,20 @@ export interface BooleanFieldProps<
     TrueIcon?: SvgIconComponent | null;
     FalseIcon?: SvgIconComponent | null;
     looseValue?: boolean;
+    source?: [RecordType] extends [never]
+        ? string
+        : Call<
+              Objects.AllPaths,
+              // Here we pick only the paths that contain a boolean
+              Call<Objects.PickBy<Booleans.Equals<boolean>>, RecordType>
+          >;
+    sortBy?: [RecordType] extends [never]
+        ? string
+        : Call<
+              Objects.AllPaths,
+              // Here we pick only the paths that contain a boolean
+              Call<Objects.PickBy<Booleans.Equals<boolean>>, RecordType>
+          >;
 }
 
 const PREFIX = 'RaBooleanField';

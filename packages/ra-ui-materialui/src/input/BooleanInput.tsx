@@ -14,21 +14,8 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 import { InputPropTypes } from './InputPropTypes';
 
-export const BooleanInput = <
-    RecordType extends Record<string, any> = Record<string, any>,
-    // By default, Source should allow all possible paths for RecordType (author, author.name, etc.)
-    Source extends string = Call<
-        Objects.AllPaths,
-        // Here we pick only the paths that contain a boolean
-        Call<Objects.PickBy<Booleans.Equals<boolean>>, RecordType>
-    > extends never // But if RecordType is not provided explicitly, Source would be never
-        ? string // So we default to string in this case
-        : Call<
-              Objects.AllPaths,
-              Call<Objects.PickBy<Booleans.Equals<boolean>>, RecordType>
-          >
->(
-    props: BooleanInputProps<RecordType, Source>
+export const BooleanInput = <RecordType extends Record<string, any> = never>(
+    props: BooleanInputProps<RecordType>
 ) => {
     const {
         className,
@@ -56,7 +43,7 @@ export const BooleanInput = <
         isRequired,
         fieldState: { error, invalid, isTouched },
         formState: { isSubmitted },
-    } = useInput<Source, boolean>({
+    } = useInput<boolean>({
         defaultValue,
         format,
         parse,
@@ -130,20 +117,16 @@ BooleanInput.defaultProps = {
 };
 
 export type BooleanInputProps<
-    RecordType extends Record<string, any> = Record<string, any>,
-    // By default, Source should allow all possible paths for RecordType (author, author.name, etc.)
-    Source extends string = Call<
-        Objects.AllPaths,
-        // Here we pick only the paths that contain a boolean
-        Call<Objects.PickBy<Booleans.Equals<boolean>>, RecordType>
-    > extends never // But if RecordType is not provided explicitly, Source would be never
-        ? string // So we default to string in this case
-        : Call<
-              Objects.AllPaths,
-              Call<Objects.PickBy<Booleans.Equals<boolean>>, RecordType>
-          >
-> = CommonInputProps<Source, boolean> &
+    RecordType extends Record<string, any> = never
+> = CommonInputProps<boolean> &
     SwitchProps &
     Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'> & {
         options: SwitchProps;
+        source: [RecordType] extends [never]
+            ? string
+            : Call<
+                  Objects.AllPaths,
+                  // Here we pick only the paths that contain a boolean
+                  Call<Objects.PickBy<Booleans.Equals<boolean>>, RecordType>
+              >;
     };

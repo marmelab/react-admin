@@ -23,8 +23,8 @@ const defaultFormat = (value: any) => (value == null ? '' : value);
 // parse empty string into null as it's more suitable for a majority of backends
 const defaultParse = (value: string) => (value === '' ? null : value);
 
-export const useInput = <Source extends string = string, ValueType = any>(
-    props: InputProps<Source, ValueType>
+export const useInput = <ValueType = any>(
+    props: InputProps<ValueType>
 ): UseInputValue => {
     const {
         defaultValue,
@@ -123,7 +123,7 @@ export const useInput = <Source extends string = string, ValueType = any>(
     };
 };
 
-export type InputProps<Source extends string = string, ValueType = any> = Omit<
+export type InputProps<ValueType = any> = Omit<
     UseControllerProps,
     'name' | 'defaultValue' | 'rules'
 > &
@@ -141,7 +141,7 @@ export type InputProps<Source extends string = string, ValueType = any> = Omit<
         parse?: (value: any) => ValueType;
         type?: string;
         resource?: string;
-        source: Source;
+        source: string;
         validate?: Validator | Validator[];
     };
 
