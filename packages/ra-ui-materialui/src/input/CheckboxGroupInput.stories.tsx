@@ -47,6 +47,33 @@ export const Basic = () => (
     </AdminContext>
 );
 
+type Post = {
+    roles: string[];
+    title: string;
+};
+
+export const Typed = () => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <Create
+            resource="posts"
+            record={{ roles: ['u001', 'u003'] }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <CheckboxGroupInput<Post>
+                    source="roles"
+                    choices={[
+                        { id: 'admin', name: 'Admin' },
+                        { id: 'u001', name: 'Editor' },
+                        { id: 'u002', name: 'Moderator' },
+                        { id: 'u003', name: 'Reviewer' },
+                    ]}
+                />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
 const dataProvider = testDataProvider({
     // @ts-ignore
     getList: () => Promise.resolve({ data: choices, total: choices.length }),

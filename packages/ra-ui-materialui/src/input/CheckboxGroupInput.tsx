@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
-import { useCallback, FunctionComponent } from 'react';
+import { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import FormLabel from '@mui/material/FormLabel';
@@ -9,6 +9,7 @@ import FormControl, { FormControlProps } from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
 import FormHelperText from '@mui/material/FormHelperText';
 import { CheckboxProps } from '@mui/material/Checkbox';
+import { Call, Objects } from 'hotscript';
 import { FieldTitle, useInput, ChoicesProps, useChoicesContext } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
@@ -84,7 +85,11 @@ import { LinearProgress } from '../layout';
  *
  * The object passed as `options` props is passed to the MUI <Checkbox> components
  */
-export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => {
+export const CheckboxGroupInput = <
+    RecordType extends Record<string, any> = never
+>(
+    props: CheckboxGroupInputProps<RecordType>
+) => {
     const {
         choices: choicesProp,
         className,
@@ -274,14 +279,19 @@ CheckboxGroupInput.propTypes = {
     translateChoice: PropTypes.bool,
 };
 
-export type CheckboxGroupInputProps = Omit<CommonInputProps, 'source'> &
+export type CheckboxGroupInputProps<
+    RecordType extends Record<string, any> = never
+> = Omit<CommonInputProps, 'source'> &
     ChoicesProps &
     CheckboxProps &
     FormControlProps & {
         options?: CheckboxProps;
         row?: boolean;
         // Optional as this input can be used inside a ReferenceInput
-        source?: string;
+        source?: [RecordType] extends [never]
+            ? string
+            : // TODO: find a way to pick only properties that are arrays
+              Call<Objects.AllPaths, RecordType>;
         labelPlacement?: 'bottom' | 'end' | 'start' | 'top';
     };
 
