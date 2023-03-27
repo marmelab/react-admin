@@ -1,5 +1,6 @@
 import React, { Children, ReactElement } from 'react';
 import PropTypes from 'prop-types';
+import { Booleans, Call, Objects } from 'hotscript';
 import {
     ChoicesContextProvider,
     useReferenceInputController,
@@ -70,7 +71,9 @@ import { AutocompleteInput } from './AutocompleteInput';
  * The enclosed component may filter results. ReferenceInput create a ChoicesContext which provides
  * a `setFilters` function. You can call this function to filter the results.
  */
-export const ReferenceInput = (props: ReferenceInputProps) => {
+export const ReferenceInput = <RecordType extends Record<string, any> = never>(
+    props: ReferenceInputProps<RecordType>
+) => {
     const { children, reference } = props;
 
     const controllerProps = useReferenceInputController(props);
@@ -112,10 +115,24 @@ ReferenceInput.defaultProps = {
     children: <AutocompleteInput />,
 };
 
-export interface ReferenceInputProps
-    extends InputProps,
+export interface ReferenceInputProps<
+    RecordType extends Record<string, any> = never
+> extends InputProps,
         UseReferenceInputControllerParams {
     children?: ReactElement;
     label?: string;
+    source: [RecordType] extends [never]
+        ? string
+        :
+              | Call<
+                    Objects.AllPaths,
+                    // Here we pick only the paths that contain a boolean
+                    Call<Objects.PickBy<Booleans.Equals<string>>, RecordType>
+                >
+              | Call<
+                    Objects.AllPaths,
+                    // Here we pick only the paths that contain a boolean
+                    Call<Objects.PickBy<Booleans.Equals<number>>, RecordType>
+                >;
     [key: string]: any;
 }
