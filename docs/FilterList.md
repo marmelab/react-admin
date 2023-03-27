@@ -201,19 +201,19 @@ import CategoryIcon from '@mui/icons-material/LocalOffer';
 
 export const CategoriesFilter = () => {
     const isSelected = (value, filters) => {
-        const category = filters.category || [];
-        return category.includes(value.category);
+        const categories = filters.categories || [];
+        return categories.includes(value.category);
     };
 
     const toggleFilter = (value, filters) => {
-        const category = filters.category || [];
+        const categories = filters.categories || [];
         return {
             ...filters,
-            category: category.includes(value.category)
+            categories: categories.includes(value.category)
                 // Remove the category if it was already present
-                ? category.filter(v => v !== value.category)
+                ? categories.filter(v => v !== value.category)
                 // Add the category if it wasn't already present
-                : [...category, value.category],
+                : [...categories, value.category],
         };
     };
 
