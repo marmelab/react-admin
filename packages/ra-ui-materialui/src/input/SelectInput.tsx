@@ -438,7 +438,9 @@ export type SelectInputProps<
     ChoicesProps<ChoiceType> &
     Omit<SupportCreateSuggestionOptions<ChoiceType>, 'handleChange'> &
     Omit<TextFieldProps, 'label' | 'helperText' | 'classes' | 'onChange'> & {
-        disableValue?: string;
+        disableValue?: [ChoiceType] extends [never]
+            ? string
+            : Call<Objects.AllPaths, ChoiceType>;
         emptyText?: string | ReactElement;
         emptyValue?: any;
         resettable?: boolean;

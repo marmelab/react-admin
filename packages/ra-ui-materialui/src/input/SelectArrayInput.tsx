@@ -364,7 +364,9 @@ export type SelectArrayInputProps<
     Omit<CommonInputProps, 'source'> &
     Omit<FormControlProps, 'defaultValue' | 'onBlur' | 'onChange'> & {
         options?: SelectProps;
-        disableValue?: string;
+        disableValue?: [ChoiceType] extends [never]
+            ? string
+            : Call<Objects.AllPaths, ChoiceType>;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
         source?: [RecordType] extends [never]
             ? string
