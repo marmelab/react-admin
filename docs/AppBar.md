@@ -203,7 +203,7 @@ export const MyAppBar = () => (
             <ToggleThemeButton lightTheme={defaultTheme} darkTheme={darkTheme} />
             <RefreshIconButton />
         </>
-    } >
+    }/>
 );
 ```
 
