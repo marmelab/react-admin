@@ -2,7 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
-import { Booleans, Call, Objects } from 'hotscript';
+import { Call, Objects } from 'hotscript';
 import { useInput, FieldTitle } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
@@ -119,11 +119,7 @@ export type TimeInputProps<
     Omit<TextFieldProps, 'helperText' | 'label'> & {
         source: [RecordType] extends [never]
             ? string
-            : Call<
-                  Objects.AllPaths,
-                  // Here we pick only the paths that contain a string
-                  Call<Objects.PickBy<Booleans.Equals<string>>, RecordType>
-              >;
+            : Call<Objects.AllPaths, RecordType>;
     };
 
 const leftPad = (nb = 2) => value => ('0'.repeat(nb) + value).slice(-nb);

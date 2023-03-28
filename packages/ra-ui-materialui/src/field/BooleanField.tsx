@@ -1,19 +1,17 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { memo } from 'react';
 import { SvgIconComponent } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import DoneIcon from '@mui/icons-material/Done';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Tooltip, Typography, TypographyProps } from '@mui/material';
-import { Booleans, Call, Objects } from 'hotscript';
+import { Call, Objects } from 'hotscript';
 import { useTranslate, useRecordContext } from 'ra-core';
 
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-
-const genericMemo: <T>(component: T) => T = memo;
+import { genericMemo } from './genericMemo';
 
 const BooleanFieldImpl = <RecordType extends Record<string, any> = never>(
     props: BooleanFieldProps<RecordType>
@@ -106,18 +104,10 @@ export interface BooleanFieldProps<
     looseValue?: boolean;
     source?: [RecordType] extends [never]
         ? string
-        : Call<
-              Objects.AllPaths,
-              // Here we pick only the paths that contain a boolean
-              Call<Objects.PickBy<Booleans.Equals<boolean>>, RecordType>
-          >;
+        : Call<Objects.AllPaths, RecordType>;
     sortBy?: [RecordType] extends [never]
         ? string
-        : Call<
-              Objects.AllPaths,
-              // Here we pick only the paths that contain a boolean
-              Call<Objects.PickBy<Booleans.Equals<boolean>>, RecordType>
-          >;
+        : Call<Objects.AllPaths, RecordType>;
 }
 
 const PREFIX = 'RaBooleanField';

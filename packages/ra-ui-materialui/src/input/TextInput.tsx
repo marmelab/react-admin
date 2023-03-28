@@ -1,7 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { Booleans, Call, Objects } from 'hotscript';
+import { Call, Objects } from 'hotscript';
 import { useInput, FieldTitle } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
@@ -111,9 +111,5 @@ export type TextInputProps<
     Omit<ResettableTextFieldProps, 'label' | 'helperText'> & {
         source: [RecordType] extends [never]
             ? string
-            : Call<
-                  Objects.AllPaths,
-                  // Here we pick only the paths that contain a string
-                  Call<Objects.PickBy<Booleans.Equals<string>>, RecordType>
-              >;
+            : Call<Objects.AllPaths, RecordType>;
     };

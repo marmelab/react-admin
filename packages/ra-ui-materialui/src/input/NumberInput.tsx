@@ -2,7 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
-import { Booleans, Call, Objects } from 'hotscript';
+import { Call, Objects } from 'hotscript';
 import { useInput, FieldTitle } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
@@ -190,11 +190,7 @@ export interface NumberInputProps<
     max?: string | number;
     source: [RecordType] extends [never]
         ? string
-        : Call<
-              Objects.AllPaths,
-              // Here we pick only the paths that contain a number
-              Call<Objects.PickBy<Booleans.Equals<number>>, RecordType>
-          >;
+        : Call<Objects.AllPaths, RecordType>;
 }
 
 const convertStringToNumber = value => {

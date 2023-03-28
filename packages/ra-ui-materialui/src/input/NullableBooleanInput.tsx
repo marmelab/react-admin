@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import clsx from 'clsx';
-import { Booleans, Call, Objects } from 'hotscript';
+import { Call, Objects } from 'hotscript';
 import { useInput, useTranslate, FieldTitle } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
@@ -143,9 +143,5 @@ export type NullableBooleanInputProps<
         trueLabel?: string;
         source: [RecordType] extends [never]
             ? string
-            : Call<
-                  Objects.AllPaths,
-                  // Here we pick only the paths that contain a boolean
-                  Call<Objects.PickBy<Booleans.Equals<boolean>>, RecordType>
-              >;
+            : Call<Objects.AllPaths, RecordType>;
     };

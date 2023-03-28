@@ -1,6 +1,6 @@
 import React, { Children, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { Booleans, Call, Objects } from 'hotscript';
+import { Call, Objects } from 'hotscript';
 import {
     ChoicesContextProvider,
     useReferenceInputController,
@@ -123,16 +123,6 @@ export interface ReferenceInputProps<
     label?: string;
     source: [RecordType] extends [never]
         ? string
-        :
-              | Call<
-                    Objects.AllPaths,
-                    // Here we pick only the paths that contain a boolean
-                    Call<Objects.PickBy<Booleans.Equals<string>>, RecordType>
-                >
-              | Call<
-                    Objects.AllPaths,
-                    // Here we pick only the paths that contain a boolean
-                    Call<Objects.PickBy<Booleans.Equals<number>>, RecordType>
-                >;
+        : Call<Objects.AllPaths, RecordType>;
     [key: string]: any;
 }

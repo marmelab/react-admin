@@ -6,7 +6,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormGroup, { FormGroupProps } from '@mui/material/FormGroup';
 import Switch, { SwitchProps } from '@mui/material/Switch';
-import { Booleans, Call, Objects } from 'hotscript';
+import { Call, Objects } from 'hotscript';
 import { FieldTitle, useInput } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
@@ -124,9 +124,5 @@ export type BooleanInputProps<
         options: SwitchProps;
         source: [RecordType] extends [never]
             ? string
-            : Call<
-                  Objects.AllPaths,
-                  // Here we pick only the paths that contain a boolean
-                  Call<Objects.PickBy<Booleans.Equals<boolean>>, RecordType>
-              >;
+            : Call<Objects.AllPaths, RecordType>;
     };
