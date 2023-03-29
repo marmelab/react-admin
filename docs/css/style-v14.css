@@ -46,6 +46,12 @@ main > .container .markdown-section {
     top: 20px;
     padding-left: 1em;
 }
+
+@media (max-height: 700px) {
+    .toc-container {
+        display: none;
+    }
+}
 .toc.is-position-fixed {
     position: static !important;
 }
