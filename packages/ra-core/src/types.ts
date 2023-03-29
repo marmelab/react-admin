@@ -196,8 +196,8 @@ export interface UpdateResult<RecordType extends RaRecord = any> {
     data: RecordType;
 }
 
-export interface UpdateManyParams<T extends RaRecord = any> {
-    ids: T['id'][];
+export interface UpdateManyParams<T = any> {
+    ids: Identifier[];
     data: T;
     meta?: any;
 }
