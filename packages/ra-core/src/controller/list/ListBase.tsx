@@ -20,8 +20,8 @@ import { ListContextProvider } from './ListContextProvider';
  *
  * @example // Custom list layout
  *
- * const PostList = props => (
- *     <ListBase {...props} perPage={10}>
+ * const PostList = () => (
+ *     <ListBase perPage={10}>
  *         <div>
  *              List metrics...
  *         </div>

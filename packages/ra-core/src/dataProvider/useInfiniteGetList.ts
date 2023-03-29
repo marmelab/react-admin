@@ -14,7 +14,6 @@ import { useDataProvider } from './useDataProvider';
  *
  * @see https://react-query-v3.tanstack.com/reference/useInfiniteQuery
  *
- *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
  *
