@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect, useCallback, useRef } from 'react';
 import { useInfinitePaginationContext, useListContext } from 'ra-core';
-import { Typography } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 
 export const InfiniteScroll = () => {
     const { isLoading } = useListContext();
@@ -34,10 +34,10 @@ export const InfiniteScroll = () => {
 
     if (isLoading) return null;
     return (
-        <Typography ref={observerElem} variant="body2" color="grey.500" pt={2}>
-            {isFetchingNextPage && hasNextPage
-                ? 'Loading...'
-                : 'No search left'}
-        </Typography>
+        <Box ref={observerElem} py={2} textAlign="center">
+            {isFetchingNextPage && hasNextPage && (
+                <CircularProgress size="1.5em" />
+            )}
+        </Box>
     );
 };
