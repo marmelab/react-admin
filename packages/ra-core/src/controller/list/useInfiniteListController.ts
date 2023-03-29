@@ -8,7 +8,6 @@ import { useAuthenticated } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../notification';
 import { useInfiniteGetList } from '../../dataProvider';
-import { SORT_ASC } from './queryReducer';
 import { defaultExporter } from '../../export';
 import {
     RaRecord,
@@ -52,7 +51,7 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         filterDefaultValues,
         perPage = 10,
         queryOptions = {},
-        sort = defaultSort,
+        sort,
         storeKey,
     } = props;
     useAuthenticated({ enabled: !disableAuthentication });
@@ -197,11 +196,6 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         fetchPreviousPage,
         isFetchingPreviousPage,
     };
-};
-
-const defaultSort = {
-    field: 'id',
-    order: SORT_ASC,
 };
 
 export interface InfiniteListControllerProps<

@@ -16,10 +16,12 @@ import { ListView, ListViewProps } from './ListView';
  *
  * The <InfiniteList> component renders the list layout (title, buttons, filters),
  * and fetches the list of records from the REST API.
- * It contains an <InfinitePagination> component, which fetches the next page of records.
  *
  * It then delegates the rendering of the list of records to its child component.
  * Usually, it's a <Datagrid>, responsible for displaying a table with one row for each post.
+ *
+ * It contains an <InfinitePagination> component, which fetches the next page of records
+ * when the user scrolls to the bottom of the list.
  *
  * The <InfiniteList> component accepts the following props:
  *
