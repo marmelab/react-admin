@@ -26,13 +26,22 @@ import { InfiniteListControllerResult } from './useInfiniteListController';
 export const InfinitePaginationContext = createContext<
     InfinitePaginationContextValue
 >({
+    hasNextPage: null,
     fetchNextPage: null,
+    isFetchingNextPage: null,
+    hasPreviousPage: null,
     fetchPreviousPage: null,
+    isFetchingPreviousPage: null,
 });
 
 InfinitePaginationContext.displayName = 'InfinitePaginationContext';
 
 export type InfinitePaginationContextValue = Pick<
     InfiniteListControllerResult,
-    'fetchNextPage' | 'fetchPreviousPage'
+    | 'fetchNextPage'
+    | 'fetchPreviousPage'
+    | 'isFetchingNextPage'
+    | 'hasNextPage'
+    | 'hasPreviousPage'
+    | 'isFetchingPreviousPage'
 >;
