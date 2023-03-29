@@ -21,8 +21,8 @@ import { BooleanField } from 'react-admin';
 | ----------------- | -------- | ---------------------------- |-----------------------------|----------------------------------------------------------------------|
 | `valueLabelTrue`  | Optional | `string`                     | 'true'                      | Aria label for the truthy value                                      |
 | `valueLabelFalse` | Optional | `string`                     | 'false'                     | Aria label for the falsy value                                       |
-| `TrueIcon`        | Optional | `SvgIconComponent` or `null` | `@mui/icons-material/Done`  | Icon to show for the truthy value                                    |
-| `FalseIcon`       | Optional | `SvgIconComponent` or `null` | `@mui/icons-material/Clear` | Icon to show for the falsy value                                     |
+| `TrueIcon`        | Optional | `SvgIconComponent` or `boolean` | `@mui/icons-material/Done`  | Icon to show for the truthy value                                    |
+| `FalseIcon`       | Optional | `SvgIconComponent` or `boolean` | `@mui/icons-material/Clear` | Icon to show for the falsy value                                     |
 | `looseValue`      | Optional | `boolean`                    | `false`                     | If `true` the field's value is not evaluated strictly as a `boolean` |
 
 `<BooleanField>` also accepts the [common field props](./Fields.md#common-field-props).
