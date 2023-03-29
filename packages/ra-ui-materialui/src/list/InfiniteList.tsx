@@ -69,6 +69,7 @@ export const InfiniteList = <RecordType extends RaRecord = any>({
     exporter,
     filter,
     filterDefaultValues,
+    pagination = defaultPagination,
     perPage,
     queryOptions,
     resource,
@@ -89,9 +90,11 @@ export const InfiniteList = <RecordType extends RaRecord = any>({
         sort={sort}
         storeKey={storeKey}
     >
-        <ListView<RecordType> {...rest} pagination={<InfiniteScroll />} />
+        <ListView<RecordType> {...rest} pagination={pagination} />
     </InfiniteListBase>
 );
+
+const defaultPagination = <InfiniteScroll />;
 
 export interface InfiniteListProps<RecordType extends RaRecord = any>
     extends InfiniteListControllerProps<RecordType>,
