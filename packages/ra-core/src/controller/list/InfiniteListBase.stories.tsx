@@ -57,16 +57,37 @@ const dataProvider = new Proxy(baseDataProvider, {
 });
 
 const BookListView = () => {
-    const { data, isLoading } = useListContext();
+    const {
+        data,
+        isLoading,
+        sort,
+        setSort,
+        filterValues,
+        setFilters,
+    } = useListContext();
     if (isLoading) {
         return <div>Loading...</div>;
     }
+    const toggleSort = () => {
+        setSort({
+            field: sort.field === 'title' ? 'id' : 'title',
+            order: 'ASC',
+        });
+    };
+    const toggleFilter = () => {
+        setFilters(filterValues.q ? {} : { q: 'The ' }, null);
+    };
+
     return (
-        <ul>
-            {data.map((record: any) => (
-                <li key={record.id}>{record.title}</li>
-            ))}
-        </ul>
+        <div>
+            <button onClick={toggleSort}>Toggle Sort</button>
+            <button onClick={toggleFilter}>Toggle Filter</button>
+            <ul>
+                {data.map((record: any) => (
+                    <li key={record.id}>{record.title}</li>
+                ))}
+            </ul>
+        </div>
     );
 };
 

@@ -2,6 +2,7 @@ export * from './BulkActionsToolbar';
 export * from './Count';
 export * from './datagrid';
 export * from './Empty';
+export * from './InfiniteList';
 export * from './filter';
 export * from './FilterContext';
 export * from './List';
