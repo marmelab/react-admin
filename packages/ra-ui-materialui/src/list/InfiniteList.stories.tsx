@@ -109,7 +109,7 @@ const BookList = () => (
     </InfiniteList>
 );
 
-export const Basic = () => (
+export const FullApp = () => (
     <Admin dataProvider={dataProvider}>
         <Resource name="books" list={BookList} />
     </Admin>
