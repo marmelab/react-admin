@@ -79,7 +79,7 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
         Error,
         GetInfiniteListResult<RecordType>
     >(
-        [resource, 'getList', { pagination, sort, filter, meta }],
+        [resource, 'getInfiniteList', { pagination, sort, filter, meta }],
         ({ pageParam = pagination.page }) =>
             dataProvider
                 .getList<RecordType>(resource, {
