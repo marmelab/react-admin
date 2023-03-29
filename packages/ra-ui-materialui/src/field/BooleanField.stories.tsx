@@ -19,6 +19,6 @@ export const Basic = (props: BooleanFieldProps) => {
     );
 };
 
-export const NoFalseIcon = () => <Basic FalseIcon={null} />;
+export const NoFalseIcon = () => <Basic FalseIcon={false} />;
 
-export const NoTrueIcon = () => <Basic TrueIcon={null} />;
+export const NoTrueIcon = () => <Basic TrueIcon={false} />;
