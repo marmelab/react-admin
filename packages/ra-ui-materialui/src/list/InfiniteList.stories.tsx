@@ -6,12 +6,17 @@ import { Resource } from 'ra-core';
 
 import { InfiniteList } from './InfiniteList';
 import { SimpleList } from './SimpleList';
-import { Pagination as DefaultPagination } from './pagination';
+import { Datagrid } from './datagrid';
+import {
+    InfinitePagination,
+    Pagination as DefaultPagination,
+} from './pagination';
 import { AdminUI } from '../AdminUI';
 import { AdminContext } from '../AdminContext';
+import { TextField } from '../field';
 import { SearchInput } from '../input';
 import { SortButton } from '../button';
-import { TopToolbar } from '../layout';
+import { TopToolbar, Layout } from '../layout';
 
 export default {
     title: 'ra-ui-materialui/list/InfiniteList',
@@ -87,33 +92,16 @@ const dataProvider = new Proxy(baseDataProvider, {
     },
 });
 
-const Admin = ({ dataProvider, children }) => (
+const Admin = ({ children, dataProvider, layout }: any) => (
     <AdminContext
         dataProvider={dataProvider}
         i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
     >
-        <AdminUI>{children}</AdminUI>
+        <AdminUI layout={layout}>{children}</AdminUI>
     </AdminContext>
 );
 
 const bookFilters = [<SearchInput source="q" alwaysOn />];
-const BookActions = () => (
-    <TopToolbar>
-        <SortButton fields={['id', 'title']} />
-    </TopToolbar>
-);
-
-const BookList = () => (
-    <InfiniteList filters={bookFilters} actions={<BookActions />}>
-        <SimpleList primaryText="%{title}" secondaryText="%{author}" />
-    </InfiniteList>
-);
-
-export const FullApp = () => (
-    <Admin dataProvider={dataProvider}>
-        <Resource name="books" list={BookList} />
-    </Admin>
-);
 
 export const Aside = () => (
     <Admin dataProvider={dataProvider}>
@@ -163,12 +151,30 @@ export const Filters = () => (
     </Admin>
 );
 
-export const Pagination = () => (
+export const PaginationClassic = () => (
     <Admin dataProvider={dataProvider}>
         <Resource
             name="books"
             list={() => (
                 <InfiniteList pagination={<DefaultPagination />}>
+                    <SimpleList
+                        primaryText="%{title}"
+                        secondaryText="%{author}"
+                    />
+                </InfiniteList>
+            )}
+        />
+    </Admin>
+);
+
+export const PaginationInfinite = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource
+            name="books"
+            list={() => (
+                <InfiniteList
+                    pagination={<InfinitePagination sx={{ py: 5 }} />}
+                >
                     <SimpleList
                         primaryText="%{title}"
                         secondaryText="%{author}"
@@ -217,6 +223,68 @@ export const Title = () => (
             name="books"
             list={() => (
                 <InfiniteList title="The Books">
+                    <SimpleList
+                        primaryText="%{title}"
+                        secondaryText="%{author}"
+                    />
+                </InfiniteList>
+            )}
+        />
+    </Admin>
+);
+
+const LayoutWithFooter = props => (
+    <>
+        <Layout {...props} />
+        <div style={{ height: '100px', backgroundColor: 'red' }}>Footer</div>
+    </>
+);
+
+export const WithFooter = () => (
+    <Admin dataProvider={dataProvider} layout={LayoutWithFooter}>
+        <Resource
+            name="books"
+            list={() => (
+                <InfiniteList>
+                    <SimpleList
+                        primaryText="%{title}"
+                        secondaryText="%{author}"
+                    />
+                </InfiniteList>
+            )}
+        />
+    </Admin>
+);
+
+export const WithDatagrid = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource
+            name="books"
+            list={() => (
+                <InfiniteList>
+                    <Datagrid>
+                        <TextField source="id" />
+                        <TextField source="title" />
+                        <TextField source="author" />
+                    </Datagrid>
+                </InfiniteList>
+            )}
+        />
+    </Admin>
+);
+
+const BookActions = () => (
+    <TopToolbar>
+        <SortButton fields={['id', 'title']} />
+    </TopToolbar>
+);
+
+export const WithSimpleList = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource
+            name="books"
+            list={() => (
+                <InfiniteList filters={bookFilters} actions={<BookActions />}>
                     <SimpleList
                         primaryText="%{title}"
                         secondaryText="%{author}"

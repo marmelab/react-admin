@@ -8,7 +8,7 @@ import {
 } from 'ra-core';
 
 import { TitlePropType } from '../layout/Title';
-import { InfiniteScroll } from './pagination';
+import { InfinitePagination } from './pagination';
 import { ListView, ListViewProps } from './ListView';
 
 /**
@@ -16,7 +16,7 @@ import { ListView, ListViewProps } from './ListView';
  *
  * The <InfiniteList> component renders the list layout (title, buttons, filters),
  * and fetches the list of records from the REST API.
- * It contains an <InfiniteScroll> component which fetches the next page of records.
+ * It contains an <InfinitePagination> component, which fetches the next page of records.
  *
  * It then delegates the rendering of the list of records to its child component.
  * Usually, it's a <Datagrid>, responsible for displaying a table with one row for each post.
@@ -94,7 +94,7 @@ export const InfiniteList = <RecordType extends RaRecord = any>({
     </InfiniteListBase>
 );
 
-const defaultPagination = <InfiniteScroll />;
+const defaultPagination = <InfinitePagination />;
 
 export interface InfiniteListProps<RecordType extends RaRecord = any>
     extends InfiniteListControllerProps<RecordType>,
