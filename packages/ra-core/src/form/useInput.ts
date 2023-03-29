@@ -88,28 +88,39 @@ export const useInput = (props: InputProps): UseInputValue => {
     // This hook ensures that the input default value is applied when a new record is loaded but has
     // no value for the input.
     useApplyInputDefaultValues(props);
-
-    const field = {
-        ...controllerField,
-        value: format ? format(controllerField.value) : controllerField.value,
-        onBlur: (...event: any[]) => {
+    
+    // We need to stabilize the onBlur and onChange callbacks to avoid infinite loops
+    const stableOnBlur = useCallback(
+        (...event: any[]) => {
             if (onBlur) {
                 onBlur(...event);
             }
             controllerField.onBlur();
         },
-        onChange: (...event: any[]) => {
+        [onBlur, controllerField.onBlur]
+    );
+
+    const stableOnChange = useCallback(
+        (...event: any[]) => {
             if (onChange) {
                 onChange(...event);
             }
-            const eventOrValue = (props.type === 'checkbox' &&
-            event[0]?.target?.value === 'on'
-                ? event[0].target.checked
-                : event[0]?.target?.value ?? event[0]) as any;
-            controllerField.onChange(
-                parse ? parse(eventOrValue) : eventOrValue
-            );
+            const eventOrValue = (
+                props.type === "checkbox" && event[0]?.target?.value === "on"
+                    ? event[0].target.checked
+                    : event[0]?.target?.value ?? event[0]
+            ) as any;
+            controllerField.onChange(parse ? parse(eventOrValue) : eventOrValue);
         },
+        [onChange, controllerField.onChange, parse, props.type]
+    );
+
+    // Construct the wrapped field object with out custom callbacks
+    const field = {
+        ...controllerField,
+        value: format ? format(controllerField.value) : controllerField.value,
+        onBlur: stableOnBlur,
+        onChange: stableOnChange,
     };
 
     return {
