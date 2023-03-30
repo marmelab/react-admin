@@ -233,6 +233,7 @@ React-admin supports **one-to-many**, **many-to-one**, **one-to-one**, and **man
 - [`ReferenceArrayInput`](./ReferenceArrayInput.md)
 - [`ReferenceManyInput`](./ReferenceManyInput.md)
 - [`ReferenceManyToManyInput`](./ReferenceManyToManyInput.md)
+- [`ReferenceOneInput`](./ReferenceOneInput.md)
 
 The [Fields For Relationships](./FieldsForRelationships.md) page lists all reference fields together with their common usage.
 
@@ -481,8 +482,8 @@ Inside forms, you can use [react-admin input components](./Inputs.md), designed 
 | Array of objects      | `[{ item: 'jeans', qty: 3 }, { item: 'shirt', qty: 1 }]`     | [`<ArrayInput>`](./ArrayInput.md)                                                                                                                                                                    |
 | Array of Enums        | `['foo', 'bar']`                                             | [`<SelectArrayInput>`](./SelectArrayInput.md), [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md), [`<CheckboxGroupInput>`](./CheckboxGroupInput.md), [`<DualListInput>`](./DualListInput.md) |
 | Array of foreign keys | `[42, 43]`                                                   | [`<ReferenceArrayInput>`](./ReferenceArrayInput.md)                                                                                                                                                  |
-| Translations          | `{ en: 'Hello', fr: 'Bonjour' }`                             | [`<TranslatableInputs>`](./TranslatableInputs.md)                                                                                                                                                        |
-| Related records       | `[{ id: 42, title: 'Hello' }, { id: 43, title: 'World' }]` | [`<ReferenceManyInput>`](./ReferenceManyInput.md), [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md)                                                                                     |
+| Translations          | `{ en: 'Hello', fr: 'Bonjour' }`                             | [`<TranslatableInputs>`](./TranslatableInputs.md)                                                                                                                                                    |
+| Related records       | `[{ id: 42, title: 'Hello' }, { id: 43, title: 'World' }]`   | [`<ReferenceManyInput>`](./ReferenceManyInput.md), [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md), [`<ReferenceOneInput>`](./ReferenceOneInput.md)                                    |
 
 You can build **dependent inputs**, using the [react-hook-form's `useWatch` hook](https://react-hook-form.com/api/usewatch). For instance, here is a `CityInput` that displays the cities of the selected country:
 
