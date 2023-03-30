@@ -51,7 +51,7 @@ const App = () => (
 | `className` | Optional | `string`    | -        | Passed to the root `<div>` component                                  |
 | `error`     | Optional | `Component` | -        | A React component rendered in the content area in case of error       |
 | `menu`      | Optional | `Component` | -        | A React component rendered at the side of the screen                  |
-| `sidebar`   | Optional | `Component` | -        | A React component that wraps the menu in a drawer                |
+| `sidebar`   | Optional | `Component` | -        | A React component responsible for rendering the menu (e.g. in a drawer) |
 | `sx`        | Optional | `SxProps`   | -        | Style overrides, powered by MUI System                                |
 
 React-admin injects more props at runtime based on the `<Admin>` props:
