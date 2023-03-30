@@ -234,6 +234,46 @@ React-admin provides alternative menu layouts that you can use as a base for you
 
 And you can build a totally custom menu using [MUI's `<Menu>` component](https://mui.com/material-ui/react-menu/).
 
+## `sidebar`
+
+You can override the default sidebar using this prop. The default sidebar will display a permanent drawer when the window size is above MUI theme's `sm` breakpoint, and a temporary drawer when the window size is less than that.
+
+If you wish to always display a temporary drawer, you can customize using the following sample code:
+
+```jsx
+// in src/Layout.js
+import * as React from 'react';
+import { Layout } from 'react-admin';
+
+import { MySidebar } from './MySidebar';
+
+export const Layout = (props) => <Layout {...props} sidebar={MySidebar} />;
+
+
+// in src/MySidebar.js
+import * as React from 'react';
+import { Drawer } from '@mui/material';
+import { SidebarClasses, useLocale, useSidebarState } from 'react-admin';
+
+export const MySidebar = ({ children }) => {
+    const [open, setOpen] = useSidebarState();
+    useLocale(); // force redraw on locale change
+
+    const toggleSidebar = () => setOpen(!open);
+
+    return (
+        <Drawer
+            variant="temporary"
+            open={open}
+            onClose={toggleSidebar}
+            classes={SidebarClasses}
+        >
+            {children}
+        </Drawer>
+    );
+};
+```
+
 ## `sx`: CSS API
 
 Pass an `sx` prop to customize the style of the main component and the underlying elements.
