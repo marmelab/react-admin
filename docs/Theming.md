@@ -476,6 +476,12 @@ You can also pass a custom media query as a screen.
 const isSmall = useMediaQuery('(min-width:600px)');
 ```
 
+**Tip**: To perform the server-side hydration, the hook needs to render twice. A first time with `false`, the value of the server, and a second time with the resolved value. This double pass rendering cycle comes with a drawback. It's slower. To avoid it, you can set the `noSsr` option to `true` if you are doing client-side only rendering.
+
+```jsx
+const isSmall = useMediaQuery('(min-width:600px)', { noSsr: true });
+```
+
 Here is an example for a responsive list of posts, displaying a `SimpleList` on mobile, and a `Datagrid` otherwise:
 
 ```jsx
@@ -485,7 +491,10 @@ import { useMediaQuery } from '@mui/material';
 import { List, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
 export const PostList = () => {
-    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    const isSmall = useMediaQuery(
+        theme => theme.breakpoints.down('sm'),
+        { noSsr: true }
+    );
     return (
         <List>
             {isSmall ? (
