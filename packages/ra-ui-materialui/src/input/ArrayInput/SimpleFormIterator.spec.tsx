@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {
-    fireEvent,
-    getByLabelText,
-    render,
     screen,
+    render,
+    fireEvent,
     waitFor,
+    getByLabelText,
 } from '@testing-library/react';
 import expect from 'expect';
 import { FormDataConsumer, testDataProvider } from 'ra-core';
