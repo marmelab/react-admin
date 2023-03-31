@@ -6,6 +6,7 @@ import {
     UseMutationResult,
     MutateOptions,
     QueryKey,
+    UseInfiniteQueryResult,
 } from 'react-query';
 
 import { useDataProvider } from './useDataProvider';
@@ -15,6 +16,7 @@ import {
     DeleteParams,
     MutationMode,
     GetListResult as OriginalGetListResult,
+    GetInfiniteListResult,
 } from '../types';
 import { useEvent } from '../util';
 
@@ -127,6 +129,31 @@ export const useDelete = <
                           pageInfo: res.pageInfo,
                       }
                     : res;
+            },
+            { updatedAt }
+        );
+        queryClient.setQueriesData(
+            [resource, 'getInfiniteList'],
+            (res: UseInfiniteQueryResult<GetInfiniteListResult>['data']) => {
+                if (!res || !res.pages) return res;
+                return {
+                    ...res,
+                    pages: res.pages.map(page => {
+                        const newCollection = updateColl(page.data);
+                        const recordWasFound =
+                            newCollection.length < page.data.length;
+                        return recordWasFound
+                            ? {
+                                  ...page,
+                                  data: newCollection,
+                                  total: page.total
+                                      ? page.total - 1
+                                      : undefined,
+                                  pageInfo: page.pageInfo,
+                              }
+                            : page;
+                    }),
+                };
             },
             { updatedAt }
         );
@@ -306,6 +333,7 @@ export const useDelete = <
 
         const queryKeys = [
             [callTimeResource, 'getList'],
+            [callTimeResource, 'getInfiniteList'],
             [callTimeResource, 'getMany'],
             [callTimeResource, 'getManyReference'],
         ];
