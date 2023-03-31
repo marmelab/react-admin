@@ -204,5 +204,63 @@ describe('useDeleteMany', () => {
                 });
             });
         });
+        it('updates getInfiniteList query cache when dataProvider promise resolves', async () => {
+            const queryClient = new QueryClient();
+            queryClient.setQueryData(['foo', 'getInfiniteList'], {
+                pages: [
+                    {
+                        data: [
+                            { id: 1, bar: 'bar' },
+                            { id: 2, bar: 'bar' },
+                            { id: 3, bar: 'bar' },
+                            { id: 4, bar: 'bar' },
+                        ],
+                        total: 4,
+                    },
+                ],
+                pageParams: [],
+            });
+            const dataProvider = {
+                deleteMany: jest.fn(() =>
+                    Promise.resolve({ data: [1, 2] } as any)
+                ),
+            } as any;
+            let localDeleteMany;
+            const Dummy = () => {
+                const [deleteMany] = useDeleteMany();
+                localDeleteMany = deleteMany;
+                return <span />;
+            };
+            render(
+                <CoreAdminContext
+                    dataProvider={dataProvider}
+                    queryClient={queryClient}
+                >
+                    <Dummy />
+                </CoreAdminContext>
+            );
+            localDeleteMany('foo', { ids: [1, 2] });
+            await waitFor(() => {
+                expect(dataProvider.deleteMany).toHaveBeenCalledWith('foo', {
+                    ids: [1, 2],
+                });
+            });
+            await waitFor(() => {
+                expect(
+                    queryClient.getQueryData(['foo', 'getInfiniteList'])
+                ).toEqual({
+                    pages: [
+                        {
+                            data: [
+                                { id: 3, bar: 'bar' },
+                                { id: 4, bar: 'bar' },
+                            ],
+                            total: 2,
+                        },
+                    ],
+                    pageParams: [],
+                });
+            });
+        });
     });
 });
