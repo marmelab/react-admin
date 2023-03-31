@@ -4,11 +4,11 @@ import FormDataConsumer, { FormDataConsumerView } from './FormDataConsumer';
 import { testDataProvider } from '../dataProvider';
 import {
     AdminContext,
-    ArrayInput,
     BooleanInput,
     SimpleForm,
-    SimpleFormIterator,
     TextInput,
+    SimpleFormIterator,
+    ArrayInput,
 } from 'ra-ui-materialui';
 import expect from 'expect';
 
