@@ -194,7 +194,10 @@ const PostListDesktop = () => (
 );
 
 const PostList = () => {
-    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
+    const isSmall = useMediaQuery<Theme>(
+        theme => theme.breakpoints.down('md'),
+        { noSsr: true }
+    );
     return isSmall ? <PostListMobile /> : <PostListDesktop />;
 };
 
