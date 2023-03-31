@@ -186,8 +186,8 @@ export interface GetManyReferenceResult<RecordType extends RaRecord = any> {
     };
 }
 
-export interface UpdateParams<T = any> {
-    id: Identifier;
+export interface UpdateParams<T extends RaRecord = any> {
+    id: T['id'];
     data: Partial<T>;
     previousData: T;
     meta?: any;
