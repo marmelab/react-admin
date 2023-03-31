@@ -75,7 +75,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         const { id, ...rest } = fields[0];
         initialDefaultValue.current = rest;
         for (const k in initialDefaultValue.current)
-            initialDefaultValue.current[k] = '';
+            initialDefaultValue.current[k] = null;
     }
 
     const addField = useCallback(
@@ -104,7 +104,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                             input.props.source
                         ) {
                             defaultValue[input.props.source] =
-                                input.props.defaultValue ?? '';
+                                input.props.defaultValue ?? null;
                         }
                     });
                 }
