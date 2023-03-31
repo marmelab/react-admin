@@ -410,6 +410,52 @@ describe('useUpdate', () => {
                 });
             });
         });
+        it('updates getInfiniteList query cache when dataProvider promise resolves', async () => {
+            const queryClient = new QueryClient();
+            queryClient.setQueryData(['foo', 'getInfiniteList'], {
+                pages: [{ data: [{ id: 1, bar: 'bar' }], total: 1 }],
+                pageParams: [],
+            });
+            const dataProvider = {
+                update: jest.fn(() =>
+                    Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
+                ),
+            } as any;
+            let localUpdate;
+            const Dummy = () => {
+                const [update] = useUpdate();
+                localUpdate = update;
+                return <span />;
+            };
+            render(
+                <CoreAdminContext
+                    dataProvider={dataProvider}
+                    queryClient={queryClient}
+                >
+                    <Dummy />
+                </CoreAdminContext>
+            );
+            localUpdate('foo', {
+                id: 1,
+                data: { bar: 'baz' },
+                previousData: { id: 1, bar: 'bar' },
+            });
+            await waitFor(() => {
+                expect(dataProvider.update).toHaveBeenCalledWith('foo', {
+                    id: 1,
+                    data: { bar: 'baz' },
+                    previousData: { id: 1, bar: 'bar' },
+                });
+            });
+            await waitFor(() => {
+                expect(
+                    queryClient.getQueryData(['foo', 'getInfiniteList'])
+                ).toEqual({
+                    pages: [{ data: [{ id: 1, bar: 'baz' }], total: 1 }],
+                    pageParams: [],
+                });
+            });
+        });
     });
 });
 
