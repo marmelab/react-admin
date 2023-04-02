@@ -82,3 +82,40 @@ Check the [`<List>` component](./List.md) for details about each prop.
 
 Additional props are passed down to the root component (a MUI `<Card>` by default).
 
+## Showing The Record Count
+
+One drawback of the `<InfiniteList>` component is that it doesn't show the number of results. To fix this, you can use `useListContext` to access the `total` property of the list, and render the total number of results in a fixed footer:
+
+![Infinite list with total number of results](./img/infinite-pagination-count.webp)
+
+{% raw %}
+```jsx
+import { useListContext, InfinitePagination, InfiniteList } from 'react-admin';
+import { Box, Card, Typography } from '@mui/material';
+
+const CustomPagination = () => {
+    const { total } = useListContext();
+    return (
+        <>
+            <InfinitePagination />
+            {total > 0 && (
+                <Box position="sticky" bottom={0} textAlign="center">
+                    <Card
+                        elevation={2}
+                        sx={{ px: 2, py: 1, mb: 1, display: 'inline-block' }}
+                    >
+                        <Typography variant="body2">{total} results</Typography>
+                    </Card>
+                </Box>
+            )}
+        </>
+    );
+};
+
+export const BookList = () => (
+    <InfiniteList pagination={<CustomPagination />}>
+        // ...
+    </InfiniteList>
+);
+```
+{% endraw %}
