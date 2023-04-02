@@ -47,7 +47,9 @@ const App = () => (
 export default App;
 ```
 
-That's enough to display a basic post list, that users can sort and filter, and load additional records when they reach the bottom of the list:
+That's enough to display a basic post list, that users can sort and filter, and load additional records when they reach the bottom of the list.
+
+**Tip**: `<Datagrid>` has a sticky header by default, so the user can always see the column names when they scroll down.
 
 ## Props
 
@@ -84,7 +86,7 @@ Additional props are passed down to the root component (a MUI `<Card>` by defaul
 
 ## Showing The Record Count
 
-One drawback of the `<InfiniteList>` component is that it doesn't show the number of results. To fix this, you can use `useListContext` to access the `total` property of the list, and render the total number of results in a fixed footer:
+One drawback of the `<InfiniteList>` component is that it doesn't show the number of results. To fix this, you can use `useListContext` to access the `total` property of the list, and render the total number of results in a sticky footer:
 
 ![Infinite list with total number of results](./img/infinite-pagination-count.webp)
 
