@@ -195,6 +195,7 @@ Sometimes, you may want to customize how filters are applied. For instance, by a
 
 Here's how you could implement cumulative filters, e.g. allowing users to filter items having one of several categories:
 
+{% raw %}
 ```jsx
 import { FilterList, FilterListItem } from 'react-admin';
 import CategoryIcon from '@mui/icons-material/LocalOffer';
@@ -247,5 +248,6 @@ export const CategoriesFilter = () => {
     )
 }
 ```
+{% endraw %}
 
 ![Cumulative filter list items](./img/filter-list-cumulative.gif)
