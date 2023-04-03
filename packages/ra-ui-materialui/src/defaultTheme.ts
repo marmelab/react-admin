@@ -22,6 +22,19 @@ export const defaultTheme = {
         closedWidth: 50,
     },
     components: {
+        MuiAutocomplete: {
+            variants: [
+                {
+                    props: {},
+                    style: ({ theme }) => ({
+                        [theme.breakpoints.down('sm')]: {
+                            // @see MuiTextField.styleOverrides.root
+                            width: '100%',
+                        },
+                    }),
+                },
+            ],
+        },
         MuiFilledInput: {
             variants: [
                 {
@@ -41,6 +54,17 @@ export const defaultTheme = {
                 margin: 'dense' as const,
                 size: 'small' as const,
             },
+            variants: [
+                {
+                    props: {},
+                    style: ({ theme }) => ({
+                        [theme.breakpoints.down('sm')]: {
+                            // @see MuiTextField.styleOverrides.root
+                            width: '100%',
+                        },
+                    }),
+                },
+            ],
         },
         MuiFormControl: {
             defaultProps: {
@@ -48,6 +72,19 @@ export const defaultTheme = {
                 margin: 'dense' as const,
                 size: 'small' as const,
             },
+        },
+        RaSelectArrayInput: {
+            variants: [
+                {
+                    props: {},
+                    style: ({ theme }) => ({
+                        [theme.breakpoints.down('sm')]: {
+                            // @see MuiTextField.styleOverrides.root
+                            width: '100%',
+                        },
+                    }),
+                },
+            ],
         },
     },
 };
