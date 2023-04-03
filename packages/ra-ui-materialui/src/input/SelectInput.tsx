@@ -421,7 +421,6 @@ const StyledResettableTextField = styled(ResettableTextField, {
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     ...ResettableTextFieldStyles,
-    minWidth: theme.spacing(20),
     '& .MuiFilledInput-root': { paddingRight: 0 },
 }));
 

@@ -651,11 +651,7 @@ export const AutocompleteInputClasses = {
 const StyledAutocomplete = styled(Autocomplete, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
-    [`& .${AutocompleteInputClasses.textField}`]: {
-        minWidth: theme.spacing(20),
-    },
-}));
+})(() => ({}));
 
 // @ts-ignore
 export interface AutocompleteInputProps<
