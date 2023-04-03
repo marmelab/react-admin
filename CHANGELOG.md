@@ -1,9 +1,21 @@
 # Changelog
 
+## v4.9.1
+
+* Fix `<ReferenceInput>` logs warning on deselection ([#8788](https://github.com/marmelab/react-admin/pull/8788)) ([slax57](https://github.com/slax57))
+* Fix form `validate` function no longer applies translation ([#8746](https://github.com/marmelab/react-admin/pull/8746)) ([slax57](https://github.com/slax57))
+* [Doc] Add `<ReferenceOneInput>` ([#8783](https://github.com/marmelab/react-admin/pull/8783)) ([slax57](https://github.com/slax57))
+* [Doc] Fix typo in `<AppBar>` example ([#8775](https://github.com/marmelab/react-admin/pull/8775)) ([davidhenley](https://github.com/davidhenley))
+* [Doc] Fix missing `<Layout sidebar>` prop ([#8777](https://github.com/marmelab/react-admin/pull/8777)) ([smeng9](https://github.com/smeng9))
+* [Doc] Fix typo in `<FilterList>` example ([#8773](https://github.com/marmelab/react-admin/pull/8773)) ([davidhenley](https://github.com/davidhenley))
+* [Doc] Fix typo in `withLifecycleCallbacks` example ([#8769](https://github.com/marmelab/react-admin/pull/8769)) ([afilp](https://github.com/afilp))
+* [Docs] Fix broken index page links ([#8768](https://github.com/marmelab/react-admin/pull/8768)) ([carlos-duran](https://github.com/carlos-duran))
+* [TypeScript] Fix `UpdateParams` id type doesn't use generic type ([#8782](https://github.com/marmelab/react-admin/pull/8782)) ([zhujinxuan](https://github.com/zhujinxuan))
+
 ## v4.9.0
 
 - Add ability to pass `null` to `TrueIcon` or `FalseIcon` in `<BooleanField>` ([#8760](https://github.com/marmelab/react-admin/pull/8760)) ([slax57](https://github.com/slax57))
-- Improve `AppBar` Customization ([#8681](https://github.com/marmelab/react-admin/pull/8681)) ([fzaninotto](https://(github.com/fzaninotto))
+- Improve `AppBar` Customization ([#8681](https://github.com/marmelab/react-admin/pull/8681)) ([fzaninotto](https://github.com/fzaninotto))
 - Allow to customize how `<FilterListItem>` applies filters ([#8676](https://github.com/marmelab/react-admin/pull/8676)) ([djhi](https://github.com/djhi))
 - Introduce `withRefreshAuth` ([#8574](https://github.com/marmelab/react-admin/pull/8574)) ([djhi](https://github.com/djhi))
 - Add ability to change `<SelectArrayInput>`'s `size` prop and fix `outlined` variant ([#8562](https://github.com/marmelab/react-admin/pull/8562)) ([amilosmanli](https://github.com/amilosmanli))
