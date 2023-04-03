@@ -770,7 +770,7 @@ describe('<SimpleFormIterator />', () => {
         await waitFor(() => {
             expect(save).toHaveBeenCalledWith(
                 {
-                    emails: [{ email: '' }],
+                    emails: [{ email: null }],
                 },
                 expect.anything()
             );
@@ -853,7 +853,7 @@ describe('<SimpleFormIterator />', () => {
             expect(save).toHaveBeenCalledWith(
                 {
                     id: 1,
-                    emails: [{ email: '', role: '' }],
+                    emails: [{ email: null, role: null }],
                 },
                 expect.anything()
             );
