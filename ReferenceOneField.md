@@ -26,6 +26,8 @@ This field fetches a one-to-one relationship, e.g. the details of a book, when u
 
 For the inverse relationships (the book linked to a book_detail), you can use a [`<ReferenceField>`](./ReferenceField.md).
 
+**Tip**: To edit the records of a one-to-one relationship, use [the `<ReferenceOneInput>` component](./ReferenceOneInput.md).
+
 ## Usage
 
 Here is how to render a field of the `book_details` resource inside a Show view for the `books` resource:
