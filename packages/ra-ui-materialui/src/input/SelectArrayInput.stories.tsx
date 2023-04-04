@@ -37,7 +37,6 @@ export const Basic = () => (
                         { id: 'u002', name: 'Moderator' },
                         { id: 'u003', name: 'Reviewer' },
                     ]}
-                    sx={{ width: 300 }}
                 />
                 <SelectArrayInput
                     source="roles"
@@ -48,7 +47,6 @@ export const Basic = () => (
                         { id: 'u002', name: 'Moderator' },
                         { id: 'u003', name: 'Reviewer' },
                     ]}
-                    sx={{ width: 300 }}
                 />
                 <SelectArrayInput
                     source="roles"
@@ -59,7 +57,6 @@ export const Basic = () => (
                         { id: 'u002', name: 'Moderator' },
                         { id: 'u003', name: 'Reviewer' },
                     ]}
-                    sx={{ width: 300 }}
                 />
             </SimpleForm>
         </Create>
