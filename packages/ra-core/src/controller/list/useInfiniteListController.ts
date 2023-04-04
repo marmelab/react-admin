@@ -60,7 +60,7 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
 
     if (!resource) {
         throw new Error(
-            `<List> was called outside of a ResourceContext and without a resource prop. You must set the resource prop.`
+            `<InfiniteList> was called outside of a ResourceContext and without a resource prop. You must set the resource prop.`
         );
     }
     if (filter && isValidElement(filter)) {
