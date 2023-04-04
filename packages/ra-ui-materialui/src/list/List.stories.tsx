@@ -390,13 +390,12 @@ export const StoreKey = () => {
     );
 };
 
-export const ErrorContent = () => (
+export const ErrorInFetch = () => (
     <Admin
         dataProvider={
             {
-                getList: async () => {
-                    throw new Error('Error in dataProvider');
-                },
+                getList: () =>
+                    Promise.reject(new Error('Error in dataProvider')),
             } as any
         }
         history={history}
