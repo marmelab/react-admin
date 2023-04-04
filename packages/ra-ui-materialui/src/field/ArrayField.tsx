@@ -1,7 +1,13 @@
 import * as React from 'react';
-import { memo, FC, ReactNode } from 'react';
+import { memo, ReactNode } from 'react';
 import get from 'lodash/get';
-import { ListContextProvider, useRecordContext, useList } from 'ra-core';
+import {
+    ListContextProvider,
+    useRecordContext,
+    useList,
+    SortPayload,
+    FilterPayload,
+} from 'ra-core';
 
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
@@ -72,11 +78,11 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *       );
  *   };
  */
-export const ArrayField: FC<ArrayFieldProps> = memo(props => {
-    const { children, resource, source } = props;
+export const ArrayField = memo<ArrayFieldProps>(props => {
+    const { children, resource, source, perPage, sort, filter } = props;
     const record = useRecordContext(props);
     const data = get(record, source, emptyArray) || emptyArray;
-    const listContext = useList({ data, resource });
+    const listContext = useList({ data, resource, perPage, sort, filter });
     return (
         <ListContextProvider value={listContext}>
             {children}
@@ -84,12 +90,16 @@ export const ArrayField: FC<ArrayFieldProps> = memo(props => {
     );
 });
 
+// @ts-ignore
 ArrayField.propTypes = {
     ...fieldPropTypes,
 };
 
 export interface ArrayFieldProps extends PublicFieldProps, InjectedFieldProps {
     children: ReactNode;
+    perPage?: number;
+    sort?: SortPayload;
+    filter?: FilterPayload;
 }
 
 ArrayField.displayName = 'ArrayField';

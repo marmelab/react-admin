@@ -1,10 +1,18 @@
 import * as React from 'react';
 import { MemoryRouter } from 'react-router';
-import { useListContext, useRecordContext } from 'ra-core';
+import {
+    RecordContextProvider,
+    useListContext,
+    useRecordContext,
+} from 'ra-core';
+import { Card, ThemeProvider, createTheme } from '@mui/material';
 
 import { ArrayField } from './ArrayField';
-import { SingleFieldList } from '../list';
+import { Datagrid, SingleFieldList } from '../list';
 import { ChipField } from './ChipField';
+import { SimpleShowLayout } from '../detail';
+import { TextField } from './TextField';
+import { Pagination } from '../list/pagination';
 
 export default { title: 'ra-ui-materialui/fields/ArrayField' };
 
@@ -26,6 +34,47 @@ export const Basic = () => (
     </MemoryRouter>
 );
 
+export const PerPage = () => (
+    <ThemeProvider theme={createTheme()}>
+        <MemoryRouter>
+            <ArrayField record={{ id: 123, books }} source="books" perPage={2}>
+                <SingleFieldList>
+                    <ChipField source="title" />
+                </SingleFieldList>
+                <Pagination />
+            </ArrayField>
+        </MemoryRouter>
+    </ThemeProvider>
+);
+
+export const Sort = () => (
+    <MemoryRouter>
+        <ArrayField
+            record={{ id: 123, books }}
+            source="books"
+            sort={{ field: 'title', order: 'ASC' }}
+        >
+            <SingleFieldList>
+                <ChipField source="title" />
+            </SingleFieldList>
+        </ArrayField>
+    </MemoryRouter>
+);
+
+export const Filter = () => (
+    <MemoryRouter>
+        <ArrayField
+            record={{ id: 123, books }}
+            source="books"
+            filter={{ title: 'Anna Karenina' }}
+        >
+            <SingleFieldList>
+                <ChipField source="title" />
+            </SingleFieldList>
+        </ArrayField>
+    </MemoryRouter>
+);
+
 const SortButton = () => {
     const { setSort } = useListContext();
     return (
@@ -35,7 +84,7 @@ const SortButton = () => {
     );
 };
 
-export const FilterButton = () => {
+const FilterButton = () => {
     const { setFilters } = useListContext();
     return (
         <button onClick={() => setFilters({ title: 'Resurrection' }, {})}>
@@ -44,7 +93,7 @@ export const FilterButton = () => {
     );
 };
 
-export const SelectedChip = () => {
+const SelectedChip = () => {
     const { selectedIds, onToggleItem } = useListContext();
     const record = useRecordContext();
     return (
@@ -67,5 +116,47 @@ export const ListContext = () => (
             </SingleFieldList>
             <SortButton /> <FilterButton />
         </ArrayField>
+    </MemoryRouter>
+);
+
+export const InShowLayout = () => (
+    <MemoryRouter>
+        <RecordContextProvider
+            value={{
+                id: 123,
+                title: 'Lorem Ipsum Sit Amet',
+                tags: [{ name: 'dolor' }, { name: 'sit' }, { name: 'amet' }],
+                backlinks: [
+                    {
+                        uuid: '34fdf393-f449-4b04-a423-38ad02ae159e',
+                        date: '2012-08-10T00:00:00.000Z',
+                        url: 'http://example.com/foo/bar.html',
+                    },
+                    {
+                        uuid: 'd907743a-253d-4ec1-8329-404d4c5e6cf1',
+                        date: '2012-08-14T00:00:00.000Z',
+                        url: 'https://blog.johndoe.com/2012/08/12/foobar.html',
+                    },
+                ],
+            }}
+        >
+            <Card sx={{ m: 1, p: 1 }}>
+                <SimpleShowLayout>
+                    <TextField source="title" />
+                    <ArrayField source="tags">
+                        <SingleFieldList>
+                            <ChipField source="name" size="small" />
+                        </SingleFieldList>
+                    </ArrayField>
+                    <ArrayField source="backlinks">
+                        <Datagrid bulkActionButtons={false}>
+                            <TextField source="uuid" />
+                            <TextField source="date" />
+                            <TextField source="url" />
+                        </Datagrid>
+                    </ArrayField>
+                </SimpleShowLayout>
+            </Card>
+        </RecordContextProvider>
     </MemoryRouter>
 );
