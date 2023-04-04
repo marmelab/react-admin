@@ -174,7 +174,7 @@ NumberInput.defaultProps = {
 };
 
 export interface NumberInputProps<RecordType extends any = unknown>
-    extends CommonInputProps,
+    extends CommonInputProps<number>,
         Omit<
             TextFieldProps,
             | 'label'
