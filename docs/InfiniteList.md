@@ -20,7 +20,7 @@ Here is the minimal code necessary to display an infinite list of books:
 
 ```jsx
 // in src/books.js
-import { InfiniteList, Datagrid, TextField, DateField, BooleanField } from 'react-admin';
+import { InfiniteList, Datagrid, TextField, DateField } from 'react-admin';
 
 export const BookList = () => (
     <InfiniteList>
