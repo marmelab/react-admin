@@ -95,7 +95,7 @@ BooleanField.displayName = 'BooleanField';
 export interface BooleanFieldProps<
     RecordType extends Record<string, any> = never
 > extends PublicFieldProps,
-        InjectedFieldProps,
+        InjectedFieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     valueLabelTrue?: string;
     valueLabelFalse?: string;

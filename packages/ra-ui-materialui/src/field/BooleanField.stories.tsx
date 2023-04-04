@@ -26,16 +26,16 @@ type Post = {
 };
 
 export const Typed = (props: Omit<BooleanFieldProps, 'source' | 'sortBy'>) => {
-    const [value, setValue] = React.useState(true);
+    const [published, setPublished] = React.useState(true);
     return (
         <Stack direction="row">
             <input
                 type="checkbox"
-                checked={value}
-                onChange={e => setValue(e.target.checked)}
+                checked={published}
+                onChange={e => setPublished(e.target.checked)}
             />
             <BooleanField<Post>
-                record={{ value }}
+                record={{ published }}
                 source="published"
                 sortBy="published"
                 {...props}
