@@ -3,13 +3,20 @@ import { ReactElement } from 'react';
 import expect from 'expect';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 
-import { useReferenceArrayInputController } from './useReferenceArrayInputController';
+import {
+    useReferenceArrayInputController,
+    UseReferenceArrayInputParams,
+} from './useReferenceArrayInputController';
 import { CoreAdminContext } from '../../core';
 import { testDataProvider } from '../../dataProvider';
-import { Form } from '../../form';
+import { ChoicesContextValue, Form } from '../../form';
 import { SORT_ASC } from '../list/queryReducer';
 
-const ReferenceArrayInputController = props => {
+const ReferenceArrayInputController = (
+    props: UseReferenceArrayInputParams & {
+        children: (params: ChoicesContextValue) => ReactElement;
+    }
+) => {
     const { children, ...rest } = props;
     return children(useReferenceArrayInputController(rest)) as ReactElement;
 };
@@ -139,8 +146,8 @@ describe('useReferenceArrayInputController', () => {
                 <CoreAdminContext
                     dataProvider={testDataProvider({
                         getList: () => Promise.reject(new Error('boom')),
+                        // @ts-ignore
                         getMany: () =>
-                            // @ts-ignore
                             Promise.resolve({
                                 data: [{ id: 1, title: 'foo' }],
                             }),
@@ -191,6 +198,40 @@ describe('useReferenceArrayInputController', () => {
             },
             filter: {},
             meta: undefined,
+        });
+    });
+
+    it('should call getList with meta when provided', async () => {
+        const children = jest.fn(() => <div />);
+        const dataProvider = testDataProvider({
+            // @ts-ignore
+            getList: jest
+                .fn()
+                .mockResolvedValue(Promise.resolve({ data: [], total: 0 })),
+        });
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Form onSubmit={jest.fn()}>
+                    <ReferenceArrayInputController
+                        {...defaultProps}
+                        queryOptions={{ meta: { value: 'a' } }}
+                    >
+                        {children}
+                    </ReferenceArrayInputController>
+                </Form>
+            </CoreAdminContext>
+        );
+        expect(dataProvider.getList).toHaveBeenCalledWith('tags', {
+            pagination: {
+                page: 1,
+                perPage: 25,
+            },
+            sort: {
+                field: 'id',
+                order: 'DESC',
+            },
+            filter: {},
+            meta: { value: 'a' },
         });
     });
 
@@ -290,6 +331,36 @@ describe('useReferenceArrayInputController', () => {
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledWith('tags', {
                 ids: [5, 6],
+            });
+        });
+    });
+
+    it('should call getMany with meta when provided', async () => {
+        const children = jest.fn(() => <div />);
+        const dataProvider = testDataProvider({
+            // @ts-ignore
+            getMany: jest
+                .fn()
+                .mockResolvedValue(
+                    Promise.resolve({ data: [{ id: 5 }, { id: 6 }] })
+                ),
+        });
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Form onSubmit={jest.fn()} defaultValues={{ tag_ids: [5, 6] }}>
+                    <ReferenceArrayInputController
+                        {...defaultProps}
+                        queryOptions={{ meta: { value: 'a' } }}
+                    >
+                        {children}
+                    </ReferenceArrayInputController>
+                </Form>
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(dataProvider.getMany).toHaveBeenCalledWith('tags', {
+                ids: [5, 6],
+                meta: { value: 'a' },
             });
         });
     });
