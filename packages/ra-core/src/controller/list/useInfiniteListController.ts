@@ -65,7 +65,7 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
     }
     if (filter && isValidElement(filter)) {
         throw new Error(
-            '<List> received a React element as `filter` props. If you intended to set the list filter elements, use the `filters` (with an s) prop instead. The `filter` prop is internal and should not be set by the developer.'
+            '<InfiniteList> received a React element as `filter` props. If you intended to set the list filter elements, use the `filters` (with an s) prop instead. The `filter` prop is internal and should not be set by the developer.'
         );
     }
 
