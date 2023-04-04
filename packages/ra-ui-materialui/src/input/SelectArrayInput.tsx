@@ -89,7 +89,7 @@ import {
  * ];
  */
 export const SelectArrayInput = <
-    RecordType extends Record<string, any> = never,
+    RecordType extends any = unknown,
     ChoiceType extends Record<string, any> = never
 >(
     props: SelectArrayInputProps<RecordType, ChoiceType>
@@ -357,7 +357,7 @@ export const SelectArrayInput = <
 };
 
 export type SelectArrayInputProps<
-    RecordType extends Record<string, any> = never,
+    RecordType extends any = unknown,
     ChoiceType extends Record<string, any> = never
 > = ChoicesProps<ChoiceType> &
     Omit<SupportCreateSuggestionOptions<ChoiceType>, 'handleChange'> &
@@ -368,7 +368,7 @@ export type SelectArrayInputProps<
             ? string
             : Call<Objects.AllPaths, ChoiceType>;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
-        source?: [RecordType] extends [never]
+        source?: unknown extends RecordType
             ? string
             : Call<Objects.AllPaths, RecordType>;
     };

@@ -45,7 +45,7 @@ const parseTime = (value: string) => {
  *     </Edit>
  * );
  */
-export const TimeInput = <RecordType extends Record<string, any> = never>({
+export const TimeInput = <RecordType extends any = unknown>({
     className,
     defaultValue,
     format = formatTime,
@@ -114,10 +114,10 @@ TimeInput.propTypes = {
 };
 
 export type TimeInputProps<
-    RecordType extends Record<string, any> = never
+    RecordType extends any = unknown
 > = CommonInputProps &
     Omit<TextFieldProps, 'helperText' | 'label'> & {
-        source: [RecordType] extends [never]
+        source: unknown extends RecordType
             ? string
             : Call<Objects.AllPaths, RecordType>;
     };

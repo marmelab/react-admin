@@ -11,9 +11,7 @@ import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 
-export const NullableBooleanInput = <
-    RecordType extends Record<string, any> = never
->(
+export const NullableBooleanInput = <RecordType extends any = unknown>(
     props: NullableBooleanInputProps<RecordType>
 ) => {
     const {
@@ -135,13 +133,13 @@ const getStringFromBoolean = (value?: boolean | null): string => {
 };
 
 export type NullableBooleanInputProps<
-    RecordType extends Record<string, any> = never
+    RecordType extends any = unknown
 > = CommonInputProps &
     Omit<TextFieldProps, 'label' | 'helperText'> & {
         nullLabel?: string;
         falseLabel?: string;
         trueLabel?: string;
-        source: [RecordType] extends [never]
+        source: unknown extends RecordType
             ? string
             : Call<Objects.AllPaths, RecordType>;
     };

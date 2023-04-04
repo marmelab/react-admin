@@ -114,12 +114,12 @@ type Author = {
 };
 
 const TypedBookEdit = () => {
-    const choices = [
-        { id: 1, name: 'Leo Tolstoy' },
-        { id: 2, name: 'Victor Hugo' },
-        { id: 3, name: 'William Shakespeare' },
-        { id: 4, name: 'Charles Baudelaire' },
-        { id: 5, name: 'Marcel Proust' },
+    const choices: Author[] = [
+        { id: 1, name: 'Leo Tolstoy', disabled: false },
+        { id: 2, name: 'Victor Hugo', disabled: false },
+        { id: 3, name: 'William Shakespeare', disabled: false },
+        { id: 4, name: 'Charles Baudelaire', disabled: false },
+        { id: 5, name: 'Marcel Proust', disabled: false },
     ];
     return (
         <Edit

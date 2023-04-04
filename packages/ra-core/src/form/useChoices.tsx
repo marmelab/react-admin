@@ -10,33 +10,29 @@ import { RecordContextProvider } from '../controller';
 export type OptionTextElement = ReactElement<{
     record: RaRecord;
 }>;
-export type OptionTextFunc<
-    RecordType extends Record<string, unknown> = Record<string, unknown>
-> = (choice: RecordType) => React.ReactNode;
+export type OptionTextFunc<RecordType = unknown> = (
+    choice: unknown extends RecordType ? any : RecordType
+) => React.ReactNode;
 
-export type OptionText<RecordType extends Record<string, unknown> = never> =
+export type OptionText<RecordType = unknown> =
     | OptionTextElement
     | OptionTextFunc<RecordType>
-    | ([RecordType] extends [never]
+    | (unknown extends RecordType
           ? string
           : Call<Objects.AllPaths, RecordType>);
 
-export interface ChoicesProps<
-    RecordType extends Record<string, unknown> = never
-> {
+export interface ChoicesProps<RecordType = unknown> {
     choices?: any[];
     isFetching?: boolean;
     isLoading?: boolean;
-    optionValue?: [RecordType] extends [never]
+    optionValue?: unknown extends RecordType
         ? string
         : Call<Objects.AllPaths, RecordType>;
     optionText?: OptionText<RecordType>;
     translateChoice?: boolean;
 }
 
-export interface UseChoicesOptions<
-    RecordType extends Record<string, unknown> = never
-> {
+export interface UseChoicesOptions<RecordType = unknown> {
     optionValue?: string;
     optionText?: OptionText<RecordType>;
     disableValue?: string;
@@ -54,7 +50,7 @@ export interface UseChoicesOptions<
  * - getChoiceText: Returns the choice text or a React element
  * - getChoiceValue: Returns the choice value
  */
-export const useChoices = <RecordType extends Record<string, unknown> = never>({
+export const useChoices = <RecordType extends any = unknown>({
     optionText,
     optionValue = 'id',
     disableValue = 'disabled',

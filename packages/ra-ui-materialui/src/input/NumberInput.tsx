@@ -20,7 +20,7 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
  * <NumberInput source="nb_views" step={1} />
  *
  */
-export const NumberInput = <RecordType extends Record<string, any> = never>({
+export const NumberInput = <RecordType extends any = unknown>({
     className,
     defaultValue = null,
     format = convertNumberToString,
@@ -173,9 +173,8 @@ NumberInput.defaultProps = {
     textAlign: 'right',
 };
 
-export interface NumberInputProps<
-    RecordType extends Record<string, any> = never
-> extends CommonInputProps,
+export interface NumberInputProps<RecordType extends any = unknown>
+    extends CommonInputProps,
         Omit<
             TextFieldProps,
             | 'label'
@@ -188,7 +187,7 @@ export interface NumberInputProps<
     step?: string | number;
     min?: string | number;
     max?: string | number;
-    source: [RecordType] extends [never]
+    source: unknown extends RecordType
         ? string
         : Call<Objects.AllPaths, RecordType>;
 }

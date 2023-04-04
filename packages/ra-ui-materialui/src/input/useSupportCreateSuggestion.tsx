@@ -119,7 +119,7 @@ export const useSupportCreateSuggestion = (
 };
 
 export interface SupportCreateSuggestionOptions<
-    RecordType extends Record<string, unknown> = any
+    RecordType extends any = unknown
 > {
     create?: ReactElement;
     createValue?: string;

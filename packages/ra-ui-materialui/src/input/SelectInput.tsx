@@ -107,10 +107,10 @@ import { LoadingInput } from './LoadingInput';
  *
  */
 export const SelectInput = <
-    RecordType extends Record<string, any> = never,
-    ChoiceType extends Record<string, any> = never
+    RecordType extends any = unknown,
+    OptionType extends any = unknown
 >(
-    props: SelectInputProps<RecordType, ChoiceType>
+    props: SelectInputProps<RecordType, OptionType>
 ) => {
     const {
         choices: choicesProp,
@@ -431,21 +431,21 @@ const StyledResettableTextField = styled(ResettableTextField, {
     '& .MuiFilledInput-root': { paddingRight: 0 },
 }));
 
-export type SelectInputProps<
-    RecordType extends Record<string, any> = never,
-    ChoiceType extends Record<string, any> = never
-> = Omit<CommonInputProps, 'source'> &
-    ChoicesProps<ChoiceType> &
-    Omit<SupportCreateSuggestionOptions<ChoiceType>, 'handleChange'> &
+export type SelectInputProps<RecordType = unknown, OptionType = unknown> = Omit<
+    CommonInputProps,
+    'source'
+> &
+    ChoicesProps<OptionType> &
+    Omit<SupportCreateSuggestionOptions<OptionType>, 'handleChange'> &
     Omit<TextFieldProps, 'label' | 'helperText' | 'classes' | 'onChange'> & {
-        disableValue?: [ChoiceType] extends [never]
+        disableValue?: unknown extends OptionType
             ? string
-            : Call<Objects.AllPaths, ChoiceType>;
+            : Call<Objects.AllPaths, OptionType>;
         emptyText?: string | ReactElement;
         emptyValue?: any;
         resettable?: boolean;
         // Source is optional as AutocompleteInput can be used inside a ReferenceInput that already defines the source
-        source?: [RecordType] extends [never]
+        source?: unknown extends RecordType
             ? string
             : Call<Objects.AllPaths, RecordType>;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;

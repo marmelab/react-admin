@@ -10,7 +10,7 @@ import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import { SxProps } from '@mui/system';
 
-export const ImageField = <RecordType extends Record<string, any> = never>(
+export const ImageField = <RecordType extends any = unknown>(
     props: ImageFieldProps<RecordType>
 ) => {
     const { className, emptyText, source, src, title, ...rest } = props;
@@ -103,18 +103,18 @@ const Root = styled(Box, {
     },
 });
 
-export interface ImageFieldProps<RecordType extends Record<string, any> = never>
+export interface ImageFieldProps<RecordType extends any = unknown>
     extends PublicFieldProps,
         InjectedFieldProps<RecordType> {
     src?: string;
     sx?: SxProps;
-    title: [RecordType] extends [never]
+    title: unknown extends RecordType
         ? string
         : Call<Objects.AllPaths, RecordType>;
-    source: [RecordType] extends [never]
+    source: unknown extends RecordType
         ? string
         : Call<Objects.AllPaths, RecordType> | 'src';
-    sortBy?: [RecordType] extends [never]
+    sortBy?: unknown extends RecordType
         ? string
         : Call<Objects.AllPaths, RecordType>;
 }

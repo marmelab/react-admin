@@ -81,9 +81,7 @@ import { LinearProgress } from '../layout';
  *
  * The object passed as `options` props is passed to the MUI <RadioButtonGroup> component
  */
-export const RadioButtonGroupInput = <
-    RecordType extends Record<string, any> = never
->(
+export const RadioButtonGroupInput = <RecordType extends any = unknown>(
     props: RadioButtonGroupInputProps<RecordType>
 ) => {
     const {
@@ -273,14 +271,15 @@ const sanitizeRestProps = ({
     ...rest
 }: any) => sanitizeInputRestProps(rest);
 
-export type RadioButtonGroupInputProps<
-    RecordType extends Record<string, any> = never
-> = Omit<CommonInputProps, 'source'> &
+export type RadioButtonGroupInputProps<RecordType extends any = unknown> = Omit<
+    CommonInputProps,
+    'source'
+> &
     ChoicesProps &
     FormControlProps &
     RadioGroupProps & {
         options?: RadioGroupProps;
-        source?: [RecordType] extends [never]
+        source?: unknown extends RecordType
             ? string
             : Call<Objects.AllPaths, RecordType>;
     };

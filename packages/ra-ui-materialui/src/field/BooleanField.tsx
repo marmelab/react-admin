@@ -13,7 +13,7 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { genericMemo } from './genericMemo';
 
-const BooleanFieldImpl = <RecordType extends Record<string, any> = never>(
+const BooleanFieldImpl = <RecordType extends any = unknown>(
     props: BooleanFieldProps<RecordType>
 ) => {
     const {
@@ -92,9 +92,8 @@ BooleanField.propTypes = {
 // @ts-ignore
 BooleanField.displayName = 'BooleanField';
 
-export interface BooleanFieldProps<
-    RecordType extends Record<string, any> = never
-> extends PublicFieldProps,
+export interface BooleanFieldProps<RecordType extends any = unknown>
+    extends PublicFieldProps,
         InjectedFieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     valueLabelTrue?: string;
@@ -102,10 +101,10 @@ export interface BooleanFieldProps<
     TrueIcon?: SvgIconComponent | null;
     FalseIcon?: SvgIconComponent | null;
     looseValue?: boolean;
-    source?: [RecordType] extends [never]
+    source?: unknown extends RecordType
         ? string
         : Call<Objects.AllPaths, RecordType>;
-    sortBy?: [RecordType] extends [never]
+    sortBy?: unknown extends RecordType
         ? string
         : Call<Objects.AllPaths, RecordType>;
 }

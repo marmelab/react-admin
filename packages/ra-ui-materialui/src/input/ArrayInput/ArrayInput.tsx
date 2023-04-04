@@ -69,7 +69,7 @@ import { ArrayInputContext } from './ArrayInputContext';
  *
  * @see {@link https://react-hook-form.com/api/usefieldarray}
  */
-export const ArrayInput = <RecordType extends Record<string, any> = never>(
+export const ArrayInput = <RecordType extends any = unknown>(
     props: ArrayInputProps<RecordType>
 ) => {
     const {
@@ -108,9 +108,7 @@ export const ArrayInput = <RecordType extends Record<string, any> = never>(
 
     const fieldProps = useFieldArray<
         any,
-        [RecordType] extends [never]
-            ? string
-            : Call<Objects.AllPaths, RecordType>
+        unknown extends RecordType ? string : Call<Objects.AllPaths, RecordType>
     >({
         name: source,
         rules: {
@@ -219,7 +217,7 @@ export const getArrayInputError = error => {
     return error;
 };
 
-export interface ArrayInputProps<RecordType extends Record<string, any> = never>
+export interface ArrayInputProps<RecordType = unknown>
     extends CommonInputProps,
         Omit<FormControlProps, 'defaultValue' | 'onBlur' | 'onChange'> {
     className?: string;
@@ -228,7 +226,7 @@ export interface ArrayInputProps<RecordType extends Record<string, any> = never>
     isFetching?: boolean;
     isLoading?: boolean;
     record?: Partial<RaRecord>;
-    source: [RecordType] extends [never]
+    source: unknown extends RecordType
         ? string
         : Call<Objects.AllPaths, RecordType>;
 }

@@ -31,7 +31,7 @@ import { InputHelperText } from './InputHelperText';
  * // (which is always a date string) back to a Date object.
  * <DateInput source="published_at" parse={val => new Date(val)} />
  */
-export const DateInput = <RecordType extends Record<string, any> = never>({
+export const DateInput = <RecordType extends any = unknown>({
     className,
     defaultValue,
     format = getStringFromDate,
@@ -106,10 +106,10 @@ DateInput.propTypes = {
 };
 
 export type DateInputProps<
-    RecordType extends Record<string, any> = never
+    RecordType extends any = unknown
 > = CommonInputProps &
     Omit<TextFieldProps, 'helperText' | 'label'> & {
-        source: [RecordType] extends [never]
+        source: unknown extends RecordType
             ? string
             : Call<Objects.AllPaths, RecordType>;
     };

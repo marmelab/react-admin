@@ -85,9 +85,7 @@ import { LinearProgress } from '../layout';
  *
  * The object passed as `options` props is passed to the MUI <Checkbox> components
  */
-export const CheckboxGroupInput = <
-    RecordType extends Record<string, any> = never
->(
+export const CheckboxGroupInput = <RecordType extends any = unknown>(
     props: CheckboxGroupInputProps<RecordType>
 ) => {
     const {
@@ -279,16 +277,17 @@ CheckboxGroupInput.propTypes = {
     translateChoice: PropTypes.bool,
 };
 
-export type CheckboxGroupInputProps<
-    RecordType extends Record<string, any> = never
-> = Omit<CommonInputProps, 'source'> &
+export type CheckboxGroupInputProps<RecordType extends any = unknown> = Omit<
+    CommonInputProps,
+    'source'
+> &
     ChoicesProps &
     CheckboxProps &
     FormControlProps & {
         options?: CheckboxProps;
         row?: boolean;
         // Optional as this input can be used inside a ReferenceInput
-        source?: [RecordType] extends [never]
+        source?: unknown extends RecordType
             ? string
             : // TODO: find a way to pick only properties that are arrays
               Call<Objects.AllPaths, RecordType>;

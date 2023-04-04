@@ -24,7 +24,7 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 import { SxProps } from '@mui/system';
 
-export const FileInput = <RecordType extends Record<string, any> = never>(
+export const FileInput = <RecordType extends any = unknown>(
     props: FileInputProps<RecordType>
 ) => {
     const {
@@ -256,7 +256,7 @@ const StyledLabeled = styled(Labeled, {
 }));
 
 export type FileInputProps<
-    RecordType extends Record<string, any> = never
+    RecordType extends any = unknown
 > = CommonInputProps & {
     accept?: DropzoneOptions['accept'];
     className?: string;
@@ -272,7 +272,7 @@ export type FileInputProps<
     inputProps?: any;
     validateFileRemoval?(file): boolean | Promise<boolean>;
     sx?: SxProps;
-    source: [RecordType] extends [never]
+    source: unknown extends RecordType
         ? string
         : Call<Objects.AllPaths, RecordType>;
 };

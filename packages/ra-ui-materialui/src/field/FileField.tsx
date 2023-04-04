@@ -24,7 +24,7 @@ import { Link } from '@mui/material';
  *     <a href="doc.pdf" title="Presentation">Presentation</a>
  * </div>
  */
-export const FileField = <RecordType extends Record<string, any> = never>(
+export const FileField = <RecordType extends any = unknown>(
     props: FileFieldProps<RecordType>
 ) => {
     const {
@@ -104,7 +104,7 @@ export const FileField = <RecordType extends Record<string, any> = never>(
     );
 };
 
-export interface FileFieldProps<RecordType extends Record<string, any> = never>
+export interface FileFieldProps<RecordType extends any = unknown>
     extends PublicFieldProps,
         InjectedFieldProps<RecordType> {
     src?: string;
@@ -113,13 +113,13 @@ export interface FileFieldProps<RecordType extends Record<string, any> = never>
     ping?: string;
     rel?: string;
     sx?: SxProps;
-    title: [RecordType] extends [never]
+    title: unknown extends RecordType
         ? string
         : Call<Objects.AllPaths, RecordType>;
-    source: [RecordType] extends [never]
+    source: unknown extends RecordType
         ? string
         : Call<Objects.AllPaths, RecordType> | 'src';
-    sortBy?: [RecordType] extends [never]
+    sortBy?: unknown extends RecordType
         ? string
         : Call<Objects.AllPaths, RecordType>;
 }

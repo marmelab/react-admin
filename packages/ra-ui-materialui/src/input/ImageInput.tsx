@@ -2,7 +2,7 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { FileInput, FileInputProps, FileInputClasses } from './FileInput';
 
-export const ImageInput = <RecordType extends Record<string, any> = never>(
+export const ImageInput = <RecordType extends any = unknown>(
     props: ImageInputProps<RecordType>
 ) => (
     <StyledFileInput
@@ -12,9 +12,9 @@ export const ImageInput = <RecordType extends Record<string, any> = never>(
     />
 );
 
-export type ImageInputProps<
-    RecordType extends Record<string, any> = never
-> = FileInputProps<RecordType>;
+export type ImageInputProps<RecordType extends any = unknown> = FileInputProps<
+    RecordType
+>;
 
 const PREFIX = 'RaImageInput';
 

@@ -66,8 +66,8 @@ import { AutocompleteInput, AutocompleteInputProps } from './AutocompleteInput';
  */
 
 export const AutocompleteArrayInput = <
-    RecordType extends Record<string, unknown> = never,
-    OptionType extends Record<string, unknown> = never,
+    RecordType extends any = unknown,
+    OptionType extends any = unknown,
     DisableClearable extends boolean | undefined = boolean | undefined,
     SupportCreate extends boolean | undefined = false
 >({
@@ -93,8 +93,8 @@ export const AutocompleteArrayInput = <
 );
 
 export type AutocompleteArrayInputProps<
-    RecordType extends Record<string, unknown> = never,
-    OptionType extends Record<string, unknown> = never,
+    RecordType extends any = unknown,
+    OptionType extends any = unknown,
     DisableClearable extends boolean | undefined = false,
     SupportCreate extends boolean | undefined = false
 > = Omit<
