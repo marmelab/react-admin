@@ -105,7 +105,7 @@ const Root = styled(Box, {
 
 export interface ImageFieldProps<RecordType extends Record<string, any> = never>
     extends PublicFieldProps,
-        InjectedFieldProps {
+        InjectedFieldProps<RecordType> {
     src?: string;
     sx?: SxProps;
     title: [RecordType] extends [never]

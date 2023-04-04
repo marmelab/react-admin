@@ -106,7 +106,7 @@ export const FileField = <RecordType extends Record<string, any> = never>(
 
 export interface FileFieldProps<RecordType extends Record<string, any> = never>
     extends PublicFieldProps,
-        InjectedFieldProps {
+        InjectedFieldProps<RecordType> {
     src?: string;
     target?: string;
     download?: boolean | string;
