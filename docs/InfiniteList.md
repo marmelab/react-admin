@@ -16,7 +16,7 @@ The `<InfiniteList>` component is an alternative to [the `<List>` component](./L
 
 ## Usage
 
-Here is the minimal code necessary to display an infinite list of books:
+Here is the minimal code necessary to display a list of books with infinite scroll:
 
 ```jsx
 // in src/books.js

@@ -46,7 +46,7 @@ export const InfinitePagination = ({
     const handleObserver = useEvent<[IntersectionObserverEntry[]], void>(
         entries => {
             const [target] = entries;
-            if (target.isIntersecting && hasNextPage) {
+            if (target.isIntersecting && hasNextPage && !isFetchingNextPage) {
                 fetchNextPage();
             }
         }
@@ -58,7 +58,14 @@ export const InfinitePagination = ({
         const observer = new IntersectionObserver(handleObserver, options);
         observer.observe(element);
         return () => observer.unobserve(element);
-    }, [fetchNextPage, hasNextPage, handleObserver, options, isLoading]);
+    }, [
+        fetchNextPage,
+        hasNextPage,
+        handleObserver,
+        options,
+        isLoading,
+        isFetchingNextPage,
+    ]);
 
     if (isLoading) return null;
 

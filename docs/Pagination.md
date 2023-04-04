@@ -46,7 +46,7 @@ const PostPagination = () => <Pagination rowsPerPageOptions={[10, 25, 50, 100]} 
 
 **Tip**: Pass an empty array to `rowsPerPageOptions` to disable the rows per page selection.
 
-## Infinite Pagination
+## Infinite Scroll
 
 On mobile devices, the `<Pagination>` component is not very user friendly. The expected user experience is to reveal more records when the user scrolls to the bottom of the list. This UX is also useful on desktop, for lists with a large number of records.
 

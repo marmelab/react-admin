@@ -81,7 +81,10 @@ const data = {
     ],
 };
 
-const baseDataProvider = fakeRestProvider(data);
+const baseDataProvider = fakeRestProvider(
+    data,
+    process.env.NODE_ENV === 'development'
+);
 
 const dataProvider = new Proxy(baseDataProvider, {
     get: (target, name) => (resource, params) => {
@@ -276,6 +279,24 @@ export const PerPage = () => (
                         primaryText="%{title}"
                         secondaryText="%{author}"
                     />
+                </InfiniteList>
+            )}
+        />
+    </Admin>
+);
+
+// Useful to check that on a large window, the list fetches beyond page 2
+export const PerPageSmall = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource
+            name="books"
+            list={() => (
+                <InfiniteList perPage={1}>
+                    <Datagrid>
+                        <TextField source="id" />
+                        <TextField source="title" />
+                        <TextField source="author" />
+                    </Datagrid>
                 </InfiniteList>
             )}
         />
