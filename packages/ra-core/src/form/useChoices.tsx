@@ -10,11 +10,11 @@ import { RecordContextProvider } from '../controller';
 export type OptionTextElement = ReactElement<{
     record: RaRecord;
 }>;
-export type OptionTextFunc<RecordType extends Record<string, unknown> = any> = (
-    choice: RecordType
-) => React.ReactNode;
+export type OptionTextFunc<
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+> = (choice: RecordType) => React.ReactNode;
 
-export type OptionText<RecordType extends Record<string, unknown> = any> =
+export type OptionText<RecordType extends Record<string, unknown> = never> =
     | OptionTextElement
     | OptionTextFunc<RecordType>
     | ([RecordType] extends [never]
@@ -22,7 +22,7 @@ export type OptionText<RecordType extends Record<string, unknown> = any> =
           : Call<Objects.AllPaths, RecordType>);
 
 export interface ChoicesProps<
-    RecordType extends Record<string, unknown> = any
+    RecordType extends Record<string, unknown> = never
 > {
     choices?: any[];
     isFetching?: boolean;
@@ -34,9 +34,11 @@ export interface ChoicesProps<
     translateChoice?: boolean;
 }
 
-export interface UseChoicesOptions {
+export interface UseChoicesOptions<
+    RecordType extends Record<string, unknown> = never
+> {
     optionValue?: string;
-    optionText?: OptionText;
+    optionText?: OptionText<RecordType>;
     disableValue?: string;
     translateChoice?: boolean;
 }
@@ -52,12 +54,12 @@ export interface UseChoicesOptions {
  * - getChoiceText: Returns the choice text or a React element
  * - getChoiceValue: Returns the choice value
  */
-export const useChoices = ({
-    optionText = 'name',
+export const useChoices = <RecordType extends Record<string, unknown> = never>({
+    optionText,
     optionValue = 'id',
     disableValue = 'disabled',
     translateChoice = true,
-}: UseChoicesOptions) => {
+}: UseChoicesOptions<RecordType>) => {
     const translate = useTranslate();
 
     const getChoiceText = useCallback(
@@ -72,7 +74,7 @@ export const useChoices = ({
             const choiceName =
                 typeof optionText === 'function'
                     ? optionText(choice)
-                    : get(choice, optionText);
+                    : get(choice, optionText ?? 'name');
 
             return isValidElement(choiceName)
                 ? choiceName
