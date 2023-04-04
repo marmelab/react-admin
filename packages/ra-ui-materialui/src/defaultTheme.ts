@@ -23,14 +23,17 @@ export const defaultTheme = {
     },
     components: {
         MuiFilledInput: {
-            styleOverrides: {
-                root: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                    '&$disabled': {
+            variants: [
+                {
+                    props: {},
+                    style: {
                         backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                        '&$disabled': {
+                            backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                        },
                     },
                 },
-            },
+            ],
         },
         MuiTextField: {
             defaultProps: {
