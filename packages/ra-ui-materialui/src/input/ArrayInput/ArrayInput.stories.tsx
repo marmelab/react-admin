@@ -74,7 +74,7 @@ export const Basic = () => (
 type Book = {
     id: number;
     title: string;
-    authors: [];
+    authors: Author[];
 };
 
 type Author = {
