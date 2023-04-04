@@ -2,8 +2,12 @@ import * as React from 'react';
 import fakeRestProvider from 'ra-data-fakerest';
 import defaultMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
-import { Resource, useListContext } from 'ra-core';
-import { Box, Card, Typography } from '@mui/material';
+import {
+    Resource,
+    useListContext,
+    useInfinitePaginationContext,
+} from 'ra-core';
+import { Box, Button, Card, Typography } from '@mui/material';
 
 import { InfiniteList } from './InfiniteList';
 import { SimpleList } from './SimpleList';
@@ -180,6 +184,41 @@ export const PaginationInfinite = () => (
                         primaryText="%{title}"
                         secondaryText="%{author}"
                     />
+                </InfiniteList>
+            )}
+        />
+    </Admin>
+);
+
+const LoadMore = () => {
+    const {
+        hasNextPage,
+        fetchNextPage,
+        isFetchingNextPage,
+    } = useInfinitePaginationContext();
+    return hasNextPage ? (
+        <Box mt={1} textAlign="center">
+            <Button
+                disabled={isFetchingNextPage}
+                onClick={() => fetchNextPage()}
+            >
+                Load more
+            </Button>
+        </Box>
+    ) : null;
+};
+
+export const PaginationLoadMore = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource
+            name="books"
+            list={() => (
+                <InfiniteList pagination={<LoadMore />}>
+                    <Datagrid>
+                        <TextField source="id" />
+                        <TextField source="title" />
+                        <TextField source="author" />
+                    </Datagrid>
                 </InfiniteList>
             )}
         />

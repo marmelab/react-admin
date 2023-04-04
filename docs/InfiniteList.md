@@ -84,6 +84,47 @@ Check the [`<List>` component](./List.md) for details about each prop.
 
 Additional props are passed down to the root component (a MUI `<Card>` by default).
 
+## `pagination`
+
+You can replace the default "load on scroll" pagination (triggered by a component named `<InfinitePagination>`) by a custom pagination component. To get the pagination state and callbacks, you'll need to read the `InfinitePaginationContext`. 
+
+![load more button](./img/infinite-pagination-load-more.webp)
+
+For example, here is a custom infinite pagination component displaying a "Load More" button at the bottom of the list:
+
+```jsx
+import { InfiniteList, useInfinitePaginationContext, Datagrid, TextField } from 'react-admin';
+import { Box, Button } from '@mui/material';
+
+const LoadMore = () => {
+    const {
+        hasNextPage,
+        fetchNextPage,
+        isFetchingNextPage,
+    } = useInfinitePaginationContext();
+    return hasNextPage ? (
+        <Box mt={1} textAlign="center">
+            <Button
+                disabled={isFetchingNextPage}
+                onClick={() => fetchNextPage()}
+            >
+                Load more
+            </Button>
+        </Box>
+    ) : null;
+};
+
+export const BookList = () => (
+    <InfiniteList pagination={<LoadMore />}>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+        </Datagrid>
+    </InfiniteList>
+);
+```
+
 ## Showing The Record Count
 
 One drawback of the `<InfiniteList>` component is that it doesn't show the number of results. To fix this, you can use `useListContext` to access the `total` property of the list, and render the total number of results in a sticky footer:
