@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { memo, FC, ReactElement } from 'react';
+import { memo, FC, ReactNode } from 'react';
 import get from 'lodash/get';
-import { ListContextProvider, useRecordContext } from 'ra-core';
+import { ListContextProvider, useRecordContext, useList } from 'ra-core';
 
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
@@ -76,35 +76,9 @@ export const ArrayField: FC<ArrayFieldProps> = memo(props => {
     const { children, resource, source } = props;
     const record = useRecordContext(props);
     const data = get(record, source, emptyArray) || emptyArray;
-
+    const listContext = useList({ data, resource });
     return (
-        <ListContextProvider
-            value={{
-                data,
-                selectedIds: [],
-                sort: { field: null, order: null },
-                displayedFilters: null,
-                filterValues: null,
-                hasNextPage: null,
-                hasPreviousPage: null,
-                hideFilter: null,
-                isFetching: false,
-                isLoading: false,
-                onSelect: null,
-                onToggleItem: null,
-                onUnselectItems: null,
-                page: null,
-                perPage: null,
-                refetch: null,
-                resource,
-                setFilters: null,
-                setPage: null,
-                setPerPage: null,
-                setSort: null,
-                showFilter: null,
-                total: data.length,
-            }}
-        >
+        <ListContextProvider value={listContext}>
             {children}
         </ListContextProvider>
     );
@@ -115,7 +89,7 @@ ArrayField.propTypes = {
 };
 
 export interface ArrayFieldProps extends PublicFieldProps, InjectedFieldProps {
-    children: ReactElement;
+    children: ReactNode;
 }
 
 ArrayField.displayName = 'ArrayField';
