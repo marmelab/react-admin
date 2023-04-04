@@ -102,9 +102,12 @@ const dataProvider = fakeRestDataProvider(data);
 const history = createMemoryHistory({ initialEntries: ['/books'] });
 
 const BookList = () => {
-    const { data, isLoading } = useListContext();
+    const { data, error, isLoading } = useListContext();
     if (isLoading) {
         return <div>Loading...</div>;
+    }
+    if (error) {
+        return <div>Error: {error.message}</div>;
     }
     return (
         <Stack spacing={2} sx={{ padding: 2 }}>
@@ -386,3 +389,18 @@ export const StoreKey = () => {
         </Admin>
     );
 };
+
+export const ErrorContent = () => (
+    <Admin
+        dataProvider={
+            {
+                getList: async () => {
+                    throw new Error('Error in dataProvider');
+                },
+            } as any
+        }
+        history={history}
+    >
+        <Resource name="books" list={BookListBasic} />
+    </Admin>
+);
