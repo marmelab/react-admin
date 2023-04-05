@@ -113,18 +113,19 @@ const defaultFilterOptions = createFilterOptions();
  * <AutocompleteInput source="author_id" options={{ color: 'secondary', InputLabelProps: { shrink: true } }} />
  */
 export const AutocompleteInput = <
-    RecordType extends any = unknown,
     OptionType extends any = unknown,
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
-    SupportCreate extends boolean | undefined = false
+    SupportCreate extends boolean | undefined = false,
+    // FIXME: The following type should be first but that would be a breaking change so we'll wait for v5
+    RecordType extends any = unknown
 >(
     props: AutocompleteInputProps<
-        RecordType,
         OptionType,
         Multiple,
         DisableClearable,
-        SupportCreate
+        SupportCreate,
+        RecordType
     >
 ) => {
     const {
@@ -247,11 +248,11 @@ export const AutocompleteInput = <
     );
 
     const selectedChoice = useSelectedChoice<
-        RecordType,
         OptionType,
         Multiple,
         DisableClearable,
-        SupportCreate
+        SupportCreate,
+        RecordType
     >(field.value, {
         choices: finalChoices,
         // @ts-ignore
@@ -663,11 +664,12 @@ const StyledAutocomplete = styled(Autocomplete, {
 
 // @ts-ignore
 export interface AutocompleteInputProps<
-    RecordType extends any = unknown,
     OptionType extends Record<string, any> = any,
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
-    SupportCreate extends boolean | undefined = false
+    SupportCreate extends boolean | undefined = false,
+    // FIXME: The following type should be first but that would be a breaking change so we'll wait for v5
+    RecordType extends any = unknown
 > extends Omit<CommonInputProps, 'source'>,
         ChoicesProps<OptionType>,
         UseSuggestionsOptions,
@@ -700,11 +702,12 @@ export interface AutocompleteInputProps<
  * Returns the selected choice (or choices if multiple) by matching the input value with the choices.
  */
 const useSelectedChoice = <
-    RecordType extends any = unknown,
     OptionType extends any = unknown,
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
-    SupportCreate extends boolean | undefined = false
+    SupportCreate extends boolean | undefined = false,
+    // FIXME: The following type should be first but that would be a breaking change so we'll wait for v5
+    RecordType extends any = unknown
 >(
     value: any,
     {
@@ -712,11 +715,11 @@ const useSelectedChoice = <
         multiple,
         optionValue,
     }: AutocompleteInputProps<
-        RecordType,
         OptionType,
         Multiple,
         DisableClearable,
-        SupportCreate
+        SupportCreate,
+        RecordType
     >
 ) => {
     const selectedChoiceRef = useRef(

@@ -66,25 +66,26 @@ import { AutocompleteInput, AutocompleteInputProps } from './AutocompleteInput';
  */
 
 export const AutocompleteArrayInput = <
-    RecordType extends any = unknown,
     OptionType extends any = unknown,
     DisableClearable extends boolean | undefined = boolean | undefined,
-    SupportCreate extends boolean | undefined = false
+    SupportCreate extends boolean | undefined = false,
+    // FIXME: The following type should be first but that would be a breaking change so we'll wait for v5
+    RecordType extends any = unknown
 >({
     defaultValue,
     ...props
 }: AutocompleteArrayInputProps<
-    RecordType,
     OptionType,
     DisableClearable,
-    SupportCreate
+    SupportCreate,
+    RecordType
 >) => (
     <AutocompleteInput<
-        RecordType,
         OptionType,
         true,
         DisableClearable,
-        SupportCreate
+        SupportCreate,
+        RecordType
     >
         {...props}
         multiple
@@ -93,17 +94,18 @@ export const AutocompleteArrayInput = <
 );
 
 export type AutocompleteArrayInputProps<
-    RecordType extends any = unknown,
     OptionType extends any = unknown,
     DisableClearable extends boolean | undefined = false,
-    SupportCreate extends boolean | undefined = false
+    SupportCreate extends boolean | undefined = false,
+    // FIXME: The following type should be first but that would be a breaking change so we'll wait for v5
+    RecordType extends any = unknown
 > = Omit<
     AutocompleteInputProps<
-        RecordType,
         OptionType,
         true,
         DisableClearable,
-        SupportCreate
+        SupportCreate,
+        RecordType
     >,
     'defaultValue'
 > & {
