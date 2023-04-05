@@ -41,9 +41,9 @@ export const useRedirect = () => {
         (
             redirectTo: RedirectionSideEffect,
             resource: string = '',
-            id?: Identifier | null,
-            data?: Partial<RaRecord> | null,
-            state: object | null = {}
+            id?: Identifier,
+            data?: Partial<RaRecord>,
+            state: object = {}
         ) => {
             if (!redirectTo) {
                 return;

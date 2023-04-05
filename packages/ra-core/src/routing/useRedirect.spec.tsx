@@ -13,15 +13,15 @@ import { Identifier, RaRecord } from '../types';
 const Redirect = ({
     redirectTo,
     resource = '',
-    id = null,
-    data = null,
-    state = null,
+    id = undefined,
+    data = undefined,
+    state = undefined,
 }: {
     redirectTo: RedirectionSideEffect;
     resource?: string;
-    id?: Identifier | null;
-    data?: Partial<RaRecord> | null;
-    state?: object | null;
+    id?: Identifier;
+    data?: Partial<RaRecord>;
+    state?: object;
 }) => {
     const redirect = useRedirect();
     useEffect(() => {
