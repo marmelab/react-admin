@@ -25,7 +25,7 @@ import { RichTextInputToolbar } from './RichTextInputToolbar';
 /**
  * A rich text editor for the react-admin that is accessible and supports translations. Based on [Tiptap](https://www.tiptap.dev/).
  * @param props The input props. Accept all common react-admin input props.
- * @param {EditorOptions} props.editorOptions The options to pass to the Tiptap editor.
+ * @param {EditorOptions} props.editorOptions The options to pass to the Tiptap editor. See Tiptap settings [here](https://tiptap.dev/api/editor#settings).
  * @param {ReactNode} props.toolbar The toolbar containing the editors commands.
  *
  * @example <caption>Customizing the editors options</caption>
