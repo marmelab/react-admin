@@ -1,10 +1,13 @@
 import * as React from 'react';
 import { MemoryRouter } from 'react-router';
 import {
+    I18nContextProvider,
     RecordContextProvider,
     useListContext,
     useRecordContext,
 } from 'ra-core';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
 import { Card, ThemeProvider, createTheme } from '@mui/material';
 
 import { ArrayField } from './ArrayField';
@@ -34,15 +37,23 @@ export const Basic = () => (
     </MemoryRouter>
 );
 
+const i18nProvider = polyglotI18nProvider(() => englishMessages);
+
 export const PerPage = () => (
     <ThemeProvider theme={createTheme()}>
         <MemoryRouter>
-            <ArrayField record={{ id: 123, books }} source="books" perPage={2}>
-                <SingleFieldList>
-                    <ChipField source="title" />
-                </SingleFieldList>
-                <Pagination />
-            </ArrayField>
+            <I18nContextProvider value={i18nProvider}>
+                <ArrayField
+                    record={{ id: 123, books }}
+                    source="books"
+                    perPage={2}
+                >
+                    <SingleFieldList>
+                        <ChipField source="title" />
+                    </SingleFieldList>
+                    <Pagination />
+                </ArrayField>
+            </I18nContextProvider>
         </MemoryRouter>
     </ThemeProvider>
 );
