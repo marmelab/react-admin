@@ -162,8 +162,6 @@ const Root = styled('div', {
 })(({ theme }) => ({
     display: 'flex',
     flexWrap: 'wrap',
-    marginTop: theme.spacing(-1),
-    marginBottom: theme.spacing(-1),
 
     [`& .${SingleFieldListClasses.link}`]: {
         textDecoration: 'none',

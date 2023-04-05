@@ -72,7 +72,10 @@ const PostShow = () => {
                             sort={{ field: `name.${locale}`, order: 'ASC' }}
                         >
                             <SingleFieldList>
-                                <ChipField source={`name.${locale}`} />
+                                <ChipField
+                                    source={`name.${locale}`}
+                                    size="small"
+                                />
                             </SingleFieldList>
                         </ReferenceArrayField>
                         <DateField source="published_at" />
