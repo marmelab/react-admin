@@ -163,7 +163,7 @@ const PostList = () => {
                         cellClassName="hiddenOnSmallScreens"
                         headerClassName="hiddenOnSmallScreens"
                     >
-                        <SingleFieldList>
+                        <SingleFieldList sx={{ my: -2 }}>
                             <ChipField source="name.en" size="small" />
                         </SingleFieldList>
                     </ReferenceArrayField>
