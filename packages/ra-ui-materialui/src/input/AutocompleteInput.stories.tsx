@@ -131,7 +131,7 @@ const TypedBookEdit = () => {
             }}
         >
             <SimpleForm>
-                <AutocompleteInput<Book, Author>
+                <AutocompleteInput<Author, false, false, true, Book>
                     source="author"
                     optionValue="id"
                     optionText="name"
