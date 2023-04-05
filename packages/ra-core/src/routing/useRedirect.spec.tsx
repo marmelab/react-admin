@@ -6,8 +6,9 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
 import { CoreAdminContext } from '../core';
-import { useRedirect } from './useRedirect';
+import { RedirectionSideEffect, useRedirect } from './useRedirect';
 import { testDataProvider } from '../dataProvider';
+import { Identifier, RaRecord } from '../types';
 
 const Redirect = ({
     redirectTo,
@@ -15,6 +16,12 @@ const Redirect = ({
     id = null,
     data = null,
     state = null,
+}: {
+    redirectTo: RedirectionSideEffect;
+    resource?: string;
+    id?: Identifier | null;
+    data?: Partial<RaRecord> | null;
+    state?: object | null;
 }) => {
     const redirect = useRedirect();
     useEffect(() => {
@@ -89,6 +96,7 @@ describe('useRedirect', () => {
 
     it('should support absolute URLs', () => {
         const oldLocation = window.location;
+        // @ts-ignore
         delete window.location;
         // @ts-ignore
         window.location = { href: '' };
