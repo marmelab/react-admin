@@ -19,7 +19,7 @@ const reviewFilters = [
         ]}
     />,
     <ReferenceInput source="customer_id" reference="customers">
-        <AutocompleteInput<Review, Customer>
+        <AutocompleteInput<Customer, false, false, false, Review>
             optionText={choice =>
                 choice?.id // the empty choice is { id: '' }
                     ? `${choice.first_name} ${choice.last_name}`
