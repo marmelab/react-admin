@@ -14,7 +14,6 @@ import { useDataProvider } from './useDataProvider';
  *
  * @see https://react-query-v3.tanstack.com/reference/useInfiniteQuery
  *
- *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
  *
@@ -80,7 +79,7 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
         Error,
         GetInfiniteListResult<RecordType>
     >(
-        [resource, 'getList', { pagination, sort, filter, meta }],
+        [resource, 'getInfiniteList', { pagination, sort, filter, meta }],
         ({ pageParam = pagination.page }) =>
             dataProvider
                 .getList<RecordType>(resource, {
@@ -147,7 +146,7 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
         ? {
               ...result,
               data: result.data,
-              total: result.data?.pages[0]?.total || 0,
+              total: result.data?.pages[0]?.total || undefined,
           }
         : result) as UseInfiniteQueryResult<
         GetInfiniteListResult<RecordType>,
