@@ -14,7 +14,6 @@ You can find translation packages for the following languages:
 - Bulgarian (`bg`): [ptodorov0/ra-language-bulgarian](https://github.com/ptodorov0/ra-language-bulgarian)
 - Catalan (`ca`): [joshf/ra-language-catalan](https://github.com/joshf/ra-language-catalan)
 - Chinese (`zh-TW`): [areyliu6/ra-language-chinese-traditional](https://github.com/areyliu6/ra-language-chinese-traditional)
-- Chinese (`zh`): [chen4w/ra-language-chinese](https://github.com/chen4w/ra-language-chinese)
 - Chinese (`zh`): [haxqer/ra-language-chinese](https://github.com/haxqer/ra-language-chinese)
 - Czech (`cs`): [binao/ra-language-czech](https://github.com/binao/ra-language-czech)
 - Danish (`da`): [nikri/ra-language-danish](https://github.com/nikri/ra-language-danish)
