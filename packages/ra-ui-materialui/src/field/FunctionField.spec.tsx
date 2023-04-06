@@ -30,9 +30,10 @@ describe('<FunctionField />', () => {
             <FunctionField
                 record={{ id: 123, foo: 'bar' }}
                 render={r => r && r.foo}
+                source="asr"
                 className="foo"
             />
         );
-        expect(queryByText('bar').classList).toContain('foo');
+        expect(queryByText('bar')?.classList).toContain('foo');
     });
 });

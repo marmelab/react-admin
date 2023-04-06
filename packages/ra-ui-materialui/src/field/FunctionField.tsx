@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { useRecordContext } from 'ra-core';
 import PropTypes from 'prop-types';
 import Typography, { TypographyProps } from '@mui/material/Typography';
+import { Call, Objects } from 'hotscript';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
@@ -18,7 +19,7 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  * />
  */
 
-export const FunctionField = <RecordType extends unknown = any>(
+export const FunctionField = <RecordType extends any = unknown>(
     props: FunctionFieldProps<RecordType>
 ) => {
     const { className, source = '', render, ...rest } = props;
@@ -46,9 +47,15 @@ FunctionField.propTypes = {
     render: PropTypes.func.isRequired,
 };
 
-export interface FunctionFieldProps<RecordType extends unknown = any>
+export interface FunctionFieldProps<RecordType extends any = unknown>
     extends PublicFieldProps,
         InjectedFieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     render: (record?: RecordType, source?: string) => any;
+    source?: unknown extends RecordType
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
+    sortBy?: unknown extends RecordType
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
 }
