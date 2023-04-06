@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { memo, FC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@mui/material/Typography';
+import { Call, Objects } from 'hotscript';
 import { useRecordContext, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { genericMemo } from './genericMemo';
 
 /**
  * Display a numeric value as a locale string.
@@ -36,7 +37,9 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  * // renders the record { id: 1234, price: 25.99 } as
  * <span>25,99 $US</span>
  */
-export const NumberField: FC<NumberFieldProps> = memo(props => {
+const NumberFieldImpl = <RecordType extends any = unknown>(
+    props: NumberFieldProps<RecordType>
+) => {
     const {
         className,
         emptyText,
@@ -77,15 +80,20 @@ export const NumberField: FC<NumberFieldProps> = memo(props => {
             {hasNumberFormat ? value.toLocaleString(locales, options) : value}
         </Typography>
     );
-});
+};
+
+export const NumberField = genericMemo(NumberFieldImpl);
 
 // what? TypeScript loses the displayName if we don't set it explicitly
+// @ts-ignore
 NumberField.displayName = 'NumberField';
 
+// @ts-ignore
 NumberField.defaultProps = {
     textAlign: 'right',
 };
 
+// @ts-ignore
 NumberField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
@@ -97,12 +105,18 @@ NumberField.propTypes = {
     options: PropTypes.object,
 };
 
-export interface NumberFieldProps
+export interface NumberFieldProps<RecordType extends any = unknown>
     extends PublicFieldProps,
-        InjectedFieldProps,
+        InjectedFieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     locales?: string | string[];
     options?: object;
+    source?: unknown extends RecordType
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
+    sortBy?: unknown extends RecordType
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
 }
 
 const hasNumberFormat = !!(
