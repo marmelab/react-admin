@@ -9,7 +9,7 @@ import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import { genericMemo } from './genericMemo';
 
-export const EmailFieldImpl = <RecordType extends any = unknown>(
+const EmailFieldImpl = <RecordType extends any = unknown>(
     props: EmailFieldProps<RecordType>
 ) => {
     const { className, source, emptyText, ...rest } = props;
