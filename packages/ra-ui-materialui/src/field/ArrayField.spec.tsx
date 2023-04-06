@@ -36,7 +36,7 @@ describe('<ArrayField />', () => {
     it('should not fail for empty records', () => {
         render(
             <Wrapper>
-                <ArrayField source="arr" record={{ id: 123 }}>
+                <ArrayField source="foo" record={{ id: 123, foo: undefined }}>
                     <DummyIterator />
                 </ArrayField>
             </Wrapper>

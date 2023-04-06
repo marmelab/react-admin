@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { memo, FC, ReactElement } from 'react';
+import { ReactNode } from 'react';
 import get from 'lodash/get';
 import { ListContextProvider, useRecordContext } from 'ra-core';
+import { Call, Objects } from 'hotscript';
 
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { genericMemo } from './genericMemo';
 
 /**
  * Display a collection
@@ -72,7 +74,9 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *       );
  *   };
  */
-export const ArrayField: FC<ArrayFieldProps> = memo(props => {
+const ArrayFieldImpl = <RecordType extends any = unknown>(
+    props: ArrayFieldProps<RecordType>
+) => {
     const { children, resource, source } = props;
     const record = useRecordContext(props);
     const data = get(record, source, emptyArray) || emptyArray;
@@ -108,16 +112,28 @@ export const ArrayField: FC<ArrayFieldProps> = memo(props => {
             {children}
         </ListContextProvider>
     );
-});
+};
 
+export const ArrayField = genericMemo(ArrayFieldImpl);
+
+// @ts-ignore
 ArrayField.propTypes = {
     ...fieldPropTypes,
 };
 
-export interface ArrayFieldProps extends PublicFieldProps, InjectedFieldProps {
-    children: ReactElement;
-}
-
+// @ts-ignore
 ArrayField.displayName = 'ArrayField';
+
+export interface ArrayFieldProps<RecordType extends any = unknown>
+    extends PublicFieldProps,
+        InjectedFieldProps<RecordType> {
+    children: ReactNode;
+    source?: unknown extends RecordType
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
+    sortBy?: unknown extends RecordType
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
+}
 
 const emptyArray = [];
