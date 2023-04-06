@@ -3,7 +3,7 @@ import defaults from 'lodash/defaults';
 
 import { useResourceDefinitions } from './useResourceDefinitions';
 import { useResourceContext } from './useResourceContext';
-import { ResourceDefinition } from '../types';
+import { ResourceDefinition, ResourceOptions } from '../types';
 
 /**
  * Hook to get the definition of a given resource
@@ -26,9 +26,11 @@ import { ResourceDefinition } from '../types';
  *
  * const definition = useResourceDefinition({ resource: 'posts' });
  */
-export const useResourceDefinition = (
+export const useResourceDefinition = <
+    OptionsType extends ResourceOptions = any
+>(
     props?: UseResourceDefinitionOptions
-): ResourceDefinition => {
+): ResourceDefinition<OptionsType> => {
     const resource = useResourceContext(props);
     const resourceDefinitions = useResourceDefinitions();
     const { hasCreate, hasEdit, hasList, hasShow, recordRepresentation } =

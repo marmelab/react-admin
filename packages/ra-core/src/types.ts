@@ -275,9 +275,9 @@ export type LegacyDataProvider = (
 
 export type RecordToStringFunction = (record: any) => string;
 
-export interface ResourceDefinition {
+export interface ResourceDefinition<OptionsType extends ResourceOptions = any> {
     readonly name: string;
-    readonly options?: any;
+    readonly options?: OptionsType;
     readonly hasList?: boolean;
     readonly hasEdit?: boolean;
     readonly hasShow?: boolean;
