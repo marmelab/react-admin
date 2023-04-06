@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { memo, FC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import { Typography, TypographyProps } from '@mui/material';
+import { Call, Objects } from 'hotscript';
 import { useRecordContext, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { genericMemo } from './genericMemo';
 
 /**
  * Display a date value as a locale string.
@@ -32,7 +33,9 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  * // renders the record { id: 1234, new Date('2012-11-07') } as
  * <span>mercredi 7 novembre 2012</span>
  */
-export const DateField: FC<DateFieldProps> = memo(props => {
+export const DateFieldImpl = <RecordType extends any = unknown>(
+    props: DateFieldProps<RecordType>
+) => {
     const {
         className,
         emptyText,
@@ -108,8 +111,11 @@ export const DateField: FC<DateFieldProps> = memo(props => {
             {dateString}
         </Typography>
     );
-});
+};
 
+export const DateField = genericMemo(DateFieldImpl);
+
+// @ts-ignore
 DateField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
@@ -123,16 +129,23 @@ DateField.propTypes = {
     showDate: PropTypes.bool,
 };
 
+// @ts-ignore
 DateField.displayName = 'DateField';
 
-export interface DateFieldProps
+export interface DateFieldProps<RecordType extends any = unknown>
     extends PublicFieldProps,
-        InjectedFieldProps,
+        InjectedFieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     locales?: string | string[];
     options?: object;
     showTime?: boolean;
     showDate?: boolean;
+    source?: unknown extends RecordType
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
+    sortBy?: unknown extends RecordType
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
 }
 
 const toLocaleStringSupportsLocales = (() => {
