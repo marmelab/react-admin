@@ -1,26 +1,32 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render } from '@testing-library/react';
-import { RecordContextProvider, I18nContextProvider } from 'ra-core';
+import {
+    RecordContextProvider,
+    I18nContextProvider,
+    mergeTranslations,
+} from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
 
 import { EmailField } from './EmailField';
 
 const i18nProvider = polyglotI18nProvider(
-    _locale => ({
-        resources: {
-            books: {
-                name: 'Books',
-                fields: {
-                    id: 'Id',
-                    title: 'Title',
-                    author: 'Author',
-                    year: 'Year',
+    _locale =>
+        mergeTranslations(englishMessages, {
+            resources: {
+                books: {
+                    name: 'Books',
+                    fields: {
+                        id: 'Id',
+                        title: 'Title',
+                        author: 'Author',
+                        year: 'Year',
+                    },
+                    not_found: 'Not found',
                 },
-                not_found: 'Not found',
             },
-        },
-    }),
+        }),
     'en'
 );
 
@@ -102,7 +108,7 @@ describe('<EmailField />', () => {
 
     it('should return null when the record has no value for the source and no emptyText', () => {
         const { container } = render(
-            <EmailField record={{ id: 123 }} source="foo" />
+            <EmailField record={{ id: 123, foo: undefined }} source="foo" />
         );
         expect(container.firstChild).toBeNull();
     });
@@ -111,7 +117,7 @@ describe('<EmailField />', () => {
         const { getByText } = render(
             <I18nContextProvider value={i18nProvider}>
                 <EmailField
-                    record={{ id: 123 }}
+                    record={{ id: 123, foo: { bar: undefined } }}
                     source="foo.bar"
                     emptyText="resources.books.not_found"
                 />

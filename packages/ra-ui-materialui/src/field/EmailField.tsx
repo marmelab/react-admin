@@ -1,14 +1,17 @@
 import * as React from 'react';
-import { memo, FC } from 'react';
 import get from 'lodash/get';
 import Typography from '@mui/material/Typography';
 import { Link, LinkProps } from '@mui/material';
+import { Call, Objects } from 'hotscript';
 import { useRecordContext, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { genericMemo } from './genericMemo';
 
-export const EmailField: FC<EmailFieldProps> = memo(props => {
+export const EmailFieldImpl = <RecordType extends any = unknown>(
+    props: EmailFieldProps<RecordType>
+) => {
     const { className, source, emptyText, ...rest } = props;
     const record = useRecordContext(props);
     const value = get(record, source);
@@ -38,15 +41,26 @@ export const EmailField: FC<EmailFieldProps> = memo(props => {
             {value}
         </Link>
     );
-});
+};
 
+export const EmailField = genericMemo(EmailFieldImpl);
+
+// @ts-ignore
 EmailField.propTypes = fieldPropTypes;
+// @ts-ignore
 EmailField.displayName = 'EmailField';
 
-export interface EmailFieldProps
+export interface EmailFieldProps<RecordType extends any = unknown>
     extends PublicFieldProps,
-        InjectedFieldProps,
-        Omit<LinkProps, 'textAlign'> {}
+        InjectedFieldProps<RecordType>,
+        Omit<LinkProps, 'textAlign'> {
+    source?: unknown extends RecordType
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
+    sortBy?: unknown extends RecordType
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
+}
 
 // useful to prevent click bubbling in a Datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
