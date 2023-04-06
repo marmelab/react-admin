@@ -97,7 +97,7 @@ export const ReferenceOneField = <RecordType extends RaRecord = any>(
 
 export interface ReferenceOneFieldProps<RecordType extends RaRecord = any>
     extends PublicFieldProps,
-        InjectedFieldProps {
+        InjectedFieldProps<any> {
     children?: ReactNode;
     reference: string;
     target: string;

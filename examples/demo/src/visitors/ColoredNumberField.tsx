@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useRecordContext, NumberField, NumberFieldProps } from 'react-admin';
 
 const ColoredNumberField = (props: NumberFieldProps) => {
-    const record = useRecordContext(props);
+    const record = useRecordContext<any>(props);
     if (!record || !props.source) {
         return null;
     }

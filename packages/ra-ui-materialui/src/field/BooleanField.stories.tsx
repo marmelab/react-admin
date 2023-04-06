@@ -25,7 +25,9 @@ type Post = {
     title: string;
 };
 
-export const Typed = (props: Omit<BooleanFieldProps, 'source' | 'sortBy'>) => {
+export const Typed = (
+    props: Omit<BooleanFieldProps, 'source' | 'sortBy' | 'record'>
+) => {
     const [published, setPublished] = React.useState(true);
     return (
         <Stack direction="row">
@@ -35,7 +37,7 @@ export const Typed = (props: Omit<BooleanFieldProps, 'source' | 'sortBy'>) => {
                 onChange={e => setPublished(e.target.checked)}
             />
             <BooleanField<Post>
-                record={{ published }}
+                record={{ published, reported: false, title: '' }}
                 source="published"
                 sortBy="published"
                 {...props}

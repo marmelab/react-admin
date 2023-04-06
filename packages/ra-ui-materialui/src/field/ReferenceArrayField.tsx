@@ -121,7 +121,7 @@ ReferenceArrayField.propTypes = {
 
 export interface ReferenceArrayFieldProps
     extends PublicFieldProps,
-        InjectedFieldProps {
+        InjectedFieldProps<any> {
     children?: ReactNode;
     filter?: FilterPayload;
     page?: number;

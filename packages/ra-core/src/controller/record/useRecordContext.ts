@@ -30,9 +30,7 @@ import { RecordContext } from './RecordContext';
  *
  * @returns {RaRecord} A record object
  */
-export const useRecordContext = <
-    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord
->(
+export const useRecordContext = <RecordType extends any = RaRecord>(
     props?: UseRecordContextParams<RecordType>
 ): RecordType | undefined => {
     // Can't find a way to specify the RecordType when CreateContext is declared

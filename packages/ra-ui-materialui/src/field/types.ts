@@ -28,7 +28,7 @@ export interface PublicFieldProps {
     fullWidth?: boolean;
 }
 
-export interface InjectedFieldProps<RecordType = any> {
+export interface InjectedFieldProps<RecordType extends any = unknown> {
     record?: RecordType;
     resource?: string;
 }

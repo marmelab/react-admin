@@ -97,7 +97,7 @@ export const ReferenceManyField = (props: ReferenceManyFieldProps) => {
 
 export interface ReferenceManyFieldProps
     extends PublicFieldProps,
-        InjectedFieldProps {
+        InjectedFieldProps<any> {
     children: ReactNode;
     filter?: FilterPayload;
     page?: number;

@@ -96,7 +96,7 @@ export const ReferenceManyCount = (props: ReferenceManyCountProps) => {
 
 export interface ReferenceManyCountProps
     extends PublicFieldProps,
-        InjectedFieldProps,
+        InjectedFieldProps<any>,
         Omit<TypographyProps, 'textAlign'> {
     reference: string;
     target: string;
