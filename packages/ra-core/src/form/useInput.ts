@@ -23,7 +23,9 @@ const defaultFormat = (value: any) => (value == null ? '' : value);
 // parse empty string into null as it's more suitable for a majority of backends
 const defaultParse = (value: string) => (value === '' ? null : value);
 
-export const useInput = (props: InputProps): UseInputValue => {
+export const useInput = <ValueType = any>(
+    props: InputProps<ValueType>
+): UseInputValue => {
     const {
         defaultValue,
         format = defaultFormat,
