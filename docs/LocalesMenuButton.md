@@ -8,7 +8,7 @@ title: "LocalesMenuButton"
 The `<LocalesMenuButton>` component, also known as the "language switcher", displays a menu allowing users to select the language of the interface. It leverages the [store](./Store.md) so that their selection is persisted.
 
 <video controls autoplay muted loop>
-  <source src="./img/LocalesMenuButton.webm" type="video/webm">
+  <source src="./img/LocalesMenuButton.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

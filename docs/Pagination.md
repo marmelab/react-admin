@@ -8,7 +8,7 @@ title: "The Pagination Component"
 By default, the `<List>` uses the `<Pagination>` component for pagination. This component displays buttons to navigate between pages, including buttons for the surrounding pages.
 
 <video controls autoplay muted loop>
-  <source src="./img/pagination-buttons.webm" type="video/webm">
+  <source src="./img/pagination-buttons.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

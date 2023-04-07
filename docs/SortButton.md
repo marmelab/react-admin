@@ -8,7 +8,7 @@ title: "The SortButton Component"
 Some List views don't have a natural UI for sorting - e.g. the `<SimpleList>`, or a list of images, don't have column headers like the `<Datagrid>`. For these cases, react-admin offers the `<SortButton>`, which displays a dropdown list of fields that the user can choose to sort on.
 
 <video controls autoplay muted loop>
-  <source src="./img/sort-button.webm" type="video/webm">
+  <source src="./img/sort-button.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

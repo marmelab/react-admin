@@ -9,7 +9,7 @@ To let users choose multiple values in a list using a dropdown with autocompleti
 It renders using MUI [Autocomplete](https://mui.com/components/autocomplete/).
 
 <video controls autoplay muted loop>
-  <source src="./img/autocomplete-array-input.webm" type="video/webm">
+  <source src="./img/autocomplete-array-input.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -138,7 +138,7 @@ const choices = possibleValues.map(value => ({ id: value, name: ucfirst(value) }
 To allow users to add new options, pass a React element as the `create` prop. `<AutocompleteArrayInput>` will then render a "Create" option at the bottom of the choices list. When clicked, it will render the create element.
 
 <video controls autoplay muted loop>
-  <source src="./img/autocomplete-array-input-create.webm" type="video/webm">
+  <source src="./img/autocomplete-array-input-create.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

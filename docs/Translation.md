@@ -6,7 +6,7 @@ title: "Translation"
 # Internationalization
 
 <video controls autoplay muted loop>
-  <source src="./img/translation.webm" type="video/webm">
+  <source src="./img/translation.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

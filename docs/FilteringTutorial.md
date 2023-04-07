@@ -14,7 +14,7 @@ One of the most important features of the List page is the ability to filter the
     <td style="width:50%;border:none;text-align:center">
         <a title="Filter Button/Form Combo" href="./img/list_filter.webm">
             <video controls autoplay muted loop>
-                <source src="./img/list_filter.webm" type="video/webm">
+                <source src="./img/list_filter.webm" type="video/webm"/>
                 Your browser does not support the video tag.
             </video>
         </a>
@@ -23,7 +23,7 @@ One of the most important features of the List page is the ability to filter the
     <td style="width:50%;border:none;text-align:center">
         <a title="<FilterList> Sidebar" href="./img/filter-sidebar.webm">
             <video controls autoplay muted loop>
-                <source src="./img/filter-sidebar.webm" type="video/webm">
+                <source src="./img/filter-sidebar.webm" type="video/webm"/>
                 Your browser does not support the video tag.
             </video>
         </a>
@@ -52,7 +52,7 @@ React-admin offers 4 different ways to filter the list. Depending on the type of
 ## The Filter Button/Form Combo
 
 <video controls autoplay muted loop>
-  <source src="./img/list_filter.webm" type="video/webm">
+  <source src="./img/list_filter.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -86,7 +86,7 @@ Elements passed as `filters` are regular inputs. That means you can build sophis
 ### `<SearchInput>`
 
 <video controls autoplay muted loop>
-  <source src="./img/search_input.webm" type="video/webm">
+  <source src="./img/search_input.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -106,7 +106,7 @@ In the example given above, the `q` filter triggers a full-text search on all fi
 ### Quick Filters
 
 <video controls autoplay muted loop>
-  <source src="./img/quick_filters.webm" type="video/webm">
+  <source src="./img/quick_filters.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -139,7 +139,7 @@ const postFilters = [
 ## The `<FilterList>` Sidebar
 
 <video controls autoplay muted loop>
-  <source src="./img/filter-sidebar.webm" type="video/webm">
+  <source src="./img/filter-sidebar.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -195,7 +195,7 @@ Check [the `<FilterList>` documentation](./FilterList.md) for more information.
 If you use the FilterList, you'll probably need a search input. As the FilterList sidebar is not a form, this requires a bit of extra work. Fortunately, react-admin provides a specialized search input component for that purpose: check [the `<FilterLiveSearch>` documentation](./FilterLiveSearch.md) for details.
 
 <video controls autoplay muted loop>
-  <source src="./img/filter-live-search.webm" type="video/webm">
+  <source src="./img/filter-live-search.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -203,7 +203,7 @@ If you use the FilterList, you'll probably need a search input. As the FilterLis
 Finally, a filter sidebar is the ideal place to display the user's favorite filters. Check [the `<SavedQueriesList>` documentation](./SavedQueriesList.md) for more information.
 
 <video controls autoplay muted loop>
-  <source src="./img/SavedQueriesList.webm" type="video/webm">
+  <source src="./img/SavedQueriesList.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -394,7 +394,7 @@ export default {
 ## Saved Queries: Let Users Save Filter And Sort
 
 [<video controls autoplay muted loop>
-  <source src="./img/SavedQueriesList.webm" type="video/webm">
+  <source src="./img/SavedQueriesList.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -435,7 +435,7 @@ const SongList = () => (
 ## Building a Custom Filter
 
 <video controls autoplay muted loop>
-  <source src="./img/filter_with_submit.webm" type="video/webm">
+  <source src="./img/filter_with_submit.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

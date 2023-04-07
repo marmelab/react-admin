@@ -141,7 +141,7 @@ Finally, `<Datagrid>` inspects children for props that indicate how it should be
 ## `bulkActionButtons`
 
 <video controls autoplay muted loop>
-  <source src="./img/bulk-actions-toolbar.webm" type="video/webm">
+  <source src="./img/bulk-actions-toolbar.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -393,7 +393,7 @@ const PostList = () => (
 ## `expand`
 
 <video controls autoplay muted loop>
-  <source src="./img/datagrid_expand.webm" type="video/webm">
+  <source src="./img/datagrid_expand.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -813,7 +813,7 @@ const PostList = () => (
 The [`<SelectColumnsButton>`](./SelectColumnsButton.md) component lets users hide, show, and reorder datagrid columns. 
 
 <video controls autoplay muted loop>
-  <source src="./img/SelectColumnsButton.webm" type="video/webm">
+  <source src="./img/SelectColumnsButton.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -858,7 +858,7 @@ const PostList = () => (
 You can let end users customize the fields displayed in the `<Datagrid>` by using the `<DatagridConfigurable>` component instead.
 
 <video controls autoplay muted loop>
-  <source src="./img/DatagridConfigurable.webm" type="video/webm">
+  <source src="./img/DatagridConfigurable.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -989,7 +989,7 @@ Check [the `ra-editable-datagrid` documentation](https://marmelab.com/ra-enterpr
 ## Customizing Column Sort
 
 <video controls autoplay muted loop>
-  <source src="./img/sort-column-header.webm" type="video/webm">
+  <source src="./img/sort-column-header.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

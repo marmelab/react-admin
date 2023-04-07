@@ -896,7 +896,7 @@ Users often need to edit data from several resources in the same form. React-adm
 ![EditInDialogButton](https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.gif)
 
 <video controls autoplay muted loop>
-  <source src="./img/reference-many-input.webm" type="video/webm">
+  <source src="./img/reference-many-input.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

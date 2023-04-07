@@ -8,7 +8,7 @@ title: "The FilterButton Component"
 Part of the filter button/form combo, `<FilterButton>` renders whenever you use the `<List filters>` prop. When clicked, it reveals a dropdown of filter names, allowing users to add a new filter input to the filter form.
 
 <video controls autoplay muted loop>
-  <source src="./img/list_filter.webm" type="video/webm">
+  <source src="./img/list_filter.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

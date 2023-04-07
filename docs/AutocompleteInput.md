@@ -9,7 +9,7 @@ To let users choose a value in a list using a dropdown with autocompletion, use 
 It renders using [MUI's `<Autocomplete>`](https://mui.com/components/autocomplete/).
 
 <video controls autoplay muted loop>
-  <source src="./img/autocomplete-input.webm" type="video/webm">
+  <source src="./img/autocomplete-input.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

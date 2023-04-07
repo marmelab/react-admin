@@ -8,7 +8,7 @@ title: "TabbedForm"
 `<TabbedForm>` creates a `<form>` to edit a record, and renders inputs grouped by tab. The tabs are set by using `<TabbedForm.Tab>` components. It is useful for forms with a lot of inputs, to reduce the time taken to change a subset of the fields.
 
 <video controls autoplay muted loop>
-  <source src="./img/tabbed-form.webm" type="video/webm">
+  <source src="./img/tabbed-form.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

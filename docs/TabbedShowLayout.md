@@ -10,7 +10,7 @@ The `<TabbedShowLayout>` pulls the `record` from the `RecordContext`. It renders
 Switching tabs will update the current url. By default, it uses the tabs indexes and the first tab will be displayed at the root url. You can customize the path by providing a `path` prop to each `<TabbedShowLayout.Tab>` component. If you'd like the first one to act as an index page, just omit the `path` prop.
 
 <video controls autoplay muted loop>
-  <source src="./img/tabbed-show.webm" type="video/webm">
+  <source src="./img/tabbed-show.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

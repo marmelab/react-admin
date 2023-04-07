@@ -8,7 +8,7 @@ title: "The SelectInput Component"
 To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [MUI's `<Select>`](https://mui.com/api/select).
 
 <video controls autoplay muted loop>
-  <source src="./img/select-input.webm" type="video/webm">
+  <source src="./img/select-input.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

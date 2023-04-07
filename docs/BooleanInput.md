@@ -8,7 +8,7 @@ title: "The BooleanInput Component"
 `<BooleanInput />` renders a switch allowing users to set the value `true` or `false` to a record field.
 
 <video controls autoplay muted loop>
-  <source src="./img/boolean-input.webm" type="video/webm">
+  <source src="./img/boolean-input.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

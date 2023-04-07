@@ -8,7 +8,7 @@ title: "The SelectArrayInput Component"
 To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [MUI's `<Select>`](https://mui.com/api/select).
 
 <video controls autoplay muted loop>
-  <source src="./img/select-array-input.webm" type="video/webm">
+  <source src="./img/select-array-input.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -143,7 +143,7 @@ const choices = possibleValues.map(value => ({ id: value, name: ucfirst(value) }
 To allow users to add new options, pass a React element as the `create` prop. `<SelectArrayInput>` will then render a "Create" option at the bottom of the choices list. When clicked, it will render the create element.
 
 <video controls autoplay muted loop>
-  <source src="./img/select-array-input-create.webm" type="video/webm">
+  <source src="./img/select-array-input-create.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

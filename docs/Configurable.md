@@ -8,7 +8,7 @@ title: "The Configurable Component"
 This component makes another component configurable by the end user. When users enter the configuration mode, they can customize the component's settings via the inspector.
 
 <video controls autoplay muted loop>
-  <source src="./img/SimpleListConfigurable.webm" type="video/webm">
+  <source src="./img/SimpleListConfigurable.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

@@ -438,7 +438,7 @@ const BookList = () => (
 ## `exporter`
 
 <video controls autoplay muted loop>
-  <source src="./img/export-button.webm" type="video/webm">
+  <source src="./img/export-button.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -528,7 +528,7 @@ const CommentList = () => (
 ## `filters`: Filter Inputs
 
 <video controls autoplay muted loop>
-  <source src="./img/list_filter.webm" type="video/webm">
+  <source src="./img/list_filter.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -557,7 +557,7 @@ Filter Inputs are regular inputs. `<List>` hides them all by default, except tho
 You can also display filters as a sidebar:
 
 <video controls autoplay muted loop>
-  <source src="./img/filter-sidebar.webm" type="video/webm">
+  <source src="./img/filter-sidebar.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

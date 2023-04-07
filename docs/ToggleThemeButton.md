@@ -8,7 +8,7 @@ title: "ToggleThemeButton"
 The `<ToggleThemeButton>` component lets users switch from light to dark mode, and persists that choice by leveraging the [store](./Store.md).
 
 <video controls autoplay muted loop>
-  <source src="./img/ToggleThemeButton.webm" type="video/webm">
+  <source src="./img/ToggleThemeButton.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

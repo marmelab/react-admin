@@ -6,7 +6,7 @@ title: "security"
 # Security
 
 <video controls autoplay muted loop>
-  <source src="./img/login.webm" type="video/webm">
+  <source src="./img/login.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

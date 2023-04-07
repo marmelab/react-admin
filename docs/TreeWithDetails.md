@@ -8,7 +8,7 @@ title: "The TreeWithDetails Component"
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers a replacement for the `<List>` component when the records form **tree structures** like directories, categories, etc. `<TreeWithDetails>` renders a tree structure and the show view/edition form in the same page.
 
 <video controls autoplay muted loop>
-  <source src="./img/treewithdetails.webm" type="video/webm">
+  <source src="./img/treewithdetails.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

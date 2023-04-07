@@ -35,7 +35,7 @@ We call this type of interface a "CRUD" interface because it allows us to Create
 React-admin started as an engine to generate such CRUD interfaces, and it still does it very well. **Building CRUD interfaces with react-admin requires little to no effort**, and it's very easy to customize them.
 
 <video controls autoplay muted loop width="100%">
-  <source src="./img/CRUD.webm" type="video/webm">
+  <source src="./img/CRUD.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -198,7 +198,7 @@ const ProductEdit = () => (
 ```
 
 <video controls autoplay muted loop>
-  <source src="./img/reference-many-input.webm" type="video/webm">
+  <source src="./img/reference-many-input.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -221,7 +221,7 @@ const BookList = () => (
 ```
 
 <video controls autoplay muted loop width="100%">
-  <source src="./img/reference-input-filter.webm" type="video/webm">
+  <source src="./img/reference-input-filter.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -250,7 +250,7 @@ Let's be realistic: Many developers focus on features first and don't have much 
 React-admin provides **components that look pretty good out of the box**, so even if you don't spend time on the UI, it won't look bad (unless you try hard). React-admin uses [MUI](https://mui.com), which is a React implementation of the [Material Design](https://m3.material.io/) guidelines, the most battle-tested design system.
 
 <video controls autoplay muted loop width="100%">
-  <source src="https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4" type="video/webm">
+  <source src="https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -303,7 +303,7 @@ In most admin and B2B apps, the most common task is to look for a record. React-
     <td style="width:50%;border:none;text-align:center">
         <a title="Filter Button/Form Combo" href="./img/list_filter.webm">
             <video controls autoplay muted loop>
-                <source src="./img/list_filter.webm" type="video/webm">
+                <source src="./img/list_filter.webm" type="video/webm"/>
                 Your browser does not support the video tag.
             </video>
         </a>
@@ -312,7 +312,7 @@ In most admin and B2B apps, the most common task is to look for a record. React-
     <td style="width:50%;border:none;text-align:center">
          <a title="<FilterList> Sidebar" href="./img/filter-sidebar.webm">
             <video controls autoplay muted loop>
-                <source src="./img/filter-sidebar.webm" type="video/webm">
+                <source src="./img/filter-sidebar.webm" type="video/webm"/>
                 Your browser does not support the video tag.
             </video>
         </a>
@@ -363,7 +363,7 @@ Check the following chapters to learn more about each search and filtering compo
 Users often apply the same filters over and over again. Saved Queries **let users save a combination of filters** and sort parameters into a new, personal filter, that persists between sessions. 
 
 [<video controls autoplay muted loop>
-  <source src="./img/SavedQueriesList.webm" type="video/webm">
+  <source src="./img/SavedQueriesList.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -468,7 +468,7 @@ export const PostEdit = () => (
 ```
 
 <video controls autoplay muted loop>
-  <source src="./img/tabbed-form.webm" type="video/webm">
+  <source src="./img/tabbed-form.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -650,7 +650,7 @@ When a user edits a record and hits the "Save" button, the UI shows a confirmati
 But there is an additional benefit: it also allows the "Undo" feature. Undo is already functional in the admin at that point. Try editing a record, then hit the "Undo" link in the black confirmation box before it slides out. You'll see that the app does not send the `UPDATE` query to the API, and displays the non-modified data.
 
 [<video controls autoplay muted loop>
-  <source src="./img/tutorial_post_edit_undo.webm" type="video/webm">
+  <source src="./img/tutorial_post_edit_undo.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -819,7 +819,7 @@ Check the following components for more details:
 To manage directories, categories, and any other **hierarchical data**, admins often rely on tree structures. Navigating and editing tree structures can be tricky, but React-admin provides a set of components to make it easy.
 
 <video controls autoplay muted loop>
-  <source src="./img/treewithdetails.webm" type="video/webm">
+  <source src="./img/treewithdetails.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -941,7 +941,7 @@ const PostList = () => (
 ```
 
 <video controls autoplay muted loop>
-  <source src="./img/useSubscribeToRecordList.webm" type="video/webm">
+  <source src="./img/useSubscribeToRecordList.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -989,7 +989,7 @@ This feature leverages the following components:
 And last but not least, react-admin provides a **lock mechanism** to prevent two users from editing the same resource at the same time.
 
 <video controls autoplay muted loop>
-  <source src="./img/locks-demo.webm" type="video/webm">
+  <source src="./img/locks-demo.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -1051,7 +1051,7 @@ End-users tweak the UI to their liking, and **they expect these preferences to b
 For instance, the Saved Queries feature lets users **save a combination of filters** and sort parameters into a new, personal filter.
 
 [<video controls autoplay muted loop>
-  <source src="./img/SavedQueriesList.webm" type="video/webm">
+  <source src="./img/SavedQueriesList.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -1090,7 +1090,7 @@ const SongList = () => (
 React-admin also **persists the light/dark mode and the language choice** of end-users. 
 
 <video controls autoplay muted loop>
-  <source src="./img/ToggleThemeButton.webm" type="video/webm">
+  <source src="./img/ToggleThemeButton.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -1110,7 +1110,7 @@ To learn more about the `Store` and how to use it, check the following sections:
 An extension of preferences is Configurable components. Because no matter how polished your UI is, it will never fit all use cases. That's why react-admin provides a way to let end users **customize the features of many components visually**, via the inspector.
 
 <video controls autoplay muted loop>
-  <source src="./img/DatagridConfigurable.webm" type="video/webm">
+  <source src="./img/DatagridConfigurable.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -1264,7 +1264,7 @@ To learn more about theming in react-admin, check the following sections:
 React-admin is **fully internationalized**.
 
 <video controls autoplay muted loop>
-  <source src="./img/LocalesMenuButton.webm" type="video/webm">
+  <source src="./img/LocalesMenuButton.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -1341,7 +1341,7 @@ We routinely test react-admin with the [WAVE](https://wave.webaim.org/) and [Axe
 The react-admin layouts and components are primarily designed for desktop screens. But they also **work well on mobile devices**. On mobile, buttons with a label become icon buttons, the sidebar menu becomes a drawer, the size of clickable elements is increased, the form toolbar becomes fixed, and many more adjustments.
 
 <video controls autoplay muted loop width="100%">
-  <source src="./img/responsive.webm" type="video/webm">
+  <source src="./img/responsive.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -1413,7 +1413,7 @@ React-admin is written in TypeScript. That doesn't mean you have to use TypeScri
 And if your IDE supports TypeScript, you get autocompletion and inline documentation for all react-admin components and hooks.
 
 <video controls autoplay muted loop width="100%">
-  <source src="./img/typescript.webm" type="video/webm">
+  <source src="./img/typescript.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

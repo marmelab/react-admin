@@ -80,7 +80,7 @@ const PostList = () => (
 ```
 
 <video controls autoplay muted loop>
-  <source src="./img/useSubscribeToRecordList.webm" type="video/webm">
+  <source src="./img/useSubscribeToRecordList.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -132,7 +132,7 @@ This feature leverages the following components:
 And last but not least, ra-realtime provides a **lock mechanism** to prevent two users from editing the same resource at the same time.
 
 <video controls autoplay muted loop>
-  <source src="./img/locks-demo.webm" type="video/webm">
+  <source src="./img/locks-demo.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

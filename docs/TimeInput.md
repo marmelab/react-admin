@@ -10,11 +10,11 @@ An input for editing time. `<TimeInput>` renders a standard browser [Time Picker
 | Firefox | Edge |
 | ------- | ---- |
 | <video controls autoplay muted loop>
-  <source src="./img/time-input-firefox.webm" type="video/webm">
+  <source src="./img/time-input-firefox.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
  | <video controls autoplay muted loop>
-  <source src="./img/time-input-edge.webm" type="video/webm">
+  <source src="./img/time-input-edge.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
  |

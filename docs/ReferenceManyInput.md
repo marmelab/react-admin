@@ -8,7 +8,7 @@ title: "The ReferenceManyInput Component"
 Use `<ReferenceManyInput>` in an `<Edit>` or `<Create>` view to edit one-to-many relationships, e.g. to edit the variants of a product in the product edition view. It's an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component, part of the `@react-admin/ra-relationships` package. 
 
 <video controls autoplay muted loop>
-  <source src="./img/reference-many-input.webm" type="video/webm">
+  <source src="./img/reference-many-input.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

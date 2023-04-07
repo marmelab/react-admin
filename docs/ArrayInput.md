@@ -8,7 +8,7 @@ title: "The ArrayInput Component"
 To edit arrays of data embedded inside a record, `<ArrayInput>` creates a list of sub-forms.
 
 <video controls autoplay muted loop>
-  <source src="./img/array-input.webm" type="video/webm">
+  <source src="./img/array-input.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
