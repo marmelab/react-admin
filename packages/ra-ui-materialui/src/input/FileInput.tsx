@@ -24,7 +24,9 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 import { SxProps } from '@mui/system';
 
-export const FileInput = <RecordType extends any = unknown>(
+export const FileInput = <
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+>(
     props: FileInputProps<RecordType>
 ) => {
     const {
@@ -256,7 +258,7 @@ const StyledLabeled = styled(Labeled, {
 }));
 
 export type FileInputProps<
-    RecordType extends any = unknown
+    RecordType extends Record<string, unknown> = Record<string, unknown>
 > = CommonInputProps & {
     accept?: DropzoneOptions['accept'];
     className?: string;

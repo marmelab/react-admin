@@ -19,7 +19,9 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  * />
  */
 
-export const FunctionField = <RecordType extends any = unknown>(
+export const FunctionField = <
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+>(
     props: FunctionFieldProps<RecordType>
 ) => {
     const { className, source = '', render, ...rest } = props;
@@ -47,8 +49,9 @@ FunctionField.propTypes = {
     render: PropTypes.func.isRequired,
 };
 
-export interface FunctionFieldProps<RecordType extends any = unknown>
-    extends PublicFieldProps,
+export interface FunctionFieldProps<
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+> extends PublicFieldProps,
         InjectedFieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     render: (record?: RecordType, source?: string) => any;

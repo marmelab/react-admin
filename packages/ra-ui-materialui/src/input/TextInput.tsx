@@ -26,7 +26,9 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
  *
  * The object passed as `options` props is passed to the <ResettableTextField> component
  */
-export const TextInput = <RecordType extends any = unknown>(
+export const TextInput = <
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+>(
     props: TextInputProps<RecordType>
 ) => {
     const {
@@ -106,7 +108,7 @@ TextInput.defaultProps = {
 };
 
 export type TextInputProps<
-    RecordType extends any = unknown
+    RecordType extends Record<string, unknown> = Record<string, unknown>
 > = CommonInputProps &
     Omit<ResettableTextFieldProps, 'label' | 'helperText'> & {
         source: unknown extends RecordType

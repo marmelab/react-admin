@@ -9,7 +9,9 @@ import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import { genericMemo } from './genericMemo';
 
-const EmailFieldImpl = <RecordType extends any = unknown>(
+const EmailFieldImpl = <
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+>(
     props: EmailFieldProps<RecordType>
 ) => {
     const { className, source, emptyText, ...rest } = props;
@@ -50,8 +52,9 @@ EmailField.propTypes = fieldPropTypes;
 // @ts-ignore
 EmailField.displayName = 'EmailField';
 
-export interface EmailFieldProps<RecordType extends any = unknown>
-    extends PublicFieldProps,
+export interface EmailFieldProps<
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+> extends PublicFieldProps,
         InjectedFieldProps<RecordType>,
         Omit<LinkProps, 'textAlign'> {
     source?: unknown extends RecordType

@@ -33,7 +33,9 @@ import { genericMemo } from './genericMemo';
  * // renders the record { id: 1234, new Date('2012-11-07') } as
  * <span>mercredi 7 novembre 2012</span>
  */
-const DateFieldImpl = <RecordType extends any = unknown>(
+const DateFieldImpl = <
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+>(
     props: DateFieldProps<RecordType>
 ) => {
     const {
@@ -73,7 +75,12 @@ const DateFieldImpl = <RecordType extends any = unknown>(
         ) : null;
     }
 
-    const date = value instanceof Date ? value : new Date(value);
+    const date =
+        value instanceof Date
+            ? value
+            : typeof value === 'string' || typeof value === 'number'
+            ? new Date(value)
+            : undefined;
     let dateOptions = options;
     if (
         typeof value === 'string' &&
@@ -132,8 +139,9 @@ DateField.propTypes = {
 // @ts-ignore
 DateField.displayName = 'DateField';
 
-export interface DateFieldProps<RecordType extends any = unknown>
-    extends PublicFieldProps,
+export interface DateFieldProps<
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+> extends PublicFieldProps,
         InjectedFieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     locales?: string | string[];

@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { UseQueryOptions } from 'react-query';
 import { Typography } from '@mui/material';
+import { Call, Objects } from 'hotscript';
 import {
     useReferenceOneFieldController,
     useRecordContext,
@@ -26,8 +27,11 @@ import { ReferenceFieldView } from './ReferenceField';
  *     <TextField source="body" />
  * </ReferenceOneField>
  */
-export const ReferenceOneField = <RecordType extends RaRecord = any>(
-    props: ReferenceOneFieldProps<RecordType>
+export const ReferenceOneField = <
+    ReferenceType extends RaRecord = any,
+    RecordType extends RaRecord = any
+>(
+    props: ReferenceOneFieldProps<ReferenceType, RecordType>
 ) => {
     const {
         children,
@@ -50,7 +54,7 @@ export const ReferenceOneField = <RecordType extends RaRecord = any>(
         referenceRecord,
         error,
         refetch,
-    } = useReferenceOneFieldController<RecordType>({
+    } = useReferenceOneFieldController<ReferenceType>({
         record,
         reference,
         source,
@@ -95,19 +99,29 @@ export const ReferenceOneField = <RecordType extends RaRecord = any>(
     );
 };
 
-export interface ReferenceOneFieldProps<RecordType extends RaRecord = any>
-    extends PublicFieldProps,
-        InjectedFieldProps<any> {
+export interface ReferenceOneFieldProps<
+    ReferenceType extends RaRecord = any,
+    RecordType extends RaRecord = any
+> extends PublicFieldProps,
+        InjectedFieldProps<RecordType> {
     children?: ReactNode;
     reference: string;
-    target: string;
     sort?: SortPayload;
     filter?: any;
     link?: LinkToType;
     queryOptions?: UseQueryOptions<{
-        data: RecordType[];
+        data: ReferenceType[];
         total: number;
     }> & { meta?: any };
+    target: unknown extends ReferenceType
+        ? string
+        : Call<Objects.AllPaths, ReferenceType>;
+    source?: unknown extends RecordType
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
+    sortBy?: unknown extends RecordType
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
 }
 
 ReferenceOneField.propTypes = {

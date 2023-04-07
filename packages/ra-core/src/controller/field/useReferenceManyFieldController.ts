@@ -5,7 +5,7 @@ import isEqual from 'lodash/isEqual';
 import { useSafeSetState, removeEmpty } from '../../util';
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
-import { RaRecord, SortPayload } from '../../types';
+import { Identifier, RaRecord, SortPayload } from '../../types';
 import { ListControllerResult } from '../list';
 import usePaginationState from '../usePaginationState';
 import { useRecordSelection } from '../list/useRecordSelection';
@@ -13,7 +13,7 @@ import useSortState from '../useSortState';
 import { useResourceContext } from '../../core';
 
 export interface UseReferenceManyFieldControllerParams<
-    RecordType extends any = unknown
+    RecordType extends Record<string, unknown> = Record<string, unknown>
 > {
     filter?: any;
     page?: number;
@@ -55,7 +55,7 @@ const defaultFilter = {};
  * @returns {ListControllerResult} The reference many props
  */
 export const useReferenceManyFieldController = <
-    RecordType extends any = unknown
+    RecordType extends Record<string, unknown> = Record<string, unknown>
 >(
     props: UseReferenceManyFieldControllerParams<RecordType>
 ): ListControllerResult => {
@@ -90,7 +90,7 @@ export const useReferenceManyFieldController = <
 
     // selection logic
     const [selectedIds, selectionModifiers] = useRecordSelection(
-        `${resource}.${(record as RaRecord)?.id}.${reference}`
+        `${resource}.${((record as unknown) as RaRecord)?.id}.${reference}`
     );
 
     // filter logic
@@ -155,7 +155,7 @@ export const useReferenceManyFieldController = <
         reference,
         {
             target,
-            id: get(record, source),
+            id: get(record, source) as Identifier,
             pagination: { page, perPage },
             sort,
             filter: filterValues,

@@ -11,7 +11,9 @@ import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import { genericMemo } from './genericMemo';
 
-const ChipFieldImpl = <RecordType extends any = unknown>(
+const ChipFieldImpl = <
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+>(
     props: ChipFieldProps<RecordType>
 ) => {
     const { className, source, emptyText, ...rest } = props;
@@ -53,8 +55,9 @@ ChipField.propTypes = {
 // @ts-ignore
 ChipField.displayName = 'ChipField';
 
-export interface ChipFieldProps<RecordType extends any = unknown>
-    extends PublicFieldProps,
+export interface ChipFieldProps<
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+> extends PublicFieldProps,
         InjectedFieldProps<RecordType>,
         Omit<ChipProps, 'label'> {
     source?: unknown extends RecordType

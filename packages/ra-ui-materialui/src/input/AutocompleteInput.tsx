@@ -113,12 +113,12 @@ const defaultFilterOptions = createFilterOptions();
  * <AutocompleteInput source="author_id" options={{ color: 'secondary', InputLabelProps: { shrink: true } }} />
  */
 export const AutocompleteInput = <
-    OptionType extends any = unknown,
+    OptionType extends Record<string, unknown> = Record<string, unknown>,
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
     SupportCreate extends boolean | undefined = false,
     // FIXME: The following type should be first but that would be a breaking change so we'll wait for v5
-    RecordType extends any = unknown
+    RecordType extends Record<string, unknown> = Record<string, unknown>
 >(
     props: AutocompleteInputProps<
         OptionType,
@@ -362,7 +362,7 @@ If you provided a React element for the optionText prop, you must also provide t
         handleChange: handleChangeWithCreateSupport,
         createElement,
         createId,
-    } = useSupportCreateSuggestion({
+    } = useSupportCreateSuggestion<OptionType>({
         create,
         createLabel,
         createItemLabel,
@@ -664,16 +664,19 @@ const StyledAutocomplete = styled(Autocomplete, {
 
 // @ts-ignore
 export interface AutocompleteInputProps<
-    OptionType extends Record<string, any> = any,
+    OptionType extends Record<string, unknown> = Record<string, unknown>,
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
     SupportCreate extends boolean | undefined = false,
     // FIXME: The following type should be first but that would be a breaking change so we'll wait for v5
-    RecordType extends any = unknown
+    RecordType extends Record<string, unknown> = Record<string, unknown>
 > extends Omit<CommonInputProps, 'source'>,
         ChoicesProps<OptionType>,
         UseSuggestionsOptions,
-        Omit<SupportCreateSuggestionOptions, 'handleChange' | 'optionText'>,
+        Omit<
+            SupportCreateSuggestionOptions<OptionType>,
+            'handleChange' | 'optionText'
+        >,
         Omit<
             AutocompleteProps<
                 OptionType,
@@ -702,12 +705,12 @@ export interface AutocompleteInputProps<
  * Returns the selected choice (or choices if multiple) by matching the input value with the choices.
  */
 const useSelectedChoice = <
-    OptionType extends any = unknown,
+    OptionType extends Record<string, unknown> = Record<string, unknown>,
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
     SupportCreate extends boolean | undefined = false,
     // FIXME: The following type should be first but that would be a breaking change so we'll wait for v5
-    RecordType extends any = unknown
+    RecordType extends Record<string, unknown> = Record<string, unknown>
 >(
     value: any,
     {

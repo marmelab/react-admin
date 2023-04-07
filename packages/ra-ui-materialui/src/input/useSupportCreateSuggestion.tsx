@@ -28,8 +28,10 @@ import set from 'lodash/set';
  * - getCreateItem: a function which will return the label of the choice for create a new choice.
  * - createElement: a React element to render after the input. It will be rendered when users choose to create a new choice. It renders null otherwise.
  */
-export const useSupportCreateSuggestion = (
-    options: SupportCreateSuggestionOptions
+export const useSupportCreateSuggestion = <
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+>(
+    options: SupportCreateSuggestionOptions<RecordType>
 ): UseSupportCreateValue => {
     const {
         create,
@@ -119,7 +121,7 @@ export const useSupportCreateSuggestion = (
 };
 
 export interface SupportCreateSuggestionOptions<
-    RecordType extends any = unknown
+    RecordType extends Record<string, unknown> = Record<string, unknown>
 > {
     create?: ReactElement;
     createValue?: string;

@@ -77,7 +77,9 @@ import { ChipField } from './ChipField';
  *    ...
  * </ReferenceArrayField>
  */
-export const ReferenceArrayField = <RecordType extends any = unknown>(
+export const ReferenceArrayField = <
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+>(
     props: ReferenceArrayFieldProps<RecordType>
 ) => {
     const {
@@ -122,8 +124,9 @@ ReferenceArrayField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-export interface ReferenceArrayFieldProps<RecordType extends any = unknown>
-    extends PublicFieldProps,
+export interface ReferenceArrayFieldProps<
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+> extends PublicFieldProps,
         InjectedFieldProps<RecordType> {
     children?: ReactNode;
     filter?: FilterPayload;

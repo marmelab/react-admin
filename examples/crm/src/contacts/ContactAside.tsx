@@ -91,7 +91,6 @@ export const ContactAside = ({ link = 'edit' }: { link?: 'edit' | 'show' }) => {
                 </Typography>{' '}
                 <ReferenceField source="sales_id" reference="sales">
                     <FunctionField<Sale>
-                        source="last_name"
                         render={record =>
                             record
                                 ? `${record.first_name} ${record.last_name}`

@@ -78,7 +78,9 @@ import { AutocompleteArrayInput } from './AutocompleteArrayInput';
  * The enclosed component may filter results. ReferenceArrayInput create a ChoicesContext which provides
  * a `setFilters` function. You can call this function to filter the results.
  */
-export const ReferenceArrayInput = <RecordType extends any = unknown>(
+export const ReferenceArrayInput = <
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+>(
     props: ReferenceArrayInputProps<RecordType>
 ) => {
     const { children, reference } = props;
@@ -122,8 +124,9 @@ ReferenceArrayInput.defaultProps = {
     children: <AutocompleteArrayInput />,
 };
 
-export interface ReferenceArrayInputProps<RecordType extends any = unknown>
-    extends InputProps,
+export interface ReferenceArrayInputProps<
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+> extends InputProps,
         UseReferenceArrayInputParams {
     children?: ReactElement;
     label?: string;

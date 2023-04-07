@@ -69,7 +69,9 @@ import { ArrayInputContext } from './ArrayInputContext';
  *
  * @see {@link https://react-hook-form.com/api/usefieldarray}
  */
-export const ArrayInput = <RecordType extends any = unknown>(
+export const ArrayInput = <
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+>(
     props: ArrayInputProps<RecordType>
 ) => {
     const {

@@ -55,7 +55,9 @@ import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
  * In previous versions of React-Admin, the prop `linkType` was used. It is now deprecated and replaced with `link`. However
  * backward-compatibility is still kept
  */
-export const ReferenceField = <RecordType extends any = unknown>(
+export const ReferenceField = <
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+>(
     props: ReferenceFieldProps<RecordType>
 ) => {
     const { source, emptyText, ...rest } = props;
@@ -74,7 +76,7 @@ export const ReferenceField = <RecordType extends any = unknown>(
             {...rest}
             emptyText={emptyText}
             record={record}
-            id={id}
+            id={id as Identifier}
         />
     );
 };
@@ -104,8 +106,9 @@ ReferenceField.defaultProps = {
     link: 'edit',
 };
 
-export interface ReferenceFieldProps<RecordType extends any = unknown>
-    extends PublicFieldProps,
+export interface ReferenceFieldProps<
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+> extends PublicFieldProps,
         InjectedFieldProps<RecordType> {
     children?: ReactNode;
     reference: string;
@@ -125,7 +128,9 @@ export interface ReferenceFieldProps<RecordType extends any = unknown>
  * This intermediate component is made necessary by the useReference hook,
  * which cannot be called conditionally when get(record, source) is empty.
  */
-export const NonEmptyReferenceField = <RecordType extends any = unknown>({
+export const NonEmptyReferenceField = <
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+>({
     children,
     id,
     record,

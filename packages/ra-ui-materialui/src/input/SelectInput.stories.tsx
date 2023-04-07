@@ -33,10 +33,16 @@ type Post = {
     category: string;
 };
 
+type Choice = {
+    id: string;
+    name: string;
+};
+
 export const Typed = () => (
     <Wrapper>
-        <SelectInput<Post>
+        <SelectInput<Post, Choice>
             source="category"
+            optionText="name"
             choices={[
                 { id: 'M', name: 'Male ' },
                 { id: 'F', name: 'Female' },

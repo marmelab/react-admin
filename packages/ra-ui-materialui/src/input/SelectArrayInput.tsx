@@ -90,7 +90,7 @@ import {
  * ];
  */
 export const SelectArrayInput = <
-    RecordType extends any = unknown,
+    RecordType extends Record<string, unknown> = Record<string, unknown>,
     ChoiceType extends Record<string, any> = never
 >(
     props: SelectArrayInputProps<RecordType, ChoiceType>
@@ -364,7 +364,7 @@ export const SelectArrayInput = <
 };
 
 export type SelectArrayInputProps<
-    RecordType extends any = unknown,
+    RecordType extends Record<string, unknown> = Record<string, unknown>,
     ChoiceType extends Record<string, any> = never
 > = ChoicesProps<ChoiceType> &
     Omit<SupportCreateSuggestionOptions<ChoiceType>, 'handleChange'> &

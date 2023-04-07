@@ -8,7 +8,9 @@ interface UseReferenceProps<RecordType extends RaRecord = any> {
     options?: UseQueryOptions<RecordType[], Error>;
 }
 
-export interface UseReferenceResult<RecordType extends RaRecord = any> {
+export interface UseReferenceResult<
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+> {
     isLoading: boolean;
     isFetching: boolean;
     referenceRecord?: RecordType;

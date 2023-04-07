@@ -9,7 +9,8 @@ import { AuthActionType } from './auth/types';
 
 export type Identifier = string | number;
 
-export interface RaRecord<IdentifierType extends Identifier = Identifier> {
+export interface RaRecord<IdentifierType extends Identifier = Identifier>
+    extends Record<string, any> {
     id: IdentifierType;
 }
 

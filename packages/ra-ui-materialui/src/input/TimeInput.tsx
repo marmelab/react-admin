@@ -45,7 +45,9 @@ const parseTime = (value: string) => {
  *     </Edit>
  * );
  */
-export const TimeInput = <RecordType extends any = unknown>({
+export const TimeInput = <
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+>({
     className,
     defaultValue,
     format = formatTime,
@@ -114,7 +116,7 @@ TimeInput.propTypes = {
 };
 
 export type TimeInputProps<
-    RecordType extends any = unknown
+    RecordType extends Record<string, unknown> = Record<string, unknown>
 > = CommonInputProps &
     Omit<TextFieldProps, 'helperText' | 'label'> & {
         source: unknown extends RecordType

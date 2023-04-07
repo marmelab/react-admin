@@ -10,7 +10,9 @@ import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import { SxProps } from '@mui/system';
 
-export const ImageField = <RecordType extends any = unknown>(
+export const ImageField = <
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+>(
     props: ImageFieldProps<RecordType>
 ) => {
     const { className, emptyText, source, src, title, ...rest } = props;
@@ -62,9 +64,9 @@ export const ImageField = <RecordType extends any = unknown>(
     return (
         <Root className={className} {...sanitizeFieldRestProps(rest)}>
             <img
-                title={titleValue}
-                alt={titleValue}
-                src={sourceValue}
+                title={titleValue.toString()}
+                alt={titleValue.toString()}
+                src={sourceValue.toString()}
                 className={ImageFieldClasses.image}
             />
         </Root>
@@ -103,8 +105,9 @@ const Root = styled(Box, {
     },
 });
 
-export interface ImageFieldProps<RecordType extends any = unknown>
-    extends PublicFieldProps,
+export interface ImageFieldProps<
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+> extends PublicFieldProps,
         InjectedFieldProps<RecordType> {
     src?: string;
     sx?: SxProps;

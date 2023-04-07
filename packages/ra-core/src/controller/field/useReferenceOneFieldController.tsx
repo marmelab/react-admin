@@ -45,7 +45,7 @@ export interface UseReferenceOneFieldControllerParams<
  * @returns {UseReferenceResult} The request state. Destructure as { referenceRecord, isLoading, error }.
  */
 export const useReferenceOneFieldController = <
-    RecordType extends RaRecord = any
+    RecordType extends RaRecord = RaRecord
 >(
     props: UseReferenceOneFieldControllerParams<RecordType>
 ): UseReferenceResult<RecordType> => {

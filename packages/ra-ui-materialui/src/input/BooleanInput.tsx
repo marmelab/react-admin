@@ -14,7 +14,9 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 import { InputPropTypes } from './InputPropTypes';
 
-export const BooleanInput = <RecordType extends any = unknown>(
+export const BooleanInput = <
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+>(
     props: BooleanInputProps<RecordType>
 ) => {
     const {
@@ -117,7 +119,7 @@ BooleanInput.defaultProps = {
 };
 
 export type BooleanInputProps<
-    RecordType extends any = unknown
+    RecordType extends Record<string, unknown> = Record<string, unknown>
 > = CommonInputProps<boolean> &
     SwitchProps &
     Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'> & {

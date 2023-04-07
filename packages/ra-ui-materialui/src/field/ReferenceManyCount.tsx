@@ -30,7 +30,7 @@ import { get } from 'lodash';
  * <ReferenceManyCount reference="comments" target="post_id" variant="h1">
  */
 export const ReferenceManyCount = <
-    RecordType extends any = unknown,
+    RecordType extends Record<string, unknown> = Record<string, unknown>,
     ReferenceType extends any = unknown
 >(
     props: ReferenceManyCountProps<RecordType, ReferenceType>
@@ -106,7 +106,7 @@ export const ReferenceManyCount = <
 };
 
 export interface ReferenceManyCountProps<
-    RecordType extends any = unknown,
+    RecordType extends Record<string, unknown> = Record<string, unknown>,
     ReferenceType extends any = unknown
 > extends PublicFieldProps,
         InjectedFieldProps<RecordType>,

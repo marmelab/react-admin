@@ -22,7 +22,9 @@ const parseDateTime = (value: string) =>
 /**
  * Input component for entering a date and a time with timezone, using the browser locale
  */
-export const DateTimeInput = <RecordType extends any = unknown>({
+export const DateTimeInput = <
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+>({
     className,
     defaultValue,
     format = formatDateTime,
@@ -95,7 +97,7 @@ DateTimeInput.propTypes = {
 };
 
 export type DateTimeInputProps<
-    RecordType extends any = unknown
+    RecordType extends Record<string, unknown> = Record<string, unknown>
 > = CommonInputProps &
     Omit<TextFieldProps, 'helperText' | 'label'> & {
         source: unknown extends RecordType

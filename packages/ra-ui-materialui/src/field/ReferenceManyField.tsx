@@ -60,7 +60,7 @@ import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
  * </ReferenceManyField>
  */
 export const ReferenceManyField = <
-    RecordType extends any = unknown,
+    RecordType extends Record<string, unknown> = Record<string, unknown>,
     ReferenceType extends any = unknown
 >(
     props: ReferenceManyFieldProps<RecordType, ReferenceType>
@@ -102,7 +102,7 @@ export const ReferenceManyField = <
 };
 
 export interface ReferenceManyFieldProps<
-    RecordType extends any = unknown,
+    RecordType extends Record<string, unknown> = Record<string, unknown>,
     ReferenceType extends any = unknown
 > extends PublicFieldProps,
         InjectedFieldProps<RecordType> {

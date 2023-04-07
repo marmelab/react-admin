@@ -74,12 +74,25 @@ import { genericMemo } from './genericMemo';
  *       );
  *   };
  */
-const ArrayFieldImpl = <RecordType extends any = unknown>(
+const ArrayFieldImpl = <
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+>(
     props: ArrayFieldProps<RecordType>
 ) => {
     const { children, resource, source } = props;
     const record = useRecordContext(props);
     const data = get(record, source, emptyArray) || emptyArray;
+
+    if (!Array.isArray(data)) {
+        if (process.env.NODE_ENV === 'development') {
+            console.error(
+                `The value of the "${source}" field must be an array. Received: ${JSON.stringify(
+                    data
+                )}`
+            );
+        }
+        return null;
+    }
 
     return (
         <ListContextProvider
@@ -124,8 +137,9 @@ ArrayField.propTypes = {
 // @ts-ignore
 ArrayField.displayName = 'ArrayField';
 
-export interface ArrayFieldProps<RecordType extends any = unknown>
-    extends PublicFieldProps,
+export interface ArrayFieldProps<
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+> extends PublicFieldProps,
         InjectedFieldProps<RecordType> {
     children: ReactNode;
     source?: unknown extends RecordType

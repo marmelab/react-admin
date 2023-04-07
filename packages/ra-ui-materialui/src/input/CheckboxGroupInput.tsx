@@ -85,7 +85,9 @@ import { LinearProgress } from '../layout';
  *
  * The object passed as `options` props is passed to the MUI <Checkbox> components
  */
-export const CheckboxGroupInput = <RecordType extends any = unknown>(
+export const CheckboxGroupInput = <
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+>(
     props: CheckboxGroupInputProps<RecordType>
 ) => {
     const {
@@ -277,10 +279,9 @@ CheckboxGroupInput.propTypes = {
     translateChoice: PropTypes.bool,
 };
 
-export type CheckboxGroupInputProps<RecordType extends any = unknown> = Omit<
-    CommonInputProps,
-    'source'
-> &
+export type CheckboxGroupInputProps<
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+> = Omit<CommonInputProps, 'source'> &
     ChoicesProps &
     CheckboxProps &
     FormControlProps & {

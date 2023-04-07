@@ -50,7 +50,9 @@ export interface UseChoicesOptions<RecordType = unknown> {
  * - getChoiceText: Returns the choice text or a React element
  * - getChoiceValue: Returns the choice value
  */
-export const useChoices = <RecordType extends any = unknown>({
+export const useChoices = <
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+>({
     optionText,
     optionValue = 'id',
     disableValue = 'disabled',

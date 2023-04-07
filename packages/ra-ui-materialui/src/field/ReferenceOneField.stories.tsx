@@ -69,6 +69,30 @@ export const Basic = () => (
     </Wrapper>
 );
 
+type Book = {
+    id: number;
+    title: string;
+};
+
+type BookDetails = {
+    id: number;
+    book_id: number;
+    ISBN: string;
+    genre: string;
+};
+
+export const Typed = () => (
+    <Wrapper>
+        <ReferenceOneField<BookDetails, Book>
+            reference="book_details"
+            target="book_id"
+            source="id"
+        >
+            <TextField source="ISBN" />
+        </ReferenceOneField>
+    </Wrapper>
+);
+
 const slowDataProvider = {
     getManyReference: (resource, params) =>
         new Promise(resolve => {

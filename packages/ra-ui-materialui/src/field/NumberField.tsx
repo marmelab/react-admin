@@ -37,7 +37,9 @@ import { genericMemo } from './genericMemo';
  * // renders the record { id: 1234, price: 25.99 } as
  * <span>25,99 $US</span>
  */
-const NumberFieldImpl = <RecordType extends any = unknown>(
+const NumberFieldImpl = <
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+>(
     props: NumberFieldProps<RecordType>
 ) => {
     const {
@@ -77,7 +79,9 @@ const NumberFieldImpl = <RecordType extends any = unknown>(
             className={className}
             {...sanitizeFieldRestProps(rest)}
         >
-            {hasNumberFormat ? value.toLocaleString(locales, options) : value}
+            {hasNumberFormat && typeof value === 'number'
+                ? value.toLocaleString(locales, options)
+                : value}
         </Typography>
     );
 };
@@ -105,8 +109,9 @@ NumberField.propTypes = {
     options: PropTypes.object,
 };
 
-export interface NumberFieldProps<RecordType extends any = unknown>
-    extends PublicFieldProps,
+export interface NumberFieldProps<
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+> extends PublicFieldProps,
         InjectedFieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     locales?: string | string[];

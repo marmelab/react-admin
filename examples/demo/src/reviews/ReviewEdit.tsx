@@ -21,10 +21,10 @@ interface Props extends EditProps<Review> {
     onCancel: () => void;
 }
 
-const ReviewEdit = ({ onCancel, ...props }: Props) => {
+const ReviewEdit = ({ onCancel, id, ...props }: Props) => {
     const translate = useTranslate();
     return (
-        <EditBase {...props}>
+        <EditBase<Review> {...props}>
             <Box pt={5} width={{ xs: '100vW', sm: 400 }} mt={{ xs: 2, sm: 1 }}>
                 <Stack direction="row" p={2}>
                     <Typography variant="h6" flex="1">
@@ -51,7 +51,7 @@ const ReviewEdit = ({ onCancel, ...props }: Props) => {
                         </Grid>
                         <Grid item xs={6}>
                             <Labeled>
-                                <DateField source="date" />
+                                <DateField<Review> source="date" />
                             </Labeled>
                         </Grid>
                         <Grid item xs={6}>
@@ -60,7 +60,7 @@ const ReviewEdit = ({ onCancel, ...props }: Props) => {
                             </Labeled>
                         </Grid>
                     </Grid>
-                    <TextInput
+                    <TextInput<Review>
                         source="comment"
                         maxRows={15}
                         multiline

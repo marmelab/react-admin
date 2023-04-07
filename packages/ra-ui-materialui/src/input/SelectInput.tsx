@@ -107,8 +107,8 @@ import { LoadingInput } from './LoadingInput';
  *
  */
 export const SelectInput = <
-    RecordType extends any = unknown,
-    OptionType extends any = unknown
+    RecordType extends Record<string, unknown> = Record<string, unknown>,
+    OptionType extends Record<string, unknown> = Record<string, unknown>
 >(
     props: SelectInputProps<RecordType, OptionType>
 ) => {
@@ -431,10 +431,10 @@ const StyledResettableTextField = styled(ResettableTextField, {
     '& .MuiFilledInput-root': { paddingRight: 0 },
 }));
 
-export type SelectInputProps<RecordType = unknown, OptionType = unknown> = Omit<
-    CommonInputProps,
-    'source'
-> &
+export type SelectInputProps<
+    RecordType extends Record<string, unknown> = Record<string, unknown>,
+    OptionType extends Record<string, unknown> = Record<string, unknown>
+> = Omit<CommonInputProps, 'source'> &
     ChoicesProps<OptionType> &
     Omit<SupportCreateSuggestionOptions<OptionType>, 'handleChange'> &
     Omit<TextFieldProps, 'label' | 'helperText' | 'classes' | 'onChange'> & {

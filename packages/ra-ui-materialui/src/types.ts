@@ -20,7 +20,7 @@ export interface EditProps<
     className?: string;
     component?: ElementType;
     disableAuthentication?: boolean;
-    id?: Identifier;
+    id?: RecordType['id'];
     mutationMode?: MutationMode;
     queryOptions?: UseQueryOptions<RecordType> & { meta?: any };
     mutationOptions?: UseMutationOptions<

@@ -24,7 +24,9 @@ import { Link } from '@mui/material';
  *     <a href="doc.pdf" title="Presentation">Presentation</a>
  * </div>
  */
-export const FileField = <RecordType extends any = unknown>(
+export const FileField = <
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+>(
     props: FileFieldProps<RecordType>
 ) => {
     const {
@@ -90,8 +92,8 @@ export const FileField = <RecordType extends any = unknown>(
     return (
         <Root className={className} {...sanitizeFieldRestProps(rest)}>
             <Link
-                href={sourceValue}
-                title={titleValue}
+                href={sourceValue.toString()}
+                title={titleValue.toString()}
                 target={target}
                 download={download}
                 ping={ping}
@@ -104,8 +106,9 @@ export const FileField = <RecordType extends any = unknown>(
     );
 };
 
-export interface FileFieldProps<RecordType extends any = unknown>
-    extends PublicFieldProps,
+export interface FileFieldProps<
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+> extends PublicFieldProps,
         InjectedFieldProps<RecordType> {
     src?: string;
     target?: string;

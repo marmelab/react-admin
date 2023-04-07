@@ -29,7 +29,9 @@ import { RecordContext } from './RecordContext';
  *
  * @returns A record object
  */
-export const useRecordContext = <RecordType = unknown>(
+export const useRecordContext = <
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+>(
     props?: UseRecordContextParams<RecordType>
 ): RecordType | undefined => {
     // Can't find a way to specify the RecordType when CreateContext is declared
@@ -39,7 +41,9 @@ export const useRecordContext = <RecordType = unknown>(
     return (props && props.record) || context;
 };
 
-export interface UseRecordContextParams<RecordType extends any = unknown> {
+export interface UseRecordContextParams<
+    RecordType extends Record<string, unknown> = Record<string, unknown>
+> {
     record?: RecordType;
     [key: string]: any;
 }
