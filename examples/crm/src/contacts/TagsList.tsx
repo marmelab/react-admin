@@ -5,9 +5,10 @@ import {
     ChipField,
     useRecordContext,
 } from 'react-admin';
+import { Tag } from '../types';
 
 const ColoredChipField = (props: any) => {
-    const record = useRecordContext();
+    const record = useRecordContext<Tag>();
     if (!record) return null;
     return (
         <ChipField
