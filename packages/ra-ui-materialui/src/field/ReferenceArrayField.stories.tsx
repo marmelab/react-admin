@@ -41,3 +41,31 @@ export const DifferentIdTypes = () => {
         </AdminContext>
     );
 };
+
+type Band = {
+    id: number;
+    name: string;
+    members: number[];
+};
+
+export const Typed = () => {
+    return (
+        <AdminContext dataProvider={fakeRestProvider(fakeData, false)}>
+            <CardContent>
+                <Show resource="bands" id={1} sx={{ width: 600 }}>
+                    <TextField source="name" fullWidth />
+                    <ReferenceArrayField<Band>
+                        fullWidth
+                        source="members"
+                        reference="artists"
+                    >
+                        <Datagrid bulkActionButtons={false}>
+                            <TextField source="id" />
+                            <TextField source="name" />
+                        </Datagrid>
+                    </ReferenceArrayField>
+                </Show>
+            </CardContent>
+        </AdminContext>
+    );
+};

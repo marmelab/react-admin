@@ -1,15 +1,17 @@
 import get from 'lodash/get';
 import { useMemo } from 'react';
-import { RaRecord, SortPayload } from '../../types';
+import { SortPayload } from '../../types';
 import { useGetManyAggregate } from '../../dataProvider';
 import { ListControllerResult, useList } from '../list';
 import { useNotify } from '../../notification';
 
-export interface UseReferenceArrayFieldControllerParams {
+export interface UseReferenceArrayFieldControllerParams<
+    RecordType extends any = unknown
+> {
     filter?: any;
     page?: number;
     perPage?: number;
-    record?: RaRecord;
+    record?: RecordType;
     reference: string;
     resource: string;
     sort?: SortPayload;
@@ -43,8 +45,10 @@ const defaultSort = { field: null, order: null };
  *
  * @returns {ListControllerResult} The reference props
  */
-export const useReferenceArrayFieldController = (
-    props: UseReferenceArrayFieldControllerParams
+export const useReferenceArrayFieldController = <
+    RecordType extends any = unknown
+>(
+    props: UseReferenceArrayFieldControllerParams<RecordType>
 ): ListControllerResult => {
     const {
         filter = defaultFilter,

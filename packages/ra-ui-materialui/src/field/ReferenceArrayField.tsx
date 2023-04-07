@@ -14,6 +14,7 @@ import {
 } from 'ra-core';
 import { styled } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
+import { Call, Objects } from 'hotscript';
 
 import { fieldPropTypes, PublicFieldProps, InjectedFieldProps } from './types';
 import { LinearProgress } from '../layout';
@@ -76,7 +77,9 @@ import { ChipField } from './ChipField';
  *    ...
  * </ReferenceArrayField>
  */
-export const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
+export const ReferenceArrayField = <RecordType extends any = unknown>(
+    props: ReferenceArrayFieldProps<RecordType>
+) => {
     const {
         filter,
         page = 1,
@@ -86,8 +89,8 @@ export const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
         sort,
         source,
     } = props;
-    const record = useRecordContext(props);
-    const controllerProps = useReferenceArrayFieldController({
+    const record = useRecordContext<RecordType>(props);
+    const controllerProps = useReferenceArrayFieldController<RecordType>({
         filter,
         page,
         perPage,
@@ -119,9 +122,9 @@ ReferenceArrayField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-export interface ReferenceArrayFieldProps
+export interface ReferenceArrayFieldProps<RecordType extends any = unknown>
     extends PublicFieldProps,
-        InjectedFieldProps<any> {
+        InjectedFieldProps<RecordType> {
     children?: ReactNode;
     filter?: FilterPayload;
     page?: number;
@@ -131,6 +134,12 @@ export interface ReferenceArrayFieldProps
     resource?: string;
     sort?: SortPayload;
     sx?: SxProps;
+    source?: unknown extends RecordType
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
+    sortBy?: unknown extends RecordType
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
 }
 
 export interface ReferenceArrayFieldViewProps
