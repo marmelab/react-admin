@@ -1,5 +1,6 @@
 import React, { FC, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
+import { Call, Objects } from 'hotscript';
 import {
     FilterPayload,
     SortPayload,
@@ -58,7 +59,12 @@ import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
  *    ...
  * </ReferenceManyField>
  */
-export const ReferenceManyField = (props: ReferenceManyFieldProps) => {
+export const ReferenceManyField = <
+    RecordType extends any = unknown,
+    ReferenceType extends any = unknown
+>(
+    props: ReferenceManyFieldProps<RecordType, ReferenceType>
+) => {
     const {
         children,
         filter,
@@ -95,9 +101,11 @@ export const ReferenceManyField = (props: ReferenceManyFieldProps) => {
     );
 };
 
-export interface ReferenceManyFieldProps
-    extends PublicFieldProps,
-        InjectedFieldProps<any> {
+export interface ReferenceManyFieldProps<
+    RecordType extends any = unknown,
+    ReferenceType extends any = unknown
+> extends PublicFieldProps,
+        InjectedFieldProps<RecordType> {
     children: ReactNode;
     filter?: FilterPayload;
     page?: number;
@@ -105,7 +113,15 @@ export interface ReferenceManyFieldProps
     perPage?: number;
     reference: string;
     sort?: SortPayload;
-    target: string;
+    target: unknown extends ReferenceType
+        ? string
+        : Call<Objects.AllPaths, ReferenceType>;
+    source?: unknown extends RecordType
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
+    sortBy?: unknown extends RecordType
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
 }
 
 ReferenceManyField.propTypes = {

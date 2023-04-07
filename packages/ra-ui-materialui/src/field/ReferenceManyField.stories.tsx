@@ -67,3 +67,28 @@ export const Basic = () => (
         </ReferenceManyField>
     </Wrapper>
 );
+
+type Book = {
+    id: number;
+    title: string;
+    author_id: number;
+};
+
+type Author = {
+    id: number;
+    name: string;
+};
+
+export const Typed = () => (
+    <Wrapper>
+        <ReferenceManyField<Author, Book>
+            reference="books"
+            target="author_id"
+            source="id"
+        >
+            <Datagrid>
+                <TextField source="title" />
+            </Datagrid>
+        </ReferenceManyField>
+    </Wrapper>
+);
