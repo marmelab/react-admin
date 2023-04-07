@@ -76,7 +76,7 @@ const EventList = () => {
                                         'resources.customers.fields.first_seen'
                                     )}
                                 </Typography>
-                                <DateField
+                                <DateField<Customer>
                                     record={record}
                                     source="first_seen"
                                 />
@@ -200,7 +200,7 @@ const mixOrdersAndReviews = (
 };
 
 const Order = () => {
-    const record = useRecordContext();
+    const record = useRecordContext<OrderRecord>();
     const translate = useTranslate();
     if (!record) return null;
     return (
@@ -229,7 +229,7 @@ const Order = () => {
 };
 
 const Review = () => {
-    const record = useRecordContext();
+    const record = useRecordContext<ReviewRecord>();
     const translate = useTranslate();
     if (!record) return null;
     return (

@@ -3,13 +3,14 @@ import { Box } from '@mui/material';
 import Icon from '@mui/icons-material/Stars';
 
 import { FieldProps, useRecordContext } from 'react-admin';
+import { Review } from '../types';
 
 interface OwnProps {
     size?: 'large' | 'small';
 }
 
 const StarRatingField = ({ size = 'large' }: FieldProps & OwnProps) => {
-    const record = useRecordContext();
+    const record = useRecordContext<Review>();
     if (!record) return null;
 
     return (

@@ -9,6 +9,7 @@ import {
     Identifier,
     useListContext,
 } from 'react-admin';
+import { Review } from '../types';
 
 const noSelection: Identifier[] = [];
 
@@ -17,7 +18,7 @@ const BulkAcceptButton = () => {
     const notify = useNotify();
     const unselectAll = useUnselectAll('reviews');
 
-    const [updateMany, { isLoading }] = useUpdateMany(
+    const [updateMany, { isLoading }] = useUpdateMany<Review>(
         'reviews',
         { ids: selectedIds, data: { status: 'accepted' } },
         {

@@ -53,8 +53,8 @@ export const ReviewItem = () => {
                                 reference="customers"
                                 link={false}
                             >
-                                <FunctionField
-                                    render={(record?: Customer) =>
+                                <FunctionField<Customer>
+                                    render={record =>
                                         record
                                             ? `${record.first_name} ${record.last_name}`
                                             : ''

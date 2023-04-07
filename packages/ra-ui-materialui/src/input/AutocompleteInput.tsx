@@ -465,7 +465,7 @@ If you provided a React element for the optionText prop, you must also provide t
         (filter: string) => {
             let selectedItemTexts;
 
-            if (multiple) {
+            if (multiple && Array.isArray(selectedChoice)) {
                 selectedItemTexts = selectedChoice.map(item =>
                     getOptionLabel(item)
                 );

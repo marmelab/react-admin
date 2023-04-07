@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ReactElement, useCallback, useEffect, ChangeEvent } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { MenuItem, TextFieldProps } from '@mui/material';
+import { MenuItem, SelectChangeEvent, TextFieldProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Call, Objects } from 'hotscript';
 import {
@@ -213,7 +213,7 @@ export const SelectInput = <
             ? emptyText
             : emptyText === ''
             ? ' ' // em space, forces the display of an empty line of normal height
-            : translate(emptyText, { _: emptyText });
+            : translate(emptyText.toString(), { _: emptyText });
     }, [emptyText, translate]);
 
     const renderMenuItemOption = useCallback(choice => getChoiceText(choice), [
@@ -221,10 +221,10 @@ export const SelectInput = <
     ]);
 
     const handleChange = useCallback(
-        async (eventOrChoice: ChangeEvent<HTMLInputElement> | RaRecord) => {
+        async (eventOrChoice: SelectChangeEvent | RaRecord) => {
             // We might receive an event from the mui component
             // In this case, it will be the choice id
-            if (eventOrChoice?.target) {
+            if ((eventOrChoice as SelectChangeEvent)?.target) {
                 field.onChange(eventOrChoice);
             } else {
                 // Or we might receive a choice directly, for instance a newly created one
