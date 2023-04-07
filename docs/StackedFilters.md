@@ -8,7 +8,7 @@ title: "The StackedFilters Component"
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component provides an alternative filter UI for `<List>` pages. It lets users build complex filters by combining a field, an operator, and a value.
 
 <video controls autoplay muted loop width="100%">
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4">
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

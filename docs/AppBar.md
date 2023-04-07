@@ -8,7 +8,7 @@ title: "The AppBar Component"
 The default react-admin layout renders a horizontal app bar at the top, which is rendered by the `<AppBar>` component.
 
 <video controls autoplay muted loop width="100%">
-  <source src="./img/AppBar.webm" type="video/webm">
+  <source src="./img/AppBar.webm" type="video/webm" />
   Your browser does not support the video tag.
 </video>
 
@@ -111,7 +111,7 @@ export const MyAppBar = () => (
 
 **Tip**: Whats the `<TitlePortal>`? It's a placeholder for the page title, that components in the page can fill using [the `<Title>` component](./Title.md). `<Title>` uses a [React Portal](https://reactjs.org/docs/portals.html) under the hood. `<TitlePortal>` takes all the available space in the app bar, so it "pushes" the following children to the right.
  
-If you omit `<PagePortal>`, `<AppBar>` will no longer display the page title. This can be done on purpose, e.g. if you want to render something completely different in the AppBar, like a company logo and a search engine:
+If you omit `<TitlePortal>`, `<AppBar>` will no longer display the page title. This can be done on purpose, e.g. if you want to render something completely different in the AppBar, like a company logo and a search engine:
 
 ```jsx
 // in src/MyAppBar.js
@@ -203,7 +203,7 @@ export const MyAppBar = () => (
             <ToggleThemeButton lightTheme={defaultTheme} darkTheme={darkTheme} />
             <RefreshIconButton />
         </>
-    } >
+    } />
 );
 ```
 

@@ -95,7 +95,7 @@ const transformErrorFields = (error: object) => {
 
 const addTypeAndMessage = (error: object) => ({
     type: 'manual',
-    message: error,
+    message: isRaTranslationObj(error) ? error : { message: error },
 });
 
 const isRaTranslationObj = (obj: object) =>

@@ -3,7 +3,6 @@ import { Admin } from 'react-admin';
 import { Resource } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { createMemoryHistory } from 'history';
-import { Typography } from '@mui/material';
 
 import { List, Datagrid } from '../list';
 import { TextField } from '../field';

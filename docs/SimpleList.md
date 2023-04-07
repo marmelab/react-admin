@@ -5,7 +5,7 @@ title: "The SimpleList Component"
 
 # `<SimpleList>`
 
-<a href="./img/simple-list.gif"><img src="./img/simple-list.gif" style="height:300px" alt="The `<SimpleList>` component"></a>
+<a href="./img/simple-list.gif"><img src="./img/simple-list.gif" style="height:300px" alt="The `<SimpleList>` component" /></a>
 
 For mobile devices, a `<Datagrid>` is often unusable - there is simply not enough space to display several columns. The convention in that case is to use a simple list, with only one column per row. The `<SimpleList>` component serves that purpose, leveraging [MUI's `<List>` and `<ListItem>` components](https://mui.com/components/lists/). 
 

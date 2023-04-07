@@ -157,7 +157,7 @@ export const dataProvider = withLifecycleCallbacks(
     },
     {
         resource: "comments",
-        beforeRead: async (data, dataProvider) => { /* ... */ },
+        beforeSave: async (data, dataProvider) => { /* ... */ },
         afterCreate: async (result, dataProvider) => { /* ... */ },
     },
     {

@@ -8,7 +8,7 @@ title: "Realtime"
 React-admin provides hooks and UI components for collaborative applications where several people work in parallel. It allows publishing and subscribing to real-time events, updating views when another user pushes a change, notifying end users of events, and preventing data loss when two editors work on the same resource concurrently.
 
 <video controls autoplay muted width="100%">
-  <source src="./img/CollaborativeDemo.mp4" type="video/mp4">
+  <source src="./img/CollaborativeDemo.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

@@ -889,6 +889,7 @@ This affects both the submit button, and the form submission when the user press
 Users often need to edit data from several resources in the same form. React-admin doesn't support nested forms, but provides ways to edit related data in a user-friendly way:
 
 - [`<EditInDialogButton>`](./EditInDialogButton.md) lets users open a modal to edit a related record
+- [`<ReferenceOneInput>`](./ReferenceOneInput.md) lets users edit one related record
 - [`<ReferenceManyInput>`](./ReferenceManyInput.md) lets users edit a list of related records
 - [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md) lets users edit a list of related records via an associative table
 

@@ -12,6 +12,8 @@ import { TextField } from '../field';
 import { ReferenceManyField } from './ReferenceManyField';
 import { Datagrid } from '../list/datagrid/Datagrid';
 import { Notification } from '../layout/Notification';
+import { FilterForm } from '../list';
+import { TextInput } from '../input';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceManyField' };
 
@@ -26,7 +28,15 @@ let books = [
 
 const defaultDataProvider = {
     getManyReference: (resource, params) => {
-        const result = books.filter(book => book.author_id === params.id);
+        const result = books
+            .filter(book => book.author_id === params.id)
+            .filter(book =>
+                params?.filter?.q
+                    ? book.title
+                          .toLowerCase()
+                          .includes(params.filter.q.toLowerCase())
+                    : true
+            );
         return Promise.resolve({
             data: result,
             total: result.length,
@@ -62,6 +72,19 @@ export const Basic = () => (
     <Wrapper>
         <ReferenceManyField reference="books" target="author_id">
             <Datagrid>
+                <TextField source="title" />
+            </Datagrid>
+        </ReferenceManyField>
+    </Wrapper>
+);
+
+export const WithFilter = () => (
+    <Wrapper>
+        <ReferenceManyField reference="books" target="author_id">
+            <FilterForm
+                filters={[<TextInput source="q" label="Search" alwaysOn />]}
+            />
+            <Datagrid bulkActionButtons={false}>
                 <TextField source="title" />
             </Datagrid>
         </ReferenceManyField>
