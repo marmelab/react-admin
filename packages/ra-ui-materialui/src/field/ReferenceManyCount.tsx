@@ -8,10 +8,12 @@ import {
 } from 'ra-core';
 import { Typography, TypographyProps, CircularProgress } from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Error';
+import { Call, Objects } from 'hotscript';
 
 import { PublicFieldProps, InjectedFieldProps } from './types';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { Link } from '../Link';
+import { get } from 'lodash';
 
 /**
  * Fetch and render the number of records related to the current one
@@ -27,7 +29,12 @@ import { Link } from '../Link';
  * @example // Display the number of comments for the current post, with a custom Typography variant
  * <ReferenceManyCount reference="comments" target="post_id" variant="h1">
  */
-export const ReferenceManyCount = (props: ReferenceManyCountProps) => {
+export const ReferenceManyCount = <
+    RecordType extends any = unknown,
+    ReferenceType extends any = unknown
+>(
+    props: ReferenceManyCountProps<RecordType, ReferenceType>
+) => {
     const {
         reference,
         target,
@@ -39,11 +46,13 @@ export const ReferenceManyCount = (props: ReferenceManyCountProps) => {
         timeout = 1000,
         ...rest
     } = props;
-    const record = useRecordContext(props);
+    const record = useRecordContext<RecordType>(props);
     const oneSecondHasPassed = useTimeout(timeout);
     const createPath = useCreatePath();
 
-    const { isLoading, error, total } = useReferenceManyFieldController({
+    const { isLoading, error, total } = useReferenceManyFieldController<
+        RecordType
+    >({
         filter,
         sort,
         page: 1,
@@ -68,13 +77,15 @@ export const ReferenceManyCount = (props: ReferenceManyCountProps) => {
         total
     );
 
+    const targetValue = get(record, source);
+
     return link ? (
         <Link
             to={{
                 pathname: createPath({ resource: reference, type: 'list' }),
                 search: `filter=${JSON.stringify({
                     ...(filter || {}),
-                    [target]: record[source],
+                    [target]: targetValue,
                 })}`,
             }}
             variant="body2"
@@ -94,17 +105,26 @@ export const ReferenceManyCount = (props: ReferenceManyCountProps) => {
     );
 };
 
-export interface ReferenceManyCountProps
-    extends PublicFieldProps,
-        InjectedFieldProps<any>,
+export interface ReferenceManyCountProps<
+    RecordType extends any = unknown,
+    ReferenceType extends any = unknown
+> extends PublicFieldProps,
+        InjectedFieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     reference: string;
-    target: string;
+    target: unknown extends ReferenceType
+        ? string
+        : Call<Objects.AllPaths, ReferenceType>;
     sort?: SortPayload;
     filter?: any;
     label?: string;
     link?: boolean;
     resource?: string;
-    source?: string;
     timeout?: number;
+    source?: unknown extends RecordType
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
+    sortBy?: unknown extends RecordType
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
 }

@@ -12,11 +12,13 @@ import { useRecordSelection } from '../list/useRecordSelection';
 import useSortState from '../useSortState';
 import { useResourceContext } from '../../core';
 
-export interface UseReferenceManyFieldControllerParams {
+export interface UseReferenceManyFieldControllerParams<
+    RecordType extends any = unknown
+> {
     filter?: any;
     page?: number;
     perPage?: number;
-    record?: RaRecord;
+    record?: RecordType;
     reference: string;
     resource?: string;
     sort?: SortPayload;
@@ -52,8 +54,10 @@ const defaultFilter = {};
  *
  * @returns {ListControllerResult} The reference many props
  */
-export const useReferenceManyFieldController = (
-    props: UseReferenceManyFieldControllerParams
+export const useReferenceManyFieldController = <
+    RecordType extends any = unknown
+>(
+    props: UseReferenceManyFieldControllerParams<RecordType>
 ): ListControllerResult => {
     const {
         reference,
@@ -86,7 +90,7 @@ export const useReferenceManyFieldController = (
 
     // selection logic
     const [selectedIds, selectionModifiers] = useRecordSelection(
-        `${resource}.${record?.id}.${reference}`
+        `${resource}.${(record as RaRecord)?.id}.${reference}`
     );
 
     // filter logic
