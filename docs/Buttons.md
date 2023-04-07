@@ -256,7 +256,11 @@ export const PostList = () => (
 
 This button is an internal component used by react-admin in [the Filter button/form combo](./FilteringTutorial.md#the-filter-buttonform-combo).
 
-![List Filters](./img/list_filter.gif)
+<video controls autoplay muted loop>
+  <source src="./img/list_filter.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 #### `sx`: CSS API
 
@@ -365,7 +369,11 @@ To override the style of all instances of `<SkipNavigationButton>` using the [MU
 
 The `<MenuItemLink>` component displays a menu item with a label and an icon - or only the icon with a tooltip when the sidebar is minimized. It also handles the automatic closing of the menu on tap on mobile.
 
-![custom menu icons](./img/custom-menu.gif)
+<video controls autoplay muted loop>
+  <source src="./img/custom-menu.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 | Prop          | Required | Type                 | Default | Description                              |
 | ------------- | -------- | -------------------- | ------- | ---------------------------------------- |

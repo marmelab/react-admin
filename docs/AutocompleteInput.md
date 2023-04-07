@@ -8,7 +8,11 @@ title: "The AutocompleteInput Component"
 To let users choose a value in a list using a dropdown with autocompletion, use `<AutocompleteInput>`.
 It renders using [MUI's `<Autocomplete>`](https://mui.com/components/autocomplete/).
 
-![AutocompleteInput](./img/autocomplete-input.gif)
+<video controls autoplay muted loop>
+  <source src="./img/autocomplete-input.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 This input allows editing record fields that are scalar values, e.g. `123`, `'admin'`, etc. 
 

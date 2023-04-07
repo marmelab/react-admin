@@ -79,7 +79,11 @@ const PostList = () => (
 );
 ```
 
-![useSubscribeToRecordList](./img/useSubscribeToRecordList.gif)
+<video controls autoplay muted loop>
+  <source src="./img/useSubscribeToRecordList.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 This feature leverages the following hooks:
 
@@ -127,7 +131,11 @@ This feature leverages the following components:
 
 And last but not least, ra-realtime provides a **lock mechanism** to prevent two users from editing the same resource at the same time.
 
-![Edit With Locks](./img/locks-demo.gif)
+<video controls autoplay muted loop>
+  <source src="./img/locks-demo.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 A user can lock a resource, either by voluntarily asking for a lock or by editing a resource. When a resource is locked, other users can't edit it. When the lock is released, other users can edit the resource again.
 

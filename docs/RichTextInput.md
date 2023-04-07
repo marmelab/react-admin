@@ -7,7 +7,11 @@ title: "The RichTextInput Component"
 
 `<RichTextInput>` is the ideal component to let users edit HTML content. It is powered by [TipTap](https://www.tiptap.dev/).
 
-![RichTextInput](./img/rich-text-input.gif)
+<video controls autoplay muted loop>
+  <source src="./img/rich-text-input.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 ## Usage
 

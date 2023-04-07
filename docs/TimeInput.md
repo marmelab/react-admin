@@ -9,7 +9,15 @@ An input for editing time. `<TimeInput>` renders a standard browser [Time Picker
 
 | Firefox | Edge |
 | ------- | ---- |
-| ![TimeInput Firefox](./img/time-input-firefox.gif) | ![TimeInput Edge](./img/time-input-edge.gif) |
+| <video controls autoplay muted loop>
+  <source src="./img/time-input-firefox.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+ | <video controls autoplay muted loop>
+  <source src="./img/time-input-edge.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+ |
 
 This component works with Date objects to handle the timezone using the browser locale.
 You can still pass string values as long as those can be converted to a JavaScript Date object.

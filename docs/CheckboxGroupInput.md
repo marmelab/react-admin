@@ -7,7 +7,11 @@ title: "The CheckboxGroupInput Component"
 
 If you want to let the user choose multiple values among a list of possible values by showing them all, `<CheckboxGroupInput>` is the right component.
 
-![CheckboxGroupInput](./img/checkbox-group-input.gif)
+<video controls autoplay muted loop>
+  <source src="./img/checkbox-group-input.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 This input allows editing values that are arrays of scalar values, e.g. `[123, 456]`. 
 

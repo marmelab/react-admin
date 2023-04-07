@@ -140,7 +140,11 @@ Finally, `<Datagrid>` inspects children for props that indicate how it should be
 
 ## `bulkActionButtons`
 
-![Bulk Action Buttons](./img/bulk-actions-toolbar.gif)
+<video controls autoplay muted loop>
+  <source src="./img/bulk-actions-toolbar.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 Bulk action buttons are buttons that affect several records at once, like mass deletion for instance. In the `<Datagrid>` component, the bulk actions toolbar appears when a user ticks the checkboxes in the first column of the table. The user can then choose a button from the bulk actions toolbar. By default, all Datagrids have a single bulk action button, the bulk delete button. You can add other bulk action buttons by passing a custom element as the `bulkActionButtons` prop of the `<Datagrid>` component:
 
@@ -388,7 +392,11 @@ const PostList = () => (
 
 ## `expand`
 
-![expandable panel](./img/datagrid_expand.gif)
+<video controls autoplay muted loop>
+  <source src="./img/datagrid_expand.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 To show more data from the resource without adding too many columns, you can show data in an expandable panel below the row on demand, using the `expand` prop. 
 
@@ -804,7 +812,11 @@ const PostList = () => (
 
 The [`<SelectColumnsButton>`](./SelectColumnsButton.md) component lets users hide, show, and reorder datagrid columns. 
 
-![SelectColumnsButton](./img/SelectColumnsButton.gif)
+<video controls autoplay muted loop>
+  <source src="./img/SelectColumnsButton.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 ```jsx
 import {
@@ -845,7 +857,11 @@ const PostList = () => (
 
 You can let end users customize the fields displayed in the `<Datagrid>` by using the `<DatagridConfigurable>` component instead.
 
-![DatagridConfigurable](./img/DatagridConfigurable.gif)
+<video controls autoplay muted loop>
+  <source src="./img/DatagridConfigurable.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 ```diff
 import {
@@ -972,7 +988,11 @@ Check [the `ra-editable-datagrid` documentation](https://marmelab.com/ra-enterpr
 
 ## Customizing Column Sort
 
-![Sort Column Header](./img/sort-column-header.gif)
+<video controls autoplay muted loop>
+  <source src="./img/sort-column-header.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 The column headers are buttons allowing users to change the list sort field and order. This feature requires no configuration and works out fo the box. The next sections explain how you can disable or modify the field used for sorting on a particular column.
 

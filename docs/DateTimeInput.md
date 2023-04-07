@@ -7,7 +7,11 @@ title: "The DateTimeInput Component"
 
 An input for editing dates with time. `<DateTimeInput>` renders an `<input type="datetime-local" >` element, that most browsers display as [date and time picker](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local).
 
-![DateTimeInput](./img/date-time-input.gif)
+<video controls autoplay muted loop>
+  <source src="./img/date-time-input.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 The appearance depends on the browser, and falls back to a text input on safari. The date formatting in this input depends on the user's locale.
 

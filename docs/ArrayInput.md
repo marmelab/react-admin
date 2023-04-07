@@ -7,7 +7,11 @@ title: "The ArrayInput Component"
 
 To edit arrays of data embedded inside a record, `<ArrayInput>` creates a list of sub-forms.
 
-![ArrayInput](./img/array-input.gif)
+<video controls autoplay muted loop>
+  <source src="./img/array-input.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 `<ArrayInput>` allows editing of embedded arrays, like the `items` field in the following `order` record:
 

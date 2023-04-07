@@ -7,7 +7,11 @@ title: "The NumberInput Component"
 
 `<NumberInput>` translates to an HTML `<input type="number">`, and converts the user input to a number.
 
-![NumberInput](./img/number-input.gif)
+<video controls autoplay muted loop>
+  <source src="./img/number-input.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 ## Usage
 

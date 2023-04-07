@@ -7,7 +7,11 @@ title: "The BooleanInput Component"
 
 `<BooleanInput />` renders a switch allowing users to set the value `true` or `false` to a record field.
 
-![BooleanInput](./img/boolean-input.gif)
+<video controls autoplay muted loop>
+  <source src="./img/boolean-input.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 **Tip**: This input doesn't let users set a `null` value - only `true` or `false`. Use the [`<NullableBooleanInput />`](./NullableBooleanInput.md) component if you have to handle non-required booleans.
 

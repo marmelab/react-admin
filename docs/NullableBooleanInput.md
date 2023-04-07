@@ -7,7 +7,11 @@ title: "The NullableBooleanInput Component"
 
 `<NullableBooleanInput />` renders as a dropdown list, allowing choosing between `true`, `false`, and `null` values.
 
-![NullableBooleanInput](./img/nullable-boolean-input.gif)
+<video controls autoplay muted loop>
+  <source src="./img/nullable-boolean-input.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 ## Usage
 

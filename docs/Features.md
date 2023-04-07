@@ -197,7 +197,11 @@ const ProductEdit = () => (
 );
 ```
 
-![ReferenceManyInput](./img/reference-many-input.gif)
+<video controls autoplay muted loop>
+  <source src="./img/reference-many-input.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 Reference Input components are also very useful to filter a view by a related record. For instance, to display the list of books of a given author:
 
@@ -297,11 +301,21 @@ In most admin and B2B apps, the most common task is to look for a record. React-
 <table><tbody>
 <tr style="border:none">
     <td style="width:50%;border:none;text-align:center">
-        <a title="Filter Button/Form Combo" href="./img/list_filter.gif"><img src="./img/list_filter.gif" /></a>
+        <a title="Filter Button/Form Combo" href="./img/list_filter.webm">
+            <video controls autoplay muted loop>
+                <source src="./img/list_filter.webm" type="video/webm">
+                Your browser does not support the video tag.
+            </video>
+        </a>
         <a href="./FilteringTutorial.html#the-filter-buttonform-combo" style="display: block;transform: translateY(-10px);">Filter Button/Form Combo</a>
     </td>
     <td style="width:50%;border:none;text-align:center">
-        <a title="<FilterList> Sidebar" href="./img/filter-sidebar.gif"><img src="./img/filter-sidebar.gif" /></a>
+         <a title="<FilterList> Sidebar" href="./img/filter-sidebar.webm">
+            <video controls autoplay muted loop>
+                <source src="./img/filter-sidebar.webm" type="video/webm">
+                Your browser does not support the video tag.
+            </video>
+        </a>
         <a href="./FilteringTutorial.html#the-filterlist-sidebar" style="display: block;transform: translateY(-10px);"><code>&lt;FilterList&gt;</code> Sidebar</a>
     </td>
 </tr>
@@ -348,7 +362,11 @@ Check the following chapters to learn more about each search and filtering compo
 
 Users often apply the same filters over and over again. Saved Queries **let users save a combination of filters** and sort parameters into a new, personal filter, that persists between sessions. 
 
-[![Saved Queries in FilterList](./img/SavedQueriesList.gif)](./img/SavedQueriesList.gif)
+[<video controls autoplay muted loop>
+  <source src="./img/SavedQueriesList.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 Here is an example `<FilterList>` sidebar with saved queries:
 
@@ -449,7 +467,11 @@ export const PostEdit = () => (
 );
 ```
 
-![Tabbed Form](./img/tabbed-form.gif)
+<video controls autoplay muted loop>
+  <source src="./img/tabbed-form.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 React-admin offers, out of the box, several **form layouts**:
 
@@ -627,7 +649,11 @@ When a user edits a record and hits the "Save" button, the UI shows a confirmati
 
 But there is an additional benefit: it also allows the "Undo" feature. Undo is already functional in the admin at that point. Try editing a record, then hit the "Undo" link in the black confirmation box before it slides out. You'll see that the app does not send the `UPDATE` query to the API, and displays the non-modified data.
 
-[![Undo Post Editing](./img/tutorial_post_edit_undo.gif)](./img/tutorial_post_edit_undo.gif)
+[<video controls autoplay muted loop>
+  <source src="./img/tutorial_post_edit_undo.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 Even though updates appear immediately due to Optimistic Updates, React-admin only sends them to the server after a short delay (about 5 seconds). During this delay, **the user can undo the action**, and react-admin will never send the update. 
 
@@ -792,7 +818,11 @@ Check the following components for more details:
 
 To manage directories, categories, and any other **hierarchical data**, admins often rely on tree structures. Navigating and editing tree structures can be tricky, but React-admin provides a set of components to make it easy.
 
-![TreeWithDetails](./img/treewithdetails.gif)
+<video controls autoplay muted loop>
+  <source src="./img/treewithdetails.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 ```jsx
 import { Create, Edit, SimpleForm, TextInput } from 'react-admin';
@@ -910,7 +940,11 @@ const PostList = () => (
 );
 ```
 
-![useSubscribeToRecordList](./img/useSubscribeToRecordList.gif)
+<video controls autoplay muted loop>
+  <source src="./img/useSubscribeToRecordList.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 This feature leverages the following hooks:
 
@@ -954,7 +988,11 @@ This feature leverages the following components:
 
 And last but not least, react-admin provides a **lock mechanism** to prevent two users from editing the same resource at the same time.
 
-![Edit With Locks](./img/locks-demo.gif)
+<video controls autoplay muted loop>
+  <source src="./img/locks-demo.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 A user can lock a resource, either by voluntarily asking for a lock or by editing a resource. When a resource is locked, other users can't edit it. When the lock is released, other users can edit the resource again.
 
@@ -1012,7 +1050,11 @@ End-users tweak the UI to their liking, and **they expect these preferences to b
 
 For instance, the Saved Queries feature lets users **save a combination of filters** and sort parameters into a new, personal filter.
 
-[![Saved Queries in FilterList](./img/SavedQueriesList.gif)](./img/SavedQueriesList.gif)
+[<video controls autoplay muted loop>
+  <source src="./img/SavedQueriesList.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 Saved queries persist between sessions, so users can find their custom queries even after closing and reopening the admin. Saved queries are available both for the Filter Button/Form combo and for the `<FilterList>` Sidebar. It's enabled by default for the Filter Button/Form combo but you have to add it yourself in the `<FilterList>` Sidebar.
 
@@ -1047,7 +1089,11 @@ const SongList = () => (
 
 React-admin also **persists the light/dark mode and the language choice** of end-users. 
 
-![Dark Mode support](./img/ToggleThemeButton.gif)
+<video controls autoplay muted loop>
+  <source src="./img/ToggleThemeButton.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 To learn more about the `Store` and how to use it, check the following sections:
 
@@ -1063,7 +1109,11 @@ To learn more about the `Store` and how to use it, check the following sections:
 
 An extension of preferences is Configurable components. Because no matter how polished your UI is, it will never fit all use cases. That's why react-admin provides a way to let end users **customize the features of many components visually**, via the inspector.
 
-![DatagridConfigurable](./img/DatagridConfigurable.gif)
+<video controls autoplay muted loop>
+  <source src="./img/DatagridConfigurable.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 To enable this feature, replace a component (in that example, `<Datagrid>`) with its configurable counterpart:
 
@@ -1213,7 +1263,11 @@ To learn more about theming in react-admin, check the following sections:
 
 React-admin is **fully internationalized**.
 
-![LocalesMenuButton](./img/LocalesMenuButton.gif)
+<video controls autoplay muted loop>
+  <source src="./img/LocalesMenuButton.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 The default interface messages (for buttons, tooltips, input labels, etc) are in English. You can translate them to any of [the 30+ languages supported by react-admin](./TranslationLocales.md) by importing the appropriate translation package. For instance, to translate to French:
 

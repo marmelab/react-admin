@@ -270,7 +270,7 @@ ul.sidenav code {
 }
 
 @media only screen and (min-width: 601px) {
-    .markdown-section img {
+    .markdown-section img, .markdown-section video {
         max-width: 90%;
         box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.24);
         border-radius: 2px;
