@@ -362,7 +362,7 @@ Check the following chapters to learn more about each search and filtering compo
 
 Users often apply the same filters over and over again. Saved Queries **let users save a combination of filters** and sort parameters into a new, personal filter, that persists between sessions. 
 
-[<video controls autoplay muted loop>
+<video controls autoplay muted loop>
   <source src="./img/SavedQueriesList.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
@@ -649,7 +649,7 @@ When a user edits a record and hits the "Save" button, the UI shows a confirmati
 
 But there is an additional benefit: it also allows the "Undo" feature. Undo is already functional in the admin at that point. Try editing a record, then hit the "Undo" link in the black confirmation box before it slides out. You'll see that the app does not send the `UPDATE` query to the API, and displays the non-modified data.
 
-[<video controls autoplay muted loop>
+<video controls autoplay muted loop>
   <source src="./img/tutorial_post_edit_undo.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
@@ -1050,7 +1050,7 @@ End-users tweak the UI to their liking, and **they expect these preferences to b
 
 For instance, the Saved Queries feature lets users **save a combination of filters** and sort parameters into a new, personal filter.
 
-[<video controls autoplay muted loop>
+<video controls autoplay muted loop>
   <source src="./img/SavedQueriesList.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>

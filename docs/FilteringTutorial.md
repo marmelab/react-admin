@@ -393,7 +393,7 @@ export default {
 
 ## Saved Queries: Let Users Save Filter And Sort
 
-[<video controls autoplay muted loop>
+<video controls autoplay muted loop>
   <source src="./img/SavedQueriesList.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
