@@ -5,13 +5,13 @@ import get from 'lodash/get';
 import { Typography, SxProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ErrorIcon from '@mui/icons-material/Error';
+import { Call, Objects } from 'hotscript';
 import {
     useReference,
     UseReferenceResult,
     LinkToType,
     ResourceContextProvider,
     RecordContextProvider,
-    RaRecord,
     useRecordContext,
     useCreatePath,
     Identifier,
@@ -55,7 +55,9 @@ import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
  * In previous versions of React-Admin, the prop `linkType` was used. It is now deprecated and replaced with `link`. However
  * backward-compatibility is still kept
  */
-export const ReferenceField: FC<ReferenceFieldProps> = props => {
+export const ReferenceField = <RecordType extends any = unknown>(
+    props: ReferenceFieldProps<RecordType>
+) => {
     const { source, emptyText, ...rest } = props;
     const record = useRecordContext(props);
     const id = get(record, source);
@@ -102,25 +104,35 @@ ReferenceField.defaultProps = {
     link: 'edit',
 };
 
-export interface ReferenceFieldProps<RecordType extends RaRecord = any>
+export interface ReferenceFieldProps<RecordType extends any = unknown>
     extends PublicFieldProps,
         InjectedFieldProps<RecordType> {
     children?: ReactNode;
     reference: string;
     resource?: string;
-    source: string;
     translateChoice?: Function | boolean;
     link?: LinkToType;
     sx?: SxProps;
+    source: unknown extends RecordType
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
+    sortBy?: unknown extends RecordType
+        ? string
+        : Call<Objects.AllPaths, RecordType>;
 }
 
 /**
  * This intermediate component is made necessary by the useReference hook,
  * which cannot be called conditionally when get(record, source) is empty.
  */
-export const NonEmptyReferenceField: FC<
-    Omit<ReferenceFieldProps, 'source'> & { id: Identifier }
-> = ({ children, id, record, reference, link, ...props }) => {
+export const NonEmptyReferenceField = <RecordType extends any = unknown>({
+    children,
+    id,
+    record,
+    reference,
+    link,
+    ...props
+}: Omit<ReferenceFieldProps<RecordType>, 'source'> & { id: Identifier }) => {
     const createPath = useCreatePath();
     const resourceDefinition = useResourceDefinition({ resource: reference });
 

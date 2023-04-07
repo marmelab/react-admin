@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import { RaRecord } from '../../types';
 import { RecordContext } from './RecordContext';
 
 /**
@@ -28,9 +27,9 @@ import { RecordContext } from './RecordContext';
  * };
  * render(<TextField record={record} />);
  *
- * @returns {RaRecord} A record object
+ * @returns A record object
  */
-export const useRecordContext = <RecordType extends any = RaRecord>(
+export const useRecordContext = <RecordType = unknown>(
     props?: UseRecordContextParams<RecordType>
 ): RecordType | undefined => {
     // Can't find a way to specify the RecordType when CreateContext is declared
@@ -40,9 +39,7 @@ export const useRecordContext = <RecordType extends any = RaRecord>(
     return (props && props.record) || context;
 };
 
-export interface UseRecordContextParams<
-    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord
-> {
+export interface UseRecordContextParams<RecordType extends any = unknown> {
     record?: RecordType;
     [key: string]: any;
 }

@@ -9,6 +9,7 @@ import {
     EditGuesser,
     EditButton,
     useRecordContext,
+    RaRecord,
 } from './';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { Button } from '@mui/material';
@@ -118,7 +119,7 @@ const dataProvider = fakeRestDataProvider(
 );
 
 const BooksButton = () => {
-    const record = useRecordContext();
+    const record = useRecordContext<RaRecord>();
     return (
         <Button
             component={Link}

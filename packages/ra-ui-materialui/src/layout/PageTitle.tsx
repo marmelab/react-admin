@@ -1,10 +1,15 @@
 import * as React from 'react';
-import { useRecordContext, useTranslate, usePreference } from 'ra-core';
+import {
+    useRecordContext,
+    useTranslate,
+    usePreference,
+    RaRecord,
+} from 'ra-core';
 
 export const PageTitle = ({ title, defaultTitle, className, ...rest }: any) => {
     const [titleFromPreferences] = usePreference();
     const translate = useTranslate();
-    const record = useRecordContext();
+    const record = useRecordContext<RaRecord>();
 
     return titleFromPreferences ? (
         <span className={className} {...rest}>

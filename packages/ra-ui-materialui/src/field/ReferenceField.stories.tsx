@@ -67,6 +67,7 @@ const Wrapper = ({
         <ResourceDefinitionContextProvider
             definitions={{
                 book_details: {
+                    name: 'book_details',
                     hasShow: true,
                     hasEdit: true,
                 },
@@ -165,6 +166,7 @@ export const LinkWithoutEditView = () => (
         <ResourceDefinitionContextProvider
             definitions={{
                 book_details: {
+                    name: 'book_details',
                     hasEdit: false,
                 },
             }}

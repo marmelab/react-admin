@@ -1,7 +1,5 @@
-import { RaRecord } from '../types';
-
-export type LinkToFunctionType = (
-    record: RaRecord,
+export type LinkToFunctionType = <RecordType extends any = unknown>(
+    record: RecordType,
     reference: string
 ) => string;
 
