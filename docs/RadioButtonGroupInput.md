@@ -158,7 +158,7 @@ import { RadioButtonGroupInput, ReferenceInput } from 'react-admin';
 </ReferenceInput>
 ```
 
-See [Using in a `<ReferenceInput>`](#using-in-a-referenceinput) below for more details.
+See [fetching choices](#fetching-choices) below for more details.
 
 `optionText` also accepts a function, so you can shape the option text at will:
 
@@ -247,19 +247,61 @@ However, in some cases, you may not want the choice to be translated. In that ca
 
 Note that `translateChoice` is set to `false` when `<RadioButtonGroupInput>` is a child of `<ReferenceInput>`.
 
-## Using In A ReferenceInput
+## Fetching Choices
 
-If you want to populate the `choices` attribute with a list of related records, you should decorate `<RadioButtonGroupInput>` with [`<ReferenceInput>`](./ReferenceInput.md), and leave the `choices` empty:
+You can use [`useGetList`](./useGetList.md) to fetch choices. For example, to fetch a list of authors for a post:
 
 ```jsx
-import { RadioButtonGroupInput, ReferenceInput } from 'react-admin';
+import { useGetList, Create, SimpleForm, RadioButtonGroupInput } from 'react-admin';
 
-<ReferenceInput label="Author" source="author_id" reference="authors">
-    <RadioButtonGroupInput />
-</ReferenceInput>
+const PostCreate = () => {
+    const { data, isLoading } = useGetList('authors');
+    return (
+        <Create>
+            <SimpleForm>
+                ...
+                <RadioButtonGroupInput 
+                    label="Authors"
+                    source="author_id"
+                    choices={data}
+                    optionText="name"
+                    disabled={isLoading}
+                />
+            </SimpleForm>
+        </Create>
+    );
+}
 ```
 
-In that case, `<RadioButtonGroupInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to render each choice from the list of possible records. You can override this behavior by setting the `optionText` prop:
+But there is a better, declarative way. You can wrap the `<RadioButtonGroupInput>` inside a [`<ReferenceInput>`](./ReferenceInput.md) instead:
+
+```jsx
+import { Create, SimpleForm, RadioButtonGroupInput, ReferenceInput } from 'react-admin';
+
+const PostCreate = () => (
+    <Create>
+        <SimpleForm>
+            ...
+            <ReferenceInput label="Author" source="author_id" reference="authors">
+                <RadioButtonGroupInput />
+            </ReferenceInput>
+        </SimpleForm>
+    </Create>
+);
+```
+
+`<ReferenceInput>` is a headless component that:
+ 
+ - creates a `ChoiceContext` and puts its props (`label`, `source`, etc) in the context value,
+ - fetches a list of records with `dataProvider.getList()`, using the `reference` prop for the resource,
+ - puts the result of the fetch in the `ChoiceContext` as the `choices` prop,
+ - and renders its child component
+
+When rendered as a child of `<ReferenceInput>`, `<RadioButtonGroupInput>` reads that `ChoiceContext` to populate its own props, including `choices`.
+
+`<ReferenceInput>` is much more powerful than the initial snippet. It fetches the related record (the one pointed by the current `author_id` value) in addition to the list of choices, optimizes and caches API calls, and handles loading state. It is designed for many-to-one and one-to-one relationships via foreign keys, like the post-author example (one post has one author via the `author_id` value). See the [`<ReferenceInput>` documentation](./ReferenceInput.md) for more details.
+
+When used inside `<ReferenceInput>`, `<RadioButtonGroupInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to determine how to represent the related choices. In the example above, the `authors` resource uses `name` as its `recordRepresentation`, so `<RadioButtonGroupInput>` will default to `optionText="name"`. You can override this behavior by setting [the `optionText` prop](#optiontext) on the `<RadioButtonGroupInput>`:
 
 ```jsx
 import { RadioButtonGroupInput, ReferenceInput } from 'react-admin';

@@ -323,28 +323,40 @@ Refer to [MUI Select documentation](https://mui.com/api/select) for more details
 
 ## `optionText`
 
-You can customize the property to use for the option name (instead of the default `name`) thanks to the `optionText` prop:
+By default, `<SelectInput>` uses the `name` property as the text content of each option.
 
 ```jsx
-const choices = [
-    { id: 'tech', label: 'Tech' },
-    { id: 'lifestyle', label: 'Lifestyle' },
-    { id: 'people', label: 'People' },
-];
-<SelectInput source="category" choices={choices} optionText="label" />
+import { SelectInput } from 'react-admin';
+
+<SelectInput
+    source="category"
+    choices={[
+        { id: 'tech', name: 'Tech' },
+        { id: 'lifestyle', name: 'Lifestyle' },
+        { id: 'people', name: 'People' },
+    ]}
+/>
+// renders HTML similar to
+// <select>
+//     <option value="tech">Tech</option>
+//     <option value="lifestyle">Lifestyle</option>
+//     <option value="people">People</option>
+// </select>
 ```
 
-`optionText` is particularly useful when the choices are records fetched from another resource, and `<SelectInput>` is a child of a [`<ReferenceInput>`](./ReferenceInput.md). By default, react-admin uses the [`recordRepresentation`](./Resource.md#recordrepresentation) function to display the record label. But if you set the `optionText` prop, react-admin will use it instead.
+If your `choices` don't have a `name` property, or if you want to use another property, you can use the `optionText` prop to specify which property to use:
 
 ```jsx
-import { SelectInput, ReferenceInput } from 'react-admin';
-
-<ReferenceInput label="Author" source="author_id" reference="authors">
-    <SelectInput optionText="last_name" />
-</ReferenceInput>
+<SelectInput
+    source="category"
+    optionText="label"
+    choices={[
+        { id: 'tech', label: 'Tech' },
+        { id: 'lifestyle', label: 'Lifestyle' },
+        { id: 'people', label: 'People' },
+    ]}
+/>
 ```
-
-See [Using in a `<ReferenceInput>`](#using-in-a-referenceinput) below for more details.
 
 `optionText` also accepts a function, so you can shape the option text at will:
 
@@ -371,6 +383,28 @@ const FullNameField = () => {
 }
 
 <SelectInput source="author_id" choices={choices} optionText={<FullNameField />}/>
+```
+
+`optionText` is also useful when the choices are records [fetched from another resource](#fetching-choices), and `<SelectInput>` is a child of a [`<ReferenceInput>`](./ReferenceInput.md). 
+
+```jsx
+import { SelectInput, ReferenceInput } from 'react-admin';
+
+<ReferenceInput label="Author" source="author_id" reference="authors">
+    <SelectInput />
+</ReferenceInput>
+```
+
+In that case, react-admin uses the [`recordRepresentation`](./Resource.md#recordrepresentation) of the related resource to display the record label. In the example above, `<SelectInput>` uses the resource representation of the `authors` resource, which is the `name` property.
+
+But if you set the `optionText` prop, react-admin uses it instead of relying on `recordRepresentation`.
+
+```jsx
+import { SelectInput, ReferenceInput } from 'react-admin';
+
+<ReferenceInput label="Author" source="author_id" reference="authors">
+    <SelectInput optionText="last_name" />
+</ReferenceInput>
 ```
 
 ## `optionValue`
@@ -425,19 +459,61 @@ However, in some cases, you may not want the choice to be translated. In that ca
 
 Note that `translateChoice` is set to `false` when `<SelectInput>` is a child of `<ReferenceInput>`.
 
-## Using In A ReferenceInput
+## Fetching Choices
 
-If you want to populate the `choices` attribute with a list of related records, you should decorate `<SelectInput>` with [`<ReferenceInput>`](./ReferenceInput.md), and leave the `choices` empty:
+You can use [`useGetList`](./useGetList.md) to fetch choices. For example, to fetch a list of authors for a post:
 
 ```jsx
-import { SelectInput, ReferenceInput } from 'react-admin';
+import { useGetList, Create, SimpleForm, SelectInput } from 'react-admin';
 
-<ReferenceInput label="Author" source="author_id" reference="authors">
-    <SelectInput />
-</ReferenceInput>
+const PostCreate = () => {
+    const { data, isLoading } = useGetList('authors');
+    return (
+        <Create>
+            <SimpleForm>
+                ...
+                <SelectInput 
+                    label="Authors"
+                    source="author_id"
+                    choices={data}
+                    optionText="name"
+                    disabled={isLoading}
+                />
+            </SimpleForm>
+        </Create>
+    );
+}
 ```
 
-In that case, `<SelectInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to render each choice from the list of possible records. You can override this behavior by setting the `optionText` prop:
+But there is a better, declarative way. You can wrap the `<SelectInput>` inside a [`<ReferenceInput>`](./ReferenceInput.md) instead:
+
+```jsx
+import { Create, SimpleForm, SelectInput, ReferenceInput } from 'react-admin';
+
+const PostCreate = () => (
+    <Create>
+        <SimpleForm>
+            ...
+            <ReferenceInput label="Author" source="author_id" reference="authors">
+                <SelectInput />
+            </ReferenceInput>
+        </SimpleForm>
+    </Create>
+);
+```
+
+`<ReferenceInput>` is a headless component that:
+ 
+ - creates a `ChoiceContext` and puts its props (`label`, `source`, etc) in the context value,
+ - fetches a list of records with `dataProvider.getList()`, using the `reference` prop for the resource,
+ - puts the result of the fetch in the `ChoiceContext` as the `choices` prop,
+ - and renders its child component
+
+When rendered as a child of `<ReferenceInput>`, `<SelectInput>` reads that `ChoiceContext` to populate its own props, including `choices`.
+
+`<ReferenceInput>` is much more powerful than the initial snippet. It fetches the related record (the one pointed by the current `author_id` value) in addition to the list of choices, optimizes and caches API calls, and handles loading state. It is designed for many-to-one and one-to-one relationships via foreign keys, like the post-author example (one post has one author via the `author_id` value). See the [`<ReferenceInput>` documentation](./ReferenceInput.md) for more details.
+
+When used inside `<ReferenceInput>`, `<SelectInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to determine how to represent the related choices. In the example above, the `authors` resource uses `name` as its `recordRepresentation`, so `<SelectInput>` will default to `optionText="name"`. You can override this behavior by setting [the `optionText` prop](#optiontext) on the `<SelectInput>`:
 
 ```jsx
 import { SelectInput, ReferenceInput } from 'react-admin';
