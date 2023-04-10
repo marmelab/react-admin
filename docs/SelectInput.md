@@ -56,6 +56,7 @@ The form value for the source must be the selected value, e.g.
 | `disableValue`    | Optional | `string`                   | 'disabled'         | The custom field name used in `choices` to disable some choices                                                                        |
 | `emptyText`       | Optional | `string`                   | ''                 | The text to display for the empty option                                                                                               |
 | `emptyValue`      | Optional | `any`                      | ''                 | The value to use for the empty option                                                                                                  |
+| `isLoading`       | Optional | `boolean`                  | `false`            | If `true`, the component will display a loading indicator.                                                                             |
 | `onCreate`        | Optional | `Function`                 | `-`                | A function called with the current filter value when users choose to create a new choice.                                              |
 | `options`         | Optional | `Object`                   | -                  | Props to pass to the underlying `<SelectInput>` element                                                                                |
 | `optionText`      | Optional | `string` &#124; `Function` &#124; `Component` | `undefined` &#124; `record Representation` | Field name of record to display in the suggestion item or function using the choice object as argument |
@@ -273,6 +274,28 @@ You can override this value with the `emptyValue` prop.
 
 **Tip**: While you can set `emptyValue` to a non-string value (e.g. `0`), you cannot use `null` or `undefined`, as it would turn the `<SelectInput>` into an [uncontrolled component](https://reactjs.org/docs/uncontrolled-components.html). If you need the empty choice to be stored as `null` or `undefined`, use [the `parse` prop](./Inputs.md#parse) to convert the default empty value ('') to `null` or `undefined`, or use [the `sanitizeEmptyValues` prop](./SimpleForm.md#sanitizeemptyvalues) on the Form component. 
 
+## `isLoading`
+
+When [fetching choices from a remote API](#fetching-choices), the `<SelectInput>` can't be used until the choices are fetched. To let the user know, you can pass the `isLoading` prop to `<SelectInput>`. This displays a loading indicator while the choices are being fetched.
+
+```jsx
+import { useGetList, SelectInput } from 'react-admin';
+
+const UserCountry = () => {
+    const { data, isLoading } = useGetList('countries');
+    // data is an array of { id: 123, code: 'FR', name: 'France' }
+    return (
+        <SelectInput 
+            source="country"
+            choices={data}
+            optionText="name"
+            optionValue="code"
+            isLoading={isLoading}
+        />
+    );
+}
+```
+
 ## `onCreate`
 
 Use the `onCreate` prop to allow users to create new options on-the-fly. Its value must be a function. This lets you render a `prompt` to ask users about the new value. You can return either the new choice directly or a Promise resolving to the new choice.
@@ -461,67 +484,105 @@ Note that `translateChoice` is set to `false` when `<SelectInput>` is a child of
 
 ## Fetching Choices
 
-You can use [`useGetList`](./useGetList.md) to fetch choices. For example, to fetch a list of authors for a post:
+You can use [`useGetList`](./useGetList.md) to fetch choices. For example, to fetch a list of countries for a user profile:
 
 ```jsx
-import { useGetList, Create, SimpleForm, SelectInput } from 'react-admin';
+import { useGetList, SelectInput } from 'react-admin';
 
-const PostCreate = () => {
-    const { data, isLoading } = useGetList('authors');
+const UserCountry = () => {
+    const { data, isLoading } = useGetList('countries');
+    // data is an array of { id: 123, code: 'FR', name: 'France' }
     return (
-        <Create>
-            <SimpleForm>
-                ...
-                <SelectInput 
-                    label="Authors"
-                    source="author_id"
-                    choices={data}
-                    optionText="name"
-                    disabled={isLoading}
-                />
-            </SimpleForm>
-        </Create>
+        <SelectInput 
+            source="country"
+            choices={data}
+            optionText="name"
+            optionValue="code"
+            isLoading={isLoading}
+        />
     );
 }
 ```
 
-But there is a better, declarative way. You can wrap the `<SelectInput>` inside a [`<ReferenceInput>`](./ReferenceInput.md) instead:
+The `isLoading` prop is used to display a loading indicator while the data is being fetched.
+
+But most of the time, if you need to populate a `<SelectInput>` with choices fetched from another resource, it's because you're trying to set a foreign key. In that case, you should use [`<ReferenceInput>`](./ReferenceInput.md) to fetch the choices instead (see next section). 
+
+## Selecting a Foreign Key
+
+If you use `<SelectInput>` to set a foreign key for a many-to-one or a one-to-one relationship, you'll have to [fetch choices](#fetching-choices), as explained in the previous section. You'll also have to fetch the record corresponding to the current value of the foreign key, as it may not be in the list of choices. 
+
+For example, if a `contact` has one `company` via the `company_id` foreign key, a contact form can let users select a company as follows:
 
 ```jsx
-import { Create, SimpleForm, SelectInput, ReferenceInput } from 'react-admin';
+import { useGetList, useGetOne, SelectInput } from 'react-admin';
+import { useWatch } from 'react-hook-form';
 
-const PostCreate = () => (
-    <Create>
-        <SimpleForm>
-            ...
-            <ReferenceInput label="Author" source="author_id" reference="authors">
-                <SelectInput />
-            </ReferenceInput>
-        </SimpleForm>
-    </Create>
+const CompanyInput = () => {
+    // fetch possible companies
+    const { data: choices, isLoading: isLoadingChoices } = useGetList('companies');
+    // companies are like { id: 123, name: 'Acme' }
+    // get the current value of the foreign key
+    const companyId = useWatch({ name: 'company_id'})
+    // fetch the current company
+    const { data: currentCompany, isLoading: isLoadingCurrentCompany } = useGetOne('companies', { id: companyId });
+    // if the current company is not in the list of possible companies, add it
+    const choicesWithCurrentCompany = choices
+        ? choices.find(choice => choice.id === companyId)
+            ? choices
+            : [...choices, currentCompany]
+        : [];
+    return (
+        <SelectInput 
+            label="Company"
+            source="company_id"
+            choices={choicesWithCurrentCompany}
+            optionText="name"
+            disabled={isLoading}
+        />
+    );
+}
+```
+
+As this is a common task, react-admin provides a shortcut to do the same in a declarative way: [`<ReferenceInput>`](./ReferenceInput.md):
+
+```jsx
+import { ReferenceInput, SelectInput } from 'react-admin';
+
+const CompanyInput = () => (
+    <ReferenceInput reference="companies" source="company_id">
+        <SelectInput 
+            label="Company"
+            source="company_id"
+            optionText="name"
+        />
+    </ReferenceInput>
 );
 ```
 
 `<ReferenceInput>` is a headless component that:
  
- - creates a `ChoiceContext` and puts its props (`label`, `source`, etc) in the context value,
- - fetches a list of records with `dataProvider.getList()`, using the `reference` prop for the resource,
- - puts the result of the fetch in the `ChoiceContext` as the `choices` prop,
+ - fetches a list of records with `dataProvider.getList()` and `dataProvider.getOne()`, using the `reference` prop for the resource,
+ - puts the result of the fetch in the `ChoiceContext` as the `choices` prop, as well as the `isLoading` state,
  - and renders its child component
 
-When rendered as a child of `<ReferenceInput>`, `<SelectInput>` reads that `ChoiceContext` to populate its own props, including `choices`.
+When rendered as a child of `<ReferenceInput>`, `<SelectInput>` reads that `ChoiceContext` to populate its own `choices` and `isLoading` props.
 
-`<ReferenceInput>` is much more powerful than the initial snippet. It fetches the related record (the one pointed by the current `author_id` value) in addition to the list of choices, optimizes and caches API calls, and handles loading state. It is designed for many-to-one and one-to-one relationships via foreign keys, like the post-author example (one post has one author via the `author_id` value). See the [`<ReferenceInput>` documentation](./ReferenceInput.md) for more details.
-
-When used inside `<ReferenceInput>`, `<SelectInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to determine how to represent the related choices. In the example above, the `authors` resource uses `name` as its `recordRepresentation`, so `<SelectInput>` will default to `optionText="name"`. You can override this behavior by setting [the `optionText` prop](#optiontext) on the `<SelectInput>`:
+In fact, `<ReferenceInput>` puts all its props inside the `ChoiceContext`, ready for its children to use. And `<SelectInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to determine how to represent the related choices. In the example above, the `companies` resource uses `name` as its `recordRepresentation`, so `<SelectInput>` will default to `optionText="name"`. This means that you can simplify the previous example even further by lifting the `label` prop to the `<ReferenceInput>`, and removing the `source` and `optionText` props from `<SelectInput>`:
 
 ```jsx
-import { SelectInput, ReferenceInput } from 'react-admin';
+import { ReferenceInput, SelectInput } from 'react-admin';
 
-<ReferenceInput label="Author" source="author_id" reference="authors">
-    <SelectInput optionText="last_name" />
-</ReferenceInput>
+const CompanyInput = () => (
+    <ReferenceInput reference="companies" source="company_id" label="Company">
+        <SelectInput />
+    </ReferenceInput>
+);
 ```
+
+This is the recommended way to use `<SelectInput>` to select a foreign key. `<ReferenceInput>` expresses that the input is not just a `<SelectInput>`, but a `<SelectInput>` that fetches choices from another resource. It also makes the code more readable.
+
+**Tip**: `<ReferenceInput>` is much more powerful than the initial snippet. It optimizes and caches API calls, allows to refetch both API calls in one command, and stores additional data in the `<ChoicesContext>`. It can provide choices to `<SelectInput>`, but also to [`<AutocompleteInput>`](./AutocompleteInput.md) and [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md). See [the `<ReferenceInput>` documentation](./ReferenceInput.md) for more details.
 
 ## Creating New Choices
 
