@@ -21,8 +21,8 @@ import { BooleanField } from 'react-admin';
 | ----------------- | -------- | ---------------------------- |-----------------------------|----------------------------------------------------------------------|
 | `valueLabelTrue`  | Optional | `string`                     | 'true'                      | Aria label for the truthy value                                      |
 | `valueLabelFalse` | Optional | `string`                     | 'false'                     | Aria label for the falsy value                                       |
-| `TrueIcon`        | Optional | `SvgIconComponent` or `null` | `@mui/icons-material/Done`  | Icon to show for the truthy value                                    |
-| `FalseIcon`       | Optional | `SvgIconComponent` or `null` | `@mui/icons-material/Clear` | Icon to show for the falsy value                                     |
+| `TrueIcon`        | Optional | `SvgIconComponent` or `false` | `@mui/icons-material/Done`  | Icon to show for the truthy value                                    |
+| `FalseIcon`       | Optional | `SvgIconComponent` or `false` | `@mui/icons-material/Clear` | Icon to show for the falsy value                                     |
 | `looseValue`      | Optional | `boolean`                    | `false`                     | If `true` the field's value is not evaluated strictly as a `boolean` |
 
 `<BooleanField>` also accepts the [common field props](./Fields.md#common-field-props).
@@ -60,10 +60,10 @@ import AlarmOffIcon from '@mui/icons-material/AlarmOff';
 <BooleanField source="alarm" TrueIcon={AlarmOnIcon} FalseIcon={AlarmOffIcon} />
 ```
 
-**Tip:** You can also use `null` to hide one of the icons.
+**Tip:** You can also use `false` to hide one of the icons.
 
 ```jsx
 import AlarmOnIcon from '@mui/icons-material/AlarmOn';
 
-<BooleanField source="alarm" TrueIcon={AlarmOnIcon} FalseIcon={null} />
+<BooleanField source="alarm" TrueIcon={AlarmOnIcon} FalseIcon={false} />
 ```
