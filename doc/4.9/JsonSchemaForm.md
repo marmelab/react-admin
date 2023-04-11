@@ -11,7 +11,7 @@ For instance, to generate the following form:
 
 ![JsonSchemaForm](https://marmelab.com/ra-enterprise/modules/assets/jsonschemaform.webp)
 
-Configure the <Edit> view with a <JsonSchemaForm> child as follows:
+Configure the `<Edit>` view with a `<JsonSchemaForm>` child as follows:
 
 {% raw %}
 ```jsx

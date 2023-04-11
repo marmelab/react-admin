@@ -24,7 +24,7 @@ One of the most important features of the List page is the ability to filter the
     <td style="width:50%;border:none;text-align:center">
         <a title="Stacked Filters" href="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm">
             <video controls autoplay muted loop width="90%" style="margin:1rem;box-shadow:0px 4px 4px 0px rgb(0 0 0 / 24%);">
-                <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4">
+                <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4" />
                     Your browser does not support the video tag.
             </video>
         </a>
@@ -177,7 +177,7 @@ Finally, a filter sidebar is the ideal place to display the user's favorite filt
 ## The `<StackedFilters>` Component
 
 <video controls autoplay muted loop width="100%">
-    <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4">
+    <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4" />
         Your browser does not support the video tag.
 </video>
 
