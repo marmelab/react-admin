@@ -61,6 +61,7 @@ The form value for the source must be the selected value, e.g.
 | `emptyText`                | Optional | `string`              | `''`                                                                | The text to use for the empty element                                                                                                                                                                               |
 | `emptyValue`               | Optional | `any`                 | `''`                                                                | The value to use for the empty element                                                                                                                                                                              |
 | `filterToQuery`            | Optional | `string` => `Object`  | `q => ({ q })`                                                      | How to transform the searchText into a parameter for the data provider                                                                                                                                              |
+| `isLoading`                | Optional | `boolean`             | `false`                                                             | If `true`, the component will display a loading indicator.                                                                                                                                                          |
 | `inputText`                | Optional | `Function`            | `-`                                                                 | Required if `optionText` is a custom Component, this function must return the text displayed for the current selection.                                                                                             |
 | `matchSuggestion`          | Optional | `Function`            | `-`                                                                 | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`                                                             |
 | `onCreate`                 | Optional | `Function`            | `-`                                                                 | A function called with the current filter value when users choose to create a new choice.                                                                                                                           |
@@ -70,7 +71,6 @@ The form value for the source must be the selected value, e.g.
 | `shouldRender Suggestions` | Optional | `Function`            | `() => true`                                                        | A function that returns a `boolean` to determine whether or not suggestions are rendered.                                                                                                                           |
 | `suggestionLimit`          | Optional | `number`              | `null`                                                              | Limits the numbers of suggestions that are shown in the dropdown list                                                                                                                                               |
 | `translateChoice`          | Optional | `boolean`             | `true`                                                              | Whether the choices should be translated                                                                                                                                                                            |
-
 
 `<AutocompleteInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
@@ -263,6 +263,28 @@ const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
 <ReferenceInput label="Author" source="author_id" reference="authors">
     <AutocompleteInput filterToQuery={filterToQuery} />
 </ReferenceInput>
+```
+
+## `isLoading`
+
+When [fetching choices from a remote API](#fetching-choices), the `<AutocompleteInput>` can't be used until the choices are fetched. To let the user know, you can pass the `isLoading` prop to `<AutocompleteInput>`. This displays a loading message in the autocomplete box while the choices are being fetched.
+
+```jsx
+import { useGetList, AutocompleteInput } from 'react-admin';
+
+const UserCountry = () => {
+    const { data, isLoading } = useGetList('countries');
+    // data is an array of { id: 123, code: 'FR', name: 'France' }
+    return (
+        <AutocompleteInput 
+            source="country"
+            choices={data}
+            optionText="name"
+            optionValue="code"
+            isLoading={isLoading}
+        />
+    );
+}
 ```
 
 ## `onCreate`

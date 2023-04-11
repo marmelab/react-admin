@@ -121,6 +121,28 @@ const choices = possibleValues.map(value => ({ id: value, name: ucfirst(value) }
 <RadioButtonGroupInput source="category" choices={choices} />
 ```
 
+## `isLoading`
+
+When [fetching choices from a remote API](#fetching-choices), the `<RadioButtonGroupInput>` can't be used until the choices are fetched. To let the user know, you can pass the `isLoading` prop to `<RadioButtonGroupInput>`. This displays a loading indicator while the choices are being fetched.
+
+```jsx
+import { useGetList, RadioButtonGroupInput } from 'react-admin';
+
+const UserCountry = () => {
+    const { data, isLoading } = useGetList('countries');
+    // data is an array of { id: 123, code: 'FR', name: 'France' }
+    return (
+        <RadioButtonGroupInput 
+            source="country"
+            choices={data}
+            optionText="name"
+            optionValue="code"
+            isLoading={isLoading}
+        />
+    );
+}
+```
+
 ## `options`
 
 Use the `options` attribute if you want to override any of MUI's `<RadioGroup>` attributes:
