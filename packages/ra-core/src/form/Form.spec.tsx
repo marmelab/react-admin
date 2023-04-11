@@ -640,4 +640,25 @@ describe('Form', () => {
         render(<NullValue />);
         // no assertion needed: if there is a console error, the test fails
     });
+
+    it('should only validate inputs on submit', async () => {
+        let validate = jest.fn();
+        render(
+            <CoreAdminContext>
+                <Form onSubmit={jest.fn()}>
+                    <Input source="name" validate={validate} />
+                    <button type="submit">Submit</button>
+                </Form>
+            </CoreAdminContext>
+        );
+
+        fireEvent.change(screen.getByLabelText('name'), {
+            target: { value: 'hello' },
+        });
+        expect(validate).not.toHaveBeenCalled();
+        fireEvent.click(screen.getByText('Submit'));
+        await waitFor(() => {
+            expect(validate).toHaveBeenCalled();
+        });
+    });
 });
