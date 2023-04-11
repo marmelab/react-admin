@@ -41,8 +41,8 @@ The form value for the source must be the selected value, e.g.
 
 **Tip**: React-admin includes other components to edit such values:
 
- - [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md) renders a list of radio buttons
  - [`<AutocompleteInput>`](./AutocompleteInput.md) renders a list of suggestions in an autocomplete input
+ - [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md) renders a list of radio buttons
 
 **Tip**: If you need to let users select more than one item in the list, check out the [`<SelectArrayInput>`](./SelectArrayInput.md) component.
 
@@ -506,7 +506,7 @@ const UserCountry = () => {
 
 The `isLoading` prop is used to display a loading indicator while the data is being fetched.
 
-But most of the time, if you need to populate a `<SelectInput>` with choices fetched from another resource, it's because you're trying to set a foreign key. In that case, you should use [`<ReferenceInput>`](./ReferenceInput.md) to fetch the choices instead (see next section). 
+However, most of the time, if you need to populate a `<SelectInput>` with choices fetched from another resource, it's because you are trying to set a foreign key. In that case, you should use [`<ReferenceInput>`](./ReferenceInput.md) to fetch the choices instead (see next section). 
 
 ## Selecting a Foreign Key
 
@@ -568,7 +568,13 @@ const CompanyInput = () => (
 
 When rendered as a child of `<ReferenceInput>`, `<SelectInput>` reads that `ChoiceContext` to populate its own `choices` and `isLoading` props.
 
-In fact, `<ReferenceInput>` puts all its props inside the `ChoiceContext`, ready for its children to use. And `<SelectInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to determine how to represent the related choices. In the example above, the `companies` resource uses `name` as its `recordRepresentation`, so `<SelectInput>` will default to `optionText="name"`. This means that you can simplify the previous example even further by lifting the `label` prop to the `<ReferenceInput>`, and removing the `source` and `optionText` props from `<SelectInput>`:
+In fact, you can simplify the code even further:
+
+- `<ReferenceInput>` puts all its props inside the `ChoiceContext`, including `source`, so `<SelectInput>` doesn't need to repeat it.
+- You can also put the `label` prop on the `<ReferenceInput>` rather than `<SelectInput>` so that it looks just like [`<ReferenceField>`](./ReferenceField.md) (for easier memorization). 
+- `<SelectInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to determine how to represent the related choices. In the example above, the `companies` resource uses `name` as its `recordRepresentation`, so `<SelectInput>` will default to `optionText="name"`. 
+
+The code for the `<CompanyInput>` component can be reduced to:
 
 ```jsx
 import { ReferenceInput, SelectInput } from 'react-admin';
@@ -580,9 +586,9 @@ const CompanyInput = () => (
 );
 ```
 
-This is the recommended way to use `<SelectInput>` to select a foreign key. `<ReferenceInput>` expresses that the input is not just a `<SelectInput>`, but a `<SelectInput>` that fetches choices from another resource. It also makes the code more readable.
+This is the recommended approach for using `<SelectInput>` to select a foreign key. This not only signifies that the input is a `<SelectInput>` but also highlights its function in fetching choices from another resource, ultimately enhancing the code's readability.
 
-**Tip**: `<ReferenceInput>` is much more powerful than the initial snippet. It optimizes and caches API calls, allows to refetch both API calls in one command, and stores additional data in the `<ChoicesContext>`. It can provide choices to `<SelectInput>`, but also to [`<AutocompleteInput>`](./AutocompleteInput.md) and [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md). See [the `<ReferenceInput>` documentation](./ReferenceInput.md) for more details.
+**Tip**: `<ReferenceInput>` is much more powerful than the initial snippet. It optimizes and caches API calls, enables refetching of both API calls with a single command, and stores supplementary data in the `<ChoicesContext>`. `<ReferenceInput>` can provide choices to `<SelectInput>`, but also to [`<AutocompleteInput>`](./AutocompleteInput.md) and [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md). For further information, refer to [the `<ReferenceInput>` documentation](./ReferenceInput.md).
 
 ## Creating New Choices
 
