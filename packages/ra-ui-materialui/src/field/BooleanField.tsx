@@ -93,8 +93,8 @@ export interface BooleanFieldProps
         Omit<TypographyProps, 'textAlign'> {
     valueLabelTrue?: string;
     valueLabelFalse?: string;
-    TrueIcon?: SvgIconComponent | boolean;
-    FalseIcon?: SvgIconComponent | boolean;
+    TrueIcon?: SvgIconComponent | false;
+    FalseIcon?: SvgIconComponent | false;
     looseValue?: boolean;
 }
 
