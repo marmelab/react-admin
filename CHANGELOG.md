@@ -1,5 +1,15 @@
 # Changelog
 
+## v4.9.2
+
+* Fix `addRefreshAuthToAuthProvider` should not try to call `getIdentity` if it does not exist on the original `AuthProvider` ([#8810](https://github.com/marmelab/react-admin/pull/8810)) ([djhi](https://github.com/djhi))
+* Fix `editorProps` prop is ignored in `<RichTextInput>` ([#8809](https://github.com/marmelab/react-admin/pull/8809)) ([ArnaudD](https://github.com/ArnaudD))
+* Fix `useReferenceArrayInputController` does not pass `meta` to `getMany` ([#8803](https://github.com/marmelab/react-admin/pull/8803)) ([djhi](https://github.com/djhi))
+* Fix `<FilterForm>` infinite loop when used in a `<ReferenceManyField>` ([#8800](https://github.com/marmelab/react-admin/pull/8800)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix layout padding inconsistency on low resolution screens ([#8794](https://github.com/marmelab/react-admin/pull/8794)) ([soullivaneuh](https://github.com/soullivaneuh))
+* [Doc] Fix various markdown syntax warnings causing incorrect HTML ([#8818](https://github.com/marmelab/react-admin/pull/8818)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Update chinese(zh) locale package ([#8813](https://github.com/marmelab/react-admin/pull/8813)) ([haxqer](https://github.com/haxqer))
+
 ## v4.9.1
 
 * Fix `<ReferenceInput>` logs warning on deselection ([#8788](https://github.com/marmelab/react-admin/pull/8788)) ([slax57](https://github.com/slax57))
