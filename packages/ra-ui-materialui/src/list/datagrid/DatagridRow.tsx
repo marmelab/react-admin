@@ -241,7 +241,11 @@ DatagridRow.propTypes = {
     record: PropTypes.object,
     resource: PropTypes.string,
     // @ts-ignore
-    rowClick: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+    rowClick: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.func,
+        PropTypes.bool,
+    ]),
     selected: PropTypes.bool,
     style: PropTypes.object,
     selectable: PropTypes.bool,

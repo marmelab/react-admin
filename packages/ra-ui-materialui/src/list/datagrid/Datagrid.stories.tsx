@@ -403,3 +403,14 @@ export const ErrorInFetch = () => (
         </ListContextProvider>
     </MemoryRouter>
 );
+
+export const RowClickFalse = () => (
+    <Wrapper>
+        <Datagrid rowClick={false}>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </Wrapper>
+);
