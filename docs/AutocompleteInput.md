@@ -590,7 +590,7 @@ const CompanyInput = () => (
 
 This is the recommended approach for using `<AutocompleteInput>` to select a foreign key. This not only signifies that the input is a `<AutocompleteInput>` but also highlights its function in fetching choices from another resource, ultimately enhancing the code's readability.
 
-**Tip**: `<ReferenceInput>` is much more powerful than the initial snippet. It optimizes and caches API calls, enables refetching of both API calls with a single command, and stores supplementary data in the `<ChoicesContext>`. `<ReferenceInput>` can provide choices to `<AutocompleteInput>`, but also to [`<RadioButtonInput>`](./RadioButtonInput.md) and [`<SelectInput>`](./SelectInput.md). For further information, refer to [the `<ReferenceInput>` documentation](./ReferenceInput.md).
+**Tip**: `<ReferenceInput>` is much more powerful than the initial snippet. It optimizes and caches API calls, enables refetching of both API calls with a single command, and stores supplementary data in the `<ChoicesContext>`. `<ReferenceInput>` can provide choices to `<AutocompleteInput>`, but also to [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md) and [`<SelectInput>`](./SelectInput.md). For further information, refer to [the `<ReferenceInput>` documentation](./ReferenceInput.md).
 
 `<AutocompleteInput>` uses [the `filterToQuery` prop](#filtertoquery) to determine how to map the input string into a filter. You may want to customize that function to match the filtering capabilities of your API:
 
