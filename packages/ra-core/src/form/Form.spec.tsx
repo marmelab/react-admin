@@ -109,10 +109,11 @@ describe('Form', () => {
     });
 
     it('should update Form state on submit', async () => {
-        let globalFormState;
+        let isSubmitting;
 
         const CustomInput = props => {
-            globalFormState = useFormContext();
+            const formContext = useFormContext();
+            isSubmitting = formContext.formState.isSubmitting;
 
             return <Input {...props} />;
         };
@@ -128,7 +129,7 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
-            assert.equal(globalFormState.formState.isSubmitting, true);
+            assert.equal(isSubmitting, true);
         });
     });
 
