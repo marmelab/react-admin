@@ -116,7 +116,7 @@ const choices = [
 
 You can opt-out of this translation by setting [the `translateChoice` prop](#translatechoice) to `false`.
 
-If you need to *fetch* the options from another resource, you're actually editing a many-to-one or a one-to-one relationship. In this case, wrap the `<AutocompleteInput>` in a [`<ReferenceInput>`](./ReferenceInput.md). You don't need to specify the `choices` prop - the parent component injects it based on the possible values of the related resource.
+If you need to *fetch* the options from another resource, you're usually editing a many-to-one or a one-to-one relationship. In this case, wrap the `<AutocompleteInput>` in a [`<ReferenceInput>`](./ReferenceInput.md). You don't need to specify the `choices` prop - the parent component injects it based on the possible values of the related resource.
 
 ```jsx
 <ReferenceInput label="Author" source="author_id" reference="authors">
@@ -124,7 +124,7 @@ If you need to *fetch* the options from another resource, you're actually editin
 </ReferenceInput>
 ```
 
-See [Using in a `ReferenceInput>`](#using-in-a-referenceinput) below for more information.
+See [Selecting a foreign key](#selecting-a-foreign-key) below for more information.
 
 If you have an *array of values* for the options, turn it into an array of objects with the `id` and `name` properties:
 

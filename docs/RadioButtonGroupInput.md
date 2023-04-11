@@ -109,7 +109,7 @@ If you need to *fetch* the options from another resource, you're actually editin
 </ReferenceInput>
 ```
 
-See [Using in a `<ReferenceInput>`](#using-in-a-referenceinput) below for more information.
+See [Selecting a foreign key](#selecting-a-foreign-key) below for more information.
 
 If you have an *array of values* for the options, turn it into an array of objects with the `id` and `name` properties:
 
