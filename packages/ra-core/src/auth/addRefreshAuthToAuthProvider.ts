@@ -26,9 +26,9 @@ export const addRefreshAuthToAuthProvider = (
 ): AuthProvider => {
     const proxy = new Proxy(provider, {
         get(_, name) {
-            const shouldIntercept = AuthProviderInterceptedMethods.includes(
-                name.toString()
-            );
+            const shouldIntercept =
+                AuthProviderInterceptedMethods.includes(name.toString()) &&
+                provider[name.toString()] != null;
 
             if (shouldIntercept) {
                 return async (...args: any[]) => {

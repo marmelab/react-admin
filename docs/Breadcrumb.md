@@ -10,7 +10,7 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 The `<Breadcrumb>` component is designed to be integrated into the app layout. Each page can define its location using a hook, and the breadcrumb reflects that location. Breadcrumb items can be customized to include data from the current context (e.g. the name of the current record).
 
 <video controls autoplay muted loop width="100%">
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/breadcumb-nested-resource.webm" type="video/webm"/>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/breadcumb-nested-resource.webm" type="video/webm" />
   Your browser does not support the video tag.
 </video>
 

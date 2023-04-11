@@ -8,7 +8,7 @@ title: "The AppBar Component"
 The default react-admin layout renders a horizontal app bar at the top, which is rendered by the `<AppBar>` component.
 
 <video controls autoplay muted loop width="100%">
-  <source src="./img/AppBar.webm" type="video/webm"/>
+  <source src="./img/AppBar.webm" type="video/webm" />
   Your browser does not support the video tag.
 </video>
 

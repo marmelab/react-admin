@@ -768,7 +768,7 @@ The [`<Pagination>`](./Pagination.md) component gets the following constants fro
 * `actions`: A component that displays the pagination buttons (default: `<PaginationActions>`)
 * `limit`: An element that is displayed if there is no data to show (default: `<PaginationLimit>`)
 
-If you want to replace the default pagination by a "<previous - next>" pagination, create a pagination component like the following:
+If you want to replace the default pagination by a "&lt; previous - next &gt;" pagination, create a pagination component like the following:
 
 ```jsx
 import { useListContext } from 'react-admin';
