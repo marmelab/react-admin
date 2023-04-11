@@ -489,7 +489,7 @@ You can use [`useGetList`](./useGetList.md) to fetch choices. For example, to fe
 ```jsx
 import { useGetList, SelectInput } from 'react-admin';
 
-const UserCountry = () => {
+const CountryInput = () => {
     const { data, isLoading } = useGetList('countries');
     // data is an array of { id: 123, code: 'FR', name: 'France' }
     return (
