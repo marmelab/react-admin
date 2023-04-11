@@ -462,66 +462,120 @@ In that case, set the `translateChoice` prop to `false`.
 
 ## Fetching Choices
 
-You can use [`useGetList`](./useGetList.md) to fetch choices. For example, to fetch a list of authors for a post:
+You can use [`useGetList`](./useGetList.md) to fetch choices. For example, to fetch a list of countries for a user profile:
 
 ```jsx
-import { useGetList, Create, SimpleForm, AutocompleteInput } from 'react-admin';
+import { useGetList, AutocompleteInput } from 'react-admin';
 
-const PostCreate = () => {
-    const { data, isLoading } = useGetList('authors');
+const CountryInput = () => {
+    const { data, isLoading } = useGetList('countries');
+    // data is an array of { id: 123, code: 'FR', name: 'France' }
     return (
-        <Create>
-            <SimpleForm>
-                ...
-                <AutocompleteInput 
-                    label="Authors"
-                    source="author_id"
-                    choices={data}
-                    optionText="name"
-                    disabled={isLoading}
-                />
-            </SimpleForm>
-        </Create>
+        <AutocompleteInput 
+            source="country"
+            choices={data}
+            optionText="name"
+            optionValue="code"
+            isLoading={isLoading}
+        />
     );
 }
 ```
 
-However, when users type a few letters in the autocomplete input, the list of choices is just filtered locally - that's probably not what you want. 
+The `isLoading` prop is used to display a loading indicator while the data is being fetched.
 
-The right way to fetch choices AND use the input value as filter is to wrap the `<AutocompleteInput>` inside a [`<ReferenceInput>`](./ReferenceInput.md). 
+However, most of the time, if you need to populate a `<AutocompleteInput>` with choices fetched from another resource, it's because you are trying to set a foreign key. In that case, you should use [`<ReferenceInput>`](./ReferenceInput.md) to fetch the choices instead (see next section). 
+
+## Selecting a Foreign Key
+
+If you use `<AutocompleteInput>` to set a foreign key for a many-to-one or a one-to-one relationship, you'll have to [fetch choices](#fetching-choices), as explained in the previous section. You'll also have to fetch the record corresponding to the current value of the foreign key, as it may not be in the list of choices. 
+
+For example, if a `contact` has one `company` via the `company_id` foreign key, a contact form can let users select a company as follows:
 
 ```jsx
-import { Create, SimpleForm, AutocompleteInput, ReferenceInput } from 'react-admin';
+import { useState } from 'react';
+import { useGetList, useGetOne, AutocompleteInput } from 'react-admin';
+import { useWatch } from 'react-hook-form';
 
-const PostCreate = () => (
-    <Create>
-        <SimpleForm>
-            ...
-            <ReferenceInput label="Author" source="author_id" reference="authors">
-                <AutocompleteInput />
-            </ReferenceInput>
-        </SimpleForm>
-    </Create>
+const CompanyInput = () => {
+    const [filter, setFilter] = useState({ q: '' });
+    // fetch possible companies
+    const { data: choices, isLoading: isLoadingChoices } = useGetList('companies', { filter });
+    // companies are like { id: 123, name: 'Acme' }
+    // get the current value of the foreign key
+    const companyId = useWatch({ name: 'company_id'})
+    // fetch the current company
+    const { data: currentCompany, isLoading: isLoadingCurrentCompany } = useGetOne('companies', { id: companyId });
+    // if the current company is not in the list of possible companies, add it
+    const choicesWithCurrentCompany = choices
+        ? choices.find(choice => choice.id === companyId)
+            ? choices
+            : [...choices, currentCompany]
+        : [];
+    return (
+        <AutocompleteInput 
+            label="Company"
+            source="company_id"
+            choices={choicesWithCurrentCompany}
+            optionText="name"
+            disabled={isLoading}
+            onInputChange={e => setFilter({ q: e.target.value })}
+        />
+    );
+}
+```
+
+As this is a common task, react-admin provides a shortcut to do the same in a declarative way: [`<ReferenceInput>`](./ReferenceInput.md):
+
+```jsx
+import { ReferenceInput, AutocompleteInput } from 'react-admin';
+
+const CompanyInput = () => (
+    <ReferenceInput reference="companies" source="company_id">
+        <AutocompleteInput 
+            label="Company"
+            source="company_id"
+            optionText="name"
+        />
+    </ReferenceInput>
 );
 ```
 
 `<ReferenceInput>` is a headless component that:
  
- - creates a `ChoiceContext` and puts its props (`label`, `source`, etc) in the context value,
- - fetches a list of records with `dataProvider.getList()`, using the `reference` prop for the resource,
- - puts the result of the fetch in the `ChoiceContext` as the `choices` prop,
+ - fetches a list of records with `dataProvider.getList()` and `dataProvider.getOne()`, using the `reference` prop for the resource,
+ - puts the result of the fetch in the `ChoiceContext` as the `choices` prop, as well as the `isLoading` state,
  - and renders its child component
 
-When rendered as a child of `<ReferenceInput>`, `<AutocompleteInput>` reads that `ChoiceContext` to populate its own props, including `choices`.
+When rendered as a child of `<ReferenceInput>`, `<AutocompleteInput>` reads that `ChoiceContext` to populate its own `choices` and `isLoading` props. It also sends the current input prop to the `useGetList` hook, so that the list of choices is filtered as the user types.
 
-Now, whenever users type a string in the autocomplete input, `<ReferenceInput>` calls `dataProvider.getList('authors', { filter: { q: [string] }})` (using the string as filter). As a consequence, `<AutocompleteInput>` renders a filtered list of possible options from the reference resource.
+In fact, you can simplify the code even further:
+
+- `<ReferenceInput>` puts all its props inside the `ChoiceContext`, including `source`, so `<AutocompleteInput>` doesn't need to repeat it.
+- You can also put the `label` prop on the `<ReferenceInput>` rather than `<AutocompleteInput>` so that it looks just like [`<ReferenceField>`](./ReferenceField.md) (for easier memorization). 
+- `<AutocompleteInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to determine how to represent the related choices. In the example above, the `companies` resource uses `name` as its `recordRepresentation`, so `<AutocompleteInput>` will default to `optionText="name"`. 
+- `<ReferenceInput>`'s default child is `<AutocompleteInput>`, so you can omit it entirely.
+
+The code for the `<CompanyInput>` component can be reduced to:
+
+```jsx
+import { ReferenceInput } from 'react-admin';
+
+const CompanyInput = () => (
+    <ReferenceInput reference="companies" source="company_id" label="Company" />
+);
+```
+
+This is the recommended approach for using `<AutocompleteInput>` to select a foreign key. This not only signifies that the input is a `<AutocompleteInput>` but also highlights its function in fetching choices from another resource, ultimately enhancing the code's readability.
+
+**Tip**: `<ReferenceInput>` is much more powerful than the initial snippet. It optimizes and caches API calls, enables refetching of both API calls with a single command, and stores supplementary data in the `<ChoicesContext>`. `<ReferenceInput>` can provide choices to `<AutocompleteInput>`, but also to [`<RadioButtonInput>`](./RadioButtonInput.md) and [`<SelectInput>`](./SelectInput.md). For further information, refer to [the `<ReferenceInput>` documentation](./ReferenceInput.md).
 
 `<AutocompleteInput>` uses [the `filterToQuery` prop](#filtertoquery) to determine how to map the input string into a filter. You may want to customize that function to match the filtering capabilities of your API:
 
 ```jsx
 const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
 
-<ReferenceInput label="Author" source="author_id" reference="authors">
+<ReferenceInput reference="companies" source="company_id" label="Company">
     <AutocompleteInput filterToQuery={filterToQuery} />
 </ReferenceInput>
 ```
@@ -529,25 +583,9 @@ const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
 Also, `<ReferenceInput>` doesn't call `dataProvider.getList()` on every keystroke. It waits for the user to stop typing for 250ms before calling the API. You can customize this delay using the `debounce` prop:
 
 ```jsx
-<ReferenceInput label="Author" source="author_id" reference="authors">
+<ReferenceInput reference="companies" source="company_id" label="Company">
     <AutocompleteInput debounce={500} />
 </ReferenceInput>
-```
-
-To determine how to represent the related choices, `<AutocompleteInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation). In the example above, the `authors` resource uses `name` as its `recordRepresentation`, so `<AutocompleteInput>` will default to `optionText="name"`. You can override the default record representation by setting the `optionText` prop on the `<AutocompleteInput>`:
-
-```jsx
-import { AutocompleteInput, ReferenceInput } from 'react-admin';
-
-<ReferenceInput label="Author" source="author_id" reference="authors">
-    <AutocompleteInput optionText="last_name" />
-</ReferenceInput>
-```
-
-**Tip**: `<ReferenceInput>` uses `<AutocompleteInput>` as its default child. This means that when you want to render an input to let users select a related record, you just need to write:
-
-```jsx
-<ReferenceInput label="Author" source="author_id" reference="authors" />
 ```
 
 ## Using A Custom Element For Options

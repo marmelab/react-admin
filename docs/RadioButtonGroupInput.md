@@ -50,7 +50,8 @@ The form value for the source must be the selected value, e.g.
 
 | Prop              | Required | Type                       | Default | Description                                                                                                                            |
 | ----------------- | -------- | -------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `choices`         | Optional | `Object[]`                 | -       | List of items to show as options. Required unless inside a ReferenceInput.                                                                                                        |
+| `choices`         | Optional | `Object[]`                 | -       | List of items to show as options. Required unless inside a ReferenceInput.                                                             |
+| `isLoading`       | Optional | `boolean`                  | `false` | If `true`, the component will display a loading indicator.                                                                             |
 | `options`         | Optional | `Object`                   | -       | Props to pass to the underlying `<RadioButtonGroup>` element                                                                           |
 | `optionText`      | Optional | `string` &#124; `Function` | `name`  | Field name of record to display in the suggestion item or function which accepts the current record as argument (`record => {string}`) |
 | `optionValue`     | Optional | `string`                   | `id`    | Field name of record containing the value to use as input value                                                                        |
