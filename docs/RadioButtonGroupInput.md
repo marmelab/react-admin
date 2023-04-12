@@ -275,13 +275,13 @@ Note that `translateChoice` is set to `false` when `<RadioButtonGroupInput>` is 
 You can use [`useGetList`](./useGetList.md) to fetch choices. For example, to fetch a list of countries for a user profile:
 
 ```jsx
-import { useGetList, RadioButtonInput } from 'react-admin';
+import { useGetList, RadioButtonGroupInput } from 'react-admin';
 
 const CountryInput = () => {
     const { data, isLoading } = useGetList('countries');
     // data is an array of { id: 123, code: 'FR', name: 'France' }
     return (
-        <RadioButtonInput 
+        <RadioButtonGroupInput 
             source="country"
             choices={data}
             optionText="name"
@@ -294,16 +294,16 @@ const CountryInput = () => {
 
 The `isLoading` prop is used to display a loading indicator while the data is being fetched.
 
-However, most of the time, if you need to populate a `<RadioButtonInput>` with choices fetched from another resource, it's because you are trying to set a foreign key. In that case, you should use [`<ReferenceInput>`](./ReferenceInput.md) to fetch the choices instead (see next section). 
+However, most of the time, if you need to populate a `<RadioButtonGroupInput>` with choices fetched from another resource, it's because you are trying to set a foreign key. In that case, you should use [`<ReferenceInput>`](./ReferenceInput.md) to fetch the choices instead (see next section). 
 
 ## Selecting a Foreign Key
 
-If you use `<RadioButtonInput>` to set a foreign key for a many-to-one or a one-to-one relationship, you'll have to [fetch choices](#fetching-choices), as explained in the previous section. You'll also have to fetch the record corresponding to the current value of the foreign key, as it may not be in the list of choices. 
+If you use `<RadioButtonGroupInput>` to set a foreign key for a many-to-one or a one-to-one relationship, you'll have to [fetch choices](#fetching-choices), as explained in the previous section. You'll also have to fetch the record corresponding to the current value of the foreign key, as it may not be in the list of choices. 
 
 For example, if a `contact` has one `company` via the `company_id` foreign key, a contact form can let users select a company as follows:
 
 ```jsx
-import { useGetList, useGetOne, RadioButtonInput } from 'react-admin';
+import { useGetList, useGetOne, RadioButtonGroupInput } from 'react-admin';
 import { useWatch } from 'react-hook-form';
 
 const CompanyInput = () => {
@@ -321,7 +321,7 @@ const CompanyInput = () => {
             : [...choices, currentCompany]
         : [];
     return (
-        <RadioButtonInput 
+        <RadioButtonGroupInput 
             label="Company"
             source="company_id"
             choices={choicesWithCurrentCompany}
@@ -335,11 +335,11 @@ const CompanyInput = () => {
 As this is a common task, react-admin provides a shortcut to do the same in a declarative way: [`<ReferenceInput>`](./ReferenceInput.md):
 
 ```jsx
-import { ReferenceInput, RadioButtonInput } from 'react-admin';
+import { ReferenceInput, RadioButtonGroupInput } from 'react-admin';
 
 const CompanyInput = () => (
     <ReferenceInput reference="companies" source="company_id">
-        <RadioButtonInput 
+        <RadioButtonGroupInput 
             label="Company"
             source="company_id"
             optionText="name"
@@ -354,26 +354,26 @@ const CompanyInput = () => (
  - puts the result of the fetch in the `ChoiceContext` as the `choices` prop, as well as the `isLoading` state,
  - and renders its child component
 
-When rendered as a child of `<ReferenceInput>`, `<RadioButtonInput>` reads that `ChoiceContext` to populate its own `choices` and `isLoading` props.
+When rendered as a child of `<ReferenceInput>`, `<RadioButtonGroupInput>` reads that `ChoiceContext` to populate its own `choices` and `isLoading` props.
 
 In fact, you can simplify the code even further:
 
-- `<ReferenceInput>` puts all its props inside the `ChoiceContext`, including `source`, so `<RadioButtonInput>` doesn't need to repeat it.
-- You can also put the `label` prop on the `<ReferenceInput>` rather than `<RadioButtonInput>` so that it looks just like [`<ReferenceField>`](./ReferenceField.md) (for easier memorization). 
-- `<RadioButtonInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to determine how to represent the related choices. In the example above, the `companies` resource uses `name` as its `recordRepresentation`, so `<RadioButtonInput>` will default to `optionText="name"`. 
+- `<ReferenceInput>` puts all its props inside the `ChoiceContext`, including `source`, so `<RadioButtonGroupInput>` doesn't need to repeat it.
+- You can also put the `label` prop on the `<ReferenceInput>` rather than `<RadioButtonGroupInput>` so that it looks just like [`<ReferenceField>`](./ReferenceField.md) (for easier memorization). 
+- `<RadioButtonGroupInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to determine how to represent the related choices. In the example above, the `companies` resource uses `name` as its `recordRepresentation`, so `<RadioButtonGroupInput>` will default to `optionText="name"`. 
 
 The code for the `<CompanyInput>` component can be reduced to:
 
 ```jsx
-import { ReferenceInput, RadioButtonInput } from 'react-admin';
+import { ReferenceInput, RadioButtonGroupInput } from 'react-admin';
 
 const CompanyInput = () => (
     <ReferenceInput reference="companies" source="company_id" label="Company">
-        <RadioButtonInput />
+        <RadioButtonGroupInput />
     </ReferenceInput>
 );
 ```
 
-This is the recommended approach for using `<RadioButtonInput>` to select a foreign key. This not only signifies that the input is a `<RadioButtonInput>` but also highlights its function in fetching choices from another resource, ultimately enhancing the code's readability.
+This is the recommended approach for using `<RadioButtonGroupInput>` to select a foreign key. This not only signifies that the input is a `<RadioButtonGroupInput>` but also highlights its function in fetching choices from another resource, ultimately enhancing the code's readability.
 
-**Tip**: `<ReferenceInput>` is much more powerful than the initial snippet. It optimizes and caches API calls, enables refetching of both API calls with a single command, and stores supplementary data in the `<ChoicesContext>`. `<ReferenceInput>` can provide choices to `<RadioButtonInput>`, but also to [`<AutocompleteInput>`](./AutocompleteInput.md) and [`<SelectInput>`](./SelectInput.md). For further information, refer to [the `<ReferenceInput>` documentation](./ReferenceInput.md).
+**Tip**: `<ReferenceInput>` is much more powerful than the initial snippet. It optimizes and caches API calls, enables refetching of both API calls with a single command, and stores supplementary data in the `<ChoicesContext>`. `<ReferenceInput>` can provide choices to `<RadioButtonGroupInput>`, but also to [`<AutocompleteInput>`](./AutocompleteInput.md) and [`<SelectInput>`](./SelectInput.md). For further information, refer to [the `<ReferenceInput>` documentation](./ReferenceInput.md).
