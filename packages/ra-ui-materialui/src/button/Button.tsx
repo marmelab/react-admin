@@ -94,7 +94,6 @@ interface Props {
     alignIcon?: 'left' | 'right';
     children?: ReactElement;
     className?: string;
-    color?: MuiPropTypes.Color;
     component?: ElementType;
     to?: string | LocationDescriptor;
     disabled?: boolean;
