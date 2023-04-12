@@ -78,6 +78,12 @@ export const Disabled = () => (
     </Wrapper>
 );
 
+export const IsLoading = () => (
+    <Wrapper>
+        <SelectInput source="gender" isLoading />
+    </Wrapper>
+);
+
 export const Validate = () => (
     <Wrapper>
         <SelectInput

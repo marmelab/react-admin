@@ -134,6 +134,23 @@ export const Nullable = ({ onSuccess = console.log }) => {
     );
 };
 
+export const IsLoading = () => {
+    return (
+        <Admin dataProvider={dataProvider} history={history}>
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit>
+                        <SimpleForm>
+                            <AutocompleteInput source="author" isLoading />
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    );
+};
+
 const BookEditCustomText = () => {
     const choices = [
         { id: 1, fullName: 'Leo Tolstoy' },
