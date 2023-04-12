@@ -10,9 +10,15 @@ export default { title: 'ra-ui-materialui/button/Button' };
 export const Basic = () => (
     <ThemeProvider theme={theme}>
         <UIWrapper>
-            <Button label="button" />
-            <Button label="button" variant="outlined" />
-            <Button label="button" variant="contained" />
+            <Button label="default" />
+            <Button label="outlined" variant="outlined" />
+            <Button label="contained" variant="contained" />
+            <Button label="error contained" color="error" variant="contained" />
+            <Button
+                label="secondary contained"
+                color="secondary"
+                variant="contained"
+            />
         </UIWrapper>
     </ThemeProvider>
 );
@@ -50,7 +56,14 @@ export const WithUserDefinedPalette = () => (
 );
 
 const UIWrapper = ({ children }: { children: ReactNode }) => (
-    <Stack sx={{ alignItems: 'flex-start', gap: 1, margin: 1 }}>
+    <Stack
+        sx={{
+            gap: 1,
+            alignItems: 'flex-start',
+            margin: 2,
+            padding: 2,
+        }}
+    >
         {children}
     </Stack>
 );

@@ -7,7 +7,6 @@ import {
     Tooltip,
     IconButton,
     useMediaQuery,
-    PropTypes as MuiPropTypes,
     Theme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
