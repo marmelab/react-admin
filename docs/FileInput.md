@@ -62,6 +62,7 @@ Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and 
 | `multiple`             | Optional | `boolean`           | `false`    | Whether the inputs can accept multiple files.                       |
 | `options`              | Optional | `Object`            | `{}`       | Additional options passed to react-dropzone's `useDropzone()` hook. |
 | `placeholder`          | Optional | `ReactNode`         | -          | Invite displayed in the drop zone                                   |
+| `removeIcon`           | Optional | `ReactNode`         | -          | The clickable icon for removing images                              |
 | `validateFile Removal` | Optional | `function`          | -          | Allows to cancel the removal of files                               |
 
 `<FileInput>` also accepts the [common input props](./Inputs.md#common-input-props).
@@ -151,6 +152,10 @@ If that's not enough, you can pass a `placeholder` prop to overwrite it. The val
     <ImageField source="src" title="title" />
 </FileInput>
 ```
+
+## `removeIcon`
+
+Optionally overwrite the [default icon](https://mui.com/material-ui/material-icons/?query=removeCir&selected=RemoveCircle) for removing files.
 
 ## `sx`: CSS API
 

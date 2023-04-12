@@ -8,7 +8,14 @@ import { useTranslate } from 'ra-core';
 import { SvgIconProps } from '@mui/material';
 
 export const FileInputPreview = (props: FileInputPreviewProps) => {
-    const { children, className, onRemove, file, removeIcon, ...rest } = props;
+    const {
+        children,
+        className,
+        onRemove,
+        file,
+        removeIcon = RemoveCircle,
+        ...rest
+    } = props;
 
     const translate = useTranslate();
 
@@ -31,11 +38,7 @@ export const FileInputPreview = (props: FileInputPreviewProps) => {
                 title={translate('ra.action.delete')}
                 size="small"
             >
-                {removeIcon ?? (
-                    <RemoveCircle
-                        className={FileInputPreviewClasses.removeIcon}
-                    />
-                )}
+                {removeIcon}
             </IconButton>
             {children}
         </Root>
