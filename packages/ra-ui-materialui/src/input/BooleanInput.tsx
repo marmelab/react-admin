@@ -91,7 +91,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
                     />
                 }
             />
-            {helperText !== false && (
+            {(helperText !== false || (isTouched || isSubmitted) && invalid) && (
                 <FormHelperText error={(isTouched || isSubmitted) && invalid}>
                     <InputHelperText
                         touched={isTouched || isSubmitted}
