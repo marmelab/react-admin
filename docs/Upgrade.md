@@ -1891,6 +1891,13 @@ const MyCustomForm = () => {
 }
 ```
 
+**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/api/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+
+```js
+const { isDirty } = useFormState(); // ✅
+const formState = useFormState(); // ❌ should deconstruct the formState      
+```
+
 ### `sanitizeEmptyValues` Works the Other Way Around
 
 React-hook-form doesn't remove empty values like react-final-fom did. Therefore, if you opted out of this behavior with `sanitizeEmptyValues={false}`, you no longer need that prop:
@@ -1964,6 +1971,13 @@ const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
         </Toolbar>
     );
 };
+```
+
+**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/api/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+
+```js
+const { isDirty } = useFormState(); // ✅
+const formState = useFormState(); // ❌ should deconstruct the formState      
 ```
 
 ### `<Toolbar>`'s `alwaysEnableSaveButton` Prop Has Been Removed
@@ -2533,6 +2547,13 @@ const UserForm = () => (
 +       <MyInput defaultValue="John" />
     </SimpleForm>
 )
+```
+
+**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/api/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+
+```js
+const { isDirty } = useFormState(); // ✅
+const formState = useFormState(); // ❌ should deconstruct the formState      
 ```
 
 ### The `addLabel` prop Has Been Removed From All Inputs and Fields
