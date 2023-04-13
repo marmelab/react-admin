@@ -1,0 +1,23 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "module": "node16",
+        "moduleResolution": "node",
+        "moduleDetection": "auto",
+        "target": "ES2020", // Node.js 14
+        "outDir": "lib",
+        "rootDir": "src",
+        "allowJs": false,
+        "lib": ["DOM", "DOM.Iterable", "ES2020"]
+    },
+    "exclude": [
+        "templates/**",
+        "**/*.spec.ts",
+        "**/*.spec.tsx",
+        "**/*.spec.js",
+        "**/*.stories.ts",
+        "**/*.stories.tsx",
+        "**/*.stories.js"
+    ],
+    "include": ["src"]
+}
