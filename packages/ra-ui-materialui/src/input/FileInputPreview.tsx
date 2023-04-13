@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactNode, useEffect } from 'react';
+import { FC, ReactNode, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import RemoveCircle from '@mui/icons-material/RemoveCircle';
@@ -13,7 +13,7 @@ export const FileInputPreview = (props: FileInputPreviewProps) => {
         className,
         onRemove,
         file,
-        removeIcon = RemoveCircle,
+        RemoveIcon = RemoveCircle,
         ...rest
     } = props;
 
@@ -38,7 +38,7 @@ export const FileInputPreview = (props: FileInputPreviewProps) => {
                 title={translate('ra.action.delete')}
                 size="small"
             >
-                {removeIcon}
+                <RemoveIcon className={FileInputPreviewClasses.removeIcon} />
             </IconButton>
             {children}
         </Root>
@@ -80,5 +80,5 @@ export interface FileInputPreviewProps {
     className?: string;
     onRemove: () => void;
     file: any;
-    removeIcon?: React.ReactElement<SvgIconProps>;
+    RemoveIcon?: FC<SvgIconProps>;
 }
