@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import { useWatch, useFormContext, FieldValues } from 'react-hook-form';
+import { useFormContext, FieldValues } from 'react-hook-form';
 import get from 'lodash/get';
+import { useFormValues } from './useFormValues';
 
 /**
  * Get the current (edited) value of the record from the form and pass it
@@ -44,15 +45,15 @@ import get from 'lodash/get';
 const FormDataConsumer = <TFieldValues extends FieldValues = FieldValues>(
     props: ConnectedProps<TFieldValues>
 ) => {
-    const { getValues } = useFormContext<TFieldValues>();
-    let formData = (useWatch<TFieldValues>() as unknown) as TFieldValues;
-
-    //useWatch will initially return the provided defaultValues of the form.
-    //We must get the initial formData from getValues
-    if (Object.keys(formData).length === 0) {
-        formData = getValues();
-    }
-
+    const form = useFormContext<TFieldValues>();
+    const {
+        formState: {
+            // Don't know exactly why, but this is needed for the form values to be updated
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            isDirty,
+        },
+    } = form;
+    const formData = useFormValues<TFieldValues>();
     return (
         <FormDataConsumerView<TFieldValues> formData={formData} {...props} />
     );
