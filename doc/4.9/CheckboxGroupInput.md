@@ -246,3 +246,17 @@ However, in some cases (e.g. inside a `<ReferenceArrayInput>`), you may not want
 ```jsx
 <CheckboxGroupInput source="roles" choices={choices} translateChoice={false}/>
 ```
+
+## Fetching Choices
+
+If you want to populate the `choices` attribute with a list of related records, you should decorate `<CheckboxGroupInput>` with [`<ReferenceArrayInput>`](./ReferenceArrayInput.md), and leave the `choices` empty:
+
+```jsx
+import { AutocompleteArrayInput, ReferenceArrayInput } from 'react-admin';
+
+<ReferenceArrayInput label="Tags" reference="tags" source="tags">
+    <CheckboxGroupInput />
+</ReferenceArrayInput>
+```
+
+Check [the `<ReferenceArrayInput>` documentation](./ReferenceArrayInput.md) for more details.

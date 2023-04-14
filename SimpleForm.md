@@ -46,6 +46,13 @@ Here are all the props you can set on the `<SimpleForm>` component:
 
 Additional props are passed to [the `useForm` hook](https://react-hook-form.com/api/useform).
 
+**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/api/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+
+```js
+const { isDirty } = useFormState(); // ✅
+const formState = useFormState(); // ❌ should deconstruct the formState      
+```
+
 ## `component`
 
 `<SimpleForm>` renders a MUI `<CardContent>` by default. You replace it by any component you want as wrapper, just pass it as the `component` prop.

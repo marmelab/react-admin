@@ -436,7 +436,7 @@ In that case, set the `translateChoice` prop to `false`.
 
 **Tip**: To use the `disableCloseOnSelect` prop, you must also set `blurOnSelect={false}`, since this is enabled by default.
 
-## Using In A ReferenceArrayInput
+## Fetching Choices
 
 If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteArrayInput>` with [`<ReferenceArrayInput>`](./ReferenceArrayInput.md), and leave the `choices` empty:
 
@@ -447,6 +447,8 @@ import { AutocompleteArrayInput, ReferenceArrayInput } from 'react-admin';
     <AutocompleteArrayInput />
 </ReferenceArrayInput>
 ```
+
+Check [the `<ReferenceArrayInput>` documentation](./ReferenceArrayInput.md) for more details.
 
 ## Working With Object Values
 
