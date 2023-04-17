@@ -238,21 +238,29 @@ The content of the user menu depends on the return value of `authProvider.getIde
 You can customize the user menu by passing a `userMenu` prop to the `<AppBar>` component.
 
 ```jsx
+import * as React from 'react';
 import { AppBar, UserMenu, useUserMenu } from 'react-admin';
 import { MenuItem, ListItemIcon, ListItemText } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 
-const SettingsMenuItem = () => {
+// It's important to pass the ref to allow MUI to manage the keyboard navigation
+const SettingsMenuItem = React.forwardRef((props, ref) => {
+    // We are not using MenuItemLink so we retrieve the onClose function from the UserContext
     const { onClose } = useUserMenu();
     return (
-        <MenuItem onClick={onClose}>
+        <MenuItem
+            onClick={onClose}
+            ref={ref}
+            {/* It's important to pass the props to allow MUI to manage the keyboard navigation */}
+            {...props}
+        >
             <ListItemIcon>
                 <SettingsIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText>Customize</ListItemText>
         </MenuItem>
     );
-};
+});
 
 const MyAppBar = () => (
     <AppBar
