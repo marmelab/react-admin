@@ -161,16 +161,19 @@ By default, the `<ContainerLayout>` shows a user menu with a single item (logout
 
 {% raw %}
 ```jsx
+import * as React from 'react';
 import { Logout, UserMenu, useUserMenu } from 'react-admin';
 import { MenuList, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { ContainerLayout } from '@react-admin/ra-navigation';
 
+// It's important to pass the ref to allow MUI to manage the keyboard navigation
 const ConfigurationMenu = React.forwardRef((props, ref) => {
     const { onClose } = useUserMenu();
     return (
         <MenuItem
             ref={ref}
+            {/* It's important to pass the props to allow MUI to manage the keyboard navigation */}
             {...props}
             to="/configuration"
             onClick={onClose}
