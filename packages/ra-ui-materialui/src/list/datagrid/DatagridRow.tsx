@@ -114,7 +114,11 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                 return;
             }
             if (['edit', 'show'].includes(type)) {
-                navigate(createPath({ resource, id, type }));
+                if(event.ctrlKey || event.metaKey) {
+                    window.open(`#${createPath({ resource, id, type })}`);
+                } else {
+                    navigate(createPath({ resource, id, type }));
+                }
                 return;
             }
             if (type === 'expand') {
@@ -241,7 +245,11 @@ DatagridRow.propTypes = {
     record: PropTypes.object,
     resource: PropTypes.string,
     // @ts-ignore
-    rowClick: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+    rowClick: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.func,
+        PropTypes.bool,
+    ]),
     selected: PropTypes.bool,
     style: PropTypes.object,
     selectable: PropTypes.bool,
