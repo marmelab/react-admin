@@ -151,7 +151,7 @@ export const useEditController = <
                     : data
             ).then(async (data: Partial<RecordType>) => {
                 const mutate = getMutateWithMiddlewares(update);
-
+                let shouldRedirectAfterUpdate = false;
                 try {
                     await mutate(
                         resource,
@@ -175,7 +175,16 @@ export const useEditController = <
                                     messageArgs: { smart_count: 1 },
                                     undoable: mutationMode === 'undoable',
                                 });
-                                redirect(redirectTo, resource, data.id, data);
+                                if (mutationMode === 'pessimistic') {
+                                    shouldRedirectAfterUpdate = true;
+                                } else {
+                                    redirect(
+                                        redirectTo,
+                                        resource,
+                                        data.id,
+                                        data
+                                    );
+                                }
                             },
                             onError: onErrorFromSave
                                 ? onErrorFromSave
@@ -203,6 +212,9 @@ export const useEditController = <
                                   },
                         }
                     );
+                    if (shouldRedirectAfterUpdate) {
+                        redirect(redirectTo, resource, data.id, data);
+                    }
                 } catch (error) {
                     if ((error as HttpError).body?.errors != null) {
                         return (error as HttpError).body.errors;

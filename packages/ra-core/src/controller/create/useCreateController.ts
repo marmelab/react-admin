@@ -97,8 +97,9 @@ export const useCreateController = <
                     : data
             ).then(async (data: Partial<RecordType>) => {
                 const mutate = getMutateWithMiddlewares(create);
+                let shouldRedirect = false;
                 try {
-                    await mutate(
+                    const savedData = await mutate(
                         resource,
                         { data, meta },
                         {
@@ -118,12 +119,7 @@ export const useCreateController = <
                                     type: 'info',
                                     messageArgs: { smart_count: 1 },
                                 });
-                                redirect(
-                                    finalRedirectTo,
-                                    resource,
-                                    data.id,
-                                    data
-                                );
+                                shouldRedirect = true;
                             },
                             onError: onErrorFromSave
                                 ? onErrorFromSave
@@ -151,6 +147,18 @@ export const useCreateController = <
                                   },
                         }
                     );
+                    if (shouldRedirect) {
+                        // We need to wait for the 'isSubmitting' for state to be updated
+                        // otherwise useWarnWhenUnsavedChanges will block the navigation
+                        setTimeout(() => {
+                            redirect(
+                                finalRedirectTo,
+                                resource,
+                                savedData.id,
+                                savedData
+                            );
+                        }, 0);
+                    }
                 } catch (error) {
                     if ((error as HttpError).body?.errors != null) {
                         return (error as HttpError).body.errors;
