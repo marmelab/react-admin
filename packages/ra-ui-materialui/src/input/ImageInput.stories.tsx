@@ -6,7 +6,7 @@ import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
 import { SimpleForm } from '../form';
 import { ImageInput } from './ImageInput';
-import { FileField, ImageField } from '../field';
+import { ImageField } from '../field';
 import { required } from 'ra-core';
 import { FormInspector } from './common.stories';
 import DeleteIcon from '@mui/icons-material/DeleteOutline';
@@ -87,7 +87,7 @@ export const Required = () => (
 export const CustomRemoveIcon = () => (
     <Wrapper>
         <ImageInput source="image" RemoveIcon={DeleteIcon}>
-            <FileField source="src" title="title" />
+            <ImageField source="src" title="title" />
         </ImageInput>
         <FormInspector name="attachments" />
     </Wrapper>

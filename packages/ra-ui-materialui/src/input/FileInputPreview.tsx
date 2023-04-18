@@ -50,7 +50,7 @@ FileInputPreview.propTypes = {
     className: PropTypes.string,
     file: PropTypes.object,
     onRemove: PropTypes.func.isRequired,
-    removeIcon: PropTypes.element,
+    RemoveIcon: PropTypes.element,
 };
 
 FileInputPreview.defaultProps = {
