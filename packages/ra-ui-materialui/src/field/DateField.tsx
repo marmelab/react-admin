@@ -130,7 +130,7 @@ export interface DateFieldProps
         InjectedFieldProps,
         Omit<TypographyProps, 'textAlign'> {
     locales?: string | string[];
-    options?: object;
+    options?: Intl.DateTimeFormatOptions;
     showTime?: boolean;
     showDate?: boolean;
 }
