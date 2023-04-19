@@ -20,10 +20,11 @@ import {
     useForm,
     useFormContext,
 } from 'react-hook-form';
-import lodashSet from 'lodash/set';
-import lodashUnset from 'lodash/unset';
-import lodashGet from 'lodash/get';
+import set from 'lodash/set';
+import unset from 'lodash/unset';
+import get from 'lodash/get';
 import cloneDeep from 'lodash/cloneDeep';
+import isEqual from 'lodash/isEqual';
 
 import { FilterFormInput } from './FilterFormInput';
 import { FilterContext } from '../FilterContext';
@@ -48,7 +49,9 @@ export const FilterForm = (props: FilterFormProps) => {
     // Reapply filterValues when the URL changes or a user removes a filter
     useEffect(() => {
         const newValues = getFilterFormValues(form.getValues(), filterValues);
-        form.reset(newValues);
+        if (!isEqual(newValues, form.getValues())) {
+            form.reset(newValues);
+        }
     }, [filterValues, form]);
 
     useEffect(() => {
@@ -58,9 +61,9 @@ export const FilterForm = (props: FilterFormProps) => {
             const isFormValid = await form.trigger();
 
             if (isFormValid) {
-                if (lodashGet(values, name) === '') {
+                if (get(values, name) === '') {
                     const newValues = cloneDeep(values);
-                    lodashUnset(newValues, name);
+                    unset(newValues, name);
                     setFilters(newValues, displayedFilters);
                 } else {
                     setFilters(values, displayedFilters);
@@ -104,7 +107,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
     const getShownFilters = () => {
         const values = form.getValues();
         return filters.filter((filterElement: JSX.Element) => {
-            const filterValue = lodashGet(values, filterElement.props.source);
+            const filterValue = get(values, filterElement.props.source);
             return (
                 filterElement.props.alwaysOn ||
                 displayedFilters[filterElement.props.source] ||
@@ -185,7 +188,7 @@ export const mergeInitialValuesWithDefaultValues = (
         )
         .reduce(
             (acc, filterElement: JSX.Element) =>
-                lodashSet(
+                set(
                     { ...acc },
                     filterElement.props.source,
                     filterElement.props.defaultValue
@@ -250,10 +253,10 @@ const getInputValue = (
         return '';
     }
     if (Array.isArray(formValues[key])) {
-        return lodashGet(filterValues, key, '');
+        return get(filterValues, key, '');
     }
     if (formValues[key] instanceof Date) {
-        return lodashGet(filterValues, key, '');
+        return get(filterValues, key, '');
     }
     if (typeof formValues[key] === 'object') {
         const inputValues = Object.keys(formValues[key]).reduce(
@@ -274,5 +277,5 @@ const getInputValue = (
         if (!Object.keys(inputValues).length) return '';
         return inputValues;
     }
-    return lodashGet(filterValues, key, '');
+    return get(filterValues, key, '');
 };

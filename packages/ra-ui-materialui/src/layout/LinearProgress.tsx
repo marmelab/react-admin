@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import Progress, {
+import {
+    Box,
+    LinearProgress as MuiLinearProgress,
     LinearProgressProps as ProgressProps,
-} from '@mui/material/LinearProgress';
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import { useTimeout } from 'ra-core';
 
@@ -31,7 +33,9 @@ export const LinearProgress = ({
 
     return oneSecondHasPassed ? (
         <StyledProgress className={className} {...rest} />
-    ) : null;
+    ) : (
+        <Box my={1} height={4} />
+    );
 };
 
 LinearProgress.propTypes = {
@@ -48,7 +52,7 @@ export interface LinearProgressProps extends ProgressProps {
 
 const PREFIX = 'RaLinearProgress';
 
-const StyledProgress = styled(Progress, {
+const StyledProgress = styled(MuiLinearProgress, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({

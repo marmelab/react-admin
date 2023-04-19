@@ -25,7 +25,7 @@ import { RichTextInputToolbar } from './RichTextInputToolbar';
 /**
  * A rich text editor for the react-admin that is accessible and supports translations. Based on [Tiptap](https://www.tiptap.dev/).
  * @param props The input props. Accept all common react-admin input props.
- * @param {EditorOptions} props.editorOptions The options to pass to the Tiptap editor.
+ * @param {EditorOptions} props.editorOptions The options to pass to the Tiptap editor. See Tiptap settings [here](https://tiptap.dev/api/editor#settings).
  * @param {ReactNode} props.toolbar The toolbar containing the editors commands.
  *
  * @example <caption>Customizing the editors options</caption>
@@ -100,7 +100,9 @@ export const RichTextInput = (props: RichTextInputProps) => {
         editable: !disabled && !readOnly,
         content: field.value,
         editorProps: {
+            ...editorOptions?.editorProps,
             attributes: {
+                ...editorOptions?.editorProps?.attributes,
                 id,
             },
         },
@@ -126,12 +128,21 @@ export const RichTextInput = (props: RichTextInputProps) => {
         editor.setOptions({
             editable: !disabled && !readOnly,
             editorProps: {
+                ...editorOptions?.editorProps,
                 attributes: {
+                    ...editorOptions?.editorProps?.attributes,
                     id,
                 },
             },
         });
-    }, [disabled, editor, readOnly, id]);
+    }, [
+        disabled,
+        editor,
+        readOnly,
+        id,
+        editorOptions?.editorProps,
+        editorOptions?.editorProps?.attributes,
+    ]);
 
     useEffect(() => {
         if (!editor) {
@@ -223,7 +234,7 @@ const RichTextInputContent = ({
     </Root>
 );
 
-export const DefaultEditorOptions = {
+export const DefaultEditorOptions: Partial<EditorOptions> = {
     extensions: [
         StarterKit,
         Underline,

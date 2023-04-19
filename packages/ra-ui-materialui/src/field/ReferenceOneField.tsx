@@ -123,4 +123,8 @@ ReferenceOneField.propTypes = {
 
 ReferenceOneField.defaultProps = {
     source: 'id',
+    // disable sorting on this field by default as its default source prop ('id')
+    // will match the default sort ({ field: 'id', order: 'DESC'})
+    // leading to an incorrect sort indicator in a datagrid header
+    sortable: false,
 };

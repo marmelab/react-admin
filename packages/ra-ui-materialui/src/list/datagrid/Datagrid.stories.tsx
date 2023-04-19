@@ -9,6 +9,7 @@ import {
     useGetList,
     useList,
 } from 'ra-core';
+import { MemoryRouter } from 'react-router-dom';
 import { Box } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -54,16 +55,18 @@ const SubWrapper = ({ children }) => {
         <ThemeProvider theme={theme}>
             <ResourceContextProvider value="books">
                 <ListContextProvider
-                    value={{
-                        data,
-                        total: 4,
-                        isLoading: false,
-                        sort: { field: 'id', order: 'ASC' },
-                        selectedIds,
-                        onSelect: selectionModifiers.select,
-                        onToggleItem: selectionModifiers.toggle,
-                        onUnselectItems: selectionModifiers.clearSelection,
-                    }}
+                    value={
+                        {
+                            data,
+                            total: 4,
+                            isLoading: false,
+                            sort: { field: 'id', order: 'ASC' },
+                            selectedIds,
+                            onSelect: selectionModifiers.select,
+                            onToggleItem: selectionModifiers.toggle,
+                            onUnselectItems: selectionModifiers.clearSelection,
+                        } as any
+                    }
                 >
                     <Box sx={{ pt: 7, px: 4 }}>{children}</Box>
                 </ListContextProvider>
@@ -339,7 +342,7 @@ export const Standalone = () => (
     <ThemeProvider theme={theme}>
         <CoreAdminContext
             dataProvider={testDataProvider({
-                getList: () => Promise.resolve({ data, total: 4 }),
+                getList: () => Promise.resolve({ data, total: 4 }) as any,
             })}
         >
             <h1>Static</h1>
@@ -374,6 +377,36 @@ export const IsRowExpandable = () => (
                 </SimpleShowLayout>
             }
         >
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </Wrapper>
+);
+
+export const ErrorInFetch = () => (
+    <MemoryRouter>
+        <ListContextProvider
+            value={
+                {
+                    error: new Error('Error in dataProvider'),
+                } as any
+            }
+        >
+            <Datagrid>
+                <TextField source="id" />
+                <TextField source="title" />
+                <TextField source="author" />
+                <TextField source="year" />
+            </Datagrid>
+        </ListContextProvider>
+    </MemoryRouter>
+);
+
+export const RowClickFalse = () => (
+    <Wrapper>
+        <Datagrid rowClick={false}>
             <TextField source="id" />
             <TextField source="title" />
             <TextField source="author" />

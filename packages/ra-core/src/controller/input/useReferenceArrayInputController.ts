@@ -64,6 +64,7 @@ export const useReferenceArrayInputController = <
         reference,
         {
             ids: value || EmptyArray,
+            meta,
         },
         {
             enabled: value != null && value.length > 0,

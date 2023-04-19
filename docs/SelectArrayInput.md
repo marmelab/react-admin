@@ -383,7 +383,7 @@ In that case, set the `translateChoice` prop to `false`.
 <SelectArrayInput source="roles" choices={choices} translateChoice={false}/>
 ```
 
-## Using in a ReferenceArrayInput
+## Fetching Choices
 
 If you want to populate the `choices` attribute with a list of related records, you should decorate `<SelectArrayInput>` with [`<ReferenceArrayInput>`](./ReferenceArrayInput.md), and leave the `choices` empty:
 
@@ -413,6 +413,8 @@ export const PostCreate = () => (
 ```
 
 **Tip**: As it does not provide autocompletion, `<SelectArrayInput>` might not be suited when the reference resource has a lot of items.
+
+Check [the `<ReferenceArrayInput>` documentation](./ReferenceArrayInput.md) for more details.
 
 ## Creating New Choices
 
