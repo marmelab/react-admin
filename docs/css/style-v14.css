@@ -49,7 +49,8 @@ main > .container .markdown-section {
 
 @media (max-height: 700px) {
     .toc-container {
-        display: none;
+        max-height: 31.25em;
+        overflow-y: auto;
     }
 }
 .toc.is-position-fixed {
