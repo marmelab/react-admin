@@ -599,7 +599,7 @@ const SwitchLanguage = React.forwardRef((props, ref) => {
     return (
         <MenuItem
             ref={ref}
-            {/* It's important to pass the props to allow MUI to manage the keyboard navigation */}
+            // It's important to pass the props to allow MUI to manage the keyboard navigation
             {...props}
             sx={{ color: 'text.secondary' }}
             onClick={event => {

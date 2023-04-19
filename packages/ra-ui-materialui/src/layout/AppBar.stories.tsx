@@ -8,7 +8,6 @@ import {
     ListItemText,
     TextField,
     Skeleton,
-    MenuItemProps,
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { QueryClientProvider, QueryClient } from 'react-query';
@@ -199,25 +198,23 @@ export const UserMenuCustom = () => (
 );
 
 // It's important to pass the ref to allow MUI to manage the keyboard navigation
-const SettingsMenuItem: React.FC<MenuItemProps> = React.forwardRef(
-    (props, ref) => {
-        // We are not using MenuItemLink so we retrieve the onClose function from the UserContext
-        const { onClose } = useUserMenu();
-        return (
-            <MenuItem
-                onClick={onClose}
-                ref={ref}
-                // It's important to pass the props to allow MUI to manage the keyboard navigation
-                {...props}
-            >
-                <ListItemIcon>
-                    <SettingsIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Customize</ListItemText>
-            </MenuItem>
-        );
-    }
-);
+const SettingsMenuItem = React.forwardRef((props, ref) => {
+    // We are not using MenuItemLink so we retrieve the onClose function from the UserContext
+    const { onClose } = useUserMenu();
+    return (
+        <MenuItem
+            onClick={onClose}
+            ref={ref}
+            // It's important to pass the props to allow MUI to manage the keyboard navigation
+            {...props}
+        >
+            <ListItemIcon>
+                <SettingsIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>Customize</ListItemText>
+        </MenuItem>
+    );
+});
 
 export const UserMenuElements = () => (
     <Wrapper>
