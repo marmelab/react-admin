@@ -350,7 +350,7 @@ const MyLogoutButton = forwardRef((props, ref) => {
         <MenuItem
             onClick={handleClick}
             ref={ref}
-            {/* It's important to pass the props to allow MUI to manage the keyboard navigation */}
+            // It's important to pass the props to allow MUI to manage the keyboard navigation
             {...props}
         >
             <ExitIcon /> Logout

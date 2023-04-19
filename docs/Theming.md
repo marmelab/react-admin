@@ -576,7 +576,7 @@ const ConfigurationMenu = React.forwardRef((props, ref) => {
         <MenuItem
             ref={ref}
             component={Link}
-            {/* It's important to pass the props to allow MUI to manage the keyboard navigation */}
+            // It's important to pass the props to allow MUI to manage the keyboard navigation
             {...props}
             to="/configuration"
         >

@@ -251,7 +251,7 @@ const SettingsMenuItem = React.forwardRef((props, ref) => {
         <MenuItem
             onClick={onClose}
             ref={ref}
-            {/* It's important to pass the props to allow MUI to manage the keyboard navigation */}
+            // It's important to pass the props to allow MUI to manage the keyboard navigation
             {...props}
         >
             <ListItemIcon>
