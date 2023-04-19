@@ -68,6 +68,10 @@ const UIWrapper = ({ children }: { children: ReactNode }) => (
     </Stack>
 );
 
+/**
+ * Adding new theme tokens to the palette
+ * @see https://mui.com/material-ui/experimental-api/css-theme-variables/customization/#typescript
+ */
 const theme = createTheme({
     palette: {
         userDefined: {
@@ -88,6 +92,10 @@ declare module '@mui/material/styles' {
     }
 }
 
+/**
+ * Adding new theme tokens to the Button
+ * https://mui.com/joy-ui/customization/themed-components/#theme-style-overrides
+ */
 declare module '@mui/material/Button' {
     interface ButtonPropsColorOverrides {
         userDefined: true;
