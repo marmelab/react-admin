@@ -22,6 +22,12 @@ describe('LocalesMenuButton', () => {
         await waitFor(() => {
             expect(screen.queryByText('Tableau de bord')).not.toBeNull();
         });
+
+        fireEvent.click(screen.getAllByText('Français')[0]);
+        fireEvent.click(screen.getByText('English'));
+        await waitFor(() => {
+            expect(screen.queryByText('Dashboard')).not.toBeNull();
+        });
     });
 
     it('should not make the title disappear', async () => {
