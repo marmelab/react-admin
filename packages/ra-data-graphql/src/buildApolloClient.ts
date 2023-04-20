@@ -15,7 +15,9 @@ export default (options: Partial<ApolloClientOptions<unknown>>) => {
     const {
         cache = new InMemoryCache().restore({}),
         uri,
-        link = !!uri ? new HttpLink({ uri }) : undefined,
+        credentials,
+        headers,
+        link = !!uri ? new HttpLink({ uri, credentials, headers }) : undefined,
         ...otherOptions
     } = options;
 
