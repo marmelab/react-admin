@@ -107,7 +107,7 @@ describe('<DateField />', () => {
 
     it('should pass the options prop to toLocaleString', () => {
         const date = new Date('2017-04-23');
-        const options = {
+        const options: Intl.DateTimeFormatOptions = {
             weekday: 'long',
             year: 'numeric',
             month: 'long',
