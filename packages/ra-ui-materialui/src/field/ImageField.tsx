@@ -27,6 +27,7 @@ export const ImageField = (props: ImageFieldProps) => {
             </Typography>
         ) : (
             <Typography
+                component="div"
                 className={className}
                 {...sanitizeFieldRestProps(rest)}
             />
