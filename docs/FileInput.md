@@ -53,16 +53,17 @@ Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and 
 
 ## Props
 
-| Prop                   | Required | Type                | Default    | Description                                                         |
-|------------------------|----------|---------------------|------------|---------------------------------------------------------------------|
-| `accept`               | Optional | `string | string[]` | -          | Accepted file type(s). When empty, all file types are accepted.     |
-| `children`             | Optional | `ReactNode`         | -          | Element used to preview file(s)                                     |
-| `minSize`              | Optional | `number`            | 0          | Minimum file size (in bytes), e.g. 5000 for 5KB                     |
+| Prop                   | Required | Type                | Default   | Description                                                         |
+|------------------------|----------|---------------------|-----------|---------------------------------------------------------------------|
+| `accept`               | Optional | `string | string[]` | -                                                                   | Accepted file type(s). When empty, all file types are accepted.     |
+| `children`             | Optional | `ReactNode`         | -         | Element used to preview file(s)                                     |
+| `minSize`              | Optional | `number`            | 0         | Minimum file size (in bytes), e.g. 5000 for 5KB                     |
 | `maxSize`              | Optional | `number`            | `Infinity` | Maximum file size (in bytes), e.g. 5000000 for 5MB                  |
-| `multiple`             | Optional | `boolean`           | `false`    | Whether the inputs can accept multiple files.                       |
-| `options`              | Optional | `Object`            | `{}`       | Additional options passed to react-dropzone's `useDropzone()` hook. |
-| `placeholder`          | Optional | `ReactNode`         | -          | Invite displayed in the drop zone                                   |
-| `validateFile Removal` | Optional | `function`          | -          | Allows to cancel the removal of files                               |
+| `multiple`             | Optional | `boolean`           | `false`   | Whether the inputs can accept multiple files.                       |
+| `options`              | Optional | `Object`            | `{}`      | Additional options passed to react-dropzone's `useDropzone()` hook. |
+| `placeholder`          | Optional | `ReactNode`         | -         | Invite displayed in the drop zone                                   |
+| `removeIcon`           | Optional | `ReactNode`         | [MUI's RemoveCircle icon](https://mui.com/material-ui/material-icons/?query=removeCir&selected=RemoveCircle) | The clickable icon for removing files                               |
+| `validateFile Removal` | Optional | `function`          | -         | Allows to cancel the removal of files                               |
 
 `<FileInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
@@ -150,6 +151,16 @@ If that's not enough, you can pass a `placeholder` prop to overwrite it. The val
 <FileInput source="files" placeholder={<p>Drop your file here</p>}>
     <ImageField source="src" title="title" />
 </FileInput>
+```
+
+## `removeIcon`
+
+Use the `removeIcon` prop to change the icon displayed as the remove button:
+
+```jsx
+<ImageInput source="attachments" removeIcon={CustomSvgIcon}>
+    <ImageField source="src" title="title" />
+</ImageInput>
 ```
 
 ## `sx`: CSS API

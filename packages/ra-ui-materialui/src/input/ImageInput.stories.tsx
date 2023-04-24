@@ -9,6 +9,7 @@ import { ImageInput } from './ImageInput';
 import { ImageField } from '../field';
 import { required } from 'ra-core';
 import { FormInspector } from './common.stories';
+import DeleteIcon from '@mui/icons-material/DeleteOutline';
 
 export default { title: 'ra-ui-materialui/input/ImageInput' };
 
@@ -80,6 +81,15 @@ export const Required = () => (
             <ImageField source="src" title="title" />
         </ImageInput>
         <FormInspector name="attachment" />
+    </Wrapper>
+);
+
+export const CustomRemoveIcon = () => (
+    <Wrapper>
+        <ImageInput source="image" removeIcon={DeleteIcon}>
+            <ImageField source="src" title="title" />
+        </ImageInput>
+        <FormInspector name="attachments" />
     </Wrapper>
 );
 
