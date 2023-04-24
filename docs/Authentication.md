@@ -342,6 +342,7 @@ import { useLogout } from 'react-admin';
 import MenuItem from '@mui/material/MenuItem';
 import ExitIcon from '@mui/icons-material/PowerSettingsNew';
 
+// It's important to pass the ref to allow MUI to manage the keyboard navigation
 const MyLogoutButton = forwardRef((props, ref) => {
     const logout = useLogout();
     const handleClick = () => logout();
@@ -349,6 +350,8 @@ const MyLogoutButton = forwardRef((props, ref) => {
         <MenuItem
             onClick={handleClick}
             ref={ref}
+            // It's important to pass the props to allow MUI to manage the keyboard navigation
+            {...props}
         >
             <ExitIcon /> Logout
         </MenuItem>

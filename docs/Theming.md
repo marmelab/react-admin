@@ -591,7 +591,7 @@ const ConfigurationMenu = React.forwardRef((props, ref) => {
 });
 
 // It's important to pass the ref to allow MUI to manage the keyboard navigation
-const SwitchLanguage = forwardRef((props, ref) => {
+const SwitchLanguage = React.forwardRef((props, ref) => {
     const [locale, setLocale] = useLocaleState();
     // We are not using MenuItemLink so we retrieve the onClose function from the UserContext
     const { onClose } = useUserMenu();
