@@ -21,6 +21,7 @@ import { Inspector } from '../preferences';
 export const Layout = (props: LayoutProps) => {
     const {
         appBar: AppBar = DefaultAppBar,
+        appBarAlwaysOn,
         children,
         className,
         dashboard,
@@ -42,9 +43,9 @@ export const Layout = (props: LayoutProps) => {
         <StyledLayout className={clsx('layout', className)} {...rest}>
             <SkipNavigationButton />
             <div className={LayoutClasses.appFrame}>
-                <AppBar open={open} title={title} />
+                <AppBar open={open} title={title} alwaysOn={appBarAlwaysOn} />
                 <main className={LayoutClasses.contentWithSidebar}>
-                    <Sidebar>
+                    <Sidebar appBarAlwaysOn={appBarAlwaysOn}>
                         <Menu hasDashboard={!!dashboard} />
                     </Sidebar>
                     <div id="main-content" className={LayoutClasses.content}>
@@ -74,6 +75,7 @@ export interface LayoutProps
     extends CoreLayoutProps,
         Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'> {
     appBar?: ComponentType<AppBarProps>;
+    appBarAlwaysOn?: boolean;
     className?: string;
     error?: ComponentType<ErrorProps>;
     menu?: ComponentType<MenuProps>;
