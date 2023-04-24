@@ -57,7 +57,7 @@ export const App = () => (
                 : ''
         }${
             state.authProvider !== 'none'
-                ? `\tauthProvider={authProvider}\n`
+                ? `\tauthProvider={authProvider}\n\t`
                 : ''
         }>
         ${state.resources
