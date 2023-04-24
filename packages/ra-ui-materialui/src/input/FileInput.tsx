@@ -43,7 +43,7 @@ export const FileInput = (props: FileInputProps) => {
         onRemove: onRemoveProp,
         parse,
         placeholder,
-        RemoveIcon,
+        removeIcon,
         resource,
         source,
         validate,
@@ -195,7 +195,7 @@ export const FileInput = (props: FileInputProps) => {
                                 file={file}
                                 onRemove={onRemove(file)}
                                 className={FileInputClasses.removeButton}
-                                RemoveIcon={RemoveIcon}
+                                removeIcon={removeIcon}
                             >
                                 <RecordContextProvider value={file}>
                                     {childrenElement}
@@ -227,7 +227,7 @@ FileInput.propTypes = {
     multiple: PropTypes.bool,
     validateFileRemoval: PropTypes.func,
     options: PropTypes.object,
-    RemoveIcon: PropTypes.elementType,
+    removeIcon: PropTypes.elementType,
     resource: PropTypes.string,
     source: PropTypes.string,
     placeholder: PropTypes.node,
@@ -269,7 +269,7 @@ export type FileInputProps = CommonInputProps & {
     options?: DropzoneOptions;
     onRemove?: Function;
     placeholder?: ReactNode;
-    RemoveIcon?: FC<SvgIconProps>;
+    removeIcon?: FC<SvgIconProps>;
     inputProps?: any;
     validateFileRemoval?(file): boolean | Promise<boolean>;
     sx?: SxProps;

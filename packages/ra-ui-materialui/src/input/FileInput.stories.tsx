@@ -107,7 +107,7 @@ export const Disabled = () => (
 
 export const CustomRemoveIcon = () => (
     <Wrapper>
-        <FileInput source="attachments" RemoveIcon={DeleteIcon}>
+        <FileInput source="attachments" removeIcon={DeleteIcon}>
             <FileField source="src" title="title" />
         </FileInput>
         <FormInspector name="attachments" />

@@ -62,7 +62,7 @@ Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and 
 | `multiple`             | Optional | `boolean`           | `false`   | Whether the inputs can accept multiple files.                       |
 | `options`              | Optional | `Object`            | `{}`      | Additional options passed to react-dropzone's `useDropzone()` hook. |
 | `placeholder`          | Optional | `ReactNode`         | -         | Invite displayed in the drop zone                                   |
-| `RemoveIcon`           | Optional | `ReactNode`         | [MUI's RemoveCircle icon](https://mui.com/material-ui/material-icons/?query=removeCir&selected=RemoveCircle) | The clickable icon for removing files                               |
+| `removeIcon`           | Optional | `ReactNode`         | [MUI's RemoveCircle icon](https://mui.com/material-ui/material-icons/?query=removeCir&selected=RemoveCircle) | The clickable icon for removing files                               |
 | `validateFile Removal` | Optional | `function`          | -         | Allows to cancel the removal of files                               |
 
 `<FileInput>` also accepts the [common input props](./Inputs.md#common-input-props).
@@ -153,12 +153,12 @@ If that's not enough, you can pass a `placeholder` prop to overwrite it. The val
 </FileInput>
 ```
 
-## `RemoveIcon`
+## `removeIcon`
 
-Use the `RemoveIcon` prop to change the icon displayed as the remove button:
+Use the `removeIcon` prop to change the icon displayed as the remove button:
 
 ```jsx
-<ImageInput source="attachments" RemoveIcon={CustomSvgIcon}>
+<ImageInput source="attachments" removeIcon={CustomSvgIcon}>
     <ImageField source="src" title="title" />
 </ImageInput>
 ```

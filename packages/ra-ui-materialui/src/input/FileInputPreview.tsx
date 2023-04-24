@@ -13,7 +13,7 @@ export const FileInputPreview = (props: FileInputPreviewProps) => {
         className,
         onRemove,
         file,
-        RemoveIcon = RemoveCircle,
+        removeIcon: RemoveIcon = RemoveCircle,
         ...rest
     } = props;
 
@@ -50,7 +50,7 @@ FileInputPreview.propTypes = {
     className: PropTypes.string,
     file: PropTypes.object,
     onRemove: PropTypes.func.isRequired,
-    RemoveIcon: PropTypes.element,
+    removeIcon: PropTypes.element,
 };
 
 FileInputPreview.defaultProps = {
@@ -80,5 +80,5 @@ export interface FileInputPreviewProps {
     className?: string;
     onRemove: () => void;
     file: any;
-    RemoveIcon?: FC<SvgIconProps>;
+    removeIcon?: FC<SvgIconProps>;
 }

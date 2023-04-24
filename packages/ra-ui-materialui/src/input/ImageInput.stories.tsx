@@ -86,7 +86,7 @@ export const Required = () => (
 
 export const CustomRemoveIcon = () => (
     <Wrapper>
-        <ImageInput source="image" RemoveIcon={DeleteIcon}>
+        <ImageInput source="image" removeIcon={DeleteIcon}>
             <ImageField source="src" title="title" />
         </ImageInput>
         <FormInspector name="attachments" />
