@@ -114,7 +114,7 @@ build-data-generator:
 
 build-create-react-admin:
 	@echo "Transpiling create-react-admin files...";
-	@cd ./examples/create-react-admin && yarn build
+	@cd ./packages/create-react-admin && yarn build
 
 build: build-ra-core build-ra-ui-materialui build-ra-data-fakerest build-ra-data-json-server build-ra-data-localforage build-ra-data-localstorage build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphql-simple build-ra-i18n-polyglot build-ra-input-rich-text build-data-generator build-ra-language-english build-ra-language-french build-react-admin build-ra-no-code build-create-react-admin  ## compile ES6 files to JS
 
