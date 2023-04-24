@@ -2,26 +2,15 @@
 
 ## v4.9.4
 
-#### Fixes
-* `ra-data-graphql`
-  * [#8847](https://github.com/marmelab/react-admin/pull/8847) Fix GraphQL data provider when using different a custom credential type ([@rlucia](https://github.com/rlucia))
-* `ra-ui-materialui`
-  * [#8846](https://github.com/marmelab/react-admin/pull/8846) Fix `<AppBar>` title disappears on locale change ([@slax57](https://github.com/slax57))
-  * [#8850](https://github.com/marmelab/react-admin/pull/8850) Fix empty `<ImageField>` does not apply `sx` prop ([@RoBYCoNTe](https://github.com/RoBYCoNTe))
-
-#### Documentation
-* `react-admin`
-  * [#8853](https://github.com/marmelab/react-admin/pull/8853) [Doc] Replace codesandbox links by stackblitz for issue reproduction ([@slax57](https://github.com/slax57))
-* `ra-ui-materialui`
-  * [#8837](https://github.com/marmelab/react-admin/pull/8837) [Doc] fix examples of custom UserMenu items across the docs to support keyboard navigation ([@smeng9](https://github.com/smeng9))
-* Other
-  * [#8851](https://github.com/marmelab/react-admin/pull/8851) [Doc] Fix WithRecord usage in Datagrid to remind the label requirement ([@fzaninotto](https://github.com/fzaninotto))
-  * [#8841](https://github.com/marmelab/react-admin/pull/8841) Add more details about `useDefineAppLocation` in the `MultiLevelMenu` docs ([@slax57](https://github.com/slax57))
-
-#### TypeScript
-* `ra-ui-materialui`
-  * [#8832](https://github.com/marmelab/react-admin/pull/8832) Fix `<Button>` should accept user defined MUI color palettes as `color` prop ([@septentrion-730n](https://github.com/septentrion-730n))
-  * [#8844](https://github.com/marmelab/react-admin/pull/8844) Fix `<DateField>` props types ([@elstgav](https://github.com/elstgav))
+* Fix GraphQL data provider when using different a custom credential type ([#8847](https://github.com/marmelab/react-admin/pull/8847)) ([@rlucia](https://github.com/rlucia))
+* Fix `<AppBar>` title disappears on locale change ([#8846](https://github.com/marmelab/react-admin/pull/8846)) ([@slax57](https://github.com/slax57))
+* Fix empty `<ImageField>` does not apply `sx` prop ([#8850](https://github.com/marmelab/react-admin/pull/8850)) ([@RoBYCoNTe](https://github.com/RoBYCoNTe))
+* [Doc] Replace codesandbox links by stackblitz for issue reproduction ([#8853](https://github.com/marmelab/react-admin/pull/8853)) ([@slax57](https://github.com/slax57))
+* [Doc] Fix examples of custom UserMenu items across the docs to support keyboard navigation ([#8837](https://github.com/marmelab/react-admin/pull/8837)) ([@smeng9](https://github.com/smeng9))
+* [Doc] Fix WithRecord usage in Datagrid to remind the label requirement ([#8851](https://github.com/marmelab/react-admin/pull/8851)) ([@fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add more details about `useDefineAppLocation` in the `MultiLevelMenu` docs ([#8841](https://github.com/marmelab/react-admin/pull/8841)) ([@slax57](https://github.com/slax57))
+* [TypeScript] Fix `<Button>` should accept user defined MUI color palettes as `color` prop ([#8832](https://github.com/marmelab/react-admin/pull/8832)) ([@septentrion-730n](https://github.com/septentrion-730n))
+* [TypeScript] Fix `<DateField>` props types ([#8844](https://github.com/marmelab/react-admin/pull/8844)) ([@elstgav](https://github.com/elstgav))
 
 ## v4.9.3
 
