@@ -14,14 +14,16 @@ export const generateProject = async (state: ProjectConfiguration) => {
     if (state.dataProvider !== 'none') {
         copyDirectoryFiles(
             path.join(__dirname, '../templates', state.dataProvider),
-            path.join(path.join(projectDirectory, 'src'))
+            path.join(path.join(projectDirectory, 'src')),
+            ['package.json']
         );
     }
 
     if (state.authProvider !== 'none') {
         copyDirectoryFiles(
             path.join(__dirname, '../templates', state.authProvider),
-            path.join(path.join(projectDirectory, 'src'))
+            path.join(path.join(projectDirectory, 'src')),
+            ['package.json']
         );
     }
 
@@ -188,6 +190,23 @@ const initializeProjectDirectory = (projectName: string) => {
     return projectDirectory;
 };
 
-const copyDirectoryFiles = (source: string, destination: string) => {
-    fsExtra.copySync(source, destination);
+const copyDirectoryFiles = (
+    source: string,
+    destination: string,
+    excludes?: string[]
+) => {
+    fsExtra.copySync(
+        source,
+        destination,
+        excludes && excludes.length
+            ? {
+                  filter: (src: string) => {
+                      if (excludes.some(exclude => src.endsWith(exclude))) {
+                          return false;
+                      }
+                      return true;
+                  },
+              }
+            : undefined
+    );
 };
