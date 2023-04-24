@@ -93,7 +93,7 @@ export default function App({ name = 'my-admin' }: Props) {
                 <>
                     <Text>The following resources will be created:</Text>
                     {state.resources.map(resource => (
-                        <Box>
+                        <Box key={resource}>
                             <Text>- </Text>
                             <Text color="blue">{resource}</Text>
                             <Text>,</Text>
