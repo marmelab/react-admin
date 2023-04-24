@@ -88,8 +88,8 @@ A simple application with posts, comments and users that we use for our e2e test
 
 ![Blog demo](./img/blog_demo.png)
 
-* Demo: [https://iuxnw.sse.codesandbox.io/](https://iuxnw.sse.codesandbox.io/)
-* Source code: [https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/simple](https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/simple)
+* Demo: [https://stackblitz.com/github/marmelab/react-admin/tree/master/examples/simple](https://stackblitz.com/github/marmelab/react-admin/tree/master/examples/simple)
+* Source code: [https://github.com/marmelab/react-admin/tree/master/examples/simple](https://github.com/marmelab/react-admin/tree/master/examples/simple)
 
 ## Broadcom Layer 7 API Hub
 
