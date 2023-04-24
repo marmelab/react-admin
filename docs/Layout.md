@@ -52,7 +52,7 @@ const App = () => (
 | `error`     | Optional | `Component` | -        | A React component rendered in the content area in case of error       |
 | `menu`      | Optional | `Component` | -        | A React component rendered at the side of the screen                  |
 | `sidebar`   | Optional | `Component` | -        | A React component responsible for rendering the menu (e.g. in a drawer) |
-| `sx`        | Optional | `SxProps`   | -        | Style overrides, powered by MUI System                                |
+| `sx`        | Optional | `SxProps`   | -        | Style overrides, powered by Material UI System                                |
 
 React-admin injects more props at runtime based on the `<Admin>` props:
 
@@ -232,11 +232,11 @@ React-admin provides alternative menu layouts that you can use as a base for you
 
 ![MegaMenu and Breadcrumb](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.gif)
 
-And you can build a totally custom menu using [MUI's `<Menu>` component](https://mui.com/material-ui/react-menu/).
+And you can build a totally custom menu using [Material UI's `<Menu>` component](https://mui.com/material-ui/react-menu/).
 
 ## `sidebar`
 
-You can override the default sidebar using this prop. The default sidebar will display a permanent drawer when the window size is above MUI theme's `sm` breakpoint, and a temporary drawer when the window size is less than that.
+You can override the default sidebar using this prop. The default sidebar will display a permanent drawer when the window size is above Material UI theme's `sm` breakpoint, and a temporary drawer when the window size is less than that.
 
 If you wish to always display a temporary drawer, you can customize using the following sample code:
 
@@ -294,7 +294,7 @@ This property accepts the following subclasses:
 | `& .RaLayout-contentWithSidebar` | Applied to the main part containing the sidebar and the content                           |
 | `& .RaLayout-content`            | Applied to the content area                                                               |
 
-To override the style of `<Layout>` using the [MUI style overrides](https://mui.com/customization/theme-components/), use the `RaLayout` key.
+To override the style of `<Layout>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaLayout` key.
 
 **Tip**: If you need to override global styles (like the default font size or family), you should [write a custom theme](./Theming.md#theming) rather than override the `<Layout sx>` prop. And if you need to tweak the default layout to add a right column or move the menu to the top, you're probably better off [writing your own layout component](./Theming.md#layout-from-scratch). 
 

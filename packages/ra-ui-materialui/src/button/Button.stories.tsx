@@ -94,7 +94,7 @@ declare module '@mui/material/styles' {
 
 /**
  * Adding new theme tokens to the Button
- * https://mui.com/joy-ui/customization/themed-components/#theme-style-overrides
+ * https://mui.com/material-ui/customization/theme-components/#creating-new-component-variants
  */
 declare module '@mui/material/Button' {
     interface ButtonPropsColorOverrides {

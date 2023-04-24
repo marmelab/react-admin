@@ -141,7 +141,7 @@ The `<LongForm>` component accepts the usual `className` prop. You can also over
 
 The children of `<LongForm>` must be `<LongForm.Section>` elements.
 
-This component adds a section title (using a `<Typography variant="h4">`), then renders each child inside a [MUI `<Stack>`](https://mui.com/material-ui/react-stack/), and finally adds an MUI `<Divider>` at the bottom of the section.
+This component adds a section title (using a `<Typography variant="h4">`), then renders each child inside a [Material UI `<Stack>`](https://mui.com/material-ui/react-stack/), and finally adds an Material UI `<Divider>` at the bottom of the section.
 
 It accepts the following props:
 
@@ -150,7 +150,7 @@ It accepts the following props:
 | `label`           | Required | `string`    | -       | The main label used as the section title. Appears in red when the section has errors |
 | `children`        | Required | `ReactNode` | -       | A list of `<Input>` elements                                                         |
 | `cardinality`     | Optional | `number`    | -       | A number to be displayed next to the label in TOC, to quantify it                    |
-| `sx`              | Optional | `object`    | -       | An object containing the MUI style overrides to apply to the root component          |
+| `sx`              | Optional | `object`    | -       | An object containing the Material UI style overrides to apply to the root component          |
 
 ### `cardinality`
 

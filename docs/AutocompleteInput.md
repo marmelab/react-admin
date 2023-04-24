@@ -6,7 +6,7 @@ title: "The AutocompleteInput Component"
 # `<AutocompleteInput>`
 
 To let users choose a value in a list using a dropdown with autocompletion, use `<AutocompleteInput>`.
-It renders using [MUI's `<Autocomplete>`](https://mui.com/components/autocomplete/).
+It renders using [Material UI's `<Autocomplete>`](https://mui.com/material-ui/react-autocomplete/).
 
 ![AutocompleteInput](./img/autocomplete-input.gif)
 
@@ -47,7 +47,7 @@ The form value for the source must be the selected value, e.g.
 
 **Tip**: If you need to let users select more than one item in the list, check out the [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md) component.
 
-**Tip**: `<AutocompleteInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceInput>`](./ReferenceInput.md) doesn't cover your need), you'll have to [write your own Input component](./Inputs.md#writing-your-own-input-component) based on MUI `<Autocomplete>` component.
+**Tip**: `<AutocompleteInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceInput>`](./ReferenceInput.md) doesn't cover your need), you'll have to [write your own Input component](./Inputs.md#writing-your-own-input-component) based on Material UI `<Autocomplete>` component.
 
 ## Props
 
@@ -444,15 +444,15 @@ If you're using `<AutocompleteInput>` inside a [`<ReferenceInput>`](./ReferenceI
 
 ## `sx`: CSS API
 
-The `<AutocompleteInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<AutocompleteInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name                    | Description                                     |
 |------------------------------|-------------------------------------------------|
 | `& .RaSelectInput-textField` | Applied to the underlying `TextField` component |
 
-To override the style of all instances of `<AutocompleteInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaAutocompleteInput` key.
+To override the style of all instances of `<AutocompleteInput>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaAutocompleteInput` key.
 
-Refer to the [MUI `<Autocomplete>` component](https://mui.com/components/autocomplete/) to know its CSS API.
+Refer to the [Material UI `<Autocomplete>` component](https://mui.com/material-ui/react-autocomplete/) to know its CSS API.
 
 ## `translateChoice`
 
@@ -474,7 +474,7 @@ In that case, set the `translateChoice` prop to `false`.
 
 ## Additional Props
 
-`<AutocompleteInput>` renders a [MUI `<Autocomplete>` component](https://mui.com/components/autocomplete/) and it accepts the `<Autocomplete>` props:
+`<AutocompleteInput>` renders a [Material UI `<Autocomplete>` component](https://mui.com/material-ui/react-autocomplete/) and it accepts the `<Autocomplete>` props:
 
 {% raw %}
 ```jsx
@@ -616,7 +616,7 @@ You can pass a custom element as [`optionText`](#optiontext) to have `<Autocompl
 
 `<AutocompleteInput>` will render the custom option element inside a [`<RecordContext>`](./useRecordContext.md), using the related choice as the `record` prop. You can use Field components there.
 
-However, as the underlying MUI `<Autocomplete>` component requires that the current selection is a string, you must also pass a function as the `inputText` prop. This function should return a text representation of the current selection. You should also pass a `matchSuggestion` function to filter the choices based on the current selection.
+However, as the underlying Material UI `<Autocomplete>` component requires that the current selection is a string, you must also pass a function as the `inputText` prop. This function should return a text representation of the current selection. You should also pass a `matchSuggestion` function to filter the choices based on the current selection.
 
 ```jsx
 const choices = [
@@ -685,7 +685,7 @@ const PostCreate = () => {
 ```
 {% endraw %}
 
-Use the `create` prop when you want a more polished or complex UI. For example an MUI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
+Use the `create` prop when you want a more polished or complex UI. For example an Material UI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
 
 {% raw %}
 ```js

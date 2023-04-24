@@ -138,7 +138,7 @@ Check [the ra-navigation documentation](https://marmelab.com/ra-enterprise/modul
 | ----------- | -------- | ------------------- | -------- | -------------------------------------- |
 | `children`  | required | `ReactNode`         | -        | The Breadcrumb Items to be rendered.   |
 | `separator` | Optional | `string | function` | '/'      | The character user as separator        |
-| `sx`        | Optional | `SxProps`           | -        | Style overrides, powered by MUI System |
+| `sx`        | Optional | `SxProps`           | -        | Style overrides, powered by Material UI System |
 
 Additional props are passed down to the root `<nav>` component.
 

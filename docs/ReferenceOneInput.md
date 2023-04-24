@@ -77,13 +77,13 @@ const BookEdit = () => (
 | `filter`       | Optional | `Object`                  | -                                | Filters to use when fetching the related record, passed to `getManyReference()`                                                                                        |
 | `sort`         | Optional | `{ field, order }`        | `{ field: 'id', order: 'ASC' }`  | Sort order to use when fetching the related record, passed to `getManyReference()`                                                                                     |
 | `defaultValue` | Optional | `Object`                  | -                                | Default value for the related record (in case it does not yet exist)                                                                                                   |
-| `sx`           | Optional | `SxProps`                 | -                                | MUI shortcut for defining custom styles                                                                                                                                |
+| `sx`           | Optional | `SxProps`                 | -                                | Material UI shortcut for defining custom styles                                                                                                                                |
 
-Additional props are passed to the MUI `<Stack>` component.
+Additional props are passed to the Material UI `<Stack>` component.
 
 ## `children`
 
-`<ReferenceOneInput>` expects input components as its children (like `<TextInput>`, `<NumberInput>`, etc.), which will allow to edit the related record. The inputs will be rendered inside an [MUI `<Stack>`](https://mui.com/material-ui/react-stack/).
+`<ReferenceOneInput>` expects input components as its children (like `<TextInput>`, `<NumberInput>`, etc.), which will allow to edit the related record. The inputs will be rendered inside an [Material UI `<Stack>`](https://mui.com/material-ui/react-stack/).
 
 ```jsx
 <ReferenceOneInput reference="book_details" target="book_id">
@@ -205,7 +205,7 @@ By default, `<ReferenceManyInput>` fetches the `reference` for which the `target
 
 ## `sx`
 
-You can override the style of the root component (a MUI [`<FormControl>`](https://mui.com/material-ui/api/form-control/#main-content)) and its child components by setting the `sx` prop.
+You can override the style of the root component (a Material UI [`<FormControl>`](https://mui.com/material-ui/api/form-control/)) and its child components by setting the `sx` prop.
 
 {% raw %}
 

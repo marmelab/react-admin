@@ -198,7 +198,7 @@ export const UserMenuCustom = () => (
     </Wrapper>
 );
 
-// It's important to pass the ref to allow MUI to manage the keyboard navigation
+// It's important to pass the ref to allow Material UI to manage the keyboard navigation
 const SettingsMenuItem: React.FC<MenuItemProps> = React.forwardRef(
     (props, ref) => {
         // We are not using MenuItemLink so we retrieve the onClose function from the UserContext
@@ -207,7 +207,7 @@ const SettingsMenuItem: React.FC<MenuItemProps> = React.forwardRef(
             <MenuItem
                 onClick={onClose}
                 ref={ref}
-                // It's important to pass the props to allow MUI to manage the keyboard navigation
+                // It's important to pass the props to allow Material UI to manage the keyboard navigation
                 {...props}
             >
                 <ListItemIcon>

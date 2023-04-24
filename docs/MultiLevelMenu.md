@@ -111,7 +111,7 @@ const App = () => (
 | ------------- | -------- | ----------- | -------- | -------------------------------------- |
 | `children`    | Optional | `ReactNode` | -        | The Menu Items  to be rendered.        |
 | `initialOpen` | Optional | `boolean`   | `false`  | Whether the menu is initially open.    |
-| `sx`          | Optional | `SxProps`   | -        | Style overrides, powered by MUI System |
+| `sx`          | Optional | `SxProps`   | -        | Style overrides, powered by Material UI System |
 
 Additional props are passed down to the root `<div>` component.
 
@@ -164,7 +164,7 @@ export const MyMenu = () => (
 ```
 {% endraw %}
 
-To override the style of `<MultiLevelMenu>` using the [MUI style overrides](https://mui.com/customization/theme-components/), use the `RaMenuRoot` key.
+To override the style of `<MultiLevelMenu>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaMenuRoot` key.
 
 ## `<MultiLevelMenu.Item>`
 
@@ -189,9 +189,9 @@ It accepts optional props:
 
 - `icon`: the icon to display.
 - `children`: Other `<MultiLevelMenu.Item>` children.
-- `sx`: Style overrides, powered by MUI System
+- `sx`: Style overrides, powered by Material UI System
 
-Additional props are passed down to [the underling MUI `<listItem>` component](https://mui.com/api/list-item/#listitem-api).
+Additional props are passed down to [the underling Material UI `<listItem>` component](https://mui.com/api/list-item/#listitem-api).
 
 ## Creating Menu Items For Resources
 

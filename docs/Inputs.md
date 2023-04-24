@@ -9,7 +9,7 @@ An `Input` component displays an input, or a dropdown list, a list of radio butt
 
 ![Inputs](./img/inputs.webp)
 
-Input components are usually wrappers around MUI form components, bound to the current react-hook-form context.
+Input components are usually wrappers around Material UI form components, bound to the current react-hook-form context.
 
 ## Usage
 
@@ -49,12 +49,12 @@ All input components accept the following props:
 | `helperText`    | Optional | `string`                  | -       | Text to be displayed under the input (cannot be used inside a filter)                                                                                                          |
 | `label`         | Optional | `string`                  | -       | Input label. In i18n apps, the label is passed to the `translate` function. Defaults to the humanized `source` when omitted. Set `label={false}` to hide the label. |
 | `parse`         | Optional | `Function`                | `value => value === '' ? null : value` | Callback taking the input value, and returning the value you want stored in the form state.                                                                         |
-| `sx`            | Optional | `SxProps`                 | -       | MUI shortcut for defining custom styles                                                                                                                             |
+| `sx`            | Optional | `SxProps`                 | -       | Material UI shortcut for defining custom styles                                                                                                                             |
 | `validate`      | Optional | `Function` &#124; `array` | -       | Validation rules for the current property. See the [Validation Documentation](./Validation.md#per-input-validation-built-in-field-validators) for details.          |
 
 React-admin uses [react-hook-form](https://react-hook-form.com/) to control form inputs. Each input component also accepts all react-hook-form [useController](https://react-hook-form.com/api/usecontroller) hook options.
 
-Additional props are passed down to the underlying component (usually an MUI component). For instance, when setting the `variant` prop on a `<TextInput>` component, the underlying MUI `<TextField>` receives it, and renders it with a different variant. Refer to the documentation of each Input component to see the underlying MUI component and its props.
+Additional props are passed down to the underlying component (usually an Material UI component). For instance, when setting the `variant` prop on a `<TextInput>` component, the underlying Material UI `<TextField>` receives it, and renders it with a different variant. Refer to the documentation of each Input component to see the underlying Material UI component and its props.
 
 ## Which Input Component to Use?
 
@@ -290,7 +290,7 @@ Then you can display a text input to edit the author's first name as follows:
 
 ## `sx`
 
-Each individual input supports an `sx` prop to pass custom styles to the underlying component, relying on [MUI system](https://mui.com/system/basics/#the-sx-prop).
+Each individual input supports an `sx` prop to pass custom styles to the underlying component, relying on [Material UI system](https://mui.com/system/basics/#the-sx-prop).
 
 {% raw %}
 ```jsx
@@ -570,9 +570,9 @@ import { FormDataConsumer } from 'react-admin';
 
 ## Overriding The Input Variant
 
-MUI offers [3 variants for text fields](https://mui.com/material-ui/react-text-field/#basic-textfield): `outlined`, `filled`, and `standard`. The default react-admin theme uses the `filled` variant.
+Material UI offers [3 variants for text fields](https://mui.com/material-ui/react-text-field/#basic-textfield): `outlined`, `filled`, and `standard`. The default react-admin theme uses the `filled` variant.
 
-Most Input components pass their additional props down to the root component, which is often an MUI Field component. This means you can pass a `variant` prop to override the variant of a single input:
+Most Input components pass their additional props down to the root component, which is often an Material UI Field component. This means you can pass a `variant` prop to override the variant of a single input:
 
 ```jsx
 <TextInput source="name" variant="outlined" />
@@ -735,9 +735,9 @@ Now the component will render with a label:
 </span>
 ```
 
-### Using MUI Field Components
+### Using Material UI Field Components
 
-Instead of HTML `input` elements, you can use an MUI component like `TextField`. To bind MUI components to the form values, use the `useController()` hook:
+Instead of HTML `input` elements, you can use an Material UI component like `TextField`. To bind Material UI components to the form values, use the `useController()` hook:
 
 ```jsx
 // in LatLongInput.js
@@ -768,13 +768,13 @@ const LatLngInput = () => (
 );
 ```
 
-**Tip**: MUI's `<TextField>` component already includes a label, so you don't need to use `<Labeled>` in this case.
+**Tip**: Material UI's `<TextField>` component already includes a label, so you don't need to use `<Labeled>` in this case.
 
 **Tip**: Notice that we have added `defaultValue: ''` as one of the `useController` params. This is a good practice to avoid getting console warnings about controlled/uncontrolled components, that may arise if the value of `record.lat` or `record.lng` is `undefined` or `null`.
 
 `useController()` returns three values: `field`, `fieldState`, and `formState`. To learn more about these props, please refer to the [useController](https://react-hook-form.com/api/usecontroller) hook documentation.
 
-Instead of HTML `input` elements or MUI components, you can use react-admin input components, like `<NumberInput>` for instance. React-admin components already use `useController()`, and already include a label, so you don't need either `useController()` or `<Labeled>` when using them:
+Instead of HTML `input` elements or Material UI components, you can use react-admin input components, like `<NumberInput>` for instance. React-admin components already use `useController()`, and already include a label, so you don't need either `useController()` or `<Labeled>` when using them:
 
 ```jsx
 // in LatLongInput.js
@@ -844,7 +844,7 @@ const LatLngInput = props => {
 };
 ```
 
-Here is another example, this time using an MUI `Select` component:
+Here is another example, this time using an Material UI `Select` component:
 
 ```jsx
 // in SexInput.js

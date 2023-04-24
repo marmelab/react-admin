@@ -9,7 +9,7 @@ title: "The Toolbar Component"
 
 ![Toolbar](./img/Toolbar.png)
 
-**Tip**: Use react-admin's `<Toolbar>` component instead of MUI's `<Toolbar>` component. The former builds upon the latter and adds support for an alternative mobile layout (and is therefore responsive).
+**Tip**: Use react-admin's `<Toolbar>` component instead of Material UI's `<Toolbar>` component. The former builds upon the latter and adds support for an alternative mobile layout (and is therefore responsive).
 
 ## Usage
 
@@ -46,7 +46,7 @@ const CommentCreate = () => (
 - `className`
 - [`sx`](#sx-css-api)
 
-Additional props are passed down to [the MUI `<Toolbar>` component](https://mui.com/api/toolbar/).
+Additional props are passed down to [the Material UI `<Toolbar>` component](https://mui.com/material-ui/api/toolbar/).
 
 ## `children`
 
@@ -92,4 +92,4 @@ You can override the style of the toolbar using the `sx` prop. Use the class nam
 | `&.RaToolbar-mobileToolbar`    | Applied to the underlying `MuiToolbar` component for small screens                     |
 | `& .RaToolbar-defaultToolbar`  | Applied to the internal wrapper of the `<Toolbar>` buttons when no children are passed |
 
-To override the style of all instances of `<Toolbar>` components using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaToolbar` key.
+To override the style of all instances of `<Toolbar>` components using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaToolbar` key.

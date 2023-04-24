@@ -75,7 +75,7 @@ const App = () => (
 | Prop        | Required | Type        | Default  | Description                            |
 | ----------- | -------- | ----------- | -------- | -------------------------------------- |
 | `children`  | Optional | `ReactNode` | -        | The Menu Item Links to be rendered.    |
-| `sx`        | Optional | `SxProps`   | -        | Style overrides, powered by MUI System |
+| `sx`        | Optional | `SxProps`   | -        | Style overrides, powered by Material UI System |
 
 Additional props are passed down to the root `<div>` component.
 
@@ -116,7 +116,7 @@ export const MyMenu = () => (
 ```
 {% endraw %}
 
-To override the style of `<IconMenu>` using the [MUI style overrides](https://mui.com/customization/theme-components/), use the `RaMenuRoot` key.
+To override the style of `<IconMenu>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaMenuRoot` key.
 
 ## `<IconMenu.Item>`
 
@@ -141,13 +141,13 @@ It requires the following props:
 It accepts optional props:
 
 - `children`: Content of a sliding panel displayed when the menu is clicked (see [Adding sub menus](#adding-sub-menus) below)
-- `sx`: Style overrides, powered by MUI System
+- `sx`: Style overrides, powered by Material UI System
 
-Additional props are passed down to [the underling MUI `<listItem>` component](https://mui.com/api/list-item/#listitem-api).
+Additional props are passed down to [the underling Material UI `<listItem>` component](https://mui.com/material-ui/api/list-item/).
 
 ## Adding Sub Menus
 
-You can define the content of the sliding panel revealed when the user clicks on a menu by adding children to `<IconMenu.Item>`. `<IconMenu>` renders its children inside a MUI `<Card>`, so it's common to wrap the content in `<CardContent>`.
+You can define the content of the sliding panel revealed when the user clicks on a menu by adding children to `<IconMenu.Item>`. `<IconMenu>` renders its children inside a Material UI `<Card>`, so it's common to wrap the content in `<CardContent>`.
 
 For instance, here is how to add a sub menu to the Artists menu with one entry for each artist category:
 

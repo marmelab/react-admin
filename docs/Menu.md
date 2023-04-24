@@ -60,9 +60,9 @@ const App = () => (
 | Prop        | Required | Type        | Default  | Description                                                                          |
 | ----------- | -------- | ----------- | -------- | ------------------------------------------------------------------------------------ |
 | `children`  | Optional | `ReactNode` | -        | The Menu Item Links to be rendered. If not provided, defaults to the Resource names. |
-| `sx`        | Optional | `SxProps`   | -        | Style overrides, powered by MUI System                                               |
+| `sx`        | Optional | `SxProps`   | -        | Style overrides, powered by Material UI System                                               |
 
-Additional props are passed down to the root component (the MUI [`<MenuList>`](https://mui.com/material-ui/api/menu-list/) component)
+Additional props are passed down to the root component (the Material UI [`<MenuList>`](https://mui.com/material-ui/api/menu-list/) component)
 
 ## `children`
 
@@ -135,7 +135,7 @@ This property accepts the following subclasses:
 | `&.RaMenu-open`   | Applied the menu when it's open      |
 | `&.RaMenu-closed` | Applied to the menu when it's closed |
 
-To override the style of `<Menu>` using the [MUI style overrides](https://mui.com/customization/theme-components/), use the `RaMenu` key.
+To override the style of `<Menu>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaMenu` key.
 
 ## `<Menu.Item>`
 
@@ -155,7 +155,7 @@ import Badge from '@mui/material/Badge';
 
 The `letfIcon` prop allows setting the menu left icon.
 
-Additional props are passed down to [the underling MUI `<MenuItem>` component](https://mui.com/api/menu-item/#menuitem-api).
+Additional props are passed down to [the underling Material UI `<MenuItem>` component](https://mui.com/material-ui/api/menu-item/).
 
 **Tip**: The `<Menu.Item>` component makes use of the React Router [NavLink](https://reactrouter.com/docs/en/v6/components/nav-link) component, hence allowing to customize the active menu style. For instance, here is how to use a custom theme to show a left border for the active menu:
 

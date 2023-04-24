@@ -50,7 +50,7 @@ export const FormTabHeader = ({
                 error:
                     !formGroup.isValid && (formGroup.isTouched || isSubmitted),
             })}
-            {...(syncWithLocation ? propsForLink : {})} // to avoid TypeScript screams, see https://github.com/mui-org/material-ui/issues/9106#issuecomment-451270521
+            {...(syncWithLocation ? propsForLink : {})} // to avoid TypeScript screams, see https://github.com/mui/material-ui/issues/9106#issuecomment-451270521
             id={`tabheader-${value}`}
             aria-controls={`tabpanel-${value}`}
             onChange={onChange}
