@@ -111,7 +111,7 @@ const App = () => (
 | ------------- | -------- | ----------- | -------- | -------------------------------------- |
 | `children`    | Optional | `ReactNode` | -        | The Menu Items  to be rendered.        |
 | `initialOpen` | Optional | `boolean`   | `false`  | Whether the menu is initially open.    |
-| `sx`          | Optional | `SxProps`   | -        | Style overrides, powered by Material UI System |
+| `sx`          | Optional | `SxProps`   | -        | Style overrides, powered by MUI System |
 
 Additional props are passed down to the root `<div>` component.
 
@@ -189,7 +189,7 @@ It accepts optional props:
 
 - `icon`: the icon to display.
 - `children`: Other `<MultiLevelMenu.Item>` children.
-- `sx`: Style overrides, powered by Material UI System
+- `sx`: Style overrides, powered by MUI System
 
 Additional props are passed down to [the underling Material UI `<listItem>` component](https://mui.com/api/list-item/#listitem-api).
 

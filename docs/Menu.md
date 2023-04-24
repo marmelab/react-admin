@@ -60,7 +60,7 @@ const App = () => (
 | Prop        | Required | Type        | Default  | Description                                                                          |
 | ----------- | -------- | ----------- | -------- | ------------------------------------------------------------------------------------ |
 | `children`  | Optional | `ReactNode` | -        | The Menu Item Links to be rendered. If not provided, defaults to the Resource names. |
-| `sx`        | Optional | `SxProps`   | -        | Style overrides, powered by Material UI System                                               |
+| `sx`        | Optional | `SxProps`   | -        | Style overrides, powered by MUI System                                               |
 
 Additional props are passed down to the root component (the Material UI [`<MenuList>`](https://mui.com/material-ui/api/menu-list/) component)
 

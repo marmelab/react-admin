@@ -75,7 +75,7 @@ const App = () => (
 | Prop        | Required | Type        | Default  | Description                            |
 | ----------- | -------- | ----------- | -------- | -------------------------------------- |
 | `children`  | Optional | `ReactNode` | -        | The Menu Item Links to be rendered.    |
-| `sx`        | Optional | `SxProps`   | -        | Style overrides, powered by Material UI System |
+| `sx`        | Optional | `SxProps`   | -        | Style overrides, powered by MUI System |
 
 Additional props are passed down to the root `<div>` component.
 
@@ -141,7 +141,7 @@ It requires the following props:
 It accepts optional props:
 
 - `children`: Content of a sliding panel displayed when the menu is clicked (see [Adding sub menus](#adding-sub-menus) below)
-- `sx`: Style overrides, powered by Material UI System
+- `sx`: Style overrides, powered by MUI System
 
 Additional props are passed down to [the underling Material UI `<listItem>` component](https://mui.com/material-ui/api/list-item/).
 

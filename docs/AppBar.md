@@ -67,7 +67,7 @@ const App = () => (
 | `alwaysOn`          | Optional | `boolean`      | -        | When true, the app bar is always visible            |
 | `children`          | Optional | `ReactElement` | -        | What to display in the central part of the app bar  |
 | `color`             | Optional | `string`       | -        | The background color of the app bar                 |
-| `sx`                | Optional | `SxProps`      | -        | Style overrides, powered by Material UI System              |
+| `sx`                | Optional | `SxProps`      | -        | Style overrides, powered by MUI System              |
 | `toolbar`           | Optional | `ReactElement` | -        | The content of the toolbar                          |
 | `userMenu`          | Optional | `ReactElement` | -        | The content of the dropdown user menu               |
 
