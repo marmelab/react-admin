@@ -10106,15 +10106,15 @@ __metadata:
     proxy-polyfill: ^0.3.0
     query-string: ^7.1.1
     ra-data-fakerest: ^4.9.3
-    ra-data-graphql: ^4.8.4
-    ra-data-graphql-simple: ^4.8.4
+    ra-data-graphql: ^4.9.4
+    ra-data-graphql-simple: ^4.9.4
     ra-data-simple-rest: ^4.9.3
     ra-i18n-polyglot: ^4.9.3
-    ra-input-rich-text: ^4.9.3
+    ra-input-rich-text: ^4.9.4
     ra-language-english: ^4.9.3
     ra-language-french: ^4.9.3
     react: ^17.0.0
-    react-admin: ^4.9.3
+    react-admin: ^4.9.4
     react-app-polyfill: ^2.0.0
     react-dom: ^17.0.0
     react-router: ^6.1.0
@@ -16633,9 +16633,9 @@ __metadata:
     "@mui/material": ^5.0.2
     "@vitejs/plugin-react": ^2.2.0
     ra-data-local-storage: ^4.9.3
-    ra-no-code: ^4.9.3
+    ra-no-code: ^4.9.4
     react: ^17.0.0
-    react-admin: ^4.9.3
+    react-admin: ^4.9.4
     react-dom: ^17.0.0
     typescript: ^4.4.0
     vite: ^3.2.0
@@ -18759,7 +18759,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-graphql-simple@^4.8.4, ra-data-graphql-simple@workspace:packages/ra-data-graphql-simple":
+"ra-data-graphql-simple@^4.9.4, ra-data-graphql-simple@workspace:packages/ra-data-graphql-simple":
   version: 0.0.0-use.local
   resolution: "ra-data-graphql-simple@workspace:packages/ra-data-graphql-simple"
   dependencies:
@@ -18769,7 +18769,7 @@ __metadata:
     graphql-ast-types-browser: ~1.0.2
     lodash: ~4.17.5
     pluralize: ~7.0.0
-    ra-data-graphql: ^4.8.4
+    ra-data-graphql: ^4.9.4
     rimraf: ^3.0.2
     typescript: ^4.4.0
   peerDependencies:
@@ -18778,7 +18778,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-graphql@^4.8.4, ra-data-graphql@workspace:packages/ra-data-graphql":
+"ra-data-graphql@^4.9.4, ra-data-graphql@workspace:packages/ra-data-graphql":
   version: 0.0.0-use.local
   resolution: "ra-data-graphql@workspace:packages/ra-data-graphql"
   dependencies:
@@ -18862,7 +18862,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-input-rich-text@^4.9.3, ra-input-rich-text@workspace:packages/ra-input-rich-text":
+"ra-input-rich-text@^4.9.4, ra-input-rich-text@workspace:packages/ra-input-rich-text":
   version: 0.0.0-use.local
   resolution: "ra-input-rich-text@workspace:packages/ra-input-rich-text"
   dependencies:
@@ -18885,7 +18885,7 @@ __metadata:
     data-generator-retail: ^4.9.3
     ra-core: ^4.9.3
     ra-data-fakerest: ^4.9.3
-    ra-ui-materialui: ^4.9.3
+    ra-ui-materialui: ^4.9.4
     react: ^17.0.0
     react-dom: ^17.0.0
     react-hook-form: ^7.40.0
@@ -18921,7 +18921,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-no-code@^4.9.3, ra-no-code@workspace:packages/ra-no-code":
+"ra-no-code@^4.9.4, ra-no-code@workspace:packages/ra-no-code":
   version: 0.0.0-use.local
   resolution: "ra-no-code@workspace:packages/ra-no-code"
   dependencies:
@@ -18938,7 +18938,7 @@ __metadata:
     prop-types: ^15.6.1
     ra-data-local-storage: ^4.9.3
     react: ^17.0.0
-    react-admin: ^4.9.3
+    react-admin: ^4.9.4
     react-dom: ^17.0.0
     react-dropzone: ^12.0.4
     react-query: ^3.32.1
@@ -18952,7 +18952,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-ui-materialui@^4.9.3, ra-ui-materialui@workspace:packages/ra-ui-materialui":
+"ra-ui-materialui@^4.9.4, ra-ui-materialui@workspace:packages/ra-ui-materialui":
   version: 0.0.0-use.local
   resolution: "ra-ui-materialui@workspace:packages/ra-ui-materialui"
   dependencies:
@@ -19100,7 +19100,7 @@ __metadata:
     prop-types: ^15.7.2
     ra-data-fakerest: ^4.9.3
     react: ^17.0.0
-    react-admin: ^4.9.3
+    react-admin: ^4.9.4
     react-beautiful-dnd: ^13.0.0
     react-dom: ^17.0.0
     react-error-boundary: ^3.1.4
@@ -19160,7 +19160,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-admin@^4.9.3, react-admin@workspace:packages/react-admin":
+"react-admin@^4.9.4, react-admin@workspace:packages/react-admin":
   version: 0.0.0-use.local
   resolution: "react-admin@workspace:packages/react-admin"
   dependencies:
@@ -19174,7 +19174,7 @@ __metadata:
     ra-core: ^4.9.3
     ra-i18n-polyglot: ^4.9.3
     ra-language-english: ^4.9.3
-    ra-ui-materialui: ^4.9.3
+    ra-ui-materialui: ^4.9.4
     react-hook-form: ^7.40.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
@@ -20783,11 +20783,11 @@ __metadata:
     proxy-polyfill: ^0.3.0
     ra-data-fakerest: ^4.9.3
     ra-i18n-polyglot: ^4.9.3
-    ra-input-rich-text: ^4.9.3
+    ra-input-rich-text: ^4.9.4
     ra-language-english: ^4.9.3
     ra-language-french: ^4.9.3
     react: ^17.0.0
-    react-admin: ^4.9.3
+    react-admin: ^4.9.4
     react-app-polyfill: ^1.0.4
     react-dom: ^17.0.0
     react-hook-form: ^7.40.0
@@ -22120,7 +22120,7 @@ __metadata:
     "@vitejs/plugin-react": ^2.2.0
     ra-data-json-server: ^4.9.3
     react: ^18.2.0
-    react-admin: ^4.9.3
+    react-admin: ^4.9.4
     react-dom: ^18.2.0
     typescript: ^4.6.4
     vite: ^3.2.0
