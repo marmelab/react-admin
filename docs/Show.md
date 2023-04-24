@@ -56,6 +56,7 @@ That's enough to display the post show view:
 ## Props
 
 * [`actions`](#actions): override the actions toolbar with a custom component
+* [`aside`](#aside): aside element
 * `className`: passed to the root component
 * [`children`](#layout): the components that render the record fields
 * [`component`](#component): overrides the root component
@@ -150,6 +151,52 @@ export const PostShow = () => (
     </Show>
 );
 ```
+
+## `aside`
+
+You can pass an aside element to the `<Show>` component. It will be rendered on the right side of the page, below the actions toolbar.
+
+The aside component renders in the same `RecordContext` as the `Show` child component. That means you can display details of the current `record` in the aside component by calling `useRecordContext`:
+
+{% raw %}
+```jsx
+import {
+    Show,
+    SimpleShowLayout,
+    TextField,
+    DateField,
+    RichTextField,
+    useRecordContext
+} from 'react-admin';
+
+export const PostShow = () => (
+    <Show aside={<Aside />}>
+        <SimpleShowLayout>
+            <TextField source="title" />
+            <TextField source="teaser" />
+            <RichTextField source="body" />
+            <DateField label="Publication date" source="published_at" />
+        </SimpleShowLayout>
+    </Show>
+);
+
+const Aside = () => {
+    const record = useRecordContext();
+    return (
+        <div style={{ width: 200, margin: '1em' }}>
+            <Typography variant="h6">Post details</Typography>
+            {record && (
+                <Typography variant="body2">
+                    Creation date: {record.createdAt}
+                </Typography>
+            )}
+        </div>
+    );
+};
+```
+{% endraw %}
+
+**Tip**: Always test the record is defined before using it, as react-admin starts rendering the UI before the `dataProvider.getOne()` call is over.
 
 ## `queryOptions`
 
