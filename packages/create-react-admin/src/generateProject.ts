@@ -53,10 +53,12 @@ export const App = () => (
     <Admin
         ${
             state.dataProvider !== 'none'
-                ? `dataProvider={dataProvider}\n\t\t`
+                ? `dataProvider={dataProvider}\n\t`
                 : ''
         }${
-            state.authProvider !== 'none' ? `authProvider={authProvider}\n` : ''
+            state.authProvider !== 'none'
+                ? `\tauthProvider={authProvider}\n`
+                : ''
         }>
         ${state.resources
             .map(
