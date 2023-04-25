@@ -30,6 +30,7 @@ export const generateProject = async (state: ProjectConfiguration) => {
     generateAppFile(projectDirectory, state);
     generatePackageJson(projectDirectory, state);
     generateEnvFile(projectDirectory, state);
+    generateReadme(projectDirectory, state);
 };
 
 const generateAppFile = (
@@ -211,4 +212,44 @@ const copyDirectoryFiles = (
               }
             : undefined
     );
+};
+
+const generateReadme = (
+    projectDirectory: string,
+    state: ProjectConfiguration
+) => {
+    const defaultReadme = getTemplateReadme('common');
+    const dataProviderReadme = getTemplateReadme(state.dataProvider);
+    const authProviderReadme = getTemplateReadme(state.authProvider);
+
+    let readme = `${defaultReadme}`;
+
+    if (dataProviderReadme) {
+        readme += `\n${dataProviderReadme}`;
+    }
+
+    if (authProviderReadme) {
+        readme += `\n${authProviderReadme}`;
+    }
+
+    if (readme) {
+        fs.writeFileSync(path.join(projectDirectory, 'README.md'), readme);
+    }
+};
+
+const getTemplateReadme = (template: string) => {
+    if (template === 'none' || template === '') {
+        return undefined;
+    }
+    const readmePath = path.join(
+        __dirname,
+        '../templates',
+        template,
+        'README.md'
+    );
+    if (fs.existsSync(readmePath)) {
+        const readme = fs.readFileSync(readmePath, 'utf-8');
+        return readme;
+    }
+    return undefined;
 };
