@@ -5,7 +5,7 @@ title: "The SelectArrayInput Component"
 
 # `<SelectArrayInput>`
 
-To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [MUI's `<Select>`](https://mui.com/api/select).
+To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material UI's `<Select>`](https://mui.com/api/select).
 
 <video controls autoplay muted loop>
   <source src="./img/select-array-input.webm" type="video/webm"/>
@@ -286,7 +286,7 @@ If a prompt is not enough, you can use [the `create` prop](#create) to render a 
 
 ## `options`
 
-Use the `options` attribute if you want to override any of MUI's `<Select>` attributes:
+Use the `options` attribute if you want to override any of Material UI's `<Select>` attributes:
 
 {% raw %}
 ```jsx
@@ -294,7 +294,7 @@ Use the `options` attribute if you want to override any of MUI's `<Select>` attr
 ```
 {% endraw %}
 
-Refer to [MUI Select documentation](https://mui.com/api/select) for more details.
+Refer to [Material UI Select documentation](https://mui.com/api/select) for more details.
 
 ## `optionText`
 
@@ -362,14 +362,14 @@ const choices = [
 
 ## `sx`: CSS API
 
-The `<SelectArrayInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<SelectArrayInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name                     | Description                                                                        |
 |-------------------------------|------------------------------------------------------------------------------------|
-| `& .RaSelectArrayInput-chip`  | Applied to each MUI's `Chip` component used as selected item               |
-| `& .RaSelectArrayInput-chips` | Applied to the container of MUI's `Chip` components used as selected items |
+| `& .RaSelectArrayInput-chip`  | Applied to each Material UI's `Chip` component used as selected item               |
+| `& .RaSelectArrayInput-chips` | Applied to the container of Material UI's `Chip` components used as selected items |
 
-To override the style of all instances of `<SelectArrayInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaSelectArrayInput` key.
+To override the style of all instances of `<SelectArrayInput>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaSelectArrayInput` key.
 
 ## `translateChoice`
 
@@ -391,7 +391,7 @@ In that case, set the `translateChoice` prop to `false`.
 <SelectArrayInput source="roles" choices={choices} translateChoice={false}/>
 ```
 
-## Using in a ReferenceArrayInput
+## Fetching Choices
 
 If you want to populate the `choices` attribute with a list of related records, you should decorate `<SelectArrayInput>` with [`<ReferenceArrayInput>`](./ReferenceArrayInput.md), and leave the `choices` empty:
 
@@ -421,6 +421,8 @@ export const PostCreate = () => (
 ```
 
 **Tip**: As it does not provide autocompletion, `<SelectArrayInput>` might not be suited when the reference resource has a lot of items.
+
+Check [the `<ReferenceArrayInput>` documentation](./ReferenceArrayInput.md) for more details.
 
 ## Creating New Choices
 
@@ -458,7 +460,7 @@ const PostCreate = () => {
 ```
 {% endraw %}
 
-Use the `create` prop when you want a more polished or complex UI. For example a MUI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
+Use the `create` prop when you want a more polished or complex UI. For example a Material UI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
 
 {% raw %}
 ```jsx

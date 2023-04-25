@@ -60,7 +60,7 @@ const darkTheme = {
 <ToggleThemeButton darkTheme={darkTheme} />
 ```
 
-**Tip**: React-admin calls MUI's `createTheme()` on this object. 
+**Tip**: React-admin calls Material UI's `createTheme()` on this object. 
 
 ## `lightTheme`
 
@@ -87,7 +87,7 @@ const lightTheme = {
 
 React-admin uses the `<Admin theme>` prop as default theme.
 
-**Tip**: React-admin calls MUI's `createTheme()` on this object. 
+**Tip**: React-admin calls Material UI's `createTheme()` on this object. 
 
 ## API
 

@@ -43,7 +43,7 @@ import { TimeInput } from 'react-admin';
 <TimeInput source="published_at" />
 ```
 
-**Tip**: For a MUI styled `<TimeInput>` component, check out [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs).
+**Tip**: For a Material UI styled `<TimeInput>` component, check out [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs).
 
 ## Props
 

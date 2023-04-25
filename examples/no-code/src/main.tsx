@@ -4,7 +4,7 @@ import { Root } from 'ra-no-code';
 import { defaultTheme } from 'react-admin';
 import { createTheme } from '@mui/material/styles';
 
-// FIXME MUI bug https://github.com/mui-org/material-ui/issues/13394
+// FIXME Material UI bug https://github.com/mui/material-ui/issues/13394
 const theme = createTheme(defaultTheme);
 
 ReactDOM.render(

@@ -44,7 +44,7 @@ import { DateInput, minValue } from 'react-admin';
 
 It is not possible to customize the date format. Browsers use the user locale to display the date in the correct format.
 
-If you need to render a UI despite the browser locale, MUI also proposes a [Date Picker](https://mui.com/components/pickers/#date-pickers) component, which is more customizable than the native date picker, but requires additional packages.
+If you need to render a UI despite the browser locale, MUI also proposes a [Date Picker](https://mui.com/x/react-date-pickers/date-picker/) component, which is more customizable than the native date picker, but requires additional packages.
 
 <video controls autoplay muted loop>
   <source src="./img/date-picker.webm" type="video/webm"/>

@@ -101,7 +101,7 @@ It also supports [all the other `<Button>` props](#button).
 |-----------------------------|--------------------------------------------------------------------|
 | `&.RaCreateButton-floating` | Applied to the underlying `MuiFab` component used in small screens |
 
-To override the style of all instances of `<CreateButton>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaCreateButton` key.
+To override the style of all instances of `<CreateButton>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaCreateButton` key.
 
 ### `<ListButton>`
 
@@ -264,7 +264,7 @@ This button is an internal component used by react-admin in [the Filter button/f
 
 #### `sx`: CSS API
 
-To override the style of all instances of `<FilterButton>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaFilterButton` key.
+To override the style of all instances of `<FilterButton>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaFilterButton` key.
 
 ## Record Buttons
 
@@ -318,11 +318,11 @@ const MyEdit = () => (
 
 ### `disableRipple`
 
-The ripple effect can cause [performance issues](https://github.com/marmelab/react-admin/issues/5587) for large datagrids. It's possible to remove the ripple effect from within your MUI theme. The [MUI docs](https://mui.com/material-ui/getting-started/faq/#how-can-i-disable-the-ripple-effect-globally) provide instructions on how to do this.
+The ripple effect can cause [performance issues](https://github.com/marmelab/react-admin/issues/5587) for large datagrids. It's possible to remove the ripple effect from within your Material UI theme. The [Material UI docs](https://mui.com/material-ui/getting-started/faq/#how-can-i-disable-the-ripple-effect-globally) provide instructions on how to do this.
 
 It's worth noting that removing the ripple will cause accessibility issues, including a lack of focus states during tab navigating for components like `BooleanInput` and `CheckboxGroupInput`. 
 
-Note: The `disableRipple` was set to `true` in React Admin for a time, but was reimplemented due to accessibility concerns. If you'd like to reimplement the static ripple colour effect, you can use the [React Admin's previous implementation](https://github.com/marmelab/react-admin/blob/994079cbca810a2e74d85329e684811645b04ae2/packages/ra-ui-materialui/src/defaultTheme.ts#L31) as a starting point. [The MUI docs](https://mui.com/material-ui/api/button-base/#props) also gives details on how to reimplement focus styles using the `Mui-focusVisible` class.
+Note: The `disableRipple` was set to `true` in React Admin for a time, but was reimplemented due to accessibility concerns. If you'd like to reimplement the static ripple colour effect, you can use the [React Admin's previous implementation](https://github.com/marmelab/react-admin/blob/994079cbca810a2e74d85329e684811645b04ae2/packages/ra-ui-materialui/src/defaultTheme.ts#L31) as a starting point. [The Material UI docs](https://mui.com/material-ui/api/button-base/#props) also gives details on how to reimplement focus styles using the `Mui-focusVisible` class.
 
 ## Miscellaneous
 
@@ -339,7 +339,7 @@ Base component for most react-admin buttons. Responsive (displays only the icon 
 | `disabled`   | Optional | `boolean`                      | `false`   | If `true`, the button will be disabled |
 | `size`       | Optional | `'large' | 'medium' | 'small'` | `'small'` | Button size                            |
 
-Other props are passed down to [the underlying MUI `<Button>`](https://mui.com/api/button/).
+Other props are passed down to [the underlying Material UI `<Button>`](https://mui.com/material-ui/api/button/).
 
 #### `sx`: CSS API
 
@@ -352,7 +352,7 @@ Other props are passed down to [the underlying MUI `<Button>`](https://mui.com/a
 | `& .RaButton-mediumIcon`     | Applied to the Button's `children` when `size` prop is `medium` and `alignIcon` prop is 'right' |
 | `& .RaButton-largeIcon`      | Applied to the Button's `children` when `size` prop is `large` and `alignIcon` prop is 'right'  |
 
-To override the style of all instances of `<Button>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaButton` key.
+To override the style of all instances of `<Button>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaButton` key.
 
 ### `<RefreshButton>`
 ### `<SkipNavigationButton>`
@@ -363,7 +363,7 @@ To override the style of all instances of `<Button>` using the [MUI style overri
 |-----------------------------------------------|-------------------------------------------------|
 | `&.RaSkipNavigationButton-skipToContentButton` | Applied to the underlying `MuiButton` component |
 
-To override the style of all instances of `<SkipNavigationButton>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaSkipNavigationButton` key.
+To override the style of all instances of `<SkipNavigationButton>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaSkipNavigationButton` key.
 
 ### `<MenuItemLink>`
 
@@ -381,7 +381,7 @@ The `<MenuItemLink>` component displays a menu item with a label and an icon - o
 | `primaryText` | Required | `ReactNode`          | -       | The menu content, displayed when the menu isn't minimized. |
 | `leftIcon`    | Optional | `ReactNode`          | -       | The menu icon |
 
-Additional props are passed down to [the underling MUI `<MenuItem>` component](https://mui.com/api/menu-item/#menuitem-api).
+Additional props are passed down to [the underling Material UI `<MenuItem>` component](https://mui.com/material-ui/api/menu-item/).
 
 You can create a custom menu component using the `<DashboardMenuItem>` and `<MenuItemLink>` components:
 
@@ -443,7 +443,7 @@ See [The theming documentation](./Theming.md#menuitemlink) for more details.
 | `&.RaMenuItemLink-active`  | Applied to the underlying `MuiMenuItem`'s `activeClassName` prop    |
 | `& .RaMenuItemLink-icon`    | Applied to the `ListItemIcon` component when `leftIcon` prop is set |
 
-To override the style of all instances of `<MenuItemLink>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaMenuItemLink` key.
+To override the style of all instances of `<MenuItemLink>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaMenuItemLink` key.
 
 ### `<UserMenu>`
 
@@ -460,6 +460,6 @@ To override the style of all instances of `<MenuItemLink>` using the [MUI style 
 | `& .RaUserMenu-userButton` | Applied to the underlying `MuiButton` component when `useGetIdentity().loaded` is `true` and `useGetIdentity().identity.fullName` is set |
 | `& .RaUserMenu-avatar`     | Applied to the underlying `MuiAvatar` component when `useGetIdentity().avatar` is `true`                                                 |
 
-To override the style of all instances of `<UserMenu>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaUserMenu` key.
+To override the style of all instances of `<UserMenu>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaUserMenu` key.
 
 See [The theming documentation](./Theming.md#usermenu-customization) for more details.

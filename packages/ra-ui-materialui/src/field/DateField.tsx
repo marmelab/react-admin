@@ -129,8 +129,8 @@ export interface DateFieldProps
     extends PublicFieldProps,
         InjectedFieldProps,
         Omit<TypographyProps, 'textAlign'> {
-    locales?: string | string[];
-    options?: object;
+    locales?: Intl.LocalesArgument;
+    options?: Intl.DateTimeFormatOptions;
     showTime?: boolean;
     showDate?: boolean;
 }

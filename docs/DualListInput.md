@@ -60,14 +60,14 @@ Check [the `ra-relationships` documentation](https://marmelab.com/ra-enterprise/
 | Prop                   | Required | Type                                                         | Default                                           | Description                                                                                                                            |
 |------------------------|----------|--------------------------------------------------------------|---------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------|
 | `choices`              | Optional | `Object[]`                                                   | -                                                 | List of items to show as options. Required unless inside a ReferenceArray Input.                                                                                                       |
-| `addButton`            | Optional | 'outlined' &#124; 'contained' &#124; 'text' &#124; `element` | -                                                 | A MUI `variant` value for the add button or a React element to replace it.                                                             |
+| `addButton`            | Optional | 'outlined' &#124; 'contained' &#124; 'text' &#124; `element` | -                                                 | A Material UI `variant` value for the add button or a React element to replace it.                                                             |
 | `addButtonLabel`       | Optional | `string`                                                     | `ra-relationships. duallistinput. select`         | The text or translation key to use as the label for the add button                                                                     |
 | `availableItems Label` | Optional | `string`                                                     | `ra-relationships. duallistinput. availableItems` | The text or translation key to use as the label for the list of available choices                                                      |
 | `dense`                | Optional | `boolean`                                                    | `false`                                           | Visual density of the list component                                                                                                   |
 | `disableValue`         | Optional | `string`                                                     | 'disabled'                                        | The custom field name used in `choices` to disable some choices                                                                        |
 | `optionText`           | Optional | `string` &#124; `Function`                                   | `name`                                            | Field name of record to display in the suggestion item or function which accepts the current record as argument (`record => {string}`) |
 | `optionValue`          | Optional | `string`                                                     | `id`                                              | Field name of record containing the value to use as input value                                                                        |
-| `removeButton`         | Optional | 'outlined' &#124; 'contained' &#124; 'text' &#124; `element` | -                                                 | A MUI `variant` value for the remove button or a React element to replace it.                                                          |
+| `removeButton`         | Optional | 'outlined' &#124; 'contained' &#124; 'text' &#124; `element` | -                                                 | A Material UI `variant` value for the remove button or a React element to replace it.                                                          |
 | `removeButton Label`   | Optional | `string`                                                     | `ra-relationships duallistinput. unselect`        | The text or translation key to use as the label for the remove button                                                                  |
 | `selectedItems Label`  | Optional | `string`                                                     | `ra-relationships. duallistinput. selectedItems`  | The text or translation key to use as the label for the list of selected choices                                                       |
 | `translateChoice`      | Optional | `boolean`                                                    | `true`                                            | Whether the choices should be translated                                                                                               |
@@ -232,7 +232,7 @@ const choices = [
 
 ## `sx`: CSS API
 
-The `<DualListInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<DualListInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name                          | Description                      |
 |------------------------------------|----------------------------------|
@@ -247,7 +247,7 @@ The `<DualListInput>` component accepts the usual `className` prop. You can also
 | `& .RaDualListInput-selectedList`  | Applied to the selected list     |
 | `& .RaDualListInput-availableList` | Applied to the available list    |
 
-To override the style of all instances of `<DualListInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaDualListInput` key.
+To override the style of all instances of `<DualListInput>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaDualListInput` key.
 
 
 ## `translateChoice`

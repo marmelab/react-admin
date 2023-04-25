@@ -62,7 +62,30 @@ export const MyLayout = (props) => (
 );
 ```
 
-`<AppLocationContext>` is necessary because `ra-navigation` doesn't use the URL to detect the current location. Instead, page components *declare* their location using a custom hook (`useDefineAppLocation()`). This allows complex site maps, with multiple levels of nesting. That's the reason why each `<MultiLevelMenu.Item>` requires a unique `name`, that matches a particular page location. Check [the ra-navigation documentation](https://marmelab.com/ra-enterprise/modules/ra-navigation) to learn more about App Location. 
+`<AppLocationContext>` is necessary because `ra-navigation` doesn't use the URL to detect the current location. Instead, page components *declare* their location using a custom hook (`useDefineAppLocation()`). This allows complex site maps, with multiple levels of nesting. That's the reason why each `<MultiLevelMenu.Item>` requires a unique `name`, that matches a particular page location. 
+
+You can set the `AppLocation` for a given page like so:
+
+```jsx
+import { useDefineAppLocation } from '@react-admin/ra-navigation';
+
+const ArtistRockList = () => {
+    useDefineAppLocation('artists.rock');
+    return <h1>Artist Rock List</h1>;
+};
+```
+
+And then use this `AppLocation` as `name` for `<MultiLevelMenu.Item>`:
+
+```jsx
+<MultiLevelMenu.Item
+    name="artists.rock"
+    to={'/artists/rock'}
+    label="Rock"
+>
+```
+
+Check [the ra-navigation documentation](https://marmelab.com/ra-enterprise/modules/ra-navigation) to learn more about App Location. 
 
 Finally, pass this custom layout to the `<Admin>` component
 
@@ -141,7 +164,7 @@ export const MyMenu = () => (
 ```
 {% endraw %}
 
-To override the style of `<MultiLevelMenu>` using the [MUI style overrides](https://mui.com/customization/theme-components/), use the `RaMenuRoot` key.
+To override the style of `<MultiLevelMenu>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaMenuRoot` key.
 
 ## `<MultiLevelMenu.Item>`
 
@@ -168,7 +191,7 @@ It accepts optional props:
 - `children`: Other `<MultiLevelMenu.Item>` children.
 - `sx`: Style overrides, powered by MUI System
 
-Additional props are passed down to [the underling MUI `<listItem>` component](https://mui.com/api/list-item/#listitem-api).
+Additional props are passed down to [the underling Material UI `<listItem>` component](https://mui.com/api/list-item/#listitem-api).
 
 ## Creating Menu Items For Resources
 

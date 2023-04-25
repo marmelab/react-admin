@@ -54,7 +54,7 @@ const TitleInput = ({ source, label }) => {
 
 Additional props are passed to [react-hook-form's `useController` hook](https://react-hook-form.com/api/usecontroller).
 
-## Usage with MUI `<TextField>`
+## Usage with Material UI `<TextField>`
 
 ```jsx
 // in LatLongInput.js
@@ -100,7 +100,14 @@ const LatLngInput = props => {
 };
 ```
 
-## Usage with MUI `<Select>`
+**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/api/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+
+```js
+const { isDirty } = useFormState(); // ✅
+const formState = useFormState(); // ❌ should deconstruct the formState      
+```
+
+## Usage with Material UI `<Select>`
 
 ```jsx
 // in SexInput.js
@@ -145,4 +152,11 @@ const PersonEdit = () => (
         </SimpleForm>
     </Edit>
 );
+```
+
+**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/api/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+
+```js
+const { isDirty } = useFormState(); // ✅
+const formState = useFormState(); // ❌ should deconstruct the formState      
 ```

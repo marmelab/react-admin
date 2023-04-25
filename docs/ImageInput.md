@@ -151,11 +151,11 @@ If that's not enough, you can pass a `placeholder` prop to overwrite it. The val
 
 ## `sx`: CSS API
 
-The `<ImageInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<ImageInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name                       | Description                                         |
 |---------------------------------|-----------------------------------------------------|
 | `& .RaFileInput-dropZone`      | Styles pass to the underlying `FileInput` component |
 | `& .RaFileInput-removeButton`  | Styles pass to the underlying `FileInput` component |
 
-To override the style of all instances of `<ImageInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaImageInput` key.
+To override the style of all instances of `<ImageInput>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaImageInput` key.

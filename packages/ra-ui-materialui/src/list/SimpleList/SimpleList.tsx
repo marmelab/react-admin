@@ -30,7 +30,7 @@ import { SimpleListLoading } from './SimpleListLoading';
 import { ListNoResults } from '../ListNoResults';
 
 /**
- * The <SimpleList> component renders a list of records as a MUI <List>.
+ * The <SimpleList> component renders a list of records as a Material UI <List>.
  * It is usually used as a child of react-admin's <List> and <ReferenceManyField> components.
  *
  * Also widely used on Mobile.

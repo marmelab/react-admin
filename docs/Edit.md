@@ -150,7 +150,7 @@ const Aside = () => {
 
 ## `component`
 
-By default, the `<Edit>` view render the main form inside a MUI `<Card>` element. The actual layout of the form depends on the `Form` component you're using ([`<SimpleForm>`](./SimpleForm.md), [`<TabbedForm>`](./TabbedForm.md), or a custom form component).
+By default, the `<Edit>` view render the main form inside a Material UI `<Card>` element. The actual layout of the form depends on the `Form` component you're using ([`<SimpleForm>`](./SimpleForm.md), [`<TabbedForm>`](./TabbedForm.md), or a custom form component).
 
 Some form layouts also use `Card`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main page container by passing a `component` prop :
 
@@ -470,15 +470,15 @@ const PostEdit = () => (
 
 ## `sx`: CSS API
 
-The `<Edit>` components accept the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following keys:
+The `<Edit>` components accept the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following keys:
 
 | Rule name               | Description                                                                          |
 |-------------------------|--------------------------------------------------------------------------------------|
 | `& .RaEdit-main`      | Applied to the main container                                                        |
 | `& .RaEdit-noActions` | Applied to the main container when `actions` prop is `false`                         |
-| `& .RaEdit-card`      | Applied to the child component inside the main container (MUI's `Card` by default)   |
+| `& .RaEdit-card`      | Applied to the child component inside the main container (Material UI's `Card` by default)   |
 
-To override the style of all instances of `<Edit>` components using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaEdit` key.
+To override the style of all instances of `<Edit>` components using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaEdit` key.
 
 ## `title`
 

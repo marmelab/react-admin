@@ -6,7 +6,7 @@ title: "The AutocompleteArrayInput Component"
 # `<AutocompleteArrayInput>`
 
 To let users choose multiple values in a list using a dropdown with autocompletion, use `<AutocompleteArrayInput>`.
-It renders using MUI [Autocomplete](https://mui.com/components/autocomplete/).
+It renders using Material UI [Autocomplete](https://mui.com/material-ui/react-autocomplete/).
 
 <video controls autoplay muted loop>
   <source src="./img/autocomplete-array-input.webm" type="video/webm"/>
@@ -14,7 +14,7 @@ It renders using MUI [Autocomplete](https://mui.com/components/autocomplete/).
 </video>
 
 
-This input allows editing values that are arrays of scalar values, e.g. `[123, 456]`. 
+This input allows editing values that are arrays of scalar values, e.g. `[123, 456]`.
 
 **Tip**: React-admin includes other components allowing the edition of such values:
 
@@ -22,7 +22,7 @@ This input allows editing values that are arrays of scalar values, e.g. `[123, 4
 - [`<CheckboxGroupInput>`](./CheckboxGroupInput.md) renders a list of checkbox options
 - [`<DualListInput>`](./DualListInput.md) renders a list of choices that can be moved from one list to another
 
-**Tip**: `<AutocompleteArrayInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceArrayInput>`](./ReferenceArrayInput.md) doesn't cover your need), you'll have to [write your own Input component](./Inputs.md#writing-your-own-input-component) based on MUI `<Autocomplete>` component.
+**Tip**: `<AutocompleteArrayInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceArrayInput>`](./ReferenceArrayInput.md) doesn't cover your need), you'll have to [write your own Input component](./Inputs.md#writing-your-own-input-component) based on Material UI `<Autocomplete>` component.
 
 ## Usage
 
@@ -404,11 +404,11 @@ If you're using `<AutocompleteArrayInput>` inside a [`<ReferenceArrayInput>`](./
 
 ## `sx`: CSS API
 
-The `<AutocompleteArrayInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)).
+The `<AutocompleteArrayInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)).
 
-`<AutocompleteArrayInput>` renders an [`<AutocompleteInput>`](./AutocompleteInput.md) and reuses its styles. To override the style of all instances of `<AutocompleteInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaAutocompleteInput` key.
+`<AutocompleteArrayInput>` renders an [`<AutocompleteInput>`](./AutocompleteInput.md) and reuses its styles. To override the style of all instances of `<AutocompleteInput>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaAutocompleteInput` key.
 
-Refer to the [MUI `<Autocomplete>` component](https://mui.com/components/autocomplete/) to know its CSS API.
+Refer to the [Material UI `<Autocomplete>` component](https://mui.com/material-ui/react-autocomplete/) to know its CSS API.
 
 ## `translateChoice`
 
@@ -432,7 +432,7 @@ In that case, set the `translateChoice` prop to `false`.
 
 ## Additional Props
 
-`<AutocompleteArrayInput>` renders a [MUI `<Autocomplete>` component](https://mui.com/components/autocomplete/) and accepts the `<Autocomplete>` props:
+`<AutocompleteArrayInput>` renders a [Material UI `<Autocomplete>` component](https://mui.com/material-ui/react-autocomplete/) and accepts the `<Autocomplete>` props:
 
 {% raw %}
 ```jsx
@@ -444,7 +444,7 @@ In that case, set the `translateChoice` prop to `false`.
 
 **Tip**: To use the `disableCloseOnSelect` prop, you must also set `blurOnSelect={false}`, since this is enabled by default.
 
-## Using In A ReferenceArrayInput
+## Fetching Choices
 
 If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteArrayInput>` with [`<ReferenceArrayInput>`](./ReferenceArrayInput.md), and leave the `choices` empty:
 
@@ -455,6 +455,8 @@ import { AutocompleteArrayInput, ReferenceArrayInput } from 'react-admin';
     <AutocompleteArrayInput />
 </ReferenceArrayInput>
 ```
+
+Check [the `<ReferenceArrayInput>` documentation](./ReferenceArrayInput.md) for more details.
 
 ## Working With Object Values
 
@@ -497,7 +499,7 @@ You can pass a custom element as [`optionText`](#optiontext) to have `<Autocompl
 
 `<AutocompleteArrayInput>` will render the custom option element inside a [`<RecordContext>`](./useRecordContext.md), using the related choice as the `record` prop. You can use Field components there.
 
-However, as the underlying MUI `<Autocomplete>` component requires that the current selection is a string, you must also pass a function as the `inputText` prop. This function should return a text representation of the current selection. You should also pass a `matchSuggestion` function to filter the choices based on the current selection.
+However, as the underlying Material UI `<Autocomplete>` component requires that the current selection is a string, you must also pass a function as the `inputText` prop. This function should return a text representation of the current selection. You should also pass a `matchSuggestion` function to filter the choices based on the current selection.
 
 ```jsx
 const choices = [
@@ -566,7 +568,7 @@ const PostCreate = () => {
 ```
 {% endraw %}
 
-Use the `create` prop when you want a more polished or complex UI. For example a MUI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
+Use the `create` prop when you want a more polished or complex UI. For example a Material UI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
 
 {% raw %}
 ```jsx

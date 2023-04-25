@@ -85,7 +85,7 @@ const ProductEdit = () => (
 | `sort`         | Optional | `{ field, order }`        | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()`                                                                                 |
 | `defaultValue` | Optional | `array`                   | -                                | Default value of the input.                                                                                                                                         |
 | `validate`     | Optional | `Function` &#124; `array` | -                                | Validation rules for the array. See the [Validation Documentation](./Validation.md) for details.                                   |
-| `sx`           | Optional | `SxProps`                 | -                                | MUI shortcut for defining custom styles                                                                                                                             |
+| `sx`           | Optional | `SxProps`                 | -                                | Material UI shortcut for defining custom styles                                                                                                                             |
 
 ## `children`
 
@@ -240,7 +240,7 @@ By default, `<ReferenceManyInput>` ferchers the `references` for which the `targ
 
 ## `sx`
 
-You can override the style of the root component (a MUI [`<FormControl>`](https://mui.com/material-ui/api/form-control/#main-content)) and its child components by setting the `sx` prop.
+You can override the style of the root component (a Material UI [`<FormControl>`](https://mui.com/material-ui/api/form-control/)) and its child components by setting the `sx` prop.
 
 {% raw %}
 

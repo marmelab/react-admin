@@ -5,7 +5,7 @@ title: "The TextInput Component"
 
 # `<TextInput>`
 
-`<TextInput>` is the most common input. It is used for texts, emails, URL or passwords. In translates into [an MUI `<TextField>`](https://mui.com/material-ui/react-text-field/), and renders as `<input type="text">` in HTML.
+`<TextInput>` is the most common input. It is used for texts, emails, URL or passwords. In translates into [an Material UI `<TextField>`](https://mui.com/material-ui/react-text-field/), and renders as `<input type="text">` in HTML.
 
 <video controls autoplay muted loop>
   <source src="./img/text-input.webm" type="video/webm"/>
@@ -38,7 +38,7 @@ export const PostEdit = () => (
 
 `<TextInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
-Additional props are passed down to the underlying MUI [`<TextField>`](https://mui.com/material-ui/react-text-field/) component.
+Additional props are passed down to the underlying Material UI [`<TextField>`](https://mui.com/material-ui/react-text-field/) component.
 
 ## `multiline`
 

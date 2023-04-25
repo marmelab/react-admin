@@ -18,7 +18,10 @@ export const Title = (props: TitleProps) => {
     // on first mount, we don't have the container yet, so we wait for it
     useEffect(() => {
         setContainer(container => {
-            if (container) return container;
+            const isInTheDom =
+                typeof document !== 'undefined' &&
+                document.body.contains(container);
+            if (container && isInTheDom) return container;
             return typeof document !== 'undefined'
                 ? document.getElementById('react-admin-title')
                 : null;

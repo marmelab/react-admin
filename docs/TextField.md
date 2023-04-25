@@ -15,7 +15,7 @@ import { TextField } from 'react-admin';
 // <span>John Doe</span>
 ```
 
-`<TextField>` grabs the `record` from the current [`RecordContext`](./useRecordContext.md), extracts the value of the `source` property, and displays it inside a MUI `<Typography>` component.
+`<TextField>` grabs the `record` from the current [`RecordContext`](./useRecordContext.md), extracts the value of the `source` property, and displays it inside a Material UI `<Typography>` component.
 
 ## Usage
 
@@ -44,7 +44,7 @@ export const PostShow = () => (
 
 It also accepts [common field props](./Fields.md#common-field-props) such as the `sx` prop to override its style.
 
-Additional props are passed down to the underlying [MUI `<Typography>` component](https://mui.com/material-ui/react-typography/).
+Additional props are passed down to the underlying [Material UI `<Typography>` component](https://mui.com/material-ui/react-typography/).
 
 ## Displaying Values From More Than One Source
 

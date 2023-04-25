@@ -5,7 +5,7 @@ title: "The RadioButtonGroupInput Component"
 
 # `<RadioButtonGroupInput>`
 
-If you want to let the user choose a value among a list of possible values that are always shown, `<RadioButtonGroupInput>` is the right component. It renders using [MUI's `<RadioGroup>`](https://mui.com/material-ui/react-radio-button/).
+If you want to let the user choose a value among a list of possible values that are always shown, `<RadioButtonGroupInput>` is the right component. It renders using [Material UI's `<RadioGroup>`](https://mui.com/material-ui/react-radio-button/).
 
 <video controls autoplay muted loop>
   <source src="./img/radio-button-group-input.webm" type="video/webm"/>
@@ -54,7 +54,8 @@ The form value for the source must be the selected value, e.g.
 
 | Prop              | Required | Type                       | Default | Description                                                                                                                            |
 | ----------------- | -------- | -------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `choices`         | Optional | `Object[]`                 | -       | List of items to show as options. Required unless inside a ReferenceInput.                                                                                                        |
+| `choices`         | Optional | `Object[]`                 | -       | List of items to show as options. Required unless inside a ReferenceInput.                                                             |
+| `isLoading`       | Optional | `boolean`                  | `false` | If `true`, the component will display a loading indicator.                                                                             |
 | `options`         | Optional | `Object`                   | -       | Props to pass to the underlying `<RadioButtonGroup>` element                                                                           |
 | `optionText`      | Optional | `string` &#124; `Function` | `name`  | Field name of record to display in the suggestion item or function which accepts the current record as argument (`record => {string}`) |
 | `optionValue`     | Optional | `string`                   | `id`    | Field name of record containing the value to use as input value                                                                        |
@@ -112,7 +113,7 @@ If you need to *fetch* the options from another resource, you're actually editin
 </ReferenceInput>
 ```
 
-See [Using in a `<ReferenceInput>`](#using-in-a-referenceinput) below for more information.
+See [Selecting a foreign key](#selecting-a-foreign-key) below for more information.
 
 If you have an *array of values* for the options, turn it into an array of objects with the `id` and `name` properties:
 
@@ -124,9 +125,31 @@ const choices = possibleValues.map(value => ({ id: value, name: ucfirst(value) }
 <RadioButtonGroupInput source="category" choices={choices} />
 ```
 
+## `isLoading`
+
+When [fetching choices from a remote API](#fetching-choices), the `<RadioButtonGroupInput>` can't be used until the choices are fetched. To let the user know, you can pass the `isLoading` prop to `<RadioButtonGroupInput>`. This displays a loading indicator while the choices are being fetched.
+
+```jsx
+import { useGetList, RadioButtonGroupInput } from 'react-admin';
+
+const UserCountry = () => {
+    const { data, isLoading } = useGetList('countries');
+    // data is an array of { id: 123, code: 'FR', name: 'France' }
+    return (
+        <RadioButtonGroupInput 
+            source="country"
+            choices={data}
+            optionText="name"
+            optionValue="code"
+            isLoading={isLoading}
+        />
+    );
+}
+```
+
 ## `options`
 
-Use the `options` attribute if you want to override any of MUI's `<RadioGroup>` attributes:
+Use the `options` attribute if you want to override any of Material UI's `<RadioGroup>` attributes:
 
 {% raw %}
 ```jsx
@@ -137,7 +160,7 @@ Use the `options` attribute if you want to override any of MUI's `<RadioGroup>` 
 ```
 {% endraw %}
 
-Refer to [MUI RadioGroup documentation](https://mui.com/api/radio-group) for more details.
+Refer to [Material UI RadioGroup documentation](https://mui.com/api/radio-group) for more details.
 
 ## `optionText`
 
@@ -162,7 +185,7 @@ import { RadioButtonGroupInput, ReferenceInput } from 'react-admin';
 </ReferenceInput>
 ```
 
-See [Using in a `<ReferenceInput>`](#using-in-a-referenceinput) below for more details.
+See [fetching choices](#fetching-choices) below for more details.
 
 `optionText` also accepts a function, so you can shape the option text at will:
 
@@ -228,13 +251,13 @@ By default, the radio buttons are displayed in a row. You can change that and le
 
 ## `sx`: CSS API
 
-The `<RadioButtonGroupInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<RadioButtonGroupInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name                          | Description                                                   |
 |------------------------------------|---------------------------------------------------------------|
-| `& .RaRadioButtonGroupInput-label` | Applied to the underlying MUI's `FormLabel` component |
+| `& .RaRadioButtonGroupInput-label` | Applied to the underlying Material UI's `FormLabel` component |
 
-To override the style of all instances of `<RadioButtonGroupInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaRadioButtonGroupInput` key.
+To override the style of all instances of `<RadioButtonGroupInput>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaRadioButtonGroupInput` key.
 
 ## `translateChoice`
 
@@ -255,24 +278,110 @@ However, in some cases, you may not want the choice to be translated. In that ca
 
 Note that `translateChoice` is set to `false` when `<RadioButtonGroupInput>` is a child of `<ReferenceInput>`.
 
-## Using In A ReferenceInput
+## Fetching Choices
 
-If you want to populate the `choices` attribute with a list of related records, you should decorate `<RadioButtonGroupInput>` with [`<ReferenceInput>`](./ReferenceInput.md), and leave the `choices` empty:
-
-```jsx
-import { RadioButtonGroupInput, ReferenceInput } from 'react-admin';
-
-<ReferenceInput label="Author" source="author_id" reference="authors">
-    <RadioButtonGroupInput />
-</ReferenceInput>
-```
-
-In that case, `<RadioButtonGroupInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to render each choice from the list of possible records. You can override this behavior by setting the `optionText` prop:
+You can use [`useGetList`](./useGetList.md) to fetch choices. For example, to fetch a list of countries for a user profile:
 
 ```jsx
-import { RadioButtonGroupInput, ReferenceInput } from 'react-admin';
+import { useGetList, RadioButtonGroupInput } from 'react-admin';
 
-<ReferenceInput label="Author" source="author_id" reference="authors">
-    <RadioButtonGroupInput optionText="last_name" />
-</ReferenceInput>
+const CountryInput = () => {
+    const { data, isLoading } = useGetList('countries');
+    // data is an array of { id: 123, code: 'FR', name: 'France' }
+    return (
+        <RadioButtonGroupInput 
+            source="country"
+            choices={data}
+            optionText="name"
+            optionValue="code"
+            isLoading={isLoading}
+        />
+    );
+}
 ```
+
+The `isLoading` prop is used to display a loading indicator while the data is being fetched.
+
+However, most of the time, if you need to populate a `<RadioButtonGroupInput>` with choices fetched from another resource, it's because you are trying to set a foreign key. In that case, you should use [`<ReferenceInput>`](./ReferenceInput.md) to fetch the choices instead (see next section). 
+
+## Selecting a Foreign Key
+
+If you use `<RadioButtonGroupInput>` to set a foreign key for a many-to-one or a one-to-one relationship, you'll have to [fetch choices](#fetching-choices), as explained in the previous section. You'll also have to fetch the record corresponding to the current value of the foreign key, as it may not be in the list of choices. 
+
+For example, if a `contact` has one `company` via the `company_id` foreign key, a contact form can let users select a company as follows:
+
+```jsx
+import { useGetList, useGetOne, RadioButtonGroupInput } from 'react-admin';
+import { useWatch } from 'react-hook-form';
+
+const CompanyInput = () => {
+    // fetch possible companies
+    const { data: choices, isLoading: isLoadingChoices } = useGetList('companies');
+    // companies are like { id: 123, name: 'Acme' }
+    // get the current value of the foreign key
+    const companyId = useWatch({ name: 'company_id'})
+    // fetch the current company
+    const { data: currentCompany, isLoading: isLoadingCurrentCompany } = useGetOne('companies', { id: companyId });
+    // if the current company is not in the list of possible companies, add it
+    const choicesWithCurrentCompany = choices
+        ? choices.find(choice => choice.id === companyId)
+            ? choices
+            : [...choices, currentCompany]
+        : [];
+    return (
+        <RadioButtonGroupInput 
+            label="Company"
+            source="company_id"
+            choices={choicesWithCurrentCompany}
+            optionText="name"
+            disabled={isLoading}
+        />
+    );
+}
+```
+
+As this is a common task, react-admin provides a shortcut to do the same in a declarative way: [`<ReferenceInput>`](./ReferenceInput.md):
+
+```jsx
+import { ReferenceInput, RadioButtonGroupInput } from 'react-admin';
+
+const CompanyInput = () => (
+    <ReferenceInput reference="companies" source="company_id">
+        <RadioButtonGroupInput 
+            label="Company"
+            source="company_id"
+            optionText="name"
+        />
+    </ReferenceInput>
+);
+```
+
+`<ReferenceInput>` is a headless component that:
+ 
+ - fetches a list of records with `dataProvider.getList()` and `dataProvider.getOne()`, using the `reference` prop for the resource,
+ - puts the result of the fetch in the `ChoiceContext` as the `choices` prop, as well as the `isLoading` state,
+ - and renders its child component
+
+When rendered as a child of `<ReferenceInput>`, `<RadioButtonGroupInput>` reads that `ChoiceContext` to populate its own `choices` and `isLoading` props.
+
+In fact, you can simplify the code even further:
+
+- `<ReferenceInput>` puts all its props inside the `ChoiceContext`, including `source`, so `<RadioButtonGroupInput>` doesn't need to repeat it.
+- You can also put the `label` prop on the `<ReferenceInput>` rather than `<RadioButtonGroupInput>` so that it looks just like [`<ReferenceField>`](./ReferenceField.md) (for easier memorization). 
+- `<RadioButtonGroupInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to determine how to represent the related choices. In the example above, the `companies` resource uses `name` as its `recordRepresentation`, so `<RadioButtonGroupInput>` will default to `optionText="name"`. 
+
+The code for the `<CompanyInput>` component can be reduced to:
+
+```jsx
+import { ReferenceInput, RadioButtonGroupInput } from 'react-admin';
+
+const CompanyInput = () => (
+    <ReferenceInput reference="companies" source="company_id" label="Company">
+        <RadioButtonGroupInput />
+    </ReferenceInput>
+);
+```
+
+This is the recommended approach for using `<RadioButtonGroupInput>` to select a foreign key. This not only signifies that the input is a `<RadioButtonGroupInput>` but also highlights its function in fetching choices from another resource, ultimately enhancing the code's readability.
+
+**Tip**: `<ReferenceInput>` is much more powerful than the initial snippet. It optimizes and caches API calls, enables refetching of both API calls with a single command, and stores supplementary data in the `<ChoicesContext>`. `<ReferenceInput>` can provide choices to `<RadioButtonGroupInput>`, but also to [`<AutocompleteInput>`](./AutocompleteInput.md) and [`<SelectInput>`](./SelectInput.md). For further information, refer to [the `<ReferenceInput>` documentation](./ReferenceInput.md).
