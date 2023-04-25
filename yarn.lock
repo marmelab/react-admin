@@ -9533,6 +9533,7 @@ __metadata:
   resolution: "create-react-admin@workspace:packages/create-react-admin"
   dependencies:
     "@types/react": ">=17.0.0"
+    execa: ^5.1.1
     fs-extra: ^11.1.1
     ink: ^3.2.0
     ink-select-input: ^4.2.2
@@ -11583,7 +11584,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"execa@npm:^5.0.0":
+"execa@npm:^5.0.0, execa@npm:^5.1.1":
   version: 5.1.1
   resolution: "execa@npm:5.1.1"
   dependencies:

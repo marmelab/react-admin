@@ -14,6 +14,8 @@ const cli = meow(
 `
 );
 
-render(<App name={cli.input.length > 0 ? cli.input[0] : 'my-admin'} />, {
-    // debug: true,
-});
+if (cli.flags.h) {
+    cli.showHelp();
+} else {
+    render(<App name={cli.input.length > 0 ? cli.input[0] : 'my-admin'} />);
+}

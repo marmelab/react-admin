@@ -5,7 +5,7 @@ import { Stack } from './Stack.js';
 export type ChoiceType = {
     label: string;
     value: string;
-    description: string;
+    description?: string;
 };
 
 export const SelectInputChoice = ({
@@ -19,7 +19,7 @@ export const SelectInputChoice = ({
 }) => {
     return (
         <Stack>
-            <Text color={isSelected ? 'blue' : undefined}>{label}</Text>
+            <Text bold={isSelected ? true : false}>{label}</Text>
             <Text italic>{description}</Text>
         </Stack>
     );

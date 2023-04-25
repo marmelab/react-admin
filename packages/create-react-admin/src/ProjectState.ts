@@ -5,10 +5,13 @@ export type ProjectConfiguration = {
         | 'auth-provider'
         | 'resources'
         | 'generate'
+        | 'install'
+        | 'run-install'
         | 'finish';
     dataProvider: string;
     authProvider: string;
     resources: string[];
+    installer: string;
 };
 
 export const InitialProjectConfiguration: ProjectConfiguration = {
@@ -17,4 +20,5 @@ export const InitialProjectConfiguration: ProjectConfiguration = {
     dataProvider: '',
     authProvider: '',
     resources: [],
+    installer: 'npm',
 };

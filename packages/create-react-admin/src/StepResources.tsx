@@ -22,14 +22,14 @@ export const StepResources = ({
     };
     return (
         <Stack>
-            <Text>
-                Enter the name of a resource you want to add and validate with
-                Enter (leave empty to finish):
-            </Text>
-            <Text color="blue">
+            <Text bold>
                 {resources.length > 0
                     ? `Resources: ${resources.join(', ')}`
                     : 'No resource yet'}
+            </Text>
+            <Text>
+                Enter the name of a resource you want to add and validate with
+                Enter (leave empty to finish):
             </Text>
             <TextInput
                 value={value}
