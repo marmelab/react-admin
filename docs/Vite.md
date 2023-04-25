@@ -92,7 +92,7 @@ Next, add the `Roboto` font to your `index.html` file:
 </html>
 ```
 
-**Tip:** You can also install the `Roboto` font locally by following the instructions from the [MUI starter guide](https://mui.com/material-ui/getting-started/installation/#roboto-font).
+**Tip:** You can also install the `Roboto` font locally by following the instructions from the [Material UI starter guide](https://mui.com/material-ui/getting-started/installation/#roboto-font).
 
 Now, start the server with `yarn dev`, browse to `http://localhost:5173/`, and you should see the working admin:
 

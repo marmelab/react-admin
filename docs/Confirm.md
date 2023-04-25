@@ -5,7 +5,7 @@ title: "The Confirm Component"
 
 # `<Confirm>`
 
-`<Confirm>` leverages MUI's [`<Dialog>` component](https://mui.com/components/dialogs) to implement a confirmation popup.
+`<Confirm>` leverages Material UI's [`<Dialog>` component](https://mui.com/material-ui/react-dialog/) to implement a confirmation popup.
 
 ![Confirm dialog](./img/confirm.webp)
 
@@ -72,20 +72,20 @@ const BulkResetViewsButton = () => {
 | `ConfirmIcon`      | Optional | `ReactElement`                   | `<CheckCircle/>`      | Icon element of the confirm button                                 |
 | `CancelIcon`       | Optional | `ReactElement`                   | `<ErrorOutlineIcon/>` | Icon element of the cancel button                                  |
 | `translateOptions` | Optional | `{ id?: string, name?: string }` | {}                    | Custom id and name to be used in the dialog title                  |
-| `sx`               | Optional | `SxProps`                        | ''                    | MUI shortcut for defining custom styles with access to the theme   |
+| `sx`               | Optional | `SxProps`                        | ''                    | Material UI shortcut for defining custom styles with access to the theme   |
 
 Text props such as `title`, `content`, `cancel`, `confirm` and `translateOptions` are translatable. You can pass translation keys in these props. Note: `content` is only translatable when value is `string`, otherwise it renders the content as a `ReactNode`.
 
 ## `sx`: CSS API
 
-The `<Confirm>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<Confirm>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name                       | Description                                                    |
 |---------------------------------|----------------------------------------------------------------|
 | `& .RaConfirm-confirmPrimary`   | Applied to the confirm button when `confirmColor` is `primary` |
 | `& .RaConfirm-confirmWarning`   | Applied to the confirm button when `confirmColor` is `warning` |
 
-To override the style of all instances of `<Confirm>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaConfirm` key.
+To override the style of all instances of `<Confirm>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaConfirm` key.
 
 ## Delete With Confirmation
 

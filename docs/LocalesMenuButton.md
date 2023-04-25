@@ -13,7 +13,7 @@ The `<LocalesMenuButton>` component, also known as the "language switcher", disp
 
 **Tip**: For most users, this component will be automatically added to react-admin's `<AppBar>` if the `i18nProvider` is configured properly to return a list of available locales. React-admin will use the optional `getLocales` method of your `i18nProvider` (or the `availableLocales` parameter if you are using `polyglotI18nProvider`) to generate a list of locale menu items for this component.
 
-For advanced users who wish to use the customized `<AppBar>` from MUI package or place `<LocalesMenuButton>` elsewhere e.g. on a custom configuration page, they can do the following:
+For advanced users who wish to use the customized `<AppBar>` from Material UI package or place `<LocalesMenuButton>` elsewhere e.g. on a custom configuration page, they can do the following:
 
 ```jsx
 // in src/MyAppBar.js
@@ -75,9 +75,9 @@ The `locale` will be passed to `setLocale` when the user selects the language, a
 
 ## `sx`: CSS API
 
-The `<LocalesMenuButton>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)).
+The `<LocalesMenuButton>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)).
 
-To override the style of all instances of `<LocalesMenuButton>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaLocalesMenuButton` key.
+To override the style of all instances of `<LocalesMenuButton>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaLocalesMenuButton` key.
 
 ## API
 

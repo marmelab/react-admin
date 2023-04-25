@@ -56,7 +56,7 @@ Here are all the props accepted by the component:
 * [`size`](#size)
 * [`sx`](#sx-css-api)
 
-Additional props are passed down to [the MUI `<Table>` element](https://mui.com/api/table/).
+Additional props are passed down to [the Material UI `<Table>` element](https://mui.com/material-ui/api/table/).
 
 ## `body`
 
@@ -312,11 +312,11 @@ const CustomResetViewsButton = () => {
 export default CustomResetViewsButton;
 ```
 
-**Tip**: [`<Confirm>`](./Confirm.md) leverages MUI's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
+**Tip**: [`<Confirm>`](./Confirm.md) leverages Material UI's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
 
 **Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass translation keys in these props. Note: `content` is only translatable when value is `string`, otherwise it renders the content as a `ReactNode`.
 
-**Tip**: You can customize the text of the two `<Confirm>` component buttons using the `cancel` and `confirm` props which accept translation keys. You can customize the icons by setting the `ConfirmIcon` and `CancelIcon` props, which accept a [SvgIcon](https://mui.com/components/icons/) type.
+**Tip**: You can customize the text of the two `<Confirm>` component buttons using the `cancel` and `confirm` props which accept translation keys. You can customize the icons by setting the `ConfirmIcon` and `CancelIcon` props, which accept a [SvgIcon](https://mui.com/material-ui/icons/#svgicon) type.
 
 **Tip**: React-admin doesn't use the `<Confirm>` component internally, because deletes and updates are applied locally immediately, then dispatched to the server after a few seconds, unless the user chooses to undo the modification. That's what we call optimistic rendering. You can do the same for the `<ResetViewsButton>` by setting `undoable: true` in the last argument of `useUpdateMany()`, as follows:
 
@@ -689,7 +689,7 @@ export const PostList = () => (
 );
 ```
 
-**Tip**: `size` is actually a prop of the MUI `<Table>` component. Just like all additional `<Datagrid>` props, it is passed down to the `<Table>` component. 
+**Tip**: `size` is actually a prop of the Material UI `<Table>` component. Just like all additional `<Datagrid>` props, it is passed down to the `<Table>` component. 
 
 ## `sx`: CSS API
 
@@ -741,7 +741,7 @@ const PostList = () => (
 ```
 {% endraw %}
 
-**Tip**: `sx` is the standard for style customization in MUI . Check [the sx documentation](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles) for more advanced usage.
+**Tip**: `sx` is the standard for style customization in Material UI . Check [the sx documentation](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles) for more advanced usage.
 
 **Tip**: The `Datagrid` component `classes` can also be customized for all instances of the component with its global css name `"RaDatagrid"` as [describe here](https://marmelab.com/blog/2019/12/18/react-admin-3-1.html#theme-overrides)
 

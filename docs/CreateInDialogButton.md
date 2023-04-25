@@ -61,10 +61,10 @@ In the above example, `<CreateInDialogButton>` is used to create a new employee 
 
 `<CreateInDialogButton>` accepts the following props:
 
-* `inline`: set to true to display only an MUI `<IconButton>` instead of the full `<Button>`. The label will still be available as a `<Tooltip>` though.
+* `inline`: set to true to display only an Material UI `<IconButton>` instead of the full `<Button>`. The label will still be available as a `<Tooltip>` though.
 * `icon`: allows to override the default icon.
 * `label`: allows to override the default button label. I18N is supported.
-* `ButtonProps`: object containing props to pass to MUI's `<Button>`.
+* `ButtonProps`: object containing props to pass to Material UI's `<Button>`.
 * remaining props will be passed to the [`<CreateDialog>`](./CreateDialog.md) dialog component.
 
 Check out [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createindialogbutton-editindialogbutton-and-showindialogbutton) for more details.

@@ -29,7 +29,7 @@ import { BooleanInput } from 'react-admin';
 
 ## `options`
 
-Use the `options` prop to pass any option supported by the MUI's `Switch` components. For example, here's how to set a custom checked icon:
+Use the `options` prop to pass any option supported by the Material UI's `Switch` components. For example, here's how to set a custom checked icon:
 
 {% raw %}
 ```jsx
@@ -42,6 +42,4 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 
 ![CustomBooleanInputCheckIcon](./img/custom-switch-icon.png)
 
-Refer to [MUI Switch documentation](https://mui.com/api/switch) for more details.
-
-
+Refer to [Material UI Switch documentation](https://mui.com/material-ui/api/switch/) for more details.

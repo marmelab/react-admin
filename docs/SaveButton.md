@@ -55,7 +55,7 @@ const PostEdit = () => (
 - [`transform`](#transform)
 - [`type`](#type)
 
-Additional props (e.g. `color`, `variant`) are passed to [the underlying MUI `<Button>` component](https://mui.com/components/buttons/).
+Additional props (e.g. `color`, `variant`) are passed to [the underlying Material UI `<Button>` component](https://mui.com/components/buttons/).
 
 ## `icon`
 
@@ -223,7 +223,7 @@ const MyToolbar = () => (
 
 ## `sx`: CSS API
 
-The `<SaveButton>` components accept the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)).
+The `<SaveButton>` components accept the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)).
 
 {% raw %}
 ```jsx
@@ -235,7 +235,7 @@ const PostCreateToolbar = () => (
 ```
 {% endraw %}
 
-To override the style of all instances of `<SaveButton>` components using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaSaveButton` key.
+To override the style of all instances of `<SaveButton>` components using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaSaveButton` key.
 
 ## `transform`
 

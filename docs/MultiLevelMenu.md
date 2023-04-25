@@ -164,7 +164,7 @@ export const MyMenu = () => (
 ```
 {% endraw %}
 
-To override the style of `<MultiLevelMenu>` using the [MUI style overrides](https://mui.com/customization/theme-components/), use the `RaMenuRoot` key.
+To override the style of `<MultiLevelMenu>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaMenuRoot` key.
 
 ## `<MultiLevelMenu.Item>`
 
@@ -191,7 +191,7 @@ It accepts optional props:
 - `children`: Other `<MultiLevelMenu.Item>` children.
 - `sx`: Style overrides, powered by MUI System
 
-Additional props are passed down to [the underling MUI `<listItem>` component](https://mui.com/api/list-item/#listitem-api).
+Additional props are passed down to [the underling Material UI `<listItem>` component](https://mui.com/api/list-item/#listitem-api).
 
 ## Creating Menu Items For Resources
 

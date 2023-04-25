@@ -22,7 +22,7 @@ A frontend Framework for building data-driven applications running in the browse
 
 * ☂️ **Opt-In Types**: Develop either in TypeScript or JavaScript
 
-* 👨‍👩‍👧‍👦 Powered by [MUI](https://mui.com/), [react-hook-form](https://react-hook-form.com), [react-router](https://reacttraining.com/react-router/), [react-query](https://react-query-v3.tanstack.com/), [TypeScript](https://www.typescriptlang.org/) and a few more
+* 👨‍👩‍👧‍👦 Powered by [Material UI](https://mui.com/material-ui/getting-started/overview/), [react-hook-form](https://react-hook-form.com), [react-router](https://reacttraining.com/react-router/), [react-query](https://react-query-v3.tanstack.com/), [TypeScript](https://www.typescriptlang.org/) and a few more
 
 ## Installation
 
@@ -58,7 +58,7 @@ render(
 );
 ```
 
-The `<Resource>` component is a configuration component that allows you to define sub components for each of the admin view: `list`, `edit`, and `create`. These components use MUI and custom components from react-admin:
+The `<Resource>` component is a configuration component that allows you to define sub components for each of the admin view: `list`, `edit`, and `create`. These components use Material UI and custom components from react-admin:
 
 ```jsx
 // in posts.js

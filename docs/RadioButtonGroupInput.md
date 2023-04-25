@@ -5,7 +5,7 @@ title: "The RadioButtonGroupInput Component"
 
 # `<RadioButtonGroupInput>`
 
-If you want to let the user choose a value among a list of possible values that are always shown, `<RadioButtonGroupInput>` is the right component. It renders using [MUI's `<RadioGroup>`](https://mui.com/material-ui/react-radio-button/).
+If you want to let the user choose a value among a list of possible values that are always shown, `<RadioButtonGroupInput>` is the right component. It renders using [Material UI's `<RadioGroup>`](https://mui.com/material-ui/react-radio-button/).
 
 ![RadioButtonGroupInput](./img/radio-button-group-input.gif)
 
@@ -145,7 +145,7 @@ const UserCountry = () => {
 
 ## `options`
 
-Use the `options` attribute if you want to override any of MUI's `<RadioGroup>` attributes:
+Use the `options` attribute if you want to override any of Material UI's `<RadioGroup>` attributes:
 
 {% raw %}
 ```jsx
@@ -156,7 +156,7 @@ Use the `options` attribute if you want to override any of MUI's `<RadioGroup>` 
 ```
 {% endraw %}
 
-Refer to [MUI RadioGroup documentation](https://mui.com/api/radio-group) for more details.
+Refer to [Material UI RadioGroup documentation](https://mui.com/api/radio-group) for more details.
 
 ## `optionText`
 
@@ -243,13 +243,13 @@ By default, the radio buttons are displayed in a row. You can change that and le
 
 ## `sx`: CSS API
 
-The `<RadioButtonGroupInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<RadioButtonGroupInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name                          | Description                                                   |
 |------------------------------------|---------------------------------------------------------------|
-| `& .RaRadioButtonGroupInput-label` | Applied to the underlying MUI's `FormLabel` component |
+| `& .RaRadioButtonGroupInput-label` | Applied to the underlying Material UI's `FormLabel` component |
 
-To override the style of all instances of `<RadioButtonGroupInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaRadioButtonGroupInput` key.
+To override the style of all instances of `<RadioButtonGroupInput>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaRadioButtonGroupInput` key.
 
 ## `translateChoice`
 
