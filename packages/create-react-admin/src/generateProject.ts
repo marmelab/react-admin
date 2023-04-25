@@ -222,7 +222,9 @@ const generateReadme = (
     const dataProviderReadme = getTemplateReadme(state.dataProvider);
     const authProviderReadme = getTemplateReadme(state.authProvider);
 
-    let readme = `${defaultReadme}`;
+    let readme = `${defaultReadme
+        .replace(`{{name}}`, state.name)
+        .replace(`{{pkgManager}}`, state.installer)}`;
 
     if (dataProviderReadme) {
         readme += `\n${dataProviderReadme}`;
