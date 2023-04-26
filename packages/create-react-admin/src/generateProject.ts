@@ -36,6 +36,33 @@ export const generateProject = async (state: ProjectConfiguration) => {
     generatePackageJson(projectDirectory, state);
     generateEnvFile(projectDirectory, state);
     generateReadme(projectDirectory, state);
+
+    return getHelpMessages(state);
+};
+
+const getHelpMessages = (state: ProjectConfiguration) => {
+    const dataProviderHelpMessages = getTemplateHelpMessages(
+        state.dataProvider
+    );
+    const authProviderHelpMessages = getTemplateHelpMessages(
+        state.authProvider
+    );
+
+    return [dataProviderHelpMessages, authProviderHelpMessages];
+};
+
+const getTemplateHelpMessages = (template: string) => {
+    const helpMessagesPath = path.join(
+        __dirname,
+        '../templates',
+        template,
+        'help.txt'
+    );
+    if (fs.existsSync(helpMessagesPath)) {
+        const helpMessages = fs.readFileSync(helpMessagesPath, 'utf-8');
+        return helpMessages;
+    }
+    return '';
 };
 
 const generateAppFile = (

@@ -1,5 +1,5 @@
-import React, { useReducer } from 'react';
-import { Text } from 'ink';
+import React, { useReducer, useRef } from 'react';
+import { Box, Text } from 'ink';
 import {
     InitialProjectConfiguration,
     ProjectConfiguration,
@@ -71,6 +71,7 @@ export default function App({ name = 'my-admin' }: Props) {
         ...InitialProjectConfiguration,
         name,
     });
+    const helpMessages = useRef([]);
     const installDeps = useInstallDeps();
     const handleSubmit = (value: any) => {
         dispatch({ value });
@@ -86,7 +87,8 @@ export default function App({ name = 'my-admin' }: Props) {
         return <StepResources onSubmit={handleSubmit} />;
     }
     if (state.step === 'generate') {
-        generateProject(state).then(() => {
+        generateProject(state).then(messages => {
+            helpMessages.current = messages;
             dispatch({});
         });
         return <Text>Generating your application...</Text>;
@@ -102,10 +104,12 @@ export default function App({ name = 'my-admin' }: Props) {
     }
     return (
         <>
-            <Text>
-                Your application <Text bold>{state.name}</Text> was successfully
-                generated.
-            </Text>
+            <Box marginBottom={1}>
+                <Text>
+                    Your application <Text bold>{state.name}</Text> was
+                    successfully generated.
+                </Text>
+            </Box>
             <Text>
                 To start working, run <Text bold>cd {state.name}</Text>.
             </Text>
@@ -113,6 +117,11 @@ export default function App({ name = 'my-admin' }: Props) {
                 Start the app in development mode by running{' '}
                 <Text bold>npm dev</Text>.
             </Text>
+            <Box marginBottom={1}>
+                {helpMessages.current.map(line => (
+                    <Text key={line}>{line}</Text>
+                ))}
+            </Box>
         </>
     );
 }
