@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 // @ts-ignore
 import { parse } from 'query-string';
 import { useLocation } from 'react-router-dom';
@@ -13,7 +13,11 @@ import {
 } from '../../dataProvider';
 import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
-import { SaveContextValue, useMutationMiddlewares } from '../saveContext';
+import {
+    PessimisticSideEffects,
+    SaveContextValue,
+    useMutationMiddlewares,
+} from '../saveContext';
 import { useTranslate } from '../../i18n';
 import { RaRecord, TransformData } from '../../types';
 import {
@@ -69,6 +73,14 @@ export const useCreateController = <
         meta,
         ...otherMutationOptions
     } = mutationOptions;
+
+    // With a Create, the side effects need to be executed after the
+    // form submission, so we store them in a ref and return it.
+    const pessimisticSideEffectsRef = useRef<PessimisticSideEffects>({
+        onSuccess: undefined,
+        onError: undefined,
+    });
+
     const {
         registerMutationMiddleware,
         getMutateWithMiddlewares,
@@ -97,58 +109,68 @@ export const useCreateController = <
                     : data
             ).then(async (data: Partial<RecordType>) => {
                 const mutate = getMutateWithMiddlewares(create);
+
+                const sideEffects = {
+                    onSuccess: async (data, variables, context) => {
+                        if (onSuccessFromSave) {
+                            return onSuccessFromSave(data, variables, context);
+                        }
+                        if (onSuccess) {
+                            return onSuccess(data, variables, context);
+                        }
+
+                        notify('ra.notification.created', {
+                            type: 'info',
+                            messageArgs: { smart_count: 1 },
+                        });
+                        redirect(finalRedirectTo, resource, data.id, data);
+                    },
+                    onError: onErrorFromSave
+                        ? onErrorFromSave
+                        : onError
+                        ? onError
+                        : (error: Error) => {
+                              notify(
+                                  typeof error === 'string'
+                                      ? error
+                                      : error.message ||
+                                            'ra.notification.http_error',
+                                  {
+                                      type: 'error',
+                                      messageArgs: {
+                                          _:
+                                              typeof error === 'string'
+                                                  ? error
+                                                  : error && error.message
+                                                  ? error.message
+                                                  : undefined,
+                                      },
+                                  }
+                              );
+                          },
+                };
+
                 try {
                     await mutate(
                         resource,
                         { data, meta },
                         {
                             onSuccess: async (data, variables, context) => {
-                                if (onSuccessFromSave) {
-                                    return onSuccessFromSave(
+                                pessimisticSideEffectsRef.current.onSuccess = () =>
+                                    sideEffects.onSuccess(
                                         data,
                                         variables,
                                         context
                                     );
-                                }
-                                if (onSuccess) {
-                                    return onSuccess(data, variables, context);
-                                }
-
-                                notify('ra.notification.created', {
-                                    type: 'info',
-                                    messageArgs: { smart_count: 1 },
-                                });
-                                redirect(
-                                    finalRedirectTo,
-                                    resource,
-                                    data.id,
-                                    data
-                                );
                             },
-                            onError: onErrorFromSave
-                                ? onErrorFromSave
-                                : onError
-                                ? onError
-                                : (error: Error) => {
-                                      notify(
-                                          typeof error === 'string'
-                                              ? error
-                                              : error.message ||
-                                                    'ra.notification.http_error',
-                                          {
-                                              type: 'error',
-                                              messageArgs: {
-                                                  _:
-                                                      typeof error === 'string'
-                                                          ? error
-                                                          : error &&
-                                                            error.message
-                                                          ? error.message
-                                                          : undefined,
-                                              },
-                                          }
-                                      );
-                                  },
+                            onError: (error, variables, context) => {
+                                pessimisticSideEffectsRef.current.onError = () =>
+                                    sideEffects.onError(
+                                        error,
+                                        variables,
+                                        context
+                                    );
+                            },
                         }
                     );
                 } catch (error) {
@@ -179,6 +201,7 @@ export const useCreateController = <
     return {
         isFetching: false,
         isLoading: false,
+        pessimisticSideEffectsRef,
         saving,
         defaultTitle,
         save,
