@@ -177,7 +177,7 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
                 try {
                     await form.handleSubmit(handleSubmit)(event);
                     // in pessimistic mode, side effects must be called after the submission
-                    // to avoid conflicts with the warn when unsaved changes feature
+                    // to avoid conflicts with the warnWhenUnsavedChanges feature
                     saveContext?.pessimisticSideEffectsRef?.current.onSuccess?.();
                 } catch (error) {
                     saveContext?.pessimisticSideEffectsRef?.current.onError?.();

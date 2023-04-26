@@ -20,7 +20,11 @@ import {
     useGetResourceLabel,
     useGetRecordRepresentation,
 } from '../../core';
-import { SaveContextValue, useMutationMiddlewares } from '../saveContext';
+import {
+    PessimisticSideEffects,
+    SaveContextValue,
+    useMutationMiddlewares,
+} from '../saveContext';
 
 /**
  * Prepare data for the Edit view.
@@ -75,13 +79,14 @@ export const useEditController = <
         meta: mutationMeta,
         ...otherMutationOptions
     } = mutationOptions;
-    const pessimisticSideEffectsRef = useRef<{
-        onSuccess?: () => void | Promise<unknown>;
-        onError?: () => void | Promise<unknown>;
-    }>({
+
+    // In pessimistic mode, the side effects need to be executed after the
+    // form submission, so we store them in a ref and return it.
+    const pessimisticSideEffectsRef = useRef<PessimisticSideEffects>({
         onSuccess: undefined,
         onError: undefined,
     });
+
     const {
         registerMutationMiddleware,
         getMutateWithMiddlewares,
@@ -159,82 +164,73 @@ export const useEditController = <
             ).then(async (data: Partial<RecordType>) => {
                 const mutate = getMutateWithMiddlewares(update);
 
+                const sideEffects = {
+                    onSuccess: async (data, variables, context) => {
+                        if (onSuccessFromSave) {
+                            return onSuccessFromSave(data, variables, context);
+                        }
+
+                        if (onSuccess) {
+                            return onSuccess(data, variables, context);
+                        }
+
+                        notify('ra.notification.updated', {
+                            type: 'info',
+                            messageArgs: {
+                                smart_count: 1,
+                            },
+                            undoable: mutationMode === 'undoable',
+                        });
+                        redirect(redirectTo, resource, data.id, data);
+                    },
+                    onError: onErrorFromSave
+                        ? onErrorFromSave
+                        : onError
+                        ? onError
+                        : (error: Error | string) => {
+                              notify(
+                                  typeof error === 'string'
+                                      ? error
+                                      : error.message ||
+                                            'ra.notification.http_error',
+                                  {
+                                      type: 'error',
+                                      messageArgs: {
+                                          _:
+                                              typeof error === 'string'
+                                                  ? error
+                                                  : error && error.message
+                                                  ? error.message
+                                                  : undefined,
+                                      },
+                                  }
+                              );
+                          },
+                };
+
                 try {
                     if (mutationMode === 'pessimistic') {
                         // side effects will be passed to the SaveContext to be triggered *after* the form submission,
-                        // otherwise they conflict with warnWhenUnsavedChanges
+                        // otherwise they conflict with warnWhenUnsavedChanges feature
                         await mutate(
                             resource,
-                            {
-                                id,
-                                data,
-                                meta: mutationMeta,
-                            },
+                            { id, data, meta: mutationMeta },
                             {
                                 onSuccess: async (data, variables, context) => {
-                                    pessimisticSideEffectsRef.current.onSuccess = () => {
-                                        if (onSuccessFromSave) {
-                                            return onSuccessFromSave(
-                                                data,
-                                                variables,
-                                                context
-                                            );
-                                        }
-
-                                        if (onSuccess) {
-                                            return onSuccess(
-                                                data,
-                                                variables,
-                                                context
-                                            );
-                                        }
-
-                                        notify('ra.notification.updated', {
-                                            type: 'info',
-                                            messageArgs: {
-                                                smart_count: 1,
-                                            },
-                                        });
-                                        redirect(
-                                            redirectTo,
-                                            resource,
-                                            data.id,
-                                            data
+                                    pessimisticSideEffectsRef.current.onSuccess = () =>
+                                        sideEffects.onSuccess(
+                                            data,
+                                            variables,
+                                            context
                                         );
-                                    };
                                 },
                                 onError: (error, variables, context) => {
-                                    pessimisticSideEffectsRef.current.onError = () => {
-                                        if (onErrorFromSave) {
-                                            return onErrorFromSave(error);
-                                        }
-                                        if (onError) {
-                                            return onError(
-                                                error,
-                                                variables,
-                                                context
-                                            );
-                                        }
-                                        notify(
-                                            typeof error === 'string'
-                                                ? error
-                                                : error.message ||
-                                                      'ra.notification.http_error',
-                                            {
-                                                type: 'error',
-                                                messageArgs: {
-                                                    _:
-                                                        typeof error ===
-                                                        'string'
-                                                            ? error
-                                                            : error &&
-                                                              error.message
-                                                            ? error.message
-                                                            : undefined,
-                                                },
-                                            }
+                                    pessimisticSideEffectsRef.current.onError = () =>
+                                        sideEffects.onError(
+                                            error,
+                                            variables,
+                                            context
                                         );
-                                    };
                                 },
                             }
                         );
@@ -242,64 +238,7 @@ export const useEditController = <
                         await mutate(
                             resource,
                             { id, data, meta: mutationMeta },
-                            {
-                                onSuccess: async (data, variables, context) => {
-                                    if (onSuccessFromSave) {
-                                        return onSuccessFromSave(
-                                            data,
-                                            variables,
-                                            context
-                                        );
-                                    }
-
-                                    if (onSuccess) {
-                                        return onSuccess(
-                                            data,
-                                            variables,
-                                            context
-                                        );
-                                    }
-
-                                    notify('ra.notification.updated', {
-                                        type: 'info',
-                                        messageArgs: {
-                                            smart_count: 1,
-                                        },
-                                        undoable: mutationMode === 'undoable',
-                                    });
-                                    redirect(
-                                        redirectTo,
-                                        resource,
-                                        data.id,
-                                        data
-                                    );
-                                },
-                                onError: onErrorFromSave
-                                    ? onErrorFromSave
-                                    : onError
-                                    ? onError
-                                    : (error: Error | string) => {
-                                          notify(
-                                              typeof error === 'string'
-                                                  ? error
-                                                  : error.message ||
-                                                        'ra.notification.http_error',
-                                              {
-                                                  type: 'error',
-                                                  messageArgs: {
-                                                      _:
-                                                          typeof error ===
-                                                          'string'
-                                                              ? error
-                                                              : error &&
-                                                                error.message
-                                                              ? error.message
-                                                              : undefined,
-                                                  },
-                                              }
-                                          );
-                                      },
-                            }
+                            sideEffects
                         );
                     }
                 } catch (error) {

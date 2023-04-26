@@ -8,6 +8,11 @@ import {
 } from '../../types';
 import { Middleware } from './useMutationMiddlewares';
 
+export interface PessimisticSideEffects {
+    onSuccess?: () => void | Promise<unknown>;
+    onError?: () => void | Promise<unknown>;
+}
+
 export interface SaveContextValue<
     RecordType extends RaRecord = any,
     MutateFunc extends (...args: any[]) => any = (...args: any[]) => any
@@ -20,10 +25,7 @@ export interface SaveContextValue<
     mutationMode?: MutationMode;
     registerMutationMiddleware?: (callback: Middleware<MutateFunc>) => void;
     unregisterMutationMiddleware?: (callback: Middleware<MutateFunc>) => void;
-    pessimisticSideEffectsRef?: React.MutableRefObject<{
-        onSuccess?: () => void | Promise<unknown>;
-        onError?: () => void | Promise<unknown>;
-    }>;
+    pessimisticSideEffectsRef?: React.MutableRefObject<PessimisticSideEffects>;
 }
 
 export type SaveHandler<RecordType> = (
