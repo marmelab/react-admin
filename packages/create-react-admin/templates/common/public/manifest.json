@@ -1,6 +1,6 @@
 {
-    "short_name": "React Admin App",
-    "name": "Create React Admin Sample",
+    "short_name": "{{name}}",
+    "name": "{{name}}",
     "icons": [
         {
             "src": "favicon.ico",

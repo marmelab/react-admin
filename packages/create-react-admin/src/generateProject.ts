@@ -10,6 +10,11 @@ export const generateProject = async (state: ProjectConfiguration) => {
         path.join(__dirname, '../templates/common'),
         projectDirectory
     );
+    replaceTokensInFile(path.join(projectDirectory, 'index.html'), state);
+    replaceTokensInFile(
+        path.join(projectDirectory, 'public/manifest.json'),
+        state
+    );
 
     if (state.dataProvider !== 'none') {
         copyDirectoryFiles(
@@ -222,9 +227,7 @@ const generateReadme = (
     const dataProviderReadme = getTemplateReadme(state.dataProvider);
     const authProviderReadme = getTemplateReadme(state.authProvider);
 
-    let readme = `${defaultReadme
-        .replace(`{{name}}`, state.name)
-        .replace(`{{pkgManager}}`, state.installer)}`;
+    let readme = replaceTokens(defaultReadme, state);
 
     if (dataProviderReadme) {
         readme += `\n${dataProviderReadme}`;
@@ -254,4 +257,16 @@ const getTemplateReadme = (template: string) => {
         return readme;
     }
     return undefined;
+};
+
+const replaceTokens = (content: string, state: ProjectConfiguration) => {
+    return content
+        .replace(`{{name}}`, state.name)
+        .replace(`{{pkgManager}}`, state.installer);
+};
+
+const replaceTokensInFile = (filePath: string, state: ProjectConfiguration) => {
+    let fileContent = fs.readFileSync(filePath, 'utf-8');
+    fileContent = replaceTokens(fileContent, state);
+    fs.writeFileSync(filePath, fileContent);
 };
