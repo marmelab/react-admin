@@ -10,6 +10,7 @@ import { StepAuthProvider } from './StepAuthProvider.js';
 import { StepResources } from './StepResources.js';
 import { StepInstall } from './StepInstall.js';
 import { useInstallDeps } from './useInstallDeps.js';
+import { StepName } from './StepName.js';
 
 type Props = {
     name: string | undefined;
@@ -20,6 +21,12 @@ const stepReducer = (
     action
 ): ProjectConfiguration => {
     switch (state.step) {
+        case 'name':
+            return {
+                ...state,
+                name: action.value,
+                step: 'data-provider',
+            };
         case 'data-provider':
             return {
                 ...state,
@@ -67,9 +74,11 @@ const stepReducer = (
 };
 
 export default function App({ name = 'my-admin' }: Props) {
+    const sanitizedName = sanitizeName(name);
     const [state, dispatch] = useReducer(stepReducer, {
         ...InitialProjectConfiguration,
-        name,
+        name: sanitizedName,
+        step: sanitizedName === name ? 'data-provider' : 'name',
     });
     const helpMessages = useRef([]);
     const installDeps = useInstallDeps();
@@ -77,6 +86,9 @@ export default function App({ name = 'my-admin' }: Props) {
         dispatch({ value });
     };
 
+    if (state.step === 'name') {
+        return <StepName initialValue={state.name} onSubmit={handleSubmit} />;
+    }
     if (state.step === 'data-provider') {
         return <StepDataProvider onSubmit={handleSubmit} />;
     }
@@ -125,3 +137,12 @@ export default function App({ name = 'my-admin' }: Props) {
         </>
     );
 }
+
+const sanitizeName = (name: string) => {
+    return name
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/^[._]/, '')
+        .replace(/[^a-z\d\-~]+/g, '-');
+};

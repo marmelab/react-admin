@@ -1,6 +1,7 @@
 export type ProjectConfiguration = {
     name: string;
     step:
+        | 'name'
         | 'data-provider'
         | 'auth-provider'
         | 'resources'
@@ -16,7 +17,7 @@ export type ProjectConfiguration = {
 
 export const InitialProjectConfiguration: ProjectConfiguration = {
     name: '',
-    step: 'data-provider',
+    step: 'name',
     dataProvider: '',
     authProvider: '',
     resources: [],
