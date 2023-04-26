@@ -16,6 +16,7 @@ export const usePickSaveContext = <
                 'save',
                 'saving',
                 'mutationMode',
+                'pessimisticSideEffectsRef',
                 'registerMutationMiddleware',
                 'unregisterMutationMiddleware',
             ]),

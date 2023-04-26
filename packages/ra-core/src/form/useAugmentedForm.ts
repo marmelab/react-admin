@@ -170,15 +170,22 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
     );
 
     const formHandleSubmit = useCallback(
-        (event: BaseSyntheticEvent) => {
+        async (event: BaseSyntheticEvent) => {
             if (!event.defaultPrevented) {
                 // Prevent outer forms to receive the event
                 event.stopPropagation();
-                form.handleSubmit(handleSubmit)(event);
+                try {
+                    await form.handleSubmit(handleSubmit)(event);
+                    // in pessimistic mode, side effects must be called after the submission
+                    // to avoid conflicts with the warn when unsaved changes feature
+                    saveContext?.pessimisticSideEffectsRef?.current.onSuccess?.();
+                } catch (error) {
+                    saveContext?.pessimisticSideEffectsRef?.current.onError?.();
+                }
             }
             return;
         },
-        [form, handleSubmit]
+        [form, handleSubmit, saveContext]
     );
 
     return {

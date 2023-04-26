@@ -20,6 +20,10 @@ export interface SaveContextValue<
     mutationMode?: MutationMode;
     registerMutationMiddleware?: (callback: Middleware<MutateFunc>) => void;
     unregisterMutationMiddleware?: (callback: Middleware<MutateFunc>) => void;
+    pessimisticSideEffectsRef?: React.MutableRefObject<{
+        onSuccess?: () => void | Promise<unknown>;
+        onError?: () => void | Promise<unknown>;
+    }>;
 }
 
 export type SaveHandler<RecordType> = (
