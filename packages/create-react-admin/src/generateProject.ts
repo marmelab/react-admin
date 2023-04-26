@@ -158,6 +158,7 @@ const BasePackageJson = {
         'react-dom': '^18.2.0',
     },
     devDependencies: {
+        '@types/node': '^18.16.1',
         '@types/react': '^18.0.22',
         '@types/react-dom': '^18.0.7',
         '@vitejs/plugin-react': '^2.2.0',
