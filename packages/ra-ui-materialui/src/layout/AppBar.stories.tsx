@@ -74,12 +74,6 @@ export const Color = () => (
     </Wrapper>
 );
 
-export const AlwaysOn = () => (
-    <Wrapper>
-        <AppBar alwaysOn />
-    </Wrapper>
-);
-
 export const Position = () => (
     <Wrapper>
         <AppBar position="sticky" />

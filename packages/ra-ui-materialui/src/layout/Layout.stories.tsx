@@ -22,7 +22,6 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { MemoryRouter } from 'react-router';
 
 import { defaultTheme } from '../defaultTheme';
-import { AppBar } from './AppBar';
 import { Layout } from './Layout';
 import { Title } from './Title';
 
@@ -93,17 +92,9 @@ const Menu = () => (
         </MenuItem>
     </MenuList>
 );
-const BasicLayout = props => <Layout menu={Menu} {...props} />;
 
+const BasicLayout = props => <Layout menu={Menu} {...props} />;
 export const Basic = () => <Wrapper layout={BasicLayout} />;
 
-const AlwaysOnAppBar = () => <AppBar alwaysOn />;
-const AlwaysOnLayout = props => (
-    <BasicLayout appBar={AlwaysOnAppBar} {...props} />
-);
-
-export const AlwaysOn = () => <Wrapper layout={AlwaysOnLayout} />;
-
-const AlwaysOnLayout2 = props => <BasicLayout appBarAlwaysOn {...props} />;
-
-export const AlwaysOn2 = () => <Wrapper layout={AlwaysOnLayout2} />;
+const AppBarAlwaysOnLayout = props => <BasicLayout appBarAlwaysOn {...props} />;
+export const AppBarAlwaysOn = () => <Wrapper layout={AppBarAlwaysOnLayout} />;
