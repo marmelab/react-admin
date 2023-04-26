@@ -504,7 +504,11 @@ export const UserCreate = () => {
 
 You can let end users customize the fields displayed in the `<SimpleForm>` by using the `<SimpleFormConfigurable>` component instead.
 
-![SimpleFormConfigurable](./img/SimpleFormConfigurable.gif)
+<video controls autoplay muted loop>
+  <source src="./img/SimpleFormConfigurable.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 ```diff
 import {

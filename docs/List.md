@@ -437,7 +437,11 @@ const BookList = () => (
 
 ## `exporter`
 
-![Export Button](./img/export-button.gif)
+<video controls autoplay muted loop>
+  <source src="./img/export-button.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 Among the default list actions, react-admin includes an `<ExportButton>`. This button is disabled when there is no record in the current `<List>`.
 
@@ -523,7 +527,11 @@ const CommentList = () => (
 
 ## `filters`: Filter Inputs
 
-![List Filters](./img/list_filter.gif)
+<video controls autoplay muted loop>
+  <source src="./img/list_filter.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 You can add an array of filter Inputs to the List using the `filters` prop:
 
@@ -548,7 +556,11 @@ Filter Inputs are regular inputs. `<List>` hides them all by default, except tho
 
 You can also display filters as a sidebar:
 
-![`<FilterList>` sidebar](./img/filter-sidebar.gif)
+<video controls autoplay muted loop>
+  <source src="./img/filter-sidebar.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 For more details about customizing filters, see the [Filtering the List](./FilteringTutorial.md#filtering-the-list) section. 
 

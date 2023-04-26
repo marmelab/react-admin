@@ -5,7 +5,11 @@ title: "security"
 
 # Security
 
-![Login](./img/login.gif)
+<video controls autoplay muted loop>
+  <source src="./img/login.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 React-admin lets you secure your admin app with the authentication strategy of your choice. Since there are many possible strategies (Basic Auth, JWT, OAuth, etc.), react-admin delegates authentication logic to an `authProvider`.
 

@@ -8,7 +8,11 @@ title: "The AutocompleteArrayInput Component"
 To let users choose multiple values in a list using a dropdown with autocompletion, use `<AutocompleteArrayInput>`.
 It renders using Material UI [Autocomplete](https://mui.com/material-ui/react-autocomplete/).
 
-![AutocompleteArrayInput](./img/autocomplete-array-input.gif)
+<video controls autoplay muted loop>
+  <source src="./img/autocomplete-array-input.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 This input allows editing values that are arrays of scalar values, e.g. `[123, 456]`.
 
@@ -133,7 +137,11 @@ const choices = possibleValues.map(value => ({ id: value, name: ucfirst(value) }
 
 To allow users to add new options, pass a React element as the `create` prop. `<AutocompleteArrayInput>` will then render a "Create" option at the bottom of the choices list. When clicked, it will render the create element.
 
-![create option](./img/autocomplete-array-input-create.gif)
+<video controls autoplay muted loop>
+  <source src="./img/autocomplete-array-input-create.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 {% raw %}
 ```jsx

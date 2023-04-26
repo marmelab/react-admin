@@ -7,7 +7,11 @@ title: "The SelectInput Component"
 
 To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material UI's `<Select>`](https://mui.com/api/select).
 
-![SelectInput](./img/select-input.gif)
+<video controls autoplay muted loop>
+  <source src="./img/select-input.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 This input allows editing record fields that are scalar values, e.g. `123`, `'admin'`, etc. 
 

@@ -5,7 +5,11 @@ title: "The FilterLiveSearch Component"
 
 # `<FilterLiveSearch>`
 
-![Filter Live Search](./img/filter-live-search.gif)
+<video controls autoplay muted loop>
+  <source src="./img/filter-live-search.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 The filter sidebar is not a form. Therefore, if your users need to enter complex filters, you'll have to recreate a filter form using react-hook-form (see the [Building a custom filter](./FilteringTutorial.md#building-a-custom-filter) section below for an example). However, if you only need one text input with a filter-as-you-type behavior, you'll find the `<FilterLiveSearch>` component convenient.
 

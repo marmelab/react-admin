@@ -228,7 +228,7 @@ export const MyAppBar = () => (
 If your app uses [authentication](./Authentication.md), the `<AppBar>` component displays a button to display the user menu on the right side. By default, the user menu only contains a logout button.
 
 <video controls autoplay muted loop width="100%">
-  <source src="./img/AppBar-user-menu.webm" type="video/webm">
+  <source src="./img/AppBar-user-menu.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -440,7 +440,7 @@ export const MyLayout = (props) => (
 By default, users can override the page title [in configurable mode](./Features.md#configurable-ui).
 
 <video controls autoplay muted loop width="100%">
-  <source src="./img/TitleConfigurable.webm" type="video/webm">
+  <source src="./img/TitleConfigurable.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

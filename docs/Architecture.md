@@ -105,7 +105,11 @@ We spend a great deal of time refining the UI to make it as intuitive as possibl
 
 React-admin produces a user interface that is voluntarily bland by default because we want to emphasize content rather than chrome.
 
-![Sort Button](./img/sort-button.gif)
+<video controls autoplay muted loop>
+  <source src="./img/sort-button.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 As for the developer experience, react-admin is constantly evolving to find the sweet spot between an intuitive API, power user features, not too much magic, and just enough documentation. The core team are the first testers of react-admin, and pay attention to the productivity, debuggability, discoverability, performance, and robustness of all the hooks and components.
 
