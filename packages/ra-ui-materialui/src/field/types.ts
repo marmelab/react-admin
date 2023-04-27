@@ -2,6 +2,7 @@ import { ReactElement } from 'react';
 import { RaRecord } from 'ra-core';
 import PropTypes from 'prop-types';
 import { TableCellProps } from '@mui/material/TableCell';
+import { Call, Objects } from 'hotscript';
 
 type TextAlign = TableCellProps['align'];
 type SortOrder = 'ASC' | 'DESC';
@@ -10,10 +11,15 @@ export interface FieldProps<RecordType extends RaRecord = any>
     extends PublicFieldProps,
         InjectedFieldProps<RecordType> {}
 
-export interface PublicFieldProps {
-    sortBy?: string;
+export interface PublicFieldProps<
+    RecordType extends Record<string, unknown> = Record<string, any>,
+    SortByType = unknown
+> {
+    sortBy?: unknown extends SortByType
+        ? Call<Objects.AllPaths, RecordType>
+        : SortByType;
     sortByOrder?: SortOrder;
-    source?: string;
+    source?: Call<Objects.AllPaths, RecordType>;
     label?: string | ReactElement | boolean;
     sortable?: boolean;
     className?: string;

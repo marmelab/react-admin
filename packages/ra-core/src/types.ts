@@ -1,5 +1,4 @@
 import { ReactNode, ReactElement, ComponentType } from 'react';
-
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 import { AuthActionType } from './auth/types';
 
@@ -14,8 +13,8 @@ export interface RaRecord<IdentifierType extends Identifier = Identifier>
     id: IdentifierType;
 }
 
-export interface SortPayload {
-    field: string;
+export interface SortPayload<FieldType extends string = string> {
+    field: FieldType;
     order: string;
 }
 export interface FilterPayload {

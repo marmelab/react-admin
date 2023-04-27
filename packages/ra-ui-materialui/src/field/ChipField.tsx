@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { memo, FC } from 'react';
 import get from 'lodash/get';
 import Chip, { ChipProps } from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
@@ -9,8 +8,14 @@ import { useRecordContext, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { genericMemo } from './genericMemo';
 
-export const ChipField: FC<ChipFieldProps> = memo(props => {
+const ChipFieldImpl = <
+    RecordType extends Record<string, unknown> = Record<string, any>,
+    SortByType = unknown
+>(
+    props: ChipFieldProps<RecordType, SortByType>
+) => {
     const { className, source, emptyText, ...rest } = props;
     const record = useRecordContext(props);
     const value = get(record, source);
@@ -36,19 +41,25 @@ export const ChipField: FC<ChipFieldProps> = memo(props => {
             {...sanitizeFieldRestProps(rest)}
         />
     );
-});
+};
 
+export const ChipField = genericMemo(ChipFieldImpl);
+
+// @ts-ignore
 ChipField.propTypes = {
     // @ts-ignore
     ...ChipField.propTypes,
     ...fieldPropTypes,
 };
 
+// @ts-ignore
 ChipField.displayName = 'ChipField';
 
-export interface ChipFieldProps
-    extends PublicFieldProps,
-        InjectedFieldProps,
+export interface ChipFieldProps<
+    RecordType extends Record<string, unknown> = Record<string, any>,
+    SortByType = unknown
+> extends PublicFieldProps<RecordType, SortByType>,
+        InjectedFieldProps<RecordType>,
         Omit<ChipProps, 'label'> {}
 
 const PREFIX = 'RaChipField';

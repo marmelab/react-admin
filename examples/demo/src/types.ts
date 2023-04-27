@@ -39,12 +39,13 @@ export interface Customer extends RaRecord {
 
 export type OrderStatus = 'ordered' | 'delivered' | 'cancelled';
 
-export interface Order extends RaRecord {
+export type Order = {
+    id: number;
     status: OrderStatus;
     basket: BasketItem[];
     date: Date;
     total: number;
-}
+};
 
 export interface BasketItem {
     product_id: Identifier;
