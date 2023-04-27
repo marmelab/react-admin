@@ -15,6 +15,7 @@ import { CompanyAvatar } from '../companies/CompanyAvatar';
 import { NotesIterator } from '../notes';
 import { ContactList } from './ContactList';
 import { stageNames } from './stages';
+import { Deal } from '../types';
 
 export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
     const redirect = useRedirect();
@@ -48,7 +49,7 @@ export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
 };
 
 const DealShowContent = () => {
-    const record = useRecordContext();
+    const record = useRecordContext<Deal>();
     if (!record) return null;
     return (
         <div>

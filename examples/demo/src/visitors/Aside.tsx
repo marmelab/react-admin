@@ -200,7 +200,7 @@ const mixOrdersAndReviews = (
 };
 
 const Order = () => {
-    const record = useRecordContext();
+    const record = useRecordContext<OrderRecord>();
     const translate = useTranslate();
     if (!record) return null;
     return (

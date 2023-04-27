@@ -103,7 +103,7 @@ export interface ReferenceOneFieldProps<RecordType extends RaRecord = any>
     target: string;
     sort?: SortPayload;
     filter?: any;
-    link?: LinkToType;
+    link?: LinkToType<RecordType>;
     queryOptions?: UseQueryOptions<{
         data: RecordType[];
         total: number;

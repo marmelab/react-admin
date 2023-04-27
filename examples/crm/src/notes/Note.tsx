@@ -22,6 +22,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import TrashIcon from '@mui/icons-material/Delete';
 
 import { Status } from '../misc/Status';
+import { Contact, Deal } from '../types';
 
 export const Note = ({
     showStatus,
@@ -37,7 +38,7 @@ export const Note = ({
     const [isEditing, setEditing] = useState(false);
     const [noteText, setNoteText] = useState(note.text);
     const resource = useResourceContext();
-    const record = useRecordContext();
+    const record = useRecordContext<Deal | Contact>();
     const notify = useNotify();
 
     const [update, { isLoading }] = useUpdate();
