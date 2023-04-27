@@ -45,6 +45,12 @@ export type Order = {
     basket: BasketItem[];
     date: Date;
     total: number;
+    total_ex_taxes: number;
+    delivery_fees: number;
+    tax_rate: number;
+    taxes: number;
+    customer_id: number;
+    reference: string;
 };
 
 export interface BasketItem {
