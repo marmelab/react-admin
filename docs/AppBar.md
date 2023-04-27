@@ -64,7 +64,6 @@ const App = () => (
 
 | Prop                | Required | Type           | Default  | Description                                         |
 | ------------------- | -------- | -------------- | -------- | --------------------------------------------------- |
-| `alwaysOn`          | Optional | `boolean`      | -        | When true, the app bar is always visible            |
 | `children`          | Optional | `ReactElement` | -        | What to display in the central part of the app bar  |
 | `color`             | Optional | `string`       | -        | The background color of the app bar                 |
 | `sx`                | Optional | `SxProps`      | -        | Style overrides, powered by MUI System              |
@@ -72,17 +71,6 @@ const App = () => (
 | `userMenu`          | Optional | `ReactElement` | -        | The content of the dropdown user menu               |
 
 Additional props are passed to [the underlying MUI `<AppBar>` element](https://mui.com/material-ui/api/app-bar/).
-
-## `alwaysOn`
-
-By default, the app bar is hidden when the user scrolls down the page. This is useful to save space on small screens. But if you want to keep the app bar always visible, you can set the `alwaysOn` prop to `true`.
-
-```jsx
-// in src/MyAppBar.js
-import { AppBar } from 'react-admin';
-
-const MyAppBar = () => <AppBar alwaysOn />;
-```
 
 ## `children`
 

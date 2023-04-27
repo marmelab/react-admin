@@ -126,6 +126,11 @@ AppBar.propTypes = {
 const DefaultUserMenu = <UserMenu />;
 
 export interface AppBarProps extends Omit<MuiAppBarProps, 'title'> {
+    /**
+     * This prop is injected by Layout. You should not use it directly unless
+     * you are using a custom layout.
+     * If you are using the default layout, use `<Layout appBarAlwaysOn>` instead.
+     */
     alwaysOn?: boolean;
     container?: React.ElementType<any>;
     /**

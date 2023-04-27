@@ -45,13 +45,15 @@ const App = () => (
 
 ## Props
 
-| Prop        | Required | Type        | Default  | Description                                                           |
-| ----------- | -------- | ----------- | -------- | --------------------------------------------------------------------- |
-| `appBar`    | Optional | `Component` | -        | A React component rendered at the top of the layout                   |
-| `className` | Optional | `string`    | -        | Passed to the root `<div>` component                                  |
-| `error`     | Optional | `Component` | -        | A React component rendered in the content area in case of error       |
-| `menu`      | Optional | `Component` | -        | A React component rendered at the side of the screen                  |
-| `sx`        | Optional | `SxProps`   | -        | Style overrides, powered by MUI System                                |
+| Prop             | Required | Type        | Default  | Description                                                             |
+| ---------------- | -------- | ----------- | -------- | ----------------------------------------------------------------------- |
+| `appBar`         | Optional | `Component` | -        | A React component rendered at the top of the layout                     |
+| `appBarAlwaysOn` | Optional | `boolean`   | -        | When true, the app bar is always visible                                |
+| `className`      | Optional | `string`    | -        | Passed to the root `<div>` component                                    |
+| `error`          | Optional | `Component` | -        | A React component rendered in the content area in case of error         |
+| `menu`           | Optional | `Component` | -        | A React component rendered at the side of the screen                    |
+| `sidebar`        | Optional | `Component` | -        | A React component responsible for rendering the menu (e.g. in a drawer) |
+| `sx`             | Optional | `SxProps`   | -        | Style overrides, powered by MUI System                                  |
 
 React-admin injects more props at runtime based on the `<Admin>` props:
 
@@ -113,6 +115,18 @@ export const MyAppBar = () => (
 ![custom AppBar](./img/custom_appbar.png)
 
 Check out the [`<AppBar>` documentation](./AppBar.md) for more information, and for instructions on building your own AppBar.
+
+## `appBarAlwaysOn`
+
+By default, the app bar is hidden when the user scrolls down the page. This is useful to save space on small screens. But if you want to keep the app bar always visible, you can set the `appBarAlwaysOn` prop to `true`.
+
+```jsx
+// in src/MyLayout.js
+import * as React from 'react';
+import { Layout } from 'react-admin';
+
+export const MyLayout = (props) => <Layout {...props} appBarAlwaysOn />;
+```
 
 ## `className`
 
