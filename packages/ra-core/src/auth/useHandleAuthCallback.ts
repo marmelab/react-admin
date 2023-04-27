@@ -3,7 +3,6 @@ import { useLocation } from 'react-router';
 import { useRedirect } from '../routing';
 import { AuthProvider, AuthRedirectResult } from '../types';
 import useAuthProvider from './useAuthProvider';
-import useLogout from './useLogout';
 
 /**
  * This hook calls the `authProvider.handleCallback()` method on mount. This is meant to be used in a route called
@@ -17,7 +16,6 @@ export const useHandleAuthCallback = (
 ) => {
     const authProvider = useAuthProvider();
     const redirect = useRedirect();
-    const logout = useLogout();
     const location = useLocation();
     const locationState = location.state as any;
     const nextPathName = locationState && locationState.nextPathname;
@@ -45,19 +43,6 @@ export const useHandleAuthCallback = (
                 }
 
                 redirect(redirectTo ?? defaultRedirectUrl);
-            },
-            onError: err => {
-                const { redirectTo = false, logoutOnFailure = true } = (err ??
-                    {}) as AuthRedirectResult;
-
-                if (logoutOnFailure) {
-                    logout({}, redirectTo);
-                }
-                if (redirectTo === false) {
-                    return;
-                }
-
-                redirect(redirectTo);
             },
             ...options,
         }
