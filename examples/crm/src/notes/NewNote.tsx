@@ -13,7 +13,6 @@ import {
 import { Box, TextField as TextInput, Button } from '@mui/material';
 
 import { StatusSelector } from './StatusSelector';
-import { Contact, Deal } from '../types';
 
 export const NewNote = ({
     showStatus,
@@ -23,7 +22,7 @@ export const NewNote = ({
     reference: 'contacts' | 'deals';
 }) => {
     const resource = useResourceContext();
-    const record = useRecordContext<Deal | Contact>();
+    const record = useRecordContext();
     const { refetch } = useListContext();
     const [text, setText] = useState('');
     const [status, setStatus] = useState(record && record.status);

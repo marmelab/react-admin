@@ -30,7 +30,7 @@ import { RecordContext } from './RecordContext';
  * @returns {RaRecord} A record object
  */
 export const useRecordContext = <
-    RecordType extends Record<string, unknown> = Record<string, unknown>
+    RecordType extends Record<string, unknown> = Record<string, any>
 >(
     props?: UseRecordContextParams<RecordType>
 ): RecordType | undefined => {
