@@ -138,9 +138,7 @@ export default function App({ name = 'my-admin' }: Props) {
                     <Text>
                         Install the dependencies using your favorite package
                         manager.
-                    </Text>
-                    <Newline />
-                    <Text>
+                        <Newline />
                         Run the <Text bold>dev</Text> command to start the app.
                     </Text>
                 </Box>
