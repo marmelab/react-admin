@@ -1,8 +1,12 @@
 # Changelog
 
+## v4.10.1
+
+* make `create-react-admin` installer private for now ([fzaninotto](https://github.com/fzaninotto))
+
 ## v4.10.0
 
-* Add `create-react-admin` installer (to be published) ([#8833](https://github.com/marmelab/react-admin/pull/8833)) ([djhi](https://github.com/djhi))
+* Add `create-react-admin` installer ([#8833](https://github.com/marmelab/react-admin/pull/8833)) ([djhi](https://github.com/djhi))
 * Add `<InfiniteList>` and `<InfinitePagination>` components ([#8781](https://github.com/marmelab/react-admin/pull/8781)) ([fzaninotto](https://github.com/fzaninotto))
 * Add ability to change the sort, filter and selection of `<ArrayField>` ([#8802](https://github.com/marmelab/react-admin/pull/8802)) ([fzaninotto](https://github.com/fzaninotto))
 * Add ability to configure the remove icon of `<FileInputPreview>` ([#8756](https://github.com/marmelab/react-admin/pull/8756)) ([PennyJeans](https://github.com/PennyJeans))
