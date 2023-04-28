@@ -57,7 +57,7 @@ If you can't find a Data Provider for your backend below, no worries! [Writing a
 * **[SQLite](https://www.sqlite.org/index.html)**: [marmelab/ra-sqlite-dataprovider](https://github.com/marmelab/ra-sqlite-dataprovider)
 * **[REST](https://en.wikipedia.org/wiki/Representational_state_transfer)**: [marmelab/ra-data-simple-rest](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-simple-rest)
 * **[Spring Boot](https://spring.io/projects/spring-boot)**: [vishpat/ra-data-springboot-rest](https://github.com/vishpat/ra-data-springboot-rest) 
-* **[Strapi v3](https://strapi.io/)**: [nazirov91/ra-strapi-rest](https://github.com/nazirov91/ra-strapi-rest)
+* **[Strapi v3/v4](https://strapi.io/)**: [nazirov91/ra-strapi-rest](https://github.com/nazirov91/ra-strapi-rest)
 * **[Strapi v4](https://strapi.io/)**: [garridorafa/ra-strapi-v4-rest](https://github.com/garridorafa/ra-strapi-v4-rest)
 * **[Supabase](https://supabase.io/)**: [marmelab/ra-supabase](https://github.com/marmelab/ra-supabase)
 - **[SurrealDB](https://surrealdb.com/)**: [djedi23/ra-surrealdb](https://github.com/djedi23/ra-surrealdb)
