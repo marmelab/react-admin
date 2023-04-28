@@ -19,7 +19,7 @@ React-admin provides the **best-in-class documentation**, demo apps, and support
 
 That probably explains why more than 3,000 new apps are published every month using react-admin. 
 
-So react-admin is not just the assembly of [react-query](https://react-query.tanstack.com/), [react-hook-form](https://marmelab.com/react-admin/assets/techs/react-hook-form.jpeg), [react-router](https://reacttraining.com/react-router/), [MUI](https://mui.com/) and [Emotion](https://github.com/emotion-js/emotion). It's a **framework** made to speed up and facilitate the development of single-page apps in React.
+So react-admin is not just the assembly of [react-query](https://react-query.tanstack.com/), [react-hook-form](https://marmelab.com/react-admin/assets/techs/react-hook-form.jpeg), [react-router](https://reacttraining.com/react-router/), [Material UI](https://mui.com/material-ui/getting-started/overview/) and [Emotion](https://github.com/emotion-js/emotion). It's a **framework** made to speed up and facilitate the development of single-page apps in React.
 
 ## Basic CRUD
 
@@ -35,7 +35,7 @@ We call this type of interface a "CRUD" interface because it allows us to Create
 React-admin started as an engine to generate such CRUD interfaces, and it still does it very well. **Building CRUD interfaces with react-admin requires little to no effort**, and it's very easy to customize them.
 
 <video controls autoplay muted loop width="100%">
-  <source src="./img/CRUD.webm" type="video/webm">
+  <source src="./img/CRUD.webm" type="video/webm" />
   Your browser does not support the video tag.
 </video>
 
@@ -197,7 +197,11 @@ const ProductEdit = () => (
 );
 ```
 
-![ReferenceManyInput](./img/reference-many-input.gif)
+<video controls autoplay muted loop>
+  <source src="./img/reference-many-input.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 Reference Input components are also very useful to filter a view by a related record. For instance, to display the list of books of a given author:
 
@@ -217,7 +221,7 @@ const BookList = () => (
 ```
 
 <video controls autoplay muted loop width="100%">
-  <source src="./img/reference-input-filter.webm" type="video/webm">
+  <source src="./img/reference-input-filter.webm" type="video/webm" />
   Your browser does not support the video tag.
 </video>
 
@@ -233,6 +237,7 @@ React-admin supports **one-to-many**, **many-to-one**, **one-to-one**, and **man
 - [`ReferenceArrayInput`](./ReferenceArrayInput.md)
 - [`ReferenceManyInput`](./ReferenceManyInput.md)
 - [`ReferenceManyToManyInput`](./ReferenceManyToManyInput.md)
+- [`ReferenceOneInput`](./ReferenceOneInput.md)
 
 The [Fields For Relationships](./FieldsForRelationships.md) page lists all reference fields together with their common usage.
 
@@ -242,10 +247,10 @@ Reference components are a tremendous development accelerator for complex fronte
 
 Let's be realistic: Many developers focus on features first and don't have much time to spend polishing the User Interface (UI). We tend to be like that, too! The result is that quite often, admin apps are ugly. Spacing isn't consistent, buttons aren't in the best place, and color schemes hurt the eyes.
 
-React-admin provides **components that look pretty good out of the box**, so even if you don't spend time on the UI, it won't look bad (unless you try hard). React-admin uses [MUI](https://mui.com), which is a React implementation of the [Material Design](https://m3.material.io/) guidelines, the most battle-tested design system.
+React-admin provides **components that look pretty good out of the box**, so even if you don't spend time on the UI, it won't look bad (unless you try hard). React-admin uses [Material UI](https://mui.com/material-ui/getting-started/overview/), which is a React implementation of the [Material Design](https://material.io/) guidelines, the most battle-tested design system.
 
 <video controls autoplay muted loop width="100%">
-  <source src="https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4" type="video/webm">
+  <source src="https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4" type="video/webm" />
   Your browser does not support the video tag.
 </video>
 
@@ -296,11 +301,21 @@ In most admin and B2B apps, the most common task is to look for a record. React-
 <table><tbody>
 <tr style="border:none">
     <td style="width:50%;border:none;text-align:center">
-        <a title="Filter Button/Form Combo" href="./img/list_filter.gif"><img src="./img/list_filter.gif" /></a>
+        <a title="Filter Button/Form Combo" href="./img/list_filter.webm">
+            <video controls autoplay muted loop>
+                <source src="./img/list_filter.webm" type="video/webm"/>
+                Your browser does not support the video tag.
+            </video>
+        </a>
         <a href="./FilteringTutorial.html#the-filter-buttonform-combo" style="display: block;transform: translateY(-10px);">Filter Button/Form Combo</a>
     </td>
     <td style="width:50%;border:none;text-align:center">
-        <a title="<FilterList> Sidebar" href="./img/filter-sidebar.gif"><img src="./img/filter-sidebar.gif" /></a>
+         <a title="<FilterList> Sidebar" href="./img/filter-sidebar.webm">
+            <video controls autoplay muted loop>
+                <source src="./img/filter-sidebar.webm" type="video/webm"/>
+                Your browser does not support the video tag.
+            </video>
+        </a>
         <a href="./FilteringTutorial.html#the-filterlist-sidebar" style="display: block;transform: translateY(-10px);"><code>&lt;FilterList&gt;</code> Sidebar</a>
     </td>
 </tr>
@@ -308,7 +323,7 @@ In most admin and B2B apps, the most common task is to look for a record. React-
     <td style="width:50%;border:none;text-align:center">
         <a title="Stacked Filters" href="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm">
             <video controls autoplay muted loop width="90%" style="margin:1rem;box-shadow:0px 4px 4px 0px rgb(0 0 0 / 24%);">
-                <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4">
+                <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4" />
                     Your browser does not support the video tag.
             </video>
         </a>
@@ -347,7 +362,11 @@ Check the following chapters to learn more about each search and filtering compo
 
 Users often apply the same filters over and over again. Saved Queries **let users save a combination of filters** and sort parameters into a new, personal filter, that persists between sessions. 
 
-[![Saved Queries in FilterList](./img/SavedQueriesList.gif)](./img/SavedQueriesList.gif)
+<video controls autoplay muted loop>
+  <source src="./img/SavedQueriesList.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 Here is an example `<FilterList>` sidebar with saved queries:
 
@@ -397,7 +416,7 @@ Check the [Building A Custom Filter Tutorial](./FilteringTutorial.md#building-a-
 
 Many admin apps let users perform complex tasks implying the update of many fields and records. To allow such complex workflows, developers must be able to build sophisticated forms, with elaborate validation rules.
 
-React-admin offers a **rich set of input components** to build forms, powered by [MUI](https://mui.com) and [react-hook-form](https://react-hook-form.com/). React-admin's form components also take care of binding the form values to the record being edited and validating the form inputs.
+React-admin offers a **rich set of input components** to build forms, powered by [Material UI](https://mui.com/material-ui/getting-started/overview/) and [react-hook-form](https://react-hook-form.com/). React-admin's form components also take care of binding the form values to the record being edited and validating the form inputs.
 
 For instance, here is how to group inputs into tabs using `<TabbedForm>`:
 
@@ -448,7 +467,11 @@ export const PostEdit = () => (
 );
 ```
 
-![Tabbed Form](./img/tabbed-form.gif)
+<video controls autoplay muted loop>
+  <source src="./img/tabbed-form.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 React-admin offers, out of the box, several **form layouts**:
 
@@ -481,8 +504,8 @@ Inside forms, you can use [react-admin input components](./Inputs.md), designed 
 | Array of objects      | `[{ item: 'jeans', qty: 3 }, { item: 'shirt', qty: 1 }]`     | [`<ArrayInput>`](./ArrayInput.md)                                                                                                                                                                    |
 | Array of Enums        | `['foo', 'bar']`                                             | [`<SelectArrayInput>`](./SelectArrayInput.md), [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md), [`<CheckboxGroupInput>`](./CheckboxGroupInput.md), [`<DualListInput>`](./DualListInput.md) |
 | Array of foreign keys | `[42, 43]`                                                   | [`<ReferenceArrayInput>`](./ReferenceArrayInput.md)                                                                                                                                                  |
-| Translations          | `{ en: 'Hello', fr: 'Bonjour' }`                             | [`<TranslatableInputs>`](./TranslatableInputs.md)                                                                                                                                                        |
-| Related records       | `[{ id: 42, title: 'Hello' }, { id: 43, title: 'World' }]` | [`<ReferenceManyInput>`](./ReferenceManyInput.md), [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md)                                                                                     |
+| Translations          | `{ en: 'Hello', fr: 'Bonjour' }`                             | [`<TranslatableInputs>`](./TranslatableInputs.md)                                                                                                                                                    |
+| Related records       | `[{ id: 42, title: 'Hello' }, { id: 43, title: 'World' }]`   | [`<ReferenceManyInput>`](./ReferenceManyInput.md), [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md), [`<ReferenceOneInput>`](./ReferenceOneInput.md)                                    |
 
 You can build **dependent inputs**, using the [react-hook-form's `useWatch` hook](https://react-hook-form.com/api/usewatch). For instance, here is a `CityInput` that displays the cities of the selected country:
 
@@ -626,7 +649,11 @@ When a user edits a record and hits the "Save" button, the UI shows a confirmati
 
 But there is an additional benefit: it also allows the "Undo" feature. Undo is already functional in the admin at that point. Try editing a record, then hit the "Undo" link in the black confirmation box before it slides out. You'll see that the app does not send the `UPDATE` query to the API, and displays the non-modified data.
 
-[![Undo Post Editing](./img/tutorial_post_edit_undo.gif)](./img/tutorial_post_edit_undo.gif)
+<video controls autoplay muted loop>
+  <source src="./img/tutorial_post_edit_undo.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 Even though updates appear immediately due to Optimistic Updates, React-admin only sends them to the server after a short delay (about 5 seconds). During this delay, **the user can undo the action**, and react-admin will never send the update. 
 
@@ -791,7 +818,11 @@ Check the following components for more details:
 
 To manage directories, categories, and any other **hierarchical data**, admins often rely on tree structures. Navigating and editing tree structures can be tricky, but React-admin provides a set of components to make it easy.
 
-![TreeWithDetails](./img/treewithdetails.gif)
+<video controls autoplay muted loop>
+  <source src="./img/treewithdetails.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 ```jsx
 import { Create, Edit, SimpleForm, TextInput } from 'react-admin';
@@ -824,11 +855,11 @@ export const CategoriesList = () => (
 Check out the following components for displaying hierarchical data:
 
 - [`<TreeWithDetails>`](./TreeWithDetails.md): A list view for tree structures, with a details panel.
-- [`<Tree>`](https://marmelab.com/ra-enterprise/modules/ra-tree#tree-component): A list view for tree structures, with a MUI skin.
+- [`<Tree>`](https://marmelab.com/ra-enterprise/modules/ra-tree#tree-component): A list view for tree structures, with a Material UI skin.
 
 ## Application Building Blocks
 
-A UI kit like MUI provides basic building blocks like a button, a form, a table, etc. React-admin goes one level higher and provides a set of **[application components](./Reference.md#components)** specifically designed for building admin and B2B *applications*.
+A UI kit like Material UI provides basic building blocks like a button, a form, a table, etc. React-admin goes one level higher and provides a set of **[application components](./Reference.md#components)** specifically designed for building admin and B2B *applications*.
 
 ![editable Datagrid](https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid/latest/ra-editable-datagrid-overview.gif)
 
@@ -859,7 +890,7 @@ And if you want to create your building blocks, you can use any of the [75+ hook
 React-admin provides hooks and UI components for **collaborative applications** where several people work in parallel. It allows publishing and subscribing to real-time events, updating views when another user pushes a change, notifying end users of events, and **preventing data loss** when two editors work on the same resource concurrently.
 
 <video controls autoplay muted width="100%">
-  <source src="./img/CollaborativeDemo.mp4" type="video/mp4">
+  <source src="./img/CollaborativeDemo.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -909,7 +940,11 @@ const PostList = () => (
 );
 ```
 
-![useSubscribeToRecordList](./img/useSubscribeToRecordList.gif)
+<video controls autoplay muted loop>
+  <source src="./img/useSubscribeToRecordList.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 This feature leverages the following hooks:
 
@@ -953,7 +988,11 @@ This feature leverages the following components:
 
 And last but not least, react-admin provides a **lock mechanism** to prevent two users from editing the same resource at the same time.
 
-![Edit With Locks](./img/locks-demo.gif)
+<video controls autoplay muted loop>
+  <source src="./img/locks-demo.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 A user can lock a resource, either by voluntarily asking for a lock or by editing a resource. When a resource is locked, other users can't edit it. When the lock is released, other users can edit the resource again.
 
@@ -1011,7 +1050,11 @@ End-users tweak the UI to their liking, and **they expect these preferences to b
 
 For instance, the Saved Queries feature lets users **save a combination of filters** and sort parameters into a new, personal filter.
 
-[![Saved Queries in FilterList](./img/SavedQueriesList.gif)](./img/SavedQueriesList.gif)
+<video controls autoplay muted loop>
+  <source src="./img/SavedQueriesList.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 Saved queries persist between sessions, so users can find their custom queries even after closing and reopening the admin. Saved queries are available both for the Filter Button/Form combo and for the `<FilterList>` Sidebar. It's enabled by default for the Filter Button/Form combo but you have to add it yourself in the `<FilterList>` Sidebar.
 
@@ -1046,7 +1089,11 @@ const SongList = () => (
 
 React-admin also **persists the light/dark mode and the language choice** of end-users. 
 
-![Dark Mode support](./img/ToggleThemeButton.gif)
+<video controls autoplay muted loop>
+  <source src="./img/ToggleThemeButton.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 To learn more about the `Store` and how to use it, check the following sections:
 
@@ -1062,7 +1109,11 @@ To learn more about the `Store` and how to use it, check the following sections:
 
 An extension of preferences is Configurable components. Because no matter how polished your UI is, it will never fit all use cases. That's why react-admin provides a way to let end users **customize the features of many components visually**, via the inspector.
 
-![DatagridConfigurable](./img/DatagridConfigurable.gif)
+<video controls autoplay muted loop>
+  <source src="./img/DatagridConfigurable.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 To enable this feature, replace a component (in that example, `<Datagrid>`) with its configurable counterpart:
 
@@ -1099,7 +1150,7 @@ Check the following components for details:
 
 ## Theming
 
-The default [Material Design](https://m3.material.io/) look and feel is nice, but a bit... Google-y. If this bothers you, or if you need to brand your app, rest assured: react-admin is fully themeable.
+The default [Material Design](https://material.io/) look and feel is nice, but a bit... Google-y. If this bothers you, or if you need to brand your app, rest assured: react-admin is fully themeable.
 
 For instance, you can use react-admin to build a [Music Player](https://demo.navidrome.org/app/):
 
@@ -1212,7 +1263,11 @@ To learn more about theming in react-admin, check the following sections:
 
 React-admin is **fully internationalized**.
 
-![LocalesMenuButton](./img/LocalesMenuButton.gif)
+<video controls autoplay muted loop>
+  <source src="./img/LocalesMenuButton.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 The default interface messages (for buttons, tooltips, input labels, etc) are in English. You can translate them to any of [the 30+ languages supported by react-admin](./TranslationLocales.md) by importing the appropriate translation package. For instance, to translate to French:
 
@@ -1275,7 +1330,7 @@ React-admin is used by thousands of companies across the world, so the internati
 
 ## Accessibility
 
-The react-admin core team has a **strong commitment to accessibility**. React-admin uses the [MUI](https://mui.com/) components, which are accessible by default. For its own components, react-admin uses the [WAI-ARIA](https://www.w3.org/TR/wai-aria/) standard to make them accessible. This includes `aria-` attributes, keyboard navigation, and focus management.
+The react-admin core team has a **strong commitment to accessibility**. React-admin uses the [Material UI](https://mui.com/material-ui/getting-started/overview/) components, which are accessible by default. For its own components, react-admin uses the [WAI-ARIA](https://www.w3.org/TR/wai-aria/) standard to make them accessible. This includes `aria-` attributes, keyboard navigation, and focus management.
 
 We routinely test react-admin with the [WAVE](https://wave.webaim.org/) and [Axe](https://www.deque.com/axe/) accessibility tools.
 
@@ -1286,7 +1341,7 @@ We routinely test react-admin with the [WAVE](https://wave.webaim.org/) and [Axe
 The react-admin layouts and components are primarily designed for desktop screens. But they also **work well on mobile devices**. On mobile, buttons with a label become icon buttons, the sidebar menu becomes a drawer, the size of clickable elements is increased, the form toolbar becomes fixed, and many more adjustments.
 
 <video controls autoplay muted loop width="100%">
-  <source src="./img/responsive.webm" type="video/webm">
+  <source src="./img/responsive.webm" type="video/webm" />
   Your browser does not support the video tag.
 </video>
 
@@ -1358,7 +1413,7 @@ React-admin is written in TypeScript. That doesn't mean you have to use TypeScri
 And if your IDE supports TypeScript, you get autocompletion and inline documentation for all react-admin components and hooks.
 
 <video controls autoplay muted loop width="100%">
-  <source src="./img/typescript.webm" type="video/webm">
+  <source src="./img/typescript.webm" type="video/webm" />
   Your browser does not support the video tag.
 </video>
 

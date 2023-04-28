@@ -7,7 +7,11 @@ title: "The ReferenceManyInput Component"
 
 Use `<ReferenceManyInput>` in an `<Edit>` or `<Create>` view to edit one-to-many relationships, e.g. to edit the variants of a product in the product edition view. It's an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component, part of the `@react-admin/ra-relationships` package. 
 
-![ReferenceManyInput](./img/reference-many-input.gif)
+<video controls autoplay muted loop>
+  <source src="./img/reference-many-input.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 `<ReferenceManyInput>` fetches the related records, and renders them in a sub-form. When users add, remove or update related records, the `<ReferenceManyInput>` component stores these changes locally. When the users actually submit the form, `<ReferenceManyInput>` computes a diff with the existing relationship, and sends the related changes (additions, deletions, and updates) to the server.
 
@@ -81,7 +85,7 @@ const ProductEdit = () => (
 | `sort`         | Optional | `{ field, order }`        | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()`                                                                                 |
 | `defaultValue` | Optional | `array`                   | -                                | Default value of the input.                                                                                                                                         |
 | `validate`     | Optional | `Function` &#124; `array` | -                                | Validation rules for the array. See the [Validation Documentation](./Validation.md) for details.                                   |
-| `sx`           | Optional | `SxProps`                 | -                                | MUI shortcut for defining custom styles                                                                                                                             |
+| `sx`           | Optional | `SxProps`                 | -                                | Material UI shortcut for defining custom styles                                                                                                                             |
 
 ## `children`
 
@@ -236,7 +240,7 @@ By default, `<ReferenceManyInput>` ferchers the `references` for which the `targ
 
 ## `sx`
 
-You can override the style of the root component (a MUI [`<FormControl>`](https://mui.com/material-ui/api/form-control/#main-content)) and its child components by setting the `sx` prop.
+You can override the style of the root component (a Material UI [`<FormControl>`](https://mui.com/material-ui/api/form-control/)) and its child components by setting the `sx` prop.
 
 {% raw %}
 

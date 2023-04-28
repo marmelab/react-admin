@@ -268,7 +268,7 @@ You can also pass React elements as children, to build a custom iterator. Check 
 
 ## `component`
 
-By default, the List view renders the main content area inside a MUI `<Card>` element. The actual layout of the list depends on the child component you're using (`<Datagrid>`, `<SimpleList>`, or a custom layout component).
+By default, the List view renders the main content area inside a Material UI `<Card>` element. The actual layout of the list depends on the child component you're using (`<Datagrid>`, `<SimpleList>`, or a custom layout component).
 
 Some List layouts display each record in a `<Card>`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main area container by passing a `component` prop:
 
@@ -466,7 +466,11 @@ const BookList = () => (
 
 ## `exporter`
 
-![Export Button](./img/export-button.gif)
+<video controls autoplay muted loop>
+  <source src="./img/export-button.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 Among the default list actions, react-admin includes an `<ExportButton>`. This button is disabled when there is no record in the current `<List>`.
 
@@ -552,7 +556,11 @@ const CommentList = () => (
 
 ## `filters`: Filter Inputs
 
-![List Filters](./img/list_filter.gif)
+<video controls autoplay muted loop>
+  <source src="./img/list_filter.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 You can add an array of filter Inputs to the List using the `filters` prop:
 
@@ -577,7 +585,11 @@ Filter Inputs are regular inputs. `<List>` hides them all by default, except tho
 
 You can also display filters as a sidebar:
 
-![`<FilterList>` sidebar](./img/filter-sidebar.gif)
+<video controls autoplay muted loop>
+  <source src="./img/filter-sidebar.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 For more details about customizing filters, see the [Filtering the List](./FilteringTutorial.md#filtering-the-list) section. 
 
@@ -848,7 +860,7 @@ The title can be either a string or an element of your own.
 
 ## `sx`: CSS API
 
-The `<List>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<List>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name             | Description                                                   |
 |-----------------------|---------------------------------------------------------------|

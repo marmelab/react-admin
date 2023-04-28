@@ -5,7 +5,11 @@ title: "Translation"
 
 # Internationalization
 
-![Switching interface language](./img/translation.gif)
+<video controls autoplay muted loop>
+  <source src="./img/translation.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 The react-admin user interface uses English as the default language. But you can also display the UI and content in other languages, allow changing language at runtime, and even lazy-loading optional languages to avoid increasing the bundle size with all translations. 
 

@@ -11,7 +11,7 @@ The `<Show>` component handles the logic of the Show page:
 - it computes the default page title
 - it creates a `ShowContext` and a `RecordContext`,
 - it renders the page layout with the correct title and actions
-- it renders its child component (a show layout component like `<SimpleShowLayout>`) in a MUI `<Card>`
+- it renders its child component (a show layout component like `<SimpleShowLayout>`) in a Material UI `<Card>`
 
 ## Usage
 
@@ -56,6 +56,7 @@ That's enough to display the post show view:
 ## Props
 
 * [`actions`](#actions): override the actions toolbar with a custom component
+* [`aside`](#aside): aside element
 * `className`: passed to the root component
 * [`children`](#layout): the components that render the record fields
 * [`component`](#component): overrides the root component
@@ -151,6 +152,52 @@ export const PostShow = () => (
 );
 ```
 
+## `aside`
+
+You can pass an aside element to the `<Show>` component. It will be rendered on the right side of the page, below the actions toolbar.
+
+The aside component renders in the same `RecordContext` as the `Show` child component. That means you can display details of the current `record` in the aside component by calling `useRecordContext`:
+
+{% raw %}
+```jsx
+import {
+    Show,
+    SimpleShowLayout,
+    TextField,
+    DateField,
+    RichTextField,
+    useRecordContext
+} from 'react-admin';
+
+export const PostShow = () => (
+    <Show aside={<Aside />}>
+        <SimpleShowLayout>
+            <TextField source="title" />
+            <TextField source="teaser" />
+            <RichTextField source="body" />
+            <DateField label="Publication date" source="published_at" />
+        </SimpleShowLayout>
+    </Show>
+);
+
+const Aside = () => {
+    const record = useRecordContext();
+    return (
+        <div style={{ width: 200, margin: '1em' }}>
+            <Typography variant="h6">Post details</Typography>
+            {record && (
+                <Typography variant="body2">
+                    Creation date: {record.createdAt}
+                </Typography>
+            )}
+        </div>
+    );
+};
+```
+{% endraw %}
+
+**Tip**: Always test the record is defined before using it, as react-admin starts rendering the UI before the `dataProvider.getOne()` call is over.
+
 ## `queryOptions`
 
 `<Show>` accepts a `queryOptions` prop to pass options to the react-query client. 
@@ -214,7 +261,7 @@ The default `onError` function is:
 
 ## `component`
 
-By default, the Show view renders the main content area inside a MUI `<Card>`. The actual layout of the record fields depends on the Show Layout component you're using (`<SimpleShowLayout>`, `<TabbedShowLayout>`, or a custom layout component).
+By default, the Show view renders the main content area inside a Material UI `<Card>`. The actual layout of the record fields depends on the Show Layout component you're using (`<SimpleShowLayout>`, `<TabbedShowLayout>`, or a custom layout component).
 
 You can override the main area container by passing a `component` prop:
 
@@ -253,7 +300,7 @@ const PostShow = () => (
 
 ## `sx`: CSS API
 
-The `<Show>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<Show>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name        | Description                                                   |
 |------------------| ------------------------------------------------------------- |
@@ -279,7 +326,7 @@ const PostShow = () => (
 ```
 {% endraw %}
 
-To override the style of all instances of `<Show>` using the [MUI style overrides](https://mui.com/customization/theme-components/), use the `RaShow` key.
+To override the style of all instances of `<Show>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaShow` key.
 
 ## Loading State
 

@@ -68,7 +68,7 @@ const CustomMenuLive = () => (
 `<MenuLiveItemLink>` has two additional props compared to `<MenuItemLink>`:
 
 -   `resource`: Needed, The name of the concerned resource (can be different from the path in the `to` prop)
--   `badgeColor`: Optional, It's the MUI color used to display the color of the badge. The default is `alert` (not far from the red). It can also be `primary`, `secondary`, or any of the MUI colors available in the [MUI palette](https://material-ui.com/customization/palette/).
+-   `badgeColor`: Optional, It's the Material UI color used to display the color of the badge. The default is `alert` (not far from the red). It can also be `primary`, `secondary`, or any of the Material UI colors available in the [Material UI palette](https://material-ui.com/customization/palette/).
 
 The badge displays the total number of changed records since the last time the `<MenuItem>` opened. The badge value resets whenever the user opens the resource list page, and the `<MenuItem>` becomes active.
 

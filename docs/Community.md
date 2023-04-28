@@ -37,7 +37,7 @@ See the [Discord](#discord) section above.
 
 If your problem is related to a library used by react-admin, you should ask for help on the dependency's support channel:
 
-* MUI: [Documentation](https://mui.com/material-ui/getting-started/overview/), [Support](https://mui.com/material-ui/getting-started/support/)
+* Material UI: [Documentation](https://mui.com/material-ui/getting-started/overview/), [Support](https://mui.com/material-ui/getting-started/support/)
 * react-router: [Documentation](https://reactrouter.com/en/main), [Discord](https://rmx.as/discord)
 * react-query: [Documentation](https://tanstack.com/query/v3/docs/react/overview), [Discord](https://tlinz.com/discord)
 * react-hook-form: [Documentation](https://react-hook-form.com/get-started), [Discord](https://discord.gg/yYv7GZ8)

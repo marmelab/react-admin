@@ -7,7 +7,11 @@ title: "The CheckboxGroupInput Component"
 
 If you want to let the user choose multiple values among a list of possible values by showing them all, `<CheckboxGroupInput>` is the right component.
 
-![CheckboxGroupInput](./img/checkbox-group-input.gif)
+<video controls autoplay muted loop>
+  <source src="./img/checkbox-group-input.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 This input allows editing values that are arrays of scalar values, e.g. `[123, 456]`. 
 
@@ -54,7 +58,7 @@ The form value for the source must be an array of the selected values, e.g.
 | ----------------- | -------- | -------------------------- | ------- | ----------------------------------------------------------------- |
 | `choices`         | Required | `Object[]`                 | -       | List of choices                                                   |
 | `labelPlacement`  | Optional | `"bottom" `&#124;`"end"`&#124;`"start"`&#124;`"top" ` | `"end"` | The position of the checkbox label.    |
-| `options`         | Optional | `Object`                   | -       | Props to pass to the MUI `<CheckboxGroup>` component.             |
+| `options`         | Optional | `Object`                   | -       | Props to pass to the Material UI `<CheckboxGroup>` component.             |
 | `optionText`      | Optional | `string` &#124; `Function` | `name`  | Field name of record to display in the suggestion item or function which accepts the correct record as argument (`record => {string}`) |
 | `optionValue`     | Optional | `string`                   | `id`    | Field name of record containing the value to use as input value   |
 | `row`             | Optional | `boolean`                  | `true`  | Display group of elements in a compact row.                       |
@@ -129,7 +133,7 @@ By default, this inputs renders a checkbox and a label for each choice, with the
 
 ## `options`
 
-Use the `options` attribute if you want to override any of MUI's [MUI Checkbox documentation](https://mui.com/api/checkbox/) attributes:
+Use the `options` attribute if you want to override any of Material UI's [Material UI Checkbox documentation](https://mui.com/material-ui/api/checkbox/) attributes:
 
 {% raw %}
 ```jsx
@@ -220,13 +224,13 @@ By default, the checkboxes are displayed in a row. You can change that and let r
 
 ## `sx`: CSS API
 
-The `<CheckboxGroupInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<CheckboxGroupInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name                       | Description                                              |
 |---------------------------------|----------------------------------------------------------|
-| `& .RaCheckboxGroupInput-label` | Applied to the underlying MUI's `FormLabel` component    |
+| `& .RaCheckboxGroupInput-label` | Applied to the underlying Material UI's `FormLabel` component    |
 
-To override the style of all instances of `<CheckboxGroupInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaCheckboxGroupInput` key.
+To override the style of all instances of `<CheckboxGroupInput>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaCheckboxGroupInput` key.
 
 ## `translateChoice`
 
@@ -246,3 +250,17 @@ However, in some cases (e.g. inside a `<ReferenceArrayInput>`), you may not want
 ```jsx
 <CheckboxGroupInput source="roles" choices={choices} translateChoice={false}/>
 ```
+
+## Fetching Choices
+
+If you want to populate the `choices` attribute with a list of related records, you should decorate `<CheckboxGroupInput>` with [`<ReferenceArrayInput>`](./ReferenceArrayInput.md), and leave the `choices` empty:
+
+```jsx
+import { AutocompleteArrayInput, ReferenceArrayInput } from 'react-admin';
+
+<ReferenceArrayInput label="Tags" reference="tags" source="tags">
+    <CheckboxGroupInput />
+</ReferenceArrayInput>
+```
+
+Check [the `<ReferenceArrayInput>` documentation](./ReferenceArrayInput.md) for more details.

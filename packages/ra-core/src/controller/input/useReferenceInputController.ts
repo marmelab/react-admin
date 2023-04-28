@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useWatch } from 'react-hook-form';
 import { useGetList } from '../../dataProvider';
 import { FilterPayload, RaRecord, SortPayload } from '../../types';
@@ -106,7 +106,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
 
     // fetch current value
     const {
-        referenceRecord,
+        referenceRecord: currentReferenceRecord,
         refetch: refetchReference,
         error: referenceError,
         isLoading: referenceLoading,
@@ -119,6 +119,15 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
             meta,
         },
     });
+
+    // We need to delay the update of the referenceRecord and the finalData
+    // to the next React state update, because otherwise it can raise a warning
+    // with AutocompleteInput saying the current value is not in the list of choices
+    const [referenceRecord, setReferenceRecord] = useState(null);
+    useEffect(() => {
+        setReferenceRecord(currentReferenceRecord);
+    }, [currentReferenceRecord]);
+
     // add current value to possible sources
     let finalData: RecordType[], finalTotal: number;
     if (

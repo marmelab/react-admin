@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, InputAdornment } from '@mui/material';
 import { styled, SxProps } from '@mui/material/styles';
 import { useTimeout } from 'ra-core';
 
@@ -34,11 +34,15 @@ export const LoadingInput = ({
             disabled
             onChange={() => {}}
             InputProps={{
-                endAdornment: oneSecondHasPassed ? (
-                    <CircularProgress color="inherit" size={20} />
-                ) : (
-                    // use an adornment of the same size to avoid visual jumps
-                    <span style={{ width: 20 }}>&nbsp;</span>
+                endAdornment: (
+                    <InputAdornment position="end">
+                        {oneSecondHasPassed ? (
+                            <CircularProgress color="inherit" size={20} />
+                        ) : (
+                            // use an adornment of the same size to avoid visual jumps
+                            <span style={{ width: 20 }}>&nbsp;</span>
+                        )}
+                    </InputAdornment>
                 ),
             }}
         />

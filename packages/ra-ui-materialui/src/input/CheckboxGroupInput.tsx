@@ -82,7 +82,7 @@ import { LinearProgress } from '../layout';
  * @example
  * <CheckboxGroupInput source="tags" choices={choices} translateChoice={false}/>
  *
- * The object passed as `options` props is passed to the MUI <Checkbox> components
+ * The object passed as `options` props is passed to the Material UI <Checkbox> components
  */
 export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => {
     const {

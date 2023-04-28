@@ -7,11 +7,15 @@ title: "TabbedForm"
 
 `<TabbedForm>` creates a `<form>` to edit a record, and renders inputs grouped by tab. The tabs are set by using `<TabbedForm.Tab>` components. It is useful for forms with a lot of inputs, to reduce the time taken to change a subset of the fields.
 
-![tabbed form](./img/tabbed-form.gif)
+<video controls autoplay muted loop>
+  <source src="./img/tabbed-form.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 ## Usage
 
-`<TabbedForm>` reads the `record` from the `RecordContext`, uses it to initialize the defaultValues of a `<Form>`, renders its children in a MUI `<Stack>`, and renders a toolbar with a `<SaveButton>` that calls the `save` callback prepared by the edit or the create controller when pressed. 
+`<TabbedForm>` reads the `record` from the `RecordContext`, uses it to initialize the defaultValues of a `<Form>`, renders its children in a Material UI `<Stack>`, and renders a toolbar with a `<SaveButton>` that calls the `save` callback prepared by the edit or the create controller when pressed. 
 
 `<TabbedForm>` is often used as child of `<Create>` or `<Edit>`. It accepts `<TabbedForm.Tab>` elements as children. It relies on [react-hook-form](https://react-hook-form.com/) for form handling. It requires no prop by default.
 
@@ -85,9 +89,16 @@ Here are all the props you can set on the `<TabbedForm>` component:
 
 Additional props are passed to [the `useForm` hook](https://react-hook-form.com/api/useform).
 
+**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/api/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+
+```js
+const { isDirty } = useFormState(); // ✅
+const formState = useFormState(); // ❌ should deconstruct the formState      
+```
+
 ## `component`
 
-`<TabbedForm>` renders a MUI `<CardContent>` by default. You replace it by any component you want as wrapper, just pass it as the `component` prop.
+`<TabbedForm>` renders a Material UI `<CardContent>` by default. You replace it by any component you want as wrapper, just pass it as the `component` prop.
 
 ```jsx
 const PostCreate = () => (
@@ -274,7 +285,7 @@ export const PostEdit = () => (
 
 ## `tabs`
 
-By default, `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin component, to render the tab headers. You can pass a custom component as the `tabs` prop to tweak th UX of these headers. Besides, props from `<TabbedFormTabs>` are passed down to MUI's `<Tabs>` component.
+By default, `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin component, to render the tab headers. You can pass a custom component as the `tabs` prop to tweak th UX of these headers. Besides, props from `<TabbedFormTabs>` are passed down to Material UI's `<Tabs>` component.
 
 The following example shows how to make use of scrollable `<Tabs>`. Pass `variant="scrollable"` and `scrollButtons="auto"` props to `<TabbedFormTabs>` and use it in the `tabs` prop from `<TabbedForm>`.
 
@@ -295,7 +306,7 @@ export const PostEdit = () => (
 );
 ```
 
-**Tip**: MUI only adds the scroll buttons if there isn't enough space to display all the tabs. That can only happen if the Tabs containers have a fixed width.
+**Tip**: Material UI only adds the scroll buttons if there isn't enough space to display all the tabs. That can only happen if the Tabs containers have a fixed width.
 The solution here is to set a max width on one of the following components:
 
 * the `<Edit>` or `<Create>`
@@ -479,7 +490,7 @@ export const TagEdit = () => (
 - `sx`: custom styles to apply to the tab
 - `children`: the content of the tab (usually a list of inputs)
 
-`<TabbedForm.Tab>` renders its children in a MUI `<Stack>` component, i.e. one child per row.
+`<TabbedForm.Tab>` renders its children in a Material UI `<Stack>` component, i.e. one child per row.
 
 The `sx` prop allows to style the content of the tab, e.g. to limit its width:
 

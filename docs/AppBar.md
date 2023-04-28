@@ -8,7 +8,7 @@ title: "The AppBar Component"
 The default react-admin layout renders a horizontal app bar at the top, which is rendered by the `<AppBar>` component.
 
 <video controls autoplay muted loop width="100%">
-  <source src="./img/AppBar.webm" type="video/webm">
+  <source src="./img/AppBar.webm" type="video/webm" />
   Your browser does not support the video tag.
 </video>
 
@@ -22,7 +22,7 @@ By default, the `<AppBar>` component displays:
 
 You can customize the App Bar by creating a custom component based on `<AppBar>`, with different props.
 
-**Tip**: Don't mix react-admin's `<AppBar>` component with [MUI's `<AppBar>` component](https://mui.com/material-ui/api/app-bar/). The first one leverages the second but adds some react-admin-specific features.
+**Tip**: Don't mix react-admin's `<AppBar>` component with [Material UI's `<AppBar>` component](https://mui.com/material-ui/api/app-bar/). The first one leverages the second but adds some react-admin-specific features.
 
 ## Usage
 
@@ -70,7 +70,7 @@ const App = () => (
 | `toolbar`           | Optional | `ReactElement` | -        | The content of the toolbar                          |
 | `userMenu`          | Optional | `ReactElement` | -        | The content of the dropdown user menu               |
 
-Additional props are passed to [the underlying MUI `<AppBar>` element](https://mui.com/material-ui/api/app-bar/).
+Additional props are passed to [the underlying Material UI `<AppBar>` element](https://mui.com/material-ui/api/app-bar/).
 
 ## `children`
 
@@ -121,7 +121,7 @@ const MyAppBar = () => (
 
 ## `color`
 
-React-admin's `<AppBar>` renders an MUI `<AppBar>`, which supports a `color` prop to set the app bar color depending on the theme. By default, the app bar color is set to the `secondary` theme color.
+React-admin's `<AppBar>` renders an Material UI `<AppBar>`, which supports a `color` prop to set the app bar color depending on the theme. By default, the app bar color is set to the `secondary` theme color.
 
 This means you can set the app bar color to 'default', 'inherit', 'primary', 'secondary', 'transparent', or any string.
 
@@ -162,7 +162,7 @@ This property accepts the following subclasses:
 | `& .RaAppBar-menuButton` | Applied to the hamburger icon |
 | `& .RaAppBar-title`      | Applied to the title portal   |
 
-To override the style of `<AppBar>` using the [MUI style overrides](https://mui.com/customization/theme-components/), use the `RaAppBar` key.
+To override the style of `<AppBar>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaAppBar` key.
 
 ## `toolbar`
 
@@ -216,7 +216,7 @@ export const MyAppBar = () => (
 If your app uses [authentication](./Authentication.md), the `<AppBar>` component displays a button to display the user menu on the right side. By default, the user menu only contains a logout button.
 
 <video controls autoplay muted loop width="100%">
-  <source src="./img/AppBar-user-menu.webm" type="video/webm">
+  <source src="./img/AppBar-user-menu.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 
@@ -226,21 +226,29 @@ The content of the user menu depends on the return value of `authProvider.getIde
 You can customize the user menu by passing a `userMenu` prop to the `<AppBar>` component.
 
 ```jsx
+import * as React from 'react';
 import { AppBar, UserMenu, useUserMenu } from 'react-admin';
 import { MenuItem, ListItemIcon, ListItemText } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 
-const SettingsMenuItem = () => {
+// It's important to pass the ref to allow Material UI to manage the keyboard navigation
+const SettingsMenuItem = React.forwardRef((props, ref) => {
+    // We are not using MenuItemLink so we retrieve the onClose function from the UserContext
     const { onClose } = useUserMenu();
     return (
-        <MenuItem onClick={onClose}>
+        <MenuItem
+            onClick={onClose}
+            ref={ref}
+            // It's important to pass the props to allow Material UI to manage the keyboard navigation
+            {...props}
+        >
             <ListItemIcon>
                 <SettingsIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText>Customize</ListItemText>
         </MenuItem>
     );
-};
+});
 
 const MyAppBar = () => (
     <AppBar
@@ -384,7 +392,7 @@ export const MyAppbar = () => (
 
 ## Building Your Own AppBar
 
-If react-admin's `<AppBar>` component doesn't meet your needs, you can build your own component using MUI's `<AppBar>`. Here is an example:
+If react-admin's `<AppBar>` component doesn't meet your needs, you can build your own component using Material UI's `<AppBar>`. Here is an example:
 
 ```jsx
 // in src/MyAppBar.js
@@ -420,7 +428,7 @@ export const MyLayout = (props) => (
 By default, users can override the page title [in configurable mode](./Features.md#configurable-ui).
 
 <video controls autoplay muted loop width="100%">
-  <source src="./img/TitleConfigurable.webm" type="video/webm">
+  <source src="./img/TitleConfigurable.webm" type="video/webm"/>
   Your browser does not support the video tag.
 </video>
 

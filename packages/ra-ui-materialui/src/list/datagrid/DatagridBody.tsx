@@ -73,7 +73,12 @@ DatagridBody.propTypes = {
     onToggleItem: PropTypes.func,
     resource: PropTypes.string,
     row: PropTypes.element,
-    rowClick: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+    // @ts-ignore
+    rowClick: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.func,
+        PropTypes.bool,
+    ]),
     rowStyle: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     styles: PropTypes.object,
@@ -111,13 +116,13 @@ export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
     isRowSelectable?: (record: RaRecord) => boolean;
 }
 
-// trick MUI Table into thinking this is one of the child type it supports
+// trick Material UI Table into thinking this is one of the child type it supports
 // @ts-ignore
 DatagridBody.muiName = 'TableBody';
 
 export const PureDatagridBody = memo(DatagridBody);
 
-// trick MUI Table into thinking this is one of the child type it supports
+// trick Material UI Table into thinking this is one of the child type it supports
 // @ts-ignore
 PureDatagridBody.muiName = 'TableBody';
 // @ts-ignore

@@ -11,7 +11,7 @@ The `<SimpleForm>` creates a `<form>` to edit a record, and renders its children
 
 ## Usage
 
-`<SimpleForm>` reads the `record` from the `RecordContext`, uses it to initialize the defaultValues of a `<Form>`, renders its children in a MUI `<Stack>`, and renders a toolbar with a `<SaveButton>` that calls the `save` callback prepared by the edit or the create controller when pressed. 
+`<SimpleForm>` reads the `record` from the `RecordContext`, uses it to initialize the defaultValues of a `<Form>`, renders its children in a Material UI `<Stack>`, and renders a toolbar with a `<SaveButton>` that calls the `save` callback prepared by the edit or the create controller when pressed. 
 
 `<SimpleForm>` is often used as child of `<Create>` or `<Edit>`. It accepts Input and Field components as children. It relies on [react-hook-form](https://react-hook-form.com/) for form handling. It requires no prop by default.
 
@@ -46,9 +46,16 @@ Here are all the props you can set on the `<SimpleForm>` component:
 
 Additional props are passed to [the `useForm` hook](https://react-hook-form.com/api/useform).
 
+**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/api/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+
+```js
+const { isDirty } = useFormState(); // ✅
+const formState = useFormState(); // ❌ should deconstruct the formState      
+```
+
 ## `component`
 
-`<SimpleForm>` renders a MUI `<CardContent>` by default. You replace it by any component you want as wrapper, just pass it as the `component` prop.
+`<SimpleForm>` renders a Material UI `<CardContent>` by default. You replace it by any component you want as wrapper, just pass it as the `component` prop.
 
 ```jsx
 const PostCreate = () => (
@@ -497,7 +504,11 @@ export const UserCreate = () => {
 
 You can let end users customize the fields displayed in the `<SimpleForm>` by using the `<SimpleFormConfigurable>` component instead.
 
-![SimpleFormConfigurable](./img/SimpleFormConfigurable.gif)
+<video controls autoplay muted loop>
+  <source src="./img/SimpleFormConfigurable.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 ```diff
 import {

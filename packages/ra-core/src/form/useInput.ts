@@ -17,6 +17,7 @@ import { useFormGroupContext } from './useFormGroupContext';
 import { useGetValidationErrorMessage } from './useGetValidationErrorMessage';
 import { useFormGroups } from './useFormGroups';
 import { useApplyInputDefaultValues } from './useApplyInputDefaultValues';
+import { useEvent } from '../util';
 
 // replace null or undefined values by empty string to avoid controlled/uncontrolled input warning
 const defaultFormat = (value: any) => (value == null ? '' : value);
@@ -32,8 +33,8 @@ export const useInput = <ValueType = any>(
         id,
         isRequired: isRequiredOption,
         name,
-        onBlur,
-        onChange,
+        onBlur: initialOnBlur,
+        onChange: initialOnChange,
         parse = defaultParse,
         source,
         validate,
@@ -91,27 +92,29 @@ export const useInput = <ValueType = any>(
     // no value for the input.
     useApplyInputDefaultValues(props);
 
+    const onBlur = useEvent((...event: any[]) => {
+        if (initialOnBlur) {
+            initialOnBlur(...event);
+        }
+        controllerField.onBlur();
+    });
+
+    const onChange = useEvent((...event: any[]) => {
+        if (initialOnChange) {
+            initialOnChange(...event);
+        }
+        const eventOrValue = (props.type === 'checkbox' &&
+        event[0]?.target?.value === 'on'
+            ? event[0].target.checked
+            : event[0]?.target?.value ?? event[0]) as any;
+        controllerField.onChange(parse ? parse(eventOrValue) : eventOrValue);
+    });
+
     const field = {
         ...controllerField,
         value: format ? format(controllerField.value) : controllerField.value,
-        onBlur: (...event: any[]) => {
-            if (onBlur) {
-                onBlur(...event);
-            }
-            controllerField.onBlur();
-        },
-        onChange: (...event: any[]) => {
-            if (onChange) {
-                onChange(...event);
-            }
-            const eventOrValue = (props.type === 'checkbox' &&
-            event[0]?.target?.value === 'on'
-                ? event[0].target.checked
-                : event[0]?.target?.value ?? event[0]) as any;
-            controllerField.onChange(
-                parse ? parse(eventOrValue) : eventOrValue
-            );
-        },
+        onBlur,
+        onChange,
     };
 
     return {

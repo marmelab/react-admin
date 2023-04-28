@@ -312,7 +312,12 @@ Datagrid.propTypes = {
     onSelect: PropTypes.func,
     onToggleItem: PropTypes.func,
     resource: PropTypes.string,
-    rowClick: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+    // @ts-ignore
+    rowClick: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.func,
+        PropTypes.bool,
+    ]),
     rowStyle: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     setSort: PropTypes.func,

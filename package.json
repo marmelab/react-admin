@@ -87,5 +87,15 @@
         "minimist": "^1.2.6",
         "ejs": "^3.1.7"
     },
-    "packageManager": "yarn@3.1.1"
+    "packageManager": "yarn@3.1.1",
+    "changelog": {
+        "repo": "marmelab/react-admin",
+        "labels": {
+            "breaking change": "Breaking Changes",
+            "feature": "New Features",
+            "fix": "Fixes",
+            "Documentation": "Documentation",
+            "TypeScript": "TypeScript"
+        }
+    }
 }

@@ -9,7 +9,11 @@ This 30 minutes tutorial will expose how to create a new admin app based on an e
 
 Here is an overview of the result:
 
-[![React-Admin tutorial overview](./img/tutorial_overview.gif)](./img/tutorial_overview.gif)
+<video controls autoplay muted loop>
+  <source src="./img/tutorial_overview.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 ## Setting Up
 
@@ -115,7 +119,7 @@ Lastly, add the `Roboto` font to the `index.html` file:
 </html>
 ```
 
-**Tip:** You can also install the `Roboto` font locally by following the instructions from the [MUI starter guide](https://mui.com/material-ui/getting-started/installation/#roboto-font).
+**Tip:** You can also install the `Roboto` font locally by following the instructions from the [Material UI starter guide](https://mui.com/material-ui/getting-started/installation/#roboto-font).
 
 The `<App>` component renders an `<Admin>` component, which is the root component of a react-admin application. This component expects a `dataProvider` prop - a function capable of fetching data from an API. Since there is no standard for data exchanges between computers, you will probably have to write a custom provider to connect react-admin to your own APIs - but we'll dive into Data Providers later. For now, let's take advantage of the `ra-data-json-server` data provider, which speaks the same REST dialect as JSONPlaceholder.
 
@@ -254,7 +258,7 @@ export const UserList = () => (
 );
 ```
 
-`<SimpleList>` uses [MUI's `<List>` and `<ListItem>` components](https://mui.com/components/lists), and expects functions as `primaryText`, `secondaryText`, and `tertiaryText` props.
+`<SimpleList>` uses [Material UI's `<List>` and `<ListItem>` components](https://mui.com/material-ui/react-list/), and expects functions as `primaryText`, `secondaryText`, and `tertiaryText` props.
 
 Refresh the page, and now the list displays in a different way:
 
@@ -266,11 +270,15 @@ React-admin offers a large library of components you can pick from to build the 
 
 The react-admin layout is already responsive. Try to resize your browser to see how the sidebar switches to a drawer on smaller screens. Besides, the `<SimpleList>` component is a really good fit for mobile devices. 
 
-[![Mobile user list](./img/tutorial_mobile_user_list.gif)](./img/tutorial_mobile_user_list.gif)
+<video controls autoplay muted loop>
+  <source src="./img/tutorial_mobile_user_list.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 But on desktop, `<SimpleList>` takes too much space for a low information density. So let's modify the `<UserList>` component to use the `<Datagrid>` component on desktop, and the `<SimpleList>` component on mobile. 
 
-To do so, we'll use [the `useMediaQuery` hook](https://mui.com/material-ui/react-use-media-query/#main-content) from MUI:
+To do so, we'll use [the `useMediaQuery` hook](https://mui.com/material-ui/react-use-media-query/) from Material UI:
 
 ```jsx
 // in src/users.tsx
@@ -306,7 +314,11 @@ export const UserList = () => {
 
 This works exactly the way you expect.
 
-[![Responsive List](./img/tutorial_user_list_responsive.gif)](./img/tutorial_user_list_responsive.gif)
+<video controls autoplay muted loop>
+  <source src="./img/tutorial_user_list_responsive.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 This shows that the `<List>` child can be anything you want - even a custom React component with its own logic. It also shows that react-admin is a good fit for responsive applications - but it's your job to use `useMediaQuery()` in pages.
 
@@ -406,7 +418,7 @@ That means react-admin never blocks you: if one react-admin component doesn't pe
 
 The `<MyUrlField>` component is a perfect opportunity to illustrate how to customize styles.
 
-React-admin relies on [MUI](https://mui.com/), a set of React components modeled after Google's [Material Design UI Guidelines](https://material.io/). All MUI components (and most react-admin components) support a prop called `sx`, which allows custom inline styles. Let's take advantage of the `sx` prop to remove the underline from the link and add an icon:
+React-admin relies on [Material UI](https://mui.com/material-ui/getting-started/overview/), a set of React components modeled after Google's [Material Design Guidelines](https://material.io/). All Material UI components (and most react-admin components) support a prop called `sx`, which allows custom inline styles. Let's take advantage of the `sx` prop to remove the underline from the link and add an icon:
 
 {% raw %}
 ```jsx
@@ -433,9 +445,9 @@ export default MyUrlField;
 
 The `sx` prop is like React's `style` prop, except it supports theming, media queries, shorthand properties, and much more. It's a CSS-in-JS solution, so you'll have to use the JS variants of the CSS property names (e.g. `textDecoration` instead of `text-decoration`). 
 
-**Tip**: There is much more to MUI styles than what this tutorial covers. Read the [MUI documentation](https://mui.com/system/basics/) to learn more about theming, vendor prefixes, responsive utilities, etc.
+**Tip**: There is much more to Material UI styles than what this tutorial covers. Read the [Material UI documentation](https://mui.com/system/basics/) to learn more about theming, vendor prefixes, responsive utilities, etc.
 
-**Tip**: MUI supports other CSS-in-JS solutions, including [Styled components](https://mui.com/system/styled/).
+**Tip**: Material UI supports other CSS-in-JS solutions, including [Styled components](https://mui.com/system/styled/).
 
 ## Handling Relationships
 
@@ -570,7 +582,11 @@ const App = () => (
 );
 ```
 
-[![Post Edit Guesser](./img/tutorial_edit_guesser.gif)](./img/tutorial_edit_guesser.gif)
+<video controls autoplay muted loop>
+  <source src="./img/tutorial_edit_guesser.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 Users can display the edit page just by clicking on the Edit button. The form is already functional; it issues `PUT` requests to the REST API upon submission. And thanks to the `recordRepresentation` of the "users" Resource, the user name is displayed for the post author.
 
@@ -708,7 +724,11 @@ const App = () => (
 );
 ```
 
-[![Post Creation](./img/tutorial_post_create.gif)](./img/tutorial_post_create.gif)
+<video controls autoplay muted loop>
+  <source src="./img/tutorial_post_create.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 React-admin automatically adds a "create" button on top of the posts list to give access to the `create` component. And the creation form works ; it issues a `POST` request to the REST API upon submission.
 
@@ -722,7 +742,11 @@ That's because react-admin uses *optimistic updates*. When a user edits a record
 
 But there is an additional benefit: it also allows the "Undo" feature. Undo is already functional in the admin at that point. Try editing a record, then hit the "Undo" link in the black confirmation box before it slides out. You'll see that the app does not send the `UPDATE` query to the API, and displays the non-modified data.
 
-[![Undo Post Editing](./img/tutorial_post_edit_undo.gif)](./img/tutorial_post_edit_undo.gif)
+<video controls autoplay muted loop>
+  <source src="./img/tutorial_post_edit_undo.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 Even though updates appear immediately due to Optimistic Rendering, React-admin only sends them to the server after a short delay (about 5 seconds). During this delay, the user can undo the action, and react-admin will never send the update. 
 
@@ -783,7 +807,11 @@ export const PostList = () => (
 
 The first filter, 'q', takes advantage of a full-text functionality offered by JSONPlaceholder. It is `alwaysOn`, so it always appears on the screen. Users can add the second filter, `userId`, thanks to the "add filter" button, located on the top of the list. As it's a `<ReferenceInput>`, it's already populated with possible users. 
 
-[![posts search engine](./img/filters.gif)](./img/filters.gif)
+<video controls autoplay muted loop>
+  <source src="./img/filters.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 Filters are "search-as-you-type", meaning that when the user enters new values in the filter form, the list refreshes (via an API request) immediately.
 
@@ -806,7 +834,11 @@ const App = () => (
 );
 ```
 
-[![custom menu icons](./img/custom-menu.gif)](./img/custom-menu.gif)
+<video controls autoplay muted loop>
+  <source src="./img/custom-menu.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 ## Using a Custom Home Page
 
@@ -900,7 +932,11 @@ const App = () => (
 
 Once the app reloads, it's now behind a login form that accepts everyone:
 
-[![Login form](./img/login.gif)](./img/login.gif)
+<video controls autoplay muted loop>
+  <source src="./img/login.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 ## Connecting To A Real API
 

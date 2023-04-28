@@ -86,7 +86,7 @@ import { LoadingInput } from './LoadingInput';
  * @example
  * <SelectInput source="gender" choices={choices} translateChoice={false}/>
  *
- * The object passed as `options` props is passed to the MUI <Select> component
+ * The object passed as `options` props is passed to the Material UI <Select> component
  *
  * You can disable some choices by providing a `disableValue` field which name is `disabled` by default
  * @example

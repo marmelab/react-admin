@@ -449,7 +449,7 @@ export const PostList = () => (
 
 ### `<Datagrid>`
 
-Alternative to react-admin's <Datagrid> that adds RBAC control to columns
+Alternative to react-admin's `<Datagrid>` that adds RBAC control to columns
 
 To see a column, the user must have the permission to read the resource column:
 

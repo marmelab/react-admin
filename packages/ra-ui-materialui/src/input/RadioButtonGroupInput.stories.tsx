@@ -60,6 +60,12 @@ export const Invalid = () => (
     </Wrapper>
 );
 
+export const IsLoading = () => (
+    <Wrapper>
+        <RadioButtonGroupInput source="category" isLoading />
+    </Wrapper>
+);
+
 const dataProvider = testDataProvider({
     getList: () => Promise.resolve({ data: choices, total: choices.length }),
     getMany: (resource, params) =>

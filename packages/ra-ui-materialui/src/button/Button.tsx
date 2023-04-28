@@ -7,7 +7,6 @@ import {
     Tooltip,
     IconButton,
     useMediaQuery,
-    PropTypes as MuiPropTypes,
     Theme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -94,7 +93,6 @@ interface Props {
     alignIcon?: 'left' | 'right';
     children?: ReactElement;
     className?: string;
-    color?: MuiPropTypes.Color;
     component?: ElementType;
     to?: string | LocationDescriptor;
     disabled?: boolean;

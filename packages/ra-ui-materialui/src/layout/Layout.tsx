@@ -136,7 +136,7 @@ const StyledLayout = styled('div', {
         flexBasis: 0,
         padding: 0,
         [theme.breakpoints.up('xs')]: {
-            paddingRight: theme.spacing(2),
+            paddingRight: theme.spacing(1),
             paddingLeft: theme.spacing(1),
         },
     },

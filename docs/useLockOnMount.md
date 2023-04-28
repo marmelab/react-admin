@@ -9,7 +9,11 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 `useLockOnMount` calls `dataProvider.lock()` on mount and `dataProvider.unlock()` on unmount to lock and unlock the record. It relies on `authProvider.getIdentity()` to get the identity of the current user. It guesses the current `resource` and `recordId` from the context (or the route) if not provided.
 
-![Locking a record](./img/useLockOnMount.gif)
+<video controls autoplay muted loop>
+  <source src="./img/useLockOnMount.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 ## Usage
 

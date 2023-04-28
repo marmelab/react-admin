@@ -136,6 +136,7 @@ title: "Index"
 * [`<ReferenceManyToManyField>`](./ReferenceManyToManyField.md)<img class="icon" src="./img/premium.svg" />
 * [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md)<img class="icon" src="./img/premium.svg" />
 * [`<ReferenceOneField>`](./ReferenceOneField.md)
+* [`<ReferenceOneInput>`](./ReferenceOneInput.md)
 * [`<Resource>`](./Resource.md)
 * [`<RichTextField>`](./RichTextField.md)
 * [`<RichTextInput>`](./RichTextInput.md)

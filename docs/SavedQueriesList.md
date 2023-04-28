@@ -5,7 +5,11 @@ title: "The SavedQueriesList Component"
 
 # `<SavedQueriesList>`
 
-![Filter Sidebar With SavedQueriesList](./img/SavedQueriesList.gif)
+<video controls autoplay muted loop>
+  <source src="./img/SavedQueriesList.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 `<SavedQueriesList>` renders a list of filters saved by the end user (and kept in [the Store](./Store.md)). It is a complement to `<FilterList>` sections for [the filter sidebar](./FilteringTutorial.md#the-filterlist-sidebar).
 
