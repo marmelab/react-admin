@@ -255,7 +255,7 @@ const generateReadme = (
     const dataProviderReadme = getTemplateReadme(state.dataProvider);
     const authProviderReadme = getTemplateReadme(state.authProvider);
 
-    let readme = replaceTokens(defaultReadme, state);
+    let readme = `${defaultReadme}`;
 
     if (dataProviderReadme) {
         readme += `\n${dataProviderReadme}`;
@@ -266,7 +266,10 @@ const generateReadme = (
     }
 
     if (readme) {
-        fs.writeFileSync(path.join(projectDirectory, 'README.md'), readme);
+        fs.writeFileSync(
+            path.join(projectDirectory, 'README.md'),
+            replaceTokens(`${readme}\n`, state)
+        );
     }
 };
 
@@ -288,9 +291,32 @@ const getTemplateReadme = (template: string) => {
 };
 
 const replaceTokens = (content: string, state: ProjectConfiguration) => {
+    let installCommand;
+    let devCommand;
+    let buildCommand;
+
+    switch (state.installer) {
+        case 'npm':
+            installCommand = 'npm install';
+            devCommand = 'npm run dev';
+            buildCommand = 'npm run build';
+            break;
+        case 'yarn':
+            installCommand = 'yarn';
+            devCommand = 'yarn dev';
+            buildCommand = 'yarn build';
+            break;
+        default:
+            installCommand = 'npm install\n# or\nyarn install';
+            devCommand = 'npm run dev\n# or\nyarn dev';
+            buildCommand = 'npm run build\n# or\nyarn build';
+    }
+
     return content
         .replace(`{{name}}`, state.name)
-        .replace(`{{pkgManager}}`, state.installer);
+        .replace(`{{installCommand}}`, installCommand)
+        .replace(`{{devCommand}}`, devCommand)
+        .replace(`{{buildCommand}}`, buildCommand);
 };
 
 const replaceTokensInFile = (filePath: string, state: ProjectConfiguration) => {

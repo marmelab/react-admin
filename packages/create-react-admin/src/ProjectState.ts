@@ -21,5 +21,5 @@ export const InitialProjectConfiguration: ProjectConfiguration = {
     dataProvider: '',
     authProvider: '',
     resources: [],
-    installer: 'npm',
+    installer: '',
 };

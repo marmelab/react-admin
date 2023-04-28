@@ -42,26 +42,26 @@ const stepReducer = (
                 ...state,
                 step:
                     state.dataProvider === 'ra-data-fakerest'
-                        ? 'generate'
+                        ? 'install'
                         : 'resources',
                 authProvider: action.value,
             };
         case 'resources':
             return {
                 ...state,
-                step: 'generate',
-                resources: action.value,
-            };
-        case 'generate':
-            return {
-                ...state,
                 step: 'install',
+                resources: action.value,
             };
         case 'install':
             return {
                 ...state,
                 installer: action.value,
-                step: action.value ? 'run-install' : 'finish',
+                step: 'generate',
+            };
+        case 'generate':
+            return {
+                ...state,
+                step: state.installer ? 'run-install' : 'finish',
             };
         case 'run-install':
             return {
@@ -98,15 +98,15 @@ export default function App({ name = 'my-admin' }: Props) {
     if (state.step === 'resources') {
         return <StepResources onSubmit={handleSubmit} />;
     }
+    if (state.step === 'install') {
+        return <StepInstall onSubmit={handleSubmit} />;
+    }
     if (state.step === 'generate') {
         generateProject(state).then(messages => {
             helpMessages.current = messages;
             dispatch({});
         });
         return <Text>Generating your application...</Text>;
-    }
-    if (state.step === 'install') {
-        return <StepInstall onSubmit={handleSubmit} />;
     }
     if (state.step === 'run-install') {
         installDeps(state).then(() => {
@@ -125,16 +125,33 @@ export default function App({ name = 'my-admin' }: Props) {
             <Text>
                 To start working, run <Text bold>cd {state.name}</Text>.
             </Text>
-            <Text>
-                Start the app in development mode by running{' '}
-                <Text bold>
-                    {state.installer === 'npm' ? 'npm run' : 'yarn'} dev
+            {state.installer ? (
+                <Text>
+                    Start the app in development mode by running{' '}
+                    <Text bold>
+                        {state.installer === 'npm' ? 'npm run' : 'yarn'} dev
+                    </Text>
+                    .
                 </Text>
-                .
-            </Text>
+            ) : (
+                <Box>
+                    <Box>
+                        <Text>
+                            Install the dependencies using your favorite package
+                            manager.
+                        </Text>
+                    </Box>
+                    <Box>
+                        <Text>
+                            Run the <Text bold>dev</Text> command to start the
+                            app.
+                        </Text>
+                    </Box>
+                </Box>
+            )}
             <Box marginBottom={1}>
-                {helpMessages.current.map(line => (
-                    <Text key={line}>{line}</Text>
+                {helpMessages.current.map((line, index) => (
+                    <Text key={index}>{line}</Text>
                 ))}
             </Box>
         </>

@@ -5,7 +5,7 @@
 Install the application dependencies by running:
 
 ```sh
-{{pkgManager}} install
+{{installCommand}}
 ```
 
 ## Development
@@ -13,7 +13,7 @@ Install the application dependencies by running:
 Start the application in development mode by running:
 
 ```sh
-{{pkgManager}} run dev
+{{devCommand}}
 ```
 
 ## Production
@@ -21,5 +21,5 @@ Start the application in development mode by running:
 Build the application in production mode by running:
 
 ```sh
-{{pkgManager}} run build
+{{buildCommand}}
 ```
