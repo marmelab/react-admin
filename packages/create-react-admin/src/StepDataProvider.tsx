@@ -15,19 +15,18 @@ const SupportedDataProviders: ChoiceType[] = [
         label: 'JSON Server',
         value: 'ra-data-json-server',
         description:
-            'A data provider based on a JSON Server API (https://github.com/typicode/json-server)',
+            'A data provider based on the JSON Server API (https://github.com/typicode/json-server)',
     },
     {
         label: 'Simple REST',
         value: 'ra-data-simple-rest',
         description:
-            'A Simple REST data drovider (https://github.com/marmelab/react-admin/tree/master/packages/ra-data-simple-rest)',
+            'A Simple REST data provider (https://github.com/marmelab/react-admin/tree/master/packages/ra-data-simple-rest)',
     },
     {
         label: 'None',
         value: 'none',
-        description:
-            "I'll configure the data provider myself.",
+        description: "I'll configure the data provider myself.",
     },
 ];
 
