@@ -127,7 +127,10 @@ export default function App({ name = 'my-admin' }: Props) {
             </Text>
             <Text>
                 Start the app in development mode by running{' '}
-                <Text bold>npm dev</Text>.
+                <Text bold>
+                    {state.installer === 'npm' ? 'npm run' : 'yarn'} dev
+                </Text>
+                .
             </Text>
             <Box marginBottom={1}>
                 {helpMessages.current.map(line => (
