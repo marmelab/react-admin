@@ -1,5 +1,21 @@
 # Changelog
 
+## v4.10.0
+
+* Add `create-react-admin` installer ([#8833](https://github.com/marmelab/react-admin/pull/8833)) ([djhi](https://github.com/djhi))
+* Add `<InfiniteList>` and `<InfinitePagination>` components ([#8781](https://github.com/marmelab/react-admin/pull/8781)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to change the sort, filter and selection of `<ArrayField>` ([#8802](https://github.com/marmelab/react-admin/pull/8802)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to configure the remove icon of `<FileInputPreview>` ([#8756](https://github.com/marmelab/react-admin/pull/8756)) ([PennyJeans](https://github.com/PennyJeans))
+* Fix `<Datagrid>` does not apply `className` to its root element (minor BC) ([#8804](https://github.com/marmelab/react-admin/pull/8804)) ([slax57](https://github.com/slax57))
+* Fix `useHandleCallback` sometimes causes infinite redirection loop ([#8861](https://github.com/marmelab/react-admin/pull/8861)) ([djhi](https://github.com/djhi))
+* Fix `<AppBar alwaysOn>` hides sidebar menu on scroll ([#8856](https://github.com/marmelab/react-admin/pull/8856)) ([slax57](https://github.com/slax57))
+* Fix `<SimpleFormIterator>` new item's fields default empty string instead of null ([#8792](https://github.com/marmelab/react-admin/pull/8792)) ([kriskw1999](https://github.com/kriskw1999))
+* [Doc] Fix reference to Material UI ([#8857](https://github.com/marmelab/react-admin/pull/8857)) ([oliviertassinari](https://github.com/oliviertassinari))
+* [Doc] Fix Show documentation misses the `aside` prop ([#8855](https://github.com/marmelab/react-admin/pull/8855)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Convert GIF files to WebM ([#8767](https://github.com/marmelab/react-admin/pull/8767)) ([slax57](https://github.com/slax57))
+* [TypeScript] Add some utilities to improve generics ([#8815](https://github.com/marmelab/react-admin/pull/8815)) ([IAmVisco](https://github.com/IAmVisco))
+* [TypeScript] Improve `useRedirect` and `useCreatePath` types ([#8811](https://github.com/marmelab/react-admin/pull/8811)) ([djhi](https://github.com/djhi))
+
 ## v4.9.4
 
 * Fix GraphQL data provider when using different a custom credential type ([#8847](https://github.com/marmelab/react-admin/pull/8847)) ([@rlucia](https://github.com/rlucia))
