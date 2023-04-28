@@ -25,7 +25,7 @@ export const StepAuthProvider = ({
     return (
         <Stack>
             <Text>
-                Select the auth provider you want to use and validate with
+                Select the auth provider you want to use, and validate with
                 Enter:
             </Text>
             <SelectInput

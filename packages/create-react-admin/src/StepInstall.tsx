@@ -6,15 +6,15 @@ import { Stack } from './Stack.js';
 
 const choices: ChoiceType[] = [
     {
-        label: 'Install dependencies with npm',
+        label: 'Using npm',
         value: 'npm',
     },
     {
-        label: 'Install dependencies with yarn',
+        label: 'Using yarn',
         value: 'yarn',
     },
     {
-        label: "Don't install dependencies",
+        label: "Don't install dependencies, I'll do it myself.",
         value: '',
     },
 ];
@@ -29,7 +29,7 @@ export const StepInstall = ({
     };
     return (
         <Stack>
-            <Text>Should we install the dependencies for you?</Text>
+            <Text>How do you want to install the dependencies?</Text>
             <SelectInput<string>
                 items={choices}
                 itemComponent={SelectInputChoice}

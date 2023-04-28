@@ -21,7 +21,7 @@ export const StepName = ({
     return (
         <Stack>
             <Text>
-                Enter the name of your application and validate with Enter:
+                Enter the name of your application, and validate with Enter:
             </Text>
             <TextInput
                 value={value}

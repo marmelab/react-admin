@@ -1,5 +1,5 @@
 import React, { useReducer, useRef } from 'react';
-import { Box, Text } from 'ink';
+import { Box, Text, Newline } from 'ink';
 import {
     InitialProjectConfiguration,
     ProjectConfiguration,
@@ -135,18 +135,15 @@ export default function App({ name = 'my-admin' }: Props) {
                 </Text>
             ) : (
                 <Box>
-                    <Box>
-                        <Text>
-                            Install the dependencies using your favorite package
-                            manager.
-                        </Text>
-                    </Box>
-                    <Box>
-                        <Text>
-                            Run the <Text bold>dev</Text> command to start the
-                            app.
-                        </Text>
-                    </Box>
+                    <Text>
+                        Install the dependencies using your favorite package
+                        manager.
+                    </Text>
+                    <Newline />
+                    <Text>
+                        Run the <Text bold>dev</Text> command to start the
+                        app.
+                    </Text>
                 </Box>
             )}
             <Box marginBottom={1}>

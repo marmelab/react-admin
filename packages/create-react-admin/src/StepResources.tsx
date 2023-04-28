@@ -28,7 +28,7 @@ export const StepResources = ({
                     : 'No resource yet'}
             </Text>
             <Text>
-                Enter the name of a resource you want to add and validate with
+                Enter the name of a resource you want to add, and validate with
                 Enter (leave empty to finish):
             </Text>
             <TextInput
