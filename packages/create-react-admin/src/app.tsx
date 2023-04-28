@@ -116,7 +116,7 @@ export default function App({ name = 'my-admin' }: Props) {
     }
     return (
         <>
-            <Box marginBottom={1}>
+            <Box marginBottom={1} marginTop={1}>
                 <Text>
                     Your application <Text bold>{state.name}</Text> was
                     successfully generated.
@@ -141,8 +141,7 @@ export default function App({ name = 'my-admin' }: Props) {
                     </Text>
                     <Newline />
                     <Text>
-                        Run the <Text bold>dev</Text> command to start the
-                        app.
+                        Run the <Text bold>dev</Text> command to start the app.
                     </Text>
                 </Box>
             )}
