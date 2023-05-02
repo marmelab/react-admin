@@ -27,3 +27,7 @@ In another directory, run:
 ```
 
 The above command assume you cloned react-admin in the `react-admin` directory and you are running the command in this directory parent.
+
+## Miscellaneous
+
+This package is MIT licensed. Sponsored by Marmelab and Anthony Chan.

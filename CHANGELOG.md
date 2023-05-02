@@ -2,9 +2,11 @@
 
 ## v4.10.1
 
-* make `create-react-admin` installer private for now ([fzaninotto](https://github.com/fzaninotto))
+* Republish all packages, including the `create-react-admin` installer ([fzaninotto](https://github.com/fzaninotto))
 
 ## v4.10.0
+
+Note: This release wasn't published to npm, use version 4.10.1 or higher.
 
 * Add `create-react-admin` installer ([#8833](https://github.com/marmelab/react-admin/pull/8833)) ([djhi](https://github.com/djhi))
 * Add `<InfiniteList>` and `<InfinitePagination>` components ([#8781](https://github.com/marmelab/react-admin/pull/8781)) ([fzaninotto](https://github.com/fzaninotto))
