@@ -39,6 +39,7 @@ Here are all the props accepted by the component:
 - [`catchAll`](#catchall)
 - [`menu`](#menu)
 - [`theme`](#theme)
+- [`darkTheme`](#darktheme)
 - [`layout`](#layout)
 - [`loginPage`](#loginpage)
 - [`authCallbackPage`](#authcallbackpage)
@@ -383,6 +384,57 @@ const App = () => (
 ![Dark theme](./img/dark-theme.png)
 
 For more details on predefined themes and custom themes, refer to [the Theming chapter](./Theming.md#global-theme-overrides) of the react-admin documentation.
+
+## `darkTheme`
+
+If you want to support light and dark mode, you can provide a `darkTheme` in addition to the `theme` prop. The `darkTheme` will be used when the user's browser is in dark mode, or when the user manually switches to dark mode using [the `<ToggleThemeButton>` component](./ToggleThemeButton.md).
+
+```jsx
+import { Admin } from 'react-admin';
+import { darkTheme, lightTheme } from './themes';
+
+const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+        theme={lightTheme}
+        darkTheme={darkTheme}
+    >
+        ...
+    </Admin>
+);
+```
+
+To let users change the theme manually, add a `<ToggleThemeButton>` component to the AppBar, and add that AppBar to a custom layout:
+
+```jsx
+// in src/MyAppBar.js
+import { AppBar, TitlePortal, ToggleThemeButton } from 'react-admin';
+
+export const MyAppBar = () => (
+    <AppBar>
+        <TitlePortal />
+        <ToggleThemeButton />
+    </AppBar>>
+);
+
+// in src/App.js
+import { Admin, Layout } from 'react-admin';
+import { MyAppBar } from './MyAppBar';
+import { darkTheme, lightTheme } from './themes';
+
+const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
+
+const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+        layout={MyLayout} 
+        theme={lightTheme}
+        darkTheme={darkTheme}
+    >
+        ...
+    </Admin>
+);
+```
 
 ## `layout`
 

@@ -101,13 +101,32 @@ const BookList = () => {
 const MyAppBar = () => (
     <AppBar>
         <TitlePortal />
-        <ToggleThemeButton darkTheme={{ palette: { mode: 'dark' } }} />
+        <ToggleThemeButton />
     </AppBar>
 );
 const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 
 export const Basic = () => (
-    <Admin dataProvider={dataProvider} history={history} layout={MyLayout}>
+    <Admin
+        dataProvider={dataProvider}
+        history={history}
+        layout={MyLayout}
+        darkTheme={{ palette: { mode: 'dark' } }}
+    >
+        <Resource name="books" list={BookList} />
+    </Admin>
+);
+
+const LegacyAppBar = () => (
+    <AppBar>
+        <TitlePortal />
+        <ToggleThemeButton darkTheme={{ palette: { mode: 'dark' } }} />
+    </AppBar>
+);
+const LegacyLayout = props => <Layout {...props} appBar={LegacyAppBar} />;
+
+export const Legacy = () => (
+    <Admin dataProvider={dataProvider} history={history} layout={LegacyLayout}>
         <Resource name="books" list={BookList} />
     </Admin>
 );
