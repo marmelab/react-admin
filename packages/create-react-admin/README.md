@@ -30,4 +30,4 @@ The above command assume you cloned react-admin in the `react-admin` directory a
 
 ## Miscellaneous
 
-This package is MIT licensed. Sponsored by Marmelab and Anthony Chan.
+This package is MIT licensed. Sponsored by [Marmelab](https://marmelab.com) and [Anthony Chan](https://github.com/ckanthony).
