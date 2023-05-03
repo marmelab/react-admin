@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
 
-import { RaRecord } from '../../types';
 import { useEditController, EditControllerProps } from './useEditController';
 import { EditContextProvider } from './EditContextProvider';
 import { ResourceContextProvider } from '../../core';
@@ -35,7 +34,9 @@ import { ResourceContextProvider } from '../../core';
  *     </EditBase>
  * );
  */
-export const EditBase = <RecordType extends RaRecord = any>({
+export const EditBase = <
+    RecordType extends Record<string, unknown> = Record<string, any>
+>({
     children,
     ...props
 }: { children: ReactNode } & EditControllerProps<RecordType>) => {

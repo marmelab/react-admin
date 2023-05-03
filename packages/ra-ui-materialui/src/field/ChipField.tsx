@@ -7,17 +7,16 @@ import clsx from 'clsx';
 import { useRecordContext, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { FieldProps, fieldPropTypes } from './types';
 import { genericMemo } from './genericMemo';
 
 const ChipFieldImpl = <
-    RecordType extends Record<string, unknown> = Record<string, any>,
-    SortByType = unknown
+    RecordType extends Record<string, unknown> = Record<string, any>
 >(
-    props: ChipFieldProps<RecordType, SortByType>
+    props: ChipFieldProps<RecordType>
 ) => {
     const { className, source, emptyText, ...rest } = props;
-    const record = useRecordContext(props);
+    const record = useRecordContext<RecordType>(props);
     const value = get(record, source);
     const translate = useTranslate();
 
@@ -56,10 +55,8 @@ ChipField.propTypes = {
 ChipField.displayName = 'ChipField';
 
 export interface ChipFieldProps<
-    RecordType extends Record<string, unknown> = Record<string, any>,
-    SortByType = unknown
-> extends PublicFieldProps<RecordType, SortByType>,
-        InjectedFieldProps<RecordType>,
+    RecordType extends Record<string, unknown> = Record<string, any>
+> extends FieldProps<RecordType>,
         Omit<ChipProps, 'label'> {}
 
 const PREFIX = 'RaChipField';

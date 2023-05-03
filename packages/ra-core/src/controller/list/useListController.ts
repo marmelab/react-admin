@@ -207,7 +207,9 @@ const defaultSort = {
     order: SORT_ASC,
 };
 
-export interface ListControllerResult<RecordType extends RaRecord = any> {
+export interface ListControllerResult<
+    RecordType extends Record<string, unknown> = Record<string, any>
+> {
     sort: SortPayload;
     data: RecordType[];
     defaultTitle?: string;

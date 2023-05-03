@@ -61,9 +61,7 @@ export const TagsListEdit = () => {
     };
 
     const handleDeleteTag = (id: Identifier) => {
-        const tags: Identifier[] = record.tags.filter(
-            (tagId: Identifier) => tagId !== id
-        );
+        const tags = record.tags.filter(tagId => tagId !== id);
         update('contacts', {
             id: record.id,
             data: { tags },
@@ -71,8 +69,8 @@ export const TagsListEdit = () => {
         });
     };
 
-    const handleAddTag = (id: Identifier) => {
-        const tags: Identifier[] = [...record.tags, id];
+    const handleAddTag = (id: number) => {
+        const tags = [...record.tags, id];
         update('contacts', {
             id: record.id,
             data: { tags },

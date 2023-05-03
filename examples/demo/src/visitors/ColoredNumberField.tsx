@@ -13,6 +13,8 @@ const ColoredNumberField = (props: NumberFieldProps) => {
     );
 };
 
-ColoredNumberField.defaultProps = NumberField.defaultProps;
+ColoredNumberField.defaultProps = {
+    textAlign: 'right',
+};
 
 export default ColoredNumberField;

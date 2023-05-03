@@ -90,7 +90,7 @@ export type DataProvider<ResourceType extends string = string> = {
         params: GetListParams
     ) => Promise<GetListResult<RecordType>>;
 
-    getOne: <RecordType extends RaRecord = any>(
+    getOne: <RecordType extends Record<string, unknown> = Record<string, any>>(
         resource: ResourceType,
         params: GetOneParams<RecordType>
     ) => Promise<GetOneResult<RecordType>>;
@@ -105,7 +105,7 @@ export type DataProvider<ResourceType extends string = string> = {
         params: GetManyReferenceParams
     ) => Promise<GetManyReferenceResult<RecordType>>;
 
-    update: <RecordType extends RaRecord = any>(
+    update: <RecordType extends Record<string, unknown> = Record<string, any>>(
         resource: ResourceType,
         params: UpdateParams
     ) => Promise<UpdateResult<RecordType>>;
@@ -152,11 +152,15 @@ export interface GetInfiniteListResult<RecordType extends RaRecord = any>
     extends GetListResult<RecordType> {
     pageParam?: number;
 }
-export interface GetOneParams<RecordType extends RaRecord = any> {
+export interface GetOneParams<
+    RecordType extends Record<string, unknown> = Record<string, any>
+> {
     id: RecordType['id'];
     meta?: any;
 }
-export interface GetOneResult<RecordType extends RaRecord = any> {
+export interface GetOneResult<
+    RecordType extends Record<string, unknown> = Record<string, any>
+> {
     data: RecordType;
 }
 
@@ -185,13 +189,17 @@ export interface GetManyReferenceResult<RecordType extends RaRecord = any> {
     };
 }
 
-export interface UpdateParams<T extends RaRecord = any> {
-    id: T['id'];
-    data: Partial<T>;
-    previousData: T;
+export interface UpdateParams<
+    RecordType extends Record<string, unknown> = Record<string, any>
+> {
+    id: RecordType['id'];
+    data: Partial<RecordType>;
+    previousData: RecordType;
     meta?: any;
 }
-export interface UpdateResult<RecordType extends RaRecord = any> {
+export interface UpdateResult<
+    RecordType extends Record<string, unknown> = Record<string, any>
+> {
     data: RecordType;
 }
 

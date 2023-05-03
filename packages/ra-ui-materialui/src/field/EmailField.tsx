@@ -1,14 +1,18 @@
 import * as React from 'react';
-import { memo, FC } from 'react';
 import get from 'lodash/get';
 import Typography from '@mui/material/Typography';
 import { Link, LinkProps } from '@mui/material';
 import { useRecordContext, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { FieldProps, fieldPropTypes } from './types';
+import { genericMemo } from './genericMemo';
 
-export const EmailField: FC<EmailFieldProps> = memo(props => {
+const EmailFieldImpl = <
+    RecordType extends Record<string, unknown> = Record<string, any>
+>(
+    props: EmailFieldProps<RecordType>
+) => {
     const { className, source, emptyText, ...rest } = props;
     const record = useRecordContext(props);
     const value = get(record, source);
@@ -38,14 +42,18 @@ export const EmailField: FC<EmailFieldProps> = memo(props => {
             {value}
         </Link>
     );
-});
+};
 
+export const EmailField = genericMemo(EmailFieldImpl);
+
+// @ts-ignore
 EmailField.propTypes = fieldPropTypes;
+// @ts-ignore
 EmailField.displayName = 'EmailField';
 
-export interface EmailFieldProps
-    extends PublicFieldProps,
-        InjectedFieldProps,
+export interface EmailFieldProps<
+    RecordType extends Record<string, unknown> = Record<string, any>
+> extends FieldProps<RecordType>,
         Omit<LinkProps, 'textAlign'> {}
 
 // useful to prevent click bubbling in a Datagrid with rowClick

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Typography, { TypographyProps } from '@mui/material/Typography';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { FieldProps, fieldPropTypes } from './types';
 
 /**
  * Field using a render function
@@ -50,8 +50,7 @@ FunctionField.propTypes = {
 
 export interface FunctionFieldProps<
     RecordType extends Record<string, unknown> = Record<string, any>
-> extends PublicFieldProps,
-        InjectedFieldProps<RecordType>,
+> extends FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     render: (record?: RecordType, source?: string) => any;
 }

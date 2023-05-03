@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { memo, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import get from 'lodash/get';
 import {
     ListContextProvider,
@@ -9,7 +9,8 @@ import {
     FilterPayload,
 } from 'ra-core';
 
-import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { FieldProps, fieldPropTypes } from './types';
+import { genericMemo } from './genericMemo';
 
 /**
  * Renders an embedded array of objects.
@@ -74,30 +75,39 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *
  * @see useListContext
  */
-export const ArrayField = memo<ArrayFieldProps>(props => {
+const ArrayFieldImpl = <
+    RecordType extends Record<string, unknown> = Record<string, any>
+>(
+    props: ArrayFieldProps<RecordType>
+) => {
     const { children, resource, source, perPage, sort, filter } = props;
     const record = useRecordContext(props);
-    const data = get(record, source, emptyArray) || emptyArray;
+    const data = (get(record, source, emptyArray) as any[]) || emptyArray;
     const listContext = useList({ data, resource, perPage, sort, filter });
     return (
         <ListContextProvider value={listContext}>
             {children}
         </ListContextProvider>
     );
-});
+};
+
+export const ArrayField = genericMemo(ArrayFieldImpl);
 
 // @ts-ignore
 ArrayField.propTypes = {
     ...fieldPropTypes,
 };
 
-export interface ArrayFieldProps extends PublicFieldProps, InjectedFieldProps {
+export interface ArrayFieldProps<
+    RecordType extends Record<string, unknown> = Record<string, any>
+> extends FieldProps<RecordType> {
     children: ReactNode;
     perPage?: number;
     sort?: SortPayload;
     filter?: FilterPayload;
 }
 
+// @ts-ignore
 ArrayField.displayName = 'ArrayField';
 
 const emptyArray = [];

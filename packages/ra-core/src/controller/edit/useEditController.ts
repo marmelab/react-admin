@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
-import { RaRecord, MutationMode, TransformData } from '../../types';
+import { MutationMode, TransformData } from '../../types';
 import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
 import {
@@ -45,7 +45,7 @@ import { SaveContextValue, useMutationMiddlewares } from '../saveContext';
  * }
  */
 export const useEditController = <
-    RecordType extends RaRecord = any,
+    RecordType extends Record<string, unknown> = Record<string, any>,
     MutationOptionsError = unknown
 >(
     props: EditControllerProps<RecordType, MutationOptionsError> = {}
@@ -67,7 +67,10 @@ export const useEditController = <
     const redirect = useRedirect();
     const refresh = useRefresh();
     const { id: routeId } = useParams<'id'>();
-    const id = propsId != null ? propsId : decodeURIComponent(routeId);
+    const id =
+        propsId != null
+            ? propsId
+            : (decodeURIComponent(routeId) as RecordType['id']);
     const { meta: queryMeta, ...otherQueryOptions } = queryOptions;
     const {
         onSuccess,
@@ -244,7 +247,7 @@ export const useEditController = <
 };
 
 export interface EditControllerProps<
-    RecordType extends RaRecord = any,
+    RecordType extends Record<string, unknown> = Record<string, any>,
     MutationOptionsError = unknown
 > {
     disableAuthentication?: boolean;
@@ -262,8 +265,9 @@ export interface EditControllerProps<
     [key: string]: any;
 }
 
-export interface EditControllerResult<RecordType extends RaRecord = any>
-    extends SaveContextValue {
+export interface EditControllerResult<
+    RecordType extends Record<string, unknown> = Record<string, any>
+> extends SaveContextValue {
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
     data?: RecordType;

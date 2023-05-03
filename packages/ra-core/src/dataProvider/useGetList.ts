@@ -123,7 +123,7 @@ export const useGetList = <RecordType extends RaRecord = any>(
 };
 
 export type UseGetListHookValue<
-    RecordType extends RaRecord = any
+    RecordType extends Record<string, unknown> = Record<string, any>
 > = UseQueryResult<RecordType[], Error> & {
     total?: number;
     pageInfo?: {

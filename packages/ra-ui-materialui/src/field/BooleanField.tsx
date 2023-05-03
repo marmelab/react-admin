@@ -8,14 +8,13 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { Tooltip, Typography, TypographyProps } from '@mui/material';
 import { useTranslate, useRecordContext } from 'ra-core';
 import { genericMemo } from './genericMemo';
-import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { FieldProps, fieldPropTypes } from './types';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 
 const BooleanFieldImpl = <
-    RecordType extends Record<string, unknown> = Record<string, any>,
-    SortByType = unknown
+    RecordType extends Record<string, unknown> = Record<string, any>
 >(
-    props: BooleanFieldProps<RecordType, SortByType>
+    props: BooleanFieldProps<RecordType>
 ) => {
     const {
         className,
@@ -28,7 +27,7 @@ const BooleanFieldImpl = <
         looseValue = false,
         ...rest
     } = props;
-    const record = useRecordContext(props);
+    const record = useRecordContext<RecordType>(props);
     const translate = useTranslate();
 
     const value = get(record, source);
@@ -94,10 +93,8 @@ BooleanField.propTypes = {
 BooleanField.displayName = 'BooleanField';
 
 export interface BooleanFieldProps<
-    RecordType extends Record<string, unknown> = Record<string, any>,
-    SortByType = unknown
-> extends PublicFieldProps<RecordType, SortByType>,
-        InjectedFieldProps<RecordType>,
+    RecordType extends Record<string, unknown> = Record<string, any>
+> extends FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     valueLabelTrue?: string;
     valueLabelFalse?: string;

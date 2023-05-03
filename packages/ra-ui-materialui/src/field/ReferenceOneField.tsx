@@ -13,7 +13,7 @@ import {
     RaRecord,
 } from 'ra-core';
 
-import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
+import { fieldPropTypes, FieldProps } from './types';
 import { ReferenceFieldView } from './ReferenceField';
 
 /**
@@ -40,7 +40,7 @@ export const ReferenceOneField = <RecordType extends RaRecord = any>(
         link = false,
         queryOptions,
     } = props;
-    const record = useRecordContext(props);
+    const record = useRecordContext<RecordType>(props);
     const createPath = useCreatePath();
     const translate = useTranslate();
 
@@ -96,8 +96,7 @@ export const ReferenceOneField = <RecordType extends RaRecord = any>(
 };
 
 export interface ReferenceOneFieldProps<RecordType extends RaRecord = any>
-    extends PublicFieldProps,
-        InjectedFieldProps {
+    extends FieldProps<RecordType> {
     children?: ReactNode;
     reference: string;
     target: string;

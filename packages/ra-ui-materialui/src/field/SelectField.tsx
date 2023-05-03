@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { memo, FC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import {
@@ -11,7 +10,8 @@ import {
 import { Typography, TypographyProps } from '@mui/material';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { FieldProps, fieldPropTypes } from './types';
+import { genericMemo } from './genericMemo';
 
 /**
  * Display a value in an enumeration
@@ -75,7 +75,11 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *
  * **Tip**: <ReferenceField> sets `translateChoice` to false by default.
  */
-export const SelectField: FC<SelectFieldProps> = memo(props => {
+const SelectFieldImpl = <
+    RecordType extends Record<string, unknown> = Record<string, any>
+>(
+    props: SelectFieldProps<RecordType>
+) => {
     const {
         className,
         emptyText,
@@ -122,14 +126,18 @@ export const SelectField: FC<SelectFieldProps> = memo(props => {
             {choiceText}
         </Typography>
     );
-});
+};
 
+export const SelectField = genericMemo(SelectFieldImpl);
+
+// @ts-ignore
 SelectField.defaultProps = {
     optionText: 'name',
     optionValue: 'id',
     translateChoice: true,
 };
 
+// @ts-ignore
 SelectField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
@@ -144,10 +152,11 @@ SelectField.propTypes = {
     translateChoice: PropTypes.bool,
 };
 
-export interface SelectFieldProps
-    extends ChoicesProps,
-        PublicFieldProps,
-        InjectedFieldProps,
+export interface SelectFieldProps<
+    RecordType extends Record<string, unknown> = Record<string, any>
+> extends ChoicesProps,
+        FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {}
 
+// @ts-ignore
 SelectField.displayName = 'SelectField';

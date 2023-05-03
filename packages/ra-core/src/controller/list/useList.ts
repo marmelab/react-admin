@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import { removeEmpty, useSafeSetState } from '../../util';
-import { FilterPayload, RaRecord, SortPayload } from '../../types';
+import { FilterPayload, SortPayload } from '../../types';
 import { useResourceContext } from '../../core';
 import usePaginationState from '../usePaginationState';
 import useSortState from '../useSortState';
@@ -51,7 +51,9 @@ const refetch = () => {
  * @param {SortPayload} props.sort: Optional. The initial sort (field and order)
  * @param {filterCallback} prop.filterCallback Optional. A function that allows you to make a custom filter
  */
-export const useList = <RecordType extends RaRecord = any>(
+export const useList = <
+    RecordType extends Record<string, unknown> = Record<string, any>
+>(
     props: UseListOptions<RecordType>
 ): UseListValue<RecordType> => {
     const {
@@ -265,7 +267,9 @@ export const useList = <RecordType extends RaRecord = any>(
     };
 };
 
-export interface UseListOptions<RecordType extends RaRecord = any> {
+export interface UseListOptions<
+    RecordType extends Record<string, unknown> = Record<string, any>
+> {
     data?: RecordType[];
     error?: any;
     filter?: FilterPayload;
@@ -279,7 +283,7 @@ export interface UseListOptions<RecordType extends RaRecord = any> {
 }
 
 export type UseListValue<
-    RecordType extends RaRecord = any
+    RecordType extends Record<string, unknown> = Record<string, any>
 > = ListControllerResult<RecordType>;
 
 const defaultFilter = {};

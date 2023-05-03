@@ -13,7 +13,11 @@ import { EditProps } from '../types';
 import { EditView } from './EditView';
 import { editFieldTypes } from './editFieldTypes';
 
-export const EditGuesser = (props: EditProps) => {
+export const EditGuesser = <
+    RecordType extends Record<string, unknown> = Record<string, any>
+>(
+    props: EditProps<RecordType>
+) => {
     const {
         resource,
         id,
@@ -26,7 +30,7 @@ export const EditGuesser = (props: EditProps) => {
         ...rest
     } = props;
     return (
-        <EditBase
+        <EditBase<RecordType>
             resource={resource}
             id={id}
             mutationMode={mutationMode}

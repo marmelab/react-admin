@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { memo, FC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import { Typography, TypographyProps } from '@mui/material';
 import { useRecordContext, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { FieldProps, fieldPropTypes } from './types';
+import { genericMemo } from './genericMemo';
 
 /**
  * Display a date value as a locale string.
@@ -32,7 +32,11 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  * // renders the record { id: 1234, new Date('2012-11-07') } as
  * <span>mercredi 7 novembre 2012</span>
  */
-export const DateField: FC<DateFieldProps> = memo(props => {
+const DateFieldImpl = <
+    RecordType extends Record<string, unknown> = Record<string, any>
+>(
+    props: DateFieldProps<RecordType>
+) => {
     const {
         className,
         emptyText,
@@ -51,7 +55,7 @@ export const DateField: FC<DateFieldProps> = memo(props => {
         );
     }
 
-    const record = useRecordContext(props);
+    const record = useRecordContext<RecordType>(props);
     if (!record) {
         return null;
     }
@@ -70,7 +74,13 @@ export const DateField: FC<DateFieldProps> = memo(props => {
         ) : null;
     }
 
-    const date = value instanceof Date ? value : new Date(value);
+    const date =
+        value instanceof Date
+            ? value
+            : typeof value === 'string' || typeof value === 'number'
+            ? new Date(value)
+            : undefined;
+
     let dateOptions = options;
     if (
         typeof value === 'string' &&
@@ -108,8 +118,11 @@ export const DateField: FC<DateFieldProps> = memo(props => {
             {dateString}
         </Typography>
     );
-});
+};
 
+export const DateField = genericMemo(DateFieldImpl);
+
+// @ts-ignore
 DateField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
@@ -123,11 +136,12 @@ DateField.propTypes = {
     showDate: PropTypes.bool,
 };
 
+// @ts-ignore
 DateField.displayName = 'DateField';
 
-export interface DateFieldProps
-    extends PublicFieldProps,
-        InjectedFieldProps,
+export interface DateFieldProps<
+    RecordType extends Record<string, unknown> = Record<string, any>
+> extends FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     locales?: Intl.LocalesArgument;
     options?: Intl.DateTimeFormatOptions;

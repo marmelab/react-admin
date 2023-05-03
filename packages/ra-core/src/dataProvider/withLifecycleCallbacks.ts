@@ -166,10 +166,10 @@ export const withLifecycleCallbacks = (
             return result;
         },
 
-        getOne: async function <RecordType extends RaRecord = any>(
-            resource: string,
-            params: GetOneParams<RecordType>
-        ) {
+        // @ts-ignore
+        getOne: async function <
+            RecordType extends Record<string, unknown> = Record<string, any>
+        >(resource: string, params: GetOneParams<RecordType>) {
             let newParams = params;
             const beforeGetOneHandlers = handlers.filter(
                 h => h.resource === resource && h.beforeGetOne
@@ -285,10 +285,10 @@ export const withLifecycleCallbacks = (
             return result;
         },
 
-        update: async function <RecordType extends RaRecord = any>(
-            resource: string,
-            params: UpdateParams<RecordType>
-        ) {
+        // @ts-ignore
+        update: async function <
+            RecordType extends Record<string, unknown> = Record<string, any>
+        >(resource: string, params: UpdateParams<RecordType>) {
             let newParams = params;
             const beforeUpdateHandlers = handlers.filter(
                 h => h.resource === resource && h.beforeUpdate

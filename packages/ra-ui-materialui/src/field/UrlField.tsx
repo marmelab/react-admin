@@ -1,12 +1,17 @@
 import * as React from 'react';
-import { AnchorHTMLAttributes, memo, FC } from 'react';
+import { AnchorHTMLAttributes } from 'react';
 import get from 'lodash/get';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { Typography, Link } from '@mui/material';
 import { useRecordContext, useTranslate } from 'ra-core';
-import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { FieldProps, fieldPropTypes } from './types';
+import { genericMemo } from './genericMemo';
 
-export const UrlField: FC<UrlFieldProps> = memo(props => {
+const UrlFieldImpl = <
+    RecordType extends Record<string, unknown> = Record<string, any>
+>(
+    props: UrlFieldProps<RecordType>
+) => {
     const { className, emptyText, source, ...rest } = props;
     const record = useRecordContext(props);
     const value = get(record, source);
@@ -36,14 +41,18 @@ export const UrlField: FC<UrlFieldProps> = memo(props => {
             {value}
         </Link>
     );
-});
+};
 
+export const UrlField = genericMemo(UrlFieldImpl);
+
+// @ts-ignore
 UrlField.propTypes = fieldPropTypes;
+// @ts-ignore
 UrlField.displayName = 'UrlField';
 
-export interface UrlFieldProps
-    extends PublicFieldProps,
-        InjectedFieldProps,
+export interface UrlFieldProps<
+    RecordType extends Record<string, unknown> = Record<string, any>
+> extends FieldProps<RecordType>,
         AnchorHTMLAttributes<HTMLAnchorElement> {}
 
 // useful to prevent click bubbling in a Datagrid with rowClick
