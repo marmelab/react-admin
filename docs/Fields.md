@@ -598,3 +598,33 @@ You can find components for react-admin in third-party repositories.
 - [OoDeLally/react-admin-clipboard-list-field](https://github.com/OoDeLally/react-admin-clipboard-list-field): a quick and customizable copy-to-clipboard field.
 - [MrHertal/react-admin-json-view](https://github.com/MrHertal/react-admin-json-view): JSON field and input for react-admin.
 - [alexgschwend/react-admin-color-picker](https://github.com/alexgschwend/react-admin-color-picker): a color field
+
+## TypeScript
+
+All field components accept a generic type that describe the record. This is used to validate the `source` prop to ensure it targets an actual property of the record:
+
+```tsx
+import * as React from "react";
+import { Show, SimpleShowLayout, TextField, DateField, RichTextField } from 'react-admin';
+
+type Post = {
+    id: number;
+    title: string;
+    teaser: string;
+    body: string;
+    published_at: string;
+}
+
+export const PostShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <TextField<Post> source="title" />
+            <TextField<Post> source="teaser" />
+            <RichTextField<Post> source="body" />
+            <DateField<Post> label="Publication date" source="published_at" />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+Specifying the record type will also allow your IDE to provide auto-completion for both the `source` and `sortBy` prop. Note that the `sortBy` prop also accept any string.
