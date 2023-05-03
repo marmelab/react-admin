@@ -67,3 +67,33 @@ import AlarmOnIcon from '@mui/icons-material/AlarmOn';
 
 <BooleanField source="alarm" TrueIcon={AlarmOnIcon} FalseIcon={null} />
 ```
+
+## TypeScript
+
+The `<BooleanField>` component accept a generic type that describe the record. This is used to validate the `source` prop to ensure it targets an actual property of the record:
+
+```tsx
+import * as React from "react";
+import { Show, SimpleShowLayout, TextField, BooleanField, RichTextField } from 'react-admin';
+
+type Post = {
+    id: number;
+    title: string;
+    teaser: string;
+    body: string;
+    published: boolean;
+}
+
+export const PostShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <TextField<Post> source="title" />
+            <TextField<Post> source="teaser" />
+            <RichTextField<Post> source="body" />
+            <BooleanField<Post> source="published" />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+Specifying the record type will also allow your IDE to provide auto-completion for both the `source` and `sortBy` prop. Note that the `sortBy` prop also accept any string.
