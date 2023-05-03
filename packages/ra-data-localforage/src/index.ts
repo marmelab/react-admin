@@ -105,7 +105,9 @@ export default async (
                     }
                 });
         },
-        getOne: <RecordType extends RaRecord = any>(
+        getOne: <
+            RecordType extends Record<string, unknown> = Record<string, any>
+        >(
             resource: string,
             params: GetOneParams<any>
         ) => baseDataProvider.getOne<RecordType>(resource, params),
@@ -129,7 +131,9 @@ export default async (
                 }),
 
         // update methods need to persist changes in localForage
-        update: <RecordType extends RaRecord = any>(
+        update: <
+            RecordType extends Record<string, unknown> = Record<string, any>
+        >(
             resource: string,
             params: UpdateParams<any>
         ) => {
