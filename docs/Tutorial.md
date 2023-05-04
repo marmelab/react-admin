@@ -17,18 +17,24 @@ Here is an overview of the result:
 
 ## Setting Up
 
-React-admin uses React. We'll use [Vite](https://vitejs.dev/) to create an empty React app, and install the `react-admin` package:
+React-admin uses React. We'll use [create-react-admin](https://github.com/marmelab/react-admin/tree/master/packages/create-react-admin) to bootstrap a new admin:
 
 ```sh
-yarn create vite test-admin --template react-ts
-cd test-admin/
-yarn add react-admin ra-data-json-server
+yarn create react-admin test-admin
+```
+
+Choose **JSON Server** as the data provider, then **None** as the auth provider. Don't add any resource for now and just press **Enter**. Finally, choose either `npm` or `yarn` and press **Enter**. Once everything is installed, enter the following commands:
+
+```sh
+cd test-admin
+npm run dev
+# or
 yarn dev
 ```
 
-You should be up and running with an empty React application on port 5173.
+You should be up and running with an empty React admin application on port 5173.
 
-**Tip**: Although this tutorial uses a TypeScript template, you can use react-admin with JavaScript if you prefer. Also, you can use [create-react-app](./CreateReactApp.md), [Next.js](./NextJs.md), [Remix](./Remix.md), or any other React framework to create your admin app. React-admin is framework-agnostic.
+**Tip**: Although this tutorial uses a TypeScript template, you can use react-admin with JavaScript if you prefer. Also, you can use [Vite](https://vitejs.dev/), [create-react-app](./CreateReactApp.md), [Next.js](./NextJs.md), [Remix](./Remix.md), or any other React framework to create your admin app. React-admin is framework-agnostic.
 
 ## Using an API As Data Source
 
