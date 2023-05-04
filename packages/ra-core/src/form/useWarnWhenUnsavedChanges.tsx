@@ -55,6 +55,13 @@ export const useWarnWhenUnsavedChanges = (
             ) {
                 unblock();
                 tx.retry();
+            } else {
+                if (isSubmitting) {
+                    // Retry the transition in 100ms, until the form is no longer submitting
+                    setTimeout(() => {
+                        tx.retry();
+                    }, 100);
+                }
             }
         });
 
