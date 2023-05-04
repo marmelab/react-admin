@@ -76,56 +76,9 @@ JSONPlaceholder provides endpoints for users, posts, and comments. The admin we'
 
 ## Making Contact With The API Using a Data Provider
 
-Bootstrap the admin app by replacing the `src/App.tsx` by the following code:
-
-```jsx
-// in src/App.tsx
-import { Admin } from "react-admin";
-import jsonServerProvider from "ra-data-json-server";
-
-const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com');
-
-const App = () => <Admin dataProvider={dataProvider} />;
-
-export default App;
-```
-
-That's enough for react-admin to render an empty app and confirm that the setup is done: 
+The application has been initialized with enough code for react-admin to render an empty app and confirm that the setup is done: 
 
 [![Empty Admin](./img/tutorial_empty.png)](./img/tutorial_empty.png)
-
-Also, you should change the default Vite CSS file to look like this:
-
-```css
-/* in src/index.css */
-body {
-    margin: 0;
-}
-```
-
-Lastly, add the `Roboto` font to the `index.html` file:
-
-```diff
-// in ./index.html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>React Admin</title>
-+   <link
-+     rel="stylesheet"
-+     href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-+   />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/index.tsx"></script>
-  </body>
-</html>
-```
-
-**Tip:** You can also install the `Roboto` font locally by following the instructions from the [Material UI starter guide](https://mui.com/material-ui/getting-started/installation/#roboto-font).
 
 The `<App>` component renders an `<Admin>` component, which is the root component of a react-admin application. This component expects a `dataProvider` prop - a function capable of fetching data from an API. Since there is no standard for data exchanges between computers, you will probably have to write a custom provider to connect react-admin to your own APIs - but we'll dive into Data Providers later. For now, let's take advantage of the `ra-data-json-server` data provider, which speaks the same REST dialect as JSONPlaceholder.
 
