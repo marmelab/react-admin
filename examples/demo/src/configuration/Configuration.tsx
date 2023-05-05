@@ -5,8 +5,6 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import { useTranslate, useLocaleState, useTheme, Title } from 'react-admin';
 
-import { darkTheme, lightTheme } from '../layout/themes';
-
 const Configuration = () => {
     const translate = useTranslate();
     const [locale, setLocale] = useLocaleState();
@@ -22,24 +20,16 @@ const Configuration = () => {
                 <Button
                     variant="contained"
                     sx={{ margin: '1em' }}
-                    color={
-                        theme?.palette?.mode === 'light'
-                            ? 'primary'
-                            : 'secondary'
-                    }
-                    onClick={() => setTheme(lightTheme)}
+                    color={theme === 'light' ? 'primary' : 'secondary'}
+                    onClick={() => setTheme('light')}
                 >
                     {translate('pos.theme.light')}
                 </Button>
                 <Button
                     variant="contained"
                     sx={{ margin: '1em' }}
-                    color={
-                        theme?.palette?.mode === 'dark'
-                            ? 'primary'
-                            : 'secondary'
-                    }
-                    onClick={() => setTheme(darkTheme)}
+                    color={theme === 'dark' ? 'primary' : 'secondary'}
+                    onClick={() => setTheme('dark')}
                 >
                     {translate('pos.theme.dark')}
                 </Button>
