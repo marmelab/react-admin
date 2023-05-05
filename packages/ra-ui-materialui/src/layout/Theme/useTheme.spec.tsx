@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { CoreAdminContext, useStore } from 'ra-core';
+import { CoreAdminContext, useStore, memoryStore } from 'ra-core';
 import expect from 'expect';
 import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { useTheme } from './useTheme';
-import { SimplePaletteColorOptions } from '@mui/material';
 
 const authProvider = {
     login: jest.fn().mockResolvedValueOnce(''),
@@ -16,13 +15,29 @@ const authProvider = {
 
 const Foo = () => {
     const [theme] = useTheme();
-    return theme !== undefined ? <div aria-label="has-theme" /> : <></>;
+    return theme !== undefined ? (
+        <div aria-label="has-theme">{theme}</div>
+    ) : (
+        <></>
+    );
 };
 
 describe('useTheme', () => {
-    it('should return current theme', () => {
+    it('should return undefined by default', () => {
         render(
             <CoreAdminContext authProvider={authProvider}>
+                <Foo />
+            </CoreAdminContext>
+        );
+        expect(screen.queryByLabelText('has-theme')).toBeNull();
+    });
+
+    it('should return current theme when set', () => {
+        render(
+            <CoreAdminContext
+                authProvider={authProvider}
+                store={memoryStore({ theme: 'dark' })}
+            >
                 <Foo />
             </CoreAdminContext>
         );
@@ -31,13 +46,12 @@ describe('useTheme', () => {
 
     it('should return theme from settings when available', () => {
         const { result: storeResult } = renderHook(() => useStore('theme'));
-        storeResult.current[1]({ palette: { primary: { main: 'red' } } });
+        const [_, setTheme] = storeResult.current;
+        setTheme('dark');
 
         const { result: themeResult } = renderHook(() => useTheme());
+        const [theme, __] = themeResult.current;
 
-        expect(storeResult.current[0].palette.primary.main).toEqual(
-            (themeResult.current[0].palette
-                ?.primary as SimplePaletteColorOptions).main
-        );
+        expect(theme).toEqual('dark');
     });
 });
