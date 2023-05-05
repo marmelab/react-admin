@@ -18,3 +18,8 @@ It will then ask you to choose:
 - a auth provider
 - the names of the resources to add
 - the package manager to use to install the dependencies
+
+<video controls autoplay muted loop>
+  <source src="./img/create-react-admin.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
