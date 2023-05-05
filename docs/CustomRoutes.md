@@ -143,8 +143,8 @@ import PeopleIcon from '@mui/icons-material/People';
 export const MyMenu = () => (
     <Menu>
         <Menu.DashboardItem />
-        <Menu.ResourceItem to="/posts"  />
-        <Menu.ResourceItem to="/comments" />
+        <Menu.ResourceItem name="posts"  />
+        <Menu.ResourceItem name="comments" />
         <Menu.Item to="/settings" primaryText="Users" leftIcon={<SettingsIcon />}/>
         <Menu.Item to="/profile" primaryText="Miscellaneous" leftIcon={<PeopleIcon />}/>
     </Menu>
