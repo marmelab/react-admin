@@ -19,14 +19,21 @@ import dataProviderFactory from './dataProvider';
 import Configuration from './configuration/Configuration';
 import Segments from './segments/Segments';
 
-const i18nProvider = polyglotI18nProvider(locale => {
-    if (locale === 'fr') {
-        return import('./i18n/fr').then(messages => messages.default);
-    }
+const i18nProvider = polyglotI18nProvider(
+    locale => {
+        if (locale === 'fr') {
+            return import('./i18n/fr').then(messages => messages.default);
+        }
 
-    // Always fallback on english
-    return englishMessages;
-}, 'en');
+        // Always fallback on english
+        return englishMessages;
+    },
+    'en',
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' },
+    ]
+);
 
 const App = () => (
     <Admin

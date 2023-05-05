@@ -5,6 +5,7 @@ import {
     Logout,
     UserMenu,
     useTranslate,
+    ToggleThemeButton,
     useUserMenu,
 } from 'react-admin';
 import { Link } from 'react-router-dom';
@@ -40,22 +41,17 @@ const ConfigurationMenu = React.forwardRef((props, ref) => {
         </MenuItem>
     );
 });
-const CustomUserMenu = () => (
-    <UserMenu>
-        <ConfigurationMenu />
-        <Logout />
-    </UserMenu>
-);
 
 const CustomAppBar = () => {
     const isLargeEnough = useMediaQuery<Theme>(theme =>
         theme.breakpoints.up('sm')
     );
     return (
-        <AppBar color="secondary" elevation={1} userMenu={<CustomUserMenu />}>
+        <AppBar color="secondary" elevation={1}>
             <TitlePortal />
             {isLargeEnough && <Logo />}
             {isLargeEnough && <Box component="span" sx={{ flex: 1 }} />}
+            <ToggleThemeButton />
         </AppBar>
     );
 };
