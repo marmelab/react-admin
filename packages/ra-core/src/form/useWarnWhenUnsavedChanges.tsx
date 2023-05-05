@@ -55,6 +55,14 @@ export const useWarnWhenUnsavedChanges = (
             ) {
                 unblock();
                 tx.retry();
+            } else {
+                if (isSubmitting) {
+                    // Retry the transition (possibly several times) until the form is no longer submitting.
+                    // The value of 100ms is arbitrary, it allows to give some time between retries.
+                    setTimeout(() => {
+                        tx.retry();
+                    }, 100);
+                }
             }
         });
 
