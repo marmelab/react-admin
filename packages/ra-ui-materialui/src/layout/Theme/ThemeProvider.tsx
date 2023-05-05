@@ -21,12 +21,14 @@ export const ThemeProvider = ({
     children,
     theme: themeOverride,
 }: ThemeProviderProps) => {
-    const { lightTheme, darkTheme } = useThemesContext();
+    const { lightTheme, darkTheme, defaultToLightTheme } = useThemesContext();
 
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)', {
         noSsr: true,
     });
-    const [mode] = useTheme(prefersDarkMode && darkTheme ? 'dark' : 'light');
+    const [mode] = useTheme(
+        prefersDarkMode && !defaultToLightTheme && darkTheme ? 'dark' : 'light'
+    );
 
     const themeValue = useMemo(() => {
         try {

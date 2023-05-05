@@ -5,8 +5,7 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useTranslate } from 'ra-core';
 
 import { ToggleThemeLegacyButton } from './ToggleThemeLegacyButton';
-import { useTheme } from '../layout';
-import { RaThemeOptions } from '..';
+import { RaThemeOptions, useThemesContext, useTheme } from '../layout';
 
 /**
  * Button toggling the theme (light or dark).
@@ -27,10 +26,13 @@ import { RaThemeOptions } from '..';
  */
 export const ToggleThemeButton = (props: ToggleThemeButtonProps) => {
     const translate = useTranslate();
+    const { darkTheme, defaultToLightTheme } = useThemesContext(props);
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)', {
         noSsr: true,
     });
-    const [theme, setTheme] = useTheme(prefersDarkMode ? 'dark' : 'light');
+    const [theme, setTheme] = useTheme(
+        prefersDarkMode && !defaultToLightTheme && darkTheme ? 'dark' : 'light'
+    );
 
     // FIXME: remove in v5
     if (props.darkTheme) {

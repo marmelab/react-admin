@@ -6,4 +6,5 @@ export const ThemesContext = createContext<ThemesContextValue>({});
 export interface ThemesContextValue {
     darkTheme?: RaThemeOptions;
     lightTheme?: RaThemeOptions;
+    defaultToLightTheme?: boolean;
 }

@@ -49,6 +49,7 @@ const App = () => (
         disableTelemetry
         theme={lightTheme}
         darkTheme={darkTheme}
+        defaultToLightTheme
     >
         <CustomRoutes>
             <Route path="/configuration" element={<Configuration />} />
