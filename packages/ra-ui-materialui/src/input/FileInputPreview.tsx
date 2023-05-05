@@ -48,7 +48,7 @@ export const FileInputPreview = (props: FileInputPreviewProps) => {
 FileInputPreview.propTypes = {
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
-    file: PropTypes.object,
+    file: PropTypes.any,
     onRemove: PropTypes.func.isRequired,
     removeIcon: PropTypes.element,
 };
