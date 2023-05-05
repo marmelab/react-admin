@@ -634,7 +634,6 @@ const App = () => (
     </Admin>
 );
 ```
-
 ## ~~`menu`~~
 
 **Tip**: This prop is deprecated. To override the menu component, use a [custom layout](#layout) instead.
