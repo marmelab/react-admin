@@ -1,5 +1,12 @@
 # Changelog
 
+## v4.10.2
+
+* Fix custom redirect in pessimistic `<Edit>` or `<Create>` when using `warnWhenUnsavedChanges` ([#8882](https://github.com/marmelab/react-admin/pull/8882)) ([slax57](https://github.com/slax57))
+* Fix `create-react-admin` package manifest ([#8888](https://github.com/marmelab/react-admin/pull/8888)) ([djhi](https://github.com/djhi))
+* [Doc] Fix `<Menu.ResourceItem>` example should use the `name` prop ([#8886](https://github.com/marmelab/react-admin/pull/8886)) ([septentrion-730n](https://github.com/septentrion-730n))
+* [Doc] Update DataProvider List with `ra-strapi-rest` v4 ([#8865](https://github.com/marmelab/react-admin/pull/8865)) ([nazirov91](https://github.com/nazirov91))
+
 ## v4.10.1
 
 * Republish all packages, including the `create-react-admin` installer ([fzaninotto](https://github.com/fzaninotto))
