@@ -16,7 +16,6 @@ import invoices from './invoices';
 import categories from './categories';
 import reviews from './reviews';
 import dataProviderFactory from './dataProvider';
-import Configuration from './configuration/Configuration';
 import Segments from './segments/Segments';
 
 const i18nProvider = polyglotI18nProvider(
@@ -52,7 +51,6 @@ const App = () => (
         defaultToLightTheme
     >
         <CustomRoutes>
-            <Route path="/configuration" element={<Configuration />} />
             <Route path="/segments" element={<Segments />} />
         </CustomRoutes>
         <Resource name="customers" {...visitors} />
