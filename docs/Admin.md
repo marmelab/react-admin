@@ -3,9 +3,16 @@ layout: default
 title: "The Admin Component"
 ---
 
-# The `<Admin>` Component
+# `<Admin>`
 
-The `<Admin>` component creates an application with its own state, routing, and controller logic. `<Admin>` requires only a `dataProvider` prop, and at least one child `<Resource>` to work:
+The `<Admin>` component is the root component of a react-admin app. It allows to configure the application adapters and UI.
+
+`<Admin>` creates a series of context providers to allow its children to access the app configuration. It renders the main routes and layout. It delegates the rendering of the content area to its `<Resource>` children.
+
+![Admin Component](./img/dense.webp)
+## Usage
+
+`<Admin>` requires only a `dataProvider` prop, and at least one child `<Resource>` to work. Here is the most basic example:
 
 ```jsx
 // in src/App.js
@@ -27,28 +34,62 @@ export default App;
 
 `<Admin>` children can be [`<Resource>`](./Resource.md) and [`<CustomRoutes>`](./CustomRoutes.md) elements.
 
+In most apps, `<Admin>` takes many props. Here is a more complete example taken from [the e-commerce demo](https://marmelab.com/react-admin-demo/):
+
+{% raw %}
+```jsx
+const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+        authProvider={authProvider}
+        i18nProvider={i18nProvider}
+        dashboard={Dashboard}
+        loginPage={Login}
+        layout={Layout}
+        theme={lightTheme}
+        darkTheme={darkTheme}
+        defaultToLightTheme
+    >
+        <CustomRoutes>
+            <Route path="/segments" element={<Segments />} />
+        </CustomRoutes>
+        <Resource name="customers" {...visitors} />
+        <Resource name="commands" {...orders} options={{ label: 'Orders' }} />
+        <Resource name="invoices" {...invoices} />
+        <Resource name="products" {...products} />
+        <Resource name="categories" {...categories} />
+        <Resource name="reviews" {...reviews} />
+    </Admin>
+);
+```
+{% endraw %}
+
+## Props
+
 Here are all the props accepted by the component:
 
-- [`dataProvider`](#dataprovider)
-- [`authProvider`](#authprovider)
-- [`i18nProvider`](#i18nprovider)
-- [`queryClient`](#queryclient)
-- [`title`](#title)
-- [`dashboard`](#dashboard)
-- [`disableTelemetry`](#disabletelemetry)
-- [`catchAll`](#catchall)
-- [`menu`](#menu)
-- [`theme`](#theme)
-- [`darkTheme`](#darktheme)
-- [`layout`](#layout)
-- [`loginPage`](#loginpage)
-- [`authCallbackPage`](#authcallbackpage)
-- [`history`](#history)
-- [`basename`](#basename)
-- [`ready`](#ready)
-- [`requireAuth`](#requireauth)
-- [`store`](#store)
-- [`notification`](#notification)
+| Prop                   | Required | Type           | Default        | Description                                              |
+|------------------------|----------|----------------|----------------|----------------------------------------------------------|
+| `authCallbackPage`     | Optional | `Component`    | `AuthCallback` | The content of the authentication callback page          |
+| `authProvider`         | Optional | `AuthProvider` | -              | The authentication provider for security and permissions |
+| `basename`             | Optional | `string`       | -              | The base path for all URLs                               |
+| `catchAll`             | Optional | `Component`    | `NotFound`     | The fallback component for unknown routes                |
+| `dashboard`            | Optional | `Component`    | -              | The content of the dashboard page                        |
+| `darkTheme`            | Optional | `object`       | -              | The dark theme configuration                             |
+| `dataProvider`         | Required | `DataProvider` | -              | The data provider for fetching resources                 |
+| `defaultTo LightTheme` | Optional | `boolean`      | `false`        | Flag to default to the light theme                       |
+| `disableTelemetry`     | Optional | `boolean`      | `false`        | Set to `true` to disable telemetry collection            |
+| `i18nProvider`         | Optional | `I18NProvider` | -              | The internationalization provider for translations       |
+| `layout`               | Optional | `Component`    | `Layout`       | The content of the layout                                |
+| `loginPage`            | Optional | `Component`    | `LoginPage`    | The content of the login page                            |
+| `notification`         | Optional | `Component`    | `Notification` | The notification component                               |
+| `queryClient`          | Optional | `QueryClient`  | -              | The react-query client                                   |
+| `ready`                | Optional | `Component`    | -              | The content of the ready page                            |
+| `requireAuth`          | Optional | `boolean`      | `false`        | Flag to require authentication for all routes            |
+| `store`                | Optional | `Store`        | -              | The Store for managing user preferences                  |
+| `theme`                | Optional | `object`       | -              | The main (light) theme configuration                     |
+| `title`                | Optional | `string`       | -              | The error page title                                     |
+
 
 ## `dataProvider`
 
@@ -430,6 +471,27 @@ const App = () => (
         layout={MyLayout} 
         theme={lightTheme}
         darkTheme={darkTheme}
+    >
+        ...
+    </Admin>
+);
+```
+
+## `defaultToLightTheme`
+
+If you provide both a `lightTheme` and a `darkTheme`, react-admin will choose the default theme to use for each user based on their OS preference. This means that users using dark mode will see the dark theme by default. Users can then switch to the other theme using [the `<ToggleThemeButton>` component](./ToggleThemeButton.md).
+
+If you prefer to always default to the light theme regardless of the user's OS preference, you can set the `defaultToLightTheme` prop to `true`:
+
+```jsx
+import { Admin } from 'react-admin';
+
+const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+        theme={lightTheme}
+        darkTheme={darkTheme}
+        defaultToLightTheme
     >
         ...
     </Admin>

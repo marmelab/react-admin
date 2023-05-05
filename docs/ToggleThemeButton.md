@@ -31,6 +31,7 @@ export const MyAppBar = () => (
 
 Then, pass the custom App Bar in a custom `<Layout>`, and the `<Layout>` to your `<Admin>`. The `<Admin>` must define a `darkTheme` prop for the button to work:
 
+{% raw %}
 ```jsx
 import { Admin, Layout } from 'react-admin';
 
@@ -48,6 +49,7 @@ const App = () => (
     </Admin>
 );
 ```
+{% endraw %}
 
 ## Creating A Dark Theme
 
