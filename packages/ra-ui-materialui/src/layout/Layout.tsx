@@ -11,7 +11,7 @@ import { styled, SxProps } from '@mui/material/styles';
 import { CoreLayoutProps } from 'ra-core';
 
 import { AppBar as DefaultAppBar, AppBarProps } from './AppBar';
-import { Sidebar as DefaultSidebar } from './Sidebar';
+import { Sidebar as DefaultSidebar, SidebarProps } from './Sidebar';
 import { Menu as DefaultMenu, MenuProps } from './Menu';
 import { Error, ErrorProps } from './Error';
 import { SkipNavigationButton } from '../button';
@@ -79,7 +79,7 @@ export interface LayoutProps
     className?: string;
     error?: ComponentType<ErrorProps>;
     menu?: ComponentType<MenuProps>;
-    sidebar?: ComponentType<{ children: ReactNode }>;
+    sidebar?: ComponentType<SidebarProps>;
     sx?: SxProps;
 }
 
