@@ -16,16 +16,14 @@ It is enabled by default in the `<AppBar>` as soon as you define a dark theme vi
 
 ## Usage
 
-You can add the `<ToggleThemeButton>` to a custom App Bar:
+You can add the `<ToggleThemeButton>` to a custom [`<AppBar toolbar>`](./AppBar.md#toolbar):
 
 ```jsx
 // in src/MyAppBar.js
-import { AppBar, TitlePortal, ToggleThemeButton } from 'react-admin';
+import { AppBar, ToggleThemeButton } from 'react-admin';
 
 export const MyAppBar = () => (
-    <AppBar toolbar={<ToggleThemeButton />}>
-        <TitlePortal />
-    </AppBar>>
+    <AppBar toolbar={<ToggleThemeButton />} />
 );
 ```
 

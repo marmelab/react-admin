@@ -10,16 +10,13 @@ import { RaThemeOptions, useThemesContext, useTheme } from '../layout';
 /**
  * Button toggling the theme (light or dark).
  *
- * Uses the light and dark theme defined in the <Admin> component.
+ * Enabled by default in the <AppBar> when the <Admin> component has a darkMode.
  *
  * @example
- * import { AppBar, TitlePortal, ToggleThemeButton } from 'react-admin';
+ * import { AppBar, ToggleThemeButton } from 'react-admin';
  *
  * const MyAppBar = () => (
- *     <AppBar>
- *         <TitlePortal />
- *         <ToggleThemeButton />
- *     </AppBar>
+ *     <AppBar toolbar={<ToggleThemeButton />} />
  * );
  *
  * const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
