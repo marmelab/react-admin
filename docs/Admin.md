@@ -425,7 +425,7 @@ const App = () => (
 
 ## `darkTheme`
 
-If you want to support light and dark mode, you can provide a `darkTheme` in addition to the `theme` prop. The `darkTheme` will be used when the user's browser is in dark mode, or when the user manually switches to dark mode using [the `<ToggleThemeButton>` component](./ToggleThemeButton.md).
+If you want to support both light and dark mode, you can provide a `darkTheme` in addition to the `theme` prop. The `darkTheme` will be used when the user's browser is in dark mode, or when the user manually switches to dark mode using [the `<ToggleThemeButton>` component](./ToggleThemeButton.md).
 
 ![Dark mode](./img/dark-theme.png)
 
@@ -776,16 +776,16 @@ Check the [Preferences documentation](./Store.md) for more details.
 
 ## `theme`
 
-Material UI supports [theming](https://mui.com/material-ui/customization/theming/). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom Material UI theme by using the `theme` prop:
+Material UI supports [theming](https://mui.com/material-ui/customization/theming/). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom Material UI theme by using the `theme` prop.
+
+For instance, to use a dark theme by default:
 
 ```jsx
 import { defaultTheme } from 'react-admin';
 
 const theme = {
     ...defaultTheme,
-    palette: {
-        mode: 'dark', // Switching the dark mode on is a single property value change.
-    },
+    palette: { mode: 'dark' },
 };
 
 const App = () => (
@@ -796,6 +796,8 @@ const App = () => (
 ```
 
 ![Dark theme](./img/dark-theme.png)
+
+If you want to support both a light and a dark theme, check out [the `<Admin darkTheme>` prop](#darktheme). 
 
 For more details on predefined themes and custom themes, refer to [the Theming chapter](./Theming.md#global-theme-overrides) of the react-admin documentation.
 
