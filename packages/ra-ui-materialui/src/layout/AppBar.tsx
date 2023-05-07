@@ -18,6 +18,8 @@ import { UserMenu } from './UserMenu';
 import { HideOnScroll } from './HideOnScroll';
 import { TitlePortal } from './TitlePortal';
 import { LocalesMenuButton } from '../button';
+import { useThemesContext } from './Theme/useThemesContext';
+import { ToggleThemeButton } from '../button/ToggleThemeButton';
 
 /**
  * The AppBar component renders a custom MuiAppBar.
@@ -93,9 +95,11 @@ export const AppBar: FC<AppBarProps> = memo(props => {
 
 const DefaultToolbar = () => {
     const locales = useLocales();
+    const { darkTheme } = useThemesContext();
     return (
         <>
             {locales && locales.length > 1 ? <LocalesMenuButton /> : null}
+            {darkTheme && <ToggleThemeButton />}
             <LoadingIndicator />
         </>
     );

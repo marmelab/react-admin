@@ -12,6 +12,7 @@ The `<ToggleThemeButton>` component lets users switch from light to dark mode, a
   Your browser does not support the video tag.
 </video>
 
+It is enabled by default in the `<AppBar>` as soon as you define a dark theme via [the `<Admin darkTheme>` prop](./Admin.md#darktheme).
 
 ## Usage
 
@@ -22,9 +23,8 @@ You can add the `<ToggleThemeButton>` to a custom App Bar:
 import { AppBar, TitlePortal, ToggleThemeButton } from 'react-admin';
 
 export const MyAppBar = () => (
-    <AppBar>
+    <AppBar toolbar={<ToggleThemeButton />}>
         <TitlePortal />
-        <ToggleThemeButton />
     </AppBar>>
 );
 ```
@@ -50,6 +50,25 @@ const App = () => (
 );
 ```
 {% endraw %}
+
+## Removing The Button From The AppBar
+
+The `<ToggleThemeButton>` appears by default in the `<AppBar>` if the `<Admin darkTheme>` prop is defined. If you want to remove it, you need to set a custom [`<AppBar toolbar>` prop](./AppBar.md#toolbar):
+
+```jsx
+// in src/MyAppBar.js
+import { AppBar, LocalesMenuButton, RefreshIconButton } from 'react-admin';
+
+export const MyAppBar = () => (
+    <AppBar toolbar={
+        <>
+            <LocalesMenuButton />
+            {/* no ToggleThemeButton here */}
+            <RefreshIconButton />
+        </>
+    } />
+);
+```
 
 ## Creating A Dark Theme
 

@@ -369,6 +369,12 @@ const App = () => (
 
 It's a common practice to support both a light theme and a dark theme in an application, and let users choose which one they prefer. 
 
+<video controls autoplay muted loop>
+  <source src="./img/ToggleThemeButton.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
+
 React-admin's `<Admin>` component accepts a `darkTheme` mode in addition to the `theme` prop. 
 
 ```jsx
@@ -388,52 +394,9 @@ const App = () => (
 );
 ```
 
-With this setup, the default application theme will depend on the user's system settings. If the user has chosen a dark mode in their OS, react-admin will use the dark theme. Otherwise, it will use the light theme.
+With this setup, the default application theme depends on the user's system settings. If the user has chosen a dark mode in their OS, react-admin will use the dark theme. Otherwise, it will use the light theme.
 
-In addition, you can let users switch from one theme to the other: [the `<ToggleThemeButton>` component](./ToggleThemeButton.md) lets users switch from light to dark mode, and persists that choice by leveraging the [store](./Store.md).
-
-<video controls autoplay muted loop>
-  <source src="./img/ToggleThemeButton.webm" type="video/webm"/>
-  Your browser does not support the video tag.
-</video>
-
-Add the `<ToggleThemeButton>` to a custom App Bar:
-
-```jsx
-// in src/MyLayout.jsx
-import * as React from 'react';
-import { Layout, AppBar, ToggleThemeButton, TitlePortal } from 'react-admin';
-import { Box, Typography } from '@mui/material';
-
-const MyAppBar = () => (
-    <AppBar>
-        <TitlePortal />
-        <ToggleThemeButton />
-    </AppBar>
-);
-
-const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
-```
-
-Then, pass the custom layout to the `<Admin>` component:
-
-```jsx
-import { Admin, defaultTheme } from 'react-admin';
-
-const lightTheme = defaultTheme;
-const darkTheme = { ...defaultTheme, palette: { mode: 'dark' } };
-
-const App = () => (
-    <Admin
-        dataProvider={...}
-        theme={lightTheme}
-        darkTheme={darkTheme}
-        layout={MyLayout}
-    >
-        // ...
-    </Admin>
-);
-```
+In addition, users can switch from one theme to the other using [the `<ToggleThemeButton>` component](./ToggleThemeButton.md), which appears in the AppBar as soon as you define a `daerkTheme` prop.
 
 ## Changing the Theme Programmatically
 

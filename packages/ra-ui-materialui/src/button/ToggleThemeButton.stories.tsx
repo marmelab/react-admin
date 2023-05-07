@@ -85,48 +85,37 @@ const dataProvider = fakeRestDataProvider({
 
 const history = createMemoryHistory({ initialEntries: ['/books'] });
 
-const BookList = () => {
-    return (
-        <List>
-            <Datagrid>
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="author" />
-                <TextField source="year" />
-            </Datagrid>
-        </List>
-    );
-};
-
-const MyAppBar = () => (
-    <AppBar>
-        <TitlePortal />
-        <ToggleThemeButton />
-    </AppBar>
+const BookList = () => (
+    <List>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </List>
 );
-const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 
 export const Basic = () => (
     <Admin
         dataProvider={dataProvider}
         history={history}
-        layout={MyLayout}
         darkTheme={{ palette: { mode: 'dark' } }}
     >
         <Resource name="books" list={BookList} />
     </Admin>
 );
 
-const LegacyAppBar = () => (
+const MyAppBar = () => (
     <AppBar>
         <TitlePortal />
         <ToggleThemeButton darkTheme={{ palette: { mode: 'dark' } }} />
     </AppBar>
 );
-const LegacyLayout = props => <Layout {...props} appBar={LegacyAppBar} />;
+const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 
 export const Legacy = () => (
-    <Admin dataProvider={dataProvider} history={history} layout={LegacyLayout}>
+    <Admin dataProvider={dataProvider} history={history} layout={MyLayout}>
         <Resource name="books" list={BookList} />
     </Admin>
 );
