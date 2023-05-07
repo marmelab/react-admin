@@ -85,10 +85,10 @@ const theme = createTheme({
 
 declare module '@mui/material/styles' {
     interface Palette {
-        userDefined: PaletteColor;
+        userDefined?: PaletteColor;
     }
     interface PaletteOptions {
-        userDefined: PaletteColor;
+        userDefined?: PaletteColor;
     }
 }
 

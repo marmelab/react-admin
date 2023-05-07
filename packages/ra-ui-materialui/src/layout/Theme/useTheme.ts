@@ -1,7 +1,6 @@
 import { useStore } from 'ra-core';
-import { RaThemeOptions } from './types';
+import { RaThemeOptions, ThemeType } from './types';
 
-export type ThemeType = 'light' | 'dark';
 export type ThemeSetter = (theme: ThemeType | RaThemeOptions) => void;
 
 /**

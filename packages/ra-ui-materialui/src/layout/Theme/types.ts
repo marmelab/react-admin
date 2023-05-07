@@ -11,3 +11,5 @@ export interface RaThemeOptions extends MuiThemeOptions {
     };
     components?: ComponentsTheme;
 }
+
+export type ThemeType = 'light' | 'dark';

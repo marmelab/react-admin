@@ -11,11 +11,23 @@ import { useTheme } from './useTheme';
 import { useThemesContext } from './useThemesContext';
 
 /**
- * This sets the Material UI theme based on the store.
+ * This sets the Material UI theme based on the preferred theme type.
  *
  * @param props
  * @param props.children The children of the component.
- * @param props.theme The initial theme.
+ * @param {ThemeOptions} props.theme The initial theme. Optional, use the one from the context if not provided.
+ *
+ * @example
+ *
+ * import { ThemesContext, ThemeProvider } from 'react-admin';
+ *
+ * const App = () => (
+ *    <ThemesContext.Provider value={{ lightTheme, darkTheme }}>
+ *      <ThemeProvider>
+ *        <Button>Test</Button>
+ *      </ThemeProvider>
+ *   </ThemesContext.Provider>
+ * );
  */
 export const ThemeProvider = ({
     children,
@@ -50,5 +62,8 @@ export const ThemeProvider = ({
 
 export interface ThemeProviderProps {
     children: ReactNode;
+    /**
+     * @deprecated Use the `ThemesProvider` component instead.
+     */
     theme?: RaThemeOptions;
 }
