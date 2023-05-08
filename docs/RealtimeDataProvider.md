@@ -185,7 +185,7 @@ const App = () => (
 
 If you're using another transport for real-time messages (WebSockets, long polling, GraphQL subscriptions, etc.), you'll have to implement `subscribe`, `unsubscribe`, and `publish` yourself in your `dataProvider`. As an example, here is an implementation using a local variable, that `ra-realtime` uses in tests:
 
-```ts
+```jsx
 let subscriptions = [];
 
 const dataProvider = {
