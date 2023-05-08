@@ -5,6 +5,16 @@ title: "Realtime DataProvider Requirements"
 
 # Realtime DataProvider Requirements
 
+`ra-realtime` provides helper functions to add real-time capabilities to an existing data provider if you use the following real-time backends:
+
+-  [Supabase](#supabase)
+-  [API Platform](#api-platform)
+-  [Mercure](#mercure)
+
+For other backends, you'll need to write your own implementation. Check the [Writing a custom adapter](#writing-a-custom-adapter) section below for more information.
+
+## Realtime Methods & Signature
+
 To enable real-time features, the `dataProvider` must implement three new methods:
 
 -   `subscribe(topic, callback)`
@@ -20,7 +30,87 @@ In addition, to support the lock features, the `dataProvider` must implement 4 m
 -   `getLock(resource, { id, meta })`
 -   `getLocks(resource, { meta })`
 
-## API-Platform Adapter
+## Supabase
+
+The `ra-realtime` package contains a function augmenting a regular (API-based) `dataProvider` with real-time methods based on the capabilities of [Supabase](https://supabase.com/docs/guides/realtime). 
+
+This adapter subscribes to [Postgres Changes](https://supabase.com/docs/guides/realtime/extensions/postgres-changes), and transforms the events into the format expected by `ra-realtime`.
+
+```jsx
+import { createClient } from '@supabase/supabase-js';
+import { supabaseDataProvider } from 'ra-supabase';
+import { addRealTimeMethodsBasedOnSupabase, ListLive } from '@react-admin/ra-realtime';
+import { Admin, Resource, Datagrid, TextField, EmailField } from 'react-admin';
+
+const supabaseClient = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
+);
+
+const dataProvider = supabaseDataProvider({
+    instanceUrl: process.env.SUPABASE_URL,
+    apiKey: process.env.SUPABASE_ANON_KEY,
+    supabaseClient
+});
+
+const realTimeDataProvider = addRealTimeMethodsBasedOnSupabase({
+    dataProvider,
+    supabaseClient,
+});
+
+export const App = () => (
+    <Admin dataProvider={realTimeDataProvider}>
+        <Resource name="sales" list={SaleList} />
+    </Admin>
+);
+
+const SaleList = () => (
+    <ListLive>
+        <Datagrid rowClick="edit">
+            <TextField source="id" />
+            <TextField source="first_name" />
+            <TextField source="last_name" />
+            <EmailField source="email" />
+        </Datagrid>
+    </ListLive>
+);
+```
+
+**Tip:** Realtime features are not enabled in Supabase by default, you need to enable them. This can be done either from the [Replication](https://app.supabase.com/project/_/database/replication) section of your Supabase Dashboard, or by running the following SQL query with the [SQL Editor](https://app.supabase.com/project/_/sql):
+
+```sql
+begin;
+
+-- remove the supabase_realtime publication
+drop
+  publication if exists supabase_realtime;
+
+-- re-create the supabase_realtime publication with no tables
+create publication supabase_realtime;
+
+commit;
+
+-- add a table to the publication
+alter
+  publication supabase_realtime add table sales;
+alter
+  publication supabase_realtime add table contacts;
+alter
+  publication supabase_realtime add table contactNotes;
+```
+
+Have a look at the Supabase [Replication Setup](https://supabase.com/docs/guides/realtime/extensions/postgres-changes#replication-setup) documentation section for more info.
+
+`addRealTimeMethodsBasedOnSupabase` accepts the following parameters:
+
+| Prop              | Required | Type             | Default | Description                                              |
+| ----------------- | -------- | ---------------- | ------- | -------------------------------------------------------- |
+| `dataProvider`    | Required | `DataProvider`   | -       | The base dataProvider to augment with realtime methods   |
+| `supabaseClient`  | Required | `SupabaseClient` | -       | The Supabase JS Client                                   |
+
+**Tip**: You may choose to sign your own tokens to customize claims that can be checked in your RLS policies. In order to use these custom tokens with `addRealTimeMethodsBasedOnSupabase`, you must pass an `apikey` field in both Realtime's `headers` and `params` when creating the `supabaseClient`. Please follow the instructions from the [Supabase documentation](https://supabase.com/docs/guides/realtime/extensions/postgres-changes#custom-tokens) for more information about how to do so.
+
+## API-Platform
 
 The `ra-realtime` package contains a function augmenting a regular (API-based) `dataProvider` with real-time methods based on the capabilities of [API-Platform](https://api-platform.com/). Use it as follows:
 
@@ -70,7 +160,7 @@ const GreetingsList = () => (
 );
 ```
 
-## Mercure Adapter
+## Mercure
 
 The `ra-realtime` package contains a function augmenting a regular (API-based) `dataProvider` with real-time methods based on [a Mercure hub](https://mercure.rocks/). Use it as follows:
 
