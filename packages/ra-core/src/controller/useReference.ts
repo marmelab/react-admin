@@ -40,6 +40,7 @@ export interface UseReferenceResult<RecordType extends RaRecord = any> {
  * @param {Object} option
  * @param {string} option.reference The linked resource name
  * @param {string} option.id The id of the reference
+ * @param {Object} option.options Options passed to the dataProvider
  *
  * @returns {UseReferenceResult} The reference record
  */
