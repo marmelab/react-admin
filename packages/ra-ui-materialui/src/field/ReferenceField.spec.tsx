@@ -584,7 +584,7 @@ describe('<ReferenceField />', () => {
         expect(screen.findByText('Not found')).not.toBeNull();
     });
 
-    it.only('should accept a queryOptions prop', async () => {
+    it('should accept a queryOptions prop', async () => {
         const dataProvider = testDataProvider({
             getMany: jest.fn().mockResolvedValue({
                 data: [{ id: 123, title: 'foo' }],
