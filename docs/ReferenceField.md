@@ -146,16 +146,15 @@ You can also use a custom `link` function to get a custom path for the children.
 
 ## `queryOptions`
 
-`<ReferenceField>` uses `react-query` to fetch the related record. You can set [any of `useQuery` options](https://react-query-v3.tanstack.com/reference/useQuery) via the the `queryOptions` prop.
+Use the `queryOptions` prop to pass options to the `dataProvider.getMany()` query that fetches the referenced record.
 
-For instance, if you want to disable the refetch on window focus for this query, you can use:
+For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
 
-{% raw %}
 ```jsx
 <ReferenceField 
     source="user_id"
     reference="users"
-    queryOptions={{ refetchOnWindowFocus: false }}
+    queryOptions={{ meta: { foo: 'bar' } }}
 >
     <TextField source="name" />
 </ReferenceField>
