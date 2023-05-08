@@ -23,6 +23,7 @@ import {
 import { LinearProgress } from '../layout';
 import { Link } from '../Link';
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
+import { UseQueryOptions } from 'react-query';
 
 /**
  * Fetch reference record, and render its representation, or delegate rendering to child component.
@@ -106,6 +107,7 @@ export interface ReferenceFieldProps<RecordType extends RaRecord = any>
     extends PublicFieldProps,
         InjectedFieldProps<RecordType> {
     children?: ReactNode;
+    queryOptions?: UseQueryOptions<RecordType[], Error> & { meta?: any };
     reference: string;
     resource?: string;
     source: string;
@@ -120,7 +122,7 @@ export interface ReferenceFieldProps<RecordType extends RaRecord = any>
  */
 export const NonEmptyReferenceField: FC<
     Omit<ReferenceFieldProps, 'source'> & { id: Identifier }
-> = ({ children, id, record, reference, link, ...props }) => {
+> = ({ children, id, record, reference, link, queryOptions, ...props }) => {
     const createPath = useCreatePath();
     const resourceDefinition = useResourceDefinition({ resource: reference });
 
@@ -146,6 +148,7 @@ export const NonEmptyReferenceField: FC<
                 {...useReference({
                     reference,
                     id,
+                    options: queryOptions,
                 })}
                 resourceLinkPath={resourceLinkPath}
             >

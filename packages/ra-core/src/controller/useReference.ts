@@ -5,7 +5,7 @@ import { UseQueryOptions } from 'react-query';
 interface UseReferenceProps<RecordType extends RaRecord = any> {
     id: Identifier;
     reference: string;
-    options?: UseQueryOptions<RecordType[], Error>;
+    options?: UseQueryOptions<RecordType[], Error> & { meta?: any };
 }
 
 export interface UseReferenceResult<RecordType extends RaRecord = any> {
