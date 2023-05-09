@@ -143,7 +143,7 @@ If you need to count the number of records related to the current one via a one-
 
 ```jsx
 import { 
-    ChipField
+    ChipField,
     Datagrid,
     DateField,
     List,
