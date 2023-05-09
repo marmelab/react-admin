@@ -17,6 +17,7 @@ By default, the `<AppBar>` component displays:
 - a hamburger icon to toggle the sidebar width,
 - the page title,
 - a button to change locales (if the application uses [i18n](./Translation.md)),
+- a button to change the theme (if the application uses a [dark theme](./Admin.md#darktheme)),
 - a loading indicator,
 - a button to display the user menu.
 
@@ -74,28 +75,29 @@ Additional props are passed to [the underlying Material UI `<AppBar>` element](h
 
 ## `children`
 
-The `<AppBar>` component accepts a `children` prop, which is displayed in the central part of the app bar. This is useful to add buttons to the app bar, for instance, a light/dark theme switcher.
+The `<AppBar>` component accepts a `children` prop, which is displayed in the central part of the app bar. This is useful to add buttons to the app bar, for instance, a settings button.
 
 ```jsx
 // in src/MyAppBar.js
-import { 
-    AppBar,
-    TitlePortal,
-    ToggleThemeButton,
-    defaultTheme,
-} from 'react-admin';
+import { AppBar, TitlePortal } from 'react-admin';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { IconButton } from '@mui/material';
 
-const darkTheme = { palette: { mode: 'dark' } };
+const SettingsButton = () => (
+    <IconButton color="inherit">
+        <SettingsIcon />
+    </IconButton>
+);
 
 export const MyAppBar = () => (
     <AppBar>
         <TitlePortal />
-        <ToggleThemeButton lightTheme={defaultTheme} darkTheme={darkTheme} />
+        <SettingsButton />
     </AppBar>
 );
 ```
 
-![App bar with a toggle theme button](./img/AppBar-children.png)
+![App bar with a settings button](./img/AppBar-children.png)
 
 **Tip**: Whats the `<TitlePortal>`? It's a placeholder for the page title, that components in the page can fill using [the `<Title>` component](./Title.md). `<Title>` uses a [React Portal](https://reactjs.org/docs/portals.html) under the hood. `<TitlePortal>` takes all the available space in the app bar, so it "pushes" the following children to the right.
  
@@ -166,7 +168,11 @@ To override the style of `<AppBar>` using the [Material UI style overrides](http
 
 ## `toolbar`
 
-By default, the `<AppBar>` renders two buttons in addition to the user menu: the language menu and the refresh button.
+By default, the `<AppBar>` renders three buttons in addition to the user menu:
+
+- the [language menu button](./LocalesMenuButton.md),
+- the [theme toggle button](./ToggleThemeButton.md),
+- and [the refresh button](./Buttons.md#refreshbutton).
 
 If you want to reorder or remove these buttons, you can customize the toolbar by passing a `toolbar` prop.
 
@@ -177,36 +183,37 @@ import {
     LocalesMenuButton,
     RefreshIconButton,
     ToggleThemeButton,
-    defaultTheme,
 } from 'react-admin';
-
-const darkTheme = {
-    palette: { mode: 'dark' },
-};
 
 export const MyAppBar = () => (
     <AppBar toolbar={
         <>
             <LocalesMenuButton />
-            <ToggleThemeButton lightTheme={defaultTheme} darkTheme={darkTheme} />
+            <ToggleThemeButton />
             <RefreshIconButton />
         </>
     } />
 );
 ```
 
-**Tip**: If you only need to *add* buttons to the toolbar, you can pass them as children instead of overriding the entire toolbar.
+**Tip**: If you only need to *add* buttons to the toolbar, you can pass them as [children](#children) instead of overriding the entire toolbar.
 
 ```jsx
 // in src/MyAppBar.js
-import { AppBar, TitlePortal, ToggleThemeButton, defaultTheme } from 'react-admin';
+import { AppBar, TitlePortal } from 'react-admin';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { IconButton } from '@mui/material';
 
-const darkTheme = { palette: { mode: 'dark' } };
+const SettingsButton = () => (
+    <IconButton color="inherit">
+        <SettingsIcon />
+    </IconButton>
+);
 
 export const MyAppBar = () => (
     <AppBar>
         <TitlePortal />
-        <ToggleThemeButton lightTheme={defaultTheme} darkTheme={darkTheme} />
+        <SettingsButton />
     </AppBar>
 );
 ```
@@ -346,23 +353,24 @@ export const i18nProvider = {
 
 To add buttons to the app bar, you can use the `<AppBar>` [`children` prop](#children).
 
-For instance, to add `<ToggleThemeButton>`:
+For instance, to add a settings button:
 
 ```jsx
 // in src/MyAppBar.js
-import { 
-    AppBar,
-    TitlePortal,
-    ToggleThemeButton,
-    defaultTheme,
-} from 'react-admin';
+import { AppBar, TitlePortal } from 'react-admin';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { IconButton } from '@mui/material';
 
-const darkTheme = { palette: { mode: 'dark' } };
+const SettingsButton = () => (
+    <IconButton color="inherit">
+        <SettingsIcon />
+    </IconButton>
+);
 
 export const MyAppBar = () => (
     <AppBar>
         <TitlePortal />
-        <ToggleThemeButton lightTheme={defaultTheme} darkTheme={darkTheme} />
+        <SettingsButton />
     </AppBar>
 );
 ```

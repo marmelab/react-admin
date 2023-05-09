@@ -12,28 +12,24 @@ The `<ToggleThemeButton>` component lets users switch from light to dark mode, a
   Your browser does not support the video tag.
 </video>
 
+It is enabled by default in the `<AppBar>` as soon as you define a dark theme via [the `<Admin darkTheme>` prop](./Admin.md#darktheme).
 
 ## Usage
 
-You can add the `<ToggleThemeButton>` to a custom App Bar:
+You can add the `<ToggleThemeButton>` to a custom [`<AppBar toolbar>`](./AppBar.md#toolbar):
 
 ```jsx
-import { AppBar, TitlePortal, ToggleThemeButton, defaultTheme } from 'react-admin';
-
-const darkTheme = {
-    palette: { mode: 'dark' },
-};
+// in src/MyAppBar.js
+import { AppBar, ToggleThemeButton } from 'react-admin';
 
 export const MyAppBar = () => (
-    <AppBar>
-        <TitlePortal />
-        <ToggleThemeButton lightTheme={defaultTheme} darkTheme={darkTheme} />
-    </AppBar>>
+    <AppBar toolbar={<ToggleThemeButton />} />
 );
 ```
 
-Then, pass the custom App Bar in a custom `<Layout>`, and the `<Layout>` to your `<Admin>`:
+Then, pass the custom App Bar in a custom `<Layout>`, and the `<Layout>` to your `<Admin>`. The `<Admin>` must define a `darkTheme` prop for the button to work:
 
+{% raw %}
 ```jsx
 import { Admin, Layout } from 'react-admin';
 
@@ -42,56 +38,63 @@ import { MyAppBar } from './MyAppBar';
 const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
 
 const App = () => (
-    <Admin dataProvider={dataProvider} layout={MyLayout}>
+    <Admin
+        dataProvider={dataProvider}
+        layout={MyLayout} 
+        darkTheme={{ palette: { mode: 'dark' } }}
+    >
         ...
     </Admin>
 );
 ```
+{% endraw %}
 
-## `darkTheme`
+## Removing The Button From The AppBar
 
-Required: A theme object to use when the user chooses the dark mode. It must be serializable to JSON.
+The `<ToggleThemeButton>` appears by default in the `<AppBar>` if the `<Admin darkTheme>` prop is defined. If you want to remove it, you need to set a custom [`<AppBar toolbar>` prop](./AppBar.md#toolbar):
 
 ```jsx
-const darkTheme = {
-    palette: { mode: 'dark' },
-};
+// in src/MyAppBar.js
+import { AppBar, LocalesMenuButton, RefreshIconButton } from 'react-admin';
 
-<ToggleThemeButton darkTheme={darkTheme} />
+export const MyAppBar = () => (
+    <AppBar toolbar={
+        <>
+            <LocalesMenuButton />
+            {/* no ToggleThemeButton here */}
+            <RefreshIconButton />
+        </>
+    } />
+);
 ```
 
-**Tip**: React-admin calls Material UI's `createTheme()` on this object. 
+## Creating A Dark Theme
 
-## `lightTheme`
+For this button to work, you must provide a dark theme to the `<Admin>` component. The `darkTheme` should be a JSON object that follows the [Material UI theme specification](https://material-ui.com/customization/theming/).
 
-A theme object to use when the user chooses the light mode. It must be serializable to JSON.
+You can create such a theme from scratch:
 
 ```jsx
 const darkTheme = {
     palette: { mode: 'dark' },
 };
-const lightTheme = {
+```
+
+Of you can override react-admin's default dark theme:
+
+```jsx
+import { defaultDarkTheme } from 'react-admin';
+
+const darkTheme = {
+    ...defaultDarkTheme,
     palette: {
-        type: 'light',
+        ...defaultDarkTheme.palette,
         primary: {
-            main: '#3f51b5',
-        },
-        secondary: {
-            main: '#f50057',
+            main: '#90caf9',
         },
     },
 };
-
-<ToggleThemeButton lightTheme={lightTheme} darkTheme={darkTheme} />
 ```
 
-React-admin uses the `<Admin theme>` prop as default theme.
-
-**Tip**: React-admin calls Material UI's `createTheme()` on this object. 
-
-## API
-
-* [`ToggleThemeButton`]
-
-[`ToggleThemeButton`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/button/ToggleThemeButton.jsx
+**Tip**: React-admin calls Material UI's `createTheme()` on the `<Admin darkTheme>` prop - don't call it yourself. 
 

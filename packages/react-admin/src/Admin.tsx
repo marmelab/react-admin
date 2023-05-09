@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { ComponentType } from 'react';
 import { CoreAdminProps, localStorageStore } from 'ra-core';
-import { AdminUI, AdminContext } from 'ra-ui-materialui';
-import { ThemeOptions } from '@mui/material';
+import { AdminUI, AdminContext, RaThemeOptions } from 'ra-ui-materialui';
 
 import { defaultI18nProvider } from './defaultI18nProvider';
 
@@ -111,6 +110,9 @@ export const Admin = (props: AdminProps) => {
         store,
         ready,
         theme,
+        lightTheme,
+        darkTheme,
+        defaultTheme,
         title = 'React Admin',
     } = props;
 
@@ -130,6 +132,9 @@ export const Admin = (props: AdminProps) => {
             history={history}
             queryClient={queryClient}
             theme={theme}
+            lightTheme={lightTheme}
+            darkTheme={darkTheme}
+            defaultTheme={defaultTheme}
         >
             <AdminUI
                 layout={layout}
@@ -159,6 +164,9 @@ Admin.defaultProps = {
 export default Admin;
 
 export interface AdminProps extends CoreAdminProps {
-    theme?: ThemeOptions;
+    theme?: RaThemeOptions;
+    lightTheme?: RaThemeOptions;
+    darkTheme?: RaThemeOptions;
+    defaultTheme?: 'light' | 'dark';
     notification?: ComponentType;
 }
