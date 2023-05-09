@@ -112,7 +112,7 @@ export const Admin = (props: AdminProps) => {
         theme,
         lightTheme,
         darkTheme,
-        defaultToLightTheme,
+        defaultTheme,
         title = 'React Admin',
     } = props;
 
@@ -134,7 +134,7 @@ export const Admin = (props: AdminProps) => {
             theme={theme}
             lightTheme={lightTheme}
             darkTheme={darkTheme}
-            defaultToLightTheme={defaultToLightTheme}
+            defaultTheme={defaultTheme}
         >
             <AdminUI
                 layout={layout}
@@ -167,6 +167,6 @@ export interface AdminProps extends CoreAdminProps {
     theme?: RaThemeOptions;
     lightTheme?: RaThemeOptions;
     darkTheme?: RaThemeOptions;
-    defaultToLightTheme?: boolean;
+    defaultTheme?: 'light' | 'dark';
     notification?: ComponentType;
 }

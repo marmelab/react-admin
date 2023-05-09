@@ -23,12 +23,12 @@ import { RaThemeOptions, useThemesContext, useTheme } from '../layout';
  */
 export const ToggleThemeButton = (props: ToggleThemeButtonProps) => {
     const translate = useTranslate();
-    const { darkTheme, defaultToLightTheme } = useThemesContext(props);
+    const { darkTheme, defaultTheme } = useThemesContext(props);
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)', {
         noSsr: true,
     });
     const [theme, setTheme] = useTheme(
-        prefersDarkMode && !defaultToLightTheme && darkTheme ? 'dark' : 'light'
+        defaultTheme || (prefersDarkMode && darkTheme ? 'dark' : 'light')
     );
 
     // FIXME: remove in v5

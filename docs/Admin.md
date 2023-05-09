@@ -64,7 +64,7 @@ const App = () => (
         loginPage={Login}
         theme={lightTheme}
         darkTheme={darkTheme}
-        defaultToLightTheme
+        defaultTheme="light"
     >
         <Resource name="customers" list={CustomerList} edit={CustomerEdit} />
         <Resource name="orders" list={OrderList} edit={OrderEdit} options={{ label: 'Orders' }} />
@@ -111,7 +111,7 @@ const App = () => (
         layout={Layout}
         theme={lightTheme}
         darkTheme={darkTheme}
-        defaultToLightTheme
+        defaultTheme="light"
     >
         <Resource {...customers} />
         <Resource {...orders} />
@@ -136,28 +136,28 @@ Three main props lets you configure the core features of the `<Admin>` component
 
 Here are all the props accepted by the component:
 
-| Prop                   | Required | Type           | Default        | Description                                              |
-|------------------------|----------|----------------|----------------|----------------------------------------------------------|
-| `dataProvider`         | Required | `DataProvider` | -              | The data provider for fetching resources                 |
-| `children`             | Required | `ReactNode`    | -              | The routes to render                                     |
-| `authCallbackPage`     | Optional | `Component`    | `AuthCallback` | The content of the authentication callback page          |
-| `authProvider`         | Optional | `AuthProvider` | -              | The authentication provider for security and permissions |
-| `basename`             | Optional | `string`       | -              | The base path for all URLs                               |
-| `catchAll`             | Optional | `Component`    | `NotFound`     | The fallback component for unknown routes                |
-| `dashboard`            | Optional | `Component`    | -              | The content of the dashboard page                        |
-| `darkTheme`            | Optional | `object`       | -              | The dark theme configuration                             |
-| `defaultTo LightTheme` | Optional | `boolean`      | `false`        | Flag to default to the light theme                       |
-| `disableTelemetry`     | Optional | `boolean`      | `false`        | Set to `true` to disable telemetry collection            |
-| `i18nProvider`         | Optional | `I18NProvider` | -              | The internationalization provider for translations       |
-| `layout`               | Optional | `Component`    | `Layout`       | The content of the layout                                |
-| `loginPage`            | Optional | `Component`    | `LoginPage`    | The content of the login page                            |
-| `notification`         | Optional | `Component`    | `Notification` | The notification component                               |
-| `queryClient`          | Optional | `QueryClient`  | -              | The react-query client                                   |
-| `ready`                | Optional | `Component`    | `Ready`        | The content of the ready page                            |
-| `requireAuth`          | Optional | `boolean`      | `false`        | Flag to require authentication for all routes            |
-| `store`                | Optional | `Store`        | -              | The Store for managing user preferences                  |
-| `theme`                | Optional | `object`       | -              | The main (light) theme configuration                     |
-| `title`                | Optional | `string`       | -              | The error page title                                     |
+| Prop               | Required | Type           | Default        | Description                                              |
+|------------------- |----------|----------------|----------------|----------------------------------------------------------|
+| `dataProvider`     | Required | `DataProvider` | -              | The data provider for fetching resources                 |
+| `children`         | Required | `ReactNode`    | -              | The routes to render                                     |
+| `authCallbackPage` | Optional | `Component`    | `AuthCallback` | The content of the authentication callback page          |
+| `authProvider`     | Optional | `AuthProvider` | -              | The authentication provider for security and permissions |
+| `basename`         | Optional | `string`       | -              | The base path for all URLs                               |
+| `catchAll`         | Optional | `Component`    | `NotFound`     | The fallback component for unknown routes                |
+| `dashboard`        | Optional | `Component`    | -              | The content of the dashboard page                        |
+| `darkTheme`        | Optional | `object`       | -              | The dark theme configuration                             |
+| `defaultTheme`     | Optional | `boolean`      | `false`        | Flag to default to the light theme                       |
+| `disableTelemetry` | Optional | `boolean`      | `false`        | Set to `true` to disable telemetry collection            |
+| `i18nProvider`     | Optional | `I18NProvider` | -              | The internationalization provider for translations       |
+| `layout`           | Optional | `Component`    | `Layout`       | The content of the layout                                |
+| `loginPage`        | Optional | `Component`    | `LoginPage`    | The content of the login page                            |
+| `notification`     | Optional | `Component`    | `Notification` | The notification component                               |
+| `queryClient`      | Optional | `QueryClient`  | -              | The react-query client                                   |
+| `ready`            | Optional | `Component`    | `Ready`        | The content of the ready page                            |
+| `requireAuth`      | Optional | `boolean`      | `false`        | Flag to require authentication for all routes            |
+| `store`            | Optional | `Store`        | -              | The Store for managing user preferences                  |
+| `theme`            | Optional | `object`       | -              | The main (light) theme configuration                     |
+| `title`            | Optional | `string`       | -              | The error page title                                     |
 
 
 ## `dataProvider`
@@ -447,13 +447,13 @@ const App = () => (
 );
 ```
 
-**Tip**: To disable OS preference detection and always use the light theme, see the [`defaultToLightTheme`](#defaulttolighttheme) prop.
+**Tip**: To disable OS preference detection and always use one theme by default, see the [`defaultTheme`](#defaulttheme) prop.
 
-## `defaultToLightTheme`
+## `defaultTheme`
 
 If you provide both a `lightTheme` and a `darkTheme`, react-admin will choose the default theme to use for each user based on their OS preference. This means that users using dark mode will see the dark theme by default. Users can then switch to the other theme using [the `<ToggleThemeButton>` component](./ToggleThemeButton.md).
 
-If you prefer to always default to the light theme regardless of the user's OS preference, you can set the `defaultToLightTheme` prop to `true`:
+If you prefer to always default to the light or the dark theme regardless of the user's OS preference, you can set the `defaultTheme` prop to either `light` or `dark`:
 
 ```jsx
 import { Admin } from 'react-admin';
@@ -463,7 +463,7 @@ const App = () => (
         dataProvider={dataProvider}
         theme={lightTheme}
         darkTheme={darkTheme}
-        defaultToLightTheme
+        defaultTheme="light"
     >
         ...
     </Admin>

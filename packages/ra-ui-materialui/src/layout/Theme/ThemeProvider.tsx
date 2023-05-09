@@ -33,13 +33,13 @@ export const ThemeProvider = ({
     children,
     theme: themeOverride,
 }: ThemeProviderProps) => {
-    const { lightTheme, darkTheme, defaultToLightTheme } = useThemesContext();
+    const { lightTheme, darkTheme, defaultTheme } = useThemesContext();
 
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)', {
         noSsr: true,
     });
     const [mode] = useTheme(
-        prefersDarkMode && !defaultToLightTheme && darkTheme ? 'dark' : 'light'
+        defaultTheme || (prefersDarkMode && darkTheme ? 'dark' : 'light')
     );
 
     const themeValue = useMemo(() => {

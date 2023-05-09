@@ -4,17 +4,18 @@ import { ThemesContext } from './ThemesContext';
 import { RaThemeOptions } from './types';
 
 export const useThemesContext = (params?: UseThemesContextParams) => {
-    const { lightTheme, darkTheme, defaultToLightTheme } = params || {};
+    const { lightTheme, darkTheme, defaultTheme } = params || {};
     const context = useContext(ThemesContext);
     return {
         lightTheme: lightTheme || context.lightTheme,
         darkTheme: darkTheme || context.darkTheme,
-        defaultToLightTheme: defaultToLightTheme ?? context.defaultToLightTheme,
+        defaultTheme: defaultTheme ?? context.defaultTheme,
     };
 };
 
 export interface UseThemesContextParams {
     lightTheme?: RaThemeOptions;
     darkTheme?: RaThemeOptions;
+    defaultTheme?: 'dark' | 'light';
     [key: string]: any;
 }

@@ -9,7 +9,7 @@ export const AdminContext = (props: AdminContextProps) => {
         theme,
         lightTheme = defaultLightTheme,
         darkTheme,
-        defaultToLightTheme,
+        defaultTheme,
         children,
         ...rest
     } = props;
@@ -19,7 +19,7 @@ export const AdminContext = (props: AdminContextProps) => {
                 value={{
                     lightTheme: theme || lightTheme,
                     darkTheme,
-                    defaultToLightTheme,
+                    defaultTheme,
                 }}
             >
                 <ThemeProvider>{children}</ThemeProvider>
@@ -31,7 +31,7 @@ export const AdminContext = (props: AdminContextProps) => {
 export interface AdminContextProps extends CoreAdminContextProps {
     lightTheme?: RaThemeOptions;
     darkTheme?: RaThemeOptions;
-    defaultToLightTheme?: boolean;
+    defaultTheme?: 'light' | 'dark';
 }
 
 AdminContext.displayName = 'AdminContext';
