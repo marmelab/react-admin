@@ -375,7 +375,7 @@ It's a common practice to support both a light theme and a dark theme in an appl
 </video>
 
 
-React-admin's `<Admin>` component accepts a `darkTheme` mode in addition to the `theme` prop. 
+React-admin's `<Admin>` component accepts a `darkTheme` prop in addition to the `theme` prop. 
 
 ```jsx
 import { Admin, defaultTheme } from 'react-admin';
