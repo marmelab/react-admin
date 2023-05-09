@@ -583,4 +583,33 @@ describe('<ReferenceField />', () => {
 
         expect(screen.findByText('Not found')).not.toBeNull();
     });
+
+    it('should accept a queryOptions prop', async () => {
+        const dataProvider = testDataProvider({
+            getMany: jest.fn().mockResolvedValue({
+                data: [{ id: 123, title: 'foo' }],
+            }),
+        });
+        render(
+            <ThemeProvider theme={theme}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ReferenceField
+                        record={record}
+                        resource="comments"
+                        source="postId"
+                        reference="posts"
+                        queryOptions={{ meta: { foo: 'bar' } }}
+                    >
+                        <TextField source="title" />
+                    </ReferenceField>
+                </CoreAdminContext>
+            </ThemeProvider>
+        );
+        await waitFor(() => {
+            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
+                ids: [123],
+                meta: { foo: 'bar' },
+            });
+        });
+    });
 });
