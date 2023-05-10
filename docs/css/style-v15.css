@@ -49,7 +49,7 @@ main > .container .markdown-section {
 
 @media (max-height: 700px) {
     .toc-container {
-        max-height: 31.25em;
+        height: 70vh;
         overflow-y: auto;
     }
 }
