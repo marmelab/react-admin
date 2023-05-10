@@ -84,7 +84,7 @@ export const ReferenceOneField = <RecordType extends RaRecord = any>(
                 isLoading={isLoading}
                 isFetching={isFetching}
                 referenceRecord={referenceRecord}
-                resourceLinkPath={resourceLinkPath}
+                link={resourceLinkPath}
                 reference={reference}
                 refetch={refetch}
                 error={error}
