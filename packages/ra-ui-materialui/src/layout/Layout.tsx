@@ -1,7 +1,6 @@
 import React, {
     useState,
     ErrorInfo,
-    ReactNode,
     ComponentType,
     HtmlHTMLAttributes,
 } from 'react';
