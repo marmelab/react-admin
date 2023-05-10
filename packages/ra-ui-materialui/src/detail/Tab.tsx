@@ -94,7 +94,7 @@ export const Tab = ({
                 value={value}
                 icon={icon}
                 className={clsx('show-tab', className)}
-                {...(syncWithLocation ? propsForLink : {})} // to avoid TypeScript screams, see https://github.com/mui-org/material-ui/issues/9106#issuecomment-451270521
+                {...(syncWithLocation ? propsForLink : {})} // to avoid TypeScript screams, see https://github.com/mui/material-ui/issues/9106#issuecomment-451270521
                 {...rest}
             />
         );

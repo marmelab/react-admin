@@ -25,8 +25,8 @@ import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
  * @prop {string} className
  * @prop {string} label Button label. Defaults to 'ra.action.delete, translated.
  * @prop {boolean} disabled Disable the button.
- * @prop {string} variant MUI variant for the button. Defaults to 'contained'.
- * @prop {ReactElement} icon Override the icon. Defaults to the Delete icon from MUI.
+ * @prop {string} variant Material UI variant for the button. Defaults to 'contained'.
+ * @prop {ReactElement} icon Override the icon. Defaults to the Delete icon from Material UI.
  *
  * @param {Props} props
  *

@@ -7,7 +7,11 @@ title: "The SelectColumnsButton Component"
 
 This button lets users show or hide columns in a Datagrid. It must be used in conjunction with [`<DatagridConfigurable>`](./Datagrid.md#configurable).
 
-![SelectColumnsButton](./img/SelectColumnsButton.gif)
+<video controls autoplay muted loop>
+  <source src="./img/SelectColumnsButton.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 ## Usage 
 

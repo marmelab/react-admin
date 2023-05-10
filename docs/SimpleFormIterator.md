@@ -7,7 +7,11 @@ title: "SimpleFormIterator"
 
 This component provides a UI for editing arrays of objects, one row per object.
 
-![ArrayInput](./img/array-input.gif)
+<video controls autoplay muted loop>
+  <source src="./img/array-input.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 `<SimpleFormIterator>` lets users edit, add, remove and reorder sub-records. It is designed to be used as a child of [`<ArrayInput>`](./ArrayInput.md) or [`<ReferenceManyInput>`](./ReferenceManyInput.md). You can also use it within an `ArrayInputContext` containing a *field array*, i.e. the value returned by [react-hook-form's `useFieldArray` hook](https://react-hook-form.com/api/usefieldarray).
 
@@ -81,7 +85,7 @@ const OrderEdit = () => (
 | `inline` | Optional | `boolean` | `false` | When true, inputs are put on the same line |
 | `removeButton` | Optional | `ReactElement` | - | Component to render for the remove button |
 | `reOrderButtons` | Optional | `ReactElement` | - | Component to render for the up / down button |
-| `sx` | Optional | `SxProps` | - | MUI shortcut for defining custom styles |
+| `sx` | Optional | `SxProps` | - | Material UI shortcut for defining custom styles |
 
 ## `addButton`
 
@@ -349,7 +353,7 @@ const OrderEdit = () => (
 
 ## `sx`
 
-You can override the style of the root element (a `<div>` element) as well as those of the inner components thanks to the `sx` property. It relies on MUI System and supports CSS and shorthand properties (see [their documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)).
+You can override the style of the root element (a `<div>` element) as well as those of the inner components thanks to the `sx` property. It relies on MUI System and supports CSS and shorthand properties (see [their documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)).
 
 This property accepts the following subclasses:
 

@@ -82,7 +82,7 @@ The optional `title` prop points to the picture title property, used for both `a
 
 ## `sx`: CSS API
 
-The `<ImageField>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<ImageField>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name               | Description                                                                    |
 |-------------------------|--------------------------------------------------------------------------------|
@@ -100,4 +100,4 @@ For instance, to specify a size for the image:
 ```
 {% endraw %}
 
-To override the style of all instances of `<ImageField>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaImageField` key.
+To override the style of all instances of `<ImageField>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaImageField` key.

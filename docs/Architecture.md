@@ -99,13 +99,17 @@ React-admin has two sets of users:
 
 For each feature, we design the User Experience (UX) and the Developer Experience (DX) carefully. 
 
-For the visual part, react-admin builds upon MUI, which is the implementation of the Material Design System. It's a great help to build usable, consistent user interfaces, but it's not enough. 
+For the visual part, react-admin builds upon Material UI, which is the implementation of the Material Design System. It's a great help to build usable, consistent user interfaces, but it's not enough. 
 
 We spend a great deal of time refining the UI to make it as intuitive as possible. We pay attention to small alignment glitches, screen flashes, and color inconsistencies. We iterate with every customer feedback, to remove visual and animation problems that occur in real-life applications.
 
 React-admin produces a user interface that is voluntarily bland by default because we want to emphasize content rather than chrome.
 
-![Sort Button](./img/sort-button.gif)
+<video controls autoplay muted loop>
+  <source src="./img/sort-button.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 As for the developer experience, react-admin is constantly evolving to find the sweet spot between an intuitive API, power user features, not too much magic, and just enough documentation. The core team are the first testers of react-admin, and pay attention to the productivity, debuggability, discoverability, performance, and robustness of all the hooks and components.
 
@@ -115,7 +119,7 @@ Many excellent open-source libraries already address partial requirements of B2B
 
 Rather than reinventing the wheel, react-admin uses the best tools in each category (in terms of features, developer experience, active maintenance, documentation, user base), and provides a glue around these libraries.
 
-In react-admin v4, these libraries are called react-query, react-router, react-hook-form, MUI, testing-library, date-fns, and lodash.
+In react-admin v4, these libraries are called react-query, react-router, react-hook-form, Material UI, testing-library, date-fns, and lodash.
 
 When a new requirement arises, the react-admin teams always looks for an existing solution, and prefers integrating it rather than redeveloping it.
 
@@ -172,7 +176,7 @@ const MyRefreshButton = () => {
 
 Before adding a new hook or a new prop to an existing component, we always check if there isn't a simple way to implement the feature in pure React. If it's the case, then we don't add the new prop. We prefer to keep the react-admin API, code, test, and documentation simple. This choice is crucial to keep the learning curve acceptable, and maintenance burden low.
 
-For instance, the `<SimpleShowLayout>` component displays Field elements in a column. How can you put two fields in a single column? We could add a specific syntax allowing to specify the number of elements per column and per line. This would complicate the usage and documentation for simple use cases. Besides, it's doable in pure React, without any change in the react-admin core, e.g. by leveraging MUI's `<Stack>` component:
+For instance, the `<SimpleShowLayout>` component displays Field elements in a column. How can you put two fields in a single column? We could add a specific syntax allowing to specify the number of elements per column and per line. This would complicate the usage and documentation for simple use cases. Besides, it's doable in pure React, without any change in the react-admin core, e.g. by leveraging Material UI's `<Stack>` component:
 
 ```jsx
 import * as React from 'react';
@@ -224,7 +228,7 @@ Every time we implemented child inspection, we regretted it afterward. We tend t
 React-admin is a *distribution* of several packages, each of which handles a specific feature. The packages are all located in the `packages/` directory. The most notable packages are:
     
 * `ra-core`: The core react-admin logic, without any UI.
-* `ra-ui-materialui`: The MUI skin for react-admin.
+* `ra-ui-materialui`: The Material UI skin for react-admin.
 * `ra-data-*`: Data providers for various data backends.
 * `ra-language-*`: Interface translations for various languages.
 * `react-admin`: the standard distribution of react-admin

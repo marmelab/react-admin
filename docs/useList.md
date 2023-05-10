@@ -103,6 +103,8 @@ const { data, total } = useList({
 // data will be [{ id: 1, name: 'Arnold' }] and total will be 1
 ```
 
+The filtering capabilities are very limited. For instance, there is no "greater than" or "less than" operator. You can only filter on the equality of a field.
+
 ## `filterCallback`
 
 Property for custom filter definition. Lets you apply local filters to the fetched data.

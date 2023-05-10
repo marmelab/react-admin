@@ -41,7 +41,7 @@ See more details in the [ra-navigation documentation](https://marmelab.com/ra-en
 
 ## `appBar`
 
-If you want to use a different color for the AppBar, or to make it sticky, pass a custom `appBar` element based on `<Header>`, which is a simple wrapper around [MUI's `<AppBar>` component](https://mui.com/material-ui/react-app-bar/#main-content).
+If you want to use a different color for the AppBar, or to make it sticky, pass a custom `appBar` element based on `<Header>`, which is a simple wrapper around [Material UI's `<AppBar>` component](https://mui.com/material-ui/react-app-bar/).
 
 ```jsx
 import { ContainerLayout, Header } from '@react-admin/ra-navigation';
@@ -62,7 +62,7 @@ const MyLayout = props => <ContainerLayout {...props} fixed />;
 
 ## `maxWidth`
 
-This prop allows to set the maximum width of the content [`<Container>`](https://mui.com/material-ui/react-container/#main-content). It accepts a string, one of `xs`, `sm`, `md`, `lg`, `xl`, or `false` to remove side margins and occupy the full width of the screen.
+This prop allows to set the maximum width of the content [`<Container>`](https://mui.com/material-ui/react-container/). It accepts a string, one of `xs`, `sm`, `md`, `lg`, `xl`, or `false` to remove side margins and occupy the full width of the screen.
 
 ```jsx
 import { ContainerLayout } from '@react-admin/ra-navigation';
@@ -121,7 +121,7 @@ export const App = () => (
 
 ## `sx`
 
-The `sx` prop allows to customize the style of the layout, and the underlying component. It accepts a [MUI `sx` prop](https://mui.com/system/the-sx-prop/#main-content).
+The `sx` prop allows to customize the style of the layout, and the underlying component. It accepts a [Material UI `sx` prop](https://mui.com/system/the-sx-prop/).
 
 {% raw %}
 ```jsx
@@ -161,16 +161,19 @@ By default, the `<ContainerLayout>` shows a user menu with a single item (logout
 
 {% raw %}
 ```jsx
+import * as React from 'react';
 import { Logout, UserMenu, useUserMenu } from 'react-admin';
 import { MenuList, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { ContainerLayout } from '@react-admin/ra-navigation';
 
+// It's important to pass the ref to allow Material UI to manage the keyboard navigation
 const ConfigurationMenu = React.forwardRef((props, ref) => {
     const { onClose } = useUserMenu();
     return (
         <MenuItem
             ref={ref}
+            // It's important to pass the props to allow Material UI to manage the keyboard navigation
             {...props}
             to="/configuration"
             onClick={onClose}

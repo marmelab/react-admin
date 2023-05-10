@@ -15,7 +15,7 @@ import { useLocale } from 'ra-core';
 import { useSidebarState } from './useSidebarState';
 
 export const Sidebar = (props: SidebarProps) => {
-    const { children, closedSize, size, ...rest } = props;
+    const { appBarAlwaysOn, children, closedSize, size, ...rest } = props;
     const isXSmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('sm')
     );
@@ -41,7 +41,9 @@ export const Sidebar = (props: SidebarProps) => {
             open={open}
             onClose={toggleSidebar}
             classes={SidebarClasses}
-            className={trigger ? SidebarClasses.appBarCollapsed : ''}
+            className={
+                trigger && !appBarAlwaysOn ? SidebarClasses.appBarCollapsed : ''
+            }
             {...rest}
         >
             <div className={SidebarClasses.fixed}>{children}</div>
@@ -54,9 +56,9 @@ Sidebar.propTypes = {
 };
 
 export interface SidebarProps extends DrawerProps {
+    appBarAlwaysOn?: boolean;
     children: ReactElement;
     closedSize?: number;
-
     size?: number;
 }
 

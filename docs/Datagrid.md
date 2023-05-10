@@ -56,7 +56,7 @@ Here are all the props accepted by the component:
 * [`size`](#size)
 * [`sx`](#sx-css-api)
 
-Additional props are passed down to [the MUI `<Table>` element](https://mui.com/api/table/).
+Additional props are passed down to [the Material UI `<Table>` element](https://mui.com/material-ui/api/table/).
 
 ## `body`
 
@@ -140,7 +140,11 @@ Finally, `<Datagrid>` inspects children for props that indicate how it should be
 
 ## `bulkActionButtons`
 
-![Bulk Action Buttons](./img/bulk-actions-toolbar.gif)
+<video controls autoplay muted loop>
+  <source src="./img/bulk-actions-toolbar.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 Bulk action buttons are buttons that affect several records at once, like mass deletion for instance. In the `<Datagrid>` component, the bulk actions toolbar appears when a user ticks the checkboxes in the first column of the table. The user can then choose a button from the bulk actions toolbar. By default, all Datagrids have a single bulk action button, the bulk delete button. You can add other bulk action buttons by passing a custom element as the `bulkActionButtons` prop of the `<Datagrid>` component:
 
@@ -312,11 +316,11 @@ const CustomResetViewsButton = () => {
 export default CustomResetViewsButton;
 ```
 
-**Tip**: [`<Confirm>`](./Confirm.md) leverages MUI's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
+**Tip**: [`<Confirm>`](./Confirm.md) leverages Material UI's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
 
 **Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass translation keys in these props. Note: `content` is only translatable when value is `string`, otherwise it renders the content as a `ReactNode`.
 
-**Tip**: You can customize the text of the two `<Confirm>` component buttons using the `cancel` and `confirm` props which accept translation keys. You can customize the icons by setting the `ConfirmIcon` and `CancelIcon` props, which accept a [SvgIcon](https://mui.com/components/icons/) type.
+**Tip**: You can customize the text of the two `<Confirm>` component buttons using the `cancel` and `confirm` props which accept translation keys. You can customize the icons by setting the `ConfirmIcon` and `CancelIcon` props, which accept a [SvgIcon](https://mui.com/material-ui/icons/#svgicon) type.
 
 **Tip**: React-admin doesn't use the `<Confirm>` component internally, because deletes and updates are applied locally immediately, then dispatched to the server after a few seconds, unless the user chooses to undo the modification. That's what we call optimistic rendering. You can do the same for the `<ResetViewsButton>` by setting `undoable: true` in the last argument of `useUpdateMany()`, as follows:
 
@@ -388,7 +392,11 @@ const PostList = () => (
 
 ## `expand`
 
-![expandable panel](./img/datagrid_expand.gif)
+<video controls autoplay muted loop>
+  <source src="./img/datagrid_expand.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 To show more data from the resource without adding too many columns, you can show data in an expandable panel below the row on demand, using the `expand` prop. 
 
@@ -689,7 +697,7 @@ export const PostList = () => (
 );
 ```
 
-**Tip**: `size` is actually a prop of the MUI `<Table>` component. Just like all additional `<Datagrid>` props, it is passed down to the `<Table>` component. 
+**Tip**: `size` is actually a prop of the Material UI `<Table>` component. Just like all additional `<Datagrid>` props, it is passed down to the `<Table>` component. 
 
 ## `sx`: CSS API
 
@@ -741,7 +749,7 @@ const PostList = () => (
 ```
 {% endraw %}
 
-**Tip**: `sx` is the standard for style customization in MUI . Check [the sx documentation](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles) for more advanced usage.
+**Tip**: `sx` is the standard for style customization in Material UI . Check [the sx documentation](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles) for more advanced usage.
 
 **Tip**: The `Datagrid` component `classes` can also be customized for all instances of the component with its global css name `"RaDatagrid"` as [describe here](https://marmelab.com/blog/2019/12/18/react-admin-3-1.html#theme-overrides)
 
@@ -804,7 +812,11 @@ const PostList = () => (
 
 The [`<SelectColumnsButton>`](./SelectColumnsButton.md) component lets users hide, show, and reorder datagrid columns. 
 
-![SelectColumnsButton](./img/SelectColumnsButton.gif)
+<video controls autoplay muted loop>
+  <source src="./img/SelectColumnsButton.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 ```jsx
 import {
@@ -845,7 +857,11 @@ const PostList = () => (
 
 You can let end users customize the fields displayed in the `<Datagrid>` by using the `<DatagridConfigurable>` component instead.
 
-![DatagridConfigurable](./img/DatagridConfigurable.gif)
+<video controls autoplay muted loop>
+  <source src="./img/DatagridConfigurable.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 ```diff
 import {
@@ -972,7 +988,11 @@ Check [the `ra-editable-datagrid` documentation](https://marmelab.com/ra-enterpr
 
 ## Customizing Column Sort
 
-![Sort Column Header](./img/sort-column-header.gif)
+<video controls autoplay muted loop>
+  <source src="./img/sort-column-header.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 The column headers are buttons allowing users to change the list sort field and order. This feature requires no configuration and works out fo the box. The next sections explain how you can disable or modify the field used for sorting on a particular column.
 

@@ -7,7 +7,11 @@ title: "The FilterList Component"
 
 An alternative UI to the Filter Button/Form Combo is the FilterList Sidebar. Similar to what users usually see on e-commerce websites, it's a panel with many simple filters that can be enabled and combined using the mouse.
 
-![Filter Sidebar](./img/filter-sidebar.gif)
+<video controls autoplay muted loop>
+  <source src="./img/filter-sidebar.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 The user experience is better than the Button/Form Combo, because the filter values are explicit, and it doesn't require typing anything in a form. But it's a bit less powerful, as only filters with a finite set of values (or intervals) can be used in the `<FilterList>`.
 
@@ -250,4 +254,8 @@ export const CategoriesFilter = () => {
 ```
 {% endraw %}
 
-![Cumulative filter list items](./img/filter-list-cumulative.gif)
+<video controls autoplay muted loop>
+  <source src="./img/filter-list-cumulative.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+

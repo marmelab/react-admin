@@ -7,7 +7,11 @@ title: "ToggleThemeButton"
 
 The `<ToggleThemeButton>` component lets users switch from light to dark mode, and persists that choice by leveraging the [store](./Store.md).
 
-![Dark Mode support](./img/ToggleThemeButton.gif)
+<video controls autoplay muted loop>
+  <source src="./img/ToggleThemeButton.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 ## Usage
 
@@ -56,7 +60,7 @@ const darkTheme = {
 <ToggleThemeButton darkTheme={darkTheme} />
 ```
 
-**Tip**: React-admin calls MUI's `createTheme()` on this object. 
+**Tip**: React-admin calls Material UI's `createTheme()` on this object. 
 
 ## `lightTheme`
 
@@ -83,7 +87,7 @@ const lightTheme = {
 
 React-admin uses the `<Admin theme>` prop as default theme.
 
-**Tip**: React-admin calls MUI's `createTheme()` on this object. 
+**Tip**: React-admin calls Material UI's `createTheme()` on this object. 
 
 ## API
 

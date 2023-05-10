@@ -26,7 +26,11 @@ export const ImageField = (props: ImageFieldProps) => {
                 {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
         ) : (
-            <div className={className} {...sanitizeFieldRestProps(rest)} />
+            <Typography
+                component="div"
+                className={className}
+                {...sanitizeFieldRestProps(rest)}
+            />
         );
     }
 

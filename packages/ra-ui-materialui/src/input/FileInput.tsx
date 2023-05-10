@@ -1,5 +1,6 @@
 import React, {
     Children,
+    FC,
     isValidElement,
     ReactElement,
     ReactNode,
@@ -22,6 +23,7 @@ import { FileInputPreview } from './FileInputPreview';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 import { SxProps } from '@mui/system';
+import { SvgIconProps } from '@mui/material';
 
 export const FileInput = (props: FileInputProps) => {
     const {
@@ -41,6 +43,7 @@ export const FileInput = (props: FileInputProps) => {
         onRemove: onRemoveProp,
         parse,
         placeholder,
+        removeIcon,
         resource,
         source,
         validate,
@@ -192,6 +195,7 @@ export const FileInput = (props: FileInputProps) => {
                                 file={file}
                                 onRemove={onRemove(file)}
                                 className={FileInputClasses.removeButton}
+                                removeIcon={removeIcon}
                             >
                                 <RecordContextProvider value={file}>
                                     {childrenElement}
@@ -223,6 +227,7 @@ FileInput.propTypes = {
     multiple: PropTypes.bool,
     validateFileRemoval: PropTypes.func,
     options: PropTypes.object,
+    removeIcon: PropTypes.elementType,
     resource: PropTypes.string,
     source: PropTypes.string,
     placeholder: PropTypes.node,
@@ -264,6 +269,7 @@ export type FileInputProps = CommonInputProps & {
     options?: DropzoneOptions;
     onRemove?: Function;
     placeholder?: ReactNode;
+    removeIcon?: FC<SvgIconProps>;
     inputProps?: any;
     validateFileRemoval?(file): boolean | Promise<boolean>;
     sx?: SxProps;

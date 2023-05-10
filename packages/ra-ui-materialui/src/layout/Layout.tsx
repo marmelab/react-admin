@@ -1,7 +1,6 @@
 import React, {
     useState,
     ErrorInfo,
-    ReactNode,
     ComponentType,
     HtmlHTMLAttributes,
 } from 'react';
@@ -11,7 +10,7 @@ import { styled, SxProps } from '@mui/material/styles';
 import { CoreLayoutProps } from 'ra-core';
 
 import { AppBar as DefaultAppBar, AppBarProps } from './AppBar';
-import { Sidebar as DefaultSidebar } from './Sidebar';
+import { Sidebar as DefaultSidebar, SidebarProps } from './Sidebar';
 import { Menu as DefaultMenu, MenuProps } from './Menu';
 import { Error, ErrorProps } from './Error';
 import { SkipNavigationButton } from '../button';
@@ -21,6 +20,7 @@ import { Inspector } from '../preferences';
 export const Layout = (props: LayoutProps) => {
     const {
         appBar: AppBar = DefaultAppBar,
+        appBarAlwaysOn,
         children,
         className,
         dashboard,
@@ -42,9 +42,9 @@ export const Layout = (props: LayoutProps) => {
         <StyledLayout className={clsx('layout', className)} {...rest}>
             <SkipNavigationButton />
             <div className={LayoutClasses.appFrame}>
-                <AppBar open={open} title={title} />
+                <AppBar open={open} title={title} alwaysOn={appBarAlwaysOn} />
                 <main className={LayoutClasses.contentWithSidebar}>
-                    <Sidebar>
+                    <Sidebar appBarAlwaysOn={appBarAlwaysOn}>
                         <Menu hasDashboard={!!dashboard} />
                     </Sidebar>
                     <div id="main-content" className={LayoutClasses.content}>
@@ -74,10 +74,11 @@ export interface LayoutProps
     extends CoreLayoutProps,
         Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'> {
     appBar?: ComponentType<AppBarProps>;
+    appBarAlwaysOn?: boolean;
     className?: string;
     error?: ComponentType<ErrorProps>;
     menu?: ComponentType<MenuProps>;
-    sidebar?: ComponentType<{ children: ReactNode }>;
+    sidebar?: ComponentType<SidebarProps>;
     sx?: SxProps;
 }
 

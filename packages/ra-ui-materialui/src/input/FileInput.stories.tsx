@@ -9,6 +9,7 @@ import { FileInput } from './FileInput';
 import { FileField } from '../field';
 import { required } from 'ra-core';
 import { FormInspector } from './common.stories';
+import DeleteIcon from '@mui/icons-material/DeleteOutline';
 
 export default { title: 'ra-ui-materialui/input/FileInput' };
 
@@ -101,6 +102,15 @@ export const Disabled = () => (
             <FileField source="src" title="title" />
         </FileInput>
         <FormInspector name="attachment" />
+    </Wrapper>
+);
+
+export const CustomRemoveIcon = () => (
+    <Wrapper>
+        <FileInput source="attachments" removeIcon={DeleteIcon}>
+            <FileField source="src" title="title" />
+        </FileInput>
+        <FormInspector name="attachments" />
     </Wrapper>
 );
 

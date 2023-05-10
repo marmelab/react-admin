@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import {
     CoreAdminContext,
     ResourceContextProvider,
@@ -12,6 +12,7 @@ import { NumberField } from './NumberField';
 import { TextField } from './TextField';
 import { Datagrid } from '../list';
 import { SimpleList } from '../list';
+import { ListContext } from './ArrayField.stories';
 
 describe('<ArrayField />', () => {
     const sort = { field: 'id', order: 'ASC' };
@@ -129,5 +130,28 @@ describe('<ArrayField />', () => {
 
         expect(queryByText('baz')).not.toBeNull();
         expect(queryByText('456')).not.toBeNull();
+    });
+
+    it('should create a ListContext with working callbacks', async () => {
+        render(<ListContext />);
+        screen.getByText('War and Peace');
+        screen.getByText('Filter by title').click();
+        await waitFor(() => {
+            expect(screen.queryByText('War and Peace')).toBeNull();
+        });
+        const chip = screen.getByText('Resurrection');
+        expect(
+            (chip.parentNode as HTMLElement).className.includes(
+                'MuiChip-colorDefault'
+            )
+        ).toBeTruthy();
+        chip.click();
+        await waitFor(() => {
+            expect(
+                (chip.parentNode as HTMLElement).className.includes(
+                    'MuiChip-colorPrimary'
+                )
+            ).toBeTruthy();
+        });
     });
 });

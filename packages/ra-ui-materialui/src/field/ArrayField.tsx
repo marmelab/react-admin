@@ -1,27 +1,44 @@
 import * as React from 'react';
-import { memo, FC, ReactElement } from 'react';
+import { memo, ReactNode } from 'react';
 import get from 'lodash/get';
-import { ListContextProvider, useRecordContext } from 'ra-core';
+import {
+    ListContextProvider,
+    useRecordContext,
+    useList,
+    SortPayload,
+    FilterPayload,
+} from 'ra-core';
 
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 /**
- * Display a collection
+ * Renders an embedded array of objects.
  *
- * Ideal for embedded arrays of objects, e.g.
- * {
- *   id: 123
- *   tags: [
- *     { name: 'foo' },
- *     { name: 'bar' }
- *   ]
- * }
+ * ArrayField creates a ListContext with the field value, and renders its children components -
+ * usually iterator components like Datagrid, SingleFieldList, or SimpleList.
  *
- * The child must be an iterator component
- * (like <Datagrid> or <SingleFieldList>).
+ * @example // Display all the tags of the current post as `<Chip>` components
+ * // const post = {
+ * //   id: 123
+ * //   tags: [
+ * //     { name: 'foo' },
+ * //     { name: 'bar' }
+ * //   ]
+ * // };
+ * const PostShow = () => (
+ *    <Show>
+ *       <SimpleShowLayout>
+ *           <ArrayField source="tags">
+ *               <SingleFieldList>
+ *                   <ChipField source="name" />
+ *               </SingleFieldList>
+ *           </ArrayField>
+ *      </SimpleShowLayout>
+ *   </Show>
+ * );
  *
- * @example Display all the backlinks of the current post as a <Datagrid>
- * // post = {
+ * @example // Display all the backlinks of the current post as a `<Datagrid>`
+ * // const post = {
  * //   id: 123
  * //   backlinks: [
  * //       {
@@ -35,87 +52,50 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  * //           url: 'https://blog.johndoe.com/2012/08/12/foobar.html',
  * //       }
  * //    ]
- * // }
- *     <ArrayField source="backlinks">
- *         <Datagrid>
- *             <DateField source="date" />
- *             <UrlField source="url" />
- *         </Datagrid>
- *     </ArrayField>
+ * // };
+ * <ArrayField source="backlinks">
+ *     <Datagrid>
+ *         <DateField source="date" />
+ *         <UrlField source="url" />
+ *     </Datagrid>
+ * </ArrayField>
  *
- * @example Display all the tags of the current post as <Chip> components
- * // post = {
- * //   id: 123
- * //   tags: [
- * //     { name: 'foo' },
- * //     { name: 'bar' }
- * //   ]
- * // }
- *     <ArrayField source="tags">
- *         <SingleFieldList>
- *             <ChipField source="name" />
- *         </SingleFieldList>
- *     </ArrayField>
+ * @example // If you need to render a collection of strings, it's often simpler to write your own component
+ * const TagsField = () => {
+ *     const record = useRecordContext();
+ *     return (
+ *         <ul>
+ *             {record.tags.map(item => (
+ *                 <li key={item.name}>{item.name}</li>
+ *             ))}
+ *         </ul>
+ *     );
+ * };
  *
- * If you need to render a collection in a custom way, it's often simpler
- * to write your own component:
- *
- * @example
- *   const TagsField = () => {
- *       const record = useRecordContext();
- *       return (
- *           <ul>
- *               {record.tags.map(item => (
- *                   <li key={item.name}>{item.name}</li>
- *               ))}
- *           </ul>
- *       );
- *   };
+ * @see useListContext
  */
-export const ArrayField: FC<ArrayFieldProps> = memo(props => {
-    const { children, resource, source } = props;
+export const ArrayField = memo<ArrayFieldProps>(props => {
+    const { children, resource, source, perPage, sort, filter } = props;
     const record = useRecordContext(props);
     const data = get(record, source, emptyArray) || emptyArray;
-
+    const listContext = useList({ data, resource, perPage, sort, filter });
     return (
-        <ListContextProvider
-            value={{
-                data,
-                selectedIds: [],
-                sort: { field: null, order: null },
-                displayedFilters: null,
-                filterValues: null,
-                hasNextPage: null,
-                hasPreviousPage: null,
-                hideFilter: null,
-                isFetching: false,
-                isLoading: false,
-                onSelect: null,
-                onToggleItem: null,
-                onUnselectItems: null,
-                page: null,
-                perPage: null,
-                refetch: null,
-                resource,
-                setFilters: null,
-                setPage: null,
-                setPerPage: null,
-                setSort: null,
-                showFilter: null,
-                total: data.length,
-            }}
-        >
+        <ListContextProvider value={listContext}>
             {children}
         </ListContextProvider>
     );
 });
 
+// @ts-ignore
 ArrayField.propTypes = {
     ...fieldPropTypes,
 };
 
 export interface ArrayFieldProps extends PublicFieldProps, InjectedFieldProps {
-    children: ReactElement;
+    children: ReactNode;
+    perPage?: number;
+    sort?: SortPayload;
+    filter?: FilterPayload;
 }
 
 ArrayField.displayName = 'ArrayField';

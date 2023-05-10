@@ -106,7 +106,7 @@ const defaultFilterOptions = createFilterOptions();
  * @example
  * <AutocompleteInput source="gender" choices={choices} translateChoice={false}/>
  *
- * The object passed as `options` props is passed to the MUI <TextField> component
+ * The object passed as `options` props is passed to the Material UI <TextField> component
  *
  * @example
  * <AutocompleteInput source="author_id" options={{ color: 'secondary', InputLabelProps: { shrink: true } }} />
@@ -489,7 +489,7 @@ If you provided a React element for the optionText prop, you must also provide t
             matchSuggestion || // When using element as optionText (and matchSuggestion), options are filtered by getSuggestions, so they shouldn't be filtered here
             limitChoicesToValue // When limiting choices to values (why? it's legacy!), options are also filtered by getSuggestions, so they shouldn't be filtered here
                 ? options
-                : defaultFilterOptions(options, params); // Otherwise, we let MUI's Autocomplete do the filtering
+                : defaultFilterOptions(options, params); // Otherwise, we let Material UI's Autocomplete do the filtering
 
         // add create option if necessary
         const { inputValue } = params;

@@ -9,8 +9,8 @@ import {
     useGetList,
     useList,
 } from 'ra-core';
+import { Box, styled } from '@mui/material';
 import { MemoryRouter } from 'react-router-dom';
-import { Box } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { TextField } from '../../field';
@@ -382,6 +382,25 @@ export const IsRowExpandable = () => (
             <TextField source="author" />
             <TextField source="year" />
         </Datagrid>
+    </Wrapper>
+);
+
+const StyledDatagrid = styled(Datagrid, {
+    name: 'MyStyledDatagrid',
+    overridesResolver: (props, styles) => styles.root,
+})(() => ({
+    width: '70%',
+    backgroundColor: '#ffb',
+}));
+
+export const StyledComponent = () => (
+    <Wrapper>
+        <StyledDatagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </StyledDatagrid>
     </Wrapper>
 );
 

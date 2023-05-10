@@ -6,6 +6,7 @@ import {
     UseMutationResult,
     MutateOptions,
     QueryKey,
+    UseInfiniteQueryResult,
 } from 'react-query';
 
 import { useDataProvider } from './useDataProvider';
@@ -15,6 +16,7 @@ import {
     UpdateParams,
     MutationMode,
     GetListResult as OriginalGetListResult,
+    GetInfiniteListResult,
 } from '../types';
 import { useEvent } from '../util';
 
@@ -131,6 +133,20 @@ export const useUpdate = <
             [resource, 'getList'],
             (res: GetListResult) =>
                 res && res.data ? { ...res, data: updateColl(res.data) } : res,
+            { updatedAt }
+        );
+        queryClient.setQueriesData(
+            [resource, 'getInfiniteList'],
+            (res: UseInfiniteQueryResult<GetInfiniteListResult>['data']) =>
+                res && res.pages
+                    ? {
+                          ...res,
+                          pages: res.pages.map(page => ({
+                              ...page,
+                              data: updateColl(page.data),
+                          })),
+                      }
+                    : res,
             { updatedAt }
         );
         queryClient.setQueriesData(
@@ -335,6 +351,7 @@ export const useUpdate = <
                 { id: String(callTimeId), meta: callTimeMeta },
             ],
             [callTimeResource, 'getList'],
+            [callTimeResource, 'getInfiniteList'],
             [callTimeResource, 'getMany'],
             [callTimeResource, 'getManyReference'],
         ];

@@ -48,6 +48,35 @@ That's enough to display a basic post list, with functional sort and pagination:
 
 You can find more advanced examples of `<List>` usage in the [demos](./Demos.md). 
 
+## Props
+
+| Prop                      | Required | Type           | Default        | Description                                                                                  |
+|---------------------------|----------|----------------|----------------|----------------------------------------------------------------------------------------------|
+| `children`                | Required | `ReactNode`    | -              | The component to use to render the list of records.                                          |
+| `actions`                 | Optional | `ReactElement` | -              | The actions to display in the toolbar.                                                       |
+| `aside`                   | Optional | `ReactElement` | -              | The component to display on the side of the list.                                            |
+| `component`               | Optional | `Component`    | `Card`         | The component to render as the root element.                                                 |
+| `debounce`                | Optional | `number`       | `500`          | The debounce delay in milliseconds to apply when users change the sort or filter parameters. |
+| `disable Authentication`  | Optional | `boolean`      | `false`        | Set to `true` to disable the authentication check.                                           |
+| `disable SyncWithLocation`| Optional | `boolean`      | `false`        | Set to `true` to disable the synchronization of the list parameters with the URL.            |
+| `empty`                   | Optional | `ReactElement` | -              | The component to display when the list is empty.                                             |
+| `emptyWhileLoading`       | Optional | `boolean`      | `false`        | Set to `true` to return `null` while the list is loading.                                    |
+| `exporter`                | Optional | `function`     | -              | The function to call to export the list.                                                     |
+| `filters`                 | Optional | `ReactElement` | -              | The filters to display in the toolbar.                                                       |
+| `filter`                  | Optional | `object`       | -              | The permanent filter values.                                                                 |
+| `filterDefaultValues`     | Optional | `object`       | -              | The default filter values.                                                                   |
+| `hasCreate`               | Optional | `boolean`      | `false`        | Set to `true` to show the create button.                                                     |
+| `pagination`              | Optional | `ReactElement` | `<Pagination>` | The pagination component to use.                                                             |
+| `perPage`                 | Optional | `number`       | `10`           | The number of records to fetch per page.                                                     |
+| `queryOptions`            | Optional | `object`       | -              | The options to pass to the `useQuery` hook.                                                  |
+| `resource`                | Optional | `string`       | -              | The resource name, e.g. `posts`.                                                             |
+| `sort`                    | Optional | `object`       | -              | The initial sort parameters.                                                                 |
+| `storeKey`                | Optional | `string`       | -              | The key to use to store the current filter & sort.                                           |
+| `title`                   | Optional | `string`       | -              | The title to display in the App Bar.                                                         |
+| `sx`                      | Optional | `object`       | -              | The CSS styles to apply to the component.                                                    |
+
+Additional props are passed down to the root component (a MUI `<Card>` by default).
+
 ## `actions`
 
 ![Actions Toolbar](./img/actions-toolbar.png)
@@ -239,7 +268,7 @@ You can also pass React elements as children, to build a custom iterator. Check 
 
 ## `component`
 
-By default, the List view renders the main content area inside a MUI `<Card>` element. The actual layout of the list depends on the child component you're using (`<Datagrid>`, `<SimpleList>`, or a custom layout component).
+By default, the List view renders the main content area inside a Material UI `<Card>` element. The actual layout of the list depends on the child component you're using (`<Datagrid>`, `<SimpleList>`, or a custom layout component).
 
 Some List layouts display each record in a `<Card>`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main area container by passing a `component` prop:
 
@@ -437,7 +466,11 @@ const BookList = () => (
 
 ## `exporter`
 
-![Export Button](./img/export-button.gif)
+<video controls autoplay muted loop>
+  <source src="./img/export-button.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 Among the default list actions, react-admin includes an `<ExportButton>`. This button is disabled when there is no record in the current `<List>`.
 
@@ -523,7 +556,11 @@ const CommentList = () => (
 
 ## `filters`: Filter Inputs
 
-![List Filters](./img/list_filter.gif)
+<video controls autoplay muted loop>
+  <source src="./img/list_filter.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 You can add an array of filter Inputs to the List using the `filters` prop:
 
@@ -548,7 +585,11 @@ Filter Inputs are regular inputs. `<List>` hides them all by default, except tho
 
 You can also display filters as a sidebar:
 
-![`<FilterList>` sidebar](./img/filter-sidebar.gif)
+<video controls autoplay muted loop>
+  <source src="./img/filter-sidebar.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
 
 For more details about customizing filters, see the [Filtering the List](./FilteringTutorial.md#filtering-the-list) section. 
 
@@ -819,7 +860,7 @@ The title can be either a string or an element of your own.
 
 ## `sx`: CSS API
 
-The `<List>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<List>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name             | Description                                                   |
 |-----------------------|---------------------------------------------------------------|
@@ -864,6 +905,41 @@ const PostList = () => (
 );
 ```
 {% endraw %}
+
+## Infinite Scroll Pagination
+
+By default, the `<List>` component displays the first page of the list of records. To display the next page, the user must click on the "next" button. This is called "finite pagination". An alternative is to display the next page automatically when the user scrolls to the bottom of the list. This is called "infinite pagination".
+
+<video controls autoplay muted loop width="100%">
+  <source src="./img/infinite-book-list.webm" poster="./img/infinite-book-list.webp" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
+To achieve infinite pagination, replace the `<List>` component with [the `<InfiniteList>` component](./InfiniteList.md).
+
+```diff
+import {
+-   List,
++   InfiniteList,
+    Datagrid,
+    TextField,
+    DateField
+} from 'react-admin';
+
+const BookList = () => (
+-   <List>
++   <InfiniteList>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <DateField source="author" />
+        </Datagrid>
+-   </List>
++   </InfiniteList>
+);
+```
+
+`<InfiniteList>` is a drop-in replacement for `<List>`. It accepts the same props, and uses the same view layout. Check [the `<InfiniteList>` documentation](./InfiniteList.md) for more information.
 
 ## Live Updates
 

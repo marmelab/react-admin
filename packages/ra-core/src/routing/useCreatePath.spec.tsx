@@ -1,15 +1,24 @@
 import * as React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import { useCreatePath } from './useCreatePath';
+import { CreatePathType, useCreatePath } from './useCreatePath';
 import { AtRoot, SubPath } from './useCreatePath.stories';
+import { Identifier } from '../types';
 
 describe('useCreatePath', () => {
     beforeEach(() => {
         window.history.replaceState({}, '', '/');
     });
 
-    const UseCreatePath = ({ resource, type, id }: any) => {
+    const UseCreatePath = ({
+        resource,
+        type,
+        id,
+    }: {
+        resource: string;
+        type: CreatePathType;
+        id?: Identifier;
+    }) => {
         const createPath = useCreatePath();
         const path = createPath({ resource, type, id });
         return <div>{path}</div>;

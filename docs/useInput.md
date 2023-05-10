@@ -54,7 +54,7 @@ const TitleInput = ({ source, label }) => {
 
 Additional props are passed to [react-hook-form's `useController` hook](https://react-hook-form.com/api/usecontroller).
 
-## Usage with MUI `<TextField>`
+## Usage with Material UI `<TextField>`
 
 ```jsx
 // in LatLongInput.js
@@ -107,7 +107,7 @@ const { isDirty } = useFormState(); // ✅
 const formState = useFormState(); // ❌ should deconstruct the formState      
 ```
 
-## Usage with MUI `<Select>`
+## Usage with Material UI `<Select>`
 
 ```jsx
 // in SexInput.js
