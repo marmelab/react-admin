@@ -1,6 +1,6 @@
 {
     "name": "ra-language-english",
-    "version": "4.9.3",
+    "version": "4.10.2",
     "description": "English messages for react-admin, the frontend framework for building admin applications on top of REST/GraphQL services",
     "repository": {
         "type": "git",
@@ -21,7 +21,7 @@
         "watch": "tsc --outDir dist/esm --module es2015 --watch"
     },
     "dependencies": {
-        "ra-core": "^4.9.3"
+        "ra-core": "^4.10.2"
     },
     "devDependencies": {
         "rimraf": "^3.0.2",
@@ -39,5 +39,5 @@
         "url": "https://github.com/marmelab/react-admin/issues"
     },
     "homepage": "https://github.com/marmelab/react-admin#readme",
-    "gitHead": "8748248e40742bbd367338e0573a00213e17d3ab"
+    "gitHead": "e936ff2c3f887d2e98ef136cf3b3f3d254725fc4"
 }

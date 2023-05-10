@@ -1,6 +1,6 @@
 {
     "name": "ra-no-code",
-    "version": "4.9.4",
+    "version": "4.10.2",
     "description": "",
     "files": [
         "*.md",
@@ -48,10 +48,10 @@
         "lodash": "~4.17.5",
         "papaparse": "^5.3.0",
         "prop-types": "^15.6.1",
-        "ra-data-local-storage": "^4.9.3",
-        "react-admin": "^4.9.4",
+        "ra-data-local-storage": "^4.10.2",
+        "react-admin": "^4.10.2",
         "react-dropzone": "^12.0.4",
         "react-query": "^3.32.1"
     },
-    "gitHead": "6eb0f6fcbe3ba237b507f3506d230b3445c0a764"
+    "gitHead": "e936ff2c3f887d2e98ef136cf3b3f3d254725fc4"
 }

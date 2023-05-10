@@ -225,13 +225,13 @@ import {
     Datagrid,
     TextField,
     NumberField,
-    ReferenceArrayField
+    ReferenceArrayField,
     BooleanField,
 } from 'react-admin';
 import {
     textFilter,
     dateFilter,
-    booleanFilter
+    booleanFilter,
     referenceFilter,
     StackedFilters,
 } from '@react-admin/ra-form-layout';
