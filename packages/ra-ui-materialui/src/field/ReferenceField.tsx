@@ -120,24 +120,7 @@ export interface ReferenceFieldProps<RecordType extends RaRecord = any>
  */
 export const NonEmptyReferenceField: FC<
     Omit<ReferenceFieldProps, 'source'> & { id: Identifier }
-> = ({ children, id, record, reference, link, ...props }) => {
-    const createPath = useCreatePath();
-    const resourceDefinition = useResourceDefinition({ resource: reference });
-
-    const resourceLinkPath =
-        link === false ||
-        (link === 'edit' && !resourceDefinition.hasEdit) ||
-        (link === 'show' && !resourceDefinition.hasShow)
-            ? false
-            : createPath({
-                  resource: reference,
-                  id,
-                  type:
-                      typeof link === 'function'
-                          ? link(record, reference)
-                          : link,
-              });
-
+> = ({ children, id, record, reference, ...props }) => {
     return (
         <ResourceContextProvider value={reference}>
             <PureReferenceFieldView
@@ -147,7 +130,6 @@ export const NonEmptyReferenceField: FC<
                     reference,
                     id,
                 })}
-                resourceLinkPath={resourceLinkPath}
             >
                 {children}
             </PureReferenceFieldView>
@@ -167,11 +149,13 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
         isLoading,
         reference,
         referenceRecord,
-        resourceLinkPath,
+        link,
         sx,
     } = props;
     const getRecordRepresentation = useGetRecordRepresentation(reference);
     const translate = useTranslate();
+    const createPath = useCreatePath();
+    const resourceDefinition = useResourceDefinition({ resource: reference });
 
     if (error) {
         return (
@@ -193,6 +177,20 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
             <>{emptyText && translate(emptyText, { _: emptyText })}</>
         ) : null;
     }
+
+    const resourceLinkPath =
+        link === false ||
+        (link === 'edit' && !resourceDefinition.hasEdit) ||
+        (link === 'show' && !resourceDefinition.hasShow)
+            ? false
+            : createPath({
+                  resource: reference,
+                  id: referenceRecord.id,
+                  type:
+                      typeof link === 'function'
+                          ? link(referenceRecord, reference)
+                          : link,
+              });
 
     let child = children || (
         <Typography component="span" variant="body2">
@@ -227,10 +225,12 @@ ReferenceFieldView.propTypes = {
     reference: PropTypes.string,
     referenceRecord: PropTypes.any,
     resource: PropTypes.string,
-    resourceLinkPath: PropTypes.oneOfType([
+    // @ts-ignore
+    link: PropTypes.oneOfType([
         PropTypes.string,
-        PropTypes.oneOf([false]),
-    ]) as React.Validator<string | false>,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
     source: PropTypes.string,
     translateChoice: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
 };
@@ -242,7 +242,7 @@ export interface ReferenceFieldViewProps
     reference: string;
     resource?: string;
     translateChoice?: Function | boolean;
-    resourceLinkPath?: string | false;
+    link?: LinkToType;
     children?: ReactNode;
     sx?: SxProps;
 }
