@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
-import { MutationMode, RaRecord, TransformData } from '../../types';
+import { RaRecord, MutationMode, TransformData } from '../../types';
 import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
 import {
@@ -45,7 +45,7 @@ import { SaveContextValue, useMutationMiddlewares } from '../saveContext';
  * }
  */
 export const useEditController = <
-    RecordType extends RaRecord = RaRecord,
+    RecordType extends RaRecord = any,
     MutationOptionsError = unknown
 >(
     props: EditControllerProps<RecordType, MutationOptionsError> = {}
@@ -247,7 +247,7 @@ export const useEditController = <
 };
 
 export interface EditControllerProps<
-    RecordType extends RaRecord = RaRecord,
+    RecordType extends RaRecord = any,
     MutationOptionsError = unknown
 > {
     disableAuthentication?: boolean;

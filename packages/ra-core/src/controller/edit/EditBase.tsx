@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
 
+import { RaRecord } from '../../types';
 import { useEditController, EditControllerProps } from './useEditController';
 import { EditContextProvider } from './EditContextProvider';
 import { ResourceContextProvider } from '../../core';
-import { RaRecord } from '../../types';
 
 /**
  * Call useEditController and put the value in a EditContext
@@ -35,7 +35,7 @@ import { RaRecord } from '../../types';
  *     </EditBase>
  * );
  */
-export const EditBase = <RecordType extends RaRecord = RaRecord>({
+export const EditBase = <RecordType extends RaRecord = any>({
     children,
     ...props
 }: { children: ReactNode } & EditControllerProps<RecordType>) => {
