@@ -126,6 +126,17 @@ nav ul#nav-mobile a {
     font-weight: normal;
 }
 
+@media only screen and (max-width: 992px) {
+    .sidenav li > a {
+        height: 1.7em;
+        line-height: 1.7em;
+        padding: 0 0 0 1em;
+        font-size: 1.2em;
+        font-weight: normal;
+    }
+     
+}
+
 .sidenav.sidenav-fixed ul.collapsible-accordion a.collapsible-header {
     padding: 0 30px;
 }
