@@ -45,6 +45,8 @@ main > .container .markdown-section {
     align-self: start;
     top: 20px;
     padding-left: 1em;
+    overflow-y: auto;
+    max-height: calc(100vh - 114px); /* 114px = 50px container top padding + 64px navbar height  */
 }
 .toc.is-position-fixed {
     position: static !important;
