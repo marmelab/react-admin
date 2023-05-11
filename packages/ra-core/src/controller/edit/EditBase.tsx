@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { useEditController, EditControllerProps } from './useEditController';
 import { EditContextProvider } from './EditContextProvider';
 import { ResourceContextProvider } from '../../core';
+import { RaRecord } from '../../types';
 
 /**
  * Call useEditController and put the value in a EditContext
@@ -34,9 +35,7 @@ import { ResourceContextProvider } from '../../core';
  *     </EditBase>
  * );
  */
-export const EditBase = <
-    RecordType extends Record<string, unknown> = Record<string, any>
->({
+export const EditBase = <RecordType extends RaRecord = RaRecord>({
     children,
     ...props
 }: { children: ReactNode } & EditControllerProps<RecordType>) => {

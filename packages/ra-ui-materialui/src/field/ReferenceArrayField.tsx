@@ -11,6 +11,7 @@ import {
     ResourceContextProvider,
     useRecordContext,
     useResourceDefinition,
+    RaRecord,
 } from 'ra-core';
 import { styled } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
@@ -77,7 +78,8 @@ import { ChipField } from './ChipField';
  * </ReferenceArrayField>
  */
 export const ReferenceArrayField = <
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends Record<string, unknown> = Record<string, any>,
+    ReferenceRecordType extends RaRecord = RaRecord
 >(
     props: ReferenceArrayFieldProps<RecordType>
 ) => {
@@ -91,7 +93,10 @@ export const ReferenceArrayField = <
         source,
     } = props;
     const record = useRecordContext(props);
-    const controllerProps = useReferenceArrayFieldController<RecordType>({
+    const controllerProps = useReferenceArrayFieldController<
+        RecordType,
+        ReferenceRecordType
+    >({
         filter,
         page,
         perPage,

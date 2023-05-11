@@ -5,7 +5,7 @@ import isEqual from 'lodash/isEqual';
 import { useSafeSetState, removeEmpty } from '../../util';
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
-import { Identifier, SortPayload } from '../../types';
+import { Identifier, RaRecord, SortPayload } from '../../types';
 import { ListControllerResult } from '../list';
 import usePaginationState from '../usePaginationState';
 import { useRecordSelection } from '../list/useRecordSelection';
@@ -13,7 +13,7 @@ import useSortState from '../useSortState';
 import { useResourceContext } from '../../core';
 
 export interface UseReferenceManyFieldControllerParams<
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends RaRecord = RaRecord
 > {
     filter?: any;
     page?: number;
@@ -55,10 +55,11 @@ const defaultFilter = {};
  * @returns {ListControllerResult} The reference many props
  */
 export const useReferenceManyFieldController = <
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord
 >(
     props: UseReferenceManyFieldControllerParams<RecordType>
-): ListControllerResult => {
+): ListControllerResult<ReferenceRecordType> => {
     const {
         reference,
         record,
@@ -151,7 +152,7 @@ export const useReferenceManyFieldController = <
         isFetching,
         isLoading,
         refetch,
-    } = useGetManyReference(
+    } = useGetManyReference<ReferenceRecordType>(
         reference,
         {
             target,

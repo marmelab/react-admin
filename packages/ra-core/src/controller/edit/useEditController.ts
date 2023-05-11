@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
-import { MutationMode, TransformData } from '../../types';
+import { MutationMode, RaRecord, TransformData } from '../../types';
 import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
 import {
@@ -45,7 +45,7 @@ import { SaveContextValue, useMutationMiddlewares } from '../saveContext';
  * }
  */
 export const useEditController = <
-    RecordType extends Record<string, unknown> = Record<string, any>,
+    RecordType extends RaRecord = RaRecord,
     MutationOptionsError = unknown
 >(
     props: EditControllerProps<RecordType, MutationOptionsError> = {}
@@ -247,7 +247,7 @@ export const useEditController = <
 };
 
 export interface EditControllerProps<
-    RecordType extends Record<string, unknown> = Record<string, any>,
+    RecordType extends RaRecord = RaRecord,
     MutationOptionsError = unknown
 > {
     disableAuthentication?: boolean;
@@ -265,9 +265,8 @@ export interface EditControllerProps<
     [key: string]: any;
 }
 
-export interface EditControllerResult<
-    RecordType extends Record<string, unknown> = Record<string, any>
-> extends SaveContextValue {
+export interface EditControllerResult<RecordType extends RaRecord = RaRecord>
+    extends SaveContextValue {
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
     data?: RecordType;

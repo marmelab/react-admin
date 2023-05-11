@@ -13324,10 +13324,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hotscript@npm:^1.0.11":
-  version: 1.0.11
-  resolution: "hotscript@npm:1.0.11"
-  checksum: 08fa561165f51640d50745976269ab448326c0cd4372e8671ceb9b60e75aaf55b2813796e28b7666ac0f1d66f0f86bcf9bd100b61a6c533f0f09d805f49c1cd0
+"hotscript@npm:^1.0.12":
+  version: 1.0.12
+  resolution: "hotscript@npm:1.0.12"
+  checksum: 3ab48ec3405bda539ed5438e177914f65be0facb1acd1aa725ee716216ca87d2d1916f2b6ac58d8b7e94ad517a349c46fd7c45f24fe9f7fedf4799f12cb410d4
   languageName: node
   linkType: hard
 
@@ -18910,7 +18910,6 @@ __metadata:
     eventemitter3: ^4.0.7
     expect: ^27.4.6
     history: ^5.1.0
-    hotscript: ^1.0.11
     ignore-styles: ~5.0.1
     inflection: ~1.12.0
     jsonexport: ^3.2.0
@@ -19161,6 +19160,7 @@ __metadata:
     expect: ^27.4.6
     file-api: ~0.10.4
     history: ^5.1.0
+    hotscript: ^1.0.12
     ignore-styles: ~5.0.1
     inflection: ~1.12.0
     jsonexport: ^3.2.0

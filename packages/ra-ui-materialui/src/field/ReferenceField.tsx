@@ -17,6 +17,7 @@ import {
     useGetRecordRepresentation,
     useResourceDefinition,
     useTranslate,
+    RaRecord,
 } from 'ra-core';
 import { UseQueryOptions } from 'react-query';
 
@@ -57,9 +58,10 @@ import { genericMemo } from './genericMemo';
  * backward-compatibility is still kept
  */
 export const ReferenceField = <
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends Record<string, unknown> = Record<string, any>,
+    ReferenceRecordType extends RaRecord = RaRecord
 >(
-    props: ReferenceFieldProps<RecordType>
+    props: ReferenceFieldProps<RecordType, ReferenceRecordType>
 ) => {
     const { source, emptyText, ...rest } = props;
     const record = useRecordContext<RecordType>(props);
@@ -73,7 +75,7 @@ export const ReferenceField = <
             </Typography>
         ) : null
     ) : (
-        <NonEmptyReferenceField
+        <NonEmptyReferenceField<RecordType, ReferenceRecordType>
             {...rest}
             emptyText={emptyText}
             record={record}
@@ -108,13 +110,17 @@ ReferenceField.defaultProps = {
 };
 
 export interface ReferenceFieldProps<
-    RecordType extends Record<string, unknown> = Record<string, any>
-> extends FieldProps<RecordType> {
+    RecordType extends Record<string, unknown> = Record<string, any>,
+    ReferenceRecordType extends RaRecord = RaRecord
+> extends Omit<FieldProps<RecordType>, 'source'>,
+        Required<Pick<FieldProps<RecordType>, 'source'>> {
     children?: ReactNode;
-    queryOptions?: UseQueryOptions<RecordType[], Error> & { meta?: any };
+    queryOptions?: UseQueryOptions<ReferenceRecordType[], Error> & {
+        meta?: any;
+    };
     reference: string;
     translateChoice?: Function | boolean;
-    link?: LinkToType<RecordType>;
+    link?: LinkToType<ReferenceRecordType>;
     sx?: SxProps;
 }
 
@@ -123,47 +129,28 @@ export interface ReferenceFieldProps<
  * which cannot be called conditionally when get(record, source) is empty.
  */
 export const NonEmptyReferenceField = <
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, unknown> = Record<string, any>,
+    ReferenceRecordType extends RaRecord = RaRecord
 >({
     children,
     id,
-    record,
     reference,
-    link,
     queryOptions,
     ...props
-}: Omit<ReferenceFieldProps<RecordType>, 'source'> & {
+}: Omit<ReferenceFieldProps<RecordType, ReferenceRecordType>, 'source'> & {
     id: Identifier;
 }) => {
-    const createPath = useCreatePath();
-    const resourceDefinition = useResourceDefinition({ resource: reference });
-
-    const resourceLinkPath =
-        link === false ||
-        (link === 'edit' && !resourceDefinition.hasEdit) ||
-        (link === 'show' && !resourceDefinition.hasShow)
-            ? false
-            : createPath({
-                  resource: reference,
-                  id,
-                  type:
-                      typeof link === 'function'
-                          ? link(record, reference)
-                          : link,
-              });
-
     return (
         <ResourceContextProvider value={reference}>
             {/* @ts-ignore */}
-            <PureReferenceFieldView<RecordType>
+            <PureReferenceFieldView<RecordType, ReferenceRecordType>
                 reference={reference}
                 {...props}
-                {...useReference<RecordType>({
+                {...useReference<ReferenceRecordType>({
                     reference,
                     id,
                     options: queryOptions,
                 })}
-                resourceLinkPath={resourceLinkPath}
             >
                 {children}
             </PureReferenceFieldView>
@@ -187,11 +174,13 @@ export const ReferenceFieldView = <
         isLoading,
         reference,
         referenceRecord,
-        resourceLinkPath,
+        link,
         sx,
     } = props;
     const getRecordRepresentation = useGetRecordRepresentation(reference);
     const translate = useTranslate();
+    const createPath = useCreatePath();
+    const resourceDefinition = useResourceDefinition({ resource: reference });
 
     if (error) {
         return (
@@ -213,6 +202,20 @@ export const ReferenceFieldView = <
             <>{emptyText && translate(emptyText, { _: emptyText })}</>
         ) : null;
     }
+
+    const resourceLinkPath =
+        link === false ||
+        (link === 'edit' && !resourceDefinition.hasEdit) ||
+        (link === 'show' && !resourceDefinition.hasShow)
+            ? false
+            : createPath({
+                  resource: reference,
+                  id: referenceRecord.id,
+                  type:
+                      typeof link === 'function'
+                          ? link(referenceRecord, reference)
+                          : link,
+              });
 
     let child = children || (
         <Typography component="span" variant="body2">
@@ -247,23 +250,26 @@ ReferenceFieldView.propTypes = {
     reference: PropTypes.string,
     referenceRecord: PropTypes.any,
     resource: PropTypes.string,
-    resourceLinkPath: PropTypes.oneOfType([
+    // @ts-ignore
+    link: PropTypes.oneOfType([
         PropTypes.string,
-        PropTypes.oneOf([false]),
-    ]) as React.Validator<string | false>,
+        PropTypes.bool,
+        PropTypes.func,
+    ]).isRequired,
     source: PropTypes.string,
     translateChoice: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
 };
 
 export interface ReferenceFieldViewProps<
-    RecordType extends Record<string, any> = Record<string, any>
+    RecordType extends Record<string, unknown> = Record<string, any>,
+    ReferenceRecordType extends RaRecord = RaRecord
 > extends FieldProps<RecordType>,
         UseReferenceResult {
     children?: ReactNode;
     reference: string;
     resource?: string;
     translateChoice?: Function | boolean;
-    resourceLinkPath?: string | false;
+    link?: LinkToType<ReferenceRecordType>;
     sx?: SxProps;
 }
 

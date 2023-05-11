@@ -26,8 +26,11 @@ import { ReferenceFieldView } from './ReferenceField';
  *     <TextField source="body" />
  * </ReferenceOneField>
  */
-export const ReferenceOneField = <RecordType extends RaRecord = any>(
-    props: ReferenceOneFieldProps<RecordType>
+export const ReferenceOneField = <
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord
+>(
+    props: ReferenceOneFieldProps<RecordType, ReferenceRecordType>
 ) => {
     const {
         children,
@@ -50,7 +53,7 @@ export const ReferenceOneField = <RecordType extends RaRecord = any>(
         referenceRecord,
         error,
         refetch,
-    } = useReferenceOneFieldController<RecordType>({
+    } = useReferenceOneFieldController<ReferenceRecordType>({
         record,
         reference,
         source,
@@ -84,7 +87,7 @@ export const ReferenceOneField = <RecordType extends RaRecord = any>(
                 isLoading={isLoading}
                 isFetching={isFetching}
                 referenceRecord={referenceRecord}
-                resourceLinkPath={resourceLinkPath}
+                link={resourceLinkPath}
                 reference={reference}
                 refetch={refetch}
                 error={error}
@@ -95,8 +98,10 @@ export const ReferenceOneField = <RecordType extends RaRecord = any>(
     );
 };
 
-export interface ReferenceOneFieldProps<RecordType extends RaRecord = any>
-    extends FieldProps<RecordType> {
+export interface ReferenceOneFieldProps<
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord
+> extends FieldProps<RecordType> {
     children?: ReactNode;
     reference: string;
     target: string;
@@ -104,7 +109,7 @@ export interface ReferenceOneFieldProps<RecordType extends RaRecord = any>
     filter?: any;
     link?: LinkToType<RecordType>;
     queryOptions?: UseQueryOptions<{
-        data: RecordType[];
+        data: ReferenceRecordType[];
         total: number;
     }> & { meta?: any };
 }

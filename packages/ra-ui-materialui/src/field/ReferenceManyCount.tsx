@@ -5,6 +5,7 @@ import {
     useTimeout,
     useCreatePath,
     SortPayload,
+    RaRecord,
 } from 'ra-core';
 import { Typography, TypographyProps, CircularProgress } from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -27,9 +28,7 @@ import { Link } from '../Link';
  * @example // Display the number of comments for the current post, with a custom Typography variant
  * <ReferenceManyCount reference="comments" target="post_id" variant="h1">
  */
-export const ReferenceManyCount = <
-    RecordType extends Record<string, unknown> = Record<string, any>
->(
+export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
     props: ReferenceManyCountProps<RecordType>
 ) => {
     const {
@@ -100,9 +99,8 @@ export const ReferenceManyCount = <
     );
 };
 
-export interface ReferenceManyCountProps<
-    RecordType extends Record<string, unknown> = Record<string, any>
-> extends FieldProps<RecordType>,
+export interface ReferenceManyCountProps<RecordType extends RaRecord = RaRecord>
+    extends FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     reference: string;
     target: string;

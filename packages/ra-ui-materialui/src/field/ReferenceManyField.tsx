@@ -8,6 +8,7 @@ import {
     ListControllerResult,
     ResourceContextProvider,
     useRecordContext,
+    RaRecord,
 } from 'ra-core';
 
 import { fieldPropTypes, FieldProps } from './types';
@@ -59,7 +60,8 @@ import { fieldPropTypes, FieldProps } from './types';
  * </ReferenceManyField>
  */
 export const ReferenceManyField = <
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord
 >(
     props: ReferenceManyFieldProps<RecordType>
 ) => {
@@ -77,7 +79,10 @@ export const ReferenceManyField = <
     } = props;
     const record = useRecordContext(props);
 
-    const controllerProps = useReferenceManyFieldController<RecordType>({
+    const controllerProps = useReferenceManyFieldController<
+        RecordType,
+        ReferenceRecordType
+    >({
         filter,
         page,
         perPage,

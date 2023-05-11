@@ -16,6 +16,7 @@ import {
     MutationMode,
     GetListResult as OriginalGetListResult,
     GetInfiniteListResult,
+    RaRecord,
 } from '../types';
 import { useEvent } from '../util';
 
@@ -82,7 +83,7 @@ import { useEvent } from '../util';
  *                    \-- data is Product
  */
 export const useUpdate = <
-    RecordType extends Record<string, unknown> = Record<string, any>,
+    RecordType extends RaRecord = RaRecord,
     MutationError = unknown
 >(
     resource?: string,
@@ -136,7 +137,11 @@ export const useUpdate = <
         );
         queryClient.setQueriesData(
             [resource, 'getInfiniteList'],
-            (res: UseInfiniteQueryResult<GetInfiniteListResult>['data']) =>
+            (
+                res: UseInfiniteQueryResult<
+                    GetInfiniteListResult<RecordType>
+                >['data']
+            ) =>
                 res && res.pages
                     ? {
                           ...res,
@@ -440,9 +445,7 @@ export const useUpdate = <
 
 type Snapshot = [key: QueryKey, value: any][];
 
-export interface UseUpdateMutateParams<
-    RecordType extends Record<string, unknown> = Record<string, any>
-> {
+export interface UseUpdateMutateParams<RecordType extends RaRecord = RaRecord> {
     resource?: string;
     id?: RecordType['id'];
     data?: Partial<RecordType>;
@@ -451,7 +454,7 @@ export interface UseUpdateMutateParams<
 }
 
 export type UseUpdateOptions<
-    RecordType extends Record<string, unknown> = Record<string, any>,
+    RecordType extends RaRecord = RaRecord,
     MutationError = unknown
 > = UseMutationOptions<
     RecordType,
@@ -460,7 +463,7 @@ export type UseUpdateOptions<
 > & { mutationMode?: MutationMode; returnPromise?: boolean };
 
 export type UseUpdateResult<
-    RecordType extends Record<string, unknown> = Record<string, any>,
+    RecordType extends RaRecord = RaRecord,
     TReturnPromise extends boolean = boolean,
     MutationError = unknown
 > = [

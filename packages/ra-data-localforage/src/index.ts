@@ -105,9 +105,7 @@ export default async (
                     }
                 });
         },
-        getOne: <
-            RecordType extends Record<string, unknown> = Record<string, any>
-        >(
+        getOne: <RecordType extends RaRecord = any>(
             resource: string,
             params: GetOneParams<any>
         ) => baseDataProvider.getOne<RecordType>(resource, params),
@@ -131,9 +129,7 @@ export default async (
                 }),
 
         // update methods need to persist changes in localForage
-        update: <
-            RecordType extends Record<string, unknown> = Record<string, any>
-        >(
+        update: <RecordType extends RaRecord = any>(
             resource: string,
             params: UpdateParams<any>
         ) => {
@@ -162,7 +158,7 @@ export default async (
         },
         create: <RecordType extends RaRecord = any>(
             resource: string,
-            params: CreateParams<any>
+            params: CreateParams
         ) => {
             // we need to call the fakerest provider first to get the generated id
             return baseDataProvider

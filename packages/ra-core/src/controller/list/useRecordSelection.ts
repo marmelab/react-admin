@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 
 import { useStore, useRemoveFromStore } from '../../store';
+import { RaRecord } from '../../types';
 
 /**
  * Get the list of selected items for a resource, and callbacks to change the selection
@@ -9,9 +10,7 @@ import { useStore, useRemoveFromStore } from '../../store';
  *
  * @returns {Object} Destructure as [selectedIds, { select, toggle, clearSelection }].
  */
-export const useRecordSelection = <
-    RecordType extends Record<string, unknown> = Record<string, any>
->(
+export const useRecordSelection = <RecordType extends RaRecord = RaRecord>(
     resource: string
 ): [
     RecordType['id'][],

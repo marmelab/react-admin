@@ -9,7 +9,7 @@ import {
 import union from 'lodash/union';
 
 import { UseGetManyHookValue } from './useGetMany';
-import { Identifier, GetManyParams, DataProvider } from '../types';
+import { Identifier, GetManyParams, DataProvider, RaRecord } from '../types';
 import { useDataProvider } from './useDataProvider';
 
 /**
@@ -65,9 +65,7 @@ import { useDataProvider } from './useDataProvider';
  *      );
  * };
  */
-export const useGetManyAggregate = <
-    RecordType extends Record<string, unknown> = Record<string, any>
->(
+export const useGetManyAggregate = <RecordType extends RaRecord = RaRecord>(
     resource: string,
     params: GetManyParams,
     options: UseQueryOptions<RecordType[], Error> = {}

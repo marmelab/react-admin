@@ -94,9 +94,7 @@ import {
  *             target: "post_id",
  *             id: params.id,
  *           }
- *         );
- *         if (comments.length > 0) {
- *           await dataProvider.deleteMany("comments", {
+ *         );RaRecord
  *             ids: comments.map((comment) => comment.id),
  *           });
  *         }
@@ -167,9 +165,10 @@ export const withLifecycleCallbacks = (
         },
 
         // @ts-ignore
-        getOne: async function <
-            RecordType extends Record<string, unknown> = Record<string, any>
-        >(resource: string, params: GetOneParams<RecordType>) {
+        getOne: async function <RecordType extends RaRecord = RaRecord>(
+            resource: string,
+            params: GetOneParams<RecordType>
+        ) {
             let newParams = params;
             const beforeGetOneHandlers = handlers.filter(
                 h => h.resource === resource && h.beforeGetOne
@@ -286,9 +285,10 @@ export const withLifecycleCallbacks = (
         },
 
         // @ts-ignore
-        update: async function <
-            RecordType extends Record<string, unknown> = Record<string, any>
-        >(resource: string, params: UpdateParams<RecordType>) {
+        update: async function <RecordType extends RaRecord = RaRecord>(
+            resource: string,
+            params: UpdateParams<RecordType>
+        ) {
             let newParams = params;
             const beforeUpdateHandlers = handlers.filter(
                 h => h.resource === resource && h.beforeUpdate
@@ -330,9 +330,9 @@ export const withLifecycleCallbacks = (
             return result;
         },
 
-        create: async function <RecordType extends RaRecord = any>(
+        create: async function <RecordType extends RaRecord = RaRecord>(
             resource: string,
-            params: CreateParams<RecordType>
+            params: CreateParams
         ) {
             let newParams = params;
             const beforeCreateHandlers = handlers.filter(
@@ -528,9 +528,9 @@ export type ResourceCallbacks<T extends RaRecord = any> = {
         dataProvider: DataProvider
     ) => Promise<UpdateManyResult<T>>;
     beforeCreate?: (
-        params: CreateParams<T>,
+        params: CreateParams,
         dataProvider: DataProvider
-    ) => Promise<CreateParams<T>>;
+    ) => Promise<CreateParams>;
     beforeDelete?: (
         params: DeleteParams<T>,
         dataProvider: DataProvider

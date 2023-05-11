@@ -7,15 +7,14 @@ import {
     useResourceContext,
     useEditContext,
     getElementsFromRecords,
+    RaRecord,
 } from 'ra-core';
 
 import { EditProps } from '../types';
 import { EditView } from './EditView';
 import { editFieldTypes } from './editFieldTypes';
 
-export const EditGuesser = <
-    RecordType extends Record<string, unknown> = Record<string, any>
->(
+export const EditGuesser = <RecordType extends RaRecord = RaRecord>(
     props: EditProps<RecordType>
 ) => {
     const {

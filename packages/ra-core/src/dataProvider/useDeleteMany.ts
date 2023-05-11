@@ -144,7 +144,11 @@ export const useDeleteMany = <
         );
         queryClient.setQueriesData(
             [resource, 'getInfiniteList'],
-            (res: UseInfiniteQueryResult<GetInfiniteListResult>['data']) => {
+            (
+                res: UseInfiniteQueryResult<
+                    GetInfiniteListResult<RecordType>
+                >['data']
+            ) => {
                 if (!res || !res.pages) return res;
                 return {
                     ...res,

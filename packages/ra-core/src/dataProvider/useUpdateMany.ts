@@ -77,7 +77,7 @@ import { Identifier } from '..';
  * };
  */
 export const useUpdateMany = <
-    RecordType extends RaRecord = any,
+    RecordType extends RaRecord = RaRecord,
     MutationError = unknown
 >(
     resource?: string,
@@ -147,7 +147,11 @@ export const useUpdateMany = <
         );
         queryClient.setQueriesData(
             [resource, 'getInfiniteList'],
-            (res: UseInfiniteQueryResult<GetInfiniteListResult>['data']) =>
+            (
+                res: UseInfiniteQueryResult<
+                    GetInfiniteListResult<RecordType>
+                >['data']
+            ) =>
                 res && res.pages
                     ? {
                           ...res,

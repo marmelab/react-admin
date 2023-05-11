@@ -70,18 +70,16 @@ import { useEvent } from '../util';
  *                    \-- data is Product
  */
 export const useCreate = <
-    RecordType extends RaRecord = any,
+    RecordType extends RaRecord = RaRecord,
     MutationError = unknown
 >(
     resource?: string,
-    params: Partial<CreateParams<Partial<RecordType>>> = {},
+    params: Partial<CreateParams> = {},
     options: UseCreateOptions<RecordType, MutationError> = {}
 ): UseCreateResult<RecordType, boolean, MutationError> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
-    const paramsRef = useRef<Partial<CreateParams<Partial<RecordType>>>>(
-        params
-    );
+    const paramsRef = useRef<Partial<CreateParams>>(params);
 
     const mutation = useMutation<
         RecordType,
@@ -122,7 +120,7 @@ export const useCreate = <
 
     const create = (
         callTimeResource: string = resource,
-        callTimeParams: Partial<CreateParams<RecordType>> = {},
+        callTimeParams: Partial<CreateParams> = {},
         createOptions: MutateOptions<
             RecordType,
             MutationError,
@@ -151,7 +149,7 @@ export const useCreate = <
 
 export interface UseCreateMutateParams<RecordType extends RaRecord = any> {
     resource?: string;
-    data?: Partial<RecordType>;
+    data?: Partial<Omit<RecordType, 'id'>>;
     meta?: any;
 }
 
@@ -171,7 +169,7 @@ export type UseCreateResult<
 > = [
     (
         resource?: string,
-        params?: Partial<CreateParams<Partial<RecordType>>>,
+        params?: Partial<CreateParams>,
         options?: MutateOptions<
             RecordType,
             MutationError,

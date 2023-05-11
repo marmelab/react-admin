@@ -1,6 +1,6 @@
 import get from 'lodash/get';
 import { useMemo } from 'react';
-import { SortPayload } from '../../types';
+import { RaRecord, SortPayload } from '../../types';
 import { useGetManyAggregate } from '../../dataProvider';
 import { ListControllerResult, useList } from '../list';
 import { useNotify } from '../../notification';
@@ -46,7 +46,8 @@ const defaultSort = { field: null, order: null };
  * @returns {ListControllerResult} The reference props
  */
 export const useReferenceArrayFieldController = <
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends Record<string, unknown> = Record<string, any>,
+    ReferenceRecordType extends RaRecord = RaRecord
 >(
     props: UseReferenceArrayFieldControllerParams<RecordType>
 ): ListControllerResult => {
@@ -69,7 +70,7 @@ export const useReferenceArrayFieldController = <
     }, [value, source]);
 
     const { data, error, isLoading, isFetching, refetch } = useGetManyAggregate<
-        RecordType
+        ReferenceRecordType
     >(
         reference,
         { ids },
@@ -94,7 +95,7 @@ export const useReferenceArrayFieldController = <
         }
     );
 
-    const listProps = useList<RecordType>({
+    const listProps = useList<ReferenceRecordType>({
         data,
         error,
         filter,
