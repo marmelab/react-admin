@@ -112,7 +112,7 @@ export interface ReferenceFieldProps<RecordType extends RaRecord = any>
     resource?: string;
     source: string;
     translateChoice?: Function | boolean;
-    link?: LinkToType;
+    link?: LinkToType<RecordType>;
     sx?: SxProps;
 }
 
