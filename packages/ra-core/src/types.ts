@@ -93,7 +93,7 @@ export type DataProvider<ResourceType extends string = string> = {
 
     getOne: <RecordType extends RaRecord = any>(
         resource: ResourceType,
-        params: GetOneParams
+        params: GetOneParams<RecordType>
     ) => Promise<GetOneResult<RecordType>>;
 
     getMany: <RecordType extends RaRecord = any>(
