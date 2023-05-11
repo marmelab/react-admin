@@ -265,7 +265,7 @@ export interface EditControllerProps<
     [key: string]: any;
 }
 
-export interface EditControllerResult<RecordType extends RaRecord = RaRecord>
+export interface EditControllerResult<RecordType extends RaRecord = any>
     extends SaveContextValue {
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
