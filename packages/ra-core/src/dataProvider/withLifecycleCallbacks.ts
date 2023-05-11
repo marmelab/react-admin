@@ -94,8 +94,9 @@ import {
  *             target: "post_id",
  *             id: params.id,
  *           }
- *         );RaRecord
- *             ids: comments.map((comment) => comment.id),
+ *         );
+ *         if (comments.length > 0) {
+ *           await dataProvider.deleteMany("comments", { *             ids: comments.map((comment) => comment.id),
  *           });
  *         }
  *         // update the author's nb_posts
@@ -165,7 +166,7 @@ export const withLifecycleCallbacks = (
         },
 
         // @ts-ignore
-        getOne: async function <RecordType extends RaRecord = RaRecord>(
+        getOne: async function <RecordType extends RaRecord = any>(
             resource: string,
             params: GetOneParams<RecordType>
         ) {
@@ -285,7 +286,7 @@ export const withLifecycleCallbacks = (
         },
 
         // @ts-ignore
-        update: async function <RecordType extends RaRecord = RaRecord>(
+        update: async function <RecordType extends RaRecord = any>(
             resource: string,
             params: UpdateParams<RecordType>
         ) {
@@ -330,7 +331,7 @@ export const withLifecycleCallbacks = (
             return result;
         },
 
-        create: async function <RecordType extends RaRecord = RaRecord>(
+        create: async function <RecordType extends RaRecord = any>(
             resource: string,
             params: CreateParams
         ) {

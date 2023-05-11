@@ -77,7 +77,7 @@ import { Identifier } from '..';
  * };
  */
 export const useUpdateMany = <
-    RecordType extends RaRecord = RaRecord,
+    RecordType extends RaRecord = any,
     MutationError = unknown
 >(
     resource?: string,

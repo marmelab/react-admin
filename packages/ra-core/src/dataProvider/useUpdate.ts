@@ -12,11 +12,11 @@ import {
 import { useDataProvider } from './useDataProvider';
 import undoableEventEmitter from './undoableEventEmitter';
 import {
+    RaRecord,
     UpdateParams,
     MutationMode,
     GetListResult as OriginalGetListResult,
     GetInfiniteListResult,
-    RaRecord,
 } from '../types';
 import { useEvent } from '../util';
 
@@ -83,7 +83,7 @@ import { useEvent } from '../util';
  *                    \-- data is Product
  */
 export const useUpdate = <
-    RecordType extends RaRecord = RaRecord,
+    RecordType extends RaRecord = any,
     MutationError = unknown
 >(
     resource?: string,
@@ -445,7 +445,7 @@ export const useUpdate = <
 
 type Snapshot = [key: QueryKey, value: any][];
 
-export interface UseUpdateMutateParams<RecordType extends RaRecord = RaRecord> {
+export interface UseUpdateMutateParams<RecordType extends RaRecord = any> {
     resource?: string;
     id?: RecordType['id'];
     data?: Partial<RecordType>;
@@ -454,7 +454,7 @@ export interface UseUpdateMutateParams<RecordType extends RaRecord = RaRecord> {
 }
 
 export type UseUpdateOptions<
-    RecordType extends RaRecord = RaRecord,
+    RecordType extends RaRecord = any,
     MutationError = unknown
 > = UseMutationOptions<
     RecordType,
@@ -463,7 +463,7 @@ export type UseUpdateOptions<
 > & { mutationMode?: MutationMode; returnPromise?: boolean };
 
 export type UseUpdateResult<
-    RecordType extends RaRecord = RaRecord,
+    RecordType extends RaRecord = any,
     TReturnPromise extends boolean = boolean,
     MutationError = unknown
 > = [

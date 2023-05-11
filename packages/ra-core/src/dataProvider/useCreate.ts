@@ -70,7 +70,7 @@ import { useEvent } from '../util';
  *                    \-- data is Product
  */
 export const useCreate = <
-    RecordType extends RaRecord = RaRecord,
+    RecordType extends RaRecord = any,
     MutationError = unknown
 >(
     resource?: string,

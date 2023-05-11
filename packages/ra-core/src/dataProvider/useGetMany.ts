@@ -113,5 +113,5 @@ export const useGetMany = <RecordType extends RaRecord = any>(
 };
 
 export type UseGetManyHookValue<
-    RecordType extends RaRecord = RaRecord
+    RecordType extends RaRecord = any
 > = UseQueryResult<RecordType[], Error>;
