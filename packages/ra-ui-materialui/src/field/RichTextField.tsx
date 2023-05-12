@@ -68,6 +68,9 @@ RichTextField.propTypes = {
     purifyOptions: PropTypes.any,
 };
 
+// We only support the case when sanitize() returns a string
+// hence we need to force the RETURN_DOM_FRAGMENT and RETURN_DOM
+// options to false
 export type PurifyOptions = purify.Config & {
     RETURN_DOM_FRAGMENT?: false | undefined;
     RETURN_DOM?: false | undefined;
