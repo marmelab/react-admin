@@ -6018,6 +6018,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/dompurify@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "@types/dompurify@npm:3.0.2"
+  dependencies:
+    "@types/trusted-types": "*"
+  checksum: 54cf82078d1eab075c75ccba252f08514963e29b8afd63e940ea33a9eefcbac86b43e169415ff82af11c128f03921e1e0ab4fdfaa65ce56d4cd91f3e72985abe
+  languageName: node
+  linkType: hard
+
 "@types/eslint-scope@npm:^3.7.3":
   version: 3.7.3
   resolution: "@types/eslint-scope@npm:3.7.3"
@@ -6495,6 +6504,13 @@ __metadata:
   version: 2.1.0
   resolution: "@types/throttle-debounce@npm:2.1.0"
   checksum: 815b59dfe74e62b7df14dc7daafbb9ab994204a5d716c3db5ce5a2f5144baecf29fe30babe07a8600b63a7a9a59c9e9cf61779a8a0a8812c8b4e921fc6f4cd97
+  languageName: node
+  linkType: hard
+
+"@types/trusted-types@npm:*":
+  version: 2.0.3
+  resolution: "@types/trusted-types@npm:2.0.3"
+  checksum: 25eae736a8a6d24353c3e0108138935250f79d1d239f6fd6f3eb52d88476456ba946f8cb8f3130c6841d40534cafc2dd2326358d86966327c3c4a3d3eecaf585
   languageName: node
   linkType: hard
 
@@ -19128,6 +19144,7 @@ __metadata:
     "@mui/icons-material": ^5.0.1
     "@mui/material": ^5.0.2
     "@testing-library/react": ^11.2.3
+    "@types/dompurify": ^3.0.2
     autosuggest-highlight: ^3.1.1
     clsx: ^1.1.1
     cross-env: ^5.2.0

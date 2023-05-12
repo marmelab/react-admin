@@ -29,6 +29,7 @@
         "@mui/icons-material": "^5.0.1",
         "@mui/material": "^5.0.2",
         "@testing-library/react": "^11.2.3",
+        "@types/dompurify": "^3.0.2",
         "cross-env": "^5.2.0",
         "expect": "^27.4.6",
         "file-api": "~0.10.4",

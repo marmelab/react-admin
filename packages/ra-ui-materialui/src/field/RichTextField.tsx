@@ -31,6 +31,7 @@ export const RichTextField: FC<RichTextFieldProps> = memo<RichTextFieldProps>(
             emptyText,
             source,
             stripTags = false,
+            purifyOptions,
             ...rest
         } = props;
         const record = useRecordContext(props);
@@ -50,7 +51,7 @@ export const RichTextField: FC<RichTextFieldProps> = memo<RichTextFieldProps>(
                 ) : (
                     <span
                         dangerouslySetInnerHTML={{
-                            __html: purify.sanitize(value),
+                            __html: purify.sanitize(value, purifyOptions),
                         }}
                     />
                 )}
@@ -64,6 +65,12 @@ RichTextField.propTypes = {
     ...Typography.propTypes,
     ...fieldPropTypes,
     stripTags: PropTypes.bool,
+    purifyOptions: PropTypes.any,
+};
+
+export type PurifyOptions = purify.Config & {
+    RETURN_DOM_FRAGMENT?: false | undefined;
+    RETURN_DOM?: false | undefined;
 };
 
 export interface RichTextFieldProps
@@ -71,6 +78,7 @@ export interface RichTextFieldProps
         InjectedFieldProps,
         Omit<TypographyProps, 'textAlign'> {
     stripTags?: boolean;
+    purifyOptions?: PurifyOptions;
 }
 
 RichTextField.displayName = 'RichTextField';
