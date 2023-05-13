@@ -1,12 +1,13 @@
+import { RaRecord } from 'react-admin';
+
 export type ThemeName = 'light' | 'dark';
 
-export type Category = {
+export interface Category extends RaRecord<number> {
     id: number;
     name: string;
-};
+}
 
-export type Product = {
-    id: number;
+export interface Product extends RaRecord<number> {
     category_id: number;
     description: string;
     height: number;
@@ -16,10 +17,9 @@ export type Product = {
     stock: number;
     thumbnail: string;
     width: number;
-};
+}
 
-export type Customer = {
-    id: number;
+export interface Customer extends RaRecord<number> {
     first_name: string;
     last_name: string;
     address: string;
@@ -37,12 +37,11 @@ export type Customer = {
     nb_commands: number;
     total_spent: number;
     email: string;
-};
+}
 
 export type OrderStatus = 'ordered' | 'delivered' | 'cancelled';
 
-export type Order = {
-    id: number;
+export interface Order extends RaRecord<number> {
     status: OrderStatus;
     basket: BasketItem[];
     date: Date;
@@ -53,28 +52,26 @@ export type Order = {
     taxes: number;
     customer_id: number;
     reference: string;
-};
+}
 
 export type BasketItem = {
     product_id: number;
     quantity: number;
 };
 
-export type Invoice = {
-    id: number;
+export interface Invoice extends RaRecord<number> {
     date: Date;
-};
+}
 
 export type ReviewStatus = 'accepted' | 'pending' | 'rejected';
 
-export type Review = {
-    id: number;
+export interface Review extends RaRecord<number> {
     date: Date;
     status: ReviewStatus;
     customer_id: number;
     product_id: number;
     comment: string;
-};
+}
 
 declare global {
     interface Window {

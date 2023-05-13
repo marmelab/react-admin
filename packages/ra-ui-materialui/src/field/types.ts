@@ -12,7 +12,9 @@ export interface FieldProps<
 > {
     sortBy?: Call<Objects.AllPaths, RecordType> | AnyString;
     sortByOrder?: SortOrder;
-    source?: Call<Objects.AllPaths, RecordType>;
+    source?: Call<Objects.AllPaths, RecordType> extends never
+        ? AnyString
+        : Call<Objects.AllPaths, RecordType>;
     label?: string | ReactElement | boolean;
     sortable?: boolean;
     className?: string;
