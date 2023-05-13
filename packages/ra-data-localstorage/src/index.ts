@@ -77,7 +77,7 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
                         throw error;
                     }
                 }),
-        getOne: <RecordType extends RaRecord = RaRecord>(resource, params) =>
+        getOne: <RecordType extends RaRecord = any>(resource, params) =>
             baseDataProvider.getOne<RecordType>(resource, params),
         getMany: <RecordType extends RaRecord = any>(resource, params) =>
             baseDataProvider.getMany<RecordType>(resource, params),
@@ -97,7 +97,7 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
                 }),
 
         // update methods need to persist changes in localStorage
-        update: <RecordType extends RaRecord = RaRecord>(resource, params) => {
+        update: <RecordType extends RaRecord = any>(resource, params) => {
             updateLocalStorage(() => {
                 const index = data[resource]?.findIndex(
                     record => record.id == params.id

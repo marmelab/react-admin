@@ -158,7 +158,7 @@ export default async (
         },
         create: <RecordType extends RaRecord = any>(
             resource: string,
-            params: CreateParams
+            params: CreateParams<any>
         ) => {
             // we need to call the fakerest provider first to get the generated id
             return baseDataProvider

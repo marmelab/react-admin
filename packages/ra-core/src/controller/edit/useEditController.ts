@@ -67,10 +67,7 @@ export const useEditController = <
     const redirect = useRedirect();
     const refresh = useRefresh();
     const { id: routeId } = useParams<'id'>();
-    const id =
-        propsId != null
-            ? propsId
-            : (decodeURIComponent(routeId) as RecordType['id']);
+    const id = propsId != null ? propsId : decodeURIComponent(routeId);
     const { meta: queryMeta, ...otherQueryOptions } = queryOptions;
     const {
         onSuccess,
