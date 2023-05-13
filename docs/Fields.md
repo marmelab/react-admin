@@ -607,6 +607,7 @@ All field components accept a generic type that describe the record. This is use
 import * as React from "react";
 import { Show, SimpleShowLayout, TextField, DateField, RichTextField } from 'react-admin';
 
+// Note that you shouldn't extend RaRecord for this to work
 type Post = {
     id: number;
     title: string;
@@ -626,5 +627,7 @@ export const PostShow = () => (
     </Show>
 );
 ```
+
+**Limitation**: You must not extend `RaRecord` for this to work. This is because `RaRecord` extends `Record<string, any>` and TypeScript would not be able to infer your types properties.
 
 Specifying the record type will also allow your IDE to provide auto-completion for both the `source` and `sortBy` prop. Note that the `sortBy` prop also accept any string.
