@@ -90,7 +90,7 @@ export type DataProvider<ResourceType extends string = string> = {
         params: GetListParams
     ) => Promise<GetListResult<RecordType>>;
 
-    getOne: <RecordType extends Record<string, unknown> = Record<string, any>>(
+    getOne: <RecordType extends RaRecord = any>(
         resource: ResourceType,
         params: GetOneParams<RecordType>
     ) => Promise<GetOneResult<RecordType>>;
@@ -105,7 +105,7 @@ export type DataProvider<ResourceType extends string = string> = {
         params: GetManyReferenceParams
     ) => Promise<GetManyReferenceResult<RecordType>>;
 
-    update: <RecordType extends Record<string, unknown> = Record<string, any>>(
+    update: <RecordType extends RaRecord = any>(
         resource: ResourceType,
         params: UpdateParams
     ) => Promise<UpdateResult<RecordType>>;
@@ -152,15 +152,11 @@ export interface GetInfiniteListResult<RecordType extends RaRecord = any>
     extends GetListResult<RecordType> {
     pageParam?: number;
 }
-export interface GetOneParams<
-    RecordType extends Record<string, unknown> = Record<string, any>
-> {
+export interface GetOneParams<RecordType extends RaRecord = any> {
     id: RecordType['id'];
     meta?: any;
 }
-export interface GetOneResult<
-    RecordType extends Record<string, unknown> = Record<string, any>
-> {
+export interface GetOneResult<RecordType extends RaRecord = any> {
     data: RecordType;
 }
 
@@ -189,17 +185,13 @@ export interface GetManyReferenceResult<RecordType extends RaRecord = any> {
     };
 }
 
-export interface UpdateParams<
-    RecordType extends Record<string, unknown> = Record<string, any>
-> {
+export interface UpdateParams<RecordType extends RaRecord = any> {
     id: RecordType['id'];
     data: Partial<RecordType>;
     previousData: RecordType;
     meta?: any;
 }
-export interface UpdateResult<
-    RecordType extends Record<string, unknown> = Record<string, any>
-> {
+export interface UpdateResult<RecordType extends RaRecord = any> {
     data: RecordType;
 }
 
