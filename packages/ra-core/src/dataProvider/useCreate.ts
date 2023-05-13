@@ -74,12 +74,14 @@ export const useCreate = <
     MutationError = unknown
 >(
     resource?: string,
-    params: Partial<CreateParams> = {},
+    params: Partial<CreateParams<Partial<RecordType>>> = {},
     options: UseCreateOptions<RecordType, MutationError> = {}
 ): UseCreateResult<RecordType, boolean, MutationError> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
-    const paramsRef = useRef<Partial<CreateParams>>(params);
+    const paramsRef = useRef<Partial<CreateParams<Partial<RecordType>>>>(
+        params
+    );
 
     const mutation = useMutation<
         RecordType,
@@ -120,7 +122,7 @@ export const useCreate = <
 
     const create = (
         callTimeResource: string = resource,
-        callTimeParams: Partial<CreateParams> = {},
+        callTimeParams: Partial<CreateParams<Partial<RecordType>>> = {},
         createOptions: MutateOptions<
             RecordType,
             MutationError,
@@ -169,7 +171,7 @@ export type UseCreateResult<
 > = [
     (
         resource?: string,
-        params?: Partial<CreateParams>,
+        params?: Partial<CreateParams<Partial<RecordType>>>,
         options?: MutateOptions<
             RecordType,
             MutationError,

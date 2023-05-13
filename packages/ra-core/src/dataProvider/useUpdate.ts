@@ -137,11 +137,7 @@ export const useUpdate = <
         );
         queryClient.setQueriesData(
             [resource, 'getInfiniteList'],
-            (
-                res: UseInfiniteQueryResult<
-                    GetInfiniteListResult<RecordType>
-                >['data']
-            ) =>
+            (res: UseInfiniteQueryResult<GetInfiniteListResult>['data']) =>
                 res && res.pages
                     ? {
                           ...res,

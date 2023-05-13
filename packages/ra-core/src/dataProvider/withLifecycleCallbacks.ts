@@ -96,7 +96,8 @@ import {
  *           }
  *         );
  *         if (comments.length > 0) {
- *           await dataProvider.deleteMany("comments", { *             ids: comments.map((comment) => comment.id),
+ *           await dataProvider.deleteMany("comments", {
+ *             ids: comments.map((comment) => comment.id),
  *           });
  *         }
  *         // update the author's nb_posts
