@@ -16,6 +16,6 @@ export const genericMemo: <T extends FunctionComponent>(component: T) => T = <
     // On the memoized version so that components that inspect their children props may read them.
     result.propTypes = component.propTypes;
     result.defaultProps = component.defaultProps;
-    result.displayName = component.displayName.replace('Impl', '');
+    result.displayName = component.displayName?.replace('Impl', '');
     return result;
 };
