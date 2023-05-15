@@ -151,7 +151,7 @@ interface Props<
     mutationOptions?: UseMutationOptions<
         RecordType,
         MutationOptionsError,
-        CreateParams | UpdateParams<RecordType>
+        CreateParams<RecordType> | UpdateParams<RecordType>
     >;
     transform?: TransformData;
     variant?: string;
