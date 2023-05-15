@@ -16,7 +16,7 @@ export const ImageField = <
 ) => {
     const { className, emptyText, source, src, title, ...rest } = props;
     const record = useRecordContext(props);
-    const sourceValue = get(record, source).toString();
+    const sourceValue = get(record, source);
     const translate = useTranslate();
 
     if (!sourceValue) {
@@ -62,14 +62,14 @@ export const ImageField = <
         );
     }
 
-    const titleValue = get(record, title).toString() || title;
+    const titleValue = get(record, title)?.toString() || title;
 
     return (
         <Root className={className} {...sanitizeFieldRestProps(rest)}>
             <img
                 title={titleValue}
                 alt={titleValue}
-                src={sourceValue}
+                src={sourceValue?.toString()}
                 className={ImageFieldClasses.image}
             />
         </Root>

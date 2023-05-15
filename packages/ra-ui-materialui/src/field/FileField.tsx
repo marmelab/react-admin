@@ -41,7 +41,7 @@ export const FileField = <
         ...rest
     } = props;
     const record = useRecordContext(props);
-    const sourceValue = get(record, source).toString();
+    const sourceValue = get(record, source);
     const translate = useTranslate();
 
     if (!sourceValue) {
@@ -86,12 +86,12 @@ export const FileField = <
         );
     }
 
-    const titleValue = get(record, title).toString() || title;
+    const titleValue = get(record, title)?.toString() || title;
 
     return (
         <Root className={className} {...sanitizeFieldRestProps(rest)}>
             <Link
-                href={sourceValue}
+                href={sourceValue?.toString()}
                 title={titleValue}
                 target={target}
                 download={download}
