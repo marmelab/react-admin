@@ -6,7 +6,7 @@ import { ListControllerResult, useList } from '../list';
 import { useNotify } from '../../notification';
 
 export interface UseReferenceArrayFieldControllerParams<
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends RaRecord = RaRecord
 > {
     filter?: any;
     page?: number;
@@ -46,7 +46,7 @@ const defaultSort = { field: null, order: null };
  * @returns {ListControllerResult} The reference props
  */
 export const useReferenceArrayFieldController = <
-    RecordType extends Record<string, unknown> = Record<string, any>,
+    RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord
 >(
     props: UseReferenceArrayFieldControllerParams<RecordType>

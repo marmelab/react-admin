@@ -78,7 +78,7 @@ import { ChipField } from './ChipField';
  * </ReferenceArrayField>
  */
 export const ReferenceArrayField = <
-    RecordType extends Record<string, unknown> = Record<string, any>,
+    RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord
 >(
     props: ReferenceArrayFieldProps<RecordType>
@@ -129,7 +129,7 @@ ReferenceArrayField.propTypes = {
 };
 
 export interface ReferenceArrayFieldProps<
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends RaRecord = RaRecord
 > extends FieldProps<RecordType> {
     children?: ReactNode;
     filter?: FilterPayload;
