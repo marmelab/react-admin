@@ -42,9 +42,6 @@ TextFieldImpl.displayName = 'TextFieldImpl';
 
 export const TextField = genericMemo(TextFieldImpl);
 
-TextField.displayName = 'TextField';
-TextField.propTypes = TextFieldImpl.propTypes;
-
 export interface TextFieldProps<
     RecordType extends Record<string, unknown> = Record<string, any>
 > extends FieldProps<RecordType>,

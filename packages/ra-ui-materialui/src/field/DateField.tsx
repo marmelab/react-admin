@@ -136,9 +136,6 @@ DateFieldImpl.displayName = 'DateFieldImpl';
 
 export const DateField = genericMemo(DateFieldImpl);
 
-DateField.propTypes = DateFieldImpl.propTypes;
-DateField.displayName = 'DateField';
-
 export interface DateFieldProps<
     RecordType extends Record<string, unknown> = Record<string, any>
 > extends FieldProps<RecordType>,

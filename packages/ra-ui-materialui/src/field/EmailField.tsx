@@ -49,9 +49,6 @@ EmailFieldImpl.displayName = 'EmailFieldImpl';
 
 export const EmailField = genericMemo(EmailFieldImpl);
 
-EmailField.propTypes = EmailFieldImpl.propTypes;
-EmailField.displayName = 'EmailField';
-
 export interface EmailFieldProps<
     RecordType extends Record<string, unknown> = Record<string, any>
 > extends FieldProps<RecordType>,

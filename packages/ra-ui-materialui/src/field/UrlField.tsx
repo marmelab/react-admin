@@ -47,8 +47,6 @@ UrlFieldImpl.propTypes = fieldPropTypes;
 UrlFieldImpl.displayName = 'UrlFieldImpl';
 
 export const UrlField = genericMemo(UrlFieldImpl);
-UrlField.propTypes = UrlFieldImpl.propTypes;
-UrlField.displayName = 'UrlField';
 
 export interface UrlFieldProps<
     RecordType extends Record<string, unknown> = Record<string, any>
