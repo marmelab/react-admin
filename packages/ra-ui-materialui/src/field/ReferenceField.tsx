@@ -227,7 +227,7 @@ export const ReferenceFieldView = <
         <Root className={className} sx={sx}>
             <RecordContextProvider value={referenceRecord}>
                 <Link
-                    to={resourceLinkPath as string}
+                    to={resourceLinkPath.toString()}
                     className={ReferenceFieldClasses.link}
                     onClick={stopPropagation}
                 >

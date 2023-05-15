@@ -56,7 +56,7 @@ const NumberFieldImpl = <
     if (!record) {
         return null;
     }
-    const value = get(record, source) as number;
+    const value = get(record, source);
 
     if (value == null) {
         return emptyText ? (
@@ -78,7 +78,9 @@ const NumberFieldImpl = <
             className={className}
             {...sanitizeFieldRestProps(rest)}
         >
-            {hasNumberFormat ? value.toLocaleString(locales, options) : value}
+            {hasNumberFormat && typeof value === 'number'
+                ? value.toLocaleString(locales, options)
+                : value}
         </Typography>
     );
 };

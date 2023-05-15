@@ -41,7 +41,7 @@ export const FileField = <
         ...rest
     } = props;
     const record = useRecordContext(props);
-    const sourceValue = get(record, source) as string;
+    const sourceValue = get(record, source).toString();
     const translate = useTranslate();
 
     if (!sourceValue) {
@@ -86,7 +86,7 @@ export const FileField = <
         );
     }
 
-    const titleValue = (get(record, title) as string) || title;
+    const titleValue = get(record, title).toString() || title;
 
     return (
         <Root className={className} {...sanitizeFieldRestProps(rest)}>
