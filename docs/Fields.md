@@ -601,7 +601,7 @@ You can find components for react-admin in third-party repositories.
 
 ## TypeScript
 
-All field components accept a generic type that describe the record. This is used to validate the `source` prop to ensure it targets an actual property of the record:
+All field components accept a generic type that describes the record. This lets TypeScript validate that the `source` prop targets an actual field of the record:
 
 ```tsx
 import * as React from "react";
@@ -630,4 +630,4 @@ export const PostShow = () => (
 
 **Limitation**: You must not extend `RaRecord` for this to work. This is because `RaRecord` extends `Record<string, any>` and TypeScript would not be able to infer your types properties.
 
-Specifying the record type will also allow your IDE to provide auto-completion for both the `source` and `sortBy` prop. Note that the `sortBy` prop also accept any string.
+Specifying the record type will also allow your IDE to provide auto-completion for both the `source` and `sortBy` prop. Note that the `sortBy` prop also accepts any string.
