@@ -1,12 +1,12 @@
-export type Sale = {
-    id: number;
+import { RaRecord } from 'react-admin';
+
+export interface Sale extends RaRecord<number> {
     first_name: string;
     last_name: string;
     email: string;
-};
+}
 
-export type Company = {
-    id: number;
+export interface Company extends RaRecord<number> {
     name: string;
     logo: string;
     sector: string;
@@ -22,10 +22,9 @@ export type Company = {
     nb_deals: number;
     sales_id: number;
     created_at: string;
-};
+}
 
-export type Contact = {
-    id: number;
+export interface Contact extends RaRecord<number> {
     first_name: string;
     last_name: string;
     title: string;
@@ -41,20 +40,18 @@ export type Contact = {
     nb_notes: number;
     status: string;
     background: string;
-};
+}
 
-export type ContactNote = {
-    id: number;
+export interface ContactNote extends RaRecord<number> {
     contact_id: number;
     type: string;
     text: string;
     date: string;
     sales_id: number;
     status: string;
-};
+}
 
-export type Deal = {
-    id: number;
+export interface Deal extends RaRecord<number> {
     name: string;
     company_id: number;
     contact_ids: number[];
@@ -68,10 +65,9 @@ export type Deal = {
     sales_id: number;
     index: number;
     nb_notes: number;
-};
+}
 
-export type Tag = {
-    id: number;
+export interface Tag extends RaRecord<number> {
     name: string;
     color: string;
-};
+}
