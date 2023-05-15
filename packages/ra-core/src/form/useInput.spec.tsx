@@ -17,6 +17,26 @@ const Input: FunctionComponent<
     return children(inputProps);
 };
 
+const InputWithCustomOnChange: FunctionComponent<
+    {
+        children: (props: ReturnType<typeof useInput>) => ReactElement;
+    } & InputProps & { getContextValue?: (value: string) => void }
+> = ({ children, getContextValue, ...props }) => {
+    const { getValues } = useFormContext();
+
+    return (
+        <Input
+            {...props}
+            onChange={e => {
+                props.onChange(e);
+                getContextValue(getValues()[props.source]);
+            }}
+        >
+            {children}
+        </Input>
+    );
+};
+
 describe('useInput', () => {
     it('returns the props needed for an input', () => {
         let inputProps;
@@ -104,6 +124,46 @@ describe('useInput', () => {
 
         fireEvent.blur(input);
         expect(handleBlur).toHaveBeenCalled();
+    });
+
+    it('custom onChange handler should have access to updated context input value', () => {
+        let targetValue, contextValue;
+        const handleChange = e => {
+            targetValue = e.target.value;
+        };
+        const getContextValue = value => {
+            contextValue = value;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <Form onSubmit={jest.fn()}>
+                    <InputWithCustomOnChange
+                        source="title"
+                        resource="posts"
+                        onChange={handleChange}
+                        getContextValue={getContextValue}
+                        defaultValue=""
+                    >
+                        {({ id, field }) => (
+                            <input
+                                type="text"
+                                id={id}
+                                aria-label="Title"
+                                {...field}
+                            />
+                        )}
+                    </InputWithCustomOnChange>
+                </Form>
+            </CoreAdminContext>
+        );
+        const input = screen.getByLabelText('Title');
+
+        fireEvent.change(input, {
+            target: { value: 'Changed title' },
+        });
+        expect(targetValue).toBe('Changed title');
+        expect(contextValue).toBe('Changed title');
     });
 
     describe('defaultValue', () => {
