@@ -24,6 +24,7 @@ export const NoFalseIcon = () => <Basic FalseIcon={null} />;
 export const NoTrueIcon = () => <Basic TrueIcon={null} />;
 
 type Post = {
+    id: number;
     published: boolean;
     deep: {
         reported: boolean;
@@ -31,9 +32,7 @@ type Post = {
     title: string;
 };
 
-export const Typed = (
-    props: Omit<BooleanFieldProps, 'source' | 'sortBy' | 'record'>
-) => {
+export const Typed = () => {
     const [published, setPublished] = React.useState(true);
     return (
         <Stack direction="row">
@@ -43,10 +42,14 @@ export const Typed = (
                 onChange={e => setPublished(e.target.checked)}
             />
             <BooleanField<Post>
-                record={{ published, deep: { reported: false }, title: '' }}
+                record={{
+                    id: 1,
+                    published,
+                    deep: { reported: false },
+                    title: '',
+                }}
                 source="deep.reported"
                 sortBy="published"
-                {...props}
             />
         </Stack>
     );
