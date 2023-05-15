@@ -16,10 +16,10 @@ import {
 } from 'react-admin';
 
 import AvatarField from '../visitors/AvatarField';
-import { Customer } from './../types';
+import { Customer, Review } from './../types';
 
 export const ReviewItem = () => {
-    const record = useRecordContext();
+    const record = useRecordContext<Review>();
     const createPath = useCreatePath();
     if (!record) {
         return null;
