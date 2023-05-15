@@ -136,6 +136,7 @@ export const NonEmptyReferenceField = <
     id,
     reference,
     queryOptions,
+    link,
     ...props
 }: Omit<ReferenceFieldProps<RecordType, ReferenceRecordType>, 'source'> & {
     id: Identifier;
@@ -151,6 +152,7 @@ export const NonEmptyReferenceField = <
                     id,
                     options: queryOptions,
                 })}
+                resourceLinkPath={link}
             >
                 {children}
             </PureReferenceFieldView>
@@ -174,7 +176,7 @@ export const ReferenceFieldView = <
         isLoading,
         reference,
         referenceRecord,
-        link,
+        resourceLinkPath,
         sx,
     } = props;
     const getRecordRepresentation = useGetRecordRepresentation(reference);
@@ -203,18 +205,18 @@ export const ReferenceFieldView = <
         ) : null;
     }
 
-    const resourceLinkPath =
-        link === false ||
-        (link === 'edit' && !resourceDefinition.hasEdit) ||
-        (link === 'show' && !resourceDefinition.hasShow)
+    const link =
+        resourceLinkPath === false ||
+        (resourceLinkPath === 'edit' && !resourceDefinition.hasEdit) ||
+        (resourceLinkPath === 'show' && !resourceDefinition.hasShow)
             ? false
             : createPath({
                   resource: reference,
                   id: referenceRecord.id,
                   type:
-                      typeof link === 'function'
-                          ? link(referenceRecord, reference)
-                          : link,
+                      typeof resourceLinkPath === 'function'
+                          ? resourceLinkPath(referenceRecord, reference)
+                          : resourceLinkPath,
               });
 
     let child = children || (
@@ -223,11 +225,11 @@ export const ReferenceFieldView = <
         </Typography>
     );
 
-    return resourceLinkPath ? (
+    return link ? (
         <Root className={className} sx={sx}>
             <RecordContextProvider value={referenceRecord}>
                 <Link
-                    to={resourceLinkPath.toString()}
+                    to={link.toString()}
                     className={ReferenceFieldClasses.link}
                     onClick={stopPropagation}
                 >
@@ -251,7 +253,7 @@ ReferenceFieldView.propTypes = {
     referenceRecord: PropTypes.any,
     resource: PropTypes.string,
     // @ts-ignore
-    link: PropTypes.oneOfType([
+    resourceLinkPath: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,
         PropTypes.func,
@@ -269,7 +271,7 @@ export interface ReferenceFieldViewProps<
     reference: string;
     resource?: string;
     translateChoice?: Function | boolean;
-    link?: LinkToType<ReferenceRecordType>;
+    resourceLinkPath?: LinkToType<ReferenceRecordType>;
     sx?: SxProps;
 }
 
