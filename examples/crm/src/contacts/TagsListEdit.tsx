@@ -69,7 +69,7 @@ export const TagsListEdit = () => {
         });
     };
 
-    const handleAddTag = (id: number) => {
+    const handleAddTag = (id: Identifier) => {
         const tags = [...record.tags, id];
         update('contacts', {
             id: record.id,
