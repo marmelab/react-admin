@@ -621,6 +621,8 @@ export const PostShow = () => (
         <SimpleShowLayout>
             <TextField<Post> source="title" />
             <TextField<Post> source="teaser" />
+            {/* Here TS will show an error because a teasr field does not exist */}
+            <TextField<Post> source="teasr" />
             <RichTextField<Post> source="body" />
             <DateField<Post> label="Publication date" source="published_at" />
         </SimpleShowLayout>
