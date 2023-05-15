@@ -82,7 +82,9 @@ const ArrayFieldImpl = <
 ) => {
     const { children, resource, source, perPage, sort, filter } = props;
     const record = useRecordContext(props);
-    const data = (get(record, source, emptyArray) as any[]) || emptyArray;
+    const data =
+        (get(record, source, emptyArray) as Record<string, any>[]) ||
+        emptyArray;
     const listContext = useList({ data, resource, perPage, sort, filter });
     return (
         <ListContextProvider value={listContext}>
@@ -90,11 +92,13 @@ const ArrayFieldImpl = <
         </ListContextProvider>
     );
 };
+ArrayFieldImpl.propTypes = fieldPropTypes;
+ArrayFieldImpl.displayName = 'ArrayFieldImpl';
 
 export const ArrayField = genericMemo(ArrayFieldImpl);
 
-ArrayFieldImpl.propTypes = fieldPropTypes;
 ArrayField.propTypes = ArrayFieldImpl.propTypes;
+ArrayField.displayName = 'ArrayField';
 
 export interface ArrayFieldProps<
     RecordType extends Record<string, unknown> = Record<string, any>
@@ -104,8 +108,5 @@ export interface ArrayFieldProps<
     sort?: SortPayload;
     filter?: FilterPayload;
 }
-
-ArrayFieldImpl.displayName = 'ArrayFieldImpl';
-ArrayField.displayName = 'ArrayField';
 
 const emptyArray = [];

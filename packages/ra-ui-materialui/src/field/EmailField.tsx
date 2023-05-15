@@ -44,12 +44,12 @@ const EmailFieldImpl = <
     );
 };
 
+EmailFieldImpl.propTypes = fieldPropTypes;
+EmailFieldImpl.displayName = 'EmailFieldImpl';
+
 export const EmailField = genericMemo(EmailFieldImpl);
 
-EmailFieldImpl.propTypes = fieldPropTypes;
 EmailField.propTypes = EmailFieldImpl.propTypes;
-
-EmailFieldImpl.displayName = 'EmailFieldImpl';
 EmailField.displayName = 'EmailField';
 
 export interface EmailFieldProps<

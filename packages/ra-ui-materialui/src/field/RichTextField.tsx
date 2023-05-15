@@ -62,8 +62,6 @@ const RichTextFieldImpl = <
     );
 };
 
-export const RichTextField = genericMemo(RichTextFieldImpl);
-
 RichTextFieldImpl.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
@@ -71,7 +69,11 @@ RichTextFieldImpl.propTypes = {
     stripTags: PropTypes.bool,
     purifyOptions: PropTypes.any,
 };
+RichTextFieldImpl.displayName = 'RichTextFieldImpl';
 
+export const RichTextField = genericMemo(RichTextFieldImpl);
+
+RichTextField.displayName = 'RichTextField';
 RichTextField.propTypes = RichTextFieldImpl.propTypes;
 
 // We only support the case when sanitize() returns a string
@@ -89,9 +91,6 @@ export interface RichTextFieldProps<
     stripTags?: boolean;
     purifyOptions?: PurifyOptions;
 }
-
-RichTextFieldImpl.displayName = 'RichTextFieldImpl';
-RichTextField.displayName = 'RichTextField';
 
 export const removeTags = (input: string) =>
     input ? input.replace(/<[^>]+>/gm, '') : '';

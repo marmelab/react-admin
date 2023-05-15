@@ -31,17 +31,18 @@ const TextFieldImpl = <
     );
 };
 
-export const TextField = genericMemo(TextFieldImpl);
-
-// what? TypeScript loses the displayName if we don't set it explicitly
-TextFieldImpl.displayName = 'TextFieldImpl';
-TextField.displayName = 'TextField';
-
 TextFieldImpl.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
 };
+
+// what? TypeScript loses the displayName if we don't set it explicitly
+TextFieldImpl.displayName = 'TextFieldImpl';
+
+export const TextField = genericMemo(TextFieldImpl);
+
+TextField.displayName = 'TextField';
 TextField.propTypes = TextFieldImpl.propTypes;
 
 export interface TextFieldProps<

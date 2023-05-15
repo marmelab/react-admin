@@ -43,12 +43,11 @@ const UrlFieldImpl = <
     );
 };
 
-export const UrlField = genericMemo(UrlFieldImpl);
-
 UrlFieldImpl.propTypes = fieldPropTypes;
-UrlField.propTypes = UrlFieldImpl.propTypes;
-
 UrlFieldImpl.displayName = 'UrlFieldImpl';
+
+export const UrlField = genericMemo(UrlFieldImpl);
+UrlField.propTypes = UrlFieldImpl.propTypes;
 UrlField.displayName = 'UrlField';
 
 export interface UrlFieldProps<
