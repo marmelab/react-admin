@@ -44,14 +44,15 @@ const ChipFieldImpl = <
 
 export const ChipField = genericMemo(ChipFieldImpl);
 
-// @ts-ignore
-ChipField.propTypes = {
+ChipFieldImpl.propTypes = {
     // @ts-ignore
     ...ChipField.propTypes,
     ...fieldPropTypes,
 };
 
-// @ts-ignore
+ChipField.propTypes = ChipFieldImpl.propTypes;
+
+ChipFieldImpl.displayName = 'ChipFieldImpl';
 ChipField.displayName = 'ChipField';
 
 export interface ChipFieldProps<

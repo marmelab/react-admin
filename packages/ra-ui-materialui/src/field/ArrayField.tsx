@@ -93,10 +93,8 @@ const ArrayFieldImpl = <
 
 export const ArrayField = genericMemo(ArrayFieldImpl);
 
-// @ts-ignore
-ArrayField.propTypes = {
-    ...fieldPropTypes,
-};
+ArrayFieldImpl.propTypes = fieldPropTypes;
+ArrayField.propTypes = ArrayFieldImpl.propTypes;
 
 export interface ArrayFieldProps<
     RecordType extends Record<string, unknown> = Record<string, any>
@@ -107,7 +105,7 @@ export interface ArrayFieldProps<
     filter?: FilterPayload;
 }
 
-// @ts-ignore
+ArrayFieldImpl.displayName = 'ArrayFieldImpl';
 ArrayField.displayName = 'ArrayField';
 
 const emptyArray = [];

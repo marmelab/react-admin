@@ -122,8 +122,7 @@ const DateFieldImpl = <
 
 export const DateField = genericMemo(DateFieldImpl);
 
-// @ts-ignore
-DateField.propTypes = {
+DateFieldImpl.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
@@ -136,7 +135,9 @@ DateField.propTypes = {
     showDate: PropTypes.bool,
 };
 
-// @ts-ignore
+DateField.propTypes = DateFieldImpl.propTypes;
+
+DateFieldImpl.displayName = 'DateFieldImpl';
 DateField.displayName = 'DateField';
 
 export interface DateFieldProps<

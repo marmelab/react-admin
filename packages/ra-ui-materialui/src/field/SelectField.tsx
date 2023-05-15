@@ -130,15 +130,19 @@ const SelectFieldImpl = <
 
 export const SelectField = genericMemo(SelectFieldImpl);
 
-// @ts-ignore
-SelectField.defaultProps = {
+// We have to set the defaultProps on both the SelectFieldImpl and NumberField.
+// On SelectFieldImpl because that will make it possible to reference defaultProps in user components by making
+// TS happy and allows us to also declare defaultProps on NumberField.
+SelectFieldImpl.defaultProps = {
     optionText: 'name',
     optionValue: 'id',
     translateChoice: true,
 };
 
-// @ts-ignore
-SelectField.propTypes = {
+// On SelectField because that will allow children inspection to work.
+SelectField.defaultProps = SelectFieldImpl.defaultProps;
+
+SelectFieldImpl.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
@@ -151,6 +155,7 @@ SelectField.propTypes = {
     optionValue: PropTypes.string,
     translateChoice: PropTypes.bool,
 };
+SelectField.propTypes = SelectFieldImpl.propTypes;
 
 export interface SelectFieldProps<
     RecordType extends Record<string, unknown> = Record<string, any>

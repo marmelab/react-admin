@@ -64,14 +64,15 @@ const RichTextFieldImpl = <
 
 export const RichTextField = genericMemo(RichTextFieldImpl);
 
-// @ts-ignore
-RichTextField.propTypes = {
+RichTextFieldImpl.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
     stripTags: PropTypes.bool,
     purifyOptions: PropTypes.any,
 };
+
+RichTextField.propTypes = RichTextFieldImpl.propTypes;
 
 // We only support the case when sanitize() returns a string
 // hence we need to force the RETURN_DOM_FRAGMENT and RETURN_DOM
@@ -89,7 +90,7 @@ export interface RichTextFieldProps<
     purifyOptions?: PurifyOptions;
 }
 
-// @ts-ignore
+RichTextFieldImpl.displayName = 'RichTextFieldImpl';
 RichTextField.displayName = 'RichTextField';
 
 export const removeTags = (input: string) =>

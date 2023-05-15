@@ -46,9 +46,10 @@ const EmailFieldImpl = <
 
 export const EmailField = genericMemo(EmailFieldImpl);
 
-// @ts-ignore
-EmailField.propTypes = fieldPropTypes;
-// @ts-ignore
+EmailFieldImpl.propTypes = fieldPropTypes;
+EmailField.propTypes = EmailFieldImpl.propTypes;
+
+EmailFieldImpl.displayName = 'EmailFieldImpl';
 EmailField.displayName = 'EmailField';
 
 export interface EmailFieldProps<

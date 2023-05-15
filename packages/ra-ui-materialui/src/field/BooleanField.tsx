@@ -77,8 +77,7 @@ const BooleanFieldImpl = <
 
 export const BooleanField = genericMemo(BooleanFieldImpl);
 
-// @ts-ignore
-BooleanField.propTypes = {
+BooleanFieldImpl.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
@@ -89,7 +88,9 @@ BooleanField.propTypes = {
     looseValue: PropTypes.bool,
 };
 
-// @ts-ignore
+BooleanField.propTypes = BooleanFieldImpl.propTypes;
+
+BooleanFieldImpl.displayName = 'BooleanFieldImpl';
 BooleanField.displayName = 'BooleanField';
 
 export interface BooleanFieldProps<

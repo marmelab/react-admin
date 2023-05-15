@@ -45,9 +45,10 @@ const UrlFieldImpl = <
 
 export const UrlField = genericMemo(UrlFieldImpl);
 
-// @ts-ignore
-UrlField.propTypes = fieldPropTypes;
-// @ts-ignore
+UrlFieldImpl.propTypes = fieldPropTypes;
+UrlField.propTypes = UrlFieldImpl.propTypes;
+
+UrlFieldImpl.displayName = 'UrlFieldImpl';
 UrlField.displayName = 'UrlField';
 
 export interface UrlFieldProps<

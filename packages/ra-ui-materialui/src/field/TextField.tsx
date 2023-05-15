@@ -34,15 +34,15 @@ const TextFieldImpl = <
 export const TextField = genericMemo(TextFieldImpl);
 
 // what? TypeScript loses the displayName if we don't set it explicitly
-// @ts-ignore
+TextFieldImpl.displayName = 'TextFieldImpl';
 TextField.displayName = 'TextField';
 
-// @ts-ignore
-TextField.propTypes = {
+TextFieldImpl.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
 };
+TextField.propTypes = TextFieldImpl.propTypes;
 
 export interface TextFieldProps<
     RecordType extends Record<string, unknown> = Record<string, any>

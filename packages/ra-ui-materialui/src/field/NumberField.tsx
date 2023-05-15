@@ -86,16 +86,20 @@ const NumberFieldImpl = <
 export const NumberField = genericMemo(NumberFieldImpl);
 
 // what? TypeScript loses the displayName if we don't set it explicitly
-// @ts-ignore
+// Declaring it first on the NumberFieldImpl makes TS happy to accept it on NumberField
+NumberFieldImpl.displayName = 'NumberFieldImpl';
 NumberField.displayName = 'NumberField';
 
-// @ts-ignore
-NumberField.defaultProps = {
+// We have to set the defaultProps on both the NumberFieldImpl and NumberField.
+// On NumberFieldImpl because that will make it possible to reference defaultProps in user components by making
+// TS happy and allows us to also declare defaultProps on NumberField.
+NumberFieldImpl.defaultProps = {
     textAlign: 'right',
 };
+// On NumberField because that will allow children inspection to work.
+NumberField.defaultProps = NumberFieldImpl.defaultProps;
 
-// @ts-ignore
-NumberField.propTypes = {
+NumberFieldImpl.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
@@ -105,6 +109,7 @@ NumberField.propTypes = {
     ]),
     options: PropTypes.object,
 };
+NumberField.propTypes = NumberFieldImpl.propTypes;
 
 export interface NumberFieldProps<
     RecordType extends Record<string, unknown> = Record<string, any>
