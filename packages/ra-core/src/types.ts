@@ -13,8 +13,8 @@ export interface RaRecord<IdentifierType extends Identifier = Identifier>
     id: IdentifierType;
 }
 
-export interface SortPayload<FieldType extends string = string> {
-    field: FieldType;
+export interface SortPayload {
+    field: string;
     order: string;
 }
 export interface FilterPayload {
