@@ -44,6 +44,7 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
         delayError,
         formRootPathname,
         mode,
+        resetOptions,
         resolver,
         reValidateMode = 'onChange',
         onSubmit,
@@ -81,7 +82,8 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
     const form = useForm({
         context,
         criteriaMode,
-        defaultValues: defaultValuesIncludingRecord,
+        values: defaultValuesIncludingRecord,
+        resetOptions,
         delayError,
         mode,
         reValidateMode,
@@ -92,25 +94,6 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
     });
 
     const formRef = useRef(form);
-
-    // initialize form with record
-    /* eslint-disable react-hooks/exhaustive-deps */
-    useEffect(() => {
-        if (!record) {
-            return;
-        }
-        const initialValues = getFormInitialValues(defaultValues, record);
-        form.reset(initialValues);
-    }, [
-        JSON.stringify({
-            defaultValues:
-                typeof defaultValues === 'function'
-                    ? 'function'
-                    : defaultValues,
-            record,
-        }),
-    ]);
-    /* eslint-enable react-hooks/exhaustive-deps */
 
     // notify on invalid form
     useNotifyIsFormInvalid(form.control);
