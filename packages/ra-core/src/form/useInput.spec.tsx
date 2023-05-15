@@ -20,8 +20,8 @@ const Input: FunctionComponent<
 const InputWithCustomOnChange: FunctionComponent<
     {
         children: (props: ReturnType<typeof useInput>) => ReactElement;
-    } & InputProps & { getContextValue?: (value: string) => void }
-> = ({ children, getContextValue, ...props }) => {
+    } & InputProps & { setContextValue?: (value: string) => void }
+> = ({ children, setContextValue, ...props }) => {
     const { getValues } = useFormContext();
 
     return (
@@ -29,7 +29,7 @@ const InputWithCustomOnChange: FunctionComponent<
             {...props}
             onChange={e => {
                 props.onChange(e);
-                getContextValue(getValues()[props.source]);
+                setContextValue(getValues()[props.source]);
             }}
         >
             {children}
@@ -131,7 +131,7 @@ describe('useInput', () => {
         const handleChange = e => {
             targetValue = e.target.value;
         };
-        const getContextValue = value => {
+        const setContextValue = value => {
             contextValue = value;
         };
 
@@ -142,7 +142,7 @@ describe('useInput', () => {
                         source="title"
                         resource="posts"
                         onChange={handleChange}
-                        getContextValue={getContextValue}
+                        setContextValue={setContextValue}
                         defaultValue=""
                     >
                         {({ id, field }) => (
