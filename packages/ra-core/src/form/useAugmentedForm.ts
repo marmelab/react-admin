@@ -38,22 +38,16 @@ import { sanitizeEmptyValues as sanitizeValues } from './sanitizeEmptyValues';
  */
 export const useAugmentedForm = (props: UseAugmentedFormProps) => {
     const {
-        context,
         criteriaMode = 'firstError',
         defaultValues,
-        delayError,
         formRootPathname,
-        mode,
-        resetOptions,
         resolver,
         reValidateMode = 'onChange',
         onSubmit,
         sanitizeEmptyValues,
-        shouldFocusError,
-        shouldUnregister,
-        shouldUseNativeValidation,
         warnWhenUnsavedChanges,
         validate,
+        ...rest
     } = props;
     const record = useRecordContext(props);
     const saveContext = useSaveContext();
@@ -80,17 +74,11 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
         : undefined;
 
     const form = useForm({
-        context,
         criteriaMode,
         values: defaultValuesIncludingRecord,
-        resetOptions,
-        delayError,
-        mode,
         reValidateMode,
         resolver: finalResolver,
-        shouldFocusError,
-        shouldUnregister,
-        shouldUseNativeValidation,
+        ...rest,
     });
 
     const formRef = useRef(form);
