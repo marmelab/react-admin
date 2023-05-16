@@ -1,24 +1,24 @@
 {
-  "name": "tutorial",
-  "version": "4.10.2",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "ra-data-json-server": "^4.10.2",
-    "react": "^18.2.0",
-    "react-admin": "^4.10.2",
-    "react-dom": "^18.2.0"
-  },
-  "devDependencies": {
-    "@types/react": "^18.0.22",
-    "@types/react-dom": "^18.0.7",
-    "@vitejs/plugin-react": "^2.2.0",
-    "typescript": "^4.6.4",
-    "vite": "^3.2.0"
-  }
+    "name": "tutorial",
+    "version": "4.10.3",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "ra-data-json-server": "^4.10.3",
+        "react": "^18.2.0",
+        "react-admin": "^4.10.3",
+        "react-dom": "^18.2.0"
+    },
+    "devDependencies": {
+        "@types/react": "^18.0.22",
+        "@types/react-dom": "^18.0.7",
+        "@vitejs/plugin-react": "^2.2.0",
+        "typescript": "^4.6.4",
+        "vite": "^3.2.0"
+    }
 }
