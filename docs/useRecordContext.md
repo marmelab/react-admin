@@ -130,6 +130,7 @@ const BookAuthor = (props) => {
 ## See Also
 
 * [`WithRecord`](./WithRecord.md) is the render prop version of the `useRecordContext` hook.
+* [`useListContext`](./useListContext.md) is the equivalent for lists.
 
 ## API
 

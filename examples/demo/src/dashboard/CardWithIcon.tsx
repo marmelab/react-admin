@@ -11,7 +11,7 @@ interface Props {
     icon: FC<any>;
     to: To;
     title?: string;
-    subtitle?: string | number;
+    subtitle?: ReactNode;
     children?: ReactNode;
 }
 

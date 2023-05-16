@@ -189,6 +189,7 @@ title: "Index"
 * [`<UserMenu>`](./AppBar.md#usermenu)
 
 **- W -**
+* [`<WithListContext>`](./WithListContext.md)
 * [`<WithPermissions>`](./WithPermissions.md)
 * [`<WithRecord>`](./WithRecord.md)
 * [`<WizardForm>`](./WizardForm.md)<img class="icon" src="./img/premium.svg" />

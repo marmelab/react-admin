@@ -93,6 +93,27 @@ const {
 } = useListContext();
 ```
 
+## Declarative Version
+
+`useListContext` often forces you to create a new component just to access the list context. If you prefer a declarative approach based on render props, you can use [the `<WithListContext>` component](./WithListContext.md) instead:
+
+```jsx
+import { WithListContext } from 'react-admin';
+import { Typography } from '@mui/material';
+
+export const Aside = () => (
+    <WithListContext render={({ data, isLoading }) => 
+        !isLoading && (
+            <div>
+                <Typography variant="h6">Posts stats</Typography>
+                <Typography variant="body2">
+                    Total views: {data.reduce((sum, post) => sum + post.views, 0)}
+                </Typography>
+            </div>
+    )}>
+);
+```
+
 ## Recipes
 
 You can find many usage examples of `useListContext` in the documentation, including:

@@ -1,16 +1,13 @@
 import * as React from 'react';
-import {
-    Avatar,
-    Box,
-    Button,
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemText,
-} from '@mui/material';
+import { Avatar, Box, Button } from '@mui/material';
 import CustomerIcon from '@mui/icons-material/PersonAdd';
 import { Link } from 'react-router-dom';
-import { useTranslate, useGetList } from 'react-admin';
+import {
+    ListBase,
+    WithListContext,
+    SimpleList,
+    useTranslate,
+} from 'react-admin';
 import { subDays } from 'date-fns';
 
 import CardWithIcon from './CardWithIcon';
@@ -26,58 +23,48 @@ const NewCustomers = () => {
     aMonthAgo.setSeconds(0);
     aMonthAgo.setMilliseconds(0);
 
-    const { isLoading, data: visitors } = useGetList<Customer>('customers', {
-        filter: {
-            has_ordered: true,
-            first_seen_gte: aMonthAgo.toISOString(),
-        },
-        sort: { field: 'first_seen', order: 'DESC' },
-        pagination: { page: 1, perPage: 100 },
-    });
-
-    const nb = visitors ? visitors.reduce((nb: number) => ++nb, 0) : 0;
     return (
-        <CardWithIcon
-            to="/customers"
-            icon={CustomerIcon}
-            title={translate('pos.dashboard.new_customers')}
-            subtitle={nb}
+        <ListBase
+            resource="customers"
+            filter={{
+                has_ordered: true,
+                first_seen_gte: aMonthAgo.toISOString(),
+            }}
+            sort={{ field: 'first_seen', order: 'DESC' }}
+            perPage={100}
+            storeKey="new_customers"
         >
-            <List sx={{ display: isLoading ? 'none' : 'block' }}>
-                {visitors
-                    ? visitors.map((record: Customer) => (
-                          <ListItem
-                              button
-                              to={`/customers/${record.id}`}
-                              component={Link}
-                              key={record.id}
-                          >
-                              <ListItemAvatar>
-                                  <Avatar
-                                      src={`${record.avatar}?size=32x32`}
-                                      alt={`${record.first_name} ${record.last_name}`}
-                                  />
-                              </ListItemAvatar>
-                              <ListItemText
-                                  primary={`${record.first_name} ${record.last_name}`}
-                              />
-                          </ListItem>
-                      ))
-                    : null}
-            </List>
-            <Box flexGrow={1}>&nbsp;</Box>
-            <Button
-                sx={{ borderRadius: 0 }}
-                component={Link}
+            <CardWithIcon
                 to="/customers"
-                size="small"
-                color="primary"
+                icon={CustomerIcon}
+                title={translate('pos.dashboard.new_customers')}
+                subtitle={
+                    <WithListContext render={({ total }) => <>{total}</>} />
+                }
             >
-                <Box p={1} sx={{ color: 'primary.main' }}>
-                    {translate('pos.dashboard.all_customers')}
-                </Box>
-            </Button>
-        </CardWithIcon>
+                <SimpleList<Customer>
+                    primaryText="%{first_name} %{last_name}"
+                    leftAvatar={customer => (
+                        <Avatar
+                            src={`${customer.avatar}?size=32x32`}
+                            alt={`${customer.first_name} ${customer.last_name}`}
+                        />
+                    )}
+                />
+                <Box flexGrow={1}>&nbsp;</Box>
+                <Button
+                    sx={{ borderRadius: 0 }}
+                    component={Link}
+                    to="/customers"
+                    size="small"
+                    color="primary"
+                >
+                    <Box p={1} sx={{ color: 'primary.main' }}>
+                        {translate('pos.dashboard.all_customers')}
+                    </Box>
+                </Button>
+            </CardWithIcon>
+        </ListBase>
     );
 };
 
