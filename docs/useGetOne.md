@@ -128,3 +128,32 @@ const UserProfile = () => {
     return <div>User {data.username}</div>;
 };
 ```
+
+## TypeScript
+
+The `useGetOne` hook accepts a generic parameter for the record type:
+
+```tsx
+import { useGetOne, useRecordContext } from 'react-admin';
+
+type Ticket = {
+    id: number;
+    userId: string;
+    message: string;
+};
+
+type User = {
+    id: number;
+    username: string;
+}
+
+const UserProfile = () => {
+    // record is of type Ticket
+    const record = useRecordContext<Ticket>();
+    // user is of type User
+    const { data: user, isLoading, error } = useGetOne<User>('users', { id: record.userId });
+    if (isLoading) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    return <div>User {user.username}</div>;
+};
+```

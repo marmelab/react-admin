@@ -49,3 +49,41 @@ dataProvider.getMany('tags', { ids: [1, 2, 3, 4, 5, 6, 7] });
 ```
 
 React-admin uses `useGetMany` in [the `<ReferenceField>` component](./ReferenceField.md), to overcome the n+1 problem when using this component in a list. 
+
+## TypeScript
+
+The `useGetMany` hook accepts a generic parameter for the record type:
+
+```tsx
+import { useGetMany, useRecordContext } from 'react-admin';
+
+type Post = {
+    id: number;
+    title: string;
+    tagIds: number[];
+};
+
+type Tag = {
+    id: number;
+    name: string;
+}
+
+const PostTags = () => {
+    // record is of type Post
+    const record = useRecordContext<Post>();
+    // data is of type Tag[]
+    const { data, isLoading, error } = useGetMany(
+        'tags',
+        { ids: record.tagIds }
+    );
+    if (isLoading) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    return (
+         <ul>
+             {data.map(tag => (
+                 <li key={tag.id}>{tag.name}</li>
+             ))}
+         </ul>
+     );
+};
+```

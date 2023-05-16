@@ -118,3 +118,40 @@ const LatestNews = () => {
 ```
 
 The `data` will automatically update when a new record is created, or an existing record is updated or deleted.
+
+## TypeScript
+
+The `useGetList` hook accepts a generic parameter for the record type:
+
+```tsx
+import { useGetList } from 'react-admin';
+
+type Post = {
+    id: number;
+    title: string;
+};
+
+const LatestNews = () => {
+    // data is of type Post[]
+    const { data, total, isLoading, error } = useGetList<Post>(
+        'posts',
+        { 
+            pagination: { page: 1, perPage: 10 },
+            sort: { field: 'published_at', order: 'DESC' }
+        }
+    );
+    if (isLoading) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    return (
+        <>
+            <h1>Latest news</h1>
+            <ul>
+                {data.map(record =>
+                    <li key={record.id}>{record.title}</li>
+                )}
+            </ul>
+            <p>{data.length} / {total} articles</p>
+        </>
+    );
+};
+```

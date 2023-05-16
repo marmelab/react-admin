@@ -127,6 +127,24 @@ const BookAuthor = (props) => {
 ```
 {% endraw %}
 
+## TypeScript
+
+The `useRecordContext` hook accepts a generic parameter for the record type:
+
+```tsx
+type Book = {
+    id: number;
+    author: string;
+};
+
+const BookAuthor = () => {
+    // record is of type Book
+    const record = useRecordContext<Book>();
+    if (!record) return null;
+    return <span>{record.author}</span>;
+};
+```
+
 ## See Also
 
 * [`WithRecord`](./WithRecord.md) is the render prop version of the `useRecordContext` hook.
