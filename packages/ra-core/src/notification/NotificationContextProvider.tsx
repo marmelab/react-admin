@@ -30,6 +30,7 @@ export const NotificationContextProvider = ({ children }) => {
             addNotification,
             takeNotification,
             resetNotifications,
+            setNotifications,
         }),
         [notifications] // eslint-disable-line react-hooks/exhaustive-deps
     );
