@@ -38,17 +38,20 @@ import { RichTextField } from 'react-admin';
 
 <RichTextField source="body" stripTags />
 ```
+
 ## `purifyOptions`
 
 The `purifyOptions` prop allows to pass additional options to the DomPurify library when calling `sanitize()`.
 
 For instance you can use the `ADD_ATTR` option to allow additional attributes, like `'target'`:
 
+{% raw %}
 ```jsx
 import { RichTextField } from 'react-admin';
 
 <RichTextField source="body" purifyOptions={{ ADD_ATTR: ['target'] }} />
 ```
+{% endraw %}
 
 **Tip:** More available options can be found in the [DomPurify Readme](https://github.com/cure53/DOMPurify#can-i-configure-dompurify).
 
