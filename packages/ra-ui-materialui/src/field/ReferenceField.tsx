@@ -120,7 +120,7 @@ export interface ReferenceFieldProps<RecordType extends RaRecord = any>
  */
 export const NonEmptyReferenceField: FC<
     Omit<ReferenceFieldProps, 'source'> & { id: Identifier }
-> = ({ children, id, record, reference, ...props }) => {
+> = ({ children, id, record, reference, link, ...props }) => {
     return (
         <ResourceContextProvider value={reference}>
             <PureReferenceFieldView
@@ -130,6 +130,7 @@ export const NonEmptyReferenceField: FC<
                     reference,
                     id,
                 })}
+                resourceLinkPath={link}
             >
                 {children}
             </PureReferenceFieldView>
@@ -149,7 +150,7 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
         isLoading,
         reference,
         referenceRecord,
-        link,
+        resourceLinkPath,
         sx,
     } = props;
     const getRecordRepresentation = useGetRecordRepresentation(reference);
@@ -178,18 +179,18 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
         ) : null;
     }
 
-    const resourceLinkPath =
-        link === false ||
-        (link === 'edit' && !resourceDefinition.hasEdit) ||
-        (link === 'show' && !resourceDefinition.hasShow)
+    const link =
+        resourceLinkPath === false ||
+        (resourceLinkPath === 'edit' && !resourceDefinition.hasEdit) ||
+        (resourceLinkPath === 'show' && !resourceDefinition.hasShow)
             ? false
             : createPath({
                   resource: reference,
                   id: referenceRecord.id,
                   type:
-                      typeof link === 'function'
-                          ? link(referenceRecord, reference)
-                          : link,
+                      typeof resourceLinkPath === 'function'
+                          ? resourceLinkPath(referenceRecord, reference)
+                          : resourceLinkPath,
               });
 
     let child = children || (
@@ -198,11 +199,11 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
         </Typography>
     );
 
-    return resourceLinkPath ? (
+    return link ? (
         <Root className={className} sx={sx}>
             <RecordContextProvider value={referenceRecord}>
                 <Link
-                    to={resourceLinkPath as string}
+                    to={link}
                     className={ReferenceFieldClasses.link}
                     onClick={stopPropagation}
                 >
@@ -226,7 +227,7 @@ ReferenceFieldView.propTypes = {
     referenceRecord: PropTypes.any,
     resource: PropTypes.string,
     // @ts-ignore
-    link: PropTypes.oneOfType([
+    resourceLinkPath: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,
         PropTypes.func,
@@ -242,7 +243,7 @@ export interface ReferenceFieldViewProps
     reference: string;
     resource?: string;
     translateChoice?: Function | boolean;
-    link?: LinkToType;
+    resourceLinkPath?: LinkToType;
     children?: ReactNode;
     sx?: SxProps;
 }
