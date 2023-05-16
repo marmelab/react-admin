@@ -40,12 +40,12 @@
         "ra-data-graphql": "^4.10.1"
     },
     "peerDependencies": {
-        "graphql": "^15.6.0",
+        "graphql": "^16.6.0",
         "ra-core": "^4.0.0"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
-        "graphql": "^15.6.0",
+        "graphql": "^16.6.0",
         "rimraf": "^3.0.2",
         "typescript": "^4.4.0"
     },
