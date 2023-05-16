@@ -11,9 +11,9 @@ import { useListContext } from './useListContext';
  *    <List>
  *       <WithListContext render={({ data }) => (
  *          <ul>
- *            {data ? data.map(record => (
+ *            {data && data.map(record => (
  *              <li key={record.id}>{record.title}</li>
- *            )) : null}
+ *            ))}
  *          </ul>
  *       )} />
  *   </List>
@@ -21,9 +21,12 @@ import { useListContext } from './useListContext';
  */
 export const WithListContext = <RecordType extends RaRecord>({
     render,
-}: WithListContextProps<RecordType>) => render(useListContext<RecordType>());
+}: WithListContextProps<RecordType>) =>
+    render(useListContext<RecordType>()) || null;
 
 export interface WithListContextProps<RecordType extends RaRecord> {
-    render: (context: ListControllerResult<RecordType>) => ReactElement | null;
+    render: (
+        context: ListControllerResult<RecordType>
+    ) => ReactElement | false | null;
     label?: string;
 }
