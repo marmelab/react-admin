@@ -1119,7 +1119,7 @@ describe('<AutocompleteInput />', () => {
                 <SimpleForm
                     mode="onBlur"
                     onSubmit={jest.fn()}
-                    defaultValues={{ role: 2 }}
+                    defaultValues={{ language: 'ang' }}
                 >
                     <AutocompleteInput
                         source="language"
@@ -1184,7 +1184,7 @@ describe('<AutocompleteInput />', () => {
                 <SimpleForm
                     mode="onBlur"
                     onSubmit={jest.fn()}
-                    defaultValues={{ role: 2 }}
+                    defaultValues={{ language: 'ang' }}
                 >
                     <AutocompleteInput
                         source="language"
@@ -1250,7 +1250,7 @@ describe('<AutocompleteInput />', () => {
                 <SimpleForm
                     mode="onBlur"
                     onSubmit={jest.fn()}
-                    defaultValues={{ role: 2 }}
+                    defaultValues={{ language: 'ang' }}
                 >
                     <AutocompleteInput
                         source="language"

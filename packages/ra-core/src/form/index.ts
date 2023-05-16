@@ -41,7 +41,6 @@ export * from './useFormGroup';
 export * from './useFormGroups';
 export * from './useFormGroupContext';
 export * from './useGetValidationErrorMessage';
-export * from './useInitializeFormWithRecord';
 export * from './useNotifyIsFormInvalid';
 export * from './useAugmentedForm';
 export * from './useInput';
