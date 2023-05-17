@@ -111,7 +111,6 @@ const PostComments = () => {
         'comments',
         { 
             target: 'post_id',
-            // TypeScript knows that post is of type Post
             id: record.id,
             pagination: { page: 1, perPage: 10 },
             sort: { field: 'published_at', order: 'DESC' }

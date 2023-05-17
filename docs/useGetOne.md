@@ -149,7 +149,6 @@ type User = {
 
 const UserProfile = () => {
     const ticket = useRecordContext<Ticket>();
-    // TypeScript knows that ticket is of type Ticket
     const { data: user, isLoading, error } = useGetOne<User>('users', { id: ticket.userId });
     if (isLoading) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }

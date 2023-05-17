@@ -73,7 +73,6 @@ const PostTags = () => {
 
     const { data: tags, isLoading, error } = useGetMany<Tag>(
         'tags',
-        // TypeScript knows that post is of type Post
         { ids: post.tagIds }
     );
     if (isLoading) { return <Loading />; }
