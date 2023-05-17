@@ -48,12 +48,48 @@ But the recommended way to query the Data Provider is to use the dataProvider me
 
 **Tip**: The `dataProvider` returned by the hook is actually a *wrapper* around your Data Provider. This wrapper logs the user out if the dataProvider returns an error, and if the authProvider sees that error as an authentication error (via `authProvider.checkError()`).
 
-**Tip**: If you use TypeScript, you can specify a record type for more type safety:
+## TypeScript
+
+The `useDataProvider` hook accepts a generic parameter for the `dataProvider` type. This is useful when you added custom methods to your `dataProvider`:
+
+```tsx
+// In src/dataProvider.ts
+import { DataProvider } from 'react-admin';
+
+export interface CustomDataProviderMethods extends DataProvider {
+    customAction: (resource: string, params: any) => Promise<any>
+}
+
+export const dataProvider: CustomDataProviderMethods {
+    // ...Standard dataProvider methods
+    customAction: (resource, params) => {
+        // Do something
+    }
+}
+
+// In src/CustomAction.tsx
+import { useDataProvider } from 'react-admin';
+import { CustomDataProviderMethods } from './src/dataProvider';
+
+export const CustomAction = () => {
+    const dataProvider = useDataProvider<CustomDataProviderMethods>();
+
+    return (
+        <button
+            onClick={() => dataProvider.customAction('resource', { value: 'something' })}
+        >
+            Do something
+        </button>
+    );
+};
+```
+
+Besides, all the standard dataProvider methods accept a generic parameter for the record type:
 
 ```jsx
 dataProvider.getOne<Product>('users', { id: 123 })
     .then(({ data }) => {
-        //     \- type of data is Product
+        // TypeScript knows that data is of type Product
         // ...
     })
 ```
