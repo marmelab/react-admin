@@ -2,7 +2,7 @@ import * as React from 'react';
 import { memo, FC, ElementType } from 'react';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@mui/material/Typography';
-import { useRecordContext } from 'ra-core';
+import { useRecordContext, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
@@ -11,6 +11,7 @@ export const TextField: FC<TextFieldProps> = memo(props => {
     const { className, source, emptyText, ...rest } = props;
     const record = useRecordContext(props);
     const value = get(record, source);
+    const translate = useTranslate();
 
     return (
         <Typography
@@ -21,7 +22,8 @@ export const TextField: FC<TextFieldProps> = memo(props => {
         >
             {value != null && typeof value !== 'string'
                 ? JSON.stringify(value)
-                : value || emptyText}
+                : value ||
+                  (emptyText ? translate(emptyText, { _: emptyText }) : null)}
         </Typography>
     );
 });
