@@ -13,7 +13,7 @@ Use it to render a list of records already fetched.
 
 The most common use case for `<WithListContext>` is to build a custom list view on-the-fly, without creating a new component, in a place where records are available inside a `ListContext`. 
 
-For instance, an list of book tags fetched via [`<ReferenceArrayField>`](./ReferenceArrayField.md): 
+For instance, a list of book tags fetched via [`<ReferenceArrayField>`](./ReferenceArrayField.md): 
 
 ```jsx
 import { List, Datagrid, TextField, ReferenceArrayField, WithListContext } from 'react-admin';
