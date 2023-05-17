@@ -134,12 +134,12 @@ As a reminder, the [`ListContext`](./useListContext.md) is an object with the fo
 
 ## Availability
 
-Whenever you use a react-admin component fetching a list of records, react-admin stores it in a [`ListContext`](./useListContext.md). This means that `<WithListContext>` works out of the box:
+Whenever you use a react-admin component to fetch a list of records, react-admin stores the data in a [`ListContext`](./useListContext.md). Consequently, `<WithListContext>` works in any component that is a descendant of:
 
-- in descendants of the [`<List>`](./ListBase.md), [`<InfiniteList>`](./InfiniteList.md), and [`<ListBase>`](./ListBase.md) components
-- in descendants of the [`<ArrayField>`](./ArrayField.md) component
-- in descendants of the [`<ReferenceManyField>`](./ReferenceManyField.md) component
-- in descendants of the [`<ReferenceArrayField>`](./ReferenceArrayField.md) component
+- the [`<List>`](./ListBase.md), [`<InfiniteList>`](./InfiniteList.md), and [`<ListBase>`](./ListBase.md) components
+- the [`<ArrayField>`](./ArrayField.md) component
+- the [`<ReferenceManyField>`](./ReferenceManyField.md) component
+- the [`<ReferenceArrayField>`](./ReferenceArrayField.md) component
 
 ## Building a Chart
 
