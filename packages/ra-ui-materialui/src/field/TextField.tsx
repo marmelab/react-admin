@@ -22,7 +22,8 @@ export const TextField: FC<TextFieldProps> = memo(props => {
         >
             {value != null && typeof value !== 'string'
                 ? JSON.stringify(value)
-                : value || translate(emptyText, { _: emptyText })}
+                : value ||
+                  (emptyText ? translate(emptyText, { _: emptyText }) : null)}
         </Typography>
     );
 });
