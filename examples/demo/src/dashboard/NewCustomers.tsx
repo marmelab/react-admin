@@ -32,7 +32,7 @@ const NewCustomers = () => {
             }}
             sort={{ field: 'first_seen', order: 'DESC' }}
             perPage={100}
-            storeKey="new_customers"
+            disableSyncWithLocation
         >
             <CardWithIcon
                 to="/customers"
