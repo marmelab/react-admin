@@ -1042,3 +1042,8 @@ React-admin was built with customization in mind. You can replace any react-admi
 Now that you've completed the tutorial, continue your journey with [the Features chapter](./Features.md), which lists all the features of react-admin.
 
 **Tip**: To help you close the gap between theoretical knowledge and practical experience, take advantage of the react-admin [Demos](./Demos.md). They are great examples of how to use react-admin in a real world application. They also show the best practices for going beyond simple CRUD apps.
+
+<video controls autoplay muted loop width="100%">
+  <source src="https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>

@@ -56,7 +56,7 @@ React-admin apps run in the browser - they are "Single-Page Apps". They rely on 
 
 Which kind of API? **All kinds**. React-admin is backend agnostic. It doesn't care if your API is a REST API, a GraphQL API, a SOAP API, a JSON-RPC API, or even a local API. It doesn't care if your API is written in PHP, Python, Ruby, Java, or even JavaScript. It doesn't care if your API is a third-party API or a home-grown API.
 
-![Backend agnostic](./img/data-provider.png)
+<img src="./img/data-provider.png" class="no-shadow" alt="Backend agnostic" />
 
 React-admin ships with [more than 45 adapters](./DataProviderList.md) for popular API flavors, and gives you all the tools to build your own adapter. This works thanks to a powerful abstraction layer called the [Data Provider](./DataProviderIntroduction.md).
 

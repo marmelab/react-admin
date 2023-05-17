@@ -5,7 +5,7 @@ title: "Create_React-App Integration"
 
 # Create-React-App Integration
 
-[Create-React-App](https://create-react-app.dev/) is the standard way to bootstrap single-page React applications. That's also the recommended way to install and run react-admin. 
+[Create-React-App](https://create-react-app.dev/) is a convenient way to bootstrap single-page React applications. It provides a pre-configured build setup with no configuration.
 
 ## Setting Up Create React App
 

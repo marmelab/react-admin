@@ -289,6 +289,12 @@ ul.sidenav code {
         border-radius: 2px;
         margin: 1rem;
     }
+    .markdown-section img.no-shadow, .markdown-section video.no-shadow {
+        max-width: 90%;
+        box-shadow: none;
+        border-radius: 0;
+        margin: 1rem;
+    }
 }
 
 .markdown-section hr {
