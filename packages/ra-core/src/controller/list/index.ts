@@ -21,3 +21,4 @@ export * from './useListSortContext';
 export * from './useRecordSelection';
 export * from './useUnselect';
 export * from './useUnselectAll';
+export * from './WithListContext';

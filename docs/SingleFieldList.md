@@ -7,7 +7,7 @@ title: "The SingleFieldList Component"
 
 Use `<SingleFieldList>` when you want to display only one property for each record in a list, for instance, to display the list of tag names for a post.
 
-![SingleFieldList](./img/singlefieldlist.png)
+![SingleFieldList](./img/ReferenceArrayField-default-child.png)
 
 `<SingleFieldList>` is an **iterator** component: it gets `data` from the `ListContext`, and iterates over it to display each record. It creates a `<RecordContext>` for each record, and delegates the actual rendering to its child - usually a Field component. 
 

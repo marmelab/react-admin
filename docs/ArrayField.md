@@ -112,6 +112,46 @@ const PostShow = () => (
 </ArrayField>
 ```
 
+You can also render custom JSX, leveraging [the `<WithListContext>` component](./WithListContext.md):
+
+```jsx
+<ArrayField source="backlinks">
+    <WithListContext render={({ data }) => (
+        <ul>
+            {data.map(backlink => (
+                <li key={backlink.id}>{backlink.url}</li>
+            ))}
+        </ul>
+    )} />
+</ArrayField>
+```
+
+Or a custom component, leveraging [the `useListContext` hook](./useListContext.md):
+
+```jsx
+const Backlinks = () => {
+    const { data } = useListContext();
+    return (
+        <ul>
+            {data.map(backlink => (
+                <li key={backlink.id}>{backlink.url}</li>
+            ))}
+        </ul>
+    );
+};
+
+const PostShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <TextField source="title" />
+            <ArrayField source="backlinks">
+                <Backlinks />
+            </ArrayField>
+        </SimpleShowLayout>
+    </Show>
+)
+```
+
 ## `filter`
 
 You can use the `filter` prop to display only a subset of the items in the array. For instance, to display only the backlinks for a particular day:

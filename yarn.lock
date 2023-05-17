@@ -18917,6 +18917,7 @@ __metadata:
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
     react-test-renderer: ^16.9.0 || ^17.0.0
+    recharts: ^2.1.15
     rimraf: ^3.0.2
     typescript: ^4.4.0
     yup: ^0.32.11

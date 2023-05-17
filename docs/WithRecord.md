@@ -56,6 +56,7 @@ const PostList = () => (
 ## See Also
 
 * [`useRecordContext`](./useRecordContext.md) is the hook version of this component.
+* [`<WithListContext>`](./WithListContext.md) is the equivalent for lists.
 
 ## API
 

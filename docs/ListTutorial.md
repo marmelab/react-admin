@@ -545,14 +545,39 @@ Check [the Theming documentation](./Theming.md) for more information about the `
 
 ## Building a Custom Iterator
 
-In some cases, neither the `<Datagrid>` nor the `<SimpleList>` components allow to display the records in an optimal way for a given task. In these cases, pass your layout component directly as children of the `<List>` component. As `<List>` takes care of fetching the data and putting it in a `ListContext`, you can leverage [the `useListContext` hook](./useListContext.md) to get the list data. 
+In some cases, neither the `<Datagrid>` nor the `<SimpleList>` components allow to display the records in an optimal way for a given task. In these cases, pass your layout component directly as children of the `<List>` component. 
+
+As `<List>` takes care of fetching the data and putting it in a `ListContext`, you can leverage [the `<WithListContext>` component](./WithListContext.md) to get the list data in a render prop. 
+
+{% raw %}
+```jsx
+import { List, WithListContext } from 'react-admin';
+import { Stack, Typography } from '@mui/material';
+
+const BookList = () => (
+    <List emptyWhileLoading>
+        <WithListContext render={({ data }) => (
+            <Stack spacing={2} sx={{ padding: 2 }}>
+                {data.map(book => (
+                    <Typography key={book.id}>
+                        <i>{book.title}</i>, by {book.author} ({book.year})
+                    </Typography>
+                ))}
+            </Stack>
+        )} />
+    </List>
+);
+```
+{% endraw %}
+
+If you prefer using a hook, you can use [the `useListContext` hook](./useListContext.md) instead:
 
 {% raw %}
 ```jsx
 import { List, useListContext } from 'react-admin';
 import { Stack, Typography } from '@mui/material';
 
-const SimpleBookList = () => {
+const BookListView = () => {
     const { data } = useListContext();
     return (
         <Stack spacing={2} sx={{ padding: 2 }}>
@@ -563,12 +588,11 @@ const SimpleBookList = () => {
             ))}
         </Stack>
     );
-}
+};
 
-// use the custom list layout as <List> child
 const BookList = () => (
     <List emptyWhileLoading>
-        <SimpleBookList />
+        <BookListView />
     </List>
 );
 ```

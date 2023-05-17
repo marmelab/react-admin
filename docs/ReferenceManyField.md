@@ -73,7 +73,7 @@ export const AuthorShow = () => (
 
 `<ReferenceManyField>` accepts a `reference` attribute, which specifies the resource to fetch for the related record. It also accepts a `source` attribute which defines the field containing the value to look for in the `target` field of the referenced resource. By default, this is the `id` of the resource (`authors.id` in the previous example).
 
-You can also use `<ReferenceManyField>` in a list, e.g. to display the authors of the comments related to each post in a list by matching `post.id` to `comment.post_id`. We're using `<SingleFieldList>` to display an inline list using only one field for each of the referenced record:
+You can also use `<ReferenceManyField>` in a list, e.g. to display the authors of the comments related to each post in a list by matching `post.id` to `comment.post_id`:
 
 ```jsx
 import * as React from "react";
@@ -97,6 +97,8 @@ export const PostList = () => (
 
 ![ReferenceManyFieldSingleFieldList](./img/reference-many-field-single-field-list.png)
 
+This example leverages [`<SingleFieldList>`](./SingleFieldList.md) to display an inline list using only one field for each of the referenced records.
+
 ## Props
 
 | Prop         | Required | Type      | Default | Description                                                                         |
@@ -111,6 +113,64 @@ export const PostList = () => (
 | `sort`       | Optional | `{ field, order }` | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()` |
 
 `<ReferenceManyField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
+
+## `children`
+
+`<ReferenceManyField>` renders its children inside a [`ListContext`](./useListContext.md). This means you can use any component that uses a `ListContext`:
+
+- [`<SingleFieldList>`](./SingleFieldList.md)
+- [`<Datagrid>`](./Datagrid.md)
+- [`<SimpleList>`](./SimpleList.md)
+- [`<EditableDatagrid>`](./EditableDatagrid.md)
+- [`<Calendar>`](./Calendar.md)
+- Or a component of your own (check the [`<WithListContext>`](./WithListContext.md) and the [`useListContext`](./useListContext.md) chapters to learn how). 
+
+For instance, use a `<Datagrid>` to render the related records in a table:
+
+```jsx
+import { Show, SimpleShowLayout, TextField, ReferenceManyField, Datagrid } from 'react-admin';
+
+export const AuthorShow = () => (
+  <Show>
+    <SimpleShowLayout>
+      <TextField source="first_name" />
+      <TextField source="last_name" />
+      <DateField label="Born" source="dob" />
+      <ReferenceManyField label="Books" reference="books" target="author_id">
+        <Datagrid>
+          <TextField source="title" />
+          <TextField source="year" />
+        </Datagrid>
+      </ReferenceManyField>
+    </SimpleShowLayout>
+  </Show>
+);
+```
+
+Or [`<WithListContext>`](./WithListContext.md) to render the related records in a custom way:
+
+```jsx
+import { Show, SimpleShowLayout, TextField, ReferenceManyField, WithListContext } from 'react-admin';
+
+export const AuthorShow = () => (
+  <Show>
+    <SimpleShowLayout>
+      <TextField source="first_name" />
+      <TextField source="last_name" />
+      <DateField label="Born" source="dob" />
+      <ReferenceManyField label="Books" reference="books" target="author_id">
+        <WithListContext render={({ data }) => (
+          <ul>
+            {data.map(book => (
+              <li key={book.id}>{book.title}</li>
+            ))}
+          </ul>
+        )} />
+      </ReferenceManyField>
+    </SimpleShowLayout>
+  </Show>
+);
+```
 
 ## `filter`
 
