@@ -105,7 +105,7 @@ We spend a great deal of time refining the UI to make it as intuitive as possibl
 
 React-admin produces a user interface that is voluntarily bland by default because we want to emphasize content rather than chrome.
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/sort-button.webm" type="video/webm"/>
   <source src="./img/sort-button.mp4" type="video/mp4"/>
   Your browser does not support the video tag.

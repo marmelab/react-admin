@@ -9,7 +9,7 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 `useLockOnCall` calls `dataProvider.lock()` when the callback is called. It relies on `authProvider.getIdentity()` to get the identity of the current user. It guesses the current `resource` and `recordId` from the context (or the route) if not provided. It releases the lock when the component unmounts by calling `dataProvider.unlock()`.
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/useLockOnCall.webm" type="video/webm"/>
   <source src="./img/useLockOnCall.mp4" type="video/mp4"/>
   Your browser does not support the video tag.

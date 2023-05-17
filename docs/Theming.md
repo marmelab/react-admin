@@ -369,7 +369,7 @@ const App = () => (
 
 The `<ToggleThemeButton>` component lets users switch from light to dark mode, and persists that choice by leveraging the [store](./Store.md).
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/ToggleThemeButton.webm" type="video/webm"/>
   <source src="./img/ToggleThemeButton.mp4" type="video/mp4"/>
   Your browser does not support the video tag.

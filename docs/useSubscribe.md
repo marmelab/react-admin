@@ -7,7 +7,7 @@ title: "useSubscribe"
 
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> hook subscribes to the events from a topic on mount (and unsubscribe on unmount).
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/useSubscribe.webm" type="video/webm"/>
   <source src="./img/useSubscribe.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
@@ -110,7 +110,7 @@ const JobProgress = ({ jobId }) => {
 };
 ```
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/useSubscribeUnsubscribe.webm" type="video/webm"/>
   <source src="./img/useSubscribeUnsubscribe.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
@@ -148,7 +148,7 @@ const OfficeClosed = () => {
 };
 ```
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/useSubscribeOnce.webm" type="video/webm"/>
   <source src="./img/useSubscribeOnce.mp4" type="video/mp4"/>
   Your browser does not support the video tag.

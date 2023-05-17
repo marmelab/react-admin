@@ -23,7 +23,7 @@ The terminal will then ask you to choose:
 - the names of the resources to add
 - the package manager to use to install the dependencies
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/create-react-admin.webm" type="video/webm"/>
   <source src="./img/create-react-admin.mp4" type="video/mp4"/>
   Your browser does not support the video tag.

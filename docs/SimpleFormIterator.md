@@ -7,7 +7,7 @@ title: "SimpleFormIterator"
 
 This component provides a UI for editing arrays of objects, one row per object.
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/array-input.webm" type="video/webm"/>
   <source src="./img/array-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.

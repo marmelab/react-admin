@@ -7,7 +7,7 @@ title: "The ReferenceArrayInput Component"
 
 Use `<ReferenceArrayInput>` to edit an array of reference values, i.e. to let users choose a list of values (usually foreign keys) from another REST endpoint.
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/reference-array-input.webm" type="video/webm"/>
   <source src="./img/reference-array-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.

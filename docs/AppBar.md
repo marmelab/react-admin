@@ -7,7 +7,7 @@ title: "The AppBar Component"
 
 The default react-admin layout renders a horizontal app bar at the top, which is rendered by the `<AppBar>` component.
 
-<video controls autoplay muted loop width="100%">
+<video controls autoplay playsinline muted loop width="100%">
   <source src="./img/AppBar.webm" type="video/webm" />
   <source src="./img/AppBar.mp4" type="video/mp4" />
   Your browser does not support the video tag.
@@ -216,7 +216,7 @@ export const MyAppBar = () => (
 
 If your app uses [authentication](./Authentication.md), the `<AppBar>` component displays a button to display the user menu on the right side. By default, the user menu only contains a logout button.
 
-<video controls autoplay muted loop width="100%">
+<video controls autoplay playsinline muted loop width="100%">
   <source src="./img/AppBar-user-menu.webm" type="video/webm"/>
   <source src="./img/AppBar-user-menu.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
@@ -429,7 +429,7 @@ export const MyLayout = (props) => (
 
 By default, users can override the page title [in configurable mode](./Features.md#configurable-ui).
 
-<video controls autoplay muted loop width="100%">
+<video controls autoplay playsinline muted loop width="100%">
   <source src="./img/TitleConfigurable.webm" type="video/webm"/>
   <source src="./img/TitleConfigurable.mp4" type="video/mp4"/>
   Your browser does not support the video tag.

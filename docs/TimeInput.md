@@ -17,14 +17,14 @@ An input for editing time. `<TimeInput>` renders a standard browser [Time Picker
   <tbody>
     <tr>
       <td>
-        <video controls autoplay muted loop>
+        <video controls autoplay playsinline muted loop>
           <source src="./img/time-input-firefox.webm" type="video/webm"/>
           <source src="./img/time-input-firefox.mp4" type="video/mp4"/>
           Your browser does not support the video tag.
         </video>
       </td>
       <td>
-        <video controls autoplay muted loop>
+        <video controls autoplay playsinline muted loop>
           <source src="./img/time-input-edge.webm" type="video/webm"/>
           <source src="./img/time-input-edge.mp4" type="video/mp4"/>
           Your browser does not support the video tag.

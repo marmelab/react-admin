@@ -7,7 +7,7 @@ title: "The RadioButtonGroupInput Component"
 
 If you want to let the user choose a value among a list of possible values that are always shown, `<RadioButtonGroupInput>` is the right component. It renders using [Material UI's `<RadioGroup>`](https://mui.com/material-ui/react-radio-button/).
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/radio-button-group-input.webm" type="video/webm"/>
   <source src="./img/radio-button-group-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
@@ -244,7 +244,7 @@ By default, the radio buttons are displayed in a row. You can change that and le
 <RadioButtonGroupInput source="category" choices={choices} row={false} />
 ```
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/radio-button-group-input-row.webm" type="video/webm"/>
   <source src="./img/radio-button-group-input-row.mp4" type="video/mp4"/>
   Your browser does not support the video tag.

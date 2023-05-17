@@ -466,7 +466,7 @@ const BookList = () => (
 
 ## `exporter`
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/export-button.webm" type="video/webm"/>
   <source src="./img/export-button.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
@@ -557,7 +557,7 @@ const CommentList = () => (
 
 ## `filters`: Filter Inputs
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/list_filter.webm" type="video/webm"/>
   <source src="./img/list_filter.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
@@ -587,7 +587,7 @@ Filter Inputs are regular inputs. `<List>` hides them all by default, except tho
 
 You can also display filters as a sidebar:
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/filter-sidebar.webm" type="video/webm"/>
   <source src="./img/filter-sidebar.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
@@ -913,7 +913,7 @@ const PostList = () => (
 
 By default, the `<List>` component displays the first page of the list of records. To display the next page, the user must click on the "next" button. This is called "finite pagination". An alternative is to display the next page automatically when the user scrolls to the bottom of the list. This is called "infinite pagination".
 
-<video controls autoplay muted loop width="100%">
+<video controls autoplay playsinline muted loop width="100%">
   <source src="./img/infinite-book-list.webm" poster="./img/infinite-book-list.webp" type="video/webm">
   Your browser does not support the video tag.
 </video>

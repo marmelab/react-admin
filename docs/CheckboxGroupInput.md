@@ -7,7 +7,7 @@ title: "The CheckboxGroupInput Component"
 
 If you want to let the user choose multiple values among a list of possible values by showing them all, `<CheckboxGroupInput>` is the right component.
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/checkbox-group-input.webm" type="video/webm"/>
   <source src="./img/checkbox-group-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.

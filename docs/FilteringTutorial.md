@@ -13,7 +13,7 @@ One of the most important features of the List page is the ability to filter the
 <tr style="border:none">
     <td style="width:50%;border:none;text-align:center">
         <a title="Filter Button/Form Combo" href="./img/list_filter.webm">
-            <video controls autoplay muted loop>
+            <video controls autoplay playsinline muted loop>
                 <source src="./img/list_filter.webm" type="video/webm"/>
                 <source src="./img/list_filter.mp4" type="video/mp4"/>
                 Your browser does not support the video tag.
@@ -23,7 +23,7 @@ One of the most important features of the List page is the ability to filter the
     </td>
     <td style="width:50%;border:none;text-align:center">
         <a title="<FilterList> Sidebar" href="./img/filter-sidebar.webm">
-            <video controls autoplay muted loop>
+            <video controls autoplay playsinline muted loop>
                 <source src="./img/filter-sidebar.webm" type="video/webm"/>
                 <source src="./img/filter-sidebar.mp4" type="video/mp4"/>
                 Your browser does not support the video tag.
@@ -35,7 +35,7 @@ One of the most important features of the List page is the ability to filter the
 <tr style="border:none;background-color:#fff;">
     <td style="width:50%;border:none;text-align:center">
         <a title="Stacked Filters" href="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm">
-            <video controls autoplay muted loop width="90%" style="margin:1rem;box-shadow:0px 4px 4px 0px rgb(0 0 0 / 24%);">
+            <video controls autoplay playsinline muted loop width="90%" style="margin:1rem;box-shadow:0px 4px 4px 0px rgb(0 0 0 / 24%);">
                 <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4" />
                     Your browser does not support the video tag.
             </video>
@@ -53,7 +53,7 @@ React-admin offers 4 different ways to filter the list. Depending on the type of
 
 ## The Filter Button/Form Combo
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/list_filter.webm" type="video/webm"/>
   <source src="./img/list_filter.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
@@ -88,7 +88,7 @@ Elements passed as `filters` are regular inputs. That means you can build sophis
 
 ### `<SearchInput>`
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/search_input.webm" type="video/webm"/>
   <source src="./img/search_input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
@@ -109,7 +109,7 @@ In the example given above, the `q` filter triggers a full-text search on all fi
 
 ### Quick Filters
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/quick_filters.webm" type="video/webm"/>
   <source src="./img/quick_filters.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
@@ -143,7 +143,7 @@ const postFilters = [
 
 ## The `<FilterList>` Sidebar
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/filter-sidebar.webm" type="video/webm"/>
   <source src="./img/filter-sidebar.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
@@ -200,7 +200,7 @@ Check [the `<FilterList>` documentation](./FilterList.md) for more information.
 
 If you use the FilterList, you'll probably need a search input. As the FilterList sidebar is not a form, this requires a bit of extra work. Fortunately, react-admin provides a specialized search input component for that purpose: check [the `<FilterLiveSearch>` documentation](./FilterLiveSearch.md) for details.
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/filter-live-search.webm" type="video/webm"/>
   <source src="./img/filter-live-search.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
@@ -209,7 +209,7 @@ If you use the FilterList, you'll probably need a search input. As the FilterLis
 
 Finally, a filter sidebar is the ideal place to display the user's favorite filters. Check [the `<SavedQueriesList>` documentation](./SavedQueriesList.md) for more information.
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/SavedQueriesList.webm" type="video/webm"/>
   <source src="./img/SavedQueriesList.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
@@ -218,7 +218,7 @@ Finally, a filter sidebar is the ideal place to display the user's favorite filt
 
 ## The `<StackedFilters>` Component
 
-<video controls autoplay muted loop width="100%">
+<video controls autoplay playsinline muted loop width="100%">
     <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4" />
         Your browser does not support the video tag.
 </video>
@@ -401,7 +401,7 @@ export default {
 
 ## Saved Queries: Let Users Save Filter And Sort
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/SavedQueriesList.webm" type="video/webm"/>
   <source src="./img/SavedQueriesList.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
@@ -443,7 +443,7 @@ const SongList = () => (
 
 ## Building a Custom Filter
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/filter_with_submit.webm" type="video/webm"/>
   <source src="./img/filter_with_submit.mp4" type="video/mp4"/>
   Your browser does not support the video tag.

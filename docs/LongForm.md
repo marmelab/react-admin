@@ -7,7 +7,7 @@ title: "LongForm"
 
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers an alternative form layout, to be used as child of `<Create>` or `<Edit>`. Expects `<LongForm.Section>` elements as children.
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/ra-longform-overview.webm" type="video/webm"/>
   <source src="./img/ra-longform-overview.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
