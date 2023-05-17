@@ -51,7 +51,6 @@ type Post = {
 };
 
 const LatestNews = () => {
-    // data is of type Post[]
     const { data, total, isLoading, error } = useGetListLive<Post>(
         'posts',
         { 
@@ -65,6 +64,7 @@ const LatestNews = () => {
         <>
             <h1>Latest news</h1>
             <ul>
+                {/* TypeScript knows that record is of type Post[] */}
                 {data.map(record =>
                     <li key={record.id}>{record.title}</li>
                 )}

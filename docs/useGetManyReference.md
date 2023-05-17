@@ -105,14 +105,13 @@ type Comment = {
 }
 
 const PostComments = () => {
-    // record is of type Post
     const record = useRecordContext<Post>();
     // fetch all comments related to the current record
-    // data is of type Comment[]
     const { data, isLoading, error } = useGetManyReference<Comment>(
         'comments',
         { 
             target: 'post_id',
+            // TypeScript knows that record is of type Post
             id: record.id,
             pagination: { page: 1, perPage: 10 },
             sort: { field: 'published_at', order: 'DESC' }
@@ -122,6 +121,7 @@ const PostComments = () => {
     if (error) { return <p>ERROR</p>; }
     return (
         <ul>
+            {/* TypeScript knows that record is of type Comment[] */}
             {data.map(comment => (
                 <li key={comment.id}>{comment.body}</li>
             ))}

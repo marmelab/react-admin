@@ -138,9 +138,9 @@ type Book = {
 };
 
 const BookAuthor = () => {
-    // record is of type Book
     const record = useRecordContext<Book>();
     if (!record) return null;
+    // TypeScript knows that record is of type Book
     return <span>{record.author}</span>;
 };
 ```

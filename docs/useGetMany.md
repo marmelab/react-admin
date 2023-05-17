@@ -69,21 +69,22 @@ type Tag = {
 }
 
 const PostTags = () => {
-    // record is of type Post
     const record = useRecordContext<Post>();
-    // data is of type Tag[]
-    const { data, isLoading, error } = useGetMany(
+
+const { data, isLoading, error } = useGetMany<Tag>(
         'tags',
+        // TypeScript knows that record is of type Post
         { ids: record.tagIds }
     );
     if (isLoading) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return (
-         <ul>
-             {data.map(tag => (
-                 <li key={tag.id}>{tag.name}</li>
-             ))}
-         </ul>
-     );
+        <ul>
+            {/* TypeScript knows that record is of type Tag[] */}
+            {data.map(tag => (
+                <li key={tag.id}>{tag.name}</li>
+            ))}
+        </ul>
+    );
 };
 ```
