@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
+import type { SxProps } from '@mui/material';
 import { isValidElement, ReactNode, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -44,7 +45,7 @@ import { ListNoResults } from '../ListNoResults';
  * - rightAvatar: same
  * - rightIcon: same
  * - linkType: 'edit' or 'show', or a function returning 'edit' or 'show' based on the record
- * - rowStyle: function returning a style object based on (record, index)
+ * - rowSx: function returning a sx object based on (record, index)
  *
  * @example // Display all posts as a List
  * const postRowStyle = (record, index) => ({
@@ -58,7 +59,7 @@ import { ListNoResults } from '../ListNoResults';
  *             tertiaryText={record =>
  *                 new Date(record.published_at).toLocaleDateString()
  *             }
- *             rowStyle={postRowStyle}
+ *             rowSx={postRowStyle}
  *          />
  *     </List>
  * );
@@ -78,7 +79,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         rightIcon,
         secondaryText,
         tertiaryText,
-        rowStyle,
+        rowSx,
         ...rest
     } = props;
     const { data, isLoading, total } = useListContext<RecordType>(props);
@@ -134,11 +135,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                             resource={resource}
                             id={record.id}
                             record={record}
-                            style={
-                                rowStyle
-                                    ? rowStyle(record, rowIndex)
-                                    : undefined
-                            }
+                            sx={rowSx?.(record, rowIndex)}
                         >
                             {leftIcon && (
                                 <ListItemIcon>
@@ -248,7 +245,7 @@ SimpleList.propTypes = {
         PropTypes.element,
         PropTypes.string,
     ]),
-    rowStyle: PropTypes.func,
+    rowSx: PropTypes.func,
 };
 
 export type FunctionToElement<RecordType extends RaRecord = any> = (
@@ -269,7 +266,7 @@ export interface SimpleListProps<RecordType extends RaRecord = any>
     rightIcon?: FunctionToElement<RecordType>;
     secondaryText?: FunctionToElement<RecordType> | ReactElement | string;
     tertiaryText?: FunctionToElement<RecordType> | ReactElement | string;
-    rowStyle?: (record: RecordType, index: number) => any;
+    rowSx?: (record: RecordType, index: number) => SxProps;
     // can be injected when using the component without context
     resource?: string;
     data?: RecordType[];

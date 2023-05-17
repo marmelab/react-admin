@@ -28,7 +28,7 @@ export const PostList = () => (
             secondaryText={record => `${record.views} views`}
             tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
             linkType={record => record.canEdit ? "edit" : "show"}
-            rowStyle={record => ({ backgroundColor: record.nb_views >= 500 ? '#efe' : 'white' })}
+            rowSx={record => ({ backgroundColor: record.nb_views >= 500 ? '#efe' : 'white' })}
         />
     </List>
 );
@@ -46,7 +46,7 @@ It accepts the following props:
 * [`leftIcon`](#lefticon)
 * [`rightAvatar`](#rightavatar)
 * [`rightIcon`](#righticon)
-* [`rowStyle`](#rowstyle)
+* [`rowSx`](#rowsx)
 * [`empty`](#empty)
 
 ## `leftAvatar`
@@ -157,20 +157,20 @@ This prop should be a function returning an `<Avatar>` component. When present, 
 
 This prop should be a function returning an `<Icon>` component. When present, the `<ListItem>` renders a `<ListIcon>` after the `<ListItemText>`.
 
-## `rowStyle`
+## `rowSx`
 
 This optional prop should be a function, which gets called for each row. It receives the current record and index as arguments, and should return a style object. The style object is applied to the `<ListItem>` styles prop.
 
 ```jsx
 import { List, SimpleList } from 'react-admin';
 
-const postRowStyle = (record, index) => ({
+const postRowSx = (record, index) => ({
     backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
 });
 
 export const PostList = () => (
     <List>
-        <SimpleList primaryText={record => record.title} rowStyle={postRowStyle} />
+        <SimpleList primaryText={record => record.title} rowSx={postRowSx} />
     </List>
 );
 ```

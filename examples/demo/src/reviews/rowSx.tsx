@@ -1,13 +1,12 @@
 import green from '@mui/material/colors/green';
+import type { SxProps } from '@mui/material';
 import orange from '@mui/material/colors/orange';
 import red from '@mui/material/colors/red';
-import { useTheme } from '@mui/material/styles';
 import { Identifier } from 'react-admin';
 
 import { Review } from './../types';
 
-const rowStyle = (selectedRow?: Identifier) => (record: Review) => {
-    const theme = useTheme();
+const rowSx = (selectedRow?: Identifier) => (record: Review): SxProps => {
     let style = {};
     if (!record) {
         return style;
@@ -15,7 +14,7 @@ const rowStyle = (selectedRow?: Identifier) => (record: Review) => {
     if (selectedRow && selectedRow === record.id) {
         style = {
             ...style,
-            backgroundColor: theme.palette.action.selected,
+            backgroundColor: 'action.selected',
         };
     }
     if (record.status === 'accepted')
@@ -42,4 +41,4 @@ const rowStyle = (selectedRow?: Identifier) => (record: Review) => {
     return style;
 };
 
-export default rowStyle;
+export default rowSx;

@@ -134,11 +134,14 @@ export const Hover = () => (
     </Wrapper>
 );
 
-export const RowStyle = () => (
+export const RowSx = () => (
     <Wrapper>
         <Datagrid
-            rowStyle={(record: any) => ({
+            rowSx={(record: any) => ({
                 backgroundColor: record.id % 2 ? 'white' : '#eee',
+                ...(record.year > 1900 && {
+                    '& td.column-year': { color: 'primary.main' },
+                }),
             })}
         >
             <TextField source="id" />
