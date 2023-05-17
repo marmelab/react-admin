@@ -9,6 +9,7 @@ This button lets users show or hide columns in a Datagrid. It must be used in co
 
 <video controls autoplay muted loop>
   <source src="./img/SelectColumnsButton.webm" type="video/webm"/>
+  <source src="./img/SelectColumnsButton.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

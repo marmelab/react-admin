@@ -9,6 +9,7 @@ To let users choose several values in a list using a dropdown, use `<SelectArray
 
 <video controls autoplay muted loop>
   <source src="./img/select-array-input.webm" type="video/webm"/>
+  <source src="./img/select-array-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -144,6 +145,7 @@ To allow users to add new options, pass a React element as the `create` prop. `<
 
 <video controls autoplay muted loop>
   <source src="./img/select-array-input-create.webm" type="video/webm"/>
+  <source src="./img/select-array-input-create.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

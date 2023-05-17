@@ -258,6 +258,7 @@ This button is an internal component used by react-admin in [the Filter button/f
 
 <video controls autoplay muted loop>
   <source src="./img/list_filter.webm" type="video/webm"/>
+  <source src="./img/list_filter.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -371,6 +372,7 @@ The `<MenuItemLink>` component displays a menu item with a label and an icon - o
 
 <video controls autoplay muted loop>
   <source src="./img/custom-menu.webm" type="video/webm"/>
+  <source src="./img/custom-menu.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

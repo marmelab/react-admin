@@ -11,6 +11,7 @@ Here is an overview of the result:
 
 <video controls autoplay muted loop>
   <source src="./img/tutorial_overview.webm" type="video/webm"/>
+  <source src="./img/tutorial_overview.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -231,6 +232,7 @@ The react-admin layout is already responsive. Try to resize your browser to see 
 
 <video controls autoplay muted loop>
   <source src="./img/tutorial_mobile_user_list.webm" type="video/webm"/>
+  <source src="./img/tutorial_mobile_user_list.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -275,6 +277,7 @@ This works exactly the way you expect.
 
 <video controls autoplay muted loop>
   <source src="./img/tutorial_user_list_responsive.webm" type="video/webm"/>
+  <source src="./img/tutorial_user_list_responsive.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -543,6 +546,7 @@ const App = () => (
 
 <video controls autoplay muted loop>
   <source src="./img/tutorial_edit_guesser.webm" type="video/webm"/>
+  <source src="./img/tutorial_edit_guesser.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -685,6 +689,7 @@ const App = () => (
 
 <video controls autoplay muted loop>
   <source src="./img/tutorial_post_create.webm" type="video/webm"/>
+  <source src="./img/tutorial_post_create.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -703,6 +708,7 @@ But there is an additional benefit: it also allows the "Undo" feature. Undo is a
 
 <video controls autoplay muted loop>
   <source src="./img/tutorial_post_edit_undo.webm" type="video/webm"/>
+  <source src="./img/tutorial_post_edit_undo.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -768,6 +774,7 @@ The first filter, 'q', takes advantage of a full-text functionality offered by J
 
 <video controls autoplay muted loop>
   <source src="./img/filters.webm" type="video/webm"/>
+  <source src="./img/filters.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -795,6 +802,7 @@ const App = () => (
 
 <video controls autoplay muted loop>
   <source src="./img/custom-menu.webm" type="video/webm"/>
+  <source src="./img/custom-menu.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -893,6 +901,7 @@ Once the app reloads, it's now behind a login form that accepts everyone:
 
 <video controls autoplay muted loop>
   <source src="./img/login.webm" type="video/webm"/>
+  <source src="./img/login.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

@@ -9,6 +9,7 @@ title: "The TextInput Component"
 
 <video controls autoplay muted loop>
   <source src="./img/text-input.webm" type="video/webm"/>
+  <source src="./img/text-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -60,6 +61,7 @@ import { TextInput } from 'react-admin';
 
 <video controls autoplay muted loop>
   <source src="./img/resettable-text-input.webm" type="video/webm"/>
+  <source src="./img/resettable-text-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

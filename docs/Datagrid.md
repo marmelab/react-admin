@@ -143,6 +143,7 @@ Finally, `<Datagrid>` inspects children for props that indicate how it should be
 
 <video controls autoplay muted loop>
   <source src="./img/bulk-actions-toolbar.webm" type="video/webm"/>
+  <source src="./img/bulk-actions-toolbar.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -395,6 +396,7 @@ const PostList = () => (
 
 <video controls autoplay muted loop>
   <source src="./img/datagrid_expand.webm" type="video/webm"/>
+  <source src="./img/datagrid_expand.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -815,6 +817,7 @@ The [`<SelectColumnsButton>`](./SelectColumnsButton.md) component lets users hid
 
 <video controls autoplay muted loop>
   <source src="./img/SelectColumnsButton.webm" type="video/webm"/>
+  <source src="./img/SelectColumnsButton.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -860,6 +863,7 @@ You can let end users customize the fields displayed in the `<Datagrid>` by usin
 
 <video controls autoplay muted loop>
   <source src="./img/DatagridConfigurable.webm" type="video/webm"/>
+  <source src="./img/DatagridConfigurable.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -991,6 +995,7 @@ Check [the `ra-editable-datagrid` documentation](https://marmelab.com/ra-enterpr
 
 <video controls autoplay muted loop>
   <source src="./img/sort-column-header.webm" type="video/webm"/>
+  <source src="./img/sort-column-header.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

@@ -25,6 +25,7 @@ The terminal will then ask you to choose:
 
 <video controls autoplay muted loop>
   <source src="./img/create-react-admin.webm" type="video/webm"/>
+  <source src="./img/create-react-admin.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

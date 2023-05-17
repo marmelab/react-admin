@@ -9,6 +9,7 @@ By default, the `<List>` uses the `<Pagination>` component for pagination. This 
 
 <video controls autoplay muted loop>
   <source src="./img/pagination-buttons.webm" type="video/webm"/>
+  <source src="./img/pagination-buttons.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

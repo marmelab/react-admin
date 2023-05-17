@@ -9,6 +9,7 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 <video controls autoplay muted loop>
   <source src="./img/useSubscribe.webm" type="video/webm"/>
+  <source src="./img/useSubscribe.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -111,6 +112,7 @@ const JobProgress = ({ jobId }) => {
 
 <video controls autoplay muted loop>
   <source src="./img/useSubscribeUnsubscribe.webm" type="video/webm"/>
+  <source src="./img/useSubscribeUnsubscribe.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -148,6 +150,7 @@ const OfficeClosed = () => {
 
 <video controls autoplay muted loop>
   <source src="./img/useSubscribeOnce.webm" type="video/webm"/>
+  <source src="./img/useSubscribeOnce.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

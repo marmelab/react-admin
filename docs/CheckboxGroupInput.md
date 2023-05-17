@@ -9,6 +9,7 @@ If you want to let the user choose multiple values among a list of possible valu
 
 <video controls autoplay muted loop>
   <source src="./img/checkbox-group-input.webm" type="video/webm"/>
+  <source src="./img/checkbox-group-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

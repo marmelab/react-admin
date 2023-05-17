@@ -15,6 +15,7 @@ One of the most important features of the List page is the ability to filter the
         <a title="Filter Button/Form Combo" href="./img/list_filter.webm">
             <video controls autoplay muted loop>
                 <source src="./img/list_filter.webm" type="video/webm"/>
+                <source src="./img/list_filter.mp4" type="video/mp4"/>
                 Your browser does not support the video tag.
             </video>
         </a>
@@ -24,6 +25,7 @@ One of the most important features of the List page is the ability to filter the
         <a title="<FilterList> Sidebar" href="./img/filter-sidebar.webm">
             <video controls autoplay muted loop>
                 <source src="./img/filter-sidebar.webm" type="video/webm"/>
+                <source src="./img/filter-sidebar.mp4" type="video/mp4"/>
                 Your browser does not support the video tag.
             </video>
         </a>
@@ -53,6 +55,7 @@ React-admin offers 4 different ways to filter the list. Depending on the type of
 
 <video controls autoplay muted loop>
   <source src="./img/list_filter.webm" type="video/webm"/>
+  <source src="./img/list_filter.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -87,6 +90,7 @@ Elements passed as `filters` are regular inputs. That means you can build sophis
 
 <video controls autoplay muted loop>
   <source src="./img/search_input.webm" type="video/webm"/>
+  <source src="./img/search_input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -107,6 +111,7 @@ In the example given above, the `q` filter triggers a full-text search on all fi
 
 <video controls autoplay muted loop>
   <source src="./img/quick_filters.webm" type="video/webm"/>
+  <source src="./img/quick_filters.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -140,6 +145,7 @@ const postFilters = [
 
 <video controls autoplay muted loop>
   <source src="./img/filter-sidebar.webm" type="video/webm"/>
+  <source src="./img/filter-sidebar.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -196,6 +202,7 @@ If you use the FilterList, you'll probably need a search input. As the FilterLis
 
 <video controls autoplay muted loop>
   <source src="./img/filter-live-search.webm" type="video/webm"/>
+  <source src="./img/filter-live-search.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -204,6 +211,7 @@ Finally, a filter sidebar is the ideal place to display the user's favorite filt
 
 <video controls autoplay muted loop>
   <source src="./img/SavedQueriesList.webm" type="video/webm"/>
+  <source src="./img/SavedQueriesList.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -395,6 +403,7 @@ export default {
 
 <video controls autoplay muted loop>
   <source src="./img/SavedQueriesList.webm" type="video/webm"/>
+  <source src="./img/SavedQueriesList.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -436,6 +445,7 @@ const SongList = () => (
 
 <video controls autoplay muted loop>
   <source src="./img/filter_with_submit.webm" type="video/webm"/>
+  <source src="./img/filter_with_submit.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

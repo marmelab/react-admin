@@ -505,6 +505,7 @@ On Mobile, `<Datagrid>` doesn't work well - the screen is too narrow. You should
 
 <video controls autoplay muted loop style="height:300px">
     <source src="./img/simple-list.webm" type="video/webm"/>
+    <source src="./img/simple-list.mp4" type="video/mp4"/>
     Your browser does not support the video tag.
 </video>
 
@@ -588,6 +589,7 @@ The first filter UI is called "the Filer/Form Combo".
 
 <video controls autoplay muted loop>
   <source src="./img/list_filter.webm" type="video/webm"/>
+  <source src="./img/list_filter.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -596,6 +598,7 @@ The second filter UI is called "the Filter List Sidebar".
 
 <video controls autoplay muted loop>
   <source src="./img/filter-sidebar.webm" type="video/webm"/>
+  <source src="./img/filter-sidebar.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -621,6 +624,7 @@ If you're using a `<Datagrid>` inside the List view, then the column headers are
 
 <video controls autoplay muted loop>
   <source src="./img/sort-column-header.webm" type="video/webm"/>
+  <source src="./img/sort-column-header.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -629,6 +633,7 @@ If you're using another List layout, check [the `<SortButton>` component](./Sort
 
 <video controls autoplay muted loop>
   <source src="./img/sort-button.webm" type="video/webm"/>
+  <source src="./img/sort-button.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

@@ -9,6 +9,7 @@ To let users choose a value in a list using a dropdown, use `<SelectInput>`. It 
 
 <video controls autoplay muted loop>
   <source src="./img/select-input.webm" type="video/webm"/>
+  <source src="./img/select-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

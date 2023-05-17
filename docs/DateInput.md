@@ -9,6 +9,7 @@ Ideal for editing dates, `<DateInput>` renders an HTML `<input type="date">` ele
 
 <video controls autoplay muted loop>
   <source src="./img/date-input.webm" type="video/webm"/>
+  <source src="./img/date-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -48,6 +49,7 @@ If you need to render a UI despite the browser locale, MUI also proposes a [Date
 
 <video controls autoplay muted loop>
   <source src="./img/date-picker.webm" type="video/webm"/>
+  <source src="./img/date-picker.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

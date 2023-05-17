@@ -9,6 +9,7 @@ This hook calls `dataProvider.getList()` when the component mounts. It returns a
 
 <video controls autoplay muted loop>
   <source src="./img/useInfiniteGetList.webm" type="video/webm"/>
+  <source src="./img/useInfiniteGetList.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

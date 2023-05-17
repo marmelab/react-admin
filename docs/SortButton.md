@@ -9,6 +9,7 @@ Some List views don't have a natural UI for sorting - e.g. the `<SimpleList>`, o
 
 <video controls autoplay muted loop>
   <source src="./img/sort-button.webm" type="video/webm"/>
+  <source src="./img/sort-button.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

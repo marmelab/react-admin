@@ -81,6 +81,7 @@ const PostList = () => (
 
 <video controls autoplay muted loop>
   <source src="./img/useSubscribeToRecordList.webm" type="video/webm"/>
+  <source src="./img/useSubscribeToRecordList.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -133,6 +134,7 @@ And last but not least, ra-realtime provides a **lock mechanism** to prevent two
 
 <video controls autoplay muted loop>
   <source src="./img/locks-demo.webm" type="video/webm"/>
+  <source src="./img/locks-demo.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

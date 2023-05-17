@@ -10,6 +10,7 @@ It renders using Material UI [Autocomplete](https://mui.com/material-ui/react-au
 
 <video controls autoplay muted loop>
   <source src="./img/autocomplete-array-input.webm" type="video/webm"/>
+  <source src="./img/autocomplete-array-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -139,6 +140,7 @@ To allow users to add new options, pass a React element as the `create` prop. `<
 
 <video controls autoplay muted loop>
   <source src="./img/autocomplete-array-input-create.webm" type="video/webm"/>
+  <source src="./img/autocomplete-array-input-create.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

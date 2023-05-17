@@ -322,6 +322,7 @@ export default {
 
 <video controls autoplay muted loop>
   <source src="./img/logout.webm" type="video/webm"/>
+  <source src="./img/logout.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

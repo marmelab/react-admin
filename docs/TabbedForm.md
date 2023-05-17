@@ -9,6 +9,7 @@ title: "TabbedForm"
 
 <video controls autoplay muted loop>
   <source src="./img/tabbed-form.webm" type="video/webm"/>
+  <source src="./img/tabbed-form.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

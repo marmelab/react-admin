@@ -9,6 +9,7 @@ Part of the filter button/form combo, `<FilterButton>` renders whenever you use 
 
 <video controls autoplay muted loop>
   <source src="./img/list_filter.webm" type="video/webm"/>
+  <source src="./img/list_filter.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

@@ -9,6 +9,7 @@ This component makes another component configurable by the end user. When users 
 
 <video controls autoplay muted loop>
   <source src="./img/SimpleListConfigurable.webm" type="video/webm"/>
+  <source src="./img/SimpleListConfigurable.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

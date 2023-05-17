@@ -107,6 +107,7 @@ React-admin produces a user interface that is voluntarily bland by default becau
 
 <video controls autoplay muted loop>
   <source src="./img/sort-button.webm" type="video/webm"/>
+  <source src="./img/sort-button.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

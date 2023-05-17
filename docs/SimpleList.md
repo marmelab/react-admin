@@ -7,6 +7,7 @@ title: "The SimpleList Component"
 
 <video controls autoplay muted loop style="height:300px">
     <source src="./img/simple-list.webm" type="video/webm"/>
+    <source src="./img/simple-list.mp4" type="video/mp4"/>
     Your browser does not support the video tag.
 </video>
 
@@ -237,6 +238,7 @@ You can let end users customize the fields displayed in the `<SimpleList>` by us
 
 <video controls autoplay muted loop>
   <source src="./img/SimpleListConfigurable.webm" type="video/webm"/>
+  <source src="./img/SimpleListConfigurable.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

@@ -9,6 +9,7 @@ Use `<ReferenceOneInput>` in an `<Edit>` or `<Create>` view to edit a record lin
 
 <video controls autoplay muted loop width="100%">
   <source src="./img/reference-one-input.webm" type="video/webm" />
+  <source src="./img/reference-one-input.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

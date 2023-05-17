@@ -9,6 +9,7 @@ You may have inputs which are translated in multiple languages and want users to
 
 <video controls autoplay muted loop>
   <source src="./img/translatable-input.webm" type="video/webm"/>
+  <source src="./img/translatable-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

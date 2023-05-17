@@ -468,6 +468,7 @@ const BookList = () => (
 
 <video controls autoplay muted loop>
   <source src="./img/export-button.webm" type="video/webm"/>
+  <source src="./img/export-button.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -558,6 +559,7 @@ const CommentList = () => (
 
 <video controls autoplay muted loop>
   <source src="./img/list_filter.webm" type="video/webm"/>
+  <source src="./img/list_filter.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -587,6 +589,7 @@ You can also display filters as a sidebar:
 
 <video controls autoplay muted loop>
   <source src="./img/filter-sidebar.webm" type="video/webm"/>
+  <source src="./img/filter-sidebar.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

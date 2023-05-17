@@ -9,6 +9,7 @@ The default react-admin layout renders a horizontal app bar at the top, which is
 
 <video controls autoplay muted loop width="100%">
   <source src="./img/AppBar.webm" type="video/webm" />
+  <source src="./img/AppBar.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -217,6 +218,7 @@ If your app uses [authentication](./Authentication.md), the `<AppBar>` component
 
 <video controls autoplay muted loop width="100%">
   <source src="./img/AppBar-user-menu.webm" type="video/webm"/>
+  <source src="./img/AppBar-user-menu.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -429,6 +431,7 @@ By default, users can override the page title [in configurable mode](./Features.
 
 <video controls autoplay muted loop width="100%">
   <source src="./img/TitleConfigurable.webm" type="video/webm"/>
+  <source src="./img/TitleConfigurable.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

@@ -9,6 +9,7 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 <video controls autoplay muted loop>
   <source src="./img/treewithdetails.webm" type="video/webm"/>
+  <source src="./img/treewithdetails.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

@@ -11,6 +11,7 @@ Switching tabs will update the current url. By default, it uses the tabs indexes
 
 <video controls autoplay muted loop>
   <source src="./img/tabbed-show.webm" type="video/webm"/>
+  <source src="./img/tabbed-show.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

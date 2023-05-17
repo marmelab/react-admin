@@ -9,6 +9,7 @@ If you want to let the user choose a value among a list of possible values that 
 
 <video controls autoplay muted loop>
   <source src="./img/radio-button-group-input.webm" type="video/webm"/>
+  <source src="./img/radio-button-group-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -245,6 +246,7 @@ By default, the radio buttons are displayed in a row. You can change that and le
 
 <video controls autoplay muted loop>
   <source src="./img/radio-button-group-input-row.webm" type="video/webm"/>
+  <source src="./img/radio-button-group-input-row.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

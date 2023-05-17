@@ -7,6 +7,7 @@ title: "The SavedQueriesList Component"
 
 <video controls autoplay muted loop>
   <source src="./img/SavedQueriesList.webm" type="video/webm"/>
+  <source src="./img/SavedQueriesList.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

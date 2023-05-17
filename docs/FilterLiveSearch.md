@@ -7,6 +7,7 @@ title: "The FilterLiveSearch Component"
 
 <video controls autoplay muted loop>
   <source src="./img/filter-live-search.webm" type="video/webm"/>
+  <source src="./img/filter-live-search.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

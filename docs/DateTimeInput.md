@@ -9,6 +9,7 @@ An input for editing dates with time. `<DateTimeInput>` renders an `<input type=
 
 <video controls autoplay muted loop>
   <source src="./img/date-time-input.webm" type="video/webm"/>
+  <source src="./img/date-time-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
