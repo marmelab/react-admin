@@ -3,7 +3,7 @@ import { FC, memo } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@mui/material/Typography';
-import { useRecordContext } from 'ra-core';
+import { useRecordContext, useTranslate } from 'ra-core';
 import purify from 'dompurify';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
@@ -35,6 +35,7 @@ export const RichTextField: FC<RichTextFieldProps> = memo<RichTextFieldProps>(
         } = props;
         const record = useRecordContext(props);
         const value = get(record, source);
+        const translate = useTranslate();
 
         return (
             <Typography
@@ -44,7 +45,7 @@ export const RichTextField: FC<RichTextFieldProps> = memo<RichTextFieldProps>(
                 {...sanitizeFieldRestProps(rest)}
             >
                 {value == null && emptyText ? (
-                    emptyText
+                    translate(emptyText, { _: emptyText })
                 ) : stripTags ? (
                     removeTags(value)
                 ) : (
