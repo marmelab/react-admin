@@ -51,7 +51,7 @@ type Post = {
 };
 
 const LatestNews = () => {
-    const { data, total, isLoading, error } = useGetListLive<Post>(
+    const { data: posts, total, isLoading, error } = useGetListLive<Post>(
         'posts',
         { 
             pagination: { page: 1, perPage: 10 },
@@ -64,12 +64,12 @@ const LatestNews = () => {
         <>
             <h1>Latest news</h1>
             <ul>
-                {/* TypeScript knows that record is of type Post[] */}
-                {data.map(record =>
-                    <li key={record.id}>{record.title}</li>
+                {/* TypeScript knows that posts is of type Post[] */}
+                {posts.map(post =>
+                    <li key={post.id}>{post.title}</li>
                 )}
             </ul>
-            <p>{data.length} / {total} articles</p>
+            <p>{posts.length} / {total} articles</p>
         </>
     );
 };

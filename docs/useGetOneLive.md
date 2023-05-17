@@ -50,9 +50,9 @@ type User = {
 }
 
 const UserProfile = () => {
-    const record = useRecordContext<Ticket>();
-    // TypeScript knows that record is of type Ticket
-    const { data: user, isLoading, error } = useGetOneLive<User>('users', { id: record.userId });
+    const ticket = useRecordContext<Ticket>();
+    // TypeScript knows that ticket is of type Ticket
+    const { data: user, isLoading, error } = useGetOneLive<User>('users', { id: ticket.userId });
     if (isLoading) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     // TypeScript knows that user is of type User
