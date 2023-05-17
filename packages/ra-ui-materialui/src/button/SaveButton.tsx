@@ -128,13 +128,28 @@ export const SaveButton = <RecordType extends RaRecord = any>(
             aria-label={displayedLabel}
             disabled={disabled}
             onClick={handleClick}
-            // TODO: find a way to display the loading state (LoadingButton from mui Lab?)
             {...rest}
         >
-            {isSubmitting ? <CircularProgress size={18} thickness={2} /> : icon}
+            {isSubmitting ? (
+                <CircularProgress
+                    sx={circularProgressStyle}
+                    size={14}
+                    thickness={3}
+                    color="inherit"
+                />
+            ) : (
+                icon
+            )}
             {displayedLabel}
         </StyledButton>
     );
+};
+
+const circularProgressStyle = {
+    '&.MuiCircularProgress-root': {
+        marginRight: '10px',
+        marginLeft: '2px',
+    },
 };
 
 const defaultIcon = <ContentSave />;
