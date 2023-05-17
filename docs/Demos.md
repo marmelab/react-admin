@@ -95,7 +95,7 @@ A simple application with posts, comments and users that we use for our e2e test
 
 A framework built on top of react-admin for building developer portals.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ecHsgNmug9E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay playsinline; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ecHsgNmug9E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 * Source code: [https://github.com/CAAPIM/APIHub](https://github.com/CAAPIM/APIHub)
 
