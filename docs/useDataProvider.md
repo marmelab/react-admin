@@ -57,29 +57,37 @@ The `useDataProvider` hook accepts a generic parameter for the `dataProvider` ty
 import { DataProvider } from 'react-admin';
 
 export interface CustomDataProviderMethods extends DataProvider {
-    customAction: (resource: string, params: any) => Promise<any>
+    archive: (resource: string, params: {
+        id: number;
+    }) => Promise<any>
 }
 
 export const dataProvider: CustomDataProviderMethods {
     // ...Standard dataProvider methods
-    customAction: (resource, params) => {
-        // Do something
+    archive: (resource, params) => {
+        // Call the archive endpoint and return a promise
     }
 }
 
-// In src/CustomAction.tsx
-import { useDataProvider } from 'react-admin';
+// In src/ArchiveButton.tsx
+import { Button, useDataProvider } from 'react-admin';
+import ArchiveIcon from '@mui/icons-material/Archive';
 import { CustomDataProviderMethods } from './src/dataProvider';
 
-export const CustomAction = () => {
+export const ArchiveButton = () => {
     const dataProvider = useDataProvider<CustomDataProviderMethods>();
+    const record = useRecord();
 
     return (
-        <button
-            onClick={() => dataProvider.customAction('resource', { value: 'something' })}
+        <Button
+            label="Archive"
+            onClick={() => {
+                // TypeScript knows the archive method
+                dataProvider.archive('resource', { id: record.id })
+            }}
         >
-            Do something
-        </button>
+            <ArchiveIcon />
+        </Button>
     );
 };
 ```
