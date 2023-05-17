@@ -37,7 +37,7 @@ import { ResourceContextProvider } from '../../core';
  *     </CreateBase>
  * );
  */
-export const CreateBase = <RecordType extends RaRecord = any>({
+export const CreateBase = <RecordType extends Omit<RaRecord, 'id'> = any>({
     children,
     ...props
 }: CreateControllerProps<RecordType> & { children: ReactNode }) => {

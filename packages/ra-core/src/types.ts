@@ -116,7 +116,7 @@ export type DataProvider<ResourceType extends string = string> = {
         params: UpdateManyParams
     ) => Promise<UpdateManyResult<RecordType>>;
 
-    create: <RecordType extends RaRecord = any>(
+    create: <RecordType extends Omit<RaRecord, 'id'> = any>(
         resource: ResourceType,
         params: CreateParams
     ) => Promise<CreateResult<RecordType>>;
@@ -209,7 +209,7 @@ export interface CreateParams<T = any> {
     data: T;
     meta?: any;
 }
-export interface CreateResult<RecordType extends RaRecord = any> {
+export interface CreateResult<RecordType extends Omit<RaRecord, 'id'> = any> {
     data: RecordType;
 }
 

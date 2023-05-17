@@ -40,7 +40,7 @@ import {
  * }
  */
 export const useCreateController = <
-    RecordType extends RaRecord = RaRecord,
+    RecordType extends Omit<RaRecord, 'id'> = any,
     MutationOptionsError = unknown
 >(
     props: CreateControllerProps<RecordType, MutationOptionsError> = {}
@@ -191,7 +191,7 @@ export const useCreateController = <
 };
 
 export interface CreateControllerProps<
-    RecordType extends RaRecord = RaRecord,
+    RecordType extends Omit<RaRecord, 'id'> = any,
     MutationOptionsError = unknown
 > {
     disableAuthentication?: boolean;
@@ -208,8 +208,9 @@ export interface CreateControllerProps<
     transform?: TransformData;
 }
 
-export interface CreateControllerResult<RecordType extends RaRecord = RaRecord>
-    extends SaveContextValue {
+export interface CreateControllerResult<
+    RecordType extends Omit<RaRecord, 'id'> = any
+> extends SaveContextValue {
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
     data?: RecordType;

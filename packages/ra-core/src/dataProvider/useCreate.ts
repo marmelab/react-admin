@@ -70,7 +70,7 @@ import { useEvent } from '../util';
  *                    \-- data is Product
  */
 export const useCreate = <
-    RecordType extends RaRecord = any,
+    RecordType extends Omit<RaRecord, 'id'> = any,
     MutationError = unknown
 >(
     resource?: string,
@@ -149,14 +149,16 @@ export const useCreate = <
     return [useEvent(create), mutation];
 };
 
-export interface UseCreateMutateParams<RecordType extends RaRecord = any> {
+export interface UseCreateMutateParams<
+    RecordType extends Omit<RaRecord, 'id'> = any
+> {
     resource?: string;
     data?: Partial<RecordType>;
     meta?: any;
 }
 
 export type UseCreateOptions<
-    RecordType extends RaRecord = any,
+    RecordType extends Omit<RaRecord, 'id'> = any,
     MutationError = unknown
 > = UseMutationOptions<
     RecordType,
@@ -165,7 +167,7 @@ export type UseCreateOptions<
 > & { returnPromise?: boolean };
 
 export type UseCreateResult<
-    RecordType extends RaRecord = any,
+    RecordType extends Omit<RaRecord, 'id'> = any,
     TReturnPromise extends boolean = boolean,
     MutationError = unknown
 > = [

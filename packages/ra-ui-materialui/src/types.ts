@@ -36,7 +36,7 @@ export interface EditProps<
 }
 
 export interface CreateProps<
-    RecordType extends RaRecord = any,
+    RecordType extends Omit<RaRecord, 'id'> = any,
     MutationOptionsError = unknown
 > {
     actions?: ReactElement | false;

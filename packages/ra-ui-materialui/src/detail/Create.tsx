@@ -50,7 +50,7 @@ import { CreateBase } from 'ra-core';
  * );
  * export default App;
  */
-export const Create = <RecordType extends RaRecord = any>(
+export const Create = <RecordType extends Omit<RaRecord, 'id'> = any>(
     props: CreateProps<RecordType> & { children: ReactNode }
 ): ReactElement => {
     useCheckMinimumRequiredProps('Create', ['children'], props);
@@ -66,7 +66,7 @@ export const Create = <RecordType extends RaRecord = any>(
         ...rest
     } = props;
     return (
-        <CreateBase
+        <CreateBase<RecordType>
             resource={resource}
             record={record}
             redirect={redirect}
