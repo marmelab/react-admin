@@ -920,6 +920,25 @@ const PostList = () => (
 );
 ```
 
+The inspector uses the field `source` (or `label` when it's a string) to display the column name. If you use non-field children (e.g. action buttons), then it's your responsibility to wrap them in a component with a `label` prop, that will be used by the inspector:
+
+```jsx
+const FieldWrapper = ({ children, label }) => children;
+const PostList = () => (
+    <List>
+        <DatagridConfigurable>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+            <FieldWrapper label="Actions">
+                <EditButton />
+            </FieldWrapper>
+        </DatagridConfigurable>
+    </List>
+);
+```
+
 `<DatagridConfigurable>` accepts the same props as `<Datagrid>`.
 
 ## Editable Spreadsheet

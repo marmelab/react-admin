@@ -2,7 +2,12 @@ import * as React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import expect from 'expect';
 
-import { Basic, Omit, PreferenceKey } from './DatagridConfigurable.stories';
+import {
+    Basic,
+    Omit,
+    PreferenceKey,
+    LabelElement,
+} from './DatagridConfigurable.stories';
 
 describe('<DatagridConfigurable>', () => {
     it('should render a datagrid with configurable columns', async () => {
@@ -18,7 +23,7 @@ describe('<DatagridConfigurable>', () => {
         screen.getByLabelText('Year').click();
         expect(screen.queryByText('1869')).not.toBeNull();
     });
-    it('should accept fields with a custom title', async () => {
+    it('should accept fields with a custom label', async () => {
         render(<Basic />);
         screen.getByLabelText('Configure mode').click();
         await screen.findByText('Inspector');
@@ -29,6 +34,19 @@ describe('<DatagridConfigurable>', () => {
         screen.getByLabelText('Original title').click();
         expect(screen.queryByText('War and Peace')).toBeNull();
         screen.getByLabelText('Original title').click();
+        expect(screen.queryByText('War and Peace')).not.toBeNull();
+    });
+    it('should accept fields with a label element', async () => {
+        render(<LabelElement />);
+        screen.getByLabelText('Configure mode').click();
+        await screen.findByText('Inspector');
+        fireEvent.mouseOver(screen.getByText('Leo Tolstoy'));
+        await screen.getByTitle('ra.configurable.customize').click();
+        await screen.findByText('Datagrid');
+        expect(screen.queryByText('War and Peace')).not.toBeNull();
+        screen.getByLabelText('Title').click();
+        expect(screen.queryByText('War and Peace')).toBeNull();
+        screen.getByLabelText('Title').click();
         expect(screen.queryByText('War and Peace')).not.toBeNull();
     });
     it('should accept fields with no source', async () => {
