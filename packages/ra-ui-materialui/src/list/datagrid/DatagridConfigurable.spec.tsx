@@ -7,6 +7,7 @@ import {
     Omit,
     PreferenceKey,
     LabelElement,
+    NullChildren,
 } from './DatagridConfigurable.stories';
 
 describe('<DatagridConfigurable>', () => {
@@ -47,6 +48,19 @@ describe('<DatagridConfigurable>', () => {
         screen.getByLabelText('Title').click();
         expect(screen.queryByText('War and Peace')).toBeNull();
         screen.getByLabelText('Title').click();
+        expect(screen.queryByText('War and Peace')).not.toBeNull();
+    });
+    it('accepts null children', async () => {
+        render(<NullChildren />);
+        screen.getByLabelText('Configure mode').click();
+        await screen.findByText('Inspector');
+        fireEvent.mouseOver(screen.getByText('Leo Tolstoy'));
+        await screen.getByTitle('ra.configurable.customize').click();
+        await screen.findByText('Datagrid');
+        expect(screen.queryByText('War and Peace')).not.toBeNull();
+        screen.getByLabelText('Original title').click();
+        expect(screen.queryByText('War and Peace')).toBeNull();
+        screen.getByLabelText('Original title').click();
         expect(screen.queryByText('War and Peace')).not.toBeNull();
     });
     it('should accept fields with no source', async () => {

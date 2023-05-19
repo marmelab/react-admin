@@ -141,3 +141,20 @@ export const LabelElement = () => (
         </DatagridConfigurable>
     </Wrapper>
 );
+
+export const NullChildren = () => (
+    <Wrapper>
+        <DatagridConfigurable
+            resource="books1"
+            data={data}
+            sort={{ field: 'title', order: 'ASC' }}
+            bulkActionButtons={false}
+        >
+            {false && <TextField source="id" />}
+            <TextField source="title" label="Original title" />
+            <TextField source="author" />
+            <TextField source="year" />
+            <EditButton />
+        </DatagridConfigurable>
+    </Wrapper>
+);
