@@ -131,3 +131,30 @@ export const PreferenceKey = () => (
         </MemoryRouter>
     </PreferencesEditorContextProvider>
 );
+
+export const LabelElement = () => (
+    <ThemeProvider theme={theme}>
+        <PreferencesEditorContextProvider>
+            <MemoryRouter>
+                <Inspector />
+                <Box display="flex" justifyContent="flex-end">
+                    <InspectorButton />
+                </Box>
+                <Box p={2}>
+                    <DatagridConfigurable
+                        resource="books1"
+                        data={data}
+                        sort={{ field: 'title', order: 'ASC' }}
+                        bulkActionButtons={false}
+                    >
+                        <TextField source="id" />
+                        <TextField source="title" label={<>Original title</>} />
+                        <TextField source="author" />
+                        <TextField source="year" />
+                        <EditButton />
+                    </DatagridConfigurable>
+                </Box>
+            </MemoryRouter>
+        </PreferencesEditorContextProvider>
+    </ThemeProvider>
+);
