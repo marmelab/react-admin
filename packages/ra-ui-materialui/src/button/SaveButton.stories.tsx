@@ -1,15 +1,7 @@
 import * as React from 'react';
-import { Form, testDataProvider } from 'ra-core';
+import { Form } from 'ra-core';
 
 import { SaveButton } from './SaveButton';
-import { SimpleForm, Toolbar } from '../form';
-import { Edit } from '../detail';
-import {
-    TextInput,
-    ArrayInput,
-    SimpleFormIterator,
-    NumberInput,
-} from '../input';
 import { AdminContext } from '../AdminContext';
 import { useFormContext } from 'react-hook-form';
 
