@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ReactElement, useCallback, useEffect, ChangeEvent } from 'react';
+import { isElement } from 'react-is';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { MenuItem, TextFieldProps } from '@mui/material';
@@ -203,7 +204,7 @@ export const SelectInput = (props: SelectInputProps) => {
     const { error, invalid, isTouched } = fieldState;
 
     const renderEmptyItemOption = useCallback(() => {
-        return React.isValidElement(emptyText)
+        return isElement(emptyText)
             ? emptyText
             : emptyText === ''
             ? ' ' // em space, forces the display of an empty line of normal height
