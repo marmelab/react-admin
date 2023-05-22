@@ -7,8 +7,9 @@ title: "The FilterList Component"
 
 An alternative UI to the Filter Button/Form Combo is the FilterList Sidebar. Similar to what users usually see on e-commerce websites, it's a panel with many simple filters that can be enabled and combined using the mouse.
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/filter-sidebar.webm" type="video/webm"/>
+  <source src="./img/filter-sidebar.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -254,8 +255,9 @@ export const CategoriesFilter = () => {
 ```
 {% endraw %}
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/filter-list-cumulative.webm" type="video/webm"/>
+  <source src="./img/filter-list-cumulative.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

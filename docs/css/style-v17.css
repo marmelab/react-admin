@@ -282,6 +282,10 @@ ul.sidenav code {
     }
 }
 
+.markdown-section img, .markdown-section video {
+    max-width: 100%;
+}
+
 @media only screen and (min-width: 601px) {
     .markdown-section img, .markdown-section video {
         max-width: 90%;

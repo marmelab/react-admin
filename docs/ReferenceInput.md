@@ -7,8 +7,9 @@ title: "The ReferenceInput Component"
 
 Use `<ReferenceInput>` for foreign-key values, for instance, to edit the `company_id` of a `contact` resource. 
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/reference-input.webm" type="video/webm"/>
+  <source src="./img/reference-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

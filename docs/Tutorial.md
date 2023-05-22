@@ -9,8 +9,9 @@ This 30 minutes tutorial will expose how to create a new admin app based on an e
 
 Here is an overview of the result:
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/tutorial_overview.webm" type="video/webm"/>
+  <source src="./img/tutorial_overview.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -229,8 +230,9 @@ React-admin offers a large library of components you can pick from to build the 
 
 The react-admin layout is already responsive. Try to resize your browser to see how the sidebar switches to a drawer on smaller screens. Besides, the `<SimpleList>` component is a really good fit for mobile devices. 
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/tutorial_mobile_user_list.webm" type="video/webm"/>
+  <source src="./img/tutorial_mobile_user_list.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -273,8 +275,9 @@ export const UserList = () => {
 
 This works exactly the way you expect.
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/tutorial_user_list_responsive.webm" type="video/webm"/>
+  <source src="./img/tutorial_user_list_responsive.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -541,8 +544,9 @@ const App = () => (
 );
 ```
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/tutorial_edit_guesser.webm" type="video/webm"/>
+  <source src="./img/tutorial_edit_guesser.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -683,8 +687,9 @@ const App = () => (
 );
 ```
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/tutorial_post_create.webm" type="video/webm"/>
+  <source src="./img/tutorial_post_create.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -701,8 +706,9 @@ That's because react-admin uses *optimistic updates*. When a user edits a record
 
 But there is an additional benefit: it also allows the "Undo" feature. Undo is already functional in the admin at that point. Try editing a record, then hit the "Undo" link in the black confirmation box before it slides out. You'll see that the app does not send the `UPDATE` query to the API, and displays the non-modified data.
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/tutorial_post_edit_undo.webm" type="video/webm"/>
+  <source src="./img/tutorial_post_edit_undo.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -766,8 +772,9 @@ export const PostList = () => (
 
 The first filter, 'q', takes advantage of a full-text functionality offered by JSONPlaceholder. It is `alwaysOn`, so it always appears on the screen. Users can add the second filter, `userId`, thanks to the "add filter" button, located on the top of the list. As it's a `<ReferenceInput>`, it's already populated with possible users. 
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/filters.webm" type="video/webm"/>
+  <source src="./img/filters.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -793,8 +800,9 @@ const App = () => (
 );
 ```
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/custom-menu.webm" type="video/webm"/>
+  <source src="./img/custom-menu.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -891,8 +899,9 @@ const App = () => (
 
 Once the app reloads, it's now behind a login form that accepts everyone:
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/login.webm" type="video/webm"/>
+  <source src="./img/login.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -1043,7 +1052,7 @@ Now that you've completed the tutorial, continue your journey with [the Features
 
 **Tip**: To help you close the gap between theoretical knowledge and practical experience, take advantage of the react-admin [Demos](./Demos.md). They are great examples of how to use react-admin in a real world application. They also show the best practices for going beyond simple CRUD apps.
 
-<video controls autoplay muted loop width="100%">
+<video controls autoplay playsinline muted loop width="100%">
   <source src="https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
