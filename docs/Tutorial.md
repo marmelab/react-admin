@@ -24,7 +24,7 @@ React-admin uses React. We'll use [create-react-admin](https://github.com/marmel
 yarn create react-admin test-admin
 ```
 
-Choose **JSON Server** as the data provider, then **None** as the auth provider. Don't add any resource for now and just press **Enter**. Finally, choose either `npm` or `yarn` and press **Enter**. Once everything is installed, enter the following commands:
+Choose **JSON Server** as the data provider, then **None** as the auth provider. Don't add any resource for now and just press **Enter**. Finally, choose either `npm` or `yarn` and press **Enter**. Once everything is installed, type the following commands:
 
 ```sh
 cd test-admin
@@ -33,15 +33,48 @@ npm run dev
 yarn dev
 ```
 
-You should be up and running with an empty React admin application on port 5173.
+You should be up and running with an empty React admin application on port 5173: 
 
-**Tip**: Although this tutorial uses a TypeScript template, you can use react-admin with JavaScript if you prefer. Also, you can use [Vite](https://vitejs.dev/), [create-react-app](./CreateReactApp.md), [Next.js](./NextJs.md), [Remix](./Remix.md), or any other React framework to create your admin app. React-admin is framework-agnostic.
+[![Empty Admin](./img/tutorial_empty.png)](./img/tutorial_empty.png)
+
+**Tip**: Although this tutorial uses [Vite](https://vitejs.dev/) with [TypeScript](https://www.typescriptlang.org/), you can use react-admin with JavaScript if you prefer. Also, you can use [Next.js](./NextJs.md), [Remix](./Remix.md), [create-react-app](./CreateReactApp.md), or any other React framework to create your admin app. React-admin is framework-agnostic.
+
+Let's take a look at the generated code. The main entry point is `index.tsx`, which renders the `App` component in the DOM:
+
+```tsx
+// in src/index.tsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { App } from './App';
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>
+);
+```
+
+The `<App>` component renders an `<Admin>` component, which is the root component of a react-admin application.
+
+```tsx
+// in src/App.tsx
+import { Admin, Resource, ListGuesser, EditGuesser, ShowGuesser } from 'react-admin';
+import { dataProvider } from './dataProvider';
+
+export const App = () => (
+    <Admin dataProvider={dataProvider}>
+
+    </Admin>
+);
+```
+
+This empty component only defines a `dataProvider` prop. But what is a data provider?
 
 ## Using an API As Data Source
 
-React-admin runs in the browser, and fetches data from an API.
+React-admin apps are single-Page-Apps (SPAs) running in the browser, and fetching data from an API. Since there is no standard for data exchanges between computers, react-admin needs an adapter to talk to your API. This adapter is called a *Data Provider*.
 
-We'll be using [JSONPlaceholder](https://jsonplaceholder.typicode.com/), a fake REST API designed for testing and prototyping, as the data source for the application. Here is what it looks like:
+For this tutorial, we'll be using [JSONPlaceholder](https://jsonplaceholder.typicode.com/), a fake REST API designed for testing and prototyping, as the data source for the application. Here is what it looks like:
 
 ```
 curl https://jsonplaceholder.typicode.com/users/2
@@ -75,15 +108,20 @@ curl https://jsonplaceholder.typicode.com/users/2
 
 JSONPlaceholder provides endpoints for users, posts, and comments. The admin we'll build should allow to Create, Retrieve, Update, and Delete (CRUD) these resources.
 
-## Making Contact With The API Using a Data Provider
+The `test-admin` project you just created already contains a data provider pre-configured for JSONPlaceholder. 
 
-The application has been initialized with enough code for react-admin to render an empty app and confirm that the setup is done: 
+```jsx
+// in src/dataProvider.ts
+import jsonServerProvider from 'ra-data-json-server';
 
-[![Empty Admin](./img/tutorial_empty.png)](./img/tutorial_empty.png)
+export const dataProvider = jsonServerProvider(
+    import.meta.env.VITE_JSON_SERVER_URL
+);
+```
 
-The `<App>` component renders an `<Admin>` component, which is the root component of a react-admin application. This component expects a `dataProvider` prop - a function capable of fetching data from an API. Since there is no standard for data exchanges between computers, you will probably have to write a custom provider to connect react-admin to your own APIs - but we'll dive into Data Providers later. For now, let's take advantage of the `ra-data-json-server` data provider, which speaks the same REST dialect as JSONPlaceholder.
+This uses a third-party package, `ra-data-json-server`, which maps the JSONPlaceholder API dialect with the react-admin CRUD API. There are [dozens of data provider packages](./DataProviderList.md) for various APIs and databases. You can even write your own data provider if you need to. But for now, let's make sure the app can connect to JSONPlaceholder.
 
-Now it's time to add features!
+**Tip**: The `import.meta.env.VITE_JSON_SERVER_URL` expression is a [Vite environment variable](https://vitejs.dev/guide/env-and-mode.html). It's set to `https://jsonplaceholder.typicode.com` in the `.env` file at the root of the project.
 
 ## Mapping API Endpoints With Resources
 
@@ -93,20 +131,14 @@ The `<Admin>` component expects one or more `<Resource>` child components. Each 
 
 ```diff
 // in src/App.tsx
--import { Admin } from "react-admin";
-+import { Admin, Resource, ListGuesser } from "react-admin";
-import jsonServerProvider from "ra-data-json-server";
+import { Admin, Resource, ListGuesser, EditGuesser, ShowGuesser } from 'react-admin';
+import { dataProvider } from './dataProvider';
 
-const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com');
-
--const App = () => <Admin dataProvider={dataProvider} />;
-+const App = () => (
-+ <Admin dataProvider={dataProvider}>
+export const App = () => (
+  <Admin dataProvider={dataProvider}>
 +   <Resource name="users" list={ListGuesser} />
-+ </Admin>
-+);
-
-export default App;
+  </Admin>
+);
 ```
 
 The line `<Resource name="users" />` informs react-admin to fetch the "users" records from the [https://jsonplaceholder.typicode.com/users](https://jsonplaceholder.typicode.com/users) URL. `<Resource>` also defines the React components to use for each CRUD operation (`list`, `create`, `edit`, and `show`).
@@ -151,14 +183,12 @@ Then, edit the `App.tsx` file to use this new component instead of `ListGuesser`
 
 ```diff
 // in src/App.tsx
--import { Admin, Resource, ListGuesser } from "react-admin";
+-import { Admin, Resource, ListGuesser, EditGuesser, ShowGuesser } from 'react-admin';
 +import { Admin, Resource } from "react-admin";
-import jsonServerProvider from "ra-data-json-server";
+import { dataProvider } from './dataProvider';
 +import { UserList } from "./users";
 
-const dataProvider = jsonServerProvider("https://jsonplaceholder.typicode.com");
-
-const App = () => (
+export const App = () => (
   <Admin dataProvider={dataProvider}>
 -   <Resource name="users" list={ListGuesser} />
 +   <Resource name="users" list={UserList} />
@@ -191,10 +221,12 @@ export const UserList = () => (
 );
 ```
 
-The root component, `<List>`, reads the query parameters from the URL, crafts an API call based on these parameters, and puts the result in a React context. It also builds a set of callbacks allowing child components to modify the list filters, pagination, and sorting. `<List>` does a lot of things, yet its syntax couldn't be simpler:
+The root component, `<List>`, reads the query parameters from the URL, calls the API based on these parameters, and puts the result in a React context. It also builds a set of callbacks allowing child components to modify the list filters, pagination, and sorting. `<List>` does a lot of things, yet its syntax couldn't be simpler:
 
 ```jsx
 <List>
+   {/* children */}
+</List>
 ```
 
 This is a good illustration of the react-admin target: helping developers build sophisticated apps in a simple way.
@@ -430,17 +462,15 @@ React-admin knows how to take advantage of these foreign keys to fetch reference
 // in src/App.tsx
 -import { Admin, Resource } from "react-admin";
 +import { Admin, Resource, ListGuesser } from "react-admin";
-import jsonServerProvider from "ra-data-json-server";
+import { dataProvider } from './dataProvider';
 import { UserList } from "./users";
 
-const App = () => (
+export const App = () => (
   <Admin dataProvider={dataProvider}>
     <Resource name="users" list={UserList} />
 +   <Resource name="posts" list={ListGuesser} />
   </Admin>
 );
-
-export default App;
 ```
 
 [![Guessed Post List](./img/tutorial_guessed_post_list.png)](./img/tutorial_guessed_post_list.png)
@@ -467,10 +497,11 @@ export const PostList = () => (
 // in src/App.tsx
 -import { Admin, Resource, ListGuesser } from "react-admin";
 +import { Admin, Resource } from "react-admin";
+import { dataProvider } from './dataProvider';
 +import { PostList } from "./posts";
 import { UserList } from "./users";
 
-const App = () => (
+export const App = () => (
     <Admin dataProvider={dataProvider}>
 -       <Resource name="posts" list={ListGuesser} />
 +       <Resource name="posts" list={PostList} />
@@ -532,10 +563,11 @@ An admin interface isn't just about displaying remote data, it should also allow
 // in src/App.tsx
 -import { Admin, Resource } from "react-admin";
 +import { Admin, Resource, EditGuesser } from "react-admin";
+import { dataProvider } from './dataProvider';
 import { PostList } from "./posts";
 import { UserList } from "./users";
 
-const App = () => (
+export const App = () => (
     <Admin dataProvider={dataProvider}>
 -       <Resource name="posts" list={PostList} />
 +       <Resource name="posts" list={PostList} edit={EditGuesser} />
@@ -591,14 +623,12 @@ Use that component as the `edit` prop of the "posts" Resource instead of the gue
 // in src/App.tsx
 -import { Admin, Resource, EditGuesser } from "react-admin";
 +import { Admin, Resource } from "react-admin";
-import jsonServerProvider from "ra-data-json-server";
+import { dataProvider } from './dataProvider';
 -import { PostList } from "./posts";
 +import { PostList, PostEdit } from "./posts";
 import { UserList } from "./users";
 
-const dataProvider = jsonServerProvider("https://jsonplaceholder.typicode.com");
-
-const App = () => (
+export const App = () => (
   <Admin dataProvider={dataProvider}>
 -   <Resource name="posts" list={PostList} edit={EditGuesser} />
 +   <Resource name="posts" list={PostList} edit={PostEdit} />
@@ -674,11 +704,12 @@ To use the new `<PostCreate>` components in the posts resource, just add it as `
 ```diff
 // in src/App.tsx
 import { Admin, Resource } from "react-admin";
+import { dataProvider } from './dataProvider';
 -import { PostList, PostEdit } from "./posts";
 +import { PostList, PostEdit, PostCreate } from "./posts";
 import { UserList } from "./users";
 
-const App = () => (
+export const App = () => (
   <Admin dataProvider={dataProvider}>
 -   <Resource name="posts" list={PostList} edit={PostEdit} />
 +   <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} />
@@ -792,7 +823,7 @@ The sidebar menu shows the same icon for both posts and users. Customizing the m
 import PostIcon from "@mui/icons-material/Book";
 import UserIcon from "@mui/icons-material/Group";
 
-const App = () => (
+export const App = () => (
   <Admin dataProvider={dataProvider}>
     <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon} />
     <Resource name="users" list={UserList} icon={UserIcon} recordRepresentation="name" />
@@ -827,7 +858,7 @@ export const Dashboard = () => (
 // in src/App.tsx
 import { Dashboard } from './Dashboard';
 
-const App = () => (
+export const App = () => (
   <Admin dataProvider={dataProvider} dashboard={Dashboard} >
       // ...
   </Admin>
@@ -890,7 +921,7 @@ To enable this authentication strategy, pass the `authProvider` to the `<Admin>`
 import { Dashboard } from './Dashboard';
 import { authProvider } from './authProvider';
 
-const App = () => (
+export const App = () => (
     <Admin authProvider={authProvider} dataProvider={dataProvider} dashboard={Dashboard} >
         // ...
     </Admin>
