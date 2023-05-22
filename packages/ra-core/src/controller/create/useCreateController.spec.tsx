@@ -324,6 +324,37 @@ describe('useCreateController', () => {
         });
     });
 
+    it('should accept meta as a save option', async () => {
+        let saveCallback;
+        const create = jest
+            .fn()
+            .mockImplementationOnce((_, { data }) =>
+                Promise.resolve({ data: { id: 123, ...data } })
+            );
+        const dataProvider = testDataProvider({
+            getOne: () => Promise.resolve({ data: { id: 12 } } as any),
+            create,
+        });
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <CreateController {...defaultProps}>
+                    {({ save }) => {
+                        saveCallback = save;
+                        return null;
+                    }}
+                </CreateController>
+            </CoreAdminContext>
+        );
+        await act(async () =>
+            saveCallback({ foo: 'bar' }, { meta: { lorem: 'ipsum' } })
+        );
+        expect(create).toHaveBeenCalledWith('posts', {
+            data: { foo: 'bar' },
+            meta: { lorem: 'ipsum' },
+        });
+    });
+
     it('should allow the save onError option to override the failure side effects override', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         let saveCallback;

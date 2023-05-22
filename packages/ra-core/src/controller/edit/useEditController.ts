@@ -137,6 +137,7 @@ export const useEditController = <
                 onSuccess: onSuccessFromSave,
                 onError: onErrorFromSave,
                 transform: transformFromSave,
+                meta: metaFromSave,
             } = {}
         ) =>
             Promise.resolve(
@@ -155,7 +156,7 @@ export const useEditController = <
                 try {
                     await mutate(
                         resource,
-                        { id, data, meta: mutationMeta },
+                        { id, data, meta: metaFromSave ?? mutationMeta },
                         {
                             onSuccess: async (data, variables, context) => {
                                 if (onSuccessFromSave) {
