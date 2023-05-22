@@ -15,7 +15,8 @@
         "test": "prettier --check . && xo && ava"
     },
     "files": [
-        "lib"
+        "lib",
+        "templates"
     ],
     "dependencies": {
         "execa": "^5.1.1",
