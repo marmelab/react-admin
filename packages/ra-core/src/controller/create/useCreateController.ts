@@ -87,6 +87,7 @@ export const useCreateController = <
                 onSuccess: onSuccessFromSave,
                 onError: onErrorFromSave,
                 transform: transformFromSave,
+                meta: metaFromSave,
             } = {}
         ) =>
             Promise.resolve(
@@ -100,7 +101,7 @@ export const useCreateController = <
                 try {
                     await mutate(
                         resource,
-                        { data, meta },
+                        { data, meta: metaFromSave ?? meta },
                         {
                             onSuccess: async (data, variables, context) => {
                                 if (onSuccessFromSave) {
