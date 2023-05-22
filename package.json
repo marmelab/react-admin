@@ -23,13 +23,15 @@
     "run-crm": "cd examples/crm && yarn dev",
     "build-crm": "cd examples/crm && yarn build",
     "storybook": "storybook dev -p 9010",
-    "build-storybook": "storybook build --no-dll -c .storybook -o public --quiet"
+    "build-storybook": "storybook build -c .storybook -o public --quiet"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^7.0.12",
     "@storybook/addon-controls": "^7.0.12",
+    "@storybook/addon-docs": "^7.0.13",
     "@storybook/addon-storysource": "^7.0.12",
     "@storybook/addons": "^7.0.12",
+    "@storybook/builder-vite": "^7.0.12",
     "@storybook/react": "^7.0.12",
     "@storybook/react-vite": "^7.0.12",
     "@storybook/testing-react": "^2.0.0",

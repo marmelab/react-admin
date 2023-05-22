@@ -4,7 +4,15 @@ const packages = fs.readdirSync(path.resolve(__dirname, '../packages'));
 module.exports = {
     stories: [`../packages/${process.env.ONLY || '**'}/**/*.stories.@(tsx)`],
     addons: [
-        '@storybook/addon-storysource',
+        {
+            name: '@storybook/addon-storysource',
+            options: {
+                loaderOptions: {
+                    injectStoryParameters: false,
+                    parser: 'typescript',
+                },
+            },
+        },
         '@storybook/addon-actions',
         '@storybook/addon-controls',
     ],
@@ -48,6 +56,9 @@ module.exports = {
                 ),
             },
         };
+    },
+    core: {
+        builder: '@storybook/builder-vite',
     },
     framework: {
         name: '@storybook/react-vite',
