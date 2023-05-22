@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { RaRecord, useCheckMinimumRequiredProps } from 'ra-core';
+import { Identifier, RaRecord, useCheckMinimumRequiredProps } from 'ra-core';
 
 import { CreateProps } from '../types';
 import { CreateView } from './CreateView';
@@ -50,8 +50,13 @@ import { CreateBase } from 'ra-core';
  * );
  * export default App;
  */
-export const Create = <RecordType extends Omit<RaRecord, 'id'> = any>(
-    props: CreateProps<RecordType> & { children: ReactNode }
+export const Create = <
+    RecordType extends Omit<RaRecord, 'id'> = any,
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
+>(
+    props: CreateProps<RecordType, Error, ResultRecordType> & {
+        children: ReactNode;
+    }
 ): ReactElement => {
     useCheckMinimumRequiredProps('Create', ['children'], props);
     const {
@@ -66,7 +71,7 @@ export const Create = <RecordType extends Omit<RaRecord, 'id'> = any>(
         ...rest
     } = props;
     return (
-        <CreateBase<RecordType>
+        <CreateBase<RecordType, ResultRecordType>
             resource={resource}
             record={record}
             redirect={redirect}
