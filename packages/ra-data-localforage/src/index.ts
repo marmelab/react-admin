@@ -156,7 +156,7 @@ export default async (
             updateLocalForage(resource);
             return baseDataProvider.updateMany(resource, params);
         },
-        create: <RecordType extends RaRecord = any>(
+        create: <RecordType extends Omit<RaRecord, 'id'> = any>(
             resource: string,
             params: CreateParams<any>
         ) => {

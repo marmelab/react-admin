@@ -36,8 +36,9 @@ export interface EditProps<
 }
 
 export interface CreateProps<
-    RecordType extends RaRecord = any,
-    MutationOptionsError = unknown
+    RecordType extends Omit<RaRecord, 'id'> = any,
+    MutationOptionsError = unknown,
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
 > {
     actions?: ReactElement | false;
     aside?: ReactElement;
@@ -50,7 +51,7 @@ export interface CreateProps<
     redirect?: RedirectionSideEffect;
     resource?: string;
     mutationOptions?: UseMutationOptions<
-        RecordType,
+        ResultRecordType,
         MutationOptionsError,
         UseCreateMutateParams<RecordType>
     > & { meta?: any };
