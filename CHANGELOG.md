@@ -1,5 +1,10 @@
 # Changelog
 
+## v4.10.5
+
+* Fix create and edit controller's save callback should use calltime meta param ([#8933](https://github.com/marmelab/react-admin/pull/8933)) ([slax57](https://github.com/slax57))
+* Fix create-react-admin does not include its templates ([#8932](https://github.com/marmelab/react-admin/pull/8932)) ([djhi](https://github.com/djhi))
+
 ## v4.10.4
 
 * Fix `<DatagridConfigurable>` inspector hides the wrong column when using empty children ([#8929](https://github.com/marmelab/react-admin/pull/8929)) ([fzaninotto](https://github.com/fzaninotto))
