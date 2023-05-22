@@ -7,8 +7,9 @@ title: "The TranslatableInputs Component"
 
 You may have inputs which are translated in multiple languages and want users to edit translations for each language separately. To display them, you can use the `<TranslatableInputs>` component.
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/translatable-input.webm" type="video/webm"/>
+  <source src="./img/translatable-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

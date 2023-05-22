@@ -58,3 +58,39 @@ const UserName = ({ userId }) => {
     return <>{identity.fullName}</>;
 };
 ```
+
+## TypeScript
+
+The `useAuthProvider` hook accepts a generic parameter for the `authProvider` type. This is useful when you added custom methods to your `authProvider`:
+
+```tsx
+// In src/authProvider.ts
+import { AuthProvider } from 'react-admin';
+
+export interface CustomAuthProviderMethods extends AuthProvider {
+    refreshToken: () => Promise<any>
+}
+
+export const authProvider: CustomAuthProviderMethods {
+    // ...Standard authProvider methods
+    refreshToken: () => {
+        // Refresh the user authentication token
+    }
+}
+
+// In src/RefreshToken.tsx
+import { useAuthProvider } from 'react-admin';
+import { CustomAuthProviderMethods } from './src/authProvider';
+
+const THIRTY_MINUTES = 1000 * 60 * 30;
+export const RefreshToken = () => {
+    const authProvider = useAuthProvider<CustomAuthProviderMethods>();
+
+    useEffect(() => {
+        const interval = useInterval(() => authProvider.refreshToken(), THIRTY_MINUTES);
+        return () => clearInterval(interval);
+    }, [authProvider]);
+
+    return null;
+};
+```

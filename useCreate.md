@@ -58,16 +58,23 @@ const LikeButton = () => {
 };
 ```
 
-**Tip**: If you use TypeScript, you can specify the record and error types for more type safety:
+## TypeScript
+
+The `useCreate` hook accepts a generic parameter for the record type and another for the error type:
 
 ```tsx
+type Product = {
+    id: number;
+    reference: string;
+}
+
 useCreate<Product, Error>(undefined, undefined, {
     onError: (error) => {
-        // error is an instance of Error.
+        // TypeScript knows that error is of type Error
     },
     onSettled: (data, error) => {
-        // data is an instance of Product.
-        // error is an instance of Error.
+        // TypeScript knows that data is of type Product
+        // TypeScript knows that error is of type Error
     },
 })
 ```

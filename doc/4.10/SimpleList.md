@@ -5,8 +5,9 @@ title: "The SimpleList Component"
 
 # `<SimpleList>`
 
-<video controls autoplay muted loop style="height:300px">
+<video controls autoplay playsinline muted loop style="height:300px">
     <source src="./img/simple-list.webm" type="video/webm"/>
+    <source src="./img/simple-list.mp4" type="video/mp4"/>
     Your browser does not support the video tag.
 </video>
 
@@ -235,8 +236,9 @@ export const PostList = () => {
 
 You can let end users customize the fields displayed in the `<SimpleList>` by using the `<SimpleListConfigurable>` component instead.
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/SimpleListConfigurable.webm" type="video/webm"/>
+  <source src="./img/SimpleListConfigurable.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

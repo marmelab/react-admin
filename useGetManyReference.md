@@ -84,3 +84,47 @@ const PostComments = () => {
     );
 };
 ```
+
+## TypeScript
+
+The `useGetManyReference` hook accepts a generic parameter for the record type:
+
+```tsx
+import { useGetManyReference, useRecordContext } from 'react-admin';
+
+type Post = {
+    id: number;
+    title: string;
+};
+
+type Comment = {
+    id: number;
+    post_id: string;
+    body: string;
+    published_at: Date;
+}
+
+const PostComments = () => {
+    const post = useRecordContext<Post>();
+    // fetch all comments related to the current record
+    const { data: comments, isLoading, error } = useGetManyReference<Comment>(
+        'comments',
+        { 
+            target: 'post_id',
+            id: record.id,
+            pagination: { page: 1, perPage: 10 },
+            sort: { field: 'published_at', order: 'DESC' }
+        }
+    );
+    if (isLoading) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    return (
+        <ul>
+            {/* TypeScript knows that comments is of type Comment[] */}
+            {comments.map(comment => (
+                <li key={comment.id}>{comment.body}</li>
+            ))}
+        </ul>
+    );
+};
+```

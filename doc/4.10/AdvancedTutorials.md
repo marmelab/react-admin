@@ -79,7 +79,7 @@ This article shows how to customize react-admin look and feel using only the Mat
 
 This tutorial explains how to create a custom component to select tags for a record, fetching the list of existing tags and allowing to create new tags on the fly.
 
-<video controls autoplay muted loop width="100%">
+<video controls autoplay playsinline muted loop width="100%">
     <source src="https://marmelab.com/b612ecd6bf066e85bad0a036614f55b0/tags-list-edit.webm" type="video/webm" />
     Your browser does not support the video tag.
 </video>

@@ -7,16 +7,18 @@ title: "The Layout Component"
 
 The default react-admin layout renders a horizontal app bar at the top, a navigation menu on the side, and the main content in the center.
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/layout-component.webm" type="video/webm"/>
+  <source src="./img/layout-component.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
 
 In addition, the layout renders the menu as a dropdown on mobile.
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/layout-responsive.webm" type="video/webm"/>
+  <source src="./img/layout-responsive.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

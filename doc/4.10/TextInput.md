@@ -7,8 +7,9 @@ title: "The TextInput Component"
 
 `<TextInput>` is the most common input. It is used for texts, emails, URL or passwords. In translates into [an Material UI `<TextField>`](https://mui.com/material-ui/react-text-field/), and renders as `<input type="text">` in HTML.
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/text-input.webm" type="video/webm"/>
+  <source src="./img/text-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -58,8 +59,9 @@ import { TextInput } from 'react-admin';
 <TextInput source="title" resettable />
 ```
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/resettable-text-input.webm" type="video/webm"/>
+  <source src="./img/resettable-text-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

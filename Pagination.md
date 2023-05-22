@@ -7,8 +7,9 @@ title: "The Pagination Component"
 
 By default, the `<List>` uses the `<Pagination>` component for pagination. This component displays buttons to navigate between pages, including buttons for the surrounding pages.
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/pagination-buttons.webm" type="video/webm"/>
+  <source src="./img/pagination-buttons.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -54,7 +55,7 @@ const PostPagination = () => <Pagination rowsPerPageOptions={[10, 25, 50, 100]} 
 
 On mobile devices, the `<Pagination>` component is not very user friendly. The expected user experience is to reveal more records when the user scrolls to the bottom of the list. This UX is also useful on desktop, for lists with a large number of records.
 
-<video controls autoplay muted loop width="100%">
+<video controls autoplay playsinline muted loop width="100%">
   <source src="./img/infinite-book-list.webm" poster="./img/infinite-book-list.webp" type="video/webm">
   Your browser does not support the video tag.
 </video>

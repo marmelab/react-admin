@@ -49,6 +49,41 @@ const PostShow = () => (
 )
 ```
 
+## TypeScript
+
+The `useShowContext` hook accepts a generic parameter for the record type:
+
+```tsx
+import { Show, useShowContext } from 'react-admin';
+import { Typography } from '@mui/material';
+
+type Post = {
+    id: number;
+    title: string;
+    updated_at: Date;
+};
+
+export const PostShow = () => (
+    <Show aside={<Aside />}>
+        // ...
+    </Show>
+);
+
+const Aside = () => {
+    const { record: post, isLoading } = useShowContext<Post>();
+    if (isLoading) return null;
+    return (
+        <div>
+            <Typography variant="h6">Posts stats</Typography>
+            <Typography variant="body2">
+                {/* TypeScript knows that post is of type Post */}
+                Last edition: {post.updated_at}
+            </Typography>
+        </div>
+    );
+};
+```
+
 ## See Also
 
 * [`useShowController`](./useShowController.md) computes all the data that is located in the ShowContext.

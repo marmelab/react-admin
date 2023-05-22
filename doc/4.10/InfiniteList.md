@@ -7,7 +7,7 @@ title: "The InfiniteList Component"
 
 The `<InfiniteList>` component is an alternative to [the `<List>` component](./List.md) that allows user to load more records when they scroll to the bottom of the list. It's useful when you have a large number of records, or when users are using a mobile device.
 
-<video controls autoplay muted loop width="100%">
+<video controls autoplay playsinline muted loop width="100%">
   <source src="./img/infinite-book-list.webm" poster="./img/infinite-book-list.webp" type="video/webm">
   Your browser does not support the video tag.
 </video>

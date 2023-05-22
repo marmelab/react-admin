@@ -323,7 +323,7 @@ const BoolkList = () => (
 
 ## `disableSyncWithLocation`
 
-By default, react-admin synchronizes the `<List>` parameters (sort, pagination, filters) with the query string in the URL (using `react-router` location).
+By default, react-admin synchronizes the `<List>` parameters (sort, pagination, filters) with the query string in the URL (using `react-router` location) and the [Store](./Store.md).
 
 When you use a `<List>` component anywhere else than as `<Resource list>`, you may want to disable this synchronization to keep the parameters in a local state, independent for each `<List>` instance. This allows to have multiple lists on a single page. The drawback is that a hit on the "back" button doesn't restore the previous list parameters. To do so, pass the `disableSyncWithLocation` prop.
 
@@ -354,6 +354,8 @@ const Dashboard = () => (
 )
 ```
 {% endraw %}
+
+**Tip**: As `disableSyncWithLocation` also disables the persistence of the list parameters in the Store, the `storeKey` prop is ignored when `disableSyncWithLocation` is set to `true`.
 
 Please note that the selection state is not synced in the URL but in a global store using the resource as key. Thus, all lists in the page using the same resource will share the same selection state. This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. If you want the selection state to be local, you will have to implement your own `useListController` hook and pass a custom key to the `useRecordSelection` hook. You will then need to implement your own `DeleteButton` and `BulkDeleteButton` to manually unselect rows when deleting records.
 
@@ -466,8 +468,9 @@ const BookList = () => (
 
 ## `exporter`
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/export-button.webm" type="video/webm"/>
+  <source src="./img/export-button.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -556,8 +559,9 @@ const CommentList = () => (
 
 ## `filters`: Filter Inputs
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/list_filter.webm" type="video/webm"/>
+  <source src="./img/list_filter.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -585,8 +589,9 @@ Filter Inputs are regular inputs. `<List>` hides them all by default, except tho
 
 You can also display filters as a sidebar:
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/filter-sidebar.webm" type="video/webm"/>
+  <source src="./img/filter-sidebar.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -910,7 +915,7 @@ const PostList = () => (
 
 By default, the `<List>` component displays the first page of the list of records. To display the next page, the user must click on the "next" button. This is called "finite pagination". An alternative is to display the next page automatically when the user scrolls to the bottom of the list. This is called "infinite pagination".
 
-<video controls autoplay muted loop width="100%">
+<video controls autoplay playsinline muted loop width="100%">
   <source src="./img/infinite-book-list.webm" poster="./img/infinite-book-list.webp" type="video/webm">
   Your browser does not support the video tag.
 </video>

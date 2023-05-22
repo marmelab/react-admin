@@ -141,8 +141,9 @@ Finally, `<Datagrid>` inspects children for props that indicate how it should be
 
 ## `bulkActionButtons`
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/bulk-actions-toolbar.webm" type="video/webm"/>
+  <source src="./img/bulk-actions-toolbar.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -393,8 +394,9 @@ const PostList = () => (
 
 ## `expand`
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/datagrid_expand.webm" type="video/webm"/>
+  <source src="./img/datagrid_expand.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -813,8 +815,9 @@ const PostList = () => (
 
 The [`<SelectColumnsButton>`](./SelectColumnsButton.md) component lets users hide, show, and reorder datagrid columns. 
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/SelectColumnsButton.webm" type="video/webm"/>
+  <source src="./img/SelectColumnsButton.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -858,8 +861,9 @@ const PostList = () => (
 
 You can let end users customize the fields displayed in the `<Datagrid>` by using the `<DatagridConfigurable>` component instead.
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/DatagridConfigurable.webm" type="video/webm"/>
+  <source src="./img/DatagridConfigurable.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -915,6 +919,25 @@ const PostList = () => (
             <TextField source="title" />
             <TextField source="author" />
             <TextField source="year" />
+        </DatagridConfigurable>
+    </List>
+);
+```
+
+The inspector uses the field `source` (or `label` when it's a string) to display the column name. If you use non-field children (e.g. action buttons), then it's your responsibility to wrap them in a component with a `label` prop, that will be used by the inspector:
+
+```jsx
+const FieldWrapper = ({ children, label }) => children;
+const PostList = () => (
+    <List>
+        <DatagridConfigurable>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+            <FieldWrapper label="Actions">
+                <EditButton />
+            </FieldWrapper>
         </DatagridConfigurable>
     </List>
 );
@@ -989,8 +1012,9 @@ Check [the `ra-editable-datagrid` documentation](https://marmelab.com/ra-enterpr
 
 ## Customizing Column Sort
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/sort-column-header.webm" type="video/webm"/>
+  <source src="./img/sort-column-header.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

@@ -7,8 +7,9 @@ title: "The MarkdownInput Component"
 
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component allows to edit and preview Markdown data, based on [the Toast UI editor](https://nhn.github.io/tui.editor/latest/ToastUIEditor).
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/markdown-input.webm" type="video/webm"/>
+  <source src="./img/markdown-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
