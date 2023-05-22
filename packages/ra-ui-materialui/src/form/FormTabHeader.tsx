@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { isValidElement, ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode } from 'react';
+import { isElement } from 'react-is';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import { Tab as MuiTab, TabProps as MuiTabProps } from '@mui/material';
@@ -29,9 +30,7 @@ export const FormTabHeader = ({
         to: { ...location, pathname: value },
     };
 
-    let tabLabel = isValidElement(label)
-        ? label
-        : translate(label, { _: label });
+    let tabLabel = isElement(label) ? label : translate(label, { _: label });
     if (count !== undefined) {
         tabLabel = (
             <span>

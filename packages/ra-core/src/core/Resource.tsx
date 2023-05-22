@@ -1,44 +1,39 @@
 import * as React from 'react';
-import { isValidElement } from 'react';
+import { ComponentType, ReactElement, isValidElement } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { isValidElementType } from 'react-is';
 
 import { ResourceProps } from '../types';
 import { ResourceContextProvider } from './ResourceContextProvider';
 
 export const Resource = (props: ResourceProps) => {
-    const { create: Create, edit: Edit, list: List, name, show: Show } = props;
+    const { create, edit, list, name, show } = props;
 
     return (
         <ResourceContextProvider value={name}>
             <Routes>
-                {Create && (
-                    <Route
-                        path="create/*"
-                        element={isValidElement(Create) ? Create : <Create />}
-                    />
+                {create && (
+                    <Route path="create/*" element={getElement(create)} />
                 )}
-                {Show && (
-                    <Route
-                        path=":id/show/*"
-                        element={isValidElement(Show) ? Show : <Show />}
-                    />
-                )}
-                {Edit && (
-                    <Route
-                        path=":id/*"
-                        element={isValidElement(Edit) ? Edit : <Edit />}
-                    />
-                )}
-                {List && (
-                    <Route
-                        path="/*"
-                        element={isValidElement(List) ? List : <List />}
-                    />
-                )}
+                {show && <Route path=":id/show/*" element={getElement(show)} />}
+                {edit && <Route path=":id/*" element={getElement(edit)} />}
+                {list && <Route path="/*" element={getElement(list)} />}
                 {props.children}
             </Routes>
         </ResourceContextProvider>
     );
+};
+
+const getElement = (ElementOrComponent: ComponentType<any> | ReactElement) => {
+    if (isValidElement(ElementOrComponent)) {
+        return ElementOrComponent;
+    }
+
+    if (isValidElementType(ElementOrComponent)) {
+        return <ElementOrComponent />;
+    }
+
+    return null;
 };
 
 Resource.raName = 'Resource';

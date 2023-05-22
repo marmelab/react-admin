@@ -1,6 +1,7 @@
 import * as React from 'react';
+import { isElement } from 'react-is';
 import { styled } from '@mui/material/styles';
-import { memo, isValidElement, ReactElement } from 'react';
+import { memo, ReactElement } from 'react';
 import {
     IconButton,
     ListItem,
@@ -176,7 +177,7 @@ export const FilterListItem = memo((props: FilterListItemProps) => {
             >
                 <ListItemText
                     primary={
-                        isValidElement(label)
+                        isElement(label)
                             ? label
                             : translate(label, { _: label })
                     }
