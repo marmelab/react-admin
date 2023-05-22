@@ -6,7 +6,7 @@ import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
 import { SimpleForm } from '../form';
 import { RadioButtonGroupInput } from './RadioButtonGroupInput';
-import { FormInspector } from './common.stories';
+import { FormInspector } from './common';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { testDataProvider } from 'ra-core';
 

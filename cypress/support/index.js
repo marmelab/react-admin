@@ -1,1 +1,1 @@
-require('cypress-plugin-tab');
+import 'cypress-plugin-tab';

@@ -1,11 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-
 const packages = fs.readdirSync(path.resolve(__dirname, '../packages'));
 module.exports = {
-    core: {
-        builder: 'webpack5',
-    },
     stories: [`../packages/${process.env.ONLY || '**'}/**/*.stories.@(tsx)`],
     addons: [
         '@storybook/addon-storysource',
@@ -25,17 +21,19 @@ module.exports = {
                 ...plugins,
                 [
                     '@babel/plugin-proposal-private-property-in-object',
-                    { loose: true },
+                    {
+                        loose: true,
+                    },
                 ],
             ],
         };
     },
-    reactOptions: {
-        fastRefresh: true,
-    },
-    webpackFinal: async (config, { configType }) => {
+    viteFinal: async (config, { configType }) => {
         return {
             ...config,
+            define: {
+                'process.env': process.env,
+            },
             resolve: {
                 ...config.resolve,
                 alias: packages.reduce(
@@ -50,5 +48,14 @@ module.exports = {
                 ),
             },
         };
+    },
+    framework: {
+        name: '@storybook/react-vite',
+        options: {
+            fastRefresh: true,
+        },
+    },
+    docs: {
+        autodocs: false,
     },
 };
