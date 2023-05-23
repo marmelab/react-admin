@@ -92,7 +92,7 @@ const ArrayFieldImpl = <
         </ListContextProvider>
     );
 };
-ArrayFieldImpl.propTypes = fieldPropTypes;
+ArrayFieldImpl.propTypes = { ...fieldPropTypes };
 ArrayFieldImpl.displayName = 'ArrayFieldImpl';
 
 export const ArrayField = genericMemo(ArrayFieldImpl);
