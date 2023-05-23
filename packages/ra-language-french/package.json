@@ -6,6 +6,11 @@
         "type": "git",
         "url": "git+https://github.com/marmelab/react-admin.git"
     },
+    "files": [
+        "*.md",
+        "dist",
+        "src"
+    ],
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
     "types": "dist/cjs/index.d.ts",
