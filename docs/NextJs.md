@@ -126,7 +126,7 @@ SUPABASE_SERVICE_ROLE="MY_SERVICE_ROLE_KEY"
 
 Create [a "catch-all" API route](https://nextjs.org/docs/api-routes/dynamic-api-routes#optional-catch-all-api-routes) in the Next.js app by adding a `pages/api/admin/[[...slug]].ts` file. This API route redirects all calls from the react-admin app to the Supabase CRUD API:
 
-```jsx
+```tsx
 // in pages/api/admin/[[...slug]].ts
 import { NextApiRequest, NextApiResponse } from "next";
 
