@@ -23,8 +23,14 @@ module.exports = {
     },
     babel: async options => {
         const { plugins = [] } = options;
+        console.log(plugins);
         return {
             ...options,
+            presets: [
+                '@babel/preset-env',
+                '@babel/preset-react',
+                '@babel/preset-typescript',
+            ],
             plugins: [
                 ...plugins,
                 [
@@ -36,12 +42,9 @@ module.exports = {
             ],
         };
     },
-    viteFinal: async (config, { configType }) => {
+    webpackFinal: async (config, { configType }) => {
         return {
             ...config,
-            define: {
-                'process.env': process.env,
-            },
             resolve: {
                 ...config.resolve,
                 alias: packages.reduce(
@@ -57,14 +60,9 @@ module.exports = {
             },
         };
     },
-    core: {
-        builder: '@storybook/builder-vite',
-    },
     framework: {
-        name: '@storybook/react-vite',
-        options: {
-            fastRefresh: true,
-        },
+        name: '@storybook/react-webpack5',
+        options: {},
     },
     docs: {
         autodocs: false,
