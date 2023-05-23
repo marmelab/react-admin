@@ -1,10 +1,6 @@
 {
     "lerna": "2.5.1",
-    "packages": [
-        "examples/data-generator",
-        "examples/simple",
-        "packages/*"
-    ],
-    "version": "4.10.5",
+    "packages": ["examples/data-generator", "examples/simple", "packages/*"],
+    "version": "4.10.6",
     "useWorkspaces": true
 }
