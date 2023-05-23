@@ -6,7 +6,7 @@ import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
 import { SimpleForm } from '../form';
 import { TimeInput } from './TimeInput';
-import { FormInspector } from './common.stories';
+import { FormInspector } from './common';
 
 export default { title: 'ra-ui-materialui/input/TimeInput' };
 
