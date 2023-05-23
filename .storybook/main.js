@@ -23,7 +23,6 @@ module.exports = {
     },
     babel: async options => {
         const { plugins = [] } = options;
-        console.log(plugins);
         return {
             ...options,
             presets: [
