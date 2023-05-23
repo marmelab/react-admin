@@ -12,7 +12,7 @@ React-admin runs seamlessly on [Next.js](https://nextjs.org/), with minimal conf
 Let's start by creating a new Next.js project called `nextjs-react-admin`.
 
 ```bash
-npx create-next-app --ts nextjs-react-admin --use-yarn
+npx create-next-app@latest next-admin --ts --use-yarn --eslint --no-tailwind --no-src-dir --no-app --import-alias "@/*"
 ```
 
 ![Setup Next.js](./img/nextjs-setup.webp)
@@ -128,19 +128,21 @@ Create [a "catch-all" API route](https://nextjs.org/docs/api-routes/dynamic-api-
 
 ```jsx
 // in pages/api/admin/[[...slug]].ts
-export default async function handler(req, res) {
+import { NextApiRequest, NextApiResponse } from "next";
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // get the incoming request URL, e.g. 'posts?limit=10&offset=0&order=id.asc'
-  const requestUrl = req.url.substring("/api/admin/".length);
+  const requestUrl = req.url?.substring("/api/admin/".length);
   // build the CRUD request based on the incoming request
   const url = `${process.env.SUPABASE_URL}/rest/v1/${requestUrl}`;
-  const options = {
+  const options: RequestInit = {
     method: req.method,
     headers: {
-      prefer: req.headers["prefer"] ?? "",
+      prefer: req.headers["prefer"] as string ?? "",
       accept: req.headers["accept"] ?? "application/json",
       ["content-type"]: req.headers["content-type"] ?? "application/json",
       // supabase authentication
-      apiKey: process.env.SUPABASE_SERVICE_ROLE,
+      apiKey: process.env.SUPABASE_SERVICE_ROLE ?? '',
     },
   };
   if (req.body) {
@@ -149,24 +151,27 @@ export default async function handler(req, res) {
   // call the CRUD API
   const response = await fetch(url, options);
   // send the response back to the client
-  res.setHeader("Content-Range", response.headers.get("content-range"));
+  const contentRange = response.headers.get("content-range");
+  if (contentRange) {
+    res.setHeader("Content-Range", contentRange);
+  }
   res.end(await response.text());
 }
 ```
 
 **Tip**: Some of this code is really PostgREST-specific. The `prefer` header is required to let PostgREST return one record instead of an array containing one record in response to `getOne` requests. The `Content-Range` header is returned by PostgREST and must be passed down to the client. A proxy for another CRUD API will require different parameters.
 
-Finally, update the react-admin data provider to use the Supabase adapter instead of the JSON Server one. As Supabase provides a PostgREST endpoint, we'll use [`ra-data-postgrest`](https://github.com/promitheus7/ra-data-postgrest):
+Finally, update the react-admin data provider to use the Supabase adapter instead of the JSON Server one. As Supabase provides a PostgREST endpoint, we'll use [`ra-data-postgrest`](https://github.com/raphiniert-com/ra-data-postgrest):
 
 ```sh
-yarn add @promitheus/ra-data-postgrest
+yarn add @raphiniert/ra-data-postgrest
 ```
 
 ```jsx
 // in src/admin/App.jsx
 import * as React from "react";
 import { Admin, Resource, ListGuesser } from 'react-admin';
-import postgrestRestProvider from "@promitheus/ra-data-postgrest";
+import postgrestRestProvider from "@raphiniert/ra-data-postgrest";
 
 const dataProvider = postgrestRestProvider("/api/admin");
 
