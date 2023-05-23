@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { memo, FC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import {
@@ -11,7 +10,8 @@ import {
 import { Typography, TypographyProps } from '@mui/material';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { FieldProps, fieldPropTypes } from './types';
+import { genericMemo } from './genericMemo';
 
 /**
  * Display a value in an enumeration
@@ -75,7 +75,11 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *
  * **Tip**: <ReferenceField> sets `translateChoice` to false by default.
  */
-export const SelectField: FC<SelectFieldProps> = memo(props => {
+const SelectFieldImpl = <
+    RecordType extends Record<string, unknown> = Record<string, any>
+>(
+    props: SelectFieldProps<RecordType>
+) => {
     const {
         className,
         emptyText,
@@ -122,15 +126,9 @@ export const SelectField: FC<SelectFieldProps> = memo(props => {
             {choiceText}
         </Typography>
     );
-});
-
-SelectField.defaultProps = {
-    optionText: 'name',
-    optionValue: 'id',
-    translateChoice: true,
 };
 
-SelectField.propTypes = {
+SelectFieldImpl.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
@@ -144,10 +142,17 @@ SelectField.propTypes = {
     translateChoice: PropTypes.bool,
 };
 
-export interface SelectFieldProps
-    extends ChoicesProps,
-        PublicFieldProps,
-        InjectedFieldProps,
-        Omit<TypographyProps, 'textAlign'> {}
+SelectFieldImpl.defaultProps = {
+    optionText: 'name',
+    optionValue: 'id',
+    translateChoice: true,
+};
+SelectFieldImpl.displayName = 'SelectFieldImpl';
 
-SelectField.displayName = 'SelectField';
+export const SelectField = genericMemo(SelectFieldImpl);
+
+export interface SelectFieldProps<
+    RecordType extends Record<string, unknown> = Record<string, any>
+> extends ChoicesProps,
+        FieldProps<RecordType>,
+        Omit<TypographyProps, 'textAlign'> {}

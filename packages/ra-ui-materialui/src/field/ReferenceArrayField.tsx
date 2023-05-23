@@ -11,11 +11,12 @@ import {
     ResourceContextProvider,
     useRecordContext,
     useResourceDefinition,
+    RaRecord,
 } from 'ra-core';
 import { styled } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
 
-import { fieldPropTypes, PublicFieldProps, InjectedFieldProps } from './types';
+import { fieldPropTypes, FieldProps } from './types';
 import { LinearProgress } from '../layout';
 import { SingleFieldList } from '../list/SingleFieldList';
 import { ChipField } from './ChipField';
@@ -76,7 +77,12 @@ import { ChipField } from './ChipField';
  *    ...
  * </ReferenceArrayField>
  */
-export const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
+export const ReferenceArrayField = <
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord
+>(
+    props: ReferenceArrayFieldProps<RecordType>
+) => {
     const {
         filter,
         page = 1,
@@ -87,7 +93,10 @@ export const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
         source,
     } = props;
     const record = useRecordContext(props);
-    const controllerProps = useReferenceArrayFieldController({
+    const controllerProps = useReferenceArrayFieldController<
+        RecordType,
+        ReferenceRecordType
+    >({
         filter,
         page,
         perPage,
@@ -119,16 +128,15 @@ ReferenceArrayField.propTypes = {
     source: PropTypes.string.isRequired,
 };
 
-export interface ReferenceArrayFieldProps
-    extends PublicFieldProps,
-        InjectedFieldProps {
+export interface ReferenceArrayFieldProps<
+    RecordType extends RaRecord = RaRecord
+> extends FieldProps<RecordType> {
     children?: ReactNode;
     filter?: FilterPayload;
     page?: number;
     pagination?: ReactElement;
     perPage?: number;
     reference: string;
-    resource?: string;
     sort?: SortPayload;
     sx?: SxProps;
 }

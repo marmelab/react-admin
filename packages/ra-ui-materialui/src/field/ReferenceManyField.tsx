@@ -8,9 +8,10 @@ import {
     ListControllerResult,
     ResourceContextProvider,
     useRecordContext,
+    RaRecord,
 } from 'ra-core';
 
-import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
+import { fieldPropTypes, FieldProps } from './types';
 
 /**
  * Render related records to the current one.
@@ -58,7 +59,12 @@ import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
  *    ...
  * </ReferenceManyField>
  */
-export const ReferenceManyField = (props: ReferenceManyFieldProps) => {
+export const ReferenceManyField = <
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord
+>(
+    props: ReferenceManyFieldProps<RecordType>
+) => {
     const {
         children,
         filter,
@@ -73,7 +79,10 @@ export const ReferenceManyField = (props: ReferenceManyFieldProps) => {
     } = props;
     const record = useRecordContext(props);
 
-    const controllerProps = useReferenceManyFieldController({
+    const controllerProps = useReferenceManyFieldController<
+        RecordType,
+        ReferenceRecordType
+    >({
         filter,
         page,
         perPage,
@@ -95,9 +104,9 @@ export const ReferenceManyField = (props: ReferenceManyFieldProps) => {
     );
 };
 
-export interface ReferenceManyFieldProps
-    extends PublicFieldProps,
-        InjectedFieldProps {
+export interface ReferenceManyFieldProps<
+    RecordType extends Record<string, unknown> = Record<string, any>
+> extends FieldProps<RecordType> {
     children: ReactNode;
     filter?: FilterPayload;
     page?: number;

@@ -6,10 +6,14 @@ import get from 'lodash/get';
 import { useRecordContext, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { FieldProps, fieldPropTypes } from './types';
 import { SxProps } from '@mui/system';
 
-export const ImageField = (props: ImageFieldProps) => {
+export const ImageField = <
+    RecordType extends Record<string, unknown> = Record<string, any>
+>(
+    props: ImageFieldProps<RecordType>
+) => {
     const { className, emptyText, source, src, title, ...rest } = props;
     const record = useRecordContext(props);
     const sourceValue = get(record, source);
@@ -58,14 +62,14 @@ export const ImageField = (props: ImageFieldProps) => {
         );
     }
 
-    const titleValue = get(record, title) || title;
+    const titleValue = get(record, title)?.toString() || title;
 
     return (
         <Root className={className} {...sanitizeFieldRestProps(rest)}>
             <img
                 title={titleValue}
                 alt={titleValue}
-                src={sourceValue}
+                src={sourceValue?.toString()}
                 className={ImageFieldClasses.image}
             />
         </Root>
@@ -104,7 +108,9 @@ const Root = styled(Box, {
     },
 });
 
-export interface ImageFieldProps extends PublicFieldProps, InjectedFieldProps {
+export interface ImageFieldProps<
+    RecordType extends Record<string, unknown> = Record<string, any>
+> extends FieldProps<RecordType> {
     src?: string;
     title?: string;
     sx?: SxProps;

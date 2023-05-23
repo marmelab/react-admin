@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { memo, FC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@mui/material/Typography';
 import { useRecordContext, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { FieldProps, fieldPropTypes } from './types';
+import { genericMemo } from './genericMemo';
 
 /**
  * Display a numeric value as a locale string.
@@ -36,7 +36,11 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  * // renders the record { id: 1234, price: 25.99 } as
  * <span>25,99 $US</span>
  */
-export const NumberField: FC<NumberFieldProps> = memo(props => {
+const NumberFieldImpl = <
+    RecordType extends Record<string, unknown> = Record<string, any>
+>(
+    props: NumberFieldProps<RecordType>
+) => {
     const {
         className,
         emptyText,
@@ -46,7 +50,7 @@ export const NumberField: FC<NumberFieldProps> = memo(props => {
         textAlign,
         ...rest
     } = props;
-    const record = useRecordContext(props);
+    const record = useRecordContext<RecordType>(props);
     const translate = useTranslate();
 
     if (!record) {
@@ -74,19 +78,14 @@ export const NumberField: FC<NumberFieldProps> = memo(props => {
             className={className}
             {...sanitizeFieldRestProps(rest)}
         >
-            {hasNumberFormat ? value.toLocaleString(locales, options) : value}
+            {hasNumberFormat && typeof value === 'number'
+                ? value.toLocaleString(locales, options)
+                : value}
         </Typography>
     );
-});
-
-// what? TypeScript loses the displayName if we don't set it explicitly
-NumberField.displayName = 'NumberField';
-
-NumberField.defaultProps = {
-    textAlign: 'right',
 };
 
-NumberField.propTypes = {
+NumberFieldImpl.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
     ...fieldPropTypes,
@@ -97,9 +96,17 @@ NumberField.propTypes = {
     options: PropTypes.object,
 };
 
-export interface NumberFieldProps
-    extends PublicFieldProps,
-        InjectedFieldProps,
+// what? TypeScript loses the displayName if we don't set it explicitly
+NumberFieldImpl.displayName = 'NumberFieldImpl';
+NumberFieldImpl.defaultProps = {
+    textAlign: 'right',
+};
+
+export const NumberField = genericMemo(NumberFieldImpl);
+
+export interface NumberFieldProps<
+    RecordType extends Record<string, unknown> = Record<string, any>
+> extends FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     locales?: string | string[];
     options?: object;

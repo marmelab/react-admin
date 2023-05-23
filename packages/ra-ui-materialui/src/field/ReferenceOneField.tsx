@@ -13,7 +13,7 @@ import {
     RaRecord,
 } from 'ra-core';
 
-import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
+import { fieldPropTypes, FieldProps } from './types';
 import { ReferenceFieldView } from './ReferenceField';
 
 /**
@@ -26,8 +26,11 @@ import { ReferenceFieldView } from './ReferenceField';
  *     <TextField source="body" />
  * </ReferenceOneField>
  */
-export const ReferenceOneField = <RecordType extends RaRecord = any>(
-    props: ReferenceOneFieldProps<RecordType>
+export const ReferenceOneField = <
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord
+>(
+    props: ReferenceOneFieldProps<RecordType, ReferenceRecordType>
 ) => {
     const {
         children,
@@ -40,7 +43,7 @@ export const ReferenceOneField = <RecordType extends RaRecord = any>(
         link = false,
         queryOptions,
     } = props;
-    const record = useRecordContext(props);
+    const record = useRecordContext<RecordType>(props);
     const createPath = useCreatePath();
     const translate = useTranslate();
 
@@ -50,7 +53,7 @@ export const ReferenceOneField = <RecordType extends RaRecord = any>(
         referenceRecord,
         error,
         refetch,
-    } = useReferenceOneFieldController<RecordType>({
+    } = useReferenceOneFieldController<ReferenceRecordType>({
         record,
         reference,
         source,
@@ -95,9 +98,10 @@ export const ReferenceOneField = <RecordType extends RaRecord = any>(
     );
 };
 
-export interface ReferenceOneFieldProps<RecordType extends RaRecord = any>
-    extends PublicFieldProps,
-        InjectedFieldProps {
+export interface ReferenceOneFieldProps<
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord
+> extends FieldProps<RecordType> {
     children?: ReactNode;
     reference: string;
     target: string;
@@ -105,7 +109,7 @@ export interface ReferenceOneFieldProps<RecordType extends RaRecord = any>
     filter?: any;
     link?: LinkToType<RecordType>;
     queryOptions?: UseQueryOptions<{
-        data: RecordType[];
+        data: ReferenceRecordType[];
         total: number;
     }> & { meta?: any };
 }

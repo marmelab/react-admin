@@ -122,7 +122,7 @@ export const useCreate = <
 
     const create = (
         callTimeResource: string = resource,
-        callTimeParams: Partial<CreateParams<RecordType>> = {},
+        callTimeParams: Partial<CreateParams<Partial<RecordType>>> = {},
         createOptions: MutateOptions<
             RecordType,
             MutationError,
@@ -151,7 +151,7 @@ export const useCreate = <
 
 export interface UseCreateMutateParams<RecordType extends RaRecord = any> {
     resource?: string;
-    data?: Partial<RecordType>;
+    data?: Partial<Omit<RecordType, 'id'>>;
     meta?: any;
 }
 

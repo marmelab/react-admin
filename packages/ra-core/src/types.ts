@@ -1,5 +1,4 @@
 import { ReactNode, ReactElement, ComponentType } from 'react';
-
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 import { AuthActionType } from './auth/types';
 
@@ -186,10 +185,10 @@ export interface GetManyReferenceResult<RecordType extends RaRecord = any> {
     };
 }
 
-export interface UpdateParams<T extends RaRecord = any> {
-    id: T['id'];
-    data: Partial<T>;
-    previousData: T;
+export interface UpdateParams<RecordType extends RaRecord = any> {
+    id: RecordType['id'];
+    data: Partial<RecordType>;
+    previousData: RecordType;
     meta?: any;
 }
 export interface UpdateResult<RecordType extends RaRecord = any> {

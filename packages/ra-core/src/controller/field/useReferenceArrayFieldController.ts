@@ -5,11 +5,13 @@ import { useGetManyAggregate } from '../../dataProvider';
 import { ListControllerResult, useList } from '../list';
 import { useNotify } from '../../notification';
 
-export interface UseReferenceArrayFieldControllerParams {
+export interface UseReferenceArrayFieldControllerParams<
+    RecordType extends RaRecord = RaRecord
+> {
     filter?: any;
     page?: number;
     perPage?: number;
-    record?: RaRecord;
+    record?: RecordType;
     reference: string;
     resource: string;
     sort?: SortPayload;
@@ -43,8 +45,11 @@ const defaultSort = { field: null, order: null };
  *
  * @returns {ListControllerResult} The reference props
  */
-export const useReferenceArrayFieldController = (
-    props: UseReferenceArrayFieldControllerParams
+export const useReferenceArrayFieldController = <
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord
+>(
+    props: UseReferenceArrayFieldControllerParams<RecordType>
 ): ListControllerResult => {
     const {
         filter = defaultFilter,
@@ -64,7 +69,9 @@ export const useReferenceArrayFieldController = (
         return emptyArray;
     }, [value, source]);
 
-    const { data, error, isLoading, isFetching, refetch } = useGetManyAggregate(
+    const { data, error, isLoading, isFetching, refetch } = useGetManyAggregate<
+        ReferenceRecordType
+    >(
         reference,
         { ids },
         {
@@ -88,7 +95,7 @@ export const useReferenceArrayFieldController = (
         }
     );
 
-    const listProps = useList({
+    const listProps = useList<ReferenceRecordType>({
         data,
         error,
         filter,

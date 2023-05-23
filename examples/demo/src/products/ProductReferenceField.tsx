@@ -7,7 +7,7 @@ interface Props {
 
 const ProductReferenceField = (
     props: Props &
-        Omit<Omit<ReferenceFieldProps, 'source'>, 'reference' | 'children'>
+        Omit<ReferenceFieldProps, 'source' | 'reference' | 'children'>
 ) => (
     <ReferenceField
         label="Product"

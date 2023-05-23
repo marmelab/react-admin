@@ -34,6 +34,7 @@
         "expect": "^27.4.6",
         "file-api": "~0.10.4",
         "history": "^5.1.0",
+        "hotscript": "^1.0.12",
         "ignore-styles": "~5.0.1",
         "ra-core": "^4.10.2",
         "ra-i18n-polyglot": "^4.10.2",

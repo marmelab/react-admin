@@ -44,7 +44,7 @@ export interface UseReferenceResult<RecordType extends RaRecord = any> {
  *
  * @returns {UseReferenceResult} The reference record
  */
-export const useReference = <RecordType extends RaRecord = any>({
+export const useReference = <RecordType extends RaRecord = RaRecord>({
     reference,
     id,
     options = {},
