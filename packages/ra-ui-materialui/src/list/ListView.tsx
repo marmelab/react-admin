@@ -41,7 +41,6 @@ export const ListView = <RecordType extends RaRecord = any>(
         defaultTitle,
         data,
         error,
-        total,
         isLoading,
         filterValues,
         resource,
@@ -83,7 +82,7 @@ export const ListView = <RecordType extends RaRecord = any>(
 
     const shouldRenderEmptyPage =
         !isLoading &&
-        total === 0 &&
+        data?.length === 0 &&
         !Object.keys(filterValues).length &&
         empty !== false;
 
@@ -144,7 +143,6 @@ ListView.propTypes = {
     setSort: PropTypes.func,
     showFilter: PropTypes.func,
     title: TitlePropType,
-    total: PropTypes.number,
 };
 
 export interface ListViewProps {
