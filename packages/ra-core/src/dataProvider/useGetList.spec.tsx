@@ -353,7 +353,6 @@ describe('useGetList', () => {
             getList: jest.fn(() =>
                 Promise.resolve({ data: [{ id: 1, title: 'live' }], total: 1 })
             ),
-            delete: jest.fn(),
         } as unknown) as DataProvider;
         render(
             <CoreAdminContext
@@ -369,7 +368,9 @@ describe('useGetList', () => {
         await waitFor(() => {
             expect(callback).toHaveBeenCalled();
         });
+        // Simulate the side-effect of e.g. a call to delete
         queryClient.setQueriesData(['posts', 'getList'], res => res);
+        // If we get this far without an error being thrown, the test passes
         await waitFor(() => {
             expect(onSuccess).toHaveBeenCalled();
         });
