@@ -102,6 +102,9 @@ export const CoreAdmin = (props: CoreAdminProps) => {
         requireAuth,
         store,
         title = 'React Admin',
+        resources,
+        customRoutes,
+        customRoutesWithoutLayout,
     } = props;
     return (
         <CoreAdminContext
@@ -124,6 +127,9 @@ export const CoreAdmin = (props: CoreAdminProps) => {
                 loginPage={loginPage}
                 requireAuth={requireAuth}
                 ready={ready}
+                resources={resources}
+                customRoutes={customRoutes}
+                customRoutesWithoutLayout={customRoutesWithoutLayout}
             >
                 {children}
             </CoreAdminUI>

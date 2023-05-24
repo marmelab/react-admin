@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect, Children, ComponentType } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, RouteObject, Routes } from 'react-router-dom';
 
 import { WithPermissions, useCheckAuth } from '../auth';
 import { useTimeout } from '../util';
@@ -11,8 +11,12 @@ import {
     LayoutComponent,
     LoadingComponent,
     CoreLayoutProps,
+    ResourceConfig,
+    GetResourcesFunction,
+    GetRoutesFunction,
 } from '../types';
 import { useConfigureAdminRouterFromChildren } from './useConfigureAdminRouterFromChildren';
+import { useConfigureAdminRouterFromProps } from './useConfigureAdminRouterFromProps';
 
 export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
     const oneSecondHasPassed = useTimeout(1000);
@@ -25,6 +29,7 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
         status,
         resources,
     } = useConfigureAdminRouterFromChildren(props.children);
+    const element = useConfigureAdminRouterFromProps(props);
 
     const {
         layout: Layout,
@@ -49,6 +54,14 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
                 .catch(() => {});
         }
     }, [checkAuth, requireAuth]);
+
+    if (
+        props.resources != null ||
+        props.customRoutes != null ||
+        props.customRoutesWithoutLayout != null
+    ) {
+        return element;
+    }
 
     if (status === 'empty') {
         return <Ready />;
@@ -119,10 +132,6 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
     );
 };
 
-CoreAdminRoutes.defaultProps = {
-    customRoutes: [],
-};
-
 export interface CoreAdminRoutesProps extends CoreLayoutProps {
     layout: LayoutComponent;
     catchAll: CatchAllComponent;
@@ -130,6 +139,9 @@ export interface CoreAdminRoutesProps extends CoreLayoutProps {
     loading: LoadingComponent;
     requireAuth?: boolean;
     ready?: ComponentType;
+    resources?: Record<string, ResourceConfig> | GetResourcesFunction;
+    customRoutes?: RouteObject[] | GetRoutesFunction;
+    customRoutesWithoutLayout?: RouteObject[] | GetRoutesFunction;
 }
 
 const defaultAuthParams = { params: { route: 'dashboard' } };

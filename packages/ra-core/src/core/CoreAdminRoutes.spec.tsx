@@ -16,10 +16,6 @@ const CatchAll = () => <div />;
 const Loading = () => <>Loading</>;
 
 describe('<CoreAdminRoutes>', () => {
-    const defaultProps = {
-        customRoutes: [],
-    };
-
     describe('With resources as regular children', () => {
         it('should render resources and custom routes with and without layout', () => {
             const history = createMemoryHistory();
@@ -224,7 +220,6 @@ describe('<CoreAdminRoutes>', () => {
                     history={history}
                 >
                     <CoreAdminRoutes
-                        {...defaultProps}
                         layout={Layout}
                         loading={Loading}
                         catchAll={CatchAll}
