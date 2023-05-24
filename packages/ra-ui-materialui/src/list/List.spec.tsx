@@ -128,6 +128,33 @@ describe('<List />', () => {
         });
     });
 
+    it('should render custom empty component when data is empty', async () => {
+        const Dummy = () => null;
+        const CustomEmpty = () => <div>Custom Empty</div>;
+
+        const dataProvider = {
+            getList: jest.fn(() =>
+                Promise.resolve({
+                    data: [],
+                    pageInfo: { hasNextPage: false, hasPreviousPage: false },
+                })
+            ),
+        } as any;
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <ThemeProvider theme={theme}>
+                    <List resource="posts" empty={<CustomEmpty />}>
+                        <Dummy />
+                    </List>
+                </ThemeProvider>
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(screen.queryByText('resources.posts.empty')).toBeNull();
+            screen.getByText('Custom Empty');
+        });
+    });
+
     it('should not render an invite when a filter is active', async () => {
         const Dummy = () => {
             const { isLoading } = useListContext();
