@@ -55,7 +55,7 @@ export const ListView = <RecordType extends RaRecord = any>(
         <div className={ListClasses.main}>
             {(filters || actions) && (
                 <ListToolbar
-                    className={ListClasses.actions}         
+                    className={ListClasses.actions}
                     filters={filters}
                     actions={actions}
                     hasCreate={hasCreate}
