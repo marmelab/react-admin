@@ -1,6 +1,7 @@
 import { ReactNode, ReactElement, ComponentType } from 'react';
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 import { AuthActionType } from './auth/types';
+import { RouteObject } from 'react-router';
 
 /**
  * data types
@@ -300,6 +301,25 @@ export type Dispatch<T> = T extends (...args: infer A) => any
     : never;
 
 export type ResourceElement = ReactElement<ResourceProps>;
+export type ResourceConfig = Pick<
+    ResourceProps,
+    | 'create'
+    | 'edit'
+    | 'icon'
+    | 'list'
+    | 'options'
+    | 'recordRepresentation'
+    | 'show'
+    | 'routes'
+>;
+
+export type GetResourcesFunction = (
+    permissions: any
+) => Record<string, ResourceConfig> | Promise<Record<string, ResourceConfig>>;
+export type GetRoutesFunction = (
+    permissions: any
+) => RouteObject[] | Promise<RouteObject[]>;
+
 export type RenderResourcesFunction = (
     permissions: any
 ) =>
@@ -359,6 +379,7 @@ export interface ResourceProps {
     recordRepresentation?: ReactElement | RecordToStringFunction | string;
     options?: ResourceOptions;
     children?: ReactNode;
+    routes?: RouteObject[];
 }
 
 export type Exporter = (

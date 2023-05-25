@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ComponentType, useEffect, isValidElement, createElement } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, RouteObject } from 'react-router-dom';
 
 import { CoreAdminRoutes } from './CoreAdminRoutes';
 import { Ready } from '../util';
@@ -13,6 +13,9 @@ import {
     CatchAllComponent,
     DashboardComponent,
     LoadingComponent,
+    ResourceConfig,
+    GetResourcesFunction,
+    GetRoutesFunction,
 } from '../types';
 
 export type ChildrenFunction = () => ComponentType[];
@@ -35,6 +38,9 @@ export interface CoreAdminUIProps {
     requireAuth?: boolean;
     ready?: ComponentType;
     title?: TitleComponent;
+    resources?: Record<string, ResourceConfig> | GetResourcesFunction;
+    customRoutes?: RouteObject[] | GetRoutesFunction;
+    customRoutesWithoutLayout?: RouteObject[] | GetRoutesFunction;
 }
 
 export const CoreAdminUI = (props: CoreAdminUIProps) => {
@@ -51,6 +57,9 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
         ready = Ready,
         title = 'React Admin',
         requireAuth = false,
+        resources,
+        customRoutes,
+        customRoutesWithoutLayout,
     } = props;
 
     useEffect(() => {
@@ -92,6 +101,9 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
                         requireAuth={requireAuth}
                         ready={ready}
                         title={title}
+                        resources={resources}
+                        customRoutes={customRoutes}
+                        customRoutesWithoutLayout={customRoutesWithoutLayout}
                     >
                         {children}
                     </CoreAdminRoutes>

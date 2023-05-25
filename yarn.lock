@@ -6334,6 +6334,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^18.16.1":
+  version: 18.16.14
+  resolution: "@types/node@npm:18.16.14"
+  checksum: 28b00ede91212971c8724c73a922d7dec70d4a3b95d576b28946b12ebe82f2ba7f3d07b2c2e1584e1149cc11ca1c93d4da1f5c48d9b541a9c0311b88d03ea43b
+  languageName: node
+  linkType: hard
+
 "@types/normalize-package-data@npm:^2.4.0":
   version: 2.4.1
   resolution: "@types/normalize-package-data@npm:2.4.1"
@@ -18894,7 +18901,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-fakerest@^4.10.6, ra-data-fakerest@workspace:packages/ra-data-fakerest":
+"ra-data-fakerest@^4.10.6, ra-data-fakerest@^4.9.2, ra-data-fakerest@workspace:packages/ra-data-fakerest":
   version: 0.0.0-use.local
   resolution: "ra-data-fakerest@workspace:packages/ra-data-fakerest"
   dependencies:
@@ -19311,7 +19318,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-admin@^4.10.6, react-admin@workspace:packages/react-admin":
+"react-admin@^4.10.6, react-admin@^4.9.0, react-admin@workspace:packages/react-admin":
   version: 0.0.0-use.local
   resolution: "react-admin@workspace:packages/react-admin"
   dependencies:
@@ -23247,6 +23254,23 @@ __metadata:
   checksum: b1e623adcfb9df35350dd7fc61295d6d4a1eaa65a406ba39c4b8360045b614af95ad10e05abf704936ed022569be438c4bfa02d6d031863c4166a238c301119f
   languageName: node
   linkType: hard
+
+"with-config@workspace:examples/with-config":
+  version: 0.0.0-use.local
+  resolution: "with-config@workspace:examples/with-config"
+  dependencies:
+    "@types/node": ^18.16.1
+    "@types/react": ^18.0.22
+    "@types/react-dom": ^18.0.7
+    "@vitejs/plugin-react": ^2.2.0
+    ra-data-fakerest: ^4.9.2
+    react: ^18.2.0
+    react-admin: ^4.9.0
+    react-dom: ^18.2.0
+    typescript: ^4.6.4
+    vite: ^3.2.0
+  languageName: unknown
+  linkType: soft
 
 "word-wrap@npm:^1.2.3, word-wrap@npm:~1.2.3":
   version: 1.2.3

@@ -114,6 +114,9 @@ export const Admin = (props: AdminProps) => {
         darkTheme,
         defaultTheme,
         title = 'React Admin',
+        resources,
+        customRoutes,
+        customRoutesWithoutLayout,
     } = props;
 
     if (loginPage === true && process.env.NODE_ENV !== 'production') {
@@ -149,6 +152,9 @@ export const Admin = (props: AdminProps) => {
                 notification={notification}
                 requireAuth={requireAuth}
                 ready={ready}
+                resources={resources}
+                customRoutes={customRoutes}
+                customRoutesWithoutLayout={customRoutesWithoutLayout}
             >
                 {children}
             </AdminUI>
