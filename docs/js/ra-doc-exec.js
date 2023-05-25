@@ -81,9 +81,16 @@ function changeSelectedMenu() {
 }
 
 function toggleDockBlocks(status) {
-    var docBlock = document.querySelector('.docBlocks');
+    const docBlock = document.querySelector('.docBlocks');
+    const needHelp = document.querySelector('.needHelp');
     if (!docBlock) return;
-    docBlock.style.display = status ? 'grid' : 'none';
+    if (status) {
+        docBlock.style.display = 'grid';
+        needHelp.style.display = 'block';
+    } else {
+        docBlock.style.display = 'none';
+        needHelp.style.display = 'none';
+    }
 }
 
 // Replace full page reloads by a fill of the content area
