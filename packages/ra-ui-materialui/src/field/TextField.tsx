@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ElementType } from 'react';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@mui/material/Typography';
-import { useRecordContext } from 'ra-core';
+import { useRecordContext, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { FieldProps, fieldPropTypes } from './types';
@@ -16,6 +16,7 @@ const TextFieldImpl = <
     const { className, source, emptyText, ...rest } = props;
     const record = useRecordContext(props);
     const value = get(record, source)?.toString();
+    const translate = useTranslate();
 
     return (
         <Typography
@@ -26,7 +27,8 @@ const TextFieldImpl = <
         >
             {value != null && typeof value !== 'string'
                 ? JSON.stringify(value)
-                : value || emptyText}
+                : value ||
+                  (emptyText ? translate(emptyText, { _: emptyText }) : null)}
         </Typography>
     );
 };

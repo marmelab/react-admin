@@ -1,15 +1,15 @@
 {
     "private": true,
     "name": "e2e",
-    "version": "4.10.0",
+    "version": "4.10.6",
     "scripts": {
         "start": "cypress open",
         "test": "yarn node ./start.js"
     },
     "devDependencies": {
-        "@cypress/webpack-preprocessor": "^5.10.0",
         "cypress": "^10.9.0",
         "cypress-plugin-tab": "^1.0.5",
+        "cypress-vite": "^1.4.0",
         "express": "~4.17.3"
     }
 }

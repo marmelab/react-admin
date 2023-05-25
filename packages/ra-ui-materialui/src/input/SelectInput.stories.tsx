@@ -12,7 +12,7 @@ import { TextInput } from './TextInput';
 import { ReferenceInput } from './ReferenceInput';
 import { SaveButton } from '../button//SaveButton';
 import { Toolbar } from '../form/Toolbar';
-import { FormInspector } from './common.stories';
+import { FormInspector } from './common';
 
 export default { title: 'ra-ui-materialui/input/SelectInput' };
 

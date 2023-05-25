@@ -572,6 +572,47 @@ describe('<ReferenceField />', () => {
         expect(screen.queryAllByRole('link')).toHaveLength(0);
     });
 
+    it('should call the link function with the referenced record', async () => {
+        const dataProvider = testDataProvider({
+            getMany: jest.fn().mockResolvedValue({
+                data: [{ id: 123, title: 'foo' }],
+            }),
+        });
+        const link = jest.fn().mockReturnValue('/posts/123');
+
+        render(
+            <ThemeProvider theme={theme}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: {
+                                hasEdit: true,
+                            },
+                        }}
+                    >
+                        <ReferenceField
+                            record={record}
+                            resource="comments"
+                            source="postId"
+                            reference="posts"
+                            link={link}
+                        >
+                            <TextField source="title" />
+                        </ReferenceField>
+                    </ResourceDefinitionContextProvider>
+                </CoreAdminContext>
+            </ThemeProvider>
+        );
+        await waitFor(() =>
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
+        );
+        expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
+            '#/posts/123'
+        );
+
+        expect(link).toHaveBeenCalledWith({ id: 123, title: 'foo' }, 'posts');
+    });
+
     it('should accept multiple children', async () => {
         render(<Children />);
         expect(screen.findByText('9780393966473')).not.toBeNull();

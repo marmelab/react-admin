@@ -2,7 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography, { TypographyProps } from '@mui/material/Typography';
-import { useRecordContext } from 'ra-core';
+import { useRecordContext, useTranslate } from 'ra-core';
 import purify from 'dompurify';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
@@ -39,6 +39,7 @@ const RichTextFieldImpl = <
     } = props;
     const record = useRecordContext(props);
     const value = get(record, source)?.toString();
+    const translate = useTranslate();
 
     return (
         <Typography
@@ -48,7 +49,7 @@ const RichTextFieldImpl = <
             {...sanitizeFieldRestProps(rest)}
         >
             {value == null && emptyText ? (
-                emptyText
+                translate(emptyText, { _: emptyText })
             ) : stripTags ? (
                 removeTags(value)
             ) : (

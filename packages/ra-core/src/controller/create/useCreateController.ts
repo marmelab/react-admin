@@ -15,7 +15,7 @@ import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
 import { SaveContextValue, useMutationMiddlewares } from '../saveContext';
 import { useTranslate } from '../../i18n';
-import { RaRecord, TransformData } from '../../types';
+import { Identifier, RaRecord, TransformData } from '../../types';
 import {
     useResourceContext,
     useResourceDefinition,
@@ -40,10 +40,15 @@ import {
  * }
  */
 export const useCreateController = <
-    RecordType extends RaRecord = RaRecord,
-    MutationOptionsError = unknown
+    RecordType extends Omit<RaRecord, 'id'> = any,
+    MutationOptionsError = unknown,
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
 >(
-    props: CreateControllerProps<RecordType, MutationOptionsError> = {}
+    props: CreateControllerProps<
+        RecordType,
+        MutationOptionsError,
+        ResultRecordType
+    > = {}
 ): CreateControllerResult<RecordType> => {
     const {
         disableAuthentication,
@@ -77,7 +82,8 @@ export const useCreateController = <
 
     const [create, { isLoading: saving }] = useCreate<
         RecordType,
-        MutationOptionsError
+        MutationOptionsError,
+        ResultRecordType
     >(resource, undefined, { ...otherMutationOptions, returnPromise: true });
 
     const save = useCallback(
@@ -87,6 +93,7 @@ export const useCreateController = <
                 onSuccess: onSuccessFromSave,
                 onError: onErrorFromSave,
                 transform: transformFromSave,
+                meta: metaFromSave,
             } = {}
         ) =>
             Promise.resolve(
@@ -100,7 +107,7 @@ export const useCreateController = <
                 try {
                     await mutate(
                         resource,
-                        { data, meta },
+                        { data, meta: metaFromSave ?? meta },
                         {
                             onSuccess: async (data, variables, context) => {
                                 if (onSuccessFromSave) {
@@ -191,8 +198,9 @@ export const useCreateController = <
 };
 
 export interface CreateControllerProps<
-    RecordType extends RaRecord = RaRecord,
-    MutationOptionsError = unknown
+    RecordType extends Omit<RaRecord, 'id'> = any,
+    MutationOptionsError = unknown,
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
 > {
     disableAuthentication?: boolean;
     hasEdit?: boolean;
@@ -201,15 +209,16 @@ export interface CreateControllerProps<
     redirect?: RedirectionSideEffect;
     resource?: string;
     mutationOptions?: UseMutationOptions<
-        RecordType,
+        ResultRecordType,
         MutationOptionsError,
         UseCreateMutateParams<RecordType>
     > & { meta?: any };
     transform?: TransformData;
 }
 
-export interface CreateControllerResult<RecordType extends RaRecord = RaRecord>
-    extends SaveContextValue {
+export interface CreateControllerResult<
+    RecordType extends Omit<RaRecord, 'id'> = any
+> extends SaveContextValue {
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
     data?: RecordType;

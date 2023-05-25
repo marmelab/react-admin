@@ -618,6 +618,41 @@ describe('useEditController', () => {
         });
     });
 
+    it('should accept meta as a save option', async () => {
+        let saveCallback;
+        const update = jest
+            .fn()
+            .mockImplementationOnce((_, { id, data, previousData }) =>
+                Promise.resolve({ data: { id, ...previousData, ...data } })
+            );
+        const dataProvider = ({
+            getOne: () => Promise.resolve({ data: { id: 12 } }),
+            update,
+        } as unknown) as DataProvider;
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <EditController {...defaultProps} mutationMode="pessimistic">
+                    {({ save }) => {
+                        saveCallback = save;
+                        return <div />;
+                    }}
+                </EditController>
+            </CoreAdminContext>
+        );
+        await act(async () =>
+            saveCallback({ foo: 'bar' }, { meta: { lorem: 'ipsum' } })
+        );
+        await waitFor(() => {
+            expect(update).toHaveBeenCalledWith('posts', {
+                id: 12,
+                data: { foo: 'bar' },
+                previousData: undefined,
+                meta: { lorem: 'ipsum' },
+            });
+        });
+    });
+
     it('should allow the save onSuccess option to override the success side effects override', async () => {
         let saveCallback;
         const dataProvider = ({

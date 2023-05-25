@@ -1,7 +1,8 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, getNodeText } from '@testing-library/react';
-import { RecordContextProvider } from 'ra-core';
+import { screen, render, getNodeText } from '@testing-library/react';
+import { RecordContextProvider, I18nContextProvider } from 'ra-core';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import { TextField } from './TextField';
 
@@ -78,5 +79,37 @@ describe('<TextField />', () => {
             <TextField record={record} source="title" emptyText="NA" />
         );
         expect(queryByText('NA')).not.toBeNull();
+    });
+
+    it('should translate emptyText', () => {
+        const i18nProvider = polyglotI18nProvider(
+            _locale =>
+                ({
+                    resources: {
+                        books: {
+                            name: 'Books',
+                            fields: {
+                                id: 'Id',
+                                title: 'Title',
+                                author: 'Author',
+                                year: 'Year',
+                            },
+                            not_found: 'Not found',
+                        },
+                    },
+                } as any),
+            'en'
+        );
+        render(
+            <I18nContextProvider value={i18nProvider}>
+                <TextField
+                    record={{ id: 123 }}
+                    source="foo.bar"
+                    emptyText="resources.books.not_found"
+                />
+            </I18nContextProvider>
+        );
+
+        expect(screen.getByText('Not found')).not.toBeNull();
     });
 });

@@ -48,12 +48,56 @@ But the recommended way to query the Data Provider is to use the dataProvider me
 
 **Tip**: The `dataProvider` returned by the hook is actually a *wrapper* around your Data Provider. This wrapper logs the user out if the dataProvider returns an error, and if the authProvider sees that error as an authentication error (via `authProvider.checkError()`).
 
-**Tip**: If you use TypeScript, you can specify a record type for more type safety:
+## TypeScript
+
+The `useDataProvider` hook accepts a generic parameter for the `dataProvider` type. This is useful when you added custom methods to your `dataProvider`:
+
+```tsx
+// In src/dataProvider.ts
+import { DataProvider } from 'react-admin';
+
+export interface DataProviderWithCustomMethods extends DataProvider {
+    archive: (resource: string, params: {
+        id: number;
+    }) => Promise<any>
+}
+
+export const dataProvider: DataProviderWithCustomMethods {
+    // ...Standard dataProvider methods
+    archive: (resource, params) => {
+        // Call the archive endpoint and return a promise
+    }
+}
+
+// In src/ArchiveButton.tsx
+import { Button, useDataProvider } from 'react-admin';
+import ArchiveIcon from '@mui/icons-material/Archive';
+import { DataProviderWithCustomMethods } from './src/dataProvider';
+
+export const ArchiveButton = () => {
+    const dataProvider = useDataProvider<DataProviderWithCustomMethods>();
+    const record = useRecord();
+
+    return (
+        <Button
+            label="Archive"
+            onClick={() => {
+                // TypeScript knows the archive method
+                dataProvider.archive('resource', { id: record.id })
+            }}
+        >
+            <ArchiveIcon />
+        </Button>
+    );
+};
+```
+
+Besides, all the standard dataProvider methods accept a generic parameter for the record type:
 
 ```jsx
 dataProvider.getOne<Product>('users', { id: 123 })
     .then(({ data }) => {
-        //     \- type of data is Product
+        // TypeScript knows that data is of type Product
         // ...
     })
 ```

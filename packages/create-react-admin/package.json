@@ -1,21 +1,22 @@
 {
     "name": "create-react-admin",
     "description": "A CLI to quickly start a new react-admin project",
-    "version": "4.10.2",
+    "version": "4.10.6",
     "license": "MIT",
     "bin": "lib/cli.js",
     "authors": [
         "Gildas Garcia"
     ],
     "engines": {
-        "node": ">=16"
+        "node": ">=14.16"
     },
     "scripts": {
         "build": "tsc",
         "test": "prettier --check . && xo && ava"
     },
     "files": [
-        "lib"
+        "lib",
+        "templates"
     ],
     "dependencies": {
         "execa": "^5.1.1",

@@ -53,6 +53,33 @@ const PostList = () => (
 );
 ```
 
+## TypeScript
+
+The `<WithRecord>` component accepts a generic parameter for the record type:
+
+```tsx
+import { Show, SimpleShowLayout, WithRecord } from 'react-admin';
+
+type Book = {
+    id: number;
+    author: string;
+}
+
+const BookShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <WithRecord<Book>
+                label="author"
+                render={book => {
+                    // TypeScript knows that book is of type Book
+                    return <span>{book.author}</span>}
+                }
+            />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
 ## See Also
 
 * [`useRecordContext`](./useRecordContext.md) is the hook version of this component.

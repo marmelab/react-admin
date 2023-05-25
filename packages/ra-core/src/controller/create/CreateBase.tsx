@@ -5,7 +5,7 @@ import {
     CreateControllerProps,
 } from './useCreateController';
 import { CreateContextProvider } from './CreateContextProvider';
-import { RaRecord } from '../../types';
+import { Identifier, RaRecord } from '../../types';
 import { ResourceContextProvider } from '../../core';
 
 /**
@@ -37,11 +37,20 @@ import { ResourceContextProvider } from '../../core';
  *     </CreateBase>
  * );
  */
-export const CreateBase = <RecordType extends RaRecord = any>({
+export const CreateBase = <
+    RecordType extends Omit<RaRecord, 'id'> = any,
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
+>({
     children,
     ...props
-}: CreateControllerProps<RecordType> & { children: ReactNode }) => {
-    const controllerProps = useCreateController<RecordType>(props);
+}: CreateControllerProps<RecordType, Error, ResultRecordType> & {
+    children: ReactNode;
+}) => {
+    const controllerProps = useCreateController<
+        RecordType,
+        Error,
+        ResultRecordType
+    >(props);
     const body = (
         <CreateContextProvider value={controllerProps}>
             {children}

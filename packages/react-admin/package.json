@@ -1,6 +1,6 @@
 {
     "name": "react-admin",
-    "version": "4.10.2",
+    "version": "4.10.6",
     "description": "A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
     "files": [
         "*.md",

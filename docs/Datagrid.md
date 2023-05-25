@@ -62,7 +62,7 @@ Additional props are passed down to [the Material UI `<Table>` element](https://
 
 By default, `<Datagrid>` renders its body using `<DatagridBody>`, an internal react-admin component. You can pass a custom component as the `body` prop to override that default. And by the way, `<DatagridBody>` has a `row` prop set to `<DatagridRow>` by default for the same purpose. `<DatagridRow>` receives the row `record`, the `resource`, and a copy of the `<Datagrid>` children. That means you can create custom `<Datagrid>` logic without copying several components from the react-admin source.
 
-For instance, the `<Datagrid isRowSelectable>` prop allows to hide the selection checkbox for some records. To show a *disabled* checkbox instead of hiding it, you can override `<DatagridRow>` and `<DatagridBody>` as follows:
+For instance, the `<Datagrid isRowSelectable>` prop allows to disable the selection checkbox for some records. To *hide* checkboxes instead of disabling them, you can override `<DatagridRow>` and `<DatagridBody>` as follows:
 
 ```jsx
 // in src/PostList.js
@@ -74,12 +74,13 @@ const MyDatagridRow = ({ record, id, onToggleItem, children, selected, selectabl
         <TableRow>
             {/* first column: selection checkbox */}
             <TableCell padding="none">
-                <Checkbox
-                    disabled={selectable}
-                    checked={selected}
-                    onClick={event => onToggleItem(id, event)}
-                />
-            </TableCell>
+                {selectable && (
+                     <Checkbox
+                         checked={selected}
+                         onClick={event => onToggleItem(id, event)}
+                     />
+                )}
+            </TableCell>            
             {/* data columns based on children */}
             {React.Children.map(children, field => (
                 <TableCell key={`${id}-${field.props.source}`}>
@@ -140,8 +141,9 @@ Finally, `<Datagrid>` inspects children for props that indicate how it should be
 
 ## `bulkActionButtons`
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/bulk-actions-toolbar.webm" type="video/webm"/>
+  <source src="./img/bulk-actions-toolbar.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -392,8 +394,9 @@ const PostList = () => (
 
 ## `expand`
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/datagrid_expand.webm" type="video/webm"/>
+  <source src="./img/datagrid_expand.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -581,9 +584,9 @@ const PostList = () => (
 
 ## `isRowSelectable`
 
-You can customize which rows show a selection checkbox using the `isRowSelectable` prop. It expects a function that receives the row record and returns a boolean.
+You can customize which rows show an enabled selection checkbox using the `isRowSelectable` prop. It expects a function that receives the row record and returns a boolean.
 
-For instance, this code shows a checkbox only for rows with an id greater than 300:
+For instance, this code enables a checkbox only for rows with an id greater than 300:
 
 ```jsx
 import { List, Datagrid } from 'react-admin';
@@ -812,8 +815,9 @@ const PostList = () => (
 
 The [`<SelectColumnsButton>`](./SelectColumnsButton.md) component lets users hide, show, and reorder datagrid columns. 
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/SelectColumnsButton.webm" type="video/webm"/>
+  <source src="./img/SelectColumnsButton.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -857,8 +861,9 @@ const PostList = () => (
 
 You can let end users customize the fields displayed in the `<Datagrid>` by using the `<DatagridConfigurable>` component instead.
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/DatagridConfigurable.webm" type="video/webm"/>
+  <source src="./img/DatagridConfigurable.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -914,6 +919,25 @@ const PostList = () => (
             <TextField source="title" />
             <TextField source="author" />
             <TextField source="year" />
+        </DatagridConfigurable>
+    </List>
+);
+```
+
+The inspector uses the field `source` (or `label` when it's a string) to display the column name. If you use non-field children (e.g. action buttons), then it's your responsibility to wrap them in a component with a `label` prop, that will be used by the inspector:
+
+```jsx
+const FieldWrapper = ({ children, label }) => children;
+const PostList = () => (
+    <List>
+        <DatagridConfigurable>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+            <FieldWrapper label="Actions">
+                <EditButton />
+            </FieldWrapper>
         </DatagridConfigurable>
     </List>
 );
@@ -988,8 +1012,9 @@ Check [the `ra-editable-datagrid` documentation](https://marmelab.com/ra-enterpr
 
 ## Customizing Column Sort
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/sort-column-header.webm" type="video/webm"/>
+  <source src="./img/sort-column-header.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

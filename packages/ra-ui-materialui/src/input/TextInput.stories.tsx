@@ -8,7 +8,7 @@ import { Create } from '../detail';
 import { Edit } from '../detail';
 import { SimpleForm, Toolbar } from '../form';
 import { SaveButton } from '../button';
-import { FormInspector } from './common.stories';
+import { FormInspector } from './common';
 
 export default { title: 'ra-ui-materialui/input/TextInput' };
 

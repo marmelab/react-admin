@@ -8,7 +8,7 @@ import {
 } from 'react-query';
 
 import { useDataProvider } from './useDataProvider';
-import { RaRecord, CreateParams } from '../types';
+import { RaRecord, CreateParams, Identifier } from '../types';
 import { useEvent } from '../util';
 
 /**
@@ -70,13 +70,14 @@ import { useEvent } from '../util';
  *                    \-- data is Product
  */
 export const useCreate = <
-    RecordType extends RaRecord = any,
-    MutationError = unknown
+    RecordType extends Omit<RaRecord, 'id'> = any,
+    MutationError = unknown,
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
 >(
     resource?: string,
     params: Partial<CreateParams<Partial<RecordType>>> = {},
-    options: UseCreateOptions<RecordType, MutationError> = {}
-): UseCreateResult<RecordType, boolean, MutationError> => {
+    options: UseCreateOptions<RecordType, MutationError, ResultRecordType> = {}
+): UseCreateResult<RecordType, boolean, MutationError, ResultRecordType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const paramsRef = useRef<Partial<CreateParams<Partial<RecordType>>>>(
@@ -84,7 +85,7 @@ export const useCreate = <
     );
 
     const mutation = useMutation<
-        RecordType,
+        ResultRecordType,
         MutationError,
         Partial<UseCreateMutateParams<RecordType>>
     >(
@@ -94,7 +95,7 @@ export const useCreate = <
             meta: callTimeMeta = paramsRef.current.meta,
         } = {}) =>
             dataProvider
-                .create<RecordType>(callTimeResource, {
+                .create<RecordType, ResultRecordType>(callTimeResource, {
                     data: callTimeData,
                     meta: callTimeMeta,
                 })
@@ -102,7 +103,7 @@ export const useCreate = <
         {
             ...options,
             onSuccess: (
-                data: RecordType,
+                data: ResultRecordType,
                 variables: Partial<UseCreateMutateParams<RecordType>> = {},
                 context: unknown
             ) => {
@@ -124,7 +125,7 @@ export const useCreate = <
         callTimeResource: string = resource,
         callTimeParams: Partial<CreateParams<Partial<RecordType>>> = {},
         createOptions: MutateOptions<
-            RecordType,
+            ResultRecordType,
             MutationError,
             Partial<UseCreateMutateParams<RecordType>>,
             unknown
@@ -149,38 +150,42 @@ export const useCreate = <
     return [useEvent(create), mutation];
 };
 
-export interface UseCreateMutateParams<RecordType extends RaRecord = any> {
+export interface UseCreateMutateParams<
+    RecordType extends Omit<RaRecord, 'id'> = any
+> {
     resource?: string;
     data?: Partial<Omit<RecordType, 'id'>>;
     meta?: any;
 }
 
 export type UseCreateOptions<
-    RecordType extends RaRecord = any,
-    MutationError = unknown
+    RecordType extends Omit<RaRecord, 'id'> = any,
+    MutationError = unknown,
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
 > = UseMutationOptions<
-    RecordType,
+    ResultRecordType,
     MutationError,
     Partial<UseCreateMutateParams<RecordType>>
 > & { returnPromise?: boolean };
 
 export type UseCreateResult<
-    RecordType extends RaRecord = any,
+    RecordType extends Omit<RaRecord, 'id'> = any,
     TReturnPromise extends boolean = boolean,
-    MutationError = unknown
+    MutationError = unknown,
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
 > = [
     (
         resource?: string,
         params?: Partial<CreateParams<Partial<RecordType>>>,
         options?: MutateOptions<
-            RecordType,
+            ResultRecordType,
             MutationError,
             Partial<UseCreateMutateParams<RecordType>>,
             unknown
         > & { returnPromise?: TReturnPromise }
-    ) => Promise<TReturnPromise extends true ? RecordType : void>,
+    ) => Promise<TReturnPromise extends true ? ResultRecordType : void>,
     UseMutationResult<
-        RecordType,
+        ResultRecordType,
         MutationError,
         Partial<UseCreateMutateParams<RecordType>>,
         unknown

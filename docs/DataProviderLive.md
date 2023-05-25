@@ -7,7 +7,7 @@ title: "Real-Time Updates And Locks"
 
 Teams where several people work in parallel on a common task need to allow live updates, real-time notifications, and prevent data loss when two editors work on the same resource concurrently. 
 
-<video controls autoplay muted>
+<video controls autoplay playsinline muted>
   <source src="./img/CollaborativeDemo.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>

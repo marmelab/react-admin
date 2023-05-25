@@ -225,19 +225,23 @@ export const ReferenceFieldView = <
         </Typography>
     );
 
-    return link ? (
-        <Root className={className} sx={sx}>
-            <RecordContextProvider value={referenceRecord}>
-                <Link
-                    to={link.toString()}
-                    className={ReferenceFieldClasses.link}
-                    onClick={stopPropagation}
-                >
-                    {child}
-                </Link>
-            </RecordContextProvider>
-        </Root>
-    ) : (
+    if (link) {
+        return (
+            <Root className={className} sx={sx}>
+                <RecordContextProvider value={referenceRecord}>
+                    <Link
+                        to={link}
+                        className={ReferenceFieldClasses.link}
+                        onClick={stopPropagation}
+                    >
+                        {child}
+                    </Link>
+                </RecordContextProvider>
+            </Root>
+        );
+    }
+
+    return (
         <RecordContextProvider value={referenceRecord}>
             {child}
         </RecordContextProvider>

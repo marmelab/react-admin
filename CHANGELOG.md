@@ -1,5 +1,41 @@
 # Changelog
 
+## v4.10.6
+
+* Fix ra-language-french package.json to avoid including tsconfig ([#8939](https://github.com/marmelab/react-admin/pull/8939)) ([djhi](https://github.com/djhi))
+* Fix create-react-admin adds unnecessary files ([#8935](https://github.com/marmelab/react-admin/pull/8935)) ([djhi](https://github.com/djhi))
+* [TypeScript] Fix `<Create>` generic record type should not require an `id` field ([#8923](https://github.com/marmelab/react-admin/pull/8923)) ([djhi](https://github.com/djhi))
+* [Doc] Fix tutorial with create-react-admin ([#8934](https://github.com/marmelab/react-admin/pull/8934)) ([fzaninotto](https://github.com/fzaninotto))
+* [chore] Update Storybook to v7 & Cypress to use Vite ([#8936](https://github.com/marmelab/react-admin/pull/8936)) ([djhi](https://github.com/djhi))
+
+## v4.10.5
+
+* Fix create and edit controller's save callback should use calltime meta param ([#8933](https://github.com/marmelab/react-admin/pull/8933)) ([slax57](https://github.com/slax57))
+* Fix create-react-admin does not include its templates ([#8932](https://github.com/marmelab/react-admin/pull/8932)) ([djhi](https://github.com/djhi))
+
+## v4.10.4
+
+* Fix `<DatagridConfigurable>` inspector hides the wrong column when using empty children ([#8929](https://github.com/marmelab/react-admin/pull/8929)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<DatagridConfigurable>` fails to render when using a Field with a label element ([#8928](https://github.com/marmelab/react-admin/pull/8928)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<TextField>` and `<RichTextField>` don't translate the `emptyText` ([#8924](https://github.com/marmelab/react-admin/pull/8924)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<SaveButton>` spinner while submitting ([#8920](https://github.com/marmelab/react-admin/pull/8920)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix video playback on iOS ([#8922](https://github.com/marmelab/react-admin/pull/8922)) ([slax57](https://github.com/slax57))
+* [Doc] Fix `<List disableSyncWithLocation>` doc about persisting list params in the store ([#8919](https://github.com/marmelab/react-admin/pull/8919)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Document type parameter in generic hooks ([#8916](https://github.com/marmelab/react-admin/pull/8916)) ([djhi](https://github.com/djhi))
+
+## v4.10.3
+
+* Fix `<ReferenceField>` link function is called with referencing record instead of referenced record ([#8899](https://github.com/marmelab/react-admin/pull/8899)) ([djhi](https://github.com/djhi))
+* Fix `ReferenceFieldView` backwards compatibility ([#8912](https://github.com/marmelab/react-admin/pull/8912)) ([djhi](https://github.com/djhi))
+* Fix `create-react-admin` requires node 16 ([#8902](https://github.com/marmelab/react-admin/pull/8902)) ([fzaninotto](https://github.com/fzaninotto))
+* [Typescript] Fix Layout's `sidebar` prop type ([#8887](https://github.com/marmelab/react-admin/pull/8887)) ([smeng9](https://github.com/smeng9))
+* [Doc] Add Advanced Tutorial about Custom Tags Selector ([#8906](https://github.com/marmelab/react-admin/pull/8906)) ([slax57](https://github.com/slax57))
+* [Doc] Update Datagrid's `isRowSelectable` description and examples ([#8901](https://github.com/marmelab/react-admin/pull/8901)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] fix import statements in example code ([#8896](https://github.com/marmelab/react-admin/pull/8896)) ([charlie-ac](https://github.com/charlie-ac))
+* [Doc] add casdoor auth provider ([#8894](https://github.com/marmelab/react-admin/pull/8894)) ([akriventsev](https://github.com/akriventsev))
+* [Doc] Add Supabase realtime adapter ([#8893](https://github.com/marmelab/react-admin/pull/8893)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Update tutorial to use `create-react-admin` ([#8881](https://github.com/marmelab/react-admin/pull/8881)) ([djhi](https://github.com/djhi))
+
 ## v4.10.2
 
 * Fix custom redirect in pessimistic `<Edit>` or `<Create>` when using `warnWhenUnsavedChanges` ([#8882](https://github.com/marmelab/react-admin/pull/8882)) ([slax57](https://github.com/slax57))

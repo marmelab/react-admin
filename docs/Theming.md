@@ -369,8 +369,9 @@ const App = () => (
 
 It's a common practice to support both a light theme and a dark theme in an application, and let users choose which one they prefer. 
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/ToggleThemeButton.webm" type="video/webm"/>
+  <source src="./img/ToggleThemeButton.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
