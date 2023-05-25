@@ -83,13 +83,12 @@ function changeSelectedMenu() {
 function toggleDockBlocks(status) {
     const docBlock = document.querySelector('.docBlocks');
     const needHelp = document.querySelector('.needHelp');
-    if (!docBlock) return;
     if (status) {
-        docBlock.style.display = 'grid';
-        needHelp.style.display = 'block';
+        if (docBlock) docBlock.style.display = 'grid';
+        if (needHelp) needHelp.style.display = 'block';
     } else {
-        docBlock.style.display = 'none';
-        needHelp.style.display = 'none';
+        if (docBlock) docBlock.style.display = 'none';
+        if (needHelp) needHelp.style.display = 'none';
     }
 }
 
