@@ -152,6 +152,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         exporter,
         filter,
         filterValues: query.filterValues,
+        filterDefaultValues,
         hideFilter: queryModifiers.hideFilter,
         isFetching,
         isLoading,
