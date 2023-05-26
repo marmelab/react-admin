@@ -82,7 +82,7 @@ export const ListView = <RecordType extends RaRecord = any>(
 
     const shouldRenderEmptyPage =
         !isLoading &&
-        data?.length === 0 &&
+        (!data || data.length === 0) &&
         !Object.keys(filterValues).length &&
         empty !== false;
 
