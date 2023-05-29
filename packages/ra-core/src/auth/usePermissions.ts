@@ -19,7 +19,7 @@ const emptyParams = {};
  *
  * @param {Object} params Any params you want to pass to the authProvider
  *
- * @returns The current auth check state. Destructure as { permissions, error, isLoading }.
+ * @returns The current auth check state. Destructure as { permissions, error, isLoading, refetch }.
  *
  * @example
  *     import { usePermissions } from 'react-admin';
@@ -54,6 +54,7 @@ const usePermissions = <Permissions = any, Error = any>(
             permissions: result.data,
             isLoading: result.isLoading,
             error: result.error,
+            refetch: result.refetch,
         }),
         [result]
     );
