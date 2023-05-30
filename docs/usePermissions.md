@@ -75,8 +75,8 @@ const GrantAdminPermissionsButton = () => {
         update(
             "users",
             { id: record.id, data: { admin: true }, previousData: record },
+            { onSuccess: refetch },
         );
-        refetch();
     }
 
     return (
