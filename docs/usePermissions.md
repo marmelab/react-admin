@@ -65,6 +65,7 @@ const MyPage = () => {
 
 Permissions are loaded when the app loads and then cached. If your application requires permissions to be refreshed, for example after a change modifying user permissions, you can use `refetch` function to trigger reload.
 
+{% raw %}
 ```jsx
 const GrantAdminPermissionsButton = () => {
     const record = useRecordContext();
@@ -86,6 +87,7 @@ const GrantAdminPermissionsButton = () => {
     )
 }
 ```
+{% endraw %}
 
 ## RBAC
 
