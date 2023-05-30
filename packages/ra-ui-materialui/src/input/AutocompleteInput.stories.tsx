@@ -24,7 +24,7 @@ import fakeRestProvider from 'ra-data-fakerest';
 
 import { Edit } from '../detail';
 import { SimpleForm } from '../form';
-import { AutocompleteInput } from './AutocompleteInput';
+import { AutocompleteInput, AutocompleteInputProps } from './AutocompleteInput';
 import { ReferenceInput } from './ReferenceInput';
 import { TextInput } from './TextInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
@@ -686,6 +686,46 @@ export const InsideReferenceInputWithCreationSupport = () => (
     <Admin dataProvider={dataProviderWithAuthors} history={history}>
         <Resource name="authors" />
         <Resource name="books" edit={BookEditWithReferenceAndCreationSupport} />
+    </Admin>
+);
+
+const BookOptionText = () => {
+    const book = useRecordContext();
+    if (!book) return null;
+    return <div>{`${book.name} - ${book.language}`}</div>;
+};
+
+export const InsideReferenceInputWithCustomizedItemRendering = (
+    props: Partial<AutocompleteInputProps>
+) => (
+    <Admin dataProvider={dataProviderWithAuthors} history={history}>
+        <Resource name="authors" />
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                >
+                    <SimpleForm>
+                        <ReferenceInput reference="authors" source="author">
+                            <AutocompleteInput
+                                fullWidth
+                                optionText={<BookOptionText />}
+                                inputText={book =>
+                                    `${book.name} - ${book.language}`
+                                }
+                                {...props}
+                            />
+                        </ReferenceInput>
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
     </Admin>
 );
 
