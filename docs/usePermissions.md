@@ -61,6 +61,32 @@ const MyPage = () => {
 }
 ```
 
+## Refreshing permissions
+
+Permissions are loaded on page load and cached. If your application requires permissions to be refreshed, for example after a change modifying user permissions, you can use `refetch` function to trigger reload.
+
+```jsx
+const GrantAdminPermissionsButton = () => {
+    const record = useRecordContext();
+    const [ update ] = useUpdate();
+    const { refetch } = usePermissions();
+
+    const handleClick = () => {
+        update(
+            "users",
+            { id: record.id, data: { admin: true }, previousData: record },
+        );
+        refetch();
+    }
+
+    return (
+        <Button onClick={handleClick}>
+            Make user an admin
+        </Button>
+    )
+}
+```
+
 ## RBAC
 
 [The ra-rbac module](https://marmelab.com/ra-enterprise/modules/ra-rbac)<img class="icon" src="./img/premium.svg" /> provides an alternative implementation of the `usePermissions` hook. It returns an array of permissions, resulting in the merge of the user permissions and the permissions from the user roles.
