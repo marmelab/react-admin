@@ -276,8 +276,12 @@ export const AutocompleteInput = <
             throw new Error(`
 If you provided a React element for the optionText prop, you must also provide the inputText prop (used for the text input)`);
         }
-        // eslint-disable-next-line eqeqeq
-        if (isValidElement(optionText) && matchSuggestion == undefined) {
+        if (
+            isValidElement(optionText) &&
+            !isFromReference &&
+            // eslint-disable-next-line eqeqeq
+            matchSuggestion == undefined
+        ) {
             throw new Error(`
 If you provided a React element for the optionText prop, you must also provide the matchSuggestion prop (used to match the user input with a choice)`);
         }
@@ -515,7 +519,7 @@ If you provided a React element for the optionText prop, you must also provide t
     const oneSecondHasPassed = useTimeout(1000, filterValue);
 
     const suggestions = useMemo(() => {
-        if (matchSuggestion || limitChoicesToValue) {
+        if (!isFromReference && (matchSuggestion || limitChoicesToValue)) {
             return getSuggestions(filterValue);
         }
         return finalChoices?.slice(0, suggestionLimit) || [];
@@ -526,6 +530,7 @@ If you provided a React element for the optionText prop, you must also provide t
         limitChoicesToValue,
         matchSuggestion,
         suggestionLimit,
+        isFromReference,
     ]);
 
     const isOptionEqualToValue = (option, value) => {
