@@ -46,9 +46,13 @@ FunctionField.propTypes = {
     render: PropTypes.func.isRequired,
 };
 
+export type FunctionFieldRenderer<
+    RecordType extends Record<string, unknown> = any
+> = (record?: RecordType, source?: string) => any;
+
 export interface FunctionFieldProps<
     RecordType extends Record<string, unknown> = any
 > extends FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
-    render: (record?: RecordType, source?: string) => any;
+    render: FunctionFieldRenderer<RecordType>;
 }
