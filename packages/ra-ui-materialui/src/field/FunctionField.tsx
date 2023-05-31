@@ -48,7 +48,7 @@ FunctionField.propTypes = {
 
 export type FunctionFieldRenderer<
     RecordType extends Record<string, unknown> = any
-> = (record?: RecordType, source?: string) => any;
+> = (record: RecordType, source?: string) => React.ReactNode;
 
 export interface FunctionFieldProps<
     RecordType extends Record<string, unknown> = any
