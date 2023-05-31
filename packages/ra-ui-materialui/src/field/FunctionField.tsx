@@ -14,7 +14,7 @@ import { FieldProps, fieldPropTypes } from './types';
  * <FunctionField
  *     source="last_name" // used for sorting
  *     label="Name"
- *     render={record => record && `${record.first_name} ${record.last_name}`}
+ *     render={record => `${record.first_name} ${record.last_name}`}
  * />
  */
 
