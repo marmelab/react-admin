@@ -17,6 +17,7 @@ import {
     DifferentShapeInGetMany,
     InsideReferenceInput,
     InsideReferenceInputDefaultValue,
+    InsideReferenceInputWithCustomizedItemRendering,
     Nullable,
     NullishValuesSupport,
     VeryLargeOptionsNumber,
@@ -1392,6 +1393,39 @@ describe('<AutocompleteInput />', () => {
             }
             expect(testFailed).toBe(false);
             expect(input.value).toBe('Leo Tolstoy test');
+        });
+
+        it('should not use getSuggestions to do client-side filtering', async () => {
+            // filtering should be done server-side only, and hence matchSuggestion should never be called
+            const matchSuggestion = jest.fn().mockReturnValue(true);
+            render(
+                <InsideReferenceInputWithCustomizedItemRendering
+                    matchSuggestion={matchSuggestion}
+                />
+            );
+            await waitFor(
+                () => {
+                    expect(
+                        (screen.getByRole('textbox') as HTMLInputElement).value
+                    ).toBe('Leo Tolstoy - Russian');
+                },
+                { timeout: 2000 }
+            );
+            screen.getByRole('textbox').focus();
+            fireEvent.click(screen.getByLabelText('Clear value'));
+            await waitFor(() => {
+                expect(screen.getByRole('listbox').children).toHaveLength(5);
+            });
+            fireEvent.change(screen.getByRole('textbox'), {
+                target: { value: 'French' },
+            });
+            await waitFor(
+                () => {
+                    screen.getByText('No options');
+                },
+                { timeout: 2000 }
+            );
+            expect(matchSuggestion).not.toHaveBeenCalled();
         });
     });
 
