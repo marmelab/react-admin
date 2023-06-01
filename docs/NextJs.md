@@ -7,7 +7,18 @@ title: "Next.Js Integration"
 
 React-admin runs seamlessly on [Next.js](https://nextjs.org/), with minimal configuration.
 
-## Setting Up Next.js
+Next.js 13 proposes 2 ways to build a React project: 
+
+- the classic [Pages router](https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts),
+- the new [App router](https://vercel.com/blog/nextjs-app-router-data-fetching) with React Server components. 
+
+React-admin supports both ways. 
+
+This chapter documents first the classic "Pages router" way, as it's the most common (and stable) one.
+
+If you want to use the new "App router", please refer to the [Setting Up Next.js With App Router](#setting-up-nextjs-with-app-router) later in this chapter.
+
+## Setting Up Next.js With Pages Router
 
 Let's start by creating a new Next.js project called `nextjs-react-admin`.
 
@@ -26,6 +37,7 @@ This creates a project with the following folder structure:
 Add the `react-admin` npm package, as well as a data provider package. In this example, we'll use `ra-data-json-server` to connect to a test API provided by [JSONPlaceholder](https://jsonplaceholder.typicode.com).
 
 ```bash
+cd next-admin
 yarn add react-admin ra-data-json-server
 ```
 
@@ -50,8 +62,6 @@ export default App;
 ```
 
 This is a minimal admin for 2 resources. React-admin should be able to render a list of posts and a list of comments, guessing the data structure from the API response. 
-
-## Using React-Admin As The Root Application
 
 Now, let's configure Next.js to render the admin app component in the root path ('/'). Edit the file called `pages/index.tsx`, and replace the content with the following:
 
@@ -184,3 +194,54 @@ const App = () => (
 
 export default App;
 ```
+
+## Setting Up Next.js With App Router
+
+Let's start by creating a new Next.js project called `nextjs-react-admin` using the new App Router.
+
+```bash
+npx create-next-app@latest next-admin --ts --use-yarn --eslint --no-tailwind --no-src-dir --app --import-alias "@/*"
+```
+
+This creates a project with the following folder structure:
+
+![Basic Architecture Next.js App Router](./img/nextjs-file-structure-app-router.png)
+
+## Setting Up React-Admin
+
+Add the `react-admin` npm package, as well as a data provider package. In this example, we'll use `ra-data-json-server` to connect to a test API provided by [JSONPlaceholder](https://jsonplaceholder.typicode.com).
+
+```bash
+cd next-admin
+yarn add react-admin ra-data-json-server
+```
+
+Next, replace the `app/pages.tsx` file with the following code, which initializes the react-admin app:
+
+```jsx
+// in app/pages.tsx
+"use client";
+import { Admin, Resource, ListGuesser } from 'react-admin';
+import jsonServerProvider from 'ra-data-json-server';
+
+const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com');
+
+const App = () => (
+  <Admin dataProvider={dataProvider}>
+    <Resource name="posts" list={ListGuesser} />
+    <Resource name="comments" list={ListGuesser} />
+  </Admin>
+);
+
+export default App;
+```
+
+Now, start the server with `yarn dev`, browse to `http://localhost:3000/`, and you should see the working admin:
+
+![Working Page](./img/nextjs-react-admin.webp)
+
+React-admin renders a CRUD for posts and comments, guessing the data structure from the API response. 
+
+**Tip**: Why the `"use client"` directive? React-admin is designed as a Single-Page Application, rendered on the client-side. It comes with various client-side only libraries (emotion, material-ui, react-query) leveraging the React Context API, and cannot be rendered using React Server components.
+
+Starting from there, you can [Add an API](#adding-an-api) as described in the previous section, and/or add features to the Next.js app, as explained in the [Getting started tutorial](./GettingStarted.md)
