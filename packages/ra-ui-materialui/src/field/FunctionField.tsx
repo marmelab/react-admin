@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useMemo } from 'react';
-import { useRecordContext } from 'ra-core';
+import { RenderRecordFunction, useRecordContext } from 'ra-core';
 import PropTypes from 'prop-types';
 import Typography, { TypographyProps } from '@mui/material/Typography';
 
@@ -46,13 +46,9 @@ FunctionField.propTypes = {
     render: PropTypes.func.isRequired,
 };
 
-export type FunctionFieldRenderer<
-    RecordType extends Record<string, unknown> = any
-> = (record: RecordType, source?: string) => React.ReactNode;
-
 export interface FunctionFieldProps<
     RecordType extends Record<string, unknown> = any
 > extends FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
-    render: FunctionFieldRenderer<RecordType>;
+    render: RenderRecordFunction<RecordType>;
 }
