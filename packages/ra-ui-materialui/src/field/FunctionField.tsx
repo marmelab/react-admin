@@ -18,9 +18,7 @@ import { FieldProps, fieldPropTypes } from './types';
  * />
  */
 
-export const FunctionField = <
-    RecordType extends Record<string, unknown> = Record<string, any>
->(
+export const FunctionField = <RecordType extends Record<string, unknown> = any>(
     props: FunctionFieldProps<RecordType>
 ) => {
     const { className, source = '', render, ...rest } = props;
@@ -49,7 +47,7 @@ FunctionField.propTypes = {
 };
 
 export interface FunctionFieldProps<
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends Record<string, unknown> = any
 > extends FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     render: (record?: RecordType, source?: string) => any;
