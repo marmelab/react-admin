@@ -25,6 +25,8 @@ import {
     LegacyDataProvider,
 } from '../types';
 
+const defaultStore = memoryStore();
+
 export interface CoreAdminContextProps {
     authProvider?: AuthProvider | LegacyAuthProvider;
     basename?: string;
@@ -45,9 +47,9 @@ export const CoreAdminContext = (props: CoreAdminContextProps) => {
     const {
         authProvider,
         basename,
-        dataProvider,
+        dataProvider = defaultDataProvider,
         i18nProvider,
-        store,
+        store = defaultStore,
         children,
         history,
         queryClient,
@@ -99,9 +101,4 @@ React-admin requires a valid dataProvider function to work.`);
             </DataProviderContext.Provider>
         </AuthContext.Provider>
     );
-};
-
-CoreAdminContext.defaultProps = {
-    dataProvider: defaultDataProvider,
-    store: memoryStore(),
 };
