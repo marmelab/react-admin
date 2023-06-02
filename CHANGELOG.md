@@ -1,5 +1,16 @@
 # Changelog
 
+## v4.11.1
+
+* Fix `<AutocompleteInput>` should not use `matchSuggestion` when in a `<ReferenceInput>` ([#8956](https://github.com/marmelab/react-admin/pull/8956)) ([slax57](https://github.com/slax57))
+* Fix `<ListView>` should show custom empty component with partial pagination ([#8945](https://github.com/marmelab/react-admin/pull/8945)) ([yanchesky](https://github.com/yanchesky))
+* [TypeScript] Fix inference errors in Field components ([#8962](https://github.com/marmelab/react-admin/pull/8962)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix regression in type of `<FunctionField>` `render` ([#8964](https://github.com/marmelab/react-admin/pull/8964)) ([slax57](https://github.com/slax57))
+* [Doc] Add Next.js app router install instructions ([#8965](https://github.com/marmelab/react-admin/pull/8965)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix NextJS tutorial for the latest version of create-next-app ([#8938](https://github.com/marmelab/react-admin/pull/8938)) ([djhi](https://github.com/djhi))
+* [Doc] Fix `dataProvider.getList()` response format error message does not take partial pagination into account ([#8957](https://github.com/marmelab/react-admin/pull/8957)) ([yanchesky](https://github.com/yanchesky))
+* [Doc] Fix create-react-admin usage with npx ([#8961](https://github.com/marmelab/react-admin/pull/8961)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v4.11.0
 
 * Add `<WithListContext>` component ([#8917](https://github.com/marmelab/react-admin/pull/8917)) ([fzaninotto](https://github.com/fzaninotto))
