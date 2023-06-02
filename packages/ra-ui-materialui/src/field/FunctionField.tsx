@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useMemo } from 'react';
-import { useRecordContext } from 'ra-core';
+import { RenderRecordFunction, useRecordContext } from 'ra-core';
 import PropTypes from 'prop-types';
 import Typography, { TypographyProps } from '@mui/material/Typography';
 
@@ -14,7 +14,7 @@ import { FieldProps, fieldPropTypes } from './types';
  * <FunctionField
  *     source="last_name" // used for sorting
  *     label="Name"
- *     render={record => record && `${record.first_name} ${record.last_name}`}
+ *     render={record => `${record.first_name} ${record.last_name}`}
  * />
  */
 
@@ -50,5 +50,5 @@ export interface FunctionFieldProps<
     RecordType extends Record<string, unknown> = any
 > extends FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
-    render: (record?: RecordType, source?: string) => any;
+    render: RenderRecordFunction<RecordType>;
 }
