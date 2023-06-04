@@ -74,27 +74,49 @@ export const PostEdit = () => (
 
 React-admin highlights the tabs containing validation errors to help users locate incorrect input values. 
 
+## Props
+
 Here are all the props you can set on the `<TabbedForm>` component:
 
-* [`component`](#component)
-* [`defaultValues`](#defaultvalues)
-* [`id`](#id)
-* [`noValidate`](#novalidate)
-* [`onSubmit`](#onsubmit)
-* [`sx`](#sx-css-api)
-* [`syncWithLocation`](#syncwithlocation)
-* [`tabs`](#tabs)
-* [`toolbar`](#toolbar)
-* [`validate`](#validate)
-* [`warnWhenUnsavedChanges`](#warnwhenunsavedchanges)
+| Prop                      | Required | Type               | Default | Description                                                |
+| ------------------------- | -------- | ------------------ | ------- | ---------------------------------------------------------- |
+| `children`                | Required | `element`          | -       | The form content.                                          |
+| `component`               | Optional | `elementType`      | `CardContent` | The component used to wrap the form.                |
+| `defaultValues`           | Optional | `object| function` | -       | The default values of the record.                          |
+| `id`                      | Optional | `string`           | -       | The id of the underlying `<form>` tag.                     |
+| `noValidate`              | Optional | `boolean`          | -       | Set to `true` to disable the browser's default validation. |
+| `onSubmit`                | Optional | `function`         | `save`  | A callback to call when the form is submitted.             |
+| `sanitize EmptyValues`    | Optional | `boolean`          | -       | Set to `true` to remove empty values from the form state.  |
+| `sx`                      | Optional | `object`           | -       | Custom styles                                              |
+| `toolbar`                 | Optional | `element`          | -       | The toolbar component.                                     |
+| `validate`                | Optional | `function`         | -       | A function to validate the form values.                    |
+| `warnWhen UnsavedChanges` | Optional | `boolean`          | -       | Set to `true` to warn the user when leaving the form with unsaved changes. |
 
-Additional props are passed to [the `useForm` hook](https://react-hook-form.com/api/useform).
+Additional props are passed to [the `useForm` hook](https://react-hook-form.com/api/useform) and to the wrapper `<div>` component.
 
-**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/api/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+## `children`
 
-```js
-const { isDirty } = useFormState(); // ✅
-const formState = useFormState(); // ❌ should deconstruct the formState      
+`<TabbedForm>` expects `<TabbedForm.Tab>` elements as children. It renders them as tabs using [a Material UI `<Tabs>` component](https://mui.com/material-ui/react-tabs/).
+
+```jsx
+export const PostEdit = () => (
+    <Edit>
+        <TabbedForm>
+            <TabbedForm.Tab label="summary">
+                ...
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="body">
+                ...
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="Miscellaneous">
+                ...
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="comments">
+                ...
+            </TabbedForm.Tab>
+        </TabbedForm>
+    </Edit>
+);
 ```
 
 ## `component`
@@ -643,6 +665,17 @@ const ProductEditDetails = () => (
 ```
 {% endraw %}
 
+## Subscribing To Form Changes
+
+`<TabbedForm>` relies on [react-hook-form's `useForm`](https://react-hook-form.com/docs/useform) to manage the form state and validation. You can subscribe to form changes using the [`useFormContext`](https://react-hook-form.com/docs/useformcontext) and [`useFormState`](https://react-hook-form.com/docs/useformstate) hooks.
+ 
+**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/api/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+
+```js
+const { isDirty } = useFormState(); // ✅
+const formState = useFormState(); // ❌ should deconstruct the formState      
+```
+
 ## Dynamic Tab Label
 
 `<TabbedForm>` often contain not only inputs, but also related data (e.g. the reviews of a product). Users appreviate that the label of such tabs show the actual number of related elements, to avoid clicking on a tab to reveal an empty list.
@@ -750,3 +783,41 @@ const UserEdit = () => {
 };
 ```
 {% endraw %}
+
+## AutoSave
+
+In forms where users may spend a lot of time, it's a good idea to save the form automatically after a few seconds of inactivity. You can auto save the form content by using [the `<AutoSave>` component](./AutoSave.md).
+
+{% raw %}
+```tsx
+import { AutoSave } from '@react-admin/ra-form-layout';
+import { Edit, SaveButton, TabbedForm, TextInput, Toolbar } from 'react-admin';
+
+const AutoSaveToolbar = () => (
+    <Toolbar>
+        <SaveButton />
+        <AutoSave />
+    </Toolbar>
+);
+
+const PostEdit = () => (
+    <Edit mutationMode="optimistic">
+        <TabbedForm
+            resetOptions={{ keepDirtyValues: true }}
+            toolbar={AutoSaveToolbar}
+        >
+            <TabbedForm.Tab label="summary">
+                <TextInput source="title" />
+                <TextInput source="teaser" />
+            </TabbedForm.Tab>
+        </TabbedForm>
+    </Edit>
+);
+```
+{% endraw %}
+
+Note that you **must** set the `<TabbedForm resetOptions>` prop to `{ keepDirtyValues: true }`. If you forget that prop, any change entered by the end user after the autosave but before its acknowledgement by the server will be lost.
+
+If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](https://marmelab.com/react-admin/Edit.html#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
+
+Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.

@@ -228,21 +228,19 @@ const BookList = () => (
   Your browser does not support the video tag.
 </video>
 
-React-admin supports **one-to-many**, **many-to-one**, **one-to-one**, and **many-to-many relationships**. Check the following components to learn more about relationships:
+React-admin supports **one-to-many**, **many-to-one**, **one-to-one**, and **many-to-many relationships**. The [Fields For Relationships](./FieldsForRelationships.md) page lists all reference fields together with their common usage. Check the following components to learn more about relationships:
 
-- [`ReferenceField`](./ReferenceField.md)
-- [`ReferenceArrayField`](./ReferenceArrayField.md)
-- [`ReferenceManyField`](./ReferenceManyField.md)
-- [`ReferenceManyCount`](./ReferenceManyCount.md)
-- [`ReferenceManyToManyField`](./ReferenceManyToManyField.md)
-- [`ReferenceOneField`](./ReferenceOneField.md)
-- [`ReferenceInput`](./ReferenceInput.md)
-- [`ReferenceArrayInput`](./ReferenceArrayInput.md)
-- [`ReferenceManyInput`](./ReferenceManyInput.md)
-- [`ReferenceManyToManyInput`](./ReferenceManyToManyInput.md)
-- [`ReferenceOneInput`](./ReferenceOneInput.md)
-
-The [Fields For Relationships](./FieldsForRelationships.md) page lists all reference fields together with their common usage.
+- [`<ReferenceField>`](./ReferenceField.md)
+- [`<ReferenceArrayField>`](./ReferenceArrayField.md)
+- [`<ReferenceManyField>`](./ReferenceManyField.md)
+- [`<ReferenceManyCount>`](./ReferenceManyCount.md)
+- [`<ReferenceManyToManyField>`](./ReferenceManyToManyField.md)
+- [`<ReferenceOneField>`](./ReferenceOneField.md)
+- [`<ReferenceInput>`](./ReferenceInput.md)
+- [`<ReferenceArrayInput>`](./ReferenceArrayInput.md)
+- [`<ReferenceManyInput>`](./ReferenceManyInput.md)
+- [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md)
+- [`<ReferenceOneInput>`](./ReferenceOneInput.md)
 
 Reference components are a tremendous development accelerator for complex frontend features. They also liberate the backend developers from the burden of implementing complex joins.
 
@@ -293,9 +291,9 @@ Guesser components start by fetching data from the API, analyzing the shape of t
 
 Check the following components to learn more about guessers:
 
-- [`ListGuesser`](./ListGuesser.md)
-- [`EditGuesser`](./EditGuesser.md)
-- [`ShowGuesser`](./ShowGuesser.md)
+- [`<ListGuesser>`](./ListGuesser.md)
+- [`<EditGuesser>`](./EditGuesser.md)
+- [`<ShowGuesser>`](./ShowGuesser.md)
 
 ## Search & Filtering
 
@@ -422,9 +420,9 @@ Check the [Building A Custom Filter Tutorial](./FilteringTutorial.md#building-a-
 
 Many admin apps let users perform complex tasks implying the update of many fields and records. To allow such complex workflows, developers must be able to build sophisticated forms, with elaborate validation rules.
 
-React-admin offers a **rich set of input components** to build forms, powered by [Material UI](https://mui.com/material-ui/getting-started/overview/) and [react-hook-form](https://react-hook-form.com/). React-admin's form components also take care of binding the form values to the record being edited and validating the form inputs.
+React-admin offers a **rich set of input components and form layouts** to build forms, powered by [Material UI](https://mui.com/material-ui/getting-started/overview/) and [react-hook-form](https://react-hook-form.com/). React-admin's form components also take care of binding the form values to the record being edited and validating the form inputs.
 
-For instance, here is how to group inputs into tabs using `<TabbedForm>`:
+For instance, here is how to build a tabbed form for editing a blog post:
 
 ```jsx
 import {
@@ -479,18 +477,21 @@ export const PostEdit = () => (
   Your browser does not support the video tag.
 </video>
 
+### Form Layouts
 
-React-admin offers, out of the box, several **form layouts**:
+React-admin offers, out of the box, several form layouts:
 
-- [`SimpleForm`](./SimpleForm.md) for a single-column layout
-- [`TabbedForm`](./TabbedForm.md) for a tabbed layout
-- [`AccordionForm`](./AccordionForm.md) for long forms with collapsible sections
-- [`LongForm`](./LongForm.md) for long forms with a navigation sidebar
-- [`WizardForm`](./WizardForm.md) for multi-step forms
-- [`EditInDialog`](./EditInDialog.md) for sub-forms in a modal dialog
+- [`<SimpleForm>`](./SimpleForm.md) for a single-column layout
+- [`<TabbedForm>`](./TabbedForm.md) for a tabbed layout
+- [`<AccordionForm>`](./AccordionForm.md) for long forms with collapsible sections
+- [`<LongForm>`](./LongForm.md) for long forms with a navigation sidebar
+- [`<WizardForm>`](./WizardForm.md) for multi-step forms
+- [`<EditInDialog>`](./EditInDialog.md) for sub-forms in a modal dialog
 - and [`Form`](./Form.md), a headless component to use as a base for your custom layouts
 
-Inside forms, you can use [react-admin input components](./Inputs.md), designed for many types of data: 
+### Input Components
+
+Inside forms, you can use specialize [input components](./Inputs.md), designed for many types of data: 
 
 | Data Type             | Example value                                                | Input Components                                                                                                                                                                                     |
 |-----------------------|--------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -514,7 +515,9 @@ Inside forms, you can use [react-admin input components](./Inputs.md), designed 
 | Translations          | `{ en: 'Hello', fr: 'Bonjour' }`                             | [`<TranslatableInputs>`](./TranslatableInputs.md)                                                                                                                                                    |
 | Related records       | `[{ id: 42, title: 'Hello' }, { id: 43, title: 'World' }]`   | [`<ReferenceManyInput>`](./ReferenceManyInput.md), [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md), [`<ReferenceOneInput>`](./ReferenceOneInput.md)                                    |
 
-You can build **dependent inputs**, using the [react-hook-form's `useWatch` hook](https://react-hook-form.com/api/usewatch). For instance, here is a `CityInput` that displays the cities of the selected country:
+### Dependent Inputs 
+
+You can build dependent inputs, using the [react-hook-form's `useWatch` hook](https://react-hook-form.com/api/usewatch). For instance, here is a `CityInput` that displays the cities of the selected country:
 
 ```jsx
 import * as React from 'react';
@@ -553,7 +556,20 @@ const OrderEdit = () => (
 export default OrderEdit;
 ```
 
-For validation, you can use react-admin's [per field validators](https://marmelab.com/react-admin/Validation.html#per-input-validation-built-in-field-validators), or a [validation schema powered by yup or zod](https://marmelab.com/react-admin/Validation.html#schema-validation). Here is an example of per-field validation:
+### Validation
+
+React-admin ships with a powerful and versatile validation engine.
+
+![Validation example](./img/validation.png)
+
+React-admin forms support the most common validation strategies:
+
+* [per field validators](./Validation.md#per-input-validation-built-in-field-validators),
+* [form validation](./Validation.md#global-validation),
+* [validation schema powered by yup or zod](./Validation.html#schema-validation),
+* [server-side validation](./Validation.md#server-side-validation).
+
+Here is an example of per-field validation:
 
 ```jsx
 import {
@@ -590,6 +606,18 @@ export const UserCreate = () => (
     </Create>
 );
 ```
+
+### AutoSave
+
+React-admin lets you build forms saving changes automatically with [`<AutoSave>`](./AutoSave.md), so that users never lose their changes.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/AutoSave.webm" type="video/webm"/>
+  <source src="./img/AutoSave.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+### JSON Schema Forms
 
 Finally, you can generate entire **forms based on a JSON schema**, using the [`<JsonSchemaForm>` component](./JsonSchemaForm.md).
 

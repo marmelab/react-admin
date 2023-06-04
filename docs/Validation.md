@@ -5,6 +5,8 @@ title: "Form Validation"
 
 # Form Validation
 
+![Validation example](./img/validation.png)
+
 React-admin relies on [react-hook-form](https://react-hook-form.com/) for the validation of user input in forms. React-admin supports several approaches:
 
 - using the `validate` prop at the Form level (validation by function)
