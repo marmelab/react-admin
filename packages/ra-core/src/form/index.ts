@@ -46,3 +46,4 @@ export * from './useAugmentedForm';
 export * from './useInput';
 export * from './useSuggestions';
 export * from './useWarnWhenUnsavedChanges';
+export * from './useApplyArrayInputDefaultValues';

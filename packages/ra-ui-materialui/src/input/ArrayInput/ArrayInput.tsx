@@ -6,7 +6,7 @@ import {
     FieldTitle,
     composeSyncValidators,
     RaRecord,
-    useApplyInputDefaultValues,
+    useApplyArrayInputDefaultValues,
     useGetValidationErrorMessage,
     useFormGroupContext,
     useFormGroups,
@@ -71,9 +71,7 @@ import { ArrayInputContext } from './ArrayInputContext';
 export const ArrayInput = (props: ArrayInputProps) => {
     const {
         className,
-        defaultValue,
         label,
-        isFetching,
         isLoading,
         children,
         helperText,
@@ -133,7 +131,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
         };
     }, [register, unregister, source, formGroups, formGroupName]);
 
-    useApplyInputDefaultValues(props);
+    useApplyArrayInputDefaultValues(props, fieldProps);
 
     const { isDirty, error } = getFieldState(source, formState);
 
