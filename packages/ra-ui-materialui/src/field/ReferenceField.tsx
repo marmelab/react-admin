@@ -291,6 +291,7 @@ const Root = styled('span', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
+    lineHeight: 'initial',
     [`& .${ReferenceFieldClasses.link}`]: {
         '& > *': {
             color: theme.palette.primary.main,
