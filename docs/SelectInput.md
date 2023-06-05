@@ -712,3 +712,40 @@ const CreateCategory = () => {
 };
 ```
 {% endraw %}
+
+## Tree Structure
+
+If the choices form a hierarchy or a tree, use the [`<TreeInput>`](./TreeInput.md) component instead of `<SelectInput>`. It renders a collapsible tree structure, and lets users select a value by clicking on a node.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/ReferenceNodeInput-TreeInput-basic.webm" type="video/webm"/>
+  <source src="./img/ReferenceNodeInput-TreeInput-basic.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+```tsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { TreeInput } from '@react-admin/ra-tree';
+
+export const ProductEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="id" disabled />
+            <TextInput source="name" />
+            <TreeInput source="category" treeData={[
+                { id: 1, title: 'Clothing', isRoot: true, children: [2, 6] },
+                { id: 2, title: 'Men', children: [3] },
+                { id: 3, title: 'Suits', children: [4, 5] },
+                { id: 4, title: 'Slacks', children: [] },
+                { id: 5, title: 'Jackets', children: [] },
+                { id: 6, title: 'Women', children: [7, 10, 11] },
+                { id: 7, title: 'Dresses', children: [8, 9] },
+                { id: 8, title: 'Evening Gowns', children: [] },
+                { id: 9, title: 'Sun Dresses', children: [] },
+                { id: 10, title: 'Skirts', children: [] },
+                { id: 11, title: 'Blouses', children: [] },
+            ]} />
+        </SimpleForm>
+    </Edit>
+);
+```
