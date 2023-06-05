@@ -11,7 +11,7 @@ export default defineConfig({
     e2e: {
         // We've imported your old cypress plugins here.
         // You may want to clean this up later by importing these.
-        setupNodeEvents(on, config) {
+        setupNodeEvents(on) {
             on('before:browser:launch', (browser = {}, launchOptions) => {
                 // Fix for Cypress 4:
                 // https://docs.cypress.io/api/plugins/browser-launch-api.html#Usage
