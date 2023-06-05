@@ -864,6 +864,7 @@ export const CategoriesList = () => (
 Check out the following components for displaying hierarchical data:
 
 - [`<TreeWithDetails>`](./TreeWithDetails.md): A list view for tree structures, with a details panel.
+- [`<TreeInput>`](./TreeInput.md): An input component for tree structures.
 - [`<Tree>`](https://marmelab.com/ra-enterprise/modules/ra-tree#tree-component): A list view for tree structures, with a Material UI skin.
 
 ## Application Building Blocks
