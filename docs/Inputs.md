@@ -542,6 +542,8 @@ const PostEdit = () => (
 );
 ```
 
+**Tip:** TypeScript users will notice that `scopedFormData` and `getSource` are typed as optional parameters. This is because the `<FormDataConsumer>` component can be used outside of an `<ArrayInput>` and in that case, these parameters will be `undefined`. If you are inside an `<ArrayInput>`, you can safely assume that these parameters will be defined.
+
 ## Hiding Inputs Based On Other Inputs
 
 You may want to display or hide inputs based on the value of another input - for instance, show an `email` input only if the `hasEmail` boolean input has been ticked to `true`.
