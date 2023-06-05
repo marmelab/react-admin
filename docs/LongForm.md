@@ -342,9 +342,9 @@ Warning about unsaved changes is an opt-in feature: you must set the `warnWhenUn
 ```jsx
 export const TagEdit = () => (
     <Edit>
-        <Form warnWhenUnsavedChanges>
+        <LongForm warnWhenUnsavedChanges>
             ...
-        </Form>
+        </LongForm>
     </Edit>
 );
 ```
