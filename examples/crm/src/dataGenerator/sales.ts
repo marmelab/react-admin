@@ -1,8 +1,6 @@
 import { name, internet } from 'faker/locale/en_US';
 
-import { Db } from './types';
-
-export const generateSales = (db: Db) => {
+export const generateSales = () => {
     const randomSales = Array.from(Array(10).keys()).map(id => {
         const first_name = name.firstName();
         const last_name = name.lastName();

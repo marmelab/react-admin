@@ -83,7 +83,7 @@ describe('Edit Page', () => {
             cy.contains('Required');
             // FIXME: We navigate away from the page and confirm the unsaved changes
             // This is needed because HashHistory would prevent further navigation
-            cy.window().then(win => {
+            cy.window().then(() => {
                 cy.on('window:confirm', () => true);
             });
             cy.get('.RaSidebar-fixed [role="menuitem"]:first-child').click();

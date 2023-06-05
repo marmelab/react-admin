@@ -30,7 +30,7 @@ import {
 import { useFormContext, useWatch } from 'react-hook-form';
 import { Button, Dialog, DialogActions, DialogContent } from '@mui/material';
 
-const PostCreateToolbar = props => {
+const PostCreateToolbar = () => {
     const notify = useNotify();
     const redirect = useRedirect();
     const { reset } = useFormContext();
