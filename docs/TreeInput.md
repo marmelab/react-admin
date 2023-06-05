@@ -167,7 +167,7 @@ However, most of the time, if you need to populate a `<TreeInput>` with choices 
 
 ## Selecting a Foreign Key
 
-If you use `<TreeInput>` to set a foreign key for a many-to-one or a one-to-one relationship, you’ll have to [fetch choices](#fetching-choices), as explained in the previous section. You’ll also have to fetch the record corresponding to the current value of the foreign key, as it may not be in the list of choices.
+If you use `<TreeInput>` to set a foreign key for a many-to-one or a one-to-one relationship, you’ll have to [fetch choices](#fetching-choices), as explained in the previous section.
 
 As this is a common task, react-admin provides a shortcut to do the same in a declarative way: [`<ReferenceNodeInput>`](./ReferenceNodeInput.md):
 
