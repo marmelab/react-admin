@@ -264,6 +264,53 @@ describe('<ArrayInput />', () => {
         expect(screen.queryByText('test helper text')).not.toBeNull();
     });
 
+    it('should update the form state to dirty, and allow submit, on updating an array input with default value', async () => {
+        const TestArrayInputs = () => {
+            const { reset } = useFormContext();
+
+            // mimic's the scaffolding elsewhere in the app but does not disable the form
+            // without this (before array input side effects)
+            React.useEffect(() => {
+                reset();
+            }, [reset]);
+
+            return (
+                <ArrayInput
+                    resource="bar"
+                    source="arr"
+                    defaultValue={[{ id: 'foo' }]}
+                >
+                    <SimpleFormIterator>
+                        <TextInput source="id" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            );
+        };
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn}>
+                    <TestArrayInputs />
+                </SimpleForm>
+            </AdminContext>
+        );
+        const submitButton = screen
+            .getByLabelText('ra.action.save')
+            .closest('button');
+
+        await waitFor(() => {
+            expect(submitButton?.disabled).toBe(true);
+        });
+
+        const firstArrayInput = screen.getByDisplayValue('foo');
+
+        userEvent.type(firstArrayInput, 'bar');
+
+        await waitFor(() => {
+            expect(submitButton?.disabled).toBe(false);
+        });
+    });
+
     describe('used within a form with global validation', () => {
         it('should display an error if the array is required and empty', async () => {
             render(<GlobalValidation />);
