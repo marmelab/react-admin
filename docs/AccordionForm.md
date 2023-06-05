@@ -349,7 +349,7 @@ export const TagEdit = () => (
 
 The children of `<AccordionForm>` must be `<AccordionForm.Panel>` elements.
 
-This component renders a [MUI `<Accordion>` component](https://mui.com/components/accordion/). In the `<AccordionDetails>`, renders each child inside a `<FormInput>` (the same layout as in `<SimpleForm>`).
+This component renders a [MUI `<Accordion>` component](https://mui.com/components/accordion/). Children are rendered in a Stack, one child per row, just like for `<SimpleForm>`.
 
 ### Props
 
