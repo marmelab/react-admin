@@ -343,7 +343,7 @@ const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
 
 ## Tree Structure
 
-If the reference resource is a tree, use `<ReferenceNodeInput>` instead of `<ReferenceInput>`.
+If the reference resource is a tree, use [`<ReferenceNodeInput>`](./ReferenceNodeInput.md) instead of `<ReferenceInput>`.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/ReferenceNodeInput-TreeInput-basic.webm" type="video/webm"/>
