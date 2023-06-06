@@ -90,6 +90,7 @@ const EditActions = ({ hasShow }: EditActionsProps) => (
 );
 
 const SanitizedBox = ({
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     fullWidth,
     ...props
 }: BoxProps & { fullWidth?: boolean }) => <Box {...props} />;
@@ -156,12 +157,7 @@ const PostEdit = () => {
                                     <AutocompleteInput helperText={false} />
                                 </ReferenceInput>
                                 <FormDataConsumer>
-                                    {({
-                                        formData,
-                                        scopedFormData,
-                                        getSource,
-                                        ...rest
-                                    }) =>
+                                    {({ scopedFormData, getSource, ...rest }) =>
                                         scopedFormData &&
                                         scopedFormData.user_id ? (
                                             <SelectInput
