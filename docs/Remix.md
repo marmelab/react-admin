@@ -239,10 +239,10 @@ const getSupabaseUrlFromRequestUrl = (url: string) => {
 
 **Tip**: Some of this code is really PostgREST-specific. The `prefer` header is required to let PostgREST return one record instead of an array containing one record in response to `getOne` requests. A proxy for another CRUD API will require different parameters.
 
-Finally, update the react-admin data provider to use the Supabase adapter instead of the JSON Server one. As Supabase provides a PostgREST endpoint, we'll use [`ra-data-postgrest`](https://github.com/promitheus7/ra-data-postgrest):
+Finally, update the react-admin data provider to use the Supabase adapter instead of the JSON Server one. As Supabase provides a PostgREST endpoint, we'll use [`ra-data-postgrest`](https://github.com/raphiniert-com/ra-data-postgrest):
 
 ```sh
-yarn add @promitheus/ra-data-postgrest
+yarn add @raphiniert/ra-data-postgrest
 ```
 
 ```jsx
