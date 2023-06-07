@@ -84,7 +84,7 @@ const PREFIX = 'RaPaginationActions';
 const Root = styled('div', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
+})(() => ({
     flexShrink: 0,
     ml: 4,
 }));

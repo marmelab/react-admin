@@ -550,7 +550,7 @@ describe('<NumberInput />', () => {
                     >
                         <NumberInput
                             {...defaultProps}
-                            validate={value => undefined}
+                            validate={() => undefined}
                         />
                     </SimpleForm>
                 </AdminContext>

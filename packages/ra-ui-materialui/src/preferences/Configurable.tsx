@@ -88,7 +88,7 @@ export const Configurable = (props: ConfigurableProps) => {
         setPreferenceKey(prefixedPreferenceKey);
     };
 
-    const handleShowButton = event => {
+    const handleShowButton = () => {
         setIsCustomizeButtonVisible(true);
     };
 

@@ -191,11 +191,13 @@ const StyledButton = styled(Button, {
     },
 });
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const sanitizeRestProps = ({
     resource = null,
     preferenceKey = null,
     ...rest
 }) => rest;
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 export interface SelectColumnsButtonProps
     extends React.HtmlHTMLAttributes<HTMLDivElement> {

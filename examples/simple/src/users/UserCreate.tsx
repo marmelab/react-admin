@@ -26,7 +26,7 @@ const UserEditToolbar = ({ permissions, ...props }) => {
                 <SaveButton
                     label="user.action.save_and_add"
                     mutationOptions={{
-                        onSuccess: data => {
+                        onSuccess: () => {
                             notify('ra.notification.created', {
                                 type: 'info',
                                 messageArgs: {

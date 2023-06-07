@@ -449,7 +449,7 @@ If you provided a React element for the optionText prop, you must also provide t
     const handleInputChange = (
         event: any,
         newInputValue: string,
-        reason: string
+        _reason: string
     ) => {
         if (
             event?.type === 'change' ||
@@ -511,7 +511,7 @@ If you provided a React element for the optionText prop, you must also provide t
     const handleAutocompleteChange = (
         event: any,
         newValue: any,
-        reason: string
+        _reason: string
     ) => {
         handleChangeWithCreateSupport(newValue != null ? newValue : emptyValue);
     };

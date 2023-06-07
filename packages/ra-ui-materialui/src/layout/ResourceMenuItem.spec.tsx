@@ -47,9 +47,7 @@ describe('ResourceMenuItem', () => {
             >
                 <AdminUI layout={CustomLayout}>
                     <Resource name="users" list={ListGuesser} />
-                    {permissions => (
-                        <Resource name="posts" list={ListGuesser} />
-                    )}
+                    {() => <Resource name="posts" list={ListGuesser} />}
                 </AdminUI>
             </AdminContext>
         );
