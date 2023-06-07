@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { cloneElement, memo, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { TableBody, TableBodyProps } from '@mui/material';
+import { SxProps, TableBody, TableBodyProps } from '@mui/material';
 import clsx from 'clsx';
 import { Identifier, RaRecord } from 'ra-core';
 
@@ -22,6 +22,7 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
             row,
             rowClick,
             rowStyle,
+            rowSx,
             selectedIds,
             isRowSelectable,
             ...rest
@@ -53,6 +54,7 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
                         selectable: !isRowSelectable || isRowSelectable(record),
                         selected: selectedIds?.includes(record.id),
                         style: rowStyle ? rowStyle(record, rowIndex) : null,
+                        sx: rowSx?.(record, rowIndex),
                     },
                     children
                 )
@@ -80,6 +82,7 @@ DatagridBody.propTypes = {
         PropTypes.bool,
     ]),
     rowStyle: PropTypes.func,
+    rowSx: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     styles: PropTypes.object,
     isRowSelectable: PropTypes.func,
@@ -112,6 +115,7 @@ export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
     row?: ReactElement;
     rowClick?: string | RowClickFunction | false;
     rowStyle?: (record: RaRecord, index: number) => any;
+    rowSx?: (record: RaRecord, index: number) => SxProps;
     selectedIds?: Identifier[];
     isRowSelectable?: (record: RaRecord) => boolean;
 }

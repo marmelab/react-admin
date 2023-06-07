@@ -48,6 +48,7 @@ It accepts the following props:
 * [`rightAvatar`](#rightavatar)
 * [`rightIcon`](#righticon)
 * [`rowStyle`](#rowstyle)
+* [`rowSx`](#rowsx)
 * [`empty`](#empty)
 
 ## `leftAvatar`
@@ -172,6 +173,22 @@ const postRowStyle = (record, index) => ({
 export const PostList = () => (
     <List>
         <SimpleList primaryText={record => record.title} rowStyle={postRowStyle} />
+    </List>
+);
+```
+
+## `rowSx`
+
+This optional prop should be a function, which gets called for each row. It receives the current record and index as arguments, and should return a style object. The style object is applied to the `<ListItem>` styles prop.
+
+```jsx
+import { List, SimpleList } from 'react-admin';
+const postRowSx = (record, index) => ({
+    backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
+});
+export const PostList = () => (
+    <List>
+        <SimpleList primaryText={record => record.title} rowSx={postRowSx} />
     </List>
 );
 ```
