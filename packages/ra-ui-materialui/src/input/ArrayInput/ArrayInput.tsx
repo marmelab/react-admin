@@ -71,7 +71,9 @@ import { ArrayInputContext } from './ArrayInputContext';
 export const ArrayInput = (props: ArrayInputProps) => {
     const {
         className,
+        defaultValue,
         label,
+        isFetching,
         isLoading,
         children,
         helperText,
