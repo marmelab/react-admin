@@ -1,7 +1,12 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { minLength, required, testDataProvider } from 'ra-core';
+import {
+    RecordContextProvider,
+    minLength,
+    required,
+    testDataProvider,
+} from 'ra-core';
 
 import { AdminContext } from '../../AdminContext';
 import { SimpleForm } from '../../form';
@@ -265,35 +270,24 @@ describe('<ArrayInput />', () => {
     });
 
     it('should update the form state to dirty, and allow submit, on updating an array input with default value', async () => {
-        const TestArrayInputs = () => {
-            const { reset } = useFormContext();
-
-            // mimic's the scaffolding elsewhere in the app but does not disable the form
-            // without this (before array input side effects)
-            React.useEffect(() => {
-                reset();
-            }, [reset]);
-
-            return (
-                <ArrayInput
-                    resource="bar"
-                    source="arr"
-                    defaultValue={[{ id: 'foo' }]}
-                >
-                    <SimpleFormIterator>
-                        <TextInput source="id" />
-                    </SimpleFormIterator>
-                </ArrayInput>
-            );
-        };
-
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn}>
-                    <TestArrayInputs />
-                </SimpleForm>
+                {/**
+                 * RecordContextProvider - required to mimic instantiating a form with default data so that the it reset by
+                 * a react admin lifecycle and giving a non dirty form state. This in turn means the submit button is disabled on first render.
+                 */}
+                <RecordContextProvider value={{ foo: 'bar' }}>
+                    <SimpleForm onSubmit={jest.fn}>
+                        <ArrayInput source="arr" defaultValue={[{ id: 'foo' }]}>
+                            <SimpleFormIterator>
+                                <TextInput source="id" />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </RecordContextProvider>
             </AdminContext>
         );
+
         const submitButton = screen
             .getByLabelText('ra.action.save')
             .closest('button');
