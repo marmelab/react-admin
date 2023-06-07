@@ -55,7 +55,7 @@ export const FilterForm = (props: FilterFormProps) => {
     }, [filterValues, form]);
 
     useEffect(() => {
-        const subscription = form.watch(async (values, { name, type }) => {
+        const subscription = form.watch(async (values, { name }) => {
             // We must check whether the form is valid as watch will not check that for us.
             // We can't rely on form state as it might not be synchronized yet
             const isFormValid = await form.trigger();

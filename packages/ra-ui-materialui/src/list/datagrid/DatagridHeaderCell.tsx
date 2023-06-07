@@ -110,11 +110,11 @@ export const DatagridHeaderCellClasses = {
 const StyledTableCell = styled(TableCell, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
+})({
     [`& .MuiTableSortLabel-icon`]: {
         display: 'none',
     },
     [`& .Mui-active .MuiTableSortLabel-icon`]: {
         display: 'inline',
     },
-}));
+});
