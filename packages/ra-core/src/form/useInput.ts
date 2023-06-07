@@ -84,7 +84,7 @@ export const useInput = <ValueType = any>(
     // they may reset their default values which would override the input default value.
     // This hook ensures that the input default value is applied when a new record is loaded but has
     // no value for the input.
-    useApplyInputDefaultValues(props);
+    useApplyInputDefaultValues({ inputProps: props });
 
     const onBlur = useEvent((...event: any[]) => {
         if (initialOnBlur) {
