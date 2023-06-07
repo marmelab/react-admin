@@ -47,4 +47,3 @@ export * from './useInput';
 export * from './useSuggestions';
 export * from './useUnique';
 export * from './useWarnWhenUnsavedChanges';
-export * from './useApplyArrayInputDefaultValues';
