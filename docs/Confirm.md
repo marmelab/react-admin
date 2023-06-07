@@ -62,16 +62,16 @@ const BulkResetViewsButton = () => {
 |--------------------|----------|----------------------------------|-----------------------|--------------------------------------------------------------------|
 | `title`            | Required | `string`                         | -                     | Title of the dialog                                                |
 | `content`          | Required | `ReactNode`                      | -                     | Body of the dialog                                                 |
-| `onClose`          | Required | `MouseEventHandler`              | -                     | onClick event handler of the cancel button                         |
-| `onConfirm`        | Required | `MouseEventHandler`              | -                     | onClick event handler of the confirm button                        |
+| `onClose`          | Required | `Mouse EventHandler`              | -                     | onClick event handler of the cancel button                         |
+| `onConfirm`        | Required | `Mouse EventHandler`              | -                     | onClick event handler of the confirm button                        |
 | `isOpen`           | Optional | `boolean`                        | `false`               | `true` to show the dialog, `false` to hide it                      |
 | `loading`          | Optional | `boolean`                        | `false`               | Boolean to be applied to the `disabled` prop of the action buttons |
-| `cancel`           | Optional | `string`                         | 'ra.action.cancel'    | Label of the cancel button                                         |
-| `confirm`          | Optional | `string`                         | 'ra.action.confirm'   | Label of the confirm button                                        |
+| `cancel`           | Optional | `string`                         | 'ra.action. cancel'    | Label of the cancel button                                         |
+| `confirm`          | Optional | `string`                         | 'ra.action. confirm'   | Label of the confirm button                                        |
 | `confirmColor`     | Optional | `string`                         | 'primary'             | Color of the confirm button                                        |
-| `ConfirmIcon`      | Optional | `ReactElement`                   | `<CheckCircle/>`      | Icon element of the confirm button                                 |
-| `CancelIcon`       | Optional | `ReactElement`                   | `<ErrorOutlineIcon/>` | Icon element of the cancel button                                  |
-| `translateOptions` | Optional | `{ id?: string, name?: string }` | {}                    | Custom id and name to be used in the dialog title                  |
+| `ConfirmIcon`      | Optional | `ReactElement`                   | `<Check Circle/>`      | Icon element of the confirm button                                 |
+| `CancelIcon`       | Optional | `ReactElement`                   | `<Error OutlineIcon/>` | Icon element of the cancel button                                  |
+| `translate Options` | Optional | `{ id?: string, name?: string }` | {}                    | Custom id and name to be used in the dialog title                  |
 | `sx`               | Optional | `SxProps`                        | ''                    | Material UI shortcut for defining custom styles with access to the theme   |
 
 Text props such as `title`, `content`, `cancel`, `confirm` and `translateOptions` are translatable. You can pass translation keys in these props. Note: `content` is only translatable when value is `string`, otherwise it renders the content as a `ReactNode`.
