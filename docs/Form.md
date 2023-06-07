@@ -39,7 +39,7 @@ export const PostCreate = () => (
 );
 ```
 
-`<Form>` calls react-hook-form's `useForm` hook, and places the result in a `FormProvider` component. This means you can take advantage of the [`useFormContext`](https://react-hook-form.com/api/useformcontext) and [`useFormState`](https://react-hook-form.com/api/useformstate) hooks to access the form state.
+`<Form>` calls react-hook-form's `useForm` hook, and places the result in a `FormProvider` component. This means you can take advantage of the [`useFormContext`](https://www.react-hook-form.com/api/useformcontext) and [`useFormState`](https://www.react-hook-form.com/api/useformstate) hooks to access the form state.
 
 ## Props
 
@@ -55,7 +55,7 @@ Here are all the props you can set on the `<Form>` component:
 | `validate`               | Optional | `function`        | -       | A function to validate the form values.                    |
 | `warnWhenUnsavedChanges` | Optional | `boolean`         | -       | Set to `true` to warn the user when leaving the form with unsaved changes. |
 
-Additional props are passed to [the `useForm` hook](https://react-hook-form.com/api/useform).
+Additional props are passed to [the `useForm` hook](https://www.react-hook-form.com/api/useform).
 
 ## `defaultValues`
 
@@ -239,7 +239,7 @@ export const TagEdit = () => (
 
 `<Form>` relies on [react-hook-form's `useForm`](https://react-hook-form.com/docs/useform) to manage the form state and validation. You can subscribe to form changes using the [`useFormContext`](https://react-hook-form.com/docs/useformcontext) and [`useFormState`](https://react-hook-form.com/docs/useformstate) hooks.
  
-**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/api/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://www.react-hook-form.com/api/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
 
 ```js
 const { isDirty } = useFormState(); // ✅

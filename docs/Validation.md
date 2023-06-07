@@ -20,7 +20,7 @@ You can’t use both form level validation and input level validation - this is 
 
 By default, the validation mode is `onSubmit`, and the re-validation mode is `onChange`.
 
-Since [`<Form>`](./Form.md) actually passes all additional props to react-hook-form's [`useForm` hook](https://react-hook-form.com/api/useform/), this can easily be changed by setting the `mode` and `reValidateMode` props.
+Since [`<Form>`](./Form.md) actually passes all additional props to react-hook-form's [`useForm` hook](https://www.react-hook-form.com/api/useform/), this can easily be changed by setting the `mode` and `reValidateMode` props.
 
 ```jsx
 export const UserCreate = () => (
@@ -91,7 +91,7 @@ export const UserCreate = () => (
 );
 ```
 
-**Tip**: The props you pass to `<SimpleForm>` and `<TabbedForm>` are passed to the [useForm hook](https://react-hook-form.com/api/useform) of `react-hook-form`.
+**Tip**: The props you pass to `<SimpleForm>` and `<TabbedForm>` are passed to the [useForm hook](https://www.react-hook-form.com/api/useform) of `react-hook-form`.
 
 **Tip**: The `validate` function can return a promise for asynchronous validation. See [the Server-Side Validation section](#server-side-validation) below.
 
@@ -257,7 +257,7 @@ export const ProductEdit = () => (
 ```
 {% endraw %}
 
-**Tip**: The props of your Input components are passed to a `react-hook-form` [useController](https://react-hook-form.com/api/usecontroller) hook.
+**Tip**: The props of your Input components are passed to a `react-hook-form` [useController](https://www.react-hook-form.com/api/usecontroller) hook.
 
 **Tip**: The custom validator function can return a promise, e.g. to use server-side validation. See next section for details.
 
@@ -337,7 +337,7 @@ export const UserCreate = () => (
 
 ## Schema Validation
 
-`react-hook-form` supports schema validation with many libraries through its [`resolver` props](https://react-hook-form.com/api/useform#validationResolver). To use it, follow their [resolvers documentation](https://github.com/react-hook-form/resolvers). Here's an example using `yup`:
+`react-hook-form` supports schema validation with many libraries through its [`resolver` props](https://www.react-hook-form.com/api/useform#validationResolver). To use it, follow their [resolvers documentation](https://github.com/react-hook-form/resolvers). Here's an example using `yup`:
 
 ```jsx
 import { yupResolver } from '@hookform/resolvers/yup';
