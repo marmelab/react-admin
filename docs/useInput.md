@@ -5,7 +5,7 @@ title: "useInput"
 
 # `useInput`
 
-This hook lets you build custom inputs for react-admin. It's a wrapper around [react-hook-form's `useController`](https://react-hook-form.com/api/usecontroller).
+This hook lets you build custom inputs for react-admin. It's a wrapper around [react-hook-form's `useController`](https://www.react-hook-form.com/api/usecontroller).
 
 React-admin adds functionality to react-hook-form:
 
@@ -52,7 +52,7 @@ const TitleInput = ({ source, label }) => {
 | `onChange`     | Optional | `Function`                     | -       | A function to call when the input value changes                   |
 | `onBlur`       | Optional | `Function`                     | -       | A function to call when the input is blurred                      |
 
-Additional props are passed to [react-hook-form's `useController` hook](https://react-hook-form.com/api/usecontroller).
+Additional props are passed to [react-hook-form's `useController` hook](https://www.react-hook-form.com/api/usecontroller).
 
 ## Usage with Material UI `<TextField>`
 
@@ -100,7 +100,7 @@ const LatLngInput = props => {
 };
 ```
 
-**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/api/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://www.react-hook-form.com/api/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
 
 ```js
 const { isDirty } = useFormState(); // ✅
@@ -154,7 +154,7 @@ const PersonEdit = () => (
 );
 ```
 
-**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/api/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://www.react-hook-form.com/api/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
 
 ```js
 const { isDirty } = useFormState(); // ✅

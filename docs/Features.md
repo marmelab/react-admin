@@ -517,7 +517,7 @@ Inside forms, you can use specialize [input components](./Inputs.md), designed f
 
 ### Dependent Inputs 
 
-You can build dependent inputs, using the [react-hook-form's `useWatch` hook](https://react-hook-form.com/api/usewatch). For instance, here is a `CityInput` that displays the cities of the selected country:
+You can build dependent inputs, using the [react-hook-form's `useWatch` hook](https://www.react-hook-form.com/api/usewatch). For instance, here is a `CityInput` that displays the cities of the selected country:
 
 ```jsx
 import * as React from 'react';

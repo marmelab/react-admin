@@ -100,7 +100,7 @@ Here are all the props you can set on the `<LongForm>` component:
 | `warnWhenUnsavedChanges` | Optional | `boolean`         | -       | Set to `true` to warn the user when leaving the form with unsaved changes. |
 
 
-Additional props are passed to `react-hook-form`'s [`useForm` hook](https://react-hook-form.com/api/useform).
+Additional props are passed to `react-hook-form`'s [`useForm` hook](https://www.react-hook-form.com/api/useform).
 
 ## `children`
 
