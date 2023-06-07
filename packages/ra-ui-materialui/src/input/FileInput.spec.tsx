@@ -282,7 +282,7 @@ describe('<FileInput />', () => {
                     >
                         <FileInput
                             {...defaultProps}
-                            validateFileRemoval={file => {
+                            validateFileRemoval={() => {
                                 throw Error('Cancel Removal Action');
                             }}
                         >
@@ -334,7 +334,7 @@ describe('<FileInput />', () => {
                     >
                         <FileInput
                             {...defaultProps}
-                            validateFileRemoval={async file => {
+                            validateFileRemoval={async () => {
                                 throw Error('Cancel Removal Action');
                             }}
                         >
@@ -381,7 +381,7 @@ describe('<FileInput />', () => {
                     >
                         <FileInput
                             {...defaultProps}
-                            validateFileRemoval={file => true}
+                            validateFileRemoval={() => true}
                         >
                             <FileField source="src" title="title" />
                         </FileInput>
@@ -420,7 +420,7 @@ describe('<FileInput />', () => {
                     >
                         <FileInput
                             {...defaultProps}
-                            validateFileRemoval={async file => true}
+                            validateFileRemoval={async () => true}
                         >
                             <FileField source="src" title="title" />
                         </FileInput>

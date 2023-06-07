@@ -221,12 +221,14 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
     );
 };
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const sanitizeRestProps = ({
     displayedFilters = null,
     filterValues = null,
     showFilter = null,
     ...rest
 }) => rest;
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 FilterButton.propTypes = {
     resource: PropTypes.string,
@@ -252,6 +254,6 @@ const PREFIX = 'RaFilterButton';
 const Root = styled('div', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
+})({
     display: 'inline-block',
-}));
+});
