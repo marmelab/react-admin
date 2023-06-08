@@ -37,15 +37,15 @@ const CompanyShow = () => (
             <TextField source="name" />
             <TextField source="address" />
             <TextField source="city" />
+            <WithRecord render={record => (
+                  <CreateInDialogButton record={{ company_id: record.id }}>
+                      <SimpleForm>
+                          <TextInput source="first_name" />
+                          <TextInput source="last_name" />
+                      </SimpleForm>
+                  </CreateInDialogButton>
+              )} />
             <ReferenceManyField target="company_id" reference="employees">
-                <WithRecord render={record => (
-                    <CreateInDialogButton record={{ company_id: record.id }}>
-                        <SimpleForm>
-                            <TextInput source="first_name" />
-                            <TextInput source="last_name" />
-                        </SimpleForm>
-                    </CreateInDialogButton>
-                )} />
                 <Datagrid>
                     <TextField source="first_name" />
                     <TextField source="last_name" />
