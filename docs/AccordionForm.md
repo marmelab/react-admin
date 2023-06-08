@@ -90,7 +90,7 @@ Here are all the props you can set on the `<AccordionForm>` component:
 | `warnWhen UnsavedChanges` | Optional | `boolean`         | -       | Set to `true` to warn the user when leaving the form with unsaved changes. |
 
 
-Additional props are passed to `react-hook-form`'s [`useForm` hook](https://react-hook-form.com/api/useform).
+Additional props are passed to `react-hook-form`'s [`useForm` hook](https://react-hook-form.com/docs/useform).
 
 ## `autoClose`
 

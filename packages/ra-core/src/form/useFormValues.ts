@@ -1,6 +1,6 @@
 import { FieldValues, useFormContext, useWatch } from 'react-hook-form';
 
-// hook taken from https://react-hook-form.com/api/usewatch/#rules
+// hook taken from https://react-hook-form.com/docs/usewatch/#rules
 export const useFormValues = <
     TFieldValues extends FieldValues = FieldValues
 >() => {

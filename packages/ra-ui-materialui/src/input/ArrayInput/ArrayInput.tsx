@@ -66,7 +66,7 @@ import { ArrayInputContext } from './ArrayInputContext';
  * list item (<li>). It also provides controls for adding and removing
  * a sub-record (a backlink in this example).
  *
- * @see {@link https://react-hook-form.com/api/usefieldarray}
+ * @see {@link https://react-hook-form.com/docs/usefieldarray}
  */
 export const ArrayInput = (props: ArrayInputProps) => {
     const {
@@ -188,7 +188,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
                         touched={isDirty || isSubmitted}
                         // root property is applicable to built-in validation only,
                         // Resolvers are yet to support useFieldArray root level validation.
-                        // Reference: https://react-hook-form.com/api/usefieldarray
+                        // Reference: https://react-hook-form.com/docs/usefieldarray
                         error={error?.root?.message ?? error?.message}
                         helperText={helperText}
                     />

@@ -229,7 +229,7 @@ const StyledForm = styled('form', {
 
 /**
  * Because we are using controlled inputs with react-hook-form, we must provide a default value
- * for each input when resetting the form. (see https://react-hook-form.com/api/useform/reset).
+ * for each input when resetting the form. (see https://react-hook-form.com/docs/useform/reset).
  * To ensure we don't provide undefined which will result to the current input value being reapplied
  * and due to the dynamic nature of the filter form, we rebuild the filter form values from its current
  * values and make sure to pass at least an empty string for each input.
