@@ -5,7 +5,7 @@ import { ArrayInputContext, ArrayInputContextValue } from './ArrayInputContext';
  * A hook to access an array input methods as provided by react-hook-form.
  * Useful to create custom array input iterators.
  * @see {ArrayInput}
- * @see https://www.react-hook-form.com/api/usefieldarray
+ * @see https://react-hook-form.com/docs/usefieldarray
  */
 export const useArrayInput = (
     props?: Partial<ArrayInputContextValue>

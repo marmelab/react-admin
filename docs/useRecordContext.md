@@ -64,7 +64,7 @@ As soon as there is a record available, react-admin puts it in a `RecordContext`
 
 Inside `<Edit>` and `<Create>`, `useRecordContext` returns the *initial* record, used to set the initial form values. 
 
-If you want to react to the data entered by the user, use [react-hook-form's `useWatch`](https://www.react-hook-form.com/api/usewatch/) instead of `useRecordContext`. It returns the current form values, including the changes made by the user.
+If you want to react to the data entered by the user, use [react-hook-form's `useWatch`](https://react-hook-form.com/docs/usewatch/) instead of `useRecordContext`. It returns the current form values, including the changes made by the user.
 
 For instance if you want to display an additional input when a user marks an order as returned, you can do the following:
 

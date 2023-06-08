@@ -58,7 +58,7 @@ The `<WizardForm>` component accepts the following props:
 | `warnWhen UnsavedChanges` | Optional | `boolean`         | -       | Set to `true` to warn the user when leaving the form with unsaved changes. |
 
 
-Additional props are passed to `react-hook-form`'s [`useForm` hook](https://www.react-hook-form.com/api/useform).
+Additional props are passed to `react-hook-form`'s [`useForm` hook](https://react-hook-form.com/docs/useform).
 
 ## `children`
 
@@ -405,7 +405,7 @@ const PostCreate = () => (
 
 ## Adding a Summary Final Step
 
-In order to add a final step with a summary of the form values before submit, you can leverage `react-hook-form` [`useWatch`](https://www.react-hook-form.com/api/usewatch) hook:
+In order to add a final step with a summary of the form values before submit, you can leverage `react-hook-form` [`useWatch`](https://react-hook-form.com/docs/usewatch) hook:
 
 ```tsx
 const FinalStepContent = () => {
