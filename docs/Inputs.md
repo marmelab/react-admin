@@ -52,7 +52,7 @@ All input components accept the following props:
 | `sx`            | Optional | `SxProps`                 | -       | Material UI shortcut for defining custom styles                                                                                                                             |
 | `validate`      | Optional | `Function` &#124; `array` | -       | Validation rules for the current property. See the [Validation Documentation](./Validation.md#per-input-validation-built-in-field-validators) for details.          |
 
-React-admin uses [react-hook-form](https://react-hook-form.com/) to control form inputs. Each input component also accepts all react-hook-form [useController](https://www.react-hook-form.com/api/usecontroller) hook options.
+React-admin uses [react-hook-form](https://react-hook-form.com/) to control form inputs. Each input component also accepts all react-hook-form [useController](https://react-hook-form.com/docs/usecontroller) hook options.
 
 Additional props are passed down to the underlying component (usually an Material UI component). For instance, when setting the `variant` prop on a `<TextInput>` component, the underlying Material UI `<TextField>` receives it, and renders it with a different variant. Refer to the documentation of each Input component to see the underlying Material UI component and its props.
 
@@ -438,7 +438,7 @@ import { TextInput, required } from 'react-admin';
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
 
-React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://www.react-hook-form.com/api/usewatch) hook.
+React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://react-hook-form.com/docs/usewatch) hook.
 
 ```jsx
 import * as React from 'react';
@@ -635,7 +635,7 @@ const theme = {
 
 ## Writing Your Own Input Component
 
-If you need a more specific input type, you can write it directly in React. You'll have to rely on react-hook-form's [useController](https://www.react-hook-form.com/api/usecontroller) hook, to handle the value update cycle.
+If you need a more specific input type, you can write it directly in React. You'll have to rely on react-hook-form's [useController](https://react-hook-form.com/docs/usecontroller) hook, to handle the value update cycle.
 
 ### Using `useController`
 
@@ -773,7 +773,7 @@ const LatLngInput = () => (
 
 **Tip**: Notice that we have added `defaultValue: ''` as one of the `useController` params. This is a good practice to avoid getting console warnings about controlled/uncontrolled components, that may arise if the value of `record.lat` or `record.lng` is `undefined` or `null`.
 
-`useController()` returns three values: `field`, `fieldState`, and `formState`. To learn more about these props, please refer to the [useController](https://www.react-hook-form.com/api/usecontroller) hook documentation.
+`useController()` returns three values: `field`, `fieldState`, and `formState`. To learn more about these props, please refer to the [useController](https://react-hook-form.com/docs/usecontroller) hook documentation.
 
 Instead of HTML `input` elements or Material UI components, you can use react-admin input components, like `<NumberInput>` for instance. React-admin components already use `useController()`, and already include a label, so you don't need either `useController()` or `<Labeled>` when using them:
 
@@ -892,7 +892,7 @@ const PersonEdit = () => (
 );
 ```
 
-**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://www.react-hook-form.com/api/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/docs/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
 
 ```js
 const { isDirty } = useFormState(); // ✅
