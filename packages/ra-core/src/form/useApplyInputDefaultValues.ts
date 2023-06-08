@@ -54,26 +54,27 @@ export const useApplyInputDefaultValues = ({
             return;
         }
 
+        // Side note: For Array Input but checked for all to avoid possible regression
+        // Since we use get(record, source), if source is like foo.23.bar,
+        // this effect will run. However we only want to set the default value
+        // for the subfield bar if the record actually has a value for foo.23
+        const pathContainsIndex = source
+            .split('.')
+            .some(pathPart => numericRegex.test(pathPart));
+        if (pathContainsIndex) {
+            const parentPath = source.split('.').slice(0, -1).join('.');
+            const parentValue = get(getValues(), parentPath);
+            if (parentValue == null) {
+                // the parent is undefined, so we don't want to set the default value
+                return;
+            }
+        }
+
         if (isArrayInput) {
             if (!fieldArrayInputControl) {
                 throw new Error(
                     'useApplyInputDefaultValues: No fieldArrayInputControl passed in props for array input usage'
                 );
-            }
-
-            // Since we use get(record, source), if source is like foo.23.bar,
-            // this effect will run. However we only want to set the default value
-            // for the subfield bar if the record actually has a value for foo.23
-            const pathContainsIndex = source
-                .split('.')
-                .some(pathPart => numericRegex.test(pathPart));
-            if (pathContainsIndex) {
-                const parentPath = source.split('.').slice(0, -1).join('.');
-                const parentValue = get(getValues(), parentPath);
-                if (parentValue == null) {
-                    // the parent is undefined, so we don't want to set the default value
-                    return;
-                }
             }
 
             // We need to update inputs nested in array using react hook forms
