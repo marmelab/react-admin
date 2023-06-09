@@ -1,3 +1,4 @@
+'use client';
 import * as React from 'react';
 import { ComponentType } from 'react';
 import { CoreAdminProps, localStorageStore } from 'ra-core';
