@@ -199,7 +199,7 @@ yarn add @react-admin/ra-realtime
 
 `ra-realtime` is part of the [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to install this package.
 
-You will need a data provider that supports real-time subscriptions. Check out the [Data Provider Requirements](./RealTimeDataProvider.md) section for more information.
+You will need a data provider that supports real-time subscriptions. Check out the [Data Provider Requirements](./RealtimeDataProvider.md) section for more information.
 
 ## I18N
 
