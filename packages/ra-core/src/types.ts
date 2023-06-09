@@ -361,10 +361,6 @@ export interface ResourceProps {
     children?: ReactNode;
 }
 
-export type RenderRecordFunction<
-    RecordType extends Record<string, unknown> = any
-> = (record: RecordType, source?: string) => ReactNode;
-
 export type Exporter = (
     data: any,
     fetchRelatedRecords: (
