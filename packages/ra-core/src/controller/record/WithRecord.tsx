@@ -1,4 +1,5 @@
-import { ReactElement } from 'react';
+import * as React from 'react';
+import { ReactNode } from 'react';
 import { useRecordContext } from './useRecordContext';
 
 /**
@@ -17,12 +18,12 @@ export const WithRecord = <RecordType extends Record<string, unknown> = any>({
     render,
 }: WithRecordProps<RecordType>) => {
     const record = useRecordContext<RecordType>();
-    return record ? render(record) : null;
+    return record ? <>{render(record)}</> : null;
 };
 
 export interface WithRecordProps<
     RecordType extends Record<string, unknown> = any
 > {
-    render: (record: RecordType) => ReactElement;
+    render: (record: RecordType) => ReactNode;
     label?: string;
 }
