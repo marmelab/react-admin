@@ -1,5 +1,27 @@
 # Changelog
 
+## v4.11.2
+
+* Fix `<ReferenceField>` line height isn't consistent with other fields ([#8976](https://github.com/marmelab/react-admin/pull/8976)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix configurable does not have a targetable root class ([#8980](https://github.com/marmelab/react-admin/pull/8980)) ([djhi](https://github.com/djhi))
+* Fix `<Admin>` fails when used in Next.js server components ([#8990](https://github.com/marmelab/react-admin/pull/8990)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix English translation of auth error message ([#8970](https://github.com/marmelab/react-admin/pull/8970)) ([joebordes](https://github.com/joebordes))
+* Fix linter warnings ([#8978](https://github.com/marmelab/react-admin/pull/8978)) ([fzaninotto](https://github.com/fzaninotto))
+* Bump vite from 3.2.0 to 3.2.7 ([#8981](https://github.com/marmelab/react-admin/pull/8981)) (dependabot)
+* Fix `<AutocompleteArrayInput>` 'custom options' story ([#8983](https://github.com/marmelab/react-admin/pull/8983)) ([slax57](https://github.com/slax57))
+* [TypeScript] Fix `<WithRecord>` `render` prop type ([#8993](https://github.com/marmelab/react-admin/pull/8993)) ([slax57](https://github.com/slax57))
+* [TypeScript] Fix FunctionField render function type expects a nullable record ([#8963](https://github.com/marmelab/react-admin/pull/8963)) ([elstgav](https://github.com/elstgav))
+* [Doc] Add `<AutoSave>` documentation ([#8969](https://github.com/marmelab/react-admin/pull/8969)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add `<TreeInput>` and `<ReferenceNodeInput>` chapters ([#8974](https://github.com/marmelab/react-admin/pull/8974)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Better explain the type of `getSource` and `scopedFormData` in `<FormDataConsumer>` ([#8979](https://github.com/marmelab/react-admin/pull/8979)) ([slax57](https://github.com/slax57))
+* [Doc] Fix broken link in Realtime documentation ([#8991](https://github.com/marmelab/react-admin/pull/8991)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<ReferenceArrayInput>` section about custom query filter ([#8989](https://github.com/marmelab/react-admin/pull/8989)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<CreateInDialogButton>` usage example ([#8988](https://github.com/marmelab/react-admin/pull/8988)) ([slax57](https://github.com/slax57))
+* [Doc] Fix links to react-hook-form's doc ([#8984](https://github.com/marmelab/react-admin/pull/8984)) ([slax57](https://github.com/slax57))
+* [Doc] Fix `<Confirm>` prop table overflows ([#8985](https://github.com/marmelab/react-admin/pull/8985)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix Remix tutorial mentions outdated postgrest adapter ([#8982](https://github.com/marmelab/react-admin/pull/8982)) ([fzaninotto](https://github.com/fzaninotto))
+* [Demo] Fix tag list on Mobile ([#8975](https://github.com/marmelab/react-admin/pull/8975)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v4.11.1
 
 * Fix `<AutocompleteInput>` should not use `matchSuggestion` when in a `<ReferenceInput>` ([#8956](https://github.com/marmelab/react-admin/pull/8956)) ([slax57](https://github.com/slax57))
