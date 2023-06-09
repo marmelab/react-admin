@@ -223,7 +223,6 @@ Next, replace the `app/pages.tsx` file with the following code, which initialize
 
 ```jsx
 // in app/pages.tsx
-"use client";
 import { Admin, Resource, ListGuesser, EditGuesser } from "react-admin";
 import jsonServerProvider from "ra-data-json-server";
 
@@ -246,6 +245,6 @@ Now, start the server with `yarn dev`, browse to `http://localhost:3000/`, and y
 
 React-admin renders a CRUD for users, posts and comments, guessing the data structure from the API response. 
 
-**Tip**: Why the `"use client"` directive? React-admin is designed as a Single-Page Application, rendered on the client-side. It comes with various client-side only libraries (emotion, material-ui, react-query) leveraging the React Context API, and cannot be rendered using React Server components.
+**Tip**: The `<Admin>` component uses the `"use client"` directive, because React-admin is designed as a Single-Page Application, rendered on the client-side. It comes with various client-side only libraries (emotion, material-ui, react-query) leveraging the React Context API, and cannot be rendered using React Server components.
 
 Starting from there, you can [Add an API](#adding-an-api) as described in the previous section, and/or add features to the Next.js app, as explained in the [Getting started tutorial](./GettingStarted.md)

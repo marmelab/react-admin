@@ -14,7 +14,7 @@ This component provides a UI for editing arrays of objects, one row per object.
 </video>
 
 
-`<SimpleFormIterator>` lets users edit, add, remove and reorder sub-records. It is designed to be used as a child of [`<ArrayInput>`](./ArrayInput.md) or [`<ReferenceManyInput>`](./ReferenceManyInput.md). You can also use it within an `ArrayInputContext` containing a *field array*, i.e. the value returned by [react-hook-form's `useFieldArray` hook](https://react-hook-form.com/api/usefieldarray).
+`<SimpleFormIterator>` lets users edit, add, remove and reorder sub-records. It is designed to be used as a child of [`<ArrayInput>`](./ArrayInput.md) or [`<ReferenceManyInput>`](./ReferenceManyInput.md). You can also use it within an `ArrayInputContext` containing a *field array*, i.e. the value returned by [react-hook-form's `useFieldArray` hook](https://react-hook-form.com/docs/usefieldarray).
 
 ## Usage
 
@@ -152,6 +152,8 @@ const PostEdit = () => (
     </Edit>
 );
 ```
+
+**Tip:** TypeScript users will notice that `scopedFormData` and `getSource` are typed as optional parameters. This is because the `<FormDataConsumer>` component can be used outside of a `<SimpleFormIterator>` and in that case, these parameters will be `undefined`. If you are inside a `<SimpleFormIterator>`, you can safely assume that these parameters will be defined.
 
 **Note**: `<SimpleFormIterator>` only accepts `Input` components as children. If you want to use some `Fields` instead, you have to use a `<FormDataConsumer>`, as follows:
 

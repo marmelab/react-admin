@@ -341,6 +341,37 @@ const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
 </ReferenceInput>
 ```
 
+## Tree Structure
+
+If the reference resource is a tree, use [`<ReferenceNodeInput>`](./ReferenceNodeInput.md) instead of `<ReferenceInput>`.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/ReferenceNodeInput-TreeInput-basic.webm" type="video/webm"/>
+  <source src="./img/ReferenceNodeInput-TreeInput-basic.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+For instance, to edit the category of a product and let the user choose the category in a tree:
+
+```tsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { ReferenceNodeInput } from '@react-admin/ra-tree';
+
+const ProductEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="id" disabled />
+            <TextInput source="name" />
+            <ReferenceNodeInput
+                source="category_id"
+                reference="categories"
+            />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+
 ## Performance 
 
 Why does `<ReferenceInput>` use the `dataProvider.getMany()` method with a single value `[id]` instead of `dataProvider.getOne()` to fetch the record for the current value?

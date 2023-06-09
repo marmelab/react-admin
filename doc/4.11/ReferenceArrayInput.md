@@ -338,6 +338,6 @@ If you want to customize the conversion between the search term and the query fi
 const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
 
 <ReferenceArrayInput source="tags_ids" reference="tags">
-    <ReferenceArrayInput filterToQuery={filterToQuery} />
+    <AutocompleteArrayInput filterToQuery={filterToQuery} />
 </ReferenceArrayInput>
 ```

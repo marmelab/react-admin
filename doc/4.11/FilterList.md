@@ -68,11 +68,15 @@ A more sophisticated example is the filter sidebar for the visitors list visible
 
 **Tip**: In a Filter List sidebar, you can use [the `<FilterLiveSearch>` component](./FilterLiveSearch.md) to add a search input at the top of the sidebar, and [the `<SavedQueriesList>` component](./SavedQueriesList.md) to add a list of saved queries.
 
+## Props
+
 `<FilterList>` accepts 3 props:
 
-* [`children`](#children), which must be a list of `<FilterListItem>`
-* [`icon`](#icon)
-* [`label`](#label)
+| Prop | Required | Type | Default | Description |
+|------|----------|------|---------|-------------|
+| [`children`](#children) | Required | node | | The children of `<FilterList>` must be a list of `<FilterListItem>` components. |
+| [`icon`](#icon) | Optional | element | | When set, the `<FilterList icon>` prop appears on the left side of the filter label. |
+| [`label`](#label) | Optional | string | | React-admin renders the `<FilterList label>` on top of the child filter items. The string is passed through the `useTranslate` hook, and therefore can be translated. |
 
 ## `children`
 
@@ -191,12 +195,20 @@ const CustomerList = props => (
 
 **Tip**: The `<FilterList>` Sidebar is not a good UI for small screens. You can choose to hide it on small screens (as in the previous example). A good tradeoff is to use `<FilterList>` on large screens, and the Filter Button/Form combo on Mobile.
 
-## Customize How Filters Are Applied
+## Cumulative Filters
 
-Sometimes, you may want to customize how filters are applied. For instance, by allowing users to select multiple items such as selecting multiple categories. The `<FilterListItem>` component accepts two props for this purpose:
+By default, selecting a filter item replaces the current filter value. But for some filter types, like categories, you may want to allow users to select more than one item. 
 
-- `isSelected`: accepts a function that receives the item value and the currently applied filters. It must return a boolean.
-- `toggleFilter`: accepts a function that receives the item value and the currently applied filters. It is called when user toggles a filter and must return the new filters to apply.
+<video controls autoplay playsinline muted loop>
+  <source src="./img/filter-list-cumulative.webm" type="video/webm"/>
+  <source src="./img/filter-list-cumulative.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+To do so, you can use the `isSelected` and `toggleFilter` props of the `<FilterListItem>` component.
+
+- The `isSelected` prop accepts a function that receives the item value and the currently applied filters. It must return a boolean.
+- The `toggleFilter` prop accepts a function that receives the item value and the currently applied filters. It is called when user toggles a filter and must return the new filters to apply.
 
 Here's how you could implement cumulative filters, e.g. allowing users to filter items having one of several categories:
 
@@ -255,9 +267,14 @@ export const CategoriesFilter = () => {
 ```
 {% endraw %}
 
-<video controls autoplay playsinline muted loop>
-  <source src="./img/filter-list-cumulative.webm" type="video/webm"/>
-  <source src="./img/filter-list-cumulative.mp4" type="video/mp4"/>
-  Your browser does not support the video tag.
-</video>
+## `<FilterListItem>`
+
+The children of `<FilterList>` must be a list of `<FilterListItem>` components. The `<FilterListItem>` accepts the following props:
+
+| Prop | Required | Type | Default | Description |
+|------|----------|------|---------|-------------|
+| `label` | Required | string | | The label of the filter item. It is passed through the `useTranslate` hook, and therefore can be translated. |
+| `value` | Required | object | | The value of the filter item. It is merged with the current filter value when enabled by the user. |
+| `isSelected` | Optional | function | | A function that receives the item value and the currently applied filters. It must return a boolean. |
+| `toggleFilter` | Optional | function | | A function that receives the item value and the currently applied filters. It is called when user toggles a filter and must return the new filters to apply. |
 
