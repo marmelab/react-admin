@@ -115,7 +115,7 @@ const Settings = () => (
 export default Settings;
 ```
 
-`<Title>` uses a [React Portal](https://reactjs.org/docs/portals.html), so it doesn't matter *where* you put it in your component. The title will always be rendered in the app bar.
+`<Title>` uses a [React Portal](https://react.dev/reference/react-dom/createPortal), so it doesn't matter *where* you put it in your component. The title will always be rendered in the app bar.
 
 ## Linking To Custom Routes
 
