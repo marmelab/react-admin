@@ -177,6 +177,7 @@ const frenchMessages: TranslationMessages = {
             email: 'Doit être un email',
             oneOf: 'Doit être au choix: %{options}',
             regex: 'Doit respecter un format spécifique (regexp): %{pattern}',
+            unique: 'Doit être unique',
         },
         saved_queries: {
             label: 'Mes requêtes',
