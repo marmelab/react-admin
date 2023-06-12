@@ -89,7 +89,7 @@ export const useUnique = (options?: UseUniqueOptions) => {
 
                 if (total > 0) {
                     return translate(message, {
-                        _: 'Must be unique',
+                        _: message,
                         source: props.source,
                         value,
                         field: translateLabel({
