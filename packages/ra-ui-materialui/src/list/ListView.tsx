@@ -54,6 +54,7 @@ export const ListView = <RecordType extends RaRecord = any>(
         <div className={ListClasses.main}>
             {(filters || actions) && (
                 <ListToolbar
+                    className={ListClasses.actions}
                     filters={filters}
                     actions={actions}
                     hasCreate={hasCreate}
@@ -78,7 +79,8 @@ export const ListView = <RecordType extends RaRecord = any>(
     );
 
     const renderEmpty = () =>
-        empty !== false && cloneElement(empty, { hasCreate });
+        empty !== false &&
+        cloneElement(empty, { className: ListClasses.noResults, hasCreate });
 
     const shouldRenderEmptyPage =
         !isLoading &&
@@ -163,12 +165,7 @@ const Root = styled('div', {
         overflow: 'inherit',
     },
 
-    [`& .${ListClasses.actions}`]: {
-        zIndex: 2,
-        display: 'flex',
-        justifyContent: 'flex-end',
-        flexWrap: 'wrap',
-    },
+    [`& .${ListClasses.actions}`]: {},
 
-    [`& .${ListClasses.noResults}`]: { padding: 20 },
+    [`& .${ListClasses.noResults}`]: {},
 }));
