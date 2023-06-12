@@ -144,7 +144,7 @@ export const MyLayout = (props) => <Layout {...props} appBarAlwaysOn />;
 
 ## `error`
 
-Whenever a client-side error happens in react-admin, the user sees an error page. React-admin uses [React's Error Boundaries](https://reactjs.org/docs/error-boundaries.html) to render this page when any component in the page throws an unrecoverable error. 
+Whenever a client-side error happens in react-admin, the user sees an error page. React-admin uses [React's Error Boundaries](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary) to render this page when any component in the page throws an unrecoverable error. 
 
 ![Default error page](./img/error.webp)
 
