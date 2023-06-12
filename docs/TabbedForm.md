@@ -879,4 +879,4 @@ const ProductEdit = () => (
 ```
 {% endraw %}
 
-Check [the RBAC `<SimpleForm>` component](./AuthRBAC.md#simpleform) documentation for more details.
+Check [the RBAC `<TabbedForm>` component](./AuthRBAC.md#tabbedform) documentation for more details.

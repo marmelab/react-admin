@@ -493,7 +493,6 @@ const ProductCreate = () => (
     </Create>
 );
 ```
-```
 {% endraw %}
 
 Check [the RBAC `<WizardForm>`](./AuthRBAC.md#wizardform) documentation for more details.
