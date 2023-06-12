@@ -19,7 +19,7 @@ React-admin v4 uses Material UI (Material-UI) v5. The Material UI team has writt
 
 ## Redux Is Gone
 
-React-admin no longer relies on Redux. Instead, it relies on [React context](https://reactjs.org/docs/context.html) and third-party libraries (e.g. [react-query](https://react-query-v3.tanstack.com/)). 
+React-admin no longer relies on Redux. Instead, it relies on [React context](https://react.dev/learn/passing-data-deeply-with-context) and third-party libraries (e.g. [react-query](https://react-query-v3.tanstack.com/)). 
 
 You will need to update your code if it contains any of the following keywords:
 
