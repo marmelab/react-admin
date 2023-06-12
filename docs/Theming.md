@@ -778,7 +778,7 @@ export default MyLayout;
 
 ## Customizing the AppBar Content
 
-By default, the react-admin `<AppBar>` component displays the page title. You can override this default by passing children to `<AppBar>` - they will replace the default title. And if you still want to include the page title, make sure you include an element with id `react-admin-title` in the top bar (this uses [React Portals](https://reactjs.org/docs/portals.html)).
+By default, the react-admin `<AppBar>` component displays the page title. You can override this default by passing children to `<AppBar>` - they will replace the default title. And if you still want to include the page title, make sure you include an element with id `react-admin-title` in the top bar (this uses [React Portals](https://react.dev/reference/react-dom/createPortal)).
 
 Here is an example customization for `<AppBar>` to include a company logo in the center of the page header:
 
