@@ -441,3 +441,59 @@ const PostCreate = () => (
     </Create>
 );
 ```
+
+## Role-Based Access Control (RBAC)
+
+Fine-grained permissions control can be added by using the [`<WizardForm>`](./AuthRBAC.md#wizardform) and [`<WizardFormStep>`](./AuthRBAC.md#wizardformstep) components provided by the `@react-admin/ra-enterprise` package. 
+
+{% raw %}
+```tsx
+import { WizardForm } from '@react-admin/ra-enterprise';
+
+const authProvider = {
+    checkAuth: () => Promise.resolve(),
+    login: () => Promise.resolve(),
+    logout: () => Promise.resolve(),
+    checkError: () => Promise.resolve(),
+    getPermissions: () =>Promise.resolve([
+        // 'delete' is missing
+        { action: ['list', 'edit'], resource: 'products' },
+        { action: 'write', resource: 'products.reference' },
+        { action: 'write', resource: 'products.width' },
+        { action: 'write', resource: 'products.height' },
+        // 'products.description' is missing
+        { action: 'write', resource: 'products.thumbnail' },
+        // 'products.image' is missing
+        { action: 'write', resource: 'products.step.description' },
+        { action: 'write', resource: 'products.step.images' },
+        // 'products.step.stock' is missing
+    ]),
+};
+
+const ProductCreate = () => (
+    <Create>
+        <WizardForm>
+            <WizardForm.Step name="description" label="Description">
+                <TextInput source="reference" />
+                <TextInput source="width" />
+                <TextInput source="height" />
+                {/* Won't be displayed */}
+                <TextInput source="description" />
+            </WizardForm.Step>
+            <WizardForm.Step name="images" label="Images">
+                {/* Won't be displayed */}
+                <TextInput source="image" />
+                <TextInput source="thumbnail" />
+            </WizardForm.Step>
+            {/* Won't be displayed */}
+            <WizardForm.Step name="stock" label="Stock">
+                <TextInput source="stock" />
+            </WizardForm.Step>
+        </WizardForm>
+    </Create>
+);
+```
+```
+{% endraw %}
+
+Check [the RBAC `<WizardForm>`](./AuthRBAC.md#wizardform) documentation for more details.
