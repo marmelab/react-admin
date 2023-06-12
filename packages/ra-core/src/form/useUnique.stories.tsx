@@ -118,7 +118,43 @@ export const Basic = () => {
     );
 };
 
-const WithCustomMessageForm = () => {
+const DeepFieldForm = () => {
+    const unique = useUnique();
+    return (
+        <Form>
+            <p>
+                The name field should be unique. Try to enter "John Doe" or
+                "Jane Doe".
+            </p>
+            <Input source="identity.name" defaultValue="" validate={unique()} />
+            <button type="submit">Submit</button>
+        </Form>
+    );
+};
+
+export const DeepField = () => {
+    const dataProvider = fakerestDataProvider(
+        {
+            users: [
+                { id: 1, identity: { name: 'John Doe' }, organization_id: 1 },
+                { id: 2, identity: { name: 'Jane Doe' }, organization_id: 2 },
+            ],
+            organizations: [
+                { id: 1, name: 'BigCorp' },
+                { id: 2, name: 'EvilCorp' },
+            ],
+        },
+        process.env.NODE_ENV !== 'test'
+    );
+
+    return (
+        <Wrapper dataProvider={dataProvider}>
+            <DeepFieldForm />
+        </Wrapper>
+    );
+};
+
+const WithMessageForm = () => {
     const unique = useUnique();
     return (
         <Form>
@@ -140,15 +176,15 @@ const WithCustomMessageForm = () => {
     );
 };
 
-export const WithCustomMessage = () => {
+export const WithMessage = () => {
     return (
         <Wrapper>
-            <WithCustomMessageForm />
+            <WithMessageForm />
         </Wrapper>
     );
 };
 
-const WithCustomTranslatedMessageForm = () => {
+const WithTranslatedMessageForm = () => {
     const unique = useUnique();
     return (
         <Form>
@@ -175,10 +211,10 @@ const WithCustomTranslatedMessageForm = () => {
     );
 };
 
-export const WithCustomTranslatedMessage = () => {
+export const WithTranslatedMessage = () => {
     return (
         <Wrapper>
-            <WithCustomTranslatedMessageForm />
+            <WithTranslatedMessageForm />
         </Wrapper>
     );
 };
