@@ -467,3 +467,56 @@ Note that you **must** set the `<LongForm resetOptions>` prop to `{ keepDirtyVal
 If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](https://marmelab.com/react-admin/Edit.html#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
 
 Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
+
+## Role-Based Access Control (RBAC)
+
+Fine-grained permissions control can be added by using the [`<LongForm>`](./AuthRBAC.md#longform) and [`<LongFormSection>`](./AuthRBAC.md#longformsection) components provided by the `@react-admin/ra-enterprise` package. 
+
+{% raw %}
+```tsx
+import { LongForm } from '@react-admin/ra-enterprise';
+
+const authProvider = {
+    checkAuth: () => Promise.resolve(),
+    login: () => Promise.resolve(),
+    logout: () => Promise.resolve(),
+    checkError: () => Promise.resolve(),
+    getPermissions: () =>Promise.resolve([
+        // 'delete' is missing
+        { action: ['list', 'edit'], resource: 'products' },
+        { action: 'write', resource: 'products.reference' },
+        { action: 'write', resource: 'products.width' },
+        { action: 'write', resource: 'products.height' },
+        // 'products.description' is missing
+        { action: 'write', resource: 'products.thumbnail' },
+        // 'products.image' is missing
+        { action: 'write', resource: 'products.Section.description' },
+        { action: 'write', resource: 'products.Section.images' },
+        // 'products.Section.stock' is missing
+    ]),
+};
+
+const ProductEdit = () => (
+    <Edit>
+        <LongForm>
+            <LongForm.Section name="description" label="Description">
+                <TextInput source="reference" />
+                <TextInput source="width" />
+                <TextInput source="height" />
+                <TextInput source="description" />
+            </LongForm.Section>
+            <LongForm.Section name="images" label="Images">
+                <TextInput source="image" />
+                <TextInput source="thumbnail" />
+            </LongForm.Section>
+            <LongForm.Section name="stock" label="Stock">
+                <TextInput source="stock" />
+            </LongForm.Section>
+            // delete button not displayed
+        </LongForm>
+    </Edit>
+);
+```
+{% endraw %}
+
+Check [the RBAC `<LongForm>`](./AuthRBAC.md#longform) documentation for more details.

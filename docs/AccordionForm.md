@@ -508,3 +508,56 @@ Note that you **must** set the `<AccordionForm resetOptions>` prop to `{ keepDir
 If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](https://marmelab.com/react-admin/Edit.html#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
 
 Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
+
+## Role-Based Access Control (RBAC)
+
+Fine-grained permissions control can be added by using the [`<AccordionForm>`](./AuthRBAC.md#accordionform), [`<AccordionFormPanel>`](./AuthRBAC.md#accordionformpanel) and [`<AccordionSection>`](./AuthRBAC.md#accordionsection) components provided by the `@react-admin/ra-enterprise` package. 
+
+{% raw %}
+```tsx
+import { AccordionForm } from '@react-admin/ra-enterprise';
+
+const authProvider = {
+    checkAuth: () => Promise.resolve(),
+    login: () => Promise.resolve(),
+    logout: () => Promise.resolve(),
+    checkError: () => Promise.resolve(),
+    getPermissions: () =>Promise.resolve([
+        // 'delete' is missing
+        { action: ['list', 'edit'], resource: 'products' },
+        { action: 'write', resource: 'products.reference' },
+        { action: 'write', resource: 'products.width' },
+        { action: 'write', resource: 'products.height' },
+        // 'products.description' is missing
+        { action: 'write', resource: 'products.thumbnail' },
+        // 'products.image' is missing
+        { action: 'write', resource: 'products.panel.description' },
+        { action: 'write', resource: 'products.panel.images' },
+        // 'products.panel.stock' is missing
+    ]),
+};
+
+const ProductEdit = () => (
+    <Edit>
+        <AccordionForm>
+            <AccordionForm.Panel label="description" label="Description">
+                <TextInput source="reference" />
+                <TextInput source="width" />
+                <TextInput source="height" />
+                <TextInput source="description" />
+            </AccordionForm.Panel>
+            <AccordionForm.Panel label="images" label="Images">
+                <TextInput source="image" />
+                <TextInput source="thumbnail" />
+            </AccordionForm.Panel>
+            <AccordionForm.Panel label="stock" label="Stock">
+                <TextInput source="stock" />
+            </AccordionForm.Panel>
+            // delete button not displayed
+        </AccordionForm>
+    </Edit>
+);
+```
+{% endraw %}
+
+Check [the RBAC `<AccordionForm>` component](./AuthRBAC.md#accordionform) documentation for more details.
