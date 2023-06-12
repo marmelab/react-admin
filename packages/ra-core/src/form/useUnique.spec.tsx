@@ -4,11 +4,11 @@ import {
     Basic,
     DataProviderErrorOnValidation,
     WithAdditionalFilters,
-    WithCustomMessage,
+    WithMessage,
 } from './useUnique.stories';
 
 describe('useUnique', () => {
-    it('should show the default error when a field is not unique', async () => {
+    it('should show the default error when the field value already exists', async () => {
         render(<Basic />);
 
         await screen.findByDisplayValue('John Doe');
@@ -18,7 +18,7 @@ describe('useUnique', () => {
         await screen.findByText('Must be unique');
     });
 
-    it('should not show the default error when a field is unique', async () => {
+    it('should not show the default error when the field value does not already exists', async () => {
         window.alert = jest.fn();
         render(<Basic />);
 
@@ -32,8 +32,8 @@ describe('useUnique', () => {
         expect(screen.queryByText('Must be unique')).toBeNull();
     });
 
-    it('should show a custom error when a field is not unique and message is provided', async () => {
-        render(<WithCustomMessage />);
+    it('should show a custom error when the field value already exists and message is provided', async () => {
+        render(<WithMessage />);
 
         await screen.findByDisplayValue('John Doe');
 
@@ -42,7 +42,7 @@ describe('useUnique', () => {
         await screen.findByText('Someone is already registered with this name');
     });
 
-    it('should not show the custom error when a field is unique and message is provided', async () => {
+    it('should not show the custom error when the field value does not already exists and message is provided', async () => {
         window.alert = jest.fn();
         render(<Basic />);
 
@@ -81,13 +81,13 @@ describe('useUnique', () => {
         render(<DataProviderErrorOnValidation />);
 
         await screen.findByDisplayValue('John Doe');
-
+        // The dataProvider for this story fails one over two times
+        // Here's the first time, it should show an error
         fireEvent.click(screen.getByText('Submit'));
-
         expect(screen.queryByText('Server communication error')).toBeNull();
 
+        // Here's the second time, it should show the validation message
         fireEvent.click(screen.getByText('Submit'));
-
         expect(screen.queryByText('Must be unique')).toBeNull();
     });
 });

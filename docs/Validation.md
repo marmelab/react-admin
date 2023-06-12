@@ -280,7 +280,7 @@ const UserCreateForm = () => {
 
 #### `message`
 
-A custom message to display when the validation fails. Defaults to `ra.validation.unique`.
+A custom message to display when the validation fails. Defaults to `Must be unique` (translation key: `ra.validation.unique`).
 It accepts a translation key. The [`i18nProvider.translate` function] will be called with the following parameters:
 - `source`: the input name
 - `label`: the translated input label
