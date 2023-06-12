@@ -9,7 +9,7 @@ describe('<RichTextInput />', () => {
         const { container, rerender } = render(<Basic record={record} />);
 
         await waitFor(() => {
-            expect(container.querySelector('#body').innerHTML).toEqual(
+            expect(container.querySelector('#body')?.innerHTML).toEqual(
                 '<h1>Hello world!</h1>'
             );
         });
@@ -18,7 +18,7 @@ describe('<RichTextInput />', () => {
         rerender(<Basic record={newRecord} />);
 
         await waitFor(() => {
-            expect(container.querySelector('#body').innerHTML).toEqual(
+            expect(container.querySelector('#body')?.innerHTML).toEqual(
                 '<h1>Goodbye world!</h1>'
             );
         });
