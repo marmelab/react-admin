@@ -164,9 +164,11 @@ This optional prop should be a function, which gets called for each row. It rece
 
 ```jsx
 import { List, SimpleList } from 'react-admin';
+
 const postRowStyle = (record, index) => ({
     backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
 });
+
 export const PostList = () => (
     <List>
         <SimpleList primaryText={record => record.title} rowStyle={postRowStyle} />
