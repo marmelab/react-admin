@@ -413,7 +413,7 @@ export const MyAppBar = () => (
     <AppBar position="static">
         <Toolbar>
             <TitlePortal />
-            <Box flex="1">
+            <Box flex="1" />
             <RefreshIconButton />
         </Toolbar>
     </AppBar>
