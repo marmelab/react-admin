@@ -644,7 +644,7 @@ export const PostList = () => (
 
 ## `rowSx`
 
-You can customize the styles of rows and cells in `<Datagrid>` (applied to the `<DatagridRow>` element) based on the record, thanks to the `rowSx` prop, which expects a function. React-admin calls this function for each row, passing the current record and index as arguments. The function should return a Material UI `sx`, which react-admin uses as a `<TableRow sx>` prop. 
+You can customize the styles of rows and cells in `<Datagrid>` (applied to the `<DatagridRow>` element) based on the record, thanks to the `rowSx` prop, which expects a function. React-admin calls this function for each row, passing the current record and index as arguments. The function should return a Material UI [`sx`](https://mui.com/system/getting-started/the-sx-prop/), which react-admin uses as a `<TableRow sx>` prop. 
 
 For instance, this allows to apply a custom background to the entire row if one value of the record - like its number of views - passes a certain threshold.
 
