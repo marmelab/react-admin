@@ -626,6 +626,7 @@ const PostList = () => (
 You can customize the `<Datagrid>` row style (applied to the `<tr>` element) based on the record, thanks to the `rowStyle` prop, which expects a function. React-admin calls this function for each row, passing the current record and index as arguments. The function should return a style object, which react-admin uses as a `<tr style>` prop. 
 
 For instance, this allows to apply a custom background to the entire row if one value of the record - like its number of views - passes a certain threshold.
+
 ```jsx
 import { List, Datagrid } from 'react-admin';
 
