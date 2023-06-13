@@ -3,9 +3,7 @@ import { useQuery, UseQueryOptions } from 'react-query';
 import useAuthProvider from './useAuthProvider';
 
 const emptyParams = {};
-const defaultQueryParams: UseQueryOptions = {
-    staleTime: 5 * 60 * 1000,
-};
+
 /**
  * Hook for getting user permissions
  *
@@ -38,7 +36,9 @@ const defaultQueryParams: UseQueryOptions = {
  */
 const usePermissions = <Permissions = any, Error = any>(
     params = emptyParams,
-    queryParams: UseQueryOptions<Permissions, Error> = {}
+    queryParams: UseQueryOptions<Permissions, Error> = {
+        staleTime: 5 * 60 * 1000,
+    }
 ) => {
     const authProvider = useAuthProvider();
 
@@ -47,10 +47,7 @@ const usePermissions = <Permissions = any, Error = any>(
         authProvider
             ? () => authProvider.getPermissions(params)
             : async () => [],
-        {
-            ...defaultQueryParams,
-            ...queryParams,
-        }
+        queryParams
     );
 
     return useMemo(
