@@ -43,9 +43,7 @@ import { useResourceDefinitionContext } from './useResourceDefinitionContext';
 export const useConfigureAdminRouterFromChildren = (
     children: AdminChildren
 ): RoutesAndResources & { status: AdminRouterStatus } => {
-    const { permissions, isLoading } = usePermissions(undefined, {
-        enabled: !!getSingleChildFunction(children),
-    });
+    const { permissions, isLoading } = usePermissions();
 
     // Whenever children are updated, update our custom routes and resources
     const [routesAndResources, status] = useRoutesAndResourcesFromChildren(
