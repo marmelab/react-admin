@@ -51,6 +51,7 @@ Here are all the props accepted by the component:
 * [`isRowExpandable`](#isrowexpandable)
 * [`isRowSelectable`](#isrowselectable)
 * [`optimized`](#optimized-better-performance-for-large-tables)
+* [`rowStyle`](#rowstyle)
 * [`rowSx`](#rowsx)
 * [`rowClick`](#rowclick)
 * [`size`](#size)
@@ -615,6 +616,26 @@ const PostList = () => (
             <TextField source="id" />
             <TextField source="title" />
             <TextField source="views" />
+        </Datagrid>
+    </List>
+);
+```
+
+## `rowStyle`
+
+You can customize the `<Datagrid>` row style (applied to the `<tr>` element) based on the record, thanks to the `rowStyle` prop, which expects a function. React-admin calls this function for each row, passing the current record and index as arguments. The function should return a style object, which react-admin uses as a `<tr style>` prop. 
+
+For instance, this allows to apply a custom background to the entire row if one value of the record - like its number of views - passes a certain threshold.
+```jsx
+import { List, Datagrid } from 'react-admin';
+
+const postRowStyle = (record, index) => ({
+    backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
+});
+export const PostList = () => (
+    <List>
+        <Datagrid rowStyle={postRowStyle}>
+            ...
         </Datagrid>
     </List>
 );
