@@ -178,7 +178,7 @@ export const PostList = () => (
 
 ## `rowSx`
 
-This optional prop should be a function, which gets called for each row. It receives the current record and index as arguments, and should return a style object. The style object is applied to the `<ListItem>` styles prop.
+This optional prop should be a function, which gets called for each row. It receives the current record and index as arguments, and should return a Material UI [`sx`](https://mui.com/system/getting-started/the-sx-prop/). The style object is applied to the `<ListItem>` `sx` prop.
 
 ```jsx
 import { List, SimpleList } from 'react-admin';
