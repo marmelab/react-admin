@@ -129,6 +129,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         resource,
         rowClick,
         rowSx,
+        rowStyle,
         size = 'small',
         sx,
         expandSingle = false,
@@ -272,6 +273,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                                 onToggleItem: handleToggleItem,
                                 resource,
                                 rowSx,
+                                rowStyle,
                                 selectedIds,
                                 isRowSelectable,
                             },
@@ -318,6 +320,7 @@ Datagrid.propTypes = {
         PropTypes.bool,
     ]),
     rowSx: PropTypes.func,
+    rowStyle: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     setSort: PropTypes.func,
     total: PropTypes.number,
@@ -346,6 +349,7 @@ export interface DatagridProps<RecordType extends RaRecord = any>
     optimized?: boolean;
     rowClick?: string | RowClickFunction | false;
     rowSx?: (record: RecordType, index: number) => SxProps;
+    rowStyle?: (record: RecordType, index: number) => any;
     size?: 'medium' | 'small';
     // can be injected when using the component without context
     sort?: SortPayload;

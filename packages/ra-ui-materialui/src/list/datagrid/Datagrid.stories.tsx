@@ -134,6 +134,21 @@ export const Hover = () => (
     </Wrapper>
 );
 
+export const RowStyle = () => (
+    <Wrapper>
+        <Datagrid
+            rowStyle={(record: any) => ({
+                backgroundColor: record.id % 2 ? 'white' : '#eee',
+            })}
+        >
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </Wrapper>
+);
+
 export const RowSx = () => (
     <Wrapper>
         <Datagrid

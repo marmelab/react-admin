@@ -22,6 +22,7 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
             row,
             rowClick,
             rowSx,
+            rowStyle,
             selectedIds,
             isRowSelectable,
             ...rest
@@ -53,6 +54,7 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
                         selectable: !isRowSelectable || isRowSelectable(record),
                         selected: selectedIds?.includes(record.id),
                         sx: rowSx?.(record, rowIndex),
+                        style: rowStyle?.(record, rowIndex),
                     },
                     children
                 )
@@ -80,6 +82,7 @@ DatagridBody.propTypes = {
         PropTypes.bool,
     ]),
     rowSx: PropTypes.func,
+    rowStyle: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     styles: PropTypes.object,
     isRowSelectable: PropTypes.func,
@@ -112,6 +115,7 @@ export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
     row?: ReactElement;
     rowClick?: string | RowClickFunction | false;
     rowSx?: (record: RaRecord, index: number) => SxProps;
+    rowStyle?: (record: RaRecord, index: number) => any;
     selectedIds?: Identifier[];
     isRowSelectable?: (record: RaRecord) => boolean;
 }
