@@ -29,7 +29,10 @@ export const authProvider: AuthProvider = {
     checkError: () => Promise.resolve(),
     checkAuth: () =>
         localStorage.getItem('user') ? Promise.resolve() : Promise.reject(),
-    getPermissions: () => Promise.reject('Unknown method'),
+    getPermissions: () => {
+        const role = localStorage.getItem('permissions');
+        return role ? Promise.resolve(role) : Promise.reject();
+    },
     getIdentity: () => {
         const persistedUser = localStorage.getItem('user');
         const user = persistedUser ? JSON.parse(persistedUser) : null;
