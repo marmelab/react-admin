@@ -1,26 +1,68 @@
 import * as React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     Basic,
     DataProviderErrorOnValidation,
+    DeepField,
     WithAdditionalFilters,
     WithMessage,
 } from './useUnique.stories';
+import { testDataProvider } from '../dataProvider';
+import { DataProvider } from '../types';
 
 describe('useUnique', () => {
+    const baseDataProvider = (overrides?: Partial<DataProvider>) =>
+        testDataProvider({
+            // @ts-ignore
+            getList: jest.fn(() =>
+                Promise.resolve({
+                    data: [{ id: 1, name: 'John Doe' }],
+                    total: 1,
+                })
+            ),
+            // @ts-ignore
+            create: jest.fn(() => Promise.resolve({ data: { id: 1 } })),
+            ...overrides,
+        });
+
     it('should show the default error when the field value already exists', async () => {
-        render(<Basic />);
+        const dataProvider = baseDataProvider();
+        render(<Basic dataProvider={dataProvider} />);
 
         await screen.findByDisplayValue('John Doe');
 
         fireEvent.click(screen.getByText('Submit'));
-
+        await waitFor(() => {
+            expect(dataProvider.getList).toHaveBeenCalledWith('users', {
+                filter: {
+                    name: 'John Doe',
+                },
+                pagination: {
+                    page: 1,
+                    perPage: 1,
+                },
+                sort: {
+                    field: 'id',
+                    order: 'ASC',
+                },
+            });
+        });
         await screen.findByText('Must be unique');
+        expect(dataProvider.create).not.toHaveBeenCalled();
     });
 
     it('should not show the default error when the field value does not already exists', async () => {
-        window.alert = jest.fn();
-        render(<Basic />);
+        const dataProvider = baseDataProvider({
+            // @ts-ignore
+            getList: jest.fn(() =>
+                Promise.resolve({
+                    data: [],
+                    total: 0,
+                })
+            ),
+        });
+
+        render(<Basic dataProvider={dataProvider} />);
 
         await screen.findByDisplayValue('John Doe');
         fireEvent.change(screen.getByDisplayValue('John Doe'), {
@@ -29,22 +71,35 @@ describe('useUnique', () => {
 
         fireEvent.click(screen.getByText('Submit'));
 
+        await waitFor(() => {
+            expect(dataProvider.create).toHaveBeenCalled();
+        });
         expect(screen.queryByText('Must be unique')).toBeNull();
     });
 
     it('should show a custom error when the field value already exists and message is provided', async () => {
-        render(<WithMessage />);
+        const dataProvider = baseDataProvider();
+        render(<WithMessage dataProvider={dataProvider} />);
 
         await screen.findByDisplayValue('John Doe');
 
         fireEvent.click(screen.getByText('Submit'));
 
         await screen.findByText('Someone is already registered with this name');
+        expect(dataProvider.create).not.toHaveBeenCalled();
     });
 
     it('should not show the custom error when the field value does not already exists and message is provided', async () => {
-        window.alert = jest.fn();
-        render(<Basic />);
+        const dataProvider = baseDataProvider({
+            // @ts-ignore
+            getList: jest.fn(() =>
+                Promise.resolve({
+                    data: [],
+                    total: 0,
+                })
+            ),
+        });
+        render(<WithMessage dataProvider={dataProvider} />);
 
         await screen.findByDisplayValue('John Doe');
         fireEvent.change(screen.getByDisplayValue('John Doe'), {
@@ -52,29 +107,68 @@ describe('useUnique', () => {
         });
 
         fireEvent.click(screen.getByText('Submit'));
-
+        await waitFor(() => {
+            expect(dataProvider.create).toHaveBeenCalled();
+        });
         expect(
             screen.queryByText('Someone is already registered with this name')
         ).toBeNull();
     });
 
     it('should call the dataProvider with additional filter when provided', async () => {
-        render(<WithAdditionalFilters />);
+        const dataProvider = baseDataProvider();
+        render(<WithAdditionalFilters dataProvider={dataProvider} />);
 
         await screen.findByDisplayValue('John Doe');
 
         fireEvent.click(screen.getByText('Submit'));
 
-        expect(screen.queryByText('Must be unique')).toBeNull();
-
-        fireEvent.change(screen.getByDisplayValue('John Doe'), {
-            // Jane exists but is linked to another organization than BigCorp (the default)
-            target: { value: 'Jane Doe' },
+        await waitFor(() => {
+            expect(dataProvider.getList).toHaveBeenCalledWith('users', {
+                filter: {
+                    name: 'John Doe',
+                    organization_id: 1,
+                },
+                pagination: {
+                    page: 1,
+                    perPage: 1,
+                },
+                sort: {
+                    field: 'id',
+                    order: 'ASC',
+                },
+            });
         });
+        await screen.findByText('Must be unique');
+    });
+
+    it('should work with deep paths', async () => {
+        const dataProvider = baseDataProvider();
+        render(<DeepField dataProvider={dataProvider} />);
+
+        await screen.findByDisplayValue('John Doe');
 
         fireEvent.click(screen.getByText('Submit'));
 
-        expect(screen.queryByText('Must be unique')).toBeNull();
+        await waitFor(() => {
+            expect(dataProvider.getList).toHaveBeenCalledWith('users', {
+                filter: {
+                    identity: {
+                        name: 'John Doe',
+                    },
+                },
+                pagination: {
+                    page: 1,
+                    perPage: 1,
+                },
+                sort: {
+                    field: 'id',
+                    order: 'ASC',
+                },
+            });
+        });
+        await screen.findByText('Must be unique');
+        expect(dataProvider.create).not.toHaveBeenCalled();
     });
 
     it('should show an error when the dataProvider fails', async () => {

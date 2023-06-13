@@ -2,11 +2,12 @@ import * as React from 'react';
 import fakerestDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { EditBase } from '../controller';
 import { Form } from './Form';
 import { useInput } from './useInput';
 import {
     CoreAdminContext,
+    CreateBase,
+    DataProvider,
     FormDataConsumer,
     mergeTranslations,
     useUnique,
@@ -81,17 +82,7 @@ const Wrapper = ({ children, dataProvider = defaultDataProvider }) => {
             queryClient={new QueryClient()}
             i18nProvider={i18nProvider}
         >
-            <EditBase
-                id="1"
-                resource="users"
-                mutationOptions={{
-                    onSuccess: () => {
-                        alert('success');
-                    },
-                }}
-            >
-                {children}
-            </EditBase>
+            <CreateBase resource="users">{children}</CreateBase>
         </CoreAdminContext>
     );
 };
@@ -99,7 +90,7 @@ const Wrapper = ({ children, dataProvider = defaultDataProvider }) => {
 const BasicForm = () => {
     const unique = useUnique();
     return (
-        <Form>
+        <Form defaultValues={{ name: 'John Doe' }}>
             <p>
                 The name field should be unique. Try to enter "John Doe" or
                 "Jane Doe".
@@ -110,9 +101,9 @@ const BasicForm = () => {
     );
 };
 
-export const Basic = () => {
+export const Basic = ({ dataProvider }: { dataProvider?: DataProvider }) => {
     return (
-        <Wrapper>
+        <Wrapper dataProvider={dataProvider}>
             <BasicForm />
         </Wrapper>
     );
@@ -121,7 +112,7 @@ export const Basic = () => {
 const DeepFieldForm = () => {
     const unique = useUnique();
     return (
-        <Form>
+        <Form defaultValues={{ identity: { name: 'John Doe' } }}>
             <p>
                 The name field should be unique. Try to enter "John Doe" or
                 "Jane Doe".
@@ -132,8 +123,8 @@ const DeepFieldForm = () => {
     );
 };
 
-export const DeepField = () => {
-    const dataProvider = fakerestDataProvider(
+export const DeepField = ({
+    dataProvider = fakerestDataProvider(
         {
             users: [
                 { id: 1, identity: { name: 'John Doe' }, organization_id: 1 },
@@ -145,8 +136,8 @@ export const DeepField = () => {
             ],
         },
         process.env.NODE_ENV !== 'test'
-    );
-
+    ),
+}) => {
     return (
         <Wrapper dataProvider={dataProvider}>
             <DeepFieldForm />
@@ -157,7 +148,7 @@ export const DeepField = () => {
 const WithMessageForm = () => {
     const unique = useUnique();
     return (
-        <Form>
+        <Form defaultValues={{ name: 'John Doe' }}>
             <p>
                 The name field should be unique. Try to enter "John Doe" or
                 "Jane Doe".
@@ -176,9 +167,13 @@ const WithMessageForm = () => {
     );
 };
 
-export const WithMessage = () => {
+export const WithMessage = ({
+    dataProvider,
+}: {
+    dataProvider?: DataProvider;
+}) => {
     return (
-        <Wrapper>
+        <Wrapper dataProvider={dataProvider}>
             <WithMessageForm />
         </Wrapper>
     );
@@ -187,7 +182,7 @@ export const WithMessage = () => {
 const WithTranslatedMessageForm = () => {
     const unique = useUnique();
     return (
-        <Form>
+        <Form defaultValues={{ name: 'John Doe' }}>
             <p>
                 The name field should be unique. Try to enter "John Doe" or
                 "Jane Doe".
@@ -222,7 +217,7 @@ export const WithTranslatedMessage = () => {
 const WithAdditionalFiltersForm = () => {
     const unique = useUnique();
     return (
-        <Form>
+        <Form defaultValues={{ name: 'John Doe', organization_id: 1 }}>
             <p>
                 The name field should be unique. "John Doe" is already
                 registered for BigCorp and "Jane Doe" is already registered for
@@ -247,9 +242,13 @@ const WithAdditionalFiltersForm = () => {
     );
 };
 
-export const WithAdditionalFilters = () => {
+export const WithAdditionalFilters = ({
+    dataProvider,
+}: {
+    dataProvider?: DataProvider;
+}) => {
     return (
-        <Wrapper>
+        <Wrapper dataProvider={dataProvider}>
             <WithAdditionalFiltersForm />
         </Wrapper>
     );
