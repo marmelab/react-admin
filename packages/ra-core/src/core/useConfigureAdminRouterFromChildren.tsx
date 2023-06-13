@@ -45,6 +45,7 @@ export const useConfigureAdminRouterFromChildren = (
 ): RoutesAndResources & { status: AdminRouterStatus } => {
     const { permissions, isLoading } = usePermissions(undefined, {
         enabled: !!getSingleChildFunction(children),
+        staleTime: 5 * 60 * 1000,
     });
 
     // Whenever children are updated, update our custom routes and resources
