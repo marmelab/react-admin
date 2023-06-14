@@ -30,8 +30,7 @@ export const authProvider: AuthProvider = {
     checkAuth: () =>
         localStorage.getItem('user') ? Promise.resolve() : Promise.reject(),
     getPermissions: () => {
-        const role = localStorage.getItem('permissions');
-        return role ? Promise.resolve(role) : Promise.reject();
+        return Promise.resolve(undefined);
     },
     getIdentity: () => {
         const persistedUser = localStorage.getItem('user');
