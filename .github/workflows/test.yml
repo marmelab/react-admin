@@ -135,8 +135,8 @@ jobs:
         run: unzip -o -u demo-build.zip
       - name: Run e-commerce
         # Run the demo in production mode
-        run: cd ./examples/demo && yarn preview
-      - name: GreenFrame Analysis
+        run: cd ./examples/demo && yarn preview --no-open --host 0.0.0.0 &
+      - name: Run GreenFrame Analysis
         uses: marmelab/greenframe-action@1.0.0
         env:
           GREENFRAME_SECRET_TOKEN: ${{secrets.GREENFRAME_SECRET_TOKEN}}

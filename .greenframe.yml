@@ -1,6 +1,6 @@
 scenarios:
   - path: "./greenframe/scenario.js"
-    name: "Login"
+    name: "Main scenario"
     threshold: 0.5
 baseURL: "http://localhost:4173"
 projectName: "react-admin"
