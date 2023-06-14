@@ -41,13 +41,7 @@ async page => {
     await page.addMilestone('Edit first reviewer customer');
     await page.getByRole('row').getByRole('cell').nth(1).click();
     await page.waitForNetworkIdle();
-    await page.addMilestone('Go to review');
-    await page
-        .getByRole('link', { name: /Review on poster/ })
-        .first()
-        .click();
-    await page.waitForNetworkIdle();
-    await page.addMilestone('Go to Poster');
-    await page.getByRole('link').nth(1).click();
+    await page.addMilestone('Go to review or poster');
+    await page.getByRole('link').first().click();
     await page.waitForNetworkIdle();
 };
