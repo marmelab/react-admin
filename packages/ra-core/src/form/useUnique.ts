@@ -3,8 +3,9 @@ import { useResourceContext } from '../core';
 import { useDataProvider } from '../dataProvider';
 import { useTranslate, useTranslateLabel } from '../i18n';
 import { InputProps } from './useInput';
-import { useCallback } from 'react';
-import { set } from 'lodash';
+import { useCallback, useRef } from 'react';
+import set from 'lodash/set';
+import { asyncDebounce } from '../util';
 
 /**
  * A hook that returns a validation function checking for a record field uniqueness
@@ -47,16 +48,6 @@ import { set } from 'lodash';
  *         </SimpleForm>
  *     );
  * }
- *
- * @example // With a custom message
- * const UserCreateForm = () => {
- *     const unique = useUnique();
- *     return (
- *         <SimpleForm>
- *             <TextInput source="username" validate={unique({ message: 'Username is already used')} />
- *         </SimpleForm>
- *     );
- * }
  */
 export const useUnique = (options?: UseUniqueOptions) => {
     const dataProvider = useDataProvider();
@@ -64,14 +55,23 @@ export const useUnique = (options?: UseUniqueOptions) => {
     const resource = useResourceContext(options);
     const translate = useTranslate();
 
+    const debouncedGetList = useRef(
+        // The initial value is here to set the correct type on useRef
+        asyncDebounce(
+            dataProvider.getList,
+            options?.debounce ?? DEFAULT_DEBOUNCE
+        )
+    );
+
     const validateUnique = useCallback(
-        (callTimeOptions?: UseUniqueOptions) => async (
-            value: any,
-            allValues: any,
-            props: InputProps
-        ) => {
-            const { message, filter } = merge<UseUniqueOptions, any, any>(
+        (callTimeOptions?: UseUniqueOptions) => {
+            const { message, filter, debounce: interval } = merge<
+                UseUniqueOptions,
+                any,
+                any
+            >(
                 {
+                    debounce: DEFAULT_DEBOUNCE,
                     filter: {},
                     message: 'ra.validation.unique',
                 },
@@ -79,31 +79,43 @@ export const useUnique = (options?: UseUniqueOptions) => {
                 callTimeOptions
             );
 
-            try {
-                const finalFilter = set(merge({}, filter), props.source, value);
-                const { total } = await dataProvider.getList(resource, {
-                    filter: finalFilter,
-                    pagination: { page: 1, perPage: 1 },
-                    sort: { field: 'id', order: 'ASC' },
-                });
+            debouncedGetList.current = asyncDebounce(
+                dataProvider.getList,
+                interval
+            );
 
-                if (total > 0) {
-                    return translate(message, {
-                        _: message,
-                        source: props.source,
-                        value,
-                        field: translateLabel({
-                            label: props.label,
-                            source: props.source,
-                            resource,
-                        }),
+            return async (value: any, allValues: any, props: InputProps) => {
+                try {
+                    const finalFilter = set(
+                        merge({}, filter),
+                        props.source,
+                        value
+                    );
+                    const { total } = await debouncedGetList.current(resource, {
+                        filter: finalFilter,
+                        pagination: { page: 1, perPage: 1 },
+                        sort: { field: 'id', order: 'ASC' },
                     });
-                }
-            } catch (error) {
-                return translate('ra.notification.http_error');
-            }
 
-            return undefined;
+                    if (total > 0) {
+                        return translate(message, {
+                            _: message,
+                            source: props.source,
+                            value,
+                            field: translateLabel({
+                                label: props.label,
+                                source: props.source,
+                                resource,
+                            }),
+                        });
+                    }
+                } catch (error) {
+                    console.error(error);
+                    return translate('ra.notification.http_error');
+                }
+
+                return undefined;
+            };
         },
         [dataProvider, options, resource, translate, translateLabel]
     );
@@ -111,7 +123,10 @@ export const useUnique = (options?: UseUniqueOptions) => {
     return validateUnique;
 };
 
+const DEFAULT_DEBOUNCE = 1000;
+
 export type UseUniqueOptions = {
+    debounce?: number;
     resource?: string;
     message?: string;
     filter?: Record<string, any>;
