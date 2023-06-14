@@ -51,7 +51,7 @@ describe('useUnique', () => {
         expect(dataProvider.create).not.toHaveBeenCalled();
     });
 
-    it('should not show the default error when the field value does not already exists', async () => {
+    it('should not show the default error when the field value does not already exist', async () => {
         const dataProvider = baseDataProvider({
             // @ts-ignore
             getList: jest.fn(() =>
@@ -89,7 +89,7 @@ describe('useUnique', () => {
         expect(dataProvider.create).not.toHaveBeenCalled();
     });
 
-    it('should not show the custom error when the field value does not already exists and message is provided', async () => {
+    it('should not show the custom error when the field value does not already exist and a message is provided', async () => {
         const dataProvider = baseDataProvider({
             // @ts-ignore
             getList: jest.fn(() =>
