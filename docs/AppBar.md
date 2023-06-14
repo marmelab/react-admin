@@ -383,7 +383,10 @@ export const MyAppBar = () => (
 
 A common use case for app bar customization is to add a site-wide search engine. The `<Search>` component is a good starting point for this.
 
-![ra-search](https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.webm" type="video/webm" />
+  Your browser does not support the video tag.
+</video>
 
 ```jsx
 // in src/MyAppBar.jsx

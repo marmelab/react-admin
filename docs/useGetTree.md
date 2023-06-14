@@ -9,7 +9,10 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 It calls `dataProvider.getTree()` (one of the new `dataProvider` methods supported by `ra-tree`) when the component mounts, and returns the tree nodes in a flat array.
 
-![useGetTree](https://marmelab.com/ra-enterprise/modules/assets/ra-tree-overview.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-tree-overview.webm" type="video/webm" />
+  Your browser does not support the video tag.
+</video>
 
 ## Usage
 

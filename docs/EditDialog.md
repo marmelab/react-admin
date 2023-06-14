@@ -7,7 +7,10 @@ title: "EditDialog"
 
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers a replacement to [the `<Edit>` component](./Edit.md) allowing users to update records without leaving the context of the list page.
 
-![EditDialog](https://marmelab.com/ra-enterprise/modules/assets/edit-dialog.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/edit-dialog.webm" type="video/webm" />
+  Your browser does not support the video tag.
+</video>
 
 ## Usage
 
@@ -76,7 +79,10 @@ This may not be what you want if you need to display the edit dialog in another 
 
 In that case, use [the `<EditInDialogButton>` component](./EditInDialogButton.md), which doesn't create a route, but renders the dialog when the user clicks on it.
 
-![EditInDialogButton](https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.webm" type="video/webm" />
+  Your browser does not support the video tag.
+</video>
 
 Put `<EditInDialogButton>` wherever you would put an `<EditButton>`, and use the same children as you would for an `<Edit>` component (e.g. a `<SimpleForm>`): 
 
