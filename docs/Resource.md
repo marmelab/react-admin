@@ -321,6 +321,7 @@ export const App = () => (
 
 <video controls autoplay playsinline muted loop width="100%">
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/breadcumb-nested-resource.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/breadcumb-nested-resource.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

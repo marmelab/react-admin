@@ -11,6 +11,7 @@ It can be useful in case you want the ability to show a record linked by a refer
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

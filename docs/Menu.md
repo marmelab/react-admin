@@ -323,6 +323,7 @@ If you need to display a menu item with a submenu, you should use [the `<MultiLe
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

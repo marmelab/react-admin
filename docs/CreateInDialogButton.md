@@ -11,6 +11,7 @@ It can be useful in case you want the ability to create a record linked by a ref
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/CreateInDialogButton.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/CreateInDialogButton.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

@@ -636,6 +636,7 @@ You can do the same for error notifications, by passing a custom `onError`  call
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/edit-dialog.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/edit-dialog.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

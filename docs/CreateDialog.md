@@ -9,6 +9,7 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/create-dialog.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/create-dialog.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -80,6 +81,7 @@ In that case, use [the `<CreateInDialogButton>` component](./CreateInDialogButto
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/CreateInDialogButton.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/CreateInDialogButton.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

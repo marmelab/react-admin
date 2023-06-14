@@ -562,6 +562,7 @@ Note: In order to get the `mutationOptions` being considered, you have to set th
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/create-dialog.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/create-dialog.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
