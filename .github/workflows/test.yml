@@ -83,6 +83,14 @@ jobs:
           # Needed as workaround for Vite https://github.com/vitejs/vite/issues/2433#issuecomment-831399876
           # value = (your memory in GiB, 6.51 for GH Actions) * 1024 - 512
           NODE_OPTIONS: '--max-old-space-size=6163'
+    - name: Zip demo build
+      run: zip demo-build.zip -r examples/demo/dist examples/demo/package.json
+    - name: Upload demo build artifact
+      uses: actions/upload-artifact@v3
+      with:
+          name: demo-build
+          path: demo-build.zip
+          retention-days: 1
 
   crm:
     runs-on: ubuntu-latest
@@ -101,3 +109,30 @@ jobs:
     - name: Build crm
       run: make build-crm
 
+  greenframe:
+    runs-on: ubuntu-latest
+    name: GreenFrame
+    steps:
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      # To use this repository's private action,
+      # you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Fetch all the git history to enable git comparison
+      - name: Download demo build
+        uses: actions/download-artifact@v3
+        with:
+            name: demo-build
+      - name: Unzip demo build
+        run: unzip -o -u demo-build.zip
+      - name: Run e-commerce
+        # Run the demo in production mode
+        run: cd ./examples/demo && yarn preview
+      - name: GreenFrame Analysis
+        uses: marmelab/greenframe-action@1.0.0
+        env:
+          GREENFRAME_SECRET_TOKEN: ${{secrets.GREENFRAME_SECRET_TOKEN}}
