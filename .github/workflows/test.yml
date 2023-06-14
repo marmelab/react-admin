@@ -112,6 +112,7 @@ jobs:
   greenframe:
     runs-on: ubuntu-latest
     name: GreenFrame
+    needs: [e-commerce]
     steps:
       - name: Setup node
         uses: actions/setup-node@v3
