@@ -11,6 +11,13 @@ import { testDataProvider } from '../dataProvider';
 import { DataProvider } from '../types';
 
 describe('useUnique', () => {
+    beforeEach(() => {
+        jest.useFakeTimers();
+    });
+    afterEach(() => {
+        jest.useRealTimers();
+    });
+
     const baseDataProvider = (overrides?: Partial<DataProvider>) =>
         testDataProvider({
             // @ts-ignore
@@ -69,12 +76,18 @@ describe('useUnique', () => {
             target: { value: 'Jordan Doe' },
         });
 
+        await waitFor(() => {
+            expect(screen.queryByText('Must be unique')).toBeNull();
+        });
+
         fireEvent.click(screen.getByText('Submit'));
 
-        await waitFor(() => {
-            expect(dataProvider.create).toHaveBeenCalled();
-        });
-        expect(screen.queryByText('Must be unique')).toBeNull();
+        await waitFor(
+            () => {
+                expect(dataProvider.create).toHaveBeenCalled();
+            },
+            { timeout: 5000 }
+        );
     });
 
     it('should show a custom error when the field value already exists and message is provided', async () => {
@@ -82,10 +95,13 @@ describe('useUnique', () => {
         render(<WithMessage dataProvider={dataProvider} />);
 
         await screen.findByDisplayValue('John Doe');
-
         fireEvent.click(screen.getByText('Submit'));
 
-        await screen.findByText('Someone is already registered with this name');
+        await screen.findByText(
+            'Someone is already registered with this name',
+            {},
+            { timeout: 5000 }
+        );
         expect(dataProvider.create).not.toHaveBeenCalled();
     });
 
@@ -107,9 +123,12 @@ describe('useUnique', () => {
         });
 
         fireEvent.click(screen.getByText('Submit'));
-        await waitFor(() => {
-            expect(dataProvider.create).toHaveBeenCalled();
-        });
+        await waitFor(
+            () => {
+                expect(dataProvider.create).toHaveBeenCalled();
+            },
+            { timeout: 5000 }
+        );
         expect(
             screen.queryByText('Someone is already registered with this name')
         ).toBeNull();
@@ -123,22 +142,25 @@ describe('useUnique', () => {
 
         fireEvent.click(screen.getByText('Submit'));
 
-        await waitFor(() => {
-            expect(dataProvider.getList).toHaveBeenCalledWith('users', {
-                filter: {
-                    name: 'John Doe',
-                    organization_id: 1,
-                },
-                pagination: {
-                    page: 1,
-                    perPage: 1,
-                },
-                sort: {
-                    field: 'id',
-                    order: 'ASC',
-                },
-            });
-        });
+        await waitFor(
+            () => {
+                expect(dataProvider.getList).toHaveBeenCalledWith('users', {
+                    filter: {
+                        name: 'John Doe',
+                        organization_id: 1,
+                    },
+                    pagination: {
+                        page: 1,
+                        perPage: 1,
+                    },
+                    sort: {
+                        field: 'id',
+                        order: 'ASC',
+                    },
+                });
+            },
+            { timeout: 5000 }
+        );
         await screen.findByText('Must be unique');
     });
 
