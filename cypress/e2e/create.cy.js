@@ -374,7 +374,7 @@ describe('Create Page', () => {
         );
     });
 
-    it.only('should validate unique fields', () => {
+    it('should validate unique fields', () => {
         CreatePage.logout();
         LoginPage.login('admin', 'password');
 
