@@ -7,7 +7,10 @@ title: "AccordionForm"
 
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers an alternative layout for Edit and Create forms, where Inputs are grouped into expandable panels.
 
-![AccordionForm](https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-form-overview.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-form-overview.webm" type="video/webm" />
+  Your browser does not support the video tag.
+</video>
 
 Users can open or close each panel independently, and each panel has a header that gets highlighted when the section contains validation errors.
 
@@ -68,7 +71,10 @@ By default, each child accordion element handles its expanded state independentl
 
 You can also use the `<AccordionSection>` component as a child of `<SimpleForm>` for secondary inputs:
 
-![Accordion section](https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-section-overview.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-section-overview.webm" type="video/webm" />
+  Your browser does not support the video tag.
+</video>
 
 Check [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/modules/ra-form-layout##accordionform) for more details.
 

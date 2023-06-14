@@ -7,7 +7,10 @@ title: "WizardForm"
 
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers an alternative layout for large Create forms, allowing users to enter data step-by-step.
 
-![WizardForm](https://marmelab.com/ra-enterprise/modules/assets/ra-wizard-form-overview.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-wizard-form-overview.webm" type="video/webm" />
+  Your browser does not support the video tag.
+</video>
 
 `<WizardForm>` renders one step at a time. The form is submitted when the user clicks on the `Save` button of the last step.
 

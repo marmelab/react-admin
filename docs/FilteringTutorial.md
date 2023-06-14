@@ -268,7 +268,10 @@ Check the [`<StackedFilters>` documentation](./StackedFilters.md) for more infor
 
 ## Global Search
 
-![ra-search basic](https://marmelab.com/ra-enterprise/modules/assets/ra-search-overview.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-overview.webm" type="video/webm" />
+  Your browser does not support the video tag.
+</video>
 
 Although list filters allow to make precise queries using per-field criteria, users often prefer simpler interfaces like full-text search. After all, that's what they use every day on search engines, email clients, and in their file explorer. 
 
@@ -276,7 +279,10 @@ If you want to display a full-text search allowing to look for any record in the
 
 `<Search>` can plug to any existing search engine (ElasticSearch, Lucene, or custom search engine), and lets you customize the search results to provide quick navigation to related items, turning the search engine into an "Omnibox": 
 
-![ra-search demo](https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.webm" type="video/webm" />
+  Your browser does not support the video tag.
+</video>
 
 For mode details about the global search, check the [`<Search>` documentation](./Search.md). 
 
