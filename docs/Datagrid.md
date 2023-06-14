@@ -951,6 +951,7 @@ You can combine a datagrid and an edition form into a unified spreadsheet view, 
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

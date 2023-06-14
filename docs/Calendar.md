@@ -9,6 +9,7 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-calendar.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-calendar.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

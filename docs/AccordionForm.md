@@ -9,6 +9,7 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-form-overview.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-form-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -73,6 +74,7 @@ You can also use the `<AccordionSection>` component as a child of `<SimpleForm>`
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-section-overview.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-section-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -404,6 +406,7 @@ Renders children (Inputs) inside a MUI `<Accordion>` element without a Card styl
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-section-overview.webm" type="video/webm"/>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-section-overview.mp4" type="video/mp4"/>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-section-overview.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>

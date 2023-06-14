@@ -11,6 +11,7 @@ It calls `dataProvider.getTree()` (one of the new `dataProvider` methods support
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-tree-overview.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-tree-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

@@ -270,6 +270,7 @@ Check the [`<StackedFilters>` documentation](./StackedFilters.md) for more infor
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-overview.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -281,6 +282,7 @@ If you want to display a full-text search allowing to look for any record in the
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

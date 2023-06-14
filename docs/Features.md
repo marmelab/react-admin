@@ -775,6 +775,7 @@ Most admin and B2B apps require that user actions are recorded for audit purpose
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-audit-log/latest/ra-audit-log.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-audit-log/latest/ra-audit-log.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -818,6 +819,7 @@ If your app needs to display **events**, **appointments**, **time intervals**, o
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-calendar.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-calendar.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -907,6 +909,7 @@ A UI kit like Material UI provides basic building blocks like a button, a form, 
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid/latest/ra-editable-datagrid-overview.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid/latest/ra-editable-datagrid-overview.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
