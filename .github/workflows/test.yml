@@ -114,16 +114,19 @@ jobs:
     name: GreenFrame
     needs: [e-commerce]
     steps:
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
       # To use this repository's private action,
       # you must check out the repository
       - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0 # Fetch all the git history to enable git comparison
+      - name: Use Node.js LTS
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+      - uses: bahmutov/npm-install@v1
+        with:
+          install-command: yarn --immutable                 
       - name: Download demo build
         uses: actions/download-artifact@v3
         with:
