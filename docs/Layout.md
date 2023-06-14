@@ -253,7 +253,11 @@ React-admin provides alternative menu layouts that you can use as a base for you
 - [`<MultiLevelMenu>`](./MultiLevelMenu.md) to render nested menus
 - [`<IconMenu>`](./IconMenu.md) for a narrow icon bar with dropdown menus
 
-![MegaMenu and Breadcrumb](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 And you can build a totally custom menu using [Material UI's `<Menu>` component](https://mui.com/material-ui/react-menu/).
 

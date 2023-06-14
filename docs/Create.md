@@ -560,7 +560,11 @@ Note: In order to get the `mutationOptions` being considered, you have to set th
 
 `<Create>` is designed to be a page component, passed to the `create` prop of the `<Resource>` component. But you may want to let users create a record from another page. 
 
-![CreateDialog](https://marmelab.com/ra-enterprise/modules/assets/create-dialog.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/create-dialog.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/create-dialog.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 * If you want to allow creation from the `list` page, use [the `<CreateDialog>` component](./CreateDialog.md)
 * If you want to allow creation from another page, use [the `<CreateInDialogButton>` component](./CreateInDialogButton.md)

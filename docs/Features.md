@@ -773,7 +773,11 @@ To learn more about authentication, roles, and permissions, check out the follow
 
 Most admin and B2B apps require that user actions are recorded for audit purposes. React-admin provides templates for displaying such audit logs, and helpers to automatically **record user actions**.
 
-![Audit log](https://marmelab.com/ra-enterprise/modules/assets/ra-audit-log/latest/ra-audit-log.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-audit-log/latest/ra-audit-log.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-audit-log/latest/ra-audit-log.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 ```jsx
 import { useGetList } from "react-admin";
@@ -813,7 +817,11 @@ const dataProvider = addEventsForMutations(
 
 If your app needs to display **events**, **appointments**, **time intervals**, or any other kind of time-based data, you can use the [`<Calendar>`](./Calendar.md) component.
 
-![the `<Calendar>` component](https://marmelab.com/ra-enterprise/modules/assets/ra-calendar.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-calendar.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-calendar.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 ```jsx
 import { Calendar, getFilterValuesFromInterval } from '@react-admin/ra-calendar';
@@ -899,7 +907,11 @@ Check out the following components for displaying hierarchical data:
 
 A UI kit like Material UI provides basic building blocks like a button, a form, a table, etc. React-admin goes one level higher and provides a set of **[application components](./Reference.md#components)** specifically designed for building admin and B2B *applications*.
 
-![editable Datagrid](https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid/latest/ra-editable-datagrid-overview.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid/latest/ra-editable-datagrid-overview.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid/latest/ra-editable-datagrid-overview.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 These building blocks include:
 
