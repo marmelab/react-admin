@@ -110,7 +110,6 @@ export const useUnique = (options?: UseUniqueOptions) => {
                         });
                     }
                 } catch (error) {
-                    console.error(error);
                     return translate('ra.notification.http_error');
                 }
 
