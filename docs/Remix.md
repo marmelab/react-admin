@@ -21,7 +21,7 @@ This script will ask you for more details about your project. You can use the fo
 - "Just the basics"
 - "Remix App Server"
 - "TypeScript"
-- "Don't run npm install"
+- "Run npm install"
 
 The project structure should look something like this:
 
