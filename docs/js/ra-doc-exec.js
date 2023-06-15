@@ -87,7 +87,7 @@ const transpileToJS = async tsCode => {
     return jsCode;
 };
 
-const builtJSCodeBlocksFromTS = async () => {
+const buildJSCodeBlocksFromTS = async () => {
     const tsBlocks = document.querySelectorAll('div.language-tsx');
 
     await Promise.all(
@@ -293,7 +293,7 @@ document.addEventListener('click', event => {
     fetch(href)
         .then(res => res.text())
         .then(replaceContent)
-        .then(builtJSCodeBlocksFromTS);
+        .then(buildJSCodeBlocksFromTS);
     // change the URL
     window.history.pushState(null, null, href);
     changeSelectedMenu();
@@ -313,7 +313,7 @@ window.addEventListener('popstate', () => {
         fetch(window.location.pathname)
             .then(res => res.text())
             .then(replaceContent)
-            .then(builtJSCodeBlocksFromTS);
+            .then(buildJSCodeBlocksFromTS);
     }
     changeSelectedMenu();
 });
@@ -328,5 +328,5 @@ window.addEventListener('DOMContentLoaded', () => {
     buildPageToC();
 
     navigationFitScroll();
-    builtJSCodeBlocksFromTS();
+    buildJSCodeBlocksFromTS();
 });
