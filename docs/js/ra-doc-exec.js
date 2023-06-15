@@ -21,7 +21,13 @@ const applyPreferredLanguage = async () => {
             if (fence.classList.contains(`language-${preferredLanguage}`)) {
                 fence.style.display = 'block';
             } else {
-                fence.style.display = 'none';
+                if (
+                    (fence.classList.contains(`language-jsx`) &&
+                        fence.dataset.tsBlock) ||
+                    fence.classList.contains(`language-tsx`)
+                ) {
+                    fence.style.display = 'none';
+                }
             }
 
             if (
