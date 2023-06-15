@@ -39,7 +39,7 @@ It accepts a translation key. The [`translate` function](./useTranslate.md) will
 - `label`: the translated input label
 - `value`: the current input value
 
-```js
+```jsx
 import { SimpleForm, TextInput, useUnique } from 'react-admin';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
@@ -85,7 +85,7 @@ const UserCreateForm = () => {
 
 The resource targeted by the [`dataProvider.getList`](./DataProviderWriting.md#request-format) call. Defaults to the resource from the nearest [`ResourceContext`](./Resource.md#resource-context).
 
-This can be useful for custom pages instead on setting up a [`ResourceContext`](./Resource.md#resource-context).
+This can be useful for custom pages instead of setting up a [`ResourceContext`](./Resource.md#resource-context).
 
 ```jsx
 import { PasswordInput, SimpleForm, TextInput, useUnique } from 'react-admin';
