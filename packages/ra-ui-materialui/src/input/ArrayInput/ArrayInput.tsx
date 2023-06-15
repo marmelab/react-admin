@@ -133,7 +133,11 @@ export const ArrayInput = (props: ArrayInputProps) => {
         };
     }, [register, unregister, source, formGroups, formGroupName]);
 
-    useApplyInputDefaultValues(props);
+    useApplyInputDefaultValues({
+        inputProps: props,
+        isArrayInput: true,
+        fieldArrayInputControl: fieldProps,
+    });
 
     const { isDirty, error } = getFieldState(source, formState);
 
