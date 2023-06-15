@@ -63,6 +63,7 @@ const transpileToJS = async tsCode => {
         await new Promise(resolve => setTimeout(resolve, 100));
         return transpileToJS(tsCode);
     }
+
     const transpilation = window.ts.transpileModule(
         // Ensure blank lines are preserved
         tsCode.replace(/\n\n/g, '\n/** THIS_IS_A_NEWLINE **/'),
@@ -72,6 +73,7 @@ const transpileToJS = async tsCode => {
                 target: 99,
                 noResolve: true,
                 isolatedModules: true,
+                verbatimModuleSyntax: true,
             },
             reportDiagnostics: false,
         }
@@ -82,11 +84,13 @@ const transpileToJS = async tsCode => {
         // Ensure blank lines are preserved
         transpilation.outputText.replace(
             /\/\*\* THIS_IS_A_NEWLINE \*\*\//g,
-            '\n'
+            '\n\n'
         ),
         {
             plugins: [prettierPlugins.babel],
             parser: 'babel',
+            tabWidth: 4,
+            printWidth: 120,
         }
     );
 
@@ -160,11 +164,13 @@ const buildJSCodeBlocksFromTS = async () => {
             parent.insertBefore(container, block);
             parent.removeChild(block);
 
-            jsTabTitle.addEventListener('click', () => {
+            jsTabTitle.addEventListener('click', event => {
+                event.preventDefault();
                 window.localStorage.setItem('preferred-language', 'jsx');
                 applyPreferredLanguage();
             });
-            tsTabTitle.addEventListener('click', () => {
+            tsTabTitle.addEventListener('click', event => {
+                event.preventDefault();
                 window.localStorage.setItem('preferred-language', 'tsx');
                 applyPreferredLanguage();
             });
