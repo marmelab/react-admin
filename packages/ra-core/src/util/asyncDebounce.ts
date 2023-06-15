@@ -16,10 +16,12 @@ export function asyncDebounce<
         func(...args)
             .then((...res) => {
                 resolveSet.forEach(resolve => resolve(...res));
-                resolveSet.clear();
             })
             .catch((...res) => {
                 rejectSet.forEach(reject => reject(...res));
+            })
+            .finally(() => {
+                resolveSet.clear();
                 rejectSet.clear();
             });
     }, wait);
