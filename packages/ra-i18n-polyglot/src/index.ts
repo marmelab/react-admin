@@ -1,3 +1,4 @@
+'use client';
 import Polyglot from 'node-polyglot';
 
 import { I18nProvider, TranslationMessages, Locale } from 'ra-core';
