@@ -680,7 +680,7 @@ And if you want something super custom that react-admin doesn't support out of t
 
 ## AI-Powered Components
 
-React-admin leverages recent breakthroughs in AI to **boost developer productivity**.
+React-admin leverages recent breakthroughs in AI to **boost user productivity**.
 
 One example is [`<PredictiveTextInput>`](./PredictiveTextInput.md), which suggests completion for the input value, using your favorite AI backend. Users can accept the completion by pressing the `Tab` key. It's like Intellisense or Copilot for your forms.
 
