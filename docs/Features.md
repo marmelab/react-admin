@@ -678,6 +678,39 @@ const CustomerEdit = () => (
 
 And if you want something super custom that react-admin doesn't support out of the box, you can always use [react-hook-form](https://react-hook-form.com/) directly.
 
+## AI-Powered Components
+
+React-admin leverages recent breakthroughs in AI to **boost developer productivity**.
+
+One example is [`<PredictiveTextInput>`](./PredictiveTextInput.md), which suggests completion for the input value, using your favorite AI backend. Users can accept the completion by pressing the `Tab` key. It's like Intellisense or Copilot for your forms.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/PredictiveTextInput.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+Use `<PredictiveTextInput>` in any react-admin form:
+
+```jsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { PredictiveTextInput } from '@react-admin/ra-ai';
+
+const PersonEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="firstName" />
+            <TextInput source="lastName" />
+            <TextInput source="company" />
+            <PredictiveTextInput source="email" />
+            <PredictiveTextInput source="website" />
+            <PredictiveTextInput source="bio" multiline />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+See [the `<PredictiveTextInput>` documentation](./PredictiveTextInput.md) for more details.
+
 ## Optimistic Updates And Undo
 
 When a user edits a record and hits the "Save" button, the UI shows a confirmation and displays the updated data *before sending the update query to the server*. The main benefit is that UI changes are immediate - **no need to wait for the server response**. It's a great comfort for users.
