@@ -76,7 +76,7 @@ This is a minimal admin for 2 resources. React-admin should be able to render a 
 
 ## Remix v1
 
-This section if for projects using [the current routing file conventions (v1)](https://remix.run/docs/en/main/file-conventions/routes-files).
+This section is for projects using [the current routing file conventions (v1)](https://remix.run/docs/en/main/file-conventions/routes-files).
 
 ### Using React-Admin As The Root Application
 
@@ -271,7 +271,7 @@ Note that the Supabase credentials never leave the server. It's up to you to add
 
 ## Remix v2
 
-This section if for projects using [the new routing file conventions (v2)](https://remix.run/docs/en/main/file-conventions/route-files-v2https://remix.run/docs/en/main/file-conventions/route-files-v2).
+This section is for projects using [the new routing file conventions (v2)](https://remix.run/docs/en/main/file-conventions/route-files-v2).
 
 ### Using React-Admin As The Root Application
 
