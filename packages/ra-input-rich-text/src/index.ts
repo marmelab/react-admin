@@ -1,3 +1,4 @@
+'use client';
 export * from './RichTextInput';
 export * from './buttons';
 export * from './RichTextInputToolbar';

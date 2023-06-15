@@ -1,3 +1,4 @@
+'use client';
 export * from './auth';
 export * from './controller';
 export * from './core';

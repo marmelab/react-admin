@@ -1,3 +1,4 @@
+'use client';
 import { TranslationMessages } from 'ra-core';
 
 const englishMessages: TranslationMessages = {

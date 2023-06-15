@@ -1,3 +1,4 @@
+'use client';
 import FakeRest from 'fakerest';
 import { DataProvider } from 'ra-core';
 
