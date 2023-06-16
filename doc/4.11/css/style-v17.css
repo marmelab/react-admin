@@ -46,7 +46,9 @@ main > .container .markdown-section {
     top: 20px;
     padding-left: 1em;
     overflow-y: auto;
-    max-height: calc(100vh - 114px); /* 114px = 50px container top padding + 64px navbar height  */
+    max-height: calc(
+        100vh - 114px
+    ); /* 114px = 50px container top padding + 64px navbar height  */
 }
 .toc.is-position-fixed {
     position: static !important;
@@ -134,7 +136,6 @@ nav ul#nav-mobile a {
         font-size: 1.2em;
         font-weight: normal;
     }
-     
 }
 
 .sidenav.sidenav-fixed ul.collapsible-accordion a.collapsible-header {
@@ -282,18 +283,21 @@ ul.sidenav code {
     }
 }
 
-.markdown-section img, .markdown-section video {
+.markdown-section img,
+.markdown-section video {
     max-width: 100%;
 }
 
 @media only screen and (min-width: 601px) {
-    .markdown-section img, .markdown-section video {
+    .markdown-section img,
+    .markdown-section video {
         max-width: 90%;
         box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.24);
         border-radius: 2px;
         margin: 1rem;
     }
-    .markdown-section img.no-shadow, .markdown-section video.no-shadow {
+    .markdown-section img.no-shadow,
+    .markdown-section video.no-shadow {
         max-width: 90%;
         box-shadow: none;
         border-radius: 0;
@@ -606,7 +610,6 @@ body.no-sidebar .sidenav-trigger {
     background: none;
 }
 
-
 .pages-index {
     column-count: 3;
 }
@@ -620,7 +623,7 @@ body.no-sidebar .sidenav-trigger {
 
 .pages-index code {
     font-size: 0.8em;
-    background: none!important;
+    background: none !important;
 }
 
 #docsearch .DocSearch-Button {
@@ -628,9 +631,9 @@ body.no-sidebar .sidenav-trigger {
 }
 
 @media only screen and (max-width: 1500px) {
-        #docsearch .DocSearch-Button {
-            width: 200px !important;
-        }
+    #docsearch .DocSearch-Button {
+        width: 200px !important;
+    }
 }
 
 .news {
@@ -655,4 +658,21 @@ body.no-sidebar .sidenav-trigger {
     .news-mobile {
         display: none;
     }
+}
+
+.marmelab-language-switcher-tabs {
+    display: flex;
+    gap: 1rem;
+    justify-content: end;
+}
+
+.language-switcher {
+    background-color: #f5f2f0;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.language-switcher.active {
+    background-color: #f5f2f0;
+    text-decoration: none !important;
 }
