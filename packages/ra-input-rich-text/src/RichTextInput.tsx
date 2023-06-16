@@ -169,7 +169,7 @@ export const RichTextInput = (props: RichTextInputProps) => {
     }, [editor, field]);
 
     return (
-        <Root className={clsx(className, fullWidth ? 'fullWidth' : '')} sx={sx}>
+        <Root className={fullWidth ? 'fullWidth' : ''} sx={sx}>
             <Labeled
                 isRequired={isRequired}
                 label={label}
