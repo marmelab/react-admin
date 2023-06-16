@@ -287,56 +287,51 @@ Check the [withLifecycleCallbacks](./withLifecycleCallbacks.md) documentation fo
 
 ## Handling File Uploads
 
-As Data Providers are just objects, you can extend them with custom logic for a given method. 
+You can leverage [`withLifecycleCallbacks`](#adding-lifecycle-callbacks) to add support for file upload.
 
 For instance, the following Data Provider extends the `ra-data-simple-rest` provider, and stores images passed to the `dataProvider.update('posts')` call as Base64 strings. React-admin offers an `<ImageInput />` component that allows image upload:
 
 ```js
+import { withLifecycleCallbacks } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 
-const dataProvider = simpleRestProvider('http://path.to.my.api/');
-
-const myDataProvider = {
-    ...dataProvider,
-    update: (resource, params) => {
-        if (resource !== 'posts') {
-            // fallback to the default implementation
-            return dataProvider.update(resource, params);
-        }
-
+const dataProvider = withLifecycleCallbacks(simpleRestProvider('http://path.to.my.api/'), [
+    {
         /**
          * For posts update only, convert uploaded image in base 64 and attach it to
          * the `picture` sent property, with `src` and `title` attributes.
          */
-        
-        // Freshly dropped pictures are File objects and must be converted to base64 strings
-        const newPictures = params.data.pictures.filter(
-            p => p.rawFile instanceof File
-        );
-        const formerPictures = params.data.pictures.filter(
-            p => !(p.rawFile instanceof File)
-        );
-
-        return Promise.all(newPictures.map(convertFileToBase64))
-            .then(base64Pictures =>
-                base64Pictures.map(picture64 => ({
-                    src: picture64,
-                    title: `${params.data.title}`,
-                }))
-            )
-            .then(transformedNewPictures =>
-                dataProvider.update(resource, {
-                    data: {
-                        ...params.data,
-                        pictures: [
-                            ...transformedNewPictures,
-                            ...formerPictures,
-                        ],
-                    },
-                })
+        resource: 'posts',
+        beforeUpdate: async (params, dataProvider) => {
+            // Freshly dropped pictures are File objects and must be converted to base64 strings
+            const newPictures = params.data.pictures.filter(
+                p => p.rawFile instanceof File
             );
-    },
-};
+            const formerPictures = params.data.pictures.filter(
+                p => !(p.rawFile instanceof File)
+            );
+
+            return Promise.all(newPictures.map(convertFileToBase64))
+                .then(base64Pictures =>
+                    base64Pictures.map(picture64 => ({
+                        src: picture64,
+                        title: `${params.data.title}`,
+                    }))
+                )
+                .then(transformedNewPictures =>
+                    dataProvider.update(resource, {
+                        data: {
+                            ...params.data,
+                            pictures: [
+                                ...transformedNewPictures,
+                                ...formerPictures,
+                            ],
+                        },
+                    })
+                );
+        }
+    }
+]);
 
 /**
  * Convert a `File` object returned by the upload input into a base 64 string.
@@ -354,6 +349,8 @@ const convertFileToBase64 = file =>
 
 export default myDataProvider;
 ```
+
+**Tip**: use `beforeSave` instead of `beforeUpdate` to do the same for both create and update calls.
 
 You can use the same technique to upload images to an object storage service, and then update the record using the URL of that stored object.
 
