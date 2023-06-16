@@ -11,7 +11,8 @@ import TextStyle from '@tiptap/extension-text-style';
 import { Color } from '@tiptap/extension-color';
 import Highlight from '@tiptap/extension-highlight';
 import { FormHelperText } from '@mui/material';
-import { SxProps, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
+import { SxProps } from '@mui/system';
 import { useInput, useResourceContext } from 'ra-core';
 import {
     CommonInputProps,
