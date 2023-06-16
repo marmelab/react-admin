@@ -7,7 +7,11 @@ title: "AccordionForm"
 
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers an alternative layout for Edit and Create forms, where Inputs are grouped into expandable panels.
 
-![AccordionForm](https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-form-overview.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-form-overview.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-form-overview.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 Users can open or close each panel independently, and each panel has a header that gets highlighted when the section contains validation errors.
 
@@ -68,7 +72,11 @@ By default, each child accordion element handles its expanded state independentl
 
 You can also use the `<AccordionSection>` component as a child of `<SimpleForm>` for secondary inputs:
 
-![Accordion section](https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-section-overview.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-section-overview.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-section-overview.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 Check [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/modules/ra-form-layout##accordionform) for more details.
 
@@ -399,6 +407,7 @@ Renders children (Inputs) inside a MUI `<Accordion>` element without a Card styl
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-section-overview.webm" type="video/webm"/>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-section-overview.mp4" type="video/mp4"/>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-section-overview.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -508,3 +517,56 @@ Note that you **must** set the `<AccordionForm resetOptions>` prop to `{ keepDir
 If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](https://marmelab.com/react-admin/Edit.html#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
 
 Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
+
+## Role-Based Access Control (RBAC)
+
+Fine-grained permissions control can be added by using the [`<AccordionForm>`](./AuthRBAC.md#accordionform), [`<AccordionFormPanel>`](./AuthRBAC.md#accordionformpanel) and [`<AccordionSection>`](./AuthRBAC.md#accordionsection) components provided by the `@react-admin/ra-enterprise` package. 
+
+{% raw %}
+```tsx
+import { AccordionForm } from '@react-admin/ra-enterprise';
+
+const authProvider = {
+    checkAuth: () => Promise.resolve(),
+    login: () => Promise.resolve(),
+    logout: () => Promise.resolve(),
+    checkError: () => Promise.resolve(),
+    getPermissions: () =>Promise.resolve([
+        // 'delete' is missing
+        { action: ['list', 'edit'], resource: 'products' },
+        { action: 'write', resource: 'products.reference' },
+        { action: 'write', resource: 'products.width' },
+        { action: 'write', resource: 'products.height' },
+        // 'products.description' is missing
+        { action: 'write', resource: 'products.thumbnail' },
+        // 'products.image' is missing
+        { action: 'write', resource: 'products.panel.description' },
+        { action: 'write', resource: 'products.panel.images' },
+        // 'products.panel.stock' is missing
+    ]),
+};
+
+const ProductEdit = () => (
+    <Edit>
+        <AccordionForm>
+            <AccordionForm.Panel label="description" label="Description">
+                <TextInput source="reference" />
+                <TextInput source="width" />
+                <TextInput source="height" />
+                <TextInput source="description" />
+            </AccordionForm.Panel>
+            <AccordionForm.Panel label="images" label="Images">
+                <TextInput source="image" />
+                <TextInput source="thumbnail" />
+            </AccordionForm.Panel>
+            <AccordionForm.Panel label="stock" label="Stock">
+                <TextInput source="stock" />
+            </AccordionForm.Panel>
+            // delete button not displayed
+        </AccordionForm>
+    </Edit>
+);
+```
+{% endraw %}
+
+Check [the RBAC `<AccordionForm>` component](./AuthRBAC.md#accordionform) documentation for more details.

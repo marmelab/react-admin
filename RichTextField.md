@@ -9,7 +9,7 @@ This component displays some HTML content. The content is "rich" (i.e. unescaped
 
 ![RichTextField](./img/rich-text-field.png)
 
-This component leverages [the `dangerouslySetInnerHTML` attribute](https://reactjs.org/docs/dom-elements.html#dangerouslysetinnerhtml), but uses [the DomPurify library](https://github.com/cure53/DOMPurify) to sanitize the HTML before rendering it. It means it is **safe from Cross-Site Scripting (XSS) attacks** - but it's still a good practice to sanitize the value server-side.
+This component leverages [the `dangerouslySetInnerHTML` attribute](https://react.dev/reference/react-dom/components/common#dangerously-setting-the-inner-html), but uses [the DomPurify library](https://github.com/cure53/DOMPurify) to sanitize the HTML before rendering it. It means it is **safe from Cross-Site Scripting (XSS) attacks** - but it's still a good practice to sanitize the value server-side.
 
 ## Usage
 

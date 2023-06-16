@@ -7,7 +7,11 @@ title: "The DualListInput Component"
 
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component allows to edit array values, one-to-many or many-to-many relationships by moving items from one list to another.
 
-![DualListInput](https://marmelab.com/ra-enterprise/modules/assets/ra-relationships-duallistinput.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-relationships-duallistinput.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-relationships-duallistinput.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 This input allows editing values that are arrays of scalar values, e.g. `[123, 456]`. 
 
