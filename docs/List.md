@@ -71,7 +71,7 @@ You can find more advanced examples of `<List>` usage in the [demos](./Demos.md)
 | `queryOptions`            | Optional | `object`       | -              | The options to pass to the `useQuery` hook.                                                  |
 | `resource`                | Optional | `string`       | -              | The resource name, e.g. `posts`.                                                             |
 | `sort`                    | Optional | `object`       | -              | The initial sort parameters.                                                                 |
-| `storeKey`                | Optional | `string`       | -              | The key to use to store the current filter & sort.                                           |
+| `storeKey`                | Optional | `string` | `false` | -              | The key to use to store the current filter & sort. Pass `false` to disable                                         |
 | `title`                   | Optional | `string`       | -              | The title to display in the App Bar.                                                         |
 | `sx`                      | Optional | `object`       | -              | The CSS styles to apply to the component.                                                    |
 
@@ -848,6 +848,8 @@ const Admin = () => {
 {% endraw %}
 
 **Tip:** The `storeKey` is actually passed to the underlying `useListController` hook, which you can use directly for more complex scenarios. See the [`useListController` doc](./useListController.md#storekey) for more info.
+
+You can disable this feature by setting the `storeKey` prop to `false`. When disabled, parameters will not be persisted in the store.
 
 ## `title`
 
