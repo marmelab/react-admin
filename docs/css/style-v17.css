@@ -674,4 +674,5 @@ body.no-sidebar .sidenav-trigger {
 
 .language-switcher.active {
     background-color: #f5f2f0;
+    text-decoration: none !important;
 }
