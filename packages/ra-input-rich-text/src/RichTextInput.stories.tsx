@@ -32,7 +32,7 @@ export const Basic = (props: Partial<SimpleFormProps>) => (
             onSubmit={() => {}}
             {...props}
         >
-            <RichTextInput label="Body" source="body" />
+            <RichTextInput source="body" />
             <FormInspector />
         </SimpleForm>
     </AdminContext>
@@ -45,7 +45,7 @@ export const Disabled = (props: Partial<SimpleFormProps>) => (
             onSubmit={() => {}}
             {...props}
         >
-            <RichTextInput label="Body" source="body" disabled />
+            <RichTextInput source="body" disabled />
             <FormInspector />
         </SimpleForm>
     </AdminContext>
