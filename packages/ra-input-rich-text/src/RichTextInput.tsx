@@ -11,7 +11,7 @@ import TextStyle from '@tiptap/extension-text-style';
 import { Color } from '@tiptap/extension-color';
 import Highlight from '@tiptap/extension-highlight';
 import { FormHelperText } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { SxProps, styled } from '@mui/material/styles';
 import { useInput, useResourceContext } from 'ra-core';
 import {
     CommonInputProps,
@@ -83,6 +83,7 @@ export const RichTextInput = (props: RichTextInputProps) => {
         label,
         readOnly = false,
         source,
+        sx,
         toolbar,
     } = props;
 
@@ -168,71 +169,35 @@ export const RichTextInput = (props: RichTextInputProps) => {
     }, [editor, field]);
 
     return (
-        <Labeled
-            isRequired={isRequired}
-            label={label}
-            id={`${id}-label`}
-            color={fieldState?.invalid ? 'error' : undefined}
-            source={source}
-            resource={resource}
-            fullWidth={fullWidth}
-        >
-            <RichTextInputContent
-                className={clsx('ra-input', `ra-input-${source}`, className)}
-                editor={editor}
-                error={error}
-                helperText={helperText}
-                id={id}
-                isTouched={isTouched}
-                isSubmitted={isSubmitted}
-                invalid={invalid}
-                toolbar={toolbar || <RichTextInputToolbar />}
-            />
-        </Labeled>
+        <Root className={clsx(className, fullWidth ? 'fullWidth' : '')} sx={sx}>
+            <Labeled
+                isRequired={isRequired}
+                label={label}
+                id={`${id}-label`}
+                color={fieldState?.invalid ? 'error' : undefined}
+                source={source}
+                resource={resource}
+                fullWidth={fullWidth}
+            >
+                <RichTextInputContent
+                    className={clsx(
+                        'ra-input',
+                        `ra-input-${source}`,
+                        className
+                    )}
+                    editor={editor}
+                    error={error}
+                    helperText={helperText}
+                    id={id}
+                    isTouched={isTouched}
+                    isSubmitted={isSubmitted}
+                    invalid={invalid}
+                    toolbar={toolbar || <RichTextInputToolbar />}
+                />
+            </Labeled>
+        </Root>
     );
 };
-
-/**
- * Extracted in a separate component so that we can remove fullWidth from the props injected by Labeled
- * and avoid warnings about unknown props on Root.
- */
-const RichTextInputContent = ({
-    className,
-    editor,
-    error,
-    fullWidth,
-    helperText,
-    id,
-    isTouched,
-    isSubmitted,
-    invalid,
-    toolbar,
-}: RichTextInputContentProps) => (
-    <Root className={className}>
-        <TiptapEditorProvider value={editor}>
-            {toolbar}
-            <EditorContent
-                aria-labelledby={`${id}-label`}
-                className={classes.editorContent}
-                editor={editor}
-            />
-        </TiptapEditorProvider>
-        <FormHelperText
-            className={
-                (isTouched || isSubmitted) && invalid
-                    ? 'ra-rich-text-input-error'
-                    : ''
-            }
-            error={(isTouched || isSubmitted) && invalid}
-        >
-            <InputHelperText
-                touched={isTouched || isSubmitted}
-                error={error?.message}
-                helperText={helperText}
-            />
-        </FormHelperText>
-    </Root>
-);
 
 export const DefaultEditorOptions: Partial<EditorOptions> = {
     extensions: [
@@ -251,6 +216,15 @@ export const DefaultEditorOptions: Partial<EditorOptions> = {
     ],
 };
 
+export type RichTextInputProps = CommonInputProps &
+    Omit<LabeledProps, 'children'> & {
+        disabled?: boolean;
+        readOnly?: boolean;
+        editorOptions?: Partial<EditorOptions>;
+        toolbar?: ReactNode;
+        sx?: SxProps;
+    };
+
 const PREFIX = 'RaRichTextInput';
 const classes = {
     editorContent: `${PREFIX}-editorContent`,
@@ -259,10 +233,9 @@ const Root = styled('div', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-
+    '&.fullWidth': {
+        width: '100%',
+    },
     [`& .${classes.editorContent}`]: {
         width: '100%',
         '& .ProseMirror': {
@@ -296,23 +269,56 @@ const Root = styled('div', {
     },
 }));
 
-export type RichTextInputProps = CommonInputProps &
-    Omit<LabeledProps, 'children'> & {
-        disabled?: boolean;
-        readOnly?: boolean;
-        editorOptions?: Partial<EditorOptions>;
-        toolbar?: ReactNode;
-    };
+/**
+ * Extracted in a separate component so that we can remove fullWidth from the props injected by Labeled
+ * and avoid warnings about unknown props on Root.
+ */
+const RichTextInputContent = ({
+    className,
+    editor,
+    error,
+    helperText,
+    id,
+    isTouched,
+    isSubmitted,
+    invalid,
+    toolbar,
+}: RichTextInputContentProps) => (
+    <div className={className}>
+        <TiptapEditorProvider value={editor}>
+            {toolbar}
+            <EditorContent
+                aria-labelledby={`${id}-label`}
+                className={classes.editorContent}
+                editor={editor}
+            />
+        </TiptapEditorProvider>
+        <FormHelperText
+            className={
+                (isTouched || isSubmitted) && invalid
+                    ? 'ra-rich-text-input-error'
+                    : ''
+            }
+            error={(isTouched || isSubmitted) && invalid}
+        >
+            <InputHelperText
+                touched={isTouched || isSubmitted}
+                error={error?.message}
+                helperText={helperText}
+            />
+        </FormHelperText>
+    </div>
+);
 
 export type RichTextInputContentProps = {
     className?: string;
     editor?: Editor;
     error?: any;
-    fullWidth?: boolean;
     helperText?: string | ReactElement | false;
     id: string;
     isTouched: boolean;
     isSubmitted: boolean;
     invalid: boolean;
     toolbar?: ReactNode;
+    sx?: SxProps;
 };

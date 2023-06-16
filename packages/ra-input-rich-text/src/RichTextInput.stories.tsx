@@ -110,10 +110,27 @@ export const FullWidth = (props: Partial<SimpleFormProps>) => (
             {...props}
         >
             <RichTextInput
-                toolbar={<RichTextInputToolbar size="large" />}
+                toolbar={<RichTextInputToolbar />}
                 label="Body"
                 source="body"
                 fullWidth
+            />
+            <FormInspector />
+        </SimpleForm>
+    </AdminContext>
+);
+
+export const Sx = (props: Partial<SimpleFormProps>) => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <SimpleForm
+            defaultValues={{ body: 'Hello World' }}
+            onSubmit={() => {}}
+            {...props}
+        >
+            <RichTextInput
+                label="Body"
+                source="body"
+                sx={{ border: '1px solid red' }}
             />
             <FormInspector />
         </SimpleForm>
