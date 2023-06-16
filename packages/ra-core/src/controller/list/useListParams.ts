@@ -88,8 +88,8 @@ export const useListParams = ({
     const location = useLocation();
     const navigate = useNavigate();
     const [localParams, setLocalParams] = useState(defaultParams);
-    // As we can't conditionally call a hook, ff the storeKey is false,
-    // we'll ignore the params variable later on and won't call  setParams either.
+    // As we can't conditionally call a hook, if the storeKey is false,
+    // we'll ignore the params variable later on and won't call setParams either.
     const [params, setParams] = useStore(
         storeKey || `${resource}.listParams`,
         defaultParams
