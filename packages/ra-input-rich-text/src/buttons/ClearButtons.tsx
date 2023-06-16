@@ -21,7 +21,7 @@ export const ClearButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
             value="clear"
             onClick={() => editor.chain().focus().unsetAllMarks().run()}
         >
-            <FormatClear fontSize="inherit" />
+            <FormatClear />
         </ToggleButton>
     );
 };

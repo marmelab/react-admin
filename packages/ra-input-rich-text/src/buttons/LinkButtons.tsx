@@ -40,7 +40,7 @@ export const LinkButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
             onClick={handleClick}
             selected={editor && editor.isActive('link')}
         >
-            <InsertLink fontSize="inherit" />
+            <InsertLink />
         </ToggleButton>
     );
 };
