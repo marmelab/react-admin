@@ -1,5 +1,24 @@
 # Changelog
 
+## v4.11.3
+
+* Fix Save button might stay disabled when using `<ArrayInput>` with default values ([#8971](https://github.com/marmelab/react-admin/pull/8971)) ([henryhobhouse](https://github.com/henryhobhouse))
+* Fix `<Admin>` should call `authProvider.getPermissions` only when given a child function ([#9001](https://github.com/marmelab/react-admin/pull/9001)) ([adguernier](https://github.com/adguernier))
+* Fix `<ListView>` does not apply CSS classes to its child components ([#8995](https://github.com/marmelab/react-admin/pull/8995)) ([djhi](https://github.com/djhi))
+* Update ra-input-rich-text tiptap dependencies ([#8997](https://github.com/marmelab/react-admin/pull/8997)) ([djhi](https://github.com/djhi))
+* [Doc] Add PredictiveTextInput chapter ([#9016](https://github.com/marmelab/react-admin/pull/9016)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Automatically convert TS examples to JS ([#9005](https://github.com/marmelab/react-admin/pull/9005)) ([djhi](https://github.com/djhi))
+* [Doc] Mention RBAC forms in documentation ([#8996](https://github.com/marmelab/react-admin/pull/8996)) ([djhi](https://github.com/djhi))
+* [Doc] Add documentation for Remix v2 routing conventions ([#9017](https://github.com/marmelab/react-admin/pull/9017)) ([djhi](https://github.com/djhi))
+* [Doc] Add references throughout the documentation about linking two inputs ([#9015](https://github.com/marmelab/react-admin/pull/9015)) ([djhi](https://github.com/djhi))
+* [Doc] Fix Next.js pages router installation misses src directory ([#9012](https://github.com/marmelab/react-admin/pull/9012)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix broken link in Next installation tutorial ([#9011](https://github.com/marmelab/react-admin/pull/9011)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Use WebM and MP4 videos instead of GIF for EE components ([#9006](https://github.com/marmelab/react-admin/pull/9006)) ([slax57](https://github.com/slax57))
+* [Doc] Fix broken link to `useLockOnMount` in `useLock` ([#9002](https://github.com/marmelab/react-admin/pull/9002)) ([slax57](https://github.com/slax57))
+* [Doc] Fix missing closing tag in custom AppBar example code ([#9000](https://github.com/marmelab/react-admin/pull/9000)) ([adguernier](https://github.com/adguernier))
+* [Doc] Update links to the React documentation ([#8998](https://github.com/marmelab/react-admin/pull/8998)) ([adguernier](https://github.com/adguernier))
+* [JSDoc] Fix `<ToggleThemeButton>` deprecated props JSDoc ([#8994](https://github.com/marmelab/react-admin/pull/8994)) ([slax57](https://github.com/slax57))
+
 ## v4.11.2
 
 * Fix `<ReferenceField>` line height isn't consistent with other fields ([#8976](https://github.com/marmelab/react-admin/pull/8976)) ([fzaninotto](https://github.com/fzaninotto))
