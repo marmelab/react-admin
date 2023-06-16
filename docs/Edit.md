@@ -706,4 +706,4 @@ const OrderEdit = () => (
 export default OrderEdit;
 ```
 
-Read more about the different options in the [Inputs documentation page](./Inputs.md#linking-two-inputs)
+**Tip:** If you'd like to avoid creating an intermediate component like `<CityInput>`, or are using an `<ArrayInput>`, you can use the [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs) component as an alternative.
