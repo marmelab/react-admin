@@ -678,39 +678,6 @@ const CustomerEdit = () => (
 
 And if you want something super custom that react-admin doesn't support out of the box, you can always use [react-hook-form](https://react-hook-form.com/) directly.
 
-## AI-Powered Components
-
-React-admin leverages recent breakthroughs in AI to **boost user productivity**.
-
-One example is [`<PredictiveTextInput>`](./PredictiveTextInput.md), which suggests completion for the input value, using your favorite AI backend. Users can accept the completion by pressing the `Tab` key. It's like Intellisense or Copilot for your forms.
-
-<video controls autoplay playsinline muted loop>
-  <source src="./img/PredictiveTextInput.mp4" type="video/mp4"/>
-  Your browser does not support the video tag.
-</video>
-
-Use `<PredictiveTextInput>` in any react-admin form:
-
-```jsx
-import { Edit, SimpleForm, TextInput } from 'react-admin';
-import { PredictiveTextInput } from '@react-admin/ra-ai';
-
-const PersonEdit = () => (
-    <Edit>
-        <SimpleForm>
-            <TextInput source="firstName" />
-            <TextInput source="lastName" />
-            <TextInput source="company" />
-            <PredictiveTextInput source="email" />
-            <PredictiveTextInput source="website" />
-            <PredictiveTextInput source="bio" multiline />
-        </SimpleForm>
-    </Edit>
-);
-```
-
-See [the `<PredictiveTextInput>` documentation](./PredictiveTextInput.md) for more details.
-
 ## Optimistic Updates And Undo
 
 When a user edits a record and hits the "Save" button, the UI shows a confirmation and displays the updated data *before sending the update query to the server*. The main benefit is that UI changes are immediate - **no need to wait for the server response**. It's a great comfort for users.
@@ -806,11 +773,7 @@ To learn more about authentication, roles, and permissions, check out the follow
 
 Most admin and B2B apps require that user actions are recorded for audit purposes. React-admin provides templates for displaying such audit logs, and helpers to automatically **record user actions**.
 
-<video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-audit-log/latest/ra-audit-log.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-audit-log/latest/ra-audit-log.mp4" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
+![Audit log](https://marmelab.com/ra-enterprise/modules/assets/ra-audit-log/latest/ra-audit-log.gif)
 
 ```jsx
 import { useGetList } from "react-admin";
@@ -850,11 +813,7 @@ const dataProvider = addEventsForMutations(
 
 If your app needs to display **events**, **appointments**, **time intervals**, or any other kind of time-based data, you can use the [`<Calendar>`](./Calendar.md) component.
 
-<video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-calendar.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-calendar.mp4" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
+![the `<Calendar>` component](https://marmelab.com/ra-enterprise/modules/assets/ra-calendar.gif)
 
 ```jsx
 import { Calendar, getFilterValuesFromInterval } from '@react-admin/ra-calendar';
@@ -940,11 +899,7 @@ Check out the following components for displaying hierarchical data:
 
 A UI kit like Material UI provides basic building blocks like a button, a form, a table, etc. React-admin goes one level higher and provides a set of **[application components](./Reference.md#components)** specifically designed for building admin and B2B *applications*.
 
-<video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid/latest/ra-editable-datagrid-overview.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid/latest/ra-editable-datagrid-overview.mp4" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
+![editable Datagrid](https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid/latest/ra-editable-datagrid-overview.gif)
 
 These building blocks include:
 

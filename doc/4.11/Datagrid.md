@@ -949,11 +949,7 @@ const PostList = () => (
 
 You can combine a datagrid and an edition form into a unified spreadsheet view, "à la" Excel. This is useful when you want to let users edit a large number of records at once.
 
-<video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.mp4" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
+![Editable Datagrid](https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.gif)
 
 `<EditableDatagrid>` is a drop-in replacement for `<Datagrid>`. It expects 2 additional props: `createForm` and `editForm`, the components to be displayed when a user creates or edits a row. The `<RowForm>` component allows to create such forms using react-admin Input components. 
 

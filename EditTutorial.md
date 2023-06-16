@@ -948,11 +948,7 @@ Users often need to edit data from several resources in the same form. React-adm
 - [`<ReferenceManyInput>`](./ReferenceManyInput.md) lets users edit a list of related records
 - [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md) lets users edit a list of related records via an associative table
 
-<video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.webm" type="video/webm" />
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.mp4" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
+![EditInDialogButton](https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.gif)
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/reference-many-input.webm" type="video/webm"/>
