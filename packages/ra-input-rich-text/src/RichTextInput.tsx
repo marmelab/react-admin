@@ -169,7 +169,15 @@ export const RichTextInput = (props: RichTextInputProps) => {
     }, [editor, field]);
 
     return (
-        <Root className={fullWidth ? 'fullWidth' : ''} sx={sx}>
+        <Root
+            className={clsx(
+                'ra-input',
+                `ra-input-${source}`,
+                className,
+                fullWidth ? 'fullWidth' : ''
+            )}
+            sx={sx}
+        >
             <Labeled
                 isRequired={isRequired}
                 label={label}
@@ -180,11 +188,6 @@ export const RichTextInput = (props: RichTextInputProps) => {
                 fullWidth={fullWidth}
             >
                 <RichTextInputContent
-                    className={clsx(
-                        'ra-input',
-                        `ra-input-${source}`,
-                        className
-                    )}
                     editor={editor}
                     error={error}
                     helperText={helperText}
@@ -274,7 +277,6 @@ const Root = styled('div', {
  * and avoid warnings about unknown props on Root.
  */
 const RichTextInputContent = ({
-    className,
     editor,
     error,
     helperText,
@@ -284,7 +286,7 @@ const RichTextInputContent = ({
     invalid,
     toolbar,
 }: RichTextInputContentProps) => (
-    <div className={className}>
+    <>
         <TiptapEditorProvider value={editor}>
             {toolbar}
             <EditorContent
@@ -307,7 +309,7 @@ const RichTextInputContent = ({
                 helperText={helperText}
             />
         </FormHelperText>
-    </div>
+    </>
 );
 
 export type RichTextInputContentProps = {
@@ -320,5 +322,4 @@ export type RichTextInputContentProps = {
     isSubmitted: boolean;
     invalid: boolean;
     toolbar?: ReactNode;
-    sx?: SxProps;
 };
