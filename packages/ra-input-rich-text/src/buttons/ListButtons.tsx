@@ -80,14 +80,14 @@ export const ListButtons = (props: ToggleButtonGroupProps) => {
                 aria-label={bulletListLabel}
                 title={bulletListLabel}
             >
-                <FormatListBulleted fontSize="inherit" />
+                <FormatListBulleted />
             </ToggleButton>
             <ToggleButton
                 value="orderedList"
                 aria-label={numberListLabel}
                 title={numberListLabel}
             >
-                <FormatListNumbered fontSize="inherit" />
+                <FormatListNumbered />
             </ToggleButton>
         </ToggleButtonGroup>
     );

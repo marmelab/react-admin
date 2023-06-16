@@ -42,7 +42,7 @@ export const QuoteButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
             selected={isActive}
             value="quote"
         >
-            <FormatQuote fontSize="inherit" />
+            <FormatQuote />
         </ToggleButton>
     );
 };

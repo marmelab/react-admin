@@ -68,28 +68,28 @@ export const AlignmentButtons = (props: ToggleButtonGroupProps) => {
             value={value}
         >
             <ToggleButton value="left" aria-label={leftLabel} title={leftLabel}>
-                <FormatAlignLeft fontSize="inherit" />
+                <FormatAlignLeft />
             </ToggleButton>
             <ToggleButton
                 value="center"
                 aria-label={centerLabel}
                 title={centerLabel}
             >
-                <FormatAlignCenter fontSize="inherit" />
+                <FormatAlignCenter />
             </ToggleButton>
             <ToggleButton
                 value="right"
                 aria-label={rightLabel}
                 title={rightLabel}
             >
-                <FormatAlignRight fontSize="inherit" />
+                <FormatAlignRight />
             </ToggleButton>
             <ToggleButton
                 value="justify"
                 aria-label={justifyLabel}
                 title={justifyLabel}
             >
-                <FormatAlignJustify fontSize="inherit" />
+                <FormatAlignJustify />
             </ToggleButton>
         </ToggleButtonGroup>
     );

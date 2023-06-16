@@ -54,7 +54,7 @@ import {
  */
 export const RichTextInputToolbar = (props: RichTextInputToolbarProps) => {
     const {
-        size = 'medium',
+        size = 'small',
         children = (
             <>
                 <LevelSelect size={size} />

@@ -5,7 +5,7 @@ import { RichTextInput } from './RichTextInput';
 import { RichTextInputToolbar } from './RichTextInputToolbar';
 import { useWatch } from 'react-hook-form';
 
-export default { title: 'ra-input-rich-text' };
+export default { title: 'ra-input-rich-text/RichTextInput' };
 
 const FormInspector = ({ name = 'body' }) => {
     const value = useWatch({ name });

@@ -54,7 +54,7 @@ export const ColorButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
                         value="color"
                         onClick={() => displayColorChoiceDialog(ColorType.FONT)}
                     >
-                        <FormatColorTextIcon fontSize="inherit" />
+                        <FormatColorTextIcon />
                     </ToggleButton>
                     <ToggleButton
                         aria-label={highlightLabel}
@@ -66,7 +66,7 @@ export const ColorButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
                             displayColorChoiceDialog(ColorType.BACKGROUND)
                         }
                     >
-                        <FontDownloadIcon fontSize="inherit" />
+                        <FontDownloadIcon />
                     </ToggleButton>
                 </ToggleButtonGroup>
                 {showColorChoiceDialog && (
