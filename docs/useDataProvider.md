@@ -62,7 +62,7 @@ export interface DataProviderWithCustomMethods extends DataProvider {
     }) => Promise<any>
 }
 
-export const dataProvider: DataProviderWithCustomMethods {
+export const dataProvider: DataProviderWithCustomMethods = {
     // ...Standard dataProvider methods
     archive: (resource, params) => {
         // Call the archive endpoint and return a promise
