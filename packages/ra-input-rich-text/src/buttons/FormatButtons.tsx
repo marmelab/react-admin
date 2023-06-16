@@ -93,31 +93,31 @@ export const FormatButtons = (props: ToggleButtonGroupProps) => {
             value={values}
         >
             <ToggleButton value="bold" aria-label={boldLabel} title={boldLabel}>
-                <FormatBold />
+                <FormatBold fontSize="inherit" />
             </ToggleButton>
             <ToggleButton
                 value="italic"
                 aria-label={italicLabel}
                 title={italicLabel}
             >
-                <FormatItalic />
+                <FormatItalic fontSize="inherit" />
             </ToggleButton>
             <ToggleButton
                 value="underline"
                 aria-label={underlineLabel}
                 title={underlineLabel}
             >
-                <FormatUnderlined />
+                <FormatUnderlined fontSize="inherit" />
             </ToggleButton>
             <ToggleButton
                 value="strike"
                 aria-label={strikeLabel}
                 title={strikeLabel}
             >
-                <FormatStrikethrough />
+                <FormatStrikethrough fontSize="inherit" />
             </ToggleButton>
             <ToggleButton value="code" aria-label={codeLabel} title={codeLabel}>
-                <Code />
+                <Code fontSize="inherit" />
             </ToggleButton>
         </ToggleButtonGroup>
     );

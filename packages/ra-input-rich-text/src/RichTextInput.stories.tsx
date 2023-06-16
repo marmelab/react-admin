@@ -68,6 +68,23 @@ export const Small = (props: Partial<SimpleFormProps>) => (
     </AdminContext>
 );
 
+export const Medium = (props: Partial<SimpleFormProps>) => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <SimpleForm
+            defaultValues={{ body: 'Hello World' }}
+            onSubmit={() => {}}
+            {...props}
+        >
+            <RichTextInput
+                toolbar={<RichTextInputToolbar size="medium" />}
+                label="Body"
+                source="body"
+            />
+            <FormInspector />
+        </SimpleForm>
+    </AdminContext>
+);
+
 export const Large = (props: Partial<SimpleFormProps>) => (
     <AdminContext i18nProvider={i18nProvider}>
         <SimpleForm

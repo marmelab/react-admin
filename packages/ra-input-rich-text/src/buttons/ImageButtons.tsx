@@ -29,7 +29,7 @@ export const ImageButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
             value="image"
             onClick={addImage}
         >
-            <ImageIcon />
+            <ImageIcon fontSize="inherit" />
         </ToggleButton>
     ) : null;
 };
