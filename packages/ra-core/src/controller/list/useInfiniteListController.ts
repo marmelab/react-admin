@@ -218,7 +218,7 @@ export interface InfiniteListControllerProps<
     >;
     resource?: string;
     sort?: SortPayload;
-    storeKey?: string;
+    storeKey?: string | false;
 }
 
 export interface InfiniteListControllerResult<RecordType extends RaRecord = any>

@@ -49,7 +49,7 @@ const OrderedPostList = ({
     storeKey,
     sort,
 }: {
-    storeKey: string;
+    storeKey: string | false;
     sort?: SortPayload;
 }) => {
     const params = useListController({
@@ -117,6 +117,12 @@ const TopPosts = (
 const FlopPosts = (
     <OrderedPostList storeKey="flop" sort={{ field: 'votes', order: 'ASC' }} />
 );
+const StorePosts = (
+    <OrderedPostList storeKey="store" sort={{ field: 'votes', order: 'ASC' }} />
+);
+const NoStorePosts = (
+    <OrderedPostList storeKey={false} sort={{ field: 'votes', order: 'ASC' }} />
+);
 
 export const ListsUsingSameResource = (argsOrProps, context) => {
     const history = context?.history || argsOrProps.history;
@@ -132,6 +138,42 @@ export const ListsUsingSameResource = (argsOrProps, context) => {
                 </CustomRoutes>
                 <CustomRoutes>
                     <Route path="/flop" element={FlopPosts} />
+                </CustomRoutes>
+                <Resource name="posts" />
+            </CoreAdminUI>
+        </CoreAdminContext>
+    );
+};
+
+const NoStoreLayout = (props: CoreLayoutProps) => {
+    return (
+        <div style={styles.mainContainer}>
+            <Link aria-label="store" to={`/store`}>
+                Go to Store List
+            </Link>{' '}
+            <Link aria-label="nostore" to={`/nostore`}>
+                Go to No Store List
+            </Link>
+            <br />
+            <br />
+            {props.children}
+        </div>
+    );
+};
+export const ListsWithoutStore = (argsOrProps, context) => {
+    const history = context?.history || argsOrProps.history;
+    return (
+        <CoreAdminContext
+            history={history}
+            store={localStorageStore()}
+            dataProvider={dataProvider}
+        >
+            <CoreAdminUI layout={NoStoreLayout}>
+                <CustomRoutes>
+                    <Route path="/store" element={StorePosts} />
+                </CustomRoutes>
+                <CustomRoutes>
+                    <Route path="/nostore" element={NoStorePosts} />
                 </CustomRoutes>
                 <Resource name="posts" />
             </CoreAdminUI>
