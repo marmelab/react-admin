@@ -821,3 +821,105 @@ Note that you **must** set the `<TabbedForm resetOptions>` prop to `{ keepDirtyV
 If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](https://marmelab.com/react-admin/Edit.html#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
 
 Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
+
+## Role-Based Access Control (RBAC)
+
+Fine-grained permissions control can be added by using the [`<TabbedForm>`](./AuthRBAC.md#tabbedform) and [`<FormTab>`](./AuthRBAC.md#formtab) components provided by the `@react-admin/ra-rbac` package. 
+
+{% raw %}
+```jsx
+import { Edit, TextInput } from 'react-admin';
+import { TabbedForm, FormTab } from '@react-admin/ra-rbac';
+
+const authProvider = {
+    checkAuth: () => Promise.resolve(),
+    login: () => Promise.resolve(),
+    logout: () => Promise.resolve(),
+    checkError: () => Promise.resolve(),
+    getPermissions: () =>Promise.resolve({
+        permissions: [
+            // 'delete' is missing
+            { action: ['list', 'edit'], resource: 'products' },
+            { action: 'write', resource: 'products.reference' },
+            { action: 'write', resource: 'products.width' },
+            { action: 'write', resource: 'products.height' },
+            // 'products.description' is missing
+            { action: 'write', resource: 'products.thumbnail' },
+            // 'products.image' is missing
+            { action: 'write', resource: 'products.tab.description' },
+            { action: 'write', resource: 'products.tab.images' },
+            // 'products.tab.stock' is missing
+        ],
+    }),
+};
+
+const ProductEdit = () => (
+    <Edit>
+        <TabbedForm>
+            <FormTab label="Description" name="description">
+                <TextInput source="reference" />
+                <TextInput source="width" />
+                <TextInput source="height" />
+                {/* not displayed */}
+                <TextInput source="description" />
+            </FormTab>
+            <FormTab label="Images" name="images">
+                {/* not displayed */}
+                <TextInput source="image" />
+                <TextInput source="thumbnail" />
+            </FormTab>
+            {/* not displayed */}
+            <FormTab label="Stock" name="stock">
+                <TextInput source="stock" />
+            </FormTab>
+            {/*} delete button not displayed */}
+        </TabbedForm>
+    </Edit>
+);
+```
+{% endraw %}
+
+Check [the RBAC `<TabbedForm>` component](./AuthRBAC.md#tabbedform) documentation for more details.
+
+## Linking Two Inputs
+
+Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
+
+React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://react-hook-form.com/docs/usewatch) hook.
+
+```jsx
+import * as React from 'react';
+import { Edit, SimpleForm, SelectInput } from 'react-admin';
+import { useWatch } from 'react-hook-form';
+
+const countries = ['USA', 'UK', 'France'];
+const cities = {
+    USA: ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'],
+    UK: ['London', 'Birmingham', 'Glasgow', 'Liverpool', 'Bristol'],
+    France: ['Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice'],
+};
+const toChoices = items => items.map(item => ({ id: item, name: item }));
+
+const CityInput = props => {
+    const country = useWatch({ name: 'country' });
+    return (
+        <SelectInput
+            choices={country ? toChoices(cities[country]) : []}
+            {...props}
+        />
+    );
+};
+
+const OrderEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <SelectInput source="country" choices={toChoices(countries)} />
+            <CityInput source="cities" />
+        </SimpleForm>
+    </Edit>
+);
+
+export default OrderEdit;
+```
+
+**Tip:** If you'd like to avoid creating an intermediate component like `<CityInput>`, or are using an `<ArrayInput>`, you can use the [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs) component as an alternative.

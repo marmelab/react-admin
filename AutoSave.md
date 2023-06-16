@@ -38,7 +38,7 @@ const PersonEdit = () => (
     <Edit mutationMode="optimistic">
         <SimpleForm
             resetOptions={{ keepDirtyValues: true }}
-            toolbar={AutoSaveToolbar}
+            toolbar={<AutoSaveToolbar />}
         >
             <TextInput source="first_name" />
             <TextInput source="last_name" />
@@ -120,7 +120,7 @@ const PostEdit = () => (
     <Edit mutationMode="optimistic">
         <SimpleForm
             resetOptions={{ keepDirtyValues: true }}
-            toolbar={AutoSaveToolbar}
+            toolbar={<AutoSaveToolbar />}
         >
             <TextInput source="title" />
             <TextInput source="teaser" />
