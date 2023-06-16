@@ -225,7 +225,7 @@ export type RichTextInputProps = CommonInputProps &
         readOnly?: boolean;
         editorOptions?: Partial<EditorOptions>;
         toolbar?: ReactNode;
-        sx?: any;
+        sx?: typeof Root['defaultProps']['sx'];
     };
 
 const PREFIX = 'RaRichTextInput';
