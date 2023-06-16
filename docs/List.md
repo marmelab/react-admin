@@ -5,14 +5,16 @@ title: "The List Component"
 
 # `<List>`
 
-The `<List>` component fetches the list of records from the data provider, and renders the default list layout (title, buttons, filters, pagination). It delegates the rendering of the list of records to its child component. Usually, it's a `<Datagrid>`, responsible for displaying a table with one row for each record.
+The `<List>` component is the root component for list pages. It fetches a list of records from the data provider, puts it in a [`ListContext`](./useListContext.md), renders the default list page layout (title, buttons, filters, pagination), and renders its children. Usual children of `<List>`, like [`<Datagrid>`](./Datagrid.md), are responsible for displaying the list of records. 
+
+![Simple posts list](./img/simple-post-list.png)
 
 ## Usage
 
-Here is the minimal code necessary to display a list of posts using a `<Datagrid>`:
+Here is the minimal code necessary to display a list of posts using a [`<Datagrid>`](./Datagrid.md):
 
 ```jsx
-// in src/posts.js
+// in src/posts.jsx
 import { List, Datagrid, TextField, DateField, BooleanField } from 'react-admin';
 
 export const PostList = () => (
@@ -27,7 +29,7 @@ export const PostList = () => (
     </List>
 );
 
-// in src/App.js
+// in src/App.jsx
 import { Admin, Resource } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
@@ -42,9 +44,7 @@ const App = () => (
 export default App;
 ```
 
-That's enough to display a basic post list, with functional sort and pagination:
-
-![Simple posts list](./img/simple-post-list.png)
+That's enough to display a basic post list, with functional sort and pagination.
 
 You can find more advanced examples of `<List>` usage in the [demos](./Demos.md). 
 
@@ -234,18 +234,33 @@ export const PostList = () => (
 
 ## `children`: List Layout
 
-`<List>` doesn't render any content by default - it delegates this to its child. List layout components grab the `data` from the `ListContext` and render them on screen.
+`<List>` itself doesn't render the list of records. It delegates this task to its children components. These children components grab the `data` from the `ListContext` and render them on screen.
 
-React-admin provides several List layout components:
+The most common List child is `<Datagrid>`:
+
+```jsx
+export const BookList = () => (
+    <List>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </List>
+);
+```
+
+React-admin provides several components that can read and display a list of records from a `ListContext`, each with a different layout:
 
 - [`<Datagrid>`](./Datagrid.md) displays records in a table
-- [`<SimpleList>`](./SimpleList.md) displays records in a list without many details
-- [`<SingleFieldList>`](./SingleFieldList.md) displays records inline, showing one field per record 
 - [`<EditableDatagrid>`](./EditableDatagrid.md) displays records in a table AND lets users edit them inline
+- [`<SimpleList>`](./SimpleList.md) displays records in a list without many details - suitable for mobile devices
 - [`<Tree>`](./TreeWithDetails.md) displays records in a tree structure
 - [`<Calendar>`](./Calendar.md) displays event records in a calendar
+- [`<SingleFieldList>`](./SingleFieldList.md) displays records inline, showing one field per record 
 
-To use an alternative layout, switch the `<List>` child component:
+So for instance, you can use a `<SimpleList>` instead of a `<Datagrid>` to display a list of books on a mobile device:
 
 ```diff
 export const BookList = () => (
@@ -264,7 +279,30 @@ export const BookList = () => (
 );
 ```
 
-You can also pass React elements as children, to build a custom iterator. Check [Building a custom List Iterator](./ListTutorial.md#building-a-custom-iterator) for more details.
+You can also render the list of records in a custom way. You'll need to grab the data from the `ListContext` using [`<WithListContext>`](./WithListContext.md):
+
+{% raw %}
+```tsx
+import { List, WithListContext } from 'react-admin';
+import { Stack, Typography } from '@mui/material';
+
+const BookList = () => (
+    <List>
+        <WithListContext render={({ data }) => (
+            <Stack spacing={2} sx={{ padding: 2 }}>
+                {data?.map(book => (
+                    <Typography key={book.id}>
+                        <i>{book.title}</i>, by {book.author} ({book.year})
+                    </Typography>
+                ))}
+            </Stack>
+        )} />
+    </List>
+);
+```
+{% endraw %}
+
+Check [Building a custom List Iterator](./ListTutorial.md#building-a-custom-iterator) for more details.
 
 ## `component`
 
