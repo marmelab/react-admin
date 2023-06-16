@@ -94,6 +94,18 @@ const Root = styled('div')(({ theme }) => ({
         '& > *:last-child': {
             marginRight: 0,
         },
+        '& button.MuiToggleButton-sizeSmall': {
+            padding: theme.spacing(0.3),
+            fontSize: theme.typography.pxToRem(18),
+        },
+        '& button.MuiToggleButton-sizeMedium': {
+            padding: theme.spacing(0.5),
+            fontSize: theme.typography.pxToRem(24),
+        },
+        '& button.MuiToggleButton-sizeLarge': {
+            padding: theme.spacing(1),
+            fontSize: theme.typography.pxToRem(24),
+        },
     },
 }));
 
