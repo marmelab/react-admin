@@ -12,7 +12,6 @@ import { Color } from '@tiptap/extension-color';
 import Highlight from '@tiptap/extension-highlight';
 import { FormHelperText } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { SxProps } from '@mui/system';
 import { useInput, useResourceContext } from 'ra-core';
 import {
     CommonInputProps,
@@ -226,7 +225,7 @@ export type RichTextInputProps = CommonInputProps &
         readOnly?: boolean;
         editorOptions?: Partial<EditorOptions>;
         toolbar?: ReactNode;
-        sx?: SxProps;
+        sx?: any;
     };
 
 const PREFIX = 'RaRichTextInput';
