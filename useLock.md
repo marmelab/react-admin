@@ -33,4 +33,4 @@ The optional `options` argument is passed to react-query's `useMutation` hook.
 
 ## Utility Hooks
 
-For most use cases, you won't need to call the `useLock` hook directly. Instead, you should use the [`useLockOnMount`](./useLockOnMound.md) or [`useLockOnCall`](./useLockOnCall.md) orchestration hooks, which are responsible for calling `useLock` and `useUnlock`.
+For most use cases, you won't need to call the `useLock` hook directly. Instead, you should use the [`useLockOnMount`](./useLockOnMount.md) or [`useLockOnCall`](./useLockOnCall.md) orchestration hooks, which are responsible for calling `useLock` and `useUnlock`.

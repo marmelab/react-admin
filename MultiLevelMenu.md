@@ -7,7 +7,11 @@ title: "The MultiLevelMenu Component"
 
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component adds support for nested sub menus in the left navigation bar. 
 
-![multilevel menu](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 When a React-admin application grows significantly, [the default `<Menu>` component](./Menu.md) might not be the best solution. The `<MultiLevelMenu>` can help unclutter the navigation: it renders a menu with an infinite number of levels and sub menus. Menu Items that are not at the top level are rendered inside a collapsible panel.
 

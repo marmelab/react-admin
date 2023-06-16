@@ -100,7 +100,7 @@ export const MyAppBar = () => (
 
 ![App bar with a settings button](./img/AppBar-children.png)
 
-**Tip**: Whats the `<TitlePortal>`? It's a placeholder for the page title, that components in the page can fill using [the `<Title>` component](./Title.md). `<Title>` uses a [React Portal](https://reactjs.org/docs/portals.html) under the hood. `<TitlePortal>` takes all the available space in the app bar, so it "pushes" the following children to the right.
+**Tip**: Whats the `<TitlePortal>`? It's a placeholder for the page title, that components in the page can fill using [the `<Title>` component](./Title.md). `<Title>` uses a [React Portal](https://react.dev/reference/react-dom/createPortal) under the hood. `<TitlePortal>` takes all the available space in the app bar, so it "pushes" the following children to the right.
  
 If you omit `<TitlePortal>`, `<AppBar>` will no longer display the page title. This can be done on purpose, e.g. if you want to render something completely different in the AppBar, like a company logo and a search engine:
 
@@ -308,7 +308,7 @@ export const MyCustomPage = () => (
 );
 ```
 
-**Tip**: The `<Title>` component uses a [React Portal](https://reactjs.org/docs/portals.html) to modify the title in the app bar. This is why you need to [include the `<TitlePortal>` component](#children) when you customize the `<AppBar>` children.
+**Tip**: The `<Title>` component uses a [React Portal](https://react.dev/reference/react-dom/createPortal) to modify the title in the app bar. This is why you need to [include the `<TitlePortal>` component](#children) when you customize the `<AppBar>` children.
 
 ## Displaying The Language Menu
 
@@ -383,7 +383,11 @@ export const MyAppBar = () => (
 
 A common use case for app bar customization is to add a site-wide search engine. The `<Search>` component is a good starting point for this.
 
-![ra-search](https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 ```jsx
 // in src/MyAppBar.jsx
@@ -413,7 +417,7 @@ export const MyAppBar = () => (
     <AppBar position="static">
         <Toolbar>
             <TitlePortal />
-            <Box flex="1">
+            <Box flex="1" />
             <RefreshIconButton />
         </Toolbar>
     </AppBar>

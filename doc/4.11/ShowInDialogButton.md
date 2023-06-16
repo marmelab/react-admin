@@ -9,7 +9,11 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 It can be useful in case you want the ability to show a record linked by a reference to the currently edited record, or if you have a nested `<Datagrid>` inside a `<Show>` or an `<Edit>` view. 
 
-![ShowInDialogButton](https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 Below is an example of an `<Edit>` view, inside which is a nested `<Datagrid>`, offering the ability to **create**, **edit** and **show** the rows thanks to `<CreateInDialogButton>`, `<EditInDialogButton>` and `<ShowInDialogButton>`:
 

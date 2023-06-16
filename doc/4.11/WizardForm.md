@@ -7,7 +7,11 @@ title: "WizardForm"
 
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers an alternative layout for large Create forms, allowing users to enter data step-by-step.
 
-![WizardForm](https://marmelab.com/ra-enterprise/modules/assets/ra-wizard-form-overview.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-wizard-form-overview.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-wizard-form-overview.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 `<WizardForm>` renders one step at a time. The form is submitted when the user clicks on the `Save` button of the last step.
 
@@ -441,3 +445,58 @@ const PostCreate = () => (
     </Create>
 );
 ```
+
+## Role-Based Access Control (RBAC)
+
+Fine-grained permissions control can be added by using the [`<WizardForm>`](./AuthRBAC.md#wizardform) and [`<WizardFormStep>`](./AuthRBAC.md#wizardformstep) components provided by the `@react-admin/ra-enterprise` package. 
+
+{% raw %}
+```tsx
+import { WizardForm } from '@react-admin/ra-enterprise';
+
+const authProvider = {
+    checkAuth: () => Promise.resolve(),
+    login: () => Promise.resolve(),
+    logout: () => Promise.resolve(),
+    checkError: () => Promise.resolve(),
+    getPermissions: () =>Promise.resolve([
+        // 'delete' is missing
+        { action: ['list', 'edit'], resource: 'products' },
+        { action: 'write', resource: 'products.reference' },
+        { action: 'write', resource: 'products.width' },
+        { action: 'write', resource: 'products.height' },
+        // 'products.description' is missing
+        { action: 'write', resource: 'products.thumbnail' },
+        // 'products.image' is missing
+        { action: 'write', resource: 'products.step.description' },
+        { action: 'write', resource: 'products.step.images' },
+        // 'products.step.stock' is missing
+    ]),
+};
+
+const ProductCreate = () => (
+    <Create>
+        <WizardForm>
+            <WizardForm.Step name="description" label="Description">
+                <TextInput source="reference" />
+                <TextInput source="width" />
+                <TextInput source="height" />
+                {/* Won't be displayed */}
+                <TextInput source="description" />
+            </WizardForm.Step>
+            <WizardForm.Step name="images" label="Images">
+                {/* Won't be displayed */}
+                <TextInput source="image" />
+                <TextInput source="thumbnail" />
+            </WizardForm.Step>
+            {/* Won't be displayed */}
+            <WizardForm.Step name="stock" label="Stock">
+                <TextInput source="stock" />
+            </WizardForm.Step>
+        </WizardForm>
+    </Create>
+);
+```
+{% endraw %}
+
+Check [the RBAC `<WizardForm>`](./AuthRBAC.md#wizardform) documentation for more details.
