@@ -295,14 +295,15 @@ title: "Index"
 * [`useTranslate`](./useTranslate.md)
 
 **- U -**
-* [`useUpdate`](./useUpdate.md)
-* [`useUpdateMany`](./useUpdateMany.md)
+* [`useUnique`](./useUnique.md)
 * [`useUnlock`](./useUnlock.md)<img class="icon" src="./img/premium.svg" />
 * [`useUnselect`](./useUnselect.md)
 * [`useUnselectAll`](./useUnselectAll.md)
+* [`useUpdate`](./useUpdate.md)
+* [`useUpdateMany`](./useUpdateMany.md)
 
 **- W -**
 * [`useWarnWhenUnsavedChanges`](./EditTutorial.md#warning-about-unsaved-changes)
-* [ `withLifecycleCallbacks`](./withLifecycleCallbacks.md)
+* [`withLifecycleCallbacks`](./withLifecycleCallbacks.md)
 
 </div>
