@@ -7,8 +7,9 @@ title: "useSubscribeToRecord"
 
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> hook is a specialized version of [`useSubscribe`](./useSubscribe.md) that subscribes to events concerning a single record.
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/useSubscribeToRecord.webm" type="video/webm"/>
+  <source src="./img/useSubscribeToRecord.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

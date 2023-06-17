@@ -41,7 +41,6 @@ export const ListView = <RecordType extends RaRecord = any>(
         defaultTitle,
         data,
         error,
-        total,
         isLoading,
         filterValues,
         resource,
@@ -55,6 +54,7 @@ export const ListView = <RecordType extends RaRecord = any>(
         <div className={ListClasses.main}>
             {(filters || actions) && (
                 <ListToolbar
+                    className={ListClasses.actions}
                     filters={filters}
                     actions={actions}
                     hasCreate={hasCreate}
@@ -79,11 +79,12 @@ export const ListView = <RecordType extends RaRecord = any>(
     );
 
     const renderEmpty = () =>
-        empty !== false && cloneElement(empty, { hasCreate });
+        empty !== false &&
+        cloneElement(empty, { className: ListClasses.noResults, hasCreate });
 
     const shouldRenderEmptyPage =
         !isLoading &&
-        total === 0 &&
+        data?.length === 0 &&
         !Object.keys(filterValues).length &&
         empty !== false;
 
@@ -101,50 +102,19 @@ export const ListView = <RecordType extends RaRecord = any>(
 };
 
 ListView.propTypes = {
-    // @ts-ignore-line
     actions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     aside: PropTypes.element,
     children: PropTypes.node,
     className: PropTypes.string,
     component: ComponentPropType,
-    // @ts-ignore-line
-    sort: PropTypes.shape({
-        field: PropTypes.string.isRequired,
-        order: PropTypes.string.isRequired,
-    }),
-    data: PropTypes.any,
-    defaultTitle: PropTypes.string,
-    displayedFilters: PropTypes.object,
     emptyWhileLoading: PropTypes.bool,
-    // @ts-ignore-line
-    exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
-    filterDefaultValues: PropTypes.object,
     filters: PropTypes.oneOfType([
         PropTypes.element,
         PropTypes.arrayOf(PropTypes.element),
     ]),
-    filterValues: PropTypes.object,
     hasCreate: PropTypes.bool,
-    hideFilter: PropTypes.func,
-    ids: PropTypes.array,
-    loading: PropTypes.bool,
-    onSelect: PropTypes.func,
-    onToggleItem: PropTypes.func,
-    onUnselectItems: PropTypes.func,
-    page: PropTypes.number,
-    // @ts-ignore-line
     pagination: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    perPage: PropTypes.number,
-    refresh: PropTypes.func,
-    resource: PropTypes.string,
-    selectedIds: PropTypes.array,
-    setFilters: PropTypes.func,
-    setPage: PropTypes.func,
-    setPerPage: PropTypes.func,
-    setSort: PropTypes.func,
-    showFilter: PropTypes.func,
     title: TitlePropType,
-    total: PropTypes.number,
 };
 
 export interface ListViewProps {
@@ -195,12 +165,7 @@ const Root = styled('div', {
         overflow: 'inherit',
     },
 
-    [`& .${ListClasses.actions}`]: {
-        zIndex: 2,
-        display: 'flex',
-        justifyContent: 'flex-end',
-        flexWrap: 'wrap',
-    },
+    [`& .${ListClasses.actions}`]: {},
 
-    [`& .${ListClasses.noResults}`]: { padding: 20 },
+    [`& .${ListClasses.noResults}`]: {},
 }));

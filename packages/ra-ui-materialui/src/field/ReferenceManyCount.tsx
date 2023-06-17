@@ -5,11 +5,12 @@ import {
     useTimeout,
     useCreatePath,
     SortPayload,
+    RaRecord,
 } from 'ra-core';
 import { Typography, TypographyProps, CircularProgress } from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Error';
 
-import { PublicFieldProps, InjectedFieldProps } from './types';
+import { FieldProps } from './types';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { Link } from '../Link';
 
@@ -27,7 +28,9 @@ import { Link } from '../Link';
  * @example // Display the number of comments for the current post, with a custom Typography variant
  * <ReferenceManyCount reference="comments" target="post_id" variant="h1">
  */
-export const ReferenceManyCount = (props: ReferenceManyCountProps) => {
+export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
+    props: ReferenceManyCountProps<RecordType>
+) => {
     const {
         reference,
         target,
@@ -43,7 +46,9 @@ export const ReferenceManyCount = (props: ReferenceManyCountProps) => {
     const oneSecondHasPassed = useTimeout(timeout);
     const createPath = useCreatePath();
 
-    const { isLoading, error, total } = useReferenceManyFieldController({
+    const { isLoading, error, total } = useReferenceManyFieldController<
+        RecordType
+    >({
         filter,
         sort,
         page: 1,
@@ -94,17 +99,13 @@ export const ReferenceManyCount = (props: ReferenceManyCountProps) => {
     );
 };
 
-export interface ReferenceManyCountProps
-    extends PublicFieldProps,
-        InjectedFieldProps,
+export interface ReferenceManyCountProps<RecordType extends RaRecord = RaRecord>
+    extends FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     reference: string;
     target: string;
     sort?: SortPayload;
     filter?: any;
-    label?: string;
     link?: boolean;
-    resource?: string;
-    source?: string;
     timeout?: number;
 }

@@ -30,7 +30,7 @@ import {
 import { useFormContext, useWatch } from 'react-hook-form';
 import { Button, Dialog, DialogActions, DialogContent } from '@mui/material';
 
-const PostCreateToolbar = props => {
+const PostCreateToolbar = () => {
     const notify = useNotify();
     const redirect = useRedirect();
     const { reset } = useFormContext();
@@ -163,12 +163,7 @@ const PostCreate = () => {
                                 />
                             </ReferenceInput>
                             <FormDataConsumer>
-                                {({
-                                    formData,
-                                    scopedFormData,
-                                    getSource,
-                                    ...rest
-                                }) =>
+                                {({ scopedFormData, getSource, ...rest }) =>
                                     scopedFormData && scopedFormData.user_id ? (
                                         <SelectInput
                                             source={getSource('role')}

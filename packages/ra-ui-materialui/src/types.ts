@@ -12,7 +12,7 @@ import {
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
 export interface EditProps<
-    RecordType extends RaRecord = any,
+    RecordType extends RaRecord = RaRecord,
     MutationOptionsError = unknown
 > {
     actions?: ReactElement | false;
@@ -20,7 +20,7 @@ export interface EditProps<
     className?: string;
     component?: ElementType;
     disableAuthentication?: boolean;
-    id?: Identifier;
+    id?: RecordType['id'];
     mutationMode?: MutationMode;
     queryOptions?: UseQueryOptions<RecordType> & { meta?: any };
     mutationOptions?: UseMutationOptions<
@@ -36,8 +36,9 @@ export interface EditProps<
 }
 
 export interface CreateProps<
-    RecordType extends RaRecord = any,
-    MutationOptionsError = unknown
+    RecordType extends Omit<RaRecord, 'id'> = any,
+    MutationOptionsError = unknown,
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
 > {
     actions?: ReactElement | false;
     aside?: ReactElement;
@@ -50,7 +51,7 @@ export interface CreateProps<
     redirect?: RedirectionSideEffect;
     resource?: string;
     mutationOptions?: UseMutationOptions<
-        RecordType,
+        ResultRecordType,
         MutationOptionsError,
         UseCreateMutateParams<RecordType>
     > & { meta?: any };

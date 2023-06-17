@@ -36,7 +36,13 @@ import {
 import ResetViewsButton from './ResetViewsButton';
 export const PostIcon = BookIcon;
 
-const QuickFilter = ({ label, source, defaultValue }) => {
+const QuickFilter = ({
+    label,
+}: {
+    label?: string;
+    source?: string;
+    defaultValue?: any;
+}) => {
     const translate = useTranslate();
     return <Chip sx={{ marginBottom: 1 }} label={translate(label)} />;
 };
@@ -104,13 +110,19 @@ const StyledDatagrid = styled(DatagridConfigurable)(({ theme }) => ({
     '& .publishedAt': { fontStyle: 'italic' },
 }));
 
-const PostListBulkActions = memo(({ children, ...props }) => (
-    <Fragment>
-        <ResetViewsButton {...props} />
-        <BulkDeleteButton {...props} />
-        <BulkExportButton {...props} />
-    </Fragment>
-));
+const PostListBulkActions = memo(
+    ({
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        children,
+        ...props
+    }) => (
+        <Fragment>
+            <ResetViewsButton {...props} />
+            <BulkDeleteButton {...props} />
+            <BulkExportButton {...props} />
+        </Fragment>
+    )
+);
 
 const PostListActions = () => (
     <TopToolbar>
@@ -121,11 +133,11 @@ const PostListActions = () => (
     </TopToolbar>
 );
 
-const PostListActionToolbar = ({ children, ...props }) => (
+const PostListActionToolbar = ({ children }) => (
     <Box sx={{ alignItems: 'center', display: 'flex' }}>{children}</Box>
 );
 
-const rowClick = (id, resource, record) => {
+const rowClick = (_id, _resource, record) => {
     if (record.commentable) {
         return 'edit';
     }
@@ -133,7 +145,7 @@ const rowClick = (id, resource, record) => {
     return 'show';
 };
 
-const PostPanel = ({ id, record, resource }) => (
+const PostPanel = ({ record }) => (
     <div dangerouslySetInnerHTML={{ __html: record.body }} />
 );
 

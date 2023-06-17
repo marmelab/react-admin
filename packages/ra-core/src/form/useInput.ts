@@ -5,7 +5,6 @@ import {
     useController,
     UseControllerProps,
     UseControllerReturn,
-    useFormContext,
     UseFormStateReturn,
 } from 'react-hook-form';
 import get from 'lodash/get';
@@ -45,7 +44,6 @@ export const useInput = <ValueType = any>(
     const formGroups = useFormGroups();
     const record = useRecordContext();
     const getValidationErrorMessage = useGetValidationErrorMessage();
-    const formContext = useFormContext();
 
     useEffect(() => {
         if (!formGroups || formGroupName == null) {
@@ -71,13 +69,9 @@ export const useInput = <ValueType = any>(
         name: finalName,
         defaultValue: get(record, source, defaultValue),
         rules: {
-            validate: async value => {
+            validate: async (value, values) => {
                 if (!sanitizedValidate) return true;
-                const error = await sanitizedValidate(
-                    value,
-                    formContext.getValues(),
-                    props
-                );
+                const error = await sanitizedValidate(value, values, props);
 
                 if (!error) return true;
                 return getValidationErrorMessage(error);
@@ -90,7 +84,7 @@ export const useInput = <ValueType = any>(
     // they may reset their default values which would override the input default value.
     // This hook ensures that the input default value is applied when a new record is loaded but has
     // no value for the input.
-    useApplyInputDefaultValues(props);
+    useApplyInputDefaultValues({ inputProps: props });
 
     const onBlur = useEvent((...event: any[]) => {
         if (initialOnBlur) {

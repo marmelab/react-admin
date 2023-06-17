@@ -38,21 +38,16 @@ import { sanitizeEmptyValues as sanitizeValues } from './sanitizeEmptyValues';
  */
 export const useAugmentedForm = (props: UseAugmentedFormProps) => {
     const {
-        context,
         criteriaMode = 'firstError',
         defaultValues,
-        delayError,
         formRootPathname,
-        mode,
         resolver,
         reValidateMode = 'onChange',
         onSubmit,
         sanitizeEmptyValues,
-        shouldFocusError,
-        shouldUnregister,
-        shouldUseNativeValidation,
         warnWhenUnsavedChanges,
         validate,
+        ...rest
     } = props;
     const record = useRecordContext(props);
     const saveContext = useSaveContext();
@@ -79,38 +74,14 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
         : undefined;
 
     const form = useForm({
-        context,
         criteriaMode,
-        defaultValues: defaultValuesIncludingRecord,
-        delayError,
-        mode,
+        values: defaultValuesIncludingRecord,
         reValidateMode,
         resolver: finalResolver,
-        shouldFocusError,
-        shouldUnregister,
-        shouldUseNativeValidation,
+        ...rest,
     });
 
     const formRef = useRef(form);
-
-    // initialize form with record
-    /* eslint-disable react-hooks/exhaustive-deps */
-    useEffect(() => {
-        if (!record) {
-            return;
-        }
-        const initialValues = getFormInitialValues(defaultValues, record);
-        form.reset(initialValues);
-    }, [
-        JSON.stringify({
-            defaultValues:
-                typeof defaultValues === 'function'
-                    ? 'function'
-                    : defaultValues,
-            record,
-        }),
-    ]);
-    /* eslint-enable react-hooks/exhaustive-deps */
 
     // notify on invalid form
     useNotifyIsFormInvalid(form.control);

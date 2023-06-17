@@ -7,8 +7,9 @@ title: "The RichTextInput Component"
 
 `<RichTextInput>` is the ideal component to let users edit HTML content. It is powered by [TipTap](https://www.tiptap.dev/).
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/rich-text-input.webm" type="video/webm"/>
+  <source src="./img/rich-text-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -29,8 +30,8 @@ Use it as you would any react-admin inputs:
 import { Edit, SimpleForm, TextInput } from 'react-admin';
 import { RichTextInput } from 'ra-input-rich-text';
 
-export const PostEdit = (props) => (
-	<Edit {...props}>
+export const PostEdit = () => (
+	<Edit>
 		<SimpleForm>
 			<TextInput source="title" />
 			<RichTextInput source="body" />

@@ -7,8 +7,9 @@ title: "The TextInput Component"
 
 `<TextInput>` is the most common input. It is used for texts, emails, URL or passwords. In translates into [an Material UI `<TextField>`](https://mui.com/material-ui/react-text-field/), and renders as `<input type="text">` in HTML.
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/text-input.webm" type="video/webm"/>
+  <source src="./img/text-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -58,8 +59,9 @@ import { TextInput } from 'react-admin';
 <TextInput source="title" resettable />
 ```
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/resettable-text-input.webm" type="video/webm"/>
+  <source src="./img/resettable-text-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -73,3 +75,34 @@ You can choose a specific input type using the `type` attribute, for instance `t
 ```
 
 **Warning**: Do not use `type="number"`, or you'll receive a string as value (this is a [known React bug](https://github.com/facebook/react/issues/1425)). Instead, use [`<NumberInput>`](./NumberInput.md).
+
+## Predictive Text Input
+
+An alternative to `<TextInput>` is [`<PredictiveTextInput>`](./PredictiveTextInput.md), which suggests completion for the input value, using your favorite AI backend. Users can accept the completion by pressing the `Tab` key. It's like Intellisense or Copilot for your forms.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/PredictiveTextInput.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+Use `<PredictiveTextInput>` instead of `<TextInput>` in your forms:
+
+```jsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { PredictiveTextInput } from '@react-admin/ra-ai';
+
+const PersonEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="firstName" />
+            <TextInput source="lastName" />
+            <TextInput source="company" />
+            <PredictiveTextInput source="email" />
+            <PredictiveTextInput source="website" />
+            <PredictiveTextInput source="bio" multiline />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+See the [dedicated documentation](./PredictiveTextInput.md) for more details.

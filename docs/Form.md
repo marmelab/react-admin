@@ -11,7 +11,7 @@ The `<Form>` component creates a `<form>` to edit a record, and renders its chil
 
 ## Usage
 
-Use `<Form>` to build completely custom form layouts. Don't forget to include a submit button:
+Use `<Form>` to build completely custom form layouts. Don't forget to include a submit button (or react-admin's [`<SaveButton>`](./SaveButton.md)) to actually save the record.
 
 ```jsx
 import { Create, Form, TextInput, RichTextInput, SaveButton } from 'react-admin';
@@ -39,26 +39,23 @@ export const PostCreate = () => (
 );
 ```
 
-`<Form>` calls react-hook-form's `useForm` hook, and places the result in a `FormProvider` component. This means you can take advantage of the [`useFormContext`](https://react-hook-form.com/api/useformcontext) and [`useFormState`](https://react-hook-form.com/api/useformstate) hooks to access the form state.
+`<Form>` calls react-hook-form's `useForm` hook, and places the result in a `FormProvider` component. This means you can take advantage of the [`useFormContext`](https://react-hook-form.com/docs/useformcontext) and [`useFormState`](https://react-hook-form.com/docs/useformstate) hooks to access the form state.
+
+## Props
 
 Here are all the props you can set on the `<Form>` component:
 
-* [`defaultValues`](#defaultvalues)
-* [`id`](#id)
-* [`noValidate`](#novalidate)
-* [`onSubmit`](#onsubmit)
-* [`sanitizeEmptyValues`](#sanitizeemptyvalues)
-* [`validate`](#validate)
-* [`warnWhenUnsavedChanges`](#warnwhenunsavedchanges)
+| Prop                     | Required | Type              | Default | Description                                                |
+| ------------------------ | -------- | ----------------- | ------- | ---------------------------------------------------------- |
+| `defaultValues`          | Optional | `object|function` | -       | The default values of the record.                          |
+| `id`                     | Optional | `string`          | -       | The id of the underlying `<form>` tag.                     |
+| `noValidate`             | Optional | `boolean`         | -       | Set to `true` to disable the browser's default validation. |
+| `onSubmit`               | Optional | `function`        | `save`  | A callback to call when the form is submitted.             |
+| `sanitizeEmptyValues`    | Optional | `boolean`         | -       | Set to `true` to remove empty values from the form state.  |
+| `validate`               | Optional | `function`        | -       | A function to validate the form values.                    |
+| `warnWhenUnsavedChanges` | Optional | `boolean`         | -       | Set to `true` to warn the user when leaving the form with unsaved changes. |
 
-Additional props are passed to [the `useForm` hook](https://react-hook-form.com/api/useform).
-
-**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/api/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
-
-```js
-const { isDirty } = useFormState(); // ✅
-const formState = useFormState(); // ❌ should deconstruct the formState      
-```
+Additional props are passed to [the `useForm` hook](https://react-hook-form.com/docs/useform).
 
 ## `defaultValues`
 
@@ -237,3 +234,98 @@ export const TagEdit = () => (
 ```
 
 **Warning**: This feature only works if you have a dependency on react-router 6.3.0 **at most**. The react-router team disabled this possibility in react-router 6.4, so `warnWhenUnsavedChanges` will silently fail with react-router 6.4 or later.
+
+## Subscribing To Form Changes
+
+`<Form>` relies on [react-hook-form's `useForm`](https://react-hook-form.com/docs/useform) to manage the form state and validation. You can subscribe to form changes using the [`useFormContext`](https://react-hook-form.com/docs/useformcontext) and [`useFormState`](https://react-hook-form.com/docs/useformstate) hooks.
+ 
+**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/docs/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+
+```js
+const { isDirty } = useFormState(); // ✅
+const formState = useFormState(); // ❌ should deconstruct the formState      
+```
+
+## AutoSave
+
+In forms where users may spend a lot of time, it's a good idea to save the form automatically after a few seconds of inactivity. You can auto save the form content by using [the `<AutoSave>` component](./AutoSave.md).
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/AutoSave.webm" type="video/webm"/>
+  <source src="./img/AutoSave.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+{% raw %}
+```tsx
+import { AutoSave } from '@react-admin/ra-form-layout';
+import { Edit, Form, TextInput, DateInput, SelectInput } from 'react-admin';
+import { Stack } from '@mui/material';
+
+const PersonEdit = () => (
+    <Edit mutationMode="optimistic">
+        <Form resetOptions={{ keepDirtyValues: true }}>
+            <Stack>
+                <TextInput source="first_name" />
+                <TextInput source="last_name" />
+                <DateInput source="dob" />
+                <SelectInput source="sex" choices={[
+                    { id: 'male', name: 'Male' },
+                    { id: 'female', name: 'Female' },
+                ]}/>
+            </Stack>
+             <AutoSave />
+        </Form>
+    </Edit>
+);
+```
+{% endraw %}
+
+Note that you **must** set the `<Form resetOptions>` prop to `{ keepDirtyValues: true }`. If you forget that prop, any change entered by the end user after the autosave but before its acknowledgement by the server will be lost.
+
+If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](https://marmelab.com/react-admin/Edit.html#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
+
+Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
+
+## Linking Two Inputs
+
+Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
+
+React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://react-hook-form.com/docs/usewatch) hook.
+
+```jsx
+import * as React from 'react';
+import { Edit, SimpleForm, SelectInput } from 'react-admin';
+import { useWatch } from 'react-hook-form';
+
+const countries = ['USA', 'UK', 'France'];
+const cities = {
+    USA: ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'],
+    UK: ['London', 'Birmingham', 'Glasgow', 'Liverpool', 'Bristol'],
+    France: ['Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice'],
+};
+const toChoices = items => items.map(item => ({ id: item, name: item }));
+
+const CityInput = props => {
+    const country = useWatch({ name: 'country' });
+    return (
+        <SelectInput
+            choices={country ? toChoices(cities[country]) : []}
+            {...props}
+        />
+    );
+};
+
+const OrderEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <SelectInput source="country" choices={toChoices(countries)} />
+            <CityInput source="cities" />
+        </SimpleForm>
+    </Edit>
+);
+
+export default OrderEdit;
+```
+
+**Tip:** If you'd like to avoid creating an intermediate component like `<CityInput>`, or are using an `<ArrayInput>`, you can use the [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs) component as an alternative.

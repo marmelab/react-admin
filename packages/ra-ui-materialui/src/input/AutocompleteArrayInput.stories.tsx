@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import { RaRecord, Resource, required, useCreate } from 'ra-core';
+import {
+    RaRecord,
+    Resource,
+    required,
+    useCreate,
+    useRecordContext,
+} from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { createMemoryHistory } from 'history';
@@ -226,11 +232,14 @@ export const CustomTextFunction = () => (
     </Admin>
 );
 
-const CustomOption = ({ record, ...rest }: { record?: RaRecord }) => (
-    <div {...rest}>
-        {record?.fullName}&nbsp;<i>({record?.language})</i>
-    </div>
-);
+const CustomOption = () => {
+    const record = useRecordContext();
+    return (
+        <div>
+            {record?.fullName}&nbsp;<i>({record?.language})</i>
+        </div>
+    );
+};
 
 const BookEditCustomOptions = () => {
     const choices = [

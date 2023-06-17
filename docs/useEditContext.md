@@ -62,3 +62,38 @@ const {
     saving, // boolean that becomes true when the dataProvider is called to update the record
 } = useEditContext();
 ```
+
+## TypeScript
+
+The `useEditContext` hook accepts a generic parameter for the record type:
+
+```tsx
+import { Edit, useEditContext } from 'react-admin';
+import { Typography } from '@mui/material';
+
+type Post = {
+    id: number;
+    title: string;
+    updated_at: Date;
+};
+
+export const PostEdit = () => (
+    <Edit aside={<Aside />}>
+        // ...
+    </Edit>
+);
+
+const Aside = () => {
+    const { record: post, isLoading } = useEditContext<Post>();
+    if (isLoading) return null;
+    return (
+        <div>
+            <Typography variant="h6">Posts stats</Typography>
+            <Typography variant="body2">
+                {/* TypeScript knows that post is of type Post */}
+                Last edition: {post.updated_at}
+            </Typography>
+        </div>
+    );
+};
+```

@@ -5,11 +5,11 @@ import {
     ToggleButton,
     ToggleButtonGroup,
     ToggleButtonProps,
+    useTheme,
 } from '@mui/material';
 import FormatColorTextIcon from '@mui/icons-material/FormatColorText';
 import FontDownloadIcon from '@mui/icons-material/FontDownload';
 import { useTranslate } from 'ra-core';
-import { useTheme } from 'ra-ui-materialui';
 import { useTiptapEditor } from '../useTiptapEditor';
 import {
     grey,
@@ -92,7 +92,7 @@ const ColorChoiceDialog = ({
     close,
     colorType,
 }: ColorChoiceDialogProps) => {
-    const [theme] = useTheme();
+    const theme = useTheme();
     const colors = [grey, red, orange, yellow, green, blue, purple];
     const shades = [900, 700, 500, 300, 100];
 

@@ -19,7 +19,7 @@ The `key` should be a string, and is used for local storage.
 
 The store can contain values of any type (e.g. `string`, `number`, `boolean`, `array`, `object`), as long as they can be serialized with `JSON.stringify()`. 
 
-The `setValue` function behaves like the one returned by [`useState`](https://reactjs.org/docs/hooks-reference.html#usestate), i.e. it accepts both a value or a value updater function.
+The `setValue` function behaves like the one returned by [`useState`](https://react.dev/reference/react/useState), i.e. it accepts both a value or a value updater function.
 
 ```jsx
 // use setValue with a value

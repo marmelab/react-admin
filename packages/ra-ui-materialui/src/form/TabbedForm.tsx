@@ -90,6 +90,7 @@ export const TabbedForm = (props: TabbedFormProps) => {
 
 TabbedForm.Tab = FormTab;
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const sanitizeRestProps = ({
     criteriaMode,
     defaultValues,
@@ -99,6 +100,7 @@ const sanitizeRestProps = ({
     noValidate,
     onSubmit,
     record,
+    resetOptions,
     resolver,
     reValidateMode,
     sanitizeEmptyValues,
@@ -109,6 +111,7 @@ const sanitizeRestProps = ({
     warnWhenUnsavedChanges,
     ...rest
 }: TabbedFormProps) => rest;
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 TabbedForm.propTypes = {
     children: PropTypes.node,

@@ -159,14 +159,14 @@ export const SingleFieldListClasses = {
 const Root = styled('div', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
+})({
     display: 'flex',
     flexWrap: 'wrap',
 
     [`& .${SingleFieldListClasses.link}`]: {
         textDecoration: 'none',
     },
-}));
+});
 
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();

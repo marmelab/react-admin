@@ -1,5 +1,113 @@
 # Changelog
 
+## v4.11.3
+
+* Fix Save button might stay disabled when using `<ArrayInput>` with default values ([#8971](https://github.com/marmelab/react-admin/pull/8971)) ([henryhobhouse](https://github.com/henryhobhouse))
+* Fix `<Admin>` should call `authProvider.getPermissions` only when given a child function ([#9001](https://github.com/marmelab/react-admin/pull/9001)) ([adguernier](https://github.com/adguernier))
+* Fix `<ListView>` does not apply CSS classes to its child components ([#8995](https://github.com/marmelab/react-admin/pull/8995)) ([djhi](https://github.com/djhi))
+* Update ra-input-rich-text tiptap dependencies ([#8997](https://github.com/marmelab/react-admin/pull/8997)) ([djhi](https://github.com/djhi))
+* [Doc] Add PredictiveTextInput chapter ([#9016](https://github.com/marmelab/react-admin/pull/9016)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Automatically convert TS examples to JS ([#9005](https://github.com/marmelab/react-admin/pull/9005)) ([djhi](https://github.com/djhi))
+* [Doc] Mention RBAC forms in documentation ([#8996](https://github.com/marmelab/react-admin/pull/8996)) ([djhi](https://github.com/djhi))
+* [Doc] Add documentation for Remix v2 routing conventions ([#9017](https://github.com/marmelab/react-admin/pull/9017)) ([djhi](https://github.com/djhi))
+* [Doc] Add references throughout the documentation about linking two inputs ([#9015](https://github.com/marmelab/react-admin/pull/9015)) ([djhi](https://github.com/djhi))
+* [Doc] Fix Next.js pages router installation misses src directory ([#9012](https://github.com/marmelab/react-admin/pull/9012)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix broken link in Next installation tutorial ([#9011](https://github.com/marmelab/react-admin/pull/9011)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Use WebM and MP4 videos instead of GIF for EE components ([#9006](https://github.com/marmelab/react-admin/pull/9006)) ([slax57](https://github.com/slax57))
+* [Doc] Fix broken link to `useLockOnMount` in `useLock` ([#9002](https://github.com/marmelab/react-admin/pull/9002)) ([slax57](https://github.com/slax57))
+* [Doc] Fix missing closing tag in custom AppBar example code ([#9000](https://github.com/marmelab/react-admin/pull/9000)) ([adguernier](https://github.com/adguernier))
+* [Doc] Update links to the React documentation ([#8998](https://github.com/marmelab/react-admin/pull/8998)) ([adguernier](https://github.com/adguernier))
+* [JSDoc] Fix `<ToggleThemeButton>` deprecated props JSDoc ([#8994](https://github.com/marmelab/react-admin/pull/8994)) ([slax57](https://github.com/slax57))
+
+## v4.11.2
+
+* Fix `<ReferenceField>` line height isn't consistent with other fields ([#8976](https://github.com/marmelab/react-admin/pull/8976)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix configurable does not have a targetable root class ([#8980](https://github.com/marmelab/react-admin/pull/8980)) ([djhi](https://github.com/djhi))
+* Fix `<Admin>` fails when used in Next.js server components ([#8990](https://github.com/marmelab/react-admin/pull/8990)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix English translation of auth error message ([#8970](https://github.com/marmelab/react-admin/pull/8970)) ([joebordes](https://github.com/joebordes))
+* Fix linter warnings ([#8978](https://github.com/marmelab/react-admin/pull/8978)) ([fzaninotto](https://github.com/fzaninotto))
+* Bump vite from 3.2.0 to 3.2.7 ([#8981](https://github.com/marmelab/react-admin/pull/8981)) (dependabot)
+* Fix `<AutocompleteArrayInput>` 'custom options' story ([#8983](https://github.com/marmelab/react-admin/pull/8983)) ([slax57](https://github.com/slax57))
+* [TypeScript] Fix `<WithRecord>` `render` prop type ([#8993](https://github.com/marmelab/react-admin/pull/8993)) ([slax57](https://github.com/slax57))
+* [TypeScript] Fix FunctionField render function type expects a nullable record ([#8963](https://github.com/marmelab/react-admin/pull/8963)) ([elstgav](https://github.com/elstgav))
+* [Doc] Add `<AutoSave>` documentation ([#8969](https://github.com/marmelab/react-admin/pull/8969)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add `<TreeInput>` and `<ReferenceNodeInput>` chapters ([#8974](https://github.com/marmelab/react-admin/pull/8974)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Better explain the type of `getSource` and `scopedFormData` in `<FormDataConsumer>` ([#8979](https://github.com/marmelab/react-admin/pull/8979)) ([slax57](https://github.com/slax57))
+* [Doc] Fix broken link in Realtime documentation ([#8991](https://github.com/marmelab/react-admin/pull/8991)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<ReferenceArrayInput>` section about custom query filter ([#8989](https://github.com/marmelab/react-admin/pull/8989)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<CreateInDialogButton>` usage example ([#8988](https://github.com/marmelab/react-admin/pull/8988)) ([slax57](https://github.com/slax57))
+* [Doc] Fix links to react-hook-form's doc ([#8984](https://github.com/marmelab/react-admin/pull/8984)) ([slax57](https://github.com/slax57))
+* [Doc] Fix `<Confirm>` prop table overflows ([#8985](https://github.com/marmelab/react-admin/pull/8985)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix Remix tutorial mentions outdated postgrest adapter ([#8982](https://github.com/marmelab/react-admin/pull/8982)) ([fzaninotto](https://github.com/fzaninotto))
+* [Demo] Fix tag list on Mobile ([#8975](https://github.com/marmelab/react-admin/pull/8975)) ([fzaninotto](https://github.com/fzaninotto))
+
+## v4.11.1
+
+* Fix `<AutocompleteInput>` should not use `matchSuggestion` when in a `<ReferenceInput>` ([#8956](https://github.com/marmelab/react-admin/pull/8956)) ([slax57](https://github.com/slax57))
+* Fix `<ListView>` should show custom empty component with partial pagination ([#8945](https://github.com/marmelab/react-admin/pull/8945)) ([yanchesky](https://github.com/yanchesky))
+* [TypeScript] Fix inference errors in Field components ([#8962](https://github.com/marmelab/react-admin/pull/8962)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix regression in type of `<FunctionField>` `render` ([#8964](https://github.com/marmelab/react-admin/pull/8964)) ([slax57](https://github.com/slax57))
+* [Doc] Add Next.js app router install instructions ([#8965](https://github.com/marmelab/react-admin/pull/8965)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix NextJS tutorial for the latest version of create-next-app ([#8938](https://github.com/marmelab/react-admin/pull/8938)) ([djhi](https://github.com/djhi))
+* [Doc] Fix `dataProvider.getList()` response format error message does not take partial pagination into account ([#8957](https://github.com/marmelab/react-admin/pull/8957)) ([yanchesky](https://github.com/yanchesky))
+* [Doc] Fix create-react-admin usage with npx ([#8961](https://github.com/marmelab/react-admin/pull/8961)) ([fzaninotto](https://github.com/fzaninotto))
+
+## v4.11.0
+
+* Add `<WithListContext>` component ([#8917](https://github.com/marmelab/react-admin/pull/8917)) ([fzaninotto](https://github.com/fzaninotto))
+* Expose `setNotifications` callback in `<NotificationContext>` to allow for a custom notifications center ([#8914](https://github.com/marmelab/react-admin/pull/8914)) ([smeng9](https://github.com/smeng9))
+* Add `purifyOptions` prop to `<RichTextField>` ([#8905](https://github.com/marmelab/react-admin/pull/8905)) ([slax57](https://github.com/slax57))
+* Add `queryOptions` prop to `<ReferenceField>` ([#8895](https://github.com/marmelab/react-admin/pull/8895)) ([Wi](https://github.com/Wi))XSL
+* Add ability to default to dark mode when users prefer it ([#8874](https://github.com/marmelab/react-admin/pull/8874)) ([fzaninotto](https://github.com/fzaninotto))
+* Simplify form reset on record change, and forward supported props from `useAugmentedForm` to `useForm` ([#8911](https://github.com/marmelab/react-admin/pull/8911)) ([slax57](https://github.com/slax57))
+* Fix `useGetList` default `onSuccess` throws when the query is disabled ([#8941](https://github.com/marmelab/react-admin/pull/8941)) ([slax57](https://github.com/slax57))
+* Fix `<SimpleForm>` and `<TabbedForm>` do not sanitize the `resetOptions` prop ([#8915](https://github.com/marmelab/react-admin/pull/8915)) ([slax57](https://github.com/slax57))
+* [TypeScript] Allow to provide the record type to fields and validate the `source` and `sortBy` prop ([#8863](https://github.com/marmelab/react-admin/pull/8863)) ([djhi](https://github.com/djhi))
+* [TypeScript] Fix types that should accept a react-admin record ([#8862](https://github.com/marmelab/react-admin/pull/8862)) ([djhi](https://github.com/djhi))
+
+## v4.10.6
+
+* Fix ra-language-french package.json to avoid including tsconfig ([#8939](https://github.com/marmelab/react-admin/pull/8939)) ([djhi](https://github.com/djhi))
+* Fix create-react-admin adds unnecessary files ([#8935](https://github.com/marmelab/react-admin/pull/8935)) ([djhi](https://github.com/djhi))
+* [TypeScript] Fix `<Create>` generic record type should not require an `id` field ([#8923](https://github.com/marmelab/react-admin/pull/8923)) ([djhi](https://github.com/djhi))
+* [Doc] Fix tutorial with create-react-admin ([#8934](https://github.com/marmelab/react-admin/pull/8934)) ([fzaninotto](https://github.com/fzaninotto))
+* [chore] Update Storybook to v7 & Cypress to use Vite ([#8936](https://github.com/marmelab/react-admin/pull/8936)) ([djhi](https://github.com/djhi))
+
+## v4.10.5
+
+* Fix create and edit controller's save callback should use calltime meta param ([#8933](https://github.com/marmelab/react-admin/pull/8933)) ([slax57](https://github.com/slax57))
+* Fix create-react-admin does not include its templates ([#8932](https://github.com/marmelab/react-admin/pull/8932)) ([djhi](https://github.com/djhi))
+
+## v4.10.4
+
+* Fix `<DatagridConfigurable>` inspector hides the wrong column when using empty children ([#8929](https://github.com/marmelab/react-admin/pull/8929)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<DatagridConfigurable>` fails to render when using a Field with a label element ([#8928](https://github.com/marmelab/react-admin/pull/8928)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<TextField>` and `<RichTextField>` don't translate the `emptyText` ([#8924](https://github.com/marmelab/react-admin/pull/8924)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<SaveButton>` spinner while submitting ([#8920](https://github.com/marmelab/react-admin/pull/8920)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix video playback on iOS ([#8922](https://github.com/marmelab/react-admin/pull/8922)) ([slax57](https://github.com/slax57))
+* [Doc] Fix `<List disableSyncWithLocation>` doc about persisting list params in the store ([#8919](https://github.com/marmelab/react-admin/pull/8919)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Document type parameter in generic hooks ([#8916](https://github.com/marmelab/react-admin/pull/8916)) ([djhi](https://github.com/djhi))
+
+## v4.10.3
+
+* Fix `<ReferenceField>` link function is called with referencing record instead of referenced record ([#8899](https://github.com/marmelab/react-admin/pull/8899)) ([djhi](https://github.com/djhi))
+* Fix `ReferenceFieldView` backwards compatibility ([#8912](https://github.com/marmelab/react-admin/pull/8912)) ([djhi](https://github.com/djhi))
+* Fix `create-react-admin` requires node 16 ([#8902](https://github.com/marmelab/react-admin/pull/8902)) ([fzaninotto](https://github.com/fzaninotto))
+* [Typescript] Fix Layout's `sidebar` prop type ([#8887](https://github.com/marmelab/react-admin/pull/8887)) ([smeng9](https://github.com/smeng9))
+* [Doc] Add Advanced Tutorial about Custom Tags Selector ([#8906](https://github.com/marmelab/react-admin/pull/8906)) ([slax57](https://github.com/slax57))
+* [Doc] Update Datagrid's `isRowSelectable` description and examples ([#8901](https://github.com/marmelab/react-admin/pull/8901)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] fix import statements in example code ([#8896](https://github.com/marmelab/react-admin/pull/8896)) ([charlie-ac](https://github.com/charlie-ac))
+* [Doc] add casdoor auth provider ([#8894](https://github.com/marmelab/react-admin/pull/8894)) ([akriventsev](https://github.com/akriventsev))
+* [Doc] Add Supabase realtime adapter ([#8893](https://github.com/marmelab/react-admin/pull/8893)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Update tutorial to use `create-react-admin` ([#8881](https://github.com/marmelab/react-admin/pull/8881)) ([djhi](https://github.com/djhi))
+
+## v4.10.2
+
+* Fix custom redirect in pessimistic `<Edit>` or `<Create>` when using `warnWhenUnsavedChanges` ([#8882](https://github.com/marmelab/react-admin/pull/8882)) ([slax57](https://github.com/slax57))
+* Fix `create-react-admin` package manifest ([#8888](https://github.com/marmelab/react-admin/pull/8888)) ([djhi](https://github.com/djhi))
+* [Doc] Fix `<Menu.ResourceItem>` example should use the `name` prop ([#8886](https://github.com/marmelab/react-admin/pull/8886)) ([septentrion-730n](https://github.com/septentrion-730n))
+* [Doc] Update DataProvider List with `ra-strapi-rest` v4 ([#8865](https://github.com/marmelab/react-admin/pull/8865)) ([nazirov91](https://github.com/nazirov91))
+
 ## v4.10.1
 
 * Republish all packages, including the `create-react-admin` installer ([fzaninotto](https://github.com/fzaninotto))

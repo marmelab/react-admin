@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import { RaRecord } from '../../types';
 import { RecordContext } from './RecordContext';
+import { RaRecord } from '../../types';
 
 /**
  * Hook to read the record from a RecordContext.

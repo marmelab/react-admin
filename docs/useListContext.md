@@ -93,6 +93,67 @@ const {
 } = useListContext();
 ```
 
+## Declarative Version
+
+`useListContext` often forces you to create a new component just to access the list context. If you prefer a declarative approach based on render props, you can use [the `<WithListContext>` component](./WithListContext.md) instead:
+
+```jsx
+import { WithListContext } from 'react-admin';
+import { Typography } from '@mui/material';
+
+export const Aside = () => (
+    <WithListContext render={({ data, isLoading }) => 
+        !isLoading && (
+            <div>
+                <Typography variant="h6">Posts stats</Typography>
+                <Typography variant="body2">
+                    Total views: {data.reduce((sum, post) => sum + post.views, 0)}
+                </Typography>
+            </div>
+    )}>
+);
+```
+
+## TypeScript
+
+The `useListContext` hook accepts a generic parameter for the record type:
+
+```tsx
+import { Typography } from '@mui/material';
+import { useListContext } from 'react-admin';
+import { List, Datagrid, TextField, useListContext } from 'react-admin';
+
+type Post = {
+    id: number;
+    title: string;
+    views: number;
+};
+
+export const Aside = () => {
+    const { data: posts, isLoading } = useListContext<Post>();
+    if (isLoading) return null;
+    return (
+        <div>
+            <Typography variant="h6">Posts stats</Typography>
+            <Typography variant="body2">
+                {/* TypeScript knows that posts is of type Post[] */}
+                Total views: {posts.reduce((sum, post) => sum + post.views, 0)}
+            </Typography>
+        </div>
+    );
+};
+
+export const PostList = () => (
+    <List aside={<Aside />}>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="views" />
+        </Datagrid>
+    </List>
+);
+```
+
 ## Recipes
 
 You can find many usage examples of `useListContext` in the documentation, including:

@@ -7,7 +7,7 @@ title: "Realtime"
 
 React-admin provides hooks and UI components for collaborative applications where several people work in parallel. It allows publishing and subscribing to real-time events, updating views when another user pushes a change, notifying end users of events, and preventing data loss when two editors work on the same resource concurrently.
 
-<video controls autoplay muted width="100%">
+<video controls autoplay playsinline muted width="100%">
   <source src="./img/CollaborativeDemo.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
@@ -79,8 +79,9 @@ const PostList = () => (
 );
 ```
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/useSubscribeToRecordList.webm" type="video/webm"/>
+  <source src="./img/useSubscribeToRecordList.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -131,8 +132,9 @@ This feature leverages the following components:
 
 And last but not least, ra-realtime provides a **lock mechanism** to prevent two users from editing the same resource at the same time.
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/locks-demo.webm" type="video/webm"/>
+  <source src="./img/locks-demo.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -197,7 +199,7 @@ yarn add @react-admin/ra-realtime
 
 `ra-realtime` is part of the [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to install this package.
 
-You will need a data provider that supports real-time subscriptions. Check out the [Data Provider Requirements](./RealTimeDataProvider.md) section for more information.
+You will need a data provider that supports real-time subscriptions. Check out the [Data Provider Requirements](./RealtimeDataProvider.md) section for more information.
 
 ## I18N
 

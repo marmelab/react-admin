@@ -115,7 +115,7 @@ const SalesBlockEditor = () => {
             <input
                 type="checkbox"
                 defaultChecked={showDate}
-                onChange={e => setShowDate(v => !v)}
+                onChange={() => setShowDate(v => !v)}
                 id="showDate"
             />
         </>

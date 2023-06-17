@@ -1,3 +1,4 @@
+'use client';
 /* eslint-disable eqeqeq */
 import fakeRestProvider from 'ra-data-fakerest';
 import { DataProvider, RaRecord } from 'ra-core';
@@ -123,7 +124,10 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
             });
             return baseDataProvider.updateMany(resource, params);
         },
-        create: <RecordType extends RaRecord = any>(resource, params) => {
+        create: <RecordType extends Omit<RaRecord, 'id'> = any>(
+            resource,
+            params
+        ) => {
             // we need to call the fakerest provider first to get the generated id
             return baseDataProvider
                 .create<RecordType>(resource, params)

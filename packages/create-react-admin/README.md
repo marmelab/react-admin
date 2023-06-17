@@ -28,6 +28,17 @@ In another directory, run:
 
 The above command assume you cloned react-admin in the `react-admin` directory and you are running the command in this directory parent.
 
+To test the package as if it was published:
+
+```sh
+cd packages/create-react-admin
+npm pack
+tar -xvzf create-react-admin-<version>.tgz -C ~/
+cd ~/package
+npm install
+./lib/cli.js test-cra
+```
+
 ## Miscellaneous
 
 This package is MIT licensed. Sponsored by [Marmelab](https://marmelab.com) and [Anthony Chan](https://github.com/ckanthony).

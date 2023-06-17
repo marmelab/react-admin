@@ -9,7 +9,7 @@ Whether you need to adjust a CSS rule for a single component, or change the colo
 
 ## `sx`: Overriding A Component Style
 
-All react-admin components expose an `sx` property, which allows to customize the component style. It uses the CSS-in-JS solution offered by MUI, [MUI System](https://mui.com/system/basics/#the-sx-prop). This `sx` prop is kind of like [React's `style` prop](https://reactjs.org/docs/dom-elements.html#style), but it's more powerful.
+All react-admin components expose an `sx` property, which allows to customize the component style. It uses the CSS-in-JS solution offered by MUI, [MUI System](https://mui.com/system/basics/#the-sx-prop). This `sx` prop is kind of like [React's `style` prop](https://react.dev/reference/react-dom/components/common#applying-css-styles), but it's more powerful.
 
 {% raw %}
 ```jsx
@@ -243,7 +243,7 @@ Note that you don't need to call `createTheme` yourself. React-admin will do it 
 
 Again, to guess the name of the subclass to use (like `.RaDatagrid-headerCell` above) for customizing a component, you can use the developer tools of your browser, or check the react-admin documentation for individual components (e.g. the [Datagrid CSS documentation](./Datagrid.md#sx-css-api)).
 
-You can use this technique to override not only styles, but also default for components. That's how react-admin applies the `filled` variant to all `TextField` components. So for instance, to change the variant to `outlined`, create a custom theme as follows:
+You can use this technique to override not only styles, but also defaults for components. That's how react-admin applies the `filled` variant to all `TextField` components. So for instance, to change the variant to `outlined`, create a custom theme as follows:
 
 ```jsx
 import { defaultTheme } from 'react-admin';
@@ -367,58 +367,52 @@ const App = () => (
 
 ## Letting Users Choose The Theme
 
-The `<ToggleThemeButton>` component lets users switch from light to dark mode, and persists that choice by leveraging the [store](./Store.md).
+It's a common practice to support both a light theme and a dark theme in an application, and let users choose which one they prefer. 
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/ToggleThemeButton.webm" type="video/webm"/>
+  <source src="./img/ToggleThemeButton.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
 
-You can add the `<ToggleThemeButton>` to a custom App Bar:
+React-admin's `<Admin>` component accepts a `darkTheme` prop in addition to the `theme` prop. 
 
 ```jsx
-import * as React from 'react';
-import { defaultTheme, Layout, AppBar, ToggleThemeButton, TitlePortal } from 'react-admin';
-import { createTheme, Box, Typography } from '@mui/material';
+import { Admin, defaultTheme } from 'react-admin';
 
-const darkTheme = createTheme({
-    palette: { mode: 'dark' },
-});
+const lightTheme = defaultTheme;
+const darkTheme = { ...defaultTheme, palette: { mode: 'dark' } };
 
-const MyAppBar = () => (
-    <AppBar>
-        <TitlePortal />
-        <ToggleThemeButton lightTheme={defaultTheme} darkTheme={darkTheme} />
-    </AppBar>
+const App = () => (
+    <Admin
+        dataProvider={...}
+        theme={lightTheme}
+        darkTheme={darkTheme}
+    >
+        // ...
+    </Admin>
 );
-
-const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 ```
+
+With this setup, the default application theme depends on the user's system settings. If the user has chosen a dark mode in their OS, react-admin will use the dark theme. Otherwise, it will use the light theme.
+
+In addition, users can switch from one theme to the other using [the `<ToggleThemeButton>` component](./ToggleThemeButton.md), which appears in the AppBar as soon as you define a `darkTheme` prop.
 
 ## Changing the Theme Programmatically
 
-React-admin provides the `useTheme` hook to read and update the theme programmatically. It uses the same syntax as `useState`.
-Its used internally by `ToggleThemeButton` component.
+React-admin provides the `useTheme` hook to read and update the theme programmatically. It uses the same syntax as `useState`. Its used internally by [the `<ToggleThemeButton>` component](./ToggleThemeButton.md).
 
 ```jsx
 import { defaultTheme, useTheme } from 'react-admin';
 import { Button } from '@mui/material';
 
-const lightTheme = defaultTheme;
-const darkTheme = {
-    ...defaultTheme,
-    palette: {
-        mode: 'dark',
-    },
-};
-
 const ThemeToggler = () => {
     const [theme, setTheme] = useTheme();
 
     return (
-        <Button onClick={() => setTheme(theme.palette.mode === 'dark' ? lightTheme : darkTheme)}>
-            {theme.palette.mode === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+        <Button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+            {theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
         </Button>
     );
 }
@@ -784,7 +778,7 @@ export default MyLayout;
 
 ## Customizing the AppBar Content
 
-By default, the react-admin `<AppBar>` component displays the page title. You can override this default by passing children to `<AppBar>` - they will replace the default title. And if you still want to include the page title, make sure you include an element with id `react-admin-title` in the top bar (this uses [React Portals](https://reactjs.org/docs/portals.html)).
+By default, the react-admin `<AppBar>` component displays the page title. You can override this default by passing children to `<AppBar>` - they will replace the default title. And if you still want to include the page title, make sure you include an element with id `react-admin-title` in the top bar (this uses [React Portals](https://react.dev/reference/react-dom/createPortal)).
 
 Here is an example customization for `<AppBar>` to include a company logo in the center of the page header:
 
@@ -923,9 +917,17 @@ const App = () => (
 
 **Tip**: If you need a multi-level menu, or a Mega Menu opening panels with custom content, check out [the `ra-navigation`<img class="icon" src="./img/premium.svg" /> module](https://marmelab.com/ra-enterprise/modules/ra-navigation) (part of the [Enterprise Edition](https://marmelab.com/ra-enterprise))
 
-![multi-level menu](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
-![MegaMenu and Breadcrumb](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 ## Using a Custom Login Page
 
@@ -1079,7 +1081,7 @@ const App = () => (
 );
 ```
 
-**Tip:** [React's Error Boundaries](https://reactjs.org/docs/error-boundaries.html) are used internally to display the Error Page whenever an error occurs. Error Boundaries only catch errors during rendering, in lifecycle methods, and in constructors of the components tree. This implies in particular that errors during event callbacks (such as 'onClick') are not concerned. Also note that the Error Boundary component is only set around the main container of React Admin. In particular, you won't see it for errors thrown by the [sidebar Menu](./Menu.md), nor the [AppBar](#customizing-the-appbar-content). This ensures the user is always able to navigate away from the Error Page.
+**Tip:** [React's Error Boundaries](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary) are used internally to display the Error Page whenever an error occurs. Error Boundaries only catch errors during rendering, in lifecycle methods, and in constructors of the components tree. This implies in particular that errors during event callbacks (such as 'onClick') are not concerned. Also note that the Error Boundary component is only set around the main container of React Admin. In particular, you won't see it for errors thrown by the [sidebar Menu](./Menu.md), nor the [AppBar](#customizing-the-appbar-content). This ensures the user is always able to navigate away from the Error Page.
 
 ## Loading
 

@@ -16,7 +16,7 @@ import {
 } from 'react-admin';
 
 import AvatarField from '../visitors/AvatarField';
-import { Review, Customer } from './../types';
+import { Customer, Review } from './../types';
 
 export const ReviewItem = () => {
     const record = useRecordContext<Review>();
@@ -53,11 +53,9 @@ export const ReviewItem = () => {
                                 reference="customers"
                                 link={false}
                             >
-                                <FunctionField
-                                    render={(record?: Customer) =>
-                                        record
-                                            ? `${record.first_name} ${record.last_name}`
-                                            : ''
+                                <FunctionField<Customer>
+                                    render={record =>
+                                        `${record.first_name} ${record.last_name}`
                                     }
                                     variant="subtitle1"
                                 />

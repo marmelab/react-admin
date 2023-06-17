@@ -9,8 +9,9 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 This is useful to start a subscription from an event handler, like a button click.
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/useSubscribeCallback.webm" type="video/webm"/>
+  <source src="./img/useSubscribeCallback.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -168,8 +169,9 @@ const LaunchBackgroundJob = () => {
 };
 ```
 
-<video controls autoplay muted loop>
+<video controls autoplay playsinline muted loop>
   <source src="./img/useSubscribeOnceCallback.webm" type="video/webm"/>
+  <source src="./img/useSubscribeOnceCallback.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
