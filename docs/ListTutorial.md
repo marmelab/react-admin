@@ -401,7 +401,7 @@ const Pagination = () => {
 
 ### `<List>` Renders Title, Filters, And Pagination
 
-`<ListBase>` is a headless component: it renders only its children. But almost every List view needs a wrapping `<div>`, a title, filters, pagination, a MUI `<Card>`, etc. That's why react-admin provides [the `<List>` component](./List.md), which includes the `<ListBase>` component and a "classic" layout to reduce the boilerplate even further:
+`<ListBase>` is a headless component: it renders only its children. But almost every List view needs a wrapping `<div>`, a title, filters, pagination, a Material UI `<Card>`, etc. That's why react-admin provides [the `<List>` component](./List.md), which includes the `<ListBase>` component and a "classic" layout to reduce the boilerplate even further:
 
 ```diff
 import { 
@@ -503,7 +503,11 @@ If that's not enough, [building a custom iterator](#building-a-custom-iterator) 
 
 On Mobile, `<Datagrid>` doesn't work well - the screen is too narrow. You should use [the  `<SimpleList>` component](./SimpleList.md) instead - it's another built-in List Iterator.
 
-<a href="./img/simple-list.gif"><img src="./img/simple-list.gif" style="height:300px" alt="The `<SimpleList>` component"></a>
+<video controls autoplay playsinline muted loop style="height:300px">
+    <source src="./img/simple-list.webm" type="video/webm"/>
+    <source src="./img/simple-list.mp4" type="video/mp4"/>
+    Your browser does not support the video tag.
+</video>
 
 To use `<Datagrid>` on desktop and `<SimpleList>` on mobile, use the `useMediaQuery` hook:
 
@@ -542,14 +546,39 @@ Check [the Theming documentation](./Theming.md) for more information about the `
 
 ## Building a Custom Iterator
 
-In some cases, neither the `<Datagrid>` nor the `<SimpleList>` components allow to display the records in an optimal way for a given task. In these cases, pass your layout component directly as children of the `<List>` component. As `<List>` takes care of fetching the data and putting it in a `ListContext`, you can leverage [the `useListContext` hook](./useListContext.md) to get the list data. 
+In some cases, neither the `<Datagrid>` nor the `<SimpleList>` components allow to display the records in an optimal way for a given task. In these cases, pass your layout component directly as children of the `<List>` component. 
+
+As `<List>` takes care of fetching the data and putting it in a `ListContext`, you can leverage [the `<WithListContext>` component](./WithListContext.md) to get the list data in a render prop. 
+
+{% raw %}
+```jsx
+import { List, WithListContext } from 'react-admin';
+import { Stack, Typography } from '@mui/material';
+
+const BookList = () => (
+    <List emptyWhileLoading>
+        <WithListContext render={({ data }) => (
+            <Stack spacing={2} sx={{ padding: 2 }}>
+                {data.map(book => (
+                    <Typography key={book.id}>
+                        <i>{book.title}</i>, by {book.author} ({book.year})
+                    </Typography>
+                ))}
+            </Stack>
+        )} />
+    </List>
+);
+```
+{% endraw %}
+
+If you prefer using a hook, you can use [the `useListContext` hook](./useListContext.md) instead:
 
 {% raw %}
 ```jsx
 import { List, useListContext } from 'react-admin';
 import { Stack, Typography } from '@mui/material';
 
-const SimpleBookList = () => {
+const BookListView = () => {
     const { data } = useListContext();
     return (
         <Stack spacing={2} sx={{ padding: 2 }}>
@@ -560,12 +589,11 @@ const SimpleBookList = () => {
             ))}
         </Stack>
     );
-}
+};
 
-// use the custom list layout as <List> child
 const BookList = () => (
     <List emptyWhileLoading>
-        <SimpleBookList />
+        <BookListView />
     </List>
 );
 ```
@@ -583,11 +611,21 @@ React-admin provides 2 possible UIs for filters, and lets your own if they're no
 
 The first filter UI is called "the Filer/Form Combo". 
 
-![Filter Button/Form Combo](./img/list_filter.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/list_filter.webm" type="video/webm"/>
+  <source src="./img/list_filter.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 The second filter UI is called "the Filter List Sidebar".
 
-![Filter Button/Form Combo](./img/filter-sidebar.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/filter-sidebar.webm" type="video/webm"/>
+  <source src="./img/filter-sidebar.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 Check [the dedicated Filter tutorial chapter](./FilteringTutorial.md) for more information on filtering.
 
@@ -608,11 +646,21 @@ order=DESC
 
 If you're using a `<Datagrid>` inside the List view, then the column headers are buttons allowing users to change the list sort field and order. This feature requires no configuration and works out fo the box. Check [the `<Datagrid>` documentation](./Datagrid.md#customizing-column-sort) to see how to disable or modify the field used for sorting on a particular column.
 
-![Sort Column Header](./img/sort-column-header.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/sort-column-header.webm" type="video/webm"/>
+  <source src="./img/sort-column-header.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 If you're using another List layout, check [the `<SortButton>` component](./SortButton.md): It's a standalone button that allows users to change the list sort field and order.
 
-![Sort Button](./img/sort-button.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/sort-button.webm" type="video/webm"/>
+  <source src="./img/sort-button.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 ## Linking to a Pre-Sorted List
 
@@ -803,7 +851,7 @@ import {
 export const PaginationActions = props => (
     <RaPaginationActions
         {...props}
-        // these props are passed down to the MUI <Pagination> component
+        // these props are passed down to the Material UI <Pagination> component
         color="primary"
         showFirstButton
         showLastButton
@@ -824,4 +872,4 @@ export const UserList = () => (
 You can find more List components for react-admin in third-party repositories.
 
 - [ra-customizable-datagrid](https://github.com/fizix-io/ra-customizable-datagrid): plugin that allows to hide / show columns dynamically.
-- [ra-datagrid](https://github.com/marmelab/ra-datagrid): Integration of [MUI's `<Datagrid>`](https://mui.com/components/data-grid/) into react-admin.
+- [ra-datagrid](https://github.com/marmelab/ra-datagrid): Integration of [Material UI's `<Datagrid>`](https://mui.com/components/data-grid/) into react-admin.

@@ -3,15 +3,11 @@ import merge from 'lodash/merge';
 
 import {
     Admin,
-    AppBar,
     defaultTheme,
-    Layout,
-    LayoutProps,
     Resource,
     Datagrid,
     List,
     TextField,
-    TitlePortal,
     NumberField,
     DateField,
     FilterList,
@@ -26,7 +22,6 @@ import frenchMessages from 'ra-language-french';
 import { createMemoryHistory } from 'history';
 
 import { SavedQueriesList } from './SavedQueriesList';
-import { LocalesMenuButton, ToggleThemeButton } from '../../button';
 import { RaThemeOptions } from '../..';
 import fakeRestProvider from 'ra-data-fakerest';
 
@@ -185,8 +180,13 @@ const i18nProvider = polyglotI18nProvider(
         locale === 'fr'
             ? merge(frenchMessages, frenchAppMessages)
             : englishMessages,
-    'en' // Default locale
+    'en', // Default locale
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' },
+    ]
 );
+
 const darkTheme: RaThemeOptions = {
     ...defaultTheme,
     palette: {
@@ -200,29 +200,12 @@ const darkTheme: RaThemeOptions = {
     },
 };
 
-const MyAppBar = () => (
-    <AppBar>
-        <TitlePortal />
-        <ToggleThemeButton lightTheme={defaultTheme} darkTheme={darkTheme} />
-        <LocalesMenuButton
-            languages={[
-                { locale: 'en', name: 'English' },
-                { locale: 'fr', name: 'Français' },
-            ]}
-        />
-    </AppBar>
-);
-
-const MyLayout = (props: LayoutProps) => (
-    <Layout {...props} appBar={MyAppBar} />
-);
-
 export const WithThemeAndLocale = () => (
     <Admin
         history={createMemoryHistory()}
         i18nProvider={i18nProvider}
         dataProvider={dataProvider}
-        layout={MyLayout}
+        darkTheme={darkTheme}
     >
         <Resource name="songs" list={SongList} />
     </Admin>

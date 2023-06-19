@@ -36,7 +36,7 @@ const authors = [
 ];
 
 export const dataProviderWithAuthors = {
-    getOne: (resource, params) =>
+    getOne: () =>
         Promise.resolve({
             data: {
                 id: 1,
@@ -47,11 +47,11 @@ export const dataProviderWithAuthors = {
                 year: 1869,
             },
         }),
-    getMany: (resource, params) =>
+    getMany: (_resource, params) =>
         Promise.resolve({
             data: authors.filter(author => params.ids.includes(author.id)),
         }),
-    getList: (resource, params) =>
+    getList: () =>
         new Promise(resolve => {
             // eslint-disable-next-line eqeqeq
             setTimeout(
@@ -64,7 +64,7 @@ export const dataProviderWithAuthors = {
             );
             return;
         }),
-    update: (resource, params) => Promise.resolve(params),
+    update: (_resource, params) => Promise.resolve(params),
 } as any;
 
 const BookEdit = () => (
@@ -288,14 +288,14 @@ export const ErrorAutocomplete = () => (
     <Admin
         dataProvider={
             {
-                getOne: (resource, params) => Promise.resolve({ data: book }),
-                getMany: (resource, params) =>
+                getOne: () => Promise.resolve({ data: book }),
+                getMany: (_resource, params) =>
                     Promise.resolve({
                         data: authors.filter(author =>
                             params.ids.includes(author.id)
                         ),
                     }),
-                getList: (resource, params) =>
+                getList: (_resource, params) =>
                     params.filter.q === 'lorem'
                         ? Promise.reject(new Error('An error occured'))
                         : Promise.resolve({
@@ -360,14 +360,14 @@ export const ErrorSelectInput = () => (
     <Admin
         dataProvider={
             {
-                getOne: (resource, params) => Promise.resolve({ data: book }),
-                getMany: (resource, params) =>
+                getOne: () => Promise.resolve({ data: book }),
+                getMany: (_resource, params) =>
                     Promise.resolve({
                         data: authors.filter(author =>
                             params.ids.includes(author.id)
                         ),
                     }),
-                getList: (resource, params) =>
+                getList: (_resource, _params) =>
                     Promise.reject(new Error('An error occured')),
             } as any
         }
@@ -429,14 +429,14 @@ export const ErrorRadioButtonGroupInput = () => (
     <Admin
         dataProvider={
             {
-                getOne: (resource, params) => Promise.resolve({ data: book }),
-                getMany: (resource, params) =>
+                getOne: () => Promise.resolve({ data: book }),
+                getMany: (_resource, params) =>
                     Promise.resolve({
                         data: authors.filter(author =>
                             params.ids.includes(author.id)
                         ),
                     }),
-                getList: (resource, params) =>
+                getList: (_resource, _params) =>
                     Promise.reject(new Error('An error occured')),
             } as any
         }
@@ -479,7 +479,7 @@ const BookEditWithSelfReference = () => {
         <Edit
             mutationMode="pessimistic"
             mutationOptions={{
-                onSuccess: data => {
+                onSuccess: () => {
                     // Redirecting to another page is an indirect way to make sure that
                     // no errors happened during the update nor its side effects
                     // (used by the jest tests)

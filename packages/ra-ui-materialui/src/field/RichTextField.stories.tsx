@@ -2,7 +2,7 @@ import * as React from 'react';
 import { RecordContextProvider, useTimeout } from 'ra-core';
 import dompurify from 'dompurify';
 
-import { RichTextField } from './RichTextField';
+import { RichTextField, RichTextFieldProps } from './RichTextField';
 import { SimpleShowLayout } from '../detail/SimpleShowLayout';
 
 export default {
@@ -80,5 +80,56 @@ It is regarded as one of Tolstoy's finest literary achievements and remains a cl
             <h4>Stolen data:</h4>
             <input id="stolendata" defaultValue="none" />
         </div>
+    </RecordContextProvider>
+);
+
+const TargetBlankEnabledRichTextField = (props: RichTextFieldProps) => {
+    dompurify.addHook('afterSanitizeAttributes', function (node) {
+        // set all elements owning target to target=_blank
+        if ('target' in node) {
+            node.setAttribute('target', '_blank');
+            node.setAttribute('rel', 'noopener');
+        }
+    });
+    return <RichTextField {...props} />;
+};
+
+export const TargetBlank = () => (
+    <RecordContextProvider
+        value={{
+            id: 1,
+            body: `
+<p>
+<strong>War and Peace</strong> is a novel by the Russian author
+<a href="https://en.wikipedia.org/wiki/Leo_Tolstoy" target="_blank">Leo Tolstoy</a>,
+published serially, then in its entirety in 1869.
+</p>
+<p>
+It is regarded as one of Tolstoy's finest literary achievements and remains a classic of world literature.
+</p>
+`,
+        }}
+    >
+        <TargetBlankEnabledRichTextField source="body" />
+    </RecordContextProvider>
+);
+
+export const PurifyOptions = () => (
+    <RecordContextProvider
+        value={{
+            id: 1,
+            body: `
+<p>
+<strong>War and Peace</strong> is a novel by the Russian author
+<a href="https://en.wikipedia.org/wiki/Leo_Tolstoy" target="_blank">Leo Tolstoy</a>,
+published serially, then in its entirety in 1869.
+</p>
+<p>
+It is regarded as one of Tolstoy's finest literary achievements and remains a classic of world literature.
+</p>
+`,
+        }}
+    >
+        <RichTextField source="body" purifyOptions={{ ADD_ATTR: ['target'] }} />
     </RecordContextProvider>
 );

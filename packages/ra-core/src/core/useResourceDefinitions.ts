@@ -19,5 +19,7 @@ import { useResourceDefinitionContext } from './useResourceDefinitionContext';
  * //   recordRepresentation: 'title',
  * // }
  */
-export const useResourceDefinitions = (): ResourceDefinitions =>
+export const useResourceDefinitions = <
+    OptionsType = any
+>(): ResourceDefinitions<OptionsType> =>
     useResourceDefinitionContext().definitions;

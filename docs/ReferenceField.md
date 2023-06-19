@@ -77,8 +77,9 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 | `reference` | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'posts' |
 | `children`  | Optional | `ReactNode`         | -        | One or more Field elements used to render the referenced record |
 | `emptyText` | Optional | `string`            | ''       | Defines a text to be shown when the field has no value or when the reference is missing |
-| `label`     | Optional | `string | Function` | `resources.[resource].fields.[source]`   | Label to use for the field when rendered in layout components  |
+| `label`     | Optional | `string | Function` | `resources. [resource]. fields.[source]`   | Label to use for the field when rendered in layout components  |
 | `link`      | Optional | `string | Function` | `edit`   | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
+| `queryOptions`     | Optional | [`UseQuery Options`](https://tanstack.com/query/v4/docs/reference/useQuery?from=reactQueryV3&original=https://react-query-v3.tanstack.com/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
 | `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when used in a Datagrid |
 
 `<ReferenceField>` also accepts the [common field props](./Fields.md#common-field-props).
@@ -143,6 +144,24 @@ You can also use a custom `link` function to get a custom path for the children.
 />
 ```
 
+## `queryOptions`
+
+Use the `queryOptions` prop to pass options to [the `dataProvider.getMany()` query](http://0.0.0.0:4000/useGetOne.html#aggregating-getone-calls) that fetches the referenced record.
+
+For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
+
+{% raw %}
+```jsx
+<ReferenceField 
+    source="user_id"
+    reference="users"
+    queryOptions={{ meta: { foo: 'bar' } }}
+>
+    <TextField source="name" />
+</ReferenceField>
+```
+{% endraw %}
+
 ## `reference`
 
 The resource to fetch for the related record.
@@ -163,13 +182,13 @@ By default, when used in a `<Datagrid>`, and when the user clicks on the column 
 
 ## `sx`: CSS API
 
-The `<ReferenceField>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<ReferenceField>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name                  | Description                   |
 |----------------------------|-------------------------------|
 | `& .RaReferenceField-link` | Applied to each child element |
 
-To override the style of all instances of `<ReferenceField>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaReferenceField` key.
+To override the style of all instances of `<ReferenceField>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaReferenceField` key.
 
 ## Rendering More Than One Field
 

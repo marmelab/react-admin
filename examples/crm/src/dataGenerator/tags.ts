@@ -20,6 +20,6 @@ const tags = [
     { id: 5, name: 'vip', color: '#dbe7e4' },
 ];
 
-export const generateTags = (db: Db) => {
+export const generateTags = (_: Db) => {
     return [...tags];
 };

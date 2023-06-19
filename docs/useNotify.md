@@ -32,7 +32,7 @@ The hook takes no argument and returns a callback. The callback takes 2 argument
     - `undoable`: Set it to `true` if the notification should contain an "undo" button
     - `autoHideDuration`: Duration (in milliseconds) after which the notification hides. Set it to `0` if the notification should not be dismissible.
     - `multiLine`: Set it to `true` if the notification message should be shown in more than one line.
-    - `anchorOrigin`: The position of the notification. The default is `{ vertical: 'top', horizontal: 'right' }`. See [the MUI documentation](https://mui.com/material-ui/react-snackbar/) for more details.
+    - `anchorOrigin`: The position of the notification. The default is `{ vertical: 'top', horizontal: 'right' }`. See [the Material UI documentation](https://mui.com/material-ui/react-snackbar/) for more details.
 
 Here are more examples of `notify` calls: 
 
@@ -49,7 +49,7 @@ notify('Element updated', { type: 'info', undoable: true });
 
 ## `anchorOrigin`
 
-You can change the default position of the notification by passing an `anchorOrigin` option. The value is passed to [the MUI `<Snackbar anchorOrigin>`](https://mui.com/material-ui/react-snackbar/) prop.
+You can change the default position of the notification by passing an `anchorOrigin` option. The value is passed to [the Material UI `<Snackbar anchorOrigin>`](https://mui.com/material-ui/react-snackbar/) prop.
 
 ```jsx
 notify(
@@ -174,7 +174,7 @@ const PostEdit = () => {
 
 You may want a notification message that contains HTML or other React components. To do so, you can pass a React node as the first argument of the `notify` function.
 
-This allows e.g. using [MUI's `<Alert>` component](https://mui.com/material-ui/react-snackbar/#customization) to display a notification with a custom icon, color, or action.
+This allows e.g. using [Material UI's `<Alert>` component](https://mui.com/material-ui/react-snackbar/#customization) to display a notification with a custom icon, color, or action.
 
 ![useNotify with node](./img/use-notify-node.png)
 

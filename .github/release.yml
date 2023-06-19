@@ -1,0 +1,14 @@
+changelog:
+  categories:
+    - title: Breaking Changes
+      labels:
+        - "breaking change"
+    - title: Fixes
+      labels:
+        - "fix"
+    - title: Documentation
+      labels:
+        - "documentation"
+    - title: TypeScript
+      labels:
+        - "TypeScript"

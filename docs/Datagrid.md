@@ -56,13 +56,13 @@ Here are all the props accepted by the component:
 * [`size`](#size)
 * [`sx`](#sx-css-api)
 
-Additional props are passed down to [the MUI `<Table>` element](https://mui.com/api/table/).
+Additional props are passed down to [the Material UI `<Table>` element](https://mui.com/material-ui/api/table/).
 
 ## `body`
 
 By default, `<Datagrid>` renders its body using `<DatagridBody>`, an internal react-admin component. You can pass a custom component as the `body` prop to override that default. And by the way, `<DatagridBody>` has a `row` prop set to `<DatagridRow>` by default for the same purpose. `<DatagridRow>` receives the row `record`, the `resource`, and a copy of the `<Datagrid>` children. That means you can create custom `<Datagrid>` logic without copying several components from the react-admin source.
 
-For instance, the `<Datagrid isRowSelectable>` prop allows to hide the selection checkbox for some records. To show a *disabled* checkbox instead of hiding it, you can override `<DatagridRow>` and `<DatagridBody>` as follows:
+For instance, the `<Datagrid isRowSelectable>` prop allows to disable the selection checkbox for some records. To *hide* checkboxes instead of disabling them, you can override `<DatagridRow>` and `<DatagridBody>` as follows:
 
 ```jsx
 // in src/PostList.js
@@ -74,12 +74,13 @@ const MyDatagridRow = ({ record, id, onToggleItem, children, selected, selectabl
         <TableRow>
             {/* first column: selection checkbox */}
             <TableCell padding="none">
-                <Checkbox
-                    disabled={selectable}
-                    checked={selected}
-                    onClick={event => onToggleItem(id, event)}
-                />
-            </TableCell>
+                {selectable && (
+                     <Checkbox
+                         checked={selected}
+                         onClick={event => onToggleItem(id, event)}
+                     />
+                )}
+            </TableCell>            
             {/* data columns based on children */}
             {React.Children.map(children, field => (
                 <TableCell key={`${id}-${field.props.source}`}>
@@ -140,7 +141,12 @@ Finally, `<Datagrid>` inspects children for props that indicate how it should be
 
 ## `bulkActionButtons`
 
-![Bulk Action Buttons](./img/bulk-actions-toolbar.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/bulk-actions-toolbar.webm" type="video/webm"/>
+  <source src="./img/bulk-actions-toolbar.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 Bulk action buttons are buttons that affect several records at once, like mass deletion for instance. In the `<Datagrid>` component, the bulk actions toolbar appears when a user ticks the checkboxes in the first column of the table. The user can then choose a button from the bulk actions toolbar. By default, all Datagrids have a single bulk action button, the bulk delete button. You can add other bulk action buttons by passing a custom element as the `bulkActionButtons` prop of the `<Datagrid>` component:
 
@@ -312,11 +318,11 @@ const CustomResetViewsButton = () => {
 export default CustomResetViewsButton;
 ```
 
-**Tip**: [`<Confirm>`](./Confirm.md) leverages MUI's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
+**Tip**: [`<Confirm>`](./Confirm.md) leverages Material UI's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
 
 **Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass translation keys in these props. Note: `content` is only translatable when value is `string`, otherwise it renders the content as a `ReactNode`.
 
-**Tip**: You can customize the text of the two `<Confirm>` component buttons using the `cancel` and `confirm` props which accept translation keys. You can customize the icons by setting the `ConfirmIcon` and `CancelIcon` props, which accept a [SvgIcon](https://mui.com/components/icons/) type.
+**Tip**: You can customize the text of the two `<Confirm>` component buttons using the `cancel` and `confirm` props which accept translation keys. You can customize the icons by setting the `ConfirmIcon` and `CancelIcon` props, which accept a [SvgIcon](https://mui.com/material-ui/icons/#svgicon) type.
 
 **Tip**: React-admin doesn't use the `<Confirm>` component internally, because deletes and updates are applied locally immediately, then dispatched to the server after a few seconds, unless the user chooses to undo the modification. That's what we call optimistic rendering. You can do the same for the `<ResetViewsButton>` by setting `undoable: true` in the last argument of `useUpdateMany()`, as follows:
 
@@ -388,7 +394,12 @@ const PostList = () => (
 
 ## `expand`
 
-![expandable panel](./img/datagrid_expand.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/datagrid_expand.webm" type="video/webm"/>
+  <source src="./img/datagrid_expand.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 To show more data from the resource without adding too many columns, you can show data in an expandable panel below the row on demand, using the `expand` prop. 
 
@@ -573,9 +584,9 @@ const PostList = () => (
 
 ## `isRowSelectable`
 
-You can customize which rows show a selection checkbox using the `isRowSelectable` prop. It expects a function that receives the row record and returns a boolean.
+You can customize which rows show an enabled selection checkbox using the `isRowSelectable` prop. It expects a function that receives the row record and returns a boolean.
 
-For instance, this code shows a checkbox only for rows with an id greater than 300:
+For instance, this code enables a checkbox only for rows with an id greater than 300:
 
 ```jsx
 import { List, Datagrid } from 'react-admin';
@@ -689,7 +700,7 @@ export const PostList = () => (
 );
 ```
 
-**Tip**: `size` is actually a prop of the MUI `<Table>` component. Just like all additional `<Datagrid>` props, it is passed down to the `<Table>` component. 
+**Tip**: `size` is actually a prop of the Material UI `<Table>` component. Just like all additional `<Datagrid>` props, it is passed down to the `<Table>` component. 
 
 ## `sx`: CSS API
 
@@ -741,7 +752,7 @@ const PostList = () => (
 ```
 {% endraw %}
 
-**Tip**: `sx` is the standard for style customization in MUI . Check [the sx documentation](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles) for more advanced usage.
+**Tip**: `sx` is the standard for style customization in Material UI . Check [the sx documentation](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles) for more advanced usage.
 
 **Tip**: The `Datagrid` component `classes` can also be customized for all instances of the component with its global css name `"RaDatagrid"` as [describe here](https://marmelab.com/blog/2019/12/18/react-admin-3-1.html#theme-overrides)
 
@@ -804,7 +815,12 @@ const PostList = () => (
 
 The [`<SelectColumnsButton>`](./SelectColumnsButton.md) component lets users hide, show, and reorder datagrid columns. 
 
-![SelectColumnsButton](./img/SelectColumnsButton.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/SelectColumnsButton.webm" type="video/webm"/>
+  <source src="./img/SelectColumnsButton.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 ```jsx
 import {
@@ -845,7 +861,12 @@ const PostList = () => (
 
 You can let end users customize the fields displayed in the `<Datagrid>` by using the `<DatagridConfigurable>` component instead.
 
-![DatagridConfigurable](./img/DatagridConfigurable.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/DatagridConfigurable.webm" type="video/webm"/>
+  <source src="./img/DatagridConfigurable.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 ```diff
 import {
@@ -903,13 +924,36 @@ const PostList = () => (
 );
 ```
 
+The inspector uses the field `source` (or `label` when it's a string) to display the column name. If you use non-field children (e.g. action buttons), then it's your responsibility to wrap them in a component with a `label` prop, that will be used by the inspector:
+
+```jsx
+const FieldWrapper = ({ children, label }) => children;
+const PostList = () => (
+    <List>
+        <DatagridConfigurable>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+            <FieldWrapper label="Actions">
+                <EditButton />
+            </FieldWrapper>
+        </DatagridConfigurable>
+    </List>
+);
+```
+
 `<DatagridConfigurable>` accepts the same props as `<Datagrid>`.
 
 ## Editable Spreadsheet
 
 You can combine a datagrid and an edition form into a unified spreadsheet view, "à la" Excel. This is useful when you want to let users edit a large number of records at once.
 
-![Editable Datagrid](https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 `<EditableDatagrid>` is a drop-in replacement for `<Datagrid>`. It expects 2 additional props: `createForm` and `editForm`, the components to be displayed when a user creates or edits a row. The `<RowForm>` component allows to create such forms using react-admin Input components. 
 
@@ -972,7 +1016,12 @@ Check [the `ra-editable-datagrid` documentation](https://marmelab.com/ra-enterpr
 
 ## Customizing Column Sort
 
-![Sort Column Header](./img/sort-column-header.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/sort-column-header.webm" type="video/webm"/>
+  <source src="./img/sort-column-header.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 The column headers are buttons allowing users to change the list sort field and order. This feature requires no configuration and works out fo the box. The next sections explain how you can disable or modify the field used for sorting on a particular column.
 

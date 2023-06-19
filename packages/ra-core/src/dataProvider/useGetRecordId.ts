@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useRecordContext } from '../controller';
-import { Identifier } from '../types';
+import { Identifier, RaRecord } from '../types';
 
 /**
  * Helper hook to get the current `recordId`.
@@ -15,7 +15,7 @@ import { Identifier } from '../types';
  * const recordId = useGetRecordId();
  */
 export function useGetRecordId(recordId?: Identifier): Identifier {
-    const contextRecord = useRecordContext();
+    const contextRecord = useRecordContext<RaRecord>();
     const { id: routeId } = useParams<'id'>();
     const actualRecordId = recordId ?? contextRecord?.id ?? routeId;
     if (actualRecordId == null)

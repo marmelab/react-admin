@@ -5,6 +5,7 @@ import { QueryClient } from 'react-query';
 
 import { CoreAdminContext } from '../core';
 import { useGetList } from './useGetList';
+import { DataProvider } from '../types';
 
 const UseGetList = ({
     resource = 'posts',
@@ -342,5 +343,36 @@ describe('useGetList', () => {
         expect(
             queryClient.getQueryData(['posts', 'getOne', { id: '1' }])
         ).toEqual({ id: 1, title: 'live' });
+    });
+
+    it('should not fail when the query is disabled and the cache gets updated by another query', async () => {
+        const callback: any = jest.fn();
+        const onSuccess = jest.fn();
+        const queryClient = new QueryClient();
+        const dataProvider = ({
+            getList: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, title: 'live' }], total: 1 })
+            ),
+        } as unknown) as DataProvider;
+        render(
+            <CoreAdminContext
+                queryClient={queryClient}
+                dataProvider={dataProvider}
+            >
+                <UseGetList
+                    options={{ enabled: false, onSuccess }}
+                    callback={callback}
+                />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(callback).toHaveBeenCalled();
+        });
+        // Simulate the side-effect of e.g. a call to delete
+        queryClient.setQueriesData(['posts', 'getList'], res => res);
+        // If we get this far without an error being thrown, the test passes
+        await waitFor(() => {
+            expect(onSuccess).toHaveBeenCalled();
+        });
     });
 });

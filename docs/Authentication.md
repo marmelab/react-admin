@@ -5,7 +5,12 @@ title: "security"
 
 # Security
 
-![Login](./img/login.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/login.webm" type="video/webm"/>
+  <source src="./img/login.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 React-admin lets you secure your admin app with the authentication strategy of your choice. Since there are many possible strategies (Basic Auth, JWT, OAuth, etc.), react-admin delegates authentication logic to an `authProvider`.
 
@@ -342,6 +347,7 @@ import { useLogout } from 'react-admin';
 import MenuItem from '@mui/material/MenuItem';
 import ExitIcon from '@mui/icons-material/PowerSettingsNew';
 
+// It's important to pass the ref to allow Material UI to manage the keyboard navigation
 const MyLogoutButton = forwardRef((props, ref) => {
     const logout = useLogout();
     const handleClick = () => logout();
@@ -349,6 +355,8 @@ const MyLogoutButton = forwardRef((props, ref) => {
         <MenuItem
             onClick={handleClick}
             ref={ref}
+            // It's important to pass the props to allow Material UI to manage the keyboard navigation
+            {...props}
         >
             <ExitIcon /> Logout
         </MenuItem>

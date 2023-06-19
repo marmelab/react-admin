@@ -1,14 +1,18 @@
 const fs = require('fs');
 const path = require('path');
-
 const packages = fs.readdirSync(path.resolve(__dirname, '../packages'));
 module.exports = {
-    core: {
-        builder: 'webpack5',
-    },
     stories: [`../packages/${process.env.ONLY || '**'}/**/*.stories.@(tsx)`],
     addons: [
-        '@storybook/addon-storysource',
+        {
+            name: '@storybook/addon-storysource',
+            options: {
+                loaderOptions: {
+                    injectStoryParameters: false,
+                    parser: 'typescript',
+                },
+            },
+        },
         '@storybook/addon-actions',
         '@storybook/addon-controls',
     ],
@@ -21,17 +25,33 @@ module.exports = {
         const { plugins = [] } = options;
         return {
             ...options,
+            presets: [
+                '@babel/preset-env',
+                '@babel/preset-react',
+                '@babel/preset-typescript',
+            ],
             plugins: [
                 ...plugins,
                 [
                     '@babel/plugin-proposal-private-property-in-object',
-                    { loose: true },
+                    {
+                        loose: true,
+                    },
+                ],
+                [
+                    '@babel/plugin-proposal-private-methods',
+                    {
+                        loose: true,
+                    },
+                ],
+                [
+                    '@babel/plugin-proposal-class-properties',
+                    {
+                        loose: true,
+                    },
                 ],
             ],
         };
-    },
-    reactOptions: {
-        fastRefresh: true,
     },
     webpackFinal: async (config, { configType }) => {
         return {
@@ -50,5 +70,12 @@ module.exports = {
                 ),
             },
         };
+    },
+    framework: {
+        name: '@storybook/react-webpack5',
+        options: {},
+    },
+    docs: {
+        autodocs: false,
     },
 };

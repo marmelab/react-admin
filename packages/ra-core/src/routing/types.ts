@@ -1,8 +1,11 @@
 import { RaRecord } from '../types';
 
-export type LinkToFunctionType = (
-    record: RaRecord,
+export type LinkToFunctionType<RecordType extends RaRecord = RaRecord> = (
+    record: RecordType,
     reference: string
 ) => string;
 
-export type LinkToType = string | false | LinkToFunctionType;
+export type LinkToType<RecordType extends RaRecord = RaRecord> =
+    | string
+    | false
+    | LinkToFunctionType<RecordType>;

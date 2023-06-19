@@ -5,11 +5,11 @@ import {
     ToggleButton,
     ToggleButtonGroup,
     ToggleButtonProps,
+    useTheme,
 } from '@mui/material';
 import FormatColorTextIcon from '@mui/icons-material/FormatColorText';
 import FontDownloadIcon from '@mui/icons-material/FontDownload';
 import { useTranslate } from 'ra-core';
-import { useTheme } from 'ra-ui-materialui';
 import { useTiptapEditor } from '../useTiptapEditor';
 import {
     grey,
@@ -42,7 +42,7 @@ export const ColorButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
         setColorType(colorType);
     };
 
-    return editor ? (
+    return (
         <Box sx={{ position: 'relative' }}>
             <OutsideListener onClick={() => setShowColorChoiceDialog(false)}>
                 <ToggleButtonGroup>
@@ -50,7 +50,7 @@ export const ColorButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
                         aria-label={colorLabel}
                         title={colorLabel}
                         {...props}
-                        disabled={!editor?.isEditable}
+                        disabled={!editor || !editor.isEditable}
                         value="color"
                         onClick={() => displayColorChoiceDialog(ColorType.FONT)}
                     >
@@ -60,7 +60,7 @@ export const ColorButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
                         aria-label={highlightLabel}
                         title={highlightLabel}
                         {...props}
-                        disabled={!editor?.isEditable}
+                        disabled={!editor || !editor.isEditable}
                         value="highlight"
                         onClick={() =>
                             displayColorChoiceDialog(ColorType.BACKGROUND)
@@ -78,7 +78,7 @@ export const ColorButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
                 )}
             </OutsideListener>
         </Box>
-    ) : null;
+    );
 };
 
 interface ColorChoiceDialogProps {
@@ -92,7 +92,7 @@ const ColorChoiceDialog = ({
     close,
     colorType,
 }: ColorChoiceDialogProps) => {
-    const [theme] = useTheme();
+    const theme = useTheme();
     const colors = [grey, red, orange, yellow, green, blue, purple];
     const shades = [900, 700, 500, 300, 100];
 

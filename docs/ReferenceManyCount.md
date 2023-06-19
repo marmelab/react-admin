@@ -72,7 +72,7 @@ export const PostList = () => (
 
 `<ReferenceManyCount>` also accepts the [common field props](./Fields.md#common-field-props).
 
-Additional props are passed to [the underlying MUI `<Typography>` element](https://mui.com/material-ui/api/typography/).
+Additional props are passed to [the underlying Material UI `<Typography>` element](https://mui.com/material-ui/api/typography/).
 
 ## `filter`
 

@@ -495,5 +495,65 @@ describe('useDelete', () => {
                 });
             });
         });
+        it('updates getInfiniteList query cache when dataProvider promise resolves', async () => {
+            const queryClient = new QueryClient();
+            queryClient.setQueryData(['foo', 'getInfiniteList'], {
+                pages: [
+                    {
+                        data: [
+                            { id: 1, bar: 'bar' },
+                            { id: 2, bar: 'bar' },
+                        ],
+                        total: 2,
+                    },
+                ],
+                pageParams: [],
+            });
+            const dataProvider = {
+                delete: jest.fn(() =>
+                    Promise.resolve({ data: { id: 1 } } as any)
+                ),
+            } as any;
+            let localDeleteOne;
+            const Dummy = () => {
+                const [deleteOne] = useDelete('foo', {
+                    id: 1,
+                    previousData: { id: 1, bar: 'bar' },
+                });
+                localDeleteOne = deleteOne;
+                return <span />;
+            };
+            render(
+                <CoreAdminContext
+                    dataProvider={dataProvider}
+                    queryClient={queryClient}
+                >
+                    <Dummy />
+                </CoreAdminContext>
+            );
+            localDeleteOne('foo', {
+                id: 1,
+                previousData: { id: 1, bar: 'bar' },
+            });
+            await waitFor(() => {
+                expect(dataProvider.delete).toHaveBeenCalledWith('foo', {
+                    id: 1,
+                    previousData: { id: 1, bar: 'bar' },
+                });
+            });
+            await waitFor(() => {
+                expect(
+                    queryClient.getQueryData(['foo', 'getInfiniteList'])
+                ).toEqual({
+                    pages: [
+                        {
+                            data: [{ id: 2, bar: 'bar' }],
+                            total: 1,
+                        },
+                    ],
+                    pageParams: [],
+                });
+            });
+        });
     });
 });

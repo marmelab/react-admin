@@ -7,7 +7,12 @@ title: "The Configurable Component"
 
 This component makes another component configurable by the end user. When users enter the configuration mode, they can customize the component's settings via the inspector.
 
-![SimpleListConfigurable](./img/SimpleListConfigurable.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/SimpleListConfigurable.webm" type="video/webm"/>
+  <source src="./img/SimpleListConfigurable.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 Some react-admin components are already configurable - or rather they have a configurable counterpart:
 

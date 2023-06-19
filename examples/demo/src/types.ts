@@ -1,4 +1,4 @@
-import { RaRecord, Identifier } from 'react-admin';
+import { Identifier, RaRecord } from 'react-admin';
 
 export type ThemeName = 'light' | 'dark';
 
@@ -35,6 +35,7 @@ export interface Customer extends RaRecord {
     groups: string[];
     nb_commands: number;
     total_spent: number;
+    email: string;
 }
 
 export type OrderStatus = 'ordered' | 'delivered' | 'cancelled';
@@ -44,14 +45,22 @@ export interface Order extends RaRecord {
     basket: BasketItem[];
     date: Date;
     total: number;
+    total_ex_taxes: number;
+    delivery_fees: number;
+    tax_rate: number;
+    taxes: number;
+    customer_id: Identifier;
+    reference: string;
 }
 
-export interface BasketItem {
+export type BasketItem = {
     product_id: Identifier;
     quantity: number;
-}
+};
 
-export interface Invoice extends RaRecord {}
+export interface Invoice extends RaRecord {
+    date: Date;
+}
 
 export type ReviewStatus = 'accepted' | 'pending' | 'rejected';
 
@@ -60,6 +69,7 @@ export interface Review extends RaRecord {
     status: ReviewStatus;
     customer_id: Identifier;
     product_id: Identifier;
+    comment: string;
 }
 
 declare global {

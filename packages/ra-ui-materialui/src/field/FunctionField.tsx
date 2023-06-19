@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { useMemo } from 'react';
+import { useMemo, ReactNode } from 'react';
 import { useRecordContext } from 'ra-core';
 import PropTypes from 'prop-types';
 import Typography, { TypographyProps } from '@mui/material/Typography';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { FieldProps, fieldPropTypes } from './types';
 
 /**
  * Field using a render function
@@ -14,11 +14,11 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  * <FunctionField
  *     source="last_name" // used for sorting
  *     label="Name"
- *     render={record => record && `${record.first_name} ${record.last_name}`}
+ *     render={record => `${record.first_name} ${record.last_name}`}
  * />
  */
 
-export const FunctionField = <RecordType extends unknown = any>(
+export const FunctionField = <RecordType extends Record<string, unknown> = any>(
     props: FunctionFieldProps<RecordType>
 ) => {
     const { className, source = '', render, ...rest } = props;
@@ -46,9 +46,9 @@ FunctionField.propTypes = {
     render: PropTypes.func.isRequired,
 };
 
-export interface FunctionFieldProps<RecordType extends unknown = any>
-    extends PublicFieldProps,
-        InjectedFieldProps<RecordType>,
+export interface FunctionFieldProps<
+    RecordType extends Record<string, unknown> = any
+> extends FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
-    render: (record?: RecordType, source?: string) => any;
+    render: (record: RecordType, source?: string) => ReactNode;
 }

@@ -58,24 +58,23 @@ export const DatagridConfigurable = ({
 
     React.useEffect(() => {
         // first render, or the preference have been cleared
-        const columns = React.Children.map(props.children, (child, index) =>
-            React.isValidElement(child)
-                ? {
-                      index: String(index),
-                      source: child.props.source,
-                      label:
-                          child.props.source || child.props.label
-                              ? child.props.label
-                              : translate(
-                                    'ra.configurable.Datagrid.unlabeled',
-                                    {
-                                        column: index,
-                                        _: `Unlabeled column #%{column}`,
-                                    }
-                                ),
-                  }
-                : null
-        ).filter(column => column != null);
+        const columns = React.Children.toArray(props.children)
+            .filter(child => React.isValidElement(child))
+            .map((child: React.ReactElement, index) => ({
+                index: String(index),
+                source: child.props.source,
+                label:
+                    child.props.label && typeof child.props.label === 'string' // this list is serializable, so we can't store ReactElement in it
+                        ? child.props.label
+                        : child.props.source
+                        ? //  force the label to be the source
+                          undefined
+                        : // no source or label, generate a label
+                          translate('ra.configurable.Datagrid.unlabeled', {
+                              column: index,
+                              _: `Unlabeled column #%{column}`,
+                          }),
+            }));
         if (columns.length !== availableColumns.length) {
             setAvailableColumns(columns);
             setOmit(omit);

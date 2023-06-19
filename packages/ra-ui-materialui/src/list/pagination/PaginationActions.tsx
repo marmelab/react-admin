@@ -65,9 +65,9 @@ export interface PaginationActionsProps extends PaginationProps {
     onPageChange: (event: MouseEvent, page: number) => void;
 }
 /**
- * PaginationActions propTypes are copied over from MUI’s
+ * PaginationActions propTypes are copied over from Material UI’s
  * TablePaginationActions propTypes. See
- * https://github.com/mui-org/material-ui/blob/869692ecf3812bc4577ed4dde81a9911c5949695/packages/material-ui/src/TablePaginationActions/TablePaginationActions.js#L53-L85
+ * https://github.com/mui/material-ui/blob/869692ecf3812bc4577ed4dde81a9911c5949695/packages/material-ui/src/TablePaginationActions/TablePaginationActions.js#L53-L85
  * for reference.
  */
 PaginationActions.propTypes = {
@@ -84,7 +84,7 @@ const PREFIX = 'RaPaginationActions';
 const Root = styled('div', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
+})(() => ({
     flexShrink: 0,
     ml: 4,
 }));

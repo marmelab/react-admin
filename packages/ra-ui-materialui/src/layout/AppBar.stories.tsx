@@ -2,12 +2,14 @@ import * as React from 'react';
 import {
     Box,
     createTheme,
-    ThemeProvider,
+    ThemeProvider as MuiThemeProvider,
     MenuItem,
     ListItemIcon,
     ListItemText,
     TextField,
     Skeleton,
+    MenuItemProps,
+    IconButton,
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { QueryClientProvider, QueryClient } from 'react-query';
@@ -20,11 +22,7 @@ import { TitlePortal } from './TitlePortal';
 import { UserMenu } from './UserMenu';
 import { useUserMenu } from './useUserMenu';
 import { defaultTheme } from '../defaultTheme';
-import {
-    ToggleThemeButton,
-    RefreshIconButton,
-    LocalesMenuButton,
-} from '../button';
+import { ThemesContext, ThemeProvider } from './Theme';
 import { Logout } from '../auth';
 
 export default {
@@ -52,12 +50,12 @@ const Content = () => (
 const Wrapper = ({ children, theme = createTheme(defaultTheme) }) => (
     <MemoryRouter>
         <QueryClientProvider client={new QueryClient()}>
-            <ThemeProvider theme={theme}>
+            <MuiThemeProvider theme={theme}>
                 <AuthContext.Provider value={undefined as any}>
                     {children}
                 </AuthContext.Provider>
                 <Content />
-            </ThemeProvider>
+            </MuiThemeProvider>
         </QueryClientProvider>
     </MemoryRouter>
 );
@@ -71,12 +69,6 @@ export const Basic = () => (
 export const Color = () => (
     <Wrapper>
         <AppBar color="primary" />
-    </Wrapper>
-);
-
-export const AlwaysOn = () => (
-    <Wrapper>
-        <AppBar alwaysOn />
     </Wrapper>
 );
 
@@ -164,6 +156,21 @@ export const WithAuthIdentity = () => (
     </Wrapper>
 );
 
+export const WithThemes = () => (
+    <Wrapper>
+        <ThemesContext.Provider
+            value={{
+                darkTheme: { palette: { mode: 'dark' } },
+                lightTheme: { palette: { mode: 'light' } },
+            }}
+        >
+            <ThemeProvider>
+                <AppBar />
+            </ThemeProvider>
+        </ThemesContext.Provider>
+    </Wrapper>
+);
+
 export const Toolbar = () => (
     <Wrapper>
         <AppBar
@@ -197,17 +204,26 @@ export const UserMenuCustom = () => (
     </Wrapper>
 );
 
-const SettingsMenuItem = () => {
-    const { onClose } = useUserMenu();
-    return (
-        <MenuItem onClick={onClose}>
-            <ListItemIcon>
-                <SettingsIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText>Customize</ListItemText>
-        </MenuItem>
-    );
-};
+// It's important to pass the ref to allow Material UI to manage the keyboard navigation
+const SettingsMenuItem: React.FC<MenuItemProps> = React.forwardRef(
+    (props, ref) => {
+        // We are not using MenuItemLink so we retrieve the onClose function from the UserContext
+        const { onClose } = useUserMenu();
+        return (
+            <MenuItem
+                onClick={onClose}
+                ref={ref}
+                // It's important to pass the props to allow Material UI to manage the keyboard navigation
+                {...props}
+            >
+                <ListItemIcon>
+                    <SettingsIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Customize</ListItemText>
+            </MenuItem>
+        );
+    }
+);
 
 export const UserMenuElements = () => (
     <Wrapper>
@@ -247,25 +263,24 @@ export const Complete = () => (
                     changeLocale: () => Promise.resolve(),
                 }}
             >
-                <AppBar
-                    userMenu={
-                        <UserMenu>
-                            <SettingsMenuItem />
-                            <Logout />
-                        </UserMenu>
-                    }
-                    toolbar={
-                        <>
-                            <LocalesMenuButton />
-                            <ToggleThemeButton
-                                darkTheme={{ palette: { mode: 'dark' } }}
-                                lightTheme={{ palette: { mode: 'light' } }}
-                            />
-                            <RefreshIconButton />
-                        </>
-                    }
-                />
-                <Title title='Post "Lorem Ipsum Sic Dolor amet"' />
+                <ThemesContext.Provider
+                    value={{
+                        darkTheme: { palette: { mode: 'dark' } },
+                        lightTheme: { palette: { mode: 'light' } },
+                    }}
+                >
+                    <ThemeProvider>
+                        <AppBar
+                            userMenu={
+                                <UserMenu>
+                                    <SettingsMenuItem />
+                                    <Logout />
+                                </UserMenu>
+                            }
+                        />
+                        <Title title='Post "Lorem Ipsum Sic Dolor amet"' />
+                    </ThemeProvider>
+                </ThemesContext.Provider>
             </I18nContextProvider>
         </AuthContext.Provider>
     </Wrapper>
@@ -286,14 +301,17 @@ export const WithSearch = () => (
     </Wrapper>
 );
 
+const SettingsIconButton = () => (
+    <IconButton color="inherit">
+        <SettingsIcon />
+    </IconButton>
+);
+
 export const Children = () => (
     <Wrapper>
         <AppBar>
             <TitlePortal />
-            <ToggleThemeButton
-                darkTheme={{ palette: { mode: 'dark' } }}
-                lightTheme={{ palette: { mode: 'light' } }}
-            />
+            <SettingsIconButton />
             <Title title="Custom title" />
         </AppBar>
     </Wrapper>

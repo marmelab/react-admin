@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
 import { useStore, useRemoveFromStore } from '../../store';
-import { Identifier } from '../../types';
+import { RaRecord } from '../../types';
 
 /**
  * Get the list of selected items for a resource, and callbacks to change the selection
@@ -10,14 +10,14 @@ import { Identifier } from '../../types';
  *
  * @returns {Object} Destructure as [selectedIds, { select, toggle, clearSelection }].
  */
-export const useRecordSelection = (
+export const useRecordSelection = <RecordType extends RaRecord = any>(
     resource: string
 ): [
-    Identifier[],
+    RecordType['id'][],
     {
-        select: (ids: Identifier[]) => void;
-        unselect: (ids: Identifier[]) => void;
-        toggle: (id: Identifier) => void;
+        select: (ids: RecordType['id'][]) => void;
+        unselect: (ids: RecordType['id'][]) => void;
+        toggle: (id: RecordType['id']) => void;
         clearSelection: () => void;
     }
 ] => {
@@ -27,18 +27,18 @@ export const useRecordSelection = (
 
     const selectionModifiers = useMemo(
         () => ({
-            select: (idsToAdd: Identifier[]) => {
+            select: (idsToAdd: RecordType['id'][]) => {
                 if (!idsToAdd) return;
                 setIds([...idsToAdd]);
             },
-            unselect(idsToRemove: Identifier[]) {
+            unselect(idsToRemove: RecordType['id'][]) {
                 if (!idsToRemove || idsToRemove.length === 0) return;
                 setIds(ids => {
                     if (!Array.isArray(ids)) return [];
                     return ids.filter(id => !idsToRemove.includes(id));
                 });
             },
-            toggle: (id: Identifier) => {
+            toggle: (id: RecordType['id']) => {
                 if (typeof id === 'undefined') return;
                 setIds(ids => {
                     if (!Array.isArray(ids)) return [...ids];

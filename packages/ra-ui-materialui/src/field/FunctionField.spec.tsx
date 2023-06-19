@@ -7,10 +7,7 @@ describe('<FunctionField />', () => {
     it('should render using the render function', () => {
         const record = { id: 123, foo: 'bar' };
         const { queryByText } = render(
-            <FunctionField
-                record={record}
-                render={r => r && r.foo.substr(0, 2)}
-            />
+            <FunctionField record={record} render={r => r.foo.substr(0, 2)} />
         );
         expect(queryByText('ba')).not.toBeNull();
     });
@@ -19,7 +16,7 @@ describe('<FunctionField />', () => {
         const record = { id: 123, foo: 'bar' };
         const { queryByText } = render(
             <RecordContextProvider value={record}>
-                <FunctionField render={r => r && r.foo.substr(0, 2)} />
+                <FunctionField render={r => r.foo.substr(0, 2)} />
             </RecordContextProvider>
         );
         expect(queryByText('ba')).not.toBeNull();
@@ -29,7 +26,7 @@ describe('<FunctionField />', () => {
         const { queryByText } = render(
             <FunctionField
                 record={{ id: 123, foo: 'bar' }}
-                render={r => r && r.foo}
+                render={r => r.foo}
                 className="foo"
             />
         );

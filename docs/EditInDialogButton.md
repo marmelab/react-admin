@@ -9,7 +9,11 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 It can be useful in case you want the ability to edit a record linked by a reference to the currently edited record, or if you have a nested `<Datagrid>` inside a `<Show>` or an `<Edit>` view. 
 
-![EditInDialogButton](https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 Note that this component doesn't use routing, so it doesn't change the URL. It's therefore not possible to bookmark the edit dialog, or to link to it from another page. If you need that functionality, use [`<EditDialog>`](./EditDialog.md) instead.
 
@@ -54,10 +58,10 @@ const CompanyShow = () => (
 
 It accepts the following props:
 
-* `inline`: set to true to display only an MUI `<IconButton>` instead of the full `<Button>`. The label will still be available as a `<Tooltip>` though.
+* `inline`: set to true to display only an Material UI `<IconButton>` instead of the full `<Button>`. The label will still be available as a `<Tooltip>` though.
 * `icon`: allows to override the default icon.
 * `label`: allows to override the default button label. I18N is supported.
-* `ButtonProps`: object containing props to pass to MUI's `<Button>`.
+* `ButtonProps`: object containing props to pass to Material UI's `<Button>`.
 * remaining props will be passed to the [`<EditDialog>`](./EditDialog.md) dialog component.
 
 Check out [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createindialogbutton-editindialogbutton-and-showindialogbutton) for more details.

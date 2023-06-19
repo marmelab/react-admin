@@ -47,6 +47,7 @@ const CreateButton = (props: CreateButtonProps) => {
             component={Link}
             to={createPath({ resource, type: 'create' })}
             state={scrollStates[String(scrollToTop)]}
+            // @ts-ignore FabProps ships its own runtime palette `FabPropsColorOverrides` provoking an overlap error with `ButtonProps`
             color="primary"
             className={clsx(CreateButtonClasses.floating, className)}
             aria-label={label && translate(label)}

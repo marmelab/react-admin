@@ -7,11 +7,21 @@ title: "The Layout Component"
 
 The default react-admin layout renders a horizontal app bar at the top, a navigation menu on the side, and the main content in the center.
 
-![standard layout](./img/layout-component.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/layout-component.webm" type="video/webm"/>
+  <source src="./img/layout-component.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 In addition, the layout renders the menu as a dropdown on mobile.
 
-![layout responsive](./img/layout-responsive.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/layout-responsive.webm" type="video/webm"/>
+  <source src="./img/layout-responsive.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 React-admin lets you override the app layout using [the `<Admin layout>` prop](./Admin.md#layout). You can use any component you want as layout ; but if you just need to tweak the default layout, you can use the `<Layout>` component.
 
@@ -45,14 +55,15 @@ const App = () => (
 
 ## Props
 
-| Prop        | Required | Type        | Default  | Description                                                           |
-| ----------- | -------- | ----------- | -------- | --------------------------------------------------------------------- |
-| `appBar`    | Optional | `Component` | -        | A React component rendered at the top of the layout                   |
-| `className` | Optional | `string`    | -        | Passed to the root `<div>` component                                  |
-| `error`     | Optional | `Component` | -        | A React component rendered in the content area in case of error       |
-| `menu`      | Optional | `Component` | -        | A React component rendered at the side of the screen                  |
-| `sidebar`   | Optional | `Component` | -        | A React component responsible for rendering the menu (e.g. in a drawer) |
-| `sx`        | Optional | `SxProps`   | -        | Style overrides, powered by MUI System                                |
+| Prop             | Required | Type        | Default  | Description                                                             |
+| ---------------- | -------- | ----------- | -------- | ----------------------------------------------------------------------- |
+| `appBar`         | Optional | `Component` | -        | A React component rendered at the top of the layout                     |
+| `appBarAlwaysOn` | Optional | `boolean`   | -        | When true, the app bar is always visible                                |
+| `className`      | Optional | `string`    | -        | Passed to the root `<div>` component                                    |
+| `error`          | Optional | `Component` | -        | A React component rendered in the content area in case of error         |
+| `menu`           | Optional | `Component` | -        | A React component rendered at the side of the screen                    |
+| `sidebar`        | Optional | `Component` | -        | A React component responsible for rendering the menu (e.g. in a drawer) |
+| `sx`             | Optional | `SxProps`   | -        | Style overrides, powered by MUI System                                  |
 
 React-admin injects more props at runtime based on the `<Admin>` props:
 
@@ -87,7 +98,7 @@ export const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
 
 You can use [react-admin's `<AppBar>` component](./AppBar.md) as a base for your custom app bar, or the component of your choice. 
 
-By default, react-admin's `<AppBar>` displays the page title. You can override this default by passing children to `<AppBar>` - they will replace the default title. And if you still want to include the page title, make sure you include an element with id `react-admin-title` in the top bar (this uses [React Portals](https://reactjs.org/docs/portals.html)).
+By default, react-admin's `<AppBar>` displays the page title. You can override this default by passing children to `<AppBar>` - they will replace the default title. And if you still want to include the page title, make sure you include an element with id `react-admin-title` in the top bar (this uses [React Portals](https://react.dev/reference/react-dom/createPortal)).
 
 Here is a custom app bar component extending `<AppBar>` to include a company logo in the center of the page header:
 
@@ -115,13 +126,25 @@ export const MyAppBar = () => (
 
 Check out the [`<AppBar>` documentation](./AppBar.md) for more information, and for instructions on building your own AppBar.
 
+## `appBarAlwaysOn`
+
+By default, the app bar is hidden when the user scrolls down the page. This is useful to save space on small screens. But if you want to keep the app bar always visible, you can set the `appBarAlwaysOn` prop to `true`.
+
+```jsx
+// in src/MyLayout.js
+import * as React from 'react';
+import { Layout } from 'react-admin';
+
+export const MyLayout = (props) => <Layout {...props} appBarAlwaysOn />;
+```
+
 ## `className`
 
 `className` is passed to the root `<div>` component. It lets you style the layout with CSS - but the `sx` prop is preferred.
 
 ## `error`
 
-Whenever a client-side error happens in react-admin, the user sees an error page. React-admin uses [React's Error Boundaries](https://reactjs.org/docs/error-boundaries.html) to render this page when any component in the page throws an unrecoverable error. 
+Whenever a client-side error happens in react-admin, the user sees an error page. React-admin uses [React's Error Boundaries](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary) to render this page when any component in the page throws an unrecoverable error. 
 
 ![Default error page](./img/error.webp)
 
@@ -230,13 +253,17 @@ React-admin provides alternative menu layouts that you can use as a base for you
 - [`<MultiLevelMenu>`](./MultiLevelMenu.md) to render nested menus
 - [`<IconMenu>`](./IconMenu.md) for a narrow icon bar with dropdown menus
 
-![MegaMenu and Breadcrumb](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
-And you can build a totally custom menu using [MUI's `<Menu>` component](https://mui.com/material-ui/react-menu/).
+And you can build a totally custom menu using [Material UI's `<Menu>` component](https://mui.com/material-ui/react-menu/).
 
 ## `sidebar`
 
-You can override the default sidebar using this prop. The default sidebar will display a permanent drawer when the window size is above MUI theme's `sm` breakpoint, and a temporary drawer when the window size is less than that.
+You can override the default sidebar using this prop. The default sidebar will display a permanent drawer when the window size is above Material UI theme's `sm` breakpoint, and a temporary drawer when the window size is less than that.
 
 If you wish to always display a temporary drawer, you can customize using the following sample code:
 
@@ -294,7 +321,7 @@ This property accepts the following subclasses:
 | `& .RaLayout-contentWithSidebar` | Applied to the main part containing the sidebar and the content                           |
 | `& .RaLayout-content`            | Applied to the content area                                                               |
 
-To override the style of `<Layout>` using the [MUI style overrides](https://mui.com/customization/theme-components/), use the `RaLayout` key.
+To override the style of `<Layout>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaLayout` key.
 
 **Tip**: If you need to override global styles (like the default font size or family), you should [write a custom theme](./Theming.md#theming) rather than override the `<Layout sx>` prop. And if you need to tweak the default layout to add a right column or move the menu to the top, you're probably better off [writing your own layout component](./Theming.md#layout-from-scratch). 
 

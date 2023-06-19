@@ -159,21 +159,19 @@ export const SingleFieldListClasses = {
 const Root = styled('div', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
+})({
     display: 'flex',
     flexWrap: 'wrap',
-    marginTop: theme.spacing(-1),
-    marginBottom: theme.spacing(-1),
 
     [`& .${SingleFieldListClasses.link}`]: {
         textDecoration: 'none',
     },
-}));
+});
 
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
 // Our handleClick does nothing as we wrap the children inside a Link but it is
-// required by ChipField, which uses a Chip from MUI.
-// The MUI Chip requires an onClick handler to behave like a clickable element.
+// required by ChipField, which uses a Chip from Material UI.
+// The Material UI Chip requires an onClick handler to behave like a clickable element.
 const handleClick = () => {};

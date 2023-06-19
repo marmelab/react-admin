@@ -1,19 +1,20 @@
 import { ReactElement } from 'react';
-import { RaRecord } from 'ra-core';
 import PropTypes from 'prop-types';
 import { TableCellProps } from '@mui/material/TableCell';
+import { Call, Objects } from 'hotscript';
 
 type TextAlign = TableCellProps['align'];
 type SortOrder = 'ASC' | 'DESC';
+type AnyString = string & {};
 
-export interface FieldProps<RecordType extends RaRecord = any>
-    extends PublicFieldProps,
-        InjectedFieldProps<RecordType> {}
-
-export interface PublicFieldProps {
-    sortBy?: string;
+export interface FieldProps<
+    RecordType extends Record<string, unknown> = Record<string, any>
+> {
+    sortBy?: Call<Objects.AllPaths, RecordType> | AnyString;
     sortByOrder?: SortOrder;
-    source?: string;
+    source?: Call<Objects.AllPaths, RecordType> extends never
+        ? AnyString
+        : Call<Objects.AllPaths, RecordType>;
     label?: string | ReactElement | boolean;
     sortable?: boolean;
     className?: string;
@@ -26,8 +27,41 @@ export interface PublicFieldProps {
     textAlign?: TextAlign;
     emptyText?: string;
     fullWidth?: boolean;
+    record?: RecordType;
+    resource?: string;
 }
 
+/**
+ * @deprecated use FieldProps instead
+ */
+export interface PublicFieldProps<
+    RecordType extends Record<string, unknown> = Record<string, any>,
+    SortByType = unknown
+> {
+    sortBy?: unknown extends SortByType
+        ? Call<Objects.AllPaths, RecordType>
+        : SortByType;
+    sortByOrder?: SortOrder;
+    source?: Call<Objects.AllPaths, RecordType>;
+    label?: string | ReactElement | boolean;
+    sortable?: boolean;
+    className?: string;
+    cellClassName?: string;
+    headerClassName?: string;
+    /*
+     * @deprecated this property is not used anymore
+     */
+    formClassName?: string;
+    textAlign?: TextAlign;
+    emptyText?: string;
+    fullWidth?: boolean;
+    record?: RecordType;
+    resource?: string;
+}
+
+/**
+ * @deprecated use FieldProps instead
+ */
 export interface InjectedFieldProps<RecordType = any> {
     record?: RecordType;
     resource?: string;

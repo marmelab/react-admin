@@ -9,7 +9,7 @@ An `Input` component displays an input, or a dropdown list, a list of radio butt
 
 ![Inputs](./img/inputs.webp)
 
-Input components are usually wrappers around MUI form components, bound to the current react-hook-form context.
+Input components are usually wrappers around Material UI form components, bound to the current react-hook-form context.
 
 ## Usage
 
@@ -49,12 +49,12 @@ All input components accept the following props:
 | `helperText`    | Optional | `string`                  | -       | Text to be displayed under the input (cannot be used inside a filter)                                                                                                          |
 | `label`         | Optional | `string`                  | -       | Input label. In i18n apps, the label is passed to the `translate` function. Defaults to the humanized `source` when omitted. Set `label={false}` to hide the label. |
 | `parse`         | Optional | `Function`                | `value => value === '' ? null : value` | Callback taking the input value, and returning the value you want stored in the form state.                                                                         |
-| `sx`            | Optional | `SxProps`                 | -       | MUI shortcut for defining custom styles                                                                                                                             |
+| `sx`            | Optional | `SxProps`                 | -       | Material UI shortcut for defining custom styles                                                                                                                             |
 | `validate`      | Optional | `Function` &#124; `array` | -       | Validation rules for the current property. See the [Validation Documentation](./Validation.md#per-input-validation-built-in-field-validators) for details.          |
 
-React-admin uses [react-hook-form](https://react-hook-form.com/) to control form inputs. Each input component also accepts all react-hook-form [useController](https://react-hook-form.com/api/usecontroller) hook options.
+React-admin uses [react-hook-form](https://react-hook-form.com/) to control form inputs. Each input component also accepts all react-hook-form [useController](https://react-hook-form.com/docs/usecontroller) hook options.
 
-Additional props are passed down to the underlying component (usually an MUI component). For instance, when setting the `variant` prop on a `<TextInput>` component, the underlying MUI `<TextField>` receives it, and renders it with a different variant. Refer to the documentation of each Input component to see the underlying MUI component and its props.
+Additional props are passed down to the underlying component (usually an Material UI component). For instance, when setting the `variant` prop on a `<TextInput>` component, the underlying Material UI `<TextField>` receives it, and renders it with a different variant. Refer to the documentation of each Input component to see the underlying Material UI component and its props.
 
 ## Which Input Component to Use?
 
@@ -62,7 +62,7 @@ React-admin provides a set of Input components, each one designed for a specific
 
 | Data Type             | Example value                                                | Input Components                                                                                                                                                                                     |
 |-----------------------|--------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| String                | `'Lorem Ipsum'`                                              | [`<TextInput>`](./TextInput.md)                                                                                                                                                                      |
+| String                | `'Lorem Ipsum'`                                              | [`<TextInput>`](./TextInput.md), [`<PredictiveTextInput>`](./PredictiveTextInput.md)                                                                                                                 |
 | Rich text             | `<p>Lorem Ipsum</p>`                                         | [`<RichTextInput>`](./RichTextInput.md)                                                                                                                                                              |
 | Markdown              | `# Lorem Ipsum`                                              | [`<MarkdownInput>`](./MarkdownInput.md)                                                                                                                                                              |
 | Password              | `'********'`                                                 | [`<PasswordInput>`](./PasswordInput.md)                                                                                                                                                              |
@@ -75,14 +75,13 @@ React-admin provides a set of Input components, each one designed for a specific
 | Date & time           | `'2022-10-24T19:40:28.003Z'`                                 | [`<DateTimeInput>`](./DateTimeInput.md)                                                                                                                                                              |
 | Object                | `{ foo: 'bar' }`                                             | All inputs (see [ `source`](#source))                                                                                                                                                                |
 | Enum                  | `'foo'`                                                      | [`<SelectInput>`](./SelectInput.md), [`<AutocompleteInput>`](./AutocompleteInput.md), [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md)                                                        |
+| Tree node             | `42`                                                         | [`<TreeInput>`](./TreeInput.md)                                                                                                                                                                      |
 | Foreign key           | `42`                                                         | [`<ReferenceInput>`](./ReferenceInput.md)                                                                                                                                                            |
 | Array of objects      | `[{ item: 'jeans', qty: 3 }, { item: 'shirt', qty: 1 }]`     | [`<ArrayInput>`](./ArrayInput.md)                                                                                                                                                                    |
 | Array of Enums        | `['foo', 'bar']`                                             | [`<SelectArrayInput>`](./SelectArrayInput.md), [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md), [`<CheckboxGroupInput>`](./CheckboxGroupInput.md), [`<DualListInput>`](./DualListInput.md) |
 | Array of foreign keys | `[42, 43]`                                                   | [`<ReferenceArrayInput>`](./ReferenceArrayInput.md)                                                                                                                                                  |
 | Translations          | `{ en: 'Hello', fr: 'Bonjour' }`                             | [`<TranslatableInputs>`](./TranslatableInputs.md)                                                                                                                                                    |
-| Related records       | `[{ id: 42, title: 'Hello' }, { id: 43, title: 'World' }]`   | [`<ReferenceManyInput>`](./ReferenceManyInput.md), [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md), [`<ReferenceOneInput>`](./ReferenceOneInput.md)                                    |
-
-
+| Related records       | `[{ id: 42, title: 'Hello' }, { id: 43, title: 'World' }]`   | [`<ReferenceManyInput>`](./ReferenceManyInput.md), [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md), [`<ReferenceNodeInput>`](./ReferenceNodeInput.md), [`<ReferenceOneInput>`](./ReferenceOneInput.md) |
 
 ## `className`
 
@@ -290,7 +289,7 @@ Then you can display a text input to edit the author's first name as follows:
 
 ## `sx`
 
-Each individual input supports an `sx` prop to pass custom styles to the underlying component, relying on [MUI system](https://mui.com/system/basics/#the-sx-prop).
+Each individual input supports an `sx` prop to pass custom styles to the underlying component, relying on [Material UI system](https://mui.com/system/basics/#the-sx-prop).
 
 {% raw %}
 ```jsx
@@ -439,7 +438,7 @@ import { TextInput, required } from 'react-admin';
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
 
-React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://react-hook-form.com/api/usewatch) hook.
+React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://react-hook-form.com/docs/usewatch) hook.
 
 ```jsx
 import * as React from 'react';
@@ -543,6 +542,8 @@ const PostEdit = () => (
 );
 ```
 
+**Tip:** TypeScript users will notice that `scopedFormData` and `getSource` are typed as optional parameters. This is because the `<FormDataConsumer>` component can be used outside of an `<ArrayInput>` and in that case, these parameters will be `undefined`. If you are inside an `<ArrayInput>`, you can safely assume that these parameters will be defined.
+
 ## Hiding Inputs Based On Other Inputs
 
 You may want to display or hide inputs based on the value of another input - for instance, show an `email` input only if the `hasEmail` boolean input has been ticked to `true`.
@@ -570,9 +571,9 @@ import { FormDataConsumer } from 'react-admin';
 
 ## Overriding The Input Variant
 
-MUI offers [3 variants for text fields](https://mui.com/material-ui/react-text-field/#basic-textfield): `outlined`, `filled`, and `standard`. The default react-admin theme uses the `filled` variant.
+Material UI offers [3 variants for text fields](https://mui.com/material-ui/react-text-field/#basic-textfield): `outlined`, `filled`, and `standard`. The default react-admin theme uses the `filled` variant.
 
-Most Input components pass their additional props down to the root component, which is often an MUI Field component. This means you can pass a `variant` prop to override the variant of a single input:
+Most Input components pass their additional props down to the root component, which is often an Material UI Field component. This means you can pass a `variant` prop to override the variant of a single input:
 
 ```jsx
 <TextInput source="name" variant="outlined" />
@@ -634,7 +635,7 @@ const theme = {
 
 ## Writing Your Own Input Component
 
-If you need a more specific input type, you can write it directly in React. You'll have to rely on react-hook-form's [useController](https://react-hook-form.com/api/usecontroller) hook, to handle the value update cycle.
+If you need a more specific input type, you can write it directly in React. You'll have to rely on react-hook-form's [useController](https://react-hook-form.com/docs/usecontroller) hook, to handle the value update cycle.
 
 ### Using `useController`
 
@@ -735,9 +736,9 @@ Now the component will render with a label:
 </span>
 ```
 
-### Using MUI Field Components
+### Using Material UI Field Components
 
-Instead of HTML `input` elements, you can use an MUI component like `TextField`. To bind MUI components to the form values, use the `useController()` hook:
+Instead of HTML `input` elements, you can use an Material UI component like `TextField`. To bind Material UI components to the form values, use the `useController()` hook:
 
 ```jsx
 // in LatLongInput.js
@@ -768,13 +769,13 @@ const LatLngInput = () => (
 );
 ```
 
-**Tip**: MUI's `<TextField>` component already includes a label, so you don't need to use `<Labeled>` in this case.
+**Tip**: Material UI's `<TextField>` component already includes a label, so you don't need to use `<Labeled>` in this case.
 
 **Tip**: Notice that we have added `defaultValue: ''` as one of the `useController` params. This is a good practice to avoid getting console warnings about controlled/uncontrolled components, that may arise if the value of `record.lat` or `record.lng` is `undefined` or `null`.
 
-`useController()` returns three values: `field`, `fieldState`, and `formState`. To learn more about these props, please refer to the [useController](https://react-hook-form.com/api/usecontroller) hook documentation.
+`useController()` returns three values: `field`, `fieldState`, and `formState`. To learn more about these props, please refer to the [useController](https://react-hook-form.com/docs/usecontroller) hook documentation.
 
-Instead of HTML `input` elements or MUI components, you can use react-admin input components, like `<NumberInput>` for instance. React-admin components already use `useController()`, and already include a label, so you don't need either `useController()` or `<Labeled>` when using them:
+Instead of HTML `input` elements or Material UI components, you can use react-admin input components, like `<NumberInput>` for instance. React-admin components already use `useController()`, and already include a label, so you don't need either `useController()` or `<Labeled>` when using them:
 
 ```jsx
 // in LatLongInput.js
@@ -844,7 +845,7 @@ const LatLngInput = props => {
 };
 ```
 
-Here is another example, this time using an MUI `Select` component:
+Here is another example, this time using an Material UI `Select` component:
 
 ```jsx
 // in SexInput.js
@@ -889,6 +890,13 @@ const PersonEdit = () => (
         </SimpleForm>
     </Edit>
 );
+```
+
+**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/docs/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+
+```js
+const { isDirty } = useFormState(); // ✅
+const formState = useFormState(); // ❌ should deconstruct the formState      
 ```
 
 ## Third-Party Components

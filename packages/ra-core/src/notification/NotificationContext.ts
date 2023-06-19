@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, Dispatch, SetStateAction } from 'react';
 
 import { NotificationPayload } from './types';
 
@@ -7,6 +7,7 @@ export type NotificationContextType = {
     addNotification: (notification: NotificationPayload) => void;
     takeNotification: () => NotificationPayload | void;
     resetNotifications: () => void;
+    setNotifications: Dispatch<SetStateAction<NotificationPayload[]>>;
 };
 
 /**
@@ -41,4 +42,5 @@ export const NotificationContext = createContext<NotificationContextType>({
     addNotification: () => {},
     takeNotification: () => {},
     resetNotifications: () => {},
+    setNotifications: () => {},
 });

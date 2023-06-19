@@ -7,7 +7,12 @@ title: "useInfiniteGetList"
 
 This hook calls `dataProvider.getList()` when the component mounts. It returns a list of "pages" of records, and a callback to fetch the previous or next page. It's ideal to render a feed of events or messages, where the total number of records is unknown, and the user requires the next page via a button (or a scroll listener).
 
-![useInfiniteGetList](./img/useInfiniteGetList.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/useInfiniteGetList.webm" type="video/webm"/>
+  <source src="./img/useInfiniteGetList.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 It is based on react-query's [`useInfiniteQuery`](https://react-query-v3.tanstack.com/reference/useInfiniteQuery) hook.
 

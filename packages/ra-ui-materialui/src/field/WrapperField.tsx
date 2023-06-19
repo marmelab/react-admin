@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
 
-import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { FieldProps, fieldPropTypes } from './types';
 
 /**
  * A field rendering its children.
@@ -23,16 +23,18 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *   </Show>
  * );
  */
-export const WrapperField = ({ children }: WrapperFieldProps) => (
-    <>{children}</>
-);
+export const WrapperField = <
+    RecordType extends Record<string, unknown> = Record<string, any>
+>({
+    children,
+}: WrapperFieldProps<RecordType>) => <>{children}</>;
 
 WrapperField.displayName = 'WrapperField';
 
 WrapperField.propTypes = fieldPropTypes;
 
-export interface WrapperFieldProps
-    extends PublicFieldProps,
-        InjectedFieldProps {
+export interface WrapperFieldProps<
+    RecordType extends Record<string, unknown> = Record<string, any>
+> extends FieldProps<RecordType> {
     children: ReactNode;
 }

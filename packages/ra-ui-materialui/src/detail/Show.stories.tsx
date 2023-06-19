@@ -13,7 +13,7 @@ import { Show } from './Show';
 export default { title: 'ra-ui-materialui/detail/Show' };
 
 const dataProvider = {
-    getOne: (resource, params) =>
+    getOne: () =>
         Promise.resolve({
             data: {
                 id: 1,

@@ -40,7 +40,7 @@ import { useAugmentedForm } from './useAugmentedForm';
  * @see useForm
  * @see FormGroupContext
  *
- * @link https://react-hook-form.com/api/useformcontext
+ * @link https://react-hook-form.com/docs/useformcontext
  */
 export const Form = (props: FormProps) => {
     const { children, id, className, noValidate = false } = props;

@@ -11,15 +11,15 @@ We've done our best to keep the general API of react-admin v4 similar with the v
 
 Depending on the size of your v3 application, the upgrade will take between a few hours to a few days. If you use TypeScript, the migration will be much faster.
 
-## MUI v5
+## Material UI v5
 
-React-admin v4 uses MUI (Material-UI) v5. The MUI team has written an upgrade guide, which you should read to upgrade your material-ui code.
+React-admin v4 uses Material UI (Material-UI) v5. The Material UI team has written an upgrade guide, which you should read to upgrade your material-ui code.
 
-[https://mui.com/guides/migration-v4/](https://mui.com/guides/migration-v4/)
+[https://mui.com/material-ui/migration/migration-v4/](https://mui.com/material-ui/migration/migration-v4/)
 
 ## Redux Is Gone
 
-React-admin no longer relies on Redux. Instead, it relies on [React context](https://reactjs.org/docs/context.html) and third-party libraries (e.g. [react-query](https://react-query-v3.tanstack.com/)). 
+React-admin no longer relies on Redux. Instead, it relies on [React context](https://react.dev/learn/passing-data-deeply-with-context) and third-party libraries (e.g. [react-query](https://react-query-v3.tanstack.com/)). 
 
 You will need to update your code if it contains any of the following keywords:
 
@@ -1638,7 +1638,7 @@ const UnselectAllButton = () => {
 
 ### `initialValues` Is Now `defaultValues`
 
-`<FormWithRedirect>` used to accept [`react-final-form` `<Form>` props](https://final-form.org/docs/react-final-form/types/FormProps). It now accepts [`react-hook-form` `useForm` props](https://react-hook-form.com/api/useform). This also affects the other form components (`<SimpleForm>`, `<TabbedForm>`, etc.)
+`<FormWithRedirect>` used to accept [`react-final-form` `<Form>` props](https://final-form.org/docs/react-final-form/types/FormProps). It now accepts [`react-hook-form` `useForm` props](https://react-hook-form.com/docs/useform). This also affects the other form components (`<SimpleForm>`, `<TabbedForm>`, etc.)
 
 The most commonly used prop is probably `initialValues`, which is now named `defaultValues`:
 
@@ -1657,13 +1657,13 @@ const PostCreate = () => (
 ```
 {% endraw %}
 
-We kept the `validate` function prop, which we automatically translate to a custom [`react-hook-form` `resolver`](https://react-hook-form.com/api/useform#validationResolver). So even if it's not technically a react-hook-form prop, you can still use `validate` as before.
+We kept the `validate` function prop, which we automatically translate to a custom [`react-hook-form` `resolver`](https://react-hook-form.com/docs/useform#validationResolver). So even if it's not technically a react-hook-form prop, you can still use `validate` as before.
 
-This also means you can now use [`yup`](https://github.com/jquense/yup), [`zod`](https://github.com/colinhacks/zod), [`joi`](https://github.com/sideway/joi), [superstruct](https://github.com/ianstormtaylor/superstruct), [vest](https://github.com/ealush/vest) or any [resolver](https://react-hook-form.com/api/useform#validationResolver) supported by `react-hook-form` to apply schema validation.
+This also means you can now use [`yup`](https://github.com/jquense/yup), [`zod`](https://github.com/colinhacks/zod), [`joi`](https://github.com/sideway/joi), [superstruct](https://github.com/ianstormtaylor/superstruct), [vest](https://github.com/ealush/vest) or any [resolver](https://react-hook-form.com/docs/useform#validationResolver) supported by `react-hook-form` to apply schema validation.
 
 ### Input-Level Validation Now Triggers on Submit
 
-With `react-hook-form`, the default mode for form validation is 'onSubmit'. This means the validation errors only appear once the user submits the form. If you want to have input level validation triggered before submission (e.g. on blur), you can try a different [validation strategy](https://react-hook-form.com/api/useform/) by passing a `mode` prop to the form:
+With `react-hook-form`, the default mode for form validation is 'onSubmit'. This means the validation errors only appear once the user submits the form. If you want to have input level validation triggered before submission (e.g. on blur), you can try a different [validation strategy](https://react-hook-form.com/docs/useform/) by passing a `mode` prop to the form:
 
 ```jsx
 // This will trigger input validation onBlur
@@ -1674,7 +1674,7 @@ With `react-hook-form`, the default mode for form validation is 'onSubmit'. This
 
 ### Validation: Form Level & Input Level Are Mutually Exclusive
 
-With `react-hook-form`, you can't have both form level validation and input level validation. This is because form level validation is meant to be used for [schema based validation](https://react-hook-form.com/api/useform#validationResolver).
+With `react-hook-form`, you can't have both form level validation and input level validation. This is because form level validation is meant to be used for [schema based validation](https://react-hook-form.com/docs/useform#validationResolver).
 
 If you used form level validation to run complex checks for multiple input values combinations, you can use a schema library such as [yup](https://github.com/jquense/yup):
 
@@ -1716,7 +1716,7 @@ const MyForm = () => (
 
 ### `<SimpleForm>` and `<TabbedForm>` No Longer Accept `margin` and `variant`
 
-Just like MUI, we don't provide a way to specify those props at the form level. Instead, you can either set those props on the inputs or leverage the MUI [component overrides through theme](https://mui.com/customization/theme-components/) if you need to change them globally:
+Just like Material UI, we don't provide a way to specify those props at the form level. Instead, you can either set those props on the inputs or leverage the Material UI [component overrides through theme](https://mui.com/material-ui/customization/theme-components/) if you need to change them globally:
 
 ```diff
 const PostCreate = () => (
@@ -1730,9 +1730,9 @@ const PostCreate = () => (
 )
 ```
 
-You have several options when leveraging the [theme component overrides](https://mui.com/customization/theme-components/):
+You have several options when leveraging the [theme component overrides](https://mui.com/material-ui/customization/theme-components/):
 
-- Provide your own default props for MUI components such as the `TextField`:
+- Provide your own default props for Material UI components such as the `TextField`:
 ```js
 const myTheme = {
     components: {
@@ -1858,7 +1858,7 @@ export const MyForm = () => (
 );
 ```
 
-If you need to access the form state (`valid`, `invalid`, `pristine`, `dirty`), you can call [the react-hook-form `useFormState` hook](https://react-hook-form.com/api/useformstate) instead:
+If you need to access the form state (`valid`, `invalid`, `pristine`, `dirty`), you can call [the react-hook-form `useFormState` hook](https://react-hook-form.com/docs/useformstate) instead:
 
 ```diff
 import { FormWithRedirect } from 'react-admin';
@@ -1889,6 +1889,13 @@ const MyCustomForm = () => {
 +        <button disabled={!isDirty || !isValid} {...props} />
     );
 }
+```
+
+**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/docs/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+
+```js
+const { isDirty } = useFormState(); // ✅
+const formState = useFormState(); // ❌ should deconstruct the formState      
 ```
 
 ### `sanitizeEmptyValues` Works the Other Way Around
@@ -1964,6 +1971,13 @@ const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
         </Toolbar>
     );
 };
+```
+
+**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/docs/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+
+```js
+const { isDirty } = useFormState(); // ✅
+const formState = useFormState(); // ❌ should deconstruct the formState      
 ```
 
 ### `<Toolbar>`'s `alwaysEnableSaveButton` Prop Has Been Removed
@@ -2494,7 +2508,7 @@ export default LatLngInput;
 
 Just like all inputs, `useInput` now only accept `defaultValue` and will ignore `initialValue`.
 
-Besides, `useInput` used to return `final-form` properties such as `input` and `meta`. It now returns `field`, `fieldState` and `formState` (see https://react-hook-form.com/api/usecontroller).
+Besides, `useInput` used to return `final-form` properties such as `input` and `meta`. It now returns `field`, `fieldState` and `formState` (see https://react-hook-form.com/docs/usecontroller).
 
 Note that the `error` returned by `fieldState` is not just a simple string anymore but an object with a `message` property.
 
@@ -2535,18 +2549,25 @@ const UserForm = () => (
 )
 ```
 
+**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/docs/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+
+```js
+const { isDirty } = useFormState(); // ✅
+const formState = useFormState(); // ❌ should deconstruct the formState      
+```
+
 ### The `addLabel` prop Has Been Removed From All Inputs and Fields
 
 Inputs and fields used to support an `addLabel` prop that instructed components such as the `<SimpleForm>` to decorate the input or the field with a label. This is no longer the case as inputs are now responsible for their label display and you must wrap fields inside a `<Labeled>` to add a label for them.
 
 If you used the `addLabel` prop to hide inputs label by passing `false`, you can pass `false` to the `label` prop instead.
 
-### `<AutocompleteInput>` and `<AutocompleteArrayInput>` Now Use MUI Autocomplete
+### `<AutocompleteInput>` and `<AutocompleteArrayInput>` Now Use Material UI Autocomplete
 
-We migrated both the `AutocompleteInput` and `AutocompleteArrayInput` components so that they leverage MUI [`<Autocomplete>`](https://mui.com/components/autocomplete/). If you relied on [Downshift](https://www.downshift-js.com/) options, you'll have to update your component.
+We migrated both the `AutocompleteInput` and `AutocompleteArrayInput` components so that they leverage Material UI [`<Autocomplete>`](https://mui.com/material-ui/react-autocomplete/). If you relied on [Downshift](https://www.downshift-js.com/) options, you'll have to update your component.
 
 Besides, some props aren't available anymore:
-- `allowDuplicates`: This is not supported by MUI Autocomplete.
+- `allowDuplicates`: This is not supported by Material UI Autocomplete.
 - `clearAlwaysVisible`: the clear button is now always visible, either while hovering the input or when it has focus. You can hide it using the `<Autocomplete>` `disableClearable` prop though.
 - `resettable`: Removed for the same reason as `clearAlwaysVisible`
 
@@ -2578,9 +2599,9 @@ const AuthorsInput = () => {
 Our old `<RichTextInput>` was based on [Quill](https://quilljs.com/) but:
 - it wasn't accessible (button without labels, etc.)
 - it wasn't translatable (labels in Quill are in the CSS)
-- it wasn't using MUI components for its UI and looked off
+- it wasn't using Material UI components for its UI and looked off
 
-The new `<RichTextInput>` uses [TipTap](https://github.com/ueberdosis/tiptap), a UI less library to build rich text editors. It gives us the freedom to implement the UI how we want with MUI components. That solves all the above issues.
+The new `<RichTextInput>` uses [TipTap](https://github.com/ueberdosis/tiptap), a UI less library to build rich text editors. It gives us the freedom to implement the UI how we want with Material UI components. That solves all the above issues.
 
 If you used the `<RichTextInput>` without passing Quill options such as custom toolbars, you have nothing to do.
 
@@ -2667,7 +2688,7 @@ import { BooleanInput } from 'react-admin';
 
 The `<SelectInput>`, `<SelectArrayInput>`, `<AutocompleteInput>` and `<AutocompleteArrayInput>` components used to accept an `allowEmpty` prop. When set to `true`, a choice was added for setting the input value to an empty value (empty string by default).
 
-However, the underlying MUI components now require that the current input value has a matching choice. Those components now always accept an empty value (an empty string by default). You can safely remove this prop.
+However, the underlying Material UI components now require that the current input value has a matching choice. Those components now always accept an empty value (an empty string by default). You can safely remove this prop.
 
 ```diff
 const choices = [{ id: 1, name: 'value' }, { id: 2, name: 'value 2' }]
@@ -2881,14 +2902,14 @@ import ListItemText from '@mui/material/ListItemText';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 -const ConfigurationMenu = (props) => {
-// It's important to pass the ref to allow MUI to manage the keyboard navigation
+// It's important to pass the ref to allow Material UI to manage the keyboard navigation
 +const ConfigurationMenu = forwardRef((props, ref) => {
 +   const { onClose } = useUserMenu();
     return (
 -       <MenuItemLink
 +       <MenuItem
 +           ref={ref}
-            // It's important to pass the props to allow MUI to manage the keyboard navigation
+            // It's important to pass the props to allow Material UI to manage the keyboard navigation
             {...props}
 +           component={Link}
             to="/configuration"
@@ -2964,7 +2985,7 @@ const MyAdmin = () => (
 )
 ```
 
-### The MUI `<ThemeProvider>` is not set by `<Layout>` anymore
+### The Material UI `<ThemeProvider>` is not set by `<Layout>` anymore
 
 The `<ThemeProvider>` is now set by the `<AdminContext>` component which is rendered by `<Admin>`.
 

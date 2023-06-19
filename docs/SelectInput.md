@@ -5,9 +5,14 @@ title: "The SelectInput Component"
 
 # `<SelectInput>`
 
-To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [MUI's `<Select>`](https://mui.com/api/select).
+To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material UI's `<Select>`](https://mui.com/api/select).
 
-![SelectInput](./img/select-input.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/select-input.webm" type="video/webm"/>
+  <source src="./img/select-input.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 This input allows editing record fields that are scalar values, e.g. `123`, `'admin'`, etc. 
 
@@ -272,7 +277,7 @@ You can override this value with the `emptyValue` prop.
 <SelectInput source="category" choices={choices} emptyValue={0} />
 ```
 
-**Tip**: While you can set `emptyValue` to a non-string value (e.g. `0`), you cannot use `null` or `undefined`, as it would turn the `<SelectInput>` into an [uncontrolled component](https://reactjs.org/docs/uncontrolled-components.html). If you need the empty choice to be stored as `null` or `undefined`, use [the `parse` prop](./Inputs.md#parse) to convert the default empty value ('') to `null` or `undefined`, or use [the `sanitizeEmptyValues` prop](./SimpleForm.md#sanitizeemptyvalues) on the Form component. 
+**Tip**: While you can set `emptyValue` to a non-string value (e.g. `0`), you cannot use `null` or `undefined`, as it would turn the `<SelectInput>` into an [uncontrolled component](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components). If you need the empty choice to be stored as `null` or `undefined`, use [the `parse` prop](./Inputs.md#parse) to convert the default empty value ('') to `null` or `undefined`, or use [the `sanitizeEmptyValues` prop](./SimpleForm.md#sanitizeemptyvalues) on the Form component. 
 
 ## `isLoading`
 
@@ -334,7 +339,7 @@ If a prompt is not enough, you can use [the `create` prop](#create) to render a 
 
 ## `options`
 
-Use the `options` attribute if you want to override any of MUI's `<Select>` attributes:
+Use the `options` attribute if you want to override any of Material UI's `<Select>` attributes:
 
 {% raw %}
 ```jsx
@@ -342,7 +347,7 @@ Use the `options` attribute if you want to override any of MUI's `<Select>` attr
 ```
 {% endraw %}
 
-Refer to [MUI Select documentation](https://mui.com/api/select) for more details.
+Refer to [Material UI Select documentation](https://mui.com/api/select) for more details.
 
 ## `optionText`
 
@@ -455,13 +460,13 @@ You can make the `SelectInput` component resettable using the `resettable` prop.
 
 ## `sx`: CSS API
 
-The `<SelectInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<SelectInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name                | Description                                               |
 |--------------------------|-----------------------------------------------------------|
 | `& .RaSelectInput-input` | Applied to the underlying `ResettableTextField` component |
 
-To override the style of all instances of `<SelectInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaSelectInput` key.
+To override the style of all instances of `<SelectInput>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaSelectInput` key.
 
 ## `translateChoice`
 
@@ -626,7 +631,7 @@ const PostCreate = () => {
 ```
 {% endraw %}
 
-Use the `create` prop when you want a more polished or complex UI. For example an MUI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
+Use the `create` prop when you want a more polished or complex UI. For example an Material UI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
 
 {% raw %}
 ```jsx
@@ -707,3 +712,40 @@ const CreateCategory = () => {
 };
 ```
 {% endraw %}
+
+## Tree Structure
+
+If the choices form a hierarchy or a tree, use the [`<TreeInput>`](./TreeInput.md) component instead of `<SelectInput>`. It renders a collapsible tree structure, and lets users select a value by clicking on a node.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/ReferenceNodeInput-TreeInput-basic.webm" type="video/webm"/>
+  <source src="./img/ReferenceNodeInput-TreeInput-basic.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+```tsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { TreeInput } from '@react-admin/ra-tree';
+
+export const ProductEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="id" disabled />
+            <TextInput source="name" />
+            <TreeInput source="category" treeData={[
+                { id: 1, title: 'Clothing', isRoot: true, children: [2, 6] },
+                { id: 2, title: 'Men', children: [3] },
+                { id: 3, title: 'Suits', children: [4, 5] },
+                { id: 4, title: 'Slacks', children: [] },
+                { id: 5, title: 'Jackets', children: [] },
+                { id: 6, title: 'Women', children: [7, 10, 11] },
+                { id: 7, title: 'Dresses', children: [8, 9] },
+                { id: 8, title: 'Evening Gowns', children: [] },
+                { id: 9, title: 'Sun Dresses', children: [] },
+                { id: 10, title: 'Skirts', children: [] },
+                { id: 11, title: 'Blouses', children: [] },
+            ]} />
+        </SimpleForm>
+    </Edit>
+);
+```

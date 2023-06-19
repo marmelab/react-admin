@@ -1,17 +1,6 @@
-import { ThemeOptions } from '@mui/material';
+import { RaThemeOptions } from './layout/Theme';
 
-export const defaultTheme = {
-    palette: {
-        background: {
-            default: '#fafafb',
-        },
-        secondary: {
-            light: '#6ec6ff',
-            main: '#2196f3',
-            dark: '#0069c0',
-            contrastText: '#fff',
-        },
-    },
+const defaultThemeInvariants = {
     typography: {
         h6: {
             fontWeight: 400,
@@ -22,16 +11,6 @@ export const defaultTheme = {
         closedWidth: 50,
     },
     components: {
-        MuiFilledInput: {
-            styleOverrides: {
-                root: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                    '&$disabled': {
-                        backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                    },
-                },
-            },
-        },
         MuiTextField: {
             defaultProps: {
                 variant: 'filled' as const,
@@ -49,9 +28,45 @@ export const defaultTheme = {
     },
 };
 
-export interface RaThemeOptions extends ThemeOptions {
-    sidebar?: {
-        width?: number;
-        closedWidth?: number;
-    };
-}
+export const defaultLightTheme: RaThemeOptions = {
+    palette: {
+        background: {
+            default: '#fafafb',
+        },
+        secondary: {
+            light: '#6ec6ff',
+            main: '#2196f3',
+            dark: '#0069c0',
+            contrastText: '#fff',
+        },
+    },
+    ...defaultThemeInvariants,
+    components: {
+        ...defaultThemeInvariants.components,
+        MuiFilledInput: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                    '&$disabled': {
+                        backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                    },
+                },
+            },
+        },
+    },
+};
+
+export const defaultDarkTheme: RaThemeOptions = {
+    palette: {
+        mode: 'dark',
+        primary: {
+            main: '#90caf9',
+        },
+        background: {
+            default: '#313131',
+        },
+    },
+    ...defaultThemeInvariants,
+};
+
+export const defaultTheme = defaultLightTheme;

@@ -1,17 +1,28 @@
-import * as React from 'react';
+import {
+    act,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+} from '@testing-library/react';
 import expect from 'expect';
-import { act, render, screen, waitFor } from '@testing-library/react';
-import { Routes, Route } from 'react-router';
 import { createMemoryHistory } from 'history';
+import * as React from 'react';
+import { MemoryRouter, Route, Routes } from 'react-router';
 
-import { EditController } from './EditController';
-import { DataProvider } from '../../types';
+import {
+    EditContextProvider,
+    SaveContextProvider,
+    useEditController,
+} from '..';
 import { CoreAdminContext } from '../../core';
-import { useNotificationContext } from '../../notification';
-import { SaveContextProvider } from '..';
-import undoableEventEmitter from '../../dataProvider/undoableEventEmitter';
-import { Middleware, useRegisterMutationMiddleware } from '../saveContext';
 import { testDataProvider, useUpdate } from '../../dataProvider';
+import undoableEventEmitter from '../../dataProvider/undoableEventEmitter';
+import { Form, InputProps, useInput } from '../../form';
+import { useNotificationContext } from '../../notification';
+import { DataProvider } from '../../types';
+import { Middleware, useRegisterMutationMiddleware } from '../saveContext';
+import { EditController } from './EditController';
 
 describe('useEditController', () => {
     const defaultProps = {
@@ -607,6 +618,41 @@ describe('useEditController', () => {
         });
     });
 
+    it('should accept meta as a save option', async () => {
+        let saveCallback;
+        const update = jest
+            .fn()
+            .mockImplementationOnce((_, { id, data, previousData }) =>
+                Promise.resolve({ data: { id, ...previousData, ...data } })
+            );
+        const dataProvider = ({
+            getOne: () => Promise.resolve({ data: { id: 12 } }),
+            update,
+        } as unknown) as DataProvider;
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <EditController {...defaultProps} mutationMode="pessimistic">
+                    {({ save }) => {
+                        saveCallback = save;
+                        return <div />;
+                    }}
+                </EditController>
+            </CoreAdminContext>
+        );
+        await act(async () =>
+            saveCallback({ foo: 'bar' }, { meta: { lorem: 'ipsum' } })
+        );
+        await waitFor(() => {
+            expect(update).toHaveBeenCalledWith('posts', {
+                id: 12,
+                data: { foo: 'bar' },
+                previousData: undefined,
+                meta: { lorem: 'ipsum' },
+            });
+        });
+    });
+
     it('should allow the save onSuccess option to override the success side effects override', async () => {
         let saveCallback;
         const dataProvider = ({
@@ -939,5 +985,64 @@ describe('useEditController', () => {
             data: { foo: 'bar' },
             previousData: { id: 12 },
         });
+    });
+
+    it('should allow custom redirect with warnWhenUnsavedChanges in pessimistic mode', async () => {
+        const dataProvider = testDataProvider({
+            getOne: () => Promise.resolve({ data: { id: 123 } } as any),
+            update: (_, { id, data }) =>
+                new Promise(resolve =>
+                    setTimeout(
+                        () => resolve({ data: { id, ...data } } as any),
+                        300
+                    )
+                ),
+        });
+        const Input = (props: InputProps) => {
+            const name = props.source;
+            const { field } = useInput(props);
+            return (
+                <>
+                    <label htmlFor={name}>{name}</label>
+                    <input id={name} type="text" {...field} />
+                </>
+            );
+        };
+        const EditView = () => {
+            const controllerProps = useEditController({
+                ...defaultProps,
+                id: 123,
+                redirect: 'show',
+                mutationMode: 'pessimistic',
+            });
+            return (
+                <EditContextProvider value={controllerProps}>
+                    <Form warnWhenUnsavedChanges>
+                        <>
+                            <div>Edit</div>
+                            <Input source="foo" />
+                            <input type="submit" value="Submit" />
+                        </>
+                    </Form>
+                </EditContextProvider>
+            );
+        };
+        const ShowView = () => <div>Show</div>;
+        render(
+            <MemoryRouter initialEntries={['/posts/123']}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Routes>
+                        <Route path="/posts/123" element={<EditView />} />
+                        <Route path="/posts/123/show" element={<ShowView />} />
+                    </Routes>
+                </CoreAdminContext>
+            </MemoryRouter>
+        );
+        await screen.findByText('Edit');
+        fireEvent.change(await screen.findByLabelText('foo'), {
+            target: { value: 'bar' },
+        });
+        fireEvent.click(screen.getByText('Submit'));
+        expect(await screen.findByText('Show')).not.toBeNull();
     });
 });

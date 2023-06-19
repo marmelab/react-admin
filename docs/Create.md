@@ -116,7 +116,7 @@ const PostCreate = () => (
 
 ## `component`
 
-By default, the `<Create>` view render the main form inside a MUI `<Card>` element. The actual layout of the form depends on the `Form` component you're using ([`<SimpleForm>`](./SimpleForm.md), [`<TabbedForm>`](./TabbedForm.md), or a custom form component).
+By default, the `<Create>` view render the main form inside a Material UI `<Card>` element. The actual layout of the form depends on the `Form` component you're using ([`<SimpleForm>`](./SimpleForm.md), [`<TabbedForm>`](./TabbedForm.md), or a custom form component).
 
 Some form layouts also use `Card`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main page container by passing a `component` prop :
 
@@ -290,15 +290,15 @@ const PostCreate = () => (
 
 ## `sx`: CSS API
 
-The `<Create>` components accept the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following keys:
+The `<Create>` components accept the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following keys:
 
 | Rule name               | Description                                                                          |
 |-------------------------|--------------------------------------------------------------------------------------|
 | `& .RaCreate-main`      | Applied to the main container                                                        |
 | `& .RaCreate-noActions` | Applied to the main container when `actions` prop is `false`                         |
-| `& .RaCreate-card`      | Applied to the child component inside the main container (MUI's `Card` by default)   |
+| `& .RaCreate-card`      | Applied to the child component inside the main container (Material UI's `Card` by default)   |
 
-To override the style of all instances of `<Create>` components using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaCreate` key.
+To override the style of all instances of `<Create>` components using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaCreate` key.
 
 ## `title`
 
@@ -463,7 +463,7 @@ export default PostList = () => (
 ```
 {% endraw %}
 
-**Tip**: To style the button with the main color from the MUI theme, use the `Link` component from the `react-admin` package rather than the one from `react-router-dom`.
+**Tip**: To style the button with the main color from the Material UI theme, use the `Link` component from the `react-admin` package rather than the one from `react-router-dom`.
 
 **Tip**: The `<Create>` component also watches the "source" parameter of `location.search` (the query string in the URL) in addition to `location.state` (a cross-page message hidden in the router memory). So the `CreateRelatedCommentButton` could also be written as:
 
@@ -560,8 +560,54 @@ Note: In order to get the `mutationOptions` being considered, you have to set th
 
 `<Create>` is designed to be a page component, passed to the `create` prop of the `<Resource>` component. But you may want to let users create a record from another page. 
 
-![CreateDialog](https://marmelab.com/ra-enterprise/modules/assets/create-dialog.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/create-dialog.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/create-dialog.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 * If you want to allow creation from the `list` page, use [the `<CreateDialog>` component](./CreateDialog.md)
 * If you want to allow creation from another page, use [the `<CreateInDialogButton>` component](./CreateInDialogButton.md)
 
+## Linking Two Inputs
+
+Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
+
+React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://react-hook-form.com/docs/usewatch) hook.
+
+```jsx
+import * as React from 'react';
+import { Edit, SimpleForm, SelectInput } from 'react-admin';
+import { useWatch } from 'react-hook-form';
+
+const countries = ['USA', 'UK', 'France'];
+const cities = {
+    USA: ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'],
+    UK: ['London', 'Birmingham', 'Glasgow', 'Liverpool', 'Bristol'],
+    France: ['Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice'],
+};
+const toChoices = items => items.map(item => ({ id: item, name: item }));
+
+const CityInput = props => {
+    const country = useWatch({ name: 'country' });
+    return (
+        <SelectInput
+            choices={country ? toChoices(cities[country]) : []}
+            {...props}
+        />
+    );
+};
+
+const OrderEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <SelectInput source="country" choices={toChoices(countries)} />
+            <CityInput source="cities" />
+        </SimpleForm>
+    </Edit>
+);
+
+export default OrderEdit;
+```
+
+**Tip:** If you'd like to avoid creating an intermediate component like `<CityInput>`, or are using an `<ArrayInput>`, you can use the [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs) component as an alternative.

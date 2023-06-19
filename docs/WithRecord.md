@@ -36,9 +36,54 @@ As soon as there is a record available, react-admin puts it in a `RecordContext`
 - in descendants of the `<SimpleList>` component
 - in descendants of the `<ReferenceField>` component
 
+## Using in a Datagrid
+
+When using `<WithRecord>` in a [`<Datagrid>`](./Datagrid.md), you must specify the `label` prop to let react-admin know which field to display in the column header. 
+
+```jsx
+import { Datagrid, TextField, WithRecord } from 'react-admin';
+
+const PostList = () => (
+    <List>
+        <Datagrid>
+            <TextField source="title" />
+            <WithRecord label="author" render={record => <span>{record.author}</span>} />
+        </Datagrid>
+    </List>
+);
+```
+
+## TypeScript
+
+The `<WithRecord>` component accepts a generic parameter for the record type:
+
+```tsx
+import { Show, SimpleShowLayout, WithRecord } from 'react-admin';
+
+type Book = {
+    id: number;
+    author: string;
+}
+
+const BookShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <WithRecord<Book>
+                label="author"
+                render={book => {
+                    // TypeScript knows that book is of type Book
+                    return <span>{book.author}</span>}
+                }
+            />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
 ## See Also
 
 * [`useRecordContext`](./useRecordContext.md) is the hook version of this component.
+* [`<WithListContext>`](./WithListContext.md) is the equivalent for lists.
 
 ## API
 

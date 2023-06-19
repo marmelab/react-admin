@@ -7,7 +7,12 @@ title: "The ArrayInput Component"
 
 To edit arrays of data embedded inside a record, `<ArrayInput>` creates a list of sub-forms.
 
-![ArrayInput](./img/array-input.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/array-input.webm" type="video/webm"/>
+  <source src="./img/array-input.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 `<ArrayInput>` allows editing of embedded arrays, like the `items` field in the following `order` record:
 
@@ -38,7 +43,7 @@ To edit arrays of data embedded inside a record, `<ArrayInput>` creates a list o
 
 ## Usage
 
-`<ArrayInput>` expects a single child, which must be a *form iterator* component. A form iterator is a component rendering a field array (the object returned by react-hook-form's [`useFieldArray`](https://react-hook-form.com/api/usefieldarray)). For instance, [the `<SimpleFormIterator>` component](./SimpleFormIterator.md) displays an array of react-admin Inputs in an unordered list (`<ul>`), one sub-form by list item (`<li>`). It also provides controls for adding and removing a sub-record.
+`<ArrayInput>` expects a single child, which must be a *form iterator* component. A form iterator is a component rendering a field array (the object returned by react-hook-form's [`useFieldArray`](https://react-hook-form.com/docs/usefieldarray)). For instance, [the `<SimpleFormIterator>` component](./SimpleFormIterator.md) displays an array of react-admin Inputs in an unordered list (`<ul>`), one sub-form by list item (`<li>`). It also provides controls for adding and removing a sub-record.
 
 ```jsx
 import { 

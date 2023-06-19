@@ -64,3 +64,5 @@ The `<ListBase>` component accepts the same props as [`useListController`](./use
 * [`sort`](./List.md#sort-default-sort-field--order)
 
 These are a subset of the props accepted by `<List>` - only the props that change data fetching, and not the props related to the user interface.
+
+In addition, `<ListBase>` renders its children components inside a `ListContext`. Check [the `<List children>` documentation](./List.md#children-list-layout) for usage examples.

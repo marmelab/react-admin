@@ -320,7 +320,12 @@ export default {
 };
 ```
 
-![Logout button](./img/logout.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/logout.webm" type="video/webm"/>
+  <source src="./img/logout.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 The `authProvider.logout()` method is also a good place to notify the authentication backend that the user credentials are no longer valid after logout.
 

@@ -79,7 +79,7 @@ const BookShow = () => (
             <DateField source="published_at" />
             <FunctionField 
                 label="Author"
-                render={record => record && `${record.author.first_name} ${record.author.last_name}`}
+                render={record => `${record.author.first_name} ${record.author.last_name}`}
             />
             <DateField label="Author DOB" source="author.date_of_birth" />
         </SimpleShowLayout>
@@ -178,7 +178,7 @@ const BookList = () => (
             <TextField source="title" />
             <DateField source="published_at" />
             <ReferenceField label="Author" source="author_id" reference="authors">
-                <FunctionField render={record => record && `${record.first_name} ${record.last_name}`} />
+                <FunctionField render={record => `${record.first_name} ${record.last_name}`} />
             </ReferenceField>
             <ReferenceField label="Author DOB" source="author_id" reference="authors">
                 <DateField source="date_of_birth" />
@@ -356,7 +356,7 @@ const BookShow = props => (
                 <Datagrid>
                     <FunctionField 
                         label="Author"
-                        render={record => record && `${record.first_name} ${record.last_name}`}
+                        render={record => `${record.first_name} ${record.last_name}`}
                     />
                     <DateField source="date_of_birth" />
                 </Datagrid>

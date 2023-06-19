@@ -9,7 +9,7 @@ Whether you need to adjust a CSS rule for a single component, or change the colo
 
 ## `sx`: Overriding A Component Style
 
-All react-admin components expose an `sx` property, which allows to customize the component style. It uses the CSS-in-JS solution offered by MUI, [MUI System](https://mui.com/system/basics/#the-sx-prop). This `sx` prop is kind of like [React's `style` prop](https://reactjs.org/docs/dom-elements.html#style), but it's more powerful.
+All react-admin components expose an `sx` property, which allows to customize the component style. It uses the CSS-in-JS solution offered by MUI, [MUI System](https://mui.com/system/basics/#the-sx-prop). This `sx` prop is kind of like [React's `style` prop](https://react.dev/reference/react-dom/components/common#applying-css-styles), but it's more powerful.
 
 {% raw %}
 ```jsx
@@ -45,7 +45,7 @@ All react-admin components expose an `sx` property, which allows to customize th
 ```
 {% endraw %}
 
-Check [The MUI documentation on the `sx` prop](https://mui.com/material-ui/customization/how-to-customize/#1-one-off-customization) for more information.
+Check [The Material UI documentation on the `sx` prop](https://mui.com/material-ui/customization/how-to-customize/#1-one-off-customization) for more information.
 
 Here is an example: Customizing the `<EditButton>` inside a `<Datagrid>`, using the `sx` prop:
 
@@ -120,7 +120,7 @@ The react-admin documentation for individual components also lists the classes a
 
 ## Reusable Components
 
-To reuse the same style overrides in different locations across your application, create a reusable component using [the MUI `styled()` utility](https://mui.com/system/styled/). It's a function that creates a new component based on a source component and custom styles. The basic syntax is `styled(Component)(styles) => Component` (where `styles` follows the same syntax as the `sx` prop).
+To reuse the same style overrides in different locations across your application, create a reusable component using [the Material UI `styled()` utility](https://mui.com/system/styled/). It's a function that creates a new component based on a source component and custom styles. The basic syntax is `styled(Component)(styles) => Component` (where `styles` follows the same syntax as the `sx` prop).
 
 For instance, to create a custom `<Datagrid>` component with the header style defined in the previous section:
 
@@ -189,9 +189,9 @@ Again, to guess the name of the subclass to use (like `.RaDatagrid-headerCell` a
 
 ## Global Theme Overrides
 
-If you want to override the style of a component across the entire application, you can use a custom theme, leveraging [the MUI Theming support](https://mui.com/material-ui/customization/theming/).
+If you want to override the style of a component across the entire application, you can use a custom theme, leveraging [the Material UI Theming support](https://mui.com/material-ui/customization/theming/).
 
-React-admin already wraps the app with [a MUI `<ThemeProvider>`](https://mui.com/material-ui/customization/theming/#themeprovider). Pass a custom `theme` to the `<Admin>` component to override the style of the entire application:
+React-admin already wraps the app with [a Material UI `<ThemeProvider>`](https://mui.com/material-ui/customization/theming/#themeprovider). Pass a custom `theme` to the `<Admin>` component to override the style of the entire application:
 
 ```jsx
 const theme = { ... };
@@ -236,14 +236,14 @@ const App = () => (
 
 There are 2 important gotchas here:
 
-- Don't forget to merge your custom style overrides with the ones from react-admin's `defaultTheme`, otherwise the application will have the default MUI theme (most notably, outlined text inputs)
+- Don't forget to merge your custom style overrides with the ones from react-admin's `defaultTheme`, otherwise the application will have the default Material UI theme (most notably, outlined text inputs)
 - Custom style overrides must live under a `root` key. Then, the style override syntax is the same as the one used for the `sx` prop.
 
 Note that you don't need to call `createTheme` yourself. React-admin will do it for you.
 
 Again, to guess the name of the subclass to use (like `.RaDatagrid-headerCell` above) for customizing a component, you can use the developer tools of your browser, or check the react-admin documentation for individual components (e.g. the [Datagrid CSS documentation](./Datagrid.md#sx-css-api)).
 
-You can use this technique to override not only styles, but also default for components. That's how react-admin applies the `filled` variant to all `TextField` components. So for instance, to change the variant to `outlined`, create a custom theme as follows:
+You can use this technique to override not only styles, but also defaults for components. That's how react-admin applies the `filled` variant to all `TextField` components. So for instance, to change the variant to `outlined`, create a custom theme as follows:
 
 ```jsx
 import { defaultTheme } from 'react-admin';
@@ -291,7 +291,7 @@ const theme = {
 
 ## Writing a Custom Theme
 
-MUI theming also allows to change the default palette, typography, colors, etc. This is very useful to change the react-admin style to match the branding of your company.
+Material UI theming also allows to change the default palette, typography, colors, etc. This is very useful to change the react-admin style to match the branding of your company.
 
 For instance, here is how to override the default react-admin colors and fonts:
 
@@ -331,7 +331,7 @@ A `theme` object can contain the following keys:
 * `typography`
 * `zIndex`
 
-**Tip**: Check [MUI default theme documentation](https://mui.com/customization/default-theme/) to see the default values and meaning for these keys.
+**Tip**: Check [Material UI default theme documentation](https://mui.com/material-ui/customization/default-theme/) to see the default values and meaning for these keys.
 
 Once your theme is defined, pass it to the `<Admin>` component, in the `theme` prop.
 
@@ -345,7 +345,7 @@ const App = () => (
 
 ## Using A Dark Theme
 
-MUI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark theme, create a custom theme object with a `mode: 'dark'` palette, and pass it as the `<Admin theme>` prop:
+Material UI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark theme, create a custom theme object with a `mode: 'dark'` palette, and pass it as the `<Admin theme>` prop:
 
 ```jsx
 import { defaultTheme } from 'react-admin';
@@ -367,54 +367,52 @@ const App = () => (
 
 ## Letting Users Choose The Theme
 
-The `<ToggleThemeButton>` component lets users switch from light to dark mode, and persists that choice by leveraging the [store](./Store.md).
+It's a common practice to support both a light theme and a dark theme in an application, and let users choose which one they prefer. 
 
-![Dark Mode support](./img/ToggleThemeButton.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/ToggleThemeButton.webm" type="video/webm"/>
+  <source src="./img/ToggleThemeButton.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
-You can add the `<ToggleThemeButton>` to a custom App Bar:
+
+React-admin's `<Admin>` component accepts a `darkTheme` prop in addition to the `theme` prop. 
 
 ```jsx
-import * as React from 'react';
-import { defaultTheme, Layout, AppBar, ToggleThemeButton, TitlePortal } from 'react-admin';
-import { createTheme, Box, Typography } from '@mui/material';
+import { Admin, defaultTheme } from 'react-admin';
 
-const darkTheme = createTheme({
-    palette: { mode: 'dark' },
-});
+const lightTheme = defaultTheme;
+const darkTheme = { ...defaultTheme, palette: { mode: 'dark' } };
 
-const MyAppBar = () => (
-    <AppBar>
-        <TitlePortal />
-        <ToggleThemeButton lightTheme={defaultTheme} darkTheme={darkTheme} />
-    </AppBar>
+const App = () => (
+    <Admin
+        dataProvider={...}
+        theme={lightTheme}
+        darkTheme={darkTheme}
+    >
+        // ...
+    </Admin>
 );
-
-const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 ```
+
+With this setup, the default application theme depends on the user's system settings. If the user has chosen a dark mode in their OS, react-admin will use the dark theme. Otherwise, it will use the light theme.
+
+In addition, users can switch from one theme to the other using [the `<ToggleThemeButton>` component](./ToggleThemeButton.md), which appears in the AppBar as soon as you define a `darkTheme` prop.
 
 ## Changing the Theme Programmatically
 
-React-admin provides the `useTheme` hook to read and update the theme programmatically. It uses the same syntax as `useState`.
-Its used internally by `ToggleThemeButton` component.
+React-admin provides the `useTheme` hook to read and update the theme programmatically. It uses the same syntax as `useState`. Its used internally by [the `<ToggleThemeButton>` component](./ToggleThemeButton.md).
 
 ```jsx
 import { defaultTheme, useTheme } from 'react-admin';
 import { Button } from '@mui/material';
 
-const lightTheme = defaultTheme;
-const darkTheme = {
-    ...defaultTheme,
-    palette: {
-        mode: 'dark',
-    },
-};
-
 const ThemeToggler = () => {
     const [theme, setTheme] = useTheme();
 
     return (
-        <Button onClick={() => setTheme(theme.palette.mode === 'dark' ? lightTheme : darkTheme)}>
-            {theme.palette.mode === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+        <Button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+            {theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
         </Button>
     );
 }
@@ -460,9 +458,9 @@ export const PostList = () => (
 
 ## `useMediaQuery` Hook
 
-To provide an optimized experience on mobile, tablet, and desktop devices, you often need to display different components depending on the screen size. MUI provides a hook dedicated to help such responsive layouts: [useMediaQuery](https://mui.com/components/use-media-query/#usemediaquery).
+To provide an optimized experience on mobile, tablet, and desktop devices, you often need to display different components depending on the screen size. Material UI provides a hook dedicated to help such responsive layouts: [useMediaQuery](https://mui.com/material-ui/react-use-media-query/#usemediaquery-query-options-matches).
 
-It expects a function receiving the MUI theme as a parameter, and returning a media query. Use the theme breakpoints to check for common screen sizes. The hook returns a boolean indicating if the current screen matches the media query or not.
+It expects a function receiving the Material UI theme as a parameter, and returning a media query. Use the theme breakpoints to check for common screen sizes. The hook returns a boolean indicating if the current screen matches the media query or not.
 
 ```jsx
 const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
@@ -570,13 +568,13 @@ import ListItemText from '@mui/material/ListItemText';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LanguageIcon from '@mui/icons-material/Language';
 
-// It's important to pass the ref to allow MUI to manage the keyboard navigation
+// It's important to pass the ref to allow Material UI to manage the keyboard navigation
 const ConfigurationMenu = React.forwardRef((props, ref) => {
     return (
         <MenuItem
             ref={ref}
             component={Link}
-            // It's important to pass the props to allow MUI to manage the keyboard navigation
+            // It's important to pass the props to allow Material UI to manage the keyboard navigation
             {...props}
             to="/configuration"
         >
@@ -590,8 +588,8 @@ const ConfigurationMenu = React.forwardRef((props, ref) => {
     );
 });
 
-// It's important to pass the ref to allow MUI to manage the keyboard navigation
-const SwitchLanguage = forwardRef((props, ref) => {
+// It's important to pass the ref to allow Material UI to manage the keyboard navigation
+const SwitchLanguage = React.forwardRef((props, ref) => {
     const [locale, setLocale] = useLocaleState();
     // We are not using MenuItemLink so we retrieve the onClose function from the UserContext
     const { onClose } = useUserMenu();
@@ -599,7 +597,7 @@ const SwitchLanguage = forwardRef((props, ref) => {
     return (
         <MenuItem
             ref={ref}
-            // It's important to pass the props to allow MUI to manage the keyboard navigation
+            // It's important to pass the props to allow Material UI to manage the keyboard navigation
             {...props}
             sx={{ color: 'text.secondary' }}
             onClick={event => {
@@ -667,7 +665,7 @@ const MyAppBar = () => <AppBar userMenu={<MyUserMenu />} />;
 
 ### Sidebar Customization
 
-You can specify the `Sidebar` width by setting the `width` and `closedWidth` properties on your custom MUI theme:
+You can specify the `Sidebar` width by setting the `width` and `closedWidth` properties on your custom Material UI theme:
 
 ```jsx
 import { defaultTheme } from 'react-admin';
@@ -780,7 +778,7 @@ export default MyLayout;
 
 ## Customizing the AppBar Content
 
-By default, the react-admin `<AppBar>` component displays the page title. You can override this default by passing children to `<AppBar>` - they will replace the default title. And if you still want to include the page title, make sure you include an element with id `react-admin-title` in the top bar (this uses [React Portals](https://reactjs.org/docs/portals.html)).
+By default, the react-admin `<AppBar>` component displays the page title. You can override this default by passing children to `<AppBar>` - they will replace the default title. And if you still want to include the page title, make sure you include an element with id `react-admin-title` in the top bar (this uses [React Portals](https://react.dev/reference/react-dom/createPortal)).
 
 Here is an example customization for `<AppBar>` to include a company logo in the center of the page header:
 
@@ -858,7 +856,7 @@ const MyAppBar = () => (
 export default MyAppBar;
 ```
 
-Take note that this uses *MUI's `<AppBar>`* instead of *react-admin's `<AppBar>`*. To use this custom `AppBar` component, pass it as prop to a custom `Layout`, as explained in the previous section.
+Take note that this uses *Material UI's `<AppBar>`* instead of *react-admin's `<AppBar>`*. To use this custom `AppBar` component, pass it as prop to a custom `Layout`, as explained in the previous section.
 
 To make it easier to customize, we export some components and hooks used by the `<AppBar>`:
 
@@ -919,9 +917,17 @@ const App = () => (
 
 **Tip**: If you need a multi-level menu, or a Mega Menu opening panels with custom content, check out [the `ra-navigation`<img class="icon" src="./img/premium.svg" /> module](https://marmelab.com/ra-enterprise/modules/ra-navigation) (part of the [Enterprise Edition](https://marmelab.com/ra-enterprise))
 
-![multi-level menu](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-item.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
-![MegaMenu and Breadcrumb](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 ## Using a Custom Login Page
 
@@ -1075,7 +1081,7 @@ const App = () => (
 );
 ```
 
-**Tip:** [React's Error Boundaries](https://reactjs.org/docs/error-boundaries.html) are used internally to display the Error Page whenever an error occurs. Error Boundaries only catch errors during rendering, in lifecycle methods, and in constructors of the components tree. This implies in particular that errors during event callbacks (such as 'onClick') are not concerned. Also note that the Error Boundary component is only set around the main container of React Admin. In particular, you won't see it for errors thrown by the [sidebar Menu](./Menu.md), nor the [AppBar](#customizing-the-appbar-content). This ensures the user is always able to navigate away from the Error Page.
+**Tip:** [React's Error Boundaries](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary) are used internally to display the Error Page whenever an error occurs. Error Boundaries only catch errors during rendering, in lifecycle methods, and in constructors of the components tree. This implies in particular that errors during event callbacks (such as 'onClick') are not concerned. Also note that the Error Boundary component is only set around the main container of React Admin. In particular, you won't see it for errors thrown by the [sidebar Menu](./Menu.md), nor the [AppBar](#customizing-the-appbar-content). This ensures the user is always able to navigate away from the Error Page.
 
 ## Loading
 

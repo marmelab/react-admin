@@ -1,7 +1,8 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { RecordContextProvider } from 'ra-core';
+import { RecordContextProvider, I18nContextProvider } from 'ra-core';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import { RichTextField, removeTags } from './RichTextField';
 import { Secure } from './RichTextField.stories';
@@ -147,5 +148,37 @@ describe('<RichTextField />', () => {
         expect(
             (container.querySelector('#stolendata') as HTMLInputElement)?.value
         ).toEqual('none');
+    });
+
+    it('should translate emptyText', () => {
+        const i18nProvider = polyglotI18nProvider(
+            _locale =>
+                ({
+                    resources: {
+                        books: {
+                            name: 'Books',
+                            fields: {
+                                id: 'Id',
+                                title: 'Title',
+                                author: 'Author',
+                                year: 'Year',
+                            },
+                            not_found: 'Not found',
+                        },
+                    },
+                } as any),
+            'en'
+        );
+        render(
+            <I18nContextProvider value={i18nProvider}>
+                <RichTextField
+                    record={{ id: 123 }}
+                    source="foo.bar"
+                    emptyText="resources.books.not_found"
+                />
+            </I18nContextProvider>
+        );
+
+        expect(screen.getByText('Not found')).not.toBeNull();
     });
 });

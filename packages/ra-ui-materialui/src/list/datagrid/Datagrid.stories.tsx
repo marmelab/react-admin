@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {
+    Resource,
     ResourceContextProvider,
     ListContextProvider,
     CoreAdminContext,
@@ -9,14 +10,22 @@ import {
     useGetList,
     useList,
 } from 'ra-core';
+import fakeRestDataProvider from 'ra-data-fakerest';
+import defaultMessages from 'ra-language-english';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+
+import { Box, styled } from '@mui/material';
 import { MemoryRouter } from 'react-router-dom';
-import { Box } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { TextField } from '../../field';
 import { BulkDeleteButton, BulkExportButton } from '../../button';
 import { Datagrid } from './Datagrid';
 import { SimpleShowLayout } from '../../detail';
+import { AdminUI } from '../../AdminUI';
+import { AdminContext } from '../../AdminContext';
+import { List } from '../List';
+import { EditGuesser } from '../../detail';
 
 export default { title: 'ra-ui-materialui/list/Datagrid' };
 
@@ -385,6 +394,25 @@ export const IsRowExpandable = () => (
     </Wrapper>
 );
 
+const StyledDatagrid = styled(Datagrid, {
+    name: 'MyStyledDatagrid',
+    overridesResolver: (props, styles) => styles.root,
+})(() => ({
+    width: '70%',
+    backgroundColor: '#ffb',
+}));
+
+export const StyledComponent = () => (
+    <Wrapper>
+        <StyledDatagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </StyledDatagrid>
+    </Wrapper>
+);
+
 export const ErrorInFetch = () => (
     <MemoryRouter>
         <ListContextProvider
@@ -413,4 +441,30 @@ export const RowClickFalse = () => (
             <TextField source="year" />
         </Datagrid>
     </Wrapper>
+);
+
+const dataProvider = fakeRestDataProvider({ books: data });
+
+export const FullApp = () => (
+    <AdminContext
+        dataProvider={dataProvider}
+        i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+    >
+        <AdminUI>
+            <Resource
+                name="books"
+                list={() => (
+                    <List>
+                        <Datagrid>
+                            <TextField source="id" />
+                            <TextField source="title" />
+                            <TextField source="author" />
+                            <TextField source="year" />
+                        </Datagrid>
+                    </List>
+                )}
+                edit={EditGuesser}
+            />
+        </AdminUI>
+    </AdminContext>
 );

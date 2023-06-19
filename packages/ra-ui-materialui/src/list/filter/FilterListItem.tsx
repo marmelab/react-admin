@@ -232,7 +232,7 @@ export const FilterListItemClasses = {
 const StyledListItem = styled(ListItem, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
+})({
     [`& .${FilterListItemClasses.listItemButton}`]: {
         paddingRight: '2em',
         paddingLeft: '2em',
@@ -240,7 +240,7 @@ const StyledListItem = styled(ListItem, {
     [`& .${FilterListItemClasses.listItemText}`]: {
         margin: 0,
     },
-}));
+});
 
 export interface FilterListItemProps extends Omit<ListItemProps, 'value'> {
     label: string | ReactElement;

@@ -38,21 +38,16 @@ import { sanitizeEmptyValues as sanitizeValues } from './sanitizeEmptyValues';
  */
 export const useAugmentedForm = (props: UseAugmentedFormProps) => {
     const {
-        context,
         criteriaMode = 'firstError',
         defaultValues,
-        delayError,
         formRootPathname,
-        mode,
         resolver,
         reValidateMode = 'onChange',
         onSubmit,
         sanitizeEmptyValues,
-        shouldFocusError,
-        shouldUnregister,
-        shouldUseNativeValidation,
         warnWhenUnsavedChanges,
         validate,
+        ...rest
     } = props;
     const record = useRecordContext(props);
     const saveContext = useSaveContext();
@@ -79,65 +74,14 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
         : undefined;
 
     const form = useForm({
-        context,
         criteriaMode,
-        defaultValues: defaultValuesIncludingRecord,
-        delayError,
-        mode,
+        values: defaultValuesIncludingRecord,
         reValidateMode,
         resolver: finalResolver,
-        shouldFocusError,
-        shouldUnregister,
-        shouldUseNativeValidation,
+        ...rest,
     });
 
     const formRef = useRef(form);
-
-    // According to react-hook-form docs: https://react-hook-form.com/api/useform/formstate
-    // `formState` must be read before a render in order to enable the state update.
-    const {
-        formState: {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            isSubmitting,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            isDirty,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            isValid,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            isValidating,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            dirtyFields,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            errors,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            submitCount,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            touchedFields,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            isSubmitted,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            isSubmitSuccessful,
-        },
-    } = form;
-
-    // initialize form with record
-    /* eslint-disable react-hooks/exhaustive-deps */
-    useEffect(() => {
-        if (!record) {
-            return;
-        }
-        const initialValues = getFormInitialValues(defaultValues, record);
-        form.reset(initialValues);
-    }, [
-        JSON.stringify({
-            defaultValues:
-                typeof defaultValues === 'function'
-                    ? 'function'
-                    : defaultValues,
-            record,
-        }),
-    ]);
-    /* eslint-enable react-hooks/exhaustive-deps */
 
     // notify on invalid form
     useNotifyIsFormInvalid(form.control);

@@ -88,7 +88,7 @@ export const Configurable = (props: ConfigurableProps) => {
         setPreferenceKey(prefixedPreferenceKey);
     };
 
-    const handleShowButton = event => {
+    const handleShowButton = () => {
         setIsCustomizeButtonVisible(true);
     };
 
@@ -100,6 +100,7 @@ export const Configurable = (props: ConfigurableProps) => {
         <PreferenceKeyContextProvider value={prefixedPreferenceKey}>
             <Root
                 className={clsx(
+                    ConfigurableClasses.root,
                     isEnabled && ConfigurableClasses.editMode,
                     isEditorOpen && ConfigurableClasses.editorActive
                 )}
@@ -169,6 +170,7 @@ export interface ConfigurableProps {
 const PREFIX = 'RaConfigurable';
 
 export const ConfigurableClasses = {
+    root: `${PREFIX}-root`,
     editMode: `${PREFIX}-editMode`,
     editorActive: `${PREFIX}-editorActive`,
 };

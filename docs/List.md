@@ -5,14 +5,16 @@ title: "The List Component"
 
 # `<List>`
 
-The `<List>` component fetches the list of records from the data provider, and renders the default list layout (title, buttons, filters, pagination). It delegates the rendering of the list of records to its child component. Usually, it's a `<Datagrid>`, responsible for displaying a table with one row for each record.
+The `<List>` component is the root component for list pages. It fetches a list of records from the data provider, puts it in a [`ListContext`](./useListContext.md), renders the default list page layout (title, buttons, filters, pagination), and renders its children. Usual children of `<List>`, like [`<Datagrid>`](./Datagrid.md), are responsible for displaying the list of records. 
+
+![Simple posts list](./img/simple-post-list.png)
 
 ## Usage
 
-Here is the minimal code necessary to display a list of posts using a `<Datagrid>`:
+Here is the minimal code necessary to display a list of posts using a [`<Datagrid>`](./Datagrid.md):
 
 ```jsx
-// in src/posts.js
+// in src/posts.jsx
 import { List, Datagrid, TextField, DateField, BooleanField } from 'react-admin';
 
 export const PostList = () => (
@@ -27,7 +29,7 @@ export const PostList = () => (
     </List>
 );
 
-// in src/App.js
+// in src/App.jsx
 import { Admin, Resource } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
@@ -42,11 +44,38 @@ const App = () => (
 export default App;
 ```
 
-That's enough to display a basic post list, with functional sort and pagination:
-
-![Simple posts list](./img/simple-post-list.png)
+That's enough to display a basic post list, with functional sort and pagination.
 
 You can find more advanced examples of `<List>` usage in the [demos](./Demos.md). 
+
+## Props
+
+| Prop                      | Required | Type           | Default        | Description                                                                                  |
+|---------------------------|----------|----------------|----------------|----------------------------------------------------------------------------------------------|
+| `children`                | Required | `ReactNode`    | -              | The component to use to render the list of records.                                          |
+| `actions`                 | Optional | `ReactElement` | -              | The actions to display in the toolbar.                                                       |
+| `aside`                   | Optional | `ReactElement` | -              | The component to display on the side of the list.                                            |
+| `component`               | Optional | `Component`    | `Card`         | The component to render as the root element.                                                 |
+| `debounce`                | Optional | `number`       | `500`          | The debounce delay in milliseconds to apply when users change the sort or filter parameters. |
+| `disable Authentication`  | Optional | `boolean`      | `false`        | Set to `true` to disable the authentication check.                                           |
+| `disable SyncWithLocation`| Optional | `boolean`      | `false`        | Set to `true` to disable the synchronization of the list parameters with the URL.            |
+| `empty`                   | Optional | `ReactElement` | -              | The component to display when the list is empty.                                             |
+| `emptyWhileLoading`       | Optional | `boolean`      | `false`        | Set to `true` to return `null` while the list is loading.                                    |
+| `exporter`                | Optional | `function`     | -              | The function to call to export the list.                                                     |
+| `filters`                 | Optional | `ReactElement` | -              | The filters to display in the toolbar.                                                       |
+| `filter`                  | Optional | `object`       | -              | The permanent filter values.                                                                 |
+| `filterDefaultValues`     | Optional | `object`       | -              | The default filter values.                                                                   |
+| `hasCreate`               | Optional | `boolean`      | `false`        | Set to `true` to show the create button.                                                     |
+| `pagination`              | Optional | `ReactElement` | `<Pagination>` | The pagination component to use.                                                             |
+| `perPage`                 | Optional | `number`       | `10`           | The number of records to fetch per page.                                                     |
+| `queryOptions`            | Optional | `object`       | -              | The options to pass to the `useQuery` hook.                                                  |
+| `resource`                | Optional | `string`       | -              | The resource name, e.g. `posts`.                                                             |
+| `sort`                    | Optional | `object`       | -              | The initial sort parameters.                                                                 |
+| `storeKey`                | Optional | `string`       | -              | The key to use to store the current filter & sort.                                           |
+| `title`                   | Optional | `string`       | -              | The title to display in the App Bar.                                                         |
+| `sx`                      | Optional | `object`       | -              | The CSS styles to apply to the component.                                                    |
+
+Additional props are passed down to the root component (a MUI `<Card>` by default).
 
 ## `actions`
 
@@ -205,18 +234,33 @@ export const PostList = () => (
 
 ## `children`: List Layout
 
-`<List>` doesn't render any content by default - it delegates this to its child. List layout components grab the `data` from the `ListContext` and render them on screen.
+`<List>` itself doesn't render the list of records. It delegates this task to its children components. These children components grab the `data` from the `ListContext` and render them on screen.
 
-React-admin provides several List layout components:
+The most common List child is `<Datagrid>`:
+
+```jsx
+export const BookList = () => (
+    <List>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </List>
+);
+```
+
+React-admin provides several components that can read and display a list of records from a `ListContext`, each with a different layout:
 
 - [`<Datagrid>`](./Datagrid.md) displays records in a table
-- [`<SimpleList>`](./SimpleList.md) displays records in a list without many details
-- [`<SingleFieldList>`](./SingleFieldList.md) displays records inline, showing one field per record 
 - [`<EditableDatagrid>`](./EditableDatagrid.md) displays records in a table AND lets users edit them inline
+- [`<SimpleList>`](./SimpleList.md) displays records in a list without many details - suitable for mobile devices
 - [`<Tree>`](./TreeWithDetails.md) displays records in a tree structure
 - [`<Calendar>`](./Calendar.md) displays event records in a calendar
+- [`<SingleFieldList>`](./SingleFieldList.md) displays records inline, showing one field per record 
 
-To use an alternative layout, switch the `<List>` child component:
+So for instance, you can use a `<SimpleList>` instead of a `<Datagrid>` to display a list of books on a mobile device:
 
 ```diff
 export const BookList = () => (
@@ -235,11 +279,34 @@ export const BookList = () => (
 );
 ```
 
-You can also pass React elements as children, to build a custom iterator. Check [Building a custom List Iterator](./ListTutorial.md#building-a-custom-iterator) for more details.
+You can also render the list of records in a custom way. You'll need to grab the data from the `ListContext` using [`<WithListContext>`](./WithListContext.md):
+
+{% raw %}
+```tsx
+import { List, WithListContext } from 'react-admin';
+import { Stack, Typography } from '@mui/material';
+
+const BookList = () => (
+    <List>
+        <WithListContext render={({ data }) => (
+            <Stack spacing={2} sx={{ padding: 2 }}>
+                {data?.map(book => (
+                    <Typography key={book.id}>
+                        <i>{book.title}</i>, by {book.author} ({book.year})
+                    </Typography>
+                ))}
+            </Stack>
+        )} />
+    </List>
+);
+```
+{% endraw %}
+
+Check [Building a custom List Iterator](./ListTutorial.md#building-a-custom-iterator) for more details.
 
 ## `component`
 
-By default, the List view renders the main content area inside a MUI `<Card>` element. The actual layout of the list depends on the child component you're using (`<Datagrid>`, `<SimpleList>`, or a custom layout component).
+By default, the List view renders the main content area inside a Material UI `<Card>` element. The actual layout of the list depends on the child component you're using (`<Datagrid>`, `<SimpleList>`, or a custom layout component).
 
 Some List layouts display each record in a `<Card>`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main area container by passing a `component` prop:
 
@@ -294,7 +361,7 @@ const BoolkList = () => (
 
 ## `disableSyncWithLocation`
 
-By default, react-admin synchronizes the `<List>` parameters (sort, pagination, filters) with the query string in the URL (using `react-router` location).
+By default, react-admin synchronizes the `<List>` parameters (sort, pagination, filters) with the query string in the URL (using `react-router` location) and the [Store](./Store.md).
 
 When you use a `<List>` component anywhere else than as `<Resource list>`, you may want to disable this synchronization to keep the parameters in a local state, independent for each `<List>` instance. This allows to have multiple lists on a single page. The drawback is that a hit on the "back" button doesn't restore the previous list parameters. To do so, pass the `disableSyncWithLocation` prop.
 
@@ -325,6 +392,8 @@ const Dashboard = () => (
 )
 ```
 {% endraw %}
+
+**Tip**: As `disableSyncWithLocation` also disables the persistence of the list parameters in the Store, the `storeKey` prop is ignored when `disableSyncWithLocation` is set to `true`.
 
 Please note that the selection state is not synced in the URL but in a global store using the resource as key. Thus, all lists in the page using the same resource will share the same selection state. This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. If you want the selection state to be local, you will have to implement your own `useListController` hook and pass a custom key to the `useRecordSelection` hook. You will then need to implement your own `DeleteButton` and `BulkDeleteButton` to manually unselect rows when deleting records.
 
@@ -437,7 +506,12 @@ const BookList = () => (
 
 ## `exporter`
 
-![Export Button](./img/export-button.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/export-button.webm" type="video/webm"/>
+  <source src="./img/export-button.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 Among the default list actions, react-admin includes an `<ExportButton>`. This button is disabled when there is no record in the current `<List>`.
 
@@ -523,7 +597,12 @@ const CommentList = () => (
 
 ## `filters`: Filter Inputs
 
-![List Filters](./img/list_filter.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/list_filter.webm" type="video/webm"/>
+  <source src="./img/list_filter.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 You can add an array of filter Inputs to the List using the `filters` prop:
 
@@ -548,7 +627,12 @@ Filter Inputs are regular inputs. `<List>` hides them all by default, except tho
 
 You can also display filters as a sidebar:
 
-![`<FilterList>` sidebar](./img/filter-sidebar.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/filter-sidebar.webm" type="video/webm"/>
+  <source src="./img/filter-sidebar.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 For more details about customizing filters, see the [Filtering the List](./FilteringTutorial.md#filtering-the-list) section. 
 
@@ -819,7 +903,7 @@ The title can be either a string or an element of your own.
 
 ## `sx`: CSS API
 
-The `<List>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<List>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name             | Description                                                   |
 |-----------------------|---------------------------------------------------------------|
@@ -864,6 +948,41 @@ const PostList = () => (
 );
 ```
 {% endraw %}
+
+## Infinite Scroll Pagination
+
+By default, the `<List>` component displays the first page of the list of records. To display the next page, the user must click on the "next" button. This is called "finite pagination". An alternative is to display the next page automatically when the user scrolls to the bottom of the list. This is called "infinite pagination".
+
+<video controls autoplay playsinline muted loop width="100%">
+  <source src="./img/infinite-book-list.webm" poster="./img/infinite-book-list.webp" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
+To achieve infinite pagination, replace the `<List>` component with [the `<InfiniteList>` component](./InfiniteList.md).
+
+```diff
+import {
+-   List,
++   InfiniteList,
+    Datagrid,
+    TextField,
+    DateField
+} from 'react-admin';
+
+const BookList = () => (
+-   <List>
++   <InfiniteList>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <DateField source="author" />
+        </Datagrid>
+-   </List>
++   </InfiniteList>
+);
+```
+
+`<InfiniteList>` is a drop-in replacement for `<List>`. It accepts the same props, and uses the same view layout. Check [the `<InfiniteList>` documentation](./InfiniteList.md) for more information.
 
 ## Live Updates
 
