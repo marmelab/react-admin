@@ -191,7 +191,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
                         choice={choice}
                         optionText={optionText}
                         optionValue={optionValue}
-                        source={source}
+                        source={id}
                         translateChoice={translateChoice}
                     />
                 ))}
