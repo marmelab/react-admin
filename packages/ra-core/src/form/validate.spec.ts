@@ -156,9 +156,9 @@ describe('Validators', () => {
     });
 
     describe('composeValidators', () => {
-        const asyncSuccessfullValidator = async =>
+        const asyncSuccessfullValidator = async () =>
             new Promise(resolve => resolve(undefined));
-        const asyncFailedValidator = async =>
+        const asyncFailedValidator = async () =>
             new Promise(resolve => resolve('async'));
 
         it('Correctly composes validators passed as an array', async () => {

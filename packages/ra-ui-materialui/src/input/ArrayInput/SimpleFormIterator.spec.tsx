@@ -586,7 +586,7 @@ describe('<SimpleFormIterator />', () => {
     });
 
     it('should not display the default reorder element if a custom reorder element is passed', () => {
-        const CustomReOrderButtons = props => (
+        const CustomReOrderButtons = () => (
             <button>Custom reorder Button</button>
         );
 
@@ -792,7 +792,7 @@ describe('<SimpleFormIterator />', () => {
                         <SimpleFormIterator>
                             <TextInput source="email" label="Email" />
                             <FormDataConsumer>
-                                {({ scopedFormData, getSource }) => (
+                                {({ getSource }) => (
                                     <TextInput
                                         label="Role"
                                         source={(getSource as (

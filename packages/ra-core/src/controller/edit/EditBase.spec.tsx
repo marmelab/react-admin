@@ -192,12 +192,11 @@ describe('EditBase', () => {
     it('should allow to override the onError function', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         const dataProvider = testDataProvider({
+            // @ts-ignore
             getOne: () =>
-                // @ts-ignore
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
-            update: jest.fn((_, { id, data, previousData }) =>
-                Promise.reject({ message: 'test' })
-            ),
+            // @ts-ignore
+            update: jest.fn(() => Promise.reject({ message: 'test' })),
         });
         const onError = jest.fn();
 
@@ -248,12 +247,11 @@ describe('EditBase', () => {
 
     it('should allow to override the onError function at call time', async () => {
         const dataProvider = testDataProvider({
+            // @ts-ignore
             getOne: () =>
-                // @ts-ignore
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
-            update: jest.fn((_, { id, data, previousData }) =>
-                Promise.reject({ message: 'test' })
-            ),
+            // @ts-ignore
+            update: jest.fn(() => Promise.reject({ message: 'test' })),
         });
         const onError = jest.fn();
         const onErrorOverride = jest.fn();

@@ -67,6 +67,7 @@ const Wrapper = ({
         <ResourceDefinitionContextProvider
             definitions={{
                 book_details: {
+                    name: 'book_details',
                     hasShow: true,
                     hasEdit: true,
                 },
@@ -90,7 +91,7 @@ export const Basic = () => (
 );
 
 const slowDataProvider = {
-    getMany: (resource, params) =>
+    getMany: () =>
         new Promise(resolve => {
             setTimeout(
                 () => resolve({ data: [{ id: 1, ISBN: '9780393966473' }] }),
@@ -165,6 +166,7 @@ export const LinkWithoutEditView = () => (
         <ResourceDefinitionContextProvider
             definitions={{
                 book_details: {
+                    name: 'book_details',
                     hasEdit: false,
                 },
             }}
@@ -288,11 +290,13 @@ const ListWrapper = ({ children }) => (
     <ThemeProvider theme={createTheme()}>
         <Wrapper>
             <ListContextProvider
-                value={{
-                    total: 1,
-                    data: [{ id: 1, title: 'War and Peace', detail_id: 1 }],
-                    sort: { field: 'title', order: 'ASC' },
-                }}
+                value={
+                    {
+                        total: 1,
+                        data: [{ id: 1, title: 'War and Peace', detail_id: 1 }],
+                        sort: { field: 'title', order: 'ASC' },
+                    } as any
+                }
             >
                 {children}
             </ListContextProvider>

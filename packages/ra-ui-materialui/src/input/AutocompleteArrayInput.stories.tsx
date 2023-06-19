@@ -1,12 +1,6 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import {
-    RaRecord,
-    Resource,
-    required,
-    useCreate,
-    useRecordContext,
-} from 'ra-core';
+import { Resource, required, useCreate, useRecordContext } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { createMemoryHistory } from 'history';
@@ -111,7 +105,7 @@ export const CreateProp = () => (
 );
 
 const dataProvider = {
-    getOne: (resource, params) =>
+    getOne: () =>
         Promise.resolve({
             data: {
                 id: 1,
@@ -122,7 +116,7 @@ const dataProvider = {
                 year: 1869,
             },
         }),
-    update: (resource, params) => Promise.resolve(params),
+    update: (_resource, params) => Promise.resolve(params),
 } as any;
 
 const history = createMemoryHistory({ initialEntries: ['/books/1'] });
@@ -346,7 +340,7 @@ const authors = [
 ];
 
 const dataProviderWithAuthors = {
-    getOne: (resource, params) =>
+    getOne: () =>
         Promise.resolve({
             data: {
                 id: 1,
@@ -357,11 +351,11 @@ const dataProviderWithAuthors = {
                 year: 1869,
             },
         }),
-    getMany: (resource, params) =>
+    getMany: (_resource, params) =>
         Promise.resolve({
             data: authors.filter(author => params.ids.includes(author.id)),
         }),
-    getList: (resource, params) =>
+    getList: (_resource, params) =>
         new Promise(resolve => {
             // eslint-disable-next-line eqeqeq
             if (params.filter.q == undefined) {
@@ -391,8 +385,8 @@ const dataProviderWithAuthors = {
                 500
             );
         }),
-    update: (resource, params) => Promise.resolve(params),
-    create: (resource, params) => {
+    update: (_resource, params) => Promise.resolve(params),
+    create: (_resource, params) => {
         const newAuthor = {
             id: authors.length + 1,
             name: params.data.name,

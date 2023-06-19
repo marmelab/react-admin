@@ -70,7 +70,7 @@ export const Basic = () => (
 );
 
 const slowDataProvider = {
-    getManyReference: (resource, params) =>
+    getManyReference: () =>
         new Promise(resolve => {
             setTimeout(
                 () =>
@@ -92,7 +92,7 @@ export const Loading = () => (
 );
 
 const emptyDataProvider = {
-    getManyReference: (resource, params) =>
+    getManyReference: () =>
         Promise.resolve({
             data: [],
             total: 0,

@@ -72,9 +72,9 @@ export const LogoutClasses = {
 const StyledMenuItem = styled(MenuItem, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
+})({
     [`& .${LogoutClasses.icon}`]: {},
-}));
+});
 
 export interface LogoutProps {
     className?: string;
