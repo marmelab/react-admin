@@ -47,7 +47,7 @@ const Categories = () => {
 
 ## Other Tree Hooks
 
-`useGetTree` is one of many hooks added by `ra-tree`. This package recomments do add several methods to the `dataProvider`, and has one hook for each method.
+`useGetTree` is one of many hooks added by `ra-tree`. This package recommends to add several methods to the `dataProvider`, and has one hook for each method.
 
 **Read methods**
 
