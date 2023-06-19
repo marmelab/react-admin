@@ -470,7 +470,7 @@ describe('<AutocompleteArrayInput />', () => {
                         ]}
                         optionText={<SuggestionItem />}
                         inputText={choice => choice?.name}
-                        matchSuggestion={(filter, choice) => true}
+                        matchSuggestion={() => true}
                     />
                 </SimpleForm>
             </AdminContext>
@@ -872,7 +872,7 @@ describe('<AutocompleteArrayInput />', () => {
                         resource="posts"
                         choices={choices}
                         onCreate={handleCreate}
-                        optionText={choice => `Choice is not displayed`}
+                        optionText={() => `Choice is not displayed`}
                     />
                 </SimpleForm>
             </AdminContext>
