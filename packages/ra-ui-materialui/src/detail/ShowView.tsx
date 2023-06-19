@@ -65,6 +65,7 @@ ShowView.propTypes = {
     title: PropTypes.any,
 };
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const sanitizeRestProps = ({
     defaultTitle = null,
     hasCreate = null,
@@ -82,6 +83,7 @@ const sanitizeRestProps = ({
     permissions = null,
     ...rest
 }) => rest;
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 const PREFIX = 'RaShow';
 
@@ -94,7 +96,7 @@ export const ShowClasses = {
 const Root = styled('div', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
+})({
     [`& .${ShowClasses.main}`]: {
         display: 'flex',
     },
@@ -104,4 +106,4 @@ const Root = styled('div', {
     [`& .${ShowClasses.card}`]: {
         flex: '1 1 auto',
     },
-}));
+});

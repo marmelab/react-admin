@@ -1439,7 +1439,7 @@ describe('<AutocompleteInput />', () => {
                     defaultValues={{ role: 2 }}
                 >
                     <FormDataConsumer>
-                        {({ formData, ...rest }) => {
+                        {() => {
                             return (
                                 <AutocompleteInput
                                     label="Id"
