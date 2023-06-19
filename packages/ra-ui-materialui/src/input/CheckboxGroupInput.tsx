@@ -235,16 +235,20 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                     />
                 ))}
             </FormGroup>
-            <FormHelperText
-                error={fetchError || ((isTouched || isSubmitted) && !!error)}
-                className={CheckboxGroupInputClasses.helperText}
-            >
-                <InputHelperText
-                    touched={isTouched || isSubmitted || fetchError}
-                    error={error?.message || fetchError?.message}
-                    helperText={helperText}
-                />
-            </FormHelperText>
+            {helperText !== false && (
+                <FormHelperText
+                    error={
+                        fetchError || ((isTouched || isSubmitted) && !!error)
+                    }
+                    className={CheckboxGroupInputClasses.helperText}
+                >
+                    <InputHelperText
+                        touched={isTouched || isSubmitted || fetchError}
+                        error={error?.message || fetchError?.message}
+                        helperText={helperText}
+                    />
+                </FormHelperText>
+            )}
         </StyledFormControl>
     );
 };

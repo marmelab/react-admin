@@ -180,13 +180,18 @@ export const FileInput = (props: FileInputProps) => {
                         <p>{translate(labelSingle)}</p>
                     )}
                 </div>
-                <FormHelperText error={(isTouched || isSubmitted) && invalid}>
-                    <InputHelperText
-                        touched={isTouched || isSubmitted}
-                        error={error?.message}
-                        helperText={helperText}
-                    />
-                </FormHelperText>
+                {helperText !== false && (
+                    <FormHelperText
+                        error={(isTouched || isSubmitted) && invalid}
+                    >
+                        <InputHelperText
+                            touched={isTouched || isSubmitted}
+                            error={error?.message}
+                            helperText={helperText}
+                        />
+                    </FormHelperText>
+                )}
+
                 {children && (
                     <div className="previews">
                         {files.map((file, index) => (
