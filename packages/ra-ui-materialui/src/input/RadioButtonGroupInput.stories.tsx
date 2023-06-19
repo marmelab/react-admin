@@ -113,6 +113,25 @@ export const InsideReferenceArrayInputWithError = () => (
     </AdminContext>
 );
 
+export const Id = () => (
+    <>
+        <Wrapper>
+            <RadioButtonGroupInput
+                id="foo"
+                source="category"
+                choices={choices}
+                row={false}
+            />
+        </Wrapper>
+        <Wrapper>
+            <RadioButtonGroupInput
+                source="category"
+                choices={choices}
+                row={false}
+            />
+        </Wrapper>
+    </>
+);
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({ children }) => (
