@@ -651,7 +651,9 @@ const authProvider = {
             // 'products.description' is missing
             { action: 'read', resource: 'products.thumbnail' },
             // 'products.image' is missing
+            // note that the tab with the name 'description' will be displayed 
             { action: 'read', resource: 'products.tab.description' },
+            // note that the tab with the name 'images' will be displayed 
             { action: 'read', resource: 'products.tab.images' },
             // 'products.tab.stock' is missing
         ],
@@ -758,7 +760,9 @@ const authProvider = {
             // 'products.description' is missing
             { action: 'write', resource: 'products.thumbnail' },
             // 'products.image' is missing
+            // note that the tab with the name 'description' will be displayed 
             { action: 'write', resource: 'products.tab.description' },
+            // note that the tab with the name 'images' will be displayed 
             { action: 'write', resource: 'products.tab.images' },
             // 'products.tab.stock' is missing
         ],
@@ -813,7 +817,9 @@ const authProvider = {
             // 'products.description' is missing
             { action: 'write', resource: 'products.thumbnail' },
             // 'products.image' is missing
+            // note that the tab with the name 'description' will be displayed 
             { action: 'write', resource: 'products.tab.description' },
+            // note that the tab with the name 'images' will be displayed 
             { action: 'write', resource: 'products.tab.images' },
             // 'products.tab.stock' is missing
         ],
@@ -870,7 +876,9 @@ const authProvider = {
         // 'products.description' is missing
         { action: 'write', resource: 'products.thumbnail' },
         // 'products.image' is missing
+        // note that the panel with the name 'description' will be displayed 
         { action: 'write', resource: 'products.panel.description' },
+        // note that the panel with the name 'images' will be displayed 
         { action: 'write', resource: 'products.panel.images' },
         // 'products.panel.stock' is missing
     ]),
@@ -922,7 +930,9 @@ const authProvider = {
         // 'products.description' is missing
         { action: 'write', resource: 'products.thumbnail' },
         // 'products.image' is missing
+        // note that the panel with the name 'description' will be displayed 
         { action: 'write', resource: 'products.panel.description' },
+        // note that the panel with the name 'images' will be displayed 
         { action: 'write', resource: 'products.panel.images' },
         // 'products.panel.stock' is missing
     ]),
@@ -977,7 +987,9 @@ const authProvider = {
         // 'products.description' is missing
         { action: 'write', resource: 'products.thumbnail' },
         // 'products.image' is missing
+        // note that the section with the name 'description' will be displayed 
         { action: 'write', resource: 'products.section.description' },
+        // note that the section with the name 'images' will be displayed 
         { action: 'write', resource: 'products.section.images' },
         // 'products.section.stock' is missing
     ]),
@@ -1036,7 +1048,9 @@ const authProvider = {
         // 'products.description' is missing
         { action: 'write', resource: 'products.thumbnail' },
         // 'products.image' is missing
+        // note that the section with the name 'description' will be displayed 
         { action: 'write', resource: 'products.section.description' },
+        // note that the section with the name 'images' will be displayed 
         { action: 'write', resource: 'products.section.images' },
         // 'products.Section.stock' is missing
     ]),
@@ -1089,7 +1103,9 @@ const authProvider = {
         // 'products.description' is missing
         { action: 'write', resource: 'products.thumbnail' },
         // 'products.image' is missing
+        // note that the panel with the name 'description' will be displayed 
         { action: 'write', resource: 'products.panel.description' },
+        // note that the panel with the name 'images' will be displayed 
         { action: 'write', resource: 'products.panel.images' },
         // 'products.panel.stock' is missing
     ]),
@@ -1147,7 +1163,9 @@ const authProvider = {
         // 'products.description' is missing
         { action: 'write', resource: 'products.thumbnail' },
         // 'products.image' is missing
+        // note that the step with the name 'description' will be displayed 
         { action: 'write', resource: 'products.step.description' },
+        // note that the step with the name 'images' will be displayed 
         { action: 'write', resource: 'products.step.images' },
         // 'products.step.stock' is missing
     ]),
@@ -1205,7 +1223,9 @@ const authProvider = {
         // 'products.description' is missing
         { action: 'write', resource: 'products.thumbnail' },
         // 'products.image' is missing
+        // note that the step with the name 'description' will be displayed 
         { action: 'write', resource: 'products.step.description' },
+        // note that the step with the name 'images' will be displayed 
         { action: 'write', resource: 'products.step.images' },
         // 'products.step.stock' is missing
     ]),
