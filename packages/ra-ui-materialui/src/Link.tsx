@@ -29,11 +29,11 @@ export const LinkClasses = {
     link: `${PREFIX}-link`,
 };
 
-const StyledMuiLink = styled(MuiLink)(({ theme }) => ({
+const StyledMuiLink = styled(MuiLink)({
     [`&.${LinkClasses.link}`]: {
         textDecoration: 'none',
     },
-})) as typeof MuiLink; // @see https://mui.com/material-ui/guides/typescript/#complications-with-the-component-prop
+}) as typeof MuiLink; // @see https://mui.com/material-ui/guides/typescript/#complications-with-the-component-prop
 
 // @see https://mui.com/material-ui/guides/composition/#with-typescript
 export interface LinkProps

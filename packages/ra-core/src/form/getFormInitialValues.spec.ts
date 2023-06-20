@@ -24,7 +24,7 @@ describe('getFormInitialValues', () => {
         jest.spyOn(console, 'warn').mockImplementationOnce(() => {});
         expect(
             getFormInitialValues(
-                record => ({
+                () => ({
                     value1: 'value1',
                     value2: 'value2',
                 }),
