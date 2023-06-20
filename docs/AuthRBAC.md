@@ -632,7 +632,7 @@ const ProductShow = () => (
 
 Replacement for the `<TabbedShowLayout.Tab>` that only renders a tab if the user has the right permissions.
 
-Add a `name` prop to the `<Tab>` so you can reference it in the permissions.
+Add a `name` prop to the `<Tab>` so you can reference it in the permissions.  
 Then, to allow users to access a particular `<Tab>`, update the permissions definition as follows: `{ action: 'read', resource: '{RESOURCE}.tab.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<Tab>`.
 
 > For instance, to allow users access to the following tab `<Tab label="Description" name="description">` in `product` resource, add this line in permissions: `{ action: 'read', resource: 'products.tab.description' }`. 
@@ -802,7 +802,10 @@ const ProductEdit = () => (
 
 Replacement for the default `<FormTab>` that only renders a tab if the user has the right permissions.
 
-Add a `name` prop to the `FormTab` to define the sub-resource that the user needs to have the right permissions for.
+Add a `name` prop to the `<FormTab>` so you can reference it in the permissions.  
+Then, to allow users to access a particular `<FormTab>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.tab.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<FormTab>`.
+
+> For instance, to allow users access to the following tab `<FormTab label="Description" name="description">` in `product` resource, add this line in permissions: `{ action: 'write', resource: 'products.tab.description' }`.
 
 `<FormTab>` also only renders the child inputs for which the user has the 'write' permissions.
 
@@ -914,7 +917,12 @@ const ProductEdit = () => (
 ### `<AccordionFormPanel>`
 
 Replacement for the default `<AccordionFormPanel>` that only renders a section if the user has the right permissions.
-Add a `name` prop to the `AccordionFormPanel` to define the sub-resource that the user needs to have the right permissions for.
+
+Add a `name` prop to the `<AccordionFormPanel>` so you can reference it in the permissions.  
+Then, to allow users to access a particular `<AccordionFormPanel>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.panel.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<FormTab>`.
+
+> For instance, to allow users access to the following tab `<AccordionFormPanel label="Description" name="description">` in `product` resource, add this line in permissions: `{ action: 'write', resource: 'products.panel.description' }`.
+
 `<AccordionFormPanel>` also only renders the child inputs for which the user has the 'write' permissions.
 
 To learn more about the permissions format, please refer to the [`@react-admin/ra-rbac` documentation](https://marmelab.com/ra-enterprise/modules/ra-rbac).
@@ -969,7 +977,12 @@ const ProductEdit = () => (
 ### `<AccordionSection>`
 
 Replacement for the default `<AccordionSection>` that only renders a section if the user has the right permissions.
-Add a `name` prop to the `AccordionSection` to define the sub-resource that the user needs to have the right permissions for.
+
+Add a `name` prop to the `<AccordionSection>` so you can reference it in the permissions.  
+Then, to allow users to access a particular `<AccordionSection>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.section.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<AccordionSection>`.
+
+> For instance, to allow users access to the following tab `<AccordionSection label="Description" name="description">` in `product` resource, add this line in permissions: `{ action: 'write', resource: 'products.section.description' }`.
+
 `<AccordionSection>` also only renders the child inputs for which the user has the 'write' permissions.
 
 This component is provided by the `@react-admin/ra-enterprise` package.
@@ -1086,7 +1099,12 @@ const ProductEdit = () => (
 ### `<LongFormSection>`
 
 Replacement for the default `<LongFormSection>` that only renders a section if the user has the right permissions.
-Add a `name` prop to the `LongFormSection` to define the sub-resource that the user needs to have the right permissions for.
+
+Add a `name` prop to the `<LongFormSection>` so you can reference it in the permissions.  
+Then, to allow users to access a particular `<LongFormSection>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.panel.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<LongFormSection>`.
+
+> For instance, to allow users access to the following tab `<LongFormSection label="Description" name="description">` in `product` resource, add this line in permissions: `{ action: 'write', resource: 'products.panel.description' }`.
+
 `<LongFormSection>` also only renders the child inputs for which the user has the 'write' permissions.
 
 This component is provided by the `@react-admin/ra-enterprise` package.
@@ -1207,7 +1225,11 @@ Use it with `<WizardForm>` from `@react-admin/ra-enterprise` to only display the
 
 This component is provided by the `@react-admin/ra-enterprise` package.
 
-Add a `name` prop to the WizardFormStep to define the sub-resource that the user needs to have the right permissions for.
+Add a `name` prop to the `<WizardFormStep>` so you can reference it in the permissions.  
+Then, to allow users to access a particular `<WizardFormStep>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.step.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<WizardFormStep>`.
+
+> For instance, to allow users access to the following tab `<WizardFormStep label="Description" name="description">` in `product` resource, add this line in permissions: `{ action: 'write', resource: 'products.step.description' }`.
+
 `<WizardFormStep>` also only renders the child inputs for which the user has the 'write' permissions.
 
 To learn more about the permissions format, please refer to the [`@react-admin/ra-rbac` documentation](https://marmelab.com/ra-enterprise/modules/ra-rbac).
