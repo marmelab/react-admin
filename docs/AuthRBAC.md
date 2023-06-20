@@ -1096,24 +1096,23 @@ const ProductEdit = () => (
 ```
 {% endraw %}
 
-### `<LongFormSection>`
+### `<LongForm.Section>`
 
-Replacement for the default `<LongFormSection>` that only renders a section if the user has the right permissions.
+Replacement for the default `<LongForm.Section>` that only renders a section if the user has the right permissions.
+Use it with `<LongForm>` from `@react-admin/ra-enterprise` to only display the section the user has access to in the form.
 
-Add a `name` prop to the `<LongFormSection>` so you can reference it in the permissions.  
-Then, to allow users to access a particular `<LongFormSection>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.panel.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<LongFormSection>`.
+Add a `name` prop to the `<LongForm.Section>` so you can reference it in the permissions.  
+Then, to allow users to access a particular `<LongForm.Section>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.panel.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<LongForm.Section>`.
 
-> For instance, to allow users access to the following tab `<LongFormSection label="Description" name="description">` in `product` resource, add this line in permissions: `{ action: 'write', resource: 'products.panel.description' }`.
+> For instance, to allow users access to the following tab `<LongForm.Section label="Description" name="description">` in `product` resource, add this line in permissions: `{ action: 'write', resource: 'products.panel.description' }`.
 
-`<LongFormSection>` also only renders the child inputs for which the user has the 'write' permissions.
-
-This component is provided by the `@react-admin/ra-enterprise` package.
+`<LongForm.Section>` also only renders the child inputs for which the user has the 'write' permissions.
 
 To learn more about the permissions format, please refer to the [`@react-admin/ra-rbac` documentation](https://marmelab.com/ra-enterprise/modules/ra-rbac).
 
 {% raw %}
 ```tsx
-import { LongForm, LongFormSection } from '@react-admin/ra-enterprise';
+import { LongForm } from '@react-admin/ra-enterprise';
 
 const authProvider = {
     // ...
@@ -1136,22 +1135,22 @@ const authProvider = {
 const ProductEdit = () => (
     <Edit>
         <LongForm>
-            <LongFormSection name="description" label="Description">
+            <LongForm.Section name="description" label="Description">
                 <TextInput source="reference" />
                 <TextInput source="width" />
                 <TextInput source="height" />
                 // not displayed
                 <TextInput source="description" />
-            </LongFormSection>
-            <LongFormSection name="images" label="Images">
+            </LongForm.Section>
+            <LongForm.Section name="images" label="Images">
                 // not displayed
                 <TextInput source="image" />
                 <TextInput source="thumbnail" />
-            </LongFormSection>
+            </LongForm.Section>
             // not displayed
-            <LongFormSection name="stock" label="Stock">
+            <LongForm.Section name="stock" label="Stock">
                 <TextInput source="stock" />
-            </LongFormSection>
+            </LongForm.Section>
         </LongForm>
     </Edit>
 );
