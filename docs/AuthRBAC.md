@@ -1193,7 +1193,7 @@ To learn more about the permissions format, please refer to the [`@react-admin/r
 {% raw %}
 ```tsx
 import { Edit, TextInput } from 'react-admin';
-import { WizardForm, WizardFormStep } from '@react-admin/ra-enterprise';
+import { WizardForm } from '@react-admin/ra-enterprise';
 
 const authProvider = {
     // ...
