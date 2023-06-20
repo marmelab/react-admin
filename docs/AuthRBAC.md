@@ -1125,10 +1125,10 @@ const authProvider = {
         // 'products.description' is missing
         { action: 'write', resource: 'products.thumbnail' },
         // 'products.image' is missing
-        // note that the panel with the name 'description' will be displayed 
-        { action: 'write', resource: 'products.panel.description' },
-        // note that the panel with the name 'images' will be displayed 
-        { action: 'write', resource: 'products.panel.images' },
+        // note that the section with the name 'description' will be displayed 
+        { action: 'write', resource: 'products.section.description' },
+        // note that the section with the name 'images' will be displayed 
+        { action: 'write', resource: 'products.section.images' },
         // 'products.panel.stock' is missing
     ]),
 };
