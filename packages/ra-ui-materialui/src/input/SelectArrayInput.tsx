@@ -337,7 +337,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                 >
                     {finalChoices.map(renderMenuItem)}
                 </Select>
-                {helperText !== false && (
+                {helperText !== false ? (
                     <FormHelperText
                         error={fetchError || (isTouched && !!error)}
                     >
@@ -347,7 +347,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                             helperText={helperText}
                         />
                     </FormHelperText>
-                )}
+                ) : null}
             </StyledFormControl>
             {createElement}
         </>

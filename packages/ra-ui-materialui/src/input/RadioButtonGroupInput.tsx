@@ -197,7 +197,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
                 ))}
             </RadioGroup>
 
-            {helperText !== false && (
+            {helperText !== false ? (
                 <FormHelperText>
                     <InputHelperText
                         touched={isTouched || isSubmitted || fetchError}
@@ -205,7 +205,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
                         helperText={helperText}
                     />
                 </FormHelperText>
-            )}
+            ) : null}
         </StyledFormControl>
     );
 };

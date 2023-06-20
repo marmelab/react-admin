@@ -235,7 +235,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                     />
                 ))}
             </FormGroup>
-            {helperText !== false && (
+            {helperText !== false ? (
                 <FormHelperText
                     error={
                         fetchError || ((isTouched || isSubmitted) && !!error)
@@ -248,7 +248,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                         helperText={helperText}
                     />
                 </FormHelperText>
-            )}
+            ) : null}
         </StyledFormControl>
     );
 };

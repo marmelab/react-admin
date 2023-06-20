@@ -180,7 +180,7 @@ export const FileInput = (props: FileInputProps) => {
                         <p>{translate(labelSingle)}</p>
                     )}
                 </div>
-                {helperText !== false && (
+                {helperText !== false ? (
                     <FormHelperText
                         error={(isTouched || isSubmitted) && invalid}
                     >
@@ -190,7 +190,7 @@ export const FileInput = (props: FileInputProps) => {
                             helperText={helperText}
                         />
                     </FormHelperText>
-                )}
+                ) : null}
 
                 {children && (
                     <div className="previews">
