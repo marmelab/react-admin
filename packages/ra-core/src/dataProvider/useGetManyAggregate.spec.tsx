@@ -11,7 +11,6 @@ const UseGetManyAggregate = ({
     ids,
     options = {},
     callback = null,
-    ...rest
 }) => {
     const hookValue = useGetManyAggregate(resource, { ids }, options);
     if (callback) callback(hookValue);

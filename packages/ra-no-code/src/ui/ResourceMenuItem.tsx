@@ -15,7 +15,7 @@ const classes = {
     settings: `${PREFIX}-settings`,
 };
 
-const Root = styled('div')(({ theme }) => ({
+const Root = styled('div')({
     [`&.${classes.root}`]: {
         display: 'flex',
     },
@@ -27,7 +27,7 @@ const Root = styled('div')(({ theme }) => ({
     [`& .${classes.settings}`]: {
         marginLeft: 'auto',
     },
-}));
+});
 
 export const ResourceMenuItem = (
     props: Omit<MenuItemLinkProps, 'to' | 'resource'> & {

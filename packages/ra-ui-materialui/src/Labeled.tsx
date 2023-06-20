@@ -89,7 +89,7 @@ export const LabeledClasses = {
 const Root = styled(Stack, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
+})({
     display: 'inline-flex',
     marginBottom: '0.2em',
 
@@ -101,4 +101,4 @@ const Root = styled(Stack, {
         fontSize: '0.75em',
         marginBottom: '0.2em',
     },
-}));
+});

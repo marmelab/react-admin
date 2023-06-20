@@ -553,7 +553,7 @@ describe('useCreateController', () => {
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <CreateController {...defaultProps}>
-                    {({ save, record }) => {
+                    {({ save }) => {
                         saveCallback = save;
                         return <div />;
                     }}

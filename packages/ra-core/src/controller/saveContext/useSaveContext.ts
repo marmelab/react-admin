@@ -15,7 +15,7 @@ import { SaveContext, SaveContextValue } from './SaveContext';
 export const useSaveContext = <
     PropsType extends SaveContextValue = SaveContextValue
 >(
-    props?: PropsType
+    _props?: PropsType
 ): SaveContextValue => {
     return useContext(SaveContext);
 };

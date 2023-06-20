@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { MouseEvent, ReactElement, useState } from 'react';
+import { ReactElement, useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import { ImportResourceDialog } from './ImportResourceDialog';
 import {
@@ -39,9 +39,7 @@ export const NewResourceMenuItem = (
         false
     );
 
-    const handleClick = (
-        event: MouseEvent<HTMLAnchorElement> & MouseEvent<HTMLLIElement>
-    ) => {
+    const handleClick = () => {
         setShowImportResourceDialog(true);
     };
 

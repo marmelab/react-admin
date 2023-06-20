@@ -33,7 +33,7 @@ export const useImportResourceFromCsv = (): [boolean, ImportResource] => {
                     .create(resource, {
                         data: record,
                     })
-                    .catch(error => {
+                    .catch(() => {
                         // Ignore errors while adding a single record
                         console.error(
                             `Error while importing record ${JSON.stringify(

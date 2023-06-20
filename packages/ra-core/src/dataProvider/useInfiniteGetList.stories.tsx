@@ -20,7 +20,7 @@ export const Basic = props => {
 
     if (!dataProvider) {
         dataProvider = {
-            getList: (resource, params) => {
+            getList: (_resource, params) => {
                 return new Promise(resolve => {
                     setTimeout(
                         () =>
@@ -55,7 +55,6 @@ const UseInfiniteComponent = ({
     filter = {},
     options = {},
     meta = undefined,
-    ...rest
 }) => {
     const {
         data,
@@ -109,7 +108,7 @@ export const PageInfo = props => {
 
     if (!dataProvider) {
         dataProvider = {
-            getList: (resource, params) => {
+            getList: (_resource, params) => {
                 return new Promise(resolve => {
                     setTimeout(
                         () =>
