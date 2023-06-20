@@ -1237,7 +1237,7 @@ To learn more about the permissions format, please refer to the [`@react-admin/r
 {% raw %}
 ```tsx
 import { Edit, TextInput } from 'react-admin';
-import { WizardForm } from '@react-admin/ra-enterprise';
+import { WizardForm, WizardFormStep } from '@react-admin/ra-enterprise';
 
 const authProvider = {
     // ...
@@ -1260,22 +1260,22 @@ const authProvider = {
 const ProductCreate = () => (
     <Create>
         <WizardForm>
-            <WizardForm.Step label="Description" name="description">
+            <WizardFormStep label="Description" name="description">
                 <TextInput source="reference" />
                 <TextInput source="width" />
                 <TextInput source="height" />
                 // not displayed
                 <TextInput source="description" />
-            </WizardForm.Step>
-            <WizardForm.Step label="Images" name="images">
+            </WizardFormStep>
+            <WizardFormStep label="Images" name="images">
                 // not displayed
                 <TextInput source="image" />
                 <TextInput source="thumbnail" />
-            </WizardForm.Step>
+            </WizardFormStep>
             // not displayed
-            <WizardForm.Step label="Stock" name="stock">
+            <WizardFormStep label="Stock" name="stock">
                 <TextInput source="stock" />
-            </WizardForm.Step>
+            </WizardFormStep>
         </WizardForm>
     </Create>
 );
