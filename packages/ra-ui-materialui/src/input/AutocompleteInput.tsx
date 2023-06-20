@@ -285,7 +285,7 @@ If you provided a React element for the optionText prop, you must also provide t
             throw new Error(`
 If you provided a React element for the optionText prop, you must also provide the matchSuggestion prop (used to match the user input with a choice)`);
         }
-    }, [optionText, inputText, matchSuggestion, emptyText]);
+    }, [optionText, inputText, matchSuggestion, emptyText, isFromReference]);
 
     useEffect(() => {
         warning(

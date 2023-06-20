@@ -214,7 +214,7 @@ describe('useEditController', () => {
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <EditController {...defaultProps} mutationMode="pessimistic">
-                    {({ record, save, saving }) => {
+                    {({ record, save }) => {
                         return (
                             <>
                                 <p>{record?.test}</p>
@@ -247,7 +247,7 @@ describe('useEditController', () => {
         let post = { id: 12, test: 'previous' };
         const update = jest
             .fn()
-            .mockImplementationOnce((_, { id, data, previousData }) => {
+            .mockImplementationOnce((_, { data, previousData }) => {
                 post = { ...previousData, ...data };
                 return Promise.resolve({ data: post });
             });
@@ -299,7 +299,7 @@ describe('useEditController', () => {
         let post = { id: 12 };
         const update = jest
             .fn()
-            .mockImplementationOnce((_, { id, data, previousData }) => {
+            .mockImplementationOnce((_, { data, previousData }) => {
                 post = { ...previousData, ...data };
                 return Promise.resolve({ data: post });
             });
