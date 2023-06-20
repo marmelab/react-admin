@@ -632,7 +632,9 @@ const ProductShow = () => (
 
 Replacement for the `<TabbedShowLayout.Tab>` that only renders a tab if the user has the right permissions.
 
-Add a `name` prop to the Tab to define the resource on which the user needs to have the 'read' permissions for.
+Add a `name` prop to the `<Tab>` to define the resource on which the user needs to have the 'read' permissions for.
+Then, to display a particular `<Tab>` update permissions definition as follows: `{ action: 'read', resource: '${resource}.tab.${source}' }`. 
+> For instance, to allow user access `<Tab label="Description" name="description">` in product resource, add this line in permissions: `{ action: 'read', resource: 'products.tab.description' }`. 
 
 `<Tab>` also only renders the child fields for which the user has the 'read' permissions.
 
