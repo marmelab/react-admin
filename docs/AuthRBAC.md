@@ -1036,8 +1036,8 @@ const authProvider = {
         // 'products.description' is missing
         { action: 'write', resource: 'products.thumbnail' },
         // 'products.image' is missing
-        { action: 'write', resource: 'products.Section.description' },
-        { action: 'write', resource: 'products.Section.images' },
+        { action: 'write', resource: 'products.section.description' },
+        { action: 'write', resource: 'products.section.images' },
         // 'products.Section.stock' is missing
     ]),
 };
