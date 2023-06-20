@@ -1102,9 +1102,9 @@ Replacement for the default `<LongForm.Section>` that only renders a section if 
 Use it with `<LongForm>` from `@react-admin/ra-enterprise` to only display the section the user has access to in the form.
 
 Add a `name` prop to the `<LongForm.Section>` so you can reference it in the permissions.  
-Then, to allow users to access a particular `<LongForm.Section>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.panel.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<LongForm.Section>`.
+Then, to allow users to access a particular `<LongForm.Section>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.section.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<LongForm.Section>`.
 
-> For instance, to allow users access to the following tab `<LongForm.Section label="Description" name="description">` in `product` resource, add this line in permissions: `{ action: 'write', resource: 'products.panel.description' }`.
+> For instance, to allow users access to the following tab `<LongForm.Section label="Description" name="description">` in `product` resource, add this line in permissions: `{ action: 'write', resource: 'products.section.description' }`.
 
 `<LongForm.Section>` also only renders the child inputs for which the user has the 'write' permissions.
 
