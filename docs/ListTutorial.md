@@ -43,10 +43,11 @@ const BookList = () => {
     const [filter, setFilter] = useState('');
     const [page, setPage] = useState(1);
     const perPage = 10;
+    const sort = { field: 'id', order: 'ASC' };
     const { data, total, isLoading } = useGetList('books', {
         filter: { q: filter },
         pagination: { page, perPage },
-        sort: { field: 'id', order: 'ASC' }
+        sort
     });
     if (isLoading) {
         return <div>Loading...</div>;
@@ -125,10 +126,11 @@ const BookList = () => {
     const [filter, setFilter] = useState('');
     const [page, setPage] = useState(1);
     const perPage = 10;
+    const sort = { field: 'id', order: 'ASC' };
     const { data, total, isLoading } = useGetList('books', {
         filter: { q: filter },
         pagination: { page, perPage },
-        sort: { field: 'id', order: 'ASC' }
+        sort
     });
     if (isLoading) {
         return <div>Loading...</div>;
