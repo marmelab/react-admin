@@ -1218,26 +1218,24 @@ const ProductCreate = () => (
 ```
 {% endraw %}
 
-### `<WizardFormStep>`
+### `<WizardForm.Step>`
 
-Replacement for the default `<WizardFormStep>` that only renders a step if the user has the right permissions.
+Replacement for the default `<WizardForm.Step>` that only renders a step if the user has the right permissions.
 Use it with `<WizardForm>` from `@react-admin/ra-enterprise` to only display the steps the user has access to in the stepper.
 
-This component is provided by the `@react-admin/ra-enterprise` package.
+Add a `name` prop to the `<WizardForm.Step>` so you can reference it in the permissions.  
+Then, to allow users to access a particular `<WizardForm.Step>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.step.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<WizardForm.Step>`.
 
-Add a `name` prop to the `<WizardFormStep>` so you can reference it in the permissions.  
-Then, to allow users to access a particular `<WizardFormStep>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.step.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<WizardFormStep>`.
+> For instance, to allow users access to the following tab `<WizardForm.Step label="Description" name="description">` in `product` resource, add this line in permissions: `{ action: 'write', resource: 'products.step.description' }`.
 
-> For instance, to allow users access to the following tab `<WizardFormStep label="Description" name="description">` in `product` resource, add this line in permissions: `{ action: 'write', resource: 'products.step.description' }`.
-
-`<WizardFormStep>` also only renders the child inputs for which the user has the 'write' permissions.
+`<WizardForm.Step>` also only renders the child inputs for which the user has the 'write' permissions.
 
 To learn more about the permissions format, please refer to the [`@react-admin/ra-rbac` documentation](https://marmelab.com/ra-enterprise/modules/ra-rbac).
 
 {% raw %}
 ```tsx
 import { Edit, TextInput } from 'react-admin';
-import { WizardForm, WizardFormStep } from '@react-admin/ra-enterprise';
+import { WizardForm } from '@react-admin/ra-enterprise';
 
 const authProvider = {
     // ...
@@ -1260,22 +1258,22 @@ const authProvider = {
 const ProductCreate = () => (
     <Create>
         <WizardForm>
-            <WizardFormStep label="Description" name="description">
+            <WizardForm.Step label="Description" name="description">
                 <TextInput source="reference" />
                 <TextInput source="width" />
                 <TextInput source="height" />
                 // not displayed
                 <TextInput source="description" />
-            </WizardFormStep>
-            <WizardFormStep label="Images" name="images">
+            </WizardForm.Step>
+            <WizardForm.Step label="Images" name="images">
                 // not displayed
                 <TextInput source="image" />
                 <TextInput source="thumbnail" />
-            </WizardFormStep>
+            </WizardForm.Step>
             // not displayed
-            <WizardFormStep label="Stock" name="stock">
+            <WizardForm.Step label="Stock" name="stock">
                 <TextInput source="stock" />
-            </WizardFormStep>
+            </WizardForm.Step>
         </WizardForm>
     </Create>
 );
