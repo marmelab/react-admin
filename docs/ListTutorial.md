@@ -46,7 +46,7 @@ const BookList = () => {
     const { data, total, isLoading } = useGetList('books', {
         filter: { q: filter },
         pagination: { page, perPage },
-        sort
+        sort: { field: 'id', order: 'ASC' }
     });
     if (isLoading) {
         return <div>Loading...</div>;
@@ -129,7 +129,7 @@ const BookList = () => {
     const { data, total, isLoading } = useGetList('books', {
         filter: { q: filter },
         pagination: { page, perPage },
-        sort
++       sort
     });
     if (isLoading) {
         return <div>Loading...</div>;
