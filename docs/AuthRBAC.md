@@ -635,7 +635,7 @@ Replacement for the `<TabbedShowLayout.Tab>` that only renders a tab if the user
 Add a `name` prop to the `<Tab>` so you can reference it in the permissions.  
 Then, to allow users to access a particular `<Tab>`, update the permissions definition as follows: `{ action: 'read', resource: '{RESOURCE}.tab.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<Tab>`.
 
-> For instance, to allow users access to the following tab `<Tab label="Description" name="description">` in `product` resource, add this line in permissions: `{ action: 'read', resource: 'products.tab.description' }`. 
+> For instance, to allow users access to the following tab `<Tab label="Description" name="description">` in `products` resource, add this line in permissions: `{ action: 'read', resource: 'products.tab.description' }`. 
 
 
 `<Tab>` also only renders the child fields for which the user has the 'read' permissions.
@@ -805,7 +805,7 @@ Replacement for the default `<FormTab>` that only renders a tab if the user has 
 Add a `name` prop to the `<FormTab>` so you can reference it in the permissions.  
 Then, to allow users to access a particular `<FormTab>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.tab.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<FormTab>`.
 
-> For instance, to allow users access to the following tab `<FormTab label="Description" name="description">` in `product` resource, add this line in permissions: `{ action: 'write', resource: 'products.tab.description' }`.
+> For instance, to allow users access to the following tab `<FormTab label="Description" name="description">` in `products` resource, add this line in permissions: `{ action: 'write', resource: 'products.tab.description' }`.
 
 `<FormTab>` also only renders the child inputs for which the user has the 'write' permissions.
 
@@ -921,7 +921,7 @@ Replacement for the default `<AccordionFormPanel>` that only renders a section i
 Add a `name` prop to the `<AccordionFormPanel>` so you can reference it in the permissions.  
 Then, to allow users to access a particular `<AccordionFormPanel>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.panel.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<FormTab>`.
 
-> For instance, to allow users access to the following tab `<AccordionFormPanel label="Description" name="description">` in `product` resource, add this line in permissions: `{ action: 'write', resource: 'products.panel.description' }`.
+> For instance, to allow users access to the following tab `<AccordionFormPanel label="Description" name="description">` in `products` resource, add this line in permissions: `{ action: 'write', resource: 'products.panel.description' }`.
 
 `<AccordionFormPanel>` also only renders the child inputs for which the user has the 'write' permissions.
 
@@ -981,7 +981,7 @@ Replacement for the default `<AccordionSection>` that only renders a section if 
 Add a `name` prop to the `<AccordionSection>` so you can reference it in the permissions.  
 Then, to allow users to access a particular `<AccordionSection>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.section.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<AccordionSection>`.
 
-> For instance, to allow users access to the following tab `<AccordionSection label="Description" name="description">` in `product` resource, add this line in permissions: `{ action: 'write', resource: 'products.section.description' }`.
+> For instance, to allow users access to the following tab `<AccordionSection label="Description" name="description">` in `products` resource, add this line in permissions: `{ action: 'write', resource: 'products.section.description' }`.
 
 `<AccordionSection>` also only renders the child inputs for which the user has the 'write' permissions.
 
@@ -1104,7 +1104,7 @@ Use it with `<LongForm>` from `@react-admin/ra-enterprise` to only display the s
 Add a `name` prop to the `<LongForm.Section>` so you can reference it in the permissions.  
 Then, to allow users to access a particular `<LongForm.Section>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.section.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<LongForm.Section>`.
 
-> For instance, to allow users access to the following tab `<LongForm.Section label="Description" name="description">` in `product` resource, add this line in permissions: `{ action: 'write', resource: 'products.section.description' }`.
+> For instance, to allow users access to the following tab `<LongForm.Section label="Description" name="description">` in `products` resource, add this line in permissions: `{ action: 'write', resource: 'products.section.description' }`.
 
 `<LongForm.Section>` also only renders the child inputs for which the user has the 'write' permissions.
 
@@ -1225,7 +1225,7 @@ Use it with `<WizardForm>` from `@react-admin/ra-enterprise` to only display the
 Add a `name` prop to the `<WizardForm.Step>` so you can reference it in the permissions.  
 Then, to allow users to access a particular `<WizardForm.Step>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.step.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<WizardForm.Step>`.
 
-> For instance, to allow users access to the following tab `<WizardForm.Step label="Description" name="description">` in `product` resource, add this line in permissions: `{ action: 'write', resource: 'products.step.description' }`.
+> For instance, to allow users access to the following tab `<WizardForm.Step label="Description" name="description">` in `products` resource, add this line in permissions: `{ action: 'write', resource: 'products.step.description' }`.
 
 `<WizardForm.Step>` also only renders the child inputs for which the user has the 'write' permissions.
 
