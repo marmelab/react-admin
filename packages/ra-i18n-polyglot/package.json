@@ -31,7 +31,7 @@
     "devDependencies": {
         "cross-env": "^5.2.0",
         "rimraf": "^3.0.2",
-        "typescript": "^5.0.4"
+        "typescript": "^5.1.3"
     },
     "gitHead": "e936ff2c3f887d2e98ef136cf3b3f3d254725fc4"
 }
