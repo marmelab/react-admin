@@ -7,9 +7,33 @@ title: "useRegisterMutationMiddleware"
 
 This hook allows to register a mutation middleware function.
 
-Middleware functions allow you to hook into a mutation process to perform various actions before or after the main mutation action (create or update). They allow similar use cases as the [`withLifeCycleCallbacks`](./withLifecycleCallbacks.md) except they are declared at the component level.
+Middleware functions allow you to hook into a mutation process to perform various actions before or after the main mutation action (create or update), or even alter the main mutation parameters. They allow similar use cases as the [`withLifeCycleCallbacks`](./withLifecycleCallbacks.md) except they are declared at the component level such as:
 
-**Tip** This hook will unregister the middleware function in its cleanup phase (for instance when the component that called it is unmounted).
+- adding performances logs;
+- transforming the data passed to the main mutation;
+- create, update or delete related data (audit logs, etc.).
+
+Middleware functions are functions that have access to the same parameters than the underlying mutation (create or update) and a `next` function in the mutation lifecycle.
+
+For instance, here's a middleware function for the create mutation:
+
+```tsx
+const createMiddleware = (
+    resource: string,
+    params: CreateParams,
+    options: MutateOptions,
+    next: CreateMutationFunction
+) => {
+    // Do something before the mutation
+
+    // Call the next middleware
+    next(resource, params, options);
+
+    // Do something after the mutation
+}
+```
+
+**Tip** This hook will unregister the middleware function in its cleanup phase (for instance when the component that called unmounts).
 
 ## Usage
 
@@ -17,60 +41,25 @@ The following example shows how to implement a custom `<ImageInput>` that conver
 
 ```tsx
 import { useCallback } from 'react';
-import { ImageInput, ImageInputProps, Middleware, UseCreateResult, useRegisterMutationMiddleware } from 'react-admin';
-import get from 'lodash/get';
-import set from 'lodash/set';
+import { CreateMutationFunction, ImageInput, ImageInputProps, Middleware, useRegisterMutationMiddleware } from 'react-admin';
 
-const handleImageUpload = (
-    source: string
-): Middleware<UseCreateResult[0]> => async (
+const handleImageUpload: Middleware<CreateMutationFunction> => async (
     resource,
     params,
     options,
     next
 ) => {
-    const images = get(params?.data, source);
-
-    if (Array.isArray(images)) {
-        const newImages = await Promise.all(
-            images.map(async image => {
-                const b64 = await convertFileToBase64(image);
-                return {
-                    title: image.title,
-                    src: b64,
-                };
-            })
-        );
-        const newData = set({ ...params?.data }, source, newImages);
-
-        next(
-            resource,
-            {
-                ...params,
-                data: newData,
-            },
-            options
-        );
-        return;
-    }
-
-    const b64 = await convertFileToBase64(images);
-    const newData = set({ ...params?.data }, source, {
-        title: images.title,
-        src: b64,
-    });
-
-    next(
-        resource,
-        {
-            ...params,
-            data: newData,
-        },
-        options
-    );
+    const b64 = await convertFileToBase64(params.data.thumbnail);
+    // Update the parameters that will be sent to the dataProvider call
+    const newParams = { ...params, data: { ...data, thumbnail: b64 } };
+    next(resource, newParams, options);
 };
 
-const convertFileToBase64 = file =>
+const convertFileToBase64 = (file: {
+    rawFile: File;
+    src: string;
+    title: string;
+}) =>
     new Promise((resolve, reject) => {
         // If the file src is a blob url, it must be converted to b64.
         if (file.src.startsWith('blob:')) {
@@ -84,7 +73,7 @@ const convertFileToBase64 = file =>
         }
     });
 
-const MyImageInput = (props: Omit<ImageInputProps, 'children'>) => {
+const ThumbnailInput = (props: ImageInputProps) => {
     const middleware = useCallback(handleImageUpload(props.source), [
         props.source,
     ]);
@@ -92,9 +81,36 @@ const MyImageInput = (props: Omit<ImageInputProps, 'children'>) => {
     useRegisterMutationMiddleware(middleware);
 
     return (
-        <ImageInput {...props}>
-            <ImageField source="src" title="title" />
-        </ImageInput>
+        <ImageInput {...props} source="thumbnail" />
     );
 };
+```
+
+With this middleware, given the following form values:
+
+```json
+{
+    "data": {
+        "thumbnail": {
+            "rawFile": {
+                "path": "avatar.jpg"
+            },
+            "src": "blob:http://localhost:9010/c925dc18-5918-4782-8087-b2464896b8f9",
+            "title": "avatar.jpg"
+        }
+    }
+}
+```
+
+The dataProvider `create` function will be called with:
+
+```json
+{
+    "data": {
+        "thumbnail": {
+            "title":"avatar.jpg",
+            "src":"data:image/jpeg;base64,..."
+        }
+    }
+}
 ```

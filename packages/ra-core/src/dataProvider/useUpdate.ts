@@ -458,21 +458,27 @@ export type UseUpdateOptions<
     Partial<UseUpdateMutateParams<RecordType>>
 > & { mutationMode?: MutationMode; returnPromise?: boolean };
 
+export type UpdateMutationFunction<
+    RecordType extends RaRecord = any,
+    TReturnPromise extends boolean = boolean,
+    MutationError = unknown
+> = (
+    resource?: string,
+    params?: Partial<UpdateParams<RecordType>>,
+    options?: MutateOptions<
+        RecordType,
+        MutationError,
+        Partial<UseUpdateMutateParams<RecordType>>,
+        unknown
+    > & { mutationMode?: MutationMode; returnPromise?: TReturnPromise }
+) => Promise<TReturnPromise extends true ? RecordType : void>;
+
 export type UseUpdateResult<
     RecordType extends RaRecord = any,
     TReturnPromise extends boolean = boolean,
     MutationError = unknown
 > = [
-    (
-        resource?: string,
-        params?: Partial<UpdateParams<RecordType>>,
-        options?: MutateOptions<
-            RecordType,
-            MutationError,
-            Partial<UseUpdateMutateParams<RecordType>>,
-            unknown
-        > & { mutationMode?: MutationMode; returnPromise?: TReturnPromise }
-    ) => Promise<TReturnPromise extends true ? RecordType : void>,
+    UpdateMutationFunction<RecordType, TReturnPromise, MutationError>,
     UseMutationResult<
         RecordType,
         MutationError,
