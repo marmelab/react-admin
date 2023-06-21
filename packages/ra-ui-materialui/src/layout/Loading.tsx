@@ -21,8 +21,10 @@ export const Loading = (props: LoadingProps) => {
                     className={LoadingClasses.icon}
                     color="primary"
                 />
-                <h1>{translate(loadingPrimary)}</h1>
-                <div>{translate(loadingSecondary)}</div>
+                <h1>{translate(loadingPrimary, { _: loadingPrimary })}</h1>
+                <div>
+                    {translate(loadingSecondary, { _: loadingSecondary })}
+                </div>
             </div>
         </Root>
     );
