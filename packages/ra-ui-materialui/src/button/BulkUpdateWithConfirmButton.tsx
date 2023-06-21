@@ -13,11 +13,14 @@ import {
     useUnselectAll,
     useResourceContext,
     MutationMode,
+    RaRecord,
+    UpdateManyParams,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
+import { UseMutationOptions } from 'react-query';
 
 export const BulkUpdateWithConfirmButton = (
     props: BulkUpdateWithConfirmButtonProps
@@ -67,16 +70,19 @@ export const BulkUpdateWithConfirmButton = (
             );
             setOpen(false);
         },
+        mutationOptions = {},
         ...rest
     } = props;
+    const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
 
     const [updateMany, { isLoading }] = useUpdateMany(
         resource,
-        { ids: selectedIds, data },
+        { ids: selectedIds, data, meta: mutationMeta },
         {
             onSuccess,
             onError,
             mutationMode,
+            ...otherMutationOptions,
         }
     );
 
@@ -145,8 +151,10 @@ const sanitizeRestProps = ({
     'resource' | 'selectedIds' | 'icon' | 'data'
 >) => rest;
 
-export interface BulkUpdateWithConfirmButtonProps
-    extends BulkActionProps,
+export interface BulkUpdateWithConfirmButtonProps<
+    RecordType extends RaRecord = any,
+    MutationOptionsError = unknown
+> extends BulkActionProps,
         ButtonProps {
     confirmContent?: React.ReactNode;
     confirmTitle?: string;
@@ -155,6 +163,11 @@ export interface BulkUpdateWithConfirmButtonProps
     onSuccess?: () => void;
     onError?: (error: any) => void;
     mutationMode?: MutationMode;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        MutationOptionsError,
+        UpdateManyParams<RecordType>
+    > & { meta?: any };
 }
 
 BulkUpdateWithConfirmButton.propTypes = {
