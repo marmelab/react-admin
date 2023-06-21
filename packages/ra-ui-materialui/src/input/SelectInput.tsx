@@ -296,6 +296,9 @@ export const SelectInput = (props: SelectInputProps) => {
         );
     }
 
+    const renderHelperText =
+        helperText !== false || ((isTouched || isSubmitted) && invalid);
+
     return (
         <>
             <StyledResettableTextField
@@ -318,11 +321,13 @@ export const SelectInput = (props: SelectInputProps) => {
                 clearAlwaysVisible
                 error={!!fetchError || ((isTouched || isSubmitted) && invalid)}
                 helperText={
-                    <InputHelperText
-                        touched={isTouched || isSubmitted || fetchError}
-                        error={error?.message || fetchError?.message}
-                        helperText={helperText}
-                    />
+                    renderHelperText ? (
+                        <InputHelperText
+                            touched={isTouched || isSubmitted || fetchError}
+                            error={error?.message || fetchError?.message}
+                            helperText={helperText}
+                        />
+                    ) : null
                 }
                 margin={margin}
                 {...sanitizeRestProps(rest)}
