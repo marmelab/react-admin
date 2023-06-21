@@ -58,6 +58,10 @@ export const TextInput = (props: TextInputProps) => {
         onChange,
         ...rest,
     });
+
+    const renderHelperText =
+        helperText !== false || ((isTouched || isSubmitted) && invalid);
+
     return (
         <ResettableTextField
             id={id}
@@ -75,11 +79,13 @@ export const TextInput = (props: TextInputProps) => {
             }
             error={(isTouched || isSubmitted) && invalid}
             helperText={
-                <InputHelperText
-                    touched={isTouched || isSubmitted}
-                    error={error?.message}
-                    helperText={helperText}
-                />
+                renderHelperText ? (
+                    <InputHelperText
+                        touched={isTouched || isSubmitted}
+                        error={error?.message}
+                        helperText={helperText}
+                    />
+                ) : null
             }
             {...sanitizeInputRestProps(rest)}
         />
