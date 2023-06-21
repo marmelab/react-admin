@@ -33,7 +33,7 @@ const createMiddleware = (
 }
 ```
 
-**Tip** This hook will unregister the middleware function in its cleanup phase (for instance when the component that called unmounts).
+**Tip** This hook will unregister the middleware function in its cleanup phase (for instance when the component that called unmounts). For this to work correctly, you must provide a stable reference to the function by wrapping it in a `useCallback` hook for instance.
 
 ## Usage
 
