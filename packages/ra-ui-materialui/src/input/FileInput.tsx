@@ -147,6 +147,9 @@ export const FileInput = (props: FileInputProps) => {
         onDrop,
     });
 
+    const renderHelperText =
+        helperText !== false || ((isTouched || isSubmitted) && invalid);
+
     return (
         <StyledLabeled
             htmlFor={id}
@@ -180,13 +183,18 @@ export const FileInput = (props: FileInputProps) => {
                         <p>{translate(labelSingle)}</p>
                     )}
                 </div>
-                <FormHelperText error={(isTouched || isSubmitted) && invalid}>
-                    <InputHelperText
-                        touched={isTouched || isSubmitted}
-                        error={error?.message}
-                        helperText={helperText}
-                    />
-                </FormHelperText>
+                {renderHelperText ? (
+                    <FormHelperText
+                        error={(isTouched || isSubmitted) && invalid}
+                    >
+                        <InputHelperText
+                            touched={isTouched || isSubmitted}
+                            error={error?.message}
+                            helperText={helperText}
+                        />
+                    </FormHelperText>
+                ) : null}
+
                 {children && (
                     <div className="previews">
                         {files.map((file, index) => (
