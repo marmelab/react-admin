@@ -337,17 +337,13 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                 >
                     {finalChoices.map(renderMenuItem)}
                 </Select>
-                {helperText !== false ? (
-                    <FormHelperText
-                        error={fetchError || (isTouched && !!error)}
-                    >
-                        <InputHelperText
-                            touched={isTouched || isSubmitted || fetchError}
-                            error={error?.message || fetchError?.message}
-                            helperText={helperText}
-                        />
-                    </FormHelperText>
-                ) : null}
+                <FormHelperText error={fetchError || (isTouched && !!error)}>
+                    <InputHelperText
+                        touched={isTouched || isSubmitted || fetchError}
+                        error={error?.message || fetchError?.message}
+                        helperText={helperText}
+                    />
+                </FormHelperText>
             </StyledFormControl>
             {createElement}
         </>
