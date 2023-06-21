@@ -148,6 +148,8 @@ export const ArrayInput = (props: ArrayInputProps) => {
             </Labeled>
         );
     }
+    const renderHelperText =
+        helperText !== false || ((isDirty || isSubmitted) && !!error);
 
     return (
         <Root
@@ -186,7 +188,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
                     disabled,
                 })}
             </ArrayInputContext.Provider>
-            {!!((isDirty || isSubmitted) && !!error) || helperText ? (
+            {renderHelperText ? (
                 <FormHelperText error={(isDirty || isSubmitted) && !!error}>
                     <InputHelperText
                         touched={isDirty || isSubmitted}
