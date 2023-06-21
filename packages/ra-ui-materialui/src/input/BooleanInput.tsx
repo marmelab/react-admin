@@ -91,15 +91,13 @@ export const BooleanInput = (props: BooleanInputProps) => {
                     />
                 }
             />
-            {helperText !== false || ((isTouched || isSubmitted) && invalid) ? (
-                <FormHelperText error={(isTouched || isSubmitted) && invalid}>
-                    <InputHelperText
-                        touched={isTouched || isSubmitted}
-                        error={error?.message}
-                        helperText={helperText}
-                    />
-                </FormHelperText>
-            ) : null}
+            <FormHelperText error={(isTouched || isSubmitted) && invalid}>
+                <InputHelperText
+                    touched={isTouched || isSubmitted}
+                    error={error?.message}
+                    helperText={helperText}
+                />
+            </FormHelperText>
         </FormGroup>
     );
 };
