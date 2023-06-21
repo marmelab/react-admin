@@ -62,16 +62,19 @@ export const BulkUpdateWithUndoButton = (
             );
             refresh();
         },
+        mutationOptions = {},
         ...rest
     } = props;
+    const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
 
     const [updateMany, { isLoading }] = useUpdateMany(
         resource,
-        { ids: selectedIds, data },
+        { ids: selectedIds, data, meta: mutationMeta },
         {
             onSuccess,
             onError,
             mutationMode: 'undoable',
+            ...otherMutationOptions,
         }
     );
 
