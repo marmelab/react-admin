@@ -297,7 +297,8 @@ export const SelectInput = (props: SelectInputProps) => {
     }
 
     const renderHelperText =
-        helperText !== false || ((isTouched || isSubmitted) && invalid);
+        helperText !== false ||
+        ((isTouched || isSubmitted || fetchError) && invalid);
 
     return (
         <>
