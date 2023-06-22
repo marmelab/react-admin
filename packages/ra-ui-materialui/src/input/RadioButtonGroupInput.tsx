@@ -160,8 +160,9 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
     }
 
     const renderHelperText =
+        !!fetchError ||
         helperText !== false ||
-        ((isTouched || isSubmitted || fetchError) && invalid);
+        ((isTouched || isSubmitted) && invalid);
 
     return (
         <StyledFormControl
