@@ -84,9 +84,11 @@ const convertFileToBase64 = file =>
     });
 
 const MyImageInput = (props: Omit<ImageInputProps, 'children'>) => {
-    const middleware = useCallback(handleImageUpload(props.source), [
-        props.source,
-    ]);
+    const middleware = useCallback<Middleware<UseCreateResult[0]>>(
+        (resource, params, options, next) =>
+            handleImageUpload(props.source)(resource, params, options, next),
+        [props.source]
+    );
 
     useRegisterMutationMiddleware(middleware);
 
