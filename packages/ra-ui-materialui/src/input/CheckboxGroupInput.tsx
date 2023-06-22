@@ -200,8 +200,9 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
     }
 
     const renderHelperText =
+        !!fetchError ||
         helperText !== false ||
-        ((isTouched || isSubmitted || fetchError) && invalid);
+        ((isTouched || isSubmitted) && invalid);
 
     return (
         <StyledFormControl

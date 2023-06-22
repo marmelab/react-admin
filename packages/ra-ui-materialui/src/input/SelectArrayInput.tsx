@@ -275,8 +275,9 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
               }
             : {};
     const renderHelperText =
+        !!fetchError ||
         helperText !== false ||
-        ((isTouched || isSubmitted || fetchError) && invalid);
+        ((isTouched || isSubmitted) && invalid);
 
     return (
         <>
