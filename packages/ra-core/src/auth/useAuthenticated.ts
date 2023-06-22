@@ -30,7 +30,8 @@ export const useAuthenticated = <ParamsType = any>({
     params,
     ...options
 }: UseAuthenticatedOptions<ParamsType> = {}) => {
-    useAuthState(params ?? emptyParams, true, options);
+    const logoutOnFailure = options?.enabled !== undefined ? options.enabled : true;
+    useAuthState(params ?? emptyParams, logoutOnFailure, options);
 };
 
 export type UseAuthenticatedOptions<ParamsType> = UseQueryOptions<
