@@ -33,7 +33,7 @@ import {
 } from 'react-admin';
 
 const MyComponent = () => {
-    const createMiddleware = (
+    const createMiddleware = async (
         resource: string,
         params: CreateParams,
         options: MutateOptions,
@@ -42,7 +42,7 @@ const MyComponent = () => {
         // Do something before the mutation
 
         // Call the next middleware
-        next(resource, params, options);
+        await next(resource, params, options);
 
         // Do something after the mutation
     }
@@ -65,11 +65,11 @@ React-admin will wrap each call to the `dataProvider.create()` mutation with the
 A middleware function must have the following signature:
 
 ```jsx
-const middlware = (resource, params, options, next) => {
+const middlware = async (resource, params, options, next) => {
     // Do something before the mutation
 
     // Call the next middleware
-    next(resource, params, options);
+    await next(resource, params, options);
 
     // Do something after the mutation
 }
