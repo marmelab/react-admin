@@ -195,7 +195,8 @@ const { total, data } = useList({
 });
 // total will be 3 and data will be
 // [
-//    { id: 3, name: 'Jean-Claude' },
+//    { id: 1, name: 'Arnold' },
+//    { id: 2, name: 'Sylvester' },
 // ]
 ```
 
