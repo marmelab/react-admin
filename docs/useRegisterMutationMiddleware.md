@@ -5,25 +5,67 @@ title: "useRegisterMutationMiddleware"
 
 # `useRegisterMutationMiddleware`
 
-This hook allows to register a mutation middleware function.
+React-admin lets you hook into the save logic of the forms in Creation and Edition pages using middleware functions. These functions "wrap" the main mutation (`dataProvider.create()` in a Creation page, `dataProvider.update()` in an Edition page), so you can add you own code to be executed before and after it. This allows you to perform various advanced form use cases, such as:
 
-Middleware functions allow you to hook into a mutation process to perform various actions before or after the main mutation action (create or update), or even alter the main mutation parameters. They allow similar use cases as the [`withLifeCycleCallbacks`](./withLifecycleCallbacks.md) except they are declared at the component level such as:
+- transforming the data passed to the main mutation,
+- updating the mutation parameters before it is called,
+- creating, updating or deleting related data,
+- adding performances logs,
+- etc.
 
-- adding performances logs;
-- transforming the data passed to the main mutation;
-- create, update or delete related data (audit logs, etc.).
+Middleware functions have access to the same parameters as the underlying mutation (`create` or `update`), and to a `next` function to call the next function in the mutation lifecycle.
 
-Middleware functions are functions that have access to the same parameters than the underlying mutation (create or update) and a `next` function in the mutation lifecycle.
+`useRegisterMutationMiddleware` allows to register a mutation middleware function for the current form.
 
-For instance, here's a middleware function for the create mutation:
+## Usage
+
+Define a middleware function, then use the hook to register it. 
+
+For example, a middleware for the create mutation looks like the following:
 
 ```tsx
-const createMiddleware = (
-    resource: string,
-    params: CreateParams,
-    options: MutateOptions,
-    next: CreateMutationFunction
-) => {
+import * as React from 'react';
+import {
+    useRegisterMutationMiddleware,
+    CreateParams,
+    MutateOptions,
+    CreateMutationFunction
+} from 'react-admin';
+
+const MyComponent = () => {
+    const createMiddleware = (
+        resource: string,
+        params: CreateParams,
+        options: MutateOptions,
+        next: CreateMutationFunction
+    ) => {
+        // Do something before the mutation
+
+        // Call the next middleware
+        next(resource, params, options);
+
+        // Do something after the mutation
+    }
+    const memoizedMiddleWare = React.useCallback(createMiddleware, []);
+    useRegisterMutationMiddleware(memoizedMiddleWare);
+    // ...
+}
+```
+
+Then, render that component as a descendent of the page controller component (`<Create>` or `<Edit>`).
+
+React-admin will wrap each call to the `dataProvider.create()` mutation with the `createMiddleware` function as long as the `MyComponent` component is mounted.
+
+`useRegisterMutationMiddleware` unregisters the middleware function when the component unmounts. For this to work correctly, you must provide a stable reference to the function by wrapping it in a `useCallback` hook for instance.
+
+## Params
+
+`useRegisterMutationMiddleware` expects a single parameter: a middleware function.
+
+A middleware function must have the following signature:
+
+```jsx
+const middlware = (resource, params, options, next) => {
     // Do something before the mutation
 
     // Call the next middleware
@@ -33,26 +75,39 @@ const createMiddleware = (
 }
 ```
 
-**Tip** This hook will unregister the middleware function in its cleanup phase (for instance when the component that called unmounts). For this to work correctly, you must provide a stable reference to the function by wrapping it in a `useCallback` hook for instance.
+The `params` type depends on the mutation:
 
-## Usage
+- For a `create` middleware, `{ data, meta }`
+- For an `update` middleware, `{ id, data, previousData }`
 
-The following example shows how to implement a custom `<ImageInput>` that converts its images in base64 on submit and update the main resource record to use the base64 versions of those images:
+## Example
+
+The following example shows a custom `<ImageInput>` that converts its images to base64 on submit, and updates the main resource record to use the base64 versions of those images:
 
 ```tsx
 import { useCallback } from 'react';
-import { CreateMutationFunction, ImageInput, ImageInputProps, Middleware, useRegisterMutationMiddleware } from 'react-admin';
+import { 
+    CreateMutationFunction,
+    ImageInput,
+    Middleware,
+    useRegisterMutationMiddleware
+} from 'react-admin';
 
-const handleImageUpload: Middleware<CreateMutationFunction> => async (
-    resource,
-    params,
-    options,
-    next
-) => {
-    const b64 = await convertFileToBase64(params.data.thumbnail);
-    // Update the parameters that will be sent to the dataProvider call
-    const newParams = { ...params, data: { ...data, thumbnail: b64 } };
-    next(resource, newParams, options);
+const ThumbnailInput = () => {
+    const middleware = useCallback(async (
+        resource,
+        params,
+        options,
+        next
+    ) => {
+        const b64 = await convertFileToBase64(params.data.thumbnail);
+        // Update the parameters that will be sent to the dataProvider call
+        const newParams = { ...params, data: { ...data, thumbnail: b64 } };
+        next(resource, newParams, options);
+    }, []);
+    useRegisterMutationMiddleware(middleware);
+
+    return <ImageInput source="thumbnail" />;
 };
 
 const convertFileToBase64 = (file: {
@@ -72,19 +127,20 @@ const convertFileToBase64 = (file: {
             resolve(file.src);
         }
     });
-
-const ThumbnailInput = (props: ImageInputProps) => {
-    const middleware = useCallback(handleImageUpload(props.source), [
-        props.source,
-    ]);
-
-    useRegisterMutationMiddleware(middleware);
-
-    return (
-        <ImageInput {...props} source="thumbnail" />
-    );
-};
 ```
+
+Use the `<ThumbnailInput>` component in a creation form just like any regular Input component:
+
+```jsx
+const PostCreate = () => (
+    <Create>
+        <SimpleForm>
+            <TextInput source="title" />
+            <TextInput source="body" multiline />
+            <ThumbnailInput />
+        </SimpleForm>
+    </Create>
+);
 
 With this middleware, given the following form values:
 
