@@ -536,9 +536,9 @@ If you provided a React element for the optionText prop, you must also provide t
     const isOptionEqualToValue = (option, value) => {
         return String(getChoiceValue(option)) === String(getChoiceValue(value));
     };
-
     const renderHelperText =
-        helperText !== false || ((isTouched || isSubmitted) && invalid);
+        helperText !== false ||
+        ((isTouched || isSubmitted || fetchError) && invalid);
 
     return (
         <>
