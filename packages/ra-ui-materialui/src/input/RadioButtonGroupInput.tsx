@@ -158,6 +158,12 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
             </Labeled>
         );
     }
+
+    const renderHelperText =
+        !!fetchError ||
+        helperText !== false ||
+        ((isTouched || isSubmitted) && invalid);
+
     return (
         <StyledFormControl
             component="fieldset"
@@ -196,13 +202,15 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
                     />
                 ))}
             </RadioGroup>
-            <FormHelperText>
-                <InputHelperText
-                    touched={isTouched || isSubmitted || fetchError}
-                    error={error?.message || fetchError?.message}
-                    helperText={helperText}
-                />
-            </FormHelperText>
+            {renderHelperText ? (
+                <FormHelperText>
+                    <InputHelperText
+                        touched={isTouched || isSubmitted || fetchError}
+                        error={error?.message || fetchError?.message}
+                        helperText={helperText}
+                    />
+                </FormHelperText>
+            ) : null}
         </StyledFormControl>
     );
 };
