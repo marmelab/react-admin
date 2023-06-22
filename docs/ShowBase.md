@@ -20,7 +20,7 @@ Use `<ShowBase>` instead of `<Show>` when you want a completely custom page layo
 
 {% raw %}
 ```jsx
-// in src/posts.js
+// in src/posts.jsx
 import * as React from "react";
 import { ShowBase } from 'react-admin';
 
@@ -42,7 +42,7 @@ const PostShow = () => (
     </ShowBase>
 );
 
-// in src/App.js
+// in src/App.jsx
 import * as React from "react";
 import { Admin, Resource } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
