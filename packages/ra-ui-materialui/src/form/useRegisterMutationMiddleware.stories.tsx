@@ -42,7 +42,7 @@ const handleImageUpload = (
         );
         const newData = set({ ...params?.data }, source, newImages);
 
-        next(
+        await next(
             resource,
             {
                 ...params,
@@ -59,7 +59,7 @@ const handleImageUpload = (
         src: b64,
     });
 
-    next(
+    await next(
         resource,
         {
             ...params,
