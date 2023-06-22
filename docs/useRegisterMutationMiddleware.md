@@ -103,7 +103,7 @@ const ThumbnailInput = () => {
         const b64 = await convertFileToBase64(params.data.thumbnail);
         // Update the parameters that will be sent to the dataProvider call
         const newParams = { ...params, data: { ...data, thumbnail: b64 } };
-        next(resource, newParams, options);
+        await next(resource, newParams, options);
     }, []);
     useRegisterMutationMiddleware(middleware);
 
