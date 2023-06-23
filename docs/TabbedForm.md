@@ -308,7 +308,7 @@ export const PostEdit = () => (
 
 ## `tabs`
 
-By default, `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin component, to render the tab headers. You can pass a custom component as the `tabs` prop to tweak th UX of these headers. Besides, props from `<TabbedFormTabs>` are passed down to Material UI's `<Tabs>` component.
+By default, `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin component, to render the tab headers. You can pass a custom component as the `tabs` prop to tweak the UX of these headers. Besides, props from `<TabbedFormTabs>` are passed down to Material UI's `<Tabs>` component.
 
 The following example shows how to make use of scrollable `<Tabs>`. Pass `variant="scrollable"` and `scrollButtons="auto"` props to `<TabbedFormTabs>` and use it in the `tabs` prop from `<TabbedForm>`.
 
@@ -678,7 +678,7 @@ const formState = useFormState(); // ❌ should deconstruct the formState
 
 ## Dynamic Tab Label
 
-`<TabbedForm>` often contain not only inputs, but also related data (e.g. the reviews of a product). Users appreviate that the label of such tabs show the actual number of related elements, to avoid clicking on a tab to reveal an empty list.
+`<TabbedForm>` often contain not only inputs, but also related data (e.g. the reviews of a product). Users appreciate that the label of such tabs show the actual number of related elements, to avoid clicking on a tab to reveal an empty list.
 
 ![dynamic tab label](./img/FormTab-dynamic-label.png)
 
