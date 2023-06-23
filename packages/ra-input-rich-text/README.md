@@ -18,8 +18,8 @@ Use it as you would any react-admin inputs:
 import { Edit, SimpleForm, TextInput } from 'react-admin';
 import { RichTextInput } from 'ra-input-rich-text';
 
-export const PostEdit = (props) => (
-	<Edit {...props}>
+export const PostEdit = () => (
+	<Edit>
 		<SimpleForm>
 			<TextInput source="title" />
 			<RichTextInput source="body" />
@@ -38,8 +38,8 @@ You can leverage this to change the buttons [size](#api):
 import { Edit, SimpleForm, TextInput } from 'react-admin';
 import { RichTextInput, RichTextInputToolbar } from 'ra-input-rich-text';
 
-export const PostEdit = (props) => (
-	<Edit {...props}>
+export const PostEdit = () => (
+	<Edit>
 		<SimpleForm>
 			<TextInput source="title" />
 			<RichTextInput source="body" toolbar={<RichTextInputToolbar size="large" />} />
