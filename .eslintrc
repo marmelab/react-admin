@@ -1,6 +1,12 @@
+
 {
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "warnOnUnsupportedTypeScriptVersion": false
+    },
     "extends": ["react-app", "plugin:prettier/recommended"],
     "plugins": [
+        "@typescript-eslint",
         "import",
         "jsx-a11y",
         "prettier",
