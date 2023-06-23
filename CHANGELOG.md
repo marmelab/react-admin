@@ -1,5 +1,19 @@
 # Changelog
 
+## v4.11.4
+
+ * Fix Input components add a bottom margin even when `helperText` is `false` ([#9037](https://github.com/marmelab/react-admin/pull/9037)) ([adguernier](https://github.com/adguernier))
+ * Fix `<Loading>` custom message raises a missing translation key warning ([#9036](https://github.com/marmelab/react-admin/pull/9036)) ([adossas-spdrm](https://github.com/adossas-spdrm))
+ * Fix linter warnings ([#9033](https://github.com/marmelab/react-admin/pull/9033)) ([fzaninotto](https://github.com/fzaninotto))
+ * Fix `<RadioButtonGroupInput>` does not honor `id` prop in option labels ([#9025](https://github.com/marmelab/react-admin/pull/9025)) ([fzaninotto](https://github.com/fzaninotto))
+ * Fix linter warnings ([#9024](https://github.com/marmelab/react-admin/pull/9024)) ([fzaninotto](https://github.com/fzaninotto))
+ * Fix `<RichTextInput>` toolbar appearance ([#9018](https://github.com/marmelab/react-admin/pull/9018)) ([fzaninotto](https://github.com/fzaninotto))
+ * [Doc] Fix `useList` example, with page option ([#9040](https://github.com/marmelab/react-admin/pull/9040)) ([adguernier](https://github.com/adguernier))
+ * [Doc] Fix missing constant in List tutorial example ([#9032](https://github.com/marmelab/react-admin/pull/9032)) ([adguernier](https://github.com/adguernier))
+ * [Doc] Improve description of RBAC tab, panel, section, and step ([#9030](https://github.com/marmelab/react-admin/pull/9030)) ([adguernier](https://github.com/adguernier))
+ * [Doc] Fix link to German translation package ([#9028](https://github.com/marmelab/react-admin/pull/9028)) ([tommylenz](https://github.com/tommylenz))
+ * [DOC] - Fix typo on `useGetTree` documentation ([#9027](https://github.com/marmelab/react-admin/pull/9027)) ([adguernier](https://github.com/adguernier))
+ * [Doc] Update DataProvider file upload documentation to leverage `withLifeCycleCallbacks` ([#9022](https://github.com/marmelab/react-admin/pull/9022)) ([djhi](https://github.com/djhi))
 ## v4.11.3
 
 * Fix Save button might stay disabled when using `<ArrayInput>` with default values ([#8971](https://github.com/marmelab/react-admin/pull/8971)) ([henryhobhouse](https://github.com/henryhobhouse))
