@@ -276,6 +276,14 @@ ul.sidenav code {
     text-decoration: underline;
 }
 
+.markdown-section .highlight {
+    margin-bottom: 1em;
+}
+
+.marmelab-language-switcher-tabs {
+    margin-top: -0.5em;
+}
+
 @media only screen and (max-width: 992px) {
     img:not(.no-shadow) {
         width: 100%;
@@ -676,3 +684,4 @@ body.no-sidebar .sidenav-trigger {
     background-color: #f5f2f0;
     text-decoration: none !important;
 }
+
