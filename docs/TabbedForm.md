@@ -678,7 +678,7 @@ const formState = useFormState(); // ❌ should deconstruct the formState
 
 ## Dynamic Tab Label
 
-`<TabbedForm>` often contain not only inputs, but also related data (e.g. the reviews of a product). Users appreviate that the label of such tabs show the actual number of related elements, to avoid clicking on a tab to reveal an empty list.
+`<TabbedForm>` often contain not only inputs, but also related data (e.g. the reviews of a product). Users appreciate that the label of such tabs show the actual number of related elements, to avoid clicking on a tab to reveal an empty list.
 
 ![dynamic tab label](./img/FormTab-dynamic-label.png)
 
