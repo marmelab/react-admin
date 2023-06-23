@@ -1,7 +1,7 @@
 const cypress = require('cypress');
 const server = require('./server');
 
-return server.start().then(listeningServer => {
+server.start().then(listeningServer => {
     // kick off a cypress run
     return cypress
         .run({

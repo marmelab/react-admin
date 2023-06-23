@@ -9,6 +9,7 @@ import React, {
     FC,
     ReactElement,
 } from 'react';
+import { isElement } from 'react-is';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { TableCell, TableRow, TableRowProps, Checkbox } from '@mui/material';
@@ -209,7 +210,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                     className={DatagridClasses.expandedPanel}
                 >
                     <TableCell colSpan={nbColumns}>
-                        {isValidElement(expand)
+                        {isElement(expand)
                             ? cloneElement(expand, {
                                   // @ts-ignore
                                   record,
