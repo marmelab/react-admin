@@ -308,7 +308,7 @@ export const PostEdit = () => (
 
 ## `tabs`
 
-By default, `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin component, to render the tab headers. You can pass a custom component as the `tabs` prop to tweak th UX of these headers. Besides, props from `<TabbedFormTabs>` are passed down to Material UI's `<Tabs>` component.
+By default, `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin component, to render the tab headers. You can pass a custom component as the `tabs` prop to tweak the UX of these headers. Besides, props from `<TabbedFormTabs>` are passed down to Material UI's `<Tabs>` component.
 
 The following example shows how to make use of scrollable `<Tabs>`. Pass `variant="scrollable"` and `scrollButtons="auto"` props to `<TabbedFormTabs>` and use it in the `tabs` prop from `<TabbedForm>`.
 
