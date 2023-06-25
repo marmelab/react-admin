@@ -27,9 +27,10 @@ export const useRecordSelection = <RecordType extends RaRecord = any>(
 
     const selectionModifiers = useMemo(
         () => ({
-            select: (idsToAdd: RecordType['id'][]) => {
-                if (!idsToAdd) return;
-                setIds([...idsToAdd]);
+            // erase the selection and replace it with the new one
+            select: (ids: RecordType['id'][]) => {
+                if (!ids) return;
+                setIds([...ids]);
             },
             unselect(idsToRemove: RecordType['id'][]) {
                 if (!idsToRemove || idsToRemove.length === 0) return;

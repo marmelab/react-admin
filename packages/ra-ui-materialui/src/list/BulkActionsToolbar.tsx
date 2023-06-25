@@ -7,14 +7,17 @@ import {
     useCallback,
 } from 'react';
 import PropTypes from 'prop-types';
-import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
+import isEqual from 'lodash/isEqual';
+import { styled } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { lighten } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { useMutation } from 'react-query';
 import {
+    useDataProvider,
     useTranslate,
     sanitizeListRestProps,
     useListContext,
@@ -22,26 +25,54 @@ import {
 } from 'ra-core';
 
 import TopToolbar from '../layout/TopToolbar';
+import { Button } from '@mui/material';
 
 export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
     const {
         label = 'ra.action.bulk_actions',
         children,
         className,
+        selectAllLimit = 250,
         ...rest
     } = props;
     const {
+        data,
         filterValues,
         resource,
         selectedIds = [],
+        onSelect,
         onUnselectItems,
+        total,
+        perPage,
     } = useListContext(props);
+    const dataProvider = useDataProvider();
+    const { mutateAsync } = useMutation(() =>
+        dataProvider.getList(resource, {
+            filter: filterValues,
+            pagination: { page: 1, perPage: total },
+            sort: { field: 'id', order: 'ASC' },
+        })
+    );
 
     const translate = useTranslate();
 
     const handleUnselectAllClick = useCallback(() => {
         onUnselectItems();
     }, [onUnselectItems]);
+
+    const handleSelectAll = useCallback(() => {
+        mutateAsync().then(({ data }) => {
+            onSelect(data.map(({ id }) => id));
+        });
+    }, [mutateAsync, onSelect]);
+
+    const isPageSelected =
+        selectedIds.length === perPage &&
+        isEqual(new Set(selectedIds), new Set(data.map(({ id }) => id)));
+    const hasMoreThanOnePage = total > perPage;
+    const isUnderSelectAllLimit = total <= selectAllLimit;
+    const displaySelectAllButton =
+        isPageSelected && hasMoreThanOnePage && isUnderSelectAllLimit;
 
     return (
         <Root className={className}>
@@ -69,6 +100,16 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
                             smart_count: selectedIds.length,
                         })}
                     </Typography>
+                    {displaySelectAllButton && (
+                        <Button
+                            size="small"
+                            color="primary"
+                            onClick={handleSelectAll}
+                            sx={{ ml: 1 }}
+                        >
+                            {translate('ra.action.select_all')}
+                        </Button>
+                    )}
                 </div>
                 <TopToolbar className={BulkActionsToolbarClasses.topToolbar}>
                     {Children.map(children, child =>
@@ -96,6 +137,7 @@ export interface BulkActionsToolbarProps {
     label?: string;
     selectedIds?: Identifier[];
     className?: string;
+    selectAllLimit?: number;
 }
 
 const PREFIX = 'RaBulkActionsToolbar';
