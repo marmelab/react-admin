@@ -38,7 +38,7 @@
         "web-vitals": "^1.0.1"
     },
     "scripts": {
-        "analyze": "source-map-explorer 'build/static/js/*.js'",
+        "analyze": "source-map-explorer './dist/assets/*.js'",
         "dev": "vite",
         "build": "tsc && vite build",
         "preview": "vite preview"
