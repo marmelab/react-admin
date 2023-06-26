@@ -158,7 +158,7 @@ export const AutocompleteInput = <
         noOptionsText,
         onBlur,
         onChange,
-        onCreate: onCreateProp,
+        onCreate,
         openText = 'ra.action.open',
         optionText,
         optionValue,
@@ -177,7 +177,6 @@ export const AutocompleteInput = <
     } = props;
 
     const filterToQuery = useEvent(filterToQueryProp);
-    const onCreate = useEvent(onCreateProp);
 
     const {
         allChoices,
