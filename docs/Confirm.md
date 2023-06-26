@@ -89,7 +89,7 @@ To override the style of all instances of `<Confirm>` using the [Material UI sty
 
 ## Delete With Confirmation
 
-React-admin's `<DeleteButton>` lets user delete the current record [in an optimistic way](./Features.md#optimistic-updates-and-undo): after clicking the button, users see a notification for the deletion with an "undo" link to cancel the deletion. 
+React-admin's `<DeleteButton>` lets user delete the current record [in an optimistic way](./Features.md#undo): after clicking the button, users see a notification for the deletion with an "undo" link to cancel the deletion. 
 
 Alternately, you can force the user to confirm the deletion by using `<DeleteButton mutationMode="pessimistic">`. Under the hood, this leverages the `<Confirm>` component to ask for confirmation before deleting the record.
 
