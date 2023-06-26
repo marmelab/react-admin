@@ -711,11 +711,22 @@ const PersonEdit = () => (
 
 See [the `<PredictiveTextInput>` documentation](./PredictiveTextInput.md) for more details.
 
-## Optimistic Updates And Undo
+## Fast
 
-When a user edits a record and hits the "Save" button, the UI shows a confirmation and displays the updated data *before sending the update query to the server*. The main benefit is that UI changes are immediate - **no need to wait for the server response**. It's a great comfort for users.
 
-But there is an additional benefit: it also allows the "Undo" feature. Undo is already functional in the admin at that point. Try editing a record, then hit the "Undo" link in the black confirmation box before it slides out. You'll see that the app does not send the `UPDATE` query to the API, and displays the non-modified data.
+React-admin takes advantage of the Single-Page-Application architecture, implementing various performance optimizations that make react-admin apps incredibly fast by default.
+
+- **Non-Blocking Data Fetching**: Instead of waiting for API data before starting to render the UI, React-admin initiates the rendering process immediately. This strategy ensures a snappy application where user interactions receive instant feedback, outperforming Server-side Rendered apps by eliminating waiting times for server responses.
+- **Stale While Revalidate**: This technique allows pages to display data from previous requests while newer data is being fetched. In most instances, the fresh data remains the same (e.g., when revisiting a list page), ensuring users won't notice any delays due to network requests.
+- **Local Database Mirror**: React-admin populates its internal cache with individual records fetched using `dataProvider.getList()`. When a user views a specific record, React-admin leverages its internal database to pre-fill the `dataProvider.getOne()` query response. As a result, record details are displayed instantaneously, without any wait time for server responses.
+- **Optimistic Updates**: When a user edits a record and hits the "Save" button, React-admin immediately updates its local database and displays the revised data, prior to sending the update query to the server. The resulting UI changes are instant - no server response wait time required. The same logic applies to record deletions.
+- **Query Deduplication**: React-admin identifies instances where multiple components on a page call the same data provider query for identical data. In such cases, it ensures only a single call to the data provider is made.
+- **Query Aggregation**: React-admin intercepts all calls to `dataProvider.getOne()` for related data when a `<ReferenceField>` is used in a list. It aggregates and deduplicates the requested ids, and issues a solitary dataProvider.getMany() request. This technique effectively addresses the n+1 query problem, reduces server queries, and accelerates list view rendering.
+- **Opt-In Query Cache**: React-admin provides an option to prevent refetching an API endpoint for a specified duration, which can be used when you're confident that the API response will remain consistent over time.
+
+## Undo
+
+When users submit a form, or delete a record, the UI reflects their change immediately. They also see a confirmation message for the change, containing an "Undo" button. If they click on it before the confirmation slides out (the default delay is 5s), react-admin reverts to the previous state and cancels the call to the data provider. 
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/tutorial_post_edit_undo.webm" type="video/webm"/>
@@ -723,10 +734,9 @@ But there is an additional benefit: it also allows the "Undo" feature. Undo is a
   Your browser does not support the video tag.
 </video>
 
+This undo feature is enabled by default, and requires no particular setup on the server side. In fact, react-admin delays the call to the data provider for mutations, to give users a "grace" period. That's why the actual call to `dataProvider.update()` occurs 5 seconds after the user submits an update form - even though the UI reflects the changes immediately.
 
-Even though updates appear immediately due to Optimistic Updates, React-admin only sends them to the server after a short delay (about 5 seconds). During this delay, **the user can undo the action**, and react-admin will never send the update. 
-
-Optimistic updates and undo require no specific code on the API side - react-admin handles them purely on the client side. That means that you'll get them for free with your API!
+You can disable this feature page by page by choosing a different [mutationMode](./Edit.md#mutationmode).
 
 ## Roles & Permissions
 
