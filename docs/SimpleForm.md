@@ -502,7 +502,7 @@ Before building your own custom layout, take a look at the existing form layout 
 - [`AccordionForm`](./AccordionForm.md) for long forms with collapsible sections
 - [`LongForm`](./LongForm.md) for long forms with a navigation sidebar
 - [`WizardForm`](./WizardForm.md) for multi-step forms
-- [`EditInDialog`](./EditInDialog.md) for sub-forms in a modal dialog
+- [`EditDialog`](./EditDialog.md) for sub-forms in a modal dialog
 - and [`Form`](./Form.md), a headless component to use as a base for your custom layouts
 
 ## Subscribing To Form Changes

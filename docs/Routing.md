@@ -239,4 +239,4 @@ If there are duplicates, you need to make sure to use only the same version as r
 }
 ```
 
-This may also happen inside a [Remix](https://remix.run/) application. See [Setting up react-admin for Remix](./Remix.md#setting-up-react-admin) for instructions to overcome that problem.
+This may also happen inside a [Remix](https://remix.run/) application. See [Setting up react-admin for Remix](./Remix.md#setting-up-react-admin-in-remix) for instructions to overcome that problem.

@@ -95,7 +95,7 @@ const useAuthState = (
             // If the data is undefined and the query isn't loading anymore, it means the query failed.
             // In that case, we set authenticated to false unless there's no authProvider.
             authenticated:
-                result.data ?? result.isLoading ? true : authProvider == null, // Optimisic
+                result.data ?? result.isLoading ? true : authProvider == null, // Optimistic
             isLoading: result.isLoading,
             error: result.error,
         };

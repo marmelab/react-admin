@@ -76,7 +76,7 @@ const useRoutesAndResourcesFromChildren = (
 ): [RoutesAndResources, AdminRouterStatus] => {
     // Gather custom routes and resources that were declared as direct children of CoreAdminRouter
     // e.g. Not returned from the child function (if any)
-    // We need to know right away wether some resources were declared to correctly
+    // We need to know right away whether some resources were declared to correctly
     // initialize the status at the next stop
     const doLogout = useLogout();
     const [
