@@ -237,7 +237,7 @@ With the configuration above, the possible filter keys are:
 
 ## Internationalization
 
-React-admin uses the keys of the filter configuration to display the field names. Each key goes through the standard [resource and field name translation system](./Translation.md#translating-resource-and-field-names), so you can customize them using a translation file.
+React-admin uses the keys of the filter configuration to display the field names. Each key goes through the standard [resource and field name translation system](./Translation.md#translation-files), so you can customize them using a translation file.
 
 ```jsx
 // in i18n/en.js

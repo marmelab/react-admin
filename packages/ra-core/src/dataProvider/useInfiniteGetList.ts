@@ -32,7 +32,7 @@ import { useDataProvider } from './useDataProvider';
  *
  * @example
  *
- * import { useInfinteGetList } from 'react-admin';
+ * import { useInfiniteGetList } from 'react-admin';
  *
  * const LatestNews = () => {
  *     const { data, total, isLoading, error, hasNextPage, fetchNextPage } = useInfiniteGetList(

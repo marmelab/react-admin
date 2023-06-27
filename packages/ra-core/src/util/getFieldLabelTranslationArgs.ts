@@ -67,7 +67,7 @@ const getSourceParts = (source: string) => {
     // remove digits, e.g. 'book.authors.2.categories.3.identifier.name' => 'book.authors.categories.identifier.name'
     const sourceWithoutDigits = source.replace(/\.\d+\./g, '.');
     // get final part, e.g. 'book.authors.2.categories.3.identifier.name' => 'identifier.name'
-    // we're not using a regexp here to avoid code sacnning alert "Polynomial regular expression used on uncontrolled data"
+    // we're not using a regexp here to avoid code scanning alert "Polynomial regular expression used on uncontrolled data"
     const parts = source.split('.');
     let lastPartWithDigits;
     parts.forEach((part, index) => {

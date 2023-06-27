@@ -60,7 +60,7 @@ That's enough to display the post show view:
 * `className`: passed to the root component
 * [`children`](#layout): the components that render the record fields
 * [`component`](#component): overrides the root component
-* [`disableAuthentication`](#`disableauthentication`): disable the authentication check
+* [`disableAuthentication`](#disableauthentication): disable the authentication check
 * [`emptyWhileLoading`](#loading-state)
 * [`queryOptions`](#queryoptions): options to pass to the react-query client
 * [`sx`](#sx-css-api): Override the styles

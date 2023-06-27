@@ -220,7 +220,7 @@ export const PostCreate = () => (
 ```
 {% endraw %}
 
-**Tip:** If you want to customize the _content_ of the tabs instead, for example to limit the width of the form, you should rather add an `sx` prop to the [`<TabbedForm.Tab>` component](#formtab).
+**Tip:** If you want to customize the _content_ of the tabs instead, for example to limit the width of the form, you should rather add an `sx` prop to the [`<TabbedForm.Tab>` component](#tabbedformtab).
 
 ## `sanitizeEmptyValues`
 

@@ -403,7 +403,7 @@ const SongList = () => (
 );
 ```
 
-Check [the Saved Queries Tutorial](./FilteringTutorial.md##saved-queries-let-users-save-filter-and-sort) to learn more.
+Check [the Saved Queries Tutorial](./FilteringTutorial.md#saved-queries-let-users-save-filter-and-sort) to learn more.
 
 Finally, react-admin offers low-level components and hooks to **build your own search UI**:
 
@@ -486,7 +486,7 @@ React-admin offers, out of the box, several form layouts:
 - [`<AccordionForm>`](./AccordionForm.md) for long forms with collapsible sections
 - [`<LongForm>`](./LongForm.md) for long forms with a navigation sidebar
 - [`<WizardForm>`](./WizardForm.md) for multi-step forms
-- [`<EditInDialog>`](./EditInDialog.md) for sub-forms in a modal dialog
+- [`<EditDialog>`](./EditDialog.md) for sub-forms in a modal dialog
 - and [`Form`](./Form.md), a headless component to use as a base for your custom layouts
 
 ### Input Components
@@ -506,7 +506,7 @@ Inside forms, you can use specialize [input components](./Inputs.md), designed f
 | Date                  | `'2022-10-23'`                                               | [`<DateInput>`](./DateInput.md)                                                                                                                                                                      |
 | Time                  | `'14:30:00'`                                                 | [`<TimeInput>`](./TimeInput.md)                                                                                                                                                                      |
 | Date & time           | `'2022-10-24T19:40:28.003Z'`                                 | [`<DateTimeInput>`](./DateTimeInput.md)                                                                                                                                                              |
-| Object                | `{ foo: 'bar' }`                                             | All inputs (see [ `source`](#source))                                                                                                                                                                |
+| Object                | `{ foo: 'bar' }`                                             | All inputs (see [ `source`](./Inputs.md#source))                                                                                                                                                                |
 | Enum                  | `'foo'`                                                      | [`<SelectInput>`](./SelectInput.md), [`<AutocompleteInput>`](./AutocompleteInput.md), [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md)                                                        |
 | Foreign key           | `42`                                                         | [`<ReferenceInput>`](./ReferenceInput.md)                                                                                                                                                            |
 | Array of objects      | `[{ item: 'jeans', qty: 3 }, { item: 'shirt', qty: 1 }]`     | [`<ArrayInput>`](./ArrayInput.md)                                                                                                                                                                    |
@@ -566,7 +566,7 @@ React-admin forms support the most common validation strategies:
 
 * [per field validators](./Validation.md#per-input-validation-built-in-field-validators),
 * [form validation](./Validation.md#global-validation),
-* [validation schema powered by yup or zod](./Validation.html#schema-validation),
+* [validation schema powered by yup or zod](./Validation.md#schema-validation),
 * [server-side validation](./Validation.md#server-side-validation).
 
 Here is an example of per-field validation:
@@ -809,7 +809,7 @@ To learn more about authentication, roles, and permissions, check out the follow
 - [`WithPermissions`](./WithPermissions.md)
 - [`useAuthProvider`](./useAuthProvider.md)
 - [`useAuthenticated`](./useAuthenticated.md)
-- [`useAuthstate`](./useAuthstate.md)
+- [`useAuthstate`](./useAuthState.md)
 - [`useGetIdentity`](./useGetIdentity.md)
 - [`useLogin`](./useLogin.md)
 - [`useLogout`](./useLogout.md)
@@ -979,7 +979,7 @@ These building blocks include:
 And if you want to create your building blocks, you can use any of the [75+ hooks](./Reference.md#hooks) that carry **headless, reusable logic**. To name a few of them:
 
 - [`useRecordContext`](./useRecordContext.md) to get the current record anywhere in the app
-- [`useWarnWhenUnsavedChanges`](./useWarnWhenUnsavedChanges.md) to warn the user when he tries to leave a page with unsaved changes
+- [`useWarnWhenUnsavedChanges`](./EditTutorial.md#warning-about-unsaved-changes) to warn the user when he tries to leave a page with unsaved changes
 - [`useSaveContext`](./useSaveContext.md) to tweak form submission
 - [`useTheme`](./Theming.md#changing-the-theme-programmatically) to change the theme programmatically
 
