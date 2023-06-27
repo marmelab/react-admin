@@ -14,6 +14,8 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 The actual completion is fetched from your Data Provider, based on the current record and input value, using the `dataProvider.getCompletion()` method. This allows you to use any completion API, such as [OpenAI Completion API](https://beta.openai.com/docs/api-reference/completions), [Anthropic](https://console.anthropic.com/docs/api), or your own completion model.
 
+You can test this component online in the [Enterprise Edition Storybook](https://react-admin.github.io/ra-enterprise/?path=/story/ra-ai-input-predictivetextinput--context).
+
 ## Usage
 
 Use `<PredictiveTextInput>` instead of `<TextInput>` in your forms:
@@ -393,3 +395,30 @@ const getParamsForPrompt = (prompt) => {
     return { key, value, record };
 }
 ```
+
+## Rich Text Editor
+
+If you want AI completions combined with a WYSIWYG editor for rich text, use [`<SmartRichTextInput>`](./SmartRichTextInput.md) instead of `<PredictiveTextInput>`.
+
+<video controls playsinline muted loop poster="https://marmelab.com/ra-enterprise/modules/assets/SmartRichTextInput.png" >
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/SmartRichTextInput.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+Use it just like `<PredictiveTextInput>`:
+
+```jsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { SmartRichTextInput } from '@react-admin/ra-ai';
+
+export const PostEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="title" />
+            <SmartRichTextInput source="body" />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+Check out the [`<SmartRichTextInput>` documentation](./SmartRichTextInput.md) for more details.
