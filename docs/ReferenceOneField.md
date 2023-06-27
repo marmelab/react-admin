@@ -107,7 +107,7 @@ By default, `<ReferenceOneField>` links to the edition page of the related recor
 </ReferenceOneField>
 ```
 
-You can also set the `link` prop to a string, which will be used as the link type. It can be either `edit`, `show`, a route path, or a fiunction returning a route path based on the given record.
+You can also set the `link` prop to a string, which will be used as the link type. It can be either `edit`, `show`, a route path, or a function returning a route path based on the given record.
 
 ```jsx
 <ReferenceOneField 
