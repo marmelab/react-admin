@@ -680,7 +680,7 @@ And if you want something super custom that react-admin doesn't support out of t
 
 ## AI-Powered Components
 
-React-admin leverages recent breakthroughs in AI to **boost user productivity**.
+React-admin leverages recent breakthroughs in Artificial Intelligence (AI) to **boost user productivity**.
 
 One example is [`<PredictiveTextInput>`](./PredictiveTextInput.md), which suggests completion for the input value, using your favorite AI backend. Users can accept the completion by pressing the `Tab` key. It's like Intellisense or Copilot for your forms.
 
@@ -709,7 +709,12 @@ const PersonEdit = () => (
 );
 ```
 
-See [the `<PredictiveTextInput>` documentation](./PredictiveTextInput.md) for more details.
+You can also use the [`<SmartRichTextInput>`](./SmartRichTextInput.md) component, which lets users edit HTML documents in WYSIWYG with superpowers:
+
+<video controls playsinline muted loop poster="https://marmelab.com/ra-enterprise/modules/assets/SmartRichTextInput.png" >
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/SmartRichTextInput.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 ## Fast
 
