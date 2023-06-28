@@ -16,7 +16,7 @@ import { Link } from '../Link';
  *
  * Relies on dataProvider.getList() returning a total property
  *
- * @example // Display the number of recorfds in the current resource (based on RezsourceContext)
+ * @example // Display the number of records in the current resource (based on ResourceContext)
  * <Count />
  *
  * @example // Display the number of posts

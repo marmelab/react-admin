@@ -109,7 +109,7 @@ You can provide the resource and record id explicitly if you are not in such con
 useSubscribeToRecord(event => { /* ... */ }, 'posts', 123);
 ```
 
-**Tip**: If your reason to subscribe to events on a record is to keep the record up to date, you should use [the `useGetOneLive` hook](#usegetonelive) instead.
+**Tip**: If your reason to subscribe to events on a record is to keep the record up to date, you should use [the `useGetOneLive` hook](./useGetOneLive.md) instead.
 
 ## Parameters
 

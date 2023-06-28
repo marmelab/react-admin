@@ -549,7 +549,7 @@ React-admin supports the most common validation strategies:
 
 * [per field validators](./Validation.md#per-input-validation-built-in-field-validators),
 * [form validation](./Validation.md#global-validation),
-* [validation schema powered by yup or zod](./Validation.html#schema-validation),
+* [validation schema powered by yup or zod](./Validation.md#schema-validation),
 * [server-side validation](./Validation.md#server-side-validation).
 
 ![Validation example](./img/validation.png)

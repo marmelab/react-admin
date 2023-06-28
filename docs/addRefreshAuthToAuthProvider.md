@@ -5,7 +5,7 @@ title: "addRefreshAuthToAuthProvider"
 
 # `addRefreshAuthToAuthProvider`
 
-This helper function wraps an existing [`authProvider`]('./Authentication.md') to support authentication token refreshing mechanisms.
+This helper function wraps an existing [`authProvider`](./Authentication.md) to support authentication token refreshing mechanisms.
 
 ## Usage
 
