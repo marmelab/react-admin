@@ -1,4 +1,3 @@
-'use client';
 import merge from 'lodash/merge';
 import get from 'lodash/get';
 import pluralize from 'pluralize';
