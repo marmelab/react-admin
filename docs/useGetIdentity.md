@@ -23,7 +23,7 @@ Once loaded, the `data` object contains the following properties:
 const { id, fullName, avatar } = data;
 ```
 
-`useGetIdentity` uses [react-query's `useQuery` hook](https://react-query-v3.tanstack.com/reference/useQuery) to call the `authProvider`.
+`useGetIdentity` uses [react-query's `useQuery` hook](https://tanstack.com/query/v3/docs/react/reference/useQuery) to call the `authProvider`.
 
 ## Usage
 
@@ -48,7 +48,7 @@ const PostDetail = ({ id }) => {
 
 ## Refreshing The Identity
 
-If your application contains a form letting the current user update their name and/or avatar, you may want to refresh the identity after the form is submitted. As `useGetIdentity` uses [react-query's `useQuery` hook](https://react-query-v3.tanstack.com/reference/useQuery) to call the `authProvider`, you can take advantage of the `refetch` function to do so:
+If your application contains a form letting the current user update their name and/or avatar, you may want to refresh the identity after the form is submitted. As `useGetIdentity` uses [react-query's `useQuery` hook](https://tanstack.com/query/v3/docs/react/reference/useQuery) to call the `authProvider`, you can take advantage of the `refetch` function to do so:
 
 ```jsx
 const IdentityForm = () => {
