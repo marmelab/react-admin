@@ -1,4 +1,5 @@
 export * from './AppBar';
+export * from './ApplicationUpdatedNotification';
 export * from './CardContentInner';
 export * from './Confirm';
 export * from './DashboardMenuItem';

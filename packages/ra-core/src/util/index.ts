@@ -31,3 +31,5 @@ export * from './shallowEqual';
 export * from './LabelPrefixContext';
 export * from './LabelPrefixContextProvider';
 export * from './useLabelPrefix';
+export * from './CheckForApplicationUpdate';
+export * from './useCheckForApplicationUpdate';

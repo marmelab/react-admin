@@ -40,6 +40,7 @@ const englishMessages: TranslationMessages = {
             open: 'Open',
             toggle_theme: 'Toggle Theme',
             select_columns: 'Columns',
+            update_application: 'Update Application',
         },
         boolean: {
             true: 'Yes',
@@ -158,6 +159,7 @@ const englishMessages: TranslationMessages = {
             canceled: 'Action cancelled',
             logged_out: 'Your session has ended, please reconnect.',
             not_authorized: "You're not authorized to access this resource.",
+            application_update_available: 'A new version is available.',
         },
         validation: {
             required: 'Required',
