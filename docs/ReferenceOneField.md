@@ -61,7 +61,7 @@ const BookShow = () => (
 | `children`     | Optional | `Element`                                   | -                                | The Field element used to render the referenced record                              |
 | `filter`       | Optional | `Object`                                    | `{}`                             | Used to filter referenced records                                                   |
 | `link`         | Optional | `string | Function`                         | `edit`                           | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
-| `queryOptions` | Optional | [`UseQueryOptions`](https://tanstack.com/query/v4/docs/reference/useQuery?from=reactQueryV3&original=https://react-query-v3.tanstack.com/reference/useQuery) | `{}` | `react-query` client options |
+| `queryOptions` | Optional | [`UseQueryOptions`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | `{}` | `react-query` client options |
 | `sort`         | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'ASC' }`  | Used to order referenced records                                                    |
 
 `<ReferenceOneField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
@@ -122,7 +122,7 @@ You can also set the `link` prop to a string, which will be used as the link typ
 
 ## `queryOptions`
 
-`<ReferenceOneField>` uses `react-query` to fetch the related record. You can set [any of `useQuery` options](https://react-query-v3.tanstack.com/reference/useQuery) via the the `queryOptions` prop.
+`<ReferenceOneField>` uses `react-query` to fetch the related record. You can set [any of `useQuery` options](https://tanstack.com/query/v3/docs/react/reference/useQuery) via the the `queryOptions` prop.
 
 For instance, if you want to disable the refetch on window focus for this query, you can use:
 
