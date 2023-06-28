@@ -166,6 +166,7 @@ title: "Index"
 * [`<SimpleList>`](./SimpleList.md)
 * [`<SimpleShowLayout>`](./SimpleShowLayout.md)
 * [`<SingleFieldList>`](./SingleFieldList.md)
+* [`<SmartRichTextInput>`](./SmartRichTextInput.md)<img class="icon" src="./img/premium.svg" />
 * [`<SortButton>`](./SortButton.md)
 * [`<StackedFilters>`](./StackedFilters.md)<img class="icon" src="./img/premium.svg" />
 

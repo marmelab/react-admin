@@ -171,3 +171,31 @@ const MyRichTextInput = ({ size, ...props }) => (
 );
 ```
 
+## AI Writing Assistant
+
+Modern AI tools can be a great help for editors. React-admin proposes an AI-powered writing assistant for the `<RichTextInput>` component, called [`<SmartRichTetInput>`](./SmartRichTextInput.md):
+
+<video controls playsinline muted loop poster="https://marmelab.com/ra-enterprise/modules/assets/SmartRichTextInput.png" >
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/SmartRichTextInput.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+`<SmartRichTextInput>` is a drop-in replacement for `<RichTextInput>`: 
+
+```jsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { SmartRichTextInput } from '@react-admin/ra-ai';
+
+export const PostEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="title" />
+            <SmartRichTextInput source="body" />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+`<SmartRichTextInput>` is available as part of the [ra-ai](https://marmelab.com/ra-enterprise/modules/ra-ai) enterprise package.
+
+

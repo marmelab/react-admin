@@ -76,6 +76,24 @@ You can choose a specific input type using the `type` attribute, for instance `t
 
 **Warning**: Do not use `type="number"`, or you'll receive a string as value (this is a [known React bug](https://github.com/facebook/react/issues/1425)). Instead, use [`<NumberInput>`](./NumberInput.md).
 
+## Rich Text
+
+If you want to let users edit rich text, use [`<RichTextInput>`](./RichTextInput.md) instead. This component leverages [TipTap](https://www.tiptap.dev/) to provide a WYSIWYG editor.
+
+```jsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { RichTextInput } from 'ra-input-rich-text';
+
+export const PostEdit = () => (
+	<Edit>
+		<SimpleForm>
+			<TextInput source="title" />
+			<RichTextInput source="body" />
+		</SimpleForm>
+	</Edit>
+);
+```
+
 ## Predictive Text Input
 
 An alternative to `<TextInput>` is [`<PredictiveTextInput>`](./PredictiveTextInput.md), which suggests completion for the input value, using your favorite AI backend. Users can accept the completion by pressing the `Tab` key. It's like Intellisense or Copilot for your forms.
