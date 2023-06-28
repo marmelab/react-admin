@@ -1,4 +1,3 @@
-'use client';
 /* eslint-disable eqeqeq */
 import fakeRestProvider from 'ra-data-fakerest';
 import { DataProvider, RaRecord } from 'ra-core';

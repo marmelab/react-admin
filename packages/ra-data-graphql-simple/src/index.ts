@@ -1,4 +1,3 @@
-'use client';
 import merge from 'lodash/merge';
 import buildDataProvider, { BuildQueryFactory, Options } from 'ra-data-graphql';
 import { DataProvider, Identifier } from 'ra-core';

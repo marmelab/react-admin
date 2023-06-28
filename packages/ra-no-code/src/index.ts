@@ -1,4 +1,3 @@
-'use client';
 export * from './Admin';
 export * from './ApplicationsDashboard';
 export * from './Root';
