@@ -1,4 +1,3 @@
-'use client';
 import { stringify } from 'query-string';
 import { fetchUtils, DataProvider } from 'ra-core';
 

@@ -1,4 +1,3 @@
-'use client';
 /* eslint-disable import/no-anonymous-default-export */
 import fakeRestProvider from 'ra-data-fakerest';
 
