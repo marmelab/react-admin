@@ -8,7 +8,7 @@ import {
 export const CheckForApplicationUpdate = (
     props: CheckForApplicationUpdateProps
 ) => {
-    const { updateMode, notification, ...rest } = props;
+    const { updateMode = 'manual', notification, ...rest } = props;
     const notify = useNotify();
 
     const onNewVersionAvailable = () => {
@@ -29,5 +29,5 @@ export const CheckForApplicationUpdate = (
 export interface CheckForApplicationUpdateProps
     extends Partial<UseCheckForApplicationUpdateOptions> {
     notification?: string | ReactElement;
-    updateMode: 'immediate' | 'manual';
+    updateMode?: 'immediate' | 'manual';
 }
