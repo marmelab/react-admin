@@ -19,8 +19,9 @@ import { DateField } from 'react-admin';
 | ---------- | -------- | ------- | ------- | -------------------------------------------------------------------------------------------------------- |
 | `locales`  | Optional | string  | ''      | Override the browser locale in the date formatting. Passed as first argument to `Intl.DateTimeFormat()`. |
 | `options`  | Optional | Object  | -       | Date formatting options. Passed as second argument to `Intl.DateTimeFormat()`.                           |
-| `showTime` | Optional | boolean | `false` | If true, show the time                                         |
-| `showDate` | Optional | boolean | `true` | If true, show the date                                          |
+| `showTime` | Optional | boolean | `false` | If true, show the time                                                                                   |
+| `showDate` | Optional | boolean | `true`  | If true, show the date                                                                                   |
+| `unix`     | Optional | boolean | `false` | If true, and the date value is a number, it will be multiplied by 1000 to convert it to milliseconds.    |   
 
 
 `<DateField>` also accepts the [common field props](./Fields.md#common-field-props).
