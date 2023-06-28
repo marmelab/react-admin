@@ -45,6 +45,7 @@ const DateFieldImpl = <
         showTime = false,
         showDate = true,
         source,
+        unix,
         ...rest
     } = props;
     const translate = useTranslate();
@@ -77,8 +78,10 @@ const DateFieldImpl = <
     const date =
         value instanceof Date
             ? value
-            : typeof value === 'string' || typeof value === 'number'
+            : typeof value === 'string'
             ? new Date(value)
+            : typeof value === 'number'
+            ? new Date(unix ? value * 1000 : value)
             : undefined;
 
     let dateOptions = options;
@@ -131,6 +134,7 @@ DateFieldImpl.propTypes = {
     options: PropTypes.object,
     showTime: PropTypes.bool,
     showDate: PropTypes.bool,
+    unix: PropTypes.bool,
 };
 DateFieldImpl.displayName = 'DateFieldImpl';
 
@@ -144,6 +148,7 @@ export interface DateFieldProps<
     options?: Intl.DateTimeFormatOptions;
     showTime?: boolean;
     showDate?: boolean;
+    unix?: boolean;
 }
 
 const toLocaleStringSupportsLocales = (() => {
