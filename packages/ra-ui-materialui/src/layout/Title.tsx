@@ -8,39 +8,41 @@ import { RaRecord, warning } from 'ra-core';
 import { PageTitleConfigurable } from './PageTitleConfigurable';
 
 export const Title = (props: TitleProps) => {
-    const { defaultTitle, title, preferenceKey, ...rest } = props;
-    const [container, setContainer] = useState(() =>
-        typeof document !== 'undefined'
-            ? document.getElementById('react-admin-title')
-            : null
-    );
+  const { defaultTitle, title, preferenceKey, nonconfigurable, ...rest } = props;
+  const [container, setContainer] = useState(() =>
+    typeof document !== 'undefined'
+      ? document.getElementById('react-admin-title')
+      : null
+  );
 
-    // on first mount, we don't have the container yet, so we wait for it
-    useEffect(() => {
-        setContainer(container => {
-            const isInTheDom =
-                typeof document !== 'undefined' &&
-                document.body.contains(container);
-            if (container && isInTheDom) return container;
-            return typeof document !== 'undefined'
-                ? document.getElementById('react-admin-title')
-                : null;
-        });
-    }, []);
+  // on first mount, we don't have the container yet, so we wait for it
+  useEffect(() => {
+    setContainer((container) => {
+      const isInTheDom =
+        typeof document !== 'undefined' && document.body.contains(container);
+      if (container && isInTheDom) return container;
+      return typeof document !== 'undefined'
+        ? document.getElementById('react-admin-title')
+        : null;
+    });
+  }, []);
 
-    if (!container) return null;
+  if (!container || nonconfigurable) return null; // Return null if nonconfigurable prop is true
 
-    warning(!defaultTitle && !title, 'Missing title prop in <Title> element');
+  warning(
+    !defaultTitle && !title,
+    'Missing title prop in <Title> element'
+  );
 
-    return createPortal(
-        <PageTitleConfigurable
-            title={title}
-            defaultTitle={defaultTitle}
-            preferenceKey={preferenceKey}
-            {...rest}
-        />,
-        container
-    );
+  return createPortal(
+    <PageTitleConfigurable
+      title={title}
+      defaultTitle={defaultTitle}
+      preferenceKey={preferenceKey}
+      {...rest}
+    />,
+    container
+  );
 };
 
 export const TitlePropType = PropTypes.oneOfType([
@@ -53,6 +55,7 @@ Title.propTypes = {
     className: PropTypes.string,
     record: PropTypes.any,
     title: TitlePropType,
+    nonconfigurable: PropTypes.bool,
 };
 
 export interface TitleProps {
