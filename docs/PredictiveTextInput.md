@@ -196,7 +196,7 @@ const myPromptGenerator = ({ name, value, resource, record = {} }) => {
 
 ## `queryOptions`
 
-`<PredictiveTextInput>` uses react-query to fetch the related record. You can set [any of `useQuery` options](https://react-query-v3.tanstack.com/reference/useQuery) via the the `queryOptions` prop.
+`<PredictiveTextInput>` uses react-query to fetch the related record. You can set [any of `useQuery` options](https://tanstack.com/query/v3/docs/react/reference/useQuery) via the the `queryOptions` prop.
 
 For instance, if you want to disable the refetch on window focus for this query, you can use:
 
