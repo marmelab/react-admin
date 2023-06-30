@@ -4,13 +4,20 @@ import FormatClear from '@mui/icons-material/FormatClear';
 import { useTranslate } from 'ra-core';
 import { useTiptapEditor } from '../useTiptapEditor';
 
-export const ClearButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
+export interface ClearButtonsProps {
+  label?: string;
+}
+
+export const ClearButtons = (props: Omit<ToggleButtonProps, 'value'> & ClearButtonsProps) => {
     const editor = useTiptapEditor();
     const translate = useTranslate();
 
-    const label = translate('ra.tiptap.clear_format', {
-        _: 'Clear format',
-    });
+    const label =
+        props.label ||
+        translate("ra.tiptap.clear_format", {
+        _: "Clear format",
+        });
+
 
     return (
         <ToggleButton

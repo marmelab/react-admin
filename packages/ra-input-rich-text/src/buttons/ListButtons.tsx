@@ -13,16 +13,25 @@ import FormatListNumbered from '@mui/icons-material/FormatListNumbered';
 import { useTranslate } from 'ra-core';
 import { useTiptapEditor } from '../useTiptapEditor';
 
-export const ListButtons = (props: ToggleButtonGroupProps) => {
+export interface ListButtonsProps {
+  bulletListLabel?: string;
+  numberListLabel?: string;
+}
+
+export const ListButtons = (props: ToggleButtonGroupProps & ListButtonsProps) => {
     const editor = useTiptapEditor();
     const translate = useTranslate();
 
-    const bulletListLabel = translate('ra.tiptap.list_bulleted', {
-        _: 'Bulleted list',
-    });
-    const numberListLabel = translate('ra.tiptap.list_numbered', {
-        _: 'Numbered list',
-    });
+    const bulletListLabel =
+        props.bulletListLabel ||
+        translate("ra.tiptap.list_bulleted", {
+        _: "Bulleted list",
+        });
+    const numberListLabel =
+        props.numberListLabel ||
+        translate("ra.tiptap.list_numbered", {
+        _: "Numbered list",
+        });
 
     const [value, setValue] = useState<string>();
 

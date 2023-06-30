@@ -15,15 +15,28 @@ import FormatAlignJustify from '@mui/icons-material/FormatAlignJustify';
 import { useTranslate } from 'ra-core';
 import { useTiptapEditor } from '../useTiptapEditor';
 
-export const AlignmentButtons = (props: ToggleButtonGroupProps) => {
+export interface AlignmentButtonsProps {
+  leftLabel?: string;
+  rightLabel?: string;
+  centerLabel?: string;
+  justifyLabel?: string;
+}
+
+export const AlignmentButtons = (props: ToggleButtonGroupProps & AlignmentButtonsProps) => {
     const editor = useTiptapEditor();
     const translate = useTranslate();
     const [value, setValue] = useState<string>('left');
 
-    const leftLabel = translate('ra.tiptap.align_left', { _: 'Align left' });
-    const rightLabel = translate('ra.tiptap.align_right', { _: 'Align right' });
-    const centerLabel = translate('ra.tiptap.align_center', { _: 'Center' });
-    const justifyLabel = translate('ra.tiptap.align_justify', { _: 'Justify' });
+    const leftLabel =
+        props.leftLabel || translate("ra.tiptap.align_left", { _: "Align left" });
+    const rightLabel =
+        props.rightLabel ||
+        translate("ra.tiptap.align_right", { _: "Align right" });
+    const centerLabel =
+        props.centerLabel || translate("ra.tiptap.align_center", { _: "Center" });
+    const justifyLabel =
+        props.justifyLabel ||
+        translate("ra.tiptap.align_justify", { _: "Justify" });
 
     useEffect(() => {
         const handleUpdate = () => {

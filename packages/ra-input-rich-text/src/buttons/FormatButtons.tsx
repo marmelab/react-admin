@@ -15,30 +15,48 @@ import Code from '@mui/icons-material/Code';
 import { useTranslate } from 'ra-core';
 import { useTiptapEditor } from '../useTiptapEditor';
 
-export const FormatButtons = (props: ToggleButtonGroupProps) => {
+export interface FormatButtonsProps {
+  boldLabel?: string;
+  italicLabel?: string;
+  underlineLabel?: string;
+  strikeLabel?: string;
+  codeLabel?: string;
+}
+
+export const FormatButtons = (props: ToggleButtonGroupProps & FormatButtonsProps) => {
     const editor = useTiptapEditor();
     const translate = useTranslate();
     const [values, setValues] = useState<string[]>([]);
 
-    const boldLabel = translate('ra.tiptap.bold', {
-        _: 'Bold',
-    });
+    const boldLabel =
+        props.boldLabel ||
+        translate("ra.tiptap.bold", {
+        _: "Bold",
+        });
 
-    const italicLabel = translate('ra.tiptap.italic', {
-        _: 'Italic',
-    });
+    const italicLabel =
+        props.italicLabel ||
+        translate("ra.tiptap.italic", {
+        _: "Italic",
+        });
 
-    const underlineLabel = translate('ra.tiptap.underline', {
-        _: 'Underline',
-    });
+    const underlineLabel =
+        props.underlineLabel ||
+        translate("ra.tiptap.underline", {
+        _: "Underline",
+        });
 
-    const strikeLabel = translate('ra.tiptap.strike', {
-        _: 'Strikethrough',
-    });
+    const strikeLabel =
+        props.strikeLabel ||
+        translate("ra.tiptap.strike", {
+        _: "Strikethrough",
+        });
 
-    const codeLabel = translate('ra.tiptap.code', {
-        _: 'Code',
-    });
+    const codeLabel =
+        props.codeLabel ||
+        translate("ra.tiptap.code", {
+        _: "Code",
+        });
 
     useEffect(() => {
         const handleUpdate = () => {

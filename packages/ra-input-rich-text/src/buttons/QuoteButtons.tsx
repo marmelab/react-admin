@@ -5,13 +5,19 @@ import FormatQuote from '@mui/icons-material/FormatQuote';
 import { useTranslate } from 'ra-core';
 import { useTiptapEditor } from '../useTiptapEditor';
 
-export const QuoteButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
+export interface QuoteButtonsProps {
+  label?: string;
+}
+
+export const QuoteButtons = (props: Omit<ToggleButtonProps, 'value'> & QuoteButtonsProps) => {
     const editor = useTiptapEditor();
     const translate = useTranslate();
     const [isActive, setIsActive] = useState(false);
 
-    const label = translate('ra.tiptap.blockquote', {
-        _: 'Blockquote',
+    const label =
+        props.label ||
+        translate("ra.tiptap.blockquote", {
+        _: "Blockquote",
     });
 
     useEffect(() => {

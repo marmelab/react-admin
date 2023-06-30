@@ -26,7 +26,12 @@ enum ColorType {
     BACKGROUND = 'background',
 }
 
-export const ColorButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
+export interface ColorButtonsProps {
+  colorLabel?: string;
+  highlightLabel?: string;
+}
+
+export const ColorButtons = (props: Omit<ToggleButtonProps, 'value'> & ColorButtonsProps) => {
     const translate = useTranslate();
     const editor = useTiptapEditor();
     const [showColorChoiceDialog, setShowColorChoiceDialog] = React.useState<
@@ -34,8 +39,11 @@ export const ColorButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
     >(false);
     const [colorType, setColorType] = React.useState<ColorType>(ColorType.FONT);
 
-    const colorLabel = translate('ra.tiptap.color', { _: 'Color' });
-    const highlightLabel = translate('ra.tiptap.highlight', { _: 'Highlight' });
+  const colorLabel =
+    props.colorLabel || translate("ra.tiptap.color", { _: "Color" });
+  const highlightLabel =
+    props.highlightLabel ||
+    translate("ra.tiptap.highlight", { _: "Highlight" });
 
     const displayColorChoiceDialog = (colorType: ColorType) => {
         setShowColorChoiceDialog(true);

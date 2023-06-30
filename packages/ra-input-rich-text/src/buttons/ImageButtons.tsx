@@ -4,15 +4,22 @@ import ImageIcon from '@mui/icons-material/Image';
 import { useTranslate } from 'ra-core';
 import { useTiptapEditor } from '../useTiptapEditor';
 
-export const ImageButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
+export interface ImageButtonsProps {
+    label?: string;
+    promptLabel?: string;
+}
+
+
+export const ImageButtons = (props: Omit<ToggleButtonProps, 'value'> & ImageButtonsProps) => {
     const translate = useTranslate();
     const editor = useTiptapEditor();
 
-    const label = translate('ra.tiptap.image', { _: 'Image' });
+    const label = props.label || translate("ra.tiptap.image", { _: "Image" });
 
     const addImage = React.useCallback(() => {
         const url = window.prompt(
-            translate('ra.tiptap.image_dialog', { _: 'Image URL' })
+        props.promptLabel ||
+            translate("ra.tiptap.image_dialog", { _: "Image URL" })
         );
 
         if (url) {

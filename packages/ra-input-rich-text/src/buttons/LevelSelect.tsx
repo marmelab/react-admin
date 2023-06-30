@@ -85,9 +85,12 @@ export const LevelSelect = (props: LevelSelectProps) => {
         <Root>
             <List
                 component="nav"
-                aria-label={translate('ra.tiptap.select_level', {
-                    _: 'Select the level',
-                })}
+                aria-label={
+                    props.selectLevelLabel ||
+                    translate("ra.tiptap.select_level", {
+                        _: "Select the level",
+                    })
+                }
                 dense
                 disablePadding
                 className={classes.list}
@@ -96,9 +99,12 @@ export const LevelSelect = (props: LevelSelectProps) => {
                     button
                     aria-haspopup="true"
                     aria-controls="level-menu"
-                    aria-label={translate('ra.tiptap.current_level', {
-                        _: 'Current level',
-                    })}
+                    aria-label={
+                        props.currentLevelLabel ||
+                        translate("ra.tiptap.current_level", {
+                        _: "Current level",
+                        })
+                    }
                     disabled={!editor?.isEditable}
                     onClick={handleClickListItem}
                     className={clsx({
@@ -224,4 +230,6 @@ const Root = styled('div')(({ theme }) => ({
 
 export type LevelSelectProps = {
     size?: 'small' | 'medium' | 'large';
+    selectLevelLabel?: string;
+    currentLevelLabel?: string;
 };

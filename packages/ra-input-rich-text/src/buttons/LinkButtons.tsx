@@ -6,13 +6,20 @@ import { useTranslate } from 'ra-core';
 import { useTiptapEditor } from '../useTiptapEditor';
 import { useEditorSelection } from './useEditorSelection';
 
-export const LinkButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
+export interface LinkButtonsProps {
+  label?: string;
+}
+
+
+export const LinkButtons = (props: Omit<ToggleButtonProps, 'value'> & LinkButtonsProps) => {
     const editor = useTiptapEditor();
     const translate = useTranslate();
     const currentTextSelection = useEditorSelection();
 
-    const label = translate('ra.tiptap.link', {
-        _: 'Add a link',
+    const label =
+        props.label ||
+        translate("ra.tiptap.link", {
+        _: "Add a link",
     });
 
     const handleClick = () => {
