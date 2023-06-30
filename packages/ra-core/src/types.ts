@@ -1,6 +1,7 @@
 import { ComponentType, ReactElement, ReactNode } from 'react';
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 import { AuthActionType } from './auth/types';
+import { ApplicationUpdateMode } from './util';
 
 /**
  * data types
@@ -322,6 +323,7 @@ export interface CoreLayoutProps {
         hasDashboard?: boolean;
     }>;
     title?: TitleComponent;
+    updateMode?: ApplicationUpdateMode;
 }
 
 export type LayoutComponent = ComponentType<CoreLayoutProps>;

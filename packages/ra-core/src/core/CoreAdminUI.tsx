@@ -3,7 +3,7 @@ import { ComponentType, useEffect, isValidElement, createElement } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import { CoreAdminRoutes } from './CoreAdminRoutes';
-import { Ready } from '../util';
+import { ApplicationUpdateMode, Ready } from '../util';
 import {
     TitleComponent,
     LoginComponent,
@@ -35,6 +35,7 @@ export interface CoreAdminUIProps {
     requireAuth?: boolean;
     ready?: ComponentType;
     title?: TitleComponent;
+    updateMode?: ApplicationUpdateMode;
 }
 
 export const CoreAdminUI = (props: CoreAdminUIProps) => {
@@ -51,6 +52,7 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
         ready = Ready,
         title = 'React Admin',
         requireAuth = false,
+        updateMode,
     } = props;
 
     useEffect(() => {
@@ -92,6 +94,7 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
                         requireAuth={requireAuth}
                         ready={ready}
                         title={title}
+                        updateMode={updateMode}
                     >
                         {children}
                     </CoreAdminRoutes>

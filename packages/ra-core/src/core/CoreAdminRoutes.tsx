@@ -3,7 +3,7 @@ import { useState, useEffect, Children, ComponentType } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { WithPermissions, useCheckAuth } from '../auth';
-import { useTimeout } from '../util';
+import { ApplicationUpdateMode, useTimeout } from '../util';
 import { useScrollToTop, useCreatePath } from '../routing';
 import {
     AdminChildren,
@@ -35,6 +35,7 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
         requireAuth,
         ready: Ready,
         title,
+        updateMode,
     } = props;
 
     const [canRender, setCanRender] = useState(!requireAuth);
@@ -77,7 +78,12 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
                 path="/*"
                 element={
                     <div>
-                        <Layout dashboard={dashboard} menu={menu} title={title}>
+                        <Layout
+                            dashboard={dashboard}
+                            menu={menu}
+                            title={title}
+                            updateMode={updateMode}
+                        >
                             <Routes>
                                 {customRoutesWithLayout}
                                 {Children.map(resources, resource => (
@@ -126,6 +132,7 @@ export interface CoreAdminRoutesProps extends CoreLayoutProps {
     loading: LoadingComponent;
     requireAuth?: boolean;
     ready?: ComponentType;
+    updateMode?: ApplicationUpdateMode;
 }
 
 const defaultAuthParams = { params: { route: 'dashboard' } };

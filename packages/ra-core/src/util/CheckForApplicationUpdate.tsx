@@ -29,5 +29,4 @@ export const CheckForApplicationUpdate = (
 export interface CheckForApplicationUpdateProps
     extends Partial<UseCheckForApplicationUpdateOptions> {
     notification?: string | ReactElement;
-    updateMode?: 'immediate' | 'manual';
 }

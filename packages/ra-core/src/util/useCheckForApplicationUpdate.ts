@@ -18,17 +18,24 @@ export const useCheckForApplicationUpdate = (
         url = window.location.href,
         checkInterval = ONE_HOUR,
         onNewVersionAvailable,
+        updateMode = process.env.NODE_ENV === 'production'
+            ? 'manual'
+            : 'disabled',
     } = options;
     const currentHash = useRef<string>();
     const onCodeHasChanged = useEvent(onNewVersionAvailable);
 
     useEffect(() => {
+        if (updateMode === 'disabled') return;
+
         getHashForUrl(url).then(hash => {
             currentHash.current = hash;
         });
-    }, [url]);
+    }, [updateMode, url]);
 
     useEffect(() => {
+        if (updateMode === 'disabled') return;
+
         const interval = setInterval(() => {
             getHashForUrl(url).then(hash => {
                 if (currentHash.current !== hash) {
@@ -37,7 +44,7 @@ export const useCheckForApplicationUpdate = (
             });
         }, checkInterval);
         return () => clearInterval(interval);
-    }, [checkInterval, onCodeHasChanged, url]);
+    }, [checkInterval, onCodeHasChanged, updateMode, url]);
 };
 
 const getHashForUrl = async (url: string) => {
@@ -62,4 +69,7 @@ export interface UseCheckForApplicationUpdateOptions {
     onNewVersionAvailable: () => void;
     checkInterval?: number;
     url?: string;
+    updateMode?: ApplicationUpdateMode;
 }
+
+export type ApplicationUpdateMode = 'disabled' | 'immediate' | 'manual';

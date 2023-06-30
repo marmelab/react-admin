@@ -16,7 +16,7 @@ import { Error, ErrorProps } from './Error';
 import { SkipNavigationButton } from '../button';
 import { useSidebarState } from './useSidebarState';
 import { Inspector } from '../preferences';
-import { ApplicationUpdatedNotification } from '..';
+import { ApplicationUpdatedNotification } from './ApplicationUpdatedNotification';
 
 export const Layout = (props: LayoutProps) => {
     const {
@@ -29,6 +29,7 @@ export const Layout = (props: LayoutProps) => {
         menu: Menu = DefaultMenu,
         sidebar: Sidebar = DefaultSidebar,
         title,
+        updateMode,
         ...rest
     } = props;
 
@@ -67,6 +68,7 @@ export const Layout = (props: LayoutProps) => {
                 </main>
                 <Inspector />
                 <CheckForApplicationUpdate
+                    updateMode={updateMode}
                     notification={<ApplicationUpdatedNotification />}
                 />
             </div>
