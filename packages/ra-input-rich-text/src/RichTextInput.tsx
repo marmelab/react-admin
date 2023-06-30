@@ -84,6 +84,7 @@ export const RichTextInput = (props: RichTextInputProps) => {
         readOnly = false,
         source,
         toolbar,
+        useJson
     } = props;
 
     const resource = useResourceContext(props);
@@ -156,9 +157,15 @@ export const RichTextInput = (props: RichTextInputProps) => {
                 return;
             }
 
-            const html = editor.getHTML();
-            field.onChange(html);
-            field.onBlur();
+            if (!useJson) {
+                const html = editor.getHTML();
+                field.onChange(html);
+                field.onBlur();
+            } else {
+                const json = editor.getJSON();
+                field.onChange(json);
+                field.onBlur();
+            }
         };
 
         editor.on('update', handleEditorUpdate);
@@ -302,6 +309,7 @@ export type RichTextInputProps = CommonInputProps &
         readOnly?: boolean;
         editorOptions?: Partial<EditorOptions>;
         toolbar?: ReactNode;
+        useJson?: boolean;
     };
 
 export type RichTextInputContentProps = {
