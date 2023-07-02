@@ -33,7 +33,7 @@ const AuthorShow = () => (
             <ReferenceManyField label="Books" reference="books" target="author_id">
               <Datagrid>
                 <TextField source="title" />
-                <TextField source="year" />
+                <TextField source="published_at" />
               </Datagrid>
             </ReferenceManyField>
         </SimpleShowLayout>
@@ -63,7 +63,7 @@ export const AuthorShow = () => (
       <ReferenceManyField label="Books" reference="books" target="author_id">
         <Datagrid>
           <TextField source="title" />
-          <TextField source="year" />
+          <TextField source="published_at" />
         </Datagrid>
       </ReferenceManyField>
     </SimpleShowLayout>
@@ -139,7 +139,7 @@ export const AuthorShow = () => (
       <ReferenceManyField label="Books" reference="books" target="author_id">
         <Datagrid>
           <TextField source="title" />
-          <TextField source="year" />
+          <TextField source="published_at" />
         </Datagrid>
       </ReferenceManyField>
     </SimpleShowLayout>
@@ -197,7 +197,7 @@ By default, `<SimpleShowLayout>`, `<Datagrid>` and other layout components infer
 <ReferenceManyField reference="books" target="author_id">
   <Datagrid>
     <TextField source="title" />
-    <TextField source="year" />
+    <TextField source="published_at" />
   </Datagrid>
 </ReferenceManyField>
 ```
@@ -208,7 +208,7 @@ That's why you often need to set an explicit `label` on a `<ReferenceField>`:
 <ReferenceManyField label="Books" reference="books" target="author_id">
   <Datagrid>
     <TextField source="title" />
-    <TextField source="year" />
+    <TextField source="published_at" />
   </Datagrid>
 </ReferenceManyField>
 ```
@@ -219,7 +219,7 @@ React-admin uses [the i18n system](./Translation.md) to translate the label, so 
 <ReferenceManyField label="resources.authors.fields.books" reference="books" target="author_id">
   <Datagrid>
     <TextField source="title" />
-    <TextField source="year" />
+    <TextField source="published_at" />
   </Datagrid>
 </ReferenceManyField>
 ```
@@ -256,7 +256,7 @@ For instance, if you want to display the `books` of a given `author`, the `refer
 <ReferenceManyField label="Books" reference="books" target="author_id">
   <Datagrid>
     <TextField source="title" />
-    <TextField source="year" />
+    <TextField source="published_at" />
   </Datagrid>
 </ReferenceManyField>
 ```
@@ -299,7 +299,7 @@ Name of the field carrying the relationship on the referenced resource. For inst
 <ReferenceManyField label="Books" reference="books" target="author_id">
   <Datagrid>
     <TextField source="title" />
-    <TextField source="year" />
+    <TextField source="published_at" />
   </Datagrid>
 </ReferenceManyField>
 ```
