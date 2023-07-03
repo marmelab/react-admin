@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createTheme } from '@mui/material';
+import { colors, createTheme } from '@mui/material';
 import { DeleteButton } from './DeleteButton';
 import { AdminContext } from '../AdminContext';
 import frenchMessages from 'ra-language-french';
@@ -8,8 +8,13 @@ import englishMessages from 'ra-language-english';
 
 const theme = createTheme({
     palette: {
+        primary: {
+            light: colors.orange[100],
+            main: colors.orange[500],
+            contrastText: colors.grey[50],
+        },
         error: {
-            main: '#07BA8F',
+            main: colors.orange[500],
         },
     },
 });
@@ -41,5 +46,16 @@ export const Pessimistic = () => (
 export const WithUserDefinedPalette = () => (
     <AdminContext theme={theme}>
         <DeleteButton label="Delete" record={{ id: 1 }} />
+    </AdminContext>
+);
+
+export const ContainedWithUserDefinedPalette = () => (
+    <AdminContext theme={theme}>
+        <DeleteButton
+            variant="contained"
+            color="primary"
+            label="Delete"
+            record={{ id: 1 }}
+        />
     </AdminContext>
 );
