@@ -391,7 +391,7 @@ import { AutocompleteInput, ReferenceInput } from 'react-admin';
 </ReferenceInput>
 ```
 
-In that case, react-admin uses the [`recordRepresentation`](./Resource.md#recordrepresentation) of the related resource to display the record label. In the example above, `<AutocompleteInput>` uses the resource representation of the `authors` resource, which is the `name` property.
+In that case, react-admin uses the [`recordRepresentation`](./Resource.md#recordrepresentation) of the related resource to display the record label.
 
 But if you set the `optionText` prop, react-admin uses it instead of relying on `recordRepresentation`.
 
@@ -402,6 +402,7 @@ import { AutocompleteInput, ReferenceInput } from 'react-admin';
     <AutocompleteInput optionText="last_name" />
 </ReferenceInput>
 ```
+In the example above, `<AutocompleteInput>` uses the `last_name` property from `authors` resource instead of their `recordRepresentation`.
 
 ## `optionValue`
 
