@@ -277,6 +277,7 @@ title: "Index"
 * [`useRedirect`](./useRedirect.md)
 * [`useReference`](./useGetOne.md#aggregating-getone-calls)
 * [`useRefresh`](./useRefresh.md)
+* [`useRegisterMutationMiddleware`](./useRegisterMutationMiddleware.md)
 * [`useRemoveFromStore`](./useRemoveFromStore.md)
 * [`useResetStore`](./useResetStore.md)
 * [`useResourceAppLocation`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useresourceapplocation-access-current-resource-app-location)<img class="icon" src="./img/premium.svg" />
