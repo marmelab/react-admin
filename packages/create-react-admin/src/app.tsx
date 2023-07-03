@@ -1,16 +1,16 @@
-import React, { useReducer, useRef } from 'react';
+import React, { useReducer } from 'react';
 import { Box, Text, Newline } from 'ink';
 import {
     InitialProjectConfiguration,
     ProjectConfiguration,
 } from './ProjectState.js';
-import { generateProject } from './generateProject.js';
 import { StepDataProvider } from './StepDataProvider.js';
 import { StepAuthProvider } from './StepAuthProvider.js';
 import { StepResources } from './StepResources.js';
 import { StepInstall } from './StepInstall.js';
-import { useInstallDeps } from './useInstallDeps.js';
 import { StepName } from './StepName.js';
+import { StepGenerate } from './StepGenerate';
+import { StepRunInstall } from './StepRunInstall';
 
 type Props = {
     name: string | undefined;
@@ -61,6 +61,7 @@ const stepReducer = (
         case 'generate':
             return {
                 ...state,
+                messages: action.value.messages,
                 step: state.installer ? 'run-install' : 'finish',
             };
         case 'run-install':
@@ -80,8 +81,7 @@ export default function App({ name = 'my-admin' }: Props) {
         name: sanitizedName,
         step: sanitizedName === name ? 'data-provider' : 'name',
     });
-    const helpMessages = useRef([]);
-    const installDeps = useInstallDeps();
+
     const handleSubmit = (value: any) => {
         dispatch({ value });
     };
@@ -102,17 +102,10 @@ export default function App({ name = 'my-admin' }: Props) {
         return <StepInstall onSubmit={handleSubmit} />;
     }
     if (state.step === 'generate') {
-        generateProject(state).then(messages => {
-            helpMessages.current = messages;
-            dispatch({});
-        });
-        return <Text>Generating your application...</Text>;
+        return <StepGenerate config={state} onCompleted={handleSubmit} />;
     }
     if (state.step === 'run-install') {
-        installDeps(state).then(() => {
-            dispatch({});
-        });
-        return <Text>Installing dependencies...</Text>;
+        return <StepRunInstall config={state} onCompleted={handleSubmit} />;
     }
     return (
         <>
@@ -144,7 +137,7 @@ export default function App({ name = 'my-admin' }: Props) {
                 </Box>
             )}
             <Box marginBottom={1}>
-                {helpMessages.current.map((line, index) => (
+                {state.messages.map((line, index) => (
                     <Text key={index}>{line}</Text>
                 ))}
             </Box>
