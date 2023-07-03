@@ -219,7 +219,7 @@ React-admin uses [the i18n system](./Translation.md) to translate the label, so 
 <ReferenceManyField label="resources.authors.fields.books" reference="books" target="author_id">
   <Datagrid>
     <TextField source="title" />
-    <TextField source="published_at" />
+    <DateField source="published_at" />
   </Datagrid>
 </ReferenceManyField>
 ```
