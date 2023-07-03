@@ -8,7 +8,7 @@ import { RaRecord, warning } from 'ra-core';
 import { PageTitleConfigurable } from './PageTitleConfigurable';
 
 export const Title = (props: TitleProps) => {
-  const { defaultTitle, title, preferenceKey, nonconfigurable, ...rest } = props;
+  const { defaultTitle, title, preferenceKey, nonConfigurable, ...rest } = props;
   const [container, setContainer] = useState(() =>
     typeof document !== 'undefined'
       ? document.getElementById('react-admin-title')
