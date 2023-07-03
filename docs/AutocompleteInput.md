@@ -145,6 +145,12 @@ const choices = possibleValues.map(value => ({ id: value, name: ucfirst(value) }
 
 To allow users to add new options, pass a React element as the `create` prop. `<AutocompleteInput>` will then render a menu item at the bottom of the list, which will render the passed element when clicked.
 
+<video controls autoplay playsinline muted loop>
+  <source src="./img/autocomplete-input-with-create.webm" type="video/webm"/>
+  <source src="./img/autocomplete-input-with-create.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 {% raw %}
 ```jsx
 import { CreateCategory } from './CreateCategory';
@@ -800,7 +806,7 @@ const CreateCategory = () => {
 
 **Tip:** As showcased in this example, react-admin provides a convenient hook for accessing the filter the user has already input in the `<AutocompleteInput>`: `useCreateSuggestionContext`.
 
-The `Create %{item}` option will only be displayed once the user has already set a filter (by typing in some input). If you expect your users to create new items often, you can make this more user-friendly by adding a placeholder text like this:
+The `Create %{item}%` option will only be displayed once the user has already set a filter (by typing in some input). If you expect your users to create new items often, you can make this more user-friendly by adding a placeholder text like this:
 
 {% raw %}
 ```diff
