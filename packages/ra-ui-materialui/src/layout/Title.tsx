@@ -9,12 +9,13 @@ import { PageTitleConfigurable } from './PageTitleConfigurable';
 
 export const Title = (props: TitleProps) => {
   const { defaultTitle, title, preferenceKey, nonConfigurable, ...rest } = props;
-  const [container, setContainer] = useState(() =>
-    typeof document !== 'undefined'
-      ? document.getElementById('react-admin-title')
-      : null
-  );
-
+const [container, setContainer] = useState(() => {
+  if (typeof document !== 'undefined') {
+    return document.getElementById('react-admin-title');
+  } else {
+    return null;
+  }
+});
   // on first mount, we don't have the container yet, so we wait for it
   useEffect(() => {
     setContainer((container) => {
@@ -27,22 +28,29 @@ export const Title = (props: TitleProps) => {
     });
   }, []);
 
-  if (!container || nonconfigurable) return null; // Return null if nonconfigurable prop is true
+  if (!container) return null; // Return null if nonconfigurable prop is true
 
   warning(
     !defaultTitle && !title,
     'Missing title prop in <Title> element'
   );
 
-  return createPortal(
-    <PageTitleConfigurable
-      title={title}
-      defaultTitle={defaultTitle}
-      preferenceKey={preferenceKey}
-      {...rest}
-    />,
-    container
-  );
+ if (nonconfigurable) {
+    return createPortal(
+      <PageTitle {...rest} />,
+      container
+    );
+  } else {
+    return createPortal(
+      <PageTitleConfigurable
+        title={title}
+        defaultTitle={defaultTitle}
+        preferenceKey={preferenceKey}
+        {...rest}
+      />,
+      container
+    );
+  }
 };
 
 export const TitlePropType = PropTypes.oneOfType([
@@ -64,4 +72,5 @@ export interface TitleProps {
     record?: Partial<RaRecord>;
     title?: string | ReactElement;
     preferenceKey?: string;
+    nonconfigurable?: boolean;
 }
