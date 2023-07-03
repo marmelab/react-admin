@@ -33,6 +33,7 @@ import {
     useTranslate,
     warning,
     useGetRecordRepresentation,
+    useEvent,
 } from 'ra-core';
 import {
     SupportCreateSuggestionOptions,
@@ -151,7 +152,7 @@ export const AutocompleteInput = <
         matchSuggestion,
         margin,
         fieldState: fieldStateOverride,
-        filterToQuery = DefaultFilterToQuery,
+        filterToQuery: filterToQueryProp = DefaultFilterToQuery,
         formState: formStateOverride,
         multiple = false,
         noOptionsText,
@@ -174,6 +175,8 @@ export const AutocompleteInput = <
         variant,
         ...rest
     } = props;
+
+    const filterToQuery = useEvent(filterToQueryProp);
 
     const {
         allChoices,
