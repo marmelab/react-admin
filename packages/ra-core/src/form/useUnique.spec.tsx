@@ -32,9 +32,7 @@ describe('useUnique', () => {
         await screen.findByDisplayValue('John Doe');
 
         fireEvent.click(screen.getByText('Submit'));
-        await screen.findByText('Must be unique', undefined, {
-            timeout: 10000,
-        });
+        await screen.findByText('Must be unique');
         expect(dataProvider.getList).toHaveBeenCalledWith('users', {
             filter: {
                 name: 'John Doe',
@@ -49,7 +47,7 @@ describe('useUnique', () => {
             },
         });
         expect(dataProvider.create).not.toHaveBeenCalled();
-    }, 15000);
+    });
 
     it('should not show the default error when the field value does not already exist', async () => {
         const dataProvider = baseDataProvider({
