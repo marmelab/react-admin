@@ -1,10 +1,10 @@
-import * as React from 'react';
 import { colors, createTheme } from '@mui/material';
-import { DeleteButton } from './DeleteButton';
-import { AdminContext } from '../AdminContext';
-import frenchMessages from 'ra-language-french';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
+import frenchMessages from 'ra-language-french';
+import * as React from 'react';
+import { AdminContext } from '../AdminContext';
+import { DeleteButton } from './DeleteButton';
 
 const theme = createTheme({
     palette: {
