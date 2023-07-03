@@ -11,6 +11,7 @@ export const authProvider: AuthProvider = {
         );
 
         if (user) {
+            // eslint-disable-next-line no-unused-vars
             let { password, ...userToPersist } = user;
             localStorage.setItem('user', JSON.stringify(userToPersist));
             return Promise.resolve();
@@ -29,7 +30,9 @@ export const authProvider: AuthProvider = {
     checkError: () => Promise.resolve(),
     checkAuth: () =>
         localStorage.getItem('user') ? Promise.resolve() : Promise.reject(),
-    getPermissions: () => Promise.reject('Unknown method'),
+    getPermissions: () => {
+        return Promise.resolve(undefined);
+    },
     getIdentity: () => {
         const persistedUser = localStorage.getItem('user');
         const user = persistedUser ? JSON.parse(persistedUser) : null;

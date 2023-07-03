@@ -4,6 +4,7 @@ import { CoreAdminProps, localStorageStore } from 'ra-core';
 import { AdminUI, AdminContext, RaThemeOptions } from 'ra-ui-materialui';
 
 import { defaultI18nProvider } from './defaultI18nProvider';
+const defaultStore = localStorageStore();
 
 /**
  * Main admin component, entry point to the application.
@@ -98,7 +99,7 @@ export const Admin = (props: AdminProps) => {
         dataProvider,
         disableTelemetry,
         history,
-        i18nProvider,
+        i18nProvider = defaultI18nProvider,
         layout,
         loading,
         loginPage,
@@ -107,7 +108,7 @@ export const Admin = (props: AdminProps) => {
         notification,
         queryClient,
         requireAuth,
-        store,
+        store = defaultStore,
         ready,
         theme,
         lightTheme,
@@ -154,11 +155,6 @@ export const Admin = (props: AdminProps) => {
             </AdminUI>
         </AdminContext>
     );
-};
-
-Admin.defaultProps = {
-    i18nProvider: defaultI18nProvider,
-    store: localStorageStore(),
 };
 
 export default Admin;

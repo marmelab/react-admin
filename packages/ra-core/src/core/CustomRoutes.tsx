@@ -7,7 +7,7 @@ import { ReactNode } from 'react';
  * @param props.noLayout A boolean indicating whether to render the routes outside the Layout. Defaults to false.
  * @returns Nothing. This is a configuration component.
  */
-export const CustomRoutes = (props: CustomRoutesProps) => {
+export const CustomRoutes = (_props: CustomRoutesProps) => {
     return null;
 };
 

@@ -15,8 +15,8 @@ describe('useLogin', () => {
             };
             const authProvider = {
                 login: () => Promise.resolve(),
-                checkError: error => Promise.resolve(),
-                checkAuth: params => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                checkAuth: () => Promise.resolve(),
                 logout: () => Promise.resolve(),
                 getIdentity: () => Promise.resolve({ id: 'joe' }),
                 getPermissions: () => Promise.resolve(),
@@ -42,8 +42,8 @@ describe('useLogin', () => {
             };
             const authProvider = {
                 login: () => Promise.resolve({ redirectTo: '/foo' }),
-                checkError: error => Promise.resolve(),
-                checkAuth: params => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                checkAuth: () => Promise.resolve(),
                 logout: () => Promise.resolve(),
                 getIdentity: () => Promise.resolve({ id: 'joe' }),
                 getPermissions: () => Promise.resolve(),
@@ -71,8 +71,8 @@ describe('useLogin', () => {
             };
             const authProvider = {
                 login: () => Promise.resolve({ redirectTo: false }),
-                checkError: error => Promise.resolve(),
-                checkAuth: params => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                checkAuth: () => Promise.resolve(),
                 logout: () => Promise.resolve(),
                 getIdentity: () => Promise.resolve({ id: 'joe' }),
                 getPermissions: () => Promise.resolve(),

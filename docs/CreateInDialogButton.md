@@ -9,7 +9,11 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 It can be useful in case you want the ability to create a record linked by a reference to the currently edited record, or if you have a nested `<Datagrid>` inside a `<Show>` or an `<Edit>` view. 
 
-![CreateInDialogButton](https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/CreateInDialogButton.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/CreateInDialogButton.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/CreateInDialogButton.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 Note that this component doesn't use routing, so it doesn't change the URL. It's therefore not possible to bookmark the creation dialog, or to link to it from another page. If you need that functionality, use [`<CreateDialog>`](./CreateDialog.md) instead.
 
@@ -37,15 +41,15 @@ const CompanyShow = () => (
             <TextField source="name" />
             <TextField source="address" />
             <TextField source="city" />
+            <WithRecord render={record => (
+                  <CreateInDialogButton record={{ company_id: record.id }}>
+                      <SimpleForm>
+                          <TextInput source="first_name" />
+                          <TextInput source="last_name" />
+                      </SimpleForm>
+                  </CreateInDialogButton>
+              )} />
             <ReferenceManyField target="company_id" reference="employees">
-                <WithRecord render={record => (
-                    <CreateInDialogButton record={{ company_id: record.id }}>
-                        <SimpleForm>
-                            <TextInput source="first_name" />
-                            <TextInput source="last_name" />
-                        </SimpleForm>
-                    </CreateInDialogButton>
-                )} />
                 <Datagrid>
                     <TextField source="first_name" />
                     <TextField source="last_name" />

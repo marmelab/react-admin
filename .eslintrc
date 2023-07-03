@@ -1,5 +1,9 @@
+
 {
     "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "warnOnUnsupportedTypeScriptVersion": false
+    },
     "extends": ["react-app", "plugin:prettier/recommended"],
     "plugins": [
         "@typescript-eslint",
@@ -33,7 +37,8 @@
             { 
                 "argsIgnorePattern": "^_",
                 "varsIgnorePattern": "^_",
-                "caughtErrorsIgnorePattern": "^_"
+                "caughtErrorsIgnorePattern": "^_",
+                "ignoreRestSiblings": true
             }
         ]
     }

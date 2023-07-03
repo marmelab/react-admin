@@ -1,10 +1,4 @@
-import {
-    BaseSyntheticEvent,
-    useCallback,
-    useMemo,
-    useEffect,
-    useRef,
-} from 'react';
+import { BaseSyntheticEvent, useCallback, useMemo, useRef } from 'react';
 import {
     FieldValues,
     SubmitHandler,

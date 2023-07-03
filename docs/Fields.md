@@ -418,7 +418,7 @@ const BookList = () => (
    <List>
        <Datagrid>
             <TextField source="title" />
-            <WrapperField label="author" sortBy="author.last_name">
+            <WrapperField label="author" sortBy="author_last_name">
                 <TextField source="author_first_name" />
                 <TextField source="author_last_name" />
             </WrapperField>

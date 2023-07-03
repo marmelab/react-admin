@@ -29,29 +29,47 @@ export const PostCreate = () => (
 );
 ```
 
-`<SimpleForm>` calls react-hook-form's `useForm` hook, and places the result in a `FormProvider` component. This means you can take advantage of the [`useFormContext`](https://react-hook-form.com/api/useformcontext) and [`useFormState`](https://react-hook-form.com/api/useformstate) hooks to access the form state.
+`<SimpleForm>` calls react-hook-form's `useForm` hook, and places the result in a `FormProvider` component. This means you can take advantage of the [`useFormContext`](https://react-hook-form.com/docs/useformcontext) and [`useFormState`](https://react-hook-form.com/docs/useformstate) hooks to access the form state.
+
+## Props
 
 Here are all the props you can set on the `<SimpleForm>` component:
 
-* [`component`](#component)
-* [`defaultValues`](#defaultvalues)
-* [`id`](#id)
-* [`noValidate`](#novalidate)
-* [`onSubmit`](#onsubmit)
-* [`sanitizeEmptyValues`](#sanitizeemptyvalues)
-* [`sx`](#sx-css-api)
-* [`toolbar`](#toolbar)
-* [`validate`](#validate)
-* [`warnWhenUnsavedChanges`](#warnwhenunsavedchanges)
+| Prop                      | Required | Type               | Default | Description                                                |
+| ------------------------- | -------- | ------------------ | ------- | ---------------------------------------------------------- |
+| `children`                | Required | `element`          | -       | The form content.                                          |
+| `component`               | Optional | `elementType`      | `CardContent` | The component used to wrap the form.                |
+| `defaultValues`           | Optional | `object| function` | -       | The default values of the record.                          |
+| `id`                      | Optional | `string`           | -       | The id of the underlying `<form>` tag.                     |
+| `noValidate`              | Optional | `boolean`          | -       | Set to `true` to disable the browser's default validation. |
+| `onSubmit`                | Optional | `function`         | `save`  | A callback to call when the form is submitted.             |
+| `sanitize EmptyValues`    | Optional | `boolean`          | -       | Set to `true` to remove empty values from the form state.  |
+| `sx`                      | Optional | `object`           | -       | Custom styles                                              |
+| `toolbar`                 | Optional | `element`          | -       | The toolbar component.                                     |
+| `validate`                | Optional | `function`         | -       | A function to validate the form values.                    |
+| `warnWhen UnsavedChanges` | Optional | `boolean`          | -       | Set to `true` to warn the user when leaving the form with unsaved changes. |
 
-Additional props are passed to [the `useForm` hook](https://react-hook-form.com/api/useform).
+Additional props are passed to [the `useForm` hook](https://react-hook-form.com/docs/useform) and to [the material-ui `<Stack>` component](https://mui.com/material-ui/react-stack/).
 
-**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/api/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+## `children`
 
-```js
-const { isDirty } = useFormState(); // ✅
-const formState = useFormState(); // ❌ should deconstruct the formState      
+`<SimpleForm>` renders its children (usually Input components) row by row. It uses a [Material UI `<Stack>`](https://mui.com/material-ui/react-stack/).
+
+```jsx
+import { Create, SimpleForm, TextInput, RichTextInput, NumberInput } from 'react-admin';
+
+export const PostCreate = () => (
+    <Create>
+        <SimpleForm>
+            <TextInput source="title" />
+            <RichTextInput source="body" />
+            <NumberInput source="nb_views" />
+        </SimpleForm>
+    </Create>
+);
 ```
+
+You can also pass non-input children to build a custom form layout. See the [Complex Input Layout](#complex-input-layout) section for an example.
 
 ## `component`
 
@@ -477,6 +495,27 @@ const Separator = () => <Box pt="1em" />;
 ```
 {% endraw %}
 
+Before building your own custom layout, take a look at the existing form layout components provided by react-admin:
+
+- [`SimpleForm`](./SimpleForm.md) for a single-column layout
+- [`TabbedForm`](./TabbedForm.md) for a tabbed layout
+- [`AccordionForm`](./AccordionForm.md) for long forms with collapsible sections
+- [`LongForm`](./LongForm.md) for long forms with a navigation sidebar
+- [`WizardForm`](./WizardForm.md) for multi-step forms
+- [`EditDialog`](./EditDialog.md) for sub-forms in a modal dialog
+- and [`Form`](./Form.md), a headless component to use as a base for your custom layouts
+
+## Subscribing To Form Changes
+
+`<SimpleForm>` relies on [react-hook-form's `useForm`](https://react-hook-form.com/docs/useform) to manage the form state and validation. You can subscribe to form changes using the [`useFormContext`](https://react-hook-form.com/docs/useformcontext) and [`useFormState`](https://react-hook-form.com/docs/useformstate) hooks.
+ 
+**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/docs/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+
+```js
+const { isDirty } = useFormState(); // ✅
+const formState = useFormState(); // ❌ should deconstruct the formState      
+```
+
 ## Displaying Inputs Based On Permissions
 
 You can leverage [the `usePermissions` hook](./usePermissions.md) to display inputs if the user has the required permissions.
@@ -565,3 +604,137 @@ const PostEdit = () => (
 ```
 
 `<SimpleFormConfigurable>` accepts the same props as `<SimpleForm>`.
+
+## AutoSave
+
+In forms where users may spend a lot of time, it's a good idea to save the form automatically after a few seconds of inactivity. You can auto save the form content by using [the `<AutoSave>` component](./AutoSave.md).
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/AutoSave.webm" type="video/webm"/>
+  <source src="./img/AutoSave.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+{% raw %}
+```tsx
+import { AutoSave } from '@react-admin/ra-form-layout';
+import { Edit, SimpleForm, TextInput, DateInput, SelectInput, Toolbar } from 'react-admin';
+
+const AutoSaveToolbar = () => (
+    <Toolbar>
+        <AutoSave />
+    </Toolbar>
+);
+
+const PersonEdit = () => (
+    <Edit mutationMode="optimistic">
+        <SimpleForm
+            resetOptions={{ keepDirtyValues: true }}
+            toolbar={AutoSaveToolbar}
+        >
+            <TextInput source="first_name" />
+            <TextInput source="last_name" />
+            <DateInput source="dob" />
+            <SelectInput source="sex" choices={[
+                { id: 'male', name: 'Male' },
+                { id: 'female', name: 'Female' },
+            ]}/>
+        </SimpleForm>
+    </Edit>
+);
+```
+{% endraw %}
+
+Note that you **must** set the `<SimpleForm resetOptions>` prop to `{ keepDirtyValues: true }`. If you forget that prop, any change entered by the end user after the autosave but before its acknowledgement by the server will be lost.
+
+If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](https://marmelab.com/react-admin/Edit.html#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
+
+Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
+
+## Role-Based Access Control (RBAC)
+
+Fine-grained permissions control can be added by using the [`<SimpleForm>`](./AuthRBAC.md#simpleform) component provided by the `@react-admin/ra-rbac` package. 
+
+{% raw %}
+```jsx
+import { Edit, TextInput } from 'react-admin';
+import { SimpleForm } from '@react-admin/ra-rbac';
+
+const authProvider= {
+    // ...
+    getPermissions: () => Promise.resolve({
+        permissions: [
+            // 'delete' is missing
+            { action: ['list', 'edit'], resource: 'products' },
+            { action: 'write', resource: 'products.reference' },
+            { action: 'write', resource: 'products.width' },
+            { action: 'write', resource: 'products.height' },
+            // 'products.description' is missing
+            { action: 'write', resource: 'products.thumbnail' },
+            // 'products.image' is missing
+        ]
+    }),
+};
+
+const ProductEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="reference" />
+            <TextInput source="width" />
+            <TextInput source="height" />
+            {/* not displayed */}
+            <TextInput source="description" />
+            {/* not displayed */}
+            <TextInput source="image" />
+            <TextInput source="thumbnail" />
+            {/* no delete button */}
+        </SimpleForm>
+    </Edit>
+);
+```
+{% endraw %}
+
+Check [the RBAC `<SimpleForm>` component](./AuthRBAC.md#simpleform) documentation for more details.
+
+## Linking Two Inputs
+
+Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
+
+React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://react-hook-form.com/docs/usewatch) hook.
+
+```jsx
+import * as React from 'react';
+import { Edit, SimpleForm, SelectInput } from 'react-admin';
+import { useWatch } from 'react-hook-form';
+
+const countries = ['USA', 'UK', 'France'];
+const cities = {
+    USA: ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'],
+    UK: ['London', 'Birmingham', 'Glasgow', 'Liverpool', 'Bristol'],
+    France: ['Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice'],
+};
+const toChoices = items => items.map(item => ({ id: item, name: item }));
+
+const CityInput = props => {
+    const country = useWatch({ name: 'country' });
+    return (
+        <SelectInput
+            choices={country ? toChoices(cities[country]) : []}
+            {...props}
+        />
+    );
+};
+
+const OrderEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <SelectInput source="country" choices={toChoices(countries)} />
+            <CityInput source="cities" />
+        </SimpleForm>
+    </Edit>
+);
+
+export default OrderEdit;
+```
+
+**Tip:** If you'd like to avoid creating an intermediate component like `<CityInput>`, or are using an `<ArrayInput>`, you can use the [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs) component as an alternative.

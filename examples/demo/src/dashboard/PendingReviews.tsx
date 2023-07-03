@@ -72,19 +72,15 @@ const PendingReviews = () => {
                                 link={false}
                             >
                                 <FunctionField<Customer>
-                                    render={customer =>
-                                        customer ? (
-                                            <Avatar
-                                                src={`${customer.avatar}?size=32x32`}
-                                                sx={{
-                                                    bgcolor: 'background.paper',
-                                                }}
-                                                alt={`${customer.first_name} ${customer.last_name}`}
-                                            />
-                                        ) : (
-                                            ''
-                                        )
-                                    }
+                                    render={customer => (
+                                        <Avatar
+                                            src={`${customer.avatar}?size=32x32`}
+                                            sx={{
+                                                bgcolor: 'background.paper',
+                                            }}
+                                            alt={`${customer.first_name} ${customer.last_name}`}
+                                        />
+                                    )}
                                 />
                             </ReferenceField>
                         </ListItemAvatar>

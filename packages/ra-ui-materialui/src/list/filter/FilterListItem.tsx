@@ -1,6 +1,7 @@
 import * as React from 'react';
+import { isElement } from 'react-is';
 import { styled } from '@mui/material/styles';
-import { memo, isValidElement, ReactElement } from 'react';
+import { memo, ReactElement } from 'react';
 import {
     IconButton,
     ListItem,
@@ -176,7 +177,7 @@ export const FilterListItem = memo((props: FilterListItemProps) => {
             >
                 <ListItemText
                     primary={
-                        isValidElement(label)
+                        isElement(label)
                             ? label
                             : translate(label, { _: label })
                     }
@@ -232,7 +233,7 @@ export const FilterListItemClasses = {
 const StyledListItem = styled(ListItem, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
+})({
     [`& .${FilterListItemClasses.listItemButton}`]: {
         paddingRight: '2em',
         paddingLeft: '2em',
@@ -240,7 +241,7 @@ const StyledListItem = styled(ListItem, {
     [`& .${FilterListItemClasses.listItemText}`]: {
         margin: 0,
     },
-}));
+});
 
 export interface FilterListItemProps extends Omit<ListItemProps, 'value'> {
     label: string | ReactElement;

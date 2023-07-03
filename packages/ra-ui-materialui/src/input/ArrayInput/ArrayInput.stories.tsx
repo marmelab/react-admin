@@ -16,7 +16,7 @@ import { AutocompleteInput } from '../AutocompleteInput';
 export default { title: 'ra-ui-materialui/input/ArrayInput' };
 
 const dataProvider = {
-    getOne: (resource, params) =>
+    getOne: () =>
         Promise.resolve({
             data: {
                 id: 1,
@@ -34,8 +34,8 @@ const dataProvider = {
                 tags: ['novel', 'war', 'classic'],
             },
         }),
-    update: (resource, params) => Promise.resolve(params),
-    create: (resource, params) => {
+    update: (_resource, params) => Promise.resolve(params),
+    create: (_resource, params) => {
         return Promise.resolve({ data: { ...params.data, id: 2 } });
     },
 } as any;
@@ -218,8 +218,8 @@ export const Realistic = () => (
     <Admin
         dataProvider={
             {
-                getOne: (resource, params) => Promise.resolve({ data: order }),
-                update: (resource, params) => Promise.resolve(params),
+                getOne: () => Promise.resolve({ data: order }),
+                update: (_resource, params) => Promise.resolve(params),
             } as any
         }
         history={createMemoryHistory({ initialEntries: ['/orders/1'] })}
@@ -279,8 +279,8 @@ export const NestedInline = () => (
     <Admin
         dataProvider={
             {
-                getOne: (resource, params) => Promise.resolve({ data: order }),
-                update: (resource, params) => Promise.resolve(params),
+                getOne: () => Promise.resolve({ data: order }),
+                update: (_resource, params) => Promise.resolve(params),
             } as any
         }
         history={createMemoryHistory({ initialEntries: ['/orders/1'] })}

@@ -252,7 +252,7 @@ You can override this value with the `emptyValue` prop.
 <AutocompleteInput source="author_id" choices={choices} emptyValue={0} />
 ```
 
-**Tip**: While you can set `emptyValue` to a non-string value (e.g. `0`), you cannot use `null` or `undefined`, as it would turn the `<AutocompleteInput>` into an [uncontrolled component](https://reactjs.org/docs/uncontrolled-components.html). If you need the empty choice to be stored as `null` or `undefined`, use [the `parse` prop](./Inputs.md#parse) to convert the default empty value ('') to `null` or `undefined`, or use [the `sanitizeEmptyValues` prop](./SimpleForm.md#sanitizeemptyvalues) on the Form component. 
+**Tip**: While you can set `emptyValue` to a non-string value (e.g. `0`), you cannot use `null` or `undefined`, as it would turn the `<AutocompleteInput>` into an [uncontrolled component](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components). If you need the empty choice to be stored as `null` or `undefined`, use [the `parse` prop](./Inputs.md#parse) to convert the default empty value ('') to `null` or `undefined`, or use [the `sanitizeEmptyValues` prop](./SimpleForm.md#sanitizeemptyvalues) on the Form component. 
 
 ## `filterToQuery`
 
@@ -370,9 +370,14 @@ const choices = [
    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
 ];
+
+// Note we declared the function outside the component to avoid rerenders
 const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
+
 <AutocompleteInput source="author_id" choices={choices} optionText={optionRenderer} />
 ```
+
+**Tip**: Make sure you provide a stable reference to the function passed as `optionText`. Either declare it outside the component render function or wrap it inside a [`useCallback`](https://react.dev/reference/react/useCallback).
 
 `optionText` also accepts a React Element, that will be rendered inside a [`<RecordContext>`](./useRecordContext.md) using the related choice as the `record` prop. You can use Field components there. However, using an element as `optionText` implies that you also set two more props, `inputText` and `matchSuggestion`. See [Using A Custom Element For Options](#using-a-custom-element-for-options) for more details.
 
@@ -637,6 +642,8 @@ const OptionRenderer = () => {
         </span>
     );
 };
+
+const optionText = <OptionRenderer />;
 const inputText = choice => `${choice.first_name} ${choice.last_name}`;
 const matchSuggestion = (filter, choice) => {
     return (
@@ -648,10 +655,28 @@ const matchSuggestion = (filter, choice) => {
 <AutocompleteInput
     source="author_id"
     choices={choices}
-    optionText={<OptionRenderer />}
+    optionText={optionText}
     inputText={inputText}
     matchSuggestion={matchSuggestion}
 />
+```
+
+**Tip**: Make sure you pass stable references to the functions passed to the `inputText` and `matchSuggestion` by either declaring them outside the component render function or by wrapping them in a [`useCallback`](https://react.dev/reference/react/useCallback).
+
+**Tip**: Make sure you pass a stable reference to the element passed to the `optionText` prop by calling it outside the component render function like so:
+
+```jsx
+const OptionRenderer = () => {
+    const record = useRecordContext();
+    return (
+        <span>
+            <img src={record.avatar} />
+            {record.first_name} {record.last_name}
+        </span>
+    );
+};
+
+const optionText = <OptionRenderer />;
 ```
 
 ## Creating New Choices

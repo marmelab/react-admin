@@ -63,11 +63,11 @@ export const ToggleThemeButton = (props: ToggleThemeButtonProps) => {
 
 export interface ToggleThemeButtonProps {
     /**
-     * @deprecated Set the lightTheme in the <Admin> component instead.
+     * @deprecated Set the lightTheme in the `<Admin>` component instead.
      */
     lightTheme?: RaThemeOptions;
     /**
-     * @deprecated Set the darkTheme in the <Admin> component instead.
+     * @deprecated Set the darkTheme in the `<Admin>` component instead.
      */
     darkTheme?: RaThemeOptions;
 }

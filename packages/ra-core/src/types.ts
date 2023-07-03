@@ -1,4 +1,4 @@
-import { ReactNode, ReactElement, ComponentType } from 'react';
+import { ComponentType, ReactElement, ReactNode } from 'react';
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 import { AuthActionType } from './auth/types';
 

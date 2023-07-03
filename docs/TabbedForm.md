@@ -70,31 +70,53 @@ export const PostEdit = () => (
 ```
 {% endraw %}
 
-`<TabbedForm>` calls react-hook-form's `useForm` hook, and places the result in a `FormProvider` component. This means you can take advantage of the [`useFormContext`](https://react-hook-form.com/api/useformcontext) and [`useFormState`](https://react-hook-form.com/api/useformstate) hooks to access the form state.
+`<TabbedForm>` calls react-hook-form's `useForm` hook, and places the result in a `FormProvider` component. This means you can take advantage of the [`useFormContext`](https://react-hook-form.com/docs/useformcontext) and [`useFormState`](https://react-hook-form.com/docs/useformstate) hooks to access the form state.
 
 React-admin highlights the tabs containing validation errors to help users locate incorrect input values. 
 
+## Props
+
 Here are all the props you can set on the `<TabbedForm>` component:
 
-* [`component`](#component)
-* [`defaultValues`](#defaultvalues)
-* [`id`](#id)
-* [`noValidate`](#novalidate)
-* [`onSubmit`](#onsubmit)
-* [`sx`](#sx-css-api)
-* [`syncWithLocation`](#syncwithlocation)
-* [`tabs`](#tabs)
-* [`toolbar`](#toolbar)
-* [`validate`](#validate)
-* [`warnWhenUnsavedChanges`](#warnwhenunsavedchanges)
+| Prop                      | Required | Type               | Default | Description                                                |
+| ------------------------- | -------- | ------------------ | ------- | ---------------------------------------------------------- |
+| `children`                | Required | `element`          | -       | The form content.                                          |
+| `component`               | Optional | `elementType`      | `CardContent` | The component used to wrap the form.                |
+| `defaultValues`           | Optional | `object| function` | -       | The default values of the record.                          |
+| `id`                      | Optional | `string`           | -       | The id of the underlying `<form>` tag.                     |
+| `noValidate`              | Optional | `boolean`          | -       | Set to `true` to disable the browser's default validation. |
+| `onSubmit`                | Optional | `function`         | `save`  | A callback to call when the form is submitted.             |
+| `sanitize EmptyValues`    | Optional | `boolean`          | -       | Set to `true` to remove empty values from the form state.  |
+| `sx`                      | Optional | `object`           | -       | Custom styles                                              |
+| `toolbar`                 | Optional | `element`          | -       | The toolbar component.                                     |
+| `validate`                | Optional | `function`         | -       | A function to validate the form values.                    |
+| `warnWhen UnsavedChanges` | Optional | `boolean`          | -       | Set to `true` to warn the user when leaving the form with unsaved changes. |
 
-Additional props are passed to [the `useForm` hook](https://react-hook-form.com/api/useform).
+Additional props are passed to [the `useForm` hook](https://react-hook-form.com/docs/useform) and to the wrapper `<div>` component.
 
-**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/api/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+## `children`
 
-```js
-const { isDirty } = useFormState(); // ✅
-const formState = useFormState(); // ❌ should deconstruct the formState      
+`<TabbedForm>` expects `<TabbedForm.Tab>` elements as children. It renders them as tabs using [a Material UI `<Tabs>` component](https://mui.com/material-ui/react-tabs/).
+
+```jsx
+export const PostEdit = () => (
+    <Edit>
+        <TabbedForm>
+            <TabbedForm.Tab label="summary">
+                ...
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="body">
+                ...
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="Miscellaneous">
+                ...
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="comments">
+                ...
+            </TabbedForm.Tab>
+        </TabbedForm>
+    </Edit>
+);
 ```
 
 ## `component`
@@ -198,7 +220,7 @@ export const PostCreate = () => (
 ```
 {% endraw %}
 
-**Tip:** If you want to customize the _content_ of the tabs instead, for example to limit the width of the form, you should rather add an `sx` prop to the [`<TabbedForm.Tab>` component](#formtab).
+**Tip:** If you want to customize the _content_ of the tabs instead, for example to limit the width of the form, you should rather add an `sx` prop to the [`<TabbedForm.Tab>` component](#tabbedformtab).
 
 ## `sanitizeEmptyValues`
 
@@ -286,7 +308,7 @@ export const PostEdit = () => (
 
 ## `tabs`
 
-By default, `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin component, to render the tab headers. You can pass a custom component as the `tabs` prop to tweak th UX of these headers. Besides, props from `<TabbedFormTabs>` are passed down to Material UI's `<Tabs>` component.
+By default, `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin component, to render the tab headers. You can pass a custom component as the `tabs` prop to tweak the UX of these headers. Besides, props from `<TabbedFormTabs>` are passed down to Material UI's `<Tabs>` component.
 
 The following example shows how to make use of scrollable `<Tabs>`. Pass `variant="scrollable"` and `scrollButtons="auto"` props to `<TabbedFormTabs>` and use it in the `tabs` prop from `<TabbedForm>`.
 
@@ -643,9 +665,20 @@ const ProductEditDetails = () => (
 ```
 {% endraw %}
 
+## Subscribing To Form Changes
+
+`<TabbedForm>` relies on [react-hook-form's `useForm`](https://react-hook-form.com/docs/useform) to manage the form state and validation. You can subscribe to form changes using the [`useFormContext`](https://react-hook-form.com/docs/useformcontext) and [`useFormState`](https://react-hook-form.com/docs/useformstate) hooks.
+ 
+**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/docs/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+
+```js
+const { isDirty } = useFormState(); // ✅
+const formState = useFormState(); // ❌ should deconstruct the formState      
+```
+
 ## Dynamic Tab Label
 
-`<TabbedForm>` often contain not only inputs, but also related data (e.g. the reviews of a product). Users appreviate that the label of such tabs show the actual number of related elements, to avoid clicking on a tab to reveal an empty list.
+`<TabbedForm>` often contain not only inputs, but also related data (e.g. the reviews of a product). Users appreciate that the label of such tabs show the actual number of related elements, to avoid clicking on a tab to reveal an empty list.
 
 ![dynamic tab label](./img/FormTab-dynamic-label.png)
 
@@ -750,3 +783,143 @@ const UserEdit = () => {
 };
 ```
 {% endraw %}
+
+## AutoSave
+
+In forms where users may spend a lot of time, it's a good idea to save the form automatically after a few seconds of inactivity. You can auto save the form content by using [the `<AutoSave>` component](./AutoSave.md).
+
+{% raw %}
+```tsx
+import { AutoSave } from '@react-admin/ra-form-layout';
+import { Edit, SaveButton, TabbedForm, TextInput, Toolbar } from 'react-admin';
+
+const AutoSaveToolbar = () => (
+    <Toolbar>
+        <SaveButton />
+        <AutoSave />
+    </Toolbar>
+);
+
+const PostEdit = () => (
+    <Edit mutationMode="optimistic">
+        <TabbedForm
+            resetOptions={{ keepDirtyValues: true }}
+            toolbar={AutoSaveToolbar}
+        >
+            <TabbedForm.Tab label="summary">
+                <TextInput source="title" />
+                <TextInput source="teaser" />
+            </TabbedForm.Tab>
+        </TabbedForm>
+    </Edit>
+);
+```
+{% endraw %}
+
+Note that you **must** set the `<TabbedForm resetOptions>` prop to `{ keepDirtyValues: true }`. If you forget that prop, any change entered by the end user after the autosave but before its acknowledgement by the server will be lost.
+
+If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](https://marmelab.com/react-admin/Edit.html#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
+
+Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
+
+## Role-Based Access Control (RBAC)
+
+Fine-grained permissions control can be added by using the [`<TabbedForm>`](./AuthRBAC.md#tabbedform) and [`<FormTab>`](./AuthRBAC.md#formtab) components provided by the `@react-admin/ra-rbac` package. 
+
+{% raw %}
+```jsx
+import { Edit, TextInput } from 'react-admin';
+import { TabbedForm, FormTab } from '@react-admin/ra-rbac';
+
+const authProvider = {
+    checkAuth: () => Promise.resolve(),
+    login: () => Promise.resolve(),
+    logout: () => Promise.resolve(),
+    checkError: () => Promise.resolve(),
+    getPermissions: () =>Promise.resolve({
+        permissions: [
+            // 'delete' is missing
+            { action: ['list', 'edit'], resource: 'products' },
+            { action: 'write', resource: 'products.reference' },
+            { action: 'write', resource: 'products.width' },
+            { action: 'write', resource: 'products.height' },
+            // 'products.description' is missing
+            { action: 'write', resource: 'products.thumbnail' },
+            // 'products.image' is missing
+            { action: 'write', resource: 'products.tab.description' },
+            { action: 'write', resource: 'products.tab.images' },
+            // 'products.tab.stock' is missing
+        ],
+    }),
+};
+
+const ProductEdit = () => (
+    <Edit>
+        <TabbedForm>
+            <FormTab label="Description" name="description">
+                <TextInput source="reference" />
+                <TextInput source="width" />
+                <TextInput source="height" />
+                {/* not displayed */}
+                <TextInput source="description" />
+            </FormTab>
+            <FormTab label="Images" name="images">
+                {/* not displayed */}
+                <TextInput source="image" />
+                <TextInput source="thumbnail" />
+            </FormTab>
+            {/* not displayed */}
+            <FormTab label="Stock" name="stock">
+                <TextInput source="stock" />
+            </FormTab>
+            {/*} delete button not displayed */}
+        </TabbedForm>
+    </Edit>
+);
+```
+{% endraw %}
+
+Check [the RBAC `<TabbedForm>` component](./AuthRBAC.md#tabbedform) documentation for more details.
+
+## Linking Two Inputs
+
+Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
+
+React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://react-hook-form.com/docs/usewatch) hook.
+
+```jsx
+import * as React from 'react';
+import { Edit, SimpleForm, SelectInput } from 'react-admin';
+import { useWatch } from 'react-hook-form';
+
+const countries = ['USA', 'UK', 'France'];
+const cities = {
+    USA: ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'],
+    UK: ['London', 'Birmingham', 'Glasgow', 'Liverpool', 'Bristol'],
+    France: ['Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice'],
+};
+const toChoices = items => items.map(item => ({ id: item, name: item }));
+
+const CityInput = props => {
+    const country = useWatch({ name: 'country' });
+    return (
+        <SelectInput
+            choices={country ? toChoices(cities[country]) : []}
+            {...props}
+        />
+    );
+};
+
+const OrderEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <SelectInput source="country" choices={toChoices(countries)} />
+            <CityInput source="cities" />
+        </SimpleForm>
+    </Edit>
+);
+
+export default OrderEdit;
+```
+
+**Tip:** If you'd like to avoid creating an intermediate component like `<CityInput>`, or are using an `<ArrayInput>`, you can use the [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs) component as an alternative.

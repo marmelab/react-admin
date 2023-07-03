@@ -19,7 +19,7 @@ Here is the minimal code necessary to display a view to show a post:
 
 {% raw %}
 ```jsx
-// in src/posts.js
+// in src/posts.jsx
 import * as React from "react";
 import { Show, SimpleShowLayout, TextField, DateField, RichTextField } from 'react-admin';
 
@@ -34,7 +34,7 @@ export const PostShow = () => (
     </Show>
 );
 
-// in src/App.js
+// in src/App.jsx
 import * as React from "react";
 import { Admin, Resource } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
@@ -60,7 +60,7 @@ That's enough to display the post show view:
 * `className`: passed to the root component
 * [`children`](#layout): the components that render the record fields
 * [`component`](#component): overrides the root component
-* [`disableAuthentication`](#`disableauthentication`): disable the authentication check
+* [`disableAuthentication`](#disableauthentication): disable the authentication check
 * [`emptyWhileLoading`](#loading-state)
 * [`queryOptions`](#queryoptions): options to pass to the react-query client
 * [`sx`](#sx-css-api): Override the styles

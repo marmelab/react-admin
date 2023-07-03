@@ -632,7 +632,11 @@ const ProductShow = () => (
 
 Replacement for the `<TabbedShowLayout.Tab>` that only renders a tab if the user has the right permissions.
 
-Add a `name` prop to the Tab to define the resource on which the user needs to have the 'read' permissions for.
+Add a `name` prop to the `<Tab>` so you can reference it in the permissions.  
+Then, to allow users to access a particular `<Tab>`, update the permissions definition as follows: `{ action: 'read', resource: '{RESOURCE}.tab.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<Tab>`.
+
+> For instance, to allow users access to the following tab `<Tab label="Description" name="description">` in `products` resource, add this line in permissions: `{ action: 'read', resource: 'products.tab.description' }`. 
+
 
 `<Tab>` also only renders the child fields for which the user has the 'read' permissions.
 
@@ -651,7 +655,9 @@ const authProvider = {
             // 'products.description' is missing
             { action: 'read', resource: 'products.thumbnail' },
             // 'products.image' is missing
+            // note that the tab with the name 'description' will be displayed 
             { action: 'read', resource: 'products.tab.description' },
+            // note that the tab with the name 'images' will be displayed 
             { action: 'read', resource: 'products.tab.images' },
             // 'products.tab.stock' is missing
         ],
@@ -758,7 +764,9 @@ const authProvider = {
             // 'products.description' is missing
             { action: 'write', resource: 'products.thumbnail' },
             // 'products.image' is missing
+            // note that the tab with the name 'description' will be displayed 
             { action: 'write', resource: 'products.tab.description' },
+            // note that the tab with the name 'images' will be displayed 
             { action: 'write', resource: 'products.tab.images' },
             // 'products.tab.stock' is missing
         ],
@@ -794,7 +802,10 @@ const ProductEdit = () => (
 
 Replacement for the default `<FormTab>` that only renders a tab if the user has the right permissions.
 
-Add a `name` prop to the `FormTab` to define the sub-resource that the user needs to have the right permissions for.
+Add a `name` prop to the `<FormTab>` so you can reference it in the permissions.  
+Then, to allow users to access a particular `<FormTab>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.tab.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<FormTab>`.
+
+> For instance, to allow users access to the following tab `<FormTab label="Description" name="description">` in `products` resource, add this line in permissions: `{ action: 'write', resource: 'products.tab.description' }`.
 
 `<FormTab>` also only renders the child inputs for which the user has the 'write' permissions.
 
@@ -813,7 +824,9 @@ const authProvider = {
             // 'products.description' is missing
             { action: 'write', resource: 'products.thumbnail' },
             // 'products.image' is missing
+            // note that the tab with the name 'description' will be displayed 
             { action: 'write', resource: 'products.tab.description' },
+            // note that the tab with the name 'images' will be displayed 
             { action: 'write', resource: 'products.tab.images' },
             // 'products.tab.stock' is missing
         ],
@@ -843,3 +856,425 @@ const ProductEdit = () => (
     </Edit>
 );
 ```
+
+### `<AccordionForm>`
+
+Alternative to react-admin's [`<AccordionForm>`](https://marmelab.com/react-admin/AccordionForm.html) that adds RBAC control to the delete button.
+
+This component is provided by the `@react-admin/ra-enterprise` package.
+
+To learn more about the permissions format, please refer to the [`@react-admin/ra-rbac` documentation](https://marmelab.com/ra-enterprise/modules/ra-rbac).
+
+{% raw %}
+```tsx
+import { AccordionForm } from '@react-admin/ra-enterprise';
+
+const authProvider = {
+    checkAuth: () => Promise.resolve(),
+    login: () => Promise.resolve(),
+    logout: () => Promise.resolve(),
+    checkError: () => Promise.resolve(),
+    getPermissions: () =>Promise.resolve([
+        // 'delete' is missing
+        { action: ['list', 'edit'], resource: 'products' },
+        { action: 'write', resource: 'products.reference' },
+        { action: 'write', resource: 'products.width' },
+        { action: 'write', resource: 'products.height' },
+        // 'products.description' is missing
+        { action: 'write', resource: 'products.thumbnail' },
+        // 'products.image' is missing
+        // note that the panel with the name 'description' will be displayed 
+        { action: 'write', resource: 'products.panel.description' },
+        // note that the panel with the name 'images' will be displayed 
+        { action: 'write', resource: 'products.panel.images' },
+        // 'products.panel.stock' is missing
+    ]),
+};
+
+const ProductEdit = () => (
+    <Edit>
+        <AccordionForm>
+            <AccordionForm.Panel label="description" label="Description">
+                <TextInput source="reference" />
+                <TextInput source="width" />
+                <TextInput source="height" />
+                <TextInput source="description" />
+            </AccordionForm.Panel>
+            <AccordionForm.Panel label="images" label="Images">
+                <TextInput source="image" />
+                <TextInput source="thumbnail" />
+            </AccordionForm.Panel>
+            <AccordionForm.Panel label="stock" label="Stock">
+                <TextInput source="stock" />
+            </AccordionForm.Panel>
+            // delete button not displayed
+        </AccordionForm>
+    </Edit>
+);
+```
+{% endraw %}
+
+### `<AccordionFormPanel>`
+
+Replacement for the default `<AccordionFormPanel>` that only renders a section if the user has the right permissions.
+
+Add a `name` prop to the `<AccordionFormPanel>` so you can reference it in the permissions.  
+Then, to allow users to access a particular `<AccordionFormPanel>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.panel.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<FormTab>`.
+
+> For instance, to allow users access to the following tab `<AccordionFormPanel label="Description" name="description">` in `products` resource, add this line in permissions: `{ action: 'write', resource: 'products.panel.description' }`.
+
+`<AccordionFormPanel>` also only renders the child inputs for which the user has the 'write' permissions.
+
+To learn more about the permissions format, please refer to the [`@react-admin/ra-rbac` documentation](https://marmelab.com/ra-enterprise/modules/ra-rbac).
+
+```tsx
+import { Edit, TextInput } from 'react-admin';
+import { AccordionForm } from '@react-admin/ra-form-layout';
+import { AccordionFormPanel } from '@react-admin/ra-enterprise';
+
+const authProvider = {
+    // ...
+    getPermissions: () => Promise.resolve([
+        { action: ['list', 'edit'], resource: 'products' },
+        { action: 'write', resource: 'products.reference' },
+        { action: 'write', resource: 'products.width' },
+        { action: 'write', resource: 'products.height' },
+        // 'products.description' is missing
+        { action: 'write', resource: 'products.thumbnail' },
+        // 'products.image' is missing
+        // note that the panel with the name 'description' will be displayed 
+        { action: 'write', resource: 'products.panel.description' },
+        // note that the panel with the name 'images' will be displayed 
+        { action: 'write', resource: 'products.panel.images' },
+        // 'products.panel.stock' is missing
+    ]),
+};
+
+const ProductEdit = () => (
+    <Edit>
+        <AccordionForm>
+            <AccordionFormPanel label="Description" name="description">
+                <TextInput source="reference" />
+                <TextInput source="width" />
+                <TextInput source="height" />
+                // not displayed
+                <TextInput source="description" />
+            </AccordionFormPanel>
+            <AccordionFormPanel label="Images" name="images">
+                // not displayed
+                <TextInput source="image" />
+                <TextInput source="thumbnail" />
+            </AccordionFormPanel>
+            // not displayed
+            <AccordionFormPanel label="Stock" name="stock">
+                <TextInput source="stock" />
+            </AccordionFormPanel>
+        </AccordionForm>
+    </Edit>
+);
+```
+
+### `<AccordionSection>`
+
+Replacement for the default `<AccordionSection>` that only renders a section if the user has the right permissions.
+
+Add a `name` prop to the `<AccordionSection>` so you can reference it in the permissions.  
+Then, to allow users to access a particular `<AccordionSection>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.section.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<AccordionSection>`.
+
+> For instance, to allow users access to the following tab `<AccordionSection label="Description" name="description">` in `products` resource, add this line in permissions: `{ action: 'write', resource: 'products.section.description' }`.
+
+`<AccordionSection>` also only renders the child inputs for which the user has the 'write' permissions.
+
+This component is provided by the `@react-admin/ra-enterprise` package.
+
+To learn more about the permissions format, please refer to the [`@react-admin/ra-rbac` documentation](https://marmelab.com/ra-enterprise/modules/ra-rbac).
+
+{% raw %}
+```tsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { AccordionSection } from '@react-admin/ra-enterprise';
+
+const authProvider = {
+    // ...
+    getPermissions: () => Promise.resolve([
+        { action: ['list', 'edit'], resource: 'products' },
+        { action: 'write', resource: 'products.reference' },
+        { action: 'write', resource: 'products.width' },
+        { action: 'write', resource: 'products.height' },
+        // 'products.description' is missing
+        { action: 'write', resource: 'products.thumbnail' },
+        // 'products.image' is missing
+        // note that the section with the name 'description' will be displayed 
+        { action: 'write', resource: 'products.section.description' },
+        // note that the section with the name 'images' will be displayed 
+        { action: 'write', resource: 'products.section.images' },
+        // 'products.section.stock' is missing
+    ]),
+};
+
+const ProductEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <AccordionSection label="Description" name="description">
+                <TextInput source="reference" />
+                <TextInput source="width" />
+                <TextInput source="height" />
+                // not displayed
+                <TextInput source="description" />
+            </AccordionSection>
+            <AccordionSection label="Images" name="images">
+                // not displayed
+                <TextInput source="image" />
+                <TextInput source="thumbnail" />
+            </AccordionSection>
+            // not displayed
+            <AccordionSection label="Stock" name="stock">
+                <TextInput source="stock" />
+            </AccordionSection>
+        </SimpleForm>
+    </Edit>
+);
+```
+{% endraw %}
+
+### `<LongForm>`
+
+Alternative to react-admin's [`<LongForm>`](https://marmelab.com/react-admin/LongForm.html) that adds RBAC control to the delete button and hides sections users don't have access to.
+
+This component is provided by the `@react-admin/ra-enterprise` package.
+
+Use in conjunction with ra-enterprise's `<LongForm.Section>` to render inputs based on permissions.
+
+To learn more about the permissions format, please refer to the [`@react-admin/ra-rbac` documentation](https://marmelab.com/ra-enterprise/modules/ra-rbac).
+
+{% raw %}
+```tsx
+import { LongForm } from '@react-admin/ra-enterprise';
+
+const authProvider = {
+    checkAuth: () => Promise.resolve(),
+    login: () => Promise.resolve(),
+    logout: () => Promise.resolve(),
+    checkError: () => Promise.resolve(),
+    getPermissions: () =>Promise.resolve([
+        // 'delete' is missing
+        { action: ['list', 'edit'], resource: 'products' },
+        { action: 'write', resource: 'products.reference' },
+        { action: 'write', resource: 'products.width' },
+        { action: 'write', resource: 'products.height' },
+        // 'products.description' is missing
+        { action: 'write', resource: 'products.thumbnail' },
+        // 'products.image' is missing
+        // note that the section with the name 'description' will be displayed 
+        { action: 'write', resource: 'products.section.description' },
+        // note that the section with the name 'images' will be displayed 
+        { action: 'write', resource: 'products.section.images' },
+        // 'products.Section.stock' is missing
+    ]),
+};
+
+const ProductEdit = () => (
+    <Edit>
+        <LongForm>
+            <LongForm.Section name="description" label="Description">
+                <TextInput source="reference" />
+                <TextInput source="width" />
+                <TextInput source="height" />
+                <TextInput source="description" />
+            </LongForm.Section>
+            <LongForm.Section name="images" label="Images">
+                <TextInput source="image" />
+                <TextInput source="thumbnail" />
+            </LongForm.Section>
+            <LongForm.Section name="stock" label="Stock">
+                <TextInput source="stock" />
+            </LongForm.Section>
+            // delete button not displayed
+        </LongForm>
+    </Edit>
+);
+```
+{% endraw %}
+
+### `<LongForm.Section>`
+
+Replacement for the default `<LongForm.Section>` that only renders a section if the user has the right permissions.
+Use it with `<LongForm>` from `@react-admin/ra-enterprise` to only display the section the user has access to in the form.
+
+Add a `name` prop to the `<LongForm.Section>` so you can reference it in the permissions.  
+Then, to allow users to access a particular `<LongForm.Section>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.section.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<LongForm.Section>`.
+
+> For instance, to allow users access to the following tab `<LongForm.Section label="Description" name="description">` in `products` resource, add this line in permissions: `{ action: 'write', resource: 'products.section.description' }`.
+
+`<LongForm.Section>` also only renders the child inputs for which the user has the 'write' permissions.
+
+To learn more about the permissions format, please refer to the [`@react-admin/ra-rbac` documentation](https://marmelab.com/ra-enterprise/modules/ra-rbac).
+
+{% raw %}
+```tsx
+import { LongForm } from '@react-admin/ra-enterprise';
+
+const authProvider = {
+    // ...
+    getPermissions: () => Promise.resolve([
+        { action: ['list', 'edit'], resource: 'products' },
+        { action: 'write', resource: 'products.reference' },
+        { action: 'write', resource: 'products.width' },
+        { action: 'write', resource: 'products.height' },
+        // 'products.description' is missing
+        { action: 'write', resource: 'products.thumbnail' },
+        // 'products.image' is missing
+        // note that the section with the name 'description' will be displayed 
+        { action: 'write', resource: 'products.section.description' },
+        // note that the section with the name 'images' will be displayed 
+        { action: 'write', resource: 'products.section.images' },
+        // 'products.panel.stock' is missing
+    ]),
+};
+
+const ProductEdit = () => (
+    <Edit>
+        <LongForm>
+            <LongForm.Section name="description" label="Description">
+                <TextInput source="reference" />
+                <TextInput source="width" />
+                <TextInput source="height" />
+                // not displayed
+                <TextInput source="description" />
+            </LongForm.Section>
+            <LongForm.Section name="images" label="Images">
+                // not displayed
+                <TextInput source="image" />
+                <TextInput source="thumbnail" />
+            </LongForm.Section>
+            // not displayed
+            <LongForm.Section name="stock" label="Stock">
+                <TextInput source="stock" />
+            </LongForm.Section>
+        </LongForm>
+    </Edit>
+);
+```
+{% endraw %}
+
+### `<WizardForm>`
+
+Alternative to react-admin's `<WizardForm>` that adds RBAC control to hide steps users don't have access to.
+Use in conjunction with ra-enterprise's `<WizardForm.Step>` to render inputs based on permissions.
+
+This component is provided by the `@react-admin/ra-enterprise` package.
+
+To learn more about the permissions format, please refer to the [`@react-admin/ra-rbac` documentation](https://marmelab.com/ra-enterprise/modules/ra-rbac).
+
+{% raw %}
+```tsx
+import { WizardForm } from '@react-admin/ra-enterprise';
+
+const authProvider = {
+    checkAuth: () => Promise.resolve(),
+    login: () => Promise.resolve(),
+    logout: () => Promise.resolve(),
+    checkError: () => Promise.resolve(),
+    getPermissions: () =>Promise.resolve([
+        // 'delete' is missing
+        { action: ['list', 'edit'], resource: 'products' },
+        { action: 'write', resource: 'products.reference' },
+        { action: 'write', resource: 'products.width' },
+        { action: 'write', resource: 'products.height' },
+        // 'products.description' is missing
+        { action: 'write', resource: 'products.thumbnail' },
+        // 'products.image' is missing
+        // note that the step with the name 'description' will be displayed 
+        { action: 'write', resource: 'products.step.description' },
+        // note that the step with the name 'images' will be displayed 
+        { action: 'write', resource: 'products.step.images' },
+        // 'products.step.stock' is missing
+    ]),
+};
+
+const ProductCreate = () => (
+    <Create>
+        <WizardForm>
+            <WizardForm.Step name="description" label="Description">
+                <TextInput source="reference" />
+                <TextInput source="width" />
+                <TextInput source="height" />
+                {/* Won't be displayed */}
+                <TextInput source="description" />
+            </WizardForm.Step>
+            <WizardForm.Step name="images" label="Images">
+                {/* Won't be displayed */}
+                <TextInput source="image" />
+                <TextInput source="thumbnail" />
+            </WizardForm.Step>
+            {/* Won't be displayed */}
+            <WizardForm.Step name="stock" label="Stock">
+                <TextInput source="stock" />
+            </WizardForm.Step>
+        </WizardForm>
+    </Create>
+);
+```
+{% endraw %}
+
+### `<WizardForm.Step>`
+
+Replacement for the default `<WizardForm.Step>` that only renders a step if the user has the right permissions.
+Use it with `<WizardForm>` from `@react-admin/ra-enterprise` to only display the steps the user has access to in the stepper.
+
+Add a `name` prop to the `<WizardForm.Step>` so you can reference it in the permissions.  
+Then, to allow users to access a particular `<WizardForm.Step>`, update the permissions definition as follows: `{ action: 'write', resource: '{RESOURCE}.step.{NAME}' }`, where `RESOURCE` is the resource name, and `NAME` the name you provided to the `<WizardForm.Step>`.
+
+> For instance, to allow users access to the following tab `<WizardForm.Step label="Description" name="description">` in `products` resource, add this line in permissions: `{ action: 'write', resource: 'products.step.description' }`.
+
+`<WizardForm.Step>` also only renders the child inputs for which the user has the 'write' permissions.
+
+To learn more about the permissions format, please refer to the [`@react-admin/ra-rbac` documentation](https://marmelab.com/ra-enterprise/modules/ra-rbac).
+
+{% raw %}
+```tsx
+import { Edit, TextInput } from 'react-admin';
+import { WizardForm } from '@react-admin/ra-enterprise';
+
+const authProvider = {
+    // ...
+    getPermissions: () => Promise.resolve([
+        { action: ['list', 'edit'], resource: 'products' },
+        { action: 'write', resource: 'products.reference' },
+        { action: 'write', resource: 'products.width' },
+        { action: 'write', resource: 'products.height' },
+        // 'products.description' is missing
+        { action: 'write', resource: 'products.thumbnail' },
+        // 'products.image' is missing
+        // note that the step with the name 'description' will be displayed 
+        { action: 'write', resource: 'products.step.description' },
+        // note that the step with the name 'images' will be displayed 
+        { action: 'write', resource: 'products.step.images' },
+        // 'products.step.stock' is missing
+    ]),
+};
+
+const ProductCreate = () => (
+    <Create>
+        <WizardForm>
+            <WizardForm.Step label="Description" name="description">
+                <TextInput source="reference" />
+                <TextInput source="width" />
+                <TextInput source="height" />
+                // not displayed
+                <TextInput source="description" />
+            </WizardForm.Step>
+            <WizardForm.Step label="Images" name="images">
+                // not displayed
+                <TextInput source="image" />
+                <TextInput source="thumbnail" />
+            </WizardForm.Step>
+            // not displayed
+            <WizardForm.Step label="Stock" name="stock">
+                <TextInput source="stock" />
+            </WizardForm.Step>
+        </WizardForm>
+    </Create>
+);
+```
+{% endraw %}

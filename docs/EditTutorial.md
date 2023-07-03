@@ -545,6 +545,15 @@ export const PostCreate = () => (
 
 ## Validating User Input
 
+React-admin supports the most common validation strategies:
+
+* [per field validators](./Validation.md#per-input-validation-built-in-field-validators),
+* [form validation](./Validation.md#global-validation),
+* [validation schema powered by yup or zod](./Validation.md#schema-validation),
+* [server-side validation](./Validation.md#server-side-validation).
+
+![Validation example](./img/validation.png)
+
 Form validation deserves a section of its own ; check [the Validation chapter](./Validation.md) for more details.
 
 ## Altering the Form Values Before Submitting
@@ -751,6 +760,52 @@ export const PostEdit = () => (
 );
 ```
 
+## AutoSave
+
+In forms where users may spend a lot of time, it's a good idea to save the form automatically after a few seconds of inactivity. You can auto save the form content by using [the `<AutoSave>` component](./AutoSave.md).
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/AutoSave.webm" type="video/webm"/>
+  <source src="./img/AutoSave.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+{% raw %}
+```tsx
+import { AutoSave } from '@react-admin/ra-form-layout';
+import { Edit, SimpleForm, TextInput, DateInput, SelectInput, Toolbar } from 'react-admin';
+
+const AutoSaveToolbar = () => (
+    <Toolbar>
+        <AutoSave />
+    </Toolbar>
+);
+
+const PersonEdit = () => (
+    <Edit mutationMode="optimistic">
+        <SimpleForm
+            resetOptions={{ keepDirtyValues: true }}
+            toolbar={AutoSaveToolbar}
+        >
+            <TextInput source="first_name" />
+            <TextInput source="last_name" />
+            <DateInput source="dob" />
+            <SelectInput source="sex" choices={[
+                { id: 'male', name: 'Male' },
+                { id: 'female', name: 'Female' },
+            ]}/>
+        </SimpleForm>
+    </Edit>
+);
+```
+{% endraw %}
+
+Note that you **must** set the `<SimpleForm resetOptions>` prop to `{ keepDirtyValues: true }`. If you forget that prop, any change entered by the end user after the autosave but before its acknowledgement by the server will be lost.
+
+If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](https://marmelab.com/react-admin/Edit.html#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
+
+Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
+
 ## Adding Fields With Labels
 
 All react-admin inputs handle the display of their label by wrapping their content inside a `<Labeled>` component.
@@ -893,7 +948,11 @@ Users often need to edit data from several resources in the same form. React-adm
 - [`<ReferenceManyInput>`](./ReferenceManyInput.md) lets users edit a list of related records
 - [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md) lets users edit a list of related records via an associative table
 
-![EditInDialogButton](https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/reference-many-input.webm" type="video/webm"/>

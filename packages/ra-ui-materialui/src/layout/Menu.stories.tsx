@@ -40,7 +40,7 @@ export const Default = () => {
 };
 
 export const Dense = () => {
-    const MenuDense = props => <Menu hasDashboard={true} dense={true} />;
+    const MenuDense = () => <Menu hasDashboard={true} dense={true} />;
     const LayoutDense = props => <Layout {...props} menu={MenuDense} />;
 
     return (

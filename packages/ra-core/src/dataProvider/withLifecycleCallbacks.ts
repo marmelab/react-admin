@@ -57,7 +57,7 @@ import {
  * - The callbacks are not executed in a transaction. In case of error,
  *   the backend may be left in an inconsistent state.
  * - When calling the API directly using fetch or another client,
- *   the callbacks will not be executed, leaving the backend in a possiblly inconsistent state.
+ *   the callbacks will not be executed, leaving the backend in a possibly inconsistent state.
  * - If a callback triggers the query it's listening to, this will lead to a infinite loop.
  *
  * @example

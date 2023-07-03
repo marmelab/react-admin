@@ -39,7 +39,7 @@ export const LevelSelect = (props: LevelSelectProps) => {
         setAnchorElement(event.currentTarget);
     };
 
-    const handleClose = (event: React.MouseEvent<Document, MouseEvent>) => {
+    const handleClose = (_event: React.MouseEvent<Document, MouseEvent>) => {
         setAnchorElement(null);
     };
 

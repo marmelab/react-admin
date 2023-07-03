@@ -9,7 +9,11 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 It calls `dataProvider.getTree()` (one of the new `dataProvider` methods supported by `ra-tree`) when the component mounts, and returns the tree nodes in a flat array.
 
-![useGetTree](https://marmelab.com/ra-enterprise/modules/assets/ra-tree-overview.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-tree-overview.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-tree-overview.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 ## Usage
 
@@ -43,7 +47,7 @@ const Categories = () => {
 
 ## Other Tree Hooks
 
-`useGetTree` is one of many hooks added by `ra-tree`. This package recomments do add several methods to the `dataProvider`, and has one hook for each method.
+`useGetTree` is one of many hooks added by `ra-tree`. This package recommends to add several methods to the `dataProvider`, and has one hook for each method.
 
 **Read methods**
 

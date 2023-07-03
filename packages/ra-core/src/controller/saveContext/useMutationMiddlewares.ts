@@ -113,6 +113,8 @@ export interface UseMutationMiddlewaresResult<
     unregisterMutationMiddleware: (callback: Middleware<MutateFunc>) => void;
 }
 
-export type Middleware<MutateFunc> = MutateFunc extends (...a: any[]) => infer R
+export type Middleware<
+    MutateFunc = (...args: any[]) => any
+> = MutateFunc extends (...a: any[]) => infer R
     ? (...a: [...U: Parameters<MutateFunc>, next: MutateFunc]) => R
     : never;

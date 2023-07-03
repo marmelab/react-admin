@@ -269,11 +269,7 @@ describe('useListController', () => {
         it('Does not remove previously shown filter when adding a new one', async () => {
             let currentDisplayedFilters;
 
-            let childFunction = ({
-                showFilter,
-                displayedFilters,
-                filterValues,
-            }) => {
+            let childFunction = ({ showFilter, displayedFilters }) => {
                 currentDisplayedFilters = displayedFilters;
                 return (
                     <>

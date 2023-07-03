@@ -1,6 +1,6 @@
 {
     "name": "tutorial",
-    "version": "4.11.0",
+    "version": "4.11.4",
     "private": true,
     "type": "module",
     "scripts": {
@@ -9,16 +9,16 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "ra-data-json-server": "^4.11.0",
+        "ra-data-json-server": "^4.11.4",
         "react": "^18.2.0",
-        "react-admin": "^4.11.0",
+        "react-admin": "^4.11.4",
         "react-dom": "^18.2.0"
     },
     "devDependencies": {
         "@types/react": "^18.0.22",
         "@types/react-dom": "^18.0.7",
         "@vitejs/plugin-react": "^2.2.0",
-        "typescript": "^4.6.4",
+        "typescript": "^5.1.3",
         "vite": "^3.2.0"
     }
 }

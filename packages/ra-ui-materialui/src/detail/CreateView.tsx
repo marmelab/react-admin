@@ -71,6 +71,7 @@ CreateView.propTypes = {
     title: PropTypes.node,
 };
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const sanitizeRestProps = ({
     addMiddleware = null,
     defaultTitle = null,
@@ -92,6 +93,7 @@ const sanitizeRestProps = ({
     removeMiddleware = null,
     ...rest
 }) => rest;
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 const PREFIX = 'RaCreate';
 

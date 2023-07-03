@@ -728,9 +728,7 @@ describe('useReferenceArrayInputController', () => {
         it('should set isLoading to false if enableGetChoices returns false', async () => {
             const children = jest.fn().mockReturnValue(<div />);
             await new Promise(resolve => setTimeout(resolve, 100)); // empty the query deduplication in useQueryWithStore
-            const enableGetChoices = jest.fn().mockImplementation(({ q }) => {
-                return false;
-            });
+            const enableGetChoices = jest.fn().mockImplementation(() => false);
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
                     <Form onSubmit={jest.fn()}>

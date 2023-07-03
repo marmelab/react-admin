@@ -49,7 +49,7 @@ Also, **many-to-many relationships** are often modeled as two successive one-to-
 
 - [`<ReferenceManyToManyField>`](#referencemanytomanyfield) when the API uses a join table (e.g. a `book_authors` table with both `book_id` and `author_id` fields)
 - [`<ReferenceArrayField>`](#referencearrayfield) when the API uses an array of foreign keys (e.g. each author has a `book_ids` field, and each book has an `author_ids` field)
-- [`<ArrayField>`](#arrayfield), when the API embeds an array of records (e.g. each author has an `books` field, and each book has an `authors` field)
+- [`<ArrayField>`](#arrayfield), when the API embeds an array of records (e.g. each author has a `books` field, and each book has an `authors` field)
 
 ## Deep Field Source
 
@@ -79,7 +79,7 @@ const BookShow = () => (
             <DateField source="published_at" />
             <FunctionField 
                 label="Author"
-                render={record => record && `${record.author.first_name} ${record.author.last_name}`}
+                render={record => `${record.author.first_name} ${record.author.last_name}`}
             />
             <DateField label="Author DOB" source="author.date_of_birth" />
         </SimpleShowLayout>
@@ -178,7 +178,7 @@ const BookList = () => (
             <TextField source="title" />
             <DateField source="published_at" />
             <ReferenceField label="Author" source="author_id" reference="authors">
-                <FunctionField render={record => record && `${record.first_name} ${record.last_name}`} />
+                <FunctionField render={record => `${record.first_name} ${record.last_name}`} />
             </ReferenceField>
             <ReferenceField label="Author DOB" source="author_id" reference="authors">
                 <DateField source="date_of_birth" />
@@ -356,7 +356,7 @@ const BookShow = props => (
                 <Datagrid>
                     <FunctionField 
                         label="Author"
-                        render={record => record && `${record.first_name} ${record.last_name}`}
+                        render={record => `${record.first_name} ${record.last_name}`}
                     />
                     <DateField source="date_of_birth" />
                 </Datagrid>

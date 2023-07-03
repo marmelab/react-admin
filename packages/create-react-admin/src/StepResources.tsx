@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import TextInput from 'ink-text-input';
 import { Text } from 'ink';
-import { Stack } from './Stack.js';
+import { Stack } from './Stack';
 
 export const StepResources = ({
     onSubmit,

@@ -3,6 +3,7 @@ import { useQuery, UseQueryOptions } from 'react-query';
 import useAuthProvider from './useAuthProvider';
 
 const emptyParams = {};
+
 /**
  * Hook for getting user permissions
  *

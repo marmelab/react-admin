@@ -18,6 +18,7 @@ title: "Index"
 * [`<Authenticated>`](./Authenticated.md)
 * [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md)
 * [`<AutocompleteInput>`](./AutocompleteInput.md)
+* [`<AutoSave>`](./AutoSave.md)<img class="icon" src="./img/premium.svg" />
 
 **- B -**
 * [`<Breadcrumb>`](./Breadcrumb.md)<img class="icon" src="./img/premium.svg" />
@@ -95,16 +96,16 @@ title: "Index"
 **- L -**
 * [`<Labeled>`](./Labeled.md)
 * [`<Layout>`](./Theming.md#using-a-custom-layout)
-* [`<Loading>`](./Theming.md#loading)
 * [`<LinearProgress>`](./Theming.md#linearprogress)
-* [`<LocalesMenuButton>`](./LocalesMenuButton.md)
-* [`<Logout>`](./Theming.md#using-a-custom-logout-button)
 * [`<List>`](./List.md#usage)
 * [`<ListBase>`](./ListBase.md#usage)
-* [`<ListGuesser>`](./ListGuesser.md#usage)
 * [`<ListButton>`](./Buttons.md#listbutton)
+* [`<ListGuesser>`](./ListGuesser.md#usage)
 * [`<ListLive>`](./ListLive.md)<img class="icon" src="./img/premium.svg" />
+* [`<Loading>`](./Theming.md#loading)
 * [`<LocalesMenuButton>`](./LocalesMenuButton.md)
+* [`<LongForm>`](./LongForm.md)<img class="icon" src="./img/premium.svg" />
+* [`<Logout>`](./Theming.md#using-a-custom-logout-button)
 
 **- M -**
 * [`<MarkdownField>`](./MarkdownField.md)<img class="icon" src="./img/premium.svg" />
@@ -135,6 +136,7 @@ title: "Index"
 * [`<ReferenceManyInput>`](./ReferenceManyInput.md)<img class="icon" src="./img/premium.svg" />
 * [`<ReferenceManyToManyField>`](./ReferenceManyToManyField.md)<img class="icon" src="./img/premium.svg" />
 * [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md)<img class="icon" src="./img/premium.svg" />
+* [`<ReferenceNodeInput>`](./ReferenceNodeInput.md)<img class="icon" src="./img/premium.svg" />
 * [`<ReferenceOneField>`](./ReferenceOneField.md)
 * [`<ReferenceOneInput>`](./ReferenceOneInput.md)
 * [`<Resource>`](./Resource.md)
@@ -164,6 +166,7 @@ title: "Index"
 * [`<SimpleList>`](./SimpleList.md)
 * [`<SimpleShowLayout>`](./SimpleShowLayout.md)
 * [`<SingleFieldList>`](./SingleFieldList.md)
+* [`<SmartRichTextInput>`](./SmartRichTextInput.md)<img class="icon" src="./img/premium.svg" />
 * [`<SortButton>`](./SortButton.md)
 * [`<StackedFilters>`](./StackedFilters.md)<img class="icon" src="./img/premium.svg" />
 
@@ -181,6 +184,7 @@ title: "Index"
 * [`<TranslatableFields>`](./TranslatableFields.md)
 * [`<TranslatableInputs>`](./TranslatableInputs.md)
 * [`<Tree>`](https://marmelab.com/ra-enterprise/modules/ra-tree#tree-component)<img class="icon" src="./img/premium.svg" />
+* [`<TreeInput>`](./TreeInput.md)<img class="icon" src="./img/premium.svg" />
 * [`<TreeWithDetails>`](./TreeWithDetails.md)<img class="icon" src="./img/premium.svg" />
 * [`<Toolbar>`](./Toolbar.md)
 
@@ -273,6 +277,7 @@ title: "Index"
 * [`useRedirect`](./useRedirect.md)
 * [`useReference`](./useGetOne.md#aggregating-getone-calls)
 * [`useRefresh`](./useRefresh.md)
+* [`useRegisterMutationMiddleware`](./useRegisterMutationMiddleware.md)
 * [`useRemoveFromStore`](./useRemoveFromStore.md)
 * [`useResetStore`](./useResetStore.md)
 * [`useResourceAppLocation`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useresourceapplocation-access-current-resource-app-location)<img class="icon" src="./img/premium.svg" />

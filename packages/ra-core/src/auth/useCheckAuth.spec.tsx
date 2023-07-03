@@ -34,7 +34,7 @@ const TestComponent = ({
     useEffect(() => {
         checkAuth(params, logoutOnFailure, redirectTo, disableNotification)
             .then(() => setAuthenticated(true))
-            .catch(error => setAuthenticated(false));
+            .catch(() => setAuthenticated(false));
     }, [params, logoutOnFailure, redirectTo, disableNotification, checkAuth]);
     return <div>{authenticated ? 'authenticated' : 'not authenticated'}</div>;
 };

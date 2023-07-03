@@ -211,7 +211,7 @@ const authors = [
 ];
 
 const dataProviderWithAuthors = {
-    getOne: (resource, params) =>
+    getOne: () =>
         Promise.resolve({
             data: {
                 id: 1,
@@ -222,11 +222,11 @@ const dataProviderWithAuthors = {
                 year: 1869,
             },
         }),
-    getMany: (resource, params) =>
+    getMany: (_resource, params) =>
         Promise.resolve({
             data: authors.filter(author => params.ids.includes(author.id)),
         }),
-    getList: (resource, params) =>
+    getList: () =>
         new Promise(resolve => {
             // eslint-disable-next-line eqeqeq
             setTimeout(
@@ -239,8 +239,8 @@ const dataProviderWithAuthors = {
             );
             return;
         }),
-    update: (resource, params) => Promise.resolve(params),
-    create: (resource, params) => {
+    update: (_resource, params) => Promise.resolve(params),
+    create: (_resource, params) => {
         const newAuthor = {
             id: authors.length + 1,
             first_name: params.data.first_name,
@@ -291,7 +291,7 @@ export const InsideReferenceInputDefaultValue = ({
     <Admin
         dataProvider={{
             ...dataProviderWithAuthors,
-            getOne: (resource, params) =>
+            getOne: () =>
                 Promise.resolve({
                     data: {
                         id: 1,

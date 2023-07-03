@@ -19,7 +19,7 @@ React-admin v4 uses Material UI (Material-UI) v5. The Material UI team has writt
 
 ## Redux Is Gone
 
-React-admin no longer relies on Redux. Instead, it relies on [React context](https://reactjs.org/docs/context.html) and third-party libraries (e.g. [react-query](https://react-query-v3.tanstack.com/)). 
+React-admin no longer relies on Redux. Instead, it relies on [React context](https://react.dev/learn/passing-data-deeply-with-context) and third-party libraries (e.g. [react-query](https://react-query-v3.tanstack.com/)). 
 
 You will need to update your code if it contains any of the following keywords:
 
@@ -665,7 +665,7 @@ To upgrade, check every instance of your code of the following hooks:
 
 And update the calls. If you're using TypeScript, your code won't compile until you properly upgrade the calls. 
 
-These hooks are now powered by react-query, so the state argument contains way more than just `isLoading` (`reset`, `status`, `refetch`, etc.). Check the [`useQuery`](https://react-query-v3.tanstack.com/reference/useQuery) and the [`useMutation`](https://react-query-v3.tanstack.com/reference/useMutation) documentation on the react-query website for more details. 
+These hooks are now powered by react-query, so the state argument contains way more than just `isLoading` (`reset`, `status`, `refetch`, etc.). Check the [`useQuery`](https://tanstack.com/query/v3/docs/react/reference/useQuery) and the [`useMutation`](https://tanstack.com/query/v3/docs/react/reference/useMutation) documentation on the react-query website for more details. 
 
 ### `useQuery`, `useMutation`, and `useQueryWithStore` Have Been Removed
 
@@ -981,7 +981,7 @@ const BookDetail = ({ id }) => {
 
 In general, you should use `isLoading`. It's false as long as the data has never been loaded (whether from the dataProvider or from the cache).
 
-The new props are actually returned by react-query's `useQuery` hook. Check [their documentation](https://react-query-v3.tanstack.com/reference/useQuery) for more information.
+The new props are actually returned by react-query's `useQuery` hook. Check [their documentation](https://tanstack.com/query/v3/docs/react/reference/useQuery) for more information.
 
 
 ## Auth Provider
@@ -1638,7 +1638,7 @@ const UnselectAllButton = () => {
 
 ### `initialValues` Is Now `defaultValues`
 
-`<FormWithRedirect>` used to accept [`react-final-form` `<Form>` props](https://final-form.org/docs/react-final-form/types/FormProps). It now accepts [`react-hook-form` `useForm` props](https://react-hook-form.com/api/useform). This also affects the other form components (`<SimpleForm>`, `<TabbedForm>`, etc.)
+`<FormWithRedirect>` used to accept [`react-final-form` `<Form>` props](https://final-form.org/docs/react-final-form/types/FormProps). It now accepts [`react-hook-form` `useForm` props](https://react-hook-form.com/docs/useform). This also affects the other form components (`<SimpleForm>`, `<TabbedForm>`, etc.)
 
 The most commonly used prop is probably `initialValues`, which is now named `defaultValues`:
 
@@ -1657,13 +1657,13 @@ const PostCreate = () => (
 ```
 {% endraw %}
 
-We kept the `validate` function prop, which we automatically translate to a custom [`react-hook-form` `resolver`](https://react-hook-form.com/api/useform#validationResolver). So even if it's not technically a react-hook-form prop, you can still use `validate` as before.
+We kept the `validate` function prop, which we automatically translate to a custom [`react-hook-form` `resolver`](https://react-hook-form.com/docs/useform#validationResolver). So even if it's not technically a react-hook-form prop, you can still use `validate` as before.
 
-This also means you can now use [`yup`](https://github.com/jquense/yup), [`zod`](https://github.com/colinhacks/zod), [`joi`](https://github.com/sideway/joi), [superstruct](https://github.com/ianstormtaylor/superstruct), [vest](https://github.com/ealush/vest) or any [resolver](https://react-hook-form.com/api/useform#validationResolver) supported by `react-hook-form` to apply schema validation.
+This also means you can now use [`yup`](https://github.com/jquense/yup), [`zod`](https://github.com/colinhacks/zod), [`joi`](https://github.com/sideway/joi), [superstruct](https://github.com/ianstormtaylor/superstruct), [vest](https://github.com/ealush/vest) or any [resolver](https://react-hook-form.com/docs/useform#validationResolver) supported by `react-hook-form` to apply schema validation.
 
 ### Input-Level Validation Now Triggers on Submit
 
-With `react-hook-form`, the default mode for form validation is 'onSubmit'. This means the validation errors only appear once the user submits the form. If you want to have input level validation triggered before submission (e.g. on blur), you can try a different [validation strategy](https://react-hook-form.com/api/useform/) by passing a `mode` prop to the form:
+With `react-hook-form`, the default mode for form validation is 'onSubmit'. This means the validation errors only appear once the user submits the form. If you want to have input level validation triggered before submission (e.g. on blur), you can try a different [validation strategy](https://react-hook-form.com/docs/useform/) by passing a `mode` prop to the form:
 
 ```jsx
 // This will trigger input validation onBlur
@@ -1674,7 +1674,7 @@ With `react-hook-form`, the default mode for form validation is 'onSubmit'. This
 
 ### Validation: Form Level & Input Level Are Mutually Exclusive
 
-With `react-hook-form`, you can't have both form level validation and input level validation. This is because form level validation is meant to be used for [schema based validation](https://react-hook-form.com/api/useform#validationResolver).
+With `react-hook-form`, you can't have both form level validation and input level validation. This is because form level validation is meant to be used for [schema based validation](https://react-hook-form.com/docs/useform#validationResolver).
 
 If you used form level validation to run complex checks for multiple input values combinations, you can use a schema library such as [yup](https://github.com/jquense/yup):
 
@@ -1858,7 +1858,7 @@ export const MyForm = () => (
 );
 ```
 
-If you need to access the form state (`valid`, `invalid`, `pristine`, `dirty`), you can call [the react-hook-form `useFormState` hook](https://react-hook-form.com/api/useformstate) instead:
+If you need to access the form state (`valid`, `invalid`, `pristine`, `dirty`), you can call [the react-hook-form `useFormState` hook](https://react-hook-form.com/docs/useformstate) instead:
 
 ```diff
 import { FormWithRedirect } from 'react-admin';
@@ -1891,7 +1891,7 @@ const MyCustomForm = () => {
 }
 ```
 
-**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/api/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/docs/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
 
 ```js
 const { isDirty } = useFormState(); // ✅
@@ -1973,7 +1973,7 @@ const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
 };
 ```
 
-**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/api/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/docs/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
 
 ```js
 const { isDirty } = useFormState(); // ✅
@@ -2508,7 +2508,7 @@ export default LatLngInput;
 
 Just like all inputs, `useInput` now only accept `defaultValue` and will ignore `initialValue`.
 
-Besides, `useInput` used to return `final-form` properties such as `input` and `meta`. It now returns `field`, `fieldState` and `formState` (see https://react-hook-form.com/api/usecontroller).
+Besides, `useInput` used to return `final-form` properties such as `input` and `meta`. It now returns `field`, `fieldState` and `formState` (see https://react-hook-form.com/docs/usecontroller).
 
 Note that the `error` returned by `fieldState` is not just a simple string anymore but an object with a `message` property.
 
@@ -2549,7 +2549,7 @@ const UserForm = () => (
 )
 ```
 
-**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/api/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/docs/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
 
 ```js
 const { isDirty } = useFormState(); // ✅

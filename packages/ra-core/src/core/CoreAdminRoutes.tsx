@@ -119,10 +119,6 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
     );
 };
 
-CoreAdminRoutes.defaultProps = {
-    customRoutes: [],
-};
-
 export interface CoreAdminRoutesProps extends CoreLayoutProps {
     layout: LayoutComponent;
     catchAll: CatchAllComponent;

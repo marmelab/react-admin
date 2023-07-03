@@ -20,16 +20,16 @@ export const ImageButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
         }
     }, [editor, translate]);
 
-    return editor ? (
+    return (
         <ToggleButton
             aria-label={label}
             title={label}
             {...props}
-            disabled={!editor?.isEditable}
+            disabled={!editor || !editor.isEditable}
             value="image"
             onClick={addImage}
         >
             <ImageIcon fontSize="inherit" />
         </ToggleButton>
-    ) : null;
+    );
 };

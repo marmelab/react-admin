@@ -1,7 +1,5 @@
 import React, { Fragment, ReactEventHandler, ReactElement } from 'react';
-import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import { alpha } from '@mui/material/styles';
 import ActionDelete from '@mui/icons-material/Delete';
 import clsx from 'clsx';
 import inflection from 'inflection';
@@ -34,6 +32,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
         redirect = 'list',
         translateOptions = {},
         mutationOptions,
+        color = 'error',
         ...rest
     } = props;
     const translate = useTranslate();
@@ -57,15 +56,16 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
 
     return (
         <Fragment>
-            <StyledButton
+            <Button
                 onClick={handleDialogOpen}
                 label={label}
                 className={clsx('ra-delete-button', className)}
                 key="button"
+                color={color}
                 {...rest}
             >
                 {icon}
-            </StyledButton>
+            </Button>
             <Confirm
                 isOpen={open}
                 loading={isLoading}
@@ -131,19 +131,3 @@ DeleteWithConfirmButton.propTypes = {
     icon: PropTypes.element,
     translateOptions: PropTypes.object,
 };
-
-const PREFIX = 'RaDeleteWithConfirmButton';
-
-const StyledButton = styled(Button, {
-    name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
-    color: theme.palette.error.main,
-    '&:hover': {
-        backgroundColor: alpha(theme.palette.error.main, 0.12),
-        // Reset on mouse devices
-        '@media (hover: none)': {
-            backgroundColor: 'transparent',
-        },
-    },
-}));

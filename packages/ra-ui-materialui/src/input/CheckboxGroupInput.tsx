@@ -199,6 +199,11 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         );
     }
 
+    const renderHelperText =
+        !!fetchError ||
+        helperText !== false ||
+        ((isTouched || isSubmitted) && invalid);
+
     return (
         <StyledFormControl
             component="fieldset"
@@ -235,16 +240,20 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                     />
                 ))}
             </FormGroup>
-            <FormHelperText
-                error={fetchError || ((isTouched || isSubmitted) && !!error)}
-                className={CheckboxGroupInputClasses.helperText}
-            >
-                <InputHelperText
-                    touched={isTouched || isSubmitted || fetchError}
-                    error={error?.message || fetchError?.message}
-                    helperText={helperText}
-                />
-            </FormHelperText>
+            {renderHelperText ? (
+                <FormHelperText
+                    error={
+                        fetchError || ((isTouched || isSubmitted) && !!error)
+                    }
+                    className={CheckboxGroupInputClasses.helperText}
+                >
+                    <InputHelperText
+                        touched={isTouched || isSubmitted || fetchError}
+                        error={error?.message || fetchError?.message}
+                        helperText={helperText}
+                    />
+                </FormHelperText>
+            ) : null}
         </StyledFormControl>
     );
 };

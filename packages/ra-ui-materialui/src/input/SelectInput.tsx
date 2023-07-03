@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ReactElement, useCallback, useEffect, ChangeEvent } from 'react';
+import { isElement } from 'react-is';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { MenuItem, TextFieldProps } from '@mui/material';
@@ -203,7 +204,7 @@ export const SelectInput = (props: SelectInputProps) => {
     const { error, invalid, isTouched } = fieldState;
 
     const renderEmptyItemOption = useCallback(() => {
-        return React.isValidElement(emptyText)
+        return isElement(emptyText)
             ? emptyText
             : emptyText === ''
             ? ' ' // em space, forces the display of an empty line of normal height
@@ -296,6 +297,11 @@ export const SelectInput = (props: SelectInputProps) => {
         );
     }
 
+    const renderHelperText =
+        !!fetchError ||
+        helperText !== false ||
+        ((isTouched || isSubmitted) && invalid);
+
     return (
         <>
             <StyledResettableTextField
@@ -318,11 +324,13 @@ export const SelectInput = (props: SelectInputProps) => {
                 clearAlwaysVisible
                 error={!!fetchError || ((isTouched || isSubmitted) && invalid)}
                 helperText={
-                    <InputHelperText
-                        touched={isTouched || isSubmitted || fetchError}
-                        error={error?.message || fetchError?.message}
-                        helperText={helperText}
-                    />
+                    renderHelperText ? (
+                        <InputHelperText
+                            touched={isTouched || isSubmitted || fetchError}
+                            error={error?.message || fetchError?.message}
+                            helperText={helperText}
+                        />
+                    ) : null
                 }
                 margin={margin}
                 {...sanitizeRestProps(rest)}

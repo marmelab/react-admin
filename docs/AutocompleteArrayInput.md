@@ -254,7 +254,7 @@ You can override this value with the `emptyValue` prop.
 <AutocompleteArrayInput source="roles" choices={choices} emptyValue={0} />
 ```
 
-**Tip**: While you can set `emptyValue` to a non-string value (e.g. `0`), you cannot use `null` or `undefined`, as it would turn the `<AutocompleteArrayInput>` into an [uncontrolled component](https://reactjs.org/docs/uncontrolled-components.html). If you need the empty choice to be stored as `null` or `undefined`, use [the `parse` prop](./Inputs.md#parse) to convert the default empty value ('') to `null` or `undefined`, or use [the `sanitizeEmptyValues` prop](./SimpleForm.md#sanitizeemptyvalues) on the Form component. 
+**Tip**: While you can set `emptyValue` to a non-string value (e.g. `0`), you cannot use `null` or `undefined`, as it would turn the `<AutocompleteArrayInput>` into an [uncontrolled component](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components). If you need the empty choice to be stored as `null` or `undefined`, use [the `parse` prop](./Inputs.md#parse) to convert the default empty value ('') to `null` or `undefined`, or use [the `sanitizeEmptyValues` prop](./SimpleForm.md#sanitizeemptyvalues) on the Form component. 
 
 ## `filterToQuery`
 
@@ -310,52 +310,77 @@ If a prompt is not enough, you can use [the `create` prop](#create) to render a 
 
 ## `optionText`
 
-You can customize the properties to use for the option name (instead of the default `name`) thanks to the `optionText` prop:
+By default, `<AutocompleteArrayInput>` uses the `name` property as the text content of each option.
 
 ```jsx
-const choices = [
-    { id: 'admin', label: 'Admin' },
-    { id: 'u001', label: 'Editor' },
-    { id: 'u002', label: 'Moderator' },
-    { id: 'u003', label: 'Reviewer' },
-];
-<AutocompleteArrayInput source="roles" choices={choices} optionText="label" />
+import { AutocompleteArrayInput } from 'react-admin';
+
+<AutocompleteArrayInput
+    source="categories"
+    choices={[
+        { id: 'tech', name: 'Tech' },
+        { id: 'lifestyle', name: 'Lifestyle' },
+        { id: 'people', name: 'People' },
+    ]}
+/>
+// renders the following list of choices
+// - Tech
+// - Lifestyle
+// - People
 ```
 
-`optionText` is especially useful when the choices are records coming from a `<ReferenceArrayInput>` or a `<ReferenceManyToManyInput>`. By default, react-admin uses the [`recordRepresentation`](./Resource.md#recordrepresentation) function to display the record label. But if you set the `optionText` prop, react-admin will use it instead.
+If your `choices` don't have a `name` property, or if you want to use another property, you can use the `optionText` prop to specify which property to use:
 
 ```jsx
-<ReferenceArrayInput source="tag_ids" reference="tags">
-    <AutocompleteArrayInput optionText="tag" />
-</ReferenceArrayInput>
+<AutocompleteArrayInput
+    source="categories"
+    optionText="label"
+    choices={[
+        { id: 'tech', label: 'Tech' },
+        { id: 'lifestyle', label: 'Lifestyle' },
+        { id: 'people', label: 'People' },
+    ]}
+/>
 ```
 
-`optionText` also accepts a function, so you can shape the option text based on the entire choice object:
+`optionText` also accepts a function, so you can shape the option text at will:
 
 ```jsx
 const choices = [
    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
 ];
+
+// Note we declared the function outside the component to avoid rerenders
 const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 
 <AutocompleteArrayInput source="authors" choices={choices} optionText={optionRenderer} />
 ```
 
-`optionText` also accepts a React Element, that will be rendered inside a [`<RecordContext>`](./useRecordContext.md) using the related choice as the `record` prop. You can use Field components there.
+**Tip**: Make sure you provide a stable reference to the function passed as `optionText`. Either declare it outside the component render function or wrap it inside a [`useCallback`](https://react.dev/reference/react/useCallback).
+
+`optionText` also accepts a React Element, that will be rendered inside a [`<RecordContext>`](./useRecordContext.md) using the related choice as the `record` prop. You can use Field components there. However, using an element as `optionText` implies that you also set two more props, `inputText` and `matchSuggestion`. See [Using A Custom Element For Options](#using-a-custom-element-for-options) for more details.
+
+`optionText` is also useful when the choices are records [fetched from another resource](#fetching-choices), and `<AutocompleteArrayInput>` is a child of a [`<ReferenceArrayInput>`](./ReferenceArrayInput.md). 
 
 ```jsx
-const choices = [
-   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
-   { id: 456, first_name: 'Jane', last_name: 'Austen' },
-];
+import { AutocompleteArrayInput, ReferenceArrayInput } from 'react-admin';
 
-const FullNameField = () => {
-    const record = useRecordContext();
-    return <span>{record.first_name} {record.last_name}</span>;
-}
+<ReferenceArrayInput label="Author" source="authors_ids" reference="authors">
+    <AutocompleteArrayInput />
+</ReferenceArrayInput>
+```
 
-<AutocompleteArrayInput source="authors" choices={choices} optionText={<FullNameField />}/>
+In that case, react-admin uses the [`recordRepresentation`](./Resource.md#recordrepresentation) of the related resource to display the record label. In the example above, `<AutocompleteArrayInput>` uses the resource representation of the `authors` resource, which is the `name` property.
+
+But if you set the `optionText` prop, react-admin uses it instead of relying on `recordRepresentation`.
+
+```jsx
+import { AutocompleteArrayInput, ReferenceArrayInput } from 'react-admin';
+
+<ReferenceArrayInput label="Author" source="authors_ids" reference="authors">
+    <AutocompleteArrayInput optionText="last_name" />
+</ReferenceArrayInput>
 ```
 
 ## `optionValue`
@@ -517,6 +542,7 @@ const OptionRenderer = () => {
         </span>
     );
 };
+const optionText = <OptionRenderer />;
 const inputText = choice => `${choice.first_name} ${choice.last_name}`;
 const matchSuggestion = (filter, choice) => {
     return (
@@ -528,10 +554,28 @@ const matchSuggestion = (filter, choice) => {
 <AutocompleteArrayInput
     source="author_ids"
     choices={choices}
-    optionText={<OptionRenderer />}
+    optionText={optionText}
     inputText={inputText}
     matchSuggestion={matchSuggestion}
 />
+```
+
+**Tip**: Make sure you pass stable references to the functions passed to the `inputText` and `matchSuggestion` by either declaring them outside the component render function or by wrapping them in a [`useCallback`](https://react.dev/reference/react/useCallback).
+
+**Tip**: Make sure you pass a stable reference to the element passed to the `optionText` prop by calling it outside the component render function like so:
+
+```jsx
+const OptionRenderer = () => {
+    const record = useRecordContext();
+    return (
+        <span>
+            <img src={record.avatar} />
+            {record.first_name} {record.last_name}
+        </span>
+    );
+};
+
+const optionText = <OptionRenderer />;
 ```
 
 ## Creating New Choices
