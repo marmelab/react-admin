@@ -12,6 +12,8 @@ import {
     mergeTranslations,
     useUnique,
 } from '..';
+import { createMemoryHistory } from 'history';
+import { QueryClient } from 'react-query';
 
 export default {
     title: 'ra-core/form/useUnique',
@@ -79,6 +81,8 @@ const Wrapper = ({ children, dataProvider = defaultDataProvider }) => {
         <CoreAdminContext
             dataProvider={dataProvider}
             i18nProvider={i18nProvider}
+            history={createMemoryHistory()}
+            queryClient={new QueryClient()}
         >
             <CreateBase resource="users">{children}</CreateBase>
         </CoreAdminContext>

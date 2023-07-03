@@ -11,13 +11,6 @@ import { testDataProvider } from '../dataProvider';
 import { DataProvider } from '../types';
 
 describe('useUnique', () => {
-    beforeEach(() => {
-        jest.useFakeTimers();
-    });
-    afterEach(() => {
-        jest.useRealTimers();
-    });
-
     const baseDataProvider = (overrides?: Partial<DataProvider>) =>
         testDataProvider({
             // @ts-ignore
@@ -39,22 +32,20 @@ describe('useUnique', () => {
         await screen.findByDisplayValue('John Doe');
 
         fireEvent.click(screen.getByText('Submit'));
-        await waitFor(() => {
-            expect(dataProvider.getList).toHaveBeenCalledWith('users', {
-                filter: {
-                    name: 'John Doe',
-                },
-                pagination: {
-                    page: 1,
-                    perPage: 1,
-                },
-                sort: {
-                    field: 'id',
-                    order: 'ASC',
-                },
-            });
-        });
         await screen.findByText('Must be unique');
+        expect(dataProvider.getList).toHaveBeenCalledWith('users', {
+            filter: {
+                name: 'John Doe',
+            },
+            pagination: {
+                page: 1,
+                perPage: 1,
+            },
+            sort: {
+                field: 'id',
+                order: 'ASC',
+            },
+        });
         expect(dataProvider.create).not.toHaveBeenCalled();
     });
 
