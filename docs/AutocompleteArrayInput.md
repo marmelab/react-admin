@@ -310,27 +310,40 @@ If a prompt is not enough, you can use [the `create` prop](#create) to render a 
 
 ## `optionText`
 
-You can customize the properties to use for the option name (instead of the default `name`) thanks to the `optionText` prop:
+By default, `<AutocompleteArrayInput>` uses the `name` property as the text content of each option.
 
 ```jsx
-const choices = [
-    { id: 'admin', label: 'Admin' },
-    { id: 'u001', label: 'Editor' },
-    { id: 'u002', label: 'Moderator' },
-    { id: 'u003', label: 'Reviewer' },
-];
-<AutocompleteArrayInput source="roles" choices={choices} optionText="label" />
+import { AutocompleteArrayInput } from 'react-admin';
+
+<AutocompleteArrayInput
+    source="categories"
+    choices={[
+        { id: 'tech', name: 'Tech' },
+        { id: 'lifestyle', name: 'Lifestyle' },
+        { id: 'people', name: 'People' },
+    ]}
+/>
+// renders the following list of choices
+// - Tech
+// - Lifestyle
+// - People
 ```
 
-`optionText` is especially useful when the choices are records coming from a `<ReferenceArrayInput>` or a `<ReferenceManyToManyInput>`. By default, react-admin uses the [`recordRepresentation`](./Resource.md#recordrepresentation) function to display the record label. But if you set the `optionText` prop, react-admin will use it instead.
+If your `choices` don't have a `name` property, or if you want to use another property, you can use the `optionText` prop to specify which property to use:
 
 ```jsx
-<ReferenceArrayInput source="tag_ids" reference="tags">
-    <AutocompleteArrayInput optionText="tag" />
-</ReferenceArrayInput>
+<AutocompleteArrayInput
+    source="categories"
+    optionText="label"
+    choices={[
+        { id: 'tech', label: 'Tech' },
+        { id: 'lifestyle', label: 'Lifestyle' },
+        { id: 'people', label: 'People' },
+    ]}
+/>
 ```
 
-`optionText` also accepts a function, so you can shape the option text based on the entire choice object:
+`optionText` also accepts a function, so you can shape the option text at will:
 
 ```jsx
 const choices = [
@@ -353,7 +366,7 @@ const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 ```jsx
 import { AutocompleteArrayInput, ReferenceArrayInput } from 'react-admin';
 
-<ReferenceArrayInput label="Author" source="author_id" reference="authors">
+<ReferenceArrayInput label="Author" source="authors_ids" reference="authors">
     <AutocompleteArrayInput />
 </ReferenceArrayInput>
 ```
@@ -365,7 +378,7 @@ But if you set the `optionText` prop, react-admin uses it instead of relying on 
 ```jsx
 import { AutocompleteArrayInput, ReferenceArrayInput } from 'react-admin';
 
-<ReferenceArrayInput label="Author" source="author_id" reference="authors">
+<ReferenceArrayInput label="Author" source="authors_ids" reference="authors">
     <AutocompleteArrayInput optionText="last_name" />
 </ReferenceArrayInput>
 ```
