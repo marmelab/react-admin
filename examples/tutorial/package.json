@@ -1,6 +1,6 @@
 {
     "name": "tutorial",
-    "version": "4.11.4",
+    "version": "4.12.0",
     "private": true,
     "type": "module",
     "scripts": {
@@ -9,9 +9,9 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "ra-data-json-server": "^4.11.4",
+        "ra-data-json-server": "^4.12.0",
         "react": "^18.2.0",
-        "react-admin": "^4.11.4",
+        "react-admin": "^4.12.0",
         "react-dom": "^18.2.0"
     },
     "devDependencies": {
