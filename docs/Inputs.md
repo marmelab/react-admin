@@ -47,7 +47,7 @@ All input components accept the following props:
 | `format`        | Optional | `Function`                | `value => value == null ? '' : value` | Callback taking the value from the form state, and returning the input value.                                                                                       |
 | `fullWidth`     | Optional | `boolean`                 | `false` | If `true`, the input will expand to fill the form width                                                                                                             |
 | `helperText`    | Optional | `string`                  | -       | Text to be displayed under the input (cannot be used inside a filter)                                                                                                          |
-| `label`         | Optional | `string`                  | -       | Input label. In i18n apps, the label is passed to the `translate` function. Defaults to the humanized `source` when omitted. Set `label={false}` to hide the label. |
+| `label`         | Optional | `string`                  | -       | Input label. In i18n apps, the label is passed to the `translate` function. When omitted, the `source` property is humanized and used as a label. Set `label={false}` to hide the label. |
 | `parse`         | Optional | `Function`                | `value => value === '' ? null : value` | Callback taking the input value, and returning the value you want stored in the form state.                                                                         |
 | `sx`            | Optional | `SxProps`                 | -       | Material UI shortcut for defining custom styles                                                                                                                             |
 | `validate`      | Optional | `Function` &#124; `array` | -       | Validation rules for the current property. See the [Validation Documentation](./Validation.md#per-input-validation-built-in-field-validators) for details.          |
@@ -205,7 +205,7 @@ Set `helperText` to `false` to remove the empty line below the input. Beware tha
 
 ## `label`
 
-Input label. Defaults to the humanized `source` when omitted. Set `label={false}` to hide the label.
+The input label. In i18n apps, the label is passed to the translate function. When omitted, the `source` property is humanized and used as a label. Set `label={false}` to hide the label.
 
 ```jsx
 <TextInput source="title" /> {/* input label is "Title" */}

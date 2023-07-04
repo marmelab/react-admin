@@ -136,6 +136,9 @@ const FlopPosts = (
 ```
 {% endraw %}
 
+You can disable this feature by setting the `storeKey` prop to `false`. When disabled, parameters will not be persisted in the store.
+
+
 ## Return Value
 
 The return value of `useListController` has the following shape:

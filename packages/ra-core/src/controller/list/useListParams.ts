@@ -88,15 +88,25 @@ export const useListParams = ({
     const location = useLocation();
     const navigate = useNavigate();
     const [localParams, setLocalParams] = useState(defaultParams);
-    const [params, setParams] = useStore(storeKey, defaultParams);
+    // As we can't conditionally call a hook, if the storeKey is false,
+    // we'll ignore the params variable later on and won't call setParams either.
+    const [params, setParams] = useStore(
+        storeKey || `${resource}.listParams`,
+        defaultParams
+    );
     const tempParams = useRef<ListParams>();
     const isMounted = useIsMounted();
+    const disableSyncWithStore = storeKey === false;
 
     const requestSignature = [
         location.search,
         resource,
         storeKey,
-        JSON.stringify(disableSyncWithLocation ? localParams : params),
+        JSON.stringify(
+            disableSyncWithLocation || disableSyncWithStore
+                ? localParams
+                : params
+        ),
         JSON.stringify(filterDefaultValues),
         JSON.stringify(sort),
         perPage,
@@ -111,7 +121,10 @@ export const useListParams = ({
         () =>
             getQuery({
                 queryFromLocation,
-                params: disableSyncWithLocation ? localParams : params,
+                params:
+                    disableSyncWithLocation || disableSyncWithStore
+                        ? localParams
+                        : params,
                 filterDefaultValues,
                 sort,
                 perPage,
@@ -124,7 +137,10 @@ export const useListParams = ({
     // store as well so that we don't lose them after a redirection back
     // to the list
     useEffect(() => {
-        if (Object.keys(queryFromLocation).length > 0) {
+        if (
+            Object.keys(queryFromLocation).length > 0 &&
+            !disableSyncWithStore
+        ) {
             setParams(query);
         }
     }, [location.search]); // eslint-disable-line
@@ -377,7 +393,7 @@ export interface ListParamsOptions {
     perPage?: number;
     resource: string;
     sort?: SortPayload;
-    storeKey?: string;
+    storeKey?: string | false;
 }
 
 interface Parameters extends ListParams {

@@ -1,8 +1,8 @@
 import * as React from 'react';
-import SelectInput from 'ink-select-input';
-import { ChoiceType, SelectInputChoice } from './SelectInputChoice.js';
 import { Text } from 'ink';
-import { Stack } from './Stack.js';
+import SelectInput from 'ink-select-input';
+import { ChoiceType, SelectInputChoice } from './SelectInputChoice';
+import { Stack } from './Stack';
 
 const choices: ChoiceType[] = [
     {

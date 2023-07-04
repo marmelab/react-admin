@@ -11,7 +11,10 @@ import {
     useUnselectAll,
     useResourceContext,
     useListContext,
+    RaRecord,
+    UpdateManyParams,
 } from 'ra-core';
+import { UseMutationOptions } from 'react-query';
 
 import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
@@ -59,16 +62,19 @@ export const BulkUpdateWithUndoButton = (
             );
             refresh();
         },
+        mutationOptions = {},
         ...rest
     } = props;
+    const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
 
     const [updateMany, { isLoading }] = useUpdateMany(
         resource,
-        { ids: selectedIds, data },
+        { ids: selectedIds, data, meta: mutationMeta },
         {
             onSuccess,
             onError,
             mutationMode: 'undoable',
+            ...otherMutationOptions,
         }
     );
 
@@ -102,13 +108,20 @@ const sanitizeRestProps = ({
     ...rest
 }: Omit<BulkUpdateWithUndoButtonProps, 'resource' | 'icon' | 'data'>) => rest;
 
-export interface BulkUpdateWithUndoButtonProps
-    extends BulkActionProps,
+export interface BulkUpdateWithUndoButtonProps<
+    RecordType extends RaRecord = any,
+    MutationOptionsError = unknown
+> extends BulkActionProps,
         ButtonProps {
     icon?: ReactElement;
     data: any;
     onSuccess?: () => void;
     onError?: (error: any) => void;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        MutationOptionsError,
+        UpdateManyParams<RecordType>
+    > & { meta?: any };
 }
 
 BulkUpdateWithUndoButton.propTypes = {

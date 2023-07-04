@@ -199,7 +199,7 @@ export interface ListControllerProps<RecordType extends RaRecord = any> {
     }> & { meta?: any };
     resource?: string;
     sort?: SortPayload;
-    storeKey?: string;
+    storeKey?: string | false;
 }
 
 const defaultSort = {
