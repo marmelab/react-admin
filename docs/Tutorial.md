@@ -273,13 +273,13 @@ But on desktop, `<SimpleList>` takes too much space for a low information densit
 
 To do so, we'll use [the `useMediaQuery` hook](https://mui.com/material-ui/react-use-media-query/) from Material UI:
 
-```jsx
+```tsx
 // in src/users.tsx
-import { useMediaQuery } from "@mui/material";
+import { useMediaQuery, Theme } from "@mui/material";
 import { List, SimpleList, Datagrid, TextField, EmailField } from "react-admin";
 
 export const UserList = () => {
-  const isSmall = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
   return (
     <List>
       {isSmall ? (
@@ -372,11 +372,11 @@ In react-admin, fields are just React components. When rendered, they grab the `
 
 That means that you can do the same to write a custom Field. For instance, here is a simplified version of the `<UrlField>`:
 
-```jsx
+```tsx
 // in src/MyUrlField.tsx
 import { useRecordContext } from "react-admin";
 
-const MyUrlField = ({ source }) => {
+const MyUrlField = ({ source }: { source: string }) => {
   const record = useRecordContext();
   if (!record) return null;
   return <a href={record[source]}>{record[source]}</a>;
@@ -415,13 +415,13 @@ The `<MyUrlField>` component is a perfect opportunity to illustrate how to custo
 React-admin relies on [Material UI](https://mui.com/material-ui/getting-started/overview/), a set of React components modeled after Google's [Material Design Guidelines](https://material.io/). All Material UI components (and most react-admin components) support a prop called `sx`, which allows custom inline styles. Let's take advantage of the `sx` prop to remove the underline from the link and add an icon:
 
 {% raw %}
-```jsx
+```tsx
 // in src/MyUrlField.tsx
 import { useRecordContext } from "react-admin";
 import { Link } from "@mui/material";
 import LaunchIcon from "@mui/icons-material/Launch";
 
-const MyUrlField = ({ source }) => {
+const MyUrlField = ({ source }: { source: string }) => {
   const record = useRecordContext();
   return record ? (
     <Link href={record[source]} sx={{ textDecoration: "none" }}>
@@ -877,13 +877,13 @@ For this tutorial, since there is no public authentication API, we can use a fak
 
 The `authProvider` must expose 5 methods, each returning a `Promise`:
 
-```js
+```ts
 // in src/authProvider.ts
+import { AuthProvider } from "react-admin";
 
-// TypeScript users must reference the type: `AuthProvider`
-export const authProvider = {
+export const authProvider: AuthProvider = {
   // called when the user attempts to log in
-  login: ({ username }) => {
+  login: ({ username }: { username: string }) => {
     localStorage.setItem("username", username);
     // accept all username/password combinations
     return Promise.resolve();
@@ -894,7 +894,7 @@ export const authProvider = {
     return Promise.resolve();
   },
   // called when the API returns an error
-  checkError: ({ status }) => {
+  checkError: ({ status }: { status: number }) => {
     if (status === 401 || status === 403) {
       localStorage.removeItem("username");
       return Promise.reject();
@@ -962,16 +962,15 @@ React-admin calls the Data Provider with one method for each of the actions of t
 
 The code for a Data Provider for the `my.api.url` API is as follows:
 
-```js
+```ts
 // in src/dataProvider.ts
-import { fetchUtils } from "react-admin";
+import { DataProvider, fetchUtils } from "react-admin";
 import { stringify } from "query-string";
 
 const apiUrl = 'https://my.api.com/';
 const httpClient = fetchUtils.fetchJson;
 
-// TypeScript users must reference the type `DataProvider`
-export const dataProvider = {
+export const dataProvider: DataProvider = {
     getList: (resource, params) => {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
