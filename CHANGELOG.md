@@ -12,6 +12,7 @@
 * Fix `<DeleteButton>` doesn't allow to override the text color ([#9060](https://github.com/marmelab/react-admin/pull/9060)) ([adguernier](https://github.com/adguernier))
 * Fix warning about string value passed to `BooleanInput` ([#9056](https://github.com/marmelab/react-admin/pull/9056)) ([adguernier](https://github.com/adguernier))
 * Fix demos don't allow to visualize source maps ([#9047](https://github.com/marmelab/react-admin/pull/9047)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix custom input's onChange handlers should have access to updated context value ([#8910](https://github.com/marmelab/react-admin/pull/8910)) ([WiXSL](https://github.com/WiXSL))
 * Upgrade to TS 5 ([#8937](https://github.com/marmelab/react-admin/pull/8937)) ([djhi](https://github.com/djhi))
 * [Doc] Add SmartRichTextInput, an AI assistant for rich text content ([#9052](https://github.com/marmelab/react-admin/pull/9052)) ([fzaninotto](https://github.com/fzaninotto))
 * [Doc] Document useRegisterMutationMiddleware ([#9031](https://github.com/marmelab/react-admin/pull/9031)) ([djhi](https://github.com/djhi))
@@ -95,7 +96,7 @@
 * Add `<WithListContext>` component ([#8917](https://github.com/marmelab/react-admin/pull/8917)) ([fzaninotto](https://github.com/fzaninotto))
 * Expose `setNotifications` callback in `<NotificationContext>` to allow for a custom notifications center ([#8914](https://github.com/marmelab/react-admin/pull/8914)) ([smeng9](https://github.com/smeng9))
 * Add `purifyOptions` prop to `<RichTextField>` ([#8905](https://github.com/marmelab/react-admin/pull/8905)) ([slax57](https://github.com/slax57))
-* Add `queryOptions` prop to `<ReferenceField>` ([#8895](https://github.com/marmelab/react-admin/pull/8895)) ([Wi](https://github.com/Wi))XSL
+* Add `queryOptions` prop to `<ReferenceField>` ([#8895](https://github.com/marmelab/react-admin/pull/8895)) ([WiXSL](https://github.com/WiXSL))
 * Add ability to default to dark mode when users prefer it ([#8874](https://github.com/marmelab/react-admin/pull/8874)) ([fzaninotto](https://github.com/fzaninotto))
 * Simplify form reset on record change, and forward supported props from `useAugmentedForm` to `useForm` ([#8911](https://github.com/marmelab/react-admin/pull/8911)) ([slax57](https://github.com/slax57))
 * Fix `useGetList` default `onSuccess` throws when the query is disabled ([#8941](https://github.com/marmelab/react-admin/pull/8941)) ([slax57](https://github.com/slax57))
