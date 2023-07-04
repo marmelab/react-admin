@@ -390,6 +390,14 @@ const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 `optionText` is also useful when the choices are records [fetched from another resource](#fetching-choices), and `<AutocompleteInput>` is a child of a [`<ReferenceInput>`](./ReferenceInput.md). 
 
 ```jsx
+// in ./index.js
+import {Admin, Resource } from 'react-admin';
+
+<Admin {...adminProps}>
+    <Resource name="authors" recordRepresentation={record => record.name} />
+</Admin>
+
+// in ./PostCreate.jsx
 import { AutocompleteInput, ReferenceInput } from 'react-admin';
 
 <ReferenceInput label="Author" source="author_id" reference="authors">
@@ -397,7 +405,7 @@ import { AutocompleteInput, ReferenceInput } from 'react-admin';
 </ReferenceInput>
 ```
 
-In that case, react-admin uses the [`recordRepresentation`](./Resource.md#recordrepresentation) of the related resource to display the record label.
+In that case, react-admin uses the [`recordRepresentation`](./Resource.md#recordrepresentation) of the related resource to display the record label. In the example above, `<AutocompleteInput>` uses the resource representation of the `authors` resource, which is the `name` property.
 
 But if you set the `optionText` prop, react-admin uses it instead of relying on `recordRepresentation`.
 
