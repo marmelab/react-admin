@@ -70,22 +70,14 @@ import { ApplicationUpdatedNotification } from '..';
 export const CheckForApplicationUpdate = (
     props: CheckForApplicationUpdateProps
 ) => {
-    const {
-        updateMode = 'manual',
-        notification = DEFAULT_NOTIFICATION,
-        ...rest
-    } = props;
+    const { notification = DEFAULT_NOTIFICATION, ...rest } = props;
     const notify = useNotify();
 
     const onNewVersionAvailable = () => {
-        if (updateMode === 'immediate') {
-            window.location.reload();
-        } else {
-            notify(notification, {
-                type: 'info',
-                autoHideDuration: 0,
-            });
-        }
+        notify(notification, {
+            type: 'info',
+            autoHideDuration: 0,
+        });
     };
 
     useCheckForApplicationUpdate({ onNewVersionAvailable, ...rest });
