@@ -5,7 +5,7 @@ import {
     UseCheckForApplicationUpdateOptions,
     useCheckForApplicationUpdate,
 } from 'ra-core';
-import { ApplicationUpdatedNotification } from '..';
+import { ApplicationUpdatedNotification } from './ApplicationUpdatedNotification';
 
 /**
  * A component which checks for a new version of the application and can display a notification asking users to reload the page.
