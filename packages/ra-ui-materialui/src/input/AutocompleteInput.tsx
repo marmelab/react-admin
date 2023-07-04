@@ -222,7 +222,7 @@ export const AutocompleteInput = <
     const finalChoices = useMemo(
         () =>
             // eslint-disable-next-line eqeqeq
-            emptyText == undefined || isRequired || multiple
+            emptyText == undefined || isRequired
                 ? allChoices
                 : [
                       {
