@@ -1,6 +1,7 @@
 export * from './AppBar';
 export * from './ApplicationUpdatedNotification';
 export * from './CardContentInner';
+export * from './CheckForApplicationUpdate';
 export * from './Confirm';
 export * from './DashboardMenuItem';
 export * from './DeviceTestWrapper';

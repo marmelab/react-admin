@@ -7,7 +7,7 @@ import React, {
 import { ErrorBoundary } from 'react-error-boundary';
 import clsx from 'clsx';
 import { styled, SxProps } from '@mui/material/styles';
-import { CoreLayoutProps, CheckForApplicationUpdate } from 'ra-core';
+import { CoreLayoutProps } from 'ra-core';
 
 import { AppBar as DefaultAppBar, AppBarProps } from './AppBar';
 import { Sidebar as DefaultSidebar, SidebarProps } from './Sidebar';
@@ -16,7 +16,6 @@ import { Error, ErrorProps } from './Error';
 import { SkipNavigationButton } from '../button';
 import { useSidebarState } from './useSidebarState';
 import { Inspector } from '../preferences';
-import { ApplicationUpdatedNotification } from './ApplicationUpdatedNotification';
 
 export const Layout = (props: LayoutProps) => {
     const {
@@ -29,7 +28,6 @@ export const Layout = (props: LayoutProps) => {
         menu: Menu = DefaultMenu,
         sidebar: Sidebar = DefaultSidebar,
         title,
-        updateMode,
         ...rest
     } = props;
 
@@ -67,10 +65,6 @@ export const Layout = (props: LayoutProps) => {
                     </div>
                 </main>
                 <Inspector />
-                <CheckForApplicationUpdate
-                    updateMode={updateMode}
-                    notification={<ApplicationUpdatedNotification />}
-                />
             </div>
         </StyledLayout>
     );
