@@ -390,19 +390,36 @@ const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 `optionText` is also useful when the choices are records [fetched from another resource](#fetching-choices), and `<AutocompleteInput>` is a child of a [`<ReferenceInput>`](./ReferenceInput.md). 
 
 ```jsx
-// in ./index.js
-import {Admin, Resource } from 'react-admin';
+// in src/PostCreate.jsx
+import { AutocompleteInput, Create, ReferenceInput, SimpleForm } from 'react-admin';
 
-<Admin {...adminProps}>
-    <Resource name="authors" recordRepresentation={record => record.name} />
-</Admin>
+export const PostCreate = () => {
+    return (
+        <Create>
+            <SimpleForm>
+                <ReferenceInput
+                    label="Author"
+                    source="author_id"
+                    reference="authors"
+                >
+                    <AutocompleteInput />
+                </ReferenceInput>
+            </SimpleForm>
+        </Create>
+    );
+};
 
-// in ./PostCreate.jsx
-import { AutocompleteInput, ReferenceInput } from 'react-admin';
+// in src/App.js
+import {Admin, Resource, ListGuesser } from 'react-admin';
+import { dataProvider } from './dataProvider';
+import { PostCreate } from './PostCreate';
 
-<ReferenceInput label="Author" source="author_id" reference="authors">
-    <AutocompleteInput />
-</ReferenceInput>
+export const App = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource name="posts" list={ListGuesser} create={PostCreate} />
+        <Resource name="authors" recordRepresentation={record => record.name} />
+    </Admin>
+)
 ```
 
 In that case, react-admin uses the [`recordRepresentation`](./Resource.md#recordrepresentation) of the related resource to display the record label. In the example above, `<AutocompleteInput>` uses the resource representation of the `authors` resource, which is the `name` property.
@@ -410,11 +427,20 @@ In that case, react-admin uses the [`recordRepresentation`](./Resource.md#record
 But if you set the `optionText` prop, react-admin uses it instead of relying on `recordRepresentation`.
 
 ```jsx
-import { AutocompleteInput, ReferenceInput } from 'react-admin';
+// in src/PostCreate.jsx
+import { AutocompleteInput, Create, ReferenceInput, SimpleForm } from 'react-admin';
 
-<ReferenceInput label="Author" source="author_id" reference="authors">
-    <AutocompleteInput optionText="last_name" />
-</ReferenceInput>
+export const PostCreate = () => {
+    return (
+        <Create>
+            <SimpleForm>
+                <ReferenceInput label="Author" source="author_id" reference="authors">
+                    <AutocompleteInput optionText="last_name" />
+                </ReferenceInput>
+            </SimpleForm>
+        </Create>
+    );
+};
 ```
 In the example above, `<AutocompleteInput>` uses the `last_name` property from `authors` resource instead of their `recordRepresentation`.
 
