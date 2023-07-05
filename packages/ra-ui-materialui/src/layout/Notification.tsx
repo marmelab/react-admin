@@ -44,12 +44,12 @@ export const Notification = (props: NotificationProps) => {
 
     useEffect(() => {
         const beforeunload = (e: BeforeUnloadEvent) => {
-            if (messageInfo?.notificationOptions?.undoable) {
-                e.preventDefault();
-            }
+            e.preventDefault();
         };
 
-        window.addEventListener('beforeunload', beforeunload);
+        if (messageInfo?.notificationOptions?.undoable) {
+            window.addEventListener('beforeunload', beforeunload);
+        }
 
         if (notifications.length && !messageInfo) {
             // Set a new snack when we don't have an active one
