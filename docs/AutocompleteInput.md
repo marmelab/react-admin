@@ -387,7 +387,7 @@ const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 
 `optionText` also accepts a React Element, that will be rendered inside a [`<RecordContext>`](./useRecordContext.md) using the related choice as the `record` prop. You can use Field components there. However, using an element as `optionText` implies that you also set two more props, `inputText` and `matchSuggestion`. See [Using A Custom Element For Options](#using-a-custom-element-for-options) for more details.
 
-`optionText` can also be useful when the choices are records [fetched from another resource](#fetching-choices), and `<AutocompleteInput>` is a child of a [`<ReferenceInput>`](./ReferenceInput.md). In that case, react-admin uses the [`recordRepresentation`](./Resource.md#recordrepresentation) of the related resource to display the record label. In the example below, `<AutocompleteInput>` renders author options via their `name` attribute, because it's the record representation defined in the `<Resource name="authors">`:
+`optionText` can also be useful when the choices are records [fetched from another resource](#fetching-choices), and `<AutocompleteInput>` is a child of a [`<ReferenceInput>`](./ReferenceInput.md). In that case, react-admin uses the [`recordRepresentation`](./Resource.md#recordrepresentation) of the related resource to display the record label. In the example below, `<AutocompleteInput>` renders author options via their `last_name` attribute, because it's the record representation defined in the `<Resource name="authors">`:
 
 ```jsx
 // in src/PostCreate.jsx
@@ -411,7 +411,7 @@ import { PostCreate } from './PostCreate';
 export const App = () => (
     <Admin dataProvider={dataProvider}>
         <Resource name="posts" list={ListGuesser} create={PostCreate} />
-        <Resource name="authors" recordRepresentation="name" />
+        <Resource name="authors" recordRepresentation="last_name" />
     </Admin>
 )
 ```
@@ -426,14 +426,14 @@ export const PostCreate = () => (
     <Create>
         <SimpleForm>
             <ReferenceInput label="Author" source="author_id" reference="authors">
-                <AutocompleteInput optionText="last_name" />
+                <AutocompleteInput optionText={author => `${author.first_name} ${author.last_name}`} />
             </ReferenceInput>
         </SimpleForm>
     </Create>
 );
 ```
 
-Now `<AutocompleteInput>` will use the `last_name` property from `authors` resource instead of `name`.
+Now `<AutocompleteInput>` will render author options using their full name.
 
 ## `optionValue`
 
