@@ -64,7 +64,9 @@ export const Notification = (props: NotificationProps) => {
         }
 
         return () => {
-            window.removeEventListener('beforeunload', beforeunload);
+            if (messageInfo?.notificationOptions?.undoable) {
+                window.removeEventListener('beforeunload', beforeunload);
+            }
         };
     }, [notifications, messageInfo, open, takeNotification]);
 
