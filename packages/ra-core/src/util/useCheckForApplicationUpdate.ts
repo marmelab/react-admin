@@ -7,7 +7,7 @@ import { useEvent } from './useEvent';
  * comparing the hash of the response with the hash of the current page.
  *
  * @param {UseCheckForApplicationUpdateOptions} options The options
- * @param {string} options.onNewVersionAvailable The function to call when a new version of the application is available.
+ * @param {Function} options.onNewVersionAvailable The function to call when a new version of the application is available.
  * @param {string} options.url Optional. The URL to download to check for code update. Defaults to the current URL.
  * @param {number} options.checkInterval Optional. The interval in milliseconds between two checks. Defaults to 3600000 (1 hour).
  * @param {boolean} options.disabled Optional. Whether the check should be disabled. Defaults to false.

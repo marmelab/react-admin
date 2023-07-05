@@ -5,7 +5,7 @@ title: "The CheckForApplicationUpdate component"
 
 # `CheckForApplicationUpdate`
 
-This component regularly checks whether the application source code has changed and prompt users to reload the page when an update is available. To detect updates, it fetches the current URL at regular intervals and compares a hash of the response content (usually the HTML source). This should be enough in most cases as bundlers usually update the links to the application bundles after an update. 
+This component regularly checks whether the application source code has changed and prompts users to reload the page when an update is available. To detect updates, it fetches the current URL at regular intervals and compares the hash of the response content (usually the HTML source). This should be enough in most cases as bundlers usually update the links to the application bundles after an update. 
 
 It leverages the [`useCheckForApplicationUpdate`](./useCheckForApplicationUpdate.md) hook.
 
@@ -21,6 +21,7 @@ import { CheckForApplicationUpdate, Layout, LayoutProps } from 'react-admin';
 
 export const MyLayout = ({ children, ...props }: LayoutProps) => (
     <Layout {...props}>
+        {children}
         <CheckForApplicationUpdate />
     </Layout>
 );
@@ -43,7 +44,7 @@ export const App = () => (
 | Prop            | Required | Type     | Default            | Description                                                         |
 | --------------- | -------- | -------- | ------------------ |-------------------------------------------------------------------- |
 | `checkInterval` | Optional | number   | `3600000` (1 hour) | The interval in milliseconds between two checks                     |
-| `disabled`      | Optional | boolean  | `true`             | Whether the automatic check is enabled                              |
+| `disabled`      | Optional | boolean  | `false`             | Whether the automatic check is disabled                              |
 | `notification`  | Optional | ReactElement |                    | The notification to display to the user when an update is available |
 | `url`           | Optional | string   | current URL        | The URL to download to check for code update                        |
 
@@ -59,6 +60,7 @@ const HALF_HOUR = 1800000;
 
 export const MyLayout = ({ children, ...props }: LayoutProps) => (
     <Layout {...props}>
+        {children}
         <CheckForApplicationUpdate checkInterval={HALF_HOUR} />
     </Layout>
 );
@@ -74,6 +76,7 @@ import { CheckForApplicationUpdate, Layout, LayoutProps } from 'react-admin';
 
 export const MyLayout = ({ children, ...props }: LayoutProps) => (
     <Layout {...props}>
+        {children}
         <CheckForApplicationUpdate disabled={process.env.NODE_ENV !== 'production'} />
     </Layout>
 );
@@ -129,6 +132,7 @@ const MY_APP_ROOT_URL = 'http://admin.mycompany.com';
 
 export const MyLayout = ({ children, ...props }: LayoutProps) => (
     <Layout {...props}>
+        {children}
         <CheckForApplicationUpdate url={MY_APP_ROOT_URL} />
     </Layout>
 );
