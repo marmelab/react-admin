@@ -246,11 +246,58 @@ export const PostList = () => (
 
 ![Bulk Delete button](./img/bulk-delete-button.png)
 
-| Prop                | Required | Type            | Default            | Description                                        |
-| --------------------| -------- | --------------- | ------------------ | ---------------------------------------------------|
-| `label`             | Optional | `string`        | 'ra.action.delete' | label or translation message to use                |
-| `icon`              | Optional | `ReactElement`  | `<DeleteIcon>`     | iconElement, e.g. `<CommentIcon />`                |
-| `mutationOptions`   | Optional | `object`        | null               | options for react-query `useMutation` hook         |
+| Prop                 | Required | Type                                    | Default            | Description                                                                                                         |
+| -------------------- | -------- | --------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| `confirmContent`     | Optional | React node                              | -                  | Lets you customize the content of the confirm dialog. Only used in `'pessimistic'` or `'optimistic'` mutation modes |
+| `confirmTitle`       | Optional | `string`                                | -                  | Lets you customize the title of the confirm dialog. Only used in `'pessimistic'` or `'optimistic'` mutation modes   |
+| `label`              | Optional | `string`                                | 'ra.action.delete' | label or translation message to use                                                                                 |
+| `icon`               | Optional | `ReactElement`                          | `<DeleteIcon>`     | iconElement, e.g. `<CommentIcon />`                                                                                 |
+| `mutationMode`       | Optional | `'undoable'|'pessimistic'|'optimistic'` | `'undoable'`       | Mutation mode                                                                                                       |
+| `mutationOptions`    | Optional | `object`                                | null               | options for react-query `useMutation` hook                                                                          |
+
+**Tip:** If you choose the `'pessimistic'` or `'optimistic'` mutation mode, a confirm dialog will be displayed to the user before the mutation is executed.
+
+### `<BulkUpdateButton>`
+
+Partially updates the selected rows. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons).
+
+{% raw %}
+```jsx
+import * as React from 'react';
+import { Fragment } from 'react';
+import { BulkDeleteButton, BulkExportButton, BulkUpdateButton } from 'react-admin';
+
+const PostBulkActionButtons = () => (
+    <Fragment>
+        <BulkExportButton />
+        <BulkUpdateButton data={{ published_at: new Date() }} />
+        <BulkDeleteButton />
+    </Fragment>
+);
+
+export const PostList = () => (
+    <List>
+        <Datagrid bulkActionButtons={<PostBulkActionButtons />}>
+            ...
+        </Datagrid>
+    </List>
+);
+```
+{% endraw %}
+
+![Bulk Update button](./img/bulk-update-button.png)
+
+| Prop                 | Required | Type                                    | Default            | Description                                                                                                         |
+| -------------------- | -------- | --------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| `data`               | Required | `object`                                | -                  | An object with the fields that need to be updated on the selected records                                           |
+| `confirmContent`     | Optional | React node                              | -                  | Lets you customize the content of the confirm dialog. Only used in `'pessimistic'` or `'optimistic'` mutation modes |
+| `confirmTitle`       | Optional | `string`                                | -                  | Lets you customize the title of the confirm dialog. Only used in `'pessimistic'` or `'optimistic'` mutation modes   |
+| `icon`               | Optional | `ReactElement`                          | `<ActionUpdate>`   | An icon element                                                                                                     |
+| `label`              | Optional | `string`                                | 'ra.action.update' | Label or translation message to use                                                                                 |
+| `mutationMode`       | Optional | `'undoable'|'pessimistic'|'optimistic'` | `'undoable'`       | Mutation mode                                                                                                       |
+| `mutationOptions`    | Optional | `object`                                | null               | Options for react-query `useMutation` hook                                                                          |
+
+**Tip:** If you choose the `'pessimistic'` or `'optimistic'` mutation mode, a confirm dialog will be displayed to the user before the mutation is executed.
 
 ### `<FilterButton>`
 

@@ -173,7 +173,7 @@ export const PostList = () => (
 );
 ```
 
-**Tip**: React-admin provides three components that you can use in `bulkActionButtons`: `<BulkDeleteButton>`, `<BulkUpdateButton>`, and `<BulkExportButton>`.
+**Tip**: React-admin provides three components that you can use in `bulkActionButtons`: [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton), [`<BulkUpdateButton>`](./Buttons.md#bulkupdatebutton), and [`<BulkExportButton>`](./Buttons.md#bulkexportbutton).
 
 **Tip**: You can also disable bulk actions altogether by passing `false` to the `bulkActionButtons` prop. In this case, the checkboxes column doesn't show up.
 
@@ -183,7 +183,7 @@ Bulk action button components can use the [`useListContext`](./useListContext.md
 * `resource`: the currently displayed resource (eg `posts`, `comments`, etc.)
 * `filterValues`: the filter values. This can be useful if you want to apply your action on all items matching the filter.
 
-Here is an example of custom bulk action button, which sets the `views` property of all posts to `0` optimistically:
+Here is an example of custom bulk action button, which sets the `views` property of all posts to `0`:
 
 ```jsx
 // in ./ResetViewsButton.js
