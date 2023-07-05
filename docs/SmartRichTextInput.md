@@ -163,12 +163,14 @@ That's why `<SmartRichTextInput>` accepts a `locale` prop. It defaults to 'en'.
 
 Specifies the field of the record that the input should edit. It is required.
 
+{% raw %}
 ```jsx
 <Form record={{ id: 123, title: 'Hello, world!', body: '<p>Lorem Ipsum</p>' }}>
     <SmartRichTextInput source="body" />
     {/* default value is "<p>Lorem Ipsum</p>" */}
 </Form>
 ```
+{% endraw %}
 
 If you edit a record with a complex structure, you can use a path as the `source` parameter. For instance, if the API returns the following 'book' record:
 
