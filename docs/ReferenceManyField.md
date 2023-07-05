@@ -77,7 +77,7 @@ You can also use `<ReferenceManyField>` in a list, e.g. to display the authors o
 
 ```jsx
 import * as React from "react";
-import { List, Datagrid, ChipField, ReferenceManyField, SingleFieldList, TextField, DateField } from 'react-admin';
+import { List, Datagrid, ChipField, ReferenceManyField, SingleFieldList, TextField } from 'react-admin';
 
 export const PostList = () => (
     <List>
