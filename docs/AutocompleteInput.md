@@ -387,62 +387,53 @@ const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 
 `optionText` also accepts a React Element, that will be rendered inside a [`<RecordContext>`](./useRecordContext.md) using the related choice as the `record` prop. You can use Field components there. However, using an element as `optionText` implies that you also set two more props, `inputText` and `matchSuggestion`. See [Using A Custom Element For Options](#using-a-custom-element-for-options) for more details.
 
-`optionText` is also useful when the choices are records [fetched from another resource](#fetching-choices), and `<AutocompleteInput>` is a child of a [`<ReferenceInput>`](./ReferenceInput.md). 
+`optionText` can also be useful when the choices are records [fetched from another resource](#fetching-choices), and `<AutocompleteInput>` is a child of a [`<ReferenceInput>`](./ReferenceInput.md). In that case, react-admin uses the [`recordRepresentation`](./Resource.md#recordrepresentation) of the related resource to display the record label. In the example below, `<AutocompleteInput>` renders author options via their `name` attribute, because it's the record representation defined in the `<Resource name="authors">`:
 
 ```jsx
 // in src/PostCreate.jsx
 import { AutocompleteInput, Create, ReferenceInput, SimpleForm } from 'react-admin';
 
-export const PostCreate = () => {
-    return (
-        <Create>
-            <SimpleForm>
-                <ReferenceInput
-                    label="Author"
-                    source="author_id"
-                    reference="authors"
-                >
-                    <AutocompleteInput />
-                </ReferenceInput>
-            </SimpleForm>
-        </Create>
-    );
-};
+export const PostCreate = () => (
+    <Create>
+        <SimpleForm>
+            <ReferenceInput label="Author" source="author_id" reference="authors">
+                <AutocompleteInput />
+            </ReferenceInput>
+        </SimpleForm>
+    </Create>
+);
 
 // in src/App.js
-import {Admin, Resource, ListGuesser } from 'react-admin';
+import { Admin, Resource, ListGuesser } from 'react-admin';
 import { dataProvider } from './dataProvider';
 import { PostCreate } from './PostCreate';
 
 export const App = () => (
     <Admin dataProvider={dataProvider}>
         <Resource name="posts" list={ListGuesser} create={PostCreate} />
-        <Resource name="authors" recordRepresentation={record => record.name} />
+        <Resource name="authors" recordRepresentation="name" />
     </Admin>
 )
 ```
 
-In that case, react-admin uses the [`recordRepresentation`](./Resource.md#recordrepresentation) of the related resource to display the record label. In the example above, `<AutocompleteInput>` uses the resource representation of the `authors` resource, which is the `name` property.
-
-But if you set the `optionText` prop, react-admin uses it instead of relying on `recordRepresentation`.
+If you set the `optionText` prop, react-admin uses it instead of relying on `recordRepresentation`:
 
 ```jsx
 // in src/PostCreate.jsx
 import { AutocompleteInput, Create, ReferenceInput, SimpleForm } from 'react-admin';
 
-export const PostCreate = () => {
-    return (
-        <Create>
-            <SimpleForm>
-                <ReferenceInput label="Author" source="author_id" reference="authors">
-                    <AutocompleteInput optionText="last_name" />
-                </ReferenceInput>
-            </SimpleForm>
-        </Create>
-    );
-};
+export const PostCreate = () => (
+    <Create>
+        <SimpleForm>
+            <ReferenceInput label="Author" source="author_id" reference="authors">
+                <AutocompleteInput optionText="last_name" />
+            </ReferenceInput>
+        </SimpleForm>
+    </Create>
+);
 ```
-In the example above, `<AutocompleteInput>` uses the `last_name` property from `authors` resource instead of their `recordRepresentation`.
+
+Now `<AutocompleteInput>` will use the `last_name` property from `authors` resource instead of `name`.
 
 ## `optionValue`
 
