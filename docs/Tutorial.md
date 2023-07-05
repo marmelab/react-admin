@@ -47,7 +47,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { App } from './App';
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <App />
     </React.StrictMode>
@@ -164,18 +164,18 @@ Let's copy this code, and create a new `UserList` component, in a new file named
 import { List, Datagrid, TextField, EmailField } from "react-admin";
 
 export const UserList = () => (
-  <List>
-    <Datagrid rowClick="edit">
-      <TextField source="id" />
-      <TextField source="name" />
-      <TextField source="username" />
-      <EmailField source="email" />
-      <TextField source="address.street" />
-      <TextField source="phone" />
-      <TextField source="website" />
-      <TextField source="company.name" />
-    </Datagrid>
-  </List>
+    <List>
+        <Datagrid rowClick="edit">
+            <TextField source="id" />
+            <TextField source="name" />
+            <TextField source="username" />
+            <EmailField source="email" />
+            <TextField source="address.street" />
+            <TextField source="phone" />
+            <TextField source="website" />
+            <TextField source="company.name" />
+        </Datagrid>
+    </List>
 );
 ```
 
@@ -206,18 +206,18 @@ Let's take a moment to analyze the code of the `<UserList>` component:
 
 ```tsx
 export const UserList = () => (
-  <List>
-    <Datagrid rowClick="edit">
-      <TextField source="id" />
-      <TextField source="name" />
-      <TextField source="username" />
-      <EmailField source="email" />
-      <TextField source="address.street" />
-      <TextField source="phone" />
-      <TextField source="website" />
-      <TextField source="company.name" />
-    </Datagrid>
-  </List>
+    <List>
+        <Datagrid rowClick="edit">
+            <TextField source="id" />
+            <TextField source="name" />
+            <TextField source="username" />
+            <EmailField source="email" />
+            <TextField source="address.street" />
+            <TextField source="phone" />
+            <TextField source="website" />
+            <TextField source="company.name" />
+        </Datagrid>
+    </List>
 );
 ```
 
@@ -240,13 +240,13 @@ This means we can compose `<List>` with another component - for instance `<Simpl
 import { List, SimpleList } from "react-admin";
 
 export const UserList = () => (
-  <List>
-    <SimpleList
-      primaryText={(record) => record.name}
-      secondaryText={(record) => record.username}
-      tertiaryText={(record) => record.email}
-    />
-  </List>
+    <List>
+        <SimpleList
+          primaryText={(record) => record.name}
+          secondaryText={(record) => record.username}
+          tertiaryText={(record) => record.email}
+        />
+    </List>
 );
 ```
 
@@ -279,29 +279,29 @@ import { useMediaQuery, Theme } from "@mui/material";
 import { List, SimpleList, Datagrid, TextField, EmailField } from "react-admin";
 
 export const UserList = () => {
-  const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
-  return (
-    <List>
-      {isSmall ? (
-        <SimpleList
-          primaryText={(record) => record.name}
-          secondaryText={(record) => record.username}
-          tertiaryText={(record) => record.email}
-        />
-      ) : (
-        <Datagrid rowClick="edit">
-          <TextField source="id" />
-          <TextField source="name" />
-          <TextField source="username" />
-          <EmailField source="email" />
-          <TextField source="address.street" />
-          <TextField source="phone" />
-          <TextField source="website" />
-          <TextField source="company.name" />
-        </Datagrid>
-      )}
-    </List>
-  );
+    const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
+    return (
+        <List>
+            {isSmall ? (
+                <SimpleList
+                    primaryText={(record) => record.name}
+                    secondaryText={(record) => record.username}
+                    tertiaryText={(record) => record.email}
+                />
+            ) : (
+                <Datagrid rowClick="edit">
+                    <TextField source="id" />
+                    <TextField source="name" />
+                    <TextField source="username" />
+                    <EmailField source="email" />
+                    <TextField source="address.street" />
+                    <TextField source="phone" />
+                    <TextField source="website" />
+                    <TextField source="company.name" />
+                </Datagrid>
+            )}
+        </List>
+    );
 };
 ```
 
@@ -377,9 +377,9 @@ That means that you can do the same to write a custom Field. For instance, here 
 import { useRecordContext } from "react-admin";
 
 const MyUrlField = ({ source }: { source: string }) => {
-  const record = useRecordContext();
-  if (!record) return null;
-  return <a href={record[source]}>{record[source]}</a>;
+    const record = useRecordContext();
+    if (!record) return null;
+    return <a href={record[source]}>{record[source]}</a>;
 };
 
 export default MyUrlField;
@@ -422,13 +422,13 @@ import { Link } from "@mui/material";
 import LaunchIcon from "@mui/icons-material/Launch";
 
 const MyUrlField = ({ source }: { source: string }) => {
-  const record = useRecordContext();
-  return record ? (
-    <Link href={record[source]} sx={{ textDecoration: "none" }}>
-      {record[source]}
-      <LaunchIcon sx={{ fontSize: 15, ml: 1 }} />
-    </Link>
-  ) : null;
+    const record = useRecordContext();
+    return record ? (
+        <Link href={record[source]} sx={{ textDecoration: "none" }}>
+            {record[source]}
+            <LaunchIcon sx={{ fontSize: 15, ml: 1 }} />
+        </Link>
+    ) : null;
 };
 
 export default MyUrlField;
@@ -482,14 +482,14 @@ The `ListGuesser` suggests using a `<ReferenceField>` for the `userId` field. Le
 import { List, Datagrid, TextField, ReferenceField } from "react-admin";
 
 export const PostList = () => (
-  <List>
-    <Datagrid rowClick="edit">
-      <ReferenceField source="userId" reference="users" />
-      <TextField source="id" />
-      <TextField source="title" />
-      <TextField source="body" />
-    </Datagrid>
-  </List>
+    <List>
+        <Datagrid rowClick="edit">
+            <ReferenceField source="userId" reference="users" />
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="body" />
+        </Datagrid>
+    </List>
 );
 ```
 
@@ -590,30 +590,30 @@ Copy the `<PostEdit>` code dumped by the guesser in the console to the `posts.ts
 ```tsx
 // in src/posts.tsx
 import {
-  List,
-  Datagrid,
-  TextField,
-  ReferenceField,
-  EditButton,
-  Edit,
-  SimpleForm,
-  ReferenceInput,
-  TextInput,
+    List,
+    Datagrid,
+    TextField,
+    ReferenceField,
+    EditButton,
+    Edit,
+    SimpleForm,
+    ReferenceInput,
+    TextInput,
 } from "react-admin";
 
-export const PostList = () => (
-  { /* ... */ }
-);
+export const PostList = () => {
+    /* ... */
+};
 
 export const PostEdit = () => (
-  <Edit>
-    <SimpleForm>
-      <ReferenceInput source="userId" reference="users" />
-      <TextInput source="id" />
-      <TextInput source="title" />
-      <TextInput source="body" />
-    </SimpleForm>
-  </Edit>
+    <Edit>
+        <SimpleForm>
+            <ReferenceInput source="userId" reference="users" />
+            <TextInput source="id" />
+            <TextInput source="title" />
+            <TextInput source="body" />
+        </SimpleForm>
+    </Edit>
 );
 ```
 
@@ -824,10 +824,10 @@ import PostIcon from "@mui/icons-material/Book";
 import UserIcon from "@mui/icons-material/Group";
 
 export const App = () => (
-  <Admin dataProvider={dataProvider}>
-    <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon} />
-    <Resource name="users" list={UserList} icon={UserIcon} recordRepresentation="name" />
-  </Admin>
+    <Admin dataProvider={dataProvider}>
+        <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon} />
+        <Resource name="users" list={UserList} icon={UserIcon} recordRepresentation="name" />
+    </Admin>
 );
 ```
 
@@ -847,10 +847,10 @@ By default, react-admin displays the list page of the first `Resource` element a
 import { Card, CardContent, CardHeader } from "@mui/material";
 
 export const Dashboard = () => (
-  <Card>
-    <CardHeader title="Welcome to the administration" />
-    <CardContent>Lorem ipsum sic dolor amet...</CardContent>
-  </Card>
+    <Card>
+        <CardHeader title="Welcome to the administration" />
+        <CardContent>Lorem ipsum sic dolor amet...</CardContent>
+    </Card>
 );
 ```
 
@@ -859,9 +859,9 @@ export const Dashboard = () => (
 import { Dashboard } from './Dashboard';
 
 export const App = () => (
-  <Admin dataProvider={dataProvider} dashboard={Dashboard} >
-      // ...
-  </Admin>
+    <Admin dataProvider={dataProvider} dashboard={Dashboard} >
+          // ...
+    </Admin>
 );
 ```
 
@@ -877,38 +877,38 @@ For this tutorial, since there is no public authentication API, we can use a fak
 
 The `authProvider` must expose 5 methods, each returning a `Promise`:
 
-```ts
+```tsx
 // in src/authProvider.ts
 import { AuthProvider } from "react-admin";
 
 export const authProvider: AuthProvider = {
-  // called when the user attempts to log in
-  login: ({ username }) => {
-    localStorage.setItem("username", username);
-    // accept all username/password combinations
-    return Promise.resolve();
-  },
-  // called when the user clicks on the logout button
-  logout: () => {
-    localStorage.removeItem("username");
-    return Promise.resolve();
-  },
-  // called when the API returns an error
-  checkError: ({ status }: { status: number }) => {
-    if (status === 401 || status === 403) {
-      localStorage.removeItem("username");
-      return Promise.reject();
-    }
-    return Promise.resolve();
-  },
-  // called when the user navigates to a new location, to check for authentication
-  checkAuth: () => {
-    return localStorage.getItem("username")
-      ? Promise.resolve()
-      : Promise.reject();
-  },
-  // called when the user navigates to a new location, to check for permissions / roles
-  getPermissions: () => Promise.resolve(),
+    // called when the user attempts to log in
+    login: ({ username }) => {
+        localStorage.setItem("username", username);
+        // accept all username/password combinations
+        return Promise.resolve();
+    },
+    // called when the user clicks on the logout button
+    logout: () => {
+        localStorage.removeItem("username");
+        return Promise.resolve();
+    },
+    // called when the API returns an error
+    checkError: ({ status }: { status: number }) => {
+        if (status === 401 || status === 403) {
+            localStorage.removeItem("username");
+            return Promise.reject();
+        }
+        return Promise.resolve();
+    },
+    // called when the user navigates to a new location, to check for authentication
+    checkAuth: () => {
+        return localStorage.getItem("username")
+            ? Promise.resolve()
+            : Promise.reject();
+    },
+    // called when the user navigates to a new location, to check for permissions / roles
+    getPermissions: () => Promise.resolve(),
 };
 ```
 
@@ -962,7 +962,7 @@ React-admin calls the Data Provider with one method for each of the actions of t
 
 The code for a Data Provider for the `my.api.url` API is as follows:
 
-```ts
+```tsx
 // in src/dataProvider.ts
 import { DataProvider, fetchUtils } from "react-admin";
 import { stringify } from "query-string";

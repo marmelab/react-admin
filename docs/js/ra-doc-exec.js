@@ -131,8 +131,10 @@ const buildJSCodeBlocksFromTS = async () => {
 
             // Containers for Prism highlighter
             const highlight = document.createElement('div');
+            highlight.className = 'highlight';
             jsTabContent.appendChild(highlight);
             const jsTabContentPre = document.createElement('pre');
+            jsTabContentPre.className = 'highlight';
             highlight.appendChild(jsTabContentPre);
 
             // The actual JS code element
