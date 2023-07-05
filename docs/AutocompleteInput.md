@@ -831,7 +831,7 @@ const CreateCategory = () => {
 
 **Tip:** As showcased in this example, react-admin provides a convenient hook for accessing the filter the user has already input in the `<AutocompleteInput>`: `useCreateSuggestionContext`.
 
-The `Create %{item}%` option will only be displayed once the user has already set a filter (by typing in some input). If you expect your users to create new items often, you can make this more user-friendly by adding a placeholder text like this:
+The `Create %{item}` option will only be displayed once the user has already set a filter (by typing in some input). If you expect your users to create new items often, you can make this more user-friendly by adding a placeholder text like this:
 
 {% raw %}
 ```diff
