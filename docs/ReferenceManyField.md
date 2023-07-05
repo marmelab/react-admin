@@ -150,7 +150,7 @@ export const AuthorShow = () => (
 Or [`<WithListContext>`](./WithListContext.md) to render the related records in a custom way:
 
 ```jsx
-import { Show, SimpleShowLayout, TextField, ReferenceManyField, WithListContext } from 'react-admin';
+import { Show, SimpleShowLayout, TextField, ReferenceManyField, WithListContext, DateField } from 'react-admin';
 
 export const AuthorShow = () => (
   <Show>
