@@ -45,6 +45,9 @@ export const Notification = (props: NotificationProps) => {
     useEffect(() => {
         const beforeunload = (e: BeforeUnloadEvent) => {
             e.preventDefault();
+            const confirmationMessage = '';
+            e.returnValue = confirmationMessage;
+            return confirmationMessage;
         };
 
         if (messageInfo?.notificationOptions?.undoable) {
