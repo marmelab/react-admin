@@ -883,7 +883,7 @@ import { AuthProvider } from "react-admin";
 
 export const authProvider: AuthProvider = {
   // called when the user attempts to log in
-  login: ({ username }: { username: string }) => {
+  login: ({ username }) => {
     localStorage.setItem("username", username);
     // accept all username/password combinations
     return Promise.resolve();
