@@ -44,7 +44,7 @@ export const App = () => (
 | --------------- | -------- | -------- | ------------------ |-------------------------------------------------------------------- |
 | `checkInterval` | Optional | number   | `3600000` (1 hour) | The interval in milliseconds between two checks                     |
 | `disabled`      | Optional | boolean  | `true`             | Whether the automatic check is enabled                              |
-| `notification`  | Optional | string   |                    | The notification to display to the user when an update is available |
+| `notification`  | Optional | ReactElement |                    | The notification to display to the user when an update is available |
 | `url`           | Optional | string   | current URL        | The URL to download to check for code update                        |
 
 ## `checkInterval`
