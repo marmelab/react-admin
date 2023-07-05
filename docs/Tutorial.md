@@ -110,7 +110,7 @@ JSONPlaceholder provides endpoints for users, posts, and comments. The admin we'
 
 The `test-admin` project you just created already contains a data provider pre-configured for JSONPlaceholder. 
 
-```jsx
+```tsx
 // in src/dataProvider.ts
 import jsonServerProvider from 'ra-data-json-server';
 
@@ -159,7 +159,7 @@ The `<ListGuesser>` component is not meant to be used in production - it's just 
 
 Let's copy this code, and create a new `UserList` component, in a new file named `users.tsx`:
 
-```jsx
+```tsx
 // in src/users.tsx
 import { List, Datagrid, TextField, EmailField } from "react-admin";
 
@@ -204,7 +204,7 @@ There is no visible change in the browser - except now, the app uses a component
 
 Let's take a moment to analyze the code of the `<UserList>` component:
 
-```jsx
+```tsx
 export const UserList = () => (
   <List>
     <Datagrid rowClick="edit">
@@ -223,7 +223,7 @@ export const UserList = () => (
 
 The root component, `<List>`, reads the query parameters from the URL, calls the API based on these parameters, and puts the result in a React context. It also builds a set of callbacks allowing child components to modify the list filters, pagination, and sorting. `<List>` does a lot of things, yet its syntax couldn't be simpler:
 
-```jsx
+```tsx
 <List>
    {/* children */}
 </List>
@@ -235,7 +235,7 @@ But in most frameworks, "simple" means "limited", and it's hard to go beyond bas
 
 This means we can compose `<List>` with another component - for instance `<SimpleList>`:
 
-```jsx
+```tsx
 // in src/users.tsx
 import { List, SimpleList } from "react-admin";
 
@@ -477,7 +477,7 @@ export const App = () => (
 
 The `ListGuesser` suggests using a `<ReferenceField>` for the `userId` field. Let's play with this new field by creating the `PostList` component based on the code dumped by the guesser:
 
-```jsx
+```tsx
 // in src/posts.tsx
 import { List, Datagrid, TextField, ReferenceField } from "react-admin";
 
@@ -587,7 +587,7 @@ Users can display the edit page just by clicking on the Edit button. The form is
 
 Copy the `<PostEdit>` code dumped by the guesser in the console to the `posts.tsx` file so that you can customize the view:
 
-```jsx
+```tsx
 // in src/posts.tsx
 import {
   List,
@@ -787,7 +787,7 @@ Let's get back to the post list for a minute. It offers sorting and pagination, 
 
 React-admin can use Input components to create a multi-criteria search engine in the list view. Pass an array of such Input components to the List `filters` prop to enable filtering:
 
-```jsx
+```tsx
 // in src/posts.tsx
 const postFilters = [
     <TextInput source="q" label="Search" alwaysOn />,
@@ -818,7 +818,7 @@ Filters are "search-as-you-type", meaning that when the user enters new values i
 
 The sidebar menu shows the same icon for both posts and users. Customizing the menu icon is just a matter of passing an `icon` attribute to each `<Resource>`:
 
-```jsx
+```tsx
 // in src/App.tsx
 import PostIcon from "@mui/icons-material/Book";
 import UserIcon from "@mui/icons-material/Group";
@@ -842,7 +842,7 @@ export const App = () => (
 
 By default, react-admin displays the list page of the first `Resource` element as home page. If you want to display a custom component instead, pass it in the `dashboard` prop of the `<Admin>` component.
 
-```jsx
+```tsx
 // in src/Dashboard.tsx
 import { Card, CardContent, CardHeader } from "@mui/material";
 
@@ -854,7 +854,7 @@ export const Dashboard = () => (
 );
 ```
 
-```jsx
+```tsx
 // in src/App.tsx
 import { Dashboard } from './Dashboard';
 
@@ -916,7 +916,7 @@ export const authProvider: AuthProvider = {
 
 To enable this authentication strategy, pass the `authProvider` to the `<Admin>` component:
 
-```jsx
+```tsx
 // in src/App.tsx
 import { Dashboard } from './Dashboard';
 import { authProvider } from './authProvider';
@@ -1063,7 +1063,7 @@ export const dataProvider: DataProvider = {
 
 Using this provider instead of the previous `jsonServerProvider` is just a matter of switching a function:
 
-```jsx
+```tsx
 // in src/app.tsx
 import { dataProvider } from './dataProvider';
 
