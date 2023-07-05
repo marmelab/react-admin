@@ -5,7 +5,7 @@ title: "The CheckForApplicationUpdate component"
 
 # `CheckForApplicationUpdate`
 
-This component regularly checks whether the application source code has changed and prompt users to reload the page when an update is available. To detect updates, it fetches the current URL at regular intervals and compares a hash of the response content.
+This component regularly checks whether the application source code has changed and prompt users to reload the page when an update is available. To detect updates, it fetches the current URL at regular intervals and compares a hash of the response content (usually the HTML source). This should be enough in most cases as bundlers usually update the links to the application bundles after an update. 
 
 It leverages the [`useCheckForApplicationUpdate`](./useCheckForApplicationUpdate.md) hook.
 

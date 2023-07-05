@@ -5,7 +5,7 @@ title: "useCheckForApplicationUpdate"
 
 # `useCheckForApplicationUpdate`
 
-This hook regularly checks whether the application source code has changed and calls the provided function when an update is available. To detect updates, it fetches the current URL at regular intervals and compares a hash of the response content.
+This hook regularly checks whether the application source code has changed and calls the provided function when an update is available. To detect updates, it fetches the current URL at regular intervals and compares a hash of the response content (usually the HTML source). This should be enough in most cases as bundlers usually update the links to the application bundles after an update. 
 
 ![CheckForApplicationUpdate](./img/CheckForApplicationUpdate.png)
 
