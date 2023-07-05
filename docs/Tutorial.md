@@ -47,7 +47,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { App } from './App';
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <App />
     </React.StrictMode>
@@ -110,7 +110,7 @@ JSONPlaceholder provides endpoints for users, posts, and comments. The admin we'
 
 The `test-admin` project you just created already contains a data provider pre-configured for JSONPlaceholder. 
 
-```jsx
+```tsx
 // in src/dataProvider.ts
 import jsonServerProvider from 'ra-data-json-server';
 
@@ -159,23 +159,23 @@ The `<ListGuesser>` component is not meant to be used in production - it's just 
 
 Let's copy this code, and create a new `UserList` component, in a new file named `users.tsx`:
 
-```jsx
+```tsx
 // in src/users.tsx
 import { List, Datagrid, TextField, EmailField } from "react-admin";
 
 export const UserList = () => (
-  <List>
-    <Datagrid rowClick="edit">
-      <TextField source="id" />
-      <TextField source="name" />
-      <TextField source="username" />
-      <EmailField source="email" />
-      <TextField source="address.street" />
-      <TextField source="phone" />
-      <TextField source="website" />
-      <TextField source="company.name" />
-    </Datagrid>
-  </List>
+    <List>
+        <Datagrid rowClick="edit">
+            <TextField source="id" />
+            <TextField source="name" />
+            <TextField source="username" />
+            <EmailField source="email" />
+            <TextField source="address.street" />
+            <TextField source="phone" />
+            <TextField source="website" />
+            <TextField source="company.name" />
+        </Datagrid>
+    </List>
 );
 ```
 
@@ -204,26 +204,26 @@ There is no visible change in the browser - except now, the app uses a component
 
 Let's take a moment to analyze the code of the `<UserList>` component:
 
-```jsx
+```tsx
 export const UserList = () => (
-  <List>
-    <Datagrid rowClick="edit">
-      <TextField source="id" />
-      <TextField source="name" />
-      <TextField source="username" />
-      <EmailField source="email" />
-      <TextField source="address.street" />
-      <TextField source="phone" />
-      <TextField source="website" />
-      <TextField source="company.name" />
-    </Datagrid>
-  </List>
+    <List>
+        <Datagrid rowClick="edit">
+            <TextField source="id" />
+            <TextField source="name" />
+            <TextField source="username" />
+            <EmailField source="email" />
+            <TextField source="address.street" />
+            <TextField source="phone" />
+            <TextField source="website" />
+            <TextField source="company.name" />
+        </Datagrid>
+    </List>
 );
 ```
 
 The root component, `<List>`, reads the query parameters from the URL, calls the API based on these parameters, and puts the result in a React context. It also builds a set of callbacks allowing child components to modify the list filters, pagination, and sorting. `<List>` does a lot of things, yet its syntax couldn't be simpler:
 
-```jsx
+```tsx
 <List>
    {/* children */}
 </List>
@@ -235,18 +235,18 @@ But in most frameworks, "simple" means "limited", and it's hard to go beyond bas
 
 This means we can compose `<List>` with another component - for instance `<SimpleList>`:
 
-```jsx
+```tsx
 // in src/users.tsx
 import { List, SimpleList } from "react-admin";
 
 export const UserList = () => (
-  <List>
-    <SimpleList
-      primaryText={(record) => record.name}
-      secondaryText={(record) => record.username}
-      tertiaryText={(record) => record.email}
-    />
-  </List>
+    <List>
+        <SimpleList
+          primaryText={(record) => record.name}
+          secondaryText={(record) => record.username}
+          tertiaryText={(record) => record.email}
+        />
+    </List>
 );
 ```
 
@@ -273,35 +273,35 @@ But on desktop, `<SimpleList>` takes too much space for a low information densit
 
 To do so, we'll use [the `useMediaQuery` hook](https://mui.com/material-ui/react-use-media-query/) from Material UI:
 
-```jsx
+```tsx
 // in src/users.tsx
-import { useMediaQuery } from "@mui/material";
+import { useMediaQuery, Theme } from "@mui/material";
 import { List, SimpleList, Datagrid, TextField, EmailField } from "react-admin";
 
 export const UserList = () => {
-  const isSmall = useMediaQuery((theme) => theme.breakpoints.down("sm"));
-  return (
-    <List>
-      {isSmall ? (
-        <SimpleList
-          primaryText={(record) => record.name}
-          secondaryText={(record) => record.username}
-          tertiaryText={(record) => record.email}
-        />
-      ) : (
-        <Datagrid rowClick="edit">
-          <TextField source="id" />
-          <TextField source="name" />
-          <TextField source="username" />
-          <EmailField source="email" />
-          <TextField source="address.street" />
-          <TextField source="phone" />
-          <TextField source="website" />
-          <TextField source="company.name" />
-        </Datagrid>
-      )}
-    </List>
-  );
+    const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
+    return (
+        <List>
+            {isSmall ? (
+                <SimpleList
+                    primaryText={(record) => record.name}
+                    secondaryText={(record) => record.username}
+                    tertiaryText={(record) => record.email}
+                />
+            ) : (
+                <Datagrid rowClick="edit">
+                    <TextField source="id" />
+                    <TextField source="name" />
+                    <TextField source="username" />
+                    <EmailField source="email" />
+                    <TextField source="address.street" />
+                    <TextField source="phone" />
+                    <TextField source="website" />
+                    <TextField source="company.name" />
+                </Datagrid>
+            )}
+        </List>
+    );
 };
 ```
 
@@ -372,14 +372,14 @@ In react-admin, fields are just React components. When rendered, they grab the `
 
 That means that you can do the same to write a custom Field. For instance, here is a simplified version of the `<UrlField>`:
 
-```jsx
+```tsx
 // in src/MyUrlField.tsx
 import { useRecordContext } from "react-admin";
 
-const MyUrlField = ({ source }) => {
-  const record = useRecordContext();
-  if (!record) return null;
-  return <a href={record[source]}>{record[source]}</a>;
+const MyUrlField = ({ source }: { source: string }) => {
+    const record = useRecordContext();
+    if (!record) return null;
+    return <a href={record[source]}>{record[source]}</a>;
 };
 
 export default MyUrlField;
@@ -415,20 +415,20 @@ The `<MyUrlField>` component is a perfect opportunity to illustrate how to custo
 React-admin relies on [Material UI](https://mui.com/material-ui/getting-started/overview/), a set of React components modeled after Google's [Material Design Guidelines](https://material.io/). All Material UI components (and most react-admin components) support a prop called `sx`, which allows custom inline styles. Let's take advantage of the `sx` prop to remove the underline from the link and add an icon:
 
 {% raw %}
-```jsx
+```tsx
 // in src/MyUrlField.tsx
 import { useRecordContext } from "react-admin";
 import { Link } from "@mui/material";
 import LaunchIcon from "@mui/icons-material/Launch";
 
-const MyUrlField = ({ source }) => {
-  const record = useRecordContext();
-  return record ? (
-    <Link href={record[source]} sx={{ textDecoration: "none" }}>
-      {record[source]}
-      <LaunchIcon sx={{ fontSize: 15, ml: 1 }} />
-    </Link>
-  ) : null;
+const MyUrlField = ({ source }: { source: string }) => {
+    const record = useRecordContext();
+    return record ? (
+        <Link href={record[source]} sx={{ textDecoration: "none" }}>
+            {record[source]}
+            <LaunchIcon sx={{ fontSize: 15, ml: 1 }} />
+        </Link>
+    ) : null;
 };
 
 export default MyUrlField;
@@ -477,19 +477,19 @@ export const App = () => (
 
 The `ListGuesser` suggests using a `<ReferenceField>` for the `userId` field. Let's play with this new field by creating the `PostList` component based on the code dumped by the guesser:
 
-```jsx
+```tsx
 // in src/posts.tsx
 import { List, Datagrid, TextField, ReferenceField } from "react-admin";
 
 export const PostList = () => (
-  <List>
-    <Datagrid rowClick="edit">
-      <ReferenceField source="userId" reference="users" />
-      <TextField source="id" />
-      <TextField source="title" />
-      <TextField source="body" />
-    </Datagrid>
-  </List>
+    <List>
+        <Datagrid rowClick="edit">
+            <ReferenceField source="userId" reference="users" />
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="body" />
+        </Datagrid>
+    </List>
 );
 ```
 
@@ -587,33 +587,33 @@ Users can display the edit page just by clicking on the Edit button. The form is
 
 Copy the `<PostEdit>` code dumped by the guesser in the console to the `posts.tsx` file so that you can customize the view:
 
-```jsx
+```tsx
 // in src/posts.tsx
 import {
-  List,
-  Datagrid,
-  TextField,
-  ReferenceField,
-  EditButton,
-  Edit,
-  SimpleForm,
-  ReferenceInput,
-  TextInput,
+    List,
+    Datagrid,
+    TextField,
+    ReferenceField,
+    EditButton,
+    Edit,
+    SimpleForm,
+    ReferenceInput,
+    TextInput,
 } from "react-admin";
 
-export const PostList = () => (
-  { /* ... */ }
-);
+export const PostList = () => {
+    /* ... */
+};
 
 export const PostEdit = () => (
-  <Edit>
-    <SimpleForm>
-      <ReferenceInput source="userId" reference="users" />
-      <TextInput source="id" />
-      <TextInput source="title" />
-      <TextInput source="body" />
-    </SimpleForm>
-  </Edit>
+    <Edit>
+        <SimpleForm>
+            <ReferenceInput source="userId" reference="users" />
+            <TextInput source="id" />
+            <TextInput source="title" />
+            <TextInput source="body" />
+        </SimpleForm>
+    </Edit>
 );
 ```
 
@@ -787,7 +787,7 @@ Let's get back to the post list for a minute. It offers sorting and pagination, 
 
 React-admin can use Input components to create a multi-criteria search engine in the list view. Pass an array of such Input components to the List `filters` prop to enable filtering:
 
-```jsx
+```tsx
 // in src/posts.tsx
 const postFilters = [
     <TextInput source="q" label="Search" alwaysOn />,
@@ -818,16 +818,16 @@ Filters are "search-as-you-type", meaning that when the user enters new values i
 
 The sidebar menu shows the same icon for both posts and users. Customizing the menu icon is just a matter of passing an `icon` attribute to each `<Resource>`:
 
-```jsx
+```tsx
 // in src/App.tsx
 import PostIcon from "@mui/icons-material/Book";
 import UserIcon from "@mui/icons-material/Group";
 
 export const App = () => (
-  <Admin dataProvider={dataProvider}>
-    <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon} />
-    <Resource name="users" list={UserList} icon={UserIcon} recordRepresentation="name" />
-  </Admin>
+    <Admin dataProvider={dataProvider}>
+        <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon} />
+        <Resource name="users" list={UserList} icon={UserIcon} recordRepresentation="name" />
+    </Admin>
 );
 ```
 
@@ -842,26 +842,26 @@ export const App = () => (
 
 By default, react-admin displays the list page of the first `Resource` element as home page. If you want to display a custom component instead, pass it in the `dashboard` prop of the `<Admin>` component.
 
-```jsx
+```tsx
 // in src/Dashboard.tsx
 import { Card, CardContent, CardHeader } from "@mui/material";
 
 export const Dashboard = () => (
-  <Card>
-    <CardHeader title="Welcome to the administration" />
-    <CardContent>Lorem ipsum sic dolor amet...</CardContent>
-  </Card>
+    <Card>
+        <CardHeader title="Welcome to the administration" />
+        <CardContent>Lorem ipsum sic dolor amet...</CardContent>
+    </Card>
 );
 ```
 
-```jsx
+```tsx
 // in src/App.tsx
 import { Dashboard } from './Dashboard';
 
 export const App = () => (
-  <Admin dataProvider={dataProvider} dashboard={Dashboard} >
-      // ...
-  </Admin>
+    <Admin dataProvider={dataProvider} dashboard={Dashboard} >
+          // ...
+    </Admin>
 );
 ```
 
@@ -877,38 +877,38 @@ For this tutorial, since there is no public authentication API, we can use a fak
 
 The `authProvider` must expose 5 methods, each returning a `Promise`:
 
-```js
+```tsx
 // in src/authProvider.ts
+import { AuthProvider } from "react-admin";
 
-// TypeScript users must reference the type: `AuthProvider`
-export const authProvider = {
-  // called when the user attempts to log in
-  login: ({ username }) => {
-    localStorage.setItem("username", username);
-    // accept all username/password combinations
-    return Promise.resolve();
-  },
-  // called when the user clicks on the logout button
-  logout: () => {
-    localStorage.removeItem("username");
-    return Promise.resolve();
-  },
-  // called when the API returns an error
-  checkError: ({ status }) => {
-    if (status === 401 || status === 403) {
-      localStorage.removeItem("username");
-      return Promise.reject();
-    }
-    return Promise.resolve();
-  },
-  // called when the user navigates to a new location, to check for authentication
-  checkAuth: () => {
-    return localStorage.getItem("username")
-      ? Promise.resolve()
-      : Promise.reject();
-  },
-  // called when the user navigates to a new location, to check for permissions / roles
-  getPermissions: () => Promise.resolve(),
+export const authProvider: AuthProvider = {
+    // called when the user attempts to log in
+    login: ({ username }) => {
+        localStorage.setItem("username", username);
+        // accept all username/password combinations
+        return Promise.resolve();
+    },
+    // called when the user clicks on the logout button
+    logout: () => {
+        localStorage.removeItem("username");
+        return Promise.resolve();
+    },
+    // called when the API returns an error
+    checkError: ({ status }: { status: number }) => {
+        if (status === 401 || status === 403) {
+            localStorage.removeItem("username");
+            return Promise.reject();
+        }
+        return Promise.resolve();
+    },
+    // called when the user navigates to a new location, to check for authentication
+    checkAuth: () => {
+        return localStorage.getItem("username")
+            ? Promise.resolve()
+            : Promise.reject();
+    },
+    // called when the user navigates to a new location, to check for permissions / roles
+    getPermissions: () => Promise.resolve(),
 };
 ```
 
@@ -916,7 +916,7 @@ export const authProvider = {
 
 To enable this authentication strategy, pass the `authProvider` to the `<Admin>` component:
 
-```jsx
+```tsx
 // in src/App.tsx
 import { Dashboard } from './Dashboard';
 import { authProvider } from './authProvider';
@@ -962,16 +962,15 @@ React-admin calls the Data Provider with one method for each of the actions of t
 
 The code for a Data Provider for the `my.api.url` API is as follows:
 
-```js
+```tsx
 // in src/dataProvider.ts
-import { fetchUtils } from "react-admin";
+import { DataProvider, fetchUtils } from "react-admin";
 import { stringify } from "query-string";
 
 const apiUrl = 'https://my.api.com/';
 const httpClient = fetchUtils.fetchJson;
 
-// TypeScript users must reference the type `DataProvider`
-export const dataProvider = {
+export const dataProvider: DataProvider = {
     getList: (resource, params) => {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
@@ -1064,7 +1063,7 @@ export const dataProvider = {
 
 Using this provider instead of the previous `jsonServerProvider` is just a matter of switching a function:
 
-```jsx
+```tsx
 // in src/app.tsx
 import { dataProvider } from './dataProvider';
 
