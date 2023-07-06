@@ -141,7 +141,7 @@ And last but not least, ra-realtime provides a **lock mechanism** to prevent two
 
 A user can lock a resource, either by voluntarily asking for a lock or by editing a resource. When a resource is locked, other users can't edit it. When the lock is released, other users can edit the resource again.
 
-```jsx
+```tsx
 export const NewMessageForm = () => {
     const [create, { isLoading: isCreating }] = useCreate();
     const record = useRecordContext();
@@ -151,7 +151,7 @@ export const NewMessageForm = () => {
     const isFormDisabled = lock && lock.identity !== identity?.id;
 
     const [doLock] = useLockOnCall({ resource: 'tickets' });
-    const handleSubmit = (values) => {
+    const handleSubmit = (values: any) => {
         /* ... */
     };
 

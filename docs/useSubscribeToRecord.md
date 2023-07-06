@@ -20,7 +20,7 @@ The hook expects a callback function as its only argument, as it guesses the rec
 
 For instance, the following component displays a dialog when the record is updated by someone else:
 
-```jsx
+```tsx
 import { useState } from 'react';
 import { useEditContext, useFormContext } from 'react-admin';
 import {
@@ -48,7 +48,7 @@ const WarnWhenUpdatedBySomeoneElse = () => {
         formState: { isDirty },
     } = useFormContext();
 
-    useSubscribeToRecord((event) => {
+    useSubscribeToRecord((event: Event) => {
         if (event.type === 'edited') {
             if (isDirty) {
                 setOpen(true);
@@ -124,14 +124,14 @@ useSubscribeToRecord(event => { /* ... */ }, 'posts', 123);
 
 Whenever an event is published on the `resource/[resource]/[recordId]` topic, the function passed as the first argument will be called with the event as a parameter.
 
-```jsx
+```tsx
 const [open, setOpen] = useState(false);
 const [author, setAuthor] = useState<string | null>(null);
 const { refetch } = useEditContext();
 const {
     formState: { isDirty },
 } = useFormContext();
-useSubscribeToRecord((event) => {
+useSubscribeToRecord((event: Event) => {
     if (event.type === 'edited') {
         if (isDirty) {
             setOpen(true);
@@ -145,7 +145,7 @@ useSubscribeToRecord((event) => {
 
 **Tip**: Memoize the callback using `useCallback` to avoid unnecessary subscriptions/unsubscriptions.
 
-```jsx
+```tsx
 const [open, setOpen] = useState(false);
 const [author, setAuthor] = useState<string | null>(null);
 const { refetch } = useEditContext();
@@ -154,7 +154,7 @@ const {
 } = useFormContext();
 
 const handleEvent = useCallback(
-    (event) => {
+    (event: Event) => {
         if (event.type === 'edited') {
             if (isDirty) {
                 setOpen(true);
@@ -172,8 +172,8 @@ useSubscribeToRecord(handleEvent);
 
 Just like for `useSubscribe`, the callback function receives an `unsubscribe` callback as its second argument. You can call it to unsubscribe from the topic after receiving a specific event.
 
-```jsx
-useSubscribeToRecord((event, unsubscribe) => {
+```tsx
+useSubscribeToRecord((event: Event, unsubscribe) => {
     if (event.type === 'deleted') {
         // do something
         unsubscribe();
