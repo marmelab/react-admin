@@ -68,12 +68,12 @@ Now, let's configure Next.js to render the admin app component in the root path 
 
 ```jsx
 // in src/pages/index.tsx
-import type { NextPage } from "next";
+import type, { NextPage } from "next";
 import dynamic from "next/dynamic";
 
 const App = dynamic(() => import("../admin/App"), { ssr: false });
 
-const Home: NextPage = () => {
+const Home = () => {
   return <App />;
 };
 
@@ -94,12 +94,12 @@ Next.js makes it trivial: create a `src/pages/admin.tsx` file with the same cont
 
 ```jsx
 // in src/pages/admin.tsx
-import type { NextPage } from "next";
+import type, { NextPage } from "next";
 import dynamic from "next/dynamic";
 
 const App = dynamic(() => import("../admin/App"), { ssr: false });
 
-const Admin: NextPage = () => {
+const Admin = () => {
   return <App />;
 };
 

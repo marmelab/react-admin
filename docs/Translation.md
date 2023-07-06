@@ -36,7 +36,7 @@ export const i18nProvider = {
     changeLocale: locale => Promise<void>,
     getLocale: () => string,
     // optional
-    getLocales: () => [{ locale: string; name: string; }],
+    getLocales: () => [{ locale: string, name: string }],
 }
 ```
 

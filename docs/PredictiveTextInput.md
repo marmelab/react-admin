@@ -50,7 +50,7 @@ import { addGetCompletionBasedOnOpenAIAPI } from '@react-admin/ra-ai';
 const baseDataProvider = jsonServerProvider(
     import.meta.env.VITE_JSON_SERVER_URL
 );
-export const dataProvider = addGetCompletionBasedOnOpenAIAPI(baseDataProvider),
+export const dataProvider = addGetCompletionBasedOnOpenAIAPI(baseDataProvider);
 ```
 
 `addGetCompletionBasedOnOpenAIAPI` expects the OpenAI API key to be stored in the localStorage under the key `ra-ai.openai-api-key`. It's up to you to add the key to the localStorage (e.g. in `authProvider.login()`) and to remove it (e.g. in `authProvider.logout()`)
@@ -327,7 +327,7 @@ import { addGetCompletionBasedOnOpenAIAPI } from '@react-admin/ra-ai';
 const baseDataProvider = jsonServerProvider(
     import.meta.env.VITE_JSON_SERVER_URL
 );
-export const dataProvider = addGetCompletionBasedOnOpenAIAPI(baseDataProvider),
+export const dataProvider = addGetCompletionBasedOnOpenAIAPI(baseDataProvider);
 ```
 
 `addGetCompletionBasedOnOpenAIAPI` expects the OpenAI API key to be stored in the localStorage under the key `ra-ai.openai-api-key`. It's up to you to store the key in the localStorage (e.g. in `authProvider.login()`) and to remove it (e.g. in `authProvider.logout()`).
@@ -391,7 +391,7 @@ const getParamsForPrompt = (prompt) => {
         const [key, value] = line.split(':');
         acc[key] = value;
         return acc;
-    }, {} as any);
+    }, {});
     return { key, value, record };
 }
 ```

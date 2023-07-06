@@ -119,11 +119,11 @@ Pass an `sx` prop to customize the style of the main component and the underlyin
 ```jsx
 export const MyMenu = () => (
     <Menu sx={{ 
-        marginTop: 0
+        marginTop: 0,
         '&.RaMenu-closed': {
             opacity: 0.8,
         },
-    }} >
+    }} />
 );
 ```
 {% endraw %}
@@ -164,21 +164,22 @@ export const theme = {
     palette: {
         // ...
     },
-  components: {
-    // ... 
-    RaMenuItemLink: {
-        styleOverrides: {
-            root: {
-                // invisible border when not active, to avoid position flashs
-                borderLeft: '3px solid transparent', 
-                '&.RaMenuItemLink-active': {
-                    borderLeft: '10px solid #4f3cc9',
-                },
-                '& .RaMenuItemLink-icon': {
-                    color: '#EFC44F',
+    components: {
+        // ... 
+        RaMenuItemLink: {
+            styleOverrides: {
+                root: {
+                    // invisible border when not active, to avoid position flashs
+                    borderLeft: '3px solid transparent', 
+                    '&.RaMenuItemLink-active': {
+                        borderLeft: '10px solid #4f3cc9',
+                    },
+                    '& .RaMenuItemLink-icon': {
+                        color: '#EFC44F',
+                    },
                 },
             },
-        },
+       },
     },
 };
 ```
@@ -336,7 +337,7 @@ import { Admin, Layout, LayoutProps, Resource } from 'react-admin';
 import { MenuLive } from '@react-admin/ra-realtime';
 import { PostList, PostShow, PostEdit, realTimeDataProvider } from '.';
 
-const CustomLayout = (props: LayoutProps) => (
+const CustomLayout = (props) => (
     <Layout {...props} menu={MenuLive} />
 );
 

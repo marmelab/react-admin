@@ -197,9 +197,9 @@ SUPABASE_SERVICE_ROLE="MY_SERVICE_ROLE_KEY"
 
 Time to bootstrap the API Proxy. Create a new Remix route at `app/routes/admin/api/$.tsx`. Inside this file, a `loader` function should convert the GET requests into Supabase API calls, and an `action` function should do the same for POST, PUT, and DELETE requests.
 
-```jsx
+```tsx
 // in app/routes/admin/api/$.tsx
-import type { ActionFunction, LoaderFunction } from '@remix-run/node';
+import type, { ActionFunction, LoaderFunction } from '@remix-run/node';
 
 // handle read requests (getOne, getList, getMany, getManyReference) 
 export const loader: LoaderFunction = ({ request }) => {
@@ -392,9 +392,9 @@ SUPABASE_SERVICE_ROLE="MY_SERVICE_ROLE_KEY"
 
 Time to bootstrap the API Proxy. Create a new Remix route at `app/routes/admin.api.$.tsx`. Inside this file, a `loader` function should convert the GET requests into Supabase API calls, and an `action` function should do the same for POST, PUT, and DELETE requests.
 
-```jsx
+```tsx
 // in app/routes/app/routes/admin.api.$.tsx
-import type { ActionFunction, LoaderFunction } from '@remix-run/node';
+import type, { ActionFunction, LoaderFunction } from '@remix-run/node';
 
 // handle read requests (getOne, getList, getMany, getManyReference) 
 export const loader: LoaderFunction = ({ request }) => {

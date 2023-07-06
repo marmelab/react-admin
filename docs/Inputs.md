@@ -172,7 +172,7 @@ form state value --> format --> form input value (string)
 **Tip:** By default, react-admin inputs have the following `format` function, which turns any `null` or `undefined` value into an empty string. This is to avoid warnings about controlled/uncontrolled input components:
 
 ```js
-const defaultFormat = (value: any) => value == null ? '' : value;
+const defaultFormat = (value) => value == null ? '' : value;
 ```
 
 ## `fullWidth`
@@ -750,7 +750,7 @@ const BoundedTextField = ({ name, label }) => {
         field,
         fieldState: { isTouched, invalid, error },
         formState: { isSubmitted }
-    } = useController(name, defaultValue: '');
+    } = useController({ name, defaultValue: '' });
     return (
         <TextField
             {...field}

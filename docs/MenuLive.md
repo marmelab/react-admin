@@ -18,7 +18,7 @@ import { Admin, Layout, LayoutProps, Resource } from 'react-admin';
 import { MenuLive } from '@react-admin/ra-realtime';
 import { PostList, PostShow, PostEdit, realTimeDataProvider } from '.';
 
-const CustomLayout = (props: LayoutProps) => (
+const CustomLayout = (props) => (
     <Layout {...props} menu={MenuLive} />
 );
 
