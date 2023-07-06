@@ -61,7 +61,7 @@ const convertStringToNumber = value => {
 };
 
 const productFilters = [
-    <TextInput label="Stock less than" source="stock_lte" type="number" parse={convertStringToNumber} />,
+    <TextInput label="Stock less than" source="stock_lte" type="number" parse={convertStringToNumber} />,
 ];
 
 export const ProductList = () => (

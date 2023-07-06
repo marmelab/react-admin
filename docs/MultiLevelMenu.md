@@ -55,7 +55,7 @@ Then, create a custom layout using [the `<Layout>` component](./Layout.md) and p
 ```jsx
 // in src/MyLayout.js
 import { Layout } from 'react-admin';
-import { AppLocationContext } from '@react-admin/ra-navigation';
+import { AppLocationContext } from '@react-admin/ra-navigation';
 
 import { MyMenu } from './MyMenu';
 
