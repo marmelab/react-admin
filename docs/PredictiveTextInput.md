@@ -338,7 +338,7 @@ If you rely on another API, you'll need to fetch it yourself.
 
 Finally, you don't need a completion API to use `<PredictiveTextInput>` in simple cases. For example, here is an implementation that deduces an email address from the first and last name directly in the browser:
 
-```jsx
+```tsx
 const getCompletionLocal = async ({ prompt = '' }) => {
     const { key, value, record } = getParamsFromPrompt(prompt);
     if (key === 'email') {
@@ -391,7 +391,7 @@ const getParamsForPrompt = (prompt) => {
         const [key, value] = line.split(':');
         acc[key] = value;
         return acc;
-    }, {});
+    }, {} as any);
     return { key, value, record };
 }
 ```

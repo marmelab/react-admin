@@ -128,12 +128,12 @@ export const App = () => (
 
 If you're using [the `<ContainerLayout>` component](./ContainerLayout.md), you can use the `<Search>` component directly in the `toolbar` prop:
 
-```jsx
+```tsx
 // in src/MyLayout.jsx
 import { ContainerLayout } from "@react-admin/ra-navigation";
 import { Search } from "@react-admin/ra-search";
 
-const MyLayout = (props) => (
+const MyLayout = (props: any) => (
     <ContainerLayout {...props} maxWidth="xl" toolbar={<Search />} />
 );
 ```

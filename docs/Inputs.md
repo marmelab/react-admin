@@ -171,8 +171,8 @@ form state value --> format --> form input value (string)
 
 **Tip:** By default, react-admin inputs have the following `format` function, which turns any `null` or `undefined` value into an empty string. This is to avoid warnings about controlled/uncontrolled input components:
 
-```js
-const defaultFormat = (value) => value == null ? '' : value;
+```ts
+const defaultFormat = (value: any) => value == null ? '' : value;
 ```
 
 ## `fullWidth`
