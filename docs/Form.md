@@ -15,7 +15,7 @@ Use `<Form>` to build completely custom form layouts. Don't forget to include a 
 
 ```jsx
 import { Create, Form, TextInput, RichTextInput, SaveButton } from 'react-admin';
-import { Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 
 export const PostCreate = () => (
     <Create>
