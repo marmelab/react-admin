@@ -549,17 +549,17 @@ const authProvider = {
 const ProductEdit = () => (
     <Edit>
         <AccordionForm>
-            <AccordionForm.Panel label="Description">
+            <AccordionForm.Panel name="description" label="Description">
                 <TextInput source="reference" />
                 <TextInput source="width" />
                 <TextInput source="height" />
                 <TextInput source="description" />
             </AccordionForm.Panel>
-            <AccordionForm.Panel label="Images">
+            <AccordionForm.Panel name="images" label="Images">
                 <TextInput source="image" />
                 <TextInput source="thumbnail" />
             </AccordionForm.Panel>
-            <AccordionForm.Panel label="Stock">
+            <AccordionForm.Panel name="stock" label="Stock">
                 <TextInput source="stock" />
             </AccordionForm.Panel>
             { /* delete button not displayed */ }
