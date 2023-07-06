@@ -32,6 +32,7 @@ title: "Index"
 **- C -**
 * [`<Calendar>`](./Calendar.md)<img class="icon" src="./img/premium.svg" />
 * [`<CheckboxGroupInput>`](./CheckboxGroupInput.md)
+* [`<CheckForApplicationUpdate>`](./CheckForApplicationUpdate.md)
 * [`<ChipField>`](./ChipField.md)
 * [`<CloneButton>`](./CloneButton.md)
 * [`<CompleteCalendar>`](https://marmelab.com/ra-enterprise/modules/ra-calendar#completecalendar)<img class="icon" src="./img/premium.svg" />
@@ -216,6 +217,7 @@ title: "Index"
 
 **- C -**
 * [`useCanAccess`](./useCanAccess.md)<img class="icon" src="./img/premium.svg" />
+* [`useCheckForApplicationUpdate`](./useCheckForApplicationUpdate.md)
 * [`useChoicesContext`](./useChoicesContext.md)
 * [`useCreate`](./useCreate.md)
 * [`useCreateContext`](./useCreateContext.md)
