@@ -900,7 +900,7 @@ const ProductEdit = () => (
                 <TextInput source="height" />
                 <TextInput source="description" />
             </AccordionForm.Panel>
-            <AccordionForm.Panel label="Images">
+            <AccordionForm.Panel name="images" label="Images">
                 <TextInput source="image" />
                 <TextInput source="thumbnail" />
             </AccordionForm.Panel>
