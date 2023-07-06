@@ -894,7 +894,7 @@ const authProvider = {
 const ProductEdit = () => (
     <Edit>
         <AccordionForm>
-            <AccordionForm.Panel label="Description">
+            <AccordionForm.Panel name="description" label="Description">
                 <TextInput source="reference" />
                 <TextInput source="width" />
                 <TextInput source="height" />
