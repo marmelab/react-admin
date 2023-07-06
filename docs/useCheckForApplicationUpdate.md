@@ -5,6 +5,8 @@ title: "useCheckForApplicationUpdate"
 
 # `useCheckForApplicationUpdate`
 
+When your admin application is a Single Page Application, users who keep a browser tab open at all times might not use the most recent version of the application unless you tell them to refresh the page.
+
 This hook regularly checks whether the application source code has changed and calls the provided function when an update is available. To detect updates, it fetches the current URL at regular intervals and compares the hash of the response content (usually the HTML source). This should be enough in most cases as bundlers usually update the links to the application bundles after an update. 
 
 ![CheckForApplicationUpdate](./img/CheckForApplicationUpdate.png)
@@ -47,7 +49,7 @@ export const App = () => (
 | Prop            | Required | Type     | Default            | Description                                                         |
 | ------------------------ | -------- | -------- | ------------------ | ---------------------------------------------------------- |
 | `checkInterval`          | Optional | number   | `3600000` (1 hour) | The interval in milliseconds between two checks            |
-| `disabled`               | Optional | boolean  | `true`             | Whether the automatic check is enabled                     |
+| `disabled`               | Optional | boolean  | `true` in `production` mode | Whether the automatic check is disabled                     |
 | `onNewVersionAvailable`  | Required | Function |                    | A function to call when an update is available             |
 | `url`                    | Optional | string   | current URL        | The URL to download to check for code update               |
 
@@ -77,7 +79,7 @@ export const MyLayout = (props: LayoutProps) => {
 
 ## `disabled`
 
-You can dynamically disable the automatic application update detection by providing the `disabled` prop.
+You can dynamically disable the automatic application update detection by providing the `disabled` prop. By default, it's only enabled in `production` mode.
 
 ```tsx
 // in src/MyLayout.tsx
@@ -99,7 +101,7 @@ export const MyLayout = (props: LayoutProps) => {
 
 ## `url`
 
-You can customize the URL fetched to detect updates by providing the `url` prop.
+You can customize the URL fetched to detect updates by providing the `url` prop. By default it's the current URL.
 
 ```tsx
 // in src/MyLayout.tsx
