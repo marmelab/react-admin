@@ -38,7 +38,7 @@ If you need the form value to update on change instead of on blur (for instance 
 
 ## `step`
 
-You can customize the `step` props (which defaults to "any"). For instance, to restrict the value to integers, ise a value of 1 for the `step`:
+You can customize the `step` props (which defaults to "any"). For instance, to restrict the value to integers, use a value of 1 for the `step`:
 
 ```jsx
 <NumberInput source="nb_views" step={1} />
