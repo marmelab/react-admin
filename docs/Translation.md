@@ -28,7 +28,7 @@ Just like for data fetching and authentication, react-admin is agnostic to your 
 
 It should be an object with the following methods:
 
-```jsx
+```tsx
 // in src/i18nProvider.js
 export const i18nProvider = {
     // required
