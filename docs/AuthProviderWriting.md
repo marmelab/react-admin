@@ -415,7 +415,7 @@ import { PreviousLocationStorageKey } from 'react-admin';
 import { Auth0Client } from './Auth0Client';
 
 export const authProvider = {
-    async login() => { /* Nothing to do here, this function will never be called */ },
+    async login() { /* Nothing to do here, this function will never be called */ },
     async checkAuth() {
         const isAuthenticated = await client.isAuthenticated();
         if (isAuthenticated) {
@@ -435,7 +435,7 @@ export const authProvider = {
     // and was redirected back to the /auth-callback route on the app
     async handleCallback() {
         const query = window.location.search;
-        if (!query.includes('code=') && ¡query.includes('state=')) {
+        if (!query.includes('code=') && !query.includes('state=')) {
             throw new Error('Failed to handle login callback.');
         }
         // If we did receive the Auth0 parameters,
@@ -452,7 +452,7 @@ You can override this behavior by returning an object with a `redirectTo` proper
 
 ```jsx
 async handleCallback() {
-    if (!query.includes('code=') && ¡query.includes('state=')) {
+    if (!query.includes('code=') && !query.includes('state=')) {
         throw new Error('Failed to handle login callback.');
     }
     // If we did receive the Auth0 parameters,
