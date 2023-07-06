@@ -59,11 +59,11 @@ import { RichTextField } from 'react-admin';
 
 If you wish to open all links in a new tab, you can use the following snippet to add the `target="_blank"` attribute to all links:
 
-```jsx
+```tsx
 import { RichTextField, RichTextFieldProps } from 'react-admin';
 import dompurify from 'dompurify';
 
-const TargetBlankEnabledRichTextField = (props) => {
+const TargetBlankEnabledRichTextField = (props: RichTextFieldProps) => {
     dompurify.addHook('afterSanitizeAttributes', function (node) {
         // set all elements owning target to target=_blank
         if ('target' in node) {

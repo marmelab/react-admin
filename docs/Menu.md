@@ -332,12 +332,12 @@ If you need to display a menu item with a submenu, you should use [the `<MultiLe
 
 You can display a badge on the menu item to indicate that new data is available. Use [the `<MenuLive>` component](./MenuLive.md) instead of `<Menu>` to enable this feature.
 
-```jsx
+```tsx
 import { Admin, Layout, LayoutProps, Resource } from 'react-admin';
 import { MenuLive } from '@react-admin/ra-realtime';
 import { PostList, PostShow, PostEdit, realTimeDataProvider } from '.';
 
-const CustomLayout = (props) => (
+const CustomLayout = (props: LayoutProps) => (
     <Layout {...props} menu={MenuLive} />
 );
 
