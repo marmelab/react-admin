@@ -904,7 +904,7 @@ const ProductEdit = () => (
                 <TextInput source="image" />
                 <TextInput source="thumbnail" />
             </AccordionForm.Panel>
-            <AccordionForm.Panel label="Stock">
+            <AccordionForm.Panel name="stock" label="Stock">
                 <TextInput source="stock" />
             </AccordionForm.Panel>
             // delete button not displayed
