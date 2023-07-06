@@ -66,14 +66,14 @@ This is a minimal configuration to render CRUD pages for users, posts and commen
 
 Now, let's configure Next.js to render the admin app component in the root path ('/'). Edit the file called `src/pages/index.tsx`, and replace the content with the following:
 
-```jsx
+```tsx
 // in src/pages/index.tsx
 import type, { NextPage } from "next";
 import dynamic from "next/dynamic";
 
 const App = dynamic(() => import("../admin/App"), { ssr: false });
 
-const Home = () => {
+const Home: NextPage = () => {
   return <App />;
 };
 
@@ -92,14 +92,14 @@ In many cases, the admin is only a part of the application. For instance, you ma
 
 Next.js makes it trivial: create a `src/pages/admin.tsx` file with the same content as in the previous section:
 
-```jsx
+```tsx
 // in src/pages/admin.tsx
 import type, { NextPage } from "next";
 import dynamic from "next/dynamic";
 
 const App = dynamic(() => import("../admin/App"), { ssr: false });
 
-const Admin = () => {
+const Admin: NextPage = () => {
   return <App />;
 };
 
