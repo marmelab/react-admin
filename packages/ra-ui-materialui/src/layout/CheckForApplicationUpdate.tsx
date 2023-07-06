@@ -76,7 +76,7 @@ export const CheckForApplicationUpdate = (
     const onNewVersionAvailable = () => {
         notify(notification, {
             type: 'info',
-            autoHideDuration: 0,
+            autoHideDuration: null,
         });
     };
 

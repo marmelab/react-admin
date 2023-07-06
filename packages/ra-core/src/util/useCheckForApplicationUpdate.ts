@@ -18,11 +18,11 @@ export const useCheckForApplicationUpdate = (
     const {
         url = window.location.href,
         checkInterval = ONE_HOUR,
-        onNewVersionAvailable,
-        disabled,
+        onNewVersionAvailable: onNewVersionAvailableProp,
+        disabled = process.env.NODE_ENV !== 'production',
     } = options;
     const currentHash = useRef<string>();
-    const onCodeHasChanged = useEvent(onNewVersionAvailable);
+    const onNewVersionAvailable = useEvent(onNewVersionAvailableProp);
 
     useEffect(() => {
         if (disabled) return;
@@ -36,14 +36,21 @@ export const useCheckForApplicationUpdate = (
         if (disabled) return;
 
         const interval = setInterval(() => {
-            getHashForUrl(url).then(hash => {
-                if (currentHash.current !== hash) {
-                    onCodeHasChanged();
-                }
-            });
+            getHashForUrl(url)
+                .then(hash => {
+                    if (hash != null && currentHash.current !== hash) {
+                        // Store the latest hash to avoid calling the onNewVersionAvailable function multiple times
+                        // or when users have closed the notification
+                        currentHash.current = hash;
+                        onNewVersionAvailable();
+                    }
+                })
+                .catch(() => {
+                    // Ignore errors to avoid issues when connectivity is lost
+                });
         }, checkInterval);
         return () => clearInterval(interval);
-    }, [checkInterval, onCodeHasChanged, disabled, url]);
+    }, [checkInterval, onNewVersionAvailable, disabled, url]);
 };
 
 const getHashForUrl = async (url: string) => {
