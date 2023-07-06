@@ -549,20 +549,20 @@ const authProvider = {
 const ProductEdit = () => (
     <Edit>
         <AccordionForm>
-            <AccordionForm.Panel label="description" label="Description">
+            <AccordionForm.Panel label="Description">
                 <TextInput source="reference" />
                 <TextInput source="width" />
                 <TextInput source="height" />
                 <TextInput source="description" />
             </AccordionForm.Panel>
-            <AccordionForm.Panel label="images" label="Images">
+            <AccordionForm.Panel label="Images">
                 <TextInput source="image" />
                 <TextInput source="thumbnail" />
             </AccordionForm.Panel>
-            <AccordionForm.Panel label="stock" label="Stock">
+            <AccordionForm.Panel label="Stock">
                 <TextInput source="stock" />
             </AccordionForm.Panel>
-            // delete button not displayed
+            { /* delete button not displayed */ }
         </AccordionForm>
     </Edit>
 );

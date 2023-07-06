@@ -48,7 +48,7 @@ const WarnWhenUpdatedBySomeoneElse = () => {
         formState: { isDirty },
     } = useFormContext();
 
-    useSubscribeToRecord((event: Event) => {
+    useSubscribeToRecord((event) => {
         if (event.type === 'edited') {
             if (isDirty) {
                 setOpen(true);
@@ -131,7 +131,7 @@ const { refetch } = useEditContext();
 const {
     formState: { isDirty },
 } = useFormContext();
-useSubscribeToRecord((event: Event) => {
+useSubscribeToRecord((event) => {
     if (event.type === 'edited') {
         if (isDirty) {
             setOpen(true);
@@ -154,7 +154,7 @@ const {
 } = useFormContext();
 
 const handleEvent = useCallback(
-    (event: Event) => {
+    (event) => {
         if (event.type === 'edited') {
             if (isDirty) {
                 setOpen(true);
@@ -173,7 +173,7 @@ useSubscribeToRecord(handleEvent);
 Just like for `useSubscribe`, the callback function receives an `unsubscribe` callback as its second argument. You can call it to unsubscribe from the topic after receiving a specific event.
 
 ```jsx
-useSubscribeToRecord((event: Event, unsubscribe) => {
+useSubscribeToRecord((event, unsubscribe) => {
     if (event.type === 'deleted') {
         // do something
         unsubscribe();

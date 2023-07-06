@@ -133,7 +133,7 @@ If you're using [the `<ContainerLayout>` component](./ContainerLayout.md), you c
 import { ContainerLayout } from "@react-admin/ra-navigation";
 import { Search } from "@react-admin/ra-search";
 
-const MyLayout = (props: any) => (
+const MyLayout = (props) => (
     <ContainerLayout {...props} maxWidth="xl" toolbar={<Search />} />
 );
 ```

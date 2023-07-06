@@ -23,11 +23,12 @@ const authProvider = {
 
 **Tip**: If you're a TypeScript user, you can check that your `authProvider` is correct at compile-time using the `AuthProvider` type.
 
-```jsx
+```tsx
 import { AuthProvider } from 'react-admin';
 
 const authProvider: AuthProvider = {
     // ...
+};
 ```
 
 ## Example

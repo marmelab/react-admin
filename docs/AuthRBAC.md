@@ -454,7 +454,7 @@ Alternative to react-admin's `<Datagrid>` that adds RBAC control to columns
 To see a column, the user must have the permission to read the resource column:
 
 ```jsx
-{ action: "read", resource: `${resource}.${source}` }.
+{ action: "read", resource: `${resource}.${source}` }
 ```
 
 Also, the `rowClick` prop is automatically set depending on the user props:
@@ -894,17 +894,17 @@ const authProvider = {
 const ProductEdit = () => (
     <Edit>
         <AccordionForm>
-            <AccordionForm.Panel label="description" label="Description">
+            <AccordionForm.Panel label="Description">
                 <TextInput source="reference" />
                 <TextInput source="width" />
                 <TextInput source="height" />
                 <TextInput source="description" />
             </AccordionForm.Panel>
-            <AccordionForm.Panel label="images" label="Images">
+            <AccordionForm.Panel label="Images">
                 <TextInput source="image" />
                 <TextInput source="thumbnail" />
             </AccordionForm.Panel>
-            <AccordionForm.Panel label="stock" label="Stock">
+            <AccordionForm.Panel label="Stock">
                 <TextInput source="stock" />
             </AccordionForm.Panel>
             // delete button not displayed

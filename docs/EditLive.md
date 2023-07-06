@@ -32,7 +32,7 @@ To trigger `<EditLive>` features, the API has to publish events containing at le
 {
     topic : '/resource/{resource}/{recordIdentifier}',
     type: '{deleted || updated}',
-    payload: { id: [{recordIdentifier}]},
+    payload: { id: [{ recordIdentifier }]},
 }
 ```
 

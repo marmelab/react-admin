@@ -141,6 +141,7 @@ const PostCreate = () => (
         </SimpleForm>
     </Create>
 );
+```
 
 With this middleware, given the following form values:
 

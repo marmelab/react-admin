@@ -151,7 +151,7 @@ export const NewMessageForm = () => {
     const isFormDisabled = lock && lock.identity !== identity?.id;
 
     const [doLock] = useLockOnCall({ resource: 'tickets' });
-    const handleSubmit = (values: any) => {
+    const handleSubmit = (values) => {
         /* ... */
     };
 
