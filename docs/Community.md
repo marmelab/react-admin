@@ -9,6 +9,8 @@ Thousands of new react-admin applications are created every month. [Many develop
 
 We're doing our best to keep it a convivial place where people want to hang out and help/be helped. 
 
+{% include newsletter.html %}
+
 ## Discord
 
 The [React-admin Discord Server](https://discord.gg/GeZF9sqh3N) is a great place to have conversations, answer and ask questions, all about react-admin.
@@ -78,3 +80,4 @@ If you want to **add a feature**, you can open a Pull request on the `next` bran
 For all Pull requests, you must follow the coding style of the existing files (based on [prettier](https://github.com/prettier/prettier)), and include unit tests and documentation. Be prepared for a thorough code review, and be patient for the merge - this is an open-source initiative.
 
 **Tip**: Most of the commands used by the react-admin developers are automated in the `makefile`. Feel free to type `make` without argument to see a list of the available commands. 
+
