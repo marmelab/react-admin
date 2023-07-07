@@ -19,7 +19,7 @@ React-admin provides the **best-in-class documentation**, demo apps, and support
 
 That probably explains why more than 3,000 new apps are published every month using react-admin. 
 
-So react-admin is not just the assembly of [react-query](https://react-query.tanstack.com/), [react-hook-form](https://marmelab.com/react-admin/assets/techs/react-hook-form.jpeg), [react-router](https://reacttraining.com/react-router/), [Material UI](https://mui.com/material-ui/getting-started/overview/) and [Emotion](https://github.com/emotion-js/emotion). It's a **framework** made to speed up and facilitate the development of single-page apps in React.
+So react-admin is not just the assembly of [react-query](https://react-query.tanstack.com/), [react-hook-form](https://marmelab.com/react-admin/assets/techs/react-hook-form.jpeg), [react-router](https://reacttraining.com/react-router/), [Material UI](https://mui.com/material-ui/getting-started/) and [Emotion](https://github.com/emotion-js/emotion). It's a **framework** made to speed up and facilitate the development of single-page apps in React.
 
 ## Basic CRUD
 
@@ -248,7 +248,7 @@ Reference components are a tremendous development accelerator for complex fronte
 
 Let's be realistic: Many developers focus on features first and don't have much time to spend polishing the User Interface (UI). We tend to be like that, too! The result is that quite often, admin apps are ugly. Spacing isn't consistent, buttons aren't in the best place, and color schemes hurt the eyes.
 
-React-admin provides **components that look pretty good out of the box**, so even if you don't spend time on the UI, it won't look bad (unless you try hard). React-admin uses [Material UI](https://mui.com/material-ui/getting-started/overview/), which is a React implementation of the [Material Design](https://material.io/) guidelines, the most battle-tested design system.
+React-admin provides **components that look pretty good out of the box**, so even if you don't spend time on the UI, it won't look bad (unless you try hard). React-admin uses [Material UI](https://mui.com/material-ui/getting-started/), which is a React implementation of the [Material Design](https://material.io/) guidelines, the most battle-tested design system.
 
 <video controls autoplay playsinline muted loop width="100%">
   <source src="https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4" type="video/webm" />
@@ -420,7 +420,7 @@ Check the [Building A Custom Filter Tutorial](./FilteringTutorial.md#building-a-
 
 Many admin apps let users perform complex tasks implying the update of many fields and records. To allow such complex workflows, developers must be able to build sophisticated forms, with elaborate validation rules.
 
-React-admin offers a **rich set of input components and form layouts** to build forms, powered by [Material UI](https://mui.com/material-ui/getting-started/overview/) and [react-hook-form](https://react-hook-form.com/). React-admin's form components also take care of binding the form values to the record being edited and validating the form inputs.
+React-admin offers a **rich set of input components and form layouts** to build forms, powered by [Material UI](https://mui.com/material-ui/getting-started/) and [react-hook-form](https://react-hook-form.com/). React-admin's form components also take care of binding the form values to the record being edited and validating the form inputs.
 
 For instance, here is how to build a tabbed form for editing a blog post:
 
@@ -1434,7 +1434,7 @@ React-admin is used by thousands of companies across the world, so the internati
 
 ## Accessibility
 
-The react-admin core team has a **strong commitment to accessibility**. React-admin uses the [Material UI](https://mui.com/material-ui/getting-started/overview/) components, which are accessible by default. For its own components, react-admin uses the [WAI-ARIA](https://www.w3.org/TR/wai-aria/) standard to make them accessible. This includes `aria-` attributes, keyboard navigation, and focus management.
+The react-admin core team has a **strong commitment to accessibility**. React-admin uses the [Material UI](https://mui.com/material-ui/getting-started/) components, which are accessible by default. For its own components, react-admin uses the [WAI-ARIA](https://www.w3.org/TR/wai-aria/) standard to make them accessible. This includes `aria-` attributes, keyboard navigation, and focus management.
 
 We routinely test react-admin with the [WAVE](https://wave.webaim.org/) and [Axe](https://www.deque.com/axe/) accessibility tools.
 
