@@ -1201,3 +1201,17 @@ const MyCustomList = () => {
     );
 };
 ```
+## How to disable checkboxes
+You can disable bulk actions altogether by passing `false` to the `bulkActionButtons` prop. In this case, the checkboxes column doesn’t show up anymore.
+
+```tsx
+import { Datagrid, List } from 'react-admin';
+
+export const PostList = () => (
+    <List>
+        <Datagrid bulkActionButtons={false}>
+            ...
+        </Datagrid>
+    </List>
+);
+```
