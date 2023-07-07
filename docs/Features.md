@@ -1096,7 +1096,7 @@ And last but not least, react-admin provides a **lock mechanism** to prevent two
 
 A user can lock a resource, either by voluntarily asking for a lock or by editing a resource. When a resource is locked, other users can't edit it. When the lock is released, other users can edit the resource again.
 
-```jsx
+```tsx
 export const NewMessageForm = () => {
     const [create, { isLoading: isCreating }] = useCreate();
     const record = useRecordContext();

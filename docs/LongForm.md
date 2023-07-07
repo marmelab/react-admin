@@ -140,7 +140,7 @@ export const PostCreate = () => (
                 <NumberInput source="nb_views" />
                 <SaveButton />
             </LongForm.Section>
-        </Form>
+        </LongForm>
     </Create>
 );
 ```
