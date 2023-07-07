@@ -1033,3 +1033,16 @@ const ProductList = () => (
     </List>
 )
 ```
+
+## How to disable `storeKey`
+You can disable `storeKey` feature by setting the `storeKey` prop to `false`. When disabled, parameters will not be persisted in the store.
+
+```tsx
+import { List } from 'react-admin';
+
+const ProductList = () => (
+    <List storeKey={false}>
+        ...
+    </List>
+)
+```
