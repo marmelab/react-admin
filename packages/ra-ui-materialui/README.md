@@ -1,6 +1,6 @@
 # ra-ui-material
 
-UI Components for [react-admin](https://marmelab.com/react-admin/) with [Material UI](https://mui.com/material-ui/getting-started/overview/).
+UI Components for [react-admin](https://marmelab.com/react-admin/) with [Material UI](https://mui.com/material-ui/getting-started/).
 
 ## License
 

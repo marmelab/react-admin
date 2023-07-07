@@ -119,7 +119,7 @@ See the [Data Providers documentation](./DataProviders.md) for details.
 
 ## Architecture: Batteries Included But Removable
 
-React-admin is designed as a library of loosely coupled React components built on top of [Material UI](https://mui.com/material-ui/getting-started/overview/), in addition to React hooks allowing to reuse the logic with a custom UI. 
+React-admin is designed as a library of loosely coupled React components built on top of [Material UI](https://mui.com/material-ui/getting-started/), in addition to React hooks allowing to reuse the logic with a custom UI. 
 
 You may replace one part of react-admin with your own, e.g. to use a custom Datagrid, GraphQL instead of REST, or Bootstrap instead of Material Design.
 

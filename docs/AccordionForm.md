@@ -357,7 +357,7 @@ export const TagEdit = () => (
 
 The children of `<AccordionForm>` must be `<AccordionForm.Panel>` elements.
 
-This component renders a [MUI `<Accordion>` component](https://mui.com/components/accordion/). Children are rendered in a Stack, one child per row, just like for `<SimpleForm>`.
+This component renders a [Material UI `<Accordion>` component](https://mui.com/components/accordion/). Children are rendered in a Stack, one child per row, just like for `<SimpleForm>`.
 
 ### Props
 
@@ -402,7 +402,7 @@ const CustomerEdit = () => (
 
 ## `<AccordionSection>`
 
-Renders children (Inputs) inside a MUI `<Accordion>` element without a Card style. To be used as child of a `<SimpleForm>` or a `<TabbedForm>` element.
+Renders children (Inputs) inside a Material UI `<Accordion>` element without a Card style. To be used as child of a `<SimpleForm>` or a `<TabbedForm>` element.
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-section-overview.webm" type="video/webm"/>

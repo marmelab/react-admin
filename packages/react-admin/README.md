@@ -9,7 +9,7 @@ A frontend Framework for building data-driven applications running in the browse
 ## Features
 
 * Adapts to any backend (REST, GraphQL, SOAP, etc.)
-* Powered by [Material UI](https://mui.com/material-ui/getting-started/overview/), [react-query](https://react-query-v3.tanstack.com/), [react-hook-form](https://react-hook-form.com), [react-router](https://reacttraining.com/react-router/) and a few more
+* Powered by [Material UI](https://mui.com/material-ui/getting-started/), [react-query](https://react-query-v3.tanstack.com/), [react-hook-form](https://react-hook-form.com), [react-router](https://reacttraining.com/react-router/) and a few more
 * Super-fast UI thanks to optimistic rendering (renders before the server returns)
 * Undo updates and deletes for a few seconds
 * Relationships (many to one, one to many)
@@ -133,7 +133,7 @@ See the [Data Providers documentation](https://marmelab.com/react-admin/DataProv
 
 ## Batteries Included But Removable
 
-React-admin is designed as a library of loosely coupled React components built on top of [Material UI](https://mui.com/material-ui/getting-started/overview/), in addition to custom react hooks exposing reusable controller logic. It is very easy to replace one part of react-admin with your own, e.g. to use a custom datagrid, GraphQL instead of REST, or Bootstrap instead of Material Design.
+React-admin is designed as a library of loosely coupled React components built on top of [Material UI](https://mui.com/material-ui/getting-started/), in addition to custom react hooks exposing reusable controller logic. It is very easy to replace one part of react-admin with your own, e.g. to use a custom datagrid, GraphQL instead of REST, or Bootstrap instead of Material Design.
 
 ## Examples
 
