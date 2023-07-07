@@ -1020,3 +1020,16 @@ const ProductList = () => (
     </List>
 )
 ```
+
+## How to remove `<ExportButton>`
+You can remove the `<ExportButton>` by passing false to the exporter prop.
+
+```tsx
+import { List } from 'react-admin';
+
+const ProductList = () => (
+    <List exporter={false}>
+        ...
+    </List>
+)
+```
