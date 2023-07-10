@@ -6,7 +6,7 @@ import { Resource } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { createMemoryHistory } from 'history';
 
-import { UpdateButton, UpdateButtonProps } from './UpdateButton';
+import { UpdateButton } from './UpdateButton';
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
 import { NumberField, TextField } from '../field';
@@ -185,22 +185,19 @@ export const Sx = () => (
     </AdminContext>
 );
 
-const PostShowSideEffects = (props: Partial<UpdateButtonProps>) => {
-    const {
-        onSuccess = () => {
-            alert('onSuccess');
-        },
-        onError = () => {
-            alert('onError');
-        },
-    } = props;
+const PostShowSideEffects = () => {
+    const onSuccess = () => {
+        alert('onSuccess');
+    };
+    const onError = () => {
+        alert('onError');
+    };
     return (
         <Show
             actions={
                 <TopToolbar>
                     <UpdateButton
-                        onSuccess={onSuccess}
-                        onError={onError}
+                        mutationOptions={{ onSuccess, onError }}
                         label="Reset views"
                         data={{ views: 0 }}
                     />
