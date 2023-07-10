@@ -6,7 +6,6 @@ import inflection from 'inflection';
 import { alpha, styled } from '@mui/material/styles';
 import {
     useTranslate,
-    useRefresh,
     useNotify,
     useResourceContext,
     MutationMode,
@@ -25,7 +24,6 @@ export const UpdateWithConfirmButton = (
     props: UpdateWithConfirmButtonProps
 ) => {
     const notify = useNotify();
-    const refresh = useRefresh();
     const translate = useTranslate();
     const resource = useResourceContext(props);
     const [isOpen, setOpen] = useState(false);
@@ -45,7 +43,6 @@ export const UpdateWithConfirmButton = (
     const {
         meta: mutationMeta,
         onSuccess = () => {
-            refresh();
             notify('ra.notification.updated', {
                 type: 'info',
                 messageArgs: { smart_count: 1 },
