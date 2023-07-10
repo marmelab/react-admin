@@ -206,6 +206,29 @@ The `<SimpleShowLayout>` component accepts the usual `className` prop but you ca
 
 To override the style of all instances of `<SimpleShowLayout>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaSimpleShowLayout` key.
 
+## Hiding the labels
+
+You can disable the `<Labeled>` decoration added by `<SimpleShowLayout>` by passing setting `label={false}` on a field:
+
+```jsx
+const PostShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <TextField label={false} source="title" />
+        </SimpleShowLayout>
+    </Show>
+);
+
+// translates to
+const PostShow = () => (
+    <Show>
+        <Stack>
+            <TextField source="title" />
+        </Stack>
+    </Show>
+);
+```
+
 ## See Also
 
 * [Field components](./Fields.md)

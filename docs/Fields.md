@@ -368,6 +368,17 @@ const BookEdit = () => (
 );
 ```
 
+## Hiding A Field Label
+
+You can opt out of the label decoration by passing `false` to the `label` prop.
+
+```jsx
+// No label will be added
+<TextField source="author.name" label={false} />
+```
+
+**Note**: This prop has no effect when rendering a field outside a `<Datagrid>`, a `<SimpleShowLayout>`, a `<TabbedShowLayout>`, a `<SimpleForm>`, or a `<TabbedForm>`.
+
 ## Conditional Formatting
 
 If you want to format a field depending on the value, create another component wrapping this field, and set the `sx` prop depending on the field value:
