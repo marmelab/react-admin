@@ -316,7 +316,7 @@ The default `onSuccess` function is:
 
 ```js
 () => {
-    notify('ra.notification.created', {
+    notify('ra.notification.updated', {
         messageArgs: { smart_count: 1 },
         undoable: mutationMode === 'undoable'
     });
@@ -384,7 +384,7 @@ const PostEdit = () => {
 ```
 {% endraw %}
 
-The `onError` function receives the error from the `dataProvider.edit()` call. It is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
+The `onError` function receives the error from the `dataProvider.update()` call. It is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
 
 The default `onError` function is:
 

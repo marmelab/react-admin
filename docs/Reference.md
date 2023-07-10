@@ -189,6 +189,7 @@ title: "Index"
 * [`<Toolbar>`](./Toolbar.md)
 
 **- U -**
+* [`<UpdateButton>`](./UpdateButton.md)
 * [`<UrlField>`](./UrlField.md)
 * [`<UserMenu>`](./AppBar.md#usermenu)
 
