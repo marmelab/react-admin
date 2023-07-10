@@ -42,10 +42,10 @@ export const UpdateButton = (props: UpdateButtonProps) => {
 
 export type UpdateButtonProps =
     | ({
-          mutationMode: 'undoable';
+          mutationMode?: 'undoable';
       } & UpdateWithUndoButtonProps)
     | ({
-          mutationMode: 'pessimistic' | 'optimistic';
+          mutationMode?: 'pessimistic' | 'optimistic';
       } & UpdateWithConfirmButtonProps);
 
 UpdateButton.propTypes = {
