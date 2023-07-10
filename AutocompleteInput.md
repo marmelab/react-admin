@@ -145,6 +145,12 @@ const choices = possibleValues.map(value => ({ id: value, name: ucfirst(value) }
 
 To allow users to add new options, pass a React element as the `create` prop. `<AutocompleteInput>` will then render a menu item at the bottom of the list, which will render the passed element when clicked.
 
+<video controls autoplay playsinline muted loop>
+  <source src="./img/autocomplete-input-with-create.webm" type="video/webm"/>
+  <source src="./img/autocomplete-input-with-create.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 {% raw %}
 ```jsx
 import { CreateCategory } from './CreateCategory';
@@ -381,27 +387,53 @@ const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 
 `optionText` also accepts a React Element, that will be rendered inside a [`<RecordContext>`](./useRecordContext.md) using the related choice as the `record` prop. You can use Field components there. However, using an element as `optionText` implies that you also set two more props, `inputText` and `matchSuggestion`. See [Using A Custom Element For Options](#using-a-custom-element-for-options) for more details.
 
-`optionText` is also useful when the choices are records [fetched from another resource](#fetching-choices), and `<AutocompleteInput>` is a child of a [`<ReferenceInput>`](./ReferenceInput.md). 
+`optionText` can also be useful when the choices are records [fetched from another resource](#fetching-choices), and `<AutocompleteInput>` is a child of a [`<ReferenceInput>`](./ReferenceInput.md). In that case, react-admin uses the [`recordRepresentation`](./Resource.md#recordrepresentation) of the related resource to display the record label. In the example below, `<AutocompleteInput>` renders author options via their `last_name` attribute, because it's the record representation defined in the `<Resource name="authors">`:
 
 ```jsx
-import { AutocompleteInput, ReferenceInput } from 'react-admin';
+// in src/PostCreate.jsx
+import { AutocompleteInput, Create, ReferenceInput, SimpleForm } from 'react-admin';
 
-<ReferenceInput label="Author" source="author_id" reference="authors">
-    <AutocompleteInput />
-</ReferenceInput>
+export const PostCreate = () => (
+    <Create>
+        <SimpleForm>
+            <ReferenceInput label="Author" source="author_id" reference="authors">
+                <AutocompleteInput />
+            </ReferenceInput>
+        </SimpleForm>
+    </Create>
+);
+
+// in src/App.js
+import { Admin, Resource, ListGuesser } from 'react-admin';
+import { dataProvider } from './dataProvider';
+import { PostCreate } from './PostCreate';
+
+export const App = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource name="posts" list={ListGuesser} create={PostCreate} />
+        <Resource name="authors" recordRepresentation="last_name" />
+    </Admin>
+)
 ```
 
-In that case, react-admin uses the [`recordRepresentation`](./Resource.md#recordrepresentation) of the related resource to display the record label. In the example above, `<AutocompleteInput>` uses the resource representation of the `authors` resource, which is the `name` property.
-
-But if you set the `optionText` prop, react-admin uses it instead of relying on `recordRepresentation`.
+If you set the `optionText` prop, react-admin uses it instead of relying on `recordRepresentation`:
 
 ```jsx
-import { AutocompleteInput, ReferenceInput } from 'react-admin';
+// in src/PostCreate.jsx
+import { AutocompleteInput, Create, ReferenceInput, SimpleForm } from 'react-admin';
 
-<ReferenceInput label="Author" source="author_id" reference="authors">
-    <AutocompleteInput optionText="last_name" />
-</ReferenceInput>
+export const PostCreate = () => (
+    <Create>
+        <SimpleForm>
+            <ReferenceInput label="Author" source="author_id" reference="authors">
+                <AutocompleteInput optionText={author => `${author.first_name} ${author.last_name}`} />
+            </ReferenceInput>
+        </SimpleForm>
+    </Create>
+);
 ```
+
+Now `<AutocompleteInput>` will render author options using their full name.
 
 ## `optionValue`
 

@@ -41,7 +41,7 @@ Then, create a custom layout using [the `<Layout>` component](./Layout.md) and p
 ```jsx
 // in src/MyLayout.js
 import { Layout } from 'react-admin';
-import { AppLocationContext } from '@react-admin/ra-navigation';
+import { AppLocationContext } from '@react-admin/ra-navigation';
 
 import { MyMenu } from './MyMenu';
 
@@ -59,7 +59,7 @@ Finally, pass this custom layout to the `<Admin>` component. You should apply th
 ```jsx
 // in src/App.js
 import { Admin, Resource } from "react-admin";
-import { theme } from '@react-admin/ra-navigation';
+import { theme } from '@react-admin/ra-navigation';
 
 import { MyLayout } from './MyLayout';
 

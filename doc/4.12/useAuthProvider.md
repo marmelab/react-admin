@@ -71,7 +71,7 @@ export interface CustomAuthProviderMethods extends AuthProvider {
     refreshToken: () => Promise<any>
 }
 
-export const authProvider: CustomAuthProviderMethods {
+export const authProvider: CustomAuthProviderMethods = {
     // ...Standard authProvider methods
     refreshToken: () => {
         // Refresh the user authentication token

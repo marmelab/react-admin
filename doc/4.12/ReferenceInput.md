@@ -73,7 +73,7 @@ dataProvider.getList('companies', {
 
 ```js
 dataProvider.getList('companies', { 
-    filter: { q: [search term] },
+    filter: { q: ['search term'] },
     sort: { field: 'id', order: 'DESC' },
     pagination: { page: 1, perPage: 25 }
 });

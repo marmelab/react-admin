@@ -18,25 +18,24 @@ import * as React from "react";
 import { CreateBase, SimpleForm, TextInput, SelectInput } from "react-admin";
 import { Card } from "@mui/material";
 
-export const BookCreate = () => {
+export const BookCreate = () => ( 
     <CreateBase>
-      <div>
-        <Title title="Book Creation" />
-        <Card>
-          <SimpleForm>
-            <TextInput source="title" />
-            <TextInput source="author" />
-            <SelectInput source="availability" choices={[
-              { id: "in_stock", name: "In stock" },
-              { id: "out_of_stock", name: "Out of stock" },
-              { id: "out_of_print", name: "Out of print" },
-            ]} />
-          </SimpleForm>
-        </Card>
-      </div>
+        <div>
+            <Title title="Book Creation" />
+            <Card>
+                <SimpleForm>
+                    <TextInput source="title" />
+                    <TextInput source="author" />
+                    <SelectInput source="availability" choices={[
+                        { id: "in_stock", name: "In stock" },
+                        { id: "out_of_stock", name: "Out of stock" },
+                        { id: "out_of_print", name: "Out of print" },
+                    ]} />
+                </SimpleForm>
+            </Card>
+        </div>
     </CreateBase>
-  );
-};
+);
 ```
 
 You can customize the `<CreateBase>` component using the following props, documented in the `<Create>` component:

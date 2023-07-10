@@ -308,7 +308,7 @@ Pass an `sx` prop to customize the style of the main component and the underlyin
 {% raw %}
 ```jsx
 export const MyLayout = (props) => (
-    <Layout sx={{ '& .RaLayout-appFrame': { marginTop: 55 } }} {...props}>
+    <Layout sx={{ '& .RaLayout-appFrame': { marginTop: 55 } }} {...props} />
 );
 ```
 {% endraw %}
