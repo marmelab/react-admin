@@ -1201,3 +1201,36 @@ const MyCustomList = () => {
     );
 };
 ```
+
+## How to disable checkboxes
+
+You can disable bulk actions altogether by passing `false` to the `bulkActionButtons` prop. In this case, the checkboxes column doesn’t show up anymore.
+
+```tsx
+import { Datagrid, List } from 'react-admin';
+
+export const PostList = () => (
+    <List>
+        <Datagrid bulkActionButtons={false}>
+            ...
+        </Datagrid>
+    </List>
+);
+```
+
+## Disable column sorting
+
+In a `<Datagrid>`, users can change the sort field and order by clicking on the column headers. You may want to disable this behavior for a given field (e.g. for reference or computed fields). In that case, pass a `false` value to the `sortable` prop on the field.
+
+```jsx
+const PostList = () => (
+    <List>
+        <Datagrid>
+            <TextField source="title" />
+            <ReferenceField source="author_id" sortable={false}>
+                <TextField source="name" />
+            </ReferenceField>
+        </Datagrid>
+    </List>
+);
+```
