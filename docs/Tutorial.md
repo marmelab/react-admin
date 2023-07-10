@@ -412,7 +412,7 @@ That means react-admin never blocks you: if one react-admin component doesn't pe
 
 The `<MyUrlField>` component is a perfect opportunity to illustrate how to customize styles.
 
-React-admin relies on [Material UI](https://mui.com/material-ui/getting-started/overview/), a set of React components modeled after Google's [Material Design Guidelines](https://material.io/). All Material UI components (and most react-admin components) support a prop called `sx`, which allows custom inline styles. Let's take advantage of the `sx` prop to remove the underline from the link and add an icon:
+React-admin relies on [Material UI](https://mui.com/material-ui/getting-started/), a set of React components modeled after Google's [Material Design Guidelines](https://material.io/). All Material UI components (and most react-admin components) support a prop called `sx`, which allows custom inline styles. Let's take advantage of the `sx` prop to remove the underline from the link and add an icon:
 
 {% raw %}
 ```tsx
