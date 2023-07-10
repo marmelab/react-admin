@@ -42,6 +42,6 @@ const defaultInnerHTML = { __html: '&#8203;' };
 
 export interface InputHelperTextProps {
     helperText?: string | ReactElement | boolean;
-    error?: ValidationErrorMessage;
+    error?: ValidationErrorMessage | string;
     touched: boolean;
 }
