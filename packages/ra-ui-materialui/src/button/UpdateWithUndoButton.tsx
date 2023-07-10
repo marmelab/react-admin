@@ -43,7 +43,6 @@ export const UpdateWithUndoButton = (props: UpdateWithUndoButtonProps) => {
                 messageArgs: { smart_count: 1 },
                 undoable: true,
             });
-            refresh();
         },
         onError = (error: Error | string) => {
             notify(
