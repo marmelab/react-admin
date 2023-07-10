@@ -8,7 +8,8 @@ title: "The UpdateButton Component"
 This component allows to create a button that updates a record by calling the [`useUpdate hook`](./useUpdate.md).
 
 <video controls playsinline muted loop poster="./img/updatebutton.png" >
-  <source src="./img/updatebutton.webm" type="video/mp4" />
+  <source src="./img/updatebutton.webm" type="video/webm" />
+  <source src="./img/updatebutton.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
