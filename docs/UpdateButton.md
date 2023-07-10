@@ -7,8 +7,8 @@ title: "The UpdateButton Component"
 
 This component allows to create a button that updates a record by calling the [`useUpdate hook`](./useUpdate.md).
 
-<video controls playsinline muted loop poster="https://marmelab.com/ra-enterprise/modules/assets/Update.png" >
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/Update.mp4" type="video/mp4" />
+<video controls playsinline muted loop poster="https://marmelab.com/ra-enterprise/modules/assets/updatebutton.png" >
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/updatebutton.webm" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
