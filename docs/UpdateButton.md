@@ -49,7 +49,7 @@ export const PostEdit = () => (
 | `onSuccess`      | Optional | `Function`  |        | A function to call when the mutation succeeds |
 | `onError`        | Optional | `Function`  |        | A function to call when the mutation fails    |
 
-`<UpdateButton>` also accepts the [Button props](./Buttons.md).
+`<UpdateButton>` also accepts the [Button props](./Buttons.md#button).
 
 ## `data`
 

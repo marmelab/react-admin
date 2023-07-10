@@ -94,7 +94,7 @@ describe('<UpdateWithConfirmButton />', () => {
         });
     });
 
-    it('should allows to undo the deletion after confirmation if mutationMode is undoable', async () => {
+    it('should allow to undo the update after confirmation if mutationMode is undoable', async () => {
         const dataProvider = testDataProvider({
             // @ts-ignore
             getOne: () =>
