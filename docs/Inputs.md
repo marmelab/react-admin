@@ -910,3 +910,13 @@ You can find components for react-admin in third-party repositories.
 - [@react-page/react-admin](https://react-page.github.io/docs/#/integration-react-admin): ReactPage is a rich content editor and comes with a ready-to-use React-admin input component. [check out the demo](https://react-page.github.io/examples/reactadmin)
 
 - **DEPRECATED V3** [LoicMahieu/aor-tinymce-input](https://github.com/LoicMahieu/aor-tinymce-input): a TinyMCE component, useful for editing HTML
+
+## Hiding the label
+
+You can set `label={false}` on an input component to hide its label.
+
+```jsx
+<TextInput source="title" /> {/* input label is "Title" */}
+<TextInput source="title" label="Post title" /> {/* input label is "Post title" */}
+<TextInput source="title" label={false} /> {/* input has no label */}
+```
