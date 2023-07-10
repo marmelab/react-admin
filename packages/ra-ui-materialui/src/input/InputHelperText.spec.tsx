@@ -2,6 +2,7 @@ import * as React from 'react';
 import expect from 'expect';
 import { render } from '@testing-library/react';
 import { InputHelperText } from './InputHelperText';
+import { TestTranslationProvider } from 'ra-core';
 
 describe('InputHelperText', () => {
     it('does render empty string when the input has not been touched yet and has no helper text', () => {
@@ -39,5 +40,24 @@ describe('InputHelperText', () => {
 
         expect(queryByText('Please help!')).toBeNull();
         expect(getByText('Crap!')).not.toBeNull();
+    });
+
+    it('renders and translates the error', () => {
+        const { getByText } = render(
+            <TestTranslationProvider
+                messages={{
+                    'ra.auth.sign_in_error':
+                        'Authentication failed, please retry',
+                }}
+            >
+                <InputHelperText
+                    helperText="Please help!"
+                    touched
+                    error="ra.auth.sign_in_error"
+                />
+            </TestTranslationProvider>
+        );
+
+        expect(getByText('Authentication failed, please retry')).not.toBeNull();
     });
 });
