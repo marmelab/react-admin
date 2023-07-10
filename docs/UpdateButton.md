@@ -7,8 +7,8 @@ title: "The UpdateButton Component"
 
 This component allows to create a button that updates a record by calling the [`useUpdate hook`](./useUpdate.md).
 
-<video controls playsinline muted loop poster="https://marmelab.com/ra-enterprise/modules/assets/updatebutton.png" >
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/updatebutton.webm" type="video/mp4" />
+<video controls playsinline muted loop poster="./img/updatebutton.png" >
+  <source src="./img/updatebutton.webm" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -46,8 +46,6 @@ export const PostEdit = () => (
 | `confirmTitle`   | Optional | `ReactNode` | `ra.message.bulk_update_title` | The title of the confirmation dialog when `mutationMode` is not `undoable` |
 | `confirmContent` | Optional | `ReactNode` | `ra.message.bulk_update_content` | The content of the confirmation dialog when `mutationMode` is not `undoable` |
 | `mutationOptions` | Optional | `Object`  |        | The react-query mutation options |
-| `onSuccess`      | Optional | `Function`  |        | A function to call when the mutation succeeds |
-| `onError`        | Optional | `Function`  |        | A function to call when the mutation fails    |
 
 `<UpdateButton>` also accepts the [Button props](./Buttons.md#button).
 
@@ -286,56 +284,6 @@ The default `onError` function is:
     notify(typeof error === 'string' ? error : error.message || 'ra.notification.http_error', { type: 'error' });
 }
 ```
-
-## `onSuccess`
-
-A function that will be called when the mutation succeeds. This is a shortcut to the `mutationOption.onSuccess` option:
-
-{% raw %}
-```jsx
-import { TopToolbar, UpdateButton, useNotify } from 'react-admin';
-
-const PostEditActions = () => {
-    const notify = useNotify();
-    return (
-        <TopToolbar>
-            <UpdateButton
-                label="Reset views"
-                data={{ views: 0 }}
-                onSuccess={() => {
-                    notify(`Changes saved`);
-                }}
-            />
-        </TopToolbar>
-    );
-}
-```
-{% endraw %}
-
-## `onError`
-
-A function that will be called when the mutation fails. This is a shortcut to the `mutationOption.onError` option:
-
-{% raw %}
-```jsx
-import { TopToolbar, UpdateButton, useNotify } from 'react-admin';
-
-const PostEditActions = () => {
-    const notify = useNotify();
-    return (
-        <TopToolbar>
-            <UpdateButton
-                label="Reset views"
-                data={{ views: 0 }}
-                onError={() => {
-                    notify(`Changes not saved`, { type: 'error' });
-                }}
-            />
-        </TopToolbar>
-    );
-}
-```
-{% endraw %}
 
 ## `sx`
 

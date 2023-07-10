@@ -29,6 +29,14 @@ export const UpdateWithUndoButton = (props: UpdateWithUndoButtonProps) => {
         label = 'ra.action.update',
         icon = defaultIcon,
         onClick,
+        mutationOptions = {},
+        ...rest
+    } = props;
+
+    const [updateMany, { isLoading }] = useUpdate();
+
+    const {
+        meta: mutationMeta,
         onSuccess = () => {
             notify('ra.notification.updated', {
                 type: 'info',
@@ -56,12 +64,8 @@ export const UpdateWithUndoButton = (props: UpdateWithUndoButtonProps) => {
             );
             refresh();
         },
-        mutationOptions = {},
-        ...rest
-    } = props;
-    const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
-
-    const [updateMany, { isLoading }] = useUpdate();
+        ...otherMutationOptions
+    } = mutationOptions;
 
     const handleClick = e => {
         updateMany(
@@ -97,8 +101,6 @@ const sanitizeRestProps = ({
     filterValues,
     label,
     selectedIds,
-    onSuccess,
-    onError,
     ...rest
 }: Omit<UpdateWithUndoButtonProps, 'resource' | 'icon' | 'data'>) => rest;
 
@@ -109,8 +111,6 @@ export interface UpdateWithUndoButtonProps<
         ButtonProps {
     icon?: ReactElement;
     data: any;
-    onSuccess?: () => void;
-    onError?: (error: any) => void;
     mutationOptions?: UseMutationOptions<
         RecordType,
         MutationOptionsError,

@@ -39,6 +39,11 @@ export const UpdateWithConfirmButton = (
         label = 'ra.action.update',
         mutationMode = 'pessimistic',
         onClick,
+        mutationOptions = {},
+        ...rest
+    } = props;
+    const {
+        meta: mutationMeta,
         onSuccess = () => {
             refresh();
             notify('ra.notification.updated', {
@@ -67,10 +72,8 @@ export const UpdateWithConfirmButton = (
             );
             setOpen(false);
         },
-        mutationOptions = {},
-        ...rest
-    } = props;
-    const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
+        ...otherMutationOptions
+    } = mutationOptions;
 
     const [updateMany, { isLoading }] = useUpdate();
 
@@ -137,8 +140,6 @@ export const UpdateWithConfirmButton = (
 const sanitizeRestProps = ({
     filterValues,
     label,
-    onSuccess,
-    onError,
     ...rest
 }: Omit<
     UpdateWithConfirmButtonProps,
@@ -154,8 +155,6 @@ export interface UpdateWithConfirmButtonProps<
     confirmTitle?: string;
     icon?: ReactElement;
     data: any;
-    onSuccess?: () => void;
-    onError?: (error: any) => void;
     mutationMode?: MutationMode;
     mutationOptions?: UseMutationOptions<
         RecordType,

@@ -12,28 +12,26 @@ import {
 /**
  * Updates the selected rows.
  *
- * To be used inside the <List bulkActionButtons> prop (where it's enabled by default).
+ * To be used inside the <Edit actions> prop or <Show actions> prop.
  *
  * @example // basic usage
  * import * as React from 'react';
- * import { Fragment } from 'react';
- * import { UpdateButton, BulkExportButton } from 'react-admin';
+ * import { Edit, TopToolbar, UpdateButton } from 'react-admin';
  *
- * const PostBulkActionButtons = () => (
- *     <Fragment>
- *         <BulkExportButton />
+ * const PostEditActions = () => (
+ *     <TopToolbar>
  *         <UpdateButton label="Reset Views" data={{ views: 0 }} />
- *     </Fragment>
+ *     </TopToolbar>
  * );
  *
- * export const PostList = () => (
- *     <List bulkActionButtons={<PostBulkActionButtons />}>
+ * export const PostEdit = () => (
+ *     <Edit actions={<PostEditActions />}>
  *         ...
- *     </List>
+ *     </Edit>
  * );
  */
 export const UpdateButton = (props: UpdateButtonProps) => {
-    const { mutationMode, ...rest } = props;
+    const { mutationMode = 'undoable', ...rest } = props;
 
     return mutationMode === 'undoable' ? (
         <UpdateWithUndoButton {...rest} />
@@ -56,9 +54,4 @@ UpdateButton.propTypes = {
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     icon: PropTypes.element,
-};
-
-UpdateButton.defaultProps = {
-    mutationMode: 'undoable',
-    data: {},
 };
