@@ -21,7 +21,7 @@ export const useCheckForApplicationUpdate = (
         onNewVersionAvailable: onNewVersionAvailableProp,
         disabled = process.env.NODE_ENV !== 'production',
     } = options;
-    const currentHash = useRef<string>();
+    const currentHash = useRef<number>();
     const onNewVersionAvailable = useEvent(onNewVersionAvailableProp);
 
     useEffect(() => {
@@ -59,14 +59,21 @@ const getHashForUrl = async (url: string) => {
     return hash(text);
 };
 
-const hash = (value: string) => {
-    return value
-        .split('')
-        .reduce(function (a, b) {
-            a = (a << 5) - a + b.charCodeAt(0);
-            return a & a;
-        }, 0)
-        .toString();
+// Simple hash function, taken from https://stackoverflow.com/a/52171480/3723993, suggested by Copilot
+const hash = (value: string, seed = 0) => {
+    let h1 = 0xdeadbeef ^ seed,
+        h2 = 0x41c6ce57 ^ seed;
+    for (let i = 0, ch; i < value.length; i++) {
+        ch = value.charCodeAt(i);
+        h1 = Math.imul(h1 ^ ch, 2654435761);
+        h2 = Math.imul(h2 ^ ch, 1597334677);
+    }
+    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
+    h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
+    h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+
+    return 4294967296 * (2097151 & h2) + (h1 >>> 0);
 };
 
 const ONE_HOUR = 1000 * 60 * 60;
