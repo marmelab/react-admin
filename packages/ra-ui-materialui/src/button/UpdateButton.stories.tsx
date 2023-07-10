@@ -2,7 +2,7 @@ import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
-import { Resource } from 'ra-core';
+import { Resource, withLifecycleCallbacks } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { createMemoryHistory } from 'history';
 
@@ -37,17 +37,28 @@ const i18nProvider = polyglotI18nProvider(
 );
 
 const getDataProvider = () =>
-    fakeRestDataProvider({
-        posts: [
+    withLifecycleCallbacks(
+        fakeRestDataProvider({
+            posts: [
+                {
+                    id: 1,
+                    title: 'Lorem Ipsum',
+                    body: 'Lorem ipsum dolor sit amet',
+                    views: 1000,
+                },
+            ],
+            authors: [],
+        }),
+        [
             {
-                id: 1,
-                title: 'Lorem Ipsum',
-                body: 'Lorem ipsum dolor sit amet',
-                views: 1000,
+                resource: 'posts',
+                beforeUpdate: async params => {
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    return params;
+                },
             },
-        ],
-        authors: [],
-    });
+        ]
+    );
 
 const PostShow = () => {
     return (
