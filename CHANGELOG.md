@@ -1,5 +1,20 @@
 # Changelog
 
+## v4.12.1
+
+* Fix closing browser tab loses undoable mutations without warning ([#9072](https://github.com/marmelab/react-admin/pull/9072)) ([adguernier](https://github.com/adguernier))
+* [Doc] Improve a bit reference to Material UI ([#9087](https://github.com/marmelab/react-admin/pull/9087)) ([oliviertassinari](https://github.com/oliviertassinari))
+* [Doc] Fix code examples syntax errors ([#9083](https://github.com/marmelab/react-admin/pull/9083)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix missing close tag in `<List>` `aside` snippet ([#9082](https://github.com/marmelab/react-admin/pull/9082)) ([slax57](https://github.com/slax57))
+* [Doc] fix a typo: replace ise by use in NumberInput doc ([#9081](https://github.com/marmelab/react-admin/pull/9081)) ([adguernier](https://github.com/adguernier))
+* [Doc] Fix react-router outdated doc links ([#9079](https://github.com/marmelab/react-admin/pull/9079)) ([slax57](https://github.com/slax57))
+* [Doc] Add doc for `<BulkUpdateButton>` ([#9077](https://github.com/marmelab/react-admin/pull/9077)) ([slax57](https://github.com/slax57))
+* [Doc] fix a typo in variable template example using polyglot ([#9076](https://github.com/marmelab/react-admin/pull/9076)) ([adguernier](https://github.com/adguernier))
+* [Doc] Add missing backticks for default empty value example ([#9075](https://github.com/marmelab/react-admin/pull/9075)) ([adguernier](https://github.com/adguernier))
+* [Doc] Update Tutorial to use TypeScript by default ([#9074](https://github.com/marmelab/react-admin/pull/9074)) ([adguernier](https://github.com/adguernier))
+* [Doc] Fix `<AutompleteInput create>` prop example ([#9071](https://github.com/marmelab/react-admin/pull/9071)) ([adguernier](https://github.com/adguernier))
+* [Doc] Fix `<ReferenceManyField>` chapter snippets to match the example data  ([#9067](https://github.com/marmelab/react-admin/pull/9067)) ([eboss-dev](https://github.com/eboss-dev))
+
 ## v4.12.0
 
 * Add unique validator ([#8999](https://github.com/marmelab/react-admin/pull/8999)) ([djhi](https://github.com/djhi))
