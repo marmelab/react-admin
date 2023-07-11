@@ -437,6 +437,125 @@ describe('<SimpleFormIterator />', () => {
         expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(1);
     });
 
+    it('should not reapply default values set at form level after removing and then re-adding one row', async () => {
+        render(
+            <Wrapper>
+                <SimpleForm
+                    defaultValues={{
+                        emails: [{ email: 'test@marmelab.com', name: 'test' }],
+                    }}
+                >
+                    <ArrayInput source="emails">
+                        <SimpleFormIterator>
+                            <TextInput source="email" label="Email" />
+                            <TextInput source="name" label="Name" />
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </Wrapper>
+        );
+
+        const removeFirstButton = getByLabelText(
+            // @ts-ignore
+            screen.queryAllByLabelText('Email')[0].closest('li'),
+            'ra.action.remove'
+        ).closest('button') as HTMLButtonElement;
+
+        fireEvent.click(removeFirstButton);
+        await waitFor(() => {
+            expect(screen.queryAllByLabelText('Email').length).toEqual(0);
+        });
+
+        const addItemElement = screen
+            .getByLabelText('ra.action.add')
+            .closest('button') as HTMLButtonElement;
+
+        fireEvent.click(addItemElement);
+        await waitFor(() => {
+            const inputElements = screen.queryAllByLabelText('Email');
+            expect(inputElements.length).toBe(1);
+        });
+
+        expect(
+            screen
+                .queryAllByLabelText('Email')
+                .map(inputElement => (inputElement as HTMLInputElement).value)
+        ).toEqual(['']);
+        expect(
+            screen
+                .queryAllByLabelText('Name')
+                .map(inputElement => (inputElement as HTMLInputElement).value)
+        ).toEqual(['']);
+
+        expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(1);
+    });
+
+    it('should not reapply default values set at form level after removing and then re-adding one row, even with FormDataConsumer', async () => {
+        render(
+            <Wrapper>
+                <SimpleForm
+                    defaultValues={{
+                        emails: [{ email: 'test@marmelab.com', name: 'test' }],
+                    }}
+                >
+                    <ArrayInput source="emails">
+                        <SimpleFormIterator>
+                            <FormDataConsumer>
+                                {({ getSource }) => (
+                                    <>
+                                        <TextInput
+                                            source={getSource!('email')}
+                                            label="Email"
+                                            defaultValue="default@marmelab.com"
+                                        />
+                                        <TextInput
+                                            source={getSource!('name')}
+                                            label="Name"
+                                        />
+                                    </>
+                                )}
+                            </FormDataConsumer>
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </Wrapper>
+        );
+
+        const removeFirstButton = getByLabelText(
+            // @ts-ignore
+            screen.queryAllByLabelText('Email')[0].closest('li'),
+            'ra.action.remove'
+        ).closest('button') as HTMLButtonElement;
+
+        fireEvent.click(removeFirstButton);
+        await waitFor(() => {
+            expect(screen.queryAllByLabelText('Email').length).toEqual(0);
+        });
+
+        const addItemElement = screen
+            .getByLabelText('ra.action.add')
+            .closest('button') as HTMLButtonElement;
+
+        fireEvent.click(addItemElement);
+        await waitFor(() => {
+            const inputElements = screen.queryAllByLabelText('Email');
+            expect(inputElements.length).toBe(1);
+        });
+
+        expect(
+            screen
+                .queryAllByLabelText('Email')
+                .map(inputElement => (inputElement as HTMLInputElement).value)
+        ).toEqual(['']);
+        expect(
+            screen
+                .queryAllByLabelText('Name')
+                .map(inputElement => (inputElement as HTMLInputElement).value)
+        ).toEqual(['']);
+
+        expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(1);
+    });
+
     it('should remove children row on remove button click', async () => {
         const emails = [{ email: 'foo@bar.com' }, { email: 'bar@foo.com' }];
 
