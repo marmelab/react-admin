@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReferenceField, useRedirect } from 'react-admin';
 import { Box, Card, Typography } from '@mui/material';
-import { Draggable } from 'react-beautiful-dnd';
+import { Draggable } from '@hello-pangea/dnd';
 
 import { LogoField } from '../companies/LogoField';
 import { Deal } from '../types';
