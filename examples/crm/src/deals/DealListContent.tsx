@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState, useEffect, useContext } from 'react';
 import { Identifier, useListContext, DataProviderContext } from 'react-admin';
 import { Box } from '@mui/material';
-import { DragDropContext, OnDragEndResponder } from 'react-beautiful-dnd';
+import { DragDropContext, OnDragEndResponder } from '@hello-pangea/dnd';
 import isEqual from 'lodash/isEqual';
 
 import { DealColumn } from './DealColumn';
