@@ -16,8 +16,8 @@ import { Breadcrumbs, Typography } from '@mui/material';
 import { Link, useGetRecordRepresentation, useRecordContext, useResourceContext } from 'react-admin';
 
 export const PostBreadcrumbs = () => {
-    const record = useRecordContext(props);
-    const resource = useResourceContext(props);
+    const record = useRecordContext();
+    const resource = useResourceContext();
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     return (
         <div role="presentation">
