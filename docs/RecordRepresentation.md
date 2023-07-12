@@ -5,6 +5,8 @@ title: "The RecordRepresentation Component"
 
 Render the record representation, leveraging the [`recordRepresentation`](./Resource.md#recordrepresentation) prop of the parent `<Resource>` component.
 
+You can also uses its hook version: [`<useGetRecordRepresentation>`](./useGetRecordRepresentation.md).
+
 ## Usage
 
 ```tsx
@@ -17,33 +19,33 @@ export const PostBreadcrumbs = () => {
     return (
         <div role="presentation">
             <Breadcrumbs aria-label="breadcrumb">
-            <Link underline="hover" color="inherit" to="/">
-                Home
-            </Link>
-            <Link underline="hover" color="inherit" to="/posts">
-                Posts
-            </Link>
-            <Typography color="text.primary">
-                <RecordRepresentation />
-            </Typography>
+                <Link underline="hover" color="inherit" to="/">
+                    Home
+                </Link>
+                <Link underline="hover" color="inherit" to="/posts">
+                    Posts
+                </Link>
+                <Typography color="text.primary">
+                    <RecordRepresentation />
+                </Typography>
             </Breadcrumbs>
         </div>
     );
 }
 
 // in src/posts/PostEdit.tsx
-import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { EditBase, EditView, SimpleForm, TextInput } from 'react-admin';
 import { PostBreadcrumbs } from './PostBreadcrumbs';
 
 const PostEdit = () => (
-    <>
+    <EditBase>
         <PostBreadcrumbs />
-        <Edit>
+        <EditView>
             <SimpleForm>
                 <TextInput source="title" />
             </SimpleForm>
-        </Edit>
-    </>
+        </EditView>
+    </EditBase>
 )
 ```
 

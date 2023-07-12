@@ -226,6 +226,8 @@ For instance, to change the default representation of "users" records to render 
 - a function (e.g. `(record) => record.title`) to specify a custom string representation
 - a React component (e.g. `<MyCustomRecordRepresentation />`). In such components, use [`useRecordContext`](./useRecordContext.md) to access the record.
 
+If you want to display this record representation somewhere, you can leverage the [`useGetRecordRepresentation`](./useGetRecordRepresentation.md) hook or the [`<RecordRepresentation>`](./RecordRepresentation.md) component.
+
 ## `hasCreate`, `hasEdit`, `hasShow`
 
 Some components, like [`<CreateDialog>`](./CreateDialog.md), [`<EditDialog>`](./EditDialog.md) or [`<ShowDialog>`](./ShowDialog.md) need to declare the CRUD components outside of the `<Resource>` component. In such cases, you can use the `hasCreate`, `hasEdit` and `hasShow` props to tell react-admin which CRUD components are available for a given resource.
