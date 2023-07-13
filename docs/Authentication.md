@@ -189,7 +189,7 @@ For instance, here's what a simple authProvider for Auth0 might look like:
 import { Auth0Client } from './Auth0Client';
 
 export const authProvider = {
-    async login() => { /* Nothing to do here, this function will never be called */ },
+    async login() { /* Nothing to do here, this function will never be called */ },
     async checkAuth() {
         const isAuthenticated = await Auth0Client.isAuthenticated();
         if (isAuthenticated) {

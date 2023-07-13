@@ -110,7 +110,7 @@ export const Aside = () => (
                     Total views: {data.reduce((sum, post) => sum + post.views, 0)}
                 </Typography>
             </div>
-    )}>
+    )} />
 );
 ```
 

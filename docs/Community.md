@@ -9,6 +9,8 @@ Thousands of new react-admin applications are created every month. [Many develop
 
 We're doing our best to keep it a convivial place where people want to hang out and help/be helped. 
 
+{% include newsletter.html %}
+
 ## Discord
 
 The [React-admin Discord Server](https://discord.gg/GeZF9sqh3N) is a great place to have conversations, answer and ask questions, all about react-admin.
@@ -37,7 +39,7 @@ See the [Discord](#discord) section above.
 
 If your problem is related to a library used by react-admin, you should ask for help on the dependency's support channel:
 
-* Material UI: [Documentation](https://mui.com/material-ui/getting-started/overview/), [Support](https://mui.com/material-ui/getting-started/support/)
+* Material UI: [Documentation](https://mui.com/material-ui/getting-started/), [Support](https://mui.com/material-ui/getting-started/support/)
 * react-router: [Documentation](https://reactrouter.com/en/main), [Discord](https://rmx.as/discord)
 * react-query: [Documentation](https://tanstack.com/query/v3/docs/react/overview), [Discord](https://tlinz.com/discord)
 * react-hook-form: [Documentation](https://react-hook-form.com/get-started), [Discord](https://discord.gg/yYv7GZ8)
@@ -78,3 +80,4 @@ If you want to **add a feature**, you can open a Pull request on the `next` bran
 For all Pull requests, you must follow the coding style of the existing files (based on [prettier](https://github.com/prettier/prettier)), and include unit tests and documentation. Be prepared for a thorough code review, and be patient for the merge - this is an open-source initiative.
 
 **Tip**: Most of the commands used by the react-admin developers are automated in the `makefile`. Feel free to type `make` without argument to see a list of the available commands. 
+

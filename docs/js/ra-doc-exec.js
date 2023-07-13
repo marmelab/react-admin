@@ -3,7 +3,7 @@ var allMenus, navLinks, versionsLinks;
 
 const applyPreferredLanguage = async () => {
     const preferredLanguage =
-        window.localStorage.getItem('preferred-language') || 'jsx';
+        window.localStorage.getItem('preferred-language') || 'tsx';
 
     const languageSwitchers = document.querySelectorAll('.language-switcher');
     const codeFences = document.querySelectorAll('div[class^=language-]');
@@ -131,8 +131,10 @@ const buildJSCodeBlocksFromTS = async () => {
 
             // Containers for Prism highlighter
             const highlight = document.createElement('div');
+            highlight.className = 'highlight';
             jsTabContent.appendChild(highlight);
             const jsTabContentPre = document.createElement('pre');
+            jsTabContentPre.className = 'highlight';
             highlight.appendChild(jsTabContentPre);
 
             // The actual JS code element

@@ -171,7 +171,7 @@ form state value --> format --> form input value (string)
 
 **Tip:** By default, react-admin inputs have the following `format` function, which turns any `null` or `undefined` value into an empty string. This is to avoid warnings about controlled/uncontrolled input components:
 
-```js
+```ts
 const defaultFormat = (value: any) => value == null ? '' : value;
 ```
 
@@ -750,7 +750,7 @@ const BoundedTextField = ({ name, label }) => {
         field,
         fieldState: { isTouched, invalid, error },
         formState: { isSubmitted }
-    } = useController(name, defaultValue: '');
+    } = useController({ name, defaultValue: '' });
     return (
         <TextField
             {...field}
@@ -910,3 +910,13 @@ You can find components for react-admin in third-party repositories.
 - [@react-page/react-admin](https://react-page.github.io/docs/#/integration-react-admin): ReactPage is a rich content editor and comes with a ready-to-use React-admin input component. [check out the demo](https://react-page.github.io/examples/reactadmin)
 
 - **DEPRECATED V3** [LoicMahieu/aor-tinymce-input](https://github.com/LoicMahieu/aor-tinymce-input): a TinyMCE component, useful for editing HTML
+
+## Hiding the label
+
+You can set `label={false}` on an input component to hide its label.
+
+```jsx
+<TextInput source="title" /> {/* input label is "Title" */}
+<TextInput source="title" label="Post title" /> {/* input label is "Post title" */}
+<TextInput source="title" label={false} /> {/* input has no label */}
+```

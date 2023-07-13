@@ -120,7 +120,7 @@ const UserCreateForm = () => {
     const unique = useUnique();
     return (
         <SimpleForm>
-            <ReferenceInput source="organization_id" reference="organizations">
+            <ReferenceInput source="organization_id" reference="organizations" />
             <FormDataConsumer>
                 {({ formData }) => (
                     <TextInput

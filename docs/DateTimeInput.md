@@ -28,7 +28,7 @@ The input value must be a valid date string, i.e. a string understood by JavasSr
 
 After modification by the user, the value is stored as a `Date` object, using the browser's timezone. When transformed to JSON, the date is serialized as a string in the ISO 8601 format ('yyyy-MM-ddThh:mm').
 
-**Tip**: For a Material UI styled `<DateTimeInput>` component, check out [MUI X Date Pickers](https://mui.com/x/react-date-pickers/getting-started/#date-pickers)
+**Tip**: For a Material UI styled `<DateTimeInput>` component, check out [MUI X Date Pickers](https://mui.com/x/react-date-pickers/)
 
 ## Props
 

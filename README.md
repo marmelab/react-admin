@@ -22,7 +22,7 @@ A frontend Framework for building data-driven applications running in the browse
 
 * ☂️ **Opt-In Types**: Develop either in TypeScript or JavaScript
 
-* 👨‍👩‍👧‍👦 Powered by [Material UI](https://mui.com/material-ui/getting-started/overview/), [react-hook-form](https://react-hook-form.com), [react-router](https://reacttraining.com/react-router/), [react-query](https://react-query-v3.tanstack.com/), [TypeScript](https://www.typescriptlang.org/) and a few more
+* 👨‍👩‍👧‍👦 Powered by [Material UI](https://mui.com/material-ui/getting-started/), [react-hook-form](https://react-hook-form.com), [react-router](https://reacttraining.com/react-router/), [react-query](https://react-query-v3.tanstack.com/), [TypeScript](https://www.typescriptlang.org/) and a few more
 
 ## Installation
 

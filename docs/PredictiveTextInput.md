@@ -50,7 +50,7 @@ import { addGetCompletionBasedOnOpenAIAPI } from '@react-admin/ra-ai';
 const baseDataProvider = jsonServerProvider(
     import.meta.env.VITE_JSON_SERVER_URL
 );
-export const dataProvider = addGetCompletionBasedOnOpenAIAPI(baseDataProvider),
+export const dataProvider = addGetCompletionBasedOnOpenAIAPI(baseDataProvider);
 ```
 
 `addGetCompletionBasedOnOpenAIAPI` expects the OpenAI API key to be stored in the localStorage under the key `ra-ai.openai-api-key`. It's up to you to add the key to the localStorage (e.g. in `authProvider.login()`) and to remove it (e.g. in `authProvider.logout()`)
@@ -327,7 +327,7 @@ import { addGetCompletionBasedOnOpenAIAPI } from '@react-admin/ra-ai';
 const baseDataProvider = jsonServerProvider(
     import.meta.env.VITE_JSON_SERVER_URL
 );
-export const dataProvider = addGetCompletionBasedOnOpenAIAPI(baseDataProvider),
+export const dataProvider = addGetCompletionBasedOnOpenAIAPI(baseDataProvider);
 ```
 
 `addGetCompletionBasedOnOpenAIAPI` expects the OpenAI API key to be stored in the localStorage under the key `ra-ai.openai-api-key`. It's up to you to store the key in the localStorage (e.g. in `authProvider.login()`) and to remove it (e.g. in `authProvider.logout()`).
@@ -338,7 +338,7 @@ If you rely on another API, you'll need to fetch it yourself.
 
 Finally, you don't need a completion API to use `<PredictiveTextInput>` in simple cases. For example, here is an implementation that deduces an email address from the first and last name directly in the browser:
 
-```jsx
+```tsx
 const getCompletionLocal = async ({ prompt = '' }) => {
     const { key, value, record } = getParamsFromPrompt(prompt);
     if (key === 'email') {

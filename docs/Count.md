@@ -99,7 +99,7 @@ When used in conjunction to the `filter` prop, the link will point to the list v
 
 {% raw %}
 ```jsx
-<Count link filter={{ is_published: true }} link />
+<Count link filter={{ is_published: true }} />
 ```
 {% endraw %}
 

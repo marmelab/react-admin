@@ -5,11 +5,11 @@ title: "The CustomRoutes Component"
 
 # `<CustomRoutes>`
 
-Lets you define custom pages in your react-admin application, using [react-router-dom](https://reactrouter.com/docs/en/v6/api#routes-and-route) `<Routes>` elements.
+Lets you define custom pages in your react-admin application, using [react-router-dom](https://reactrouter.com/en/6/start/concepts#defining-routes) `<Routes>` elements.
 
 ## Usage
 
-To register your own routes, pass one or several `<CustomRoutes>` elements as children of `<Admin>`. Declare as many [react-router-dom](https://reactrouter.com/docs/en/v6/api#routes-and-route) `<Route>` as you want inside them.
+To register your own routes, pass one or several `<CustomRoutes>` elements as children of `<Admin>`. Declare as many [react-router-dom](https://reactrouter.com/en/6/start/concepts#defining-routes) `<Route>` as you want inside them.
 Alternatively, you can add your custom routes to resources. They will be available under the resource prefix.
 
 ```jsx
@@ -41,7 +41,7 @@ Now, when a user browses to `/settings` or `/profile`, the components you define
 
 ## `children`
 
-`children` of the `<CustomRoutes>` component must be `<Route>` elements from [react-router-dom](https://reactrouter.com/docs/en/v6/api#routes-and-route), and map a path with a custom element.
+`children` of the `<CustomRoutes>` component must be `<Route>` elements from [react-router-dom](https://reactrouter.com/en/6/start/concepts#defining-routes), and map a path with a custom element.
 
 ```jsx
 // in src/App.js
