@@ -29,9 +29,6 @@ const TagEdit = () => {
             <ResourceContextProvider value="posts">
                 <List
                     hasCreate={false}
-                    hasShow
-                    hasEdit
-                    hasList
                     resource="posts"
                     filter={{ tags: [id] }}
                     title=" "
