@@ -111,3 +111,27 @@ export const Validation = (props: Partial<SimpleFormProps>) => (
         </SimpleForm>
     </AdminContext>
 );
+
+export const UseJson = (props: Partial<SimpleFormProps>) => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <SimpleForm
+            onSubmit={() => {}}
+            defaultValues={{
+                body: {
+                    type: 'doc',
+                    content: [
+                        {
+                            type: 'heading',
+                            attrs: { textAlign: 'left', level: 1 },
+                            content: [{ type: 'text', text: 'Hello World' }],
+                        },
+                    ],
+                },
+            }}
+            {...props}
+        >
+            <RichTextInput label="Body" source="body" useJson />
+            <FormInspector />
+        </SimpleForm>
+    </AdminContext>
+);
