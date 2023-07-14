@@ -28,6 +28,52 @@ export const PostEdit = (props) => (
 );
 ```
 
+## Using JSON as the data format
+Under the hood, the `<RichTextInput>` defaultly uses HTML as the data format - which when saved, is then exported as raw HTML in string. If you want to use JSON as the data format, you can pass the `useJson` prop to the `<RichTextInput>` component. This will then save the data as JSON in raw string, using the TipTap's JSON scheme. 
+
+```jsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { RichTextInput } from 'ra-input-rich-text';
+
+export const PostEdit = (props) => (
+	<Edit {...props}>
+		<SimpleForm>
+			<TextInput source="title" />
+			<RichTextInput source="body" useJson />
+		</SimpleForm>
+	</Edit>
+);
+```
+
+Example of the JSON data format:
+
+```json
+{
+  "type": "doc",
+  "content": [
+	{
+	  "type": "heading",
+	  "attrs": { "textAlign": "left", "level": 1 },
+	  "content": [
+		{
+		  "type": "text",
+		  "text": "Hello world!"
+		}
+	  ]
+	}
+  ]
+}
+```
+Renders as:
+```html
+<h1 style="text-align: left;">Hello world!</h1>
+```
+
+It should be noted that react-admin's [`<RichTextField>`](https://marmelab.com/react-admin/RichTextField.html) currently does not support rendering JSON data format. **Therefore, you will need to create your own custom `<RichTextField>` component with custom renderer to render the JSON data format.**
+As a starting point, we suggest to take a look at **[troop's TipTap React Render](https://github.com/troop-dev/tiptap-react-render)**.
+
+
+
 ## Customizing the Toolbar
 
 The `<RichTextInput>` component has a `toolar` prop that accepts a `ReactNode`.
