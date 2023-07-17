@@ -63,7 +63,6 @@ The form value for the source must be an array of the selected values, e.g.
 | `createLabel`              | Optional | `string`              | `ra.action. create`       | The label for the menu item allowing users to create a new choice. Used when the filter is empty                                       |
 | `createItemLabel`          | Optional | `string`              | `ra.action .create_item` | The label for the menu item allowing users to create a new choice. Used when the filter is not empty                                                    |
 | `debounce`                 | Optional | `number`              | `250`                    | The delay to wait before calling the setFilter function injected when used in a ReferenceArray Input.                                                         |
-| `emptyText`                | Optional | `string`              | `''`                     | The text to use for the empty element                                                                                                                   |
 | `emptyValue`               | Optional | `any`                 | `''`                     | The value to use for the empty element                                                                                                                  |
 | `filterToQuery`            | Optional | `string` => `Object`  | `q => ({ q })`           | How to transform the searchText into a parameter for the data provider                                                                                  |
 | `inputText`                | Optional | `Function`            | `-`                      | Required if `optionText` is a custom Component, this function must return the text displayed for the current selection.                                 |
@@ -226,22 +225,6 @@ This delay can be customized by setting the `debounce` prop.
 <ReferenceArrayInput source="tag_ids" reference="tags">
     <AutocompleteArrayInput debounce={500} />
 </ReferenceArrayInput>
-```
-
-## `emptyText`
-
-If the input isn't required (using `validate={required()}`), and you need a choice to represent the empty value, set `emptyText` prop and a choice will be added at the top, with its value as label.
-
-```jsx
-<AutocompleteArrayInput source="roles" choices={choices} emptyText="No role" />
-```
-
-The `emptyText` prop accepts either a string or a React Element.
-
-And if you want to hide that empty choice, make the input required. 
-
-```jsx
-<AutocompleteArrayInput source="roles" choices={choices} validate={required()} />
 ```
 
 ## `emptyValue`
