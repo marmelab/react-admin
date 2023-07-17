@@ -85,6 +85,7 @@ export const TranslatableInputs = (
         <Root
             className={clsx(className, TranslatableInputsClasses.root, {
                 [TranslatableInputsClasses.fullWidth]: fullWidth,
+                [TranslatableInputsClasses.fullWidth]: props.fullWidth,
             })}
             sx={sx}
         >
@@ -115,6 +116,8 @@ export interface TranslatableInputsProps extends UseTranslatableOptions {
     margin?: 'none' | 'normal' | 'dense';
     sx?: SxProps;
     StackProps?: StackProps;
+    variant?: 'standard' | 'outlined' | 'filled';
+    sx?: SxProps;
 }
 
 const PREFIX = 'RaTranslatableInputs';
