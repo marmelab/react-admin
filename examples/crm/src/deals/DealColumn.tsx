@@ -1,20 +1,16 @@
-import * as React from 'react';
-import { Box, Typography } from '@mui/material';
 import { Droppable } from '@hello-pangea/dnd';
-import { Identifier } from 'react-admin';
+import { Box, Typography } from '@mui/material';
 
+import { Deal } from '../types';
 import { DealCard } from './DealCard';
 import { stageNames } from './stages';
-import { RecordMap } from './DealListContent';
 
 export const DealColumn = ({
     stage,
-    dealIds,
-    data,
+    deals,
 }: {
     stage: string;
-    dealIds: Identifier[];
-    data: RecordMap;
+    deals: Deal[];
 }) => (
     <Box
         sx={{
@@ -52,8 +48,8 @@ export const DealColumn = ({
                         },
                     }}
                 >
-                    {dealIds.map((id, index) => (
-                        <DealCard key={id} index={index} deal={data[id]} />
+                    {deals.map((deal, index) => (
+                        <DealCard key={deal.id} deal={deal} index={index} />
                     ))}
                     {droppableProvided.placeholder}
                 </Box>
