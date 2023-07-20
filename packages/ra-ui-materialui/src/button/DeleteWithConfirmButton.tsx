@@ -98,7 +98,7 @@ export interface DeleteWithConfirmButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown
 > extends ButtonProps {
-    confirmTitle?: string;
+    confirmTitle?: React.ReactNode;
     confirmContent?: React.ReactNode;
     icon?: ReactElement;
     mutationMode?: MutationMode;

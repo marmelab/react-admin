@@ -151,7 +151,7 @@ export interface BulkDeleteWithConfirmButtonProps<
 > extends BulkActionProps,
         ButtonProps {
     confirmContent?: React.ReactNode;
-    confirmTitle?: string;
+    confirmTitle?: React.ReactNode;
     icon?: ReactElement;
     mutationMode: MutationMode;
     mutationOptions?: UseMutationOptions<

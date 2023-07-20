@@ -73,7 +73,9 @@ export const Confirm = (props: ConfirmProps) => {
             {...rest}
         >
             <DialogTitle id="alert-dialog-title">
-                {translate(title, { _: title, ...translateOptions })}
+                {typeof title === 'string'
+                    ? translate(title, { _: title, ...translateOptions })
+                    : title}
             </DialogTitle>
             <DialogContent>
                 {typeof content === 'string' ? (
@@ -126,7 +128,7 @@ export interface ConfirmProps extends Omit<DialogProps, 'open' | 'onClose'> {
     loading?: boolean;
     onClose: MouseEventHandler;
     onConfirm: MouseEventHandler;
-    title: string;
+    title: React.ReactNode;
     translateOptions?: object;
 }
 

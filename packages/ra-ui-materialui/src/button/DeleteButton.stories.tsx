@@ -1,4 +1,4 @@
-import { colors, createTheme } from '@mui/material';
+import { colors, createTheme, Typography, Alert } from '@mui/material';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
@@ -39,6 +39,27 @@ export const Pessimistic = () => (
             record={{ id: 1 }}
             label="Delete"
             resource="post"
+        />
+    </AdminContext>
+);
+
+export const PessimisticWithCustomDialogContent = () => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <DeleteButton
+            mutationMode="pessimistic"
+            record={{ id: 1 }}
+            label="Delete"
+            resource="post"
+            confirmTitle={
+                <Typography variant="h5">
+                    Delete <strong>Full Name</strong>
+                </Typography>
+            }
+            confirmContent={
+                <Alert severity="warning">
+                    Are you sure you want to delete this user?
+                </Alert>
+            }
         />
     </AdminContext>
 );

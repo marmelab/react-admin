@@ -157,7 +157,7 @@ export interface BulkUpdateWithConfirmButtonProps<
 > extends BulkActionProps,
         ButtonProps {
     confirmContent?: React.ReactNode;
-    confirmTitle?: string;
+    confirmTitle?: React.ReactNode;
     icon?: ReactElement;
     data: any;
     onSuccess?: () => void;

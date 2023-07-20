@@ -149,7 +149,7 @@ export interface UpdateWithConfirmButtonProps<
 > extends BulkActionProps,
         ButtonProps {
     confirmContent?: React.ReactNode;
-    confirmTitle?: string;
+    confirmTitle?: React.ReactNode;
     icon?: ReactElement;
     data: any;
     mutationMode?: MutationMode;
