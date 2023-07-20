@@ -117,8 +117,8 @@ export interface DeleteWithConfirmButtonProps<
 
 DeleteWithConfirmButton.propTypes = {
     className: PropTypes.string,
-    confirmTitle: PropTypes.string,
-    confirmContent: PropTypes.string,
+    confirmTitle: PropTypes.node,
+    confirmContent: PropTypes.node,
     label: PropTypes.string,
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     record: PropTypes.any,

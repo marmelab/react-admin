@@ -180,8 +180,8 @@ const StyledButton = styled(Button, {
 const defaultIcon = <ActionDelete />;
 
 BulkDeleteWithConfirmButton.propTypes = {
-    confirmTitle: PropTypes.string,
-    confirmContent: PropTypes.string,
+    confirmTitle: PropTypes.node,
+    confirmContent: PropTypes.node,
     icon: PropTypes.element,
     label: PropTypes.string,
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),

@@ -144,7 +144,7 @@ Confirm.propTypes = {
     loading: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
     onConfirm: PropTypes.func.isRequired,
-    title: PropTypes.string.isRequired,
+    title: PropTypes.node.isRequired,
     sx: PropTypes.any,
 };
 

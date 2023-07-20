@@ -171,8 +171,8 @@ export interface BulkUpdateWithConfirmButtonProps<
 }
 
 BulkUpdateWithConfirmButton.propTypes = {
-    confirmTitle: PropTypes.string,
-    confirmContent: PropTypes.string,
+    confirmTitle: PropTypes.node,
+    confirmContent: PropTypes.node,
     label: PropTypes.string,
     resource: PropTypes.string,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
