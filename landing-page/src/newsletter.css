@@ -2717,7 +2717,7 @@ textarea.input {
     background: transparent
 }
 
-.sib-hide-loader-icon {
+.sib-form .progress-indicator__icon.sib-hide-loader-icon {
     display: none
 }
 
@@ -3493,12 +3493,17 @@ textarea.input {
     -webkit-align-items: center;
     align-items: center;
     background: rgba(255,255,255,0.9);
-    display: -webkit-flex;
-    display: flex;
+    display: -webkit-inline-flex;
+    display: inline-flex;
     height: 100%;
     -webkit-justify-content: center;
     justify-content: center;
     width: 100%
+}
+
+.sib-form .progress-indicator__icon {
+    display: -webkit-inline-flex;
+    display: inline-flex;
 }
 
 .sib-form .progress-indicator .progress-indicator__icon {
