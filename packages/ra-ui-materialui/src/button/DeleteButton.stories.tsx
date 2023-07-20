@@ -1,4 +1,4 @@
-import { colors, createTheme, Typography, Alert } from '@mui/material';
+import { colors, createTheme, Alert } from '@mui/material';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
@@ -51,9 +51,9 @@ export const PessimisticWithCustomDialogContent = () => (
             label="Delete"
             resource="post"
             confirmTitle={
-                <Typography variant="h5">
+                <>
                     Delete <strong>Full Name</strong>
-                </Typography>
+                </>
             }
             confirmContent={
                 <Alert severity="warning">

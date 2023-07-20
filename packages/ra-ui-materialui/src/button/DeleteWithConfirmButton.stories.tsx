@@ -5,7 +5,7 @@ import frenchMessages from 'ra-language-french';
 import { Resource } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { createMemoryHistory } from 'history';
-import { Typography, Alert } from '@mui/material';
+import { Alert } from '@mui/material';
 
 import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
 import { AdminContext } from '../AdminContext';
@@ -156,9 +156,9 @@ export const WithCustomDialogContent = () => (
                     <BookList>
                         <DeleteWithConfirmButton
                             confirmTitle={
-                                <Typography variant="h5">
+                                <>
                                     Delete <strong>Full Name</strong>
-                                </Typography>
+                                </>
                             }
                             confirmContent={
                                 <Alert severity="warning">
