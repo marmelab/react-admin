@@ -8,6 +8,7 @@ import {
     CoreAdminContext,
     CreateBase,
     DataProvider,
+    EditBase,
     FormDataConsumer,
     mergeTranslations,
     useUnique,
@@ -84,7 +85,7 @@ const Wrapper = ({ children, dataProvider = defaultDataProvider }) => {
             history={createMemoryHistory()}
             queryClient={new QueryClient()}
         >
-            <CreateBase resource="users">{children}</CreateBase>
+            {children}
         </CoreAdminContext>
     );
 };
@@ -103,10 +104,41 @@ const BasicForm = () => {
     );
 };
 
-export const Basic = ({ dataProvider }: { dataProvider?: DataProvider }) => {
+export const Create = ({ dataProvider }: { dataProvider?: DataProvider }) => {
     return (
         <Wrapper dataProvider={dataProvider}>
-            <BasicForm />
+            <CreateBase resource="users">
+                <BasicForm />
+            </CreateBase>
+        </Wrapper>
+    );
+};
+
+const EditForm = () => {
+    const unique = useUnique();
+    return (
+        <Form defaultValues={{ name: 'John Doe' }}>
+            <p>
+                The name field should be unique. Try to enter "John Doe". Jane
+                Doe should work as this is the current record value
+            </p>
+            <Input source="name" defaultValue="" validate={unique()} />
+            <button type="submit">Submit</button>
+        </Form>
+    );
+};
+export const Edit = ({
+    dataProvider,
+    id = 2,
+}: {
+    dataProvider?: DataProvider;
+    id?: number;
+}) => {
+    return (
+        <Wrapper dataProvider={dataProvider}>
+            <EditBase resource="users" id={id}>
+                <EditForm />
+            </EditBase>
         </Wrapper>
     );
 };
@@ -142,7 +174,9 @@ export const DeepField = ({
 }) => {
     return (
         <Wrapper dataProvider={dataProvider}>
-            <DeepFieldForm />
+            <CreateBase resource="users">
+                <DeepFieldForm />
+            </CreateBase>
         </Wrapper>
     );
 };
@@ -176,7 +210,9 @@ export const WithMessage = ({
 }) => {
     return (
         <Wrapper dataProvider={dataProvider}>
-            <WithMessageForm />
+            <CreateBase resource="users">
+                <WithMessageForm />
+            </CreateBase>
         </Wrapper>
     );
 };
@@ -211,7 +247,9 @@ const WithTranslatedMessageForm = () => {
 export const WithTranslatedMessage = () => {
     return (
         <Wrapper>
-            <WithTranslatedMessageForm />
+            <CreateBase resource="users">
+                <WithTranslatedMessageForm />
+            </CreateBase>
         </Wrapper>
     );
 };
@@ -251,7 +289,9 @@ export const WithAdditionalFilters = ({
 }) => {
     return (
         <Wrapper dataProvider={dataProvider}>
-            <WithAdditionalFiltersForm />
+            <CreateBase resource="users">
+                <WithAdditionalFiltersForm />
+            </CreateBase>
         </Wrapper>
     );
 };
@@ -272,8 +312,10 @@ export const DataProviderErrorOnValidation = () => {
 
     return (
         <Wrapper dataProvider={errorDataProvider}>
-            <p>The validation will fail one time over two</p>
-            <BasicForm />
+            <CreateBase resource="users">
+                <p>The validation will fail one time over two</p>
+                <BasicForm />
+            </CreateBase>
         </Wrapper>
     );
 };

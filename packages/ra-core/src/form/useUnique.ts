@@ -6,6 +6,7 @@ import { InputProps } from './useInput';
 import { useCallback, useRef } from 'react';
 import set from 'lodash/set';
 import { asyncDebounce } from '../util';
+import { useRecordContext } from '../controller';
 
 /**
  * A hook that returns a validation function checking for a record field uniqueness
@@ -54,6 +55,7 @@ export const useUnique = (options?: UseUniqueOptions) => {
     const translateLabel = useTranslateLabel();
     const resource = useResourceContext(options);
     const translate = useTranslate();
+    const record = useRecordContext();
 
     const debouncedGetList = useRef(
         // The initial value is here to set the correct type on useRef
@@ -91,13 +93,16 @@ export const useUnique = (options?: UseUniqueOptions) => {
                         props.source,
                         value
                     );
-                    const { total } = await debouncedGetList.current(resource, {
-                        filter: finalFilter,
-                        pagination: { page: 1, perPage: 1 },
-                        sort: { field: 'id', order: 'ASC' },
-                    });
+                    const { data, total } = await debouncedGetList.current(
+                        resource,
+                        {
+                            filter: finalFilter,
+                            pagination: { page: 1, perPage: 1 },
+                            sort: { field: 'id', order: 'ASC' },
+                        }
+                    );
 
-                    if (total > 0) {
+                    if (total > 0 && !data.some(r => r.id === record?.id)) {
                         return translate(message, {
                             _: message,
                             source: props.source,
@@ -116,7 +121,7 @@ export const useUnique = (options?: UseUniqueOptions) => {
                 return undefined;
             };
         },
-        [dataProvider, options, resource, translate, translateLabel]
+        [dataProvider, options, record, resource, translate, translateLabel]
     );
 
     return validateUnique;
