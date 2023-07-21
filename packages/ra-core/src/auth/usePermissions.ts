@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useQuery, UseQueryOptions } from 'react-query';
 import useAuthProvider from './useAuthProvider';
+import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 
 const emptyParams = {};
 
@@ -41,13 +42,19 @@ const usePermissions = <Permissions = any, Error = any>(
     }
 ) => {
     const authProvider = useAuthProvider();
+    const logoutIfAccessDenied = useLogoutIfAccessDenied();
 
     const result = useQuery(
         ['auth', 'getPermissions', params],
         authProvider
             ? () => authProvider.getPermissions(params)
             : async () => [],
-        queryParams
+        {
+            ...queryParams,
+            onError: error => {
+                logoutIfAccessDenied(error);
+            },
+        }
     );
 
     return useMemo(
