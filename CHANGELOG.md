@@ -1,5 +1,18 @@
 # Changelog
 
+## v4.12.2
+
+* Fix `useUnique` should allow value if the only matching record is the current one ([#9118](https://github.com/marmelab/react-admin/pull/9118)) ([djhi](https://github.com/djhi))
+* Call `checkError` when `getPermissions` fails ([#9117](https://github.com/marmelab/react-admin/pull/9117)) ([djhi](https://github.com/djhi))
+* Fix `useGetManyReference` default `onSuccess` throws when the query is disabled ([#9116](https://github.com/marmelab/react-admin/pull/9116)) ([slax57](https://github.com/slax57))
+* Fix `<TranslatableInputs>` should support `fullWitdh` and `sx` props ([#9104](https://github.com/marmelab/react-admin/pull/9104)) ([djhi](https://github.com/djhi))
+* Fix remove unsupported propTypes on `<List>` ([#9101](https://github.com/marmelab/react-admin/pull/9101)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<SimpleFormIterator>` with `<FormDataConsumer>` should not re-apply default values ([#9094](https://github.com/marmelab/react-admin/pull/9094)) ([slax57](https://github.com/slax57))
+* [Demo] Improve CRM Demo Kanban code ([#9114](https://github.com/marmelab/react-admin/pull/9114)) ([slax57](https://github.com/slax57))
+* [Demo] Replace `react-beautiful-dnd` by `@hello-pangea/dnd` to support React 18 ([#9097](https://github.com/marmelab/react-admin/pull/9097)) ([slax57](https://github.com/slax57))
+* [Doc] add sections to explain explicitly how to disable features like bulk actions ([#9086](https://github.com/marmelab/react-admin/pull/9086)) ([adguernier](https://github.com/adguernier))
+* [Doc] Remove `emptyText` prop from `<AutoCompleteArrayInput>` doc as it is not supported ([#9073](https://github.com/marmelab/react-admin/pull/9073)) ([gitstart](https://github.com/gitstart))
+
 ## v4.12.1
 
 * Fix closing browser tab loses undoable mutations without warning ([#9072](https://github.com/marmelab/react-admin/pull/9072)) ([adguernier](https://github.com/adguernier))
