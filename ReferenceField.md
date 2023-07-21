@@ -301,3 +301,12 @@ React-admin accumulates and deduplicates the ids of the referenced records to ma
 ```
 
 Then react-admin renders the `<PostList>` with a loader for the `<ReferenceField>`, fetches the API for the related users in one call (`dataProvider.getMany('users', { ids: [789,735] }`), and re-renders the list once the data arrives. This accelerates the rendering and minimizes network load.
+
+## Removing the link
+
+You can prevent `<ReferenceField>` from adding a link to its children by setting `link` to `false`.
+
+```jsx
+// No link
+<ReferenceField source="user_id" reference="users" link={false} />
+```

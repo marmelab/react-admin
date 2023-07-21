@@ -1007,3 +1007,45 @@ const PostList = () => (
 ```
 
 The list will automatically update when a new record is created, or an existing record is updated or deleted.
+
+## How to render an empty list
+
+You can set the `empty` props value to `false` to bypass the empty page display and render an empty list instead.
+
+```tsx
+import { List } from 'react-admin';
+
+const ProductList = () => (
+    <List empty={false}>
+        ...
+    </List>
+)
+```
+
+## How to remove the `<ExportButton>`
+
+You can remove the `<ExportButton>` by passing `false` to the `exporter` prop.
+
+```tsx
+import { List } from 'react-admin';
+
+const ProductList = () => (
+    <List exporter={false}>
+        ...
+    </List>
+)
+```
+
+## How to disable storing the list parameters in the Store
+
+You can disable the `storeKey` feature by setting the `storeKey` prop to `false`. When disabled, the list parameters will not be persisted in [the Store](./Store.md).
+
+```tsx
+import { List } from 'react-admin';
+
+const ProductList = () => (
+    <List storeKey={false}>
+        ...
+    </List>
+)
+```

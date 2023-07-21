@@ -157,7 +157,7 @@ If the login fails, `authProvider.login()` should return a rejected Promise with
 
 When the user credentials are missing or become invalid, a secure API usually answers to the `dataProvider` with an HTTP error code 401 or 403.
 
-Fortunately, each time the `dataProvider` returns an error, react-admin calls the `authProvider.checkError()` method. If it returns a rejected promise, react-admin calls the `authProvider.logout()` method immediately, and asks the user to log in again.
+Fortunately, each time the `dataProvider` or the `authProvider.getPermissions` returns an error, react-admin calls the `authProvider.checkError()` method. If it returns a rejected promise, react-admin calls the `authProvider.logout()` method immediately, and asks the user to log in again.
 
 So it's up to you to decide which HTTP status codes should let the user continue (by returning a resolved promise) or log them out (by returning a rejected promise).
 
@@ -502,5 +502,5 @@ When the auth backend returns an error, the Auth Provider should return a reject
 | `logout`         | Auth backend failed to log the user out   | `void` |
 | `getIdentity`    | Auth backend failed to return identity    | `Object` free format - returned as `error` when `useGetIdentity()` is called | 
 | `handleCallback` | Failed to authenticate users after redirection | `void | { redirectTo?: string, logoutOnFailure?: boolean, message?: string }` |
-| `getPermissions` | Auth backend failed to return permissions | `Object` free format - returned as `error` when `usePermissions()` is called |
+| `getPermissions` | Auth backend failed to return permissions | `Object` free format - returned as `error` when `usePermissions()` is called. The error will be passed to `checkError` |
 
