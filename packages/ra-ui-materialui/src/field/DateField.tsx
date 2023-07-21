@@ -61,7 +61,18 @@ const DateFieldImpl = <
     }
 
     const value = get(record, source);
-    if (value == null || value === '') {
+    const parsedDate = (value: any) => {
+        if (value == null || value === '') return undefined;
+
+        return value instanceof Date
+            ? value
+            : typeof value === 'string' || typeof value === 'number'
+            ? new Date(value)
+            : undefined;
+    };
+    const date = parsedDate(value);
+
+    if (typeof date === 'undefined') {
         return emptyText ? (
             <Typography
                 component="span"
@@ -73,13 +84,6 @@ const DateFieldImpl = <
             </Typography>
         ) : null;
     }
-
-    const date =
-        value instanceof Date
-            ? value
-            : typeof value === 'string' || typeof value === 'number'
-            ? new Date(value)
-            : undefined;
 
     let dateOptions = options;
     if (
