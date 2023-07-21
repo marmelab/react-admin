@@ -50,10 +50,13 @@ const usePermissions = <Permissions = any, Error = any>(
             ? () => authProvider.getPermissions(params)
             : async () => [],
         {
-            ...queryParams,
             onError: error => {
+                if (process.env.NODE_ENV !== 'production') {
+                    console.error(error);
+                }
                 logoutIfAccessDenied(error);
             },
+            ...queryParams,
         }
     );
 
