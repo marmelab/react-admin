@@ -274,6 +274,19 @@ function toggleDockBlocks(status) {
     }
 }
 
+function loadNewsletterScript() {
+    /* Load the script only of the form is in the DOM */
+    if (document.querySelector('#sib-form') != null) {
+        const script = document.createElement('script');
+        script.src = 'https://sibforms.com/forms/end-form/build/main.js';
+        script.type = 'text/javascript';
+        script.id = 'newsletter_script';
+        document.head.appendChild(script);
+    } else {
+        document.getElementById('newsletter_script')?.remove();
+    }
+}
+
 // Replace full page reloads by a fill of the content area
 // so that the side navigation keeps its state
 // use a global event listener to also catch links inside the content area
@@ -307,7 +320,8 @@ document.addEventListener('click', event => {
     fetch(href)
         .then(res => res.text())
         .then(replaceContent)
-        .then(buildJSCodeBlocksFromTS);
+        .then(buildJSCodeBlocksFromTS)
+        .then(loadNewsletterScript);
     // change the URL
     window.history.pushState(null, null, href);
     changeSelectedMenu();
@@ -327,7 +341,8 @@ window.addEventListener('popstate', () => {
         fetch(window.location.pathname)
             .then(res => res.text())
             .then(replaceContent)
-            .then(buildJSCodeBlocksFromTS);
+            .then(buildJSCodeBlocksFromTS)
+            .then(loadNewsletterScript);
     }
     changeSelectedMenu();
 });
@@ -343,4 +358,5 @@ window.addEventListener('DOMContentLoaded', () => {
 
     navigationFitScroll();
     buildJSCodeBlocksFromTS();
+    loadNewsletterScript();
 });
