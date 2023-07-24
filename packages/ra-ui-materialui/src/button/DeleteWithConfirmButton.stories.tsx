@@ -5,6 +5,7 @@ import frenchMessages from 'ra-language-french';
 import { Resource } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { createMemoryHistory } from 'history';
+import { Alert } from '@mui/material';
 
 import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
 import { AdminContext } from '../AdminContext';
@@ -109,7 +110,7 @@ const dataProvider = fakeRestDataProvider({
 
 const history = createMemoryHistory({ initialEntries: ['/books'] });
 
-const BookList = () => {
+const BookList = ({ children }) => {
     return (
         <List>
             <Datagrid>
@@ -117,7 +118,7 @@ const BookList = () => {
                 <TextField source="title" />
                 <TextField source="author" />
                 <TextField source="year" />
-                <DeleteWithConfirmButton />
+                {children}
             </Datagrid>
         </List>
     );
@@ -130,7 +131,44 @@ export const Basic = () => (
         history={history}
     >
         <AdminUI>
-            <Resource name="books" list={BookList} />
+            <Resource
+                name="books"
+                list={
+                    <BookList>
+                        <DeleteWithConfirmButton />
+                    </BookList>
+                }
+            />
+        </AdminUI>
+    </AdminContext>
+);
+
+export const WithCustomDialogContent = () => (
+    <AdminContext
+        dataProvider={dataProvider}
+        i18nProvider={i18nProvider}
+        history={history}
+    >
+        <AdminUI>
+            <Resource
+                name="books"
+                list={
+                    <BookList>
+                        <DeleteWithConfirmButton
+                            confirmTitle={
+                                <>
+                                    Delete <strong>Full Name</strong>
+                                </>
+                            }
+                            confirmContent={
+                                <Alert severity="warning">
+                                    Are you sure you want to delete this user?
+                                </Alert>
+                            }
+                        />
+                    </BookList>
+                }
+            />
         </AdminUI>
     </AdminContext>
 );

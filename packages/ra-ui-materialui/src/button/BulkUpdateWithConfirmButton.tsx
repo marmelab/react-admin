@@ -157,7 +157,7 @@ export interface BulkUpdateWithConfirmButtonProps<
 > extends BulkActionProps,
         ButtonProps {
     confirmContent?: React.ReactNode;
-    confirmTitle?: string;
+    confirmTitle?: React.ReactNode;
     icon?: ReactElement;
     data: any;
     onSuccess?: () => void;
@@ -171,8 +171,8 @@ export interface BulkUpdateWithConfirmButtonProps<
 }
 
 BulkUpdateWithConfirmButton.propTypes = {
-    confirmTitle: PropTypes.string,
-    confirmContent: PropTypes.string,
+    confirmTitle: PropTypes.node,
+    confirmContent: PropTypes.node,
     label: PropTypes.string,
     resource: PropTypes.string,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
