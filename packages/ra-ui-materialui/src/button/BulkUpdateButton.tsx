@@ -34,12 +34,16 @@ import { MutationMode } from 'ra-core';
  * );
  */
 export const BulkUpdateButton = (props: BulkUpdateButtonProps) => {
-    const { mutationMode, ...rest } = props;
+    const { mutationMode = 'undoable', data = [], ...rest } = props;
 
     return mutationMode === 'undoable' ? (
-        <BulkUpdateWithUndoButton {...rest} />
+        <BulkUpdateWithUndoButton data={data} {...rest} />
     ) : (
-        <BulkUpdateWithConfirmButton mutationMode={mutationMode} {...rest} />
+        <BulkUpdateWithConfirmButton
+            mutationMode={mutationMode}
+            data={data}
+            {...rest}
+        />
     );
 };
 
@@ -56,9 +60,4 @@ BulkUpdateButton.propTypes = {
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     icon: PropTypes.element,
-};
-
-BulkUpdateButton.defaultProps = {
-    mutationMode: 'undoable',
-    data: [],
 };
