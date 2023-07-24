@@ -92,14 +92,14 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         margin = 'dense',
         onBlur,
         onChange,
-        options,
-        optionText,
-        optionValue,
+        options = {},
+        optionText = 'name',
+        optionValue = 'id',
         parse,
         resource: resourceProp,
-        row,
+        row = true,
         source: sourceProp,
-        translateChoice,
+        translateChoice = true,
         validate,
         ...rest
     } = props;
@@ -232,14 +232,6 @@ RadioButtonGroupInput.propTypes = {
     resource: PropTypes.string,
     source: PropTypes.string,
     translateChoice: PropTypes.bool,
-};
-
-RadioButtonGroupInput.defaultProps = {
-    options: {},
-    optionText: 'name',
-    optionValue: 'id',
-    row: true,
-    translateChoice: true,
 };
 
 const sanitizeRestProps = ({
