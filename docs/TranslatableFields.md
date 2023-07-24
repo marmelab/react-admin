@@ -138,3 +138,17 @@ const PostList = () => {
 Note that you can't have an [optimized](https://marmelab.com/react-admin/List.html#performance) Datagrid when doing so, as changing the locale wouldn't trigger a render of its children.
 
 The same pattern applies to show views when you don't want to display all translations: get the locale from the `useLocale` hook and dynamically set the `source` prop of the translatable fields.
+
+## Displaying The Fields Labels
+
+In order to display the label of each field in `<TranslatableFields>`, you need to add the `addLabel` prop to each field:
+
+```jsx
+<TranslatableFields locales={['en', 'fr']}>
+    <TextField source="title" addLabel />
+    <TextField source="description" addLabel />
+</TranslatableFields>
+```
+
+![TranslatableFields addLabel](./img/TranslatableFields-addLabel.png)
+
