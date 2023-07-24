@@ -32,7 +32,7 @@ export const NumberInput = ({
     parse,
     resource,
     source,
-    step,
+    step = 'any',
     min,
     max,
     validate,
@@ -169,12 +169,6 @@ NumberInput.propTypes = {
     resource: PropTypes.string,
     source: PropTypes.string,
     step: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-};
-
-NumberInput.defaultProps = {
-    options: {},
-    step: 'any',
-    textAlign: 'right',
 };
 
 export interface NumberInputProps
