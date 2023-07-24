@@ -113,11 +113,6 @@ ListActions.propTypes = {
     total: PropTypes.number,
 };
 
-ListActions.defaultProps = {
-    selectedIds: [],
-    onUnselectItems: () => null,
-};
-
 export interface ListActionsProps extends ToolbarProps {
     sort?: SortPayload;
     className?: string;
