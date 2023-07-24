@@ -224,7 +224,7 @@ const BookShow = () => (
 ```
 {% endraw %}
 
-## Removing the link
+## Removing The Link
 
 By default, `<ReferenceOneField>` links to the edition page of the related record. You can disable this behavior by setting the `link` prop to `false`.
 
