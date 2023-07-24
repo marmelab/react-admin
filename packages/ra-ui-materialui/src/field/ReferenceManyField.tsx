@@ -67,14 +67,14 @@ export const ReferenceManyField = <
 ) => {
     const {
         children,
-        filter,
+        filter = {},
         page = 1,
         pagination = null,
-        perPage,
+        perPage = 25,
         reference,
         resource,
-        sort,
-        source,
+        sort = { field: 'id', order: 'DESC' },
+        source = 'id',
         target,
     } = props;
     const record = useRecordContext(props);
@@ -134,13 +134,6 @@ ReferenceManyField.propTypes = {
         order: PropTypes.string,
     }),
     target: PropTypes.string.isRequired,
-};
-
-ReferenceManyField.defaultProps = {
-    filter: {},
-    perPage: 25,
-    sort: { field: 'id', order: 'DESC' },
-    source: 'id',
 };
 
 // FIXME kept for backwards compatibility, unused, to be removed in v5
