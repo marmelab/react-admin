@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ChangeEvent, memo, useMemo } from 'react';
+import { ChangeEvent, memo, useMemo, useEffect } from 'react';
 import { InputAdornment } from '@mui/material';
 import { SxProps } from '@mui/system';
 import SearchIcon from '@mui/icons-material/Search';
@@ -48,6 +48,11 @@ export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
         }),
         [filterValues, source]
     );
+
+    useEffect(() => {
+        const { [source]: _, ...filters } = filterValues;
+        setFilters(filters, null);
+    }, []);
 
     const onSubmit = () => undefined;
     return (
