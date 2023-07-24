@@ -7,6 +7,8 @@ title: "SimpleShowLayout"
 
 The `<SimpleShowLayout>` pulls the `record` from the `RecordContext`. It renders the record fields in a single-column layout (via Material UI's `<Stack>` component). `<SimpleShowLayout>` delegates the actual rendering of fields to its children. It wraps each field inside [a `<Labeled>` component](./Labeled.md) to add a label.
 
+![Simple Show Layout](./img/post-show.png)
+
 ## Usage
 
 Use `<SimpleShowLayout>` as descendant of a `<Show>` component (or any component creating a `<RecordContext>`), and set the fields to be displayed as children:
@@ -34,7 +36,7 @@ const PostShow = () => (
 
 Additional props are passed to the root component (`<div>`).
 
-## Fields
+## `children`
 
 `<SimpleShowLayout>` renders each child inside a `<Labeled>` component. The above snippet roughly translates to:
 
@@ -121,7 +123,7 @@ const PostShow = () => (
 );
 ```
 
-## Spacing
+## `spacing`
 
 `<SimpleShowLayout>` renders a Material UI `<Stack>`. You can customize the spacing of each row by passing a `spacing` prop:
 
@@ -137,7 +139,7 @@ const PostShow = () => (
 
 The default spacing is `1`.
 
-## Divider
+## `divider`
 
 `<Stack>` accepts an optional `divider` prop - a component rendered between each row. `<SimpleShowLayout>` also accepts this props, and passes it to the `<Stack>` component.
 
@@ -153,9 +155,36 @@ const PostShow = () => (
 );
 ```
 
-## More Than One Column
+## `sx`: CSS API
 
-`<SimpleShowLayout>` arranges fields with labels in a single column. If you need more than one column, nothing prevents you from using this layout several times:
+The `<SimpleShowLayout>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+
+| Rule name                     | Description                                             |
+|-------------------------------|---------------------------------------------------------|
+| `& .RaSimpleShowLayout-stack` | Applied to the `<Stack>` element                        |
+| `& .RaSimpleShowLayout-row`   | Applied to each child of the stack (i.e. to each field) |
+
+To override the style of all instances of `<SimpleShowLayout>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaSimpleShowLayout` key.
+
+## Controlled Mode
+
+By default, `<SimpleShowLayout>` reads the record from the `ResourceContext`. But by passing a `record` prop, you can render the component outside a `ResourceContext`.
+
+{% raw %}
+```jsx
+const StaticPostShow = () => (
+    <SimpleShowLayout record={{ id: 123, title: 'Hello world' }}>
+        <TextField source="title" />
+    </SimpleShowLayout>
+);
+```
+{% endraw %}
+
+When passed a `record`, `<SimpleShowLayout>` creates a `RecordContext` with the given record.
+
+## Rendering More Than One Column
+
+`<SimpleShowLayout>` arranges fields with labels in a single column. If you need more than one column, you can use this component several times, for instance in a grid:
 
 ```jsx
 const BookShow = () => (
@@ -179,36 +208,9 @@ const BookShow = () => (
 );
 ```
 
-## Controlled Mode
+## Hiding The Field Labels
 
-By default, `<SimpleShowLayout>` reads the record from the `ResourceContext`. But by passing a `record` prop, you can render the component outside a `ResourceContext`.
-
-{% raw %}
-```jsx
-const StaticPostShow = () => (
-    <SimpleShowLayout record={{ id: 123, title: 'Hello world' }}>
-        <TextField source="title" />
-    </SimpleShowLayout>
-);
-```
-{% endraw %}
-
-When passed a `record`, `<SimpleShowLayout>` creates a `RecordContext` with the given record.
-
-## `sx`: CSS API
-
-The `<SimpleShowLayout>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
-
-| Rule name                     | Description                                             |
-|-------------------------------|---------------------------------------------------------|
-| `& .RaSimpleShowLayout-stack` | Applied to the `<Stack>` element                        |
-| `& .RaSimpleShowLayout-row`   | Applied to each child of the stack (i.e. to each field) |
-
-To override the style of all instances of `<SimpleShowLayout>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaSimpleShowLayout` key.
-
-## Hiding the labels
-
-You can disable the `<Labeled>` decoration added by `<SimpleShowLayout>` by passing setting `label={false}` on a field:
+You can disable the `<Labeled>` decoration added by `<SimpleShowLayout>` by setting `label={false}` on a field:
 
 ```jsx
 const PostShow = () => (
@@ -216,15 +218,6 @@ const PostShow = () => (
         <SimpleShowLayout>
             <TextField label={false} source="title" />
         </SimpleShowLayout>
-    </Show>
-);
-
-// translates to
-const PostShow = () => (
-    <Show>
-        <Stack>
-            <TextField source="title" />
-        </Stack>
     </Show>
 );
 ```
