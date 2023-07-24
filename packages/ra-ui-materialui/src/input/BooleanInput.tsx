@@ -30,7 +30,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
         resource,
         source,
         validate,
-        options,
+        options = {},
         sx,
         ...rest
     } = props;
@@ -112,10 +112,6 @@ BooleanInput.propTypes = {
     // @ts-ignore
     options: PropTypes.shape(Switch.propTypes),
     disabled: PropTypes.bool,
-};
-
-BooleanInput.defaultProps = {
-    options: {},
 };
 
 export type BooleanInputProps = CommonInputProps &
