@@ -28,7 +28,7 @@ import { LoginForm as DefaultLoginForm } from './LoginForm';
  *     );
  */
 export const Login = (props: LoginProps) => {
-    const { children, backgroundImage, ...rest } = props;
+    const { children = <DefaultLoginForm />, backgroundImage, ...rest } = props;
     const containerRef = useRef<HTMLDivElement>();
     let backgroundImageLoaded = false;
     const checkAuth = useCheckAuth();
@@ -126,8 +126,4 @@ Login.propTypes = {
     backgroundImage: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
-};
-
-Login.defaultProps = {
-    children: <DefaultLoginForm />,
 };
