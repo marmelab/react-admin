@@ -12,7 +12,7 @@ export const FileInputPreview = (props: FileInputPreviewProps) => {
         children,
         className,
         onRemove,
-        file,
+        file = undefined,
         removeIcon: RemoveIcon = RemoveCircle,
         ...rest
     } = props;
@@ -51,10 +51,6 @@ FileInputPreview.propTypes = {
     file: PropTypes.object,
     onRemove: PropTypes.func.isRequired,
     removeIcon: PropTypes.element,
-};
-
-FileInputPreview.defaultProps = {
-    file: undefined,
 };
 
 const PREFIX = 'RaFileInputPreview';
