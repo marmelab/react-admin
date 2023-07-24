@@ -65,7 +65,7 @@ title: "Index"
 * [`<EditDialog>`](./EditDialog)<img class="icon" src="./img/premium.svg" />
 * [`<EditInDialogButton>`](./EditInDialogButton.md)<img class="icon" src="./img/premium.svg" />
 * [`<EmailField>`](./EmailField.md)
-* [`<Empty>`](./List.md#empty-empty-page-component)
+* [`<Empty>`](./List.md#empty)
 
 **- F -**
 * [`<FileField>`](./FileField.md)
@@ -121,7 +121,7 @@ title: "Index"
 * [`<NumberInput>`](./NumberInput.md)
 
 **- P -**
-* [`<Pagination>`](./List.md#pagination-pagination-component)
+* [`<Pagination>`](./List.md#pagination)
 * [`<PasswordInput>`](./PasswordInput.md)
 * [`<PreferencesSetter>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#preferencessetter-setting-preferences-declaratively)<img class="icon" src="./img/premium.svg" />
 

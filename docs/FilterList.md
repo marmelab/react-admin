@@ -50,7 +50,7 @@ export const PostFilterSidebar = () => (
 ```
 {% endraw %}
 
-Add this component to the list view using [the `<List aside>` prop](./List.md#aside-side-component):
+Add this component to the list view using [the `<List aside>` prop](./):
 
 ```jsx
 import { PostFilterSidebar } from './PostFilterSidebar';
