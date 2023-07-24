@@ -47,7 +47,7 @@ const NumberFieldImpl = <
         source,
         locales,
         options,
-        textAlign,
+        textAlign = 'right',
         ...rest
     } = props;
     const record = useRecordContext<RecordType>(props);
@@ -64,6 +64,7 @@ const NumberFieldImpl = <
                 component="span"
                 variant="body2"
                 className={className}
+                textAlign={textAlign}
                 {...sanitizeFieldRestProps(rest)}
             >
                 {emptyText && translate(emptyText, { _: emptyText })}
@@ -76,6 +77,7 @@ const NumberFieldImpl = <
             variant="body2"
             component="span"
             className={className}
+            textAlign={textAlign}
             {...sanitizeFieldRestProps(rest)}
         >
             {hasNumberFormat && typeof value === 'number'
@@ -98,9 +100,6 @@ NumberFieldImpl.propTypes = {
 
 // what? TypeScript loses the displayName if we don't set it explicitly
 NumberFieldImpl.displayName = 'NumberFieldImpl';
-NumberFieldImpl.defaultProps = {
-    textAlign: 'right',
-};
 
 export const NumberField = genericMemo(NumberFieldImpl);
 
