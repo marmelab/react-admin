@@ -62,9 +62,9 @@ export const List = <RecordType extends RaRecord = any>({
     disableAuthentication,
     disableSyncWithLocation,
     exporter,
-    filter,
+    filter = {},
     filterDefaultValues,
-    perPage,
+    perPage = 10,
     queryOptions,
     resource,
     sort,
@@ -120,9 +120,4 @@ List.propTypes = {
     disableSyncWithLocation: PropTypes.bool,
     hasCreate: PropTypes.bool,
     resource: PropTypes.string,
-};
-
-List.defaultProps = {
-    filter: {},
-    perPage: 10,
 };
