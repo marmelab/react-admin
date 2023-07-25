@@ -94,7 +94,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         create,
         createLabel,
         createValue,
-        disableValue,
+        disableValue = 'disabled',
         format,
         helperText,
         label,
@@ -104,14 +104,14 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         onBlur,
         onChange,
         onCreate,
-        options,
-        optionText,
-        optionValue,
+        options = {},
+        optionText = 'name',
+        optionValue = 'id',
         parse,
         resource: resourceProp,
         size = 'small',
         source: sourceProp,
-        translateChoice,
+        translateChoice = true,
         validate,
         variant,
         ...rest
@@ -388,14 +388,6 @@ SelectArrayInput.propTypes = {
     resource: PropTypes.string,
     source: PropTypes.string,
     translateChoice: PropTypes.bool,
-};
-
-SelectArrayInput.defaultProps = {
-    options: {},
-    optionText: 'name',
-    optionValue: 'id',
-    disableValue: 'disabled',
-    translateChoice: true,
 };
 
 const sanitizeRestProps = ({
