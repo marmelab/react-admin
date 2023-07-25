@@ -9,33 +9,35 @@ You may have fields which are translated in multiple languages and want users to
 
 ```js
 {
-    name: {
-        en: 'The english value',
-        fr: 'The french value',
-        tlh: 'The klingon value',
+    title: {
+        en: 'Doctors Without Borders',
+        fr: 'Médecins sans frontières',
     },
     description: {
-        en: 'The english value',
-        fr: 'The french value',
-        tlh: 'The klingon value',
-    }
+        en:
+            'International humanitarian medical non-governmental organisation of French origin',
+        fr:
+            "Organisation non gouvernementale (ONG) médicale humanitaire internationale d'origine française fondée en 1971 à Paris",
+    },
 }
 ```
 
-This is how to use it:
+Use `<TranslatableFields>` like so:
 
 ```jsx
 <TranslatableFields locales={['en', 'fr']}>
-    <TextField source="name" />
+    <TextField source="title" />
     <TextField source="description" />
 </TranslatableFields>
 ```
+
+![TranslatableFields addLabel](./img/TranslatableFields.png)
 
 React-admin uses the user locale as the default locale in this field. You can override this setting using the `defaultLocale` prop.
 
 ```jsx
 <TranslatableFields locales={['en', 'fr']} defaultLocale="fr">
-    <TextField source="name" />
+    <TextField source="title" />
     <TextField source="description" />
 </TranslatableFields>
 ```
@@ -138,17 +140,3 @@ const PostList = () => {
 Note that you can't have an [optimized](https://marmelab.com/react-admin/List.html#performance) Datagrid when doing so, as changing the locale wouldn't trigger a render of its children.
 
 The same pattern applies to show views when you don't want to display all translations: get the locale from the `useLocale` hook and dynamically set the `source` prop of the translatable fields.
-
-## Displaying The Fields Labels
-
-In order to display the label of each field in `<TranslatableFields>`, you need to add the `addLabel` prop to each field:
-
-```jsx
-<TranslatableFields locales={['en', 'fr']}>
-    <TextField source="title" addLabel />
-    <TextField source="description" addLabel />
-</TranslatableFields>
-```
-
-![TranslatableFields addLabel](./img/TranslatableFields-addLabel.png)
-

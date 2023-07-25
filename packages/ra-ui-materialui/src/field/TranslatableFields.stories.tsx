@@ -27,15 +27,6 @@ export const SingleField = () => (
     </Wrapper>
 );
 
-export const AddLabel = () => (
-    <Wrapper>
-        <TranslatableFields locales={['en', 'fr']}>
-            <TextField source="title" addLabel />
-            <TextField source="description" addLabel />
-        </TranslatableFields>
-    </Wrapper>
-);
-
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({ children }) => (
