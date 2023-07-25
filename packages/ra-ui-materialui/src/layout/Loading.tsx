@@ -36,11 +36,6 @@ Loading.propTypes = {
     loadingSecondary: PropTypes.string,
 };
 
-Loading.defaultProps = {
-    loadingPrimary: 'ra.page.loading',
-    loadingSecondary: 'ra.message.loading',
-};
-
 export interface LoadingProps {
     className?: string;
     loadingPrimary?: string;
