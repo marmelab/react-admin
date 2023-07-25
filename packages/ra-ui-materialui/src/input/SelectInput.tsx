@@ -114,9 +114,9 @@ export const SelectInput = (props: SelectInputProps) => {
         createLabel,
         createValue,
         defaultValue,
-        disableValue,
-        emptyText,
-        emptyValue,
+        disableValue = 'disabled',
+        emptyText = '',
+        emptyValue = '',
         format,
         filter,
         helperText,
@@ -132,7 +132,7 @@ export const SelectInput = (props: SelectInputProps) => {
         parse,
         resource: resourceProp,
         source: sourceProp,
-        translateChoice,
+        translateChoice = true,
         validate,
         ...rest
     } = props;
@@ -374,14 +374,6 @@ SelectInput.propTypes = {
     resource: PropTypes.string,
     source: PropTypes.string,
     translateChoice: PropTypes.bool,
-};
-
-SelectInput.defaultProps = {
-    emptyText: '',
-    emptyValue: '',
-    options: {},
-    translateChoice: true,
-    disableValue: 'disabled',
 };
 
 const sanitizeRestProps = ({
