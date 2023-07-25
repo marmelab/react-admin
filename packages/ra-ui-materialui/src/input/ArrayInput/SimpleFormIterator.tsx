@@ -49,9 +49,9 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         resource,
         source,
         disabled,
-        disableAdd,
+        disableAdd = false,
         disableClear,
-        disableRemove,
+        disableRemove = false,
         disableReordering,
         inline,
         getItemLabel = false,
@@ -227,11 +227,6 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
             </Root>
         </SimpleFormIteratorContext.Provider>
     ) : null;
-};
-
-SimpleFormIterator.defaultProps = {
-    disableAdd: false,
-    disableRemove: false,
 };
 
 SimpleFormIterator.propTypes = {
