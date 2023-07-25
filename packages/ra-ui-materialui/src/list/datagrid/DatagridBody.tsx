@@ -13,13 +13,13 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
         {
             children,
             className,
-            data,
+            data = [],
             expand,
-            hasBulkActions,
+            hasBulkActions = false,
             hover,
             onToggleItem,
             resource,
-            row,
+            row = defaultChildren,
             rowClick,
             rowStyle,
             selectedIds,
@@ -61,6 +61,8 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
     )
 );
 
+const defaultChildren = <DatagridRow />;
+
 DatagridBody.propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
@@ -83,12 +85,6 @@ DatagridBody.propTypes = {
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     styles: PropTypes.object,
     isRowSelectable: PropTypes.func,
-};
-
-DatagridBody.defaultProps = {
-    data: [],
-    hasBulkActions: false,
-    row: <DatagridRow />,
 };
 
 export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
