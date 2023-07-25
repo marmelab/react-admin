@@ -42,10 +42,6 @@ export const ReferenceOneField = <
         filter,
         link = false,
         queryOptions,
-        // disable sorting on this field by default as its default source prop ('id')
-        // will match the default sort ({ field: 'id', order: 'DESC'})
-        // leading to an incorrect sort indicator in a datagrid header
-        sortable = false,
     } = props;
     const record = useRecordContext<RecordType>(props);
     const createPath = useCreatePath();
@@ -95,7 +91,6 @@ export const ReferenceOneField = <
                 reference={reference}
                 refetch={refetch}
                 error={error}
-                sortable={sortable}
             >
                 {children}
             </ReferenceFieldView>
@@ -128,4 +123,11 @@ ReferenceOneField.propTypes = {
     source: PropTypes.string.isRequired,
     target: PropTypes.string.isRequired,
     queryOptions: PropTypes.any,
+};
+
+ReferenceOneField.defaultProps = {
+    // disable sorting on this field by default as its default source prop ('id')
+    // will match the default sort ({ field: 'id', order: 'DESC'})
+    // leading to an incorrect sort indicator in a datagrid header
+    sortable: false,
 };
