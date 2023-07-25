@@ -116,14 +116,12 @@ export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
 // @ts-ignore
 DatagridBody.muiName = 'TableBody';
 
-export const PureDatagridBody = memo(DatagridBody);
+export const PureDatagridBody = memo(() => (
+    <DatagridBody row={<PureDatagridRow />} />
+));
 
 // trick Material UI Table into thinking this is one of the child type it supports
 // @ts-ignore
 PureDatagridBody.muiName = 'TableBody';
-// @ts-ignore
-PureDatagridBody.defaultProps = {
-    row: <PureDatagridRow />,
-};
 
 export default DatagridBody;
