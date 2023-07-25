@@ -104,9 +104,5 @@ TextInput.propTypes = {
     source: PropTypes.string,
 };
 
-TextInput.defaultProps = {
-    options: {},
-};
-
 export type TextInputProps = CommonInputProps &
     Omit<ResettableTextFieldProps, 'label' | 'helperText'>;
