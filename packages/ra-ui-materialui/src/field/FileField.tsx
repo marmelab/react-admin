@@ -67,7 +67,7 @@ export const FileField = <
                     const srcValue = get(file, src) || title;
 
                     return (
-                        <li key={index}>
+                        <li key={index} onClick={e => e.stopPropagation()}>
                             <Link
                                 href={srcValue}
                                 title={fileTitleValue}
