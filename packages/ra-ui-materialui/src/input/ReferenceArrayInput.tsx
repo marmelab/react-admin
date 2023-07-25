@@ -81,7 +81,8 @@ export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
     const {
         children = defaultChildren,
         reference,
-        filter: {},
+        sort = { field: 'id', order: 'DESC' },
+        filter = {},
     } = props;
     if (React.Children.count(children) !== 1) {
         throw new Error(
@@ -89,7 +90,11 @@ export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
         );
     }
 
-    const controllerProps = useReferenceArrayInputController(props);
+    const controllerProps = useReferenceArrayInputController({
+        ...props,
+        sort,
+        filter,
+    });
 
     return (
         <ResourceContextProvider value={reference}>
