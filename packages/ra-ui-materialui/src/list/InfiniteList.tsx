@@ -69,10 +69,10 @@ export const InfiniteList = <RecordType extends RaRecord = any>({
     disableAuthentication,
     disableSyncWithLocation,
     exporter,
-    filter,
+    filter = {},
     filterDefaultValues,
     pagination = defaultPagination,
-    perPage,
+    perPage = 10,
     queryOptions,
     resource,
     sort,
@@ -133,9 +133,4 @@ InfiniteList.propTypes = {
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,
     resource: PropTypes.string,
-};
-
-InfiniteList.defaultProps = {
-    filter: {},
-    perPage: 10,
 };
