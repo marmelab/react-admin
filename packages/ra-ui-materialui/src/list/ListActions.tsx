@@ -46,7 +46,15 @@ import { FilterButton } from './filter';
  *     );
  */
 export const ListActions = (props: ListActionsProps) => {
-    const { className, filters: filtersProp, hasCreate: _, ...rest } = props;
+    const {
+        className,
+        filters: filtersProp,
+        hasCreate: _,
+        selectedIds = [],
+        onUnselectItems = () => null,
+        ...rest
+    } = props;
+
     const {
         sort,
         displayedFilters,
@@ -54,7 +62,7 @@ export const ListActions = (props: ListActionsProps) => {
         exporter,
         showFilter,
         total,
-    } = useListContext(props);
+    } = useListContext({ ...props, selectedIds, onUnselectItems });
     const resource = useResourceContext(props);
     const { hasCreate } = useResourceDefinition(props);
     const filters = useContext(FilterContext) || filtersProp;
@@ -111,11 +119,6 @@ ListActions.propTypes = {
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     showFilter: PropTypes.func,
     total: PropTypes.number,
-};
-
-ListActions.defaultProps = {
-    selectedIds: [],
-    onUnselectItems: () => null,
 };
 
 export interface ListActionsProps extends ToolbarProps {
