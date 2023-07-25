@@ -9,6 +9,7 @@ import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { TranslatableInputs } from './TranslatableInputs';
 import { TranslatableInputsTab } from './TranslatableInputsTab';
+import { TranslatableInputsTabContentClasses } from './TranslatableInputsTabContent';
 
 const record = {
     id: 123,
@@ -46,9 +47,9 @@ describe('<TranslatableInputs />', () => {
         expect(
             screen.getByLabelText('ra.locales.en').getAttribute('hidden')
         ).toBeNull();
-        expect(
-            screen.getByLabelText('ra.locales.fr').getAttribute('hidden')
-        ).not.toBeNull();
+        expect(screen.getByLabelText('ra.locales.fr').classList).toContain(
+            TranslatableInputsTabContentClasses.hidden
+        );
 
         expect(screen.queryByDisplayValue('english name')).not.toBeNull();
         expect(
@@ -65,12 +66,12 @@ describe('<TranslatableInputs />', () => {
         ).not.toBeNull();
 
         fireEvent.click(screen.getByText('ra.locales.fr'));
-        expect(
-            screen.getByLabelText('ra.locales.en').getAttribute('hidden')
-        ).not.toBeNull();
-        expect(
-            screen.getByLabelText('ra.locales.fr').getAttribute('hidden')
-        ).toBeNull();
+        expect(screen.getByLabelText('ra.locales.en').classList).toContain(
+            TranslatableInputsTabContentClasses.hidden
+        );
+        expect(screen.getByLabelText('ra.locales.fr').classList).not.toContain(
+            TranslatableInputsTabContentClasses.hidden
+        );
     });
 
     it('should display validation errors and highlight the tab which has invalid inputs', async () => {
@@ -117,12 +118,12 @@ describe('<TranslatableInputs />', () => {
             </AdminContext>
         );
 
-        expect(
-            screen.getByLabelText('ra.locales.en').getAttribute('hidden')
-        ).toBeNull();
-        expect(
-            screen.getByLabelText('ra.locales.fr').getAttribute('hidden')
-        ).not.toBeNull();
+        expect(screen.getByLabelText('ra.locales.en').classList).not.toContain(
+            TranslatableInputsTabContentClasses.hidden
+        );
+        expect(screen.getByLabelText('ra.locales.fr').classList).toContain(
+            TranslatableInputsTabContentClasses.hidden
+        );
 
         fireEvent.change(
             screen.getAllByLabelText('resources.undefined.fields.name')[0],
@@ -241,10 +242,12 @@ describe('<TranslatableInputs />', () => {
             </AdminContext>
         );
 
-        expect(screen.getByLabelText('en').getAttribute('hidden')).toBeNull();
-        expect(
-            screen.getByLabelText('fr').getAttribute('hidden')
-        ).not.toBeNull();
+        expect(screen.getByLabelText('en').classList).not.toContain(
+            TranslatableInputsTabContentClasses.hidden
+        );
+        expect(screen.getByLabelText('fr').classList).toContain(
+            TranslatableInputsTabContentClasses.hidden
+        );
 
         expect(screen.queryByDisplayValue('english name')).not.toBeNull();
         expect(
@@ -263,9 +266,11 @@ describe('<TranslatableInputs />', () => {
         fireEvent.change(screen.getByLabelText('select locale'), {
             target: { value: 'fr' },
         });
-        expect(
-            screen.getByLabelText('en').getAttribute('hidden')
-        ).not.toBeNull();
-        expect(screen.getByLabelText('fr').getAttribute('hidden')).toBeNull();
+        expect(screen.getByLabelText('en').classList).toContain(
+            TranslatableInputsTabContentClasses.hidden
+        );
+        expect(screen.getByLabelText('fr').classList).not.toContain(
+            TranslatableInputsTabContentClasses.hidden
+        );
     });
 });
