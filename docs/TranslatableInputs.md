@@ -49,6 +49,7 @@ You may have inputs which are translated in multiple languages and want users to
 | `defaultLocale` | Optional | `string` | `en` | The default locale to display |
 | `groupKey` | Optional | `string` | - | A unique key for accessibiliyty purpose |
 | `selector`| Optional | `ReactNode` | - | A selector to choose the locale to display |
+| `StackProps`| Optional | `object` | - | Props passed to the rendered MUI Stack |
 
 ## `defaultLocale`
 
@@ -131,6 +132,20 @@ const Selector = () => {
 >
     <TextInput source="name" />
     <RichTextInput source="description" />
+</TranslatableInputs>
+```
+
+## `StackProps`
+
+Use the `StackProps` prop to pass props to the rendered MUI [Stack](https://mui.com/material-ui/react-stack/) component.
+
+```jsx
+<TranslatableInputs
+    locales={['en', 'fr']}
+    StackProps={{ direction: 'row' }}
+>
+    <TextInput source="title" />
+    <TextInput source="description" sx={{ marginLeft: 2 }} />
 </TranslatableInputs>
 ```
 

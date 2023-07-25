@@ -78,7 +78,7 @@ export const TranslatableInputs = (
         variant,
         margin,
         sx,
-        ...rest
+        StackProps = {},
     } = props;
     const context = useTranslatable({ defaultLocale, locales });
 
@@ -98,7 +98,7 @@ export const TranslatableInputs = (
                         groupKey={groupKey}
                         variant={variant}
                         margin={margin}
-                        {...rest}
+                        {...StackProps}
                     >
                         {children}
                     </TranslatableInputsTabContent>
@@ -108,9 +108,7 @@ export const TranslatableInputs = (
     );
 };
 
-export interface TranslatableInputsProps
-    extends UseTranslatableOptions,
-        StackProps {
+export interface TranslatableInputsProps extends UseTranslatableOptions {
     className?: string;
     selector?: ReactElement;
     children: ReactNode;
@@ -119,6 +117,7 @@ export interface TranslatableInputsProps
     margin?: 'none' | 'normal' | 'dense';
     variant?: 'standard' | 'outlined' | 'filled';
     sx?: SxProps;
+    StackProps?: StackProps;
 }
 
 const PREFIX = 'RaTranslatableInputs';

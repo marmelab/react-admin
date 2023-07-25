@@ -22,21 +22,13 @@ import {
 export const TranslatableInputsTabContent = (
     props: TranslatableInputsTabContentProps
 ): ReactElement => {
-    const {
-        children,
-        groupKey = '',
-        locale,
-        margin,
-        variant,
-        ...other
-    } = props;
+    const { children, groupKey = '', locale, variant, ...other } = props;
     const { selectedLocale, getLabel, getSource } = useTranslatableContext();
 
     return (
         <FormGroupContextProvider name={`${groupKey}${locale}`}>
             <Root
                 role="tabpanel"
-                hidden={selectedLocale !== locale}
                 id={`translatable-content-${groupKey}${locale}`}
                 aria-labelledby={`translatable-header-${groupKey}${locale}`}
                 className={clsx(TranslatableInputsTabContentClasses.root, {
@@ -70,7 +62,6 @@ export type TranslatableInputsTabContentProps<
     locale: string;
     record?: RecordType;
     resource?: string;
-    margin?: 'none' | 'normal' | 'dense';
     variant?: 'standard' | 'outlined' | 'filled';
 };
 

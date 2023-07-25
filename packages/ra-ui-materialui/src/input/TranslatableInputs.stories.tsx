@@ -39,7 +39,10 @@ export const SingleInput = () => (
 
 export const Row = () => (
     <Wrapper>
-        <TranslatableInputs locales={['en', 'fr']} direction="row">
+        <TranslatableInputs
+            locales={['en', 'fr']}
+            StackProps={{ direction: 'row' }}
+        >
             <TextInput source="title" />
             <TextInput source="description" sx={{ marginLeft: 2 }} />
         </TranslatableInputs>
