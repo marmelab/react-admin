@@ -54,7 +54,12 @@ export const ChipField = genericMemo(ChipFieldImpl);
 export interface ChipFieldProps<
     RecordType extends Record<string, unknown> = Record<string, any>
 > extends FieldProps<RecordType>,
-        Omit<ChipProps, 'label'> {}
+        Omit<ChipProps, 'label' | 'children'> {
+    /**
+     * @internal do not use (prop required for TS to be able to cast ChipField as FunctionComponent)
+     */
+    children?: React.ReactNode;
+}
 
 const PREFIX = 'RaChipField';
 

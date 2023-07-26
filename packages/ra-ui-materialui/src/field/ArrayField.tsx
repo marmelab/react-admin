@@ -100,7 +100,7 @@ export const ArrayField = genericMemo(ArrayFieldImpl);
 export interface ArrayFieldProps<
     RecordType extends Record<string, unknown> = Record<string, any>
 > extends FieldProps<RecordType> {
-    children: ReactNode;
+    children?: ReactNode;
     perPage?: number;
     sort?: SortPayload;
     filter?: FilterPayload;
