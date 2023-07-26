@@ -69,7 +69,7 @@ If you want to react to the data entered by the user, use [react-hook-form's `us
 For instance if you want to display an additional input when a user marks an order as returned, you can do the following:
 
 ```jsx
-import { Edit, SimpleForm, BooleanInput TextInput } from 'react-admin';
+import { Edit, SimpleForm, BooleanInput, TextInput } from 'react-admin';
 import { useWatch } from 'react-hook-form';
 
 const ReturnedReason = () => {

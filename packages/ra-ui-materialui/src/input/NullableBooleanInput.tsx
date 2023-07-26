@@ -48,7 +48,8 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
         validate,
         ...rest,
     });
-
+    const renderHelperText =
+        helperText !== false || ((isTouched || isSubmitted) && invalid);
     return (
         <StyledTextField
             id={id}
@@ -72,11 +73,13 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
             }
             error={(isTouched || isSubmitted) && invalid}
             helperText={
-                <InputHelperText
-                    touched={isTouched || isSubmitted}
-                    error={error?.message}
-                    helperText={helperText}
-                />
+                renderHelperText ? (
+                    <InputHelperText
+                        touched={isTouched || isSubmitted}
+                        error={error?.message}
+                        helperText={helperText}
+                    />
+                ) : null
             }
             variant={variant}
             {...sanitizeInputRestProps(rest)}

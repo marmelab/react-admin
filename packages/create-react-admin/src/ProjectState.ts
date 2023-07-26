@@ -12,6 +12,7 @@ export type ProjectConfiguration = {
     dataProvider: string;
     authProvider: string;
     resources: string[];
+    messages: string[];
     installer: string;
 };
 
@@ -21,5 +22,6 @@ export const InitialProjectConfiguration: ProjectConfiguration = {
     dataProvider: '',
     authProvider: '',
     resources: [],
+    messages: [],
     installer: '',
 };

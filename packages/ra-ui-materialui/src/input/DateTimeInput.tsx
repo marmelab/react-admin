@@ -51,7 +51,8 @@ export const DateTimeInput = ({
 
     const { error, invalid, isTouched } = fieldState;
     const { isSubmitted } = formState;
-
+    const renderHelperText =
+        helperText !== false || ((isTouched || isSubmitted) && invalid);
     return (
         <TextField
             id={id}
@@ -63,11 +64,13 @@ export const DateTimeInput = ({
             margin={margin}
             error={(isTouched || isSubmitted) && invalid}
             helperText={
-                <InputHelperText
-                    touched={isTouched || isSubmitted}
-                    error={error?.message}
-                    helperText={helperText}
-                />
+                renderHelperText ? (
+                    <InputHelperText
+                        touched={isTouched || isSubmitted}
+                        error={error?.message}
+                        helperText={helperText}
+                    />
+                ) : null
             }
             label={
                 <FieldTitle

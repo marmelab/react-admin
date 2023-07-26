@@ -168,22 +168,34 @@ export type UseCreateOptions<
     Partial<UseCreateMutateParams<RecordType>>
 > & { returnPromise?: boolean };
 
+export type CreateMutationFunction<
+    RecordType extends Omit<RaRecord, 'id'> = any,
+    TReturnPromise extends boolean = boolean,
+    MutationError = unknown,
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
+> = (
+    resource?: string,
+    params?: Partial<CreateParams<Partial<RecordType>>>,
+    options?: MutateOptions<
+        ResultRecordType,
+        MutationError,
+        Partial<UseCreateMutateParams<RecordType>>,
+        unknown
+    > & { returnPromise?: TReturnPromise }
+) => Promise<TReturnPromise extends true ? ResultRecordType : void>;
+
 export type UseCreateResult<
     RecordType extends Omit<RaRecord, 'id'> = any,
     TReturnPromise extends boolean = boolean,
     MutationError = unknown,
     ResultRecordType extends RaRecord = RecordType & { id: Identifier }
 > = [
-    (
-        resource?: string,
-        params?: Partial<CreateParams<Partial<RecordType>>>,
-        options?: MutateOptions<
-            ResultRecordType,
-            MutationError,
-            Partial<UseCreateMutateParams<RecordType>>,
-            unknown
-        > & { returnPromise?: TReturnPromise }
-    ) => Promise<TReturnPromise extends true ? ResultRecordType : void>,
+    CreateMutationFunction<
+        RecordType,
+        TReturnPromise,
+        MutationError,
+        ResultRecordType
+    >,
     UseMutationResult<
         ResultRecordType,
         MutationError,

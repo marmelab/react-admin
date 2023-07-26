@@ -47,7 +47,7 @@ All input components accept the following props:
 | `format`        | Optional | `Function`                | `value => value == null ? '' : value` | Callback taking the value from the form state, and returning the input value.                                                                                       |
 | `fullWidth`     | Optional | `boolean`                 | `false` | If `true`, the input will expand to fill the form width                                                                                                             |
 | `helperText`    | Optional | `string`                  | -       | Text to be displayed under the input (cannot be used inside a filter)                                                                                                          |
-| `label`         | Optional | `string`                  | -       | Input label. In i18n apps, the label is passed to the `translate` function. Defaults to the humanized `source` when omitted. Set `label={false}` to hide the label. |
+| `label`         | Optional | `string`                  | -       | Input label. In i18n apps, the label is passed to the `translate` function. When omitted, the `source` property is humanized and used as a label. Set `label={false}` to hide the label. |
 | `parse`         | Optional | `Function`                | `value => value === '' ? null : value` | Callback taking the input value, and returning the value you want stored in the form state.                                                                         |
 | `sx`            | Optional | `SxProps`                 | -       | Material UI shortcut for defining custom styles                                                                                                                             |
 | `validate`      | Optional | `Function` &#124; `array` | -       | Validation rules for the current property. See the [Validation Documentation](./Validation.md#per-input-validation-built-in-field-validators) for details.          |
@@ -62,8 +62,8 @@ React-admin provides a set of Input components, each one designed for a specific
 
 | Data Type             | Example value                                                | Input Components                                                                                                                                                                                     |
 |-----------------------|--------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| String                | `'Lorem Ipsum'`                                              | [`<TextInput>`](./TextInput.md)                                                                                                                                                                      |
-| Rich text             | `<p>Lorem Ipsum</p>`                                         | [`<RichTextInput>`](./RichTextInput.md)                                                                                                                                                              |
+| String                | `'Lorem Ipsum'`                                              | [`<TextInput>`](./TextInput.md), [`<PredictiveTextInput>`](./PredictiveTextInput.md)                                                                                                                 |
+| Rich text             | `<p>Lorem Ipsum</p>`                                         | [`<RichTextInput>`](./RichTextInput.md), [`<SmartRichTextInput>`](./SmartRichTextInput.md)                                                                                                                                                              |
 | Markdown              | `# Lorem Ipsum`                                              | [`<MarkdownInput>`](./MarkdownInput.md)                                                                                                                                                              |
 | Password              | `'********'`                                                 | [`<PasswordInput>`](./PasswordInput.md)                                                                                                                                                              |
 | Image URL             | `'https://example.com/image.png'`                            | [`<ImageInput>`](./ImageInput.md)                                                                                                                                                                    |
@@ -171,7 +171,7 @@ form state value --> format --> form input value (string)
 
 **Tip:** By default, react-admin inputs have the following `format` function, which turns any `null` or `undefined` value into an empty string. This is to avoid warnings about controlled/uncontrolled input components:
 
-```js
+```ts
 const defaultFormat = (value: any) => value == null ? '' : value;
 ```
 
@@ -205,7 +205,7 @@ Set `helperText` to `false` to remove the empty line below the input. Beware tha
 
 ## `label`
 
-Input label. Defaults to the humanized `source` when omitted. Set `label={false}` to hide the label.
+The input label. In i18n apps, the label is passed to the translate function. When omitted, the `source` property is humanized and used as a label. Set `label={false}` to hide the label.
 
 ```jsx
 <TextInput source="title" /> {/* input label is "Title" */}
@@ -750,7 +750,7 @@ const BoundedTextField = ({ name, label }) => {
         field,
         fieldState: { isTouched, invalid, error },
         formState: { isSubmitted }
-    } = useController(name, defaultValue: '');
+    } = useController({ name, defaultValue: '' });
     return (
         <TextField
             {...field}
@@ -910,3 +910,13 @@ You can find components for react-admin in third-party repositories.
 - [@react-page/react-admin](https://react-page.github.io/docs/#/integration-react-admin): ReactPage is a rich content editor and comes with a ready-to-use React-admin input component. [check out the demo](https://react-page.github.io/examples/reactadmin)
 
 - **DEPRECATED V3** [LoicMahieu/aor-tinymce-input](https://github.com/LoicMahieu/aor-tinymce-input): a TinyMCE component, useful for editing HTML
+
+## Hiding the label
+
+You can set `label={false}` on an input component to hide its label.
+
+```jsx
+<TextInput source="title" /> {/* input label is "Title" */}
+<TextInput source="title" label="Post title" /> {/* input label is "Post title" */}
+<TextInput source="title" label={false} /> {/* input has no label */}
+```

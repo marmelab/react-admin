@@ -119,11 +119,11 @@ Pass an `sx` prop to customize the style of the main component and the underlyin
 ```jsx
 export const MyMenu = () => (
     <Menu sx={{ 
-        marginTop: 0
+        marginTop: 0,
         '&.RaMenu-closed': {
             opacity: 0.8,
         },
-    }} >
+    }} />
 );
 ```
 {% endraw %}
@@ -164,21 +164,22 @@ export const theme = {
     palette: {
         // ...
     },
-  components: {
-    // ... 
-    RaMenuItemLink: {
-        styleOverrides: {
-            root: {
-                // invisible border when not active, to avoid position flashs
-                borderLeft: '3px solid transparent', 
-                '&.RaMenuItemLink-active': {
-                    borderLeft: '10px solid #4f3cc9',
-                },
-                '& .RaMenuItemLink-icon': {
-                    color: '#EFC44F',
+    components: {
+        // ... 
+        RaMenuItemLink: {
+            styleOverrides: {
+                root: {
+                    // invisible border when not active, to avoid position flashs
+                    borderLeft: '3px solid transparent', 
+                    '&.RaMenuItemLink-active': {
+                        borderLeft: '10px solid #4f3cc9',
+                    },
+                    '& .RaMenuItemLink-icon': {
+                        color: '#EFC44F',
+                    },
                 },
             },
-        },
+       },
     },
 };
 ```
@@ -331,7 +332,7 @@ If you need to display a menu item with a submenu, you should use [the `<MultiLe
 
 You can display a badge on the menu item to indicate that new data is available. Use [the `<MenuLive>` component](./MenuLive.md) instead of `<Menu>` to enable this feature.
 
-```jsx
+```tsx
 import { Admin, Layout, LayoutProps, Resource } from 'react-admin';
 import { MenuLive } from '@react-admin/ra-realtime';
 import { PostList, PostShow, PostEdit, realTimeDataProvider } from '.';

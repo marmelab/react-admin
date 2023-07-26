@@ -118,6 +118,9 @@ export const NumberInput = ({
         setValue(value => (value !== stringValue ? stringValue : value));
     };
 
+    const renderHelperText =
+        helperText !== false || ((isTouched || isSubmitted) && invalid);
+
     return (
         <TextField
             id={id}
@@ -133,11 +136,13 @@ export const NumberInput = ({
             variant={variant}
             error={(isTouched || isSubmitted) && invalid}
             helperText={
-                <InputHelperText
-                    touched={isTouched || isSubmitted}
-                    error={error?.message}
-                    helperText={helperText}
-                />
+                renderHelperText ? (
+                    <InputHelperText
+                        touched={isTouched || isSubmitted}
+                        error={error?.message}
+                        helperText={helperText}
+                    />
+                ) : null
             }
             label={
                 <FieldTitle

@@ -11,6 +11,7 @@ import {
     required,
     useNotify,
     usePermissions,
+    useUnique,
 } from 'react-admin';
 
 import Aside from './Aside';
@@ -53,6 +54,7 @@ const isValidName = async value =>
 
 const UserCreate = () => {
     const { permissions } = usePermissions();
+    const unique = useUnique();
     return (
         <Create aside={<Aside />} redirect="show">
             <TabbedForm
@@ -65,7 +67,7 @@ const UserCreate = () => {
                         source="name"
                         defaultValue="Slim Shady"
                         autoFocus
-                        validate={[required(), isValidName]}
+                        validate={[required(), isValidName, unique()]}
                     />
                 </TabbedForm.Tab>
                 {permissions === 'admin' && (

@@ -169,6 +169,7 @@ const englishMessages: TranslationMessages = {
             email: 'Must be a valid email',
             oneOf: 'Must be one of: %{options}',
             regex: 'Must match a specific format (regexp): %{pattern}',
+            unique: 'Must be unique',
         },
         saved_queries: {
             label: 'Saved queries',

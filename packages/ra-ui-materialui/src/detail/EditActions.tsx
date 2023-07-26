@@ -41,6 +41,7 @@ export const EditActions = ({ className, ...rest }: EditActionsProps) => {
     );
 };
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const sanitizeRestProps = ({
     hasCreate = null,
     hasEdit = null,
@@ -48,6 +49,7 @@ const sanitizeRestProps = ({
     hasList = null,
     ...rest
 }) => rest;
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 export interface EditActionsProps {
     className?: string;

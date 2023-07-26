@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useQuery, UseQueryOptions } from 'react-query';
 import useAuthProvider from './useAuthProvider';
+import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 
 const emptyParams = {};
 
@@ -20,7 +21,7 @@ const emptyParams = {};
  *
  * @param {Object} params Any params you want to pass to the authProvider
  *
- * @returns The current auth check state. Destructure as { permissions, error, isLoading }.
+ * @returns The current auth check state. Destructure as { permissions, error, isLoading, refetch }.
  *
  * @example
  *     import { usePermissions } from 'react-admin';
@@ -41,13 +42,22 @@ const usePermissions = <Permissions = any, Error = any>(
     }
 ) => {
     const authProvider = useAuthProvider();
+    const logoutIfAccessDenied = useLogoutIfAccessDenied();
 
     const result = useQuery(
         ['auth', 'getPermissions', params],
         authProvider
             ? () => authProvider.getPermissions(params)
             : async () => [],
-        queryParams
+        {
+            onError: error => {
+                if (process.env.NODE_ENV !== 'production') {
+                    console.error(error);
+                }
+                logoutIfAccessDenied(error);
+            },
+            ...queryParams,
+        }
     );
 
     return useMemo(
@@ -55,6 +65,7 @@ const usePermissions = <Permissions = any, Error = any>(
             permissions: result.data,
             isLoading: result.isLoading,
             error: result.error,
+            refetch: result.refetch,
         }),
         [result]
     );

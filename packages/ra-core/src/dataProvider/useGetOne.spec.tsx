@@ -12,7 +12,6 @@ const UseGetOne = ({
     meta = undefined,
     options = {},
     callback = null,
-    ...rest
 }) => {
     const hookValue = useGetOne(resource, { id, meta }, options);
     if (callback) callback(hookValue);

@@ -87,7 +87,14 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                     Children.count(children) === 1 &&
                     React.isValidElement(Children.only(children)) &&
                     // @ts-ignore
-                    !Children.only(children).props.source
+                    !Children.only(children).props.source &&
+                    // Make sure it's not a FormDataConsumer
+                    Children.map(
+                        children,
+                        input =>
+                            React.isValidElement(input) &&
+                            input.type !== FormDataConsumer
+                    ).some(Boolean)
                 ) {
                     // ArrayInput used for an array of scalar values
                     // (e.g. tags: ['foo', 'bar'])

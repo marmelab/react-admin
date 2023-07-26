@@ -136,9 +136,7 @@ describe('CreateBase', () => {
     it('should allow to override the onError function', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         const dataProvider = testDataProvider({
-            create: jest.fn((_, { data }) =>
-                Promise.reject({ message: 'test' })
-            ),
+            create: jest.fn(() => Promise.reject({ message: 'test' })),
         });
         const onError = jest.fn();
 
@@ -172,9 +170,7 @@ describe('CreateBase', () => {
 
     it('should allow to override the onError function at call time', async () => {
         const dataProvider = testDataProvider({
-            create: jest.fn((_, { data }) =>
-                Promise.reject({ message: 'test' })
-            ),
+            create: jest.fn(() => Promise.reject({ message: 'test' })),
         });
         const onError = jest.fn();
         const onErrorOverride = jest.fn();

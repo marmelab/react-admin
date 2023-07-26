@@ -133,7 +133,11 @@ export const ArrayInput = (props: ArrayInputProps) => {
         };
     }, [register, unregister, source, formGroups, formGroupName]);
 
-    useApplyInputDefaultValues(props);
+    useApplyInputDefaultValues({
+        inputProps: props,
+        isArrayInput: true,
+        fieldArrayInputControl: fieldProps,
+    });
 
     const { isDirty, error } = getFieldState(source, formState);
 
@@ -144,6 +148,8 @@ export const ArrayInput = (props: ArrayInputProps) => {
             </Labeled>
         );
     }
+    const renderHelperText =
+        helperText !== false || ((isDirty || isSubmitted) && !!error);
 
     return (
         <Root
@@ -182,7 +188,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
                     disabled,
                 })}
             </ArrayInputContext.Provider>
-            {!!((isDirty || isSubmitted) && !!error) || helperText ? (
+            {renderHelperText ? (
                 <FormHelperText error={(isDirty || isSubmitted) && !!error}>
                     <InputHelperText
                         touched={isDirty || isSubmitted}

@@ -220,7 +220,7 @@ export const PostCreate = () => (
 ```
 {% endraw %}
 
-**Tip:** If you want to customize the _content_ of the tabs instead, for example to limit the width of the form, you should rather add an `sx` prop to the [`<TabbedForm.Tab>` component](#formtab).
+**Tip:** If you want to customize the _content_ of the tabs instead, for example to limit the width of the form, you should rather add an `sx` prop to the [`<TabbedForm.Tab>` component](#tabbedformtab).
 
 ## `sanitizeEmptyValues`
 
@@ -308,7 +308,7 @@ export const PostEdit = () => (
 
 ## `tabs`
 
-By default, `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin component, to render the tab headers. You can pass a custom component as the `tabs` prop to tweak th UX of these headers. Besides, props from `<TabbedFormTabs>` are passed down to Material UI's `<Tabs>` component.
+By default, `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin component, to render the tab headers. You can pass a custom component as the `tabs` prop to tweak the UX of these headers. Besides, props from `<TabbedFormTabs>` are passed down to Material UI's `<Tabs>` component.
 
 The following example shows how to make use of scrollable `<Tabs>`. Pass `variant="scrollable"` and `scrollButtons="auto"` props to `<TabbedFormTabs>` and use it in the `tabs` prop from `<TabbedForm>`.
 
@@ -678,7 +678,7 @@ const formState = useFormState(); // ❌ should deconstruct the formState
 
 ## Dynamic Tab Label
 
-`<TabbedForm>` often contain not only inputs, but also related data (e.g. the reviews of a product). Users appreviate that the label of such tabs show the actual number of related elements, to avoid clicking on a tab to reveal an empty list.
+`<TabbedForm>` often contain not only inputs, but also related data (e.g. the reviews of a product). Users appreciate that the label of such tabs show the actual number of related elements, to avoid clicking on a tab to reveal an empty list.
 
 ![dynamic tab label](./img/FormTab-dynamic-label.png)
 
@@ -880,3 +880,46 @@ const ProductEdit = () => (
 {% endraw %}
 
 Check [the RBAC `<TabbedForm>` component](./AuthRBAC.md#tabbedform) documentation for more details.
+
+## Linking Two Inputs
+
+Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
+
+React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://react-hook-form.com/docs/usewatch) hook.
+
+```jsx
+import * as React from 'react';
+import { Edit, SimpleForm, SelectInput } from 'react-admin';
+import { useWatch } from 'react-hook-form';
+
+const countries = ['USA', 'UK', 'France'];
+const cities = {
+    USA: ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'],
+    UK: ['London', 'Birmingham', 'Glasgow', 'Liverpool', 'Bristol'],
+    France: ['Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice'],
+};
+const toChoices = items => items.map(item => ({ id: item, name: item }));
+
+const CityInput = props => {
+    const country = useWatch({ name: 'country' });
+    return (
+        <SelectInput
+            choices={country ? toChoices(cities[country]) : []}
+            {...props}
+        />
+    );
+};
+
+const OrderEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <SelectInput source="country" choices={toChoices(countries)} />
+            <CityInput source="cities" />
+        </SimpleForm>
+    </Edit>
+);
+
+export default OrderEdit;
+```
+
+**Tip:** If you'd like to avoid creating an intermediate component like `<CityInput>`, or are using an `<ArrayInput>`, you can use the [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs) component as an alternative.

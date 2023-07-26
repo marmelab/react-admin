@@ -13,7 +13,7 @@ title: "The MenuLive Component"
 
 Use `<MenuLive>` instead of `<Menu>` in a custom layout:
 
-```jsx
+```tsx
 import { Admin, Layout, LayoutProps, Resource } from 'react-admin';
 import { MenuLive } from '@react-admin/ra-realtime';
 import { PostList, PostShow, PostEdit, realTimeDataProvider } from '.';

@@ -47,7 +47,7 @@ const UserEditForm = () => {
     const { save } = useSaveContext();
 
     const newSave = values =>
-        new Promise((resolve, reject) => {
+        new Promise(resolve => {
             if (values.name === 'test') {
                 return resolve({
                     name: {

@@ -151,7 +151,7 @@ The `options` object can contain the following properties:
 -   `once`: Whether to unsubscribe after the first event. Defaults to `false`.
 -   `unsubscribeOnUnmount`: Whether to unsubscribe on unmount. Defaults to `true`.
 
-See [`useSubscribe`](#usesubscribe) for more details.
+See [`useSubscribe`](./useSubscribe.md) for more details.
 
 ## `resource`
 

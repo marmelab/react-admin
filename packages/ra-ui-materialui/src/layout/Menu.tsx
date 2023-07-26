@@ -84,7 +84,7 @@ Menu.propTypes = {
     hasDashboard: PropTypes.bool,
 };
 
-// re-export MenuItem commponents for convenience
+// re-export MenuItem components for convenience
 Menu.Item = MenuItemLink;
 Menu.DashboardItem = DashboardMenuItem;
 Menu.ResourceItem = ResourceMenuItem;

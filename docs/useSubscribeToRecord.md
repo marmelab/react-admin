@@ -20,7 +20,7 @@ The hook expects a callback function as its only argument, as it guesses the rec
 
 For instance, the following component displays a dialog when the record is updated by someone else:
 
-```jsx
+```tsx
 import { useState } from 'react';
 import { useEditContext, useFormContext } from 'react-admin';
 import {
@@ -109,7 +109,7 @@ You can provide the resource and record id explicitly if you are not in such con
 useSubscribeToRecord(event => { /* ... */ }, 'posts', 123);
 ```
 
-**Tip**: If your reason to subscribe to events on a record is to keep the record up to date, you should use [the `useGetOneLive` hook](#usegetonelive) instead.
+**Tip**: If your reason to subscribe to events on a record is to keep the record up to date, you should use [the `useGetOneLive` hook](./useGetOneLive.md) instead.
 
 ## Parameters
 
@@ -124,7 +124,7 @@ useSubscribeToRecord(event => { /* ... */ }, 'posts', 123);
 
 Whenever an event is published on the `resource/[resource]/[recordId]` topic, the function passed as the first argument will be called with the event as a parameter.
 
-```jsx
+```tsx
 const [open, setOpen] = useState(false);
 const [author, setAuthor] = useState<string | null>(null);
 const { refetch } = useEditContext();
@@ -145,7 +145,7 @@ useSubscribeToRecord((event: Event) => {
 
 **Tip**: Memoize the callback using `useCallback` to avoid unnecessary subscriptions/unsubscriptions.
 
-```jsx
+```tsx
 const [open, setOpen] = useState(false);
 const [author, setAuthor] = useState<string | null>(null);
 const { refetch } = useEditContext();
@@ -172,7 +172,7 @@ useSubscribeToRecord(handleEvent);
 
 Just like for `useSubscribe`, the callback function receives an `unsubscribe` callback as its second argument. You can call it to unsubscribe from the topic after receiving a specific event.
 
-```jsx
+```tsx
 useSubscribeToRecord((event: Event, unsubscribe) => {
     if (event.type === 'deleted') {
         // do something

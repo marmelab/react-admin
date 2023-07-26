@@ -42,7 +42,7 @@ export const ColorButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
         setColorType(colorType);
     };
 
-    return editor ? (
+    return (
         <Box sx={{ position: 'relative' }}>
             <OutsideListener onClick={() => setShowColorChoiceDialog(false)}>
                 <ToggleButtonGroup>
@@ -50,7 +50,7 @@ export const ColorButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
                         aria-label={colorLabel}
                         title={colorLabel}
                         {...props}
-                        disabled={!editor?.isEditable}
+                        disabled={!editor || !editor.isEditable}
                         value="color"
                         onClick={() => displayColorChoiceDialog(ColorType.FONT)}
                     >
@@ -60,7 +60,7 @@ export const ColorButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
                         aria-label={highlightLabel}
                         title={highlightLabel}
                         {...props}
-                        disabled={!editor?.isEditable}
+                        disabled={!editor || !editor.isEditable}
                         value="highlight"
                         onClick={() =>
                             displayColorChoiceDialog(ColorType.BACKGROUND)
@@ -78,7 +78,7 @@ export const ColorButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
                 )}
             </OutsideListener>
         </Box>
-    ) : null;
+    );
 };
 
 interface ColorChoiceDialogProps {

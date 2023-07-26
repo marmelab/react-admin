@@ -79,7 +79,7 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 | `emptyText` | Optional | `string`            | ''       | Defines a text to be shown when the field has no value or when the reference is missing |
 | `label`     | Optional | `string | Function` | `resources. [resource]. fields.[source]`   | Label to use for the field when rendered in layout components  |
 | `link`      | Optional | `string | Function` | `edit`   | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
-| `queryOptions`     | Optional | [`UseQuery Options`](https://tanstack.com/query/v4/docs/reference/useQuery?from=reactQueryV3&original=https://react-query-v3.tanstack.com/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
+| `queryOptions`     | Optional | [`UseQuery Options`](https://tanstack.com/query/v3/docs/react/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
 | `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when used in a Datagrid |
 
 `<ReferenceField>` also accepts the [common field props](./Fields.md#common-field-props).
@@ -190,6 +190,53 @@ The `<ReferenceField>` component accepts the usual `className` prop. You can als
 
 To override the style of all instances of `<ReferenceField>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaReferenceField` key.
 
+## Performance
+
+When used in a `<Datagrid>`, `<ReferenceField>` fetches the referenced record only once for the entire table. 
+
+![ReferenceField](./img/reference-field.png)
+
+For instance, with this code:
+
+```jsx
+import { List, Datagrid, ReferenceField, TextField, EditButton } from 'react-admin';
+
+export const PostList = () => (
+    <List>
+        <Datagrid>
+            <TextField source="id" />
+            <ReferenceField label="User" source="user_id" reference="users" />
+            <TextField source="title" />
+            <EditButton />
+        </Datagrid>
+    </List>
+);
+```
+
+React-admin accumulates and deduplicates the ids of the referenced records to make *one* `dataProvider.getMany()` call for the entire list, instead of n `dataProvider.getOne()` calls. So for instance, if the API returns the following list of posts:
+
+```js
+[
+    {
+        id: 123,
+        title: 'Totally agree',
+        user_id: 789,
+    },
+    {
+        id: 124,
+        title: 'You are right my friend',
+        user_id: 789
+    },
+    {
+        id: 125,
+        title: 'Not sure about this one',
+        user_id: 735
+    }
+]
+```
+
+Then react-admin renders the `<PostList>` with a loader for the `<ReferenceField>`, fetches the API for the related users in one call (`dataProvider.getMany('users', { ids: [789,735] }`), and re-renders the list once the data arrives. This accelerates the rendering and minimizes network load.
+
 ## Rendering More Than One Field
 
 You often need to render more than one field of the reference table (e.g. if the `users` table has a `first_name` and a `last_name` field).
@@ -255,49 +302,11 @@ export const PostShow = () => (
 );
 ```
 
-## Performance
+## Removing The Link
 
-When used in a `<Datagrid>`, `<ReferenceField>` fetches the referenced record only once for the entire table. 
-
-![ReferenceField](./img/reference-field.png)
-
-For instance, with this code:
+You can prevent `<ReferenceField>` from adding a link to its children by setting `link` to `false`.
 
 ```jsx
-import { List, Datagrid, ReferenceField, TextField, EditButton } from 'react-admin';
-
-export const PostList = () => (
-    <List>
-        <Datagrid>
-            <TextField source="id" />
-            <ReferenceField label="User" source="user_id" reference="users" />
-            <TextField source="title" />
-            <EditButton />
-        </Datagrid>
-    </List>
-);
+// No link
+<ReferenceField source="user_id" reference="users" link={false} />
 ```
-
-React-admin accumulates and deduplicates the ids of the referenced records to make *one* `dataProvider.getMany()` call for the entire list, instead of n `dataProvider.getOne()` calls. So for instance, if the API returns the following list of posts:
-
-```js
-[
-    {
-        id: 123,
-        title: 'Totally agree',
-        user_id: 789,
-    },
-    {
-        id: 124,
-        title: 'You are right my friend',
-        user_id: 789
-    },
-    {
-        id: 125,
-        title: 'Not sure about this one',
-        user_id: 735
-    }
-]
-```
-
-Then react-admin renders the `<PostList>` with a loader for the `<ReferenceField>`, fetches the API for the related users in one call (`dataProvider.getMany('users', { ids: [789,735] }`), and re-renders the list once the data arrives. This accelerates the rendering and minimizes network load.

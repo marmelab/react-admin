@@ -5,10 +5,9 @@ title: "The RichTextInput Component"
 
 # `<RichTextInput>`
 
-`<RichTextInput>` is the ideal component to let users edit HTML content. It is powered by [TipTap](https://www.tiptap.dev/).
+`<RichTextInput>` lets users edit rich text in a WYSIWYG editor, and store the result as HTML. It is powered by [TipTap](https://www.tiptap.dev/).
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/rich-text-input.webm" type="video/webm"/>
   <source src="./img/rich-text-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
@@ -16,7 +15,7 @@ title: "The RichTextInput Component"
 
 ## Usage
 
-**Note**: Due to its size, `<RichTextInput>` is not bundled by default with react-admin. You must install it first, using npm:
+Due to its size, `<RichTextInput>` is not bundled by default with react-admin. You must install it first, using npm:
 
 ```sh
 npm install ra-input-rich-text
@@ -171,4 +170,32 @@ const MyRichTextInput = ({ size, ...props }) => (
 	/>
 );
 ```
+
+## AI Writing Assistant
+
+Modern AI tools can be a great help for editors. React-admin proposes an AI-powered writing assistant for the `<RichTextInput>` component, called [`<SmartRichTetInput>`](./SmartRichTextInput.md):
+
+<video controls playsinline muted loop poster="https://marmelab.com/ra-enterprise/modules/assets/SmartRichTextInput.png" >
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/SmartRichTextInput.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+`<SmartRichTextInput>` is a drop-in replacement for `<RichTextInput>`: 
+
+```jsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { SmartRichTextInput } from '@react-admin/ra-ai';
+
+export const PostEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="title" />
+            <SmartRichTextInput source="body" />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+`<SmartRichTextInput>` is available as part of the [ra-ai](https://marmelab.com/ra-enterprise/modules/ra-ai) enterprise package.
+
 

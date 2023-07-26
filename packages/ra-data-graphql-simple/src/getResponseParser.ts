@@ -3,10 +3,10 @@ import { IntrospectionResult, IntrospectedResource } from 'ra-data-graphql';
 import { IntrospectionField } from 'graphql';
 import { ApolloQueryResult } from '@apollo/client';
 
-export default (introspectionResults: IntrospectionResult) => (
+export default (_introspectionResults: IntrospectionResult) => (
     raFetchMethod: string,
-    resource: IntrospectedResource,
-    queryType: IntrospectionField
+    _resource: IntrospectedResource,
+    _queryType: IntrospectionField
 ) => (response: ApolloQueryResult<any>) => {
     const data = response.data;
 

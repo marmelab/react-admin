@@ -502,7 +502,7 @@ Before building your own custom layout, take a look at the existing form layout 
 - [`AccordionForm`](./AccordionForm.md) for long forms with collapsible sections
 - [`LongForm`](./LongForm.md) for long forms with a navigation sidebar
 - [`WizardForm`](./WizardForm.md) for multi-step forms
-- [`EditInDialog`](./EditInDialog.md) for sub-forms in a modal dialog
+- [`EditDialog`](./EditDialog.md) for sub-forms in a modal dialog
 - and [`Form`](./Form.md), a headless component to use as a base for your custom layouts
 
 ## Subscribing To Form Changes
@@ -695,3 +695,46 @@ const ProductEdit = () => (
 {% endraw %}
 
 Check [the RBAC `<SimpleForm>` component](./AuthRBAC.md#simpleform) documentation for more details.
+
+## Linking Two Inputs
+
+Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
+
+React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://react-hook-form.com/docs/usewatch) hook.
+
+```jsx
+import * as React from 'react';
+import { Edit, SimpleForm, SelectInput } from 'react-admin';
+import { useWatch } from 'react-hook-form';
+
+const countries = ['USA', 'UK', 'France'];
+const cities = {
+    USA: ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'],
+    UK: ['London', 'Birmingham', 'Glasgow', 'Liverpool', 'Bristol'],
+    France: ['Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice'],
+};
+const toChoices = items => items.map(item => ({ id: item, name: item }));
+
+const CityInput = props => {
+    const country = useWatch({ name: 'country' });
+    return (
+        <SelectInput
+            choices={country ? toChoices(cities[country]) : []}
+            {...props}
+        />
+    );
+};
+
+const OrderEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <SelectInput source="country" choices={toChoices(countries)} />
+            <CityInput source="cities" />
+        </SimpleForm>
+    </Edit>
+);
+
+export default OrderEdit;
+```
+
+**Tip:** If you'd like to avoid creating an intermediate component like `<CityInput>`, or are using an `<ArrayInput>`, you can use the [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs) component as an alternative.

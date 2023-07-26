@@ -554,7 +554,7 @@ describe('withLifecycleCallbacks', () => {
     describe('afterUpdateMany', () => {
         it('should update the updateMany result', async () => {
             const base = {
-                updateMany: jest.fn((resource, { ids, data }) =>
+                updateMany: jest.fn((resource, { ids }) =>
                     Promise.resolve({ data: ids })
                 ),
             };
@@ -716,7 +716,7 @@ describe('withLifecycleCallbacks', () => {
                         data: ids.map(id => ({ id })),
                     })
                 ),
-                updateMany: jest.fn((resource, { ids, data }) =>
+                updateMany: jest.fn((resource, { ids }) =>
                     Promise.resolve({ data: ids })
                 ),
             };

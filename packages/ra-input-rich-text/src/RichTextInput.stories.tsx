@@ -5,7 +5,7 @@ import { RichTextInput } from './RichTextInput';
 import { RichTextInputToolbar } from './RichTextInputToolbar';
 import { useWatch } from 'react-hook-form';
 
-export default { title: 'ra-input-rich-text' };
+export default { title: 'ra-input-rich-text/RichTextInput' };
 
 const FormInspector = ({ name = 'body' }) => {
     const value = useWatch({ name });
@@ -32,7 +32,7 @@ export const Basic = (props: Partial<SimpleFormProps>) => (
             onSubmit={() => {}}
             {...props}
         >
-            <RichTextInput label="Body" source="body" />
+            <RichTextInput source="body" />
             <FormInspector />
         </SimpleForm>
     </AdminContext>
@@ -45,7 +45,7 @@ export const Disabled = (props: Partial<SimpleFormProps>) => (
             onSubmit={() => {}}
             {...props}
         >
-            <RichTextInput label="Body" source="body" disabled />
+            <RichTextInput source="body" disabled />
             <FormInspector />
         </SimpleForm>
     </AdminContext>
@@ -60,6 +60,23 @@ export const Small = (props: Partial<SimpleFormProps>) => (
         >
             <RichTextInput
                 toolbar={<RichTextInputToolbar size="small" />}
+                label="Body"
+                source="body"
+            />
+            <FormInspector />
+        </SimpleForm>
+    </AdminContext>
+);
+
+export const Medium = (props: Partial<SimpleFormProps>) => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <SimpleForm
+            defaultValues={{ body: 'Hello World' }}
+            onSubmit={() => {}}
+            {...props}
+        >
+            <RichTextInput
+                toolbar={<RichTextInputToolbar size="medium" />}
                 label="Body"
                 source="body"
             />
@@ -93,10 +110,27 @@ export const FullWidth = (props: Partial<SimpleFormProps>) => (
             {...props}
         >
             <RichTextInput
-                toolbar={<RichTextInputToolbar size="large" />}
+                toolbar={<RichTextInputToolbar />}
                 label="Body"
                 source="body"
                 fullWidth
+            />
+            <FormInspector />
+        </SimpleForm>
+    </AdminContext>
+);
+
+export const Sx = (props: Partial<SimpleFormProps>) => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <SimpleForm
+            defaultValues={{ body: 'Hello World' }}
+            onSubmit={() => {}}
+            {...props}
+        >
+            <RichTextInput
+                label="Body"
+                source="body"
+                sx={{ border: '1px solid red' }}
             />
             <FormInspector />
         </SimpleForm>

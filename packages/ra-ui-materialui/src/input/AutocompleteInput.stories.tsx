@@ -32,7 +32,7 @@ import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 export default { title: 'ra-ui-materialui/input/AutocompleteInput' };
 
 const dataProvider = {
-    getOne: (resource, params) =>
+    getOne: () =>
         Promise.resolve({
             data: {
                 id: 1,
@@ -43,11 +43,11 @@ const dataProvider = {
                 year: 1869,
             },
         }),
-    update: (resource, params) => Promise.resolve(params),
+    update: (_resource, params) => Promise.resolve(params),
 } as any;
 
 const dataProviderEmpty = {
-    getOne: (resource, params) =>
+    getOne: () =>
         Promise.resolve({
             data: {
                 id: 1,
@@ -61,7 +61,7 @@ const dataProviderEmpty = {
                 year: 1869,
             },
         }),
-    update: (resource, params) => Promise.resolve(params),
+    update: (_resource, params) => Promise.resolve(params),
 } as any;
 
 const history = createMemoryHistory({ initialEntries: ['/books/1'] });
@@ -348,7 +348,7 @@ const authorsWithFirstAndLastName = [
 ];
 
 const dataProviderWithAuthorsWithFirstAndLastName = {
-    getOne: (resource, params) =>
+    getOne: () =>
         Promise.resolve({
             data: {
                 id: 1,
@@ -359,13 +359,13 @@ const dataProviderWithAuthorsWithFirstAndLastName = {
                 year: 1869,
             },
         }),
-    getMany: (resource, params) =>
+    getMany: (_resource, params) =>
         Promise.resolve({
             data: authorsWithFirstAndLastName.filter(author =>
                 params.ids.includes(author.id)
             ),
         }),
-    getList: (resource, params) =>
+    getList: (_resource, params) =>
         new Promise(resolve => {
             // eslint-disable-next-line eqeqeq
             if (params.filter.q == undefined) {
@@ -395,8 +395,8 @@ const dataProviderWithAuthorsWithFirstAndLastName = {
                 500
             );
         }),
-    update: (resource, params) => Promise.resolve(params),
-    create: (resource, params) => {
+    update: (_resource, params) => Promise.resolve(params),
+    create: (_resource, params) => {
         const newAuthor = {
             id: authorsWithFirstAndLastName.length + 1,
             name: params.data.name,
@@ -451,7 +451,7 @@ const authors = [
 ];
 
 const dataProviderWithAuthors = {
-    getOne: (resource, params) =>
+    getOne: () =>
         Promise.resolve({
             data: {
                 id: 1,
@@ -462,11 +462,11 @@ const dataProviderWithAuthors = {
                 year: 1869,
             },
         }),
-    getMany: (resource, params) =>
+    getMany: (_resource, params) =>
         Promise.resolve({
             data: authors.filter(author => params.ids.includes(author.id)),
         }),
-    getList: (resource, params) =>
+    getList: (_resource, params) =>
         new Promise(resolve => {
             // eslint-disable-next-line eqeqeq
             if (params.filter.q == undefined) {
@@ -496,8 +496,8 @@ const dataProviderWithAuthors = {
                 500
             );
         }),
-    update: (resource, params) => Promise.resolve(params),
-    create: (resource, params) => {
+    update: (_resource, params) => Promise.resolve(params),
+    create: (_resource, params) => {
         const newAuthor = {
             id: authors.length + 1,
             name: params.data.name,
@@ -539,7 +539,7 @@ export const InsideReferenceInputDefaultValue = ({
     <Admin
         dataProvider={{
             ...dataProviderWithAuthors,
-            getOne: (resource, params) =>
+            getOne: () =>
                 Promise.resolve({
                     data: {
                         id: 1,
@@ -871,7 +871,7 @@ const nullishValuesFakeData = {
     artists: [{ id: 0 }, { id: 1 }],
 };
 
-const FanList = props => {
+const FanList = () => {
     const { data } = useListContext();
     return data ? (
         <>
@@ -934,7 +934,7 @@ export const NullishValuesSupport = () => {
 };
 
 const dataProviderWithDifferentShapeInGetMany = {
-    getOne: (resource, params) =>
+    getOne: () =>
         Promise.resolve({
             data: {
                 id: 1,
@@ -945,7 +945,7 @@ const dataProviderWithDifferentShapeInGetMany = {
                 year: 1869,
             },
         }),
-    getMany: (resource, params) =>
+    getMany: (_resource, params) =>
         Promise.resolve({
             data: authors
                 .filter(author => params.ids.includes(author.id))
@@ -954,7 +954,7 @@ const dataProviderWithDifferentShapeInGetMany = {
                     newField: 'newField',
                 })),
         }),
-    getList: (resource, params) =>
+    getList: (_resource, params) =>
         new Promise(resolve => {
             // eslint-disable-next-line eqeqeq
             if (params.filter.q == undefined) {
@@ -984,8 +984,8 @@ const dataProviderWithDifferentShapeInGetMany = {
                 500
             );
         }),
-    update: (resource, params) => Promise.resolve(params),
-    create: (resource, params) => {
+    update: (_resource, params) => Promise.resolve(params),
+    create: (last_nameresource, params) => {
         const newAuthor = {
             id: authors.length + 1,
             name: params.data.name,

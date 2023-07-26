@@ -20,7 +20,7 @@
         />
         <link
             rel="stylesheet"
-            href="{{ '/css/style-v17.css' | relative_url }}"
+            href="{{ '/css/style-v18.css' | relative_url }}"
         />
         <link rel="stylesheet" href="{{ '/css/syntax.css' | relative_url }}" />
         <link rel="stylesheet" href="{{ '/css/prism.css' | relative_url }}" />
@@ -44,6 +44,47 @@
             rel="stylesheet"
             href="{{ '/css/docsearch.css' | relative_url }}"
         />
+        <!-- Newsletter form -->
+        <style>
+            @font-face {
+                font-display: block;
+                font-family: Roboto;
+                src: url(https://assets.brevo.com/font/Roboto/Latin/normal/normal/7529907e9eaf8ebb5220c5f9850e3811.woff2) format("woff2"), url(https://assets.brevo.com/font/Roboto/Latin/normal/normal/25c678feafdc175a70922a116c9be3e7.woff) format("woff")
+            }
+
+            @font-face {
+                font-display: fallback;
+                font-family: Roboto;
+                font-weight: 600;
+                src: url(https://assets.brevo.com/font/Roboto/Latin/medium/normal/6e9caeeafb1f3491be3e32744bc30440.woff2) format("woff2"), url(https://assets.brevo.com/font/Roboto/Latin/medium/normal/71501f0d8d5aa95960f6475d5487d4c2.woff) format("woff")
+            }
+
+            @font-face {
+                font-display: fallback;
+                font-family: Roboto;
+                font-weight: 700;
+                src: url(https://assets.brevo.com/font/Roboto/Latin/bold/normal/3ef7cf158f310cf752d5ad08cd0e7e60.woff2) format("woff2"), url(https://assets.brevo.com/font/Roboto/Latin/bold/normal/ece3a1d82f18b60bcce0211725c476aa.woff) format("woff")
+            }
+
+            #sib-container input:-ms-input-placeholder {
+                text-align: left;
+                font-family: "Helvetica", sans-serif;
+                color: #c0ccda;
+            }
+
+            #sib-container input::placeholder {
+                text-align: left;
+                font-family: "Helvetica", sans-serif;
+                color: #c0ccda;
+            }
+
+            #sib-container textarea::placeholder {
+                text-align: left;
+                font-family: "Helvetica", sans-serif;
+                color: #c0ccda;
+            }
+        </style>
+        <link rel="stylesheet" href="{{ '/css/newsletter.css' | relative_url }}">
     </head>
 
     <body>
@@ -113,5 +154,19 @@
             data-website-id="ef7f8242-2808-4cbf-9dff-564daa515bbd"
             src="https://analytics.marmelab.com/umami.js"
         ></script>
+
+        <!-- Newsletter form -->
+        <script>
+            window.REQUIRED_CODE_ERROR_MESSAGE = 'Please choose a country code';
+            window.LOCALE = 'en';
+            window.GENERIC_INVALID_MESSAGE = window.EMAIL_INVALID_MESSAGE = window.SMS_INVALID_MESSAGE = "The information provided is invalid. Please review the field format and try again.";
+            window.REQUIRED_ERROR_MESSAGE = "This field is required.";
+
+            var AUTOHIDE = Boolean(0);
+        </script>
+
+        <script async defer src="https://unpkg.com/typescript@5.1.3/lib/typescript.js"></script>
+        <script async defer src="https://unpkg.com/prettier@2.8.8/standalone.js"></script>
+        <script async defer src="https://unpkg.com/prettier@2.8.8/parser-babel.js"></script>
     </body>
 </html>

@@ -49,7 +49,7 @@ Also, **many-to-many relationships** are often modeled as two successive one-to-
 
 - [`<ReferenceManyToManyField>`](#referencemanytomanyfield) when the API uses a join table (e.g. a `book_authors` table with both `book_id` and `author_id` fields)
 - [`<ReferenceArrayField>`](#referencearrayfield) when the API uses an array of foreign keys (e.g. each author has a `book_ids` field, and each book has an `author_ids` field)
-- [`<ArrayField>`](#arrayfield), when the API embeds an array of records (e.g. each author has an `books` field, and each book has an `authors` field)
+- [`<ArrayField>`](#arrayfield), when the API embeds an array of records (e.g. each author has a `books` field, and each book has an `authors` field)
 
 ## Deep Field Source
 

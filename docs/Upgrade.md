@@ -665,7 +665,7 @@ To upgrade, check every instance of your code of the following hooks:
 
 And update the calls. If you're using TypeScript, your code won't compile until you properly upgrade the calls. 
 
-These hooks are now powered by react-query, so the state argument contains way more than just `isLoading` (`reset`, `status`, `refetch`, etc.). Check the [`useQuery`](https://react-query-v3.tanstack.com/reference/useQuery) and the [`useMutation`](https://react-query-v3.tanstack.com/reference/useMutation) documentation on the react-query website for more details. 
+These hooks are now powered by react-query, so the state argument contains way more than just `isLoading` (`reset`, `status`, `refetch`, etc.). Check the [`useQuery`](https://tanstack.com/query/v3/docs/react/reference/useQuery) and the [`useMutation`](https://tanstack.com/query/v3/docs/react/reference/useMutation) documentation on the react-query website for more details. 
 
 ### `useQuery`, `useMutation`, and `useQueryWithStore` Have Been Removed
 
@@ -981,7 +981,7 @@ const BookDetail = ({ id }) => {
 
 In general, you should use `isLoading`. It's false as long as the data has never been loaded (whether from the dataProvider or from the cache).
 
-The new props are actually returned by react-query's `useQuery` hook. Check [their documentation](https://react-query-v3.tanstack.com/reference/useQuery) for more information.
+The new props are actually returned by react-query's `useQuery` hook. Check [their documentation](https://tanstack.com/query/v3/docs/react/reference/useQuery) for more information.
 
 
 ## Auth Provider

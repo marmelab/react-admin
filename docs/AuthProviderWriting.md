@@ -23,11 +23,12 @@ const authProvider = {
 
 **Tip**: If you're a TypeScript user, you can check that your `authProvider` is correct at compile-time using the `AuthProvider` type.
 
-```jsx
+```tsx
 import { AuthProvider } from 'react-admin';
 
 const authProvider: AuthProvider = {
     // ...
+};
 ```
 
 ## Example
@@ -156,7 +157,7 @@ If the login fails, `authProvider.login()` should return a rejected Promise with
 
 When the user credentials are missing or become invalid, a secure API usually answers to the `dataProvider` with an HTTP error code 401 or 403.
 
-Fortunately, each time the `dataProvider` returns an error, react-admin calls the `authProvider.checkError()` method. If it returns a rejected promise, react-admin calls the `authProvider.logout()` method immediately, and asks the user to log in again.
+Fortunately, each time the `dataProvider` or the `authProvider.getPermissions` returns an error, react-admin calls the `authProvider.checkError()` method. If it returns a rejected promise, react-admin calls the `authProvider.logout()` method immediately, and asks the user to log in again.
 
 So it's up to you to decide which HTTP status codes should let the user continue (by returning a resolved promise) or log them out (by returning a rejected promise).
 
@@ -414,7 +415,7 @@ import { PreviousLocationStorageKey } from 'react-admin';
 import { Auth0Client } from './Auth0Client';
 
 export const authProvider = {
-    async login() => { /* Nothing to do here, this function will never be called */ },
+    async login() { /* Nothing to do here, this function will never be called */ },
     async checkAuth() {
         const isAuthenticated = await client.isAuthenticated();
         if (isAuthenticated) {
@@ -434,7 +435,7 @@ export const authProvider = {
     // and was redirected back to the /auth-callback route on the app
     async handleCallback() {
         const query = window.location.search;
-        if (!query.includes('code=') && ¡query.includes('state=')) {
+        if (!query.includes('code=') && !query.includes('state=')) {
             throw new Error('Failed to handle login callback.');
         }
         // If we did receive the Auth0 parameters,
@@ -451,7 +452,7 @@ You can override this behavior by returning an object with a `redirectTo` proper
 
 ```jsx
 async handleCallback() {
-    if (!query.includes('code=') && ¡query.includes('state=')) {
+    if (!query.includes('code=') && !query.includes('state=')) {
         throw new Error('Failed to handle login callback.');
     }
     // If we did receive the Auth0 parameters,
@@ -501,5 +502,5 @@ When the auth backend returns an error, the Auth Provider should return a reject
 | `logout`         | Auth backend failed to log the user out   | `void` |
 | `getIdentity`    | Auth backend failed to return identity    | `Object` free format - returned as `error` when `useGetIdentity()` is called | 
 | `handleCallback` | Failed to authenticate users after redirection | `void | { redirectTo?: string, logoutOnFailure?: boolean, message?: string }` |
-| `getPermissions` | Auth backend failed to return permissions | `Object` free format - returned as `error` when `usePermissions()` is called |
+| `getPermissions` | Auth backend failed to return permissions | `Object` free format - returned as `error` when `usePermissions()` is called. The error will be passed to `checkError` |
 

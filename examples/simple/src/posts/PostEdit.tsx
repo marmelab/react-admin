@@ -189,7 +189,7 @@ const PostEdit = () => {
                 <TabbedForm.Tab label="post.form.body">
                     <RichTextInput
                         source="body"
-                        label=""
+                        label={false}
                         validate={required()}
                         fullWidth
                     />

@@ -168,7 +168,7 @@ const PostCreate = () => (
 ```
 {% endraw %}
 
-You can also use `mutationOptions` to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://react-query-v3.tanstack.com/reference/useMutation) in the react-query website for a list of the possible options.
+You can also use `mutationOptions` to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://tanstack.com/query/v3/docs/react/reference/useMutation) in the react-query website for a list of the possible options.
 
 Let's see an example with the success side effect. By default, when the save action succeeds, react-admin shows a notification, and redirects to the new record edit page. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
 
@@ -569,3 +569,45 @@ Note: In order to get the `mutationOptions` being considered, you have to set th
 * If you want to allow creation from the `list` page, use [the `<CreateDialog>` component](./CreateDialog.md)
 * If you want to allow creation from another page, use [the `<CreateInDialogButton>` component](./CreateInDialogButton.md)
 
+## Linking Two Inputs
+
+Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
+
+React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://react-hook-form.com/docs/usewatch) hook.
+
+```jsx
+import * as React from 'react';
+import { Edit, SimpleForm, SelectInput } from 'react-admin';
+import { useWatch } from 'react-hook-form';
+
+const countries = ['USA', 'UK', 'France'];
+const cities = {
+    USA: ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'],
+    UK: ['London', 'Birmingham', 'Glasgow', 'Liverpool', 'Bristol'],
+    France: ['Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice'],
+};
+const toChoices = items => items.map(item => ({ id: item, name: item }));
+
+const CityInput = props => {
+    const country = useWatch({ name: 'country' });
+    return (
+        <SelectInput
+            choices={country ? toChoices(cities[country]) : []}
+            {...props}
+        />
+    );
+};
+
+const OrderEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <SelectInput source="country" choices={toChoices(countries)} />
+            <CityInput source="cities" />
+        </SimpleForm>
+    </Edit>
+);
+
+export default OrderEdit;
+```
+
+**Tip:** If you'd like to avoid creating an intermediate component like `<CityInput>`, or are using an `<ArrayInput>`, you can use the [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs) component as an alternative.

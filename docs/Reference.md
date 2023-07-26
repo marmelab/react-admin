@@ -65,7 +65,7 @@ title: "Index"
 * [`<EditDialog>`](./EditDialog)<img class="icon" src="./img/premium.svg" />
 * [`<EditInDialogButton>`](./EditInDialogButton.md)<img class="icon" src="./img/premium.svg" />
 * [`<EmailField>`](./EmailField.md)
-* [`<Empty>`](./List.md#empty-empty-page-component)
+* [`<Empty>`](./List.md#empty)
 
 **- F -**
 * [`<FileField>`](./FileField.md)
@@ -121,7 +121,7 @@ title: "Index"
 * [`<NumberInput>`](./NumberInput.md)
 
 **- P -**
-* [`<Pagination>`](./List.md#pagination-pagination-component)
+* [`<Pagination>`](./List.md#pagination)
 * [`<PasswordInput>`](./PasswordInput.md)
 * [`<PreferencesSetter>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#preferencessetter-setting-preferences-declaratively)<img class="icon" src="./img/premium.svg" />
 
@@ -166,6 +166,7 @@ title: "Index"
 * [`<SimpleList>`](./SimpleList.md)
 * [`<SimpleShowLayout>`](./SimpleShowLayout.md)
 * [`<SingleFieldList>`](./SingleFieldList.md)
+* [`<SmartRichTextInput>`](./SmartRichTextInput.md)<img class="icon" src="./img/premium.svg" />
 * [`<SortButton>`](./SortButton.md)
 * [`<StackedFilters>`](./StackedFilters.md)<img class="icon" src="./img/premium.svg" />
 
@@ -276,6 +277,7 @@ title: "Index"
 * [`useRedirect`](./useRedirect.md)
 * [`useReference`](./useGetOne.md#aggregating-getone-calls)
 * [`useRefresh`](./useRefresh.md)
+* [`useRegisterMutationMiddleware`](./useRegisterMutationMiddleware.md)
 * [`useRemoveFromStore`](./useRemoveFromStore.md)
 * [`useResetStore`](./useResetStore.md)
 * [`useResourceAppLocation`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useresourceapplocation-access-current-resource-app-location)<img class="icon" src="./img/premium.svg" />
@@ -298,14 +300,15 @@ title: "Index"
 * [`useTranslate`](./useTranslate.md)
 
 **- U -**
-* [`useUpdate`](./useUpdate.md)
-* [`useUpdateMany`](./useUpdateMany.md)
+* [`useUnique`](./useUnique.md)
 * [`useUnlock`](./useUnlock.md)<img class="icon" src="./img/premium.svg" />
 * [`useUnselect`](./useUnselect.md)
 * [`useUnselectAll`](./useUnselectAll.md)
+* [`useUpdate`](./useUpdate.md)
+* [`useUpdateMany`](./useUpdateMany.md)
 
 **- W -**
 * [`useWarnWhenUnsavedChanges`](./EditTutorial.md#warning-about-unsaved-changes)
-* [ `withLifecycleCallbacks`](./withLifecycleCallbacks.md)
+* [`withLifecycleCallbacks`](./withLifecycleCallbacks.md)
 
 </div>

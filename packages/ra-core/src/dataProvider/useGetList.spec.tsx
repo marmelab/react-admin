@@ -15,7 +15,6 @@ const UseGetList = ({
     options = {},
     meta = undefined,
     callback = null,
-    ...rest
 }) => {
     const hookValue = useGetList(
         resource,

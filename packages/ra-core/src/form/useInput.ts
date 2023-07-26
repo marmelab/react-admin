@@ -84,24 +84,24 @@ export const useInput = <ValueType = any>(
     // they may reset their default values which would override the input default value.
     // This hook ensures that the input default value is applied when a new record is loaded but has
     // no value for the input.
-    useApplyInputDefaultValues(props);
+    useApplyInputDefaultValues({ inputProps: props });
 
     const onBlur = useEvent((...event: any[]) => {
+        controllerField.onBlur();
         if (initialOnBlur) {
             initialOnBlur(...event);
         }
-        controllerField.onBlur();
     });
 
     const onChange = useEvent((...event: any[]) => {
-        if (initialOnChange) {
-            initialOnChange(...event);
-        }
         const eventOrValue = (props.type === 'checkbox' &&
         event[0]?.target?.value === 'on'
             ? event[0].target.checked
             : event[0]?.target?.value ?? event[0]) as any;
         controllerField.onChange(parse ? parse(eventOrValue) : eventOrValue);
+        if (initialOnChange) {
+            initialOnChange(...event);
+        }
     });
 
     const field = {

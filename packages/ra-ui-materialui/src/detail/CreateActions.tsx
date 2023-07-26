@@ -39,12 +39,14 @@ export const CreateActions = ({ className, ...rest }: CreateActionsProps) => {
     );
 };
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const sanitizeRestProps = ({
     className = null,
     hasList = null,
     resource = null,
     ...rest
 }) => rest;
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 export interface CreateActionsProps {
     className?: string;

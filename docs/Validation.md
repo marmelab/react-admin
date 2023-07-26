@@ -108,6 +108,7 @@ Alternatively, you can specify a `validate` prop directly in `<Input>` component
 * `email(message)` to check that the input is a valid email address,
 * `regex(pattern, message)` to validate that the input matches a regex,
 * `choices(list, message)` to validate that the input is within a given list,
+* `unique()` to validate that the input is unique (see [`useUnique`](./useUnique.md)),
 
 Example usage:
 

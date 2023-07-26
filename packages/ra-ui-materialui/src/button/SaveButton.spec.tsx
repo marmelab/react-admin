@@ -316,7 +316,7 @@ describe('<SaveButton />', () => {
                 }),
         });
 
-        const validateAsync = async (value, allValues) => {
+        const validateAsync = async value => {
             await new Promise(resolve => setTimeout(resolve, 250));
             if (value === 'ipsum') {
                 return 'Already used!';

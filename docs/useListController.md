@@ -39,10 +39,10 @@ const MyList = () => {
 * [`exporter`](./List.md#exporter): exporter function
 * [`filter`](./List.md#filter-permanent-filter): permanent filter, forced over the user filter
 * [`filterDefaultValues`](./List.md#filterdefaultvalues): default values for the filter form
-* [`perPage`](./List.md#perpage-pagination-size): number of results per page
+* [`perPage`](./List.md#perpage): number of results per page
 * [`queryOptions`](./List.md#queryoptions): react-query options for the useQuery call
 * [`resource`](./List.md#resource): resource name, e.g. 'posts' ; defaults to the current resource context
-* [`sort`](./List.md#sort-default-sort-field--order), current sort value, e.g. `{ field: 'published_at', order: 'DESC' }`
+* [`sort`](./List.md#sort), current sort value, e.g. `{ field: 'published_at', order: 'DESC' }`
 * [`storeKey`](#storekey): key used to differentiate the list from another sharing the same resource, in store managed states
 
 Here are their default values:
@@ -135,6 +135,9 @@ const FlopPosts = (
 );
 ```
 {% endraw %}
+
+You can disable this feature by setting the `storeKey` prop to `false`. When disabled, parameters will not be persisted in the store.
+
 
 ## Return Value
 

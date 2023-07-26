@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import { SxProps, styled } from '@mui/material/styles';
 import { ReactElement, ReactNode } from 'react';
 import {
     TranslatableContextProvider,
     useTranslatable,
     UseTranslatableOptions,
 } from 'ra-core';
+import clsx from 'clsx';
 import { TranslatableInputsTabs } from './TranslatableInputsTabs';
 import { TranslatableInputsTabContent } from './TranslatableInputsTabContent';
 
@@ -29,7 +30,7 @@ import { TranslatableInputsTabContent } from './TranslatableInputsTabContent';
  * <TranslatableInputs locales={['en', 'fr']}>
  *     <TextInput source="title" />
  *     <RichTextInput source="description" />
- * </Translatable>
+ * </TranslatableInputs>
  *
  * @example <caption>With a custom language selector</caption>
  * <TranslatableInputs
@@ -37,7 +38,7 @@ import { TranslatableInputsTabContent } from './TranslatableInputsTabContent';
  *     locales={['en', 'fr']}
  * >
  *     <TextInput source="title" />
- * </Translatable>
+ * </TranslatableInputs>
  *
  * const MyLanguageSelector = () => {
  *     const {
@@ -74,11 +75,17 @@ export const TranslatableInputs = (
         children,
         variant,
         margin,
+        sx,
     } = props;
     const context = useTranslatable({ defaultLocale, locales });
 
     return (
-        <Root className={className}>
+        <Root
+            className={clsx(className, TranslatableInputsClasses.root, {
+                [TranslatableInputsClasses.fullWidth]: props.fullWidth,
+            })}
+            sx={sx}
+        >
             <TranslatableContextProvider value={context}>
                 {selector}
                 {locales.map(locale => (
@@ -101,13 +108,19 @@ export interface TranslatableInputsProps extends UseTranslatableOptions {
     className?: string;
     selector?: ReactElement;
     children: ReactNode;
+    fullWidth?: boolean;
     groupKey?: string;
     margin?: 'none' | 'normal' | 'dense';
     variant?: 'standard' | 'outlined' | 'filled';
+    sx?: SxProps;
 }
 
 const PREFIX = 'RaTranslatableInputs';
 
+export const TranslatableInputsClasses = {
+    root: `${PREFIX}-root`,
+    fullWidth: `${PREFIX}-fullWidth`,
+};
 const Root = styled('div', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
@@ -115,4 +128,8 @@ const Root = styled('div', {
     flexGrow: 1,
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(0.5),
+
+    [`&.${TranslatableInputsClasses.fullWidth}`]: {
+        width: '100%',
+    },
 }));

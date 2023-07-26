@@ -45,4 +45,5 @@ export * from './useNotifyIsFormInvalid';
 export * from './useAugmentedForm';
 export * from './useInput';
 export * from './useSuggestions';
+export * from './useUnique';
 export * from './useWarnWhenUnsavedChanges';
