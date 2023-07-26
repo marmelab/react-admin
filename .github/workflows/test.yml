@@ -113,6 +113,7 @@ jobs:
     runs-on: ubuntu-latest
     name: GreenFrame
     needs: [e-commerce]
+    if: success() && github.ref == 'refs/heads/master'
     steps:
       # To use this repository's private action,
       # you must check out the repository
