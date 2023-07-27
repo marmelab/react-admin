@@ -14,6 +14,9 @@ Next.js 13 proposes 2 ways to build a React project:
 
 React-admin supports both ways. 
 
+## Create a Next.js application
+Let's start by creating a new Next.js project called nextjs-react-admin.
+
 ## Prevent SSR
 React-admin is designed as a Single-Page Application, rendered on the client-side. It comes with its own routing sytem, which conflicts with the Next.js routing system. So we must prevent Next.js from rendering the react-admin component on the server-side. 
 
