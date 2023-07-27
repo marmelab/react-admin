@@ -278,7 +278,7 @@ Communicating between components is a common problem in React applications, espe
 
 Whenever a react-admin component fetches data or defines a callback, the component creates a context and puts the data and callback in it.
 
-For instance, the `<Admin>` component creates an `I18NProviderContext`, which exposes the `translate` function. All components in the application can use the `useTranslate` hok, which reads the `I18NProviderContext`, to translate their labels and messages. 
+For instance, the `<Admin>` component creates an `I18NProviderContext`, which exposes the `translate` function. All components in the application can use the `useTranslate` hook, which reads the `I18NProviderContext`, to translate their labels and messages. 
 
 ```jsx
 import { useTranslate } from 'react-admin';
@@ -298,7 +298,7 @@ import { useRecordContext } from 'react-admin';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 
 const LocationField = ({ source }) => {
-    const record = useRecordContext(props);
+    const record = useRecordContext(props); // use the RecordContext created by <Show>
     if (!record) return null;
 
     return (
@@ -313,7 +313,7 @@ const LocationField = ({ source }) => {
 };
 
 const StoreShowPage = () => (
-    <Show>
+    <Show> {/* create a RecordContext */}
         <SimpleShowLayout>
             <TextField source="name" />
             <LocationField source="location" />
@@ -325,6 +325,8 @@ const StoreShowPage = () => (
 This simple approach removes the need for a dependency injection system. 
 
 So when you write a component that need to access data or callbacks defined higher in the render tree, you can always find a context to get it. 
+
+Contexts are one of the key concepts in React Admin. If you are not familiar with them, do not hesitate to read the [React documentation on Context](https://react.dev/learn/passing-data-deeply-with-context).
 
 ## User Experience Is King
 
