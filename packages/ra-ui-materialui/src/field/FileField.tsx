@@ -67,7 +67,7 @@ export const FileField = <
                     const srcValue = get(file, src) || title;
 
                     return (
-                        <li key={index} onClick={e => e.stopPropagation()}>
+                        <li key={index}>
                             <Link
                                 href={srcValue}
                                 title={fileTitleValue}
@@ -76,6 +76,7 @@ export const FileField = <
                                 ping={ping}
                                 rel={rel}
                                 variant="body2"
+                                onClick={e => e.stopPropagation()}
                             >
                                 {fileTitleValue}
                             </Link>
