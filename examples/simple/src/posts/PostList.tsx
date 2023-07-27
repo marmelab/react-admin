@@ -157,6 +157,7 @@ const PostListDesktop = () => (
         sort={{ field: 'published_at', order: 'DESC' }}
         exporter={exporter}
         actions={<PostListActions />}
+        disableSyncWithLocation
     >
         <StyledDatagrid
             bulkActionButtons={<PostListBulkActions />}

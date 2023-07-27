@@ -1,7 +1,8 @@
 import { useCallback } from 'react';
 
-import { Identifier } from '../types';
 import { useBasename } from './useBasename';
+import { useResourceDefinitions } from '../core/useResourceDefinitions';
+import { CreatePathParams } from '../types';
 
 /**
  * Get a callback to create a link to a given page in the admin app.
@@ -39,8 +40,12 @@ import { useBasename } from './useBasename';
  */
 export const useCreatePath = () => {
     const basename = useBasename();
+    const definitions = useResourceDefinitions();
     return useCallback(
         ({ resource, id, type }: CreatePathParams): string => {
+            const createPath = definitions?.[resource]?.createPath;
+            if (createPath) return createPath({ type, resource, id });
+
             switch (type) {
                 case 'list':
                     return removeDoubleSlashes(`${basename}/${resource}`);
@@ -72,17 +77,8 @@ export const useCreatePath = () => {
                     return type;
             }
         },
-        [basename]
+        [basename, definitions]
     );
 };
-
-type AnyString = string & {};
-export type CreatePathType = 'list' | 'edit' | 'show' | 'create' | AnyString;
-
-export interface CreatePathParams {
-    type: CreatePathType;
-    resource: string;
-    id?: Identifier;
-}
 
 export const removeDoubleSlashes = (path: string) => path.replace('//', '/');

@@ -14,6 +14,8 @@ import Layout from './Layout';
 import posts from './posts';
 import users from './users';
 import tags from './tags';
+import { Tab1, Tab2 } from './test';
+import { ResourceWithReg } from './ResourceWithReg';
 
 render(
     <React.StrictMode>
@@ -30,8 +32,12 @@ render(
                     element={<CustomRouteNoLayout title="Posts from /custom" />}
                 />
             </CustomRoutes>
-            <Resource name="posts" {...posts} />
-            <Resource name="comments" {...comments} />
+            <ResourceWithReg name="posts" {...posts} />
+            <CustomRoutes>
+                <Route path="/tabs/1/*" element={<Tab1 />} />
+                <Route path="/tabs/2/*" element={<Tab2 />} />
+            </CustomRoutes>
+            <ResourceWithReg name="comments" {...comments} />
             <Resource name="tags" {...tags} />
             {permissions => (
                 <>

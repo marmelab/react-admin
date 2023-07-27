@@ -152,7 +152,7 @@ const CommentMobileList = () => (
 );
 
 const CommentList = () => (
-    <ListBase perPage={6} exporter={exporter}>
+    <ListBase perPage={6} exporter={exporter} disableSyncWithLocation>
         <ListView />
     </ListBase>
 );

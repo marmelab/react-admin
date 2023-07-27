@@ -289,6 +289,13 @@ export interface ResourceDefinition<OptionsType extends ResourceOptions = any> {
         | ReactElement
         | RecordToStringFunction
         | string;
+    readonly createPath?: (params: CreatePathParams) => string;
+    /**
+     * this attributes does not have to be present in ra-core; can be defined in user code;
+     * included here for now, since it make it easier to demonstrate this feature
+     * see ResourceWithReg component in simple app for usage info
+     */
+    readonly routeType?: 'default' | `childResource` | 'resourceWithParent';
 }
 
 /**
@@ -359,6 +366,23 @@ export interface ResourceProps {
     recordRepresentation?: ReactElement | RecordToStringFunction | string;
     options?: ResourceOptions;
     children?: ReactNode;
+    /** if provided, this callback is used to build routes inside useCreatePath() */
+    createPath?: (params: CreatePathParams) => string;
+    /**
+     * this attributes does not have to be present in ra-core; can be defined in user code;
+     * included here for now, since it make it easier to demonstrate this feature
+     * see ResourceWithReg component in simple app for usage info
+     */
+    routeType?: 'default' | `childResource` | 'resourceWithParent';
+}
+
+type AnyString = string & {};
+export type CreatePathType = 'list' | 'edit' | 'show' | 'create' | AnyString;
+
+export interface CreatePathParams {
+    type: CreatePathType;
+    resource: string;
+    id?: Identifier;
 }
 
 export type Exporter = (
