@@ -62,7 +62,7 @@ export const List = <RecordType extends RaRecord = any>({
     disableAuthentication,
     disableSyncWithLocation,
     exporter,
-    filter = {},
+    filter = defaultFilter,
     filterDefaultValues,
     perPage = 10,
     queryOptions,
@@ -121,3 +121,5 @@ List.propTypes = {
     hasCreate: PropTypes.bool,
     resource: PropTypes.string,
 };
+
+const defaultFilter = {};
