@@ -5,28 +5,34 @@ title: "The TranslatableFields Component"
 
 # `<TranslatableFields>`
 
-You may have fields which are translated in multiple languages and want users to verify each translation. To display them, you can use the `<TranslatableFields>` component, which expects the translatable values to have the following structure:
+You may have fields which are translated in multiple languages and want users to verify each translation. To display them, you can use the `<TranslatableFields>` component.
+
+![TranslatableFields addLabel](./img/TranslatableFields.png)
+
+## Usage
+
+`<TranslatableFields>` expects the translatable values to have the following structure:
 
 ```js
 {
-    name: {
-        en: 'The english value',
-        fr: 'The french value',
-        tlh: 'The klingon value',
+    title: {
+        en: 'Doctors Without Borders',
+        fr: 'Médecins sans frontières',
     },
     description: {
-        en: 'The english value',
-        fr: 'The french value',
-        tlh: 'The klingon value',
-    }
+        en:
+            'International humanitarian medical non-governmental organisation of French origin',
+        fr:
+            "Organisation non gouvernementale (ONG) médicale humanitaire internationale d'origine française fondée en 1971 à Paris",
+    },
 }
 ```
 
-This is how to use it:
+Then, use `<TranslatableFields>` like so:
 
 ```jsx
 <TranslatableFields locales={['en', 'fr']}>
-    <TextField source="name" />
+    <TextField source="title" />
     <TextField source="description" />
 </TranslatableFields>
 ```
@@ -35,7 +41,7 @@ React-admin uses the user locale as the default locale in this field. You can ov
 
 ```jsx
 <TranslatableFields locales={['en', 'fr']} defaultLocale="fr">
-    <TextField source="name" />
+    <TextField source="title" />
     <TextField source="description" />
 </TranslatableFields>
 ```
