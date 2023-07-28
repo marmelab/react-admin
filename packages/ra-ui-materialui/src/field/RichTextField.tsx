@@ -49,7 +49,11 @@ const RichTextFieldImpl = <
             {...sanitizeFieldRestProps(rest)}
         >
             {value == null && emptyText ? (
-                translate(emptyText, { _: emptyText })
+                typeof emptyText === 'string' ? (
+                    translate(emptyText, { _: emptyText })
+                ) : (
+                    emptyText
+                )
             ) : stripTags ? (
                 removeTags(value)
             ) : (

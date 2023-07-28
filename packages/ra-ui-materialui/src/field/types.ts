@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { TableCellProps } from '@mui/material/TableCell';
 import { Call, Objects } from 'hotscript';
@@ -25,7 +25,7 @@ export interface FieldProps<
      */
     formClassName?: string;
     textAlign?: TextAlign;
-    emptyText?: string;
+    emptyText?: string | ReactNode;
     fullWidth?: boolean;
     record?: RecordType;
     resource?: string;

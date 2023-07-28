@@ -28,7 +28,11 @@ const TextFieldImpl = <
             {value != null && typeof value !== 'string'
                 ? JSON.stringify(value)
                 : value ||
-                  (emptyText ? translate(emptyText, { _: emptyText }) : null)}
+                  (emptyText
+                      ? typeof emptyText === 'string'
+                          ? translate(emptyText, { _: emptyText })
+                          : emptyText
+                      : null)}
         </Typography>
     );
 };

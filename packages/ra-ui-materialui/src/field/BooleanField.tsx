@@ -70,7 +70,10 @@ const BooleanFieldImpl = <
             className={className}
             {...sanitizeFieldRestProps(rest)}
         >
-            {emptyText && translate(emptyText, { _: emptyText })}
+            {emptyText &&
+                (typeof emptyText === 'string'
+                    ? translate(emptyText, { _: emptyText })
+                    : emptyText)}
         </Typography>
     );
 };

@@ -71,7 +71,10 @@ export const ReferenceField = <
     return id == null ? (
         emptyText ? (
             <Typography component="span" variant="body2">
-                {emptyText && translate(emptyText, { _: emptyText })}
+                {emptyText &&
+                    (typeof emptyText === 'string'
+                        ? translate(emptyText, { _: emptyText })
+                        : emptyText)}
             </Typography>
         ) : null
     ) : (
@@ -201,7 +204,12 @@ export const ReferenceFieldView = <
     }
     if (!referenceRecord) {
         return emptyText ? (
-            <>{emptyText && translate(emptyText, { _: emptyText })}</>
+            <>
+                {emptyText &&
+                    (typeof emptyText === 'string'
+                        ? translate(emptyText, { _: emptyText })
+                        : emptyText)}
+            </>
         ) : null;
     }
 
