@@ -69,7 +69,7 @@ export const InfiniteList = <RecordType extends RaRecord = any>({
     disableAuthentication,
     disableSyncWithLocation,
     exporter,
-    filter = {},
+    filter = defaultFilter,
     filterDefaultValues,
     pagination = defaultPagination,
     perPage = 10,
@@ -97,6 +97,7 @@ export const InfiniteList = <RecordType extends RaRecord = any>({
 );
 
 const defaultPagination = <InfinitePagination />;
+const defaultFilter = {};
 
 export interface InfiniteListProps<RecordType extends RaRecord = any>
     extends InfiniteListControllerProps<RecordType>,
