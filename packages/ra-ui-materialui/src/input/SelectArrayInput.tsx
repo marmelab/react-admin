@@ -104,7 +104,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         onBlur,
         onChange,
         onCreate,
-        options = {},
+        options = defaultOptions,
         optionText = 'name',
         optionValue = 'id',
         parse,
@@ -455,3 +455,5 @@ const StyledFormControl = styled(FormControl, {
         marginRight: theme.spacing(0.5),
     },
 }));
+
+const defaultOptions = {};
