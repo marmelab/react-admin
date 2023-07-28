@@ -92,7 +92,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         margin = 'dense',
         onBlur,
         onChange,
-        options = {},
+        options = defaultOptions,
         optionText = 'name',
         optionValue = 'id',
         parse,
@@ -291,3 +291,5 @@ const StyledFormControl = styled(FormControl, {
         transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
     },
 }));
+
+const defaultOptions = {};
