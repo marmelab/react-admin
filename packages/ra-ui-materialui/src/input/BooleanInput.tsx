@@ -30,7 +30,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
         resource,
         source,
         validate,
-        options = {},
+        options = defaultOptions,
         sx,
         ...rest
     } = props;
@@ -119,3 +119,5 @@ export type BooleanInputProps = CommonInputProps &
     Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'> & {
         options: SwitchProps;
     };
+
+const defaultOptions = {};
