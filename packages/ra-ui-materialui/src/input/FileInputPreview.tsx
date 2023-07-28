@@ -12,7 +12,7 @@ export const FileInputPreview = (props: FileInputPreviewProps) => {
         children,
         className,
         onRemove,
-        file = undefined,
+        file,
         removeIcon: RemoveIcon = RemoveCircle,
         ...rest
     } = props;
