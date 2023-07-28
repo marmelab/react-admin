@@ -50,8 +50,8 @@ export const ListActions = (props: ListActionsProps) => {
         className,
         filters: filtersProp,
         hasCreate: _,
-        selectedIds = [],
-        onUnselectItems = () => null,
+        selectedIds = defaultSelectedIds,
+        onUnselectItems = defaultOnUnselectItems,
         ...rest
     } = props;
 
@@ -136,3 +136,6 @@ export interface ListActionsProps extends ToolbarProps {
     showFilter?: (filterName: string, defaultValue: any) => void;
     total?: number;
 }
+
+const defaultSelectedIds = [];
+const defaultOnUnselectItems = () => null;
