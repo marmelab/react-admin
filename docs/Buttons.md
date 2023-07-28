@@ -269,6 +269,33 @@ To override the style of all instances of `<FilterButton>` using the [Material U
 
 ## Record Buttons
 
+### `<UpdateButton>`
+
+This component allows to create a button that updates a record by calling the [`useUpdate hook`](./useUpdate.md).
+
+{% raw %}
+```jsx
+import { Edit, SimpleForm, TextInput, TopToolbar, UpdateButton } from 'react-admin';
+
+const PostEditActions = () => (
+    <TopToolbar>
+        <UpdateButton label="Reset views" data={{ views: 0 }} />
+    </TopToolbar>
+);
+
+export const PostEdit = () => (
+    <Edit actions={<PostEditActions>}>
+        <SimpleForm>
+            <TextInput source="title" />
+            <TextInput source="body" />
+        </SimpleForm>
+    </Edit>
+);
+```
+{% endraw %}
+
+See [its documentation](./UpdateButton.md) for more details.
+
 ### `<DeleteButton>`
 
 ### `<DeleteWithConfirmButton>`
@@ -324,31 +351,6 @@ The ripple effect can cause [performance issues](https://github.com/marmelab/rea
 It's worth noting that removing the ripple will cause accessibility issues, including a lack of focus states during tab navigating for components like `BooleanInput` and `CheckboxGroupInput`. 
 
 Note: The `disableRipple` was set to `true` in React Admin for a time, but was reimplemented due to accessibility concerns. If you'd like to reimplement the static ripple colour effect, you can use the [React Admin's previous implementation](https://github.com/marmelab/react-admin/blob/994079cbca810a2e74d85329e684811645b04ae2/packages/ra-ui-materialui/src/defaultTheme.ts#L31) as a starting point. [The Material UI docs](https://mui.com/material-ui/api/button-base/#props) also gives details on how to reimplement focus styles using the `Mui-focusVisible` class.
-
-### `<UpdateButton>`
-
-This component allows to create a button that updates a record by calling the [`useUpdate hook`](./useUpdate.md).
-
-```jsx
-import { Edit, SimpleForm, TextInput, TopToolbar, UpdateButton } from 'react-admin';
-
-const PostEditActions = () => (
-    <TopToolbar>
-        <UpdateButton label="Reset views" data={{ views: 0 }} />
-    </TopToolbar>
-);
-
-export const PostEdit = () => (
-    <Edit actions={<PostEditActions>}>
-        <SimpleForm>
-            <TextInput source="title" />
-            <TextInput source="body" />
-        </SimpleForm>
-    </Edit>
-);
-```
-
-See [its documentation](./UpdateButton.md) for more details.
 
 ## Miscellaneous
 

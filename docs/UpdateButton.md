@@ -17,6 +17,7 @@ This component allows to create a button that updates a record by calling the [`
 
 Use `<UpdateButton>` inside the actions toolbar of the [`Edit`](./Edit.md#actions) or [`Show`](./Show.md#actions) views.
 
+{% raw %}
 ```jsx
 import { Edit, SimpleForm, TextInput, TopToolbar, UpdateButton } from 'react-admin';
 
@@ -35,6 +36,7 @@ export const PostEdit = () => (
     </Edit>
 );
 ```
+{% endraw %}
 
 ## Props
 
