@@ -75,7 +75,6 @@ export const TranslatableInputs = (
         groupKey = '',
         selector = <TranslatableInputsTabs groupKey={groupKey} />,
         children,
-        variant,
         margin,
         sx,
         StackProps = {},
@@ -114,7 +113,6 @@ export interface TranslatableInputsProps extends UseTranslatableOptions {
     fullWidth?: boolean;
     groupKey?: string;
     margin?: 'none' | 'normal' | 'dense';
-    variant?: 'standard' | 'outlined' | 'filled';
     sx?: SxProps;
     StackProps?: StackProps;
 }
