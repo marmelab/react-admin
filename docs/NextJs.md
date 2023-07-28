@@ -17,6 +17,29 @@ React-admin supports both ways.
 ## Create a Next.js application
 Let's start by creating a new Next.js project called nextjs-react-admin.
 
+```bash
+npx create-next-app@latest
+```
+A prompt will asks you some questions, feel free to choose the options according to your needs. 
+To easily bootstap the `<Admin>` application, regardless of Next.js router system (eg: Page Router or App router), we will choose to create a `src` folder :
+
+![Install Next.js with command line](./img/install-next-js-command-line.png)
+
+This creates a project with the following folder structure:
+
+| Page Router                                                                                                 | App Router                                                                                                |
+|-------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
+| ![ Next Admin folder structure with Page Router ]( ./img/next-admin-with-page-router-folder-structure.png ) | ![ Next Admin folder structure with Page Router ]( ./img/next-admin-with-app-router-folder-structure.png ) |
+
+### Adding React-Admin Dependencies
+
+Add the `react-admin` npm package, as well as a data provider package. In this example, we'll use `ra-data-json-server` to connect to a test API provided by [JSONPlaceholder](https://jsonplaceholder.typicode.com).
+
+```bash
+cd next-admin
+yarn add react-admin ra-data-json-server
+```
+
 ## Prevent SSR
 React-admin is designed as a Single-Page Application, rendered on the client-side. It comes with its own routing sytem, which conflicts with the Next.js routing system. So we must prevent Next.js from rendering the react-admin component on the server-side. 
 
