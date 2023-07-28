@@ -13,7 +13,7 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
         {
             children,
             className,
-            data = [],
+            data = defaultData,
             expand,
             hasBulkActions = false,
             hover,
@@ -111,6 +111,8 @@ export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
     selectedIds?: Identifier[];
     isRowSelectable?: (record: RaRecord) => boolean;
 }
+
+const defaultData = [];
 
 // trick Material UI Table into thinking this is one of the child type it supports
 // @ts-ignore
