@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import { CreatePathType, useCreatePath } from './useCreatePath';
+import { useCreatePath } from './useCreatePath';
 import { AtRoot, SubPath } from './useCreatePath.stories';
-import { Identifier } from '../types';
+import { Identifier, CreatePathType } from '../types';
 
 describe('useCreatePath', () => {
     beforeEach(() => {

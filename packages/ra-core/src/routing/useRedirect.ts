@@ -2,9 +2,9 @@ import { useCallback } from 'react';
 import { useNavigate, To } from 'react-router-dom';
 import { parsePath } from 'history';
 
-import { Identifier, RaRecord } from '../types';
+import { Identifier, RaRecord, CreatePathType } from '../types';
 import { useBasename } from './useBasename';
-import { CreatePathType, useCreatePath } from './useCreatePath';
+import { useCreatePath } from './useCreatePath';
 
 type RedirectToFunction = (
     resource?: string,
