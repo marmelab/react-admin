@@ -9,6 +9,8 @@ Thousands of new react-admin applications are created every month. [Many develop
 
 We're doing our best to keep it a convivial place where people want to hang out and help/be helped. 
 
+## Newsletter
+
 {% include newsletter.html %}
 
 ## Discord

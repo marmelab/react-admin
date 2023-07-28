@@ -756,107 +756,6 @@ const PostList = () => (
 
 **Tip**: The `Datagrid` component `classes` can also be customized for all instances of the component with its global css name `"RaDatagrid"` as [describe here](https://marmelab.com/blog/2019/12/18/react-admin-3-1.html#theme-overrides)
 
-## Styling Specific Columns
-
-If you want to style a particular column, you can take advantage of the generated class names per column. For instance, for a column formed for a `<TextField source="title" />` both the column header and the cells will have the class `column-title`.
-
-Using the `sx` prop, the column customization is just one line:
-
-{% raw %}
-```jsx
-import { List, Datagrid, TextField } from 'react-admin';
-
-const PostList = () => (
-    <List>
-        <Datagrid
-            sx={{
-                '& .column-title': { backgroundColor: '#fee' },
-            }}
-        >
-            <TextField source="id" />
-            <TextField source="title" /> {/* will have different background */}
-            <TextField source="author" />
-            <TextField source="year" />
-        </Datagrid>
-    </List>
-);
-```
-{% endraw %}
-
-You can even style the header cells differently by passing a more specific CSS selector (e.g. `& tr.column-title`).
-
-A common practice is to hide certain columns on smaller screens. You can use the same technique:
-
-{% raw %}
-```jsx
-import { List, Datagrid, TextField } from 'react-admin';
-
-const PostList = () => (
-    <List>
-        <Datagrid
-            sx={{
-                '& .column-title': {
-                    sm: { display: 'none' },
-                    md: { display: 'table-cell' },
-                },
-            }}
-        >
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="year" />
-        </Datagrid>
-    </List>
-);
-```
-{% endraw %}
-
-## Showing / Hiding Columns
-
-The [`<SelectColumnsButton>`](./SelectColumnsButton.md) component lets users hide, show, and reorder datagrid columns. 
-
-<video controls autoplay playsinline muted loop>
-  <source src="./img/SelectColumnsButton.webm" type="video/webm"/>
-  <source src="./img/SelectColumnsButton.mp4" type="video/mp4"/>
-  Your browser does not support the video tag.
-</video>
-
-
-```jsx
-import {
-    DatagridConfigurable,
-    List,
-    SelectColumnsButton,
-    FilterButton,
-    CreateButton,
-    ExportButton,
-    TextField,
-    TopToolbar,
-} from "react-admin";
-
-const PostListActions = () => (
-    <TopToolbar>
-        <SelectColumnsButton />
-        <FilterButton />
-        <CreateButton />
-        <ExportButton />
-    </TopToolbar>
-);
-
-const PostList = () => (
-    <List actions={<PostListActions />}>
-        <DatagridConfigurable>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="year" />
-        </DatagridConfigurable>
-    </List>
-);
-```
-
-`<SelectColumnsButton>` must be used in conjunction with `<DatagridConfigurable>`, the configurable version of `<Datagrid>`, described in the next section.
-
 ## Configurable
 
 You can let end users customize the fields displayed in the `<Datagrid>` by using the `<DatagridConfigurable>` component instead.
@@ -1013,92 +912,6 @@ const ArtistForm = () => (
 
 Check [the `ra-editable-datagrid` documentation](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid) for more details.
 
-
-## Customizing Column Sort
-
-<video controls autoplay playsinline muted loop>
-  <source src="./img/sort-column-header.webm" type="video/webm"/>
-  <source src="./img/sort-column-header.mp4" type="video/mp4"/>
-  Your browser does not support the video tag.
-</video>
-
-
-The column headers are buttons allowing users to change the list sort field and order. This feature requires no configuration and works out fo the box. The next sections explain how you can disable or modify the field used for sorting on a particular column.
-
-### Disabling Sorting
-
-It is possible to disable sorting for a specific `<Field>` by passing a `sortable` property set to `false`:
-
-{% raw %}
-```jsx
-// in src/posts.js
-import { List, Datagrid, TextField } from 'react-admin';
-
-export const PostList = () => (
-    <List>
-        <Datagrid>
-            <TextField source="id" sortable={false} />
-            <TextField source="title" />
-            <TextField source="body" />
-        </Datagrid>
-    </List>
-);
-```
-{% endraw %}
-
-### Specifying A Sort Field
-
-By default, a column is sorted by the `source` property. To define another attribute to sort by, set it via the `<Field sortBy>` property:
-
-{% raw %}
-```jsx
-// in src/posts.js
-import { List, Datagrid, FunctionField, ReferenceField, TextField } from 'react-admin';
-
-export const PostList = () => (
-    <List>
-        <Datagrid>
-            <ReferenceField label="Post" source="id" reference="posts" sortBy="title">
-                <TextField source="title" />
-            </ReferenceField>
-            <FunctionField
-                label="Author"
-                sortBy="last_name"
-                render={record => `${record.author.first_name} ${record.author.last_name}`}
-            />
-            <TextField source="body" />
-        </Datagrid>
-    </List>
-);
-```
-{% endraw %}
-
-### Specifying The Sort Order
-
-By default, when the user clicks on a column header, the list becomes sorted in the ascending order. You change this behavior by setting the `sortByOrder` prop to `"DESC"` in a `<Datagrid>` `<Field>`:
-
-```jsx
-// in src/posts.js
-import { List, Datagrid, FunctionField, ReferenceField, TextField } from 'react-admin';
-
-export const PostList = () => (
-    <List>
-        <Datagrid>
-            <ReferenceField label="Post" source="id" reference="posts" sortByOrder="DESC">
-                <TextField source="title" />
-            </ReferenceField>
-            <FunctionField
-                label="Author"
-                sortBy="last_name"
-                sortByOrder="DESC"
-                render={record => `${record.author.first_name} ${record.author.last_name}`}
-            />
-            <TextField source="body" />
-        </Datagrid>
-    </List>
-);
-```
-
 ## Fields And Permissions
 
 You might want to display some fields only to users with specific permissions. Use the `usePermissions` hook to get the user permissions and hide Fields accordingly:
@@ -1202,9 +1015,110 @@ const MyCustomList = () => {
 };
 ```
 
-## How to disable checkboxes
+## Styling Specific Columns
 
-You can disable bulk actions altogether by passing `false` to the `bulkActionButtons` prop. In this case, the checkboxes column doesn’t show up anymore.
+If you want to style a particular column, you can take advantage of the generated class names per column. For instance, for a column formed for a `<TextField source="title" />` both the column header and the cells will have the class `column-title`.
+
+Using the `sx` prop, the column customization is just one line:
+
+{% raw %}
+```jsx
+import { List, Datagrid, TextField } from 'react-admin';
+
+const PostList = () => (
+    <List>
+        <Datagrid
+            sx={{
+                '& .column-title': { backgroundColor: '#fee' },
+            }}
+        >
+            <TextField source="id" />
+            <TextField source="title" /> {/* will have different background */}
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </List>
+);
+```
+{% endraw %}
+
+You can even style the header cells differently by passing a more specific CSS selector (e.g. `& tr.column-title`).
+
+A common practice is to hide certain columns on smaller screens. You can use the same technique:
+
+{% raw %}
+```jsx
+import { List, Datagrid, TextField } from 'react-admin';
+
+const PostList = () => (
+    <List>
+        <Datagrid
+            sx={{
+                '& .column-title': {
+                    sm: { display: 'none' },
+                    md: { display: 'table-cell' },
+                },
+            }}
+        >
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </List>
+);
+```
+{% endraw %}
+
+## Showing / Hiding Columns
+
+The [`<SelectColumnsButton>`](./SelectColumnsButton.md) component lets users hide, show, and reorder datagrid columns. 
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/SelectColumnsButton.webm" type="video/webm"/>
+  <source src="./img/SelectColumnsButton.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+
+```jsx
+import {
+    DatagridConfigurable,
+    List,
+    SelectColumnsButton,
+    FilterButton,
+    CreateButton,
+    ExportButton,
+    TextField,
+    TopToolbar,
+} from "react-admin";
+
+const PostListActions = () => (
+    <TopToolbar>
+        <SelectColumnsButton />
+        <FilterButton />
+        <CreateButton />
+        <ExportButton />
+    </TopToolbar>
+);
+
+const PostList = () => (
+    <List actions={<PostListActions />}>
+        <DatagridConfigurable>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </DatagridConfigurable>
+    </List>
+);
+```
+
+`<SelectColumnsButton>` must be used in conjunction with `<DatagridConfigurable>`, the configurable version of `<Datagrid>`, described in the next section.
+
+## Hiding Checkboxes
+
+You can hide the checkbox column by passing `false` to the [`bulkActionButtons`](#bulkactionbuttons) prop:
 
 ```tsx
 import { Datagrid, List } from 'react-admin';
@@ -1218,18 +1132,86 @@ export const PostList = () => (
 );
 ```
 
-## Disable column sorting
+## Customizing Column Sort
 
-In a `<Datagrid>`, users can change the sort field and order by clicking on the column headers. You may want to disable this behavior for a given field (e.g. for reference or computed fields). In that case, pass a `false` value to the `sortable` prop on the field.
+<video controls autoplay playsinline muted loop>
+  <source src="./img/sort-column-header.webm" type="video/webm"/>
+  <source src="./img/sort-column-header.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
+
+The column headers are buttons allowing users to change the list sort field and order. This feature requires no configuration and works out fo the box. The next sections explain how you can disable or modify the field used for sorting on a particular column.
+
+### Disabling Sorting
+
+It is possible to disable sorting for a specific `<Field>` by passing a `sortable` property set to `false`:
+
+{% raw %}
 ```jsx
-const PostList = () => (
+// in src/posts.js
+import { List, Datagrid, TextField } from 'react-admin';
+
+export const PostList = () => (
     <List>
         <Datagrid>
+            <TextField source="id" sortable={false} />
             <TextField source="title" />
-            <ReferenceField source="author_id" sortable={false}>
-                <TextField source="name" />
+            <TextField source="body" />
+        </Datagrid>
+    </List>
+);
+```
+{% endraw %}
+
+### Specifying A Sort Field
+
+By default, a column is sorted by the `source` property. To define another attribute to sort by, set it via the `<Field sortBy>` property:
+
+{% raw %}
+```jsx
+// in src/posts.js
+import { List, Datagrid, FunctionField, ReferenceField, TextField } from 'react-admin';
+
+export const PostList = () => (
+    <List>
+        <Datagrid>
+            <ReferenceField label="Post" source="id" reference="posts" sortBy="title">
+                <TextField source="title" />
             </ReferenceField>
+            <FunctionField
+                label="Author"
+                sortBy="last_name"
+                render={record => `${record.author.first_name} ${record.author.last_name}`}
+            />
+            <TextField source="body" />
+        </Datagrid>
+    </List>
+);
+```
+{% endraw %}
+
+### Specifying The Sort Order
+
+By default, when the user clicks on a column header, the list becomes sorted in the ascending order. You change this behavior by setting the `sortByOrder` prop to `"DESC"` in a `<Datagrid>` `<Field>`:
+
+```jsx
+// in src/posts.js
+import { List, Datagrid, FunctionField, ReferenceField, TextField } from 'react-admin';
+
+export const PostList = () => (
+    <List>
+        <Datagrid>
+            <ReferenceField label="Post" source="id" reference="posts" sortByOrder="DESC">
+                <TextField source="title" />
+            </ReferenceField>
+            <FunctionField
+                label="Author"
+                sortBy="last_name"
+                sortByOrder="DESC"
+                render={record => `${record.author.first_name} ${record.author.last_name}`}
+            />
+            <TextField source="body" />
         </Datagrid>
     </List>
 );
