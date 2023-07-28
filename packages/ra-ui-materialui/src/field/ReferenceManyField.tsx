@@ -67,13 +67,13 @@ export const ReferenceManyField = <
 ) => {
     const {
         children,
-        filter = {},
+        filter = defaultFilter,
         page = 1,
         pagination = null,
         perPage = 25,
         reference,
         resource,
-        sort = { field: 'id', order: 'DESC' },
+        sort = defaultSort,
         source = 'id',
         target,
     } = props;
@@ -174,3 +174,6 @@ ReferenceManyFieldView.propTypes = {
     reference: PropTypes.string,
     setSort: PropTypes.func,
 };
+
+const defaultFilter = {};
+const defaultSort = { field: 'id', order: 'DESC' };
