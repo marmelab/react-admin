@@ -40,45 +40,66 @@ cd next-admin
 yarn add react-admin ra-data-json-server
 ```
 
-## Prevent SSR
+### Creating the Admin App Component
+
+Next, create a `components` directory inside `src`, and the admin App component in `src/components/AdminApp.jsx`:
+
+If you choose App Router, do not forget to add [the `"use client"` directive](https://nextjs.org/docs/getting-started/react-essentials#the-use-client-directive).
+
+```jsx
+// in src/components/AdminApp.jsx
+"use client"; // only needed if you choose App Router
+import { Admin, Resource, ListGuesser, EditGuesser } from "react-admin";
+import jsonServerProvider from "ra-data-json-server";
+
+const dataProvider = jsonServerProvider("https://jsonplaceholder.typicode.com");
+
+const AdminApp = () => (
+  <Admin dataProvider={dataProvider}>
+    <Resource
+      name="users"
+      list={ListGuesser}
+      edit={EditGuesser}
+      recordRepresentation="name"
+    />
+    <Resource
+      name="posts"
+      list={ListGuesser}
+      edit={EditGuesser}
+      recordRepresentation="title"
+    />
+    <Resource name="comments" list={ListGuesser} edit={EditGuesser} />
+  </Admin>
+);
+
+export default AdminApp;
+```
+
+This is a minimal configuration to render CRUD pages for users, posts and comments. React-admin guesses the data structure from the API response. 
+
+## Exposing the Admin App Component
 React-admin is designed as a Single-Page Application, rendered on the client-side. It comes with its own routing sytem, which conflicts with the Next.js routing system. So we must prevent Next.js from rendering the react-admin component on the server-side. 
 
 To do that, we will have to create a component to bootstrap the `<Admin>` application, and import it in Next.js by using the [__lazy loading__ system provided by Next.js](https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading) and specify the [`ssr` option to false](https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading#with-no-ssr). 
 
 Using dynamic import allows disabling Server-Side Rendering for the `<Admin>` component.
 
-The following code demonstrate how we will do this further in this tutorial.
+The file you import the Admin app into Next.js depends on the router system you choose.
 
-Creating the `<Admin>` application as usual to bootstrap it: 
+If you choose App Router, import `<AdminApp>` in `src/app/page.tsx`, otherwise, if you choose Page Router, import `<AdminApp>` in `src/pages/index.tsx`.
 ```tsx
-// in src/App.jsx or elsewhere, depending of Next.js Router system (Pages router or App router)
-import * as React from "react";
-import { Admin, Resource, ListGuesser, EditGuesser } from 'react-admin';
-import jsonServerProvider from 'ra-data-json-server';
-
-const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com');
-
-const App = () => (
-  <Admin dataProvider={dataProvider}>
-    <Resource name="users" list={ListGuesser} edit={EditGuesser} recordRepresentation="name" />
-    <Resource name="posts" list={ListGuesser} edit={EditGuesser} recordRepresentation="title" />
-    <Resource name="comments" list={ListGuesser} edit={EditGuesser} />
-  </Admin>
-);
-
-export default App;
-```
-Import the Admin application in Next.js:
-```tsx
-// in app/page.tsx or elsewhere, depending of Next.js Router system (Pages router or App router)
+// in src/app/page.tsx or in src/pages/index.tsx depending of the Router you choose
 import dynamic from "next/dynamic";
-// import the Admin application dynamically and prevent SSR
-const App = dynamic(() => import("./App"), { ssr: false });
+const AdminApp = dynamic(() => import("@/components/AdminApp"), { ssr: false });
 
 export default function Home() {
-  return <App />;
+  return <AdminApp />;
 }
 ```
+
+Now, start the server with `yarn dev`, browse to `http://localhost:3000/`, and you should see the working admin:
+
+![Working Page](./img/nextjs-react-admin.webp)
 ## Next.js With Pages Router
 
 Let's start by creating a new Next.js project called `nextjs-react-admin`.
