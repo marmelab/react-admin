@@ -78,12 +78,7 @@ import { AutocompleteArrayInput } from './AutocompleteArrayInput';
  * a `setFilters` function. You can call this function to filter the results.
  */
 export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
-    const {
-        children = defaultChildren,
-        reference,
-        sort = { field: 'id', order: 'DESC' },
-        filter = {},
-    } = props;
+    const { children = defaultChildren, reference, sort, filter = {} } = props;
     if (React.Children.count(children) !== 1) {
         throw new Error(
             '<ReferenceArrayInput> only accepts a single child (like <Datagrid>)'
