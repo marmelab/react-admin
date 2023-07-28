@@ -47,9 +47,11 @@ You may have inputs which are translated in multiple languages and want users to
 | ------ | -------- | -------- | ------- | ------------- |
 | `locales` | Required | `Array` | - | An array of locales. |
 | `defaultLocale` | Optional | `string` | `en` | The default locale to display |
-| `groupKey` | Optional | `string` | - | A unique key for accessibiliyty purpose |
+| `fullWidth` | Optional | `boolean` | `false` | If `true`, the inputs will expand to fill the form width |
+| `groupKey` | Optional | `string` | - | A unique key for accessibility purpose |
 | `selector`| Optional | `ReactNode` | - | A selector to choose the locale to display |
 | `StackProps`| Optional | `object` | - | Props passed to the rendered MUI Stack |
+| `sx`| Optional | `SxProps` | - | Material UI shortcut for defining custom styles |
 
 ## `defaultLocale`
 
@@ -63,6 +65,17 @@ React-admin uses the user locale as the default locale in this field. You can ov
 ```
 
 By default, `<TranslatableInputs>` will allow users to select the displayed locale using Material UI tabs with the locale code as their labels.
+
+## `fullWidth`
+
+If you want the inputs to expand to fill the form width, set the `fullWidth` prop to `true`:
+
+```jsx
+<TranslatableInputs locales={['en', 'fr']} fullWidth>
+    <TextInput source="title" />
+    <TextInput source="description" />
+</TranslatableInputs>
+```
 
 ## `groupKey`
 
@@ -139,6 +152,10 @@ const Selector = () => {
 
 Use the `StackProps` prop to pass props to the rendered MUI [Stack](https://mui.com/material-ui/react-stack/) component.
 
+For instance, you can use `direction: 'row'` to display the inputs side by side instead of stacked:
+
+{% raw %}
+
 ```jsx
 <TranslatableInputs
     locales={['en', 'fr']}
@@ -148,6 +165,28 @@ Use the `StackProps` prop to pass props to the rendered MUI [Stack](https://mui.
     <TextInput source="description" sx={{ marginLeft: 2 }} />
 </TranslatableInputs>
 ```
+
+{% endraw %}
+
+![TranslatableInputs with direction row](./img/TranslatableInputs-row.png)
+
+## `sx`
+
+Use the `sx` prop to pass additional styles to the component:
+
+{% raw %}
+
+```jsx
+<TranslatableInputs
+    locales={['en', 'fr']}
+    sx={{ border: 'solid 1px red' }}
+>
+    <TextInput source="title" />
+    <TextInput source="description" />
+</TranslatableInputs>
+```
+
+{% endraw %}
 
 ## Validation
 

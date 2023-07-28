@@ -96,7 +96,6 @@ export const TranslatableInputs = (
                         key={locale}
                         locale={locale}
                         groupKey={groupKey}
-                        variant={variant}
                         margin={margin}
                         {...StackProps}
                     >
