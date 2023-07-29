@@ -28,6 +28,7 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
         className,
         hasExpand = false,
         hasBulkActions = false,
+        bulkIgnoreNonSelectableRows = false,
         isRowSelectable,
     } = props;
     const resource = useResourceContext(props);
@@ -65,7 +66,8 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                                   record => !selectedIds.includes(record.id)
                               )
                               .filter(record =>
-                                  isRowSelectable
+                                  isRowSelectable &&
+                                  !bulkIgnoreNonSelectableRows
                                       ? isRowSelectable(record)
                                       : true
                               )
@@ -73,11 +75,17 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                       )
                     : []
             ),
-        [data, onSelect, isRowSelectable, selectedIds]
+        [
+            data,
+            onSelect,
+            isRowSelectable,
+            selectedIds,
+            bulkIgnoreNonSelectableRows,
+        ]
     );
 
     const selectableIds = Array.isArray(data)
-        ? isRowSelectable
+        ? isRowSelectable && !bulkIgnoreNonSelectableRows
             ? data
                   .filter(record => isRowSelectable(record))
                   .map(record => record.id)
@@ -162,6 +170,7 @@ DatagridHeader.propTypes = {
     data: PropTypes.arrayOf(PropTypes.any),
     hasExpand: PropTypes.bool,
     hasBulkActions: PropTypes.bool,
+    bulkIgnoreNonSelectableRows: PropTypes.bool,
     isRowSelectable: PropTypes.func,
     isRowExpandable: PropTypes.func,
     onSelect: PropTypes.func,
@@ -176,6 +185,7 @@ export interface DatagridHeaderProps<RecordType extends RaRecord = any> {
     className?: string;
     hasExpand?: boolean;
     hasBulkActions?: boolean;
+    bulkIgnoreNonSelectableRows?: boolean;
     isRowSelectable?: (record: RecordType) => boolean;
     isRowExpandable?: (record: RecordType) => boolean;
     size?: 'medium' | 'small';

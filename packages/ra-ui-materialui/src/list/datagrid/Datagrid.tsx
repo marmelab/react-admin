@@ -124,6 +124,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         empty = DefaultEmpty,
         expand,
         bulkActionButtons = defaultBulkActionButtons,
+        bulkIgnoreNonSelectableRows = false,
         hover,
         isRowSelectable,
         isRowExpandable,
@@ -254,6 +255,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                                 data,
                                 hasExpand: !!expand,
                                 hasBulkActions,
+                                bulkIgnoreNonSelectableRows,
                                 isRowSelectable,
                                 onSelect,
                                 resource,
@@ -269,6 +271,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                                 rowClick,
                                 data,
                                 hasBulkActions,
+                                bulkIgnoreNonSelectableRows,
                                 hover,
                                 onToggleItem: handleToggleItem,
                                 resource,
@@ -295,6 +298,7 @@ Datagrid.propTypes = {
     body: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     // @ts-ignore-line
     bulkActionButtons: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
+    bulkIgnoreNonSelectableRows: PropTypes.bool,
     children: PropTypes.node.isRequired,
     className: PropTypes.string,
     sort: PropTypes.exact({
@@ -332,6 +336,7 @@ export interface DatagridProps<RecordType extends RaRecord = any>
     body?: ReactElement | ComponentType;
     className?: string;
     bulkActionButtons?: ReactElement | false;
+    bulkIgnoreNonSelectableRows?: boolean;
     expand?:
         | ReactElement
         | FC<{
