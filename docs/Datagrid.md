@@ -42,6 +42,7 @@ Here are all the props accepted by the component:
 
 * [`body`](#body)
 * [`bulkActionButtons`](#bulkactionbuttons)
+* [`bulkIgnoreNonSelectableRows`](#bulkignorenonselectablerows)
 * [`children`](#children)
 * [`empty`](#empty)
 * [`expand`](#expand)
@@ -370,6 +371,24 @@ const CustomResetViewsButton = () => {
         </Button>
     );
 };
+```
+
+## `bulkIgnoreNonSelectableRows`
+By default, when the checkbox to select all rows at the bulk actions toolbar is pressed, only the selectable rows are chosen. However, if you need to select all rows, even those that are unselectable, you can do this by using the `bulkIgnoreNonSelectableRows` prop.
+
+For instance, if you need to enforce a rule that allows selecting either all rows or none of them:
+
+```jsx
+const PostList = () => (
+    <List>
+        <Datagrid
+          isRowSelectable={() => false}
+          bulkIgnoreNonSelectableRows
+        >
+            ...
+        </Datagrid>
+    </List>
+);
 ```
 
 ## `empty`
