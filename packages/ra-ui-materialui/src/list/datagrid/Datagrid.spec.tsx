@@ -239,6 +239,25 @@ describe('<Datagrid />', () => {
             expect(contextValue.onSelect).toHaveBeenCalledWith([1, 3]);
         });
 
+        it('should ignore unselectable rows when clicking on select all button using bulkIgnoreNonSelectableRows prop', () => {
+            const Test = ({ selectedIds = [] }) => (
+                <Wrapper listContext={{ ...contextValue, selectedIds }}>
+                    <Datagrid
+                        isRowSelectable={() => false}
+                        bulkIgnoreNonSelectableRows
+                    >
+                        <TitleField />
+                    </Datagrid>
+                </Wrapper>
+            );
+            render(<Test />);
+            const checkboxes = screen.queryAllByRole('checkbox');
+            expect(checkboxes.length).toBe(5);
+            fireEvent.click(checkboxes[0], { checked: true });
+
+            expect(contextValue.onSelect).toHaveBeenCalledWith([1, 2, 3, 4]);
+        });
+
         it('should not use as last selected the item that was unselected', () => {
             const Test = ({ selectedIds = [] }) => (
                 <Wrapper listContext={{ ...contextValue, selectedIds }}>
