@@ -16,6 +16,7 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
             data,
             expand,
             hasBulkActions,
+            bulkIgnoreNonSelectableRows,
             hover,
             onToggleItem,
             resource,
@@ -50,7 +51,11 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
                         record,
                         resource,
                         rowClick,
-                        selectable: !isRowSelectable || isRowSelectable(record),
+                        selectable:
+                            !isRowSelectable ||
+                            isRowSelectable(record) ||
+                            (bulkIgnoreNonSelectableRows &&
+                                selectedIds?.includes(record.id)),
                         selected: selectedIds?.includes(record.id),
                         style: rowStyle ? rowStyle(record, rowIndex) : null,
                     },
@@ -69,6 +74,7 @@ DatagridBody.propTypes = {
     // @ts-ignore
     expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     hasBulkActions: PropTypes.bool.isRequired,
+    bulkIgnoreNonSelectableRows: PropTypes.bool,
     hover: PropTypes.bool,
     onToggleItem: PropTypes.func,
     resource: PropTypes.string,
@@ -88,6 +94,7 @@ DatagridBody.propTypes = {
 DatagridBody.defaultProps = {
     data: [],
     hasBulkActions: false,
+    bulkIgnoreNonSelectableRows: false,
     row: <DatagridRow />,
 };
 
@@ -102,6 +109,7 @@ export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
               resource: string;
           }>;
     hasBulkActions?: boolean;
+    bulkIgnoreNonSelectableRows?: boolean;
     hover?: boolean;
     onToggleItem?: (
         id: Identifier,
