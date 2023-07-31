@@ -173,7 +173,7 @@ export const PostList = () => (
 );
 ```
 
-**Tip**: React-admin provides three components that you can use in `bulkActionButtons`: [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton), [`<BulkUpdateButton>`](./Buttons.md#bulkupdatebutton), and [`<BulkExportButton>`](./Buttons.md#bulkexportbutton).
+**Tip**: React-admin provides four components that you can use in `bulkActionButtons`: [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton), [`<BulkUpdateButton>`](./Buttons.md#bulkupdatebutton), [`<BulkExportButton>`](./Buttons.md#bulkexportbutton), and [`<BulkUpdateFormButton>`](./Buttons.md#bulkupdateformbutton).
 
 **Tip**: You can also disable bulk actions altogether by passing `false` to the `bulkActionButtons` prop. In this case, the checkboxes column doesn't show up.
 
