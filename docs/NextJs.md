@@ -42,9 +42,9 @@ yarn add react-admin ra-data-json-server
 
 ### Creating the Admin App Component
 
-Next, create a `components` directory inside `src`, and the admin App component in `src/components/AdminApp.jsx`:
+Next, create a `components` directory inside `src`, and an admin App component in `src/components/AdminApp.jsx`:
 
-If you choose App Router, do not forget to add [the `"use client"` directive](https://nextjs.org/docs/getting-started/react-essentials#the-use-client-directive).
+> **Tips**: If you choose App Router, do not forget to add [the `"use client"` directive](https://nextjs.org/docs/getting-started/react-essentials#the-use-client-directive).
 
 ```jsx
 // in src/components/AdminApp.jsx
@@ -80,13 +80,15 @@ This is a minimal configuration to render CRUD pages for users, posts and commen
 ## Exposing the Admin App Component
 React-admin is designed as a Single-Page Application, rendered on the client-side. It comes with its own routing sytem, which conflicts with the Next.js routing system. So we must prevent Next.js from rendering the react-admin component on the server-side. 
 
-To do that, we will have to create a component to bootstrap the `<Admin>` application, and import it in Next.js by using the [__lazy loading__ system provided by Next.js](https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading) and specify the [`ssr` option to false](https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading#with-no-ssr). 
+To do that, we will have to import our `<AdminApp>` component in Next.js by using the [__lazy loading__ system provided by Next.js](https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading) and specify the [`ssr` option to false](https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading#with-no-ssr). 
 
-Using dynamic import allows disabling Server-Side Rendering for the `<Admin>` component.
+Using dynamic import allows disabling Server-Side Rendering for the `<AdminApp>` component.
 
-The file you import the Admin app into Next.js depends on the router system you choose.
+The file you import the Admin app into Next.js depends on the router system you choose :
 
-If you choose App Router, import `<AdminApp>` in `src/app/page.tsx`, otherwise, if you choose Page Router, import `<AdminApp>` in `src/pages/index.tsx`.
+- if you choose App Router, import `<AdminApp>` in `src/app/page.tsx`, 
+- otherwise, if you choose Page Router, import `<AdminApp>` in `src/pages/index.tsx`.
+
 ```tsx
 // in src/app/page.tsx or in src/pages/index.tsx depending of the Router you choose
 import dynamic from "next/dynamic";
