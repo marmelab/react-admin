@@ -103,7 +103,7 @@ ReferenceField.propTypes = {
         PropTypes.string,
         PropTypes.bool,
         PropTypes.func,
-    ]).isRequired,
+    ]),
 };
 
 export interface ReferenceFieldProps<

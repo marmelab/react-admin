@@ -115,7 +115,7 @@ ListActions.propTypes = {
     filterValues: PropTypes.object,
     hasCreate: PropTypes.bool,
     resource: PropTypes.string,
-    onUnselectItems: PropTypes.func.isRequired,
+    onUnselectItems: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     showFilter: PropTypes.func,
     total: PropTypes.number,
