@@ -31,7 +31,7 @@ This creates a project with the following folder structure:
 |-------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
 | ![ Next Admin folder structure with Pages Router ]( ./img/next-admin-with-page-router-folder-structure.png ) | ![ Next Admin folder structure with App Router ]( ./img/next-admin-with-app-router-folder-structure.png ) |
 
-### Adding React-Admin Dependencies
+## Adding React-Admin Dependencies
 
 Add the `react-admin` npm package, as well as a data provider package. In this example, we'll use `ra-data-json-server` to connect to a test API provided by [JSONPlaceholder](https://jsonplaceholder.typicode.com).
 
@@ -40,7 +40,7 @@ cd next-admin
 yarn add react-admin ra-data-json-server
 ```
 
-### Creating The Admin App Component
+## Creating The Admin App Component
 
 Next, create a `components` directory inside `src`, and an admin App component in `src/components/AdminApp.jsx`:
 
@@ -77,7 +77,7 @@ export default AdminApp;
 
 This is a minimal configuration to render CRUD pages for users, posts and comments. React-admin guesses the data structure from the API response. 
 
-### Exposing The Admin App Component
+## Exposing The Admin App Component
 React-admin is designed as a Single-Page Application, rendered on the client-side. It comes with its own routing sytem, which conflicts with the Next.js routing system. So we must prevent Next.js from rendering the react-admin component on the server-side. 
 
 To do that, we will have to import our `<AdminApp>` component in Next.js by using the [__lazy loading__ system provided by Next.js](https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading) and specify the [`ssr` option to false](https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading#with-no-ssr). 
@@ -139,7 +139,7 @@ Now the admin renders at `http://localhost:3000/admin`, and you can use the Next
 
 **Tip**: If you migrated from the Pages Router, you might have to delete the `.next` directory in your project to ensure NextJS bundles the client dependencies correctly.
 
-### Adding an API
+## Adding an API
 
 [Next.js allows to serve an API](https://nextjs.org/docs/api-routes/introduction) from the same server. You *could* use this to build a CRUD API by hand. However, we consider that building a CRUD API on top of a relational database is a solved problem and that developers shouldn't spend time reimplementing it. 
 
