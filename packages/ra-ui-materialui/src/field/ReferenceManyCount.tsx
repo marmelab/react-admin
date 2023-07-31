@@ -20,13 +20,13 @@ import { Link } from '../Link';
  * Relies on dataProvider.getManyReference() returning a total property
  *
  * @example // Display the number of comments for the current post
- * <ReferenceManyCount reference="comments" target="post_id">
+ * <ReferenceManyCount reference="comments" target="post_id" />
  *
  * @example // Display the number of published comments for the current post
- * <ReferenceManyCount reference="comments" target="post_id" filter={{ is_published: true }}>
+ * <ReferenceManyCount reference="comments" target="post_id" filter={{ is_published: true }} />
  *
  * @example // Display the number of comments for the current post, with a custom Typography variant
- * <ReferenceManyCount reference="comments" target="post_id" variant="h1">
+ * <ReferenceManyCount reference="comments" target="post_id" variant="h1" />
  */
 export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
     props: ReferenceManyCountProps<RecordType>
