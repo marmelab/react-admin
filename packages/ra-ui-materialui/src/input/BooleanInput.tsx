@@ -117,7 +117,7 @@ BooleanInput.propTypes = {
 export type BooleanInputProps = CommonInputProps &
     SwitchProps &
     Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'> & {
-        options: SwitchProps;
+        options?: SwitchProps;
     };
 
 const defaultOptions = {};
