@@ -93,12 +93,15 @@ The file you import the Admin app into Next.js depends on the router system you 
 // depending of the Router you choose: 
 // - in src/app/page.tsx for App Router system
 // - or in src/pages/index.tsx for Pages Router system
+import { NextPage } from "next";
 import dynamic from "next/dynamic";
 const AdminApp = dynamic(() => import("@/components/AdminApp"), { ssr: false });
 
-export default function Home() {
+const Home: NextPage = () => {
   return <AdminApp />;
-}
+};
+
+export default Home;
 ```
 
 Now, start the server with `yarn dev`, browse to `http://localhost:3000/`, and you should see the working admin:
@@ -107,19 +110,22 @@ Now, start the server with `yarn dev`, browse to `http://localhost:3000/`, and y
 
 Starting from there, you can [Add an API](#adding-an-api) as described in the next section, and/or add features to the Next.js app, as explained in the [Getting started tutorial](./Tutorial.md)
 
-## Specific Use Cases For Pages Router
-
-### Rendering React-Admin In A Sub Route
+## Rendering React-Admin In A Sub Route
 
 In many cases, the admin is only a part of the application. For instance, you may want to render the admin in a subpath, e.g. `/admin`.
 
-Next.js makes it trivial: create a `src/pages/admin.tsx` file with the same content as in the previous section:
+Depending of the router system you choose, create the subpage in this following file:
+- you choose **App Router**: create the subpage in `src/app/admin/page.tsx`
+- you choose **Pages Router**: create the subpage in `src/pages/admin/index.tsx`
+
+No matter which system you choose, the file should contains the following code:
 
 ```tsx
-// in src/pages/admin.tsx
-import type, { NextPage } from "next";
+// depending of the Router you choose: 
+// - in src/app/admin/page.tsx for App Router system
+// - or in src/pages/admin/index.tsx for Pages Router system
+import { NextPage } from "next";
 import dynamic from "next/dynamic";
-
 const AdminApp = dynamic(() => import("@/components/AdminApp"), { ssr: false });
 
 const Admin: NextPage = () => {
