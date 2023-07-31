@@ -67,10 +67,10 @@ DatagridBody.propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
     // @ts-ignore
-    data: PropTypes.arrayOf(PropTypes.object).isRequired,
+    data: PropTypes.arrayOf(PropTypes.object),
     // @ts-ignore
     expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
-    hasBulkActions: PropTypes.bool.isRequired,
+    hasBulkActions: PropTypes.bool,
     hover: PropTypes.bool,
     onToggleItem: PropTypes.func,
     resource: PropTypes.string,
@@ -118,8 +118,8 @@ const defaultData = [];
 // @ts-ignore
 DatagridBody.muiName = 'TableBody';
 
-export const PureDatagridBody = memo(() => (
-    <DatagridBody row={<PureDatagridRow />} />
+export const PureDatagridBody = memo(props => (
+    <DatagridBody row={<PureDatagridRow />} {...props} />
 ));
 
 // trick Material UI Table into thinking this is one of the child type it supports

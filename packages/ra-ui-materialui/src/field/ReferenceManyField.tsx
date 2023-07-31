@@ -128,7 +128,7 @@ ReferenceManyField.propTypes = {
     resource: PropTypes.string,
     sortBy: PropTypes.string,
     sortByOrder: fieldPropTypes.sortByOrder,
-    source: PropTypes.string.isRequired,
+    source: PropTypes.string,
     sort: PropTypes.exact({
         field: PropTypes.string,
         order: PropTypes.string,

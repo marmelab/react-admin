@@ -108,7 +108,7 @@ List.propTypes = {
     ]),
     // @ts-ignore-line
     pagination: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    perPage: PropTypes.number.isRequired,
+    perPage: PropTypes.number,
     //@ts-ignore-line
     sort: PropTypes.shape({
         field: PropTypes.string,
