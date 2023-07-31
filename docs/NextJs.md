@@ -40,7 +40,7 @@ cd next-admin
 yarn add react-admin ra-data-json-server
 ```
 
-### Creating the Admin App Component
+### Creating The Admin App Component
 
 Next, create a `components` directory inside `src`, and an admin App component in `src/components/AdminApp.jsx`:
 
@@ -77,7 +77,7 @@ export default AdminApp;
 
 This is a minimal configuration to render CRUD pages for users, posts and comments. React-admin guesses the data structure from the API response. 
 
-### Exposing the Admin App Component
+### Exposing The Admin App Component
 React-admin is designed as a Single-Page Application, rendered on the client-side. It comes with its own routing sytem, which conflicts with the Next.js routing system. So we must prevent Next.js from rendering the react-admin component on the server-side. 
 
 To do that, we will have to import our `<AdminApp>` component in Next.js by using the [__lazy loading__ system provided by Next.js](https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading) and specify the [`ssr` option to false](https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading#with-no-ssr). 
@@ -107,7 +107,7 @@ Now, start the server with `yarn dev`, browse to `http://localhost:3000/`, and y
 
 Starting from there, you can [Add an API](#adding-an-api) as described in the next section, and/or add features to the Next.js app, as explained in the [Getting started tutorial](./Tutorial.md)
 
-## Pages Router Specific Use Case
+## Specific Use Cases For Pages Router
 
 ### Rendering React-Admin In A Sub Route
 
