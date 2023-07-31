@@ -38,6 +38,13 @@ const authProvider= {
     }),
 };
 
+const { canAccess: canUseCompanyResource } = useCanAccess({
+    resource: 'companies',
+}); // canUseCompanyResource is true
+const { canAccess: canUseCompanyResourceFromWildcard } = useCanAccess({
+    resource: 'companies',
+    action: '*',
+}); // canUseCompanyResourceFromWildcard is true
 const { canAccess: canReadCompanies } = useCanAccess({ action: "read", resource: "companies" }); // canReadCompanies is true
 const { canAccess: canCreatePeople } = useCanAccess({ action: "create", resource: "people" }); // canCreatePeople is true
 const { canAccess: canExportPeople } = useCanAccess({ action: "export", resource: "people" }); // canExportPeople is false

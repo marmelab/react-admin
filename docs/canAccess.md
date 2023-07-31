@@ -68,4 +68,44 @@ const ProductList = () => {
 
 **Tip**: Ra-rbac actually proposes a `<Datagrid>` component that hides columns depending on permissions. Check [the RBAC documentation](./AuthRBAC.md) for details.
 
+You don't have to provide an `action` if you just want to know whether users can access any screen of the resource. This is useful to leverage `canAccess` in an `<Admin>` component children function:
+
+```tsx
+import { Admin, ListGuesser, EditGuesser } from 'react-admin';
+import { Resource, canAccess } from '@react-admin/ra-rbac';
+import { dataProvider } from './dataProvider';
+
+const authProvider = {
+    checkAuth: () => Promise.resolve(),
+    login: () => Promise.resolve(),
+    logout: () => Promise.resolve(),
+    checkError: () => Promise.resolve(),
+    getPermissions: () =>
+        Promise.resolve([
+            { action: 'list', resource: 'products' },
+            { action: 'edit', resource: 'categories' },
+        ]),
+};
+
+export const MyApp = () => (
+    <Admin authProvider={authProvider} dataProvider={dataProvider}>
+        {(permissions: Permissions) => (
+            <>
+                {canAccess({ permissions, resource: 'products' }) ? (
+                    <Resource name="products" list={ListGuesser} />
+                ) : null}
+                {canAccess({ permissions, resource: 'categories' }) ? (
+                    <Resource name="categories" list={ListGuesser} edit={EditGuesser} />
+                ) : null}
+                {canAccess({ permissions, resource: 'commands' }) ? (
+                    <Resource name="commands" list={ListGuesser} />
+                ) : null}
+            </>
+        )}
+    </Admin>
+);
+```
+
+In this example, users will see the products list and will be able to click on its category link to edit the category. However, they won't see the categories list nor the commands list.
+
 **Tip**: Instead of calling `usePermissions` and `canAccess`, you can call [the `useCanAccess` hook](./useCanAccess.md).
