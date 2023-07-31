@@ -37,25 +37,29 @@ describe('<NumberField />', () => {
         expect(container.firstChild).toBeNull();
     });
 
-    it.each([null, undefined])(
-        'should render the emptyText when value is %s',
-        foo => {
-            const { getByText } = render(
-                <NumberField
-                    record={{ id: 123, foo }}
-                    emptyText="NA"
-                    source="foo"
-                />
-            );
-            expect(getByText('NA')).not.toBeNull();
-        }
-    );
-
     it('should render a number', () => {
         const { queryByText } = render(
             <NumberField record={{ id: 123, foo: 1 }} source="foo" />
         );
         expect(queryByText('1')).not.toBeNull();
+    });
+
+    it('should render a number string', () => {
+        const { queryByText } = render(
+            <NumberField record={{ id: 123, foo: '1' }} source="foo" />
+        );
+        expect(queryByText('1')).not.toBeNull();
+    });
+
+    it('should convert strings to numbers by default', () => {
+        const { queryByText } = render(
+            <NumberField
+                record={{ id: 123, foo: '2.1' }}
+                source="foo"
+                options={{ minimumFractionDigits: 2 }}
+            />
+        );
+        expect(queryByText('2.10')).not.toBeNull();
     });
 
     it('should use record from RecordContext', () => {
@@ -94,7 +98,7 @@ describe('<NumberField />', () => {
     it('should use custom className', () => {
         const { container } = render(
             <NumberField
-                record={{ id: 123, foo: true }}
+                record={{ id: 123, foo: 45 }}
                 source="foo"
                 className="foo"
             />
@@ -113,17 +117,45 @@ describe('<NumberField />', () => {
         expect(queryByText('2')).not.toBeNull();
     });
 
-    it('should translate emptyText', () => {
-        const { getByText } = render(
-            <I18nContextProvider value={i18nProvider}>
-                <NumberField
-                    record={{ id: 123 }}
-                    source="foo.bar"
-                    emptyText="resources.books.not_found"
-                />
-            </I18nContextProvider>
+    describe('emptyText', () => {
+        it.each([null, undefined])(
+            'should render the emptyText when value is %s',
+            foo => {
+                const { getByText } = render(
+                    <NumberField
+                        record={{ id: 123, foo }}
+                        emptyText="NA"
+                        source="foo"
+                    />
+                );
+                expect(getByText('NA')).not.toBeNull();
+            }
         );
+        it('should translate emptyText', () => {
+            const { getByText } = render(
+                <I18nContextProvider value={i18nProvider}>
+                    <NumberField
+                        record={{ id: 123 }}
+                        source="foo.bar"
+                        emptyText="resources.books.not_found"
+                    />
+                </I18nContextProvider>
+            );
 
-        expect(getByText('Not found')).not.toBeNull();
+            expect(getByText('Not found')).not.toBeNull();
+        });
+    });
+
+    describe('transform', () => {
+        it('should accept a function', () => {
+            const { queryByText } = render(
+                <NumberField
+                    record={{ id: 123, foo: 2 }}
+                    source="foo"
+                    transform={value => value * 100}
+                />
+            );
+            expect(queryByText('200')).not.toBeNull();
+        });
     });
 });
