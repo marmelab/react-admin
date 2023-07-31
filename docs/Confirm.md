@@ -69,8 +69,8 @@ const BulkResetViewsButton = () => {
 | `cancel`           | Optional | `string`                         | 'ra.action. cancel'    | Label of the cancel button                                         |
 | `confirm`          | Optional | `string`                         | 'ra.action. confirm'   | Label of the confirm button                                        |
 | `confirmColor`     | Optional | `string`                         | 'primary'             | Color of the confirm button                                        |
-| `ConfirmIcon`      | Optional | `ReactElement`                   | `<Check Circle/>`      | Icon element of the confirm button                                 |
-| `CancelIcon`       | Optional | `ReactElement`                   | `<Error OutlineIcon/>` | Icon element of the cancel button                                  |
+| `ConfirmIcon`      | Optional | `Component`                      | `CheckCircleIcon`      | Icon component of the confirm button                                 |
+| `CancelIcon`       | Optional | `Component`                      | `ErrorOutlineIcon`     | Icon component of the cancel button                                  |
 | `translate Options` | Optional | `{ id?: string, name?: string }` | {}                    | Custom id and name to be used in the dialog title                  |
 | `sx`               | Optional | `SxProps`                        | ''                    | Material UI shortcut for defining custom styles with access to the theme   |
 
