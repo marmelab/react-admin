@@ -18370,7 +18370,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-input-rich-text@^4.12.0, ra-input-rich-text@^4.12.2, ra-input-rich-text@workspace:packages/ra-input-rich-text":
+"ra-input-rich-text@^4.12.0, ra-input-rich-text@^4.12.3, ra-input-rich-text@workspace:packages/ra-input-rich-text":
   version: 0.0.0-use.local
   resolution: "ra-input-rich-text@workspace:packages/ra-input-rich-text"
   dependencies:
@@ -18393,7 +18393,7 @@ __metadata:
     data-generator-retail: ^4.12.2
     ra-core: ^4.12.2
     ra-data-fakerest: ^4.12.2
-    ra-ui-materialui: ^4.12.2
+    ra-ui-materialui: ^4.12.3
     react: ^17.0.0
     react-dom: ^17.0.0
     react-hook-form: ^7.43.9
@@ -18446,7 +18446,7 @@ __metadata:
     prop-types: ^15.6.1
     ra-data-local-storage: ^4.12.2
     react: ^17.0.0
-    react-admin: ^4.12.2
+    react-admin: ^4.12.3
     react-dom: ^17.0.0
     react-dropzone: ^12.0.4
     react-query: ^3.32.1
@@ -18460,7 +18460,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-ui-materialui@^4.12.2, ra-ui-materialui@workspace:packages/ra-ui-materialui":
+"ra-ui-materialui@^4.12.3, ra-ui-materialui@workspace:packages/ra-ui-materialui":
   version: 0.0.0-use.local
   resolution: "ra-ui-materialui@workspace:packages/ra-ui-materialui"
   dependencies:
@@ -18672,7 +18672,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-admin@^4.12.0, react-admin@^4.12.2, react-admin@workspace:packages/react-admin":
+"react-admin@^4.12.0, react-admin@^4.12.3, react-admin@workspace:packages/react-admin":
   version: 0.0.0-use.local
   resolution: "react-admin@workspace:packages/react-admin"
   dependencies:
@@ -18686,7 +18686,7 @@ __metadata:
     ra-core: ^4.12.2
     ra-i18n-polyglot: ^4.12.2
     ra-language-english: ^4.12.2
-    ra-ui-materialui: ^4.12.2
+    ra-ui-materialui: ^4.12.3
     react-hook-form: ^7.43.9
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
@@ -20020,11 +20020,11 @@ __metadata:
   linkType: hard
 
 "semver@npm:2 || 3 || 4 || 5, semver@npm:^5.4.1, semver@npm:^5.5.0, semver@npm:^5.6.0":
-  version: 5.7.1
-  resolution: "semver@npm:5.7.1"
+  version: 5.7.2
+  resolution: "semver@npm:5.7.2"
   bin:
-    semver: ./bin/semver
-  checksum: d4884f2aeca28bff35d0bd40ff0a9b2dfc4b36a883bf0ea5dc15d10d9a01bdc9041035b05f825d4b5ac8a56e490703dbf0d986d054de82cc5e9bad3f02ca6e00
+    semver: bin/semver
+  checksum: e4cf10f86f168db772ae95d86ba65b3fd6c5967c94d97c708ccb463b778c2ee53b914cd7167620950fc07faf5a564e6efe903836639e512a1aa15fbc9667fa25
   languageName: node
   linkType: hard
 
@@ -20048,14 +20048,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:7.x, semver@npm:^7.0.0, semver@npm:^7.1.1, semver@npm:^7.3.2, semver@npm:^7.3.4, semver@npm:^7.3.5, semver@npm:^7.3.7":
-  version: 7.3.7
-  resolution: "semver@npm:7.3.7"
+"semver@npm:7.x, semver@npm:^7.0.0, semver@npm:^7.1.1, semver@npm:^7.3.2, semver@npm:^7.3.4, semver@npm:^7.3.5, semver@npm:^7.3.7, semver@npm:^7.3.8":
+  version: 7.5.2
+  resolution: "semver@npm:7.5.2"
   dependencies:
     lru-cache: ^6.0.0
   bin:
     semver: bin/semver.js
-  checksum: cffd30102de68a9f8cac9ef57b43c2173dc999da4fc5189872b421f9c9e2660f70243b8e964781ac6dc48ba2542647bb672beeb4d756c89c4a9e05e1144fa40a
+  checksum: d151207ab762a8067f6302076edc04e5b8da2362eb9e3f21c2567ceadfd415064936d215b4aae7791da118c230649d29089be979ffa49c5b56a6bcf82147efdd
   languageName: node
   linkType: hard
 
@@ -20065,17 +20065,6 @@ __metadata:
   bin:
     semver: ./bin/semver.js
   checksum: 1f4959e15bcfbaf727e964a4920f9260141bb8805b399793160da4e7de128e42a7d1f79c1b7d5cd21a6073fba0d55feb9966f5fef3e5ccb8e1d7ead3d7527458
-  languageName: node
-  linkType: hard
-
-"semver@npm:^7.3.8":
-  version: 7.5.2
-  resolution: "semver@npm:7.5.2"
-  dependencies:
-    lru-cache: ^6.0.0
-  bin:
-    semver: bin/semver.js
-  checksum: d151207ab762a8067f6302076edc04e5b8da2362eb9e3f21c2567ceadfd415064936d215b4aae7791da118c230649d29089be979ffa49c5b56a6bcf82147efdd
   languageName: node
   linkType: hard
 
@@ -20307,11 +20296,11 @@ __metadata:
     proxy-polyfill: ^0.3.0
     ra-data-fakerest: ^4.12.2
     ra-i18n-polyglot: ^4.12.2
-    ra-input-rich-text: ^4.12.2
+    ra-input-rich-text: ^4.12.3
     ra-language-english: ^4.12.2
     ra-language-french: ^4.12.2
     react: ^17.0.0
-    react-admin: ^4.12.2
+    react-admin: ^4.12.3
     react-app-polyfill: ^1.0.4
     react-dom: ^17.0.0
     react-hook-form: ^7.43.9

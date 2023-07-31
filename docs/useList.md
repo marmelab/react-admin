@@ -254,7 +254,7 @@ const {
     isLoading, // boolean that is true until the data is available for the first time
     // pagination
     page, // the current page. Starts at 1
-    perPage, // the number of results per page. Defaults to 25
+    perPage, // the number of results per page. Defaults to 1000
     setPage, // a callback to change the page, e.g. setPage(3)
     setPerPage, // a callback to change the number of results per page, e.g. setPerPage(25)
     hasPreviousPage, // boolean, true if the current page is not the first one

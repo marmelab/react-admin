@@ -1,5 +1,14 @@
 # Changelog
 
+## v4.12.3
+
+* Fix `<FileField>` should not propagate click ([#9133](https://github.com/marmelab/react-admin/pull/9133)) ([slax57](https://github.com/slax57))
+* [TypeScript] Fix TS errors with `<ArrayField>` and `<ChipField>` in stories ([#9132](https://github.com/marmelab/react-admin/pull/9132)) ([slax57](https://github.com/slax57))
+* [Doc] Rename Architecture page to Key Concepts ([#9078](https://github.com/marmelab/react-admin/pull/9078)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix HowTos order and syntax in various chapters ([#9123](https://github.com/marmelab/react-admin/pull/9123)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix deprecated bulkActionButtons prop of List component ([#9135](https://github.com/marmelab/react-admin/pull/9135)) ([smeng9](https://github.com/smeng9))
+* [chore] Bump semver from 5.7.1 to 5.7.2 ([#9091](https://github.com/marmelab/react-admin/pull/9091)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## v4.12.2
 
 * Fix `useUnique` should allow value if the only matching record is the current one ([#9118](https://github.com/marmelab/react-admin/pull/9118)) ([djhi](https://github.com/djhi))

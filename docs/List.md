@@ -52,7 +52,7 @@ You can find more advanced examples of `<List>` usage in the [demos](./Demos.md)
 
 | Prop                      | Required | Type           | Default        | Description                                                                                  |
 |---------------------------|----------|----------------|----------------|----------------------------------------------------------------------------------------------|
-| `children`                | Required | `ReactNode`    | -              | The component to use to render the list of records.                                          |
+| `children`                | Required | `ReactNode`    | -              | The components rendering the list of records.                                          |
 | `actions`                 | Optional | `ReactElement` | -              | The actions to display in the toolbar.                                                       |
 | `aside`                   | Optional | `ReactElement` | -              | The component to display on the side of the list.                                            |
 | `component`               | Optional | `Component`    | `Card`         | The component to render as the root element.                                                 |
@@ -60,18 +60,18 @@ You can find more advanced examples of `<List>` usage in the [demos](./Demos.md)
 | `disable Authentication`  | Optional | `boolean`      | `false`        | Set to `true` to disable the authentication check.                                           |
 | `disable SyncWithLocation`| Optional | `boolean`      | `false`        | Set to `true` to disable the synchronization of the list parameters with the URL.            |
 | `empty`                   | Optional | `ReactElement` | -              | The component to display when the list is empty.                                             |
-| `emptyWhileLoading`       | Optional | `boolean`      | `false`        | Set to `true` to return `null` while the list is loading.                                    |
+| `empty WhileLoading`      | Optional | `boolean`      | `false`        | Set to `true` to return `null` while the list is loading.                                    |
 | `exporter`                | Optional | `function`     | -              | The function to call to export the list.                                                     |
 | `filters`                 | Optional | `ReactElement` | -              | The filters to display in the toolbar.                                                       |
 | `filter`                  | Optional | `object`       | -              | The permanent filter values.                                                                 |
-| `filterDefaultValues`     | Optional | `object`       | -              | The default filter values.                                                                   |
+| `filter DefaultValues`    | Optional | `object`       | -              | The default filter values.                                                                   |
 | `hasCreate`               | Optional | `boolean`      | `false`        | Set to `true` to show the create button.                                                     |
 | `pagination`              | Optional | `ReactElement` | `<Pagination>` | The pagination component to use.                                                             |
 | `perPage`                 | Optional | `number`       | `10`           | The number of records to fetch per page.                                                     |
 | `queryOptions`            | Optional | `object`       | -              | The options to pass to the `useQuery` hook.                                                  |
 | `resource`                | Optional | `string`       | -              | The resource name, e.g. `posts`.                                                             |
 | `sort`                    | Optional | `object`       | -              | The initial sort parameters.                                                                 |
-| `storeKey`                | Optional | `string` | `false` | -              | The key to use to store the current filter & sort. Pass `false` to disable                                         |
+| `storeKey`                | Optional | `string | false` | -            | The key to use to store the current filter & sort. Pass `false` to disable                                         |
 | `title`                   | Optional | `string`       | -              | The title to display in the App Bar.                                                         |
 | `sx`                      | Optional | `object`       | -              | The CSS styles to apply to the component.                                                    |
 
@@ -143,7 +143,7 @@ const ListActions = () => {
 }
 ```
 
-## `aside`: Side Component
+## `aside`
 
 You may want to display additional information on the side of the list. Use the `aside` prop for that, passing the component of your choice:
 
@@ -232,7 +232,7 @@ export const PostList = () => (
 
 **Tip**: the `<Card sx>` prop in the `PostFilterSidebar` component above is here to put the sidebar on the left side of the screen, instead of the default right side.
 
-## `children`: List Layout
+## `children`
 
 `<List>` itself doesn't render the list of records. It delegates this task to its children components. These children components grab the `data` from the `ListContext` and render them on screen.
 
@@ -397,7 +397,7 @@ const Dashboard = () => (
 
 Please note that the selection state is not synced in the URL but in a global store using the resource as key. Thus, all lists in the page using the same resource will share the same selection state. This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. If you want the selection state to be local, you will have to implement your own `useListController` hook and pass a custom key to the `useRecordSelection` hook. You will then need to implement your own `DeleteButton` and `BulkDeleteButton` to manually unselect rows when deleting records.
 
-## `empty`: Empty Page Component
+## `empty`
 
 When there is no result, and there is no active filter, and the resource has a create page, react-admin displays a special page inviting the user to create the first record.
 
@@ -587,7 +587,7 @@ const CommentList = () => (
 
 **Tip**: The `<ExportButton>` limits the main request to the `dataProvider` to 1,000 records. If you want to increase or decrease this limit, pass a `maxResults` prop to the `<ExportButton>` in a custom `<ListActions>` component.
 
-**Tip**: React-admin also provides a `<BulkExportButton>` component that depends on the `exporter`, and that you can use in the `bulkActionButtons` prop of the `<List>` component.
+**Tip**: React-admin also provides a `<BulkExportButton>` component that depends on the `exporter`, and that you can use in the `bulkActionButtons` prop of the `<Datagrid>` component.
 
 **Tip**: For complex (or large) exports, fetching all the related records and assembling them client-side can be slow. In that case, create the CSV on the server side, and replace the `<ExportButton>` component by a custom one, fetching the CSV route.
 
@@ -694,7 +694,7 @@ export const PostList = () => (
 );
 ```
 
-## `pagination`: Pagination Component
+## `pagination`
 
 The `pagination` prop allows to replace the default pagination controls by your own.
 
@@ -713,7 +713,7 @@ export const PostList = () => (
 
 See [Paginating the List](./ListTutorial.md#building-a-custom-pagination) for details.
 
-## `perPage`: Pagination Size 
+## `perPage`
 
 By default, the list paginates results by groups of 10. You can override this setting by specifying the `perPage` prop:
 
@@ -801,7 +801,7 @@ export const UsersList = () => (
 );
 ```
 
-## `sort`: Default Sort Field & Order
+## `sort`
 
 Pass an object literal as the `sort` prop to determine the default `field` and `order` used for sorting:
 
@@ -821,13 +821,11 @@ For more details on list sort, see the [Sorting The List](./ListTutorial.md#sort
 
 ## `storeKey`
 
-To display multiple lists of the same resource and keep distinct store states for each of them (filters, sorting and pagination), specify unique keys with the `storeKey` property.
+By default, react-admin stores the list parameters (sort, pagination, filters) in localStorage so that  users can come back to the list and find it in the same state as when they left it. React-admin uses the current resource as the identifier to store the list parameters (under the key `${resource}.listParams`).
 
-In case no `storeKey` is provided, the states will be stored with the following key: `${resource}.listParams`.
+If you want to display multiple lists of the same resource and keep distinct store states for each of them (filters, sorting and pagination), you must give each list a unique `storeKey` property. You can also disable the persistence of list parameters in the store by setting the `storeKey` prop to `false`.
 
-**Note:** Please note that selection state will remain linked to a resource-based key as described [here](./List.md#disablesyncwithlocation).
-
-In the example below, both lists `NewerBooks` and `OlderBooks` use the same resource ('books'), but their controller states are stored separately (under the store keys `'newerBooks'` and `'olderBooks'` respectively). This allows to use both components in the same app, each having its own state (filters, sorting and pagination).
+In the example below, both lists `NewerBooks` and `OlderBooks` use the same resource ('books'), but their list parameters are stored separately (under the store keys `'newerBooks'` and `'olderBooks'` respectively). This allows to use both components in the same app, each having its own state (filters, sorting and pagination).
 
 {% raw %}
 ```jsx
@@ -887,7 +885,7 @@ const Admin = () => {
 
 **Tip:** The `storeKey` is actually passed to the underlying `useListController` hook, which you can use directly for more complex scenarios. See the [`useListController` doc](./useListController.md#storekey) for more info.
 
-You can disable this feature by setting the `storeKey` prop to `false`. When disabled, parameters will not be persisted in the store.
+**Note:** *Selection state* will remain linked to a resource-based key regardless of the `storeKey`. This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. If you want the selection state to be local, you will have to implement your own `useListController` hook and pass a custom key to the `useRecordSelection` hook. You will then need to implement your own `DeleteButton` and `BulkDeleteButton` to manually unselect rows when deleting records.
 
 ## `title`
 
@@ -934,22 +932,6 @@ const PostList = () => (
 {% endraw %}
 
 **Tip**: The `List` component `classes` can also be customized for all instances of the component with its global css name `RaList` as [describe here](https://marmelab.com/blog/2019/12/18/react-admin-3-1.html#theme-overrides)
-
-## Adding `meta` To The DataProvider Call
-
-Use [the `queryOptions` prop](#queryoptions) to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getList()` call.
-
-{% raw %}
-```jsx
-import { List } from 'react-admin';
-
-const PostList = () => (
-    <List queryOptions={{ meta: { foo: 'bar' } }}>
-        ...
-    </List>
-);
-```
-{% endraw %}
 
 ## Infinite Scroll Pagination
 
@@ -1008,9 +990,27 @@ const PostList = () => (
 
 The list will automatically update when a new record is created, or an existing record is updated or deleted.
 
-## How to render an empty list
+## Adding `meta` To The DataProvider Call
 
-You can set the `empty` props value to `false` to bypass the empty page display and render an empty list instead.
+Use [the `queryOptions` prop](#queryoptions) to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getList()` call.
+
+{% raw %}
+```jsx
+import { List } from 'react-admin';
+
+const PostList = () => (
+    <List queryOptions={{ meta: { foo: 'bar' } }}>
+        ...
+    </List>
+);
+```
+{% endraw %}
+
+## Rendering An Empty List
+
+When there is no data, react-admin displays a special page inviting the user to create the first record. This page can be customized using [the `empty` prop](#empty-empty-page-component).
+
+You can set the `empty` props value to `false` to render an empty list instead.
 
 ```tsx
 import { List } from 'react-admin';
@@ -1022,23 +1022,11 @@ const ProductList = () => (
 )
 ```
 
-## How to remove the `<ExportButton>`
+## Disabling Parameters Persistence
 
-You can remove the `<ExportButton>` by passing `false` to the `exporter` prop.
+By default, react-admin stores the list parameters (sort, pagination, filters) in localStorage so that  users can come back to the list and find it in the same state as when they left it. This also synchronizes the list parameters across tabs.
 
-```tsx
-import { List } from 'react-admin';
-
-const ProductList = () => (
-    <List exporter={false}>
-        ...
-    </List>
-)
-```
-
-## How to disable storing the list parameters in the Store
-
-You can disable the `storeKey` feature by setting the `storeKey` prop to `false`. When disabled, the list parameters will not be persisted in [the Store](./Store.md).
+You can disable this feature by setting [the `storeKey` prop](#storekey) to `false`:
 
 ```tsx
 import { List } from 'react-admin';
