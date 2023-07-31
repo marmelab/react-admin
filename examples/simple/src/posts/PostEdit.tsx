@@ -32,6 +32,7 @@ import {
     useCreateSuggestionContext,
     EditActionsProps,
     usePermissions,
+    useRecordContext,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import {
     Box,
@@ -100,8 +101,15 @@ const categories = [
     { name: 'Lifestyle', id: 'lifestyle' },
 ];
 
+const Test = () => {
+    const record = useRecordContext();
+    console.log('Zzz', record);
+    return null;
+};
+
 const PostEdit = () => {
     const { permissions } = usePermissions();
+
     return (
         <Edit title={<PostTitle />} actions={<EditActions />}>
             <TabbedForm
@@ -123,6 +131,7 @@ const PostEdit = () => {
                             resettable
                         />
                     </SanitizedBox>
+                    <Test />
                     <TextInput
                         multiline
                         fullWidth

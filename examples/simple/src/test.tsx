@@ -12,7 +12,7 @@ const Info = () => {
 
     return (
         <div>
-            This is a <b>"{path.pathname}/*"</b> custom route
+            This is a <b>"{path.pathname}"</b> custom route
         </div>
     );
 };
