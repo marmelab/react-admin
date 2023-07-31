@@ -204,10 +204,6 @@ export const ArrayInput = (props: ArrayInputProps) => {
     );
 };
 
-ArrayInput.defaultProps = {
-    options: {},
-};
-
 export const getArrayInputError = error => {
     if (Array.isArray(error)) {
         return undefined;

@@ -23,7 +23,6 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
  * <TextInput source="email" type="email" />
  * <NumberInput source="nb_views" />
  *
- * The object passed as `options` props is passed to the <ResettableTextField> component
  */
 export const TextInput = (props: TextInputProps) => {
     const {
@@ -99,13 +98,8 @@ TextInput.propTypes = {
         PropTypes.bool,
         PropTypes.element,
     ]),
-    options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
-};
-
-TextInput.defaultProps = {
-    options: {},
 };
 
 export type TextInputProps = CommonInputProps &
