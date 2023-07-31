@@ -120,7 +120,7 @@ ReferenceOneField.propTypes = {
     label: fieldPropTypes.label,
     record: PropTypes.any,
     reference: PropTypes.string.isRequired,
-    source: PropTypes.string.isRequired,
+    source: PropTypes.string,
     target: PropTypes.string.isRequired,
     queryOptions: PropTypes.any,
 };
