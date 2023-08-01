@@ -147,7 +147,6 @@ Finally, `<Datagrid>` inspects children for props that indicate how it should be
   Your browser does not support the video tag.
 </video>
 
-
 Bulk action buttons are buttons that affect several records at once, like mass deletion for instance. In the `<Datagrid>` component, the bulk actions toolbar appears when a user ticks the checkboxes in the first column of the table. The user can then choose a button from the bulk actions toolbar. By default, all Datagrids have a single bulk action button, the bulk delete button. You can add other bulk action buttons by passing a custom element as the `bulkActionButtons` prop of the `<Datagrid>` component:
 
 ```jsx
@@ -173,7 +172,12 @@ export const PostList = () => (
 );
 ```
 
-**Tip**: React-admin provides four components that you can use in `bulkActionButtons`: [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton), [`<BulkUpdateButton>`](./Buttons.md#bulkupdatebutton), [`<BulkExportButton>`](./Buttons.md#bulkexportbutton), and [`<BulkUpdateFormButton>`](./Buttons.md#bulkupdateformbutton).
+**Tip**: React-admin provides four components that you can use in `bulkActionButtons`:
+
+- [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton) (enabled by default)
+- [`<BulkExportButton>`](./Buttons.md#bulkexportbutton) to export only the selection
+- [`<BulkUpdateButton>`](./Buttons.md#bulkupdatebutton) to immediately update the selection
+- [`<BulkUpdateFormButton>`](./Buttons.md#bulkupdateformbutton) to display a form allowing to update the selection
 
 **Tip**: You can also disable bulk actions altogether by passing `false` to the `bulkActionButtons` prop. In this case, the checkboxes column doesn't show up.
 

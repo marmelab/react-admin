@@ -261,6 +261,10 @@ export const PostList = () => (
 
 Partially updates the selected rows. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons).
 
+![Bulk Update button](./img/bulk-update-button.png)
+
+#### Usage
+
 {% raw %}
 ```jsx
 import * as React from 'react';
@@ -285,7 +289,7 @@ export const PostList = () => (
 ```
 {% endraw %}
 
-![Bulk Update button](./img/bulk-update-button.png)
+#### Props
 
 | Prop              | Required | Type           | Default            | Description                                                                                                         |
 |-------------------|----------|----------------|--------------------|---------------------------------------------------------------------------------------------------------------------|
@@ -301,7 +305,7 @@ export const PostList = () => (
 
 ### `<BulkUpdateFormButton>`
 
-This component renders a button allowing to edit multiple records at once.
+This component, part of the [enterprise edition](https://marmelab.com/ra-enterprise/modules/ra-form-layout)<img class="icon" src="./img/premium.svg" />, lets users edit multiple records at once. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons).
 
 The button opens a dialog containing the form passed as children. When the form is submitted, it will call the dataProvider's `updateMany` method with the ids of the selected records.
 
@@ -361,36 +365,7 @@ const PostList = () => (
 );
 ```
 
-
-**Tip:** You are not limited to using a `<SimpleForm>` as children. You can for instance use an `<InputSelectorForm>`, which allows to select the fields to update.
-
-```tsx
-import {
-    BulkUpdateFormButton,
-    InputSelectorForm,
-} from '@react-admin/ra-form-layout';
-import * as React from 'react';
-import { BooleanInput, DateInput } from 'react-admin';
-
-const PostBulkUpdateButton = () => (
-    <BulkUpdateFormButton>
-        <InputSelectorForm
-            inputs={[
-                {
-                    label: 'Published at',
-                    element: <DateInput source="published_at" />,
-                },
-                {
-                    label: 'Is public',
-                    element: <BooleanInput source="is_public" />,
-                },
-            ]}
-        />
-    </BulkUpdateFormButton>
-);
-```
-
-Check out the [`<InputSelectorForm>`](#inputselectorform) documentation for more information.
+**Tip:** You are not limited to using a `<SimpleForm>` as children. You can for instance use an `<InputSelectorForm>`, which allows to select the fields to update. Check out the [`<InputSelectorForm>`](#usage-with-inputselectorform) below for more information.
 
 #### Props
 
@@ -402,7 +377,7 @@ Check out the [`<InputSelectorForm>`](#inputselectorform) documentation for more
 | `mutationOptions` | -            | Object   | -               | Mutation options passed to [react-query](https://tanstack.com/query/v3/docs/react/reference/useMutation) when calling `updateMany` |
 
 
-##### `children`
+#### `children`
 
 `<BulkUpdateFormButton>` expects a form component as children, such as `<SimpleForm>` or `<InputSelectorForm>`.
 
@@ -421,7 +396,7 @@ const PostBulkUpdateButton = () => (
 );
 ```
 
-##### `DialogProps`
+#### `DialogProps`
 
 The `DialogProps` prop can be used to pass additional props to the [MUI Dialog](https://mui.com/material-ui/react-dialog/).
 {% raw %}
@@ -452,7 +427,7 @@ const PostBulkUpdateButtonWithTransition = () => (
 ```
 {% endraw %}
 
-##### `mutationMode`
+#### `mutationMode`
 
 Use the `mutationMode` prop to specify the [mutation mode](https://marmelab.com/react-admin/Edit.html#mutationmode).
 
@@ -471,7 +446,7 @@ const PostBulkUpdateButton = () => (
 );
 ```
 
-##### `mutationOptions` and `meta`
+#### `mutationOptions` and `meta`
 
 The `mutationOptions` prop can be used to pass options to the [react-query mutation](https://react-query.tanstack.com/reference/useMutation#options) used to call the dataProvider's `updateMany` method.
 
@@ -535,19 +510,9 @@ const PostBulkUpdateButton = () => (
 );
 ```
 
-#### Limitations
+#### Usage With `<InputSelectorForm>`
 
-If you look under the hood, you will see that `<BulkUpdateFormButton>` provides a `<SaveContext>` to its children, which allows them to call `updateMany` with the ids of the selected records.
-
-However since we are in the context of a list, there is no `<RecordContext>` available. Hence, the following inputs cannot work inside a `<BulkUpdateFormButton>`:
-
-- `<ReferenceOneInput>`
-- `<ReferenceManyInput>`
-- `<ReferenceManyToManyInput>`
-
-### `<InputSelectorForm>`
-
-This component renders a form allowing to select the fields to update in a record.
+`<BulkUpdateFormButton>` works best with `<InputSelectorForm>`, which component renders a form allowing to select the fields to update in a record.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/BulkUpdateButton-InputSelectorForm.webm" type="video/webm"/>
@@ -555,61 +520,7 @@ This component renders a form allowing to select the fields to update in a recor
   Your browser does not support the video tag.
 </video>
 
-#### Usage
-
 `<InputSelectorForm>` expects a list of inputs passed in the `inputs` prop. Each input must have a `label` and an `element`.
-
-```tsx
-import { InputSelectorForm } from '@react-admin/ra-form-layout';
-import * as React from 'react';
-import {
-    BooleanInput,
-    DateInput,
-    SelectArrayInput,
-    TextInput,
-} from 'react-admin';
-
-const PostEdit = () => (
-    <InputSelectorForm
-        inputs={[
-            {
-                label: 'Title',
-                element: <TextInput source="title" />,
-            },
-            {
-                label: 'Body',
-                element: <TextInput source="body" multiline />,
-            },
-            {
-                label: 'Published at',
-                element: <DateInput source="published_at" />,
-            },
-            {
-                label: 'Is public',
-                element: <BooleanInput source="is_public" />,
-            },
-            {
-                label: 'Tags',
-                element: (
-                    <SelectArrayInput
-                        source="tags"
-                        choices={[
-                            { id: 'react', name: 'React' },
-                            { id: 'vue', name: 'Vue' },
-                            { id: 'solid', name: 'Solid' },
-                            { id: 'programming', name: 'Programming' },
-                        ]}
-                    />
-                ),
-            },
-        ]}
-    />
-);
-```
-
-`<InputSelectorForm>` also expects to be used inside a [`<SaveContext>`](https://marmelab.com/react-admin/useSaveContext.html#usage). When the form is submitted, it will call the `save` method from the `<SaveContext>`, with the value of the selected inputs.
-
-**Tip:** `<InputSelectorForm>` is particularily useful when used with [`<BulkUpdateFormButton>`](#bulkupdateformbutton), as it allows to select the fields to update.
 
 ```tsx
 import {
@@ -636,18 +547,6 @@ const PostBulkUpdateButton = () => (
     </BulkUpdateFormButton>
 );
 ```
-
-Check out the [`<BulkUpdateFormButton>`](#bulkupdateformbutton) documentation for more information.
-
-#### Props
-
-| Prop              | Required     | Type             | Default   | Description                                     |
-| ----------------- | ------------ | ---------------- | --------- | ----------------------------------------------- |
-| `inputs`          | Required (*) | Array            | -         | The list of inputs from which the user can pick |
-
-`<InputSelectorForm>` also accepts the same props as [`<WizardForm>`](#wizardform), except the `onSubmit` and `children` props.
-
-##### `inputs`
 
 Use the `inputs` prop to specify the list of inputs from which the user can pick. Each input must have a `label` and an `element`.
 
@@ -699,46 +598,15 @@ const PostEdit = () => (
 );
 ```
 
-#### Internationalization
+#### Limitations
 
-You can use translation keys as input labels.
+If you look under the hood, you will see that `<BulkUpdateFormButton>` provides a `<SaveContext>` to its children, which allows them to call `updateMany` with the ids of the selected records.
 
-```tsx
-// in i18n/fr.ts
+However since we are in the context of a list, there is no `<RecordContext>` available. Hence, the following inputs cannot work inside a `<BulkUpdateFormButton>`:
 
-const customFrenchMessages = {
-    resources: {
-        posts: {
-            name: 'Article |||| Articles',
-            fields: {
-                published_at: 'Publié le',
-                is_public: 'Public',
-            },
-        },
-    },
-};
-
-// in posts/postEdit.tsx
-
-import { InputSelectorForm } from '@react-admin/ra-form-layout';
-import * as React from 'react';
-import { BooleanInput, DateInput } from 'react-admin';
-
-const PostEdit = () => (
-    <InputSelectorForm
-        inputs={[
-            {
-                label: 'resources.posts.fields.published_at',
-                element: <DateInput source="published_at" />,
-            },
-            {
-                label: 'resources.posts.fields.is_public',
-                element: <BooleanInput source="is_public" />,
-            },
-        ]}
-    />
-);
-```
+- `<ReferenceOneInput>`
+- `<ReferenceManyInput>`
+- `<ReferenceManyToManyInput>`
 
 ### `<FilterButton>`
 
