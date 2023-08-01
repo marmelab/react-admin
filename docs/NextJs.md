@@ -15,13 +15,15 @@ Next.js 13 proposes 2 ways to build a React project:
 React-admin supports both ways. 
 
 ## Create a Next.js application
-Let's start by creating a new Next.js project called next-admin.
+
+Use the `create-next-app` package to create a new Next.js project called `next-admin`.
 
 ```bash
 npx create-next-app@latest
 ```
+
 A prompt will asks you some questions, feel free to choose answers according to your needs. 
-To easily bootstap the `<Admin>` application, regardless of Next.js router system (eg: Pages Router or App router), we will choose to create a `src` folder :
+This tutorial assumes you're using an `src` folder, so answer 'Yes' to the 5th question. As for the App Router, you can choose to use it or not, this tutorial will explain how to use both.
 
 ![Install Next.js with command line](./img/install-next-js-command-line.png)
 
@@ -43,8 +45,6 @@ yarn add react-admin ra-data-json-server
 ## Creating The Admin App Component
 
 Next, create a `components` directory inside `src`, and an admin App component in `src/components/AdminApp.jsx`:
-
-**Tips**: If you choose App Router, do not forget to add [the `"use client"` directive](https://nextjs.org/docs/getting-started/react-essentials#the-use-client-directive). Why the `"use client"` directive? React-admin is designed as a Single-Page Application, rendered on the client-side. It comes with various client-side only libraries (emotion, material-ui, react-query) leveraging the React Context API, and cannot be rendered using React Server components.
 
 ```jsx
 // in src/components/AdminApp.jsx
@@ -75,31 +75,27 @@ const AdminApp = () => (
 export default AdminApp;
 ```
 
-This is a minimal configuration to render CRUD pages for users, posts and comments. React-admin guesses the data structure from the API response. 
+This is a minimal configuration to render CRUD pages for users, posts and comments. React-admin will guess the fields to display in the list and edition pages based on the API response. 
+
+**Tips**: If you choose App Router, do not forget to add [the `"use client"` directive](https://nextjs.org/docs/getting-started/react-essentials#the-use-client-directive).
 
 ## Exposing The Admin App Component
-React-admin is designed as a Single-Page Application, rendered on the client-side. It comes with its own routing sytem, which conflicts with the Next.js routing system. So we must prevent Next.js from rendering the react-admin component on the server-side. 
 
-To do that, we will have to import our `<AdminApp>` component in Next.js by using the [__lazy loading__ system provided by Next.js](https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading) and specify the [`ssr` option to false](https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading#with-no-ssr). 
+React-admin is designed as a Single-Page Application, rendered on the client-side. It comes with various client-side only libraries (react-router, emotion, material-ui, react-query). So when you include the `AdminApp` component in the Next.js app, you must prevent Next.js from rendering it on the server.
 
-Using dynamic import allows disabling Server-Side Rendering for the `<AdminApp>` component.
+To do that, import the `<AdminApp>` component in Next.js by using [lazy loading](https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading) and specify the [`ssr` option to false](https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading#with-no-ssr). 
 
-The file you import the Admin app into Next.js depends on the router system you choose :
+The file to modify depends on the router system you chose during setup:
 
-- if you choose App Router, import `<AdminApp>` in `src/app/page.tsx`, 
-- otherwise, if you choose Pages Router, import `<AdminApp>` in `src/pages/index.tsx`.
+- App Router: `src/app/page.tsx`, 
+- Pages Router: `src/pages/index.tsx`.
 
 ```tsx
-// depending of the Router you choose: 
-// - in src/app/page.tsx for App Router system
-// - or in src/pages/index.tsx for Pages Router system
 import { NextPage } from "next";
 import dynamic from "next/dynamic";
 const AdminApp = dynamic(() => import("@/components/AdminApp"), { ssr: false });
 
-const Home: NextPage = () => {
-  return <AdminApp />;
-};
+const Home: NextPage = () => <AdminApp />;
 
 export default Home;
 ```
@@ -114,16 +110,14 @@ Starting from there, you can [Add an API](#adding-an-api) as described in the ne
 
 In many cases, the admin is only a part of the application. For instance, you may want to render the admin in a subpath, e.g. `/admin`.
 
-Depending of the router system you choose, create the subpage in this following file:
-- you choose **App Router**: create the subpage in `src/app/admin/page.tsx`
-- you choose **Pages Router**: create the subpage in `src/pages/admin/index.tsx`
+This implies the creation of a new page in the Next.js app. Create a new file at the following location:
 
-No matter which system you choose, the file should contains the following code:
+- **App Router**: `src/app/admin/page.tsx`
+- **Pages Router**: `src/pages/admin/index.tsx`
+
+No matter which system you choose, the file should contains the same code:
 
 ```tsx
-// depending of the Router you choose: 
-// - in src/app/admin/page.tsx for App Router system
-// - or in src/pages/admin/index.tsx for Pages Router system
 import { NextPage } from "next";
 import dynamic from "next/dynamic";
 const AdminApp = dynamic(() => import("@/components/AdminApp"), { ssr: false });
@@ -135,19 +129,17 @@ const Admin: NextPage = () => {
 export default Admin;
 ```
 
-Now the admin renders at `http://localhost:3000/admin`, and you can use the Next.js routing system to add more pages.
+Now the admin renders at `http://localhost:3000/admin`. You can use the Next.js routing system to add more pages - for instance, a frontend app.
 
 **Tip**: If you migrated from the Pages Router, you might have to delete the `.next` directory in your project to ensure NextJS bundles the client dependencies correctly.
 
 ## Adding an API
 
-Never mind the router system you choose, [Next.js allows to serve an API](https://nextjs.org/docs/api-routes/introduction) from the same server. You *could* use this to build a CRUD API by hand. However, we consider that building a CRUD API on top of a relational database is a solved problem and that developers shouldn't spend time reimplementing it. 
+[Next.js allows to serve an API](https://nextjs.org/docs/api-routes/introduction) from the same server. You *could* use this to build a CRUD API by hand. However, we consider that building a CRUD API on top of a relational database is a solved problem and that developers shouldn't spend time reimplementing it. 
 
 For instance, if you store your data in a [PostgreSQL](https://www.postgresql.org/) database, you can use [PostgREST](https://postgrest.org/en/stable/) to expose the data as a REST API with zero configuration. Even better, you can use a Software-as-a-Service like [Supabase](https://supabase.com/) to do that for you. 
 
-In such cases, the Next.js API can only serve as a Proxy to authenticate client queries and pass them down to Supabase. 
-
-Let's see an example in practice. 
+In such cases, the Next.js API can serve as a Proxy to authenticate client queries and pass them down to Supabase. Let's see an example in practice. 
 
 First, create a Supabase REST API and its associated PostgreSQL database directly on the [Supabase website](https://app.supabase.com/) (it's free for tests and low usage). Once the setup is finished, use the Supabase manager to add the following tables:
 
@@ -160,17 +152,21 @@ You can populate these tables via the Supabse UI if you want. Supabase exposes a
 Copy the Supabase API URL and service role key into Next.js's `.env.local` file:
 
 ```sh
-# In `.env.local`
+# in `.env.local`
 SUPABASE_URL="https://MY_INSTANCE.supabase.co"
 SUPABASE_SERVICE_ROLE="MY_SERVICE_ROLE_KEY"
 ```
 
 **Tip**: This example uses the **service role key** here and not the anonymous role. This allows mutations without dealing with authorization. **You shouldn't do this in production**, but use the [Supabase authorization](https://supabase.com/docs/guides/auth) feature instead.
 
-Create [a "catch-all" API route](https://nextjs.org/docs/api-routes/dynamic-api-routes#optional-catch-all-api-routes) in the Next.js app by adding a `pages/api/admin/[[...slug]].ts` file. This API route redirects all calls from the react-admin app to the Supabase CRUD API:
+Create [a "catch-all" API route](https://nextjs.org/docs/api-routes/dynamic-api-routes#optional-catch-all-api-routes) in the Next.js app by adding a new file at the following location:
+
+- **App Router**: `src/app/api/admin/page.ts`
+- **Pages Router**: `src/pages/api/admin/[[...slug]].ts`
+ 
+This API route redirects all calls from the react-admin app to the Supabase CRUD API:
 
 ```tsx
-// in src/pages/api/admin/[[...slug]].ts
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -228,3 +224,5 @@ const AdminApp = () => (
 
 export default AdminApp;
 ```
+
+Your react-admin app now uses the Supabase API to fetch and update data.
