@@ -178,6 +178,16 @@ export const useList = <RecordType extends RaRecord = any>(
                                         : recordValue.includes(filterValue)
                                     : Array.isArray(filterValue)
                                     ? filterValue.includes(recordValue)
+                                    : filterName === 'q' // special full-text filter
+                                    ? Object.keys(record).some(
+                                          key =>
+                                              typeof record[key] === 'string' &&
+                                              record[key]
+                                                  .toLowerCase()
+                                                  .includes(
+                                                      (filterValue as string).toLowerCase()
+                                                  )
+                                      )
                                     : filterValue == recordValue; // eslint-disable-line eqeqeq
                                 return result;
                             }

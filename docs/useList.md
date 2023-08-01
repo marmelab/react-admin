@@ -103,7 +103,19 @@ const { data, total } = useList({
 // data will be [{ id: 1, name: 'Arnold' }] and total will be 1
 ```
 
-The filtering capabilities are very limited. For instance, there is no "greater than" or "less than" operator. You can only filter on the equality of a field.
+The filtering capabilities are very limited. A filter on a field is a simple string comparison. There is no "greater than" or "less than" operator. You can do a full-text filter by using the `q` filter.
+
+```jsx
+const { data, total } = useList({
+    data: [
+        { id: 1, name: 'Arnold' },
+        { id: 2, name: 'Sylvester' },
+        { id: 3, name: 'Jean-Claude' },
+    ],
+    filter: { q: 'arno' },
+});
+// data will be [{ id: 1, name: 'Arnold' }] and total will be 1
+```
 
 ## `filterCallback`
 
