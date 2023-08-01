@@ -37,6 +37,12 @@ Then, use `<TranslatableFields>` like so:
 </TranslatableFields>
 ```
 
+<video controls autoplay playsinline muted loop>
+  <source src="./img/translatable-fields-basic.webm" type="video/webm" />
+  <source src="./img/translatable-fields-basic.webm" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
 React-admin uses the user locale as the default locale in this field. You can override this setting using the `defaultLocale` prop.
 
 ```jsx
@@ -96,6 +102,12 @@ const Selector = () => {
     <TextField source="description" />
 </TranslatableFields>
 ```
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/translatable-fields-with-custom-selector.webm" type="video/webm" />
+  <source src="./img/translatable-fields-with-custom-selector.webm" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 If you have multiple `TranslatableFields` on the same page, you should specify a `groupKey` so that react-admin can create unique identifiers for accessibility.
 
