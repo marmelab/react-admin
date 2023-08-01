@@ -1214,6 +1214,8 @@ const ProductCreate = () => (
 
 `authProvider.getPermissions()` can return a promise, which in theory allows to rely on the authentication server for permissions. The downside is that this slows down the app a great deal, as each page may contain dozens of calls to these methods.
 
+To compensate for that, `usePermissions` uses a stale-while-revalidate approach, and after the initial call to `authProvider.getPermissions()`, it will return the permissions from the cache, and refresh them in the background.
+
 In practice, your `authProvider` should use short-lived sessions, and refresh the permissions only when the session ends. JSON Web tokens (JWT) work that way.
 
 Here is an example of an `authProvider` that stores the permissions in memory, and refreshes them only every 5 minutes: 
