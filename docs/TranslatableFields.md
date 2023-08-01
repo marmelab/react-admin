@@ -11,10 +11,11 @@ You may have fields which are translated in multiple languages and want users to
 
 ## Usage
 
-`<TranslatableFields>` expects the translatable values to have the following structure:
+`<TranslatableFields>` component, which expects the translatable values of a record to have the following structure:
 
 ```js
-{
+const record = {
+    id: 123,
     title: {
         en: 'Doctors Without Borders',
         fr: 'Médecins sans frontières',
@@ -25,6 +26,16 @@ You may have fields which are translated in multiple languages and want users to
         fr:
             "Organisation non gouvernementale (ONG) médicale humanitaire internationale d'origine française fondée en 1971 à Paris",
     },
+    internal_organizations: {
+        OCB: {
+            en: 'Brussels operational center',
+            fr: 'Centre opérationnel de Bruxelles',
+        },
+        OCP: {
+            en: 'Paris operational center',
+            fr: 'Centre opérationnel de Paris'
+        }
+    }
 }
 ```
 
@@ -34,6 +45,7 @@ Then, use `<TranslatableFields>` like so:
 <TranslatableFields locales={['en', 'fr']}>
     <TextField source="title" />
     <TextField source="description" />
+    <TextField source="history.OCP" />
 </TranslatableFields>
 ```
 
