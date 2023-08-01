@@ -9,6 +9,10 @@ import fakeRestDataProvider from 'ra-data-fakerest';
 import { Box, Typography, Card, CardContent } from '@mui/material';
 import MailIcon from '@mui/icons-material/MailOutline';
 import CategoryIcon from '@mui/icons-material/LocalOffer';
+import BiotechIcon from '@mui/icons-material/Biotech';
+import NewspaperIcon from '@mui/icons-material/Newspaper';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import HelpCenterIcon from '@mui/icons-material/HelpCenter';
 
 import { FilterList } from './FilterList';
 import { FilterListItem } from './FilterListItem';
@@ -56,18 +60,22 @@ export const Basic = () => {
                         <FilterListItem
                             label="Tests"
                             value={{ category: 'tests' }}
+                            icon={<BiotechIcon />}
                         />
                         <FilterListItem
                             label="News"
                             value={{ category: 'news' }}
+                            icon={<NewspaperIcon />}
                         />
                         <FilterListItem
                             label="Deals"
                             value={{ category: 'deals' }}
+                            icon={<LocalOfferIcon />}
                         />
                         <FilterListItem
                             label="Tutorials"
                             value={{ category: 'tutorials' }}
+                            icon={<HelpCenterIcon />}
                         />
                     </FilterList>
                 </CardContent>
