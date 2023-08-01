@@ -253,7 +253,7 @@ const StyledListItem = styled(ListItem, {
     },
     [`& .${FilterListItemClasses.listItemIcon}`]: {
         minWidth: 0,
-        marginRight: '1em',
+        marginRight: '0.5em',
     },
 });
 
