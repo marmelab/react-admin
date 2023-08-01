@@ -45,7 +45,7 @@ Then, use `<TranslatableFields>` like so:
 <TranslatableFields locales={['en', 'fr']}>
     <TextField source="title" />
     <TextField source="description" />
-    <TextField source="history.OCP" />
+    <TextField source="internal_organizations.OCP" />
 </TranslatableFields>
 ```
 
