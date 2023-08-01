@@ -112,8 +112,8 @@ In many cases, the admin is only a part of the application. For instance, you ma
 
 This implies the creation of a new page in the Next.js app. Create a new file at the following location:
 
-- **App Router**: `src/app/admin/page.tsx`
-- **Pages Router**: `src/pages/admin/index.tsx`
+- App Router: `src/app/admin/page.tsx`
+- Pages Router: `src/pages/admin/index.tsx`
 
 No matter which system you choose, the file should contains the same code:
 
@@ -159,10 +159,10 @@ SUPABASE_SERVICE_ROLE="MY_SERVICE_ROLE_KEY"
 
 **Tip**: This example uses the **service role key** here and not the anonymous role. This allows mutations without dealing with authorization. **You shouldn't do this in production**, but use the [Supabase authorization](https://supabase.com/docs/guides/auth) feature instead.
 
-Create [a "catch-all" API route](https://nextjs.org/docs/api-routes/dynamic-api-routes#optional-catch-all-api-routes) in the Next.js app by adding a new file at the following location:
+Create [a "catch-all" API route](https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes#catch-all-segmentss) in the Next.js app by adding a new file at the following location:
 
-- **App Router**: `src/app/api/admin/page.ts`
-- **Pages Router**: `src/pages/api/admin/[[...slug]].ts`
+- App Router: `src/app/api/admin/[...slug]/page.ts`
+- Pages Router: `src/pages/api/admin/[[...slug]].ts`
  
 This API route redirects all calls from the react-admin app to the Supabase CRUD API:
 
