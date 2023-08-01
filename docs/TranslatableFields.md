@@ -5,20 +5,28 @@ title: "The TranslatableFields Component"
 
 # `<TranslatableFields>`
 
-You may have fields which are translated in multiple languages and want users to verify each translation. To display them, you can use the `<TranslatableFields>` component, which expects the translatable values to have the following structure:
+You may have fields which are translated in multiple languages and want users to verify each translation. To display them, you can use the `<TranslatableFields>` component, which expects the translatable values of a record to have the following structure:
 
 ```js
-{
+const record = {
+    id: 123,
     name: {
-        en: 'The english value',
-        fr: 'The french value',
-        tlh: 'The klingon value',
+        en: 'The english name',
+        fr: 'The french name',
+        tlh: 'The klingon name',
     },
     description: {
-        en: 'The english value',
-        fr: 'The french value',
-        tlh: 'The klingon value',
-    }
+        en: 'The english description',
+        fr: 'The french description',
+        tlh: 'The klingon description',
+    },
+    nested: {
+        field: {
+            en: 'The english nested field',
+            fr: 'The french nested field',
+            tlh: 'The klingon nested field',
+        },
+    },
 }
 ```
 
@@ -28,6 +36,7 @@ This is how to use it:
 <TranslatableFields locales={['en', 'fr']}>
     <TextField source="name" />
     <TextField source="description" />
+    <TextField source="nested.field" />
 </TranslatableFields>
 ```
 
