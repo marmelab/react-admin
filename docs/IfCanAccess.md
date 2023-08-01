@@ -76,7 +76,7 @@ To display the `ExportButton` in a `CompanyList` component, you would use:
 
 ## `resource`
 
-By default, `<UseCanAccess>` uses the current resource (from the `ResourceContext`) to check permissions. You can override this behavior by passing the `resource` prop:
+By default, `<IfCanAccess>` uses the current resource (from the `ResourceContext`) to check permissions. You can override this behavior by passing the `resource` prop:
 
 ```jsx
 <IfCanAccess action="export" resource="companies">
@@ -135,7 +135,7 @@ export const PostCreate = () => (
 
 **Tip**: This example uses a `Navigate` component to redirect to a custom page because you cannot use a `Redirect` component in this context. The `IfCanAccess` component uses a render prop, and `Redirect` only works in the render method of a component.
 
-Note that you if you use the `fallback` prop for a CRUD page (Create, Edit, List, Show) as above, you must use the `<Resource>` component from `react-admin` rather than the one from `ra-rbac`. This is because `ra-rbac` already does the access control check, and would redirect to the Not Found page before the fallback component is rendered.
+Note that if you use the `fallback` prop for a CRUD page (Create, Edit, List, Show) as above, you must use the `<Resource>` component from `react-admin` rather than the one from `ra-rbac`. This is because `ra-rbac` already does the access control check, and would redirect to the Not Found page before the fallback component is rendered.
 
 ```tsx
 // In src/App.tsx
