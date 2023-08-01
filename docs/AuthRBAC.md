@@ -68,6 +68,8 @@ npm install --save @react-admin/ra-rbac
 yarn add @react-admin/ra-rbac
 ```
 
+Make sure you [enable auth features](https://marmelab.com/react-admin/Authentication.html#enabling-auth-features) by setting an `<Admin authProvider>`, and [disable anonymous access](https://marmelab.com/react-admin/Authentication.html#disabling-anonymous-access) by adding the `<Admin requireAuth>` prop. This will ensure that react-admin waits for the `authProvider` response before rendering anything.
+
 **Tip**: ra-rbac is part of the [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to access this package.
 
 ## Concepts
@@ -141,6 +143,10 @@ const corrector123Role = [
 ];
 ```
 
+**Tip**: The _order_ of permissions isn't significant. As soon as at least one permission grants access to an action on a resource, ra-rbac grant access to it - unless there is an [explicit deny](#explicit-deny).
+
+The RBAC system relies on *permissions* only. It's the `authProvider`'s responsibility to map roles to permissions. See the [`authProvider` Methods](#authprovider-methods) section for details.
+
 ### Record-Level Permissions
 
 By default, a permission applies to all records of a resource.
@@ -182,7 +188,7 @@ const allProductsButStock = [
 
 ## `authProvider` Methods
 
-Ra-rbac builds up on react-admin's `authProvider` API. It precises the return format of the `getPermissions()` method which must return a promise for object containing `permissions` (an array of permissions).
+Ra-rbac builds up on react-admin's `authProvider` API. It precises the return format of the `getPermissions()` method which must return a promise for an array of permissions objects.
 
 ```jsx
 const authProvider = {
@@ -193,17 +199,27 @@ const authProvider = {
 };
 ```
 
-For every restricted resource, ra-rbac calls `authProvider.getPermissions()` to get the permissions.
+For every restricted resource, ra-rbac calls `authProvider.getPermissions()` to get the permissions. In practice, the permissions are usually returned upon login rather than in the `authProvider` code. The authProvider stores the permissions in memory or localStorage.
 
-For the example dataProvider above, this translates to the following set of permissions:
+`authProvider.getPermissions()` doesn't return roles - only permissions. Usually, the role definitions are committed with the application code, as a constant. The roles of the current user are fetched at login, and the permissions are computed from the roles and the role definitions. 
 
-`{ action: ["read", "write"], resource: "users", record: { "id": "123" } }`
+You can use the `getPermissionsFromRoles` helper in the `authProvider` to compute the permissions that the user has based on their permissions. This function takes an object as argument with the following fields:
 
-In practice, the permissions are usually returned upon login rather than in the `authProvider` code. The authProvider stores the permissions in memory or localStorage. The `authProvider.getPermissions()` method only retrieve the permissions from localStorage. 
+-   `roleDefinitions`: a static object containing the role definitions for each role
+-   `userRoles` _(optional)_: an array of roles (admin, reader...) for the current user
+-   `userPermissions` _(optional)_: an array of permissions for the current user, to be added to the permissions computed from the roles
 
-```jsx
+Here is an example `authProvider` implementation following this pattern:
+
+```tsx
+import { getPermissionsFromRoles } from '@react-admin/ra-rbac';
+
+const roleDefinitions = {
+    admin: [{ action: '*', resource: '*' }],
+    reader: [{ action: 'read', resource: '*' }],
+};
 const authProvider = {
-    login: ({ username, password }) =>  {
+    login: ({ username, password }) => {
         const request = new Request('https://mydomain.com/authenticate', {
             method: 'POST',
             body: JSON.stringify({ username, password }),
@@ -217,12 +233,30 @@ const authProvider = {
                 return response.json();
             })
             .then(data => {
-                localStorage.setItem('permissions', JSON.stringify(data.permissions));
+                // data is like
+                // {
+                //     "id": 123,
+                //     "fullName": "John Doe",
+                //     "permissions": [
+                //          { action: ["read", "write"], resource: "users", record: { id: "123" } },
+                //      ]
+                //     "roles": ["admin", "reader"],
+                // }
+                const permissions = getPermissionsFromRoles({
+                    roleDefinitions,
+                    userPermissions: data.permissions,
+                    userRoles: data.roles,
+                });
+                localStorage.setItem(
+                    'permissions',
+                    JSON.stringify(permissions)
+                );
             });
     },
     // ...
     getPermissions: () => {
-        return JSON.parse(localStorage.getItem("permissions"));
+        const permissions = JSON.parse(localStorage.getItem('permissions'));
+        return Promise.resolve(permissions);
     },
 };
 ```
