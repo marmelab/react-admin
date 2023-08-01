@@ -6,7 +6,7 @@ import { AdminContext } from '../AdminContext';
 import { SimpleShowLayout } from '../detail';
 import { TranslatableFields } from './TranslatableFields';
 import { TextField } from './TextField';
-import { RecordContextProvider } from 'ra-core';
+import { RecordContextProvider, useTranslatableContext } from 'ra-core';
 
 export default { title: 'ra-ui-materialui/fields/TranslatableFields' };
 
@@ -24,6 +24,46 @@ export const SingleField = () => (
     <Wrapper>
         <TranslatableFields locales={['en', 'fr']}>
             <TextField source="title" />
+        </TranslatableFields>
+    </Wrapper>
+);
+
+const Selector = () => {
+    const { locales, selectLocale, selectedLocale } = useTranslatableContext();
+
+    const handleChange = event => {
+        selectLocale(event.target.value);
+    };
+
+    return (
+        <select
+            aria-label="Select the locale"
+            onChange={handleChange}
+            value={selectedLocale}
+        >
+            {locales.map(locale => (
+                <option
+                    key={locale}
+                    value={locale}
+                    id={`translatable-header-${locale}`}
+                >
+                    {locale}
+                </option>
+            ))}
+        </select>
+    );
+};
+
+export const CustomSelector = () => (
+    <Wrapper>
+        <TranslatableFields
+            resource="products"
+            locales={['en', 'fr']}
+            selector={<Selector />}
+        >
+            <TextField source="title" />
+            <TextField source="description" />
+            <TextField source="internal_organizations.OCP" label="OCP" />
         </TranslatableFields>
     </Wrapper>
 );
