@@ -15,6 +15,7 @@ export const Basic = () => (
         <TranslatableFields locales={['en', 'fr']}>
             <TextField source="title" />
             <TextField source="description" />
+            <TextField source="internal_organizations.OCP" label="OCP" />
         </TranslatableFields>
     </Wrapper>
 );
@@ -43,6 +44,16 @@ const Wrapper = ({ children }) => (
                         'International humanitarian medical non-governmental organisation of French origin',
                     fr:
                         "Organisation non gouvernementale (ONG) médicale humanitaire internationale d'origine française fondée en 1971 à Paris",
+                },
+                internal_organizations: {
+                    OCB: {
+                        en: 'Brussels operational center',
+                        fr: 'Centre opérationnel de Bruxelles',
+                    },
+                    OCP: {
+                        en: 'Paris operational center',
+                        fr: 'Centre opérationnel de Paris',
+                    },
                 },
             }}
         >
