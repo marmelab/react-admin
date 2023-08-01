@@ -8,17 +8,17 @@ export default { title: 'ra-ui-materialui/fields/TranslatableFields' };
 const record = {
     id: 123,
     name: {
-        en: 'english name',
-        fr: 'french name',
+        en: 'The english name',
+        fr: 'The french name',
     },
     description: {
-        en: 'english description',
-        fr: 'french description',
+        en: 'The english description',
+        fr: 'The french description',
     },
     nested: {
         field: {
-            en: 'english nested field',
-            fr: 'french nested field',
+            en: 'The english nested field',
+            fr: 'The french nested field',
         },
     },
 };
