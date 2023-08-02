@@ -62,12 +62,12 @@ describe('usePermissions', () => {
         });
     });
 
-    it('should return an error after a tick if the auth call fails', async () => {
+    it('should return an error after a tick if the auth.getPermissions call fails and checkError resolves', async () => {
         const authProvider = {
             login: () => Promise.reject('bad method'),
             logout: () => Promise.reject('bad method'),
             checkAuth: () => Promise.reject('bad method'),
-            checkError: () => Promise.reject('bad method'),
+            checkError: () => Promise.resolve(),
             getPermissions: () => Promise.reject('not good'),
         };
         render(
@@ -79,5 +79,24 @@ describe('usePermissions', () => {
             expect(screen.queryByText('LOADING')).toBeNull();
             expect(screen.queryByText('ERROR')).not.toBeNull();
         });
+    });
+
+    it('should call logout when the auth.getPermissions call fails and checkError rejects', async () => {
+        const authProvider = {
+            login: () => Promise.reject('bad method'),
+            logout: jest.fn(() => Promise.resolve()),
+            checkAuth: () => Promise.reject('bad method'),
+            checkError: () => Promise.reject(),
+            getPermissions: () => Promise.reject('not good'),
+        };
+        render(
+            <CoreAdminContext authProvider={authProvider}>
+                <UsePermissions>{stateInpector}</UsePermissions>
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(screen.queryByText('LOADING')).toBeNull();
+        });
+        expect(authProvider.logout).toHaveBeenCalled();
     });
 });

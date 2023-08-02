@@ -92,14 +92,14 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         margin = 'dense',
         onBlur,
         onChange,
-        options,
-        optionText,
-        optionValue,
+        options = defaultOptions,
+        optionText = 'name',
+        optionValue = 'id',
         parse,
         resource: resourceProp,
-        row,
+        row = true,
         source: sourceProp,
-        translateChoice,
+        translateChoice = true,
         validate,
         ...rest
     } = props;
@@ -234,14 +234,6 @@ RadioButtonGroupInput.propTypes = {
     translateChoice: PropTypes.bool,
 };
 
-RadioButtonGroupInput.defaultProps = {
-    options: {},
-    optionText: 'name',
-    optionValue: 'id',
-    row: true,
-    translateChoice: true,
-};
-
 const sanitizeRestProps = ({
     afterSubmit,
     allowNull,
@@ -299,3 +291,5 @@ const StyledFormControl = styled(FormControl, {
         transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
     },
 }));
+
+const defaultOptions = {};

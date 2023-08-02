@@ -91,7 +91,7 @@ const GrantAdminPermissionsButton = () => {
 
 ## RBAC
 
-[The ra-rbac module](https://marmelab.com/ra-enterprise/modules/ra-rbac)<img class="icon" src="./img/premium.svg" /> provides an alternative implementation of the `usePermissions` hook. It returns an array of permissions, resulting in the merge of the user permissions and the permissions from the user roles.
+When using [the ra-rbac module](https://marmelab.com/ra-enterprise/modules/ra-rbac)<img class="icon" src="./img/premium.svg" />, the `usePermissions` hook returns an array of permissions.
 
 ```jsx
 import { usePermissions } from "@react-admin/ra-rbac";
@@ -99,6 +99,7 @@ import { usePermissions } from "@react-admin/ra-rbac";
 const authProvider = {
     // ...
     getPermissions: () => Promise.resolve([
+        { action: "read", resource: "*" },
         { action: ["read", "write"], resource: "users", record: { "id": "123" } },
     ])
 };
@@ -113,5 +114,5 @@ const { isLoading, permissions } = usePermissions();
 // };
 ```
 
-`usePermissions` is used internally by most `ra-rbac` components, but you will probably not need to use it directly.
+`usePermissions` is used internally by most `ra-rbac` components, but you will probably not need to use it directly as react-admin provides [high-level RBAC components](./AuthRBAC.md#components).
 

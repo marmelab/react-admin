@@ -105,9 +105,9 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
                 }));
         },
         {
-            onSuccess: ({ data }) => {
+            onSuccess: value => {
                 // optimistically populate the getOne cache
-                data.forEach(record => {
+                value?.data?.forEach(record => {
                     queryClient.setQueryData(
                         [resource, 'getOne', { id: String(record.id), meta }],
                         oldRecord => oldRecord ?? record

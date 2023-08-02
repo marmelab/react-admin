@@ -223,3 +223,13 @@ const BookShow = () => (
 );
 ```
 {% endraw %}
+
+## Removing The Link
+
+By default, `<ReferenceOneField>` links to the edition page of the related record. You can disable this behavior by setting the `link` prop to `false`.
+
+```jsx
+<ReferenceOneField label="Genre" reference="book_details" target="book_id" link={false}>
+    <TextField source="genre" />
+</ReferenceOneField>
+```

@@ -53,10 +53,6 @@ FileInputPreview.propTypes = {
     removeIcon: PropTypes.element,
 };
 
-FileInputPreview.defaultProps = {
-    file: undefined,
-};
-
 const PREFIX = 'RaFileInputPreview';
 
 const FileInputPreviewClasses = {

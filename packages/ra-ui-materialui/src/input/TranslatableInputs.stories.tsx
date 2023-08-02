@@ -1,12 +1,12 @@
 import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { useWatch } from 'react-hook-form';
 
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
 import { SimpleForm } from '../form';
 import { TranslatableInputs } from './TranslatableInputs';
+import { FormInspector } from './common';
 import { TextInput } from './TextInput';
 
 export default { title: 'ra-ui-materialui/input/TranslatableInputs' };
@@ -68,20 +68,8 @@ const Wrapper = ({ children }) => (
         <Create resource="posts">
             <SimpleForm>
                 {children}
-                <FormInspector />
+                <FormInspector name="published" />
             </SimpleForm>
         </Create>
     </AdminContext>
 );
-
-const FormInspector = () => {
-    const value = useWatch();
-    return (
-        <div style={{ backgroundColor: 'lightgrey' }}>
-            Values in form:&nbsp;
-            <code>
-                {JSON.stringify(value)} ({typeof value})
-            </code>
-        </div>
-    );
-};

@@ -90,7 +90,7 @@ import { SmartRichTextInput, DefaultEditorOptions } from '@react-admin/ra-ai';
 import { CodeBlock } from '@tiptap/extension-code-block';
 
 const editorOptions = {
-    ..DefaultEditorOptions,
+    ...DefaultEditorOptions,
     extensions: [
         ...DefaultEditorOptions.extensions,
         new CodeBlock({
@@ -163,12 +163,14 @@ That's why `<SmartRichTextInput>` accepts a `locale` prop. It defaults to 'en'.
 
 Specifies the field of the record that the input should edit. It is required.
 
+{% raw %}
 ```jsx
 <Form record={{ id: 123, title: 'Hello, world!', body: '<p>Lorem Ipsum</p>' }}>
     <SmartRichTextInput source="body" />
     {/* default value is "<p>Lorem Ipsum</p>" */}
 </Form>
 ```
+{% endraw %}
 
 If you edit a record with a complex structure, you can use a path as the `source` parameter. For instance, if the API returns the following 'book' record:
 
@@ -281,7 +283,7 @@ import { addGetCompletionBasedOnOpenAIAPI } from '@react-admin/ra-ai';
 const baseDataProvider = jsonServerProvider(
     import.meta.env.VITE_JSON_SERVER_URL
 );
-export const dataProvider = addGetCompletionBasedOnOpenAIAPI(baseDataProvider),
+export const dataProvider = addGetCompletionBasedOnOpenAIAPI(baseDataProvider);
 ```
 
 `addGetCompletionBasedOnOpenAIAPI` expects the OpenAI API key to be stored in the localStorage under the key `ra-ai.openai-api-key`. It's up to you to store the key in the localStorage (e.g. in `authProvider.login()`) and to remove it (e.g. in `authProvider.logout()`).

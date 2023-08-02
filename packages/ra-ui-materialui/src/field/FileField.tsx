@@ -76,6 +76,7 @@ export const FileField = <
                                 ping={ping}
                                 rel={rel}
                                 variant="body2"
+                                onClick={e => e.stopPropagation()}
                             >
                                 {fileTitleValue}
                             </Link>

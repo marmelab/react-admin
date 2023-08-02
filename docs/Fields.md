@@ -368,6 +368,15 @@ const BookEdit = () => (
 );
 ```
 
+## Hiding The Field Label
+
+React-admin Field layout components like [`<Datagrid>`](./Datagrid.md) and [`<SimpleShowLayout>`](./SimpleShowLayout.md) inspect their children and use their `source` prop to set the table headers or the field labels. To opt out of this behavior, pass `false` to the `label` prop.
+
+```jsx
+// No label will be added in SimpleShowLayout
+<TextField source="author.name" label={false} />
+```
+
 ## Conditional Formatting
 
 If you want to format a field depending on the value, create another component wrapping this field, and set the `sx` prop depending on the field value:

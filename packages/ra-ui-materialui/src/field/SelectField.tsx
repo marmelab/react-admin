@@ -85,9 +85,9 @@ const SelectFieldImpl = <
         emptyText,
         source,
         choices,
-        optionValue,
-        optionText,
-        translateChoice,
+        optionValue = 'id',
+        optionText = 'name',
+        translateChoice = true,
         ...rest
     } = props;
     const record = useRecordContext(props);
@@ -142,11 +142,6 @@ SelectFieldImpl.propTypes = {
     translateChoice: PropTypes.bool,
 };
 
-SelectFieldImpl.defaultProps = {
-    optionText: 'name',
-    optionValue: 'id',
-    translateChoice: true,
-};
 SelectFieldImpl.displayName = 'SelectFieldImpl';
 
 export const SelectField = genericMemo(SelectFieldImpl);
