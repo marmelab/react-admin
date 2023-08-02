@@ -84,48 +84,52 @@ You may override the tabs labels using translation keys following this format: `
 You may override the language selector using the `selector` prop, which accepts a React element:
 
 ```jsx
-import { useTranslatableContext } from 'react-admin';
+import {
+  Show,
+  SimpleShowLayout,
+  TextField,
+  TranslatableFields,
+  useTranslatableContext,
+} from "react-admin";
 
 const Selector = () => {
-    const {
-        locales,
-        selectLocale,
-        selectedLocale,
-    } = useTranslatableContext();
+  const { locales, selectLocale, selectedLocale } = useTranslatableContext();
 
-    const handleChange = event => {
-        selectLocale(event.target.value);
-    };
+  const handleChange = (event) => {
+    selectLocale(event.target.value);
+  };
 
-    return (
-        <select
-            aria-label="Select the locale"
-            onChange={handleChange}
-            value={selectedLocale}
+  return (
+    <select
+      aria-label="Select the locale"
+      onChange={handleChange}
+      value={selectedLocale}
+    >
+      {locales.map((locale) => (
+        <option
+          key={locale}
+          value={locale}
+          // This allows to correctly link the containers for each locale to their labels
+          id={`translatable-header-${locale}`}
         >
-            {locales.map(locale => (
-                <option
-                    key={locale}
-                    value={locale}
-                    // This allows to correctly link the containers for each locale to their labels
-                    id={`translatable-header-${locale}`}
-                >
-                    {locale}
-                </option>
-            ))}
-        </select>
-    );
+          {locale}
+        </option>
+      ))}
+    </select>
+  );
 };
 
-<TranslatableFields
-    record={record}
-    resource="products"
-    locales={['en', 'fr']}
-    selector={<Selector />}
->
-    <TextField source="name" />
-    <TextField source="description" />
-</TranslatableFields>
+export const NgoShow = () => (
+  <Show>
+    <SimpleShowLayout>
+      <TranslatableFields locales={["en", "fr"]} selector={<Selector />}>
+        <TextField source="title" />
+        <TextField source="description" />
+        <TextField source="internal_organizations.OCP" />
+      </TranslatableFields>
+    </SimpleShowLayout>
+  </Show>
+);
 ```
 
 <video controls autoplay playsinline muted loop>
