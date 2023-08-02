@@ -574,7 +574,10 @@ export type ResourceCallbacks<T extends RaRecord = any> = {
      * Note: This callback doesn't modify the record itself, but the data argument
      * (which may be a diff, especially when called with updateMany).
      */
-    beforeSave?: (data: Partial<T>, dataProvider: DataProvider) => Promise<Partial<T>>;
+    beforeSave?<R extends <Partial<T>>: (
+        data: R,
+        dataProvider: DataProvider
+    ) => Promise<R>;
     /**
      * Update a record after it has been read from the dataProvider
      *
