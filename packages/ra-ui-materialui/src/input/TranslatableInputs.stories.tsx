@@ -68,7 +68,7 @@ const Wrapper = ({ children }) => (
         <Create resource="posts">
             <SimpleForm>
                 {children}
-                <FormInspector name="published" />
+                <FormInspector name="title" />
             </SimpleForm>
         </Create>
     </AdminContext>
