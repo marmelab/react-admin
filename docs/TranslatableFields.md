@@ -42,11 +42,24 @@ const record = {
 Then, use `<TranslatableFields>` like so:
 
 ```jsx
-<TranslatableFields locales={['en', 'fr']}>
-    <TextField source="title" />
-    <TextField source="description" />
-    <TextField source="internal_organizations.OCP" />
-</TranslatableFields>
+import {
+  Show,
+  SimpleShowLayout,
+  TextField,
+  TranslatableFields,
+} from "react-admin";
+
+export const NgoShow = () => (
+  <Show>
+      <SimpleShowLayout>
+        <TranslatableFields locales={['en', 'fr']}>
+            <TextField source="title" />
+            <TextField source="description" />
+            <TextField source="internal_organizations.OCP" />
+        </TranslatableFields>
+      </SimpleShowLayout>
+  </Show>
+);
 ```
 
 <video controls autoplay playsinline muted loop>
