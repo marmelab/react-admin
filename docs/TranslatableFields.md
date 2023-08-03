@@ -15,7 +15,7 @@ You may have fields which are translated in multiple languages and want users to
 
 ## Usage
 
-`<TranslatableFields>` component, which expects the translatable values of a record to have the following structure:
+`<TranslatableFields>` expects the translatable values of a record to have the following structure:
 
 ```js
 const record = {
@@ -33,10 +33,9 @@ const record = {
 }
 ```
 
-Then, use `<TranslatableFields>` like so:
+To display translatable values, wrap the fields you want to render with `<TranslatableFields>`, like so:
 
 ```jsx
-// in src/NgoShow.tsx
 import {
   Show,
   SimpleShowLayout,
@@ -44,7 +43,7 @@ import {
   TranslatableFields,
 } from "react-admin";
 
-export const NgoShow = () => (
+export const OrganizationShow = () => (
   <Show>
       <SimpleShowLayout>
         <TranslatableFields locales={['en', 'fr']}>
@@ -56,6 +55,19 @@ export const NgoShow = () => (
 );
 ```
 
+`<TranslatableFields>` lets users select a locale using Material UI tabs with the locale code as their labels.
+
+You may override the tabs labels using translation keys following this format: `ra.locales.[locale_code]`. For instance, `ra.locales.en` or `ra.locales.fr`.
+
+**Tip**: If you want to display only one translation, you don't need `<TranslatableFields>`. Just use a regular field with a path as `source`:
+
+```jsx
+{/* always display the English title */}
+<TextField source="title.en" />
+```
+
+## `defaultLocale`
+
 React-admin uses the user locale as the default locale in this field. You can override this setting using the `defaultLocale` prop.
 
 ```jsx
@@ -65,9 +77,7 @@ React-admin uses the user locale as the default locale in this field. You can ov
 </TranslatableFields>
 ```
 
-By default, `<TranslatableFields>` will allow users to select the displayed locale using Material UI tabs with the locale code as their labels.
-
-You may override the tabs labels using translation keys following this format: `ra.locales.[locale_code]`. For instance, `ra.locales.en` or `ra.locales.fr`.
+## `groupKey`
 
 If you have multiple `TranslatableFields` on the same page, you should specify a `groupKey` so that react-admin can create unique identifiers for accessibility.
 
@@ -77,7 +87,8 @@ If you have multiple `TranslatableFields` on the same page, you should specify a
     <TextField source="description" />
 </TranslatableFields>
 ```
-## Overriding Language Selector
+
+## `selector`
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/translatable-fields-with-custom-selector.webm" type="video/webm" />
@@ -136,7 +147,7 @@ export const NgoShow = () => (
 );
 ```
 
-## Using Translatable Fields In List or Show views
+## Using Translatable Fields In List Views
 
 The `TranslatableFields` component is not meant to be used inside a `List` as you probably don't want to have tabs inside multiple lines. The simple solution to display a translatable value would be to specify its source like this: `name.en`. However, you may want to display its translation for the current admin locale.
 
