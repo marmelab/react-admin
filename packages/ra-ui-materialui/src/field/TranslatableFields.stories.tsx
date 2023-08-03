@@ -29,7 +29,7 @@ const defaultData = [
             fr:
                 "Organisation non gouvernementale (ONG) médicale humanitaire internationale d'origine française fondée en 1971 à Paris",
         },
-        /*internal_organizations: {
+        internal_organizations: {
             OCB: {
                 en: 'Brussels operational center',
                 fr: 'Centre opérationnel de Bruxelles',
@@ -38,19 +38,24 @@ const defaultData = [
                 en: 'Paris operational center',
                 fr: 'Centre opérationnel de Paris',
             },
-        },*/
+        },
     },
 ];
+const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
-const commonTextFields = [
-    <TextField source="title" />,
-    <TextField source="description" />,
-];
+const Wrapper = ({ children }) => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <RecordContextProvider value={defaultData[0]}>
+            <SimpleShowLayout>{children}</SimpleShowLayout>
+        </RecordContextProvider>
+    </AdminContext>
+);
 
 export const Basic = () => (
     <Wrapper>
         <TranslatableFields locales={['en', 'fr']}>
-            {commonTextFields}
+            <TextField source="title" />,
+            <TextField source="description" />,
         </TranslatableFields>
     </Wrapper>
 );
@@ -98,19 +103,16 @@ export const CustomSelector = () => (
         >
             <TextField source="title" />
             <TextField source="description" />
-            <TextField source="internal_organizations.OCP" label="OCP" />
         </TranslatableFields>
     </Wrapper>
 );
 
-const i18nProvider = polyglotI18nProvider(() => englishMessages);
-
-const Wrapper = ({ children }) => (
-    <AdminContext i18nProvider={i18nProvider}>
-        <RecordContextProvider value={defaultData[0]}>
-            <SimpleShowLayout>{children}</SimpleShowLayout>
-        </RecordContextProvider>
-    </AdminContext>
+export const NestedFields = () => (
+    <Wrapper>
+        <TranslatableFields locales={['en', 'fr']}>
+            <TextField source="internal_organizations.OCP" />
+        </TranslatableFields>
+    </Wrapper>
 );
 
 const dataProvider = fakeRestDataProvider({
@@ -121,7 +123,8 @@ const ShowNgo = () => (
     <Show>
         <SimpleShowLayout>
             <TranslatableFields locales={['en', 'fr']}>
-                {commonTextFields}
+                <TextField source="title" />,
+                <TextField source="description" />,
             </TranslatableFields>
         </SimpleShowLayout>
     </Show>
