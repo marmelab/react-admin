@@ -96,11 +96,7 @@ const Selector = () => {
 
 export const CustomSelector = () => (
     <Wrapper>
-        <TranslatableFields
-            resource="products"
-            locales={['en', 'fr']}
-            selector={<Selector />}
-        >
+        <TranslatableFields locales={['en', 'fr']} selector={<Selector />}>
             <TextField source="title" />
             <TextField source="description" />
         </TranslatableFields>
