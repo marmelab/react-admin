@@ -13,13 +13,13 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
         {
             children,
             className,
-            data,
+            data = defaultData,
             expand,
-            hasBulkActions,
+            hasBulkActions = false,
             hover,
             onToggleItem,
             resource,
-            row,
+            row = defaultChildren,
             rowClick,
             rowStyle,
             selectedIds,
@@ -61,14 +61,16 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
     )
 );
 
+const defaultChildren = <DatagridRow />;
+
 DatagridBody.propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
     // @ts-ignore
-    data: PropTypes.arrayOf(PropTypes.object).isRequired,
+    data: PropTypes.arrayOf(PropTypes.object),
     // @ts-ignore
     expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
-    hasBulkActions: PropTypes.bool.isRequired,
+    hasBulkActions: PropTypes.bool,
     hover: PropTypes.bool,
     onToggleItem: PropTypes.func,
     resource: PropTypes.string,
@@ -83,12 +85,6 @@ DatagridBody.propTypes = {
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     styles: PropTypes.object,
     isRowSelectable: PropTypes.func,
-};
-
-DatagridBody.defaultProps = {
-    data: [],
-    hasBulkActions: false,
-    row: <DatagridRow />,
 };
 
 export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
@@ -116,18 +112,18 @@ export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
     isRowSelectable?: (record: RaRecord) => boolean;
 }
 
+const defaultData = [];
+
 // trick Material UI Table into thinking this is one of the child type it supports
 // @ts-ignore
 DatagridBody.muiName = 'TableBody';
 
-export const PureDatagridBody = memo(DatagridBody);
+export const PureDatagridBody = memo(props => (
+    <DatagridBody row={<PureDatagridRow />} {...props} />
+));
 
 // trick Material UI Table into thinking this is one of the child type it supports
 // @ts-ignore
 PureDatagridBody.muiName = 'TableBody';
-// @ts-ignore
-PureDatagridBody.defaultProps = {
-    row: <PureDatagridRow />,
-};
 
 export default DatagridBody;

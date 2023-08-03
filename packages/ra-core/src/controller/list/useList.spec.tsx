@@ -21,70 +21,6 @@ const UseList = ({
 };
 
 describe('<useList />', () => {
-    it('should filter string data based on the filter props', () => {
-        const callback = jest.fn();
-        const data = [
-            { id: 1, title: 'hello' },
-            { id: 2, title: 'world' },
-        ];
-
-        render(
-            <UseList
-                data={data}
-                filter={{ title: 'world' }}
-                sort={{ field: 'id', order: 'ASC' }}
-                callback={callback}
-            />
-        );
-
-        expect(callback).toHaveBeenCalledWith(
-            expect.objectContaining({
-                sort: { field: 'id', order: 'ASC' },
-                isFetching: false,
-                isLoading: false,
-                data: [{ id: 2, title: 'world' }],
-                error: undefined,
-                total: 1,
-            })
-        );
-    });
-
-    it('should filter array data based on the filter props', async () => {
-        const callback = jest.fn();
-        const data = [
-            { id: 1, items: ['one', 'two'] },
-            { id: 2, items: ['three'] },
-            { id: 3, items: 'four' },
-            { id: 4, items: ['five'] },
-        ];
-
-        render(
-            <UseList
-                data={data}
-                filter={{ items: ['two', 'four', 'five'] }}
-                sort={{ field: 'id', order: 'ASC' }}
-                callback={callback}
-            />
-        );
-
-        await waitFor(() => {
-            expect(callback).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    sort: { field: 'id', order: 'ASC' },
-                    isFetching: false,
-                    isLoading: false,
-                    data: [
-                        { id: 1, items: ['one', 'two'] },
-                        { id: 3, items: 'four' },
-                        { id: 4, items: ['five'] },
-                    ],
-                    error: undefined,
-                    total: 3,
-                })
-            );
-        });
-    });
-
     it('should apply sorting correctly', async () => {
         const callback = jest.fn();
         const data = [
@@ -229,66 +165,154 @@ describe('<useList />', () => {
         );
     });
 
-    it('should filter array data based on the custom filter', async () => {
-        const callback = jest.fn();
-        const data = [
-            { id: 1, items: ['one', 'two'] },
-            { id: 2, items: ['three'] },
-            { id: 3, items: 'four' },
-            { id: 4, items: ['five'] },
-        ];
+    describe('filter', () => {
+        it('should filter string data based on the filter props', () => {
+            const callback = jest.fn();
+            const data = [
+                { id: 1, title: 'hello' },
+                { id: 2, title: 'world' },
+            ];
 
-        render(
-            <UseList
-                data={data}
-                sort={{ field: 'id', order: 'ASC' }}
-                filterCallback={record => record.id > 2}
-                callback={callback}
-            />
-        );
+            render(
+                <UseList
+                    data={data}
+                    filter={{ title: 'world' }}
+                    sort={{ field: 'id', order: 'ASC' }}
+                    callback={callback}
+                />
+            );
 
-        await waitFor(() => {
             expect(callback).toHaveBeenCalledWith(
                 expect.objectContaining({
                     sort: { field: 'id', order: 'ASC' },
                     isFetching: false,
                     isLoading: false,
-                    data: [
-                        { id: 3, items: 'four' },
-                        { id: 4, items: ['five'] },
-                    ],
+                    data: [{ id: 2, title: 'world' }],
                     error: undefined,
-                    total: 2,
+                    total: 1,
                 })
             );
         });
-    });
 
-    it('should filter data based on a custom filter with nested objects', () => {
-        const callback = jest.fn();
-        const data = [
-            { id: 1, title: { name: 'hello' } },
-            { id: 2, title: { name: 'world' } },
-        ];
+        it('should filter array data based on the filter props', async () => {
+            const callback = jest.fn();
+            const data = [
+                { id: 1, items: ['one', 'two'] },
+                { id: 2, items: ['three'] },
+                { id: 3, items: 'four' },
+                { id: 4, items: ['five'] },
+            ];
 
-        render(
-            <UseList
-                data={data}
-                filter={{ title: { name: 'world' } }}
-                sort={{ field: 'id', order: 'ASC' }}
-                callback={callback}
-            />
-        );
+            render(
+                <UseList
+                    data={data}
+                    filter={{ items: ['two', 'four', 'five'] }}
+                    sort={{ field: 'id', order: 'ASC' }}
+                    callback={callback}
+                />
+            );
 
-        expect(callback).toHaveBeenCalledWith(
-            expect.objectContaining({
-                sort: { field: 'id', order: 'ASC' },
-                isFetching: false,
-                isLoading: false,
-                data: [{ id: 2, title: { name: 'world' } }],
-                error: undefined,
-                total: 1,
-            })
-        );
+            await waitFor(() => {
+                expect(callback).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        sort: { field: 'id', order: 'ASC' },
+                        isFetching: false,
+                        isLoading: false,
+                        data: [
+                            { id: 1, items: ['one', 'two'] },
+                            { id: 3, items: 'four' },
+                            { id: 4, items: ['five'] },
+                        ],
+                        error: undefined,
+                        total: 3,
+                    })
+                );
+            });
+        });
+
+        it('should filter array data based on the custom filter', async () => {
+            const callback = jest.fn();
+            const data = [
+                { id: 1, items: ['one', 'two'] },
+                { id: 2, items: ['three'] },
+                { id: 3, items: 'four' },
+                { id: 4, items: ['five'] },
+            ];
+
+            render(
+                <UseList
+                    data={data}
+                    sort={{ field: 'id', order: 'ASC' }}
+                    filterCallback={record => record.id > 2}
+                    callback={callback}
+                />
+            );
+
+            await waitFor(() => {
+                expect(callback).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        sort: { field: 'id', order: 'ASC' },
+                        isFetching: false,
+                        isLoading: false,
+                        data: [
+                            { id: 3, items: 'four' },
+                            { id: 4, items: ['five'] },
+                        ],
+                        error: undefined,
+                        total: 2,
+                    })
+                );
+            });
+        });
+
+        it('should filter data based on a custom filter with nested objects', () => {
+            const callback = jest.fn();
+            const data = [
+                { id: 1, title: { name: 'hello' } },
+                { id: 2, title: { name: 'world' } },
+            ];
+
+            render(
+                <UseList
+                    data={data}
+                    filter={{ title: { name: 'world' } }}
+                    sort={{ field: 'id', order: 'ASC' }}
+                    callback={callback}
+                />
+            );
+
+            expect(callback).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    sort: { field: 'id', order: 'ASC' },
+                    isFetching: false,
+                    isLoading: false,
+                    data: [{ id: 2, title: { name: 'world' } }],
+                    error: undefined,
+                    total: 1,
+                })
+            );
+        });
+
+        it('should apply the q filter as a full-text filter', () => {
+            const callback = jest.fn();
+            const data = [
+                { id: 1, title: 'Abc', author: 'Def' }, // matches 'ab'
+                { id: 2, title: 'Ghi', author: 'Jkl' }, // does not match 'ab'
+                { id: 3, title: 'Mno', author: 'Abc' }, // matches 'ab'
+            ];
+
+            render(
+                <UseList data={data} filter={{ q: 'ab' }} callback={callback} />
+            );
+
+            expect(callback).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    data: [
+                        { id: 1, title: 'Abc', author: 'Def' },
+                        { id: 3, title: 'Mno', author: 'Abc' },
+                    ],
+                })
+            );
+        });
     });
 });

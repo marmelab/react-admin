@@ -3,7 +3,8 @@ import { ChangeEvent, memo, useMemo } from 'react';
 import { InputAdornment } from '@mui/material';
 import { SxProps } from '@mui/system';
 import SearchIcon from '@mui/icons-material/Search';
-import { Form, useTranslate, useListFilterContext } from 'ra-core';
+import { useTranslate, useListFilterContext } from 'ra-core';
+import { FormProvider, useForm } from 'react-hook-form';
 
 import { TextInput, TextInputProps } from '../../input';
 
@@ -38,7 +39,7 @@ export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
             setFilters({ ...filterValues, [source]: event.target.value }, null);
         } else {
             const { [source]: _, ...filters } = filterValues;
-            setFilters(filters, null);
+            setFilters(filters, null, false);
         }
     };
 
@@ -49,32 +50,36 @@ export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
         [filterValues, source]
     );
 
+    const form = useForm({ defaultValues: initialValues });
+
     const onSubmit = () => undefined;
     return (
-        <Form defaultValues={initialValues} onSubmit={onSubmit}>
-            <TextInput
-                resettable
-                helperText={false}
-                source={source}
-                InputProps={{
-                    endAdornment: (
-                        <InputAdornment position="end">
-                            <SearchIcon color="disabled" />
-                        </InputAdornment>
-                    ),
-                }}
-                onChange={handleChange}
-                size="small"
-                {...(variant === 'outlined'
-                    ? { variant: 'outlined', label }
-                    : {
-                          placeholder: label,
-                          label: false,
-                          hiddenLabel: true,
-                      })}
-                {...rest}
-            />
-        </Form>
+        <FormProvider {...form}>
+            <form onSubmit={onSubmit}>
+                <TextInput
+                    resettable
+                    helperText={false}
+                    source={source}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <SearchIcon color="disabled" />
+                            </InputAdornment>
+                        ),
+                    }}
+                    onChange={handleChange}
+                    size="small"
+                    {...(variant === 'outlined'
+                        ? { variant: 'outlined', label }
+                        : {
+                              placeholder: label,
+                              label: false,
+                              hiddenLabel: true,
+                          })}
+                    {...rest}
+                />
+            </form>
+        </FormProvider>
     );
 });
 

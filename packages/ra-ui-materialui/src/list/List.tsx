@@ -62,9 +62,9 @@ export const List = <RecordType extends RaRecord = any>({
     disableAuthentication,
     disableSyncWithLocation,
     exporter,
-    filter,
+    filter = defaultFilter,
     filterDefaultValues,
-    perPage,
+    perPage = 10,
     queryOptions,
     resource,
     sort,
@@ -108,7 +108,7 @@ List.propTypes = {
     ]),
     // @ts-ignore-line
     pagination: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    perPage: PropTypes.number.isRequired,
+    perPage: PropTypes.number,
     //@ts-ignore-line
     sort: PropTypes.shape({
         field: PropTypes.string,
@@ -122,7 +122,4 @@ List.propTypes = {
     resource: PropTypes.string,
 };
 
-List.defaultProps = {
-    filter: {},
-    perPage: 10,
-};
+const defaultFilter = {};

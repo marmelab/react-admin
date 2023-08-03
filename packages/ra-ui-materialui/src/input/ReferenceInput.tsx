@@ -71,9 +71,18 @@ import { AutocompleteInput } from './AutocompleteInput';
  * a `setFilters` function. You can call this function to filter the results.
  */
 export const ReferenceInput = (props: ReferenceInputProps) => {
-    const { children, reference } = props;
+    const {
+        children = defaultChildren,
+        reference,
+        sort = { field: 'id', order: 'DESC' },
+        filter = {},
+    } = props;
 
-    const controllerProps = useReferenceInputController(props);
+    const controllerProps = useReferenceInputController({
+        ...props,
+        sort,
+        filter,
+    });
 
     if (Children.count(children) !== 1) {
         throw new Error('<ReferenceInput> only accepts a single child');
@@ -104,13 +113,7 @@ ReferenceInput.propTypes = {
     source: PropTypes.string,
 };
 
-ReferenceInput.defaultProps = {
-    filter: {},
-    page: 1,
-    perPage: 25,
-    sort: { field: 'id', order: 'DESC' },
-    children: <AutocompleteInput />,
-};
+const defaultChildren = <AutocompleteInput />;
 
 export interface ReferenceInputProps
     extends InputProps,

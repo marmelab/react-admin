@@ -63,7 +63,7 @@ export const ReferenceField = <
 >(
     props: ReferenceFieldProps<RecordType, ReferenceRecordType>
 ) => {
-    const { source, emptyText, ...rest } = props;
+    const { source, emptyText, link = 'edit', ...rest } = props;
     const record = useRecordContext<RecordType>(props);
     const id = get(record, source);
     const translate = useTranslate();
@@ -80,6 +80,7 @@ export const ReferenceField = <
     ) : (
         <NonEmptyReferenceField<RecordType, ReferenceRecordType>
             {...rest}
+            link={link}
             emptyText={emptyText}
             record={record}
             id={id as Identifier}
@@ -105,11 +106,7 @@ ReferenceField.propTypes = {
         PropTypes.string,
         PropTypes.bool,
         PropTypes.func,
-    ]).isRequired,
-};
-
-ReferenceField.defaultProps = {
-    link: 'edit',
+    ]),
 };
 
 export interface ReferenceFieldProps<

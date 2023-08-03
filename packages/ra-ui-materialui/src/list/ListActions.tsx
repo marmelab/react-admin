@@ -46,7 +46,15 @@ import { FilterButton } from './filter';
  *     );
  */
 export const ListActions = (props: ListActionsProps) => {
-    const { className, filters: filtersProp, hasCreate: _, ...rest } = props;
+    const {
+        className,
+        filters: filtersProp,
+        hasCreate: _,
+        selectedIds = defaultSelectedIds,
+        onUnselectItems = defaultOnUnselectItems,
+        ...rest
+    } = props;
+
     const {
         sort,
         displayedFilters,
@@ -54,7 +62,7 @@ export const ListActions = (props: ListActionsProps) => {
         exporter,
         showFilter,
         total,
-    } = useListContext(props);
+    } = useListContext({ ...props, selectedIds, onUnselectItems });
     const resource = useResourceContext(props);
     const { hasCreate } = useResourceDefinition(props);
     const filters = useContext(FilterContext) || filtersProp;
@@ -107,15 +115,10 @@ ListActions.propTypes = {
     filterValues: PropTypes.object,
     hasCreate: PropTypes.bool,
     resource: PropTypes.string,
-    onUnselectItems: PropTypes.func.isRequired,
+    onUnselectItems: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     showFilter: PropTypes.func,
     total: PropTypes.number,
-};
-
-ListActions.defaultProps = {
-    selectedIds: [],
-    onUnselectItems: () => null,
 };
 
 export interface ListActionsProps extends ToolbarProps {
@@ -133,3 +136,6 @@ export interface ListActionsProps extends ToolbarProps {
     showFilter?: (filterName: string, defaultValue: any) => void;
     total?: number;
 }
+
+const defaultSelectedIds = [];
+const defaultOnUnselectItems = () => null;

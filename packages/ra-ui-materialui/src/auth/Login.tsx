@@ -28,7 +28,7 @@ import { LoginForm as DefaultLoginForm } from './LoginForm';
  *     );
  */
 export const Login = (props: LoginProps) => {
-    const { children, backgroundImage, ...rest } = props;
+    const { children = defaultLoginForm, backgroundImage, ...rest } = props;
     const containerRef = useRef<HTMLDivElement>();
     let backgroundImageLoaded = false;
     const checkAuth = useCheckAuth();
@@ -79,6 +79,8 @@ export const Login = (props: LoginProps) => {
     );
 };
 
+const defaultLoginForm = <DefaultLoginForm />;
+
 export interface LoginProps extends HtmlHTMLAttributes<HTMLDivElement> {
     backgroundImage?: string;
     children?: ReactNode;
@@ -126,8 +128,4 @@ Login.propTypes = {
     backgroundImage: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
-};
-
-Login.defaultProps = {
-    children: <DefaultLoginForm />,
 };
