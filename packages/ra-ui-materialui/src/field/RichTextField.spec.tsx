@@ -124,6 +124,21 @@ describe('<RichTextField />', () => {
     );
 
     it.each([null, undefined])(
+        'should render the emptyText ReactNode when value is %s and stripTags is set to false',
+        body => {
+            const emptyTextNode = <b>Custom Empty Text</b>;
+            const { getByText } = render(
+                <RichTextField
+                    record={{ id: 123, body }}
+                    emptyText={emptyTextNode}
+                    source="body"
+                />
+            );
+            expect(getByText('Custom Empty Text')).toBeTruthy();
+        }
+    );
+
+    it.each([null, undefined])(
         'should render the emptyText when value is %s and stripTags is set to true',
         body => {
             const { queryByText } = render(
@@ -135,6 +150,22 @@ describe('<RichTextField />', () => {
                 />
             );
             expect(queryByText('NA')).not.toBeNull();
+        }
+    );
+
+    it.each([null, undefined])(
+        'should render the emptyText ReactNode when value is %s and stripTags is set to true',
+        body => {
+            const emptyTextNode = <b>Custom Empty Text</b>;
+            const { getByText } = render(
+                <RichTextField
+                    record={{ id: 123, body }}
+                    emptyText={emptyTextNode}
+                    source="body"
+                    stripTags
+                />
+            );
+            expect(getByText('Custom Empty Text')).toBeTruthy();
         }
     );
 

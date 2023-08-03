@@ -120,4 +120,20 @@ describe('<EmailField />', () => {
 
         expect(getByText('Not found')).not.toBeNull();
     });
+
+    it.each([null, undefined])(
+        'should render the emptyText ReactNode when value is %s',
+        foo => {
+            const emptyTextNode = <b>Custom Empty Text</b>;
+            const { getByText } = render(
+                <EmailField
+                    record={{ id: 123, foo }}
+                    source="foo"
+                    emptyText={emptyTextNode}
+                />
+            );
+            const renderedEmptyText = getByText('Custom Empty Text');
+            expect(renderedEmptyText).toBeTruthy();
+        }
+    );
 });

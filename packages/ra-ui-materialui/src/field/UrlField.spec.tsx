@@ -77,4 +77,20 @@ describe('<UrlField />', () => {
 
         expect(getByText('Not found')).not.toBeNull();
     });
+
+    it.each([null, undefined])(
+        'should render the emptyText ReactNode when value is %s',
+        url => {
+            const emptyTextNode = <b>Custom Empty Text</b>;
+            const { getByText } = render(
+                <UrlField
+                    record={{ id: 123, url }}
+                    className="foo"
+                    source="url"
+                    emptyText={emptyTextNode}
+                />
+            );
+            expect(getByText('Custom Empty Text')).toBeTruthy();
+        }
+    );
 });

@@ -194,4 +194,20 @@ describe('<DateField />', () => {
 
         expect(getByText('Not found')).not.toBeNull();
     });
+
+    it.each([null, undefined])(
+        'should display emptyText ReactNode prop if provided for %s value',
+        foo => {
+            const emptyTextNode = <b>Custom Empty Text</b>;
+            const { getByText } = render(
+                <DateField
+                    record={{ id: 123, foo }}
+                    source="foo.bar"
+                    emptyText={emptyTextNode}
+                />
+            );
+            const renderedEmptyText = getByText('Custom Empty Text');
+            expect(renderedEmptyText).toBeTruthy();
+        }
+    );
 });

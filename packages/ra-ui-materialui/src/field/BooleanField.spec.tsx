@@ -150,6 +150,22 @@ describe('<BooleanField />', () => {
         }
     );
 
+    it.each([null, undefined])(
+        'should display emptyText ReactNode prop if provided for %s value',
+        published => {
+            const emptyTextNode = <b>Custom Empty Text</b>;
+            render(
+                <BooleanField
+                    {...defaultProps}
+                    record={{ id: 123, published }}
+                    emptyText={emptyTextNode}
+                />
+            );
+            const renderedEmptyText = screen.getByText('Custom Empty Text');
+            expect(renderedEmptyText).toBeTruthy();
+        }
+    );
+
     it('should use custom className', () => {
         const { container } = render(
             <BooleanField

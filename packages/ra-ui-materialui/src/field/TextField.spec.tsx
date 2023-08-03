@@ -60,6 +60,23 @@ describe('<TextField />', () => {
         }
     );
 
+    it.each([null, undefined])(
+        'should display emptyText ReactNode prop if provided for %s value',
+        value => {
+            const record = { id: 123, title: value };
+            const emptyTextNode = <b>Custom Empty Text</b>;
+            render(
+                <TextField
+                    emptyText={emptyTextNode}
+                    record={record}
+                    source="title"
+                />
+            );
+            const renderedEmptyText = screen.getByText('Custom Empty Text');
+            expect(renderedEmptyText).toBeTruthy();
+        }
+    );
+
     it('should handle deep fields', () => {
         const record = {
             id: 123,

@@ -87,4 +87,20 @@ describe('<ChipField />', () => {
 
         expect(getByText('Not found')).not.toBeNull();
     });
+
+    it.each([null, undefined])(
+        'should display emptyText ReactNode prop if provided for %s value',
+        name => {
+            const emptyTextNode = <b>Custom Empty Text</b>;
+            const { getByText } = render(
+                <ChipField
+                    record={{ id: 123, name }}
+                    source="name"
+                    emptyText={emptyTextNode}
+                />
+            );
+            const renderedEmptyText = getByText('Custom Empty Text');
+            expect(renderedEmptyText).toBeTruthy();
+        }
+    );
 });

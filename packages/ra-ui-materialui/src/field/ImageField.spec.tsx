@@ -184,4 +184,20 @@ describe('<ImageField />', () => {
 
         expect(getByText('Not found')).not.toBeNull();
     });
+
+    it.each([null, undefined])(
+        'hould render the emptyText ReactNode when value is %s',
+        url => {
+            const emptyTextNode = <b>Custom Empty Text</b>;
+            const { getByText } = render(
+                <ImageField
+                    record={{ id: 123, url }}
+                    source="url"
+                    emptyText={emptyTextNode}
+                />
+            );
+            const renderedEmptyText = getByText('Custom Empty Text');
+            expect(renderedEmptyText).toBeTruthy();
+        }
+    );
 });

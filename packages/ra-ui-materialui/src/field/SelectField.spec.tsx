@@ -68,6 +68,18 @@ describe('<SelectField />', () => {
         expect(screen.queryByText('Option not found')).not.toBeNull();
     });
 
+    it('should render the emptyText ReactNode when the value for the source is not in the choices', () => {
+        const emptyTextNode = <b>Custom Empty Text</b>;
+        render(
+            <SelectField
+                record={{ id: 123, foo: 2 }}
+                emptyText={emptyTextNode}
+                {...defaultProps}
+            />
+        );
+        expect(screen.getByText('Custom Empty Text')).toBeTruthy();
+    });
+
     it('should render the choice', () => {
         render(<SelectField {...defaultProps} record={{ id: 123, foo: 0 }} />);
         expect(screen.queryAllByText('hello')).toHaveLength(1);

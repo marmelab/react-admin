@@ -296,6 +296,27 @@ describe('<ReferenceField />', () => {
         expect(screen.getByText('EMPTY')).not.toBeNull();
     });
 
+    it('should display emptyText ReactNode if the field is empty', () => {
+        const emptyTextNode = <b>Custom Empty Text</b>;
+        render(
+            <ThemeProvider theme={theme}>
+                <CoreAdminContext dataProvider={testDataProvider()}>
+                    <ReferenceField
+                        record={{ id: 123 }}
+                        resource="comments"
+                        source="postId"
+                        reference="posts"
+                        emptyText={emptyTextNode}
+                    >
+                        <TextField source="title" />
+                    </ReferenceField>
+                </CoreAdminContext>
+            </ThemeProvider>
+        );
+        const renderedEmptyText = screen.getByText('Custom Empty Text');
+        expect(renderedEmptyText).toBeTruthy();
+    });
+
     it('should display the emptyText if there is no reference', async () => {
         render(<MissingReference />);
         await screen.findByText('no detail');
