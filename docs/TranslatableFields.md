@@ -7,7 +7,11 @@ title: "The TranslatableFields Component"
 
 You may have fields which are translated in multiple languages and want users to verify each translation. To display them, you can use the `<TranslatableFields>` component.
 
-![TranslatableFields addLabel](./img/TranslatableFields.png)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/translatable-fields-basic.webm" type="video/webm" />
+  <source src="./img/translatable-fields-basic.webm" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 ## Usage
 
@@ -25,16 +29,6 @@ const record = {
             'International humanitarian medical non-governmental organisation of French origin',
         fr:
             "Organisation non gouvernementale (ONG) médicale humanitaire internationale d'origine française fondée en 1971 à Paris",
-    },
-    internal_organizations: {
-        OCB: {
-            en: 'Brussels operational center',
-            fr: 'Centre opérationnel de Bruxelles',
-        },
-        OCP: {
-            en: 'Paris operational center',
-            fr: 'Centre opérationnel de Paris'
-        }
     }
 }
 ```
@@ -42,6 +36,7 @@ const record = {
 Then, use `<TranslatableFields>` like so:
 
 ```jsx
+// in src/NgoShow.tsx
 import {
   Show,
   SimpleShowLayout,
@@ -55,18 +50,11 @@ export const NgoShow = () => (
         <TranslatableFields locales={['en', 'fr']}>
             <TextField source="title" />
             <TextField source="description" />
-            <TextField source="internal_organizations.OCP" />
         </TranslatableFields>
       </SimpleShowLayout>
   </Show>
 );
 ```
-
-<video controls autoplay playsinline muted loop>
-  <source src="./img/translatable-fields-basic.webm" type="video/webm" />
-  <source src="./img/translatable-fields-basic.webm" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
 
 React-admin uses the user locale as the default locale in this field. You can override this setting using the `defaultLocale` prop.
 
@@ -81,9 +69,26 @@ By default, `<TranslatableFields>` will allow users to select the displayed loca
 
 You may override the tabs labels using translation keys following this format: `ra.locales.[locale_code]`. For instance, `ra.locales.en` or `ra.locales.fr`.
 
+If you have multiple `TranslatableFields` on the same page, you should specify a `groupKey` so that react-admin can create unique identifiers for accessibility.
+
+```jsx
+<TranslatableFields locales={['en', 'fr']} groupKey="essential-fields">
+    <TextField source="name" />
+    <TextField source="description" />
+</TranslatableFields>
+```
+## Overriding Language Selector
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/translatable-fields-with-custom-selector.webm" type="video/webm" />
+  <source src="./img/translatable-fields-with-custom-selector.webm" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
 You may override the language selector using the `selector` prop, which accepts a React element:
 
 ```jsx
+// in src/NgoShow.tsx
 import {
   Show,
   SimpleShowLayout,
@@ -125,26 +130,10 @@ export const NgoShow = () => (
       <TranslatableFields locales={["en", "fr"]} selector={<Selector />}>
         <TextField source="title" />
         <TextField source="description" />
-        <TextField source="internal_organizations.OCP" />
       </TranslatableFields>
     </SimpleShowLayout>
   </Show>
 );
-```
-
-<video controls autoplay playsinline muted loop>
-  <source src="./img/translatable-fields-with-custom-selector.webm" type="video/webm" />
-  <source src="./img/translatable-fields-with-custom-selector.webm" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
-
-If you have multiple `TranslatableFields` on the same page, you should specify a `groupKey` so that react-admin can create unique identifiers for accessibility.
-
-```jsx
-<TranslatableFields locales={['en', 'fr']} groupKey="essential-fields">
-    <TextField source="name" />
-    <TextField source="description" />
-</TranslatableFields>
 ```
 
 ## Using Translatable Fields In List or Show views
