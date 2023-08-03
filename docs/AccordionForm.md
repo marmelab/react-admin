@@ -495,7 +495,7 @@ const PersonEdit = () => (
     <Edit mutationMode="optimistic">
         <AccordionForm
             resetOptions={{ keepDirtyValues: true }}
-            toolbar={AutoSaveToolbar}
+            toolbar={<AutoSaveToolbar />}
         >
             <AccordionForm.Panel label="identity">
                 <TextInput source="first_name" />
