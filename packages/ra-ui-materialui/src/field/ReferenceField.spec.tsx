@@ -313,7 +313,7 @@ describe('<ReferenceField />', () => {
                 </CoreAdminContext>
             </ThemeProvider>
         );
-        const renderedEmptyText = screen.getByText('Custom Empty Text');
+        const renderedEmptyText = screen.queryByText('Custom Empty Text');
         expect(renderedEmptyText).toBeTruthy();
     });
 

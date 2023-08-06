@@ -125,14 +125,14 @@ describe('<EmailField />', () => {
         'should render the emptyText ReactNode when value is %s',
         foo => {
             const emptyTextNode = <b>Custom Empty Text</b>;
-            const { getByText } = render(
+            const { queryByText } = render(
                 <EmailField
                     record={{ id: 123, foo }}
                     source="foo"
                     emptyText={emptyTextNode}
                 />
             );
-            const renderedEmptyText = getByText('Custom Empty Text');
+            const renderedEmptyText = queryByText('Custom Empty Text');
             expect(renderedEmptyText).toBeTruthy();
         }
     );

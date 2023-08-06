@@ -77,7 +77,7 @@ describe('<SelectField />', () => {
                 {...defaultProps}
             />
         );
-        expect(screen.getByText('Custom Empty Text')).toBeTruthy();
+        expect(screen.queryByText('Custom Empty Text')).toBeTruthy();
     });
 
     it('should render the choice', () => {

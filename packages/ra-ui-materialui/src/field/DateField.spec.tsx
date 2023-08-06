@@ -199,14 +199,14 @@ describe('<DateField />', () => {
         'should display emptyText ReactNode prop if provided for %s value',
         foo => {
             const emptyTextNode = <b>Custom Empty Text</b>;
-            const { getByText } = render(
+            const { queryByText } = render(
                 <DateField
                     record={{ id: 123, foo }}
-                    source="foo.bar"
+                    source="foo"
                     emptyText={emptyTextNode}
                 />
             );
-            const renderedEmptyText = getByText('Custom Empty Text');
+            const renderedEmptyText = queryByText('Custom Empty Text');
             expect(renderedEmptyText).toBeTruthy();
         }
     );

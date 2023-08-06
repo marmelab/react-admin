@@ -157,7 +157,7 @@ describe('<RichTextField />', () => {
         'should render the emptyText ReactNode when value is %s and stripTags is set to true',
         body => {
             const emptyTextNode = <b>Custom Empty Text</b>;
-            const { getByText } = render(
+            const { queryByText } = render(
                 <RichTextField
                     record={{ id: 123, body }}
                     emptyText={emptyTextNode}
@@ -165,7 +165,7 @@ describe('<RichTextField />', () => {
                     stripTags
                 />
             );
-            expect(getByText('Custom Empty Text')).toBeTruthy();
+            expect(queryByText('Custom Empty Text')).toBeTruthy();
         }
     );
 

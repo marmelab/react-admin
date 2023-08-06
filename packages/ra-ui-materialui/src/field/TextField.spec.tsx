@@ -72,7 +72,7 @@ describe('<TextField />', () => {
                     source="title"
                 />
             );
-            const renderedEmptyText = screen.getByText('Custom Empty Text');
+            const renderedEmptyText = screen.queryByText('Custom Empty Text');
             expect(renderedEmptyText).toBeTruthy();
         }
     );

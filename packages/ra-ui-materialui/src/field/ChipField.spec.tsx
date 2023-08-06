@@ -92,14 +92,14 @@ describe('<ChipField />', () => {
         'should display emptyText ReactNode prop if provided for %s value',
         name => {
             const emptyTextNode = <b>Custom Empty Text</b>;
-            const { getByText } = render(
+            const { queryByText } = render(
                 <ChipField
                     record={{ id: 123, name }}
                     source="name"
                     emptyText={emptyTextNode}
                 />
             );
-            const renderedEmptyText = getByText('Custom Empty Text');
+            const renderedEmptyText = queryByText('Custom Empty Text');
             expect(renderedEmptyText).toBeTruthy();
         }
     );

@@ -76,7 +76,7 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 | `source`    | Required | `string`            | -        | Name of the property to display |
 | `reference` | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'posts' |
 | `children`  | Optional | `ReactNode`         | -        | One or more Field elements used to render the referenced record |
-| `emptyText` | Optional | `string` &#124; `ReactNode`    | ''       | Defines a text or element to be shown when the field has no value or when the reference is missing |
+| `emptyText` | Optional | `string` | `ReactNode`    | ''       | Defines a text or element to be shown when the field has no value or when the reference is missing |
 | `label`     | Optional | `string | Function` | `resources. [resource]. fields.[source]`   | Label to use for the field when rendered in layout components  |
 | `link`      | Optional | `string | Function` | `edit`   | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
 | `queryOptions`     | Optional | [`UseQuery Options`](https://tanstack.com/query/v3/docs/react/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
