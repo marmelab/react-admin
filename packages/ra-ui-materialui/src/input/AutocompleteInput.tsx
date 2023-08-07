@@ -682,7 +682,7 @@ export interface AutocompleteInputProps<
     DisableClearable extends boolean | undefined = false,
     SupportCreate extends boolean | undefined = false
 > extends Omit<CommonInputProps, 'source'>,
-        ChoicesProps,
+        ChoicesProps<any>,
         UseSuggestionsOptions,
         Omit<SupportCreateSuggestionOptions, 'handleChange' | 'optionText'>,
         Omit<

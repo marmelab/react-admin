@@ -148,6 +148,6 @@ export const SelectField = genericMemo(SelectFieldImpl);
 
 export interface SelectFieldProps<
     RecordType extends Record<string, unknown> = Record<string, any>
-> extends ChoicesProps,
+> extends ChoicesProps<any>,
         FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {}

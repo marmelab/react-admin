@@ -160,7 +160,7 @@ export const DatagridInput = (props: DatagridInputProps) => {
 };
 
 export type DatagridInputProps = Omit<CommonInputProps, 'source'> &
-    ChoicesProps &
+    ChoicesProps<any> &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
     DatagridProps & {
         children?: ReactNode;

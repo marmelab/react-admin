@@ -358,7 +358,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
     );
 };
 
-export type SelectArrayInputProps = ChoicesProps &
+export type SelectArrayInputProps = ChoicesProps<any> &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
     Omit<CommonInputProps, 'source'> &
     Omit<FormControlProps, 'defaultValue' | 'onBlur' | 'onChange'> & {

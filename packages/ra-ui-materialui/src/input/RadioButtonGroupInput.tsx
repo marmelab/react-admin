@@ -269,7 +269,7 @@ const sanitizeRestProps = ({
 }: any) => sanitizeInputRestProps(rest);
 
 export type RadioButtonGroupInputProps = Omit<CommonInputProps, 'source'> &
-    ChoicesProps &
+    ChoicesProps<any> &
     FormControlProps &
     RadioGroupProps & {
         options?: RadioGroupProps;

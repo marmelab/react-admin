@@ -423,7 +423,7 @@ const StyledResettableTextField = styled(ResettableTextField, {
 }));
 
 export type SelectInputProps = Omit<CommonInputProps, 'source'> &
-    ChoicesProps &
+    ChoicesProps<any> &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
     Omit<TextFieldProps, 'label' | 'helperText' | 'classes' | 'onChange'> & {
         disableValue?: string;

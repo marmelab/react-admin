@@ -284,7 +284,7 @@ CheckboxGroupInput.propTypes = {
 };
 
 export type CheckboxGroupInputProps = Omit<CommonInputProps, 'source'> &
-    ChoicesProps &
+    ChoicesProps<any> &
     CheckboxProps &
     FormControlProps & {
         options?: CheckboxProps;
