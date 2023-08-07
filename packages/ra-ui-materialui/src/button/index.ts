@@ -22,6 +22,7 @@ export * from './ExportButton';
 export * from './IconButtonWithTooltip';
 export * from './LocalesMenuButton';
 export * from './ListButton';
+export * from './PrevNextButton';
 export * from './RefreshButton';
 export * from './RefreshIconButton';
 export * from './SaveButton';
