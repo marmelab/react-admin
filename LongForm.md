@@ -445,7 +445,7 @@ const PersonEdit = () => (
     <Edit mutationMode="optimistic">
         <LongForm
             resetOptions={{ keepDirtyValues: true }}
-            toolbar={AutoSaveToolbar}
+            toolbar={<AutoSaveToolbar />}
         >
             <LongForm.Section label="identity">
                 <TextInput source="first_name" />

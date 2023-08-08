@@ -804,7 +804,7 @@ const PostEdit = () => (
     <Edit mutationMode="optimistic">
         <TabbedForm
             resetOptions={{ keepDirtyValues: true }}
-            toolbar={AutoSaveToolbar}
+            toolbar={<AutoSaveToolbar />}
         >
             <TabbedForm.Tab label="summary">
                 <TextInput source="title" />

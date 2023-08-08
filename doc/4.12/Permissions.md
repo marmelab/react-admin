@@ -5,13 +5,15 @@ title: "Permissions"
 
 # Permissions
 
-Some applications may require fine-grained permissions to enable or disable access to certain features. Since there are many possible strategies (single role, multiple roles or rights, ACLs, etc.), react-admin delegates the permission logic to `authProvider.getPermissions()`.
+By default, react-admin apps don't check user permissions. They only require users to be logged in for the list, create, edit, and show pages if there is an `authProvider`.
 
-By default, a react-admin app only requires users to be logged in for the list, create, edit, and show pages. However, should you need to customize the views according to the users permissions, you can call the [`usePermissions()`](./usePermissions.md) hook to grab them. This works for custom pages too.
+However, some applications may require fine-grained permissions to enable or disable access to certain features. Since there are many possible strategies (single role, multiple roles or rights, ACLs, etc.), react-admin delegates the permission logic to the `authProvider`.
 
-## User Permissions
+Should you need to customize a page according to users permissions, you can get the permissions from the `authProvider` through the [`usePermissions()`](./usePermissions.md) hook.
 
-React-admin calls the `authProvider.getPermissions()` whenever it needs the user permissions. These permissions can take the shape you want:
+## Permissions In The `authProvider`
+
+It's the responsibility of `authProvider.getPermissions()` to return the user permissions. These permissions can take the shape you want:
 
 - a string (e.g. `'admin'`),
 - an array of roles (e.g. `['post_editor', 'comment_moderator', 'super_admin']`)
@@ -19,6 +21,24 @@ React-admin calls the `authProvider.getPermissions()` whenever it needs the user
 - or even a function
 
 The format of permissions is free because react-admin never actually uses the permissions itself. It's up to you to use them in your code to hide or display content, redirect the user to another page, or display warnings. 
+
+React-admin is agnostic to the permissions format, but it provides an implementation for the most common permissions format: [role-based access control (RBAC)](./AuthRBAC.md). If you want to use RBAC, the `authProvider.getPermissions()` method should return an array of permissions objects.
+
+```tsx
+const authProvider = {
+    // ...
+    getPermissions: () => Promise.resolve([
+        { action: ["read", "create", "edit", "export"], resource: "companies" },
+        { action: ["read", "create", "edit"], resource: "people" },
+        { action: ["read", "create", "edit", "export"], resource: "deals" },
+        { action: ["read", "create"], resource: "comments" },,
+        { action: ["read", "create"], resource: "tasks" },
+        { action: ["write"], resource: "tasks.completed" },
+    ])
+};
+```
+
+Check the [RBAC chapter](./AuthRBAC.md) for more details on how to use role-based access control.
 
 Following is an example where the `authProvider` stores the user's permissions in `localStorage` upon authentication, and returns these permissions when called with `getPermissions`:
 
@@ -112,56 +132,81 @@ const MyPage = () => {
 }
 ```
 
+**Tip**: If you use RBAC, use [the `<IfCanAccess>` component](./IfCanAccess.md) to fetch permissions, and render its children only if the user has the required permissions.
+
+```jsx
+import { IfCanAccess } from '@react-admin/ra-rbac';
+
+const MyPage = () => (
+    <Card>
+        <CardContent>Lorem ipsum sic dolor amet...</CardContent>
+        <IfCanAccess action="read" resource="sensitive_data">
+            <CardContent>Sensitive data</CardContent>
+        </IfCanAccess>
+    </Card>
+);
+```
 
 ## Restricting Access to Resources or Views
 
 Permissions can be useful to restrict access to resources or their views. To do so, you must pass a function as a child of the `<Admin>` component. React-admin will call this function with the permissions returned by the `authProvider`. Note that you can only provide one of such function child.
 
 ```jsx
-<Admin
-    dataProvider={dataProvider}
-    authProvider={authProvider}
->
-    {permissions => (
-        <>
-            {/* Restrict access to the edit view to admin only */}
-            <Resource
-                name="customers"
-                list={VisitorList}
-                edit={permissions === 'admin' ? VisitorEdit : null}
-                icon={VisitorIcon}
-            />
-            {/* Only include the categories resource for admin users */}
-            {permissions === 'admin'
-                ? <Resource name="categories" list={CategoryList} edit={CategoryEdit} icon={CategoryIcon} />
-                : null}
-        </>
-    )}
-</Admin>
+export const App = () => (
+    <Admin dataProvider={dataProvider} authProvider={authProvider}>
+        {permissions => (
+            <>
+                {/* Restrict access to the edit view to admin only */}
+                <Resource
+                    name="customers"
+                    list={VisitorList}
+                    edit={permissions === 'admin' ? VisitorEdit : null}
+                    icon={VisitorIcon}
+                />
+                {/* Only include the categories resource for admin users */}
+                {permissions === 'admin'
+                    ? <Resource name="categories" list={CategoryList} edit={CategoryEdit} icon={CategoryIcon} />
+                    : null}
+            </>
+        )}
+    </Admin>
+);
 ```
 
 Note that the function may return as many fragments as you need.
 
-**Tip**: Even if that's possible, be careful when completely excluding a resource (like with the `categories` resource in this example) as it will prevent you to reference this resource in the other resource views, too.
+**Tip**: If you use RBAC, you won't need to check permissions manually as above. Just use [`ra-rbac`'s `<Resource>` component](./AuthRBAC.md#resource), which will do it for you.
 
-## Restricting Access to Fields and Inputs
+```jsx
+import { Admin } from 'react-admin';
+import { Resource } from '@react-admin/ra-rbac';
 
-You might want to display some fields or inputs only to users with specific permissions. You can use the `usePermissions` hook for that.
+export const App = () => (
+    <Admin dataProvider={dataProvider} authProvider={authProvider}>
+        <Resource name="customers" list={VisitorList} edit={VisitorEdit} icon={VisitorIcon} />
+        <Resource name="categories" list={CategoryList} edit={CategoryEdit} icon={CategoryIcon} />
+    </Admin>
+);
+```
+
+## Restricting Access to Form Inputs
+
+You might want to display some inputs only to users with specific permissions. You can use the `usePermissions` hook for that.
 
 Here is an example of a `Create` view with a conditional Input based on permissions:
 
 {% raw %}
 ```jsx
+import { usePermissions, Create, SimpleForm, TextInput } from 'react-admin';
+
 export const UserCreate = () => {
     const { permissions } = usePermissions();
     return (
         <Create>
-            <SimpleForm
-                defaultValue={{ role: 'user' }}
-            >
-                <TextInput source="name" validate={[required()]} />
+            <SimpleForm>
+                <TextInput source="name" />
                 {permissions === 'admin' &&
-                    <TextInput source="role" validate={[required()]} />}
+                    <TextInput source="role" />}
             </SimpleForm>
         </Create>
     );
@@ -169,61 +214,11 @@ export const UserCreate = () => {
 ```
 {% endraw %}
 
-This also works inside an `Edit` view with a `TabbedForm`, and you can even hide a `FormTab` completely:
-
-{% raw %}
-```jsx
-export const UserEdit = () => {
-    const { permissions } = usePermissions();
-    return (
-        <Edit title={<UserTitle />}>
-            <TabbedForm defaultValue={{ role: 'user' }}>
-                <TabbedForm.Tab label="user.form.summary">
-                    {permissions === 'admin' && <TextInput disabled source="id" />}
-                    <TextInput source="name" validate={required()} />
-                </TabbedForm.Tab>
-                {permissions === 'admin' &&
-                    <TabbedForm.Tab label="user.form.security">
-                        <TextInput source="role" validate={required()} />
-                    </TabbedForm.Tab>}
-            </TabbedForm>
-        </Edit>
-    );
-};
-```
-{% endraw %}
-
-What about the `List` view, the `Datagrid`, `SimpleList`? It works there, too. And in the next example, the `permissions` prop is passed down to a custom `filters` selector.
+**Note**: `usePermissions` is asynchronous, which means that `permissions` will always be `undefined` on mount. Once the `authProvider.getPermissions()` promise is resolved, `permissions` will be set to the value returned by the promise, and the component will re-render. This may cause surprises when using `permissions` in props that are not reactive, e.g. `defaultValue`:
 
 ```jsx
-import * as React from 'react';
-import { List, Datagrid, ShowButton, TextField, TextInput }  from 'react-admin';
+import { usePermissions, Create, SimpleForm, TextInput } from 'react-admin';
 
-const getUserFilters = (permissions) => ([
-    <TextInput label="user.list.search" source="q" alwaysOn />,
-    <TextInput source="name" />,
-    permissions === 'admin' ? <TextInput source="role" /> : null,
-].filter(filter => filter !== null));
-
-export const UserList = () => {
-    const { permissions } = usePermissions();
-    return (
-        <List filters={getUserFilters(permissions)}>
-            <Datagrid>
-                <TextField source="id" />
-                <TextField source="name" />
-                {permissions === 'admin' && <TextField source="role" />}
-                {permissions === 'admin' && <EditButton />}
-                <ShowButton />
-            </Datagrid>
-        </List>
-    );
-};
-```
-
-**Tip**: `usePermissions` is asynchronous, which means that `permissions` will always be `undefined` on mount. Once the `authProvider.getPermissions()` promise is resolved, `permissions` will be set to the value returned by the promise, and the component will re-render. This may cause surprises when using `permissions` in props that are not reactive, e.g. `defaultValue`:
-
-```jsx
 export const UserCreate = () => {
     const { permissions } = usePermissions();
     return (
@@ -242,18 +237,76 @@ export const UserCreate = () => {
 In `react-hook-form`, `defaultValue` is only used on mount - changing its value after the initial render doesn't change the default value. The solution is to delay the rendering of the input until the permissions are resolved:
 
 ```jsx
+import { usePermissions, Create, SimpleForm, TextInput } from 'react-admin';
+
 export const UserCreate = () => {
-    const { permissions } = usePermissions();
+    const { isLoading, permissions } = usePermissions();
     return (
         <Create>
             <SimpleForm>
-                {permissions && <TextInput source="name" defaultValue={
+                {!isLoading && <TextInput source="name" defaultValue={
                     permissions === 'admin' ? 'admin' : 'user'
                 } />}
             </SimpleForm>
         </Create>
     );
 }
+```
+
+**Tip**: If you use RBAC, use [`ra-rbac`'s `<SimpleForm>` component](./AuthRBAC.md#simpleform) instead. It render its children only if the user has the required permissions.
+
+```jsx
+import { Create, TextInput } from 'react-admin';
+import { SimpleForm } from '@react-admin/ra-rbac';
+
+export const UserCreate = () => (
+    <Create>
+        <SimpleForm>
+            <TextInput source="name" />
+            <TextInput source="role" />
+        </SimpleForm>
+    </Create>
+);
+```
+
+## Restricting Access to Columns In  a List
+
+You can use `usePermissions` to hide some columns in a `Datagrid`. 
+
+```jsx
+import * as React from 'react';
+import { usePermissions, List, Datagrid, ShowButton, TextField }  from 'react-admin';
+
+export const UserList = () => {
+    const { permissions } = usePermissions();
+    return (
+        <List>
+            <Datagrid rowClick="edit">
+                <TextField source="id" />
+                <TextField source="name" />
+                {permissions === 'admin' && <TextField source="role" />}
+            </Datagrid>
+        </List>
+    );
+};
+```
+
+**Tip**: If you use RBAC, use [`ra-rbac`'s `<Datagrid>` component](./AuthRBAC.md#datagrid), which will render a column only if the user has the permissions for it.
+
+```jsx
+import * as React from 'react';
+import { List, ShowButton, TextField, TextInput }  from 'react-admin';
+import { Datagrid } from '@react-admin/ra-rbac';
+
+export const UserList = () => (
+    <List>
+        <Datagrid rowClick="edit">
+            <TextField source="id" />
+            <TextField source="name" />
+            <TextField source="role" />
+        </Datagrid>
+    </List>
+);
 ```
 
 ## Restricting Access to a Menu
@@ -263,21 +316,23 @@ What if you want to check the permissions inside a [custom menu](./Admin.md#menu
 ```jsx
 // in src/myMenu.js
 import * as React from "react";
-import { MenuItemLink, usePermissions } from 'react-admin';
+import { Menu, usePermissions } from 'react-admin';
 
-const Menu = ({ onMenuClick }) => {
+const MyMenu = ({ onMenuClick }) => {
     const { permissions } = usePermissions();
     return (
-        <div>
-            <MenuItemLink to="/posts" primaryText="Posts" onClick={onMenuClick} />
-            <MenuItemLink to="/comments" primaryText="Comments" onClick={onMenuClick} />
+        <Menu>
+            <Menu.Item to="/posts" primaryText="Posts" onClick={onMenuClick} />
+            <Menu.Item to="/comments" primaryText="Comments" onClick={onMenuClick} />
             {permissions === 'admin' &&
-                <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
+                <Menu.Item to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
             }
-        </div>
+        </Menu>
     );
 }
 ```
+
+**Tip**: If you use RBAC, use [`ra-rbac`'s `<Menu>` component](./AuthRBAC.md#menu), which will render a menu item only if the user has the permissions for it.
 
 ## Role-Based Access Control
 
