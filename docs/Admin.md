@@ -590,7 +590,7 @@ You can also disable the `/login` route completely by passing `false` to this pr
 ```jsx
 const authProvider = {
     // ...
-    checkAuth: async () => {
+    async checkAuth() {
         if (/* not authenticated */) {
             throw { redirectTo: '/no-access' };
         }
