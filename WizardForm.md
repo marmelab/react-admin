@@ -170,6 +170,7 @@ export const PostCreate = () => {
 
 You can also customize the progress stepper by passing a custom component in the `progress` prop.
 
+{% raw %}
 ```tsx
 import React from 'react';
 import { Create, TextInput, required } from 'react-admin';
@@ -216,6 +217,7 @@ const PostCreate = () => (
     </Create>
 );
 ```
+{% endraw %}
 
 Any additional props will be passed to the `<Progress>` component.
 
