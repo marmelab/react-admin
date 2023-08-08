@@ -588,8 +588,17 @@ See The [Authentication documentation](./Authentication.md#customizing-the-login
 You can also disable the `/login` route completely by passing `false` to this prop. In this case, it's the `authProvider`'s responsibility to redirect unauthenticated users to a custom login page, by returning a `redirectTo` field in response to `checkAuth` (see [`authProvider.checkAuth()`](./AuthProviderWriting.md#checkauth) for details). If you fail to customize the redirection, the app will end up in an infinite loop.
 
 ```jsx
+const authProvider = {
+    // ...
+    checkAuth: async () => {
+        if (/* not authenticated */) {
+            throw { redirectTo: '/no-access' };
+        }
+    },
+};
+
 const App = () => (
-    <Admin loginPage={false}>
+    <Admin authProvider={authProvider} loginPage={false}>
         ...
     </Admin>
 );
