@@ -40,7 +40,9 @@
         "fakerest": "^3.0.0"
     },
     "devDependencies": {
+        "@types/jest": "^29.5.2",
         "cross-env": "^5.2.0",
+        "expect": "^27.4.6",
         "ra-core": "^4.12.4",
         "rimraf": "^3.0.2",
         "typescript": "^5.1.3"
