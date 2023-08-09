@@ -467,8 +467,8 @@ import { UserList } from "./users";
 
 export const App = () => (
   <Admin dataProvider={dataProvider}>
-    <Resource name="users" list={UserList} />
 +   <Resource name="posts" list={ListGuesser} />
+    <Resource name="users" list={UserList} />
   </Admin>
 );
 ```
@@ -555,14 +555,77 @@ export const PostList = () => (
 
 [![Post List With Less Columns](./img/tutorial_post_list_less_columns.png)](./img/tutorial_post_list_less_columns.png)
 
+## Adding A Detail View
+
+So far, the admin only has list pages. Besides, the user list doesn't render all columns. So you need to add a detail view to see all the user fields. The `<Resource>` component accepts a `show` component prop to define a detail view. Let's use the `<ShowGuesser>` to help bootstrap it:
+
+```diff
+// in src/App.tsx
+-import { Admin, Resource } from "react-admin";
++import { Admin, Resource, ShowGuesser } from "react-admin";
+import { dataProvider } from './dataProvider';
+import { PostList } from "./posts";
+import { UserList } from "./users";
+
+export const App = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource name="posts" list={PostList} />
+-       <Resource name="users" list={UserList} recordRepresentation="name" />
++       <Resource name="users" list={UserList} show={ShowGuesser} recordRepresentation="name" />
+    </Admin>
+);
+```
+
+You will need to modify the user list view so that a click on a datagrid row links to the show view:
+
+```diff
+// in src/users.tsx
+export const UserList = () => {
+    // ...
+-        <Datagrid rowClick="edit">
++        <Datagrid rowClick="show">
+    // ...
+};
+```
+
+Now you can click on a user in the list to see its details:
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/tutorial_show_user.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+Just like for other guessed components, you can customize the show view by copying the code dumped by the `<ShowGuesser>` and modifying it to your needs. This is out of scope for this tutorial, so we'll leave it as is.
+
+But now that the `users` resource has a `show` view, you can also link to it from the post list view. All you have to do is edit the `<ReferenceField>` component to add `link="show"`, as follows:
+
+```diff
+// in src/posts.tsx
+export const PostList = () => (
+    <List>
+        <Datagrid rowClick="edit">
+-           <ReferenceField source="userId" reference="users" />
++           <ReferenceField source="userId" reference="users" link="show" />
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="body" />
+        </Datagrid>
+    </List>
+);
+```
+
+[![Post List With User Links](./img/tutorial_list_user_name_link.png)](./img/tutorial_list_user_name_link.png)
+
+Reference components let users navigate from one resource to another in a natural way. They are a key feature of react-admin.
+
 ## Adding Editing Capabilities
 
 An admin interface isn't just about displaying remote data, it should also allow editing records. React-admin provides an `<Edit>` component for that purpose ; let's use the `<EditGuesser>` to help bootstrap it.
 
 ```diff
 // in src/App.tsx
--import { Admin, Resource } from "react-admin";
-+import { Admin, Resource, EditGuesser } from "react-admin";
+-import { Admin, Resource, ShowGuesser } from "react-admin";
++import { Admin, Resource, ShowGuesser, EditGuesser } from "react-admin";
 import { dataProvider } from './dataProvider';
 import { PostList } from "./posts";
 import { UserList } from "./users";
@@ -571,7 +634,7 @@ export const App = () => (
     <Admin dataProvider={dataProvider}>
 -       <Resource name="posts" list={PostList} />
 +       <Resource name="posts" list={PostList} edit={EditGuesser} />
-        <Resource name="users" list={UserList} recordRepresentation="name" />
+        <Resource name="users" list={UserList} show={ShowGuesser} recordRepresentation="name" />
     </Admin>
 );
 ```
@@ -621,8 +684,8 @@ Use that component as the `edit` prop of the "posts" Resource instead of the gue
 
 ```diff
 // in src/App.tsx
--import { Admin, Resource, EditGuesser } from "react-admin";
-+import { Admin, Resource } from "react-admin";
+-import { Admin, Resource, ShowGuesser, EditGuesser } from "react-admin";
++import { Admin, Resource, ShowGuesser } from "react-admin";
 import { dataProvider } from './dataProvider';
 -import { PostList } from "./posts";
 +import { PostList, PostEdit } from "./posts";
@@ -632,7 +695,7 @@ export const App = () => (
   <Admin dataProvider={dataProvider}>
 -   <Resource name="posts" list={PostList} edit={EditGuesser} />
 +   <Resource name="posts" list={PostList} edit={PostEdit} />
-    <Resource name="users" list={UserList} recordRepresentation="name" />
+    <Resource name="users" list={UserList} show={ShowGuesser} recordRepresentation="name" />
   </Admin>
 );
 ```
@@ -645,7 +708,7 @@ export const PostEdit = () => (
   <Edit>
     <SimpleForm>
 +     <TextInput source="id" disabled />
-      <ReferenceInput source="userId" reference="users" />
+      <ReferenceInput source="userId" reference="users" link="show" />
 -     <TextInput source="id" />
       <TextInput source="title" />
 -     <TextInput source="body" />
@@ -703,7 +766,7 @@ To use the new `<PostCreate>` components in the posts resource, just add it as `
 
 ```diff
 // in src/App.tsx
-import { Admin, Resource } from "react-admin";
+import { Admin, Resource, ShowGuesser } from "react-admin";
 import { dataProvider } from './dataProvider';
 -import { PostList, PostEdit } from "./posts";
 +import { PostList, PostEdit, PostCreate } from "./posts";
@@ -713,7 +776,7 @@ export const App = () => (
   <Admin dataProvider={dataProvider}>
 -   <Resource name="posts" list={PostList} edit={PostEdit} />
 +   <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} />
-    <Resource name="users" list={UserList} recordRepresentation="name" />
+    <Resource name="users" list={UserList} show={ShowGuesser} recordRepresentation="name" />
   </Admin>
 );
 ```
@@ -825,8 +888,20 @@ import UserIcon from "@mui/icons-material/Group";
 
 export const App = () => (
     <Admin dataProvider={dataProvider}>
-        <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon} />
-        <Resource name="users" list={UserList} icon={UserIcon} recordRepresentation="name" />
+        <Resource 
+            name="posts"
+            list={PostList}
+            edit={PostEdit}
+            create={PostCreate}
+            icon={PostIcon}
+        />
+        <Resource
+            name="users"
+            list={UserList}
+            show={ShowGuesser}
+            recordRepresentation="name"
+            icon={UserIcon}
+        />
     </Admin>
 );
 ```
@@ -935,7 +1010,6 @@ Once the app reloads, it's now behind a login form that accepts everyone:
   <source src="./img/login.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
-
 
 ## Connecting To A Real API
 
