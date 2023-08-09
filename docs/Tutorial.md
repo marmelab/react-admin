@@ -557,7 +557,7 @@ export const PostList = () => (
 
 ## Adding A Detail View
 
-So far, the admin only has list pages. Besides, the user list doesn't render all columns. So we need to add a detail view to see the all the user fields. The `<Resource>` component accepts a `show` component prop to define a detail view. Let's use the `<ShowGuesser>` to help bootstrap it:
+So far, the admin only has list pages. Besides, the user list doesn't render all columns. So you need to add a detail view to see all the user fields. The `<Resource>` component accepts a `show` component prop to define a detail view. Let's use the `<ShowGuesser>` to help bootstrap it:
 
 ```diff
 // in src/App.tsx
