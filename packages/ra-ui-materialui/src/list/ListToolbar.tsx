@@ -73,11 +73,13 @@ const Root = styled(Toolbar, {
     width: '100%',
     padding: '0 !important',
     minHeight: theme.spacing(8),
-    [theme.breakpoints.down('sm')]: {
-        backgroundColor: theme.palette.background.paper,
-    },
     [theme.breakpoints.down('md')]: {
         margin: 0,
         flexWrap: 'wrap',
+    },
+    [theme.breakpoints.down('sm')]: {
+        backgroundColor: theme.palette.background.paper,
+        flexWrap: 'inherit',
+        flexDirection: 'column-reverse',
     },
 }));
