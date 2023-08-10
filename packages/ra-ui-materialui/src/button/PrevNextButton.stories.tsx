@@ -5,8 +5,6 @@ import { Resource } from 'ra-core';
 import {
     AdminUI,
     Datagrid,
-    DateField,
-    DateInput,
     Edit,
     List,
     PrevNextButton,
