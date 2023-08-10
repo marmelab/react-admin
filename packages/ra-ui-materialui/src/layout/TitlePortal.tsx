@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Typography } from '@mui/material';
+import { Typography, TypographyProps } from '@mui/material';
 
-export const TitlePortal = ({ className }: { className?: string }) => (
+export const TitlePortal = (props: TypographyProps) => (
     <Typography
         flex="1"
         textOverflow="ellipsis"
@@ -10,6 +10,6 @@ export const TitlePortal = ({ className }: { className?: string }) => (
         variant="h6"
         color="inherit"
         id="react-admin-title"
-        className={className}
+        {...props}
     />
 );
