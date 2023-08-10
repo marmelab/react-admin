@@ -3,14 +3,14 @@ import { useEvent } from './useEvent';
 
 /**
  * Checks if the application code has changed and calls the provided onNewVersionAvailable function when needed.
- * 
+ *
  * It checks for code update by downloading the provided URL (default to the HTML page) and
  * comparing the hash of the response with the hash of the current page.
  *
  * @param {UseCheckForApplicationUpdateOptions} options The options
  * @param {Function} options.onNewVersionAvailable The function to call when a new version of the application is available.
  * @param {string} options.url Optional. The URL to download to check for code update. Defaults to the current URL.
- * @param {number} options.checkInterval Optional. The interval in milliseconds between two checks. Defaults to 3600000 (1 hour).
+ * @param {number} options.interval Optional. The interval in milliseconds between two checks. Defaults to 3600000 (1 hour).
  * @param {boolean} options.disabled Optional. Whether the check should be disabled. Defaults to false.
  */
 export const useCheckForApplicationUpdate = (
@@ -18,7 +18,7 @@ export const useCheckForApplicationUpdate = (
 ) => {
     const {
         url = window.location.href,
-        checkInterval = ONE_HOUR,
+        interval: delay = ONE_HOUR,
         onNewVersionAvailable: onNewVersionAvailableProp,
         disabled = process.env.NODE_ENV !== 'production',
     } = options;
@@ -29,7 +29,9 @@ export const useCheckForApplicationUpdate = (
         if (disabled) return;
 
         getHashForUrl(url).then(hash => {
-            currentHash.current = hash;
+            if (hash != null) {
+                currentHash.current = hash;
+            }
         });
     }, [disabled, url]);
 
@@ -49,15 +51,20 @@ export const useCheckForApplicationUpdate = (
                 .catch(() => {
                     // Ignore errors to avoid issues when connectivity is lost
                 });
-        }, checkInterval);
+        }, delay);
         return () => clearInterval(interval);
-    }, [checkInterval, onNewVersionAvailable, disabled, url]);
+    }, [delay, onNewVersionAvailable, disabled, url]);
 };
 
 const getHashForUrl = async (url: string) => {
-    const response = await fetch(url);
-    const text = await response.text();
-    return hash(text);
+    try {
+        const response = await fetch(url);
+        if (!response.ok) return null;
+        const text = await response.text();
+        return hash(text);
+    } catch (e) {
+        return null;
+    }
 };
 
 // Simple hash function, taken from https://stackoverflow.com/a/52171480/3723993, suggested by Copilot
@@ -81,7 +88,7 @@ const ONE_HOUR = 1000 * 60 * 60;
 
 export interface UseCheckForApplicationUpdateOptions {
     onNewVersionAvailable: () => void;
-    checkInterval?: number;
+    interval?: number;
     url?: string;
     disabled?: boolean;
 }

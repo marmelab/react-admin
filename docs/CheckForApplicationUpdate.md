@@ -43,14 +43,14 @@ export const App = () => (
 
 | Prop            | Required | Type     | Default            | Description                                                         |
 | --------------- | -------- | -------- | ------------------ |-------------------------------------------------------------------- |
-| `checkInterval` | Optional | number   | `3600000` (1 hour) | The interval in milliseconds between two checks                     |
+| `interval` | Optional | number   | `3600000` (1 hour) | The interval in milliseconds between two checks                     |
 | `disabled`      | Optional | boolean  | `false` in `production` mode | Whether the automatic check is disabled                              |
 | `notification`  | Optional | ReactElement |                    | The notification to display to the user when an update is available |
 | `url`           | Optional | string   | current URL        | The URL to download to check for code update                        |
 
-## `checkInterval`
+## `interval`
 
-You can customize the interval of time between each application update check by providing the `checkInterval` prop. It accepts a number of milliseconds and is set to `3600000` (1 hour) by default.
+You can customize the interval between each check by providing the `interval` prop. It accepts a number of milliseconds and is set to `3600000` (1 hour) by default.
 
 ```tsx
 // in src/MyLayout.tsx
@@ -61,7 +61,7 @@ const HALF_HOUR = 30 * 60 * 1000;
 export const MyLayout = ({ children, ...props }: LayoutProps) => (
     <Layout {...props}>
         {children}
-        <CheckForApplicationUpdate checkInterval={HALF_HOUR} />
+        <CheckForApplicationUpdate interval={HALF_HOUR} />
     </Layout>
 );
 ```
