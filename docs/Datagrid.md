@@ -38,24 +38,24 @@ The `<Datagrid>` is an **iterator** component: it gets an array of records from 
 
 ## Props
 
-Here are all the props accepted by the component:
-
-* [`body`](#body)
-* [`bulkActionButtons`](#bulkactionbuttons)
-* [`children`](#children)
-* [`empty`](#empty)
-* [`expand`](#expand)
-* [`expandSingle`](#expandsingle) 
-* [`header`](#header)
-* [`hover`](#hover)
-* [`isRowExpandable`](#isrowexpandable)
-* [`isRowSelectable`](#isrowselectable)
-* [`optimized`](#optimized-better-performance-for-large-tables)
-* [`rowStyle`](#rowstyle)
-* [`rowSx`](#rowsx)
-* [`rowClick`](#rowclick)
-* [`size`](#size)
-* [`sx`](#sx-css-api)
+| Prop | Required | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `children` | Required | Element | n/a | The list of `<Field>` components to render as columns. |
+| `body` | Optional | Element | `<Datagrid Body>` | The component used to render the body of the table. |
+| `bulkActionButtons` | Optional | Element | `<BulkDelete Button>` | The component used to render the bulk action buttons. |
+| `empty` | Optional | Element | `<Empty>` | The component used to render the empty table. |
+| `expand` | Optional | Element |  | The component used to render the expand panel for each row. |
+| `expandSingle` | Optional | Boolean | `false` | Whether to allow only one expanded row at a time. |
+| `header` | Optional | Element | `<Datagrid Header>` | The component used to render the table header. |
+| `hover` | Optional | Boolean | `true` | Whether to highlight the row under the mouse. |
+| `isRowExpandable` | Optional | Function | `() => true` | A function that returns whether a row is expandable. |
+| `isRowSelectable` | Optional | Function | `() => true` | A function that returns whether a row is selectable. |
+| `optimized` | Optional | Boolean | `false` | Whether to optimize the rendering of the table. |
+| `rowClick` | Optional | mixed | | The action to trigger when the user clicks on a row.  |
+| `rowStyle` | Optional | Function | | A function that returns the style to apply to a row. |
+| `rowSx` | Optional | Function | | A function that returns the sx prop to apply to a row. |
+| `size` | Optional | `'small'` or `'medium'` | `'small'` | The size of the table. |
+| `sx` | Optional | Object | | The sx prop passed down to the Material UI `<Table>` element. |
 
 Additional props are passed down to [the Material UI `<Table>` element](https://mui.com/material-ui/api/table/).
 
@@ -106,39 +106,6 @@ const PostList = () => (
 
 export default PostList;
 ```
-
-## `children`
-
-`<Datagrid>` accepts a list of Field components as children. It inspects each child's `source` and/or `label` props to determine the name of the column.
-
-What's a Field component? Simply a component that reads the record (via `useRecordContext`) and renders a value. React-admin includes many Field components that you can use as children of `<Datagrid>` (`<TextField>`, `<NumberField>`, `<DateField>`, `<ReferenceField>`, and many more). Check [the Fields documentation](./Fields.md) for more information. 
-
-You can even create your own field components.
-
-```jsx
-// in src/posts.js
-import * as React from 'react';
-import { useRecordContext, List, Datagrid, TextField, DateField } from 'react-admin';
-
-const FullNameField = () => {
-    const record = useRecordContext();
-    return <span>{record.firstName} {record.lastName}</span>;
-}
-
-export const UserList = () => (
-    <List>
-        <Datagrid rowclick="edit">
-            <FullNameField source="last_name" label="Name" />
-            <DateField source="dob" />
-            <TextField source="city" />
-        </Datagrid>
-    </List>
-);
-```
-
-`<Datagrid>` also inspects its children for `headerClassName` and `cellClassName` props, and gives the class names to the headers and the cells of that column. 
-
-Finally, `<Datagrid>` inspects children for props that indicate how it should be sorted (see [the Customizing The Sort Order For Columns section](#customizing-column-sort)) below.
 
 ## `bulkActionButtons`
 
@@ -377,6 +344,39 @@ const CustomResetViewsButton = () => {
 };
 ```
 
+## `children`
+
+`<Datagrid>` accepts a list of Field components as children. It inspects each child's `source` and/or `label` props to determine the name of the column.
+
+What's a Field component? Simply a component that reads the record (via `useRecordContext`) and renders a value. React-admin includes many Field components that you can use as children of `<Datagrid>` (`<TextField>`, `<NumberField>`, `<DateField>`, `<ReferenceField>`, and many more). Check [the Fields documentation](./Fields.md) for more information. 
+
+You can even create your own field components.
+
+```jsx
+// in src/posts.js
+import * as React from 'react';
+import { useRecordContext, List, Datagrid, TextField, DateField } from 'react-admin';
+
+const FullNameField = () => {
+    const record = useRecordContext();
+    return <span>{record.firstName} {record.lastName}</span>;
+}
+
+export const UserList = () => (
+    <List>
+        <Datagrid rowclick="edit">
+            <FullNameField source="last_name" label="Name" />
+            <DateField source="dob" />
+            <TextField source="city" />
+        </Datagrid>
+    </List>
+);
+```
+
+`<Datagrid>` also inspects its children for `headerClassName` and `cellClassName` props, and gives the class names to the headers and the cells of that column. 
+
+Finally, `<Datagrid>` inspects children for props that indicate how it should be sorted (see [the Customizing The Sort Order For Columns section](#customizing-column-sort)) below.
+
 ## `empty`
 
 It's possible that a Datagrid will have no records to display. If the Datagrid's parent component does not handle the empty state, the Datagrid will display a message indicating there are no results. This message is translatable and its key is `ra.navigation.no_results`.
@@ -606,7 +606,7 @@ export const PostList = () => (
 ```
 {% endraw %}
 
-## `optimized`: Better Performance For Large Tables
+## `optimized`
 
 When displaying large pages of data, you might experience some performance issues.
 This is mostly due to the fact that we iterate over the `<Datagrid>` children and clone them.
@@ -623,48 +623,6 @@ const PostList = () => (
             <TextField source="id" />
             <TextField source="title" />
             <TextField source="views" />
-        </Datagrid>
-    </List>
-);
-```
-
-## `rowStyle`
-
-You can customize the `<Datagrid>` row style (applied to the `<tr>` element) based on the record, thanks to the `rowStyle` prop, which expects a function. React-admin calls this function for each row, passing the current record and index as arguments. The function should return a style object, which react-admin uses as a `<tr style>` prop. 
-
-For instance, this allows to apply a custom background to the entire row if one value of the record - like its number of views - passes a certain threshold.
-
-```jsx
-import { List, Datagrid } from 'react-admin';
-
-const postRowStyle = (record, index) => ({
-    backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
-});
-export const PostList = () => (
-    <List>
-        <Datagrid rowStyle={postRowStyle}>
-            ...
-        </Datagrid>
-    </List>
-);
-```
-
-## `rowSx`
-
-You can customize the styles of rows and cells in `<Datagrid>` (applied to the `<DatagridRow>` element) based on the record, thanks to the `rowSx` prop, which expects a function. React-admin calls this function for each row, passing the current record and index as arguments. The function should return a Material UI [`sx`](https://mui.com/system/getting-started/the-sx-prop/), which react-admin uses as a `<TableRow sx>` prop. 
-
-For instance, this allows to apply a custom background to the entire row if one value of the record - like its number of views - passes a certain threshold.
-
-```jsx
-import { List, Datagrid } from 'react-admin';
-
-const postRowSx = (record, index) => ({
-    backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
-});
-export const PostList = () => (
-    <List>
-        <Datagrid rowSx={postRowSx}>
-            ...
         </Datagrid>
     </List>
 );
@@ -710,6 +668,50 @@ const getPermissions = useGetPermissions();
 const postRowClick = (id, resource, record) => 
     useGetPermissions()
     .then(permissions => permissions === 'admin' ? 'edit' : 'show');
+```
+
+## `rowStyle`
+
+*Deprecated - use [`rowSx`](#rowsx) instead.*
+
+You can customize the `<Datagrid>` row style (applied to the `<tr>` element) based on the record, thanks to the `rowStyle` prop, which expects a function. React-admin calls this function for each row, passing the current record and index as arguments. The function should return a style object, which react-admin uses as a `<tr style>` prop. 
+
+For instance, this allows to apply a custom background to the entire row if one value of the record - like its number of views - passes a certain threshold.
+
+```jsx
+import { List, Datagrid } from 'react-admin';
+
+const postRowStyle = (record, index) => ({
+    backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
+});
+export const PostList = () => (
+    <List>
+        <Datagrid rowStyle={postRowStyle}>
+            ...
+        </Datagrid>
+    </List>
+);
+```
+
+## `rowSx`
+
+You can customize the styles of rows and cells in `<Datagrid>` (applied to the `<DatagridRow>` element) based on the record, thanks to the `rowSx` prop, which expects a function. React-admin calls this function for each row, passing the current record and index as arguments. The function should return a Material UI [`sx`](https://mui.com/system/getting-started/the-sx-prop/), which react-admin uses as a `<TableRow sx>` prop. 
+
+For instance, this allows to apply a custom background to the entire row if one value of the record - like its number of views - passes a certain threshold.
+
+```jsx
+import { List, Datagrid } from 'react-admin';
+
+const postRowSx = (record, index) => ({
+    backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
+});
+export const PostList = () => (
+    <List>
+        <Datagrid rowSx={postRowSx}>
+            ...
+        </Datagrid>
+    </List>
+);
 ```
 
 ## `size`
