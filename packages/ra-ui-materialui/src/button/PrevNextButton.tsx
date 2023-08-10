@@ -10,7 +10,7 @@ import { NavigateBefore, NavigateNext } from '@mui/icons-material';
 import { useMatch, useNavigate } from 'react-router';
 
 export const PrevNextButton = () => {
-    const listIds = useListIdsContext();
+    const { ids, total } = useListIdsContext();
     const navigate = useNavigate();
     const recordId = useGetRecordId();
     const resource = useResourceContext();
@@ -18,11 +18,10 @@ export const PrevNextButton = () => {
     const type = useMatch('edit') ? 'edit' : 'show';
 
     if (!recordId) return null;
-
-    const index = listIds.indexOf(recordId);
-    const previousId = index > 0 ? listIds[index - 1] : null;
+    const index = ids.indexOf(recordId);
+    const previousId = index > 0 ? ids[index - 1] : null;
     const nextId =
-        index !== -1 && index < listIds.length - 1 ? listIds[index + 1] : null;
+        index !== -1 && index < ids.length - 1 ? ids[index + 1] : null;
 
     const handleClickPrev = () => {
         const link = createPath({

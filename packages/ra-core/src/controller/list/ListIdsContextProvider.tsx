@@ -24,7 +24,7 @@ export const ListIdsContextProvider = ({ children }) => {
     const ids = list ? list.data.map(record => record.id) : [];
 
     return (
-        <ListIdsContext.Provider value={ids}>
+        <ListIdsContext.Provider value={{ ids, total: ids.length }}>
             {children}
         </ListIdsContext.Provider>
     );
