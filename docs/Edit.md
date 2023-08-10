@@ -101,6 +101,44 @@ export const PostEdit = () => (
 );
 ```
 
+Common buttons used as Edit actions are:
+
+- [`<CreateButton>`](./CreateButton.md) to create a new record
+- [`<ListButton>`](./Buttons.md#listbutton) to go back to the list
+- [`<ShowButton>`](./Buttons.md#showbutton) to go to the show page
+- [`<UpdateButton>`](./UpdateButton.md) to trigger a change in the data
+- [`<CloneButton>`](./Buttons.md#clonebutton) to clone the current record
+
+And you can add your own button, leveraging the `useRecordContext()` hook:
+
+```jsx
+import * as React from "react";
+import { useRecordContext, useUpdate, useNotify } from 'react-admin';
+
+const ResetViewsButton = () => {
+    const record = useRecordContext();
+    const [update, { isLoading }] = useUpdate();
+    const notify  = useNotify();
+    const handleClick = () => {
+        update(
+            'posts',
+            { id: record.id, data: { views: 0 }, previousData: record },
+            {
+                onSuccess: () => {
+                    notify('Views reset');
+                },
+                onFailure: error => notify(`Error: ${error.message}`, 'warning'),
+            }
+        );
+    };
+    return (
+        <Button onClick={handleClick} disabled={isLoading}>
+            Reset views
+        </Button>
+    );
+};
+```
+
 ## `aside`
 
 ![Aside component](./img/aside.png)
@@ -316,7 +354,7 @@ The default `onSuccess` function is:
 
 ```js
 () => {
-    notify('ra.notification.created', {
+    notify('ra.notification.updated', {
         messageArgs: { smart_count: 1 },
         undoable: mutationMode === 'undoable'
     });
@@ -384,7 +422,7 @@ const PostEdit = () => {
 ```
 {% endraw %}
 
-The `onError` function receives the error from the `dataProvider.edit()` call. It is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
+The `onError` function receives the error from the `dataProvider.update()` call. It is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
 
 The default `onError` function is:
 

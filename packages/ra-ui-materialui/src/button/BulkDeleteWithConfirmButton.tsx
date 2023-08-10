@@ -151,7 +151,7 @@ export interface BulkDeleteWithConfirmButtonProps<
 > extends BulkActionProps,
         ButtonProps {
     confirmContent?: React.ReactNode;
-    confirmTitle?: string;
+    confirmTitle?: React.ReactNode;
     icon?: ReactElement;
     mutationMode: MutationMode;
     mutationOptions?: UseMutationOptions<
@@ -180,8 +180,8 @@ const StyledButton = styled(Button, {
 const defaultIcon = <ActionDelete />;
 
 BulkDeleteWithConfirmButton.propTypes = {
-    confirmTitle: PropTypes.string,
-    confirmContent: PropTypes.string,
+    confirmTitle: PropTypes.node,
+    confirmContent: PropTypes.node,
     icon: PropTypes.element,
     label: PropTypes.string,
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),

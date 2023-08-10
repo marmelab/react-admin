@@ -18,25 +18,24 @@ import * as React from "react";
 import { EditBase, SimpleForm, TextInput, SelectInput } from "react-admin";
 import { Card } from "@mui/material";
 
-export const BookEdit = () => {
+export const BookEdit = () => (
     <EditBase>
-      <div>
-        <Title title="Book Edition" />
-        <Card>
-          <SimpleForm>
-            <TextInput source="title" />
-            <TextInput source="author" />
-            <SelectInput source="availability" choices={[
-              { id: "in_stock", name: "In stock" },
-              { id: "out_of_stock", name: "Out of stock" },
-              { id: "out_of_print", name: "Out of print" },
-            ]} />
-          </SimpleForm>
-        </Card>
-      </div>
+        <div>
+            <Title title="Book Edition" />
+            <Card>
+                <SimpleForm>
+                    <TextInput source="title" />
+                    <TextInput source="author" />
+                    <SelectInput source="availability" choices={[
+                        { id: "in_stock", name: "In stock" },
+                        { id: "out_of_stock", name: "Out of stock" },
+                        { id: "out_of_print", name: "Out of print" },
+                    ]} />
+                </SimpleForm>
+            </Card>
+        </div>
     </EditBase>
-  );
-};
+);
 ```
 
 You can customize the `<EditBase>` component using the following props, documented in the `<Edit>` component:

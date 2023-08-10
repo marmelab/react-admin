@@ -72,7 +72,7 @@ dataProvider.getList('tags', {
 
 ```js
 dataProvider.getList('tags', { 
-    filter: { q: [search term] },
+    filter: { q: ['search term'] },
     sort: { field: 'id', order: 'DESC' },
     pagination: { page: 1, perPage: 25 }
 });

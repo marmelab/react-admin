@@ -5,91 +5,79 @@ title: "The TranslatableFields Component"
 
 # `<TranslatableFields>`
 
-You may have fields which are translated in multiple languages and want users to verify each translation. To display them, you can use the `<TranslatableFields>` component, which expects the translatable values to have the following structure:
+You may have fields which are translated in multiple languages and want users to verify each translation. To display them, you can use the `<TranslatableFields>` component.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/translatable-fields-basic.webm" type="video/webm" />
+  <source src="./img/translatable-fields-basic.webm" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+## Usage
+
+`<TranslatableFields>` expects the translatable values of a record to have the following structure:
 
 ```js
-{
-    name: {
-        en: 'The english value',
-        fr: 'The french value',
-        tlh: 'The klingon value',
+const record = {
+    id: 123,
+    title: {
+        en: 'Doctors Without Borders',
+        fr: 'Médecins sans frontières',
     },
     description: {
-        en: 'The english value',
-        fr: 'The french value',
-        tlh: 'The klingon value',
+        en:
+            'International humanitarian medical non-governmental organisation of French origin',
+        fr:
+            "Organisation non gouvernementale (ONG) médicale humanitaire internationale d'origine française fondée en 1971 à Paris",
     }
 }
 ```
 
-This is how to use it:
+To display translatable values, wrap the fields you want to render with `<TranslatableFields>`, like so:
 
 ```jsx
-<TranslatableFields locales={['en', 'fr']}>
-    <TextField source="name" />
-    <TextField source="description" />
-</TranslatableFields>
+import {
+  Show,
+  SimpleShowLayout,
+  TextField,
+  TranslatableFields,
+} from "react-admin";
+
+export const OrganizationShow = () => (
+  <Show>
+      <SimpleShowLayout>
+        <TranslatableFields locales={['en', 'fr']}>
+            <TextField source="title" />
+            <TextField source="description" />
+        </TranslatableFields>
+      </SimpleShowLayout>
+  </Show>
+);
 ```
+
+`<TranslatableFields>` lets users select a locale using Material UI tabs with the locale code as their labels.
+
+You may override the tabs labels using translation keys following this format: `ra.locales.[locale_code]`. For instance, `ra.locales.en` or `ra.locales.fr`.
+
+**Tip**: If you want to display only one translation, you don't need `<TranslatableFields>`. Just use a regular field with a path as `source`:
+
+```jsx
+{/* always display the English title */}
+<TextField source="title.en" />
+```
+
+## `defaultLocale`
 
 React-admin uses the user locale as the default locale in this field. You can override this setting using the `defaultLocale` prop.
 
 ```jsx
 <TranslatableFields locales={['en', 'fr']} defaultLocale="fr">
-    <TextField source="name" />
+    <TextField source="title" />
     <TextField source="description" />
 </TranslatableFields>
 ```
 
-By default, `<TranslatableFields>` will allow users to select the displayed locale using Material UI tabs with the locale code as their labels.
-
-You may override the tabs labels using translation keys following this format: `ra.locales.[locale_code]`. For instance, `ra.locales.en` or `ra.locales.fr`.
-
-You may override the language selector using the `selector` prop, which accepts a React element:
-
-```jsx
-import { useTranslatableContext } from 'react-admin';
-
-const Selector = () => {
-    const {
-        locales,
-        selectLocale,
-        selectedLocale,
-    } = useTranslatableContext();
-
-    const handleChange = event => {
-        selectLocale(event.target.value);
-    };
-
-    return (
-        <select
-            aria-label="Select the locale"
-            onChange={handleChange}
-            value={selectedLocale}
-        >
-            {locales.map(locale => (
-                <option
-                    key={locale}
-                    value={locale}
-                    // This allows to correctly link the containers for each locale to their labels
-                    id={`translatable-header-${locale}`}
-                >
-                    {locale}
-                </option>
-            ))}
-        </select>
-    );
-};
-
-<TranslatableFields
-    record={record}
-    resource="products"
-    locales={['en', 'fr']}
-    selector={<Selector />}
->
-    <TextField source="name" />
-    <TextField source="description" />
-</TranslatableFields>
-```
+## `groupKey`
 
 If you have multiple `TranslatableFields` on the same page, you should specify a `groupKey` so that react-admin can create unique identifiers for accessibility.
 
@@ -100,7 +88,66 @@ If you have multiple `TranslatableFields` on the same page, you should specify a
 </TranslatableFields>
 ```
 
-## Using Translatable Fields In List or Show views
+## `selector`
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/translatable-fields-with-custom-selector.webm" type="video/webm" />
+  <source src="./img/translatable-fields-with-custom-selector.webm" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+You may override the language selector using the `selector` prop, which accepts a React element:
+
+```jsx
+// in src/NgoShow.tsx
+import {
+  Show,
+  SimpleShowLayout,
+  TextField,
+  TranslatableFields,
+  useTranslatableContext,
+} from "react-admin";
+
+const Selector = () => {
+  const { locales, selectLocale, selectedLocale } = useTranslatableContext();
+
+  const handleChange = (event) => {
+    selectLocale(event.target.value);
+  };
+
+  return (
+    <select
+      aria-label="Select the locale"
+      onChange={handleChange}
+      value={selectedLocale}
+    >
+      {locales.map((locale) => (
+        <option
+          key={locale}
+          value={locale}
+          // This allows to correctly link the containers for each locale to their labels
+          id={`translatable-header-${locale}`}
+        >
+          {locale}
+        </option>
+      ))}
+    </select>
+  );
+};
+
+export const NgoShow = () => (
+  <Show>
+    <SimpleShowLayout>
+      <TranslatableFields locales={["en", "fr"]} selector={<Selector />}>
+        <TextField source="title" />
+        <TextField source="description" />
+      </TranslatableFields>
+    </SimpleShowLayout>
+  </Show>
+);
+```
+
+## Using Translatable Fields In List Views
 
 The `TranslatableFields` component is not meant to be used inside a `List` as you probably don't want to have tabs inside multiple lines. The simple solution to display a translatable value would be to specify its source like this: `name.en`. However, you may want to display its translation for the current admin locale.
 

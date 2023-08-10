@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "e2e",
-    "version": "4.11.2",
+    "version": "4.12.0",
     "scripts": {
         "start": "cypress open",
         "test": "yarn node ./start.js"

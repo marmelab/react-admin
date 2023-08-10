@@ -43,6 +43,17 @@ export const Notification = (props: NotificationProps) => {
     const translate = useTranslate();
 
     useEffect(() => {
+        const beforeunload = (e: BeforeUnloadEvent) => {
+            e.preventDefault();
+            const confirmationMessage = '';
+            e.returnValue = confirmationMessage;
+            return confirmationMessage;
+        };
+
+        if (messageInfo?.notificationOptions?.undoable) {
+            window.addEventListener('beforeunload', beforeunload);
+        }
+
         if (notifications.length && !messageInfo) {
             // Set a new snack when we don't have an active one
             setMessageInfo(takeNotification());
@@ -51,6 +62,12 @@ export const Notification = (props: NotificationProps) => {
             // Close an active snack when a new one is added
             setOpen(false);
         }
+
+        return () => {
+            if (messageInfo?.notificationOptions?.undoable) {
+                window.removeEventListener('beforeunload', beforeunload);
+            }
+        };
     }, [notifications, messageInfo, open, takeNotification]);
 
     const handleRequestClose = useCallback(() => {

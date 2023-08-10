@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import IconButton from '@mui/material/IconButton';
+import { IconButton } from '@mui/material';
 import ActionHide from '@mui/icons-material/HighlightOff';
 import clsx from 'clsx';
 import { useResourceContext, useTranslate } from 'ra-core';
@@ -64,6 +64,9 @@ const Root = styled('div', {
     display: 'flex',
     alignItems: 'flex-end',
     pointerEvents: 'auto',
+    [theme.breakpoints.down('sm')]: {
+        width: '100%',
+    },
 
     [`& .${FilterFormInputClasses.spacer}`]: { width: theme.spacing(2) },
     [`& .${FilterFormInputClasses.hideButton}`]: {

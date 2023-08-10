@@ -27,6 +27,9 @@ export * from './RefreshIconButton';
 export * from './SaveButton';
 export * from './SkipNavigationButton';
 export * from './ToggleThemeButton';
+export * from './UpdateButton';
+export * from './UpdateWithUndoButton';
+export * from './UpdateWithConfirmButton';
 
 export type {
     CloneButtonProps,

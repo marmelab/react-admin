@@ -58,11 +58,11 @@ The `<ListBase>` component accepts the same props as [`useListController`](./use
 * [`exporter`](./List.md#exporter)
 * [`filter`](./List.md#filter-permanent-filter)
 * [`filterDefaultValues`](./List.md#filterdefaultvalues)
-* [`perPage`](./List.md#perpage-pagination-size)
+* [`perPage`](./List.md#perpage)
 * [`queryOptions`](./List.md#queryoptions)
 * [`resource`](./List.md#resource)
-* [`sort`](./List.md#sort-default-sort-field--order)
+* [`sort`](./List.md#sort)
 
 These are a subset of the props accepted by `<List>` - only the props that change data fetching, and not the props related to the user interface.
 
-In addition, `<ListBase>` renders its children components inside a `ListContext`. Check [the `<List children>` documentation](./List.md#children-list-layout) for usage examples.
+In addition, `<ListBase>` renders its children components inside a `ListContext`. Check [the `<List children>` documentation](./List.md#children) for usage examples.
