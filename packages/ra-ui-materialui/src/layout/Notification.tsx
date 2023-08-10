@@ -108,7 +108,13 @@ export const Notification = (props: NotificationProps) => {
                 typeof message === 'string' &&
                 translate(message, messageArgs)
             }
-            autoHideDuration={autoHideDurationFromMessage || autoHideDuration}
+            autoHideDuration={
+                // Only apply the default autoHideDuration when autoHideDurationFromMessage is undefined
+                // as 0 and null are valid values
+                autoHideDurationFromMessage === undefined
+                    ? autoHideDuration
+                    : autoHideDurationFromMessage
+            }
             disableWindowBlurListener={undoable}
             TransitionProps={{ onExited: handleExited }}
             onClose={handleRequestClose}

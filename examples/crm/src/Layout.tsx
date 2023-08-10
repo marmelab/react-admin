@@ -1,6 +1,6 @@
 import React, { HtmlHTMLAttributes } from 'react';
 import { CssBaseline, Container } from '@mui/material';
-import { CoreLayoutProps } from 'react-admin';
+import { CoreLayoutProps, CheckForApplicationUpdate } from 'react-admin';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import { Error } from 'react-admin';
@@ -18,6 +18,7 @@ const Layout = ({ children }: LayoutProps) => (
                 </ErrorBoundary>
             </main>
         </Container>
+        <CheckForApplicationUpdate interval={30 * 1000} />
     </>
 );
 
