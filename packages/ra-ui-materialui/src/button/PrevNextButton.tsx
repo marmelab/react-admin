@@ -43,17 +43,21 @@ export const PrevNextButton = () => {
 
     return (
         <>
-            {previousId && (
-                <IconButton aria-label="previous" onClick={handleClickPrev}>
-                    <NavigateBefore />
-                </IconButton>
-            )}
+            <IconButton
+                disabled={!previousId}
+                aria-label="previous"
+                onClick={handleClickPrev}
+            >
+                <NavigateBefore />
+            </IconButton>
             {index + 1} / {total}
-            {nextId && (
-                <IconButton aria-label="next" onClick={handleClickNext}>
-                    <NavigateNext />
-                </IconButton>
-            )}
+            <IconButton
+                disabled={!nextId}
+                aria-label="next"
+                onClick={handleClickNext}
+            >
+                <NavigateNext />
+            </IconButton>
         </>
     );
 };
