@@ -111,7 +111,7 @@ export const MyAppBar = () => (
         <SettingsButton />
     </AppBar>
 );
-``````
+```
  
 If you omit `<TitlePortal>`, `<AppBar>` will no longer display the page title. This can be done on purpose, e.g. if you want to render something completely different in the AppBar, like a company logo and a search engine:
 
