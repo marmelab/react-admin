@@ -24,7 +24,7 @@ const CustomPage = () => (
 );
 ```
 
-`<Title>` uses a [React Portal](https://react.dev/reference/react-dom/createPortal) to render the title outside of the current component. It works because the default [ `<AppBar>`](./AppBar.md) component contains a placeholder for the title called `<TitlePortal>`.
+`<Title>` uses a [React Portal](https://react.dev/reference/react-dom/createPortal) to render the title outside of the current component. It works because the default [`<AppBar>`](./AppBar.md) component contains a placeholder for the title called `<TitlePortal>`.
 
 CRUD page components ([`<List>`](./List.md), [`<Edit>`](./Edit.md), [`<Create>`](./Create.md), [`<Show>`](./Show.md)) already use a `<Title>` component. To set the page title for these components, use the `title` prop.
 
