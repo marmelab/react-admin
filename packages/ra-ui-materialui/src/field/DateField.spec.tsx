@@ -37,6 +37,13 @@ describe('<DateField />', () => {
         expect(container.firstChild).toBeNull();
     });
 
+    it('should return null when the record has an invalid type for the source', () => {
+        const { container } = render(
+            <DateField record={{ id: 123, foo: {} }} source="foo" />
+        );
+        expect(container.firstChild).toBeNull();
+    });
+
     it('should render a date', () => {
         const { queryByText } = render(
             <DateField
