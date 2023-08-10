@@ -52,6 +52,7 @@ Here are all the props accepted by the component:
 * [`isRowSelectable`](#isrowselectable)
 * [`optimized`](#optimized-better-performance-for-large-tables)
 * [`rowStyle`](#rowstyle)
+* [`rowSx`](#rowsx)
 * [`rowClick`](#rowclick)
 * [`size`](#size)
 * [`sx`](#sx-css-api)
@@ -642,6 +643,27 @@ const postRowStyle = (record, index) => ({
 export const PostList = () => (
     <List>
         <Datagrid rowStyle={postRowStyle}>
+            ...
+        </Datagrid>
+    </List>
+);
+```
+
+## `rowSx`
+
+You can customize the styles of rows and cells in `<Datagrid>` (applied to the `<DatagridRow>` element) based on the record, thanks to the `rowSx` prop, which expects a function. React-admin calls this function for each row, passing the current record and index as arguments. The function should return a Material UI [`sx`](https://mui.com/system/getting-started/the-sx-prop/), which react-admin uses as a `<TableRow sx>` prop. 
+
+For instance, this allows to apply a custom background to the entire row if one value of the record - like its number of views - passes a certain threshold.
+
+```jsx
+import { List, Datagrid } from 'react-admin';
+
+const postRowSx = (record, index) => ({
+    backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
+});
+export const PostList = () => (
+    <List>
+        <Datagrid rowSx={postRowSx}>
             ...
         </Datagrid>
     </List>

@@ -158,6 +158,24 @@ export const RowStyle = () => (
     </Wrapper>
 );
 
+export const RowSx = () => (
+    <Wrapper>
+        <Datagrid
+            rowSx={(record: any) => ({
+                backgroundColor: record.id % 2 ? 'white' : '#eee',
+                ...(record.year > 1900 && {
+                    '& td.column-year': { color: 'primary.main' },
+                }),
+            })}
+        >
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </Wrapper>
+);
+
 const CutomBulkActionButtons = () => (
     <>
         <BulkExportButton />

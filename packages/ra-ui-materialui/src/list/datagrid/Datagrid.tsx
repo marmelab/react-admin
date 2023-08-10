@@ -19,7 +19,7 @@ import {
     RaRecord,
     SortPayload,
 } from 'ra-core';
-import { Table, TableProps } from '@mui/material';
+import { Table, TableProps, SxProps } from '@mui/material';
 import clsx from 'clsx';
 import union from 'lodash/union';
 import difference from 'lodash/difference';
@@ -51,18 +51,17 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
  *  - isRowExpandable
  *  - isRowSelectable
  *  - optimized
- *  - rowStyle
  *  - rowClick
  *  - size
  *  - sx
  *
  * @example // Display all posts as a datagrid
- * const postRowStyle = (record, index) => ({
+ * const postRowSx = (record, index) => ({
  *     backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
  * });
  * export const PostList = () => (
  *     <List>
- *         <Datagrid rowStyle={postRowStyle}>
+ *         <Datagrid rowSx={postRowSx}>
  *             <TextField source="id" />
  *             <TextField source="title" />
  *             <TextField source="body" />
@@ -129,6 +128,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         isRowExpandable,
         resource,
         rowClick,
+        rowSx,
         rowStyle,
         size = 'small',
         sx,
@@ -272,6 +272,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                                 hover,
                                 onToggleItem: handleToggleItem,
                                 resource,
+                                rowSx,
                                 rowStyle,
                                 selectedIds,
                                 isRowSelectable,
@@ -318,6 +319,7 @@ Datagrid.propTypes = {
         PropTypes.func,
         PropTypes.bool,
     ]),
+    rowSx: PropTypes.func,
     rowStyle: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     setSort: PropTypes.func,
@@ -346,6 +348,7 @@ export interface DatagridProps<RecordType extends RaRecord = any>
     isRowExpandable?: (record: RecordType) => boolean;
     optimized?: boolean;
     rowClick?: string | RowClickFunction | false;
+    rowSx?: (record: RecordType, index: number) => SxProps;
     rowStyle?: (record: RecordType, index: number) => any;
     size?: 'medium' | 'small';
     // can be injected when using the component without context
