@@ -48,6 +48,7 @@ export const PrevNextButton = () => {
                     <NavigateBefore />
                 </IconButton>
             )}
+            {index + 1} / {total}
             {nextId && (
                 <IconButton aria-label="next" onClick={handleClickNext}>
                     <NavigateNext />
