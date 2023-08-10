@@ -67,7 +67,7 @@ Now, start the server with `yarn start`, browse to `http://localhost:3000/`, and
 
 Your app is now up and running, you can start tweaking it. 
 
-## Ensure Users Have The Latest Version
+## Ensuring Users Have The Latest Version
 
 If your users might keep the application open for a long time, it's a good idea to add the [`<CheckForApplicationUpdate>`](./CheckForApplicationUpdate.md) component. It will check whether a more recent version of your application is available and prompt users to reload their browser tab.
 

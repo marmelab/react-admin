@@ -2,7 +2,8 @@ import { useEffect, useRef } from 'react';
 import { useEvent } from './useEvent';
 
 /**
- * A hook that checks if the application code has changed and call the provided onNewVersionAvailable function when needed.
+ * Checks if the application code has changed and calls the provided onNewVersionAvailable function when needed.
+ * 
  * It checks for code update by downloading the provided URL (default to the HTML page) and
  * comparing the hash of the response with the hash of the current page.
  *

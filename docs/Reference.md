@@ -217,7 +217,6 @@ title: "Index"
 
 **- C -**
 * [`useCanAccess`](./useCanAccess.md)<img class="icon" src="./img/premium.svg" />
-* [`useCheckForApplicationUpdate`](./useCheckForApplicationUpdate.md)
 * [`useChoicesContext`](./useChoicesContext.md)
 * [`useCreate`](./useCreate.md)
 * [`useCreateContext`](./useCreateContext.md)

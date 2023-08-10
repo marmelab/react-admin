@@ -8,7 +8,7 @@ import {
 import { ApplicationUpdatedNotification } from './ApplicationUpdatedNotification';
 
 /**
- * A component which checks for a new version of the application and can display a notification asking users to reload the page.
+ * Display a notification asking users to reload the page when the application code has changed.
  *
  * @param {CheckForApplicationUpdateProps} props
  * @param {boolean} options.disabled Optional. Whether the check should be disabled. Defaults to false.

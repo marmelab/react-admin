@@ -7,9 +7,7 @@ title: "The CheckForApplicationUpdate component"
 
 When your admin application is a Single Page Application, users who keep a browser tab open at all times might not use the most recent version of the application unless you tell them to refresh the page.
 
-This component regularly checks whether the application source code has changed and prompts users to reload the page when an update is available. To detect updates, it fetches the current URL at regular intervals and compares the hash of the response content (usually the HTML source). This should be enough in most cases as bundlers usually update the links to the application bundles after an update. 
-
-It leverages the [`useCheckForApplicationUpdate`](./useCheckForApplicationUpdate.md) hook.
+This component regularly checks whether the application source code has changed and prompts users to reload the page when an update is available. To detect updates, it fetches the current URL at regular intervals and compares the hash of the response content (usually the HTML source). This should be enough in most cases as bundlers usually update the links to the application bundles after an update.
 
 ![CheckForApplicationUpdate](./img/CheckForApplicationUpdate.png)
 

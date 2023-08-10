@@ -40,7 +40,7 @@ const englishMessages: TranslationMessages = {
             open: 'Open',
             toggle_theme: 'Toggle Theme',
             select_columns: 'Columns',
-            update_application: 'Update Application',
+            update_application: 'Reload Application',
         },
         boolean: {
             true: 'Yes',

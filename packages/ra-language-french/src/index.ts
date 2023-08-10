@@ -41,7 +41,7 @@ const frenchMessages: TranslationMessages = {
             open: 'Ouvrir',
             toggle_theme: 'Thème clair/sombre',
             select_columns: 'Colonnes',
-            update_application: "Mettre à jour l'application",
+            update_application: "Recharger l'application",
         },
         boolean: {
             true: 'Oui',
