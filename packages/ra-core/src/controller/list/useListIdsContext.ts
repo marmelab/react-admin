@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import { ListIdsContext, ListIdsContextType } from './ListIdsContext';
+import { ListIdsContext } from './ListIdsContext';
 
-export const useListIdsContext = (): ListIdsContextType =>
-    useContext(ListIdsContext);
+export const useListIdsContext = () => useContext(ListIdsContext);
