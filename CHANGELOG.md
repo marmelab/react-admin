@@ -1,5 +1,19 @@
 # Changelog
 
+## v4.12.4
+
+* Fix `<FilterLiveSearch>` reset button does not reset the value ([#9149](https://github.com/marmelab/react-admin/pull/9149)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix deprecated `defaultProps` warnings in React 18 ([#9124](https://github.com/marmelab/react-admin/pull/9124)) ([adguernier](https://github.com/adguernier))
+* [Doc] Add documentation about `<BulkUpdateFormButton>` and `<InputSelectorForm>` ([#9145](https://github.com/marmelab/react-admin/pull/9145)) ([adguernier](https://github.com/adguernier))
+* [Doc] Improve `<TranslatableFields>` chapter ([#9154](https://github.com/marmelab/react-admin/pull/9154)) ([adguernier](https://github.com/adguernier))
+* [Doc] Fix Next.js tutorial for app and pages router ([#9131](https://github.com/marmelab/react-admin/pull/9131)) ([adguernier](https://github.com/adguernier))
+* [Doc] Fix `<Admin loginPage={false}>` leads to an infinite loop ([#9166](https://github.com/marmelab/react-admin/pull/9166)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<AutoSaveToolbar>` should be used as a `ReactElement` ([#9157](https://github.com/marmelab/react-admin/pull/9157)) ([adguernier](https://github.com/adguernier))
+* [Doc] Fix `<WizardForm>` snippet to use a custom progress bar ([#9163](https://github.com/marmelab/react-admin/pull/9163)) ([adguernier](https://github.com/adguernier))
+* [Doc] Fix `canAccess` and `<IfCanAccess>` documentation about wildcard action fallback ([#9144](https://github.com/marmelab/react-admin/pull/9144)) ([adguernier](https://github.com/adguernier))
+* [Doc] Fix default `perPage` value in `useList` ([#9139](https://github.com/marmelab/react-admin/pull/9139)) ([smeng9](https://github.com/smeng9))
+* [Doc] Fix `<Confirm>` description of confirm and cancel icon types ([#9140](https://github.com/marmelab/react-admin/pull/9140)) ([smeng9](https://github.com/smeng9))
+
 ## v4.12.3
 
 * Fix `<FileField>` should not propagate click ([#9133](https://github.com/marmelab/react-admin/pull/9133)) ([slax57](https://github.com/slax57))

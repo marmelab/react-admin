@@ -11,6 +11,7 @@ import { createTheme } from '@mui/material/styles';
 import { TextField } from '../field';
 import { ReferenceManyField } from './ReferenceManyField';
 import { Datagrid } from '../list/datagrid/Datagrid';
+import { SingleFieldList } from '../list';
 import { Notification } from '../layout/Notification';
 import { FilterForm } from '../list';
 import { TextInput } from '../input';
@@ -74,6 +75,16 @@ export const Basic = () => (
             <Datagrid>
                 <TextField source="title" />
             </Datagrid>
+        </ReferenceManyField>
+    </Wrapper>
+);
+
+export const WithSingleFieldList = () => (
+    <Wrapper>
+        <ReferenceManyField reference="books" target="author_id">
+            <SingleFieldList sx={{ gap: 1 }}>
+                <TextField source="title" />
+            </SingleFieldList>
         </ReferenceManyField>
     </Wrapper>
 );

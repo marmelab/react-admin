@@ -5,7 +5,6 @@ import {
     FormDataConsumer,
     required,
     testDataProvider,
-    TestTranslationProvider,
     useRecordContext,
 } from 'ra-core';
 import { AdminContext } from '../AdminContext';
@@ -21,6 +20,7 @@ import {
     Nullable,
     NullishValuesSupport,
     VeryLargeOptionsNumber,
+    TranslateChoice,
 } from './AutocompleteInput.stories';
 import { act } from '@testing-library/react-hooks';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
@@ -601,62 +601,38 @@ describe('<AutocompleteInput />', () => {
         });
     });
 
-    it('should translate the value by default', async () => {
-        render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <TestTranslationProvider translate={x => `**${x}**`}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ role: 2 }}
-                    >
-                        <AutocompleteInput
-                            {...defaultProps}
-                            choices={[
-                                { id: 2, name: 'foo' },
-                                { id: 3, name: 'bar' },
-                            ]}
-                        />
-                    </SimpleForm>
-                </TestTranslationProvider>
-            </AdminContext>
-        );
-        expect(screen.queryByDisplayValue('**foo**')).not.toBeNull();
-        fireEvent.focus(
-            screen.getByLabelText('**resources.users.fields.role**')
-        );
-        await waitFor(() => {
-            expect(screen.queryByText('**bar**')).not.toBeNull();
+    describe('translateChoice', () => {
+        it('should translate the choices by default', async () => {
+            render(<TranslateChoice />);
+            const inputElement = (await screen.findByLabelText(
+                'translateChoice default'
+            )) as HTMLInputElement;
+            expect(inputElement.value).toBe('Female');
         });
-    });
-
-    it('should not translate the value if translateChoice is false', async () => {
-        render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <TestTranslationProvider translate={x => `**${x}**`}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ role: 2 }}
-                    >
-                        <AutocompleteInput
-                            {...defaultProps}
-                            translateChoice={false}
-                            choices={[
-                                { id: 2, name: 'foo' },
-                                { id: 3, name: 'bar' },
-                            ]}
-                        />
-                    </SimpleForm>
-                </TestTranslationProvider>
-            </AdminContext>
-        );
-        expect(screen.queryByDisplayValue('foo')).not.toBeNull();
-        expect(screen.queryByDisplayValue('**foo**')).toBeNull();
-        fireEvent.focus(
-            screen.getByLabelText('**resources.users.fields.role**')
-        );
-        await waitFor(() => {
-            expect(screen.queryByText('bar')).not.toBeNull();
-            expect(screen.queryByText('**bar**')).toBeNull();
+        it('should not translate the choices when translateChoice is false', async () => {
+            render(<TranslateChoice />);
+            const inputElement = (await screen.findByLabelText(
+                'translateChoice false'
+            )) as HTMLInputElement;
+            expect(inputElement.value).toBe('option.female');
+        });
+        it('should not translate the choices when inside ReferenceInput by default', async () => {
+            render(<TranslateChoice />);
+            await waitFor(() => {
+                const inputElement = screen.getByLabelText(
+                    'inside ReferenceInput'
+                ) as HTMLInputElement;
+                expect(inputElement.value).toBe('option.female');
+            });
+        });
+        it('should translate the choices when inside ReferenceInput when translateChoice is true', async () => {
+            render(<TranslateChoice />);
+            await waitFor(() => {
+                const inputElement = screen.getByLabelText(
+                    'inside ReferenceInput forced'
+                ) as HTMLInputElement;
+                expect(inputElement.value).toBe('Female');
+            });
         });
     });
 

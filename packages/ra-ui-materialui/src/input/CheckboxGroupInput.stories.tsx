@@ -6,7 +6,7 @@ import { FavoriteBorder, Favorite } from '@mui/icons-material';
 import { required, testDataProvider, useRecordContext } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
-import { Create } from '../detail';
+import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { CheckboxGroupInput } from './CheckboxGroupInput';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
@@ -214,3 +214,81 @@ export const HelperText = () => (
         </Create>
     </AdminContext>
 );
+
+export const TranslateChoice = () => {
+    const i18nProvider = polyglotI18nProvider(() => ({
+        ...englishMessages,
+        'option.tech': 'Tech',
+        'option.business': 'Business',
+    }));
+    return (
+        <AdminContext
+            i18nProvider={i18nProvider}
+            dataProvider={
+                {
+                    getOne: () =>
+                        Promise.resolve({ data: { id: 1, tags: ['tech'] } }),
+                    getList: () =>
+                        Promise.resolve({
+                            data: [
+                                { id: 'tech', name: 'option.tech' },
+                                { id: 'business', name: 'option.business' },
+                            ],
+                            total: 2,
+                        }),
+                    getMany: (_resource, { ids }) =>
+                        Promise.resolve({
+                            data: [
+                                { id: 'tech', name: 'option.tech' },
+                                { id: 'business', name: 'option.business' },
+                            ].filter(({ id }) => ids.includes(id)),
+                        }),
+                } as any
+            }
+        >
+            <Edit resource="posts" id="1">
+                <SimpleForm>
+                    <CheckboxGroupInput
+                        label="translateChoice default"
+                        source="tags"
+                        choices={[
+                            { id: 'tech', name: 'option.tech' },
+                            { id: 'business', name: 'option.business' },
+                        ]}
+                    />
+                    <CheckboxGroupInput
+                        label="translateChoice true"
+                        source="tags"
+                        choices={[
+                            { id: 'tech', name: 'option.tech' },
+                            { id: 'business', name: 'option.business' },
+                        ]}
+                        translateChoice
+                    />
+                    <CheckboxGroupInput
+                        label="translateChoice false"
+                        source="tags"
+                        choices={[
+                            { id: 'tech', name: 'option.tech' },
+                            { id: 'business', name: 'option.business' },
+                        ]}
+                        translateChoice={false}
+                    />
+                    <ReferenceArrayInput reference="tags" source="tags">
+                        <CheckboxGroupInput
+                            optionText="name"
+                            label="inside ReferenceArrayInput"
+                        />
+                    </ReferenceArrayInput>
+                    <ReferenceArrayInput reference="tags" source="tags">
+                        <CheckboxGroupInput
+                            optionText="name"
+                            label="inside ReferenceArrayInput forced"
+                            translateChoice
+                        />
+                    </ReferenceArrayInput>
+                </SimpleForm>
+            </Edit>
+        </AdminContext>
+    );
+};

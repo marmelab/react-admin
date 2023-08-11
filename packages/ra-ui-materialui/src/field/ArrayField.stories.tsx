@@ -30,7 +30,7 @@ let books = [
 export const Basic = () => (
     <MemoryRouter>
         <ArrayField record={{ id: 123, books }} source="books">
-            <SingleFieldList>
+            <SingleFieldList linkType={false}>
                 <ChipField source="title" />
             </SingleFieldList>
         </ArrayField>
@@ -48,7 +48,7 @@ export const PerPage = () => (
                     source="books"
                     perPage={2}
                 >
-                    <SingleFieldList>
+                    <SingleFieldList linkType={false}>
                         <ChipField source="title" />
                     </SingleFieldList>
                     <Pagination />
@@ -65,7 +65,7 @@ export const Sort = () => (
             source="books"
             sort={{ field: 'title', order: 'ASC' }}
         >
-            <SingleFieldList>
+            <SingleFieldList linkType={false}>
                 <ChipField source="title" />
             </SingleFieldList>
         </ArrayField>
@@ -79,7 +79,7 @@ export const Filter = () => (
             source="books"
             filter={{ title: 'Anna Karenina' }}
         >
-            <SingleFieldList>
+            <SingleFieldList linkType={false}>
                 <ChipField source="title" />
             </SingleFieldList>
         </ArrayField>
@@ -122,7 +122,7 @@ const SelectedChip = () => {
 export const ListContext = () => (
     <MemoryRouter>
         <ArrayField record={{ id: 123, books }} source="books">
-            <SingleFieldList sx={{ p: 2 }}>
+            <SingleFieldList sx={{ p: 2 }} linkType={false}>
                 <SelectedChip />
             </SingleFieldList>
             <SortButton /> <FilterButton />
@@ -155,7 +155,7 @@ export const InShowLayout = () => (
                 <SimpleShowLayout>
                     <TextField source="title" />
                     <ArrayField source="tags">
-                        <SingleFieldList>
+                        <SingleFieldList linkType={false}>
                             <ChipField source="name" size="small" />
                         </SingleFieldList>
                     </ArrayField>

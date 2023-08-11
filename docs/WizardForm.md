@@ -170,40 +170,40 @@ export const PostCreate = () => {
 
 You can also customize the progress stepper by passing a custom component in the `progress` prop.
 
+{% raw %}
 ```tsx
 import React from 'react';
 import { Create, TextInput, required } from 'react-admin';
-import { WizardForm, WizardForm.Step } from '@react-admin/ra-form-layout';
+import { WizardForm, WizardFormProgressProps, useWizardFormContext } from '@react-admin/ra-form-layout';
 
-const MyProgress = ({ currentStep, onStepClick, steps }) => (
-    <ul>
-        {steps.map((step, index) => {
-            const label = React.cloneElement(step, { intent: 'label' });
-
-            return (
-                <li key={`step_${index}`}>
-                    {!onStepClick ? (
+const MyProgress = (props: WizardFormProgressProps) => {
+    const { currentStep, steps } = useWizardFormContext(props);
+    return (
+        <ul>
+            {steps.map((step, index) => {
+                const label = React.cloneElement(step, { intent: 'label' });
+                return (
+                    <li key={`step_${index}`}>
                         <span
-                            className={
-                                currentStep === index ? 'active' : undefined
-                            }
+                            style={{
+                                textDecoration:
+                                    currentStep === index
+                                        ? 'underline'
+                                        : undefined,
+                            }}
                         >
                             {label}
                         </span>
-                    ) : (
-                        <button onClick={() => onStepClick(index)}>
-                            {label}
-                        </button>
-                    )}
-                </li>
-            );
-        })}
-    </ul>
-);
+                    </li>
+                );
+            })}
+        </ul>
+    );
+};
 
 const PostCreate = () => (
     <Create>
-        <WizardForm progress={MyProgress}>
+        <WizardForm progress={<MyProgress />}>
             <WizardForm.Step label="First step">
                 <TextInput source="title" validate={required()} />
             </WizardForm.Step>
@@ -217,6 +217,7 @@ const PostCreate = () => (
     </Create>
 );
 ```
+{% endraw %}
 
 Any additional props will be passed to the `<Progress>` component.
 

@@ -1,4 +1,4 @@
-import { Admin, Resource } from 'react-admin';
+import { Admin, Resource, ShowGuesser } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 import PostIcon from '@mui/icons-material/Book';
 import UserIcon from '@mui/icons-material/Group';
@@ -26,6 +26,7 @@ const App = () => (
         <Resource
             name="users"
             list={UserList}
+            show={ShowGuesser}
             icon={UserIcon}
             recordRepresentation="name"
         />

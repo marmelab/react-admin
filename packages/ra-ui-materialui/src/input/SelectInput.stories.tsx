@@ -10,7 +10,7 @@ import { SimpleForm } from '../form';
 import { SelectInput } from './SelectInput';
 import { TextInput } from './TextInput';
 import { ReferenceInput } from './ReferenceInput';
-import { SaveButton } from '../button//SaveButton';
+import { SaveButton } from '../button/SaveButton';
 import { Toolbar } from '../form/Toolbar';
 import { FormInspector } from './common';
 
@@ -368,3 +368,86 @@ export const InsideReferenceInputWithError = () => (
         />
     </Admin>
 );
+
+export const TranslateChoice = () => {
+    const i18nProvider = polyglotI18nProvider(() => ({
+        ...englishMessages,
+        'option.male': 'Male',
+        'option.female': 'Female',
+    }));
+    return (
+        <AdminContext
+            i18nProvider={i18nProvider}
+            dataProvider={
+                {
+                    getOne: () =>
+                        Promise.resolve({ data: { id: 1, gender: 'F' } }),
+                    getList: () =>
+                        Promise.resolve({
+                            data: [
+                                { id: 'M', name: 'option.male' },
+                                { id: 'F', name: 'option.female' },
+                            ],
+                            total: 2,
+                        }),
+                    getMany: (_resource, { ids }) =>
+                        Promise.resolve({
+                            data: [
+                                { id: 'M', name: 'option.male' },
+                                { id: 'F', name: 'option.female' },
+                            ].filter(({ id }) => ids.includes(id)),
+                        }),
+                } as any
+            }
+        >
+            <Edit resource="posts" id="1">
+                <SimpleForm>
+                    <SelectInput
+                        label="translateChoice default"
+                        source="gender"
+                        id="gender1"
+                        choices={[
+                            { id: 'M', name: 'option.male' },
+                            { id: 'F', name: 'option.female' },
+                        ]}
+                    />
+                    <SelectInput
+                        label="translateChoice true"
+                        source="gender"
+                        id="gender2"
+                        choices={[
+                            { id: 'M', name: 'option.male' },
+                            { id: 'F', name: 'option.female' },
+                        ]}
+                        translateChoice
+                    />
+                    <SelectInput
+                        label="translateChoice false"
+                        source="gender"
+                        id="gender3"
+                        choices={[
+                            { id: 'M', name: 'option.male' },
+                            { id: 'F', name: 'option.female' },
+                        ]}
+                        translateChoice={false}
+                    />
+                    <ReferenceInput reference="genders" source="gender">
+                        <SelectInput
+                            optionText="name"
+                            label="inside ReferenceInput"
+                            id="gender4"
+                        />
+                    </ReferenceInput>
+                    <ReferenceInput reference="genders" source="gender">
+                        <SelectInput
+                            optionText="name"
+                            label="inside ReferenceInput forced"
+                            id="gender5"
+                            translateChoice
+                        />
+                    </ReferenceInput>
+                </SimpleForm>
+            </Edit>
+        </AdminContext>
+    );
+};

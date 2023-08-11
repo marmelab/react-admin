@@ -311,7 +311,7 @@ If you provided a React element for the optionText prop, you must also provide t
         optionValue,
         selectedItem: selectedChoice,
         suggestionLimit,
-        translateChoice,
+        translateChoice: translateChoice ?? !isFromReference,
     });
 
     const [filterValue, setFilterValue] = useState('');
