@@ -14,6 +14,7 @@ import { AdminContext } from '../AdminContext';
 import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { SelectArrayInput } from './SelectArrayInput';
+import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import { TextInput } from './TextInput';
 
@@ -191,6 +192,89 @@ export const DifferentSizes = () => {
                         size="medium"
                         variant="outlined"
                     />
+                </SimpleForm>
+            </Edit>
+        </AdminContext>
+    );
+};
+
+export const TranslateChoice = () => {
+    const i18nProvider = polyglotI18nProvider(() => ({
+        ...englishMessages,
+        'option.tech': 'Tech',
+        'option.business': 'Business',
+    }));
+    return (
+        <AdminContext
+            i18nProvider={i18nProvider}
+            dataProvider={
+                {
+                    getOne: () =>
+                        Promise.resolve({ data: { id: 1, tags: ['tech'] } }),
+                    getList: () =>
+                        Promise.resolve({
+                            data: [
+                                { id: 'tech', name: 'option.tech' },
+                                { id: 'business', name: 'option.business' },
+                            ],
+                            total: 2,
+                        }),
+                    getMany: (_resource, { ids }) =>
+                        Promise.resolve({
+                            data: [
+                                { id: 'tech', name: 'option.tech' },
+                                { id: 'business', name: 'option.business' },
+                            ].filter(({ id }) => ids.includes(id)),
+                        }),
+                } as any
+            }
+        >
+            <Edit resource="posts" id="1">
+                <SimpleForm>
+                    <SelectArrayInput
+                        label="translateChoice default"
+                        source="tags"
+                        id="tags1"
+                        choices={[
+                            { id: 'tech', name: 'option.tech' },
+                            { id: 'business', name: 'option.business' },
+                        ]}
+                    />
+                    <SelectArrayInput
+                        label="translateChoice true"
+                        source="tags"
+                        id="tags2"
+                        choices={[
+                            { id: 'tech', name: 'option.tech' },
+                            { id: 'business', name: 'option.business' },
+                        ]}
+                        translateChoice
+                    />
+                    <SelectArrayInput
+                        label="translateChoice false"
+                        source="tags"
+                        id="tags3"
+                        choices={[
+                            { id: 'tech', name: 'option.tech' },
+                            { id: 'business', name: 'option.business' },
+                        ]}
+                        translateChoice={false}
+                    />
+                    <ReferenceArrayInput reference="tags" source="tags">
+                        <SelectArrayInput
+                            optionText="name"
+                            label="inside ReferenceArrayInput"
+                            id="tags4"
+                        />
+                    </ReferenceArrayInput>
+                    <ReferenceArrayInput reference="tags" source="tags">
+                        <SelectArrayInput
+                            optionText="name"
+                            label="inside ReferenceArrayInput forced"
+                            id="tags5"
+                            translateChoice
+                        />
+                    </ReferenceArrayInput>
                 </SimpleForm>
             </Edit>
         </AdminContext>

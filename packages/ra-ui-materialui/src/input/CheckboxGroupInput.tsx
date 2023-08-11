@@ -105,7 +105,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         resource: resourceProp,
         row = true,
         source: sourceProp,
-        translateChoice = true,
+        translateChoice,
         validate,
         ...rest
     } = props;
@@ -116,6 +116,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         error: fetchError,
         resource,
         source,
+        isFromReference,
     } = useChoicesContext({
         choices: choicesProp,
         isFetching: isFetchingProp,
@@ -233,7 +234,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                         options={options}
                         optionText={optionText}
                         optionValue={optionValue}
-                        translateChoice={translateChoice}
+                        translateChoice={translateChoice ?? !isFromReference}
                         value={value}
                         labelPlacement={labelPlacement}
                         {...sanitizeRestProps(rest)}
