@@ -353,7 +353,7 @@ What's a Field component? Simply a component that reads the record (via `useReco
 You can even create your own field components.
 
 ```jsx
-// in src/posts.js
+// in src/users.js
 import * as React from 'react';
 import { useRecordContext, List, Datagrid, TextField, DateField } from 'react-admin';
 
