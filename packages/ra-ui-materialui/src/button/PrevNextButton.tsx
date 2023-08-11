@@ -9,7 +9,7 @@ import {
 } from 'ra-core';
 import { NavigateBefore, NavigateNext } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { IconButton } from '@mui/material';
+import { IconButton, styled } from '@mui/material';
 
 export const PrevNextButton = (props: PrevNextButtonProps) => {
     const { linkType = 'edit' } = props;
@@ -53,28 +53,57 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
     });
 
     return (
-        <>
-            <IconButton
-                disabled={!previousId}
-                aria-label={translate('ra.navigation.previous')}
-                component={Link}
-                to={previousLink}
-            >
-                <NavigateBefore />
-            </IconButton>
-            {index + 1} / {total}
-            <IconButton
-                disabled={!nextId}
-                aria-label={translate('ra.navigation.next')}
-                component={Link}
-                to={nextLink}
-            >
-                <NavigateNext />
-            </IconButton>
-        </>
+        <PrevNextButtonRoot>
+            <PrevNextButtonUl>
+                <li>
+                    <IconButton
+                        disabled={!previousId}
+                        aria-label={translate('ra.navigation.previous')}
+                        component={Link}
+                        to={previousLink}
+                    >
+                        <NavigateBefore />
+                    </IconButton>
+                </li>
+                <li>
+                    {index + 1} / {total}
+                </li>
+                <li>
+                    <IconButton
+                        disabled={!nextId}
+                        aria-label={translate('ra.navigation.next')}
+                        component={Link}
+                        to={nextLink}
+                    >
+                        <NavigateNext />
+                    </IconButton>
+                </li>
+            </PrevNextButtonUl>
+        </PrevNextButtonRoot>
     );
 };
 
 export interface PrevNextButtonProps {
     linkType?: 'edit' | 'show';
 }
+
+const PREFIX = 'RaPrevNextButton';
+
+const PrevNextButtonRoot = styled('nav', {
+    name: PREFIX,
+    slot: 'Root',
+    overridesResolver: (_props, styles) => styles.root,
+})({});
+
+const PrevNextButtonUl = styled('ul', {
+    name: PREFIX,
+    slot: 'Ul',
+    overridesResolver: (_props, styles) => styles.ul,
+})({
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    padding: 0,
+    margin: 0,
+    listStyle: 'none',
+});
