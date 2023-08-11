@@ -56,10 +56,14 @@ const PostList = () => (
 
 ![SingleFieldList in Datagrid](./img/singlefieldlist-datagrid.png)
 
+## Props
+
 `<SingleFieldList>` accepts the following props:
 
-* [`linkType`](#linktype)
-* [`sx`](#sx-css-api)
+| Prop        | Required | Type                      | Default | Description                                   |
+| ----------- | -------- | ------------------------- | ------- | --------------------------------------------- |
+| `linkType`  | Optional | `'edit' | 'show' | false` | `edit`  | The target of the link on each item           |
+| `sx`        | Optional | `object`                  |         | The sx props of the Material UI Box component |
 
 ## `linkType`
 
@@ -78,13 +82,11 @@ The `<SingleFieldList>` items link to the edition page by default. You can set t
 </ReferenceArrayField>
 ```
 
-
 `linkType` accepts the following values:
 
 * `linkType="edit"`: links to the edit page. This is the default behavior.
 * `linkType="show"`: links to the show page.
 * `linkType={false}`: does not create any link.
-
 
 ## `sx`: CSS API
 
