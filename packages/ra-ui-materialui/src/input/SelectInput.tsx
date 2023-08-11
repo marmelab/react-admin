@@ -130,7 +130,7 @@ export const SelectInput = (props: SelectInputProps) => {
         parse,
         resource: resourceProp,
         source: sourceProp,
-        translateChoice = true,
+        translateChoice,
         validate,
         ...rest
     } = props;
@@ -179,7 +179,7 @@ export const SelectInput = (props: SelectInputProps) => {
             (isFromReference ? getRecordRepresentation : undefined),
         optionValue,
         disableValue,
-        translateChoice,
+        translateChoice: translateChoice ?? !isFromReference,
     });
     const {
         field,
