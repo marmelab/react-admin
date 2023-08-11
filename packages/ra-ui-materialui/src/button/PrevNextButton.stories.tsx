@@ -101,7 +101,7 @@ const ShowBook = () => (
         <SimpleShowLayout>
             <TextField source="title" />
             <TextField source="author" />
-            <PrevNextButton />
+            <PrevNextButton linkType="show" />
         </SimpleShowLayout>
     </Show>
 );

@@ -7,17 +7,18 @@ import {
 } from 'ra-core';
 import IconButton from '@mui/material/IconButton';
 import { NavigateBefore, NavigateNext } from '@mui/icons-material';
-import { useMatch, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
-export const PrevNextButton = () => {
+export const PrevNextButton = (props: PrevNextButtonProps) => {
+    const { linkType = 'edit' } = props;
     const { ids, total } = useListIdsContext();
     const navigate = useNavigate();
     const recordId = useGetRecordId();
     const resource = useResourceContext();
     const createPath = useCreatePath();
-    const type = useMatch('edit') ? 'edit' : 'show';
 
     if (!recordId) return null;
+
     const index = ids.indexOf(recordId);
     const previousId = index > 0 ? ids[index - 1] : null;
     const nextId =
@@ -25,7 +26,7 @@ export const PrevNextButton = () => {
 
     const handleClickPrev = () => {
         const link = createPath({
-            type,
+            type: linkType,
             resource,
             id: previousId,
         });
@@ -34,7 +35,7 @@ export const PrevNextButton = () => {
 
     const handleClickNext = () => {
         const link = createPath({
-            type,
+            type: linkType,
             resource,
             id: nextId,
         });
@@ -61,3 +62,7 @@ export const PrevNextButton = () => {
         </>
     );
 };
+
+export interface PrevNextButtonProps {
+    linkType?: 'edit' | 'show';
+}
