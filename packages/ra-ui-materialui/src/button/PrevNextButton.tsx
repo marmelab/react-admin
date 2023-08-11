@@ -9,10 +9,10 @@ import {
 } from 'ra-core';
 import { NavigateBefore, NavigateNext } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { IconButton, styled } from '@mui/material';
+import { IconButton, SxProps, styled } from '@mui/material';
 
 export const PrevNextButton = (props: PrevNextButtonProps) => {
-    const { linkType = 'edit' } = props;
+    const { linkType = 'edit', sx } = props;
     const translate = useTranslate();
     const recordId = useGetRecordId();
     const resource = useResourceContext();
@@ -53,7 +53,7 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
     });
 
     return (
-        <PrevNextButtonRoot>
+        <PrevNextButtonRoot sx={sx}>
             <PrevNextButtonUl>
                 <li>
                     <IconButton
@@ -85,6 +85,7 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
 
 export interface PrevNextButtonProps {
     linkType?: 'edit' | 'show';
+    sx?: SxProps;
 }
 
 const PREFIX = 'RaPrevNextButton';
