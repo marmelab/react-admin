@@ -52,6 +52,7 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
  *  - isRowSelectable
  *  - optimized
  *  - rowClick
+ *  - rowSx
  *  - size
  *  - sx
  *
@@ -349,6 +350,9 @@ export interface DatagridProps<RecordType extends RaRecord = any>
     optimized?: boolean;
     rowClick?: string | RowClickFunction | false;
     rowSx?: (record: RecordType, index: number) => SxProps;
+    /**
+     * @deprecated use rowStyle instead
+     */
     rowStyle?: (record: RecordType, index: number) => any;
     size?: 'medium' | 'small';
     // can be injected when using the component without context

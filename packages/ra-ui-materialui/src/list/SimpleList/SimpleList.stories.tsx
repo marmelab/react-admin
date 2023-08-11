@@ -131,6 +131,26 @@ export const FullApp = () => (
     </AdminContext>
 );
 
+export const NoPrimaryText = () => (
+    <AdminContext
+        dataProvider={dataProvider}
+        i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+    >
+        <AdminUI>
+            <Resource
+                name="books"
+                recordRepresentation="title"
+                list={() => (
+                    <List>
+                        <SimpleList />
+                    </List>
+                )}
+                edit={EditGuesser}
+            />
+        </AdminUI>
+    </AdminContext>
+);
+
 export const ErrorInFetch = () => (
     <MemoryRouter>
         <ListContextProvider

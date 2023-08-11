@@ -24,6 +24,7 @@ import {
     sanitizeListRestProps,
     useListContext,
     useResourceContext,
+    useGetRecordRepresentation,
     useCreatePath,
     useTranslate,
 } from 'ra-core';
@@ -87,6 +88,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
     } = props;
     const { data, isLoading, total } = useListContext<RecordType>(props);
     const resource = useResourceContext(props);
+    const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
 
     if (isLoading === true) {
@@ -158,14 +160,16 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                             <ListItemText
                                 primary={
                                     <div>
-                                        {typeof primaryText === 'string'
-                                            ? translate(primaryText, {
-                                                  ...record,
-                                                  _: primaryText,
-                                              })
-                                            : isElement(primaryText)
-                                            ? primaryText
-                                            : primaryText(record, record.id)}
+                                        {primaryText
+                                            ? typeof primaryText === 'string'
+                                                ? translate(primaryText, {
+                                                      ...record,
+                                                      _: primaryText,
+                                                  })
+                                                : isElement(primaryText)
+                                                ? primaryText
+                                                : primaryText(record, record.id)
+                                            : getRecordRepresentation(record)}
 
                                         {!!tertiaryText &&
                                             (isValidElement(tertiaryText) ? (
@@ -280,6 +284,9 @@ export interface SimpleListProps<RecordType extends RaRecord = any>
     secondaryText?: FunctionToElement<RecordType> | ReactElement | string;
     tertiaryText?: FunctionToElement<RecordType> | ReactElement | string;
     rowSx?: (record: RecordType, index: number) => SxProps;
+    /**
+     * @deprecated Use rowSx instead
+     */
     rowStyle?: (record: RecordType, index: number) => any;
     // can be injected when using the component without context
     resource?: string;

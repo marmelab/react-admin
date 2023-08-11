@@ -37,19 +37,40 @@ export const PostList = () => (
 
 `<SimpleList>` executes the functions passed as `primaryText`, `secondaryText`, and `tertiaryText` on render, passing the current `record` as parameter. It uses the result to render each List item.
 
-It accepts the following props:
+## Props
 
-* [`primaryText`](#primarytext) (required)
-* [`secondaryText`](#secondarytext)
-* [`tertiaryText`](#tertiarytext)
-* [`linkType`](#linktype)
-* [`leftAvatar`](#leftavatar)
-* [`leftIcon`](#lefticon)
-* [`rightAvatar`](#rightavatar)
-* [`rightIcon`](#righticon)
-* [`rowStyle`](#rowstyle)
-* [`rowSx`](#rowsx)
-* [`empty`](#empty)
+| Prop | Required | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `primaryText` | Optional | mixed | record representation | The primary text to display. |
+| `secondaryText` | Optional | mixed | | The secondary text to display. |
+| `tertiaryText` | Optional | mixed | | The tertiary text to display. |
+| `linkType` | Optional |mixed | `"edit"` | The target of each item click. |
+| `leftAvatar` | Optional | function | | A function returning an `<Avatar>` component to display before the primary text. |
+| `leftIcon` | Optional | function | | A function returning an `<Icon>` component to display before the primary text. |
+| `rightAvatar` | Optional | function | | A function returning an `<Avatar>` component to display after the primary text. |
+| `rightIcon` | Optional | function | | A function returning an `<Icon>` component to display after the primary text. |
+| `rowStyle` | Optional | function | | A function returning a style object to apply to each row. |
+| `rowSx` | Optional | function | | A function returning a sx object to apply to each row. |
+| `empty` | Optional | ReactElement | | A ReactElement to display instead of the list when the data is empty. |
+
+## `empty`
+
+It's possible that a `<SimpleList>` will have no records to display. If the `<SimpleList>`'s parent component does not handle the empty state, the `<SimpleList>` will display a message indicating there are no results. This message is translatable with the key `ra.navigation.no_results`.
+
+You can customize the empty state by passing  a component to the `empty` prop:
+
+```jsx
+const CustomEmpty = () => <div>No books found</div>;
+
+const PostList = () => (
+    <List>
+        <SimpleList
+            primaryText={record => record.title}
+            empty={<CustomEmpty />}
+        />
+    </List>
+);
+```
 
 ## `leftAvatar`
 
@@ -78,22 +99,20 @@ export const PostList = () => (
 );
 ```
 
-
 `linkType` accepts the following values:
 
 * `linkType="edit"`: links to the edit page. This is the default behavior.
 * `linkType="show"`: links to the show page.
 * `linkType={false}`: does not create any link.
 
-
-
 ## `primaryText`
 
-The `primaryText`, `secondaryText` and `tertiaryText` props can accept 3 types of values:
+The `primaryText`, `secondaryText` and `tertiaryText` props can accept 4 types of values:
 
 1. a function returning a string, 
 2. a string, 
 3. a React element. 
+4. `undefined` (the default)
 
 If it's a **function**, react-admin passes the current record as parameter:
 
@@ -151,6 +170,18 @@ export const PostList = () => (
 
 `<SimpleList>` creates a `RecordContext` for each list item. This allows Field components to grab the current record using [`useRecordContext`](./useRecordContext.md).
 
+If it's **undefined**, react-admin uses the [`recordRepresentation`](./Resource.md#recordrepresentation) for the current Resource. This is the default value.
+
+```jsx
+import { List, SimpleList } from 'react-admin';
+
+export const PostList = () => (
+    <List>
+        <SimpleList />
+    </List>
+);
+```
+
 ## `rightAvatar`
 
 This prop should be a function returning an `<Avatar>` component. When present, the `<ListItem>` renders a `<ListItemAvatar>` after the `<ListItemText>`
@@ -160,6 +191,8 @@ This prop should be a function returning an `<Avatar>` component. When present, 
 This prop should be a function returning an `<Icon>` component. When present, the `<ListItem>` renders a `<ListIcon>` after the `<ListItemText>`.
 
 ## `rowStyle`
+
+*Deprecated - use [`rowSx`](#rowsx) instead.*
 
 This optional prop should be a function, which gets called for each row. It receives the current record and index as arguments, and should return a style object. The style object is applied to the `<ListItem>` styles prop.
 
@@ -203,24 +236,6 @@ See [`primaryText`](#primarytext)
 
 See [`primaryText`](#primarytext)
 
-## `empty`
-
-It's possible that a SimpleList will have no records to display. If the SimpleList's parent component does not handle the empty state, the SimpleList will display a message indicating there are no results. This message is translatable and its key is `ra.navigation.no_results`.
-
-You can customize the empty state by passing  a component to the `empty` prop:
-
-```jsx
-const CustomEmpty = () => <div>No books found</div>;
-
-const PostList = () => (
-    <List>
-        <SimpleList
-            primaryText={record => record.title}
-            empty={<CustomEmpty />}
-        />
-    </List>
-);
-```
 
 ## Using `<SimpleList>` On Small Screens
 
