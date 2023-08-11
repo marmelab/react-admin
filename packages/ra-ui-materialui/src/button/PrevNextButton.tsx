@@ -6,13 +6,12 @@ import {
     useListParams,
     useResourceContext,
 } from 'ra-core';
-import IconButton from '@mui/material/IconButton';
 import { NavigateBefore, NavigateNext } from '@mui/icons-material';
-import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
+import { IconButton } from '@mui/material';
 
 export const PrevNextButton = (props: PrevNextButtonProps) => {
     const { linkType = 'edit' } = props;
-    const navigate = useNavigate();
     const recordId = useGetRecordId();
     const resource = useResourceContext();
     const createPath = useCreatePath();
@@ -39,30 +38,25 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
     const nextId =
         index !== -1 && index < ids.length - 1 ? ids[index + 1] : null;
 
-    const handleClickPrev = () => {
-        const link = createPath({
-            type: linkType,
-            resource,
-            id: previousId,
-        });
-        navigate(link);
-    };
+    const previousLink = createPath({
+        type: linkType,
+        resource,
+        id: previousId,
+    });
 
-    const handleClickNext = () => {
-        const link = createPath({
-            type: linkType,
-            resource,
-            id: nextId,
-        });
-        navigate(link);
-    };
+    const nextLink = createPath({
+        type: linkType,
+        resource,
+        id: nextId,
+    });
 
     return (
         <>
             <IconButton
                 disabled={!previousId}
                 aria-label="previous"
-                onClick={handleClickPrev}
+                component={Link}
+                to={previousLink}
             >
                 <NavigateBefore />
             </IconButton>
@@ -70,7 +64,8 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
             <IconButton
                 disabled={!nextId}
                 aria-label="next"
-                onClick={handleClickNext}
+                component={Link}
+                to={nextLink}
             >
                 <NavigateNext />
             </IconButton>
