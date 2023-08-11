@@ -5,7 +5,6 @@ import { RaRecord } from '../../types';
 import { useShowController, ShowControllerProps } from './useShowController';
 import { ShowContextProvider } from './ShowContextProvider';
 import { ResourceContextProvider } from '../../core';
-import { ListIdsContextProvider } from '../list';
 
 /**
  * Call useShowController and put the value in a ShowContext
@@ -43,7 +42,7 @@ export const ShowBase = <RecordType extends RaRecord = any>({
     const controllerProps = useShowController<RecordType>(props);
     const body = (
         <ShowContextProvider value={controllerProps}>
-            <ListIdsContextProvider>{children}</ListIdsContextProvider>
+            {children}
         </ShowContextProvider>
     );
     return props.resource ? (

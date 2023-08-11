@@ -1,8 +1,9 @@
 import * as React from 'react';
 import {
     useCreatePath,
+    useGetList,
     useGetRecordId,
-    useListIdsContext,
+    useListParams,
     useResourceContext,
 } from 'ra-core';
 import IconButton from '@mui/material/IconButton';
@@ -11,13 +12,27 @@ import { useNavigate } from 'react-router';
 
 export const PrevNextButton = (props: PrevNextButtonProps) => {
     const { linkType = 'edit' } = props;
-    const { ids, total } = useListIdsContext();
     const navigate = useNavigate();
     const recordId = useGetRecordId();
     const resource = useResourceContext();
     const createPath = useCreatePath();
+    const [query] = useListParams({
+        resource,
+    });
+    const list = useGetList(resource, {
+        pagination: { page: query.page, perPage: query.perPage },
+        sort: { field: query.sort, order: query.order },
+        filter: { ...query.filter },
+    });
+
+    if (list.isLoading) {
+        return null;
+    }
 
     if (!recordId) return null;
+
+    const ids = list ? list.data.map(record => record.id) : [];
+    const total = ids.length;
 
     const index = ids.indexOf(recordId);
     const previousId = index > 0 ? ids[index - 1] : null;

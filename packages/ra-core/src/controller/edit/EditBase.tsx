@@ -5,7 +5,6 @@ import { RaRecord } from '../../types';
 import { useEditController, EditControllerProps } from './useEditController';
 import { EditContextProvider } from './EditContextProvider';
 import { ResourceContextProvider } from '../../core';
-import { ListIdsContextProvider } from '../list';
 
 /**
  * Call useEditController and put the value in a EditContext
@@ -43,7 +42,7 @@ export const EditBase = <RecordType extends RaRecord = any>({
     const controllerProps = useEditController<RecordType>(props);
     const body = (
         <EditContextProvider value={controllerProps}>
-            <ListIdsContextProvider>{children}</ListIdsContextProvider>
+            {children}
         </EditContextProvider>
     );
     return props.resource ? (
