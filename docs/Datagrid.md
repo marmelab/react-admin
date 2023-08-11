@@ -646,8 +646,8 @@ export const PostList = () => (
 
 `rowClick` accepts the following values:
 
-* "edit" to redirect to the edition vue
-* "show" to redirect to the show vue
+* "edit" to redirect to the edition view
+* "show" to redirect to the show view
 * "expand" to open the `expand` panel
 * "toggleSelection" to trigger the `onToggleItem` function
 * `false` to do nothing

@@ -44,7 +44,7 @@ export const PostList = () => (
 | `primaryText` | Optional | mixed | record representation | The primary text to display. |
 | `secondaryText` | Optional | mixed | | The secondary text to display. |
 | `tertiaryText` | Optional | mixed | | The tertiary text to display. |
-| `linkType` | Optional |mixed | `"edit"` | The target of each item click |
+| `linkType` | Optional |mixed | `"edit"` | The target of each item click. |
 | `leftAvatar` | Optional | function | | A function returning an `<Avatar>` component to display before the primary text. |
 | `leftIcon` | Optional | function | | A function returning an `<Icon>` component to display before the primary text. |
 | `rightAvatar` | Optional | function | | A function returning an `<Avatar>` component to display after the primary text. |
@@ -55,7 +55,7 @@ export const PostList = () => (
 
 ## `empty`
 
-It's possible that a SimpleList will have no records to display. If the SimpleList's parent component does not handle the empty state, the SimpleList will display a message indicating there are no results. This message is translatable and its key is `ra.navigation.no_results`.
+It's possible that a `<SimpleList>` will have no records to display. If the `<SimpleList>`'s parent component does not handle the empty state, the `<SimpleList>` will display a message indicating there are no results. This message is translatable with the key `ra.navigation.no_results`.
 
 You can customize the empty state by passing  a component to the `empty` prop:
 
