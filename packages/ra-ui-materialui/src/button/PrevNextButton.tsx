@@ -5,6 +5,7 @@ import {
     useGetRecordId,
     useListParams,
     useResourceContext,
+    useTranslate,
 } from 'ra-core';
 import { NavigateBefore, NavigateNext } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
@@ -12,6 +13,7 @@ import { IconButton } from '@mui/material';
 
 export const PrevNextButton = (props: PrevNextButtonProps) => {
     const { linkType = 'edit' } = props;
+    const translate = useTranslate();
     const recordId = useGetRecordId();
     const resource = useResourceContext();
     const createPath = useCreatePath();
@@ -54,7 +56,7 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
         <>
             <IconButton
                 disabled={!previousId}
-                aria-label="previous"
+                aria-label={translate('ra.navigation.previous')}
                 component={Link}
                 to={previousLink}
             >
@@ -63,7 +65,7 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
             {index + 1} / {total}
             <IconButton
                 disabled={!nextId}
-                aria-label="next"
+                aria-label={translate('ra.navigation.next')}
                 component={Link}
                 to={nextLink}
             >

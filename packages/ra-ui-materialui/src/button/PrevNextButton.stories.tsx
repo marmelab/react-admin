@@ -14,8 +14,12 @@ import {
     TextField,
     TextInput,
 } from 'react-admin';
+import englishMessages from 'ra-language-english';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 export default { title: 'ra-ui-materialui/button/PrevNextButton' };
+
+const i18nProvider = polyglotI18nProvider(() => englishMessages, 'en');
 
 const dataProvider = fakeRestDataProvider({
     books: [
@@ -107,7 +111,7 @@ const ShowBook = () => (
 );
 
 export const Basic = () => (
-    <AdminContext dataProvider={dataProvider}>
+    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
         <AdminUI>
             <Resource
                 name="books"
