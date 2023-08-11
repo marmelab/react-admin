@@ -35,8 +35,8 @@ import { Link } from '../Link';
  * Set the linkType prop to "show" to link to the <Show> page instead.
  *
  * @example
- * <ReferenceManyField reference="books" target="author_id" linkType="show">
- *     <SingleFieldList>
+ * <ReferenceManyField reference="books" target="author_id">
+ *     <SingleFieldList linkType="show">
  *         <ChipField source="title" />
  *     </SingleFieldList>
  * </ReferenceManyField>
@@ -45,8 +45,8 @@ import { Link } from '../Link';
  * `linkType` to false.
  *
  * @example
- * <ReferenceManyField reference="books" target="author_id" linkType={false}>
- *     <SingleFieldList>
+ * <ReferenceManyField reference="books" target="author_id">
+ *     <SingleFieldList linkType={false}>
  *         <ChipField source="title" />
  *     </SingleFieldList>
  * </ReferenceManyField>
@@ -159,14 +159,17 @@ export const SingleFieldListClasses = {
 const Root = styled('div', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})({
+})(({ theme }) => ({
     display: 'flex',
     flexWrap: 'wrap',
 
     [`& .${SingleFieldListClasses.link}`]: {
         textDecoration: 'none',
+        '& > *': {
+            color: theme.palette.primary.main,
+        },
     },
-});
+}));
 
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
