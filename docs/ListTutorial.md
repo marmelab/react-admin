@@ -73,7 +73,7 @@ const BookList = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.map(book => (
+                        {data?.map(book => (
                             <TableRow key={book.id}>
                                 <TableCell>{book.id}</TableCell>
                                 <TableCell>{book.title}</TableCell>
@@ -86,7 +86,7 @@ const BookList = () => {
             </Card>
             <Toolbar>
                 {page > 1 && <Button onClick={() => setPage(page - 1)}>Previous page</Button>}
-                {page < total / perPage && <Button onClick={() => setPage(page + 1)}>Next page</Button>}
+                {page < (total || 0) / perPage && <Button onClick={() => setPage(page + 1)}>Next page</Button>}
             </Toolbar>
         </div>
     );
@@ -222,7 +222,9 @@ const BookList = () => {
 +   const filterValues = { q: filter };
 +   const setFilters = filters => setFilter(filters.q);
     return (
-+       <ListContextProvider value={{ data, total, page, perPage, setPage, filterValues, setFilters, sort }}>
++       /* The ListContext actually does a lot more so we ignored the TS error to keep this example simple */
++       /* @ts-ignore */
++       <ListContextProvider value={{ data: data || [], total: total || 0, page, perPage, setPage, filterValues, setFilters, sort }}>
         <div>
             <Title title="Book list" />
 -           <MuiTextField
@@ -235,7 +237,8 @@ const BookList = () => {
 -           />
 +           <FilterForm filters={filters} />
             <Card>
-                <Datagrid data={data} sort={sort}>
+-               <Datagrid data={data} sort={sort}>
++               <Datagrid>
                     <TextField source="id" />
                     <TextField source="title" />
                     <TextField source="author" />
@@ -451,7 +454,6 @@ import {
     TextField,
     TextInput
 } from 'react-admin';
-import { Card } from '@mui/material';
 
 const filters = [<TextInput label="Search" source="q" size="small" alwaysOn />];
 
@@ -515,15 +517,22 @@ To use `<Datagrid>` on desktop and `<SimpleList>` on mobile, use the `useMediaQu
 ```jsx
 // in src/posts.js
 import * as React from 'react';
-import { useMediaQuery } from '@mui/material';
+import { useMediaQuery, Theme } from '@mui/material';
 import { List, SimpleList, Datagrid, TextField, ReferenceField } from 'react-admin';
 
+type Post = {
+    id: number;
+    title: string;
+    views: number;
+    published_at: string;
+}
+
 export const PostList = () => {
-    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
     return (
         <List>
             {isSmall ? (
-                <SimpleList
+                <SimpleList<Post>
                     primaryText={record => record.title}
                     secondaryText={record => `${record.views} views`}
                     tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
@@ -552,13 +561,20 @@ In some cases, neither the `<Datagrid>` nor the `<SimpleList>` components allow 
 As `<List>` takes care of fetching the data and putting it in a `ListContext`, you can leverage [the `<WithListContext>` component](./WithListContext.md) to get the list data in a render prop. 
 
 {% raw %}
-```jsx
+```tsx
 import { List, WithListContext } from 'react-admin';
 import { Stack, Typography } from '@mui/material';
 
+type Book = {
+	id: number;
+	title: string;
+	author: string;
+	year: number;
+};
+
 const BookList = () => (
     <List emptyWhileLoading>
-        <WithListContext render={({ data }) => (
+        <WithListContext<Book> render={({ data }) => (
             <Stack spacing={2} sx={{ padding: 2 }}>
                 {data.map(book => (
                     <Typography key={book.id}>
@@ -575,12 +591,19 @@ const BookList = () => (
 If you prefer using a hook, you can use [the `useListContext` hook](./useListContext.md) instead:
 
 {% raw %}
-```jsx
+```tsx
 import { List, useListContext } from 'react-admin';
 import { Stack, Typography } from '@mui/material';
 
+type Book = {
+	id: number;
+	title: string;
+	author: string;
+	year: number;
+};
+
 const BookListView = () => {
-    const { data } = useListContext();
+    const { data } = useListContext<Book>();
     return (
         <Stack spacing={2} sx={{ padding: 2 }}>
             {data.map(book => (
@@ -670,7 +693,7 @@ As the sort values are taken from the URL, you can link to a pre-sorted list by 
 For instance, if you have a list of posts ordered by publication date, and you want to provide a button to sort the list by number of views descendant:
 
 {% raw %}
-```jsx
+```tsx
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { stringify } from 'query-string';
@@ -702,9 +725,9 @@ const SortByViews = () => (
 
 When neither the `<Datagrid>` or the `<SortButton>` fit your UI needs, you have to write a custom sort control. As with custom filters, this boils down to grabbing the required data and callbacks from the `ListContext`. Let's use the `<SortButton>` source as an example usage of `sort` and `setSort`:
 
-```jsx
+```tsx
 import * as React from 'react';
-import { Button, Menu, MenuItem, Tooltip, IconButton } from '@mui/material';
+import { Button, Menu, MenuItem } from '@mui/material';
 import SortIcon from '@mui/icons-material/Sort';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useListSortContext, useTranslate } from 'react-admin';
@@ -716,21 +739,23 @@ const SortButton = ({ fields }) => {
     // rely on the translations to display labels like 'Sort by sales descending'
     const translate = useTranslate();
     // open/closed state for dropdown
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
     // mouse handlers
-    const handleClick = (event) => {
+	const handleClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
         setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {
         setAnchorEl(null);
     };
-    const handleChangeSort = (event) => {
+    const handleChangeSort: React.MouseEventHandler<HTMLLIElement> = (event) => {
         const field = event.currentTarget.dataset.sort;
-        setSort({
-            field,
-            order: field === sort.field ? inverseOrder(sort.order) : 'ASC'
-        });
+        if (field) {
+            setSort({
+                field,
+                order: field === sort.field ? inverseOrder(sort.order) : 'ASC'
+            });
+        }
         setAnchorEl(null);
     };
 
@@ -780,7 +805,7 @@ const SortButton = ({ fields }) => {
     </>);
 };
 
-const inverseOrder = sort => (sort === 'ASC' ? 'DESC' : 'ASC');
+const inverseOrder = (sort: string) => (sort === 'ASC' ? 'DESC' : 'ASC');
 
 export default SortButton;
 ```
@@ -800,8 +825,8 @@ The [`<Pagination>`](./Pagination.md) component gets the following constants fro
 
 If you want to replace the default pagination by a "&lt; previous - next &gt;" pagination, create a pagination component like the following:
 
-```jsx
-import { useListContext } from 'react-admin';
+```tsx
+import { List, useListContext } from 'react-admin';
 import { Button, Toolbar } from '@mui/material';
 import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import ChevronRight from '@mui/icons-material/ChevronRight';
@@ -842,7 +867,7 @@ export const PostList = () => (
 
 But if you just want to change the color property of the pagination button, you can extend the existing components:
 
-```jsx
+```tsx
 import {
     List,
     Pagination as RaPagination,
