@@ -73,7 +73,11 @@ export const FormDataConsumerView = <
         const getSource = (scopedSource: string) => `${source}.${scopedSource}`;
         ret = children({ formData, scopedFormData, getSource, ...rest });
     } else {
-        ret = children({ formData, ...rest });
+        ret = children({
+            formData,
+            getSource: (scopedSource: string) => scopedSource,
+            ...rest,
+        });
     }
 
     return ret === undefined ? null : ret;
@@ -82,11 +86,12 @@ export const FormDataConsumerView = <
 export default FormDataConsumer;
 
 export interface FormDataConsumerRenderParams<
-    TFieldValues extends FieldValues = FieldValues
+    TFieldValues extends FieldValues = FieldValues,
+    TScopedFieldValues extends FieldValues = TFieldValues
 > {
     formData: TFieldValues;
-    scopedFormData?: any;
-    getSource?: (source: string) => string;
+    scopedFormData?: TScopedFieldValues;
+    getSource: (source: string) => string;
 }
 
 export type FormDataConsumerRender<
