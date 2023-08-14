@@ -4,6 +4,7 @@ import fakeRestDataProvider from 'ra-data-fakerest';
 import { Resource } from 'ra-core';
 import {
     AdminUI,
+    Create,
     Datagrid,
     Edit,
     List,
@@ -248,5 +249,19 @@ export const WithLimit = () => (
                 }
             />
         </AdminUI>
+    </AdminContext>
+);
+
+export const ShouldNotDisplayed = () => (
+    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+        <Create resource="customers">
+            <SimpleForm>
+                <TextInput source="first_name" />
+                <TextInput source="last_name" />
+                <TextInput source="email" />
+                <TextInput source="city" />
+                <PrevNextButton />
+            </SimpleForm>
+        </Create>
     </AdminContext>
 );

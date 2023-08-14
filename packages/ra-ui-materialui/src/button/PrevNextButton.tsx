@@ -4,7 +4,7 @@ import {
     SORT_ASC,
     useCreatePath,
     useGetList,
-    useGetRecordId,
+    useRecordContext,
     useResourceContext,
     useStore,
     useTranslate,
@@ -16,7 +16,7 @@ import { IconButton, SxProps, styled } from '@mui/material';
 export const PrevNextButton = (props: PrevNextButtonProps) => {
     const { linkType = 'edit', sx, storeKey, limit = undefined } = props;
     const translate = useTranslate();
-    const recordId = useGetRecordId();
+    const record = useRecordContext();
     const resource = useResourceContext();
     const createPath = useCreatePath();
     const [params] = useStore<Partial<ListParams>>(
@@ -39,11 +39,11 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
         return null;
     }
 
-    if (!recordId) return null;
+    if (!record) return null;
 
     const ids = data ? data.map(record => record.id) : [];
 
-    const index = ids.indexOf(recordId);
+    const index = ids.indexOf(record.id);
     const previousId = index > 0 ? ids[index - 1] : null;
     const nextId =
         index !== -1 && index < ids.length - 1 ? ids[index + 1] : null;
