@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom';
 import { IconButton, SxProps, styled } from '@mui/material';
 
 export const PrevNextButton = (props: PrevNextButtonProps) => {
-    const { linkType = 'edit', sx, storeKey } = props;
+    const { linkType = 'edit', sx, storeKey, limit = undefined } = props;
     const translate = useTranslate();
     const recordId = useGetRecordId();
     const resource = useResourceContext();
@@ -24,9 +24,10 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
         defaultParams
     );
 
-    const { isLoading, data, total, isError, error } = useGetList(resource, {
+    const { isLoading, data, isError, error } = useGetList(resource, {
         sort: { field: params.sort, order: params.order },
         filter: { ...params.filter },
+        ...(limit ? { pagination: { page: 1, perPage: limit } } : {}),
     });
 
     if (isError) {
@@ -73,7 +74,7 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
                     </IconButton>
                 </li>
                 <li>
-                    {index + 1} / {total}
+                    {index + 1} / {data.length}
                 </li>
                 <li>
                     <IconButton
@@ -94,6 +95,7 @@ export interface PrevNextButtonProps {
     linkType?: 'edit' | 'show';
     sx?: SxProps;
     storeKey?: string | false;
+    limit?: number;
 }
 
 const PREFIX = 'RaPrevNextButton';

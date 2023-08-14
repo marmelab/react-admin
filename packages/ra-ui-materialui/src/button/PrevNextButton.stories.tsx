@@ -220,3 +220,42 @@ export const WithFilter = () => (
         </AdminUI>
     </AdminContext>
 );
+
+export const WithLimit = () => (
+    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+        <AdminUI>
+            <Resource
+                name="books"
+                list={
+                    <List>
+                        <Datagrid rowClick="edit">
+                            <TextField source="title" />
+                            <TextField source="author" />
+                            <TextField source="genre" />
+                        </Datagrid>
+                    </List>
+                }
+                edit={
+                    <Edit>
+                        <SimpleForm>
+                            <TextInput source="title" />
+                            <TextInput source="author" />
+                            <TextInput source="genre" />
+                            <PrevNextButton limit={2} />
+                        </SimpleForm>
+                    </Edit>
+                }
+                show={
+                    <Show>
+                        <SimpleShowLayout>
+                            <TextField source="title" />
+                            <TextField source="author" />
+                            <TextField source="genre" />
+                            <PrevNextButton linkType="show" limit={2} />
+                        </SimpleShowLayout>
+                    </Show>
+                }
+            />
+        </AdminUI>
+    </AdminContext>
+);
