@@ -462,21 +462,21 @@ import { useWatch } from "react-hook-form";
 
 const countries = ["USA", "UK", "France"];
 const cities: Record<string, string[]> = {
-	USA: ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"],
-	UK: ["London", "Birmingham", "Glasgow", "Liverpool", "Bristol"],
-	France: ["Paris", "Marseille", "Lyon", "Toulouse", "Nice"],
+    USA: ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"],
+    UK: ["London", "Birmingham", "Glasgow", "Liverpool", "Bristol"],
+    France: ["Paris", "Marseille", "Lyon", "Toulouse", "Nice"],
 };
 const toChoices = (items: string[]) => items.map((item) => ({ id: item, name: item }));
 
 const CityInput = (props: SelectInputProps) => {
-	const country = useWatch<{ country: string }>({ name: "country" });
-    
-	return (
-		<SelectInput
-			choices={country ? toChoices(cities[country]) : []}
-			{...props}
-		/>
-	);
+    const country = useWatch<{ country: string }>({ name: "country" });
+
+    return (
+        <SelectInput
+            choices={country ? toChoices(cities[country]) : []}
+            {...props}
+        />
+    );
 };
 
 const OrderEdit = () => (
@@ -499,30 +499,30 @@ import { Edit, SimpleForm, SelectInput, FormDataConsumer } from "react-admin";
 
 const countries = ["USA", "UK", "France"];
 const cities: Record<string, string[]> = {
-	USA: ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"],
-	UK: ["London", "Birmingham", "Glasgow", "Liverpool", "Bristol"],
-	France: ["Paris", "Marseille", "Lyon", "Toulouse", "Nice"],
+    USA: ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"],
+    UK: ["London", "Birmingham", "Glasgow", "Liverpool", "Bristol"],
+    France: ["Paris", "Marseille", "Lyon", "Toulouse", "Nice"],
 };
 const toChoices = (items: string[]) =>
-	items.map((item) => ({ id: item, name: item }));
+    items.map((item) => ({ id: item, name: item }));
 
 const OrderEdit = () => (
-	<Edit>
-		<SimpleForm>
-			<SelectInput source="country" choices={toChoices(countries)} />
-			<FormDataConsumer<{ country: string }>>
-				{({ formData, ...rest }) => (
-					<SelectInput
-						source="cities"
-						choices={
-							formData.country ? toChoices(cities[formData.country]) : []
-						}
-						{...rest}
-					/>
-				)}
-			</FormDataConsumer>
-		</SimpleForm>
-	</Edit>
+    <Edit>
+        <SimpleForm>
+            <SelectInput source="country" choices={toChoices(countries)} />
+            <FormDataConsumer<{ country: string }>>
+                {({ formData, ...rest }) => (
+                    <SelectInput
+                        source="cities"
+                        choices={
+                            formData.country ? toChoices(cities[formData.country]) : []
+                        }
+                        {...rest}
+                    />
+                )}
+            </FormDataConsumer>
+        </SimpleForm>
+    </Edit>
 );
 ```
 
@@ -830,58 +830,58 @@ import { TextField, TextFieldProps } from "@mui/material";
 import { useInput, required, InputProps } from "react-admin";
 
 interface BoundedTextFieldProps
-	extends Omit<
-			TextFieldProps,
-			"label" | "helperText" | "onChange" | "onBlur" | "type" | "defaultValue"
-		>,
-		InputProps {}
+    extends Omit<
+        TextFieldProps,
+        "label" | "helperText" | "onChange" | "onBlur" | "type" | "defaultValue"
+    >,
+    InputProps {}
 
 const BoundedTextField = (props: BoundedTextFieldProps) => {
-	const { onChange, onBlur, label, ...rest } = props;
-	const {
-		field,
-		fieldState: { isTouched, invalid, error },
-		formState: { isSubmitted },
-		isRequired,
-	} = useInput({
-		// Pass the event handlers to the hook but not the component as the field property already has them.
-		// useInput will call the provided onChange and onBlur in addition to the default needed by react-hook-form.
-		onChange,
-		onBlur,
-		...rest,
-	});
+    const { onChange, onBlur, label, ...rest } = props;
+    const {
+        field,
+        fieldState: { isTouched, invalid, error },
+        formState: { isSubmitted },
+        isRequired,
+    } = useInput({
+        // Pass the event handlers to the hook but not the component as the field property already has them.
+        // useInput will call the provided onChange and onBlur in addition to the default needed by react-hook-form.
+        onChange,
+        onBlur,
+        ...rest,
+    });
 
-	return (
-		<TextField
-			{...field}
-			label={label}
-			error={(isTouched || isSubmitted) && invalid}
-			helperText={(isTouched || isSubmitted) && invalid ? error?.message : ""}
-			required={isRequired}
-			{...rest}
-		/>
-	);
+    return (
+        <TextField
+            {...field}
+            label={label}
+            error={(isTouched || isSubmitted) && invalid}
+            helperText={(isTouched || isSubmitted) && invalid ? error?.message : ""}
+            required={isRequired}
+            {...rest}
+        />
+    );
 };
 const LatLngInput = (props: BoundedTextFieldProps) => {
-	const { source, ...rest } = props;
+    const { source, ...rest } = props;
 
-	return (
-		<span>
-			<BoundedTextField
-				source="lat"
-				label="Latitude"
-				validate={required()}
-				{...rest}
-			/>
-			&nbsp;
-			<BoundedTextField
-				source="lng"
-				label="Longitude"
-				validate={required()}
-				{...rest}
-			/>
-		</span>
-	);
+    return (
+        <span>
+            <BoundedTextField
+                source="lat"
+                label="Latitude"
+                validate={required()}
+                {...rest}
+            />
+            &nbsp;
+            <BoundedTextField
+                source="lng"
+                label="Longitude"
+                validate={required()}
+                {...rest}
+            />
+        </span>
+    );
 };
 ```
 
