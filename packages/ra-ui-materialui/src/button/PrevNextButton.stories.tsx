@@ -16,106 +16,92 @@ import {
 } from 'react-admin';
 import englishMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
+import generateData from 'data-generator-retail';
 
 export default { title: 'ra-ui-materialui/button/PrevNextButton' };
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages, 'en');
 
+const defaultCustomerData = {
+    city: 'Hill Valley',
+    address: null,
+    zipcode: null,
+    stateAbbr: null,
+    birthday: null,
+    first_seen: '2021-08-22T23:43:18.742Z',
+    last_seen: '2023-04-22T07:24:29.127Z',
+    has_ordered: false,
+    latest_purchase: null,
+    has_newsletter: true,
+    groups: [],
+    nb_commands: 0,
+    total_spent: 0,
+};
+
+const data = generateData();
+
 const dataProvider = fakeRestDataProvider({
-    books: [
-        {
-            id: 1,
-            title: 'War and Peace',
-            author: 'Leo Tolstoy',
-            genre: 'Historical novel',
-        },
-        {
-            id: 2,
-            title: 'Pride and Predjudice',
-            author: 'Jane Austen',
-            genre: 'Romance novel',
-        },
-        {
-            id: 3,
-            title: 'The Picture of Dorian Gray',
-            author: 'Oscar Wilde',
-            genre: 'Philosophical fiction',
-        },
-        {
-            id: 4,
-            title: 'Le Petit Prince',
-            author: 'Antoine de Saint-Exupéry',
-            genre: 'Novel',
-        },
-        {
-            id: 5,
-            title: "Alice's Adventures in Wonderland",
-            author: 'Lewis Carroll',
-            genre: 'Fantasy',
-        },
-        {
-            id: 6,
-            title: 'Madame Bovary',
-            author: 'Gustave Flaubert',
-            genre: 'Novel',
-        },
-        {
-            id: 7,
-            title: 'The Lord of the Rings',
-            author: 'J. R. R. Tolkien',
-            genre: 'Fantasy',
-        },
-        {
-            id: 8,
-            title: "Harry Potter and the Philosopher's Stone",
-            author: 'J. K. Rowling',
-            genre: 'Fantasy',
-        },
-        {
-            id: 9,
-            title: 'The Alchemist',
-            author: 'Paulo Coelho',
-            genre: 'Fantasy',
-        },
-        {
-            id: 10,
-            title: 'A Catcher in the Rye',
-            author: 'J. D. Salinger',
-            genre: 'Realistic fiction',
-        },
-        {
-            id: 11,
-            title: 'Ulysses',
-            author: 'James Joyce',
-            genre: 'Modernist novel',
-        },
-    ],
+    ...data,
+    ...{
+        customers: [
+            // add some persisted customers to the data
+            ...data.customers,
+            ...[
+                {
+                    id: 901,
+                    first_name: 'Martin',
+                    last_name: 'McFly',
+                    email: 'Martin.McFly@yahoo.com',
+                    ...defaultCustomerData,
+                },
+                {
+                    id: 902,
+                    first_name: 'Emmett',
+                    last_name: 'Brown',
+                    email: 'Emmett.Brown@yahoo.com',
+                    ...defaultCustomerData,
+                },
+                {
+                    id: 903,
+                    first_name: 'Biff',
+                    last_name: 'Tannen',
+                    email: 'Biff.Tannen@yahoo.com',
+                    ...defaultCustomerData,
+                },
+                {
+                    id: 904,
+                    first_name: 'Clara',
+                    last_name: 'Clayton',
+                    email: 'Clara.Clayton@yahoo.com',
+                    ...defaultCustomerData,
+                },
+            ],
+        ],
+    },
 });
 
 export const Basic = () => (
     <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
         <AdminUI>
             <Resource
-                name="books"
+                name="customers"
                 list={
-                    <List
-                        filters={[
-                            <TextInput label="Search" source="q" alwaysOn />,
-                        ]}
-                    >
+                    <List>
                         <Datagrid rowClick="edit">
-                            <TextField source="title" />
-                            <TextField source="author" />
-                            <TextField source="genre" />
+                            <TextField source="first_name" />
+                            <TextField source="last_name" />
+                            <TextField source="email" />
+                            <TextField source="city" />
                         </Datagrid>
                     </List>
                 }
                 edit={
                     <Edit>
                         <SimpleForm>
-                            <TextInput source="title" />
-                            <TextInput source="author" />
-                            <TextInput source="genre" />
+                            <TextInput source="first_name" />
+                            <TextInput source="last_name" />
+                            <TextInput source="email" />
+                            <TextInput source="city" />
                             <PrevNextButton />
                         </SimpleForm>
                     </Edit>
@@ -123,9 +109,10 @@ export const Basic = () => (
                 show={
                     <Show>
                         <SimpleShowLayout>
-                            <TextField source="title" />
-                            <TextField source="author" />
-                            <TextField source="genre" />
+                            <TextField source="first_name" />
+                            <TextField source="last_name" />
+                            <TextField source="email" />
+                            <TextField source="city" />
                             <PrevNextButton linkType="show" />
                         </SimpleShowLayout>
                     </Show>
@@ -139,27 +126,24 @@ export const WithStoreKey = () => (
     <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
         <AdminUI>
             <Resource
-                name="books"
+                name="customers"
                 list={
-                    <List
-                        storeKey="withStoreKey"
-                        filters={[
-                            <TextInput label="Search" source="q" alwaysOn />,
-                        ]}
-                    >
+                    <List storeKey="withStoreKey">
                         <Datagrid rowClick="edit">
-                            <TextField source="title" />
-                            <TextField source="author" />
-                            <TextField source="genre" />
+                            <TextField source="first_name" />
+                            <TextField source="last_name" />
+                            <TextField source="email" />
+                            <TextField source="city" />
                         </Datagrid>
                     </List>
                 }
                 edit={
                     <Edit>
                         <SimpleForm>
-                            <TextInput source="title" />
-                            <TextInput source="author" />
-                            <TextInput source="genre" />
+                            <TextInput source="first_name" />
+                            <TextInput source="last_name" />
+                            <TextInput source="email" />
+                            <TextInput source="city" />
                             <PrevNextButton storeKey="withStoreKey" />
                         </SimpleForm>
                     </Edit>
@@ -167,9 +151,10 @@ export const WithStoreKey = () => (
                 show={
                     <Show>
                         <SimpleShowLayout>
-                            <TextField source="title" />
-                            <TextField source="author" />
-                            <TextField source="genre" />
+                            <TextField source="first_name" />
+                            <TextField source="last_name" />
+                            <TextField source="email" />
+                            <TextField source="city" />
                             <PrevNextButton
                                 linkType="show"
                                 storeKey="withStoreKey"
@@ -186,22 +171,24 @@ export const WithFilter = () => (
     <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
         <AdminUI>
             <Resource
-                name="books"
+                name="customers"
                 list={
-                    <List filter={{ genre: 'Fantasy' }}>
+                    <List filter={{ city: 'Hill Valley' }}>
                         <Datagrid rowClick="edit">
-                            <TextField source="title" />
-                            <TextField source="author" />
-                            <TextField source="genre" />
+                            <TextField source="first_name" />
+                            <TextField source="last_name" />
+                            <TextField source="email" />
+                            <TextField source="city" />
                         </Datagrid>
                     </List>
                 }
                 edit={
                     <Edit>
                         <SimpleForm>
-                            <TextInput source="title" />
-                            <TextInput source="author" />
-                            <TextInput source="genre" />
+                            <TextInput source="first_name" />
+                            <TextInput source="last_name" />
+                            <TextInput source="email" />
+                            <TextInput source="city" />
                             <PrevNextButton />
                         </SimpleForm>
                     </Edit>
@@ -209,9 +196,10 @@ export const WithFilter = () => (
                 show={
                     <Show>
                         <SimpleShowLayout>
-                            <TextField source="title" />
-                            <TextField source="author" />
-                            <TextField source="genre" />
+                            <TextField source="first_name" />
+                            <TextField source="last_name" />
+                            <TextField source="email" />
+                            <TextField source="city" />
                             <PrevNextButton linkType="show" />
                         </SimpleShowLayout>
                     </Show>
@@ -225,33 +213,36 @@ export const WithLimit = () => (
     <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
         <AdminUI>
             <Resource
-                name="books"
+                name="customers"
                 list={
                     <List>
                         <Datagrid rowClick="edit">
-                            <TextField source="title" />
-                            <TextField source="author" />
-                            <TextField source="genre" />
+                            <TextField source="first_name" />
+                            <TextField source="last_name" />
+                            <TextField source="email" />
+                            <TextField source="city" />
                         </Datagrid>
                     </List>
                 }
                 edit={
                     <Edit>
                         <SimpleForm>
-                            <TextInput source="title" />
-                            <TextInput source="author" />
-                            <TextInput source="genre" />
-                            <PrevNextButton limit={2} />
+                            <TextInput source="first_name" />
+                            <TextInput source="last_name" />
+                            <TextInput source="email" />
+                            <TextInput source="city" />
+                            <PrevNextButton limit={4} />
                         </SimpleForm>
                     </Edit>
                 }
                 show={
                     <Show>
                         <SimpleShowLayout>
-                            <TextField source="title" />
-                            <TextField source="author" />
-                            <TextField source="genre" />
-                            <PrevNextButton linkType="show" limit={2} />
+                            <TextField source="first_name" />
+                            <TextField source="last_name" />
+                            <TextField source="email" />
+                            <TextField source="city" />
+                            <PrevNextButton linkType="show" limit={4} />
                         </SimpleShowLayout>
                     </Show>
                 }
