@@ -7,13 +7,16 @@ import {
     Create,
     Datagrid,
     Edit,
+    EditButton,
     List,
     PrevNextButton,
     Show,
+    ShowButton,
     SimpleForm,
     SimpleShowLayout,
     TextField,
     TextInput,
+    TopToolbar,
 } from 'react-admin';
 import englishMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
@@ -92,6 +95,16 @@ const dataProvider = fakeRestDataProvider({
     },
 });
 
+const MyTopToolbar = ({ children }) => (
+    <TopToolbar
+        sx={{
+            justifyContent: 'space-between',
+        }}
+    >
+        {children}
+    </TopToolbar>
+);
+
 export const Basic = () => (
     <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
         <AdminUI>
@@ -109,25 +122,37 @@ export const Basic = () => (
                     </List>
                 }
                 edit={
-                    <Edit>
+                    <Edit
+                        actions={
+                            <MyTopToolbar>
+                                <PrevNextButton />
+                                <ShowButton />
+                            </MyTopToolbar>
+                        }
+                    >
                         <SimpleForm>
                             <TextInput source="first_name" />
                             <TextInput source="last_name" />
                             <TextInput source="email" />
                             <TextInput source="city" />
-                            <PrevNextButton />
                         </SimpleForm>
                     </Edit>
                 }
                 show={
-                    <Show>
+                    <Show
+                        actions={
+                            <MyTopToolbar>
+                                <PrevNextButton />
+                                <PrevNextButton linkType="show" />
+                            </MyTopToolbar>
+                        }
+                    >
                         <SimpleShowLayout>
                             <TextField source="id" />
                             <TextField source="first_name" />
                             <TextField source="last_name" />
                             <TextField source="email" />
                             <TextField source="city" />
-                            <PrevNextButton linkType="show" />
                         </SimpleShowLayout>
                     </Show>
                 }
@@ -145,7 +170,6 @@ export const WithStoreKey = () => (
                     <List storeKey="withStoreKey">
                         <Datagrid rowClick="edit">
                             <TextField source="id" />
-
                             <TextField source="first_name" />
                             <TextField source="last_name" />
                             <TextField source="email" />
@@ -154,29 +178,40 @@ export const WithStoreKey = () => (
                     </List>
                 }
                 edit={
-                    <Edit>
+                    <Edit
+                        actions={
+                            <MyTopToolbar>
+                                <PrevNextButton storeKey="withStoreKey" />
+                                <ShowButton />
+                            </MyTopToolbar>
+                        }
+                    >
                         <SimpleForm>
                             <TextInput source="first_name" />
                             <TextInput source="last_name" />
                             <TextInput source="email" />
                             <TextInput source="city" />
-                            <PrevNextButton storeKey="withStoreKey" />
                         </SimpleForm>
                     </Edit>
                 }
                 show={
-                    <Show>
+                    <Show
+                        actions={
+                            <MyTopToolbar>
+                                <PrevNextButton
+                                    linkType="show"
+                                    storeKey="withStoreKey"
+                                />
+                                <EditButton />
+                            </MyTopToolbar>
+                        }
+                    >
                         <SimpleShowLayout>
                             <TextField source="id" />
-
                             <TextField source="first_name" />
                             <TextField source="last_name" />
                             <TextField source="email" />
                             <TextField source="city" />
-                            <PrevNextButton
-                                linkType="show"
-                                storeKey="withStoreKey"
-                            />
                         </SimpleShowLayout>
                     </Show>
                 }
@@ -208,38 +243,50 @@ export const WithFilter = () => (
                     </List>
                 }
                 edit={
-                    <Edit>
+                    <Edit
+                        actions={
+                            <MyTopToolbar>
+                                <PrevNextButton
+                                    listParams={{
+                                        filter: { city: 'Hill Valley' },
+                                        sort: 'first_name',
+                                        order: 'DESC',
+                                    }}
+                                />
+                                <ShowButton />
+                            </MyTopToolbar>
+                        }
+                    >
                         <SimpleForm>
                             <TextInput source="first_name" />
                             <TextInput source="last_name" />
                             <TextInput source="email" />
                             <TextInput source="city" />
-                            <PrevNextButton
-                                listParams={{
-                                    filter: { city: 'Hill Valley' },
-                                    sort: 'first_name',
-                                    order: 'DESC',
-                                }}
-                            />
                         </SimpleForm>
                     </Edit>
                 }
                 show={
-                    <Show>
+                    <Show
+                        actions={
+                            <MyTopToolbar>
+                                <PrevNextButton
+                                    linkType="show"
+                                    listParams={{
+                                        filter: { city: 'Hill Valley' },
+                                        sort: 'first_name',
+                                        order: 'DESC',
+                                    }}
+                                />
+                                <EditButton />
+                            </MyTopToolbar>
+                        }
+                    >
                         <SimpleShowLayout>
                             <TextField source="id" />
                             <TextField source="first_name" />
                             <TextField source="last_name" />
                             <TextField source="email" />
                             <TextField source="city" />
-                            <PrevNextButton
-                                linkType="show"
-                                listParams={{
-                                    filter: { city: 'Hill Valley' },
-                                    sort: 'first_name',
-                                    order: 'DESC',
-                                }}
-                            />
                         </SimpleShowLayout>
                     </Show>
                 }
@@ -265,26 +312,37 @@ export const WithLimit = () => (
                     </List>
                 }
                 edit={
-                    <Edit>
+                    <Edit
+                        actions={
+                            <MyTopToolbar>
+                                <PrevNextButton limit={500} />
+                                <ShowButton />
+                            </MyTopToolbar>
+                        }
+                    >
                         <SimpleForm>
                             <TextInput source="first_name" />
                             <TextInput source="last_name" />
                             <TextInput source="email" />
                             <TextInput source="city" />
-                            <PrevNextButton limit={500} />
                         </SimpleForm>
                     </Edit>
                 }
                 show={
-                    <Show>
+                    <Show
+                        actions={
+                            <MyTopToolbar>
+                                <PrevNextButton linkType="show" limit={500} />
+                                <ShowButton />
+                            </MyTopToolbar>
+                        }
+                    >
                         <SimpleShowLayout>
                             <TextField source="id" />
-
                             <TextField source="first_name" />
                             <TextField source="last_name" />
                             <TextField source="email" />
                             <TextField source="city" />
-                            <PrevNextButton linkType="show" limit={500} />
                         </SimpleShowLayout>
                     </Show>
                 }
@@ -295,13 +353,19 @@ export const WithLimit = () => (
 
 export const ShouldNotDisplayed = () => (
     <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
-        <Create resource="customers">
+        <Create
+            resource="customers"
+            actions={
+                <MyTopToolbar>
+                    <PrevNextButton />
+                </MyTopToolbar>
+            }
+        >
             <SimpleForm>
                 <TextInput source="first_name" />
                 <TextInput source="last_name" />
                 <TextInput source="email" />
                 <TextInput source="city" />
-                <PrevNextButton />
             </SimpleForm>
         </Create>
     </AdminContext>
