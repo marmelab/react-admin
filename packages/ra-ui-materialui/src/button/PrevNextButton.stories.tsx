@@ -89,6 +89,7 @@ export const Basic = () => (
                 list={
                     <List>
                         <Datagrid rowClick="edit">
+                            <TextField source="id" />
                             <TextField source="first_name" />
                             <TextField source="last_name" />
                             <TextField source="email" />
@@ -110,6 +111,7 @@ export const Basic = () => (
                 show={
                     <Show>
                         <SimpleShowLayout>
+                            <TextField source="id" />
                             <TextField source="first_name" />
                             <TextField source="last_name" />
                             <TextField source="email" />
@@ -131,6 +133,8 @@ export const WithStoreKey = () => (
                 list={
                     <List storeKey="withStoreKey">
                         <Datagrid rowClick="edit">
+                            <TextField source="id" />
+
                             <TextField source="first_name" />
                             <TextField source="last_name" />
                             <TextField source="email" />
@@ -152,6 +156,8 @@ export const WithStoreKey = () => (
                 show={
                     <Show>
                         <SimpleShowLayout>
+                            <TextField source="id" />
+
                             <TextField source="first_name" />
                             <TextField source="last_name" />
                             <TextField source="email" />
@@ -176,6 +182,8 @@ export const WithFilter = () => (
                 list={
                     <List filter={{ city: 'Hill Valley' }}>
                         <Datagrid rowClick="edit">
+                            <TextField source="id" />
+
                             <TextField source="first_name" />
                             <TextField source="last_name" />
                             <TextField source="email" />
@@ -197,6 +205,8 @@ export const WithFilter = () => (
                 show={
                     <Show>
                         <SimpleShowLayout>
+                            <TextField source="id" />
+
                             <TextField source="first_name" />
                             <TextField source="last_name" />
                             <TextField source="email" />
@@ -218,6 +228,8 @@ export const WithLimit = () => (
                 list={
                     <List>
                         <Datagrid rowClick="edit">
+                            <TextField source="id" />
+
                             <TextField source="first_name" />
                             <TextField source="last_name" />
                             <TextField source="email" />
@@ -239,6 +251,8 @@ export const WithLimit = () => (
                 show={
                     <Show>
                         <SimpleShowLayout>
+                            <TextField source="id" />
+
                             <TextField source="first_name" />
                             <TextField source="last_name" />
                             <TextField source="email" />

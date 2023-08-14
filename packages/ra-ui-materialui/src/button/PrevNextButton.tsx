@@ -40,11 +40,11 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
     }
 
     if (!record) return null;
-
     const ids = data ? data.map(record => record.id) : [];
 
     const index = ids.indexOf(record.id);
-    const previousId = index > 0 ? ids[index - 1] : null;
+    const previousId =
+        typeof ids[index - 1] !== undefined ? ids[index - 1] : null; // could be 0
     const nextId =
         index !== -1 && index < ids.length - 1 ? ids[index + 1] : null;
 
@@ -65,7 +65,7 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
             <PrevNextButtonUl>
                 <li>
                     <IconButton
-                        disabled={!previousId}
+                        disabled={typeof previousId !== 'number'}
                         aria-label={translate('ra.navigation.previous')}
                         component={Link}
                         to={previousLink}
