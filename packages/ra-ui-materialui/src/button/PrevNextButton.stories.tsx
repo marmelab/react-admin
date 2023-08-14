@@ -105,6 +105,21 @@ const MyTopToolbar = ({ children }) => (
     </TopToolbar>
 );
 
+const defaultFiedls = [
+    <TextField source="id" key="id" />,
+    <TextField source="first_name" key="first_name" />,
+    <TextField source="last_name" key="last_name" />,
+    <TextField source="email" key="email" />,
+    <TextField source="city" key="city" />,
+];
+
+const defaultInputs = [
+    <TextInput source="first_name" key="first_name" />,
+    <TextInput source="last_name" key="last_name" />,
+    <TextInput source="email" key="email" />,
+    <TextInput source="city" key="city" />,
+];
+
 export const Basic = () => (
     <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
         <AdminUI>
@@ -112,13 +127,7 @@ export const Basic = () => (
                 name="customers"
                 list={
                     <List>
-                        <Datagrid rowClick="edit">
-                            <TextField source="id" />
-                            <TextField source="first_name" />
-                            <TextField source="last_name" />
-                            <TextField source="email" />
-                            <TextField source="city" />
-                        </Datagrid>
+                        <Datagrid rowClick="edit">{defaultFiedls}</Datagrid>
                     </List>
                 }
                 edit={
@@ -130,12 +139,7 @@ export const Basic = () => (
                             </MyTopToolbar>
                         }
                     >
-                        <SimpleForm>
-                            <TextInput source="first_name" />
-                            <TextInput source="last_name" />
-                            <TextInput source="email" />
-                            <TextInput source="city" />
-                        </SimpleForm>
+                        <SimpleForm>{defaultInputs}</SimpleForm>
                     </Edit>
                 }
                 show={
@@ -147,13 +151,7 @@ export const Basic = () => (
                             </MyTopToolbar>
                         }
                     >
-                        <SimpleShowLayout>
-                            <TextField source="id" />
-                            <TextField source="first_name" />
-                            <TextField source="last_name" />
-                            <TextField source="email" />
-                            <TextField source="city" />
-                        </SimpleShowLayout>
+                        <SimpleShowLayout>{defaultFiedls}</SimpleShowLayout>
                     </Show>
                 }
             />
@@ -168,13 +166,7 @@ export const WithStoreKey = () => (
                 name="customers"
                 list={
                     <List storeKey="withStoreKey">
-                        <Datagrid rowClick="edit">
-                            <TextField source="id" />
-                            <TextField source="first_name" />
-                            <TextField source="last_name" />
-                            <TextField source="email" />
-                            <TextField source="city" />
-                        </Datagrid>
+                        <Datagrid rowClick="edit">{defaultFiedls}</Datagrid>
                     </List>
                 }
                 edit={
@@ -186,12 +178,7 @@ export const WithStoreKey = () => (
                             </MyTopToolbar>
                         }
                     >
-                        <SimpleForm>
-                            <TextInput source="first_name" />
-                            <TextInput source="last_name" />
-                            <TextInput source="email" />
-                            <TextInput source="city" />
-                        </SimpleForm>
+                        <SimpleForm>{defaultInputs}</SimpleForm>
                     </Edit>
                 }
                 show={
@@ -206,13 +193,7 @@ export const WithStoreKey = () => (
                             </MyTopToolbar>
                         }
                     >
-                        <SimpleShowLayout>
-                            <TextField source="id" />
-                            <TextField source="first_name" />
-                            <TextField source="last_name" />
-                            <TextField source="email" />
-                            <TextField source="city" />
-                        </SimpleShowLayout>
+                        <SimpleShowLayout>{defaultInputs}</SimpleShowLayout>
                     </Show>
                 }
             />
@@ -233,13 +214,7 @@ export const WithFilter = () => (
                         ]}
                         sort={{ field: 'first_name', order: 'DESC' }}
                     >
-                        <Datagrid rowClick="edit">
-                            <TextField source="id" />
-                            <TextField source="first_name" />
-                            <TextField source="last_name" />
-                            <TextField source="email" />
-                            <TextField source="city" />
-                        </Datagrid>
+                        <Datagrid rowClick="edit">{defaultFiedls}</Datagrid>
                     </List>
                 }
                 edit={
@@ -257,12 +232,7 @@ export const WithFilter = () => (
                             </MyTopToolbar>
                         }
                     >
-                        <SimpleForm>
-                            <TextInput source="first_name" />
-                            <TextInput source="last_name" />
-                            <TextInput source="email" />
-                            <TextInput source="city" />
-                        </SimpleForm>
+                        <SimpleForm>{defaultInputs}</SimpleForm>
                     </Edit>
                 }
                 show={
@@ -281,13 +251,7 @@ export const WithFilter = () => (
                             </MyTopToolbar>
                         }
                     >
-                        <SimpleShowLayout>
-                            <TextField source="id" />
-                            <TextField source="first_name" />
-                            <TextField source="last_name" />
-                            <TextField source="email" />
-                            <TextField source="city" />
-                        </SimpleShowLayout>
+                        <SimpleShowLayout>{defaultFiedls}</SimpleShowLayout>
                     </Show>
                 }
             />
@@ -302,13 +266,7 @@ export const WithLimit = () => (
                 name="customers"
                 list={
                     <List>
-                        <Datagrid rowClick="edit">
-                            <TextField source="id" />
-                            <TextField source="first_name" />
-                            <TextField source="last_name" />
-                            <TextField source="email" />
-                            <TextField source="city" />
-                        </Datagrid>
+                        <Datagrid rowClick="edit">{defaultFiedls}</Datagrid>
                     </List>
                 }
                 edit={
@@ -320,12 +278,7 @@ export const WithLimit = () => (
                             </MyTopToolbar>
                         }
                     >
-                        <SimpleForm>
-                            <TextInput source="first_name" />
-                            <TextInput source="last_name" />
-                            <TextInput source="email" />
-                            <TextInput source="city" />
-                        </SimpleForm>
+                        <SimpleForm>{defaultInputs}</SimpleForm>
                     </Edit>
                 }
                 show={
@@ -337,13 +290,7 @@ export const WithLimit = () => (
                             </MyTopToolbar>
                         }
                     >
-                        <SimpleShowLayout>
-                            <TextField source="id" />
-                            <TextField source="first_name" />
-                            <TextField source="last_name" />
-                            <TextField source="email" />
-                            <TextField source="city" />
-                        </SimpleShowLayout>
+                        <SimpleShowLayout>{defaultFiedls}</SimpleShowLayout>
                     </Show>
                 }
             />
@@ -361,12 +308,7 @@ export const ShouldNotDisplayed = () => (
                 </MyTopToolbar>
             }
         >
-            <SimpleForm>
-                <TextInput source="first_name" />
-                <TextInput source="last_name" />
-                <TextInput source="email" />
-                <TextInput source="city" />
-            </SimpleForm>
+            <SimpleForm>{defaultInputs}</SimpleForm>
         </Create>
     </AdminContext>
 );
