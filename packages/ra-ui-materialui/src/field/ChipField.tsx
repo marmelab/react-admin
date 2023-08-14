@@ -11,7 +11,7 @@ import { FieldProps, fieldPropTypes } from './types';
 import { genericMemo } from './genericMemo';
 
 const ChipFieldImpl = <
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>
 >(
     props: ChipFieldProps<RecordType>
 ) => {
@@ -52,7 +52,7 @@ ChipFieldImpl.displayName = 'ChipFieldImpl';
 export const ChipField = genericMemo(ChipFieldImpl);
 
 export interface ChipFieldProps<
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>
 > extends FieldProps<RecordType>,
         Omit<ChipProps, 'label' | 'children'> {
     /**
