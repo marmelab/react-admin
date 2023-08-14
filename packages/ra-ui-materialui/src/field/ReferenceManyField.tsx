@@ -105,7 +105,7 @@ export const ReferenceManyField = <
 };
 
 export interface ReferenceManyFieldProps<
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>
 > extends FieldProps<RecordType> {
     children: ReactNode;
     filter?: FilterPayload;
