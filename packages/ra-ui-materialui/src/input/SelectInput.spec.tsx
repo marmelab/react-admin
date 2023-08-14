@@ -12,6 +12,7 @@ import {
     InsideReferenceInputDefaultValue,
     Sort,
     TranslateChoice,
+    FetchChoices,
 } from './SelectInput.stories';
 
 describe('<SelectInput />', () => {
@@ -721,6 +722,14 @@ describe('<SelectInput />', () => {
             expect(onChange).toHaveBeenCalledWith('js_fatigue');
         });
     });
+
+    describe('fetching choices', () => {
+        it('should display the choices once fetched', async () => {
+            render(<FetchChoices />);
+            await screen.findByText('Leo Tolstoy');
+        });
+    });
+
     describe('inside ReferenceInput', () => {
         it('should use the recordRepresentation as optionText', async () => {
             render(<InsideReferenceInput />);

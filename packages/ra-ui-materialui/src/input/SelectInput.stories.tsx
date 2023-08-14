@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createMemoryHistory } from 'history';
 import { Admin, AdminContext } from 'react-admin';
-import { Resource, required } from 'ra-core';
+import { Resource, required, useGetList } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 
@@ -253,6 +253,50 @@ const dataProviderWithAuthors = {
 } as any;
 
 const history = createMemoryHistory({ initialEntries: ['/books/1'] });
+
+export const FetchChoices = () => {
+    const BookAuthorsInput = () => {
+        const { data, isLoading } = useGetList('authors');
+        return (
+            <SelectInput
+                source="author"
+                choices={data}
+                optionText={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+                isLoading={isLoading}
+            />
+        );
+    };
+    return (
+        <Admin dataProvider={dataProviderWithAuthors} history={history}>
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+            />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <BookAuthorsInput />
+                            <FormInspector name="author" />
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    );
+};
 
 export const InsideReferenceInput = () => (
     <Admin dataProvider={dataProviderWithAuthors} history={history}>
