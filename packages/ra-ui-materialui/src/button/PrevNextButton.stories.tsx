@@ -20,29 +20,29 @@ import {
 } from 'react-admin';
 import englishMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
-import generateData from 'data-generator-retail';
 import { MemoryRouter } from 'react-router';
+import { seed, address, internet, name } from 'faker/locale/en_GB';
 
 export default { title: 'ra-ui-materialui/button/PrevNextButton' };
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages, 'en');
 
-const defaultCustomerData = {
-    address: null,
-    zipcode: null,
-    stateAbbr: null,
-    birthday: null,
-    first_seen: '2021-08-22T23:43:18.742Z',
-    last_seen: '2023-04-22T07:24:29.127Z',
-    has_ordered: false,
-    latest_purchase: null,
-    has_newsletter: true,
-    groups: [],
-    nb_commands: 0,
-    total_spent: 0,
-};
+seed(123); // we want consistent results
+const data = {
+    customers: Array.from(Array(900).keys()).map(id => {
+        const first_name = name.firstName();
+        const last_name = name.lastName();
+        const email = internet.email(first_name, last_name);
 
-const data = generateData();
+        return {
+            id,
+            first_name,
+            last_name,
+            email,
+            city: address.city(),
+        };
+    }),
+};
 
 const dataProvider = fakeRestDataProvider({
     ...data,
