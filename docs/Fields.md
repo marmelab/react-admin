@@ -639,6 +639,6 @@ export const PostShow = () => (
 );
 ```
 
-**Limitation**: You must not extend `RaRecord` for this to work. This is because `RaRecord` extends `Record<string, any>` and TypeScript would not be able to infer your types properties.
+**Limitation**: You must not use interfaces nor extend `RaRecord` for this to work or TypeScript would not be able to infer your types properties.
 
 Specifying the record type will also allow your IDE to provide auto-completion for both the `source` and `sortBy` prop. Note that the `sortBy` prop also accepts any string.
