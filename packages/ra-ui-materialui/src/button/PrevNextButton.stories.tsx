@@ -24,7 +24,6 @@ export default { title: 'ra-ui-materialui/button/PrevNextButton' };
 const i18nProvider = polyglotI18nProvider(() => englishMessages, 'en');
 
 const defaultCustomerData = {
-    city: 'Hill Valley',
     address: null,
     zipcode: null,
     stateAbbr: null,
@@ -53,6 +52,7 @@ const dataProvider = fakeRestDataProvider({
                     first_name: 'Martin',
                     last_name: 'McFly',
                     email: 'Martin.McFly@yahoo.com',
+                    city: 'Hill Valley',
                     ...defaultCustomerData,
                 },
                 {
@@ -60,6 +60,7 @@ const dataProvider = fakeRestDataProvider({
                     first_name: 'Emmett',
                     last_name: 'Brown',
                     email: 'Emmett.Brown@yahoo.com',
+                    city: 'Hill Valley',
                     ...defaultCustomerData,
                 },
                 {
@@ -67,6 +68,7 @@ const dataProvider = fakeRestDataProvider({
                     first_name: 'Biff',
                     last_name: 'Tannen',
                     email: 'Biff.Tannen@yahoo.com',
+                    city: 'Hill Valley',
                     ...defaultCustomerData,
                 },
                 {
@@ -74,6 +76,15 @@ const dataProvider = fakeRestDataProvider({
                     first_name: 'Clara',
                     last_name: 'Clayton',
                     email: 'Clara.Clayton@yahoo.com',
+                    city: 'Hill Valley',
+                    ...defaultCustomerData,
+                },
+                {
+                    id: 905,
+                    first_name: 'Martin',
+                    last_name: 'Scorsese',
+                    email: 'Martin.Scorsese@yahoo.com',
+                    city: 'New York',
                     ...defaultCustomerData,
                 },
             ],
@@ -180,10 +191,15 @@ export const WithFilter = () => (
             <Resource
                 name="customers"
                 list={
-                    <List filter={{ city: 'Hill Valley' }}>
+                    <List
+                        filter={{ city: 'Hill Valley' }}
+                        filters={[
+                            <TextInput label="Search" source="q" alwaysOn />,
+                        ]}
+                        sort={{ field: 'first_name', order: 'DESC' }}
+                    >
                         <Datagrid rowClick="edit">
                             <TextField source="id" />
-
                             <TextField source="first_name" />
                             <TextField source="last_name" />
                             <TextField source="email" />
@@ -198,7 +214,13 @@ export const WithFilter = () => (
                             <TextInput source="last_name" />
                             <TextInput source="email" />
                             <TextInput source="city" />
-                            <PrevNextButton />
+                            <PrevNextButton
+                                listParams={{
+                                    filter: { city: 'Hill Valley' },
+                                    sort: 'first_name',
+                                    order: 'DESC',
+                                }}
+                            />
                         </SimpleForm>
                     </Edit>
                 }
@@ -206,12 +228,18 @@ export const WithFilter = () => (
                     <Show>
                         <SimpleShowLayout>
                             <TextField source="id" />
-
                             <TextField source="first_name" />
                             <TextField source="last_name" />
                             <TextField source="email" />
                             <TextField source="city" />
-                            <PrevNextButton linkType="show" />
+                            <PrevNextButton
+                                linkType="show"
+                                listParams={{
+                                    filter: { city: 'Hill Valley' },
+                                    sort: 'first_name',
+                                    order: 'DESC',
+                                }}
+                            />
                         </SimpleShowLayout>
                     </Show>
                 }
@@ -229,7 +257,6 @@ export const WithLimit = () => (
                     <List>
                         <Datagrid rowClick="edit">
                             <TextField source="id" />
-
                             <TextField source="first_name" />
                             <TextField source="last_name" />
                             <TextField source="email" />
@@ -244,7 +271,7 @@ export const WithLimit = () => (
                             <TextInput source="last_name" />
                             <TextInput source="email" />
                             <TextInput source="city" />
-                            <PrevNextButton limit={4} />
+                            <PrevNextButton limit={500} />
                         </SimpleForm>
                     </Edit>
                 }
@@ -257,7 +284,7 @@ export const WithLimit = () => (
                             <TextField source="last_name" />
                             <TextField source="email" />
                             <TextField source="city" />
-                            <PrevNextButton linkType="show" limit={4} />
+                            <PrevNextButton linkType="show" limit={500} />
                         </SimpleShowLayout>
                     </Show>
                 }

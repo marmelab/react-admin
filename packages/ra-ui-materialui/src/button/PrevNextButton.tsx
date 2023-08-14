@@ -14,19 +14,29 @@ import { Link } from 'react-router-dom';
 import { IconButton, SxProps, styled } from '@mui/material';
 
 export const PrevNextButton = (props: PrevNextButtonProps) => {
-    const { linkType = 'edit', sx, storeKey, limit = 1000 } = props;
+    const {
+        linkType = 'edit',
+        sx,
+        storeKey,
+        limit = 1000,
+        listParams = defaultParams,
+    } = props;
+
     const translate = useTranslate();
     const record = useRecordContext();
     const resource = useResourceContext();
     const createPath = useCreatePath();
-    const [params] = useStore<Partial<ListParams>>(
+    const [storedParams] = useStore<Params>(
         storeKey || `${resource}.listParams`,
         defaultParams
     );
 
     const { isLoading, data, isError, error } = useGetList(resource, {
-        sort: { field: params.sort, order: params.order },
-        filter: { ...params.filter },
+        sort: {
+            ...{ field: storedParams.sort, order: storedParams.order },
+            ...{ field: listParams.sort, order: listParams.order },
+        },
+        filter: { ...storedParams.filter, ...listParams.filter },
         ...(limit ? { pagination: { page: 1, perPage: limit } } : {}),
     });
 
@@ -96,6 +106,7 @@ export interface PrevNextButtonProps {
     sx?: SxProps;
     storeKey?: string | false;
     limit?: number;
+    listParams?: Params;
 }
 
 const PREFIX = 'RaPrevNextButton';
@@ -119,7 +130,9 @@ const PrevNextButtonUl = styled('ul', {
     listStyle: 'none',
 });
 
-const defaultParams: Partial<ListParams> = {
+type Params = Pick<ListParams, 'filter' | 'order' | 'sort'>;
+
+const defaultParams: Params = {
     sort: 'id',
     order: SORT_ASC,
     filter: {},
