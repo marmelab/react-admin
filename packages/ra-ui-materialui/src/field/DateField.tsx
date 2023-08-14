@@ -33,7 +33,7 @@ import { genericMemo } from './genericMemo';
  * <span>mercredi 7 novembre 2012</span>
  */
 const DateFieldImpl = <
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>
 >(
     props: DateFieldProps<RecordType>
 ) => {
@@ -61,7 +61,7 @@ const DateFieldImpl = <
         return null;
     }
 
-    const value = get(record, source);
+    const value = get(record, source) as any;
     if (value == null || value === '') {
         return emptyText ? (
             <Typography
@@ -129,7 +129,7 @@ DateFieldImpl.displayName = 'DateFieldImpl';
 export const DateField = genericMemo(DateFieldImpl);
 
 export interface DateFieldProps<
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>
 > extends FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     locales?: Intl.LocalesArgument;
