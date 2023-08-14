@@ -21,6 +21,7 @@ import {
 import englishMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import generateData from 'data-generator-retail';
+import { MemoryRouter } from 'react-router';
 
 export default { title: 'ra-ui-materialui/button/PrevNextButton' };
 
@@ -56,7 +57,6 @@ const dataProvider = fakeRestDataProvider({
                     last_name: 'McFly',
                     email: 'Martin.McFly@yahoo.com',
                     city: 'Hill Valley',
-                    ...defaultCustomerData,
                 },
                 {
                     id: 902,
@@ -64,7 +64,6 @@ const dataProvider = fakeRestDataProvider({
                     last_name: 'Brown',
                     email: 'Emmett.Brown@yahoo.com',
                     city: 'Hill Valley',
-                    ...defaultCustomerData,
                 },
                 {
                     id: 903,
@@ -72,7 +71,6 @@ const dataProvider = fakeRestDataProvider({
                     last_name: 'Tannen',
                     email: 'Biff.Tannen@yahoo.com',
                     city: 'Hill Valley',
-                    ...defaultCustomerData,
                 },
                 {
                     id: 904,
@@ -80,7 +78,6 @@ const dataProvider = fakeRestDataProvider({
                     last_name: 'Clayton',
                     email: 'Clara.Clayton@yahoo.com',
                     city: 'Hill Valley',
-                    ...defaultCustomerData,
                 },
                 {
                     id: 905,
@@ -88,7 +85,6 @@ const dataProvider = fakeRestDataProvider({
                     last_name: 'Scorsese',
                     email: 'Martin.Scorsese@yahoo.com',
                     city: 'New York',
-                    ...defaultCustomerData,
                 },
             ],
         ],
@@ -121,194 +117,211 @@ const defaultInputs = [
 ];
 
 export const Basic = () => (
-    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
-        <AdminUI>
-            <Resource
-                name="customers"
-                list={
-                    <List>
-                        <Datagrid rowClick="edit">{defaultFiedls}</Datagrid>
-                    </List>
-                }
-                edit={
-                    <Edit
-                        actions={
-                            <MyTopToolbar>
-                                <PrevNextButton />
-                                <ShowButton />
-                            </MyTopToolbar>
-                        }
-                    >
-                        <SimpleForm>{defaultInputs}</SimpleForm>
-                    </Edit>
-                }
-                show={
-                    <Show
-                        actions={
-                            <MyTopToolbar>
-                                <PrevNextButton />
-                                <PrevNextButton linkType="show" />
-                            </MyTopToolbar>
-                        }
-                    >
-                        <SimpleShowLayout>{defaultFiedls}</SimpleShowLayout>
-                    </Show>
-                }
-            />
-        </AdminUI>
-    </AdminContext>
+    <MemoryRouter>
+        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <AdminUI>
+                <Resource
+                    name="customers"
+                    list={
+                        <List>
+                            <Datagrid rowClick="edit">{defaultFiedls}</Datagrid>
+                        </List>
+                    }
+                    edit={
+                        <Edit
+                            actions={
+                                <MyTopToolbar>
+                                    <PrevNextButton />
+                                    <ShowButton />
+                                </MyTopToolbar>
+                            }
+                        >
+                            <SimpleForm>{defaultInputs}</SimpleForm>
+                        </Edit>
+                    }
+                    show={
+                        <Show
+                            actions={
+                                <MyTopToolbar>
+                                    <PrevNextButton />
+                                    <PrevNextButton linkType="show" />
+                                </MyTopToolbar>
+                            }
+                        >
+                            <SimpleShowLayout>{defaultFiedls}</SimpleShowLayout>
+                        </Show>
+                    }
+                />
+            </AdminUI>
+        </AdminContext>
+    </MemoryRouter>
 );
 
 export const WithStoreKey = () => (
-    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
-        <AdminUI>
-            <Resource
-                name="customers"
-                list={
-                    <List storeKey="withStoreKey">
-                        <Datagrid rowClick="edit">{defaultFiedls}</Datagrid>
-                    </List>
-                }
-                edit={
-                    <Edit
-                        actions={
-                            <MyTopToolbar>
-                                <PrevNextButton storeKey="withStoreKey" />
-                                <ShowButton />
-                            </MyTopToolbar>
-                        }
-                    >
-                        <SimpleForm>{defaultInputs}</SimpleForm>
-                    </Edit>
-                }
-                show={
-                    <Show
-                        actions={
-                            <MyTopToolbar>
-                                <PrevNextButton
-                                    linkType="show"
-                                    storeKey="withStoreKey"
-                                />
-                                <EditButton />
-                            </MyTopToolbar>
-                        }
-                    >
-                        <SimpleShowLayout>{defaultInputs}</SimpleShowLayout>
-                    </Show>
-                }
-            />
-        </AdminUI>
-    </AdminContext>
+    <MemoryRouter>
+        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <AdminUI>
+                <Resource
+                    name="customers"
+                    list={
+                        <List storeKey="withStoreKey">
+                            <Datagrid rowClick="edit">{defaultFiedls}</Datagrid>
+                        </List>
+                    }
+                    edit={
+                        <Edit
+                            actions={
+                                <MyTopToolbar>
+                                    <PrevNextButton storeKey="withStoreKey" />
+                                    <ShowButton />
+                                </MyTopToolbar>
+                            }
+                        >
+                            <SimpleForm>{defaultInputs}</SimpleForm>
+                        </Edit>
+                    }
+                    show={
+                        <Show
+                            actions={
+                                <MyTopToolbar>
+                                    <PrevNextButton
+                                        linkType="show"
+                                        storeKey="withStoreKey"
+                                    />
+                                    <EditButton />
+                                </MyTopToolbar>
+                            }
+                        >
+                            <SimpleShowLayout>{defaultInputs}</SimpleShowLayout>
+                        </Show>
+                    }
+                />
+            </AdminUI>
+        </AdminContext>
+    </MemoryRouter>
 );
 
 export const WithFilter = () => (
-    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
-        <AdminUI>
-            <Resource
-                name="customers"
-                list={
-                    <List
-                        filter={{ city: 'Hill Valley' }}
-                        filters={[
-                            <TextInput label="Search" source="q" alwaysOn />,
-                        ]}
-                        sort={{ field: 'first_name', order: 'DESC' }}
-                    >
-                        <Datagrid rowClick="edit">{defaultFiedls}</Datagrid>
-                    </List>
-                }
-                edit={
-                    <Edit
-                        actions={
-                            <MyTopToolbar>
-                                <PrevNextButton
-                                    listParams={{
-                                        filter: { city: 'Hill Valley' },
-                                        sort: 'first_name',
-                                        order: 'DESC',
-                                    }}
-                                />
-                                <ShowButton />
-                            </MyTopToolbar>
-                        }
-                    >
-                        <SimpleForm>{defaultInputs}</SimpleForm>
-                    </Edit>
-                }
-                show={
-                    <Show
-                        actions={
-                            <MyTopToolbar>
-                                <PrevNextButton
-                                    linkType="show"
-                                    listParams={{
-                                        filter: { city: 'Hill Valley' },
-                                        sort: 'first_name',
-                                        order: 'DESC',
-                                    }}
-                                />
-                                <EditButton />
-                            </MyTopToolbar>
-                        }
-                    >
-                        <SimpleShowLayout>{defaultFiedls}</SimpleShowLayout>
-                    </Show>
-                }
-            />
-        </AdminUI>
-    </AdminContext>
+    <MemoryRouter>
+        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <AdminUI>
+                <Resource
+                    name="customers"
+                    list={
+                        <List
+                            filter={{ city: 'Hill Valley' }}
+                            filters={[
+                                <TextInput
+                                    label="Search"
+                                    source="q"
+                                    alwaysOn
+                                />,
+                            ]}
+                            sort={{ field: 'first_name', order: 'DESC' }}
+                        >
+                            <Datagrid rowClick="edit">{defaultFiedls}</Datagrid>
+                        </List>
+                    }
+                    edit={
+                        <Edit
+                            actions={
+                                <MyTopToolbar>
+                                    <PrevNextButton
+                                        listParams={{
+                                            filter: { city: 'Hill Valley' },
+                                            sort: 'first_name',
+                                            order: 'DESC',
+                                        }}
+                                    />
+                                    <ShowButton />
+                                </MyTopToolbar>
+                            }
+                        >
+                            <SimpleForm>{defaultInputs}</SimpleForm>
+                        </Edit>
+                    }
+                    show={
+                        <Show
+                            actions={
+                                <MyTopToolbar>
+                                    <PrevNextButton
+                                        linkType="show"
+                                        listParams={{
+                                            filter: { city: 'Hill Valley' },
+                                            sort: 'first_name',
+                                            order: 'DESC',
+                                        }}
+                                    />
+                                    <EditButton />
+                                </MyTopToolbar>
+                            }
+                        >
+                            <SimpleShowLayout>{defaultFiedls}</SimpleShowLayout>
+                        </Show>
+                    }
+                />
+            </AdminUI>
+        </AdminContext>
+    </MemoryRouter>
 );
 
 export const WithLimit = () => (
-    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
-        <AdminUI>
-            <Resource
-                name="customers"
-                list={
-                    <List>
-                        <Datagrid rowClick="edit">{defaultFiedls}</Datagrid>
-                    </List>
-                }
-                edit={
-                    <Edit
-                        actions={
-                            <MyTopToolbar>
-                                <PrevNextButton limit={500} />
-                                <ShowButton />
-                            </MyTopToolbar>
-                        }
-                    >
-                        <SimpleForm>{defaultInputs}</SimpleForm>
-                    </Edit>
-                }
-                show={
-                    <Show
-                        actions={
-                            <MyTopToolbar>
-                                <PrevNextButton linkType="show" limit={500} />
-                                <ShowButton />
-                            </MyTopToolbar>
-                        }
-                    >
-                        <SimpleShowLayout>{defaultFiedls}</SimpleShowLayout>
-                    </Show>
-                }
-            />
-        </AdminUI>
-    </AdminContext>
+    <MemoryRouter>
+        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <AdminUI>
+                <Resource
+                    name="customers"
+                    list={
+                        <List>
+                            <Datagrid rowClick="edit">{defaultFiedls}</Datagrid>
+                        </List>
+                    }
+                    edit={
+                        <Edit
+                            actions={
+                                <MyTopToolbar>
+                                    <PrevNextButton limit={500} />
+                                    <ShowButton />
+                                </MyTopToolbar>
+                            }
+                        >
+                            <SimpleForm>{defaultInputs}</SimpleForm>
+                        </Edit>
+                    }
+                    show={
+                        <Show
+                            actions={
+                                <MyTopToolbar>
+                                    <PrevNextButton
+                                        linkType="show"
+                                        limit={500}
+                                    />
+                                    <ShowButton />
+                                </MyTopToolbar>
+                            }
+                        >
+                            <SimpleShowLayout>{defaultFiedls}</SimpleShowLayout>
+                        </Show>
+                    }
+                />
+            </AdminUI>
+        </AdminContext>
+    </MemoryRouter>
 );
 
 export const ShouldNotDisplayed = () => (
-    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
-        <Create
-            resource="customers"
-            actions={
-                <MyTopToolbar>
-                    <PrevNextButton />
-                </MyTopToolbar>
-            }
-        >
-            <SimpleForm>{defaultInputs}</SimpleForm>
-        </Create>
-    </AdminContext>
+    <MemoryRouter>
+        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <Create
+                resource="customers"
+                actions={
+                    <MyTopToolbar>
+                        <PrevNextButton />
+                    </MyTopToolbar>
+                }
+            >
+                <SimpleForm>{defaultInputs}</SimpleForm>
+            </Create>
+        </AdminContext>
+    </MemoryRouter>
 );
