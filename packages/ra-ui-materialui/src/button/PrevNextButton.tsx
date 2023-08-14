@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom';
 import { IconButton, SxProps, styled } from '@mui/material';
 
 export const PrevNextButton = (props: PrevNextButtonProps) => {
-    const { linkType = 'edit', sx, storeKey, limit = undefined } = props;
+    const { linkType = 'edit', sx, storeKey, limit = 1000 } = props;
     const translate = useTranslate();
     const record = useRecordContext();
     const resource = useResourceContext();
