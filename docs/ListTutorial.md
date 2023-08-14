@@ -237,7 +237,8 @@ const BookList = () => {
 -           />
 +           <FilterForm filters={filters} />
             <Card>
-                <Datagrid>
+-               <Datagrid data={data} sort={sort}>
++               <Datagrid>
                     <TextField source="id" />
                     <TextField source="title" />
                     <TextField source="author" />
@@ -749,7 +750,7 @@ const SortButton = ({ fields }) => {
     };
     const handleChangeSort: React.MouseEventHandler<HTMLLIElement> = (event) => {
         const field = event.currentTarget.dataset.sort;
-		if (field) {
+        if (field) {
             setSort({
                 field,
                 order: field === sort.field ? inverseOrder(sort.order) : 'ASC'
