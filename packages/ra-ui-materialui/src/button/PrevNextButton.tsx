@@ -20,6 +20,7 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
         storeKey,
         limit = 1000,
         listParams = defaultParams,
+        staleTime = 5 * 60 * 1000,
     } = props;
 
     const translate = useTranslate();
@@ -31,14 +32,18 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
         defaultParams
     );
 
-    const { isLoading, data, isError, error } = useGetList(resource, {
-        sort: {
-            ...{ field: storedParams.sort, order: storedParams.order },
-            ...{ field: listParams.sort, order: listParams.order },
+    const { isLoading, data, isError, error } = useGetList(
+        resource,
+        {
+            sort: {
+                ...{ field: storedParams.sort, order: storedParams.order },
+                ...{ field: listParams.sort, order: listParams.order },
+            },
+            filter: { ...storedParams.filter, ...listParams.filter },
+            ...(limit ? { pagination: { page: 1, perPage: limit } } : {}),
         },
-        filter: { ...storedParams.filter, ...listParams.filter },
-        ...(limit ? { pagination: { page: 1, perPage: limit } } : {}),
-    });
+        { staleTime }
+    );
 
     if (isError) {
         console.error(error);
@@ -123,6 +128,7 @@ export interface PrevNextButtonProps {
     storeKey?: string | false;
     limit?: number;
     listParams?: Params;
+    staleTime?: number;
 }
 
 const PREFIX = 'RaPrevNextButton';
