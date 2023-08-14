@@ -53,46 +53,62 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
     const ids = data ? data.map(record => record.id) : [];
 
     const index = ids.indexOf(record.id);
-    const previousId =
-        typeof ids[index - 1] !== undefined ? ids[index - 1] : null; // could be 0
-    const nextId =
-        index !== -1 && index < ids.length - 1 ? ids[index + 1] : null;
 
-    const previousLink = createPath({
-        type: linkType,
-        resource,
-        id: previousId,
-    });
+    const previousProps = {
+        disabled: true,
+        'aria-label': translate('ra.navigation.previous'),
+        to: undefined,
+        component: undefined,
+    };
+    const nextProps = {
+        disabled: true,
+        'aria-label': translate('ra.navigation.next'),
+        to: undefined,
+        component: undefined,
+    };
 
-    const nextLink = createPath({
-        type: linkType,
-        resource,
-        id: nextId,
-    });
+    if (index !== -1) {
+        const previousId =
+            typeof ids[index - 1] !== 'undefined' ? ids[index - 1] : null; // could be 0
+        const nextId =
+            index !== -1 && index < ids.length - 1 ? ids[index + 1] : null;
+
+        if (previousId !== null) {
+            previousProps.disabled = false;
+            previousProps.to = createPath({
+                type: linkType,
+                resource,
+                id: previousId,
+            });
+            previousProps.component = Link;
+        }
+
+        if (nextId !== null) {
+            nextProps.disabled = false;
+            nextProps.to = createPath({
+                type: linkType,
+                resource,
+                id: nextId,
+            });
+            nextProps.component = Link;
+        }
+    }
 
     return (
         <PrevNextButtonRoot sx={sx}>
             <PrevNextButtonUl>
                 <li>
-                    <IconButton
-                        disabled={typeof previousId !== 'number'}
-                        aria-label={translate('ra.navigation.previous')}
-                        component={Link}
-                        to={previousLink}
-                    >
+                    <IconButton {...previousProps}>
                         <NavigateBefore />
                     </IconButton>
                 </li>
+                {index !== -1 && (
+                    <li>
+                        {index + 1} / {data.length}
+                    </li>
+                )}
                 <li>
-                    {index + 1} / {data.length}
-                </li>
-                <li>
-                    <IconButton
-                        disabled={!nextId}
-                        aria-label={translate('ra.navigation.next')}
-                        component={Link}
-                        to={nextLink}
-                    >
+                    <IconButton {...nextProps}>
                         <NavigateNext />
                     </IconButton>
                 </li>
