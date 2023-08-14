@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Basic } from './PrevNextButton.stories';
-
 describe('<PrevNextButton />', () => {
+    beforeEach(() => {
+        window.scrollTo = jest.fn();
+    });
     it('should render next prev button at position 4 with a total of 905', async () => {
         render(<Basic />);
         const tr = await screen.findByText('Deja');
@@ -24,7 +26,6 @@ describe('<PrevNextButton />', () => {
         const lastPage = await screen.findByText('91');
         fireEvent.click(lastPage);
         const tr = await screen.findByText('Clara');
-        screen.debug(tr);
         fireEvent.click(tr);
         await screen.findByRole('navigation');
         const nextButton = screen.getByLabelText('Go to next page');
