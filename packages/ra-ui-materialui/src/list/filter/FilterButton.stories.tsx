@@ -159,7 +159,7 @@ const data = {
 
 const ListToolbar = (props: {
     postFilters: React.ReactElement[];
-    args: { disableSaveQuery?: boolean };
+    args?: { disableSaveQuery?: boolean };
 }) => {
     return (
         <TopToolbar>
@@ -167,7 +167,7 @@ const ListToolbar = (props: {
             <div>
                 <FilterButton
                     filters={props.postFilters}
-                    disableSaveQuery={props.args.disableSaveQuery}
+                    disableSaveQuery={props.args?.disableSaveQuery}
                 />
                 <CreateButton />
             </div>
@@ -176,9 +176,10 @@ const ListToolbar = (props: {
 };
 const PostList = (props: {
     postFilters: React.ReactElement[];
-    args: { disableSaveQuery?: boolean };
+    filterDefaultValues?: any;
+    args?: { disableSaveQuery?: boolean };
 }) => (
-    <ListBase>
+    <ListBase filterDefaultValues={props.filterDefaultValues}>
         <ListToolbar postFilters={props.postFilters} args={props.args} />
         <Datagrid>
             <TextField source="id" />
@@ -210,6 +211,28 @@ export const Basic = (args: { disableSaveQuery?: boolean }) => {
             <Resource
                 name="posts"
                 list={<PostList postFilters={postFilters} args={args} />}
+            />
+        </Admin>
+    );
+};
+
+export const ResettableAndDefaultValue = () => {
+    const postFilters: React.ReactElement[] = [
+        <TextInput label="Title" source="title" resettable />,
+    ];
+    return (
+        <Admin dataProvider={fakerestDataProvider(data)}>
+            <Resource
+                name="posts"
+                list={
+                    <PostList
+                        postFilters={postFilters}
+                        filterDefaultValues={{
+                            title:
+                                'Accusantium qui nihil voluptatum quia voluptas maxime ab similique',
+                        }}
+                    />
+                }
             />
         </Admin>
     );

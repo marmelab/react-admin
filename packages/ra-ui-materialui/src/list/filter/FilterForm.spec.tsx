@@ -11,7 +11,7 @@ import * as React from 'react';
 import { AdminContext } from '../../AdminContext';
 import { ReferenceInput, SelectInput, TextInput } from '../../input';
 import { Filter } from './Filter';
-import { Basic } from './FilterButton.stories';
+import { Basic, ResettableAndDefaultValue } from './FilterButton.stories';
 import {
     FilterForm,
     getFilterFormValues,
@@ -192,6 +192,23 @@ describe('<FilterForm />', () => {
         await screen.findByText('1-10 of 13');
         expect(screen.queryByText('Nested')).toBeNull();
         expect(screen.queryByLabelText('Nested')).toBeNull();
+    });
+
+    it('should default to form default values when clearing a filter', async () => {
+        render(<ResettableAndDefaultValue />);
+        await screen.findByText(
+            'Accusantium qui nihil voluptatum quia voluptas maxime ab similique'
+        );
+        await screen.findByText('1-1 of 1');
+        fireEvent.change(screen.queryByLabelText('Title') as Element, {
+            target: { value: 'foo' },
+        });
+        await waitFor(() => screen.findByText('No results found'));
+        fireEvent.click(await screen.findByTitle('Clear value'));
+        await screen.findByText(
+            'Accusantium qui nihil voluptatum quia voluptas maxime ab similique'
+        );
+        await screen.findByText('1-1 of 1');
     });
 
     describe('mergeInitialValuesWithDefaultValues', () => {

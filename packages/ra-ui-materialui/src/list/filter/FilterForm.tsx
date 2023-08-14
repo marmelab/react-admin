@@ -161,6 +161,7 @@ const sanitizeRestProps = ({
     displayedFilters,
     filterValues,
     hasCreate,
+    showFilter,
     hideFilter,
     setFilters,
     resource,
@@ -250,7 +251,7 @@ const getInputValue = (
     filterValues: Record<string, any>
 ) => {
     if (formValues[key] === undefined || formValues[key] === null) {
-        return '';
+        return (filterValues && filterValues[key]) || '';
     }
     if (Array.isArray(formValues[key])) {
         return get(filterValues, key, '');

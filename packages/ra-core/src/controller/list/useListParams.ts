@@ -351,7 +351,7 @@ export const getQuery = ({
             ? queryFromLocation
             : hasCustomParams(params)
             ? { ...params }
-            : { filter: filterDefaultValues || {} };
+            : {};
 
     if (!query.sort) {
         query.sort = sort.field;
@@ -362,6 +362,10 @@ export const getQuery = ({
     }
     if (query.page == null) {
         query.page = 1;
+    }
+
+    if (!query.filter || Object.keys(query.filter).length === 0) {
+        query.filter = filterDefaultValues || {};
     }
 
     return {
