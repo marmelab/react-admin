@@ -79,13 +79,6 @@ const dataProvider = fakeRestDataProvider({
                     email: 'Clara.Clayton@yahoo.com',
                     city: 'Hill Valley',
                 },
-                {
-                    id: 905,
-                    first_name: 'Martin',
-                    last_name: 'Scorsese',
-                    email: 'Martin.Scorsese@yahoo.com',
-                    city: 'New York',
-                },
             ],
         ],
     },
