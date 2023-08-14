@@ -480,12 +480,12 @@ const CityInput = (props: SelectInputProps) => {
 };
 
 const OrderEdit = () => (
-	<Edit>
-		<SimpleForm>
-			<SelectInput source="country" choices={toChoices(countries)} />
-			<CityInput source="cities" />
-		</SimpleForm>
-	</Edit>
+    <Edit>
+        <SimpleForm>
+            <SelectInput source="country" choices={toChoices(countries)} />
+            <CityInput source="cities" />
+        </SimpleForm>
+    </Edit>
 );
 
 export default OrderEdit;
@@ -893,18 +893,18 @@ import { Select, MenuItem } from "@mui/material";
 import { InputProps, useInput } from "react-admin";
 
 const SexInput = (props: InputProps) => {
-	const {
-		field,
-		fieldState: { isTouched, invalid, error },
-		formState: { isSubmitted },
-	} = useInput(props);
+    const {
+        field,
+        fieldState: { isTouched, invalid, error },
+        formState: { isSubmitted },
+    } = useInput(props);
 
-	return (
-		<Select label="Sex" {...field}>
-			<MenuItem value="M">Male</MenuItem>
-			<MenuItem value="F">Female</MenuItem>
-		</Select>
-	);
+    return (
+        <Select label="Sex" {...field}>
+            <MenuItem value="M">Male</MenuItem>
+            <MenuItem value="F">Female</MenuItem>
+        </Select>
+    );
 };
 export default SexInput;
 ```
