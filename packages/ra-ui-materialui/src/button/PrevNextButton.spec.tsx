@@ -5,7 +5,7 @@ describe('<PrevNextButton />', () => {
     beforeEach(() => {
         window.scrollTo = jest.fn();
     });
-    it('should render next prev button at position 4 with a total of 905', async () => {
+    it('should render the current record position according to the clicked item in the list', async () => {
         render(<Basic />);
         const tr = await screen.findByText('Deja');
         fireEvent.click(tr);
