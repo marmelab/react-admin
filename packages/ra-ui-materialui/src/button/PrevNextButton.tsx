@@ -46,15 +46,12 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
         { staleTime }
     );
 
+    if (!record) return null;
+    if (isLoading) return null;
     if (isError) {
         return <>{error.message}</>;
     }
 
-    if (isLoading) {
-        return null;
-    }
-
-    if (!record) return null;
     const ids = data ? data.map(record => record.id) : [];
 
     const index = ids.indexOf(record.id);
