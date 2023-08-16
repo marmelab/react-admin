@@ -12,8 +12,9 @@ import {
     useTranslate,
 } from 'ra-core';
 import { NavigateBefore, NavigateNext } from '@mui/icons-material';
+import ErrorIcon from '@mui/icons-material/Error';
 import { Link } from 'react-router-dom';
-import { IconButton, SxProps, styled } from '@mui/material';
+import { CircularProgress, IconButton, SxProps, styled } from '@mui/material';
 import clsx from 'clsx';
 
 export const PrevNextButton = (props: PrevNextButtonProps) => {
@@ -27,10 +28,9 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
         filter = {},
     } = props;
 
-    const translate = useTranslate();
     const record = useRecordContext();
     const resource = useResourceContext();
-    const createPath = useCreatePath();
+
     const [storedParams] = useStore<StoredParams>(
         storeKey || `${resource}.listParams`,
         {
@@ -40,7 +40,7 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
         }
     );
 
-    const { isLoading, data, isError, error } = useGetList(
+    const { data, error, isLoading } = useGetList(
         resource,
         {
             sort: {
@@ -54,62 +54,35 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
     );
 
     if (!record) return null;
-    if (isLoading) return null;
-    if (isError) {
-        return <>{error.message}</>;
+
+    if (isLoading) {
+        return <CircularProgress size={14} />;
+    }
+    if (error) {
+        return (
+            <ErrorIcon
+                color="error"
+                fontSize="small"
+                titleAccess="error"
+                aria-errormessage={error.message}
+            />
+        );
     }
 
     const ids = data ? data.map(record => record.id) : [];
 
     const index = ids.indexOf(record.id);
 
-    const previousProps = {
-        disabled: true,
-        'aria-label': translate('ra.navigation.previous'),
-        to: undefined,
-        component: undefined,
-    };
-    const nextProps = {
-        disabled: true,
-        'aria-label': translate('ra.navigation.next'),
-        to: undefined,
-        component: undefined,
-    };
-
-    if (index !== -1) {
-        const previousId =
-            typeof ids[index - 1] !== 'undefined' ? ids[index - 1] : null; // could be 0
-        const nextId =
-            index !== -1 && index < ids.length - 1 ? ids[index + 1] : null;
-
-        if (previousId !== null) {
-            previousProps.disabled = false;
-            previousProps.to = createPath({
-                type: linkType,
-                resource,
-                id: previousId,
-            });
-            previousProps.component = Link;
-        }
-
-        if (nextId !== null) {
-            nextProps.disabled = false;
-            nextProps.to = createPath({
-                type: linkType,
-                resource,
-                id: nextId,
-            });
-            nextProps.component = Link;
-        }
-    }
-
     return (
         <Root sx={sx}>
             <ul className={clsx(PrevNextButtonClasses.list)}>
                 <li>
-                    <IconButton {...previousProps}>
-                        <NavigateBefore />
-                    </IconButton>
+                    <PrevButton
+                        ids={ids}
+                        currentIndex={index}
+                        linkType={linkType}
+                        resource={resource}
+                    />
                 </li>
                 {index !== -1 && (
                     <li>
@@ -117,14 +90,82 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
                     </li>
                 )}
                 <li>
-                    <IconButton {...nextProps}>
-                        <NavigateNext />
-                    </IconButton>
+                    <NextButton
+                        ids={ids}
+                        currentIndex={index}
+                        linkType={linkType}
+                        resource={resource}
+                    />
                 </li>
             </ul>
         </Root>
     );
 };
+
+const PrevButton = ({ ids, currentIndex, linkType, resource }: ButtonProps) => {
+    const translate = useTranslate();
+    const createPath = useCreatePath();
+
+    const previousId =
+        typeof ids[currentIndex - 1] !== 'undefined'
+            ? ids[currentIndex - 1]
+            : null; // could be 0
+
+    return (
+        <IconButton
+            component={previousId !== null ? Link : undefined}
+            to={
+                previousId !== null
+                    ? createPath({
+                          type: linkType,
+                          resource,
+                          id: previousId,
+                      })
+                    : undefined
+            }
+            aria-label={translate('ra.navigation.previous')}
+            disabled={previousId !== null ? false : true}
+        >
+            <NavigateBefore />
+        </IconButton>
+    );
+};
+
+const NextButton = ({ ids, currentIndex, linkType, resource }: ButtonProps) => {
+    const translate = useTranslate();
+    const createPath = useCreatePath();
+
+    const nextId =
+        currentIndex !== -1 && currentIndex < ids.length - 1
+            ? ids[currentIndex + 1]
+            : null;
+
+    return (
+        <IconButton
+            component={nextId !== null ? Link : undefined}
+            to={
+                nextId !== null
+                    ? createPath({
+                          type: linkType,
+                          resource,
+                          id: nextId,
+                      })
+                    : undefined
+            }
+            aria-label={translate('ra.navigation.next')}
+            disabled={nextId !== null ? false : true}
+        >
+            <NavigateNext />
+        </IconButton>
+    );
+};
+
+interface ButtonProps {
+    ids: any[];
+    currentIndex: number;
+    linkType: 'edit' | 'show';
+    resource: string;
+}
 
 export interface PrevNextButtonProps {
     linkType?: 'edit' | 'show';
