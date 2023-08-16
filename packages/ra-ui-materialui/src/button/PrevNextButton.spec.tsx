@@ -5,6 +5,7 @@ describe('<PrevNextButton />', () => {
     beforeEach(() => {
         window.scrollTo = jest.fn();
     });
+
     it('should render the current record position according to the clicked item in the list', async () => {
         render(<Basic />);
         const tr = await screen.findByText('Deja');
@@ -12,6 +13,7 @@ describe('<PrevNextButton />', () => {
         await screen.findByRole('navigation');
         expect(screen.getByText('4 / 900')).toBeDefined();
     });
+
     it('should render previous button as disabled if there is no previous record', async () => {
         render(<Basic />);
         const tr = await screen.findByText('Maurine');
@@ -21,6 +23,7 @@ describe('<PrevNextButton />', () => {
         expect(previousButton).toBeDefined();
         expect(previousButton).toHaveProperty('disabled', true);
     });
+
     it('should render next button as disabled if there is no next record', async () => {
         render(<Basic />);
         const lastPage = await screen.findByText('90');
@@ -32,6 +35,7 @@ describe('<PrevNextButton />', () => {
         expect(nextButton).toBeDefined();
         expect(nextButton).toHaveProperty('disabled', true);
     });
+
     it('should render a total based on filter', async () => {
         render(<WithFilter />);
         const item = await screen.findByText('822');
@@ -39,6 +43,7 @@ describe('<PrevNextButton />', () => {
         await screen.findByRole('navigation');
         expect(screen.getByText('1 / 5')).toBeDefined();
     });
+
     it('should render a total based on limit', async () => {
         render(<WithLimit />);
         const item = await screen.findByText('0');
