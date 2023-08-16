@@ -10,7 +10,7 @@ describe('<PrevNextButton />', () => {
         const tr = await screen.findByText('Deja');
         fireEvent.click(tr);
         await screen.findByRole('navigation');
-        expect(screen.getByText('4 / 904')).toBeDefined();
+        expect(screen.getByText('4 / 900')).toBeDefined();
     });
     it('should render previous button as disabled if there is no previous record', async () => {
         render(<Basic />);
@@ -23,9 +23,9 @@ describe('<PrevNextButton />', () => {
     });
     it('should render next button as disabled if there is no next record', async () => {
         render(<Basic />);
-        const lastPage = await screen.findByText('91');
+        const lastPage = await screen.findByText('90');
         fireEvent.click(lastPage);
-        const tr = await screen.findByText('Clara');
+        const tr = await screen.findByText('Maxwell');
         fireEvent.click(tr);
         await screen.findByRole('navigation');
         const nextButton = screen.getByLabelText('Go to next page');
