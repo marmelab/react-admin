@@ -1,7 +1,12 @@
 import * as React from 'react';
 import { AdminContext } from '../AdminContext';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { Resource } from 'ra-core';
+import {
+    RecordContextProvider,
+    Resource,
+    ResourceContext,
+    testDataProvider,
+} from 'ra-core';
 import {
     AdminUI,
     Create,
@@ -340,4 +345,18 @@ export const WithStyle = () => (
             </AdminUI>
         </AdminContext>
     </MemoryRouter>
+);
+
+export const ErrorState = () => (
+    <AdminContext
+        dataProvider={testDataProvider({
+            getList: () => Promise.reject('Error'),
+        })}
+    >
+        <ResourceContext.Provider value="customers">
+            <RecordContextProvider value={data.customers[0]}>
+                <PrevNextButton />
+            </RecordContextProvider>
+        </ResourceContext.Provider>
+    </AdminContext>
 );
