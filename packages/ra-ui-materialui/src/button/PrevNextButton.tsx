@@ -41,7 +41,7 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
                 ...{ field: listParams.sort, order: listParams.order },
             },
             filter: { ...storedParams.filter, ...listParams.filter },
-            ...(limit ? { pagination: { page: 1, perPage: limit } } : {}),
+            pagination: { page: 1, perPage: limit },
         },
         { staleTime }
     );
