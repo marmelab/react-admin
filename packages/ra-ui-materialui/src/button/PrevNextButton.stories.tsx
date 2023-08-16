@@ -302,7 +302,7 @@ export const WithLimit = () => (
     </MemoryRouter>
 );
 
-export const ShouldNotDisplayed = () => (
+export const ShouldNotBeRendered = () => (
     <MemoryRouter>
         <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
             <Create
