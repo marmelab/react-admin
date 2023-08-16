@@ -36,6 +36,28 @@ describe('<PrevNextButtons />', () => {
         expect(nextButton).toHaveProperty('disabled', true);
     });
 
+    it('should go on edit view by default', async () => {
+        render(<Basic />);
+        const row = await screen.findByText('Deja');
+        fireEvent.click(row);
+        const next = await screen.findByLabelText('Go to next page');
+        fireEvent.click(next);
+        expect(screen.getByLabelText('First name').getAttribute('type')).toBe(
+            'text'
+        );
+    });
+
+    it('should go on show view by default', async () => {
+        render(<Basic />);
+        const row = await screen.findByText('Deja');
+        fireEvent.click(row);
+        fireEvent.click(screen.getByLabelText('Show'));
+        const next = await screen.findByLabelText('Go to next page');
+        fireEvent.click(next);
+        expect(screen.queryByLabelText('First name')).toBeNull();
+        expect(screen.getByText('First name')).toBeDefined();
+    });
+
     it('should render a total based on filter', async () => {
         render(<WithFilter />);
         const item = await screen.findByText('822');
