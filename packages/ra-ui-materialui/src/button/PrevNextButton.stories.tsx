@@ -318,3 +318,56 @@ export const ShouldNotDisplayed = () => (
         </AdminContext>
     </MemoryRouter>
 );
+
+export const WithStyle = () => (
+    <MemoryRouter>
+        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <AdminUI>
+                <Resource
+                    name="customers"
+                    list={
+                        <List>
+                            <Datagrid rowClick="edit">{defaultFields}</Datagrid>
+                        </List>
+                    }
+                    edit={
+                        <Edit
+                            actions={
+                                <MyTopToolbar>
+                                    <PrevNextButton
+                                        limit={500}
+                                        sx={{
+                                            color: 'blue',
+                                        }}
+                                    />
+                                    <ShowButton />
+                                </MyTopToolbar>
+                            }
+                        >
+                            <SimpleForm>{defaultInputs}</SimpleForm>
+                        </Edit>
+                    }
+                    show={
+                        <Show
+                            actions={
+                                <MyTopToolbar>
+                                    <PrevNextButton
+                                        linkType="show"
+                                        sx={{
+                                            '& .RaPrevNextButton-list': {
+                                                marginBottom: '20px',
+                                            },
+                                        }}
+                                    />
+                                    <ShowButton />
+                                </MyTopToolbar>
+                            }
+                        >
+                            <SimpleShowLayout>{defaultFields}</SimpleShowLayout>
+                        </Show>
+                    }
+                />
+            </AdminUI>
+        </AdminContext>
+    </MemoryRouter>
+);

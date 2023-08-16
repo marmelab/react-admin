@@ -12,6 +12,7 @@ import {
 import { NavigateBefore, NavigateNext } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { IconButton, SxProps, styled } from '@mui/material';
+import clsx from 'clsx';
 
 export const PrevNextButton = (props: PrevNextButtonProps) => {
     const {
@@ -100,8 +101,8 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
     }
 
     return (
-        <PrevNextButtonRoot sx={sx}>
-            <PrevNextButtonUl>
+        <Root sx={sx}>
+            <ul className={clsx(PrevNextButtonClasses.list)}>
                 <li>
                     <IconButton {...previousProps}>
                         <NavigateBefore />
@@ -117,8 +118,8 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
                         <NavigateNext />
                     </IconButton>
                 </li>
-            </PrevNextButtonUl>
-        </PrevNextButtonRoot>
+            </ul>
+        </Root>
     );
 };
 
@@ -133,23 +134,22 @@ export interface PrevNextButtonProps {
 
 const PREFIX = 'RaPrevNextButton';
 
-const PrevNextButtonRoot = styled('nav', {
-    name: PREFIX,
-    slot: 'Root',
-    overridesResolver: (_props, styles) => styles.root,
-})({});
+export const PrevNextButtonClasses = {
+    list: `${PREFIX}-list`,
+};
 
-const PrevNextButtonUl = styled('ul', {
+const Root = styled('nav', {
     name: PREFIX,
-    slot: 'Ul',
-    overridesResolver: (_props, styles) => styles.ul,
+    overridesResolver: (_props, styles) => styles.root,
 })({
-    display: 'flex',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    padding: 0,
-    margin: 0,
-    listStyle: 'none',
+    [`& .${PrevNextButtonClasses.list}`]: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        padding: 0,
+        margin: 0,
+        listStyle: 'none',
+    },
 });
 
 type Params = Pick<ListParams, 'filter' | 'order' | 'sort'>;
