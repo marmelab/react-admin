@@ -295,56 +295,26 @@ export const ShouldNotBeRendered = () => (
 );
 
 export const WithStyle = () => (
-    <MemoryRouter>
-        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
-            <AdminUI>
-                <Resource
-                    name="customers"
-                    list={
-                        <List>
-                            <DefaultDataGrid />
-                        </List>
-                    }
-                    edit={
-                        <Edit
-                            actions={
-                                <MyTopToolbar>
-                                    <PrevNextButton
-                                        limit={500}
-                                        sx={{
-                                            color: 'blue',
-                                        }}
-                                    />
-                                    <ShowButton />
-                                </MyTopToolbar>
-                            }
-                        >
-                            <DefaultSimpleForm />
-                        </Edit>
-                    }
-                    show={
-                        <Show
-                            actions={
-                                <MyTopToolbar>
-                                    <PrevNextButton
-                                        linkType="show"
-                                        sx={{
-                                            '& .RaPrevNextButton-list': {
-                                                marginBottom: '20px',
-                                            },
-                                        }}
-                                    />
-                                    <ShowButton />
-                                </MyTopToolbar>
-                            }
-                        >
-                            <DefaultSimpleShowLayout />
-                        </Show>
-                    }
+    <AdminContext dataProvider={dataProvider}>
+        <ResourceContext.Provider value="customers">
+            <RecordContextProvider value={data.customers[0]}>
+                <PrevNextButton
+                    sx={{
+                        color: 'blue',
+                    }}
                 />
-            </AdminUI>
-        </AdminContext>
-    </MemoryRouter>
+                <PrevNextButton
+                    linkType="show"
+                    sx={{
+                        '& .RaPrevNextButton-list': {
+                            marginBottom: '20px',
+                            color: 'red',
+                        },
+                    }}
+                />
+            </RecordContextProvider>
+        </ResourceContext.Provider>
+    </AdminContext>
 );
 
 export const ErrorState = () => (
