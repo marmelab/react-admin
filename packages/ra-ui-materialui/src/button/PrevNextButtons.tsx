@@ -17,6 +17,82 @@ import { Link } from 'react-router-dom';
 import { CircularProgress, IconButton, SxProps, styled } from '@mui/material';
 import clsx from 'clsx';
 
+/**
+ * A component used to render the previous and next buttons in a Show or Edit view.
+ *
+ * The `<PrevNextButtons>` component render a navigation to move to the next or previous record
+ * of a resource, with the current index and the total records, in an edit or show view.
+ *
+ * It fetches the list of records from the REST API according to the filters
+ * and the sort order configured in the lists by the users and
+ * also merges the filters and the sorting order passed into props.
+ *
+ * `<PrevNextButtons>` can be used anywhere a record context is provided
+ * (eg: often inside a `<Show>` or `<Edit>` component).
+ *
+ * @example // move to edit view by default
+ * <ShowButton />
+ *
+ * @example // move to show view
+ * <PrevNextButtons linkType="show" />
+ *
+ * @example // share custom storeKey with other components
+ * <PrevNextButtons storeKey="listStoreKey" />
+ *
+ * @example // limit the number of records to fetch
+ * <PrevNextButtons limit={500} />
+ *
+ * @example // customize filters and sort order
+ * <PrevNextButtons
+ *     linkType="show"
+ *     sort={{
+ *         field: 'first_name',
+ *         order: 'DESC',
+ *     }}
+ *     filter={{ q: 'East a' }}
+ * />
+ *
+ * @example // customize its style
+ * <PrevNextButtons
+ *     sx={{
+ *         color: 'blue',
+ *         '& .RaPrevNextButton-list': {
+ *             marginBottom: '20px',
+ *             color: 'red',
+ *         },
+ *     }}
+ * />
+ *
+ * @example // in an edit view
+ * import * as React from "react";
+ * import { Edit, PrevNextButtons, ShowButton, SimpleForm, TopToolbar } from 'react-admin';
+ *
+ * const MyTopToolbar = ({ children }) => (
+ *     <TopToolbar>
+ *         {children}
+ *     </TopToolbar>
+ * );
+ *
+ * export const PostEdit = () => (
+ *      <Edit
+ *          actions={
+ *              <MyTopToolbar>
+ *                  <PrevNextButtons
+ *                      sort={{
+ *                          field: 'first_name',
+ *                          order: 'DESC',
+ *                      }}
+ *                      filter={{ q: 'East a' }}
+ *                  />
+ *                  <ShowButton />
+ *              </MyTopToolbar>
+ *          }
+ *      >
+ *          <SimpleForm>...</SimpleForm>
+ *      </Edit>
+ * );
+ */
+
 export const PrevNextButtons = (props: PrevNextButtonProps) => {
     const {
         linkType = 'edit',
