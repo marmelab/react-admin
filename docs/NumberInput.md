@@ -17,7 +17,7 @@ Upon submission, the `dataProvider` will receive a number, not a string.
 
 ## Usage
 
-Use `<NumberInput>` for number values, of for string values that convert to a number. For instance, if your API expects Post records to look like this:
+Use `<NumberInput>` for number values, or for string values that convert to a number. For instance, if your API expects Post records to look like this:
 
 ```json
 {
