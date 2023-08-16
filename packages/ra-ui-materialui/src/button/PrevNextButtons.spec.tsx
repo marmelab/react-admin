@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Basic, WithFilter, WithLimit } from './PrevNextButton.stories';
-describe('<PrevNextButton />', () => {
+import { Basic, WithFilter, WithLimit } from './PrevNextButtons.stories';
+describe('<PrevNextButtons />', () => {
     beforeEach(() => {
         window.scrollTo = jest.fn();
     });

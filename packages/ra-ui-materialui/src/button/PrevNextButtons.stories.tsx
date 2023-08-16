@@ -14,7 +14,7 @@ import {
     Edit,
     EditButton,
     List,
-    PrevNextButton,
+    PrevNextButtons,
     Show,
     ShowButton,
     SimpleForm,
@@ -28,7 +28,7 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import { MemoryRouter } from 'react-router';
 import { seed, address, internet, name } from 'faker/locale/en_GB';
 
-export default { title: 'ra-ui-materialui/button/PrevNextButton' };
+export default { title: 'ra-ui-materialui/button/PrevNextButtons' };
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages, 'en');
 
@@ -99,7 +99,7 @@ export const Basic = () => (
                         <Edit
                             actions={
                                 <MyTopToolbar>
-                                    <PrevNextButton />
+                                    <PrevNextButtons />
                                     <ShowButton />
                                 </MyTopToolbar>
                             }
@@ -111,8 +111,8 @@ export const Basic = () => (
                         <Show
                             actions={
                                 <MyTopToolbar>
-                                    <PrevNextButton />
-                                    <PrevNextButton linkType="show" />
+                                    <PrevNextButtons />
+                                    <PrevNextButtons linkType="show" />
                                 </MyTopToolbar>
                             }
                         >
@@ -140,7 +140,7 @@ export const WithStoreKey = () => (
                         <Edit
                             actions={
                                 <MyTopToolbar>
-                                    <PrevNextButton storeKey="withStoreKey" />
+                                    <PrevNextButtons storeKey="withStoreKey" />
                                     <ShowButton />
                                 </MyTopToolbar>
                             }
@@ -152,7 +152,7 @@ export const WithStoreKey = () => (
                         <Show
                             actions={
                                 <MyTopToolbar>
-                                    <PrevNextButton
+                                    <PrevNextButtons
                                         linkType="show"
                                         storeKey="withStoreKey"
                                     />
@@ -194,7 +194,7 @@ export const WithFilter = () => (
                         <Edit
                             actions={
                                 <MyTopToolbar>
-                                    <PrevNextButton
+                                    <PrevNextButtons
                                         sort={{
                                             field: 'first_name',
                                             order: 'DESC',
@@ -212,7 +212,7 @@ export const WithFilter = () => (
                         <Show
                             actions={
                                 <MyTopToolbar>
-                                    <PrevNextButton
+                                    <PrevNextButtons
                                         linkType="show"
                                         sort={{
                                             field: 'first_name',
@@ -248,7 +248,7 @@ export const WithLimit = () => (
                         <Edit
                             actions={
                                 <MyTopToolbar>
-                                    <PrevNextButton limit={500} />
+                                    <PrevNextButtons limit={500} />
                                     <ShowButton />
                                 </MyTopToolbar>
                             }
@@ -260,7 +260,7 @@ export const WithLimit = () => (
                         <Show
                             actions={
                                 <MyTopToolbar>
-                                    <PrevNextButton
+                                    <PrevNextButtons
                                         linkType="show"
                                         limit={500}
                                     />
@@ -284,7 +284,7 @@ export const ShouldNotBeRendered = () => (
                 resource="customers"
                 actions={
                     <MyTopToolbar>
-                        <PrevNextButton />
+                        <PrevNextButtons />
                     </MyTopToolbar>
                 }
             >
@@ -298,12 +298,12 @@ export const WithStyle = () => (
     <AdminContext dataProvider={dataProvider}>
         <ResourceContext.Provider value="customers">
             <RecordContextProvider value={data.customers[0]}>
-                <PrevNextButton
+                <PrevNextButtons
                     sx={{
                         color: 'blue',
                     }}
                 />
-                <PrevNextButton
+                <PrevNextButtons
                     linkType="show"
                     sx={{
                         '& .RaPrevNextButton-list': {
@@ -325,7 +325,7 @@ export const ErrorState = () => (
     >
         <ResourceContext.Provider value="customers">
             <RecordContextProvider value={data.customers[0]}>
-                <PrevNextButton />
+                <PrevNextButtons />
             </RecordContextProvider>
         </ResourceContext.Provider>
     </AdminContext>

@@ -17,7 +17,7 @@ import { Link } from 'react-router-dom';
 import { CircularProgress, IconButton, SxProps, styled } from '@mui/material';
 import clsx from 'clsx';
 
-export const PrevNextButton = (props: PrevNextButtonProps) => {
+export const PrevNextButtons = (props: PrevNextButtonProps) => {
     const {
         linkType = 'edit',
         sx,
