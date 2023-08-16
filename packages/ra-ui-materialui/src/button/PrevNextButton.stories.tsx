@@ -44,45 +44,7 @@ const data = {
     }),
 };
 
-const dataProvider = fakeRestDataProvider({
-    ...data,
-    ...{
-        customers: [
-            // add some persisted customers to the data
-            ...data.customers,
-            ...[
-                {
-                    id: 901,
-                    first_name: 'Martin',
-                    last_name: 'McFly',
-                    email: 'Martin.McFly@yahoo.com',
-                    city: 'Hill Valley',
-                },
-                {
-                    id: 902,
-                    first_name: 'Emmett',
-                    last_name: 'Brown',
-                    email: 'Emmett.Brown@yahoo.com',
-                    city: 'Hill Valley',
-                },
-                {
-                    id: 903,
-                    first_name: 'Biff',
-                    last_name: 'Tannen',
-                    email: 'Biff.Tannen@yahoo.com',
-                    city: 'Hill Valley',
-                },
-                {
-                    id: 904,
-                    first_name: 'Clara',
-                    last_name: 'Clayton',
-                    email: 'Clara.Clayton@yahoo.com',
-                    city: 'Hill Valley',
-                },
-            ],
-        ],
-    },
-});
+const dataProvider = fakeRestDataProvider(data);
 
 const MyTopToolbar = ({ children }) => (
     <TopToolbar
@@ -210,7 +172,7 @@ export const WithFilter = () => (
                     name="customers"
                     list={
                         <List
-                            filter={{ city: 'Hill Valley' }}
+                            filter={{ q: 'East a' }}
                             filters={[
                                 <TextInput
                                     label="Search"
