@@ -50,7 +50,7 @@ export const CustomerList = () => (
 
 | Prop | Required | Type | Default | Description |
 |------|----------|------|---------|-------------|
-| `hiddenLabel` | Optional | `boolean` | `false` | If true, use the label as a placeholder |
+| `hiddenLabel` | Optional | `boolean` | `false` | If true, use the label as a placeholder. |
 | `label` | Optional | `string` | 'ra.action.search' | The label of the search input. |
 | `source` | Optional | `string` | 'q' | The field to filter on. |
 | `variant` | Optional | `string` | 'standard' | The variant of the search input. Can be one of 'standard', 'outlined', or 'filled'. |
