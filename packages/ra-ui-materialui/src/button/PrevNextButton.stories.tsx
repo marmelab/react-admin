@@ -190,11 +190,11 @@ export const WithFilter = () => (
                             actions={
                                 <MyTopToolbar>
                                     <PrevNextButton
-                                        listParams={{
-                                            filter: { city: 'Hill Valley' },
-                                            sort: 'first_name',
+                                        sort={{
+                                            field: 'first_name',
                                             order: 'DESC',
                                         }}
+                                        filter={{ q: 'East a' }}
                                     />
                                     <ShowButton />
                                 </MyTopToolbar>
@@ -209,11 +209,11 @@ export const WithFilter = () => (
                                 <MyTopToolbar>
                                     <PrevNextButton
                                         linkType="show"
-                                        listParams={{
-                                            filter: { city: 'Hill Valley' },
-                                            sort: 'first_name',
+                                        sort={{
+                                            field: 'first_name',
                                             order: 'DESC',
                                         }}
+                                        filter={{ q: 'East a' }}
                                     />
                                     <EditButton />
                                 </MyTopToolbar>

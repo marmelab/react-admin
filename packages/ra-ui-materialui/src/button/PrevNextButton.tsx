@@ -1,7 +1,9 @@
 import * as React from 'react';
 import {
+    FilterPayload,
     ListParams,
     SORT_ASC,
+    SortPayload,
     useCreatePath,
     useGetList,
     useRecordContext,
@@ -20,17 +22,22 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
         sx,
         storeKey,
         limit = 1000,
-        listParams = defaultParams,
         staleTime = 5 * 60 * 1000,
+        sort = { field: 'id', order: SORT_ASC },
+        filter = {},
     } = props;
 
     const translate = useTranslate();
     const record = useRecordContext();
     const resource = useResourceContext();
     const createPath = useCreatePath();
-    const [storedParams] = useStore<Params>(
+    const [storedParams] = useStore<StoredParams>(
         storeKey || `${resource}.listParams`,
-        defaultParams
+        {
+            filter,
+            order: sort.order,
+            sort: sort.field,
+        }
     );
 
     const { isLoading, data, isError, error } = useGetList(
@@ -38,9 +45,9 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
         {
             sort: {
                 ...{ field: storedParams.sort, order: storedParams.order },
-                ...{ field: listParams.sort, order: listParams.order },
+                ...sort,
             },
-            filter: { ...storedParams.filter, ...listParams.filter },
+            filter: { ...storedParams.filter, ...filter },
             pagination: { page: 1, perPage: limit },
         },
         { staleTime }
@@ -124,8 +131,9 @@ export interface PrevNextButtonProps {
     sx?: SxProps;
     storeKey?: string | false;
     limit?: number;
-    listParams?: Params;
     staleTime?: number;
+    filter?: FilterPayload;
+    sort?: SortPayload;
 }
 
 const PREFIX = 'RaPrevNextButton';
@@ -148,10 +156,4 @@ const Root = styled('nav', {
     },
 });
 
-type Params = Pick<ListParams, 'filter' | 'order' | 'sort'>;
-
-const defaultParams: Params = {
-    sort: 'id',
-    order: SORT_ASC,
-    filter: {},
-};
+type StoredParams = Pick<ListParams, 'filter' | 'order' | 'sort'>;
