@@ -94,7 +94,7 @@ const MyTopToolbar = ({ children }) => (
     </TopToolbar>
 );
 
-const defaultFiedls = [
+const defaultFields = [
     <TextField source="id" key="id" />,
     <TextField source="first_name" key="first_name" />,
     <TextField source="last_name" key="last_name" />,
@@ -117,7 +117,7 @@ export const Basic = () => (
                     name="customers"
                     list={
                         <List>
-                            <Datagrid rowClick="edit">{defaultFiedls}</Datagrid>
+                            <Datagrid rowClick="edit">{defaultFields}</Datagrid>
                         </List>
                     }
                     edit={
@@ -141,7 +141,7 @@ export const Basic = () => (
                                 </MyTopToolbar>
                             }
                         >
-                            <SimpleShowLayout>{defaultFiedls}</SimpleShowLayout>
+                            <SimpleShowLayout>{defaultFields}</SimpleShowLayout>
                         </Show>
                     }
                 />
@@ -158,7 +158,7 @@ export const WithStoreKey = () => (
                     name="customers"
                     list={
                         <List storeKey="withStoreKey">
-                            <Datagrid rowClick="edit">{defaultFiedls}</Datagrid>
+                            <Datagrid rowClick="edit">{defaultFields}</Datagrid>
                         </List>
                     }
                     edit={
@@ -212,7 +212,7 @@ export const WithFilter = () => (
                             ]}
                             sort={{ field: 'first_name', order: 'DESC' }}
                         >
-                            <Datagrid rowClick="edit">{defaultFiedls}</Datagrid>
+                            <Datagrid rowClick="edit">{defaultFields}</Datagrid>
                         </List>
                     }
                     edit={
@@ -249,7 +249,7 @@ export const WithFilter = () => (
                                 </MyTopToolbar>
                             }
                         >
-                            <SimpleShowLayout>{defaultFiedls}</SimpleShowLayout>
+                            <SimpleShowLayout>{defaultFields}</SimpleShowLayout>
                         </Show>
                     }
                 />
@@ -266,7 +266,7 @@ export const WithLimit = () => (
                     name="customers"
                     list={
                         <List>
-                            <Datagrid rowClick="edit">{defaultFiedls}</Datagrid>
+                            <Datagrid rowClick="edit">{defaultFields}</Datagrid>
                         </List>
                     }
                     edit={
@@ -293,7 +293,7 @@ export const WithLimit = () => (
                                 </MyTopToolbar>
                             }
                         >
-                            <SimpleShowLayout>{defaultFiedls}</SimpleShowLayout>
+                            <SimpleShowLayout>{defaultFields}</SimpleShowLayout>
                         </Show>
                     }
                 />
