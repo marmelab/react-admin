@@ -47,7 +47,6 @@ export const PrevNextButton = (props: PrevNextButtonProps) => {
     );
 
     if (isError) {
-        console.error(error);
         return <>{error.message}</>;
     }
 
