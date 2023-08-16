@@ -111,7 +111,6 @@ export const Basic = () => (
                         <Show
                             actions={
                                 <MyTopToolbar>
-                                    <PrevNextButtons />
                                     <PrevNextButtons linkType="show" />
                                 </MyTopToolbar>
                             }
