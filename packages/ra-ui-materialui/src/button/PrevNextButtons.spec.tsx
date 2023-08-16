@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Basic, WithFilter, WithLimit } from './PrevNextButtons.stories';
+import {
+    Basic,
+    ErrorState,
+    WithFilter,
+    WithLimit,
+} from './PrevNextButtons.stories';
 describe('<PrevNextButtons />', () => {
     beforeEach(() => {
         window.scrollTo = jest.fn();
@@ -72,5 +77,12 @@ describe('<PrevNextButtons />', () => {
         fireEvent.click(item);
         await screen.findByRole('navigation');
         expect(screen.getByText('1 / 500')).toBeDefined();
+    });
+
+    it('should render an error', async () => {
+        console.error = jest.fn();
+        render(<ErrorState />);
+        await screen.findByRole('progressbar');
+        expect(screen.getByText('error')).toBeDefined();
     });
 });

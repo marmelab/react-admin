@@ -27,6 +27,7 @@ import englishMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import { MemoryRouter } from 'react-router';
 import { seed, address, internet, name } from 'faker/locale/en_GB';
+import { QueryClient } from 'react-query';
 
 export default { title: 'ra-ui-materialui/button/PrevNextButtons' };
 
@@ -321,6 +322,9 @@ export const ErrorState = () => (
         dataProvider={testDataProvider({
             getList: () => Promise.reject('Error'),
         })}
+        queryClient={
+            new QueryClient({ defaultOptions: { queries: { retry: false } } })
+        }
     >
         <ResourceContext.Provider value="customers">
             <RecordContextProvider value={data.customers[0]}>
