@@ -52,7 +52,7 @@ export const PostEdit = () => (
 | `min`  | Optional | `number` | ''      | The minimum value to accept for this input                                                              |
 | `step` | Optional | `number` | `any`   | A stepping interval to use when using up and down arrows to adjust the value, as well as for validation |
 
-`<NumberInput>` also accepts the [common input props](./Inputs.md#common-input-props) (including `parse` and `format`, which you can use to customize the strong to number conversion).
+`<NumberInput>` also accepts the [common input props](./Inputs.md#common-input-props) (including `parse` and `format`, which you can use to customize the string to number conversion).
 
 ## `step`
 
