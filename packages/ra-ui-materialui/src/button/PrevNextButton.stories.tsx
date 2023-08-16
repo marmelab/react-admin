@@ -109,6 +109,14 @@ const defaultInputs = [
     <TextInput source="city" key="city" />,
 ];
 
+const DefaultDataGrid = () => (
+    <Datagrid rowClick="edit">{defaultFields}</Datagrid>
+);
+const DefaultSimpleForm = () => <SimpleForm>{defaultInputs}</SimpleForm>;
+const DefaultSimpleShowLayout = () => (
+    <SimpleShowLayout>{defaultFields}</SimpleShowLayout>
+);
+
 export const Basic = () => (
     <MemoryRouter>
         <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
@@ -117,7 +125,7 @@ export const Basic = () => (
                     name="customers"
                     list={
                         <List>
-                            <Datagrid rowClick="edit">{defaultFields}</Datagrid>
+                            <DefaultDataGrid />
                         </List>
                     }
                     edit={
@@ -129,7 +137,7 @@ export const Basic = () => (
                                 </MyTopToolbar>
                             }
                         >
-                            <SimpleForm>{defaultInputs}</SimpleForm>
+                            <DefaultSimpleForm />
                         </Edit>
                     }
                     show={
@@ -141,7 +149,7 @@ export const Basic = () => (
                                 </MyTopToolbar>
                             }
                         >
-                            <SimpleShowLayout>{defaultFields}</SimpleShowLayout>
+                            <DefaultSimpleShowLayout />
                         </Show>
                     }
                 />
@@ -158,7 +166,7 @@ export const WithStoreKey = () => (
                     name="customers"
                     list={
                         <List storeKey="withStoreKey">
-                            <Datagrid rowClick="edit">{defaultFields}</Datagrid>
+                            <DefaultDataGrid />
                         </List>
                     }
                     edit={
@@ -170,7 +178,7 @@ export const WithStoreKey = () => (
                                 </MyTopToolbar>
                             }
                         >
-                            <SimpleForm>{defaultInputs}</SimpleForm>
+                            <DefaultSimpleForm />
                         </Edit>
                     }
                     show={
@@ -185,7 +193,7 @@ export const WithStoreKey = () => (
                                 </MyTopToolbar>
                             }
                         >
-                            <SimpleShowLayout>{defaultInputs}</SimpleShowLayout>
+                            <DefaultSimpleShowLayout />
                         </Show>
                     }
                 />
@@ -212,7 +220,7 @@ export const WithFilter = () => (
                             ]}
                             sort={{ field: 'first_name', order: 'DESC' }}
                         >
-                            <Datagrid rowClick="edit">{defaultFields}</Datagrid>
+                            <DefaultDataGrid />
                         </List>
                     }
                     edit={
@@ -230,7 +238,7 @@ export const WithFilter = () => (
                                 </MyTopToolbar>
                             }
                         >
-                            <SimpleForm>{defaultInputs}</SimpleForm>
+                            <DefaultSimpleForm />
                         </Edit>
                     }
                     show={
@@ -249,7 +257,7 @@ export const WithFilter = () => (
                                 </MyTopToolbar>
                             }
                         >
-                            <SimpleShowLayout>{defaultFields}</SimpleShowLayout>
+                            <DefaultSimpleShowLayout />
                         </Show>
                     }
                 />
@@ -266,7 +274,7 @@ export const WithLimit = () => (
                     name="customers"
                     list={
                         <List>
-                            <Datagrid rowClick="edit">{defaultFields}</Datagrid>
+                            <DefaultDataGrid />
                         </List>
                     }
                     edit={
@@ -278,7 +286,7 @@ export const WithLimit = () => (
                                 </MyTopToolbar>
                             }
                         >
-                            <SimpleForm>{defaultInputs}</SimpleForm>
+                            <DefaultSimpleForm />
                         </Edit>
                     }
                     show={
@@ -293,7 +301,7 @@ export const WithLimit = () => (
                                 </MyTopToolbar>
                             }
                         >
-                            <SimpleShowLayout>{defaultFields}</SimpleShowLayout>
+                            <DefaultSimpleShowLayout />
                         </Show>
                     }
                 />
@@ -313,7 +321,7 @@ export const ShouldNotBeRendered = () => (
                     </MyTopToolbar>
                 }
             >
-                <SimpleForm>{defaultInputs}</SimpleForm>
+                <DefaultSimpleForm />
             </Create>
         </AdminContext>
     </MemoryRouter>
@@ -327,7 +335,7 @@ export const WithStyle = () => (
                     name="customers"
                     list={
                         <List>
-                            <Datagrid rowClick="edit">{defaultFields}</Datagrid>
+                            <DefaultDataGrid />
                         </List>
                     }
                     edit={
@@ -344,7 +352,7 @@ export const WithStyle = () => (
                                 </MyTopToolbar>
                             }
                         >
-                            <SimpleForm>{defaultInputs}</SimpleForm>
+                            <DefaultSimpleForm />
                         </Edit>
                     }
                     show={
@@ -363,7 +371,7 @@ export const WithStyle = () => (
                                 </MyTopToolbar>
                             }
                         >
-                            <SimpleShowLayout>{defaultFields}</SimpleShowLayout>
+                            <DefaultSimpleShowLayout />
                         </Show>
                     }
                 />
