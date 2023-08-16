@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Basic, WithFilter } from './PrevNextButton.stories';
+import { Basic, WithFilter, WithLimit } from './PrevNextButton.stories';
 describe('<PrevNextButton />', () => {
     beforeEach(() => {
         window.scrollTo = jest.fn();
@@ -38,5 +38,12 @@ describe('<PrevNextButton />', () => {
         fireEvent.click(item);
         await screen.findByRole('navigation');
         expect(screen.getByText('1 / 5')).toBeDefined();
+    });
+    it('should render a total based on limit', async () => {
+        render(<WithLimit />);
+        const item = await screen.findByText('0');
+        fireEvent.click(item);
+        await screen.findByRole('navigation');
+        expect(screen.getByText('1 / 500')).toBeDefined();
     });
 });
