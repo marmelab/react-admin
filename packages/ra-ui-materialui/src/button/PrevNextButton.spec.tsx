@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Basic } from './PrevNextButton.stories';
+import { Basic, WithFilter } from './PrevNextButton.stories';
 describe('<PrevNextButton />', () => {
     beforeEach(() => {
         window.scrollTo = jest.fn();
@@ -31,5 +31,12 @@ describe('<PrevNextButton />', () => {
         const nextButton = screen.getByLabelText('Go to next page');
         expect(nextButton).toBeDefined();
         expect(nextButton).toHaveProperty('disabled', true);
+    });
+    it('should render a total based on filter', async () => {
+        render(<WithFilter />);
+        const item = await screen.findByText('822');
+        fireEvent.click(item);
+        await screen.findByRole('navigation');
+        expect(screen.getByText('1 / 5')).toBeDefined();
     });
 });
