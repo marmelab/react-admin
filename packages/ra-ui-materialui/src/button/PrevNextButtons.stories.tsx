@@ -178,13 +178,6 @@ export const WithFilter = () => (
                     list={
                         <List
                             filter={{ q: 'East a' }}
-                            filters={[
-                                <TextInput
-                                    label="Search"
-                                    source="q"
-                                    alwaysOn
-                                />,
-                            ]}
                             sort={{ field: 'first_name', order: 'DESC' }}
                         >
                             <DefaultDataGrid />
@@ -220,6 +213,55 @@ export const WithFilter = () => (
                                         }}
                                         filter={{ q: 'East a' }}
                                     />
+                                    <EditButton />
+                                </MyTopToolbar>
+                            }
+                        >
+                            <DefaultSimpleShowLayout />
+                        </Show>
+                    }
+                />
+            </AdminUI>
+        </AdminContext>
+    </MemoryRouter>
+);
+
+export const WithQueryFilter = () => (
+    <MemoryRouter>
+        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <AdminUI>
+                <Resource
+                    name="customers"
+                    list={
+                        <List
+                            filters={[
+                                <TextInput
+                                    label="Search"
+                                    source="q"
+                                    alwaysOn
+                                />,
+                            ]}
+                        >
+                            <DefaultDataGrid />
+                        </List>
+                    }
+                    edit={
+                        <Edit
+                            actions={
+                                <MyTopToolbar>
+                                    <PrevNextButtons />
+                                    <ShowButton />
+                                </MyTopToolbar>
+                            }
+                        >
+                            <DefaultSimpleForm />
+                        </Edit>
+                    }
+                    show={
+                        <Show
+                            actions={
+                                <MyTopToolbar>
+                                    <PrevNextButtons />
                                     <EditButton />
                                 </MyTopToolbar>
                             }

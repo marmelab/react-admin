@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     Basic,
     ErrorState,
     WithFilter,
     WithLimit,
+    WithQueryFilter,
 } from './PrevNextButtons.stories';
 describe('<PrevNextButtons />', () => {
     beforeEach(() => {
@@ -69,6 +70,16 @@ describe('<PrevNextButtons />', () => {
         fireEvent.click(item);
         await screen.findByRole('navigation');
         expect(screen.getByText('1 / 5')).toBeDefined();
+    });
+
+    it('should render a total based on query filter', async () => {
+        render(<WithQueryFilter />);
+        const input = await screen.findByLabelText('Search');
+        fireEvent.change(input, { target: { value: 'east' } });
+        const item = await screen.findByText('217');
+        fireEvent.click(item);
+        await screen.findByRole('navigation');
+        expect(screen.getByText('10 / 57')).toBeDefined();
     });
 
     it('should render a total based on limit', async () => {
