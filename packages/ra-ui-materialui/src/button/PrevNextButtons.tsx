@@ -150,7 +150,7 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
     );
 };
 
-export interface PrevNextButtonProps<RecordType>
+export interface PrevNextButtonProps<RecordType extends RaRecord = any>
     extends UsePrevNextControllerProps<RecordType> {
     sx?: SxProps;
 }
