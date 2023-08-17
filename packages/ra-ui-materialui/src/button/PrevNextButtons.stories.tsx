@@ -9,7 +9,6 @@ import {
 } from 'ra-core';
 import {
     AdminUI,
-    Create,
     Datagrid,
     Edit,
     EditButton,
