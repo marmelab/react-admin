@@ -98,6 +98,7 @@ export const Basic = () => (
                     }
                     edit={
                         <Edit
+                            redirect={false}
                             actions={
                                 <MyTopToolbar>
                                     <PrevNextButtons />
@@ -138,6 +139,7 @@ export const WithStoreKey = () => (
                     }
                     edit={
                         <Edit
+                            redirect={false}
                             actions={
                                 <MyTopToolbar>
                                     <PrevNextButtons storeKey="withStoreKey" />
@@ -185,6 +187,7 @@ export const WithFilter = () => (
                     }
                     edit={
                         <Edit
+                            redirect={false}
                             actions={
                                 <MyTopToolbar>
                                     <PrevNextButtons
@@ -247,6 +250,7 @@ export const WithQueryFilter = () => (
                     }
                     edit={
                         <Edit
+                            redirect={false}
                             actions={
                                 <MyTopToolbar>
                                     <PrevNextButtons />
@@ -288,6 +292,7 @@ export const WithLimit = () => (
                     }
                     edit={
                         <Edit
+                            redirect={false}
                             actions={
                                 <MyTopToolbar>
                                     <PrevNextButtons limit={500} />
