@@ -23,3 +23,4 @@ export * from './record';
 export * from './saveContext';
 export * from './show';
 export * from './useReference';
+export * from './usePrevNextController';

@@ -277,23 +277,6 @@ export const WithLimit = () => (
     </MemoryRouter>
 );
 
-export const ShouldNotBeRendered = () => (
-    <MemoryRouter>
-        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
-            <Create
-                resource="customers"
-                actions={
-                    <MyTopToolbar>
-                        <PrevNextButtons />
-                    </MyTopToolbar>
-                }
-            >
-                <DefaultSimpleForm />
-            </Create>
-        </AdminContext>
-    </MemoryRouter>
-);
-
 export const WithStyle = () => (
     <AdminContext dataProvider={dataProvider}>
         <ResourceContext.Provider value="customers">

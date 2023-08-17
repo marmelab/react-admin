@@ -1,23 +1,11 @@
 import * as React from 'react';
-import {
-    FilterPayload,
-    ListParams,
-    RaRecord,
-    SORT_ASC,
-    SortPayload,
-    useCreatePath,
-    useGetList,
-    useRecordContext,
-    useResourceContext,
-    useStore,
-    useTranslate,
-} from 'ra-core';
+import { RaRecord, useTranslate, usePrevNextController } from 'ra-core';
 import { NavigateBefore, NavigateNext } from '@mui/icons-material';
 import ErrorIcon from '@mui/icons-material/Error';
 import { Link } from 'react-router-dom';
 import { CircularProgress, IconButton, SxProps, styled } from '@mui/material';
 import clsx from 'clsx';
-import { UseQueryOptions } from 'react-query';
+import { UsePrevNextControllerProps } from 'ra-core';
 
 /**
  * A component used to render the previous and next buttons in a Show or Edit view.
@@ -98,44 +86,20 @@ import { UseQueryOptions } from 'react-query';
 export const PrevNextButtons = <RecordType extends RaRecord = any>(
     props: PrevNextButtonProps<RecordType>
 ) => {
+    const { sx } = props;
+
     const {
-        linkType = 'edit',
-        sx,
-        storeKey,
-        limit = 1000,
-        sort = { field: 'id', order: SORT_ASC },
-        filter = {},
-        queryOptions = {
-            staleTime: 5 * 60 * 1000,
-        },
-    } = props;
+        hasPrev,
+        hasNext,
+        navigateToNext,
+        navigateToPrev,
+        index,
+        total,
+        error,
+        isLoading,
+    } = usePrevNextController<RecordType>(props);
 
-    const record = useRecordContext<RecordType>();
-    const resource = useResourceContext();
-
-    const [storedParams] = useStore<StoredParams>(
-        storeKey || `${resource}.listParams`,
-        {
-            filter,
-            order: sort.order,
-            sort: sort.field,
-        }
-    );
-
-    const { data, error, isLoading } = useGetList<RecordType>(
-        resource,
-        {
-            sort: {
-                ...{ field: storedParams.sort, order: storedParams.order },
-                ...sort,
-            },
-            filter: { ...storedParams.filter, ...filter },
-            pagination: { page: 1, perPage: limit },
-        },
-        queryOptions
-    );
-
-    if (!record) return null;
+    const translate = useTranslate();
 
     if (isLoading) {
         return <CircularProgress size={14} />;
@@ -151,119 +115,41 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
         );
     }
 
-    const ids = data ? data.map(record => record.id) : [];
-
-    const index = ids.indexOf(record.id);
-
     return (
         <Root sx={sx}>
             <ul className={clsx(PrevNextButtonClasses.list)}>
                 <li>
-                    <PrevButton
-                        ids={ids}
-                        currentIndex={index}
-                        linkType={linkType}
-                        resource={resource}
-                    />
+                    <IconButton
+                        component={hasPrev ? Link : undefined}
+                        to={navigateToPrev}
+                        aria-label={translate('ra.navigation.previous')}
+                        disabled={!hasPrev}
+                    >
+                        <NavigateBefore />
+                    </IconButton>
                 </li>
-                {index !== -1 && (
+                {typeof index === 'number' && (
                     <li>
-                        {index + 1} / {data.length}
+                        {index + 1} / {total}
                     </li>
                 )}
                 <li>
-                    <NextButton
-                        ids={ids}
-                        currentIndex={index}
-                        linkType={linkType}
-                        resource={resource}
-                    />
+                    <IconButton
+                        component={hasNext ? Link : undefined}
+                        to={navigateToNext}
+                        aria-label={translate('ra.navigation.next')}
+                        disabled={!hasNext}
+                    >
+                        <NavigateNext />
+                    </IconButton>
                 </li>
             </ul>
         </Root>
     );
 };
 
-const PrevButton = ({ ids, currentIndex, linkType, resource }: ButtonProps) => {
-    const translate = useTranslate();
-    const createPath = useCreatePath();
-
-    const previousId =
-        typeof ids[currentIndex - 1] !== 'undefined'
-            ? ids[currentIndex - 1]
-            : null; // could be 0
-
-    return (
-        <IconButton
-            component={previousId !== null ? Link : undefined}
-            to={
-                previousId !== null
-                    ? createPath({
-                          type: linkType,
-                          resource,
-                          id: previousId,
-                      })
-                    : undefined
-            }
-            aria-label={translate('ra.navigation.previous')}
-            disabled={previousId !== null ? false : true}
-        >
-            <NavigateBefore />
-        </IconButton>
-    );
-};
-
-const NextButton = ({ ids, currentIndex, linkType, resource }: ButtonProps) => {
-    const translate = useTranslate();
-    const createPath = useCreatePath();
-
-    const nextId =
-        currentIndex !== -1 && currentIndex < ids.length - 1
-            ? ids[currentIndex + 1]
-            : null;
-
-    return (
-        <IconButton
-            component={nextId !== null ? Link : undefined}
-            to={
-                nextId !== null
-                    ? createPath({
-                          type: linkType,
-                          resource,
-                          id: nextId,
-                      })
-                    : undefined
-            }
-            aria-label={translate('ra.navigation.next')}
-            disabled={nextId !== null ? false : true}
-        >
-            <NavigateNext />
-        </IconButton>
-    );
-};
-
-interface ButtonProps {
-    ids: any[];
-    currentIndex: number;
-    linkType: 'edit' | 'show';
-    resource: string;
-}
-
-export interface PrevNextButtonProps<RecordType extends RaRecord = any> {
-    linkType?: 'edit' | 'show';
+export interface PrevNextButtonProps extends UsePrevNextControllerProps {
     sx?: SxProps;
-    storeKey?: string | false;
-    limit?: number;
-    filter?: FilterPayload;
-    sort?: SortPayload;
-    queryOptions?: UseQueryOptions<{
-        data: RecordType[];
-        total?: number;
-        pageInfo?: {
-            hasNextPage?: boolean;
-            hasPreviousPage?: boolean;
-        };
-    }> & { meta?: any };
 }
 
 const PREFIX = 'RaPrevNextButton';
@@ -285,5 +171,3 @@ const Root = styled('nav', {
         listStyle: 'none',
     },
 });
-
-type StoredParams = Pick<ListParams, 'filter' | 'order' | 'sort'>;
