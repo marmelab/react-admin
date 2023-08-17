@@ -266,7 +266,7 @@ export const WithQueryFilter = () => (
                         <Show
                             actions={
                                 <MyTopToolbar>
-                                    <PrevNextButtons />
+                                    <PrevNextButtons linkType="show" />
                                     <EditButton />
                                 </MyTopToolbar>
                             }
