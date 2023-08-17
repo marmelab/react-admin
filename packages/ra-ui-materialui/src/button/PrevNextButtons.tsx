@@ -20,19 +20,19 @@ import { UsePrevNextControllerProps } from 'ra-core';
  * `<PrevNextButtons>` can be used anywhere a record context is provided
  * (eg: often inside a `<Show>` or `<Edit>` component).
  *
- * @example // move to edit view by default
+ * @example <caption>move to edit view by default</caption>
  * <ShowButton />
  *
- * @example // move to show view
+ * @example <caption>move to show view</caption>
  * <PrevNextButtons linkType="show" />
  *
- * @example // share custom storeKey with other components
+ * @example <caption>share custom storeKey with other components</caption>
  * <PrevNextButtons storeKey="listStoreKey" />
  *
- * @example // limit the number of records to fetch
+ * @example <caption>limit the number of records to fetch</caption>
  * <PrevNextButtons limit={500} />
  *
- * @example // customize filters and sort order
+ * @example <caption>customize filters and sort order</caption>
  * <PrevNextButtons
  *     linkType="show"
  *     sort={{
@@ -42,7 +42,7 @@ import { UsePrevNextControllerProps } from 'ra-core';
  *     filter={{ q: 'East a' }}
  * />
  *
- * @example // customize its style
+ * @example <caption>customize its style</caption>
  * <PrevNextButtons
  *     sx={{
  *         color: 'blue',
@@ -53,7 +53,7 @@ import { UsePrevNextControllerProps } from 'ra-core';
  *     }}
  * />
  *
- * @example // in an edit view
+ * @example <caption>in an edit view</caption>
  * import * as React from "react";
  * import { Edit, PrevNextButtons, ShowButton, SimpleForm, TopToolbar } from 'react-admin';
  *
@@ -148,7 +148,8 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
     );
 };
 
-export interface PrevNextButtonProps extends UsePrevNextControllerProps {
+export interface PrevNextButtonProps<RecordType>
+    extends UsePrevNextControllerProps {
     sx?: SxProps;
 }
 
