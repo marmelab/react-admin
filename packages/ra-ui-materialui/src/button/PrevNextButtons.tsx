@@ -1,11 +1,15 @@
 import * as React from 'react';
-import { RaRecord, useTranslate, usePrevNextController } from 'ra-core';
+import {
+    RaRecord,
+    useTranslate,
+    usePrevNextController,
+    UsePrevNextControllerProps,
+} from 'ra-core';
 import { NavigateBefore, NavigateNext } from '@mui/icons-material';
 import ErrorIcon from '@mui/icons-material/Error';
 import { Link } from 'react-router-dom';
 import { CircularProgress, IconButton, SxProps, styled } from '@mui/material';
 import clsx from 'clsx';
-import { UsePrevNextControllerProps } from 'ra-core';
 
 /**
  * A component used to render the previous and next buttons in a Show or Edit view.
@@ -13,9 +17,7 @@ import { UsePrevNextControllerProps } from 'ra-core';
  * The `<PrevNextButtons>` component render a navigation to move to the next or previous record
  * of a resource, with the current index and the total records, in an edit or show view.
  *
- * It fetches the list of records from the REST API according to the filters
- * and the sort order configured in the lists by the users and
- * also merges the filters and the sorting order passed into props.
+ * It uses `usePrevNextController` to fetches the list of records.
  *
  * `<PrevNextButtons>` can be used anywhere a record context is provided
  * (eg: often inside a `<Show>` or `<Edit>` component).
@@ -149,7 +151,7 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
 };
 
 export interface PrevNextButtonProps<RecordType>
-    extends UsePrevNextControllerProps {
+    extends UsePrevNextControllerProps<RecordType> {
     sx?: SxProps;
 }
 
