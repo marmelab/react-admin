@@ -163,7 +163,7 @@ In this example, `<Menu.DashboardItem>` links to the `/dashboard` route, `<Menu.
 
 Before creating your custom component, it's a good practice to check if react-admin already provides a suitable component with a generic name for your purpose. In many cases, react-admin can save you hours, if not days, of development effort.
 
-Some of the other useful react-admin components include those for guided tours, sub-forms, login screens, action buttons, calendars, and much more. Each react-admin component can be customized using props, children, and [theme](./Theming.md) to fit your application's specific needs.
+Some of the other useful react-admin components include those for guided tours, sub-forms, login screens, action buttons, calendars, and much more. Each react-admin component can be customized using props, children, and [theme](./AppTheme.md) to fit your application's specific needs.
 
 ## Composition
 

@@ -579,7 +579,7 @@ Most Input components pass their additional props down to the root component, wh
 <TextInput source="name" variant="outlined" />
 ```
 
-If you want to use another variant in all the Inputs of your application, override the `<Admin theme>` prop with a [custom theme](./Theming.md#global-theme-overrides), as follows:
+If you want to use another variant in all the Inputs of your application, override the `<Admin theme>` prop with a [custom theme](./AppTheme.md#overriding-default-props), as follows:
 
 ```jsx
 import { defaultTheme } from 'react-admin';

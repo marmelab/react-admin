@@ -543,7 +543,7 @@ export const PostList = () => {
 };
 ```
 
-Check [the Theming documentation](./Theming.md) for more information about the `useMediaQuery` hook.
+Check [the dedicated `useMediaQuery` documentation](./useMediaQuery.md) for more information.
 
 ## Building a Custom Iterator
 

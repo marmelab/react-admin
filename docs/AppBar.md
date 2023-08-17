@@ -273,7 +273,30 @@ const MyAppBar = () => (
 
 Note that you still have to include the `<Logout>` component in the user menu, as it is responsible for the logout action. Also, for other menu items to work, you must call the `onClose` callback when the user clicks on them to close the user menu.
 
-You can also hide the user menu by setting the `userMenu` prop to `false`.
+You can also customize the default icon by setting the `icon` prop to the `<UserMenu />` component.
+
+{% raw %}
+``` jsx
+import { AppBar, UserMenu } from 'react-admin';
+import Avatar from '@mui/material/Avatar';
+
+const MyCustomIcon = () => (
+    <Avatar
+        sx={{
+            height: 30,
+            width: 30,
+        }}
+        src="https://marmelab.com/images/avatars/adrien.jpg"
+    />
+);
+
+const MyUserMenu = props => (<UserMenu {...props} icon={<MyCustomIcon />} />);
+
+const MyAppBar = () => <AppBar userMenu={<MyUserMenu />} />;
+```
+{% endraw %}
+
+Finally, can hide the user menu by setting the `userMenu` prop to `false`.
 
 ```jsx
 const MyAppBar = () => <AppBar userMenu={false} />;

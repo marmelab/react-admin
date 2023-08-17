@@ -5,7 +5,7 @@ title: "The Admin Component"
 
 # `<Admin>`
 
-The `<Admin>` component is the root component of a react-admin app. It allows to configure the application adapters and UI.
+The `<Admin>` component is the root component of a react-admin app. It allows to configure the application adapters, routes, and UI.
 
 `<Admin>` creates a series of context providers to allow its children to access the app configuration. It renders the main routes and layout. It delegates the rendering of the content area to its `<Resource>` children.
 
@@ -344,7 +344,7 @@ const App = () => (
 );
 ```
 
-See [Using React-Admin In A Sub Path](./Routing.md#using-react-admin-in-a-sub-path) for more usage examples.
+See [Using React-Admin In A Sub Path](#using-react-admin-in-a-sub-path) for more usage examples.
 
 ## `catchAll`
 
@@ -565,7 +565,7 @@ const App = () => (
 
 Refer to each component documentation to understand the props it accepts.
 
-Finally, you can also pass a custom component as the `layout` prop. It must contain a `{children}` placeholder, where react-admin will render the content. Use the [default `<Layout>`](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point, and check [the Theming documentation](./Theming.md#using-a-custom-layout) for examples.
+Finally, you can also pass a custom component as the `layout` prop. It must contain a `{children}` placeholder, where react-admin will render the content. Use the [default `<Layout>`](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point, and check [the custom layout documentation](./Layout.md#writing-a-layout-from-scratch) for examples.
 
 ## `loginPage`
 
@@ -582,8 +582,6 @@ const App = () => (
 ```
 
 See The [Authentication documentation](./Authentication.md#customizing-the-login-component) for more details.
-
-**Tip**: Before considering writing your own login page component, please take a look at how to change the default [background image](./Theming.md#using-a-custom-login-page) or the [Material UI theme](#theme).
 
 You can also disable the `/login` route completely by passing `false` to this prop. In this case, it's the `authProvider`'s responsibility to redirect unauthenticated users to a custom login page, by returning a `redirectTo` field in response to `checkAuth` (see [`authProvider.checkAuth()`](./AuthProviderWriting.md#checkauth) for details). If you fail to customize the redirection, the app will end up in an infinite loop.
 
@@ -789,7 +787,7 @@ const App = () => (
 
 If you want to support both a light and a dark theme, check out [the `<Admin darkTheme>` prop](#darktheme). 
 
-For more details on predefined themes and custom themes, refer to [the Theming chapter](./Theming.md#global-theme-overrides) of the react-admin documentation.
+For more details on predefined themes and custom themes, refer to [the Application Theme chapter](./AppTheme.md).
 
 ## `title`
 
@@ -802,6 +800,113 @@ const App = () => (
     </Admin>
 );
 ```
+
+## Adding Custom Pages
+
+The [`children`](#children) prop of the `<Admin>` component define the routes of the application.
+
+In addition to [`<Resource> elements`](./Resource.md) for CRUD pages, you can use [the `<CustomRoutes>` component](./CustomRoutes.md) to do add custom routes.
+
+```jsx
+// in src/App.js
+import * as React from "react";
+import { Route } from 'react-router-dom';
+import { Admin, Resource, CustomRoutes } from 'react-admin';
+import posts from './posts';
+import comments from './comments';
+import Settings from './Settings';
+import Profile from './Profile';
+
+const App = () => (
+    <Admin dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        <Resource name="posts" {...posts} />
+        <Resource name="comments" {...comments} />
+        <CustomRoutes>
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/profile" element={<Profile />} />
+        </CustomRoutes>
+    </Admin>
+);
+
+export default App;
+```
+
+## Using A Custom Router 
+
+React-admin uses [the react-router library](https://reactrouter.com/) to handle routing, with a [HashRouter](https://reactrouter.com/en/6/router-components/hash-router#hashrouter). This means that the hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers. 
+
+But you may want to use another routing strategy, e.g. to allow server-side rendering of individual pages. React-router offers various Router components to implement such routing strategies. If you want to use a different router, simply wrap it around your app. React-admin will detect that it's already inside a router, and skip its own router. 
+
+```jsx
+import { BrowserRouter } from 'react-router-dom';
+import { Admin, Resource } from 'react-admin';
+
+const App = () => (
+    <BrowserRouter>
+        <Admin dataProvider={...}>
+            <Resource name="posts" />
+        </Admin>
+    </BrowserRouter>
+);
+```
+
+## Using React-Admin In A Sub Path
+
+React-admin links are absolute (e.g. `/posts/123/show`). If you serve your admin from a sub path (e.g. `/admin`), react-admin works seamlessly as it only appends a hash (URLs will look like `/admin#/posts/123/show`).
+
+However, if you serve your admin from a sub path AND use another Router (like `BrowserRouter` for instance), you need to set the `<Admin basename>` prop, so that react-admin routes include the basename in all links (e.g. `/admin/posts/123/show`).
+
+```jsx
+import { Admin, Resource } from 'react-admin';
+
+const App = () => (
+    <BrowserRouter>
+        <Admin basename="/admin" dataProvider={...}>
+            <Resource name="posts" />
+        </Admin>
+    </BrowserRouter>
+);
+```
+
+This makes all links be prefixed with `/admin`.
+
+Note that it is your responsibility to serve the admin from the sub path, e.g. by setting the `homepage` field in your `package.json` if you use [Create React App](https://create-react-app.dev/docs/deployment/#building-for-relative-paths).
+
+If you want to use react-admin as a sub path of a larger React application, check the next section for instructions. 
+
+## Using React-Admin Inside a Route
+
+You can include a react-admin app inside another app, using a react-router `<Route>`:
+
+```jsx
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { StoreFront } from './StoreFront';
+import { StoreAdmin } from './StoreAdmin';
+
+export const App = () => (
+    <BrowserRouter>
+        <Routes>
+            <Route path="/" element={<StoreFront />} />
+            <Route path="/admin/*" element={<StoreAdmin />} />
+        </Routes>
+    </BrowserRouter>
+);
+```
+
+React-admin will have to prefix all the internal links with `/admin`. Use the `<Admin basename>` prop for that:
+
+```jsx
+// in src/StoreAdmin.js
+import { Admin, Resource } from 'react-admin';
+
+export const StoreAdmin = () => (
+    <Admin basename="/admin" dataProvider={...}>
+        <Resource name="posts" {...posts} />
+    </Admin>
+);
+```
+
+This will let react-admin build absolute URLs including the sub path.
 
 ## Declaring resources at runtime
 
