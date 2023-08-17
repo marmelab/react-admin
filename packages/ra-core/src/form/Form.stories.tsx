@@ -168,7 +168,7 @@ export const UndefinedValue = () => {
 };
 
 const zodSchema = z.object({
-    preTranslated: z.string().min(5, { message: 'Required' }),
+    preTranslated: z.string().min(5, { message: 'This field is required' }),
     translationKey: z.string().min(5, { message: 'ra.validation.required' }),
 });
 export const ZodResolver = () => {
@@ -180,7 +180,18 @@ export const ZodResolver = () => {
                 onSubmit={data => setResult(data)}
                 resolver={zodResolver(zodSchema)}
             >
+                <p>
+                    This field has "This field is required" as its error message
+                    in the zod schema. We shouldn't see a missing translation
+                    error:
+                </p>
                 <Input source="preTranslated" />
+                <br />
+                <br />
+                <p>
+                    This field has "ra.validation.required" as its error message
+                    in the zod schema:
+                </p>
                 <Input source="translationKey" />
                 <button type="submit">Submit</button>
             </Form>
