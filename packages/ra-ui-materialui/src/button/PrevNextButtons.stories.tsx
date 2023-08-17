@@ -79,7 +79,9 @@ const defaultInputs = [
 const DefaultDataGrid = () => (
     <Datagrid rowClick="edit">{defaultFields}</Datagrid>
 );
-const DefaultSimpleForm = () => <SimpleForm>{defaultInputs}</SimpleForm>;
+const DefaultSimpleForm = () => (
+    <SimpleForm warnWhenUnsavedChanges>{defaultInputs}</SimpleForm>
+);
 const DefaultSimpleShowLayout = () => (
     <SimpleShowLayout>{defaultFields}</SimpleShowLayout>
 );
