@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
     FilterPayload,
     ListParams,
+    RaRecord,
     SORT_ASC,
     SortPayload,
     useCreatePath,
@@ -16,6 +17,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import { Link } from 'react-router-dom';
 import { CircularProgress, IconButton, SxProps, styled } from '@mui/material';
 import clsx from 'clsx';
+import { UseQueryOptions } from 'react-query';
 
 /**
  * A component used to render the previous and next buttons in a Show or Edit view.
@@ -93,18 +95,22 @@ import clsx from 'clsx';
  * );
  */
 
-export const PrevNextButtons = (props: PrevNextButtonProps) => {
+export const PrevNextButtons = <RecordType extends RaRecord = any>(
+    props: PrevNextButtonProps<RecordType>
+) => {
     const {
         linkType = 'edit',
         sx,
         storeKey,
         limit = 1000,
-        staleTime = 5 * 60 * 1000,
         sort = { field: 'id', order: SORT_ASC },
         filter = {},
+        queryOptions = {
+            staleTime: 5 * 60 * 1000,
+        },
     } = props;
 
-    const record = useRecordContext();
+    const record = useRecordContext<RecordType>();
     const resource = useResourceContext();
 
     const [storedParams] = useStore<StoredParams>(
@@ -116,7 +122,7 @@ export const PrevNextButtons = (props: PrevNextButtonProps) => {
         }
     );
 
-    const { data, error, isLoading } = useGetList(
+    const { data, error, isLoading } = useGetList<RecordType>(
         resource,
         {
             sort: {
@@ -126,7 +132,7 @@ export const PrevNextButtons = (props: PrevNextButtonProps) => {
             filter: { ...storedParams.filter, ...filter },
             pagination: { page: 1, perPage: limit },
         },
-        { staleTime }
+        queryOptions
     );
 
     if (!record) return null;
@@ -243,14 +249,21 @@ interface ButtonProps {
     resource: string;
 }
 
-export interface PrevNextButtonProps {
+export interface PrevNextButtonProps<RecordType extends RaRecord = any> {
     linkType?: 'edit' | 'show';
     sx?: SxProps;
     storeKey?: string | false;
     limit?: number;
-    staleTime?: number;
     filter?: FilterPayload;
     sort?: SortPayload;
+    queryOptions?: UseQueryOptions<{
+        data: RecordType[];
+        total?: number;
+        pageInfo?: {
+            hasNextPage?: boolean;
+            hasPreviousPage?: boolean;
+        };
+    }> & { meta?: any };
 }
 
 const PREFIX = 'RaPrevNextButton';
