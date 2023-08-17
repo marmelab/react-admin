@@ -4,6 +4,8 @@ import {
     UseControllerProps,
     useFormState,
 } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 
 import { CoreAdminContext } from '../core';
 import { Form } from './Form';
@@ -158,6 +160,28 @@ export const UndefinedValue = () => {
         <CoreAdminContext>
             <Form record={{}} onSubmit={data => setResult(data)}>
                 <Input source="foo" />
+                <button type="submit">Submit</button>
+            </Form>
+            <pre>{JSON.stringify(result, null, 2)}</pre>
+        </CoreAdminContext>
+    );
+};
+
+const zodSchema = z.object({
+    preTranslated: z.string().min(5, { message: 'Required' }),
+    translationKey: z.string().min(5, { message: 'ra.validation.required' }),
+});
+export const ZodResolver = () => {
+    const [result, setResult] = React.useState<any>();
+    return (
+        <CoreAdminContext>
+            <Form
+                record={{}}
+                onSubmit={data => setResult(data)}
+                resolver={zodResolver(zodSchema)}
+            >
+                <Input source="preTranslated" />
+                <Input source="translationKey" />
                 <button type="submit">Submit</button>
             </Form>
             <pre>{JSON.stringify(result, null, 2)}</pre>

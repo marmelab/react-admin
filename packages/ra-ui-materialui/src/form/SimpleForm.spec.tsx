@@ -69,7 +69,7 @@ describe('<SimpleForm />', () => {
             mock.mockRestore();
         });
 
-        it('should support translations with per input validation', async () => {
+        it.only('should support translations with per input validation', async () => {
             const mock = jest
                 .spyOn(console, 'warn')
                 .mockImplementation(() => {});

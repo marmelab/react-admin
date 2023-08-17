@@ -11,13 +11,26 @@ export interface ValidationErrorProps {
 
 const ValidationError = (props: ValidationErrorProps) => {
     const { error } = props;
+    let errorMessage = error;
     const translate = useTranslate();
-    if ((error as ValidationErrorMessageWithArgs).message) {
-        const { message, args } = error as ValidationErrorMessageWithArgs;
+    // react-hook-form expects errors to be plain strings but our validators can return objects
+    // that have message and args.
+    // To avoid double translation for users that validate with a schema instead of our validators
+    // we use a special format for our validators errors.
+    // The ValidationError component will check for this format and extract the message and args
+    // to translate.
+    if (typeof error === 'string' && error.startsWith('@@react-admin@@')) {
+        errorMessage = JSON.parse(error.replace('@@react-admin@@', ''));
+    }
+    if ((errorMessage as ValidationErrorMessageWithArgs).message) {
+        const {
+            message,
+            args,
+        } = errorMessage as ValidationErrorMessageWithArgs;
         return <>{translate(message, { _: message, ...args })}</>;
     }
 
-    return <>{translate(error as string, { _: error })}</>;
+    return <>{translate(errorMessage as string, { _: errorMessage })}</>;
 };
 
 export default ValidationError;
