@@ -7,6 +7,99 @@ import { ListParams, SORT_ASC } from './list';
 import { useRecordContext } from './record';
 import { useCreatePath } from '../routing';
 
+/**
+ * A hook used to fetche previous and next record IDs for a given record and resource.
+ *
+ * It fetches the list of records from the REST API according to the filters
+ * and the sort order configured in the lists by the users and
+ * also merges the filters and the sorting order passed into props.
+ *
+ * `usePrevNextController` should be used anywhere a record context is provided
+ * (eg: often inside a `<Show>` or `<Edit>` component).
+ *
+ * @example <captoin>Simple usage</caption>
+ *
+ * import { UsePrevNextControllerProps } from 'ra-core';
+ * const {
+ *         hasPrev,
+ *         hasNext,
+ *         navigateToNext,
+ *         navigateToPrev,
+ *         index,
+ *         total,
+ *         error,
+ *         isLoading,
+ *     } = usePrevNextController(props);
+ *
+ * @example <caption>Custom PrevNextButton</caption>
+ *
+ * import { UsePrevNextControllerProps, useTranslate } from 'ra-core';
+ * import { NavigateBefore, NavigateNext } from '@mui/icons-material';
+ * import ErrorIcon from '@mui/icons-material/Error';
+ * import { Link } from 'react-router-dom';
+ * import { CircularProgress, IconButton } from '@mui/material';
+ *
+ * const MyPrevNextButtons = props => {
+ *     const {
+ *         hasPrev,
+ *         hasNext,
+ *         navigateToNext,
+ *         navigateToPrev,
+ *         index,
+ *         total,
+ *         error,
+ *         isLoading,
+ *     } = usePrevNextController(props);
+ *
+ *     const translate = useTranslate();
+ *
+ *     if (isLoading) {
+ *         return <CircularProgress size={14} />;
+ *     }
+ *
+ *     if (error) {
+ *         return (
+ *             <ErrorIcon
+ *                 color="error"
+ *                 fontSize="small"
+ *                 titleAccess="error"
+ *                 aria-errormessage={error.message}
+ *             />
+ *         );
+ *     }
+ *
+ *     return (
+ *         <ul>
+ *             <li>
+ *                 <IconButton
+ *                     component={hasPrev ? Link : undefined}
+ *                     to={navigateToPrev}
+ *                     aria-label={translate('ra.navigation.previous')}
+ *                     disabled={!hasPrev}
+ *                 >
+ *                     <NavigateBefore />
+ *                 </IconButton>
+ *             </li>
+ *             {typeof index === 'number' && (
+ *                 <li>
+ *                     {index + 1} / {total}
+ *                 </li>
+ *             )}
+ *             <li>
+ *                 <IconButton
+ *                     component={hasNext ? Link : undefined}
+ *                     to={navigateToNext}
+ *                     aria-label={translate('ra.navigation.next')}
+ *                     disabled={!hasNext}
+ *                 >
+ *                     <NavigateNext />
+ *                 </IconButton>
+ *             </li>
+ *         </ul>
+ *     );
+ * };
+ */
+
 export const usePrevNextController = <RecordType extends RaRecord = any>(
     props: UsePrevNextControllerProps<RecordType>
 ): UsePrevNextControllerResult => {
