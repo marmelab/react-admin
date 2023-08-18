@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import {
     Basic,
     ErrorState,
@@ -43,7 +43,7 @@ describe('<PrevNextButtons />', () => {
         expect(nextButton).toHaveProperty('disabled', true);
     });
 
-    it('should go on edit view by default', async () => {
+    it('should link to the edit view by default', async () => {
         render(<Basic />);
         const row = await screen.findByText('Deja');
         fireEvent.click(row);
@@ -54,7 +54,7 @@ describe('<PrevNextButtons />', () => {
         );
     });
 
-    it('should go on show view by default', async () => {
+    it('should link to the show view when linkType is show', async () => {
         render(<Basic />);
         const row = await screen.findByText('Deja');
         fireEvent.click(row);
@@ -91,7 +91,7 @@ describe('<PrevNextButtons />', () => {
         expect(screen.getByText('1 / 500')).toBeDefined();
     });
 
-    it('should render an error', async () => {
+    it('should render an error UI in case of data provider error', async () => {
         console.error = jest.fn();
         render(<ErrorState />);
         await screen.findByRole('progressbar');
