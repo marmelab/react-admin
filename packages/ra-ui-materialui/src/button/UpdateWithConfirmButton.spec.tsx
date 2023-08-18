@@ -9,6 +9,7 @@ import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';
 import { Notification } from '../layout';
+import { MutationOptions } from './UpdateButton.stories';
 
 const theme = createTheme();
 
@@ -241,5 +242,20 @@ describe('<UpdateWithConfirmButton />', () => {
                 { snapshot: expect.any(Array) }
             );
         });
+    });
+
+    it('should close the dialog even with custom success side effect', async () => {
+        render(<MutationOptions />);
+        fireEvent.click(await screen.findByLabelText('Reset views'));
+        await screen.findByText('Are you sure you want to update this post?');
+        fireEvent.click(screen.getByText('Confirm'));
+        await screen.findByText('Reset views success', undefined, {
+            timeout: 2000,
+        });
+        // wait until next tick, as the settled side effect is called after the success side effect
+        await waitFor(() => new Promise(resolve => setTimeout(resolve, 300)));
+        expect(
+            screen.queryByText('Are you sure you want to update this post?')
+        ).toBeNull();
     });
 });
