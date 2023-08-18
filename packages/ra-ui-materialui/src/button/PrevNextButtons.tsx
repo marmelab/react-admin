@@ -93,8 +93,8 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
     const {
         hasPrev,
         hasNext,
-        navigateToNext,
-        navigateToPrev,
+        prevPath,
+        nextPath,
         index,
         total,
         error,
@@ -123,7 +123,7 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
                 <li>
                     <IconButton
                         component={hasPrev ? Link : undefined}
-                        to={navigateToPrev}
+                        to={prevPath}
                         aria-label={translate('ra.navigation.previous')}
                         disabled={!hasPrev}
                     >
@@ -138,7 +138,7 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
                 <li>
                     <IconButton
                         component={hasNext ? Link : undefined}
-                        to={navigateToNext}
+                        to={nextPath}
                         aria-label={translate('ra.navigation.next')}
                         disabled={!hasNext}
                     >

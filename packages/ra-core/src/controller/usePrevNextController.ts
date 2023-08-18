@@ -23,8 +23,8 @@ import { useCreatePath } from '../routing';
  * const {
  *         hasPrev,
  *         hasNext,
- *         navigateToNext,
- *         navigateToPrev,
+ *         prevPath,
+ *         nextPath,
  *         index,
  *         total,
  *         error,
@@ -43,8 +43,8 @@ import { useCreatePath } from '../routing';
  *     const {
  *         hasPrev,
  *         hasNext,
- *         navigateToNext,
- *         navigateToPrev,
+ *         nextPath,
+ *         prevPath,
  *         index,
  *         total,
  *         error,
@@ -166,7 +166,7 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
     return {
         hasPrev: previousId !== null,
         hasNext: nextId !== null,
-        navigateToPrev:
+        prevPath:
             previousId !== null
                 ? createPath({
                       type: linkType,
@@ -174,7 +174,7 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
                       id: previousId,
                   })
                 : undefined,
-        navigateToNext:
+        nextPath:
             nextId !== null
                 ? createPath({
                       type: linkType,
@@ -209,8 +209,8 @@ export interface UsePrevNextControllerProps<RecordType extends RaRecord = any> {
 export interface UsePrevNextControllerResult {
     hasPrev: boolean;
     hasNext: boolean;
-    navigateToPrev: string | undefined;
-    navigateToNext: string | undefined;
+    prevPath: string | undefined;
+    nextPath: string | undefined;
     index: number | undefined;
     total: number | undefined;
     error?: any;
