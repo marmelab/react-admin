@@ -14,21 +14,21 @@ import clsx from 'clsx';
 /**
  * A component used to render the previous and next buttons in a Show or Edit view.
  *
- * The `<PrevNextButtons>` component render a navigation to move to the next or previous record
+ * The `<PrevNextButtons>` component renders navigation buttons to navigate to the next or previous record
  * of a resource, with the current index and the total records, in an edit or show view.
  *
- * It uses `usePrevNextController` to fetches the list of records.
+ * It uses `usePrevNextController` to fetch the list of records.
  *
  * `<PrevNextButtons>` can be used anywhere a record context is provided
  * (eg: often inside a `<Show>` or `<Edit>` component).
  *
- * @example <caption>move to edit view by default</caption>
+ * @example <caption>navigate to edit view by default</caption>
  * <ShowButton />
  *
- * @example <caption>move to show view</caption>
+ * @example <caption>navigate to show view</caption>
  * <PrevNextButtons linkType="show" />
  *
- * @example <caption>share custom storeKey with other components</caption>
+ * @example <caption>custom storeKey</caption>
  * <PrevNextButtons storeKey="listStoreKey" />
  *
  * @example <caption>limit the number of records to fetch</caption>
@@ -44,7 +44,7 @@ import clsx from 'clsx';
  *     filter={{ q: 'East a' }}
  * />
  *
- * @example <caption>customize its style</caption>
+ * @example <caption>customize style</caption>
  * <PrevNextButtons
  *     sx={{
  *         color: 'blue',
