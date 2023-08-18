@@ -813,7 +813,7 @@ const App = () => (
 );
 ```
 
-See [The theming documentation](./Theming.md#menuitemlink) for more details.
+See [The Menu documentation](./Menu.md) for more details.
 
 **Tip**: If you need a multi-level menu, or a Mega Menu opening panels with custom content, check out [the `ra-navigation`<img class="icon" src="./img/premium.svg" /> module](https://marmelab.com/ra-enterprise/modules/ra-navigation) (part of the [Enterprise Edition](https://marmelab.com/ra-enterprise))
 
@@ -855,4 +855,4 @@ To override the style of all instances of `<MenuItemLink>` using the [Material U
 
 To override the style of all instances of `<UserMenu>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaUserMenu` key.
 
-See [The theming documentation](./Theming.md#usermenu-customization) for more details.
+See [The AppBar documentation](./AppBar.md#usermenu) for more details.
