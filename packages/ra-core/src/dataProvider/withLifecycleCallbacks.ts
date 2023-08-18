@@ -332,7 +332,7 @@ export const withLifecycleCallbacks = (
 
         create: async function <RecordType extends RaRecord = any>(
             resource: string,
-            params: CreateParams<Partial<RecordType>>
+            params: CreateParams<RecordType>
         ) {
             let newParams = params;
             const beforeCreateHandlers = handlers.filter(
@@ -404,7 +404,7 @@ export const withLifecycleCallbacks = (
 
         updateMany: async function <RecordType extends RaRecord = any>(
             resource: string,
-            params: UpdateManyParams<Partial<RecordType>>
+            params: UpdateManyParams<RecordType>
         ) {
             let newParams = params;
             const beforeUpdateManyHandlers = handlers.filter(
