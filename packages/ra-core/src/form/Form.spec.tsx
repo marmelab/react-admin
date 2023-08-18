@@ -20,7 +20,6 @@ import {
     NullValue,
 } from './Form.stories';
 import { mergeTranslations } from '../i18n';
-import { de } from 'date-fns/locale';
 
 describe('Form', () => {
     const Input = props => {
