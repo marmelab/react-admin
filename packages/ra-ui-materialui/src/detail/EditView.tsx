@@ -73,7 +73,6 @@ interface EditViewProps
 EditView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     aside: PropTypes.element,
-    children: PropTypes.element,
     className: PropTypes.string,
     component: ComponentPropType,
     defaultTitle: PropTypes.any,
