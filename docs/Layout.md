@@ -438,7 +438,7 @@ const MyLayout = ({ children, dashboard }) => (
         flexDirection="column"
         zIndex={1}
         minHeight="100vh"
-        backgroundColor='theme.palette.background.default,'
+        backgroundColor="theme.palette.background.default"
         position="relative"
     >
         <Box

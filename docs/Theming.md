@@ -159,9 +159,9 @@ Here is a list of the most common UI elements you may want to customize, and the
 
 Material-ui is a rich UI library, so you may not know all its components. There are 3 components you should know about when theming react-admin:
 
-- `<Box>`: a generic container component, which can be used to add padding, margin, and background color to any component. It is used extensively in react-admin, and you will probably use it a lot too.
-- `<Stack>`: a component to stack elements vertically or horizontally. 
-- `<Grid>`: a component to display elements in a grid. 
+- [`<Box>`](./BoxStackGrid.md#box): a generic container component, which can be used to add padding, margin, and background color to any component. It is used extensively in react-admin, and you will probably use it a lot too.
+- [`<Stack>`](./BoxStackGrid.md#stack): a component to stack elements vertically or horizontally. 
+- [`<Grid>`](./BoxStackGrid.md#grid): a component to display elements in a grid. 
 
 ![Stack](./img/stack.webp)
 
