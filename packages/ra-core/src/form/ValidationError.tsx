@@ -32,6 +32,7 @@ const ValidationError = (props: ValidationErrorProps) => {
             message,
             args,
         } = errorMessage as ValidationErrorMessageWithArgs;
+        console.log({ message, args });
         return <>{translate(message, args)}</>;
     }
 

@@ -4,7 +4,9 @@ import { render } from '@testing-library/react';
 import ValidationError from './ValidationError';
 import { TestTranslationProvider } from '../i18n';
 
-const translate = jest.fn(key => key);
+const translate = jest.fn(key => {
+    return key;
+});
 
 const renderWithTranslations = content =>
     render(
