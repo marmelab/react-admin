@@ -137,7 +137,10 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
         resource,
         {
             sort: {
-                ...{ field: storedParams.sort, order: storedParams.order },
+                ...{
+                    field: storedParams.sort,
+                    order: storedParams.order,
+                },
                 ...sort,
             },
             filter: { ...storedParams.filter, ...filter },
