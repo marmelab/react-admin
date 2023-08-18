@@ -138,10 +138,8 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
         {
             sort: {
                 ...sort,
-                ...{
-                    field: storedParams.sort,
-                    order: storedParams.order,
-                },
+                field: storedParams.sort,
+                order: storedParams.order,
             },
             filter: { ...storedParams.filter, ...filter },
             pagination: { page: 1, perPage: limit },
