@@ -745,3 +745,31 @@ export default OrderEdit;
 ```
 
 **Tip:** If you'd like to avoid creating an intermediate component like `<CityInput>`, or are using an `<ArrayInput>`, you can use the [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs) component as an alternative.
+
+## Navigating Through Records
+
+[`<PrevNextButtons`](./PrevNextButtons.md) component render a navigation with two buttons, allowing users to navigate through records directly into an `<Edit>` view. 
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/prev-next-buttons-edit.webm" type="video/webm" />
+  <source src="./img/prev-next-buttons-edit.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+The following code is an example of how you can use it:
+
+```tsx
+export const PostEdit = () => (
+    <Edit
+        actions={
+            <TopToolbar>
+                <PrevNextButtons />
+            </TopToolbar>
+        }
+    >
+    ...
+    </Edit>
+);
+```
+
+**Tips:** If you want users to be warned if they haven't pressed the Save button while they trying to browse, you can follow this section[Navigating Through Records In`<Edit>` Views](./PrevNextButtons.md#navigating-through-records-inedit-views-after-submit) 

@@ -5,7 +5,6 @@ title: "The PrevNextButtons Component"
 
 # `<PrevNextButtons>`
 
-
 The `<PrevNextButtons>` component renders navigation buttons to move to the next or previous record of a resource, in an [Edit](./Edit.md) or [Show](./Show.md) view. It also renders the current index and the total number of records.
 
 <video controls autoplay playsinline muted loop>
