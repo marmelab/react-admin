@@ -247,7 +247,8 @@ export const MyAdmin = () => (
 ## `storeKey`
 
 `<PrevNextButtons>` can get the current list parameters (sort and filters) from the store.
-This prop is useful if you specified a custom `storeKey` for a `<List>` and you want `<PrevNextButtons>` to use the same stored parmaters.
+This prop is useful if you specified a custom `storeKey` for a `<List>` and you want `<PrevNextButtons>` to use the same stored parameters.
+
 See [`storeKey` in `<List>`](./List.md#storekey) for more informations. 
 
 ```tsx
@@ -313,8 +314,8 @@ export const CustomerShow = () => (
 ## Navigating Through Records In`<Edit>` Views After Submit
 
 Let's says users want to edit customer records and to navigate between records in the `<Edit>` view. The default react-admin behaviors causes two problems: 
-- when their save a record the user is redirected to the `<List>` view,
-- when their navigate accross records, the form is not saved.
+- when they save a record the user is redirected to the `<List>` view,
+- when they navigate to another record, the form is not saved.
 
 Thanks to React-admin components, you can solve these issues by using 
 - [`redirect` prop from `<Edit>`](Edit.md#redirect) with which you can specify the redirect to apply. Here we will choose to stay on the page rather than being redirected to the list view.
