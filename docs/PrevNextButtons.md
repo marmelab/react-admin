@@ -67,11 +67,7 @@ export const CustomerEdit = () => (
             </TopToolbar>
         }
     >
-           ...
-           ...
-        </SimpleForm>
     ...
-        </SimpleForm>
     </Edit>
 );
 ```
@@ -81,16 +77,13 @@ For example, this prop is useful to set the same `filter` as the `<List>` for th
 
 {% raw %}
 ```tsx
-import * as React from 'react';
-import { Admin, Edit, List, PrevNextButtons, Resource, Show, TopToolbar } from 'react-admin';
-
 export const MyAdmin = () => (
     <Admin>
         <Resource
             name="customers"
             list={
                 <List filter={{ city: 'Hill Valley' }}>
-                    ...
+                ...
                 </List>
             }
             edit={
@@ -101,7 +94,7 @@ export const MyAdmin = () => (
                         </TopToolbar>
                     }
                 >
-                    ...
+                ...
                 </Edit>
             }
         />
@@ -123,11 +116,7 @@ export const CustomerEdit = () => (
             </TopToolbar>
         }
     >
-           ...
-           ...
-        </SimpleForm>
     ...
-        </SimpleForm>
     </Edit>
 );
 ```
@@ -146,11 +135,7 @@ export const CustomerShow = () => (
             </TopToolbar>
         }
     >
-           ...
-           ...
-        </SimpleShowLayout>
     ...
-        </SimpleShowLayout>
     </Show>
 );
 ```
@@ -176,11 +161,7 @@ export const CustomerShow = () => (
             </TopToolbar>
         }
     >
-           ...
-           ...
-        </SimpleShowLayout>
     ...
-        </SimpleShowLayout>
     </Show>
 );
 ```
@@ -199,11 +180,7 @@ export const CustomerEdit = () => (
             </TopToolbar>
         }
     >
-           ...
-           ...
-        </SimpleForm>
     ...
-        </SimpleForm>
     </Edit>
 );
 ```
@@ -225,13 +202,7 @@ export const CustomerEdit = () => (
             </TopToolbar>
         }
     >
-           ...
-           ...
-        </SimpleForm>
-    </Edit>
-);
     ...
-        </SimpleForm>
     </Edit>
 );
 ```
@@ -250,7 +221,7 @@ export const MyAdmin = () => (
                     field: 'first_name',
                     order: 'DESC',
                 }}>
-                    ...
+                ...
                 </List>
             }
             edit={
@@ -264,7 +235,7 @@ export const MyAdmin = () => (
                         </TopToolbar>
                     }
                 >
-                    ...
+                ...
                 </Edit>
             }
         />
@@ -286,7 +257,7 @@ export const MyAdmin = () => (
             name="customers"
             list={
                 <List storeKey="customers_key">
-                    ...
+                ...
                 </List>
             }
             edit={
@@ -297,7 +268,7 @@ export const MyAdmin = () => (
                         </TopToolbar>
                     }
                 >
-                    ...
+                ...
                 </Edit>
             }
         />
@@ -317,9 +288,6 @@ Here is an example:
 
 {% raw %}
 ```tsx
-// in src/CustomerShow.tsx
-import { Show, PrevNextButtons, SimpleShowLayout, TopToolbar } from 'react-admin';
-
 export const CustomerShow = () => (
     <Show
         actions={
@@ -336,9 +304,7 @@ export const CustomerShow = () => (
             </TopToolbar>
         }
     >
-        <SimpleShowLayout>
-           ...
-        </SimpleShowLayout>
+    ...
     </Show>
 );
 ```
@@ -356,9 +322,6 @@ Thanks to React-admin components, you can solve these issues by using
 
 {% raw %}
 ```tsx
-// in src/CustomerEdit.tsx
-import { Edit, PrevNextButtons, SimpleForm, TopToolbar } from 'react-admin';
-
 export const CustomerEdit = () => (
     <Edit
         redirect={false}
@@ -369,7 +332,7 @@ export const CustomerEdit = () => (
         }
     >
         <SimpleForm warnWhenUnsavedChanges> 
-           ...
+        ...
         </SimpleForm>
     </Edit>
 );
