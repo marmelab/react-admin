@@ -116,16 +116,11 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
 
     const record = useRecordContext<RecordType>(props);
     const resource = useResourceContext(props);
+    const createPath = useCreatePath();
 
     if (!resource) {
         throw new Error(
             `<useNextPrevController> was called outside of a ResourceContext and without a resource prop. You must set the resource prop.`
-        );
-    }
-
-    if (!record) {
-        throw new Error(
-            `<useNextPrevController> was called outside of a RecordContext and without a record prop. You must set the record prop.`
         );
     }
 
@@ -151,6 +146,8 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
         queryOptions
     );
 
+    if (!record) return null;
+
     const ids = data ? data.map(record => record.id) : [];
 
     const index = ids.indexOf(record.id);
@@ -160,8 +157,6 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
 
     const nextId =
         index !== -1 && index < ids.length - 1 ? ids[index + 1] : null;
-
-    const createPath = useCreatePath();
 
     return {
         hasPrev: previousId !== null,
