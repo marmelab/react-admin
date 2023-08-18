@@ -332,7 +332,7 @@ export const withLifecycleCallbacks = (
 
         create: async function <RecordType extends RaRecord = any>(
             resource: string,
-            params: CreateParams<RecordType>
+            params: CreateParams<Partial<RecordType>>
         ) {
             let newParams = params;
             const beforeCreateHandlers = handlers.filter(
@@ -404,7 +404,7 @@ export const withLifecycleCallbacks = (
 
         updateMany: async function <RecordType extends RaRecord = any>(
             resource: string,
-            params: UpdateManyParams<RecordType>
+            params: UpdateManyParams<Partial<RecordType>>
         ) {
             let newParams = params;
             const beforeUpdateManyHandlers = handlers.filter(
@@ -574,7 +574,10 @@ export type ResourceCallbacks<T extends RaRecord = any> = {
      * Note: This callback doesn't modify the record itself, but the data argument
      * (which may be a diff, especially when called with updateMany).
      */
-    beforeSave?: (data: Partial<T>, dataProvider: DataProvider) => Promise<T>;
+    beforeSave?: (
+        data: Partial<T>,
+        dataProvider: DataProvider
+    ) => Promise<Partial<T>>;
     /**
      * Update a record after it has been read from the dataProvider
      *
