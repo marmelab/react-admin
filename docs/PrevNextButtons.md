@@ -5,9 +5,8 @@ title: "The PrevNextButtons Component"
 
 # `<PrevNextButtons>`
 
-A component used to render a previous and a next buttons in a [`RecordContext`](./Architecture.md#context-pull-dont-push).
 
-The `<PrevNextButtons>` component render a navigation to move to the next or previous record of a resource, in an [Edit](./Edit.md) or [Show](./Show.md) view. It renders also the current index and the total number of records.
+The `<PrevNextButtons>` component renders navigation buttons to move to the next or previous record of a resource, in an [Edit](./Edit.md) or [Show](./Show.md) view. It also renders the current index and the total number of records.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/prev-next-buttons.webm" type="video/webm" />
@@ -15,13 +14,10 @@ The `<PrevNextButtons>` component render a navigation to move to the next or pre
   Your browser does not support the video tag.
 </video>
 
-It uses `usePrevNextController` to fetches the list of records.
-
-`<PrevNextButtons>` can be used anywhere a record context is provided (eg: often inside a `<Show>` or `<Edit>` component).
+`<PrevNextButtons>` can be used anywhere a [`RecordContext`](./Architecture.md#context-pull-dont-push) is provided (eg: often inside a `<Show>` or `<Edit>` component).
 
 ## Usage
 
-{% raw %}
 ```tsx
 // in src/CustomerEdit.tsx
 import { Edit, PrevNextButtons, ShowButton, SimpleForm, TextInput, TopToolbar } from 'react-admin';
@@ -44,7 +40,6 @@ export const CustomerEdit = () => (
     </Edit>
 );
 ```
-{% endraw %}
 
 ## Props
 
@@ -55,19 +50,16 @@ export const CustomerEdit = () => (
 | `linkType`     | Optional | `string`         | 'edit'                              | Specifies the view to redirect to when navigating.                                          |
 | `queryOptions` | Optional | `object`         | `{ staleTime: 5 * 60 * 1000 }`      | The options to pass to the useQuery hook.                                                   |
 | `resource`     | Optional | `string`         | -                                   | The resource name, e.g. `customers`.                                                        |
-| `sort`         | Optional | `object`         | `{ field: 'id', order: SORT_ASC } ` | The initial sort parameters.                                                                |
+| `sort`         | Optional | `object`         | `{ field: 'id', order: SORT_ASC } ` | The sort parameters.                                                                |
 | `storeKey`     | Optional | `string | false` | -                                   | The key to use to match a filter & sort configuration of a `<List>`. Pass false to disable. |
 | `sx`           | Optional | `object`         | -                                   | The CSS styles to apply to the component. |
 
 ## `filter`
 
-Just like [Permanent `filter` in `<List>`](./List.md#filter-permanent-filter), you can specify what filter to apply to fetches the list of records.
+Just like [Permanent `filter` in `<List>`](./List.md#filter-permanent-filter), you can specify what filter when fetching the list of records.
 
 {% raw %}
 ```jsx
-// in src/CustomerEdit.tsx
-import { Edit, PrevNextButtons,, SimpleForm, TopToolbar } from 'react-admin';
-
 export const CustomerEdit = () => (
     <Edit
         actions={
@@ -76,15 +68,17 @@ export const CustomerEdit = () => (
             </TopToolbar>
         }
     >
-        <SimpleForm > 
            ...
+           ...
+        </SimpleForm>
+    ...
         </SimpleForm>
     </Edit>
 );
 ```
 {% endraw %}
 
-For example, this prop is useful to grab the same `filter` from the `<List>` view which handle the same resource:
+For example, this prop is useful to set the same `filter` as the `<List>` for the same resource:
 
 {% raw %}
 ```tsx
@@ -111,20 +105,6 @@ export const MyAdmin = () => (
                     ...
                 </Edit>
             }
-            show={
-                <Show
-                    actions={
-                        <TopToolbar>
-                            <PrevNextButtons
-                                linkType="show"
-                                filter={{ city: 'Hill Valley' }}
-                            />
-                        </TopToolbar>
-                    }
-                >
-                    ...
-                </Show>
-            }
         />
     </Admin>
 );
@@ -133,12 +113,9 @@ export const MyAdmin = () => (
 
 ## `limit`
 
-You can set the maximum number of records to fetch with `limit` prop. By default, `usePrevNextController` fetches a maximum of `1000` records.
+You can set the maximum number of records to fetch with the `limit` prop. By default, `usePrevNextController` fetches a maximum of `1000` records.
 
 ```jsx
-// in src/CustomerEdit.tsx
-import { Edit, PrevNextButtons,, SimpleForm, TopToolbar } from 'react-admin';
-
 export const CustomerEdit = () => (
     <Edit
         actions={
@@ -147,8 +124,10 @@ export const CustomerEdit = () => (
             </TopToolbar>
         }
     >
-        <SimpleForm > 
            ...
+           ...
+        </SimpleForm>
+    ...
         </SimpleForm>
     </Edit>
 );
@@ -156,13 +135,10 @@ export const CustomerEdit = () => (
 
 ## `linkType`
 
-By default `<PrevNextButtons>` items link to `<Edit>` view. You can also set the `linkType` prop to `show` to link to the `<Show>` view instead.
+By default `<PrevNextButtons>` items link to the `<Edit>` view. You can also set the `linkType` prop to `show` to link to the `<Show>` view instead.
 
-{% raw %}
+
 ```tsx
-// in src/CustomerShow.tsx
-import { Show, PrevNextButtons, SimpleShowLayout, TopToolbar } from 'react-admin';
-
 export const CustomerShow = () => (
     <Show
         actions={
@@ -171,13 +147,14 @@ export const CustomerShow = () => (
             </TopToolbar>
         }
     >
-        <SimpleShowLayout>
            ...
+           ...
+        </SimpleShowLayout>
+    ...
         </SimpleShowLayout>
     </Show>
 );
 ```
-{% endraw %}
 
 `linkType` accepts the following values:
 
@@ -192,9 +169,6 @@ This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) t
 
 {% raw %}
 ```tsx
-// in src/CustomerShow.tsx
-import { Show, PrevNextButtons, SimpleShowLayout, TopToolbar } from 'react-admin';
-
 export const CustomerShow = () => (
     <Show
         actions={
@@ -203,8 +177,10 @@ export const CustomerShow = () => (
             </TopToolbar>
         }
     >
-        <SimpleShowLayout>
            ...
+           ...
+        </SimpleShowLayout>
+    ...
         </SimpleShowLayout>
     </Show>
 );
@@ -213,12 +189,9 @@ export const CustomerShow = () => (
 
 ## `resource`
 
-By default, `<PrevNextButtons>` operates on the current `ResourceContext` (defined at the routing level), so under the `/customers` path, the `resource` prop will be `customers`. You may want to force a different resource to fetche. In this case, pass a custom `resource` prop, and it will override the `ResourceContext` value.
+By default, `<PrevNextButtons>` operates on the current `ResourceContext` (defined at the routing level), so under the `/customers` path, the `resource` prop will be `customers`. Pass a custom `resource` prop to override the `ResourceContext` value.
 
 ```jsx
-// in src/CustomerEdit.tsx
-import { Edit, PrevNextButtons,, SimpleForm, TopToolbar } from 'react-admin';
-
 export const CustomerEdit = () => (
     <Edit
         actions={
@@ -227,8 +200,10 @@ export const CustomerEdit = () => (
             </TopToolbar>
         }
     >
-        <SimpleForm > 
            ...
+           ...
+        </SimpleForm>
+    ...
         </SimpleForm>
     </Edit>
 );
@@ -236,13 +211,10 @@ export const CustomerEdit = () => (
 
 ## `sort`
 
-Pass an object literal as the `sort` prop to determine `field` and `order` used for sorting:
+Pass an object literal as the `sort` prop to set the `field` and `order` used for sorting:
 
 {% raw %}
 ```jsx
-// in src/CustomerEdit.tsx
-import { Edit, PrevNextButtons,, SimpleForm, TopToolbar } from 'react-admin';
-
 export const CustomerEdit = () => (
     <Edit
         actions={
@@ -254,21 +226,22 @@ export const CustomerEdit = () => (
             </TopToolbar>
         }
     >
-        <SimpleForm > 
            ...
+           ...
+        </SimpleForm>
+    </Edit>
+);
+    ...
         </SimpleForm>
     </Edit>
 );
 ```
 {% endraw %}
 
-For example, this prop is useful to grab the same `filter` from the `<List>` view which handle the same resource:
+For example, this prop is useful to set the same `filter` as the `<List>` view which handle the same resource:
 
 {% raw %}
 ```tsx
-import * as React from 'react';
-import { Admin, Edit, List, PrevNextButtons, Resource, Show, TopToolbar } from 'react-admin';
-
 export const MyAdmin = () => (
     <Admin>
         <Resource
@@ -295,23 +268,6 @@ export const MyAdmin = () => (
                     ...
                 </Edit>
             }
-            show={
-                <Show
-                    actions={
-                        <TopToolbar>
-                            <PrevNextButtons
-                                linkType="show"
-                                sort={{
-                                    field: 'first_name',
-                                    order: 'DESC',
-                                }}
-                            />
-                        </TopToolbar>
-                    }
-                >
-                    ...
-                </Show>
-            }
         />
     </Admin>
 );
@@ -320,14 +276,11 @@ export const MyAdmin = () => (
 
 ## `storeKey`
 
-Thanks to `usePrevNextController`, `<PrevNextButtons>` grabs list parameters (sort and filters) from the store.
-This prop is useful if you specified a custom `storeKey` for a `<List>` and you want `<PrevNextButtons>` grabs the same stored parmaters.
+`<PrevNextButtons>` can get the current list parameters (sort and filters) from the store.
+This prop is useful if you specified a custom `storeKey` for a `<List>` and you want `<PrevNextButtons>` to use the same stored parmaters.
 See [`storeKey` in `<List>`](./List.md#storekey) for more informations. 
 
 ```tsx
-import * as React from 'react';
-import { Admin, Edit, List, PrevNextButtons, Resource, Show, TopToolbar } from 'react-admin';
-
 export const MyAdmin = () => (
     <Admin>
         <Resource
@@ -347,20 +300,6 @@ export const MyAdmin = () => (
                 >
                     ...
                 </Edit>
-            }
-            show={
-                <Show
-                    actions={
-                        <TopToolbar>
-                            <PrevNextButtons
-                                linkType="show"
-                                storeKey="customers_key"
-                            />
-                        </TopToolbar>
-                    }
-                >
-                    ...
-                </Show>
             }
         />
     </Admin>
@@ -406,13 +345,15 @@ export const CustomerShow = () => (
 ```
 {% endraw %}
 
-## Navigate across `<Edit>` views
+## Navigating Through Records In`<Edit>` Views After Submit
 
-Let's says the user wants to edit customer records and he wants to navigate accross these by staying in the `<Edit>` view. The problems: 
+Let's says users want to edit customer records and to navigate between records in the `<Edit>` view. The default react-admin behaviors causes two problems: 
 - when their save a record the user is redirected to the `<List>` view,
 - when their navigate accross records, the form is not saved.
 
-Thanks to React-admin components, you can solve these issues by using [`redirect` prop from `<Edit>`](Edit.md#redirect) component and [`warnWhenUnsavedChanges` from `Form`](Form.md#warnwhenunsavedchanges).
+Thanks to React-admin components, you can solve these issues by using 
+- [`redirect` prop from `<Edit>`](Edit.md#redirect) with which you can specify the redirect to apply. Here we will choose to stay on the page rather than being redirected to the list view.
+- [`warnWhenUnsavedChanges` from `Form`](Form.md#warnwhenunsavedchanges) that will triggers an alert if the user tries to change page while the record has not been saved.
 
 {% raw %}
 ```tsx
