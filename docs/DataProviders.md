@@ -1,13 +1,59 @@
 ---
 layout: default
-title: "Using Data Providers"
+title: "Data Fetching"
 ---
 
-# Setting Up The Data Provider
+# Data Fetching
+
+You can build a react-admin app on top of any API, whether it uses REST, GraphQL, RPC, or even SOAP, regardless of the dialect it uses. This works because react-admin doesn't user `fetch` directly. Instead, it uses a Data Provider object to interface with your API, and [react-query](https://tanstack.com/query/v3/docs/react/overview) to handle data fetching.
+
+## The Data Provider
+
+Whenever react-admin needs to communicate with your APIs, it does it through an object called the `dataProvider`. The `dataProvider` exposes a predefined interface that allows react-admin to query any API in a normalized way. 
+
+<img src="./img/data-provider.png" class="no-shadow" alt="Backend agnostic" />
+
+For instance, to query the API for a single record, react-admin calls `dataProvider.getOne()`: 
+
+```js
+dataProvider
+    .getOne('posts', { id: 123 })
+    .then(response => {
+        console.log(response.data); // { id: 123, title: "hello, world" }
+    });
+```
+
+It's the Data Provider's job to turn these method calls into HTTP requests, and transform the HTTP responses to the data format expected by react-admin. In technical terms, a Data Provider is an *adapter* for an API. 
+
+Thanks to this adapter system, react-admin can communicate with any API, whether it uses REST, GraphQL, RPC, or even SOAP, regardless of the dialect it uses. Check out the [list of supported backends](./DataProviderList.md) to pick an open-source package for your API.
+
+You can also [Write your own Data Provider](./DataProviderWriting.md) so that it fits the particularities of your backend(s). Data Providers can use `fetch`, `axios`, `apollo-client`, or any other library to communicate with APIs. The Data Provider is also the ideal place to add custom HTTP headers, authentication, etc.
+
+A Data Provider must have the following methods:
+
+```jsx
+const dataProvider = {
+    getList:    (resource, params) => Promise, // get a list of records based on sort, filter, and pagination
+    getOne:     (resource, params) => Promise, // get a single record by id
+    getMany:    (resource, params) => Promise, // get a list of records based on an array of ids
+    getManyReference: (resource, params) => Promise, // get the records referenced to another record, e.g. comments for a post
+    create:     (resource, params) => Promise, // create a record
+    update:     (resource, params) => Promise, // update a record based on a patch
+    updateMany: (resource, params) => Promise, // update a list of records based on an array of ids and a common patch
+    delete:     (resource, params) => Promise, // delete a record by id
+    deleteMany: (resource, params) => Promise, // delete a list of records based on an array of ids
+}
+```
+
+**Tip**: A Data Provider can have [more methods](#adding-custom-methods) than the 9 methods listed above. For instance, you create a dataProvider with custom methods for calling non-REST API endpoints, manipulating tree structures, subscribing to real time updates, etc.
+
+The Data Provider is at the heart of react-admin's architecture. By being very opinionated about the Data Provider interface, react-admin can be very flexible AND provide very sophisticated features, including reference handling, optimistic updates, and automated navigation.
 
 ## `<Admin dataProvider>`
 
 The first step to use a Data Provider is to pass it to [the `<Admin>` component](./Admin.md). You can do so by using the `dataProvider` prop.
+
+You can either pick a data provider from the list of [supported API backends](./DataProviderList.md), or [write your own](./DataProviderWriting.md).
 
 As an example, let's focus on [the Simple REST data provider](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-simple-rest). It fits REST APIs using simple GET parameters for filters and sorting.
 
@@ -40,7 +86,7 @@ export default App;
 
 That's enough to make all react-admin components work. 
 
-Here is how this Data Provider maps react-admin calls to API calls:
+Here is how this particular Data Provider maps react-admin calls to API calls:
 
 | Method name        | API call                                                                                |
 | ------------------ | --------------------------------------------------------------------------------------- |
@@ -287,9 +333,9 @@ Check the [withLifecycleCallbacks](./withLifecycleCallbacks.md) documentation fo
 
 ## Handling File Uploads
 
-You can leverage [`withLifecycleCallbacks`](#adding-lifecycle-callbacks) to add support for file upload.
+Handling file uploads in react-admin depends on how your server expects the file to be sent (e.g. as a Base64 string, as a multipart/form-data request, uploaded to a CDN via an AJAX request, etc.). When a user submits a form with a file input, the dataProvider method (`create` or `delete`) receives [a `File` object](https://developer.mozilla.org/en-US/docs/Web/API/File). It's the dataProvider's job to convert that `File`, e.g. using the `FileReader` API.
 
-For instance, the following Data Provider extends the `ra-data-simple-rest` provider, and stores images passed to the `dataProvider.update('posts')` call as Base64 strings. React-admin offers an `<ImageInput />` component that allows image upload:
+For instance, the following Data Provider extends an existing data provider to convert images passed to `dataProvider.update('posts')` into Base64 strings. The example leverages [`withLifecycleCallbacks`](#adding-lifecycle-callbacks) to modify the `dataProvider.update()` method for the `posts` resource only.
 
 ```js
 import { withLifecycleCallbacks } from 'react-admin';
@@ -298,7 +344,7 @@ import simpleRestProvider from 'ra-data-simple-rest';
 const dataProvider = withLifecycleCallbacks(simpleRestProvider('http://path.to.my.api/'), [
     {
         /**
-         * For posts update only, convert uploaded image in base 64 and attach it to
+         * For posts update only, convert uploaded images to base 64 and attach them to
          * the `picture` sent property, with `src` and `title` attributes.
          */
         resource: 'posts',
@@ -311,24 +357,20 @@ const dataProvider = withLifecycleCallbacks(simpleRestProvider('http://path.to.m
                 p => !(p.rawFile instanceof File)
             );
 
-            return Promise.all(newPictures.map(convertFileToBase64))
-                .then(base64Pictures =>
-                    base64Pictures.map(picture64 => ({
-                        src: picture64,
-                        title: `${params.data.title}`,
-                    }))
-                )
-                .then(transformedNewPictures =>
-                    dataProvider.update(resource, {
-                        data: {
-                            ...params.data,
-                            pictures: [
-                                ...transformedNewPictures,
-                                ...formerPictures,
-                            ],
-                        },
-                    })
-                );
+            const base64Pictures = await Promise.all(
+                newPictures.map(convertFileToBase64)
+            )
+            const pictures = [
+                ...base64Pictures.map((dataUrl, index) => ({
+                    src: dataUrl,
+                    title: newPictures[index].name,
+                })),
+                ...formerPictures,
+            ];
+            return dataProvider.update(
+                resource,
+                { data: { ...params.data, pictures } }
+            );  
         }
     }
 ]);
@@ -343,14 +385,13 @@ const convertFileToBase64 = file =>
         const reader = new FileReader();
         reader.onload = () => resolve(reader.result);
         reader.onerror = reject;
-
         reader.readAsDataURL(file.rawFile);
     });
 
 export default myDataProvider;
 ```
 
-**Tip**: use `beforeSave` instead of `beforeUpdate` to do the same for both create and update calls.
+**Tip**: Use `beforeSave` instead of `beforeUpdate` to do the same for both create and update calls.
 
 You can use the same technique to upload images to an object storage service, and then update the record using the URL of that stored object.
 
@@ -399,7 +440,7 @@ Check the [Calling Custom Methods](./Actions.md#calling-custom-methods) document
 
 ## Async Initialization
 
-Some Data Providers need an asynchronous initialization phase (e.g. to connect to the API). To use such Data Providers, initialize them before rendering react-admin resources, leveraging React's `useState` and `useEffect`.
+Some Data Providers need an asynchronous initialization phase (e.g. to connect to the API). To use such Data Providers, initialize them *before* rendering react-admin resources, leveraging React's `useState` and `useEffect`.
 
 For instance, the `ra-data-hasura` data provider needs to be initialized:
 
@@ -416,8 +457,9 @@ const App = () => {
 
     // initialize on mount
     useEffect(() => {
-        buildHasuraProvider({ clientOptions: { uri: 'http://localhost:8080/v1/graphql' } })
-            .then(() => setDataProvider(() => dataProvider));
+        buildHasuraProvider({
+            clientOptions: { uri: 'http://localhost:8080/v1/graphql' }
+        }).then(() => setDataProvider(() => dataProvider));
     }, []);
 
     // hide the admin until the data provider is ready
@@ -434,32 +476,6 @@ export default App;
 ```
 
 **Tip**: This example uses the function version of `setState` (`setDataProvider(() => dataProvider))`) instead of the more classic version (`setDataProvider(dataProvider)`). This is because some legacy Data Providers are actually functions, and `setState` would call them immediately on mount.  
-
-## Default Query Options
-
-If you often need to pass the same query options to the data provider, you can use [the `<Admin queryClient>` prop](./Admin.md#queryclient) to set them globally.
-
-```jsx
-import { Admin } from 'react-admin';
-import { QueryClient } from 'react-query';
-
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            retry: false,
-            staleTime: Infinity,
-        },
-    }
-});
-
-const App = () => (
-    <Admin queryClient={queryClient} dataProvider={...}>
-        ...
-    </Admin>
-);
-```
-
-To know which query options you can override, check the [Querying the API documentation](./Actions.md#query-options) and [the `<Admin queryClient>` prop documentation](./Admin.md#queryclient).
 
 ## Combining Data Providers
 
@@ -532,3 +548,106 @@ export const App = () => (
     </Admin>
 );
 ```
+
+## React-Query Options
+
+React-admin uses [react-query](https://react-query-v3.tanstack.com/) to fetch, cache and update data. Internally, the `<Admin>` component creates a react-query [`QueryClient`](https://tanstack.com/query/v3/docs/react/reference/QueryClient) on mount, using [react-query's "aggressive but sane" defaults](https://react-query-v3.tanstack.com/guides/important-defaults):
+
+* Queries consider cached data as stale
+* Stale queries are refetched automatically in the background when:
+  * New instances of the query mount
+  * The window is refocused
+  * The network is reconnected
+  * The query is optionally configured with a refetch interval
+* Query results that are no longer used in the current page are labeled as "inactive" and remain in the cache in case they are used again at a later time.
+* By default, "inactive" queries are garbage collected after 5 minutes.
+* Queries that fail are silently retried 3 times, with exponential backoff delay before capturing and displaying an error to the UI.
+* Query results by default are structurally shared to detect if data has actually changed and if not, the data reference remains unchanged to better help with value stabilization with regards to `useMemo` and `useCallback`. 
+
+If you want to override the react-query default query and mutation default options, or use a specific client or mutation cache, you can create your own `QueryClient` instance and pass it to the `<Admin queryClient>` prop:
+
+```jsx
+import { Admin } from 'react-admin';
+import { QueryClient } from 'react-query';
+
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: false,
+            structuralSharing: false,
+        },
+        mutations: {
+            retryDelay: 10000,
+        },
+    },
+});
+
+const App = () => (
+    <Admin queryClient={queryClient} dataProvider={...}>
+        ...
+    </Admin>
+);
+```
+
+To know which options you can pass to the `QueryClient` constructor, check the [react-query documentation](https://tanstack.com/query/v3/docs/react/reference/QueryClient) and the [query options](https://tanstack.com/query/v3/docs/react/reference/useQuery) and [mutation options](https://tanstack.com/query/v3/docs/react/reference/useMutation) sections.
+
+The settings that react-admin developers often overwrite are:
+
+```jsx
+import { QueryClient } from 'react-query';
+
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            /**
+             * The time in milliseconds after data is considered stale.
+             * If set to `Infinity`, the data will never be considered stale.
+             */
+            staleTime: 10000,
+            /**
+             * If `false`, failed queries will not retry by default.
+             * If `true`, failed queries will retry infinitely., failureCount: num
+             * If set to an integer number, e.g. 3, failed queries will retry until the failed query count meets that number.
+             * If set to a function `(failureCount, error) => boolean` failed queries will retry until the function returns false.
+             */
+            retry: false,
+            /**
+             * If set to `true`, the query will refetch on window focus if the data is stale.
+             * If set to `false`, the query will not refetch on window focus.
+             * If set to `'always'`, the query will always refetch on window focus.
+             * If set to a function, the function will be executed with the latest data and query to compute the value.
+             * Defaults to `true`.
+             */
+            refetchOnWindowFocus: false,
+        },
+    },
+});
+```
+
+## Calling The Data Provider
+
+You can call the data provider directly from your own React components, combining it with react-query's `useQuery` and `useMutation` hooks. However, this is such a common use case that react-admin provides a hook for each of the data provider methods.
+
+For instance, to call `dataProvider.getOne()`, use the `useGetOne` hook:
+
+```jsx
+import { useGetOne } from 'react-admin';
+import { Loading, Error } from './MyComponents';
+
+const UserProfile = ({ userId }) => {
+    const { data: user, isLoading, error } = useGetOne('users', { id: userId });
+
+    if (isLoading) return <Loading />;
+    if (error) return <Error />;
+    if (!user) return null;
+
+    return (
+        <ul>
+            <li>Name: {user.name}</li>
+            <li>Email: {user.email}</li>
+        </ul>
+    )
+};
+```
+
+The [Querying the API](./Actions.md) documentation lists all the hooks available for querying the API, as well as the options and return values for each of them.

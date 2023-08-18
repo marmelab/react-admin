@@ -1156,7 +1156,7 @@ Now that you've completed the tutorial, continue your journey with [the Features
 
 After that, the best way to learn react-admin is by reading the introduction chapters to each of its major parts:
 
-- [Data Provider and API Calls](./DataProviderIntroduction.md)
+- [Data Provider and API Calls](./DataProviders.md)
 - [Auth Provider and Security](./Authentication.md)
 - [List Page](./ListTutorial.md)
 - [Creation & Edition Pages](./EditTutorial.md)

@@ -9,106 +9,58 @@ APIs are so diverse that quite often, none of [the available Data Providers](./D
 
 The methods of a Data Provider receive a request, and return a promise for a response. Both the request and the response format are standardized.
 
-**Caution**: A Data Provider should return the same shape in `getList` and `getOne` for a given resource. This is because react-admin uses "optimistic rendering", and renders the Edit and Show view *before* calling `dataProvider.getOne()` by reusing the response from `dataProvider.getList()` if the user has displayed the List view before. If your API has different shapes for a query for a unique record and for a query for a list of records, your Data Provider should make these records consistent in shape before returning them to react-admin.
+## Data Provider Methods
 
-For instance, the following Data Provider returns more details in `getOne` than in `getList`:
+A data provider must implement the following methods:
 
 ```jsx
-const { data } = await dataProvider.getList('posts', {
-    pagination: { page: 1, perPage: 5 },
-    sort: { field: 'title', order: 'ASC' },
-    filter: { author_id: 12 },
-})
-// [
-//   { id: 123, title: "hello, world", author_id: 12 },
-//   { id: 125, title: "howdy partner", author_id: 12 },
-//  ],
-
-const { data } = dataProvider.getOne('posts', { id: 123 })
-// {
-//     data: { id: 123, title: "hello, world", author_id: 12, body: 'Lorem Ipsum Sic Dolor Amet' }
-// }
+const dataProvider = {
+    getList:    (resource, params) => Promise, // get a list of records based on sort, filter, and pagination
+    getOne:     (resource, params) => Promise, // get a single record by id
+    getMany:    (resource, params) => Promise, // get a list of records based on an array of ids
+    getManyReference: (resource, params) => Promise, // get the records referenced to another record, e.g. comments for a post
+    create:     (resource, params) => Promise, // create a record
+    update:     (resource, params) => Promise, // update a record based on a patch
+    updateMany: (resource, params) => Promise, // update a list of records based on an array of ids and a common patch
+    delete:     (resource, params) => Promise, // delete a record by id
+    deleteMany: (resource, params) => Promise, // delete a list of records based on an array of ids
+}
 ```
 
-This will cause the Edit view to blink on load. If you have this problem, modify your Data Provider to return the same shape for all methods. 
-
-## Request Format
-
-Data queries require a *method* (e.g. `getOne`), a *resource* (e.g. 'posts') and a set of *parameters*.
+To call the data provider, react-admin combines a *method* (e.g. `getOne`), a *resource* (e.g. 'posts') and a set of *parameters*.
 
 **Tip**: In comparison, HTTP requests require a *verb* (e.g. 'GET'), an *url* (e.g. 'http://myapi.com/posts'), a list of *headers* (like `Content-Type`) and a *body*.
 
-Standard methods are:
+In the rest of this documentation, the term `Record` designates an object literal with at least an `id` property (e.g. `{ id: 123, title: "hello, world" }`).
 
-| Method             | Usage                                           | Parameters format                                                                                                                               |
-| ------------------ | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `getList`          | Search for resources                            | `{ pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object}, meta: {Object} }`                                |
-| `getOne`           | Read a single resource, by id                   | `{ id: {mixed}, meta: {Object} }`                                                                                                                               |
-| `getMany`          | Read a list of resource, by ids                 | `{ ids: {mixed[]}, meta: {Object} }`                                                                                                                            |
-| `getManyReference` | Read a list of resources related to another one | `{ target: {string}, id: {mixed}, pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object}, meta: {Object} }` |
-| `create`           | Create a single resource                        | `{ data: {Object}, meta: {Object} }`                                                                                                                            |
-| `update`           | Update a single resource                        | `{ id: {mixed}, data: {Object}, previousData: {Object}, meta: {Object} }`                                                                                       |
-| `updateMany`       | Update multiple resources                       | `{ ids: {mixed[]}, data: {Object}, meta: {Object} }`                                                                                                            |
-| `delete`           | Delete a single resource                        | `{ id: {mixed}, previousData: {Object}, meta: {Object} }`                                                                                                       |
-| `deleteMany`       | Delete multiple resources                       | `{ ids: {mixed[]}, meta: {Object} }`                                                                                                                            |
+## `getList`
 
-**Tip**: All methods accept an optional `meta` parameter. React-admin doesn't use it, but it's a good way to pass special arguments or metadata to an API call. 
+React-admin calls `dataProvider.getList()` to search records.
 
-Here are several examples of how react-admin can call the Data Provider:
-
-```js
-dataProvider.getList('posts', {
-    pagination: { page: 1, perPage: 5 },
-    sort: { field: 'title', order: 'ASC' },
-    filter: { author_id: 12 },
-});
-dataProvider.getOne('posts', { id: 123 });
-dataProvider.getMany('posts', { ids: [123, 124, 125] });
-dataProvider.getManyReference('comments', {
-    target: 'post_id',
-    id: 123,
-    sort: { field: 'created_at', order: 'DESC' }
-});
-dataProvider.create('posts', { data: { title: "hello, world" } });
-dataProvider.update('posts', {
-    id: 123,
-    data: { title: "hello, world!" },
-    previousData: { title: "previous title" }
-});
-dataProvider.updateMany('posts', {
-    ids: [123, 234],
-    data: { views: 0 },
-});
-dataProvider.delete('posts', {
-    id: 123,
-    previousData: { title: "hello, world" }
-});
-dataProvider.deleteMany('posts', { ids: [123, 234] });
+**Interface**
+```tsx
+interface GetListParams {
+    pagination: { page: number, perPage: number };
+    sort: { field: string, order: 'ASC' | 'DESC' };
+    filter: any;
+    meta?: any;
+}
+interface GetListResult {
+    data: Record[];
+    total?: number;
+    // if using partial pagination
+    pageInfo?: {
+        hasNextPage?: boolean;
+        hasPreviousPage?: boolean;
+    };
+}
+function getList(resource: string, params: GetListParams): Promise<GetListResult>
 ```
 
-**Tip**: If your API supports more request types, you can add more methods to the Data Provider (for instance to support upserts, aggregations, or Remote Procedure Call). React-admin won't call these methods directly, but you can call them in your own component thanks to the `useDataProvider` hook described in the [Querying the API](./Actions.md) documentation.
+**Example**
 
-## Response Format
-
-Data Providers methods must return a Promise for an object with a `data` property.
-
-| Method             | Response format                                                 |
-| ------------------ | --------------------------------------------------------------- |
-| `getList`          | `{ data: {Record[]}, total: {int} }`       |
-| `getOne`           | `{ data: {Record} }`                       |
-| `getMany`          | `{ data: {Record[]} }`                     |
-| `getManyReference` | `{ data: {Record[]}, total: {int} }`                            |
-| `create`           | `{ data: {Record} }`                                            |
-| `update`           | `{ data: {Record} }`                                            |
-| `updateMany`       | `{ data: {mixed[]} }` The ids which have been updated           |
-| `delete`           | `{ data: {Record} }` The record that has been deleted           |
-| `deleteMany`       | `{ data: {mixed[]} }` The ids of the deleted records (optional) |
-
-A `{Record}` is an object literal with at least an `id` property, e.g. `{ id: 123, title: "hello, world" }`.
-
-Building up on the previous example, here are example responses matching the format expected by react-admin:
-
-```js
+```jsx
+// find the first 5 posts whose author_id is 12, sorted by title
 dataProvider.getList('posts', {
     pagination: { page: 1, perPage: 5 },
     sort: { field: 'title', order: 'ASC' },
@@ -125,23 +77,99 @@ dataProvider.getList('posts', {
 //     ],
 //     total: 27
 // }
+```
 
+## `getOne`
+
+React-admin calls `dataProvider.getOne()` to fetch a single record by `id`.
+
+**Interface**
+
+```tsx
+interface GetOneParams {
+    id: Identifier;
+    meta?: any;
+}
+interface GetOneResult {
+    data: Record;
+}
+function getOne(resource: string, params: GetOneParams): Promise<GetOneResult>
+```
+
+**Example**
+
+```jsx
+// find post 123
 dataProvider.getOne('posts', { id: 123 })
 .then(response => console.log(response));
 // {
 //     data: { id: 123, title: "hello, world" }
 // }
+```
 
+## `getMany`
+
+React-admin calls `dataProvider.getMany()` to fetch several records at once using their `id`.
+
+**Interface**
+
+```tsx
+interface GetManyParams {
+    ids: Identifier[];
+    meta?: any;
+}
+interface GetManyResult {
+    data: Record[];
+}
+function getMany(resource: string, params: GetManyParams): Promise<GetManyResult>
+```
+
+**Example**
+
+```jsx
+// find posts 123, 124 and 125
 dataProvider.getMany('posts', { ids: [123, 124, 125] })
 .then(response => console.log(response));
 // {
 //     data: [
 //         { id: 123, title: "hello, world" },
-//         { id: 124, title: "good day sunshise" },
+//         { id: 124, title: "good day sunshine" },
 //         { id: 125, title: "howdy partner" },
 //     ]
 // }
+```
 
+## `getManyReference`
+
+React-admin calls `dataProvider.getManyReference()` to fetch several records related to another one.
+
+**Interface**
+
+```tsx
+interface GetManyReferenceParams {
+    target: string;
+    id: Identifier;
+    pagination: { page: number, perPage: number };
+    sort: { field: string, order: 'ASC' | 'DESC' };
+    filter: any;
+    meta?: any;
+}
+interface GetManyReferenceResult {
+    data: Record[];
+    total?: number;
+    // if using partial pagination
+    pageInfo?: {
+        hasNextPage?: boolean;
+        hasPreviousPage?: boolean;
+    };
+}
+function getManyReference(resource: string, params: GetManyReferenceParams): Promise<GetManyReferenceResult>
+```
+
+**Example**
+
+```jsx
+// find all comments related to post 123
 dataProvider.getManyReference('comments', {
     target: 'post_id',
     id: 123,
@@ -156,23 +184,93 @@ dataProvider.getManyReference('comments', {
 //     ],
 //     total: 2,
 // }
+```
 
+## `create`
+
+React-admin calls `dataProvider.create()` to create a new record.
+
+**Interface**
+
+```tsx
+interface CreateParams {
+    data: Partial<Record>;
+    meta?: any;
+}
+
+interface CreateResult {
+    data: Record;
+}
+function create(resource: string, params: CreateParams): Promise<CreateResult>
+```
+
+**Example**
+
+```jsx
+// create a new post with title "hello, world"
 dataProvider.create('posts', { data: { title: "hello, world" } })
 .then(response => console.log(response));
 // {
 //     data: { id: 450, title: "hello, world" }
 // }
+```
 
+## `update`
+
+React-admin calls `dataProvider.update()` to update a record.
+
+**Interface**
+
+```tsx
+interface UpdateParams {
+    id: Identifier;
+    data: Partial<Record>;
+    previousData: Record;
+    meta?: any;
+}
+interface UpdateResult {
+    data: Record;
+}
+function update(resource: string, params: UpdateParams): Promise<UpdateResult>
+```
+
+**Example**
+
+```jsx
+// update post 123 with title "hello, world!"
 dataProvider.update('posts', {
     id: 123,
     data: { title: "hello, world!" },
-    previousData: { title: "previous title" }
+    previousData: { id: 123, title: "previous title" }
 })
 .then(response => console.log(response));
 // {
 //     data: { id: 123, title: "hello, world!" }
 // }
+```
 
+## `updateMany`
+
+React-admin calls `dataProvider.updateMany()` to update several records by `id` with a unified changeset.
+
+**Interface**
+
+```tsx
+interface UpdateManyParams {
+    ids: Identifier[];
+    data: Partial<Record>;
+    meta?: any;
+}
+interface UpdateManyResult {
+    data: Identifier[];
+}
+function updateMany(resource: string, params: UpdateManyParams): Promise<UpdateManyResult>
+```
+
+**Example**
+
+```jsx
+// update posts 123 and 234 to set views to 0
 dataProvider.updateMany('posts', {
     ids: [123, 234],
     data: { views: 0 },
@@ -181,16 +279,61 @@ dataProvider.updateMany('posts', {
 // {
 //     data: [123, 234]
 // }
+```
 
+## `delete`
+
+React-admin calls `dataProvider.delete()` to delete a record by `id`.
+
+**Interface**
+
+```tsx
+interface DeleteParams {
+    id: Identifier;
+    previousData?: Record;
+    meta?: any;
+}
+interface DeleteResult {
+    data: Record;
+}
+function delete(resource: string, params: DeleteParams): Promise<DeleteResult>
+```
+
+**Example**
+
+```jsx
+// delete post 123
 dataProvider.delete('posts', {
     id: 123,
-    previousData: { title: "hello, world!" }
+    previousData: { id: 123, title: "hello, world!" }
 })
 .then(response => console.log(response));
 // {
 //     data: { id: 123, title: "hello, world" }
 // }
+```
 
+## `deleteMany`
+
+React-admin calls `dataProvider.deleteMany()` to delete several records by `id`.
+
+**Interface**
+
+```tsx
+interface DeleteManyParams {
+    ids: Identifier[];
+    meta?: any;
+}
+interface DeleteManyResult {
+    data: Identifier[];
+}
+function deleteMany(resource: string, params: DeleteManyParams): Promise<DeleteManyResult>
+```
+
+**Example**
+
+```jsx
+// delete posts 123 and 234
 dataProvider.deleteMany('posts', { ids: [123, 234] })
 .then(response => console.log(response));
 // {
@@ -272,6 +415,46 @@ export default {
     // ...
 };
 ```
+
+## The `meta` parameter
+
+All data provider methods accept a `meta` parameter. React-admin core components never set this `meta` when calling the data provider. It's designed to let you pass additional parameters to your data provider.
+
+For instance, you could pass an option to embed related records in the response:
+
+```jsx
+const { data, isLoading, error } = useGetOne(
+    'books',
+    { id, meta: { _embed: 'authors' } },
+);
+```
+
+It's up to you to use this `meta` parameter in your data provider.
+
+## `getList` and `getOne` Shared Cache
+
+A Data Provider should return the same shape in `getList` and `getOne` for a given resource. This is because react-admin uses "optimistic rendering", and renders the Edit and Show view *before* calling `dataProvider.getOne()` by reusing the response from `dataProvider.getList()` if the user has displayed the List view before. If your API has different shapes for a query for a unique record and for a query for a list of records, your Data Provider should make these records consistent in shape before returning them to react-admin.
+
+For instance, the following Data Provider returns more details in `getOne` than in `getList`:
+
+```jsx
+const { data } = await dataProvider.getList('posts', {
+    pagination: { page: 1, perPage: 5 },
+    sort: { field: 'title', order: 'ASC' },
+    filter: { author_id: 12 },
+})
+// [
+//   { id: 123, title: "hello, world", author_id: 12 },
+//   { id: 125, title: "howdy partner", author_id: 12 },
+//  ],
+
+const { data } = dataProvider.getOne('posts', { id: 123 })
+// {
+//     data: { id: 123, title: "hello, world", author_id: 12, body: 'Lorem Ipsum Sic Dolor Amet' }
+// }
+```
+
+This will cause the Edit view to blink on load. If you have this problem, modify your Data Provider to return the same shape for all methods. 
 
 ## Example REST Implementation
 
@@ -395,7 +578,7 @@ const apiUrl = 'https://my.api.com/';
 const httpClient = fetchUtils.fetchJson;
 
 export default {
-    getList: (resource, params) => {
+    getList: async (resource, params) => {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
         const query = {
@@ -404,27 +587,29 @@ export default {
             filter: JSON.stringify(params.filter),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
-
-        return httpClient(url).then(({ headers, json }) => ({
+        const { json, headers } = await httpClient(url);
+        return {
             data: json,
             total: parseInt(headers.get('content-range').split('/').pop(), 10),
-        }));
+        };
     },
 
-    getOne: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
-            data: json,
-        })),
+    getOne: async (resource, params) => {
+        const url = `${apiUrl}/${resource}/${params.id}`
+        const { json } = await httpClient(url);
+        return { data: json };
+    },
 
-    getMany: (resource, params) => {
+    getMany: async (resource, params) => {
         const query = {
             filter: JSON.stringify({ ids: params.ids }),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
-        return httpClient(url).then(({ json }) => ({ data: json }));
+        const { json } = await httpClient(url);
+        return { data: json };
     },
 
-    getManyReference: (resource, params) => {
+    getManyReference: async (resource, params) => {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
         const query = {
@@ -436,50 +621,60 @@ export default {
             }),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
-
-        return httpClient(url).then(({ headers, json }) => ({
+        const { json, headers } = await httpClient(url);
+        return {
             data: json,
             total: parseInt(headers.get('content-range').split('/').pop(), 10),
-        }));
+        };
     },
 
-    create: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}`, {
+    create: async (resource, params) => {
+        const { json } = await httpClient(`${apiUrl}/${resource}`, {
             method: 'POST',
             body: JSON.stringify(params.data),
-        }).then(({ json }) => ({
-            data: { ...params.data, id: json.id },
-        })),
-
-    update: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/${params.id}`, {
-            method: 'PUT',
-            body: JSON.stringify(params.data),
-        }).then(({ json }) => ({ data: json })),
-
-    updateMany: (resource, params) => {
-        const query = {
-            filter: JSON.stringify({ id: params.ids}),
-        };
-        return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
-            method: 'PUT',
-            body: JSON.stringify(params.data),
-        }).then(({ json }) => ({ data: json }));
+        })
+        return { data: { ...params.data, id: json.id } };
     },
 
-    delete: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/${params.id}`, {
-            method: 'DELETE',
-        }).then(({ json }) => ({ data: json })),
+    update: async (resource, params) => {
+        const url = `${apiUrl}/${resource}/${params.id}`;
+        const { json } = await httpClient(url, {
+            method: 'PUT',
+            body: JSON.stringify(params.data),
+        })
+        return { data: json };
+    },
 
-    deleteMany: (resource, params) => {
+    updateMany: async (resource, params) => {
         const query = {
             filter: JSON.stringify({ id: params.ids}),
         };
-        return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        const { json } = await httpClient(url, {
+            method: 'PUT',
+            body: JSON.stringify(params.data),
+        })
+        return { data: json };
+    },
+
+    delete: async (resource, params) => {
+        const url = `${apiUrl}/${resource}/${params.id}`;
+        const { json } = await httpClient(url, {
+            method: 'DELETE',
+        });
+        return { data: json };
+    },
+
+    deleteMany: async (resource, params) => {
+        const query = {
+            filter: JSON.stringify({ id: params.ids}),
+        };
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        const { json } = await httpClient(url, {
             method: 'DELETE',
             body: JSON.stringify(params.data),
-        }).then(({ json }) => ({ data: json }));
+        });
+        return { data: json };
     },
 };
 ```
