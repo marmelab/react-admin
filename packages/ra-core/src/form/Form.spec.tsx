@@ -4,6 +4,8 @@ import { useFormState, useFormContext } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import assert from 'assert';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
 
 import { CoreAdminContext } from '../core';
 import { Form } from './Form';
@@ -17,6 +19,8 @@ import {
     SanitizeEmptyValues,
     NullValue,
 } from './Form.stories';
+import { mergeTranslations } from '../i18n';
+import { de } from 'date-fns/locale';
 
 describe('Form', () => {
     const Input = props => {
@@ -667,72 +671,64 @@ describe('Form', () => {
         });
     });
 
+    const i18nProvider = polyglotI18nProvider(() =>
+        mergeTranslations(englishMessages, {
+            app: {
+                validation: { required: 'This field must be provided' },
+            },
+        })
+    );
     it('should support validation messages translations at the form level without warnings', async () => {
         const mock = jest.spyOn(console, 'error').mockImplementation(() => {});
-        render(<FormLevelValidation />);
+        const translate = jest.spyOn(i18nProvider, 'translate');
+        render(<FormLevelValidation i18nProvider={i18nProvider} />);
         fireEvent.click(screen.getByText('Submit'));
         await screen.findByText('Required');
         await screen.findByText('This field is required');
         await screen.findByText('This field must be provided');
         await screen.findByText('app.validation.missing');
         expect(mock).not.toHaveBeenCalledWith(
-            'Missing translation for key: "ra.validation.required"'
+            expect.stringContaining('Missing translation for key:')
         );
-        expect(mock).not.toHaveBeenCalledWith(
-            'Missing translation for key: "app.validation.required"'
-        );
-        expect(mock).not.toHaveBeenCalledWith(
-            'Warning: Missing translation for key: "This field is required"'
-        );
-        expect(mock).not.toHaveBeenCalledWith(
-            'Warning: Missing translation for key: "app.validation.missing"'
-        );
+        // Ensure we don't have double translations
+        expect(translate).not.toHaveBeenCalledWith('Required');
+        expect(translate).not.toHaveBeenCalledWith('This field is required');
         mock.mockRestore();
     });
 
     it('should support validation messages translations at the input level without warnings', async () => {
         const mock = jest.spyOn(console, 'error').mockImplementation(() => {});
-        render(<InputLevelValidation />);
+        const translate = jest.spyOn(i18nProvider, 'translate');
+        render(<InputLevelValidation i18nProvider={i18nProvider} />);
         fireEvent.click(screen.getByText('Submit'));
         await screen.findByText('Required');
         await screen.findByText('This field is required');
         await screen.findByText('This field must be provided');
         await screen.findByText('app.validation.missing');
         expect(mock).not.toHaveBeenCalledWith(
-            'Missing translation for key: "ra.validation.required"'
+            expect.stringContaining('Missing translation for key:')
         );
-        expect(mock).not.toHaveBeenCalledWith(
-            'Missing translation for key: "app.validation.required"'
-        );
-        expect(mock).not.toHaveBeenCalledWith(
-            'Warning: Missing translation for key: "This field is required"'
-        );
-        expect(mock).not.toHaveBeenCalledWith(
-            'Warning: Missing translation for key: "app.validation.missing"'
-        );
+        // Ensure we don't have double translations
+        expect(translate).not.toHaveBeenCalledWith('Required');
+        expect(translate).not.toHaveBeenCalledWith('This field is required');
         mock.mockRestore();
     });
 
     it('should support validation messages translations when using a custom resolver without warnings', async () => {
         const mock = jest.spyOn(console, 'error').mockImplementation(() => {});
-        render(<ZodResolver />);
+        const translate = jest.spyOn(i18nProvider, 'translate');
+        render(<ZodResolver i18nProvider={i18nProvider} />);
         fireEvent.click(screen.getByText('Submit'));
         await screen.findByText('Required');
         await screen.findByText('This field is required');
         await screen.findByText('This field must be provided');
         await screen.findByText('app.validation.missing');
         expect(mock).not.toHaveBeenCalledWith(
-            'Missing translation for key: "ra.validation.required"'
+            expect.stringContaining('Missing translation for key:')
         );
-        expect(mock).not.toHaveBeenCalledWith(
-            'Missing translation for key: "app.validation.required"'
-        );
-        expect(mock).not.toHaveBeenCalledWith(
-            'Warning: Missing translation for key: "This field is required"'
-        );
-        expect(mock).not.toHaveBeenCalledWith(
-            'Warning: Missing translation for key: "app.validation.missing"'
-        );
+        // Ensure we don't have double translations
+        expect(translate).not.toHaveBeenCalledWith('Required');
+        expect(translate).not.toHaveBeenCalledWith('This field is required');
         mock.mockRestore();
     });
 });

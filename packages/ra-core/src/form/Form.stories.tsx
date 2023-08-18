@@ -15,6 +15,7 @@ import { useInput } from './useInput';
 import { required } from './validate';
 import ValidationError from './ValidationError';
 import { mergeTranslations } from '../i18n';
+import { I18nProvider } from '../types';
 
 export default {
     title: 'ra-core/form/Form',
@@ -174,13 +175,17 @@ export const UndefinedValue = () => {
     );
 };
 
-const i18nProvider = polyglotI18nProvider(() =>
+const defaultI18nProvider = polyglotI18nProvider(() =>
     mergeTranslations(englishMessages, {
         app: { validation: { required: 'This field must be provided' } },
     })
 );
 
-export const FormLevelValidation = () => {
+export const FormLevelValidation = ({
+    i18nProvider = defaultI18nProvider,
+}: {
+    i18nProvider?: I18nProvider;
+}) => {
     const [submittedData, setSubmittedData] = React.useState<any>();
     return (
         <CoreAdminContext i18nProvider={i18nProvider}>
@@ -217,7 +222,11 @@ export const FormLevelValidation = () => {
     );
 };
 
-export const InputLevelValidation = () => {
+export const InputLevelValidation = ({
+    i18nProvider = defaultI18nProvider,
+}: {
+    i18nProvider?: I18nProvider;
+}) => {
     const [submittedData, setSubmittedData] = React.useState<any>();
     return (
         <CoreAdminContext i18nProvider={i18nProvider}>
@@ -258,7 +267,11 @@ const zodSchema = z.object({
     }),
 });
 
-export const ZodResolver = () => {
+export const ZodResolver = ({
+    i18nProvider = defaultI18nProvider,
+}: {
+    i18nProvider?: I18nProvider;
+}) => {
     const [result, setResult] = React.useState<any>();
     return (
         <CoreAdminContext i18nProvider={i18nProvider}>
