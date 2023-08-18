@@ -3,6 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     Basic,
     ErrorState,
+    LoadingState,
     WithFilter,
     WithLimit,
     WithQueryFilter,
@@ -95,5 +96,11 @@ describe('<PrevNextButtons />', () => {
         render(<ErrorState />);
         await screen.findByRole('progressbar');
         expect(screen.getByText('error')).toBeDefined();
+    });
+
+    it('should render a loading UI in case of slow data provider response', async () => {
+        render(<LoadingState />);
+        const progress = await screen.findByRole('progressbar');
+        expect(progress).toBeDefined();
     });
 });

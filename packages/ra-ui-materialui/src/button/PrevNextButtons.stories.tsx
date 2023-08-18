@@ -364,3 +364,17 @@ export const ErrorState = () => (
         </ResourceContext.Provider>
     </AdminContext>
 );
+
+export const LoadingState = () => (
+    <AdminContext
+        dataProvider={testDataProvider({
+            getList: () => new Promise(() => {}),
+        })}
+    >
+        <ResourceContext.Provider value="customers">
+            <RecordContextProvider value={data.customers[0]}>
+                <PrevNextButtons />
+            </RecordContextProvider>
+        </ResourceContext.Provider>
+    </AdminContext>
+);

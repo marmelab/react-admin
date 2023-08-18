@@ -8,7 +8,7 @@ import {
 import { NavigateBefore, NavigateNext } from '@mui/icons-material';
 import ErrorIcon from '@mui/icons-material/Error';
 import { Link } from 'react-router-dom';
-import { CircularProgress, IconButton, SxProps, styled } from '@mui/material';
+import { IconButton, LinearProgress, SxProps, styled } from '@mui/material';
 import clsx from 'clsx';
 
 /**
@@ -104,7 +104,7 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
     const translate = useTranslate();
 
     if (isLoading) {
-        return <CircularProgress size={14} />;
+        return <LinearProgress />;
     }
     if (error) {
         return (
