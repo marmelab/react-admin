@@ -787,7 +787,7 @@ const App = () => (
 
 If you want to support both a light and a dark theme, check out [the `<Admin darkTheme>` prop](#darktheme). 
 
-For more details on predefined themes and custom themes, refer to [the Application Theme chapter](./AppTheme.md).
+For more details on predefined and custom themes, refer to [the Application Theme chapter](./AppTheme.md).
 
 ## `title`
 

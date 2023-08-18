@@ -24,7 +24,7 @@ The following example shows how to change the color, decoration, width, and font
 
 {% raw %}
 ```jsx
-import { Datagrid, TextField } from 'react-admin';
+import { Datagrid, TextField, List, DateField, ReferenceManyCount, BooleanField } from 'react-admin';
 
 const PostList = () => (
     <List>
@@ -122,7 +122,7 @@ The application theme lets you customize color, typography, spacing, and compone
 
 ## Customizing The Page Layout
 
-React-admin provides alternative layout components. For instance, you can replace the default `<Layout>`, which uses a sidebar for navigation, with a `<ContainerLayout>`, which uses a top bar instead.
+React-admin provides alternative layout components. For instance, you can replace the default `<Layout>`, which uses a sidebar for navigation, with a [`<ContainerLayout>`](./ContainerLayout.md), which uses a top bar instead.
 
 ![Container layout](https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/container-layout.png)
 

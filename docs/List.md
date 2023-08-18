@@ -152,7 +152,7 @@ The default `<List>` layout lets you render the component of your choice on the 
 
 ![List with aside](./img/list_aside.webp)
 
-PAss a React element as the  `aside` prop for that purpose:
+Pass a React element as the `aside` prop for that purpose:
 
 {% raw %}
 ```jsx

@@ -296,7 +296,7 @@ const MyAppBar = () => <AppBar userMenu={<MyUserMenu />} />;
 ```
 {% endraw %}
 
-Finally, can hide the user menu by setting the `userMenu` prop to `false`.
+Finally, you can hide the user menu by setting the `userMenu` prop to `false`.
 
 ```jsx
 const MyAppBar = () => <AppBar userMenu={false} />;

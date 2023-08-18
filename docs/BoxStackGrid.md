@@ -99,7 +99,7 @@ To learn more, read the [Material-UI Box documentation](https://mui.com/material
 
 ## `<Stack>`
 
-`<Stack>` is a container component for arranging elements vertically or horizontally. use it whenever you need to lay out elements in a column or a row.
+`<Stack>` is a container component for arranging elements vertically or horizontally. Use it whenever you need to lay out elements in a column or a row.
 
 ![Stack](./img/stack.webp)
 

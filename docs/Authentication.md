@@ -298,7 +298,7 @@ By default, the login page displays a gradient background. If you just want to c
 
 ```jsx
 // in src/MyLoginPage.js
-import {  Login } from 'react-admin';
+import { Login } from 'react-admin';
 
 const MyLoginPage = () => (
     <Login
@@ -308,7 +308,7 @@ const MyLoginPage = () => (
 );
 ```
 
-If you want to build a Login page from scratch, you'll need the `useLogin` hook.
+If you want to build a Login page from scratch, you'll need the [`useLogin` hook](./useLogin.md).
 
 ```jsx
 // in src/MyLoginPage.js
