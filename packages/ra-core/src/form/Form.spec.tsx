@@ -10,8 +10,13 @@ import { Form } from './Form';
 import { useNotificationContext } from '../notification';
 import { useInput } from './useInput';
 import { required } from './validate';
-import { SanitizeEmptyValues } from './Form.stories';
-import { NullValue } from './Form.stories';
+import {
+    FormLevelValidation,
+    InputLevelValidation,
+    ZodResolver,
+    SanitizeEmptyValues,
+    NullValue,
+} from './Form.stories';
 
 describe('Form', () => {
     const Input = props => {
@@ -660,5 +665,74 @@ describe('Form', () => {
         await waitFor(() => {
             expect(validate).toHaveBeenCalled();
         });
+    });
+
+    it('should support validation messages translations at the form level without warnings', async () => {
+        const mock = jest.spyOn(console, 'error').mockImplementation(() => {});
+        render(<FormLevelValidation />);
+        fireEvent.click(screen.getByText('Submit'));
+        await screen.findByText('Required');
+        await screen.findByText('This field is required');
+        await screen.findByText('This field must be provided');
+        await screen.findByText('app.validation.missing');
+        expect(mock).not.toHaveBeenCalledWith(
+            'Missing translation for key: "ra.validation.required"'
+        );
+        expect(mock).not.toHaveBeenCalledWith(
+            'Missing translation for key: "app.validation.required"'
+        );
+        expect(mock).toHaveBeenCalledWith(
+            'Warning: Missing translation for key: "This field is required"'
+        );
+        expect(mock).toHaveBeenCalledWith(
+            'Warning: Missing translation for key: "app.validation.missing"'
+        );
+        mock.mockRestore();
+    });
+
+    it('should support validation messages translations at the input level without warnings', async () => {
+        const mock = jest.spyOn(console, 'error').mockImplementation(() => {});
+        render(<InputLevelValidation />);
+        fireEvent.click(screen.getByText('Submit'));
+        await screen.findByText('Required');
+        await screen.findByText('This field is required');
+        await screen.findByText('This field must be provided');
+        await screen.findByText('app.validation.missing');
+        expect(mock).not.toHaveBeenCalledWith(
+            'Missing translation for key: "ra.validation.required"'
+        );
+        expect(mock).not.toHaveBeenCalledWith(
+            'Missing translation for key: "app.validation.required"'
+        );
+        expect(mock).toHaveBeenCalledWith(
+            'Warning: Missing translation for key: "This field is required"'
+        );
+        expect(mock).toHaveBeenCalledWith(
+            'Warning: Missing translation for key: "app.validation.missing"'
+        );
+        mock.mockRestore();
+    });
+
+    it('should support validation messages translations when using a custom resolver without warnings', async () => {
+        const mock = jest.spyOn(console, 'error').mockImplementation(() => {});
+        render(<ZodResolver />);
+        fireEvent.click(screen.getByText('Submit'));
+        await screen.findByText('Required');
+        await screen.findByText('This field is required');
+        await screen.findByText('This field must be provided');
+        await screen.findByText('app.validation.missing');
+        expect(mock).not.toHaveBeenCalledWith(
+            'Missing translation for key: "ra.validation.required"'
+        );
+        expect(mock).not.toHaveBeenCalledWith(
+            'Missing translation for key: "app.validation.required"'
+        );
+        expect(mock).toHaveBeenCalledWith(
+            'Warning: Missing translation for key: "This field is required"'
+        );
+        expect(mock).toHaveBeenCalledWith(
+            'Warning: Missing translation for key: "app.validation.missing"'
+        );
+        mock.mockRestore();
     });
 });
