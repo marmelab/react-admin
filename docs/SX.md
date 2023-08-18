@@ -238,7 +238,7 @@ You can use pseudo-classes to style a component only when it's in a specific sta
 ```
 {% endraw %}
 
-Common pseudo-classes used for styling are `:hover`, `:disabled`, `:active`, `:focus`, `:first-child`, `:last-child`. Check [the list of CDD pseudo classes](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes) for more information.
+Common pseudo-classes used for styling are `:hover`, `:disabled`, `:active`, `:focus`, `:first-child`, `:last-child`. Check [the list of CSS pseudo classes](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes) for more information.
 
 ## Styling Children
 
