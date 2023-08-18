@@ -9,10 +9,9 @@ import {
 } from 'ra-core';
 import {
     AdminUI,
-    Datagrid,
     Edit,
     EditButton,
-    List,
+    ListGuesser,
     PrevNextButtons,
     Show,
     ShowButton,
@@ -76,9 +75,6 @@ const defaultInputs = [
     <TextInput source="city" key="city" />,
 ];
 
-const DefaultDataGrid = () => (
-    <Datagrid rowClick="edit">{defaultFields}</Datagrid>
-);
 const DefaultSimpleForm = () => (
     <SimpleForm warnWhenUnsavedChanges>{defaultInputs}</SimpleForm>
 );
@@ -92,11 +88,7 @@ export const Basic = () => (
             <AdminUI>
                 <Resource
                     name="customers"
-                    list={
-                        <List>
-                            <DefaultDataGrid />
-                        </List>
-                    }
+                    list={<ListGuesser />}
                     edit={
                         <Edit
                             redirect={false}
@@ -133,11 +125,7 @@ export const WithStoreKey = () => (
             <AdminUI>
                 <Resource
                     name="customers"
-                    list={
-                        <List storeKey="withStoreKey">
-                            <DefaultDataGrid />
-                        </List>
-                    }
+                    list={<ListGuesser storeKey="withStoreKey" />}
                     edit={
                         <Edit
                             redirect={false}
@@ -179,12 +167,10 @@ export const WithFilter = () => (
                 <Resource
                     name="customers"
                     list={
-                        <List
+                        <ListGuesser
                             filter={{ q: 'East a' }}
                             sort={{ field: 'first_name', order: 'DESC' }}
-                        >
-                            <DefaultDataGrid />
-                        </List>
+                        />
                     }
                     edit={
                         <Edit
@@ -237,7 +223,7 @@ export const WithQueryFilter = () => (
                 <Resource
                     name="customers"
                     list={
-                        <List
+                        <ListGuesser
                             filters={[
                                 <TextInput
                                     label="Search"
@@ -245,9 +231,7 @@ export const WithQueryFilter = () => (
                                     alwaysOn
                                 />,
                             ]}
-                        >
-                            <DefaultDataGrid />
-                        </List>
+                        />
                     }
                     edit={
                         <Edit
@@ -286,11 +270,7 @@ export const WithLimit = () => (
             <AdminUI>
                 <Resource
                     name="customers"
-                    list={
-                        <List>
-                            <DefaultDataGrid />
-                        </List>
-                    }
+                    list={<ListGuesser />}
                     edit={
                         <Edit
                             redirect={false}
