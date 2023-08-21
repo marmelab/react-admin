@@ -15,15 +15,24 @@ A data provider must implement the following methods:
 
 ```jsx
 const dataProvider = {
-    getList:    (resource, params) => Promise, // get a list of records based on sort, filter, and pagination
-    getOne:     (resource, params) => Promise, // get a single record by id
-    getMany:    (resource, params) => Promise, // get a list of records based on an array of ids
-    getManyReference: (resource, params) => Promise, // get the records referenced to another record, e.g. comments for a post
-    create:     (resource, params) => Promise, // create a record
-    update:     (resource, params) => Promise, // update a record based on a patch
-    updateMany: (resource, params) => Promise, // update a list of records based on an array of ids and a common patch
-    delete:     (resource, params) => Promise, // delete a record by id
-    deleteMany: (resource, params) => Promise, // delete a list of records based on an array of ids
+    // get a list of records based on sort, filter, and pagination
+    getList:    (resource, params) => Promise,
+    // get a single record by id
+    getOne:     (resource, params) => Promise, 
+    // get a list of records based on an array of ids
+    getMany:    (resource, params) => Promise, 
+    // get the records referenced to another record, e.g. comments for a post
+    getManyReference: (resource, params) => Promise, 
+    // create a record
+    create:     (resource, params) => Promise, 
+    // update a record based on a patch
+    update:     (resource, params) => Promise, 
+    // update a list of records based on an array of ids and a common patch
+    updateMany: (resource, params) => Promise, 
+    // delete a record by id
+    delete:     (resource, params) => Promise, 
+    // delete a list of records based on an array of ids
+    deleteMany: (resource, params) => Promise, 
 }
 ```
 
@@ -416,7 +425,7 @@ export default {
 };
 ```
 
-## The `meta` parameter
+## The `meta` Parameter
 
 All data provider methods accept a `meta` parameter. React-admin core components never set this `meta` when calling the data provider. It's designed to let you pass additional parameters to your data provider.
 
