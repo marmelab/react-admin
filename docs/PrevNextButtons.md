@@ -362,7 +362,7 @@ export const CustomerShow = () => (
 ```
 {% endraw %}
 
-## Navigating Through Records In`<Edit>` Views After Submit
+## Navigating Through Records In `<Edit>` Views After Submit
 
 Let's says users want to edit customer records and to navigate between records in the `<Edit>` view. The default react-admin behaviors causes two problems: 
 - when they save a record the user is redirected to the `<List>` view,
@@ -390,3 +390,11 @@ export const CustomerEdit = () => (
 );
 ```
 {% endraw %}
+
+## Performance
+
+This components tries to avoid fetching the API to determine the previous and next item link. It does so by inspecting the cache of the list view. If the user has already rendered the list view for the current resource, `<PrevNextButtons>` will not need to call the `dataProvider` at all. 
+
+However, if the user has never displayed a list view, or if the current record is outside of the boundaries of the list view cache, `<PrevNextButtons>` will have to **fetch the entire list of records** for the current resource to determine the previous and next item link. This can be costly in terms of server and network performance. 
+
+If this is a problem, use [the `limit` prop](#limit) to limit the number of records fetched from the API. You can also pass a `meta` parameter to select only the `id` field in the records.
