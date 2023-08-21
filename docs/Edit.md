@@ -748,7 +748,7 @@ export default OrderEdit;
 
 ## Navigating Through Records
 
-[`<PrevNextButtons`](./PrevNextButtons.md) component render a navigation with two buttons, allowing users to navigate through records directly into an `<Edit>` view. 
+[`<PrevNextButtons`](./PrevNextButtons.md) renders a navigation with two buttons, allowing users to navigate through records without leaving an `<Edit>` view. 
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/prev-next-buttons-edit.webm" type="video/webm" />
@@ -772,4 +772,4 @@ export const PostEdit = () => (
 );
 ```
 
-**Tips:** If you want users to be warned if they haven't pressed the Save button while they trying to browse, you can follow this section[Navigating Through Records In`<Edit>` Views](./PrevNextButtons.md#navigating-through-records-inedit-views-after-submit) 
+**Tips:** If you want users to be warned if they haven't pressed the Save button when they browse to another record, you can follow the tutorial [Navigating Through Records In`<Edit>` Views](./PrevNextButtons.md#navigating-through-records-inedit-views-after-submit).

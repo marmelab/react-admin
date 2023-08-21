@@ -8,6 +8,7 @@ import {
     WithLimit,
     WithQueryFilter,
 } from './PrevNextButtons.stories';
+
 describe('<PrevNextButtons />', () => {
     beforeEach(() => {
         window.scrollTo = jest.fn();

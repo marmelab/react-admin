@@ -10,12 +10,12 @@ import { useCreatePath } from '../routing';
 /**
  * A hook used to fetch the previous and next record identifiers for a given record and resource.
  *
- * It fetchs the list of records according to the filters
- * and the sort order configured in the list and
- * merges the filters and the sorting order passed into props.
+ * It fetches the list of records according to the filters
+ * and the sort order configured in the list, and merges
+ * the filters and the sorting order passed as props.
  *
- * `usePrevNextController` should be used anywhere a record context is provided
- * (eg: often inside a `<Show>` or `<Edit>` component).
+ * usePrevNextController can be used anywhere a record context is provided
+ * (often inside a `<Show>` or `<Edit>` component).
  *
  * @example <caption>Simple usage</caption>
  *

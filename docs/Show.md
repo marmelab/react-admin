@@ -492,7 +492,7 @@ It shows a notification and refreshes the page when the record is updated by ano
 
 ## Navigating Through Records
 
-[`<PrevNextButtons`](./PrevNextButtons.md) component render a navigation with two buttons, allowing users to navigate through records directly into an `<Show>` view. 
+The [`<PrevNextButtons`](./PrevNextButtons.md) renders a navigation with two buttons, allowing users to navigate through records without leaving a `<Show>` view. 
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/prev-next-buttons-show.webm" type="video/webm" />
@@ -516,7 +516,7 @@ export const PostShow = () => (
 );
 ```
 
-**Tips:** If you want `<PrevNextButtons>` navigate through `<Show>` view, you have to set the `linkType` to `show`. [See `<PrevNextButtons>` `linkType` prop](./PrevNextButtons.md##linktype) 
+**Tips:** If you want the `<PrevNextButtons>` to link to the `<Show>` view, you have to set the `linkType` to `show`. See [the `<PrevNextButtons linkType>` prop](./PrevNextButtons.md##linktype).
 
 ## API
 

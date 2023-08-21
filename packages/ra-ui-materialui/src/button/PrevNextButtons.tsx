@@ -14,13 +14,14 @@ import clsx from 'clsx';
 /**
  * A component used to render the previous and next buttons in a Show or Edit view.
  *
- * The `<PrevNextButtons>` component renders navigation buttons to navigate to the next or previous record
- * of a resource, with the current index and the total records, in an edit or show view.
+ * The `<PrevNextButtons>` component renders navigation buttons linking to
+ * the next and previous records of the current resource, the current index
+ * and the total number of records.
  *
- * It uses `usePrevNextController` to fetch the list of records.
+ * It uses usePrevNextController to fetch the list of records.
  *
  * `<PrevNextButtons>` can be used anywhere a record context is provided
- * (eg: often inside a `<Show>` or `<Edit>` component).
+ * (often inside a `<Show>` or `<Edit>` component).
  *
  * @example <caption>navigate to edit view by default</caption>
  * <ShowButton />
