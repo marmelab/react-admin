@@ -1,4 +1,4 @@
-import { UseQueryOptions, useQuery } from 'react-query';
+import { UseQueryOptions, useQuery, useQueryClient } from 'react-query';
 import { useResourceContext } from '../core';
 import { useDataProvider } from '../dataProvider';
 import { useStore } from '../store';
@@ -125,7 +125,7 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
         );
     }
 
-    const [storedParams] = useStore<StoredParams>(
+    const [storedParams] = useStore<Partial<ListParams>>(
         storeKey || `${resource}.listParams`,
         {
             filter: filterDefaultValues,
@@ -135,6 +135,7 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
     );
 
     const dataProvider = useDataProvider();
+    const queryClient = useQueryClient();
     const pagination = { page: 1, perPage: limit };
     const sort = {
         field: storedParams.sort,
@@ -142,27 +143,58 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
     };
     const filter = { ...storedParams.filter, ...permanentFilter };
     const { meta, ...otherQueryOptions } = queryOptions;
-    const { data, error, isLoading } = useQuery(
-        [resource, 'getList', { pagination, sort, filter, meta }],
-        () =>
-            dataProvider.getList(resource, {
-                sort,
-                filter,
-                pagination,
-                meta,
-            }),
-        otherQueryOptions
+    const params = { pagination, sort, filter, meta };
+
+    // try to use data from the cache first
+    const queryData = queryClient.getQueryData<{
+        data: RaRecord[];
+        total: number;
+    }>([
+        resource,
+        'getList',
+        {
+            ...params,
+            pagination: {
+                page: storedParams.page,
+                perPage: storedParams.perPage,
+            },
+        },
+    ]);
+    const recordIndexInQueryData = queryData?.data?.findIndex(
+        r => r.id === record?.id
     );
+    const isRecordIndexFirstInNonFirstPage =
+        recordIndexInQueryData === 0 && storedParams.page > 1;
+    const isRecordIndexLastInNonLastPage =
+        recordIndexInQueryData === queryData?.data?.length - 1 &&
+        storedParams.page < queryData?.total / storedParams.perPage;
+    const canUseCacheData =
+        record &&
+        queryData?.data &&
+        recordIndexInQueryData !== -1 &&
+        !isRecordIndexFirstInNonFirstPage &&
+        !isRecordIndexLastInNonLastPage;
+
+    // If the previous and next ids are not in the cache, fetch the entire list.
+    // This is necessary e.g. when coming directly to a detail page,
+    // without displaying the list first
+    const { data, error, isLoading } = useQuery(
+        [resource, 'getList', params],
+        () => dataProvider.getList(resource, params),
+        {
+            enabled: !canUseCacheData,
+            ...otherQueryOptions,
+        }
+    );
+
+    let finalData = canUseCacheData ? queryData.data : data?.data || [];
 
     if (!record) return null;
 
-    const ids = data && data.data ? data.data?.map(record => record.id) : [];
-
+    const ids = finalData.map(record => record.id);
     const index = ids.indexOf(record.id);
-
     const previousId =
         typeof ids[index - 1] !== 'undefined' ? ids[index - 1] : null; // could be 0
-
     const nextId =
         index !== -1 && index < ids.length - 1 ? ids[index + 1] : null;
 
@@ -186,7 +218,7 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
                   })
                 : undefined,
         index: index === -1 ? undefined : index,
-        total: data?.total,
+        total: canUseCacheData ? queryData?.total : data?.total,
         error,
         isLoading,
     };
@@ -220,5 +252,3 @@ export interface UsePrevNextControllerResult {
     error?: any;
     isLoading: boolean;
 }
-
-type StoredParams = Pick<ListParams, 'filter' | 'order' | 'sort'>;
