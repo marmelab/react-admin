@@ -1,6 +1,6 @@
 import { UseQueryOptions, useQuery } from 'react-query';
 import { useResourceContext } from '../core';
-import { useDataProvider, useGetList } from '../dataProvider';
+import { useDataProvider } from '../dataProvider';
 import { useStore } from '../store';
 import { FilterPayload, RaRecord, SortPayload } from '../types';
 import { ListParams, SORT_ASC } from './list';
