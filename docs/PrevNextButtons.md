@@ -5,7 +5,7 @@ title: "The PrevNextButtons Component"
 
 # `<PrevNextButtons>`
 
-The `<PrevNextButtons>` component renders navigation buttons to move to the next or previous record of a resource, in an [Edit](./Edit.md) or [Show](./Show.md) view. It also renders the current index and the total number of records.
+The `<PrevNextButtons>` component renders navigation buttons linking to the next or previous record of a resource. It also renders the current index and the total number of records.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/prev-next-buttons.webm" type="video/webm" />
@@ -13,7 +13,7 @@ The `<PrevNextButtons>` component renders navigation buttons to move to the next
   Your browser does not support the video tag.
 </video>
 
-`<PrevNextButtons>` can be used anywhere a [`RecordContext`](./Architecture.md#context-pull-dont-push) is provided (eg: often inside a `<Show>` or `<Edit>` component).
+`<PrevNextButtons>` can be used anywhere a [`RecordContext`](./Architecture.md#context-pull-dont-push) is provided (e.g. in an [Edit](./Edit.md) or [Show](./Show.md) view).
 
 ## Usage
 
