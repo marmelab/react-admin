@@ -13,7 +13,7 @@ The `Datagrid` component renders a list of records as a table. It is usually use
 
 `<Datagrid>` renders as many columns as it receives `<Field>` children. It uses the field `label` as column header (or, for fields with no `label`, the field `source`).
 
-```jsx
+```tsx
 // in src/posts.js
 import * as React from "react";
 import { List, Datagrid, TextField, EditButton } from 'react-admin';
@@ -65,44 +65,71 @@ By default, `<Datagrid>` renders its body using `<DatagridBody>`, an internal re
 
 For instance, the `<Datagrid isRowSelectable>` prop allows to disable the selection checkbox for some records. To *hide* checkboxes instead of disabling them, you can override `<DatagridRow>` and `<DatagridBody>` as follows:
 
-```jsx
+```tsx
 // in src/PostList.js
-import { Datagrid, DatagridBody, List, TextField, RecordContextProvider } from 'react-admin';
-import { TableCell, TableRow, Checkbox } from '@mui/material';
+import * as React from "react";
+import {
+	Datagrid,
+	DatagridBody,
+	List,
+	TextField,
+	RecordContextProvider,
+	DatagridRowProps,
+	DatagridBodyProps,
+	DatagridProps,
+	FieldProps,
+} from "react-admin";
+import { TableCell, TableRow, Checkbox } from "@mui/material";
 
-const MyDatagridRow = ({ record, id, onToggleItem, children, selected, selectable }) => (
-    <RecordContextProvider value={record}>
-        <TableRow>
-            {/* first column: selection checkbox */}
-            <TableCell padding="none">
-                {selectable && (
-                     <Checkbox
-                         checked={selected}
-                         onClick={event => onToggleItem(id, event)}
-                     />
-                )}
-            </TableCell>            
-            {/* data columns based on children */}
-            {React.Children.map(children, field => (
-                <TableCell key={`${id}-${field.props.source}`}>
-                    {field}
-                </TableCell>
-            ))}
-        </TableRow>
-    </RecordContextProvider>
+const MyDatagridRow = ({
+	record,
+	id,
+	onToggleItem,
+	children,
+	selected,
+	selectable,
+}: DatagridRowProps) =>
+	id ? (
+		<RecordContextProvider value={record}>
+			<TableRow>
+				{/* first column: selection checkbox */}
+				<TableCell padding="none">
+					{selectable && (
+						<Checkbox
+							checked={selected}
+							onClick={(event) => {
+								if (onToggleItem) {
+									onToggleItem(id, event);
+								}
+							}}
+						/>
+					)}
+				</TableCell>
+				{/* data columns based on children */}
+				{React.Children.map(children, (field) =>
+					React.isValidElement<FieldProps>(field) && field.props.source ? (
+						<TableCell key={`${id}-${field.props.source}`}>{field}</TableCell>
+					) : null
+				)}
+			</TableRow>
+		</RecordContextProvider>
+	) : null;
+
+const MyDatagridBody = (props: DatagridBodyProps) => (
+	<DatagridBody {...props} row={<MyDatagridRow />} />
+);
+const MyDatagrid = (props: DatagridProps) => (
+	<Datagrid {...props} body={<MyDatagridBody />} />
 );
 
-const MyDatagridBody = props => <DatagridBody {...props} row={<MyDatagridRow />} />;
-const MyDatagrid = props => <Datagrid {...props} body={<MyDatagridBody />} />;
-
 const PostList = () => (
-    <List>
-        <MyDatagrid>
-            <TextField source="title" />
-            ...
-        </MyDatagrid>
-    </List>
-)
+	<List>
+		<MyDatagrid>
+			<TextField source="title" />
+			...
+		</MyDatagrid>
+	</List>
+);
 
 export default PostList;
 ```
@@ -117,9 +144,9 @@ export default PostList;
 
 Bulk action buttons are buttons that affect several records at once, like mass deletion for instance. In the `<Datagrid>` component, the bulk actions toolbar appears when a user ticks the checkboxes in the first column of the table. The user can then choose a button from the bulk actions toolbar. By default, all Datagrids have a single bulk action button, the bulk delete button. You can add other bulk action buttons by passing a custom element as the `bulkActionButtons` prop of the `<Datagrid>` component:
 
-```jsx
+```tsx
 import { Button } from '@mui/material';
-import { Datagrid, BulkDeleteButton } from 'react-admin';
+import { List, Datagrid, BulkDeleteButton } from 'react-admin';
 
 import ResetViewsButton from './ResetViewsButton';
 
@@ -157,7 +184,7 @@ Bulk action button components can use the [`useListContext`](./useListContext.md
 
 Here is an example of custom bulk action button, which sets the `views` property of all posts to `0`:
 
-```jsx
+```tsx
 // in ./ResetViewsButton.js
 import { VisibilityOff } from '@mui/icons-material';
 import { BulkUpdateButton } from 'react-admin';
@@ -187,7 +214,7 @@ const ResetViewsButton = () => (
 
 But let's say you need a customized bulkAction button. Here is an example leveraging the `useUpdateMany` hook, which sets the `views` property of all posts to `0`:
 
-```jsx
+```tsx
 // in ./CustomResetViewsButton.js
 import {
     useListContext,
@@ -213,7 +240,7 @@ const CustomResetViewsButton = () => {
                 notify('Posts updated');
                 unselectAll();
             },
-            onError: error => notify('Error: posts not updated', { type: 'error' }),
+            onError: () => notify('Error: posts not updated', { type: 'error' }),
         }
     );
 
@@ -233,7 +260,7 @@ export default CustomResetViewsButton;
 
 But most of the time, bulk actions are mini-applications with a standalone user interface (in a Dialog). Here is the same `<CustomResetViewsAction>` implemented behind a confirmation dialog:
 
-```jsx
+```tsx
 // in ./CustomResetViewsButton.js
 import { useState } from 'react';
 import {
@@ -352,7 +379,7 @@ What's a Field component? Simply a component that reads the record (via `useReco
 
 You can even create your own field components.
 
-```jsx
+```tsx
 // in src/users.js
 import * as React from 'react';
 import { useRecordContext, List, Datagrid, TextField, DateField } from 'react-admin';
@@ -383,7 +410,7 @@ It's possible that a Datagrid will have no records to display. If the Datagrid's
 
 You can customize the empty state by passing  a component to the `empty` prop:
 
-```jsx
+```tsx
 const CustomEmpty = () => <div>No books found</div>;
 
 const PostList = () => (
@@ -411,7 +438,7 @@ To show more data from the resource without adding too many columns, you can sho
 For instance, this code shows the `body` of a post in an expandable panel:
 
 {% raw %}
-```jsx
+```tsx
 import { useRecordContext } from 'react-admin';
 
 const PostPanel = () => {
@@ -438,7 +465,7 @@ The `expand` prop expects a React element as value. When the user chooses to exp
 
 **Tip**: You can actually use a Show Layout component for the `expand` prop:
 
-```jsx
+```tsx
 const PostShow = () => (
     <SimpleShowLayout>
         <RichTextField source="body" />
@@ -460,7 +487,7 @@ const PostList = () => (
 
 **Tip**: You can go one step further and use an `<Edit>` view as `expand` component:
 
-```jsx
+```tsx
 const PostEdit = () => {
     const record = useRecordContext();
     const resource = useResourceContext();
@@ -495,7 +522,7 @@ const PostList = () => (
 
 By default, when using [an `expand` panel](#expand), users can expand as many rows as they want. The `expandSingle` prop changes that behavior: when a user clicks on the expand button of a row, other expanded rows collapse. As a consequence, only a single row can be expanded at a time.
 
-```jsx
+```tsx
 export const PostList = () => (
     <List>
         <Datagrid expand={<PostPanel />} expandSingle>
@@ -512,28 +539,29 @@ By default, `<Datagrid>` renders the table head using `<DatagridHeader>`, an int
 
 For instance, here is a simple datagrid header that displays column names with no sort and no "select all" button:
 
-```jsx
-import { TableHead, TableRow, TableCell } from '@mui/material';
+```tsx
+import { TableHead, TableRow, TableCell } from "@mui/material";
+import { Children, isValidElement } from "react";
+import { DatagridHeaderProps, FieldProps, List, Datagrid } from "react-admin";
 
-const DatagridHeader = ({ children }) => (
-    <TableHead>
-        <TableRow>
-            <TableCell></TableCell> {/* empty cell to account for the select row checkbox in the body */}
-            {Children.map(children, child => (
-                <TableCell key={child.props.source}>
-                    {child.props.source}
-                </TableCell>
-            ))}
-        </TableRow>
-    </TableHead>
+const DatagridHeader = ({ children }: DatagridHeaderProps) => (
+	<TableHead>
+		<TableRow>
+			<TableCell></TableCell>{" "}
+			{/* empty cell to account for the select row checkbox in the body */}
+			{Children.map(children, (child) =>
+				isValidElement<FieldProps>(child) ? (
+					<TableCell key={child.props.source}>{child.props.source}</TableCell>
+				) : null
+			)}
+		</TableRow>
+	</TableHead>
 );
 
 const PostList = () => (
-    <List>
-        <Datagrid header={<DatagridHeader />}>
-            {/* ... */}
-        </Datagrid>
-    </List>
+	<List>
+		<Datagrid header={<DatagridHeader />}>{/* ... */}</Datagrid>
+	</List>
 );
 ```
 
@@ -543,7 +571,7 @@ const PostList = () => (
 
 By default, the rows of the datagrid are highlighted when the user hovers over them. To disable this behavior, set the `hover` prop to `false`.
 
-```jsx
+```tsx
 const PostList = () => (
     <List>
         <Datagrid hover={false}>
@@ -561,7 +589,7 @@ You can customize which rows can have an expandable panel by using the `isRowExp
 
 For instance, this code shows an expand button only for rows that have a detail to show:
 
-```jsx
+```tsx
 import { List, Datagrid, EditButton, BooleanField, DateField, TextField, useRecordContext } from 'react-admin';
 
 const PostPanel = () => {
@@ -593,7 +621,7 @@ You can customize which rows show an enabled selection checkbox using the `isRow
 
 For instance, this code enables a checkbox only for rows with an id greater than 300:
 
-```jsx
+```tsx
 import { List, Datagrid } from 'react-admin';
 
 export const PostList = () => (
@@ -614,7 +642,7 @@ This is mostly due to the fact that we iterate over the `<Datagrid>` children an
 In such cases, you can opt-in for an optimized version of the `<Datagrid>` by setting its `optimized` prop to `true`. 
 Be aware that you can't have dynamic children, such as those displayed or hidden by checking permissions, when using this mode.
 
-```jsx
+```tsx
 import { List, Datagrid, TextField } from 'react-admin';
 
 const PostList = () => (
@@ -632,7 +660,7 @@ const PostList = () => (
 
 You can catch clicks on rows to redirect to the show or edit view by setting the `rowClick` prop:
 
-```jsx
+```tsx
 import { List, Datagrid } from 'react-admin';
 
 export const PostList = () => (
@@ -655,17 +683,19 @@ export const PostList = () => (
 
 **Tip**: If you pass a function, it can return `'edit'`, `'show'`, `false` or a router path. This allows to redirect to either the Edit or Show view after checking a condition on the record. For example:
 
-```js
-const postRowClick = (id, resource, record) => record.editable ? 'edit' : 'show';
+```tsx
+import { Identifier, RaRecord } from 'react-admin';
+const postRowClick = (id: Identifier, resource: string, record: RaRecord) => record.editable ? 'edit' : 'show';
 ```
 
 **Tip**: If you pass a function, it can also return a promise allowing you to check an external API before returning a path. For example:
 
-```js
+```tsx
+import { Identifier, RaRecord } from 'react-admin';
 import fetchUserRights from './fetchUserRights';
 
 const getPermissions = useGetPermissions();
-const postRowClick = (id, resource, record) => 
+const postRowClick = (id: Identifier, resource: string, record: RaRecord) => 
     useGetPermissions()
     .then(permissions => permissions === 'admin' ? 'edit' : 'show');
 ```
@@ -678,7 +708,7 @@ You can customize the `<Datagrid>` row style (applied to the `<tr>` element) bas
 
 For instance, this allows to apply a custom background to the entire row if one value of the record - like its number of views - passes a certain threshold.
 
-```jsx
+```tsx
 import { List, Datagrid } from 'react-admin';
 
 const postRowStyle = (record, index) => ({
@@ -699,7 +729,7 @@ You can customize the styles of rows and cells in `<Datagrid>` (applied to the `
 
 For instance, this allows to apply a custom background to the entire row if one value of the record - like its number of views - passes a certain threshold.
 
-```jsx
+```tsx
 import { List, Datagrid } from 'react-admin';
 
 const postRowSx = (record, index) => ({
@@ -718,7 +748,7 @@ export const PostList = () => (
 
 The `<Datagrid>` is designed for a high density of content, so the row padding is low. If you want to add more margin to each cell, set the `size` prop to `medium`.
 
-```jsx
+```tsx
 export const PostList = () => (
     <List>
         <Datagrid size="medium">
@@ -760,7 +790,7 @@ The `<Datagrid>` component accepts the usual `className` prop. You can also over
 For instance, here is how you can leverage these styles to implement zebra stripes (a.k.a. alternate row styles)
 
 {% raw %}
-```jsx
+```tsx
 const PostList = () => (
     <List>
         <Datagrid
@@ -821,7 +851,7 @@ When users enter the configuration mode and select the `<Datagrid>`, they can sh
 
 By default, `<DatagridConfigurable>` renders all child fields. But you can also omit some of them by passing an `omit` prop containing an array of field sources:
 
-```jsx
+```tsx
 // by default, hide the id and author columns
 // users can choose to show them in configuration mode
 const PostList = () => (
@@ -838,7 +868,7 @@ const PostList = () => (
 
 If you render more than one `<DatagridConfigurable>` in the same page, you must pass a unique `preferenceKey` prop to each one:
 
-```jsx
+```tsx
 const PostList = () => (
     <List>
         <DatagridConfigurable preferenceKey="posts.datagrid">
@@ -853,7 +883,7 @@ const PostList = () => (
 
 The inspector uses the field `source` (or `label` when it's a string) to display the column name. If you use non-field children (e.g. action buttons), then it's your responsibility to wrap them in a component with a `label` prop, that will be used by the inspector:
 
-```jsx
+```tsx
 const FieldWrapper = ({ children, label }) => children;
 const PostList = () => (
     <List>
@@ -884,7 +914,7 @@ You can combine a datagrid and an edition form into a unified spreadsheet view, 
 
 `<EditableDatagrid>` is a drop-in replacement for `<Datagrid>`. It expects 2 additional props: `createForm` and `editForm`, the components to be displayed when a user creates or edits a row. The `<RowForm>` component allows to create such forms using react-admin Input components. 
 
-```jsx
+```tsx
 import {
     List,
     TextField,
@@ -945,7 +975,7 @@ Check [the `ra-editable-datagrid` documentation](https://marmelab.com/ra-enterpr
 You might want to display some fields only to users with specific permissions. Use the `usePermissions` hook to get the user permissions and hide Fields accordingly:
 
 {% raw %}
-```jsx
+```tsx
 import { List, Datagrid, TextField, TextInput, ShowButton, usePermissions } from 'react-admin';
 
 const getUserFilters = (permissions) => ([
@@ -986,7 +1016,7 @@ It's up to your `authProvider` to return whatever you need to check roles and pe
 
 You can use the `<Datagrid>` component to display data that you've fetched yourself. You'll need to pass all the props required for its features:
 
-```jsx
+```tsx
 import { useGetList, Datagrid, TextField } from 'react-admin';
 
 const sort = { field: 'id', order: 'DESC' };
@@ -1014,7 +1044,7 @@ const MyCustomList = () => {
 
 This list has no filtering, sorting, or row selection - it's static. If you want to allow users to interact with this list, you should pass more props to the `<Datagrid>` component, but the logic isn't trivial. Fortunately, react-admin provides [the `useList` hook](./useList.md) to build callbacks to manipulate local data. You just have to put the result in a `ListContext` to have an interactive `<Datagrid>`:
 
-```jsx
+```tsx
 import {
     useGetList,
     useList,
@@ -1050,7 +1080,7 @@ If you want to style a particular column, you can take advantage of the generate
 Using the `sx` prop, the column customization is just one line:
 
 {% raw %}
-```jsx
+```tsx
 import { List, Datagrid, TextField } from 'react-admin';
 
 const PostList = () => (
@@ -1075,7 +1105,7 @@ You can even style the header cells differently by passing a more specific CSS s
 A common practice is to hide certain columns on smaller screens. You can use the same technique:
 
 {% raw %}
-```jsx
+```tsx
 import { List, Datagrid, TextField } from 'react-admin';
 
 const PostList = () => (
@@ -1109,7 +1139,7 @@ The [`<SelectColumnsButton>`](./SelectColumnsButton.md) component lets users hid
 </video>
 
 
-```jsx
+```tsx
 import {
     DatagridConfigurable,
     List,
@@ -1176,7 +1206,7 @@ The column headers are buttons allowing users to change the list sort field and 
 It is possible to disable sorting for a specific `<Field>` by passing a `sortable` property set to `false`:
 
 {% raw %}
-```jsx
+```tsx
 // in src/posts.js
 import { List, Datagrid, TextField } from 'react-admin';
 
@@ -1197,7 +1227,7 @@ export const PostList = () => (
 By default, a column is sorted by the `source` property. To define another attribute to sort by, set it via the `<Field sortBy>` property:
 
 {% raw %}
-```jsx
+```tsx
 // in src/posts.js
 import { List, Datagrid, FunctionField, ReferenceField, TextField } from 'react-admin';
 
@@ -1223,7 +1253,7 @@ export const PostList = () => (
 
 By default, when the user clicks on a column header, the list becomes sorted in the ascending order. You change this behavior by setting the `sortByOrder` prop to `"DESC"` in a `<Datagrid>` `<Field>`:
 
-```jsx
+```tsx
 // in src/posts.js
 import { List, Datagrid, FunctionField, ReferenceField, TextField } from 'react-admin';
 
