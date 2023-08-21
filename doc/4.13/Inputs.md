@@ -17,7 +17,7 @@ Input components must be used inside a Form element (e.g. [`<Form>`](./Form.md),
 
 Input components require a `source` prop. 
 
-```jsx
+```tsx
 import { Edit, SimpleForm, ReferenceInput, SelectInput, TextInput, required } from 'react-admin';
 
 export const PostEdit = () => (
@@ -87,7 +87,7 @@ React-admin provides a set of Input components, each one designed for a specific
 
 The `className` prop is passed to the root element.
 
-```jsx
+```tsx
 <TextInput source="title" className="my-custom-class" />
 ```
 
@@ -98,7 +98,7 @@ The `className` prop is passed to the root element.
 Value of the input if the record has no value for the `source`.
 
 {% raw %}
-```jsx
+```tsx
 <Form record={{ id: 123, title: 'Lorem ipsum' }}>
     <NumberInput source="age" defaultValue={18} /> {/* input initially renders with value 18 */}
     <TextInput source="title" defaultValue="Hello, World!" /> {/* input initially renders with value "Lorem ipsum" */}
@@ -109,7 +109,10 @@ Value of the input if the record has no value for the `source`.
 React-admin will ignore these default values if the Form already defines [a form-wide `defaultValues`](./Form.md#defaultvalues):
 
 {% raw %}
-```jsx
+```tsx
+import { Create, SimpleForm, TextInput, NumberInput } from 'react-admin';
+import { RichTextInput } from 'ra-input-rich-text';
+
 export const PostCreate = () => (
     <Create>
         <SimpleForm defaultValues={{
@@ -130,6 +133,10 @@ export const PostCreate = () => (
 **Tip**: `defaultValue` cannot use a function as value. For default values computed at render time, set the `defaultValues` at the form level.
 
 ```jsx
+import { Create, SimpleForm, TextInput, NumberInput } from 'react-admin';
+import { RichTextInput } from 'ra-input-rich-text';
+import uuid from 'uuid';
+
 const postDefaultValue = () => ({ id: uuid(), created_at: new Date(), nb_views: 0 });
 
 export const PostCreate = () => (
@@ -147,7 +154,7 @@ export const PostCreate = () => (
 
 If `true`, the input is disabled and the user can't change the value.
 
-```jsx
+```tsx
 <TextInput source="title" disabled />
 ```
 
@@ -159,12 +166,13 @@ The `format` prop accepts a callback taking the value from the form state, and r
 form state value --> format --> form input value (string)
 ```
 
-```jsx
+```tsx
 {/* Unit Price is stored in cents, i.e. 123 means 1.23 */}
 <NumberInput 
     source="unit_price"
     format={v => String(v * 100)}
     parse={v => parseFloat(v) / 100}
+/>
 ```
 
 `format` often comes in pair with [`parse`](#parse) to transform the input value before storing it in the form state. See the [Transforming Input Value](#transforming-input-value-tofrom-record) section for more details.
@@ -181,7 +189,7 @@ If `true`, the input will expand to fill the form width.
 
 ![input full width](./img/input-full-width.png)
 
-```jsx
+```tsx
 <TextInput source="title" />
 <TextInput source="teaser" fullWidth multiline />
 ```
@@ -192,7 +200,7 @@ Most inputs accept a `helperText` prop to display a text below the input.
 
 ![input helper text](./img/input-helper-text.png)
 
-```jsx
+```tsx
 <NullableBooleanInput
     source="has_newsletter"
     helperText="User has opted in to the newsletter"
@@ -207,7 +215,7 @@ Set `helperText` to `false` to remove the empty line below the input. Beware tha
 
 The input label. In i18n apps, the label is passed to the translate function. When omitted, the `source` property is humanized and used as a label. Set `label={false}` to hide the label.
 
-```jsx
+```tsx
 <TextInput source="title" /> {/* input label is "Title" */}
 <TextInput source="title" label="Post title" /> {/* input label is "Post title" */}
 <TextInput source="title" label={false} /> {/* input has no label */}
@@ -215,7 +223,7 @@ The input label. In i18n apps, the label is passed to the translate function. Wh
 
 **Tip**: If your interface has to support multiple languages, don't use the `label` prop. Provide one label per locale based on the default label (which is `resources.${resourceName}.fields.${fieldName}`) instead.
 
-```jsx
+```tsx
 const frenchMessages = {
     resources: {
         posts: {
@@ -240,12 +248,13 @@ The `parse` prop accepts a callback taking the value from the input (which is a 
 form input value (string) ---> parse ---> form state value
 ```
 
-```jsx
+```tsx
 {/* Unit Price is stored in cents, i.e. 123 means 1.23 */}
 <NumberInput 
     source="unit_price"
     format={v => String(v * 100)}
     parse={v => parseFloat(v) / 100}
+/>
 ```
 
 `parse` often comes in pair with [`format`](#format) to transform the form value before passing it to the input. See the [Transforming Input Value](#transforming-input-value-tofrom-record) section for more details.
@@ -261,7 +270,7 @@ const defaultParse = (value: string) => value === '' ? null : value;
 Specifies the field of the record that the input should edit.
 
 {% raw %}
-```jsx
+```tsx
 <Form record={{ id: 123, title: 'Hello, world!' }}>
     <TextInput source="title" /> {/* default value is "Hello, world!" */}
 </Form>
@@ -283,7 +292,7 @@ If you edit a record with a complex structure, you can use a path as the `source
 
 Then you can display a text input to edit the author's first name as follows:
 
-```jsx
+```tsx
 <TextInput source="author.firstName" />
 ```
 
@@ -292,7 +301,7 @@ Then you can display a text input to edit the author's first name as follows:
 Each individual input supports an `sx` prop to pass custom styles to the underlying component, relying on [Material UI system](https://mui.com/system/basics/#the-sx-prop).
 
 {% raw %}
-```jsx
+```tsx
 <TextInput
     source="title"
     variant="filled"
@@ -314,8 +323,8 @@ A function or an array of functions to validate the input value.
 
 Validator functions should return `undefined` if the value is valid, or a string describing the error if it's invalid.
 
-```jsx
-const validateAge = (value) => {
+```tsx
+const validateAge = (value: number) => {
     if (value < 18) {
         return 'Must be over 18';
     }
@@ -327,9 +336,9 @@ const validateAge = (value) => {
 
 **Tip**: If your admin has [multi-language support](./Translation.md), validator functions should return message *identifiers* rather than messages themselves. React-admin automatically passes these identifiers to the translation function:
 
-```jsx
+```tsx
 // in validators/required.js
-const required = () => (value) =>
+const required = () => (value: any) =>
     value
         ? undefined
         : 'myroot.validation.required';
@@ -349,13 +358,13 @@ React-admin comes with a set of built-in validators:
 
 These are validator factories, so you need to call the function to get the validator.
 
-```jsx
+```tsx
 <NumberInput source="age" validate={required()} />
 ```
 
 You can use an array of validators to apply different validation rules to the same input.
 
-```jsx
+```tsx
 <NumberInput source="age" validate={[required(), validateAge]} />
 ```
 
@@ -374,17 +383,22 @@ Mnemonic for the two functions:
 
 Let's look at a simple example. Say the user would like to input values of 0-100 to a percentage field but your API (hence record) expects 0-1.0. You can use simple `parse()` and `format()` functions to archive the transform:
 
-```jsx
-<NumberInput source="percent" format={v => v * 100} parse={v => parseFloat(v) / 100} label="Formatted number" />
+```tsx
+<NumberInput
+    source="percent"
+    format={v => v * 100}
+    parse={v => parseFloat(v) / 100}
+    label="Formatted number"
+/>
 ```
 
 Another classical use-case is with handling dates. `<DateInput>` stores and returns a string. If you would like to store a JavaScript Date object in your record instead, you can do something like this:
 
-```jsx
+```tsx
 const dateFormatRegex = /^\d{4}-\d{2}-\d{2}$/;
 const dateParseRegex = /(\d{4})-(\d{2})-(\d{2})/;
 
-const convertDateToString = value => {
+const convertDateToString = (value: string | Date) => {
     // value is a `Date` object
     if (!(value instanceof Date) || isNaN(value.getDate())) return '';
     const pad = '00';
@@ -394,7 +408,7 @@ const convertDateToString = value => {
     return `${yyyy}-${(pad + MM).slice(-2)}-${(pad + dd).slice(-2)}`;
 };
 
-const dateFormatter = value => {
+const dateFormatter = (value: string | Date) => {
     // null, undefined and empty string values should not go through dateFormatter
     // otherwise, it returns undefined and will make the input an uncontrolled one.
     if (value == null || value === '') return '';
@@ -408,11 +422,12 @@ const dateFormatter = value => {
 const dateParser = value => {
     //value is a string of "YYYY-MM-DD" format
     const match = dateParseRegex.exec(value);
-    if (match === null) return;
-    const d = new Date(match[1], parseInt(match[2], 10) - 1, match[3]);
+    if (match === null || match.length === 0) return;
+	const d = new Date(parseInt(match[1]), parseInt(match[2], 10) - 1, parseInt(match[3]));
     if (isNaN(d.getDate())) return;
     return d;
 };
+
 
 <DateInput source="isodate" format={dateFormatter} parse={dateParser} defaultValue={new Date()} />
 ```
@@ -427,7 +442,7 @@ By default, react-admin will add an asterisk to the input label if the Input com
 
 ![Required Input](./img/input-full-width.png)
 
-```jsx
+```tsx
 import { TextInput, required } from 'react-admin';
 
 <TextInput source="title" validate={required()} />
@@ -440,21 +455,22 @@ Edition forms often contain linked inputs, e.g. country and city (the choices of
 
 React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://react-hook-form.com/docs/usewatch) hook.
 
-```jsx
-import * as React from 'react';
-import { Edit, SimpleForm, SelectInput } from 'react-admin';
-import { useWatch } from 'react-hook-form';
+```tsx
+import * as React from "react";
+import { Edit, SimpleForm, SelectInput, SelectInputProps } from "react-admin";
+import { useWatch } from "react-hook-form";
 
-const countries = ['USA', 'UK', 'France'];
-const cities = {
-    USA: ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'],
-    UK: ['London', 'Birmingham', 'Glasgow', 'Liverpool', 'Bristol'],
-    France: ['Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice'],
+const countries = ["USA", "UK", "France"];
+const cities: Record<string, string[]> = {
+    USA: ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"],
+    UK: ["London", "Birmingham", "Glasgow", "Liverpool", "Bristol"],
+    France: ["Paris", "Marseille", "Lyon", "Toulouse", "Nice"],
 };
-const toChoices = items => items.map(item => ({ id: item, name: item }));
+const toChoices = (items: string[]) => items.map((item) => ({ id: item, name: item }));
 
-const CityInput = props => {
-    const country = useWatch({ name: 'country' });
+const CityInput = (props: SelectInputProps) => {
+    const country = useWatch<{ country: string }>({ name: "country" });
+
     return (
         <SelectInput
             choices={country ? toChoices(cities[country]) : []}
@@ -477,22 +493,29 @@ export default OrderEdit;
 
 Alternatively, you can use the react-admin `<FormDataConsumer>` component, which grabs the form values, and passes them to a child function. As `<FormDataConsumer>` uses the render props pattern, you can avoid creating an intermediate component like the `<CityInput>` component above:
 
-```jsx
-import * as React from 'react';
-import { Edit, SimpleForm, SelectInput, FormDataConsumer } from 'react-admin';
+```tsx
+import * as React from "react";
+import { Edit, SimpleForm, SelectInput, FormDataConsumer } from "react-admin";
+
+const countries = ["USA", "UK", "France"];
+const cities: Record<string, string[]> = {
+    USA: ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"],
+    UK: ["London", "Birmingham", "Glasgow", "Liverpool", "Bristol"],
+    France: ["Paris", "Marseille", "Lyon", "Toulouse", "Nice"],
+};
+const toChoices = (items: string[]) =>
+    items.map((item) => ({ id: item, name: item }));
 
 const OrderEdit = () => (
     <Edit>
         <SimpleForm>
             <SelectInput source="country" choices={toChoices(countries)} />
-            <FormDataConsumer>
+            <FormDataConsumer<{ country: string }>>
                 {({ formData, ...rest }) => (
                     <SelectInput
                         source="cities"
                         choices={
-                            formData.country
-                                ? toChoices(cities[formData.country])
-                                : []
+                            formData.country ? toChoices(cities[formData.country]) : []
                         }
                         {...rest}
                     />
@@ -510,7 +533,7 @@ const OrderEdit = () => (
 
 And here is an example usage for `getSource` inside `<ArrayInput>`:
 
-```jsx
+```tsx
 import { FormDataConsumer } from 'react-admin';
 
 const PostEdit = () => (
@@ -519,14 +542,14 @@ const PostEdit = () => (
             <ArrayInput source="authors">
                 <SimpleFormIterator>
                     <TextInput source="name" />
-                    <FormDataConsumer>
+                    <FormDataConsumer<{ name: string }>>
                         {({
                             formData, // The whole form data
                             scopedFormData, // The data for this item of the ArrayInput
                             getSource, // A function to get the valid source inside an ArrayInput
                             ...rest
                         }) =>
-                            scopedFormData && scopedFormData.name ? (
+                            scopedFormData && getSource && scopedFormData.name ? (
                                 <SelectInput
                                     source={getSource('role')} // Will translate to "authors[0].role"
                                     choices={[{ id: 1, name: 'Head Writer' }, { id: 2, name: 'Co-Writer' }]}
@@ -550,14 +573,14 @@ You may want to display or hide inputs based on the value of another input - for
 
 For such cases, you can use the approach described above, using the `<FormDataConsumer>` component.
 
-```jsx
+```tsx
 import { FormDataConsumer } from 'react-admin';
 
  const PostEdit = () => (
      <Edit>
          <SimpleForm shouldUnregister>
              <BooleanInput source="hasEmail" />
-             <FormDataConsumer>
+             <FormDataConsumer<{ hasEmail: boolean }>>
                  {({ formData, ...rest }) => formData.hasEmail &&
                       <TextInput source="email" {...rest} />
                  }
@@ -575,13 +598,13 @@ Material UI offers [3 variants for text fields](https://mui.com/material-ui/reac
 
 Most Input components pass their additional props down to the root component, which is often an Material UI Field component. This means you can pass a `variant` prop to override the variant of a single input:
 
-```jsx
+```tsx
 <TextInput source="name" variant="outlined" />
 ```
 
-If you want to use another variant in all the Inputs of your application, override the `<Admin theme>` prop with a [custom theme](./Theming.md#global-theme-overrides), as follows:
+If you want to use another variant in all the Inputs of your application, override the `<Admin theme>` prop with a [custom theme](./AppTheme.md#overriding-default-props), as follows:
 
-```jsx
+```tsx
 import { defaultTheme } from 'react-admin';
 
 const theme = {
@@ -641,7 +664,7 @@ If you need a more specific input type, you can write it directly in React. You'
 
 For instance, let's write a component to edit the latitude and longitude of the current record:
 
-```jsx
+```tsx
 // in LatLongInput.js
 import { useController } from 'react-hook-form';
 
@@ -682,7 +705,7 @@ const ItemEdit = () => (
 
 **Tip**: React-hook-form's `useController` component supports dot notation in the `name` prop, to allow binding to nested values:
 
-```jsx
+```tsx
 import { useController } from 'react-hook-form';
 
 const LatLngInput = () => {
@@ -704,7 +727,7 @@ export default LatLngInput;
 
 This component lacks a label. React-admin provides the `<Labeled>` component for that:
 
-```jsx
+```tsx
 // in LatLongInput.js
 import { useController } from 'react-hook-form';
 import { Labeled } from 'react-admin';
@@ -740,12 +763,12 @@ Now the component will render with a label:
 
 Instead of HTML `input` elements, you can use an Material UI component like `TextField`. To bind Material UI components to the form values, use the `useController()` hook:
 
-```jsx
+```tsx
 // in LatLongInput.js
 import TextField from '@mui/material/TextField';
 import { useController } from 'react-hook-form';
 
-const BoundedTextField = ({ name, label }) => {
+const BoundedTextField = ({ name, label }: { name: string; label: string }) => {
     const {
         field,
         fieldState: { isTouched, invalid, error },
@@ -756,7 +779,7 @@ const BoundedTextField = ({ name, label }) => {
             {...field}
             label={label}
             error={(isTouched || isSubmitted) && invalid}
-            helperText={(isTouched || isSubmitted) && invalid ? error : ''}
+            helperText={(isTouched || isSubmitted) && invalid ? error?.message : ''}
         />
     );
 };
@@ -777,7 +800,7 @@ const LatLngInput = () => (
 
 Instead of HTML `input` elements or Material UI components, you can use react-admin input components, like `<NumberInput>` for instance. React-admin components already use `useController()`, and already include a label, so you don't need either `useController()` or `<Labeled>` when using them:
 
-```jsx
+```tsx
 // in LatLongInput.js
 import { NumberInput } from 'react-admin';
 const LatLngInput = () => (
@@ -801,45 +824,62 @@ React-admin adds functionality to react-hook-form:
 
 So internally, react-admin components use another hook, which wraps react-hook-form's `useController()` hook. It's called `useInput()`; use it instead of `useController()` to create form inputs that have the exact same API as react-admin Input components:
 
-```jsx
+```tsx
 // in LatLongInput.js
-import TextField from '@mui/material/TextField';
-import { useInput, required } from 'react-admin';
+import { TextField, TextFieldProps } from "@mui/material";
+import { useInput, required, InputProps } from "react-admin";
 
-const BoundedTextField = (props) => {
-    const { onChange, onBlur, ...rest } = props;
+interface BoundedTextFieldProps
+    extends Omit<
+        TextFieldProps,
+        "label" | "helperText" | "onChange" | "onBlur" | "type" | "defaultValue"
+    >,
+    InputProps {}
+
+const BoundedTextField = (props: BoundedTextFieldProps) => {
+    const { onChange, onBlur, label, ...rest } = props;
     const {
         field,
         fieldState: { isTouched, invalid, error },
         formState: { isSubmitted },
-        isRequired
+        isRequired,
     } = useInput({
         // Pass the event handlers to the hook but not the component as the field property already has them.
         // useInput will call the provided onChange and onBlur in addition to the default needed by react-hook-form.
         onChange,
         onBlur,
-        ...props,
+        ...rest,
     });
 
     return (
         <TextField
             {...field}
-            label={props.label}
+            label={label}
             error={(isTouched || isSubmitted) && invalid}
-            helperText={(isTouched || isSubmitted) && invalid ? error : ''}
+            helperText={(isTouched || isSubmitted) && invalid ? error?.message : ""}
             required={isRequired}
             {...rest}
         />
     );
 };
-const LatLngInput = props => {
-    const {source, ...rest} = props;
+const LatLngInput = (props: BoundedTextFieldProps) => {
+    const { source, ...rest } = props;
 
     return (
         <span>
-            <BoundedTextField source="lat" label="Latitude" validate={required()} {...rest} />
+            <BoundedTextField
+                source="lat"
+                label="Latitude"
+                validate={required()}
+                {...rest}
+            />
             &nbsp;
-            <BoundedTextField source="lng" label="Longitude" validate={required()} {...rest} />
+            <BoundedTextField
+                source="lng"
+                label="Longitude"
+                validate={required()}
+                {...rest}
+            />
         </span>
     );
 };
@@ -847,24 +887,20 @@ const LatLngInput = props => {
 
 Here is another example, this time using an Material UI `Select` component:
 
-```jsx
+```tsx
 // in SexInput.js
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import { useInput } from 'react-admin';
+import { Select, MenuItem } from "@mui/material";
+import { InputProps, useInput } from "react-admin";
 
-const SexInput = props => {
+const SexInput = (props: InputProps) => {
     const {
         field,
         fieldState: { isTouched, invalid, error },
-        formState: { isSubmitted }
+        formState: { isSubmitted },
     } = useInput(props);
 
     return (
-        <Select
-            label="Sex"
-            {...field}
-        >
+        <Select label="Sex" {...field}>
             <MenuItem value="M">Male</MenuItem>
             <MenuItem value="F">Female</MenuItem>
         </Select>
@@ -875,7 +911,7 @@ export default SexInput;
 
 **Tip**: `useInput` accepts all arguments that you can pass to `useController`. Besides, components using `useInput` accept props like `format` and `parse`, to convert values from the form to the input, and vice-versa:
 
-```jsx
+```tsx
 const parse = value => {/* ... */};
 const format = value => {/* ... */};
 
@@ -894,7 +930,7 @@ const PersonEdit = () => (
 
 **Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/docs/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
 
-```js
+```ts
 const { isDirty } = useFormState(); // ✅
 const formState = useFormState(); // ❌ should deconstruct the formState      
 ```
@@ -915,7 +951,7 @@ You can find components for react-admin in third-party repositories.
 
 You can set `label={false}` on an input component to hide its label.
 
-```jsx
+```tsx
 <TextInput source="title" /> {/* input label is "Title" */}
 <TextInput source="title" label="Post title" /> {/* input label is "Post title" */}
 <TextInput source="title" label={false} /> {/* input has no label */}

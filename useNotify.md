@@ -79,7 +79,7 @@ const LogoutButton = () => {
 };
 ```
 
-To change the default delay for all notifications, check [the Theming documentation](./Theming.md#notifications).
+To change the default delay for all notifications, check [the `<Admin notification>` documentation](./Admin.md#notification).
 
 ## `messageArgs`
 

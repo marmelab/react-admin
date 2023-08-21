@@ -283,7 +283,6 @@ For all these cases, it's up to you to implement your own `LoginPage` component,
 
 ```jsx
 // in src/App.js
-import * as React from "react";
 import { Admin } from 'react-admin';
 
 import MyLoginPage from './MyLoginPage';
@@ -295,11 +294,24 @@ const App = () => (
 );
 ```
 
-Use the `useLogin` hook in your custom `LoginPage` component.
+By default, the login page displays a gradient background. If you just want to change the background, you can use the default Login page component and pass an image URL as the `backgroundImage` prop.
 
 ```jsx
 // in src/MyLoginPage.js
-import * as React from 'react';
+import { Login } from 'react-admin';
+
+const MyLoginPage = () => (
+    <Login
+        // A random image that changes everyday
+        backgroundImage="https://source.unsplash.com/random/1600x900/daily"
+    />
+);
+```
+
+If you want to build a Login page from scratch, you'll need the [`useLogin` hook](./useLogin.md).
+
+```jsx
+// in src/MyLoginPage.js
 import { useState } from 'react';
 import { useLogin, useNotify, Notification } from 'react-admin';
 
