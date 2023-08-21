@@ -127,7 +127,7 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
     const [storedParams] = useStore<StoredParams>(
         storeKey || `${resource}.listParams`,
         {
-            filter,
+            filter: {},
             order: sort.order,
             sort: sort.field,
         }
