@@ -103,16 +103,18 @@ export const useUnique = (options?: UseUniqueOptions) => {
                     );
 
                     if (total > 0 && !data.some(r => r.id === record?.id)) {
-                        return translate(message, {
-                            _: message,
-                            source: props.source,
-                            value,
-                            field: translateLabel({
-                                label: props.label,
+                        return {
+                            message,
+                            args: {
                                 source: props.source,
-                                resource,
-                            }),
-                        });
+                                value,
+                                field: translateLabel({
+                                    label: props.label,
+                                    source: props.source,
+                                    resource,
+                                }),
+                            },
+                        };
                     }
                 } catch (error) {
                     return translate('ra.notification.http_error');

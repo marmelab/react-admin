@@ -13,7 +13,6 @@ import { useRecordContext } from '../controller';
 import { composeValidators, Validator } from './validate';
 import isRequired from './isRequired';
 import { useFormGroupContext } from './useFormGroupContext';
-import { useGetValidationErrorMessage } from './useGetValidationErrorMessage';
 import { useFormGroups } from './useFormGroups';
 import { useApplyInputDefaultValues } from './useApplyInputDefaultValues';
 import { useEvent } from '../util';
@@ -43,7 +42,6 @@ export const useInput = <ValueType = any>(
     const formGroupName = useFormGroupContext();
     const formGroups = useFormGroups();
     const record = useRecordContext();
-    const getValidationErrorMessage = useGetValidationErrorMessage();
 
     useEffect(() => {
         if (!formGroups || formGroupName == null) {
@@ -74,7 +72,13 @@ export const useInput = <ValueType = any>(
                 const error = await sanitizedValidate(value, values, props);
 
                 if (!error) return true;
-                return getValidationErrorMessage(error);
+                // react-hook-form expects errors to be plain strings but our validators can return objects
+                // that have message and args.
+                // To avoid double translation for users that validate with a schema instead of our validators
+                // we use a special format for our validators errors.
+                // The ValidationError component will check for this format and extract the message and args
+                // to translate.
+                return `@@react-admin@@${JSON.stringify(error)}`;
             },
         },
         ...options,
