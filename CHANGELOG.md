@@ -1,5 +1,17 @@
 # Changelog
 
+## v4.13.1
+
+* Fix `<ArrayInput>` does not apply default values set on inputs ([#9198](https://github.com/marmelab/react-admin/pull/9198)) ([djhi](https://github.com/djhi))
+* Fix `<ReferenceInput queryOptions>` does not apply to `getMany` query ([#9197](https://github.com/marmelab/react-admin/pull/9197)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<UpdateButton>` with custom notification doesn't close the confirmation dialog ([#9196](https://github.com/marmelab/react-admin/pull/9196)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<FilterLiveSearch>` uses label as placeholder by default ([#9185](https://github.com/marmelab/react-admin/pull/9185)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix missing types for `TranslationMessages` ([#9187](https://github.com/marmelab/react-admin/pull/9187)) ([bicstone](https://github.com/bicstone))
+* [Doc] Refactor Theming documentation ([#9193](https://github.com/marmelab/react-admin/pull/9193)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<NumberInput>` usage in Filter Forms ([#9186](https://github.com/marmelab/react-admin/pull/9186)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Convert Inputs Tutorial Examples to TS ([#9183](https://github.com/marmelab/react-admin/pull/9183)) ([djhi](https://github.com/djhi))
+* [Doc] Convert List Tutorial Examples to TS ([#9181](https://github.com/marmelab/react-admin/pull/9181)) ([djhi](https://github.com/djhi))
+
 ## v4.13.0
 
 * Add `<FilterListItem icon>` prop to show an icon for each filter list item ([#9150](https://github.com/marmelab/react-admin/pull/9150)) ([Guy-Adler](https://github.com/Guy-Adler))
