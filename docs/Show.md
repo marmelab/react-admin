@@ -490,6 +490,34 @@ const PostShow = () => (
 
 It shows a notification and refreshes the page when the record is updated by another user. Also, it displays a warning when the record is deleted by another user.
 
+## Navigating Through Records
+
+The [`<PrevNextButtons`](./PrevNextButtons.md) renders a navigation with two buttons, allowing users to navigate through records without leaving a `<Show>` view. 
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/prev-next-buttons-show.webm" type="video/webm" />
+  <source src="./img/prev-next-buttons-show.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+The following code is an example of how you can use it:
+
+```tsx
+export const PostShow = () => (
+    <Show
+        actions={
+            <TopToolbar>
+                <PrevNextButtons linkType="show"/>
+            </TopToolbar>
+        }
+    >
+    ...
+    </Show>
+);
+```
+
+**Tips:** If you want the `<PrevNextButtons>` to link to the `<Show>` view, you have to set the `linkType` to `show`. See [the `<PrevNextButtons linkType>` prop](./PrevNextButtons.md##linktype).
+
 ## API
 
 * [`<Show>`]
