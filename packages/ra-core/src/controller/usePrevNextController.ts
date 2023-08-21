@@ -1,6 +1,6 @@
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions, useQuery } from 'react-query';
 import { useResourceContext } from '../core';
-import { useGetList } from '../dataProvider';
+import { useDataProvider, useGetList } from '../dataProvider';
 import { useStore } from '../store';
 import { FilterPayload, RaRecord, SortPayload } from '../types';
 import { ListParams, SORT_ASC } from './list';
@@ -107,8 +107,9 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
         linkType = 'edit',
         storeKey,
         limit = 1000,
-        sort = { field: 'id', order: SORT_ASC },
-        filter = {},
+        sort: initialSort = { field: 'id', order: SORT_ASC },
+        filter: permanentFilter = {},
+        filterDefaultValues = {},
         queryOptions = {
             staleTime: 5 * 60 * 1000,
         },
@@ -127,28 +128,35 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
     const [storedParams] = useStore<StoredParams>(
         storeKey || `${resource}.listParams`,
         {
-            filter: {},
-            order: sort.order,
-            sort: sort.field,
+            filter: filterDefaultValues,
+            order: initialSort.order,
+            sort: initialSort.field,
         }
     );
 
-    const { data, error, isLoading } = useGetList<RecordType>(
-        resource,
-        {
-            sort: {
-                field: storedParams.sort,
-                order: storedParams.order,
-            },
-            filter: { ...storedParams.filter, ...filter },
-            pagination: { page: 1, perPage: limit },
-        },
-        queryOptions
+    const dataProvider = useDataProvider();
+    const pagination = { page: 1, perPage: limit };
+    const sort = {
+        field: storedParams.sort,
+        order: storedParams.order,
+    };
+    const filter = { ...storedParams.filter, ...permanentFilter };
+    const { meta, ...otherQueryOptions } = queryOptions;
+    const { data, error, isLoading } = useQuery(
+        [resource, 'getList', { pagination, sort, filter, meta }],
+        () =>
+            dataProvider.getList(resource, {
+                sort,
+                filter,
+                pagination,
+                meta,
+            }),
+        otherQueryOptions
     );
 
     if (!record) return null;
 
-    const ids = data ? data.map(record => record.id) : [];
+    const ids = data && data.data ? data.data?.map(record => record.id) : [];
 
     const index = ids.indexOf(record.id);
 
@@ -178,7 +186,7 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
                   })
                 : undefined,
         index: index === -1 ? undefined : index,
-        total: data?.length,
+        total: data?.total,
         error,
         isLoading,
     };
@@ -189,6 +197,7 @@ export interface UsePrevNextControllerProps<RecordType extends RaRecord = any> {
     storeKey?: string | false;
     limit?: number;
     filter?: FilterPayload;
+    filterDefaultValues?: FilterPayload;
     sort?: SortPayload;
     resource?: string;
     queryOptions?: UseQueryOptions<{

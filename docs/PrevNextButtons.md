@@ -45,6 +45,7 @@ export const CustomerEdit = () => (
 | Prop           | Required | Type             | Default                             | Description                                                                                 |
 | -------------- | -------- | ---------------- | ----------------------------------- | ------------------------------------------------------------------------------------------- |
 | `filter`       | Optional | `object`         | `{}`                                | The permanent filter values.                                                                |
+| `filter DefaultValues` | Optional | `object`  | `{}`                                | The default filter values.                                                                |
 | `limit`        | Optional | `number`         | `1000`                              | Maximum number of records to fetch.                                                         |
 | `linkType`     | Optional | `string`         | 'edit'                              | Specifies the view to redirect to when navigating.                                          |
 | `queryOptions` | Optional | `object`         | `{ staleTime: 5 * 60 * 1000 }`      | The options to pass to the useQuery hook.                                                   |
@@ -55,7 +56,7 @@ export const CustomerEdit = () => (
 
 ## `filter`
 
-Just like [Permanent `filter` in `<List>`](./List.md#filter-permanent-filter), you can specify what filter when fetching the list of records.
+Just like [Permanent `filter` in `<List>`](./List.md#filter-permanent-filter), you can specify a filter always applied when fetching the list of records.
 
 {% raw %}
 ```jsx
@@ -91,6 +92,56 @@ export const MyAdmin = () => (
                     actions={
                         <TopToolbar>
                             <PrevNextButtons filter={{ city: 'Hill Valley' }} />
+                        </TopToolbar>
+                    }
+                >
+                ...
+                </Edit>
+            }
+        />
+    </Admin>
+);
+```
+{% endraw %}
+
+## `filterDefaultValues`
+
+To use a default filter value, set the `filterDefaultValues` prop. 
+
+{% raw %}
+```jsx
+export const CustomerEdit = () => (
+    <Edit
+        actions={
+            <TopToolbar>
+                <PrevNextButtons filterDefaultValues={{ city: 'Hill Valley' }} />
+            </TopToolbar>
+        }
+    >
+    ...
+    </Edit>
+);
+```
+{% endraw %}
+
+This prop is useful to set the same default filter as the `<List>` for the same resource:
+
+{% raw %}
+```tsx
+export const MyAdmin = () => (
+    <Admin>
+        <Resource
+            name="customers"
+            list={
+                <List filterDefaultValues={{ city: 'Hill Valley' }}>
+                ...
+                </List>
+            }
+            edit={
+                <Edit
+                    actions={
+                        <TopToolbar>
+                            <PrevNextButtons filterDefaultValues={{ city: 'Hill Valley' }} />
                         </TopToolbar>
                     }
                 >
