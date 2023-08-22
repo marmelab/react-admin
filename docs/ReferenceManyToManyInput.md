@@ -16,45 +16,40 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 In this example, `artists.id` matches `performances.artist_id`, and `performances.event_id` matches `events.id`:
 
 ```
-┌────────────┐       ┌──────────────┐      ┌────────┐
-│ artists    │       │ performances │      │ events │
-│------------│       │--------------│      │--------│
-│ id         │───┐   │ id           │      │ id     │
-│ first_name │   └──╼│ artist_id    │   ┌──│ name   │
-│ last_name  │       │ event_id     │╾──┘  │        │
-└────────────┘       └──────────────┘      └────────┘
+┌─────────┐       ┌──────────────┐      ┌───────────────┐
+│ bands   │       │ performances │      │ venues        │
+│---------│       │--------------│      │---------------│
+│ id      │───┐   │ id           │   ┌──│ id            │
+│ name    │   └──╼│ band_id      │   │  │ name          │
+│         │       │ venue_id     │╾──┘  │ location      │
+│         │       │ date         │      │               │
+└─────────┘       └──────────────┘      └───────────────┘
 ```
 
-The form displays the events name in a [`<SelectArrayInput>`](./SelectArrayInput.md):
+The form displays the venues name in a [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md):
 
 ```jsx
+import React from 'react';
 import {
+    AutocompleteArrayInput,
     Edit,
-    SelectArrayInput,
     SimpleForm,
     TextInput,
-    required,
 } from 'react-admin';
 import { ReferenceManyToManyInput } from '@react-admin/ra-relationships';
 
-export const ArtistEdit = () => (
+export const BandEdit = () => (
     <Edit>
         <SimpleForm>
-            <TextInput disabled source="id" />
-            <TextInput source="first_name" />
-            <TextInput source="last_name" />
+            <TextInput source="name" />
             <ReferenceManyToManyInput
-                source="id"
-                reference="events"
+                reference="venues"
                 through="performances"
-                using="artist_id,event_id"
+                using="band_id,venue_id"
             >
-                <SelectArrayInput
+                <AutocompleteArrayInput
                     label="Performances"
-                    // Validation must be set on this component
-                    validate={required()}
                     optionText="name"
-                    fullWidth
                 />
             </ReferenceManyToManyInput>
         </SimpleForm>
