@@ -69,66 +69,66 @@ For instance, the `<Datagrid isRowSelectable>` prop allows to disable the select
 // in src/PostList.tsx
 import * as React from "react";
 import {
-	Datagrid,
-	DatagridBody,
-	List,
-	TextField,
-	RecordContextProvider,
-	DatagridRowProps,
-	DatagridBodyProps,
-	DatagridProps,
-	FieldProps,
+    Datagrid,
+    DatagridBody,
+    List,
+    TextField,
+    RecordContextProvider,
+    DatagridRowProps,
+    DatagridBodyProps,
+    DatagridProps,
+    FieldProps,
 } from "react-admin";
 import { TableCell, TableRow, Checkbox } from "@mui/material";
 
 const MyDatagridRow = ({
-	record,
-	id,
-	onToggleItem,
-	children,
-	selected,
-	selectable,
+    record,
+    id,
+    onToggleItem,
+    children,
+    selected,
+    selectable,
 }: DatagridRowProps) =>
-	id ? (
-		<RecordContextProvider value={record}>
-			<TableRow>
-				{/* first column: selection checkbox */}
-				<TableCell padding="none">
-					{selectable && (
-						<Checkbox
-							checked={selected}
-							onClick={(event) => {
-								if (onToggleItem) {
-									onToggleItem(id, event);
-								}
-							}}
-						/>
-					)}
-				</TableCell>
-				{/* data columns based on children */}
-				{React.Children.map(children, (field) =>
-					React.isValidElement<FieldProps>(field) && field.props.source ? (
-						<TableCell key={`${id}-${field.props.source}`}>{field}</TableCell>
-					) : null
-				)}
-			</TableRow>
-		</RecordContextProvider>
-	) : null;
+    id ? (
+        <RecordContextProvider value={record}>
+            <TableRow>
+                {/* first column: selection checkbox */}
+                <TableCell padding="none">
+                    {selectable && (
+                        <Checkbox
+                            checked={selected}
+                            onClick={(event) => {
+                                if (onToggleItem) {
+                                    onToggleItem(id, event);
+                                }
+                            }}
+                        />
+                    )}
+                </TableCell>
+                {/* data columns based on children */}
+                {React.Children.map(children, (field) =>
+                    React.isValidElement<FieldProps>(field) && field.props.source ? (
+                        <TableCell key={`${id}-${field.props.source}`}>{field}</TableCell>
+                    ) : null
+                )}
+            </TableRow>
+        </RecordContextProvider>
+    ) : null;
 
 const MyDatagridBody = (props: DatagridBodyProps) => (
-	<DatagridBody {...props} row={<MyDatagridRow />} />
+    <DatagridBody {...props} row={<MyDatagridRow />} />
 );
 const MyDatagrid = (props: DatagridProps) => (
-	<Datagrid {...props} body={<MyDatagridBody />} />
+    <Datagrid {...props} body={<MyDatagridBody />} />
 );
 
 const PostList = () => (
-	<List>
-		<MyDatagrid>
-			<TextField source="title" />
-			...
-		</MyDatagrid>
-	</List>
+    <List>
+        <MyDatagrid>
+            <TextField source="title" />
+            ...
+        </MyDatagrid>
+    </List>
 );
 
 export default PostList;
@@ -545,23 +545,23 @@ import { Children, isValidElement } from "react";
 import { DatagridHeaderProps, FieldProps, List, Datagrid, DatagridHeader } from "react-admin";
 
 const DatagridHeader = ({ children }: DatagridHeaderProps) => (
-	<TableHead>
-		<TableRow>
-			<TableCell></TableCell>{" "}
-			{/* empty cell to account for the select row checkbox in the body */}
-			{Children.map(children, (child) =>
-				isValidElement<FieldProps>(child) ? (
-					<TableCell key={child.props.source}>{child.props.source}</TableCell>
-				) : null
-			)}
-		</TableRow>
-	</TableHead>
+    <TableHead>
+        <TableRow>
+            <TableCell></TableCell>{" "}
+            {/* empty cell to account for the select row checkbox in the body */}
+            {Children.map(children, (child) =>
+                isValidElement<FieldProps>(child) ? (
+                    <TableCell key={child.props.source}>{child.props.source}</TableCell>
+                ) : null
+            )}
+        </TableRow>
+    </TableHead>
 );
 
 const PostList = () => (
-	<List>
-		<Datagrid header={<DatagridHeader />}>{/* ... */}</Datagrid>
-	</List>
+    <List>
+        <Datagrid header={<DatagridHeader />}>{/* ... */}</Datagrid>
+    </List>
 );
 ```
 
