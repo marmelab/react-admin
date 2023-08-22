@@ -542,7 +542,7 @@ For instance, here is a simple datagrid header that displays column names with n
 ```tsx
 import * as React from "react";
 import { TableHead, TableRow, TableCell } from "@mui/material";
-import { DatagridHeaderProps, FieldProps, List, Datagrid, DatagridHeader } from "react-admin";
+import { DatagridHeaderProps, FieldProps, List, Datagrid } from "react-admin";
 
 const DatagridHeader = ({ children }: DatagridHeaderProps) => (
     <TableHead>
