@@ -14,7 +14,7 @@ The `Datagrid` component renders a list of records as a table. It is usually use
 `<Datagrid>` renders as many columns as it receives `<Field>` children. It uses the field `label` as column header (or, for fields with no `label`, the field `source`).
 
 ```tsx
-// in src/posts.js
+// in src/posts.tsx
 import * as React from "react";
 import { List, Datagrid, TextField, EditButton } from 'react-admin';
 
@@ -66,7 +66,7 @@ By default, `<Datagrid>` renders its body using `<DatagridBody>`, an internal re
 For instance, the `<Datagrid isRowSelectable>` prop allows to disable the selection checkbox for some records. To *hide* checkboxes instead of disabling them, you can override `<DatagridRow>` and `<DatagridBody>` as follows:
 
 ```tsx
-// in src/PostList.js
+// in src/PostList.tsx
 import * as React from "react";
 import {
 	Datagrid,
@@ -185,7 +185,7 @@ Bulk action button components can use the [`useListContext`](./useListContext.md
 Here is an example of custom bulk action button, which sets the `views` property of all posts to `0`:
 
 ```tsx
-// in ./ResetViewsButton.js
+// in ./ResetViewsButton.tsx
 import { VisibilityOff } from '@mui/icons-material';
 import { BulkUpdateButton } from 'react-admin';
 
@@ -215,7 +215,7 @@ const ResetViewsButton = () => (
 But let's say you need a customized bulkAction button. Here is an example leveraging the `useUpdateMany` hook, which sets the `views` property of all posts to `0`:
 
 ```tsx
-// in ./CustomResetViewsButton.js
+// in ./CustomResetViewsButton.tsx
 import {
     useListContext,
     useUpdateMany,
@@ -261,7 +261,7 @@ export default CustomResetViewsButton;
 But most of the time, bulk actions are mini-applications with a standalone user interface (in a Dialog). Here is the same `<CustomResetViewsAction>` implemented behind a confirmation dialog:
 
 ```tsx
-// in ./CustomResetViewsButton.js
+// in ./CustomResetViewsButton.tsx
 import { useState } from 'react';
 import {
     Button,
@@ -380,7 +380,7 @@ What's a Field component? Simply a component that reads the record (via `useReco
 You can even create your own field components.
 
 ```tsx
-// in src/users.js
+// in src/users.tsx
 import * as React from 'react';
 import { useRecordContext, List, Datagrid, TextField, DateField } from 'react-admin';
 
@@ -542,7 +542,7 @@ For instance, here is a simple datagrid header that displays column names with n
 ```tsx
 import { TableHead, TableRow, TableCell } from "@mui/material";
 import { Children, isValidElement } from "react";
-import { DatagridHeaderProps, FieldProps, List, Datagrid } from "react-admin";
+import { DatagridHeaderProps, FieldProps, List, Datagrid, DatagridHeader } from "react-admin";
 
 const DatagridHeader = ({ children }: DatagridHeaderProps) => (
 	<TableHead>
