@@ -247,8 +247,16 @@ export interface UsePrevNextControllerProps<RecordType extends RaRecord = any> {
 export type UsePrevNextControllerResult =
     | {
           isLoading: true;
+          hasPrev?: boolean;
+          hasNext?: boolean;
+          prevPath?: string | undefined;
+          nextPath?: string | undefined;
+          index?: number | undefined;
+          total?: number | undefined;
+          error?: any;
       }
     | {
+          isLoading: false;
           hasPrev: boolean;
           hasNext: boolean;
           prevPath: string | undefined;
@@ -256,5 +264,4 @@ export type UsePrevNextControllerResult =
           index: number | undefined;
           total: number | undefined;
           error?: any;
-          isLoading: false;
       };
