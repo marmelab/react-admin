@@ -131,6 +131,8 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
             filter: filterDefaultValues,
             order: initialSort.order,
             sort: initialSort.field,
+            page: 1,
+            perPage: 10,
         }
     );
 
@@ -189,7 +191,7 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
 
     let finalData = canUseCacheData ? queryData.data : data?.data || [];
 
-    if (!record) return null;
+    if (!record || isLoading) return { isLoading: true };
 
     const ids = finalData.map(record => record.id);
     const index = ids.indexOf(record.id);
@@ -242,13 +244,17 @@ export interface UsePrevNextControllerProps<RecordType extends RaRecord = any> {
     }> & { meta?: any };
 }
 
-export interface UsePrevNextControllerResult {
-    hasPrev: boolean;
-    hasNext: boolean;
-    prevPath: string | undefined;
-    nextPath: string | undefined;
-    index: number | undefined;
-    total: number | undefined;
-    error?: any;
-    isLoading: boolean;
-}
+export type UsePrevNextControllerResult =
+    | {
+          isLoading: true;
+      }
+    | {
+          hasPrev: boolean;
+          hasNext: boolean;
+          prevPath: string | undefined;
+          nextPath: string | undefined;
+          index: number | undefined;
+          total: number | undefined;
+          error?: any;
+          isLoading: false;
+      };
