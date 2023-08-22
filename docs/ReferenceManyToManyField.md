@@ -7,9 +7,9 @@ title: "The ReferenceManyToManyField Component"
 
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component fetches a list of referenced records by lookup in an associative table, and passes the records down to its child component, which must be an iterator component.
 
-!["ReferenceManyToManyField example with band's performances"](./img/reference-many-to-many-field.png)
+!["ReferenceManyToManyField example showing band's venues"](./img/reference-many-to-many-field.png)
 
-For instance, here is how to fetch the authors related to a book record by matching `book.id` to `book_authors.book_id`, then matching `book_authors.author_id` to `authors.id`, and then display the author last_name for each, in a `<ChipField>`:
+For instance, here is how to fetch the venues related to a band record by matching `band.id` to `performances.band_id`, then matching `performances.venue_id` to `venue.id`, and then display the venue name for each, in a `<ChipField>`:
 
 ```jsx
 import {
@@ -22,7 +22,7 @@ import {
 } from 'react-admin';
 import { ReferenceManyToManyField } from '@react-admin/ra-relationships';
 
-export const BookShow = () => (
+export const BandShow = () => (
     <Show>
         <SimpleShowLayout>
             <TextField source="name" />
@@ -30,9 +30,6 @@ export const BookShow = () => (
                 reference="venues"
                 through="performances"
                 using="band_id,venue_id"
-                fullWidth
-                label="Performances"
-                validate={required()}
             >
                 <SingleFieldList>
                     <ChipField source="name" />
