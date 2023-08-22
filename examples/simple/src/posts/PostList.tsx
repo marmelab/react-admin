@@ -94,7 +94,7 @@ const PostListMobile = () => (
 
 const StyledDatagrid = styled(DatagridConfigurable)(({ theme }) => ({
     '& .title': {
-        maxWidth: '20em',
+        maxWidth: '16em',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
