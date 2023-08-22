@@ -931,7 +931,7 @@ const knownResources = [
     <Resource name="comments" list={CommentList} />,
 ];
 
-const fetchResources = (permissions: string) =>
+const fetchResources = (permissions: any) =>
     fetch('https://myapi/resources', {
         method: 'POST',
         headers: {
@@ -961,54 +961,54 @@ To overcome this limitation, you can build your own `<Admin>` component using tw
 import * as React from "react";
 import { useEffect, useState } from "react";
 import {
-	AdminContext,
-	AdminUI,
-	DataProvider,
-	defaultI18nProvider,
-	localStorageStore,
-	Resource,
-	ListGuesser,
-	Loading,
-	useDataProvider,
+    AdminContext,
+    AdminUI,
+    DataProvider,
+    defaultI18nProvider,
+    localStorageStore,
+    Resource,
+    ListGuesser,
+    Loading,
+    useDataProvider,
 } from "react-admin";
 import myDataProvider from "./myDataProvider";
 
 const store = localStorageStore();
 
 function App() {
-	return (
-		<AdminContext
-			dataProvider={myDataProvider}
-			i18nProvider={defaultI18nProvider}
-			store={store}
-		>
-			<AsyncResources />
-		</AdminContext>
-	);
+    return (
+        <AdminContext
+            dataProvider={myDataProvider}
+            i18nProvider={defaultI18nProvider}
+            store={store}
+        >
+            <AsyncResources />
+        </AdminContext>
+    );
 }
 
 interface MyDataProvider extends DataProvider {
-	getResources: () => Promise<{ name: string }[]>;
+    getResources: () => Promise<{ name: string }[]>;
 }
 
 function AsyncResources() {
-	const [resources, setResources] = useState<Array<{ name: string }>>(
-		[] as Array<{ name: string }>
-	);
-	const dataProvider = useDataProvider<MyDataProvider>();
+    const [resources, setResources] = useState<Array<{ name: string }>>(
+        [] as Array<{ name: string }>
+    );
+    const dataProvider = useDataProvider<MyDataProvider>();
 
-	useEffect(() => {
-		// Note that the `getResources` is not provided by react-admin. You have to implement your own custom verb.
-		dataProvider.getResources().then((r) => setResources(r));
-	}, []);
+    useEffect(() => {
+        // Note that the `getResources` is not provided by react-admin. You have to implement your own custom verb.
+        dataProvider.getResources().then((r) => setResources(r));
+    }, []);
 
-	return (
-		<AdminUI ready={Loading}>
-			{resources.map((resource) => (
-				<Resource name={resource.name} key={resource.name} list={ListGuesser} />
-			))}
-		</AdminUI>
-	);
+    return (
+        <AdminUI ready={Loading}>
+            {resources.map((resource) => (
+                <Resource name={resource.name} key={resource.name} list={ListGuesser} />
+            ))}
+        </AdminUI>
+    );
 }
 ```
 
