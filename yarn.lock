@@ -2433,12 +2433,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hookform/resolvers@npm:^2.8.8":
-  version: 2.8.8
-  resolution: "@hookform/resolvers@npm:2.8.8"
+"@hookform/resolvers@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "@hookform/resolvers@npm:3.2.0"
   peerDependencies:
     react-hook-form: ^7.0.0
-  checksum: 0c8814f1116a145c433300f079c3289d5ece71f36c6b782fb0f5b2388c766140cadd72bd2f7b77bc570988359d686e0c88ba513ab0ed79e70073747b7a19e8f8
+  checksum: 7eb79c480e006f08fcfe803e70b7b67eda03cc5c5bb8ce68a5399a0c6fdc34ee0fcc677fed9bea4a0baaa455ba39b15f86c8d2e3a702acdf762d6667988085b6
   languageName: node
   linkType: hard
 
@@ -9618,14 +9618,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"data-generator-retail@^4.12.0, data-generator-retail@^4.13.0, data-generator-retail@workspace:examples/data-generator":
+"data-generator-retail@^4.12.0, data-generator-retail@^4.13.1, data-generator-retail@workspace:examples/data-generator":
   version: 0.0.0-use.local
   resolution: "data-generator-retail@workspace:examples/data-generator"
   dependencies:
     cross-env: ^5.2.0
     date-fns: ^2.19.0
     faker: ^4.1.0
-    ra-core: ^4.13.0
+    ra-core: ^4.13.1
     rimraf: ^3.0.2
     typescript: ^5.1.3
   peerDependencies:
@@ -18208,11 +18208,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ra-core@^4.13.0, ra-core@workspace:packages/ra-core":
+"ra-core@^4.13.1, ra-core@workspace:packages/ra-core":
   version: 0.0.0-use.local
   resolution: "ra-core@workspace:packages/ra-core"
   dependencies:
-    "@hookform/resolvers": ^2.8.8
+    "@hookform/resolvers": ^3.2.0
     "@testing-library/react": ^11.2.3
     "@testing-library/react-hooks": ^7.0.2
     "@types/jest": ^29.5.2
@@ -18243,6 +18243,7 @@ __metadata:
     rimraf: ^3.0.2
     typescript: ^5.1.3
     yup: ^0.32.11
+    zod: ^3.22.1
   peerDependencies:
     history: ^5.1.0
     react: ^16.9.0 || ^17.0.0 || ^18.0.0
@@ -18253,7 +18254,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-fakerest@^4.12.0, ra-data-fakerest@^4.13.0, ra-data-fakerest@workspace:packages/ra-data-fakerest":
+"ra-data-fakerest@^4.12.0, ra-data-fakerest@^4.13.1, ra-data-fakerest@workspace:packages/ra-data-fakerest":
   version: 0.0.0-use.local
   resolution: "ra-data-fakerest@workspace:packages/ra-data-fakerest"
   dependencies:
@@ -18261,7 +18262,7 @@ __metadata:
     cross-env: ^5.2.0
     expect: ^27.4.6
     fakerest: ^3.0.0
-    ra-core: ^4.13.0
+    ra-core: ^4.13.1
     rimraf: ^3.0.2
     typescript: ^5.1.3
   peerDependencies:
@@ -18311,7 +18312,7 @@ __metadata:
   dependencies:
     cross-env: ^5.2.0
     query-string: ^7.1.1
-    ra-core: ^4.13.0
+    ra-core: ^4.13.1
     rimraf: ^3.0.2
     typescript: ^5.1.3
   languageName: unknown
@@ -18324,7 +18325,7 @@ __metadata:
     cross-env: ^5.2.0
     localforage: ^1.7.1
     lodash: ~4.17.5
-    ra-data-fakerest: ^4.13.0
+    ra-data-fakerest: ^4.13.1
     rimraf: ^3.0.2
     typescript: ^5.1.3
   peerDependencies:
@@ -18332,13 +18333,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-local-storage@^4.12.0, ra-data-local-storage@^4.13.0, ra-data-local-storage@workspace:packages/ra-data-localstorage":
+"ra-data-local-storage@^4.12.0, ra-data-local-storage@^4.13.1, ra-data-local-storage@workspace:packages/ra-data-localstorage":
   version: 0.0.0-use.local
   resolution: "ra-data-local-storage@workspace:packages/ra-data-localstorage"
   dependencies:
     cross-env: ^5.2.0
     lodash: ~4.17.5
-    ra-data-fakerest: ^4.13.0
+    ra-data-fakerest: ^4.13.1
     rimraf: ^3.0.2
     typescript: ^5.1.3
   peerDependencies:
@@ -18352,7 +18353,7 @@ __metadata:
   dependencies:
     cross-env: ^5.2.0
     query-string: ^7.1.1
-    ra-core: ^4.13.0
+    ra-core: ^4.13.1
     rimraf: ^3.0.2
     typescript: ^5.1.3
   peerDependencies:
@@ -18360,19 +18361,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-i18n-polyglot@^4.12.0, ra-i18n-polyglot@^4.13.0, ra-i18n-polyglot@workspace:packages/ra-i18n-polyglot":
+"ra-i18n-polyglot@^4.12.0, ra-i18n-polyglot@^4.13.1, ra-i18n-polyglot@workspace:packages/ra-i18n-polyglot":
   version: 0.0.0-use.local
   resolution: "ra-i18n-polyglot@workspace:packages/ra-i18n-polyglot"
   dependencies:
     cross-env: ^5.2.0
     node-polyglot: ^2.2.2
-    ra-core: ^4.13.0
+    ra-core: ^4.13.1
     rimraf: ^3.0.2
     typescript: ^5.1.3
   languageName: unknown
   linkType: soft
 
-"ra-input-rich-text@^4.12.0, ra-input-rich-text@^4.13.0, ra-input-rich-text@workspace:packages/ra-input-rich-text":
+"ra-input-rich-text@^4.12.0, ra-input-rich-text@^4.13.1, ra-input-rich-text@workspace:packages/ra-input-rich-text":
   version: 0.0.0-use.local
   resolution: "ra-input-rich-text@workspace:packages/ra-input-rich-text"
   dependencies:
@@ -18392,10 +18393,10 @@ __metadata:
     "@tiptap/react": ^2.0.3
     "@tiptap/starter-kit": ^2.0.3
     clsx: ^1.1.1
-    data-generator-retail: ^4.13.0
-    ra-core: ^4.13.0
-    ra-data-fakerest: ^4.13.0
-    ra-ui-materialui: ^4.13.0
+    data-generator-retail: ^4.13.1
+    ra-core: ^4.13.1
+    ra-data-fakerest: ^4.13.1
+    ra-ui-materialui: ^4.13.1
     react: ^17.0.0
     react-dom: ^17.0.0
     react-hook-form: ^7.43.9
@@ -18411,21 +18412,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-language-english@^4.12.0, ra-language-english@^4.13.0, ra-language-english@workspace:packages/ra-language-english":
+"ra-language-english@^4.12.0, ra-language-english@^4.13.1, ra-language-english@workspace:packages/ra-language-english":
   version: 0.0.0-use.local
   resolution: "ra-language-english@workspace:packages/ra-language-english"
   dependencies:
-    ra-core: ^4.13.0
+    ra-core: ^4.13.1
     rimraf: ^3.0.2
     typescript: ^5.1.3
   languageName: unknown
   linkType: soft
 
-"ra-language-french@^4.12.0, ra-language-french@^4.13.0, ra-language-french@workspace:packages/ra-language-french":
+"ra-language-french@^4.12.0, ra-language-french@^4.13.1, ra-language-french@workspace:packages/ra-language-french":
   version: 0.0.0-use.local
   resolution: "ra-language-french@workspace:packages/ra-language-french"
   dependencies:
-    ra-core: ^4.13.0
+    ra-core: ^4.13.1
     rimraf: ^3.0.2
     typescript: ^5.1.3
   languageName: unknown
@@ -18446,9 +18447,9 @@ __metadata:
     lodash: ~4.17.5
     papaparse: ^5.3.0
     prop-types: ^15.6.1
-    ra-data-local-storage: ^4.13.0
+    ra-data-local-storage: ^4.13.1
     react: ^17.0.0
-    react-admin: ^4.13.0
+    react-admin: ^4.13.1
     react-dom: ^17.0.0
     react-dropzone: ^12.0.4
     react-query: ^3.32.1
@@ -18462,7 +18463,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-ui-materialui@^4.13.0, ra-ui-materialui@workspace:packages/ra-ui-materialui":
+"ra-ui-materialui@^4.13.1, ra-ui-materialui@workspace:packages/ra-ui-materialui":
   version: 0.0.0-use.local
   resolution: "ra-ui-materialui@workspace:packages/ra-ui-materialui"
   dependencies:
@@ -18485,9 +18486,9 @@ __metadata:
     lodash: ~4.17.5
     prop-types: ^15.7.0
     query-string: ^7.1.1
-    ra-core: ^4.13.0
-    ra-i18n-polyglot: ^4.13.0
-    ra-language-english: ^4.13.0
+    ra-core: ^4.13.1
+    ra-i18n-polyglot: ^4.13.1
+    ra-language-english: ^4.13.1
     react: ^17.0.0
     react-dom: ^17.0.0
     react-dropzone: ^12.0.4
@@ -18507,6 +18508,7 @@ __metadata:
     react: ^16.9.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.9.0 || ^17.0.0 || ^18.0.0
     react-hook-form: "*"
+    react-is: ^16.9.0 || ^17.0.0 || ^18.0.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
   languageName: unknown
@@ -18674,7 +18676,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-admin@^4.12.0, react-admin@^4.13.0, react-admin@workspace:packages/react-admin":
+"react-admin@^4.12.0, react-admin@^4.13.1, react-admin@workspace:packages/react-admin":
   version: 0.0.0-use.local
   resolution: "react-admin@workspace:packages/react-admin"
   dependencies:
@@ -18685,10 +18687,10 @@ __metadata:
     cross-env: ^5.2.0
     expect: ^27.4.6
     history: ^5.1.0
-    ra-core: ^4.13.0
-    ra-i18n-polyglot: ^4.13.0
-    ra-language-english: ^4.13.0
-    ra-ui-materialui: ^4.13.0
+    ra-core: ^4.13.1
+    ra-i18n-polyglot: ^4.13.1
+    ra-language-english: ^4.13.1
+    ra-ui-materialui: ^4.13.1
     react-hook-form: ^7.43.9
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
@@ -20296,13 +20298,13 @@ __metadata:
     lodash: ~4.17.5
     prop-types: ^15.7.2
     proxy-polyfill: ^0.3.0
-    ra-data-fakerest: ^4.13.0
-    ra-i18n-polyglot: ^4.13.0
-    ra-input-rich-text: ^4.13.0
-    ra-language-english: ^4.13.0
-    ra-language-french: ^4.13.0
+    ra-data-fakerest: ^4.13.1
+    ra-i18n-polyglot: ^4.13.1
+    ra-input-rich-text: ^4.13.1
+    ra-language-english: ^4.13.1
+    ra-language-french: ^4.13.1
     react: ^17.0.0
-    react-admin: ^4.13.0
+    react-admin: ^4.13.1
     react-app-polyfill: ^1.0.4
     react-dom: ^17.0.0
     react-hook-form: ^7.43.9
@@ -22825,5 +22827,12 @@ __metadata:
   version: 0.8.15
   resolution: "zen-observable@npm:0.8.15"
   checksum: 71cc2f2bbb537300c3f569e25693d37b3bc91f225cefce251a71c30bc6bb3e7f8e9420ca0eb57f2ac9e492b085b8dfa075fd1e8195c40b83c951dd59c6e4fbf8
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.22.1":
+  version: 3.22.1
+  resolution: "zod@npm:3.22.1"
+  checksum: fe7112dd8080136652f0be10670a2a44868b097198f3be6264294a62d6c6b280099db5e1bc4a327ec4f738f58bc600445d373ecadf5d51fb5585fa0ab76ee67a
   languageName: node
   linkType: hard
