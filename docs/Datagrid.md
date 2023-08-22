@@ -1207,7 +1207,7 @@ It is possible to disable sorting for a specific `<Field>` by passing a `sortabl
 
 {% raw %}
 ```tsx
-// in src/posts.js
+// in src/posts.tsx
 import { List, Datagrid, TextField } from 'react-admin';
 
 export const PostList = () => (
@@ -1228,7 +1228,7 @@ By default, a column is sorted by the `source` property. To define another attri
 
 {% raw %}
 ```tsx
-// in src/posts.js
+// in src/posts.tsx
 import { List, Datagrid, FunctionField, ReferenceField, TextField } from 'react-admin';
 
 export const PostList = () => (
@@ -1254,7 +1254,7 @@ export const PostList = () => (
 By default, when the user clicks on a column header, the list becomes sorted in the ascending order. You change this behavior by setting the `sortByOrder` prop to `"DESC"` in a `<Datagrid>` `<Field>`:
 
 ```tsx
-// in src/posts.js
+// in src/posts.tsx
 import { List, Datagrid, FunctionField, ReferenceField, TextField } from 'react-admin';
 
 export const PostList = () => (
