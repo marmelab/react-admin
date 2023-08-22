@@ -43,7 +43,10 @@ const applyPreferredLanguage = async () => {
                 const tsBlock = document.getElementById(fence.dataset.tsBlock);
                 if (tsBlock) {
                     const jsCode = await transpileToJS(tsBlock.innerText);
-                    fence.querySelector('code').textContent = jsCode;
+                    fence.querySelector('code').textContent =
+                        jsCode === ''
+                            ? '// TypeScript-only snippet, please select the TS language ↗️'
+                            : jsCode;
                     fence.dataset.transpiled = 'true';
                     Prism.highlightElement(fence.querySelector('code'));
                 }

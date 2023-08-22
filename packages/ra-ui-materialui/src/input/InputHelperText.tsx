@@ -1,21 +1,13 @@
 import * as React from 'react';
 import { isValidElement, ReactElement } from 'react';
-import {
-    useTranslate,
-    ValidationError,
-    ValidationErrorMessage,
-    ValidationErrorMessageWithArgs,
-} from 'ra-core';
+import { useTranslate, ValidationError, ValidationErrorMessage } from 'ra-core';
 
 export const InputHelperText = (props: InputHelperTextProps) => {
     const { helperText, touched, error } = props;
     const translate = useTranslate();
 
     if (touched && error) {
-        if ((error as ValidationErrorMessageWithArgs).message) {
-            return <ValidationError error={error} />;
-        }
-        return <>{error}</>;
+        return <ValidationError error={error} />;
     }
 
     if (helperText === false) {
