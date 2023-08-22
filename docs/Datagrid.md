@@ -540,8 +540,8 @@ By default, `<Datagrid>` renders the table head using `<DatagridHeader>`, an int
 For instance, here is a simple datagrid header that displays column names with no sort and no "select all" button:
 
 ```tsx
+import * as React from "react";
 import { TableHead, TableRow, TableCell } from "@mui/material";
-import { Children, isValidElement } from "react";
 import { DatagridHeaderProps, FieldProps, List, Datagrid, DatagridHeader } from "react-admin";
 
 const DatagridHeader = ({ children }: DatagridHeaderProps) => (
@@ -549,8 +549,8 @@ const DatagridHeader = ({ children }: DatagridHeaderProps) => (
         <TableRow>
             <TableCell></TableCell>{" "}
             {/* empty cell to account for the select row checkbox in the body */}
-            {Children.map(children, (child) =>
-                isValidElement<FieldProps>(child) ? (
+            {React.Children.map(children, (child) =>
+                React.isValidElement<FieldProps>(child) ? (
                     <TableCell key={child.props.source}>{child.props.source}</TableCell>
                 ) : null
             )}
