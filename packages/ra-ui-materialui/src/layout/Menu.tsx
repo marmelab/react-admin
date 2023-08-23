@@ -5,13 +5,13 @@ import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import lodashGet from 'lodash/get';
 import clsx from 'clsx';
-import { useResourceDefinitions } from 'ra-core';
 
 import { DRAWER_WIDTH, CLOSED_DRAWER_WIDTH } from './Sidebar';
 import { useSidebarState } from './useSidebarState';
 import { DashboardMenuItem } from './DashboardMenuItem';
 import { MenuItemLink } from './MenuItemLink';
 import { ResourceMenuItem } from './ResourceMenuItem';
+import { ResourceMenuItems } from './ResourceMenuItems';
 
 /**
  * Renders a menu with one menu item per resource by default. You can also set menu items by hand.
@@ -36,17 +36,17 @@ import { ResourceMenuItem } from './ResourceMenuItem';
  * );
  */
 export const Menu = (props: MenuProps) => {
-    const resources = useResourceDefinitions();
     const {
         hasDashboard,
-        children = [
-            hasDashboard ? (
-                <DashboardMenuItem key="default-dashboard-menu-item" />
-            ) : null,
-            ...Object.keys(resources)
-                .filter(name => resources[name].hasList)
-                .map(name => <ResourceMenuItem key={name} name={name} />),
-        ],
+        children = hasDashboard ? (
+            [
+                <DashboardMenuItem key="default-dashboard-menu-item" />,
+                <ResourceMenuItems key="default-resource-menu-items" />,
+            ]
+        ) : (
+            <ResourceMenuItems />
+        ),
+
         className,
         ...rest
     } = props;
@@ -88,6 +88,7 @@ Menu.propTypes = {
 Menu.Item = MenuItemLink;
 Menu.DashboardItem = DashboardMenuItem;
 Menu.ResourceItem = ResourceMenuItem;
+Menu.ResourceItems = ResourceMenuItems;
 
 const PREFIX = 'RaMenu';
 

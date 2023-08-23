@@ -18,6 +18,7 @@ export * from './NotFound';
 export * from './Notification';
 export * from './PageTitleConfigurable';
 export * from './ResourceMenuItem';
+export * from './ResourceMenuItems';
 export * from './Sidebar';
 export * from './SidebarToggleButton';
 export * from './Theme';
