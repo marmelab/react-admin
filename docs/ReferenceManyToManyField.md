@@ -30,6 +30,7 @@ export const BandShow = () => (
                 reference="venues"
                 through="performances"
                 using="band_id,venue_id"
+                label="Performances"
             >
                 <SingleFieldList>
                     <ChipField source="name" />
