@@ -8,8 +8,10 @@ import {
 import { NavigateBefore, NavigateNext } from '@mui/icons-material';
 import ErrorIcon from '@mui/icons-material/Error';
 import { Link } from 'react-router-dom';
-import { IconButton, LinearProgress, SxProps, styled } from '@mui/material';
+import { Box, IconButton, SxProps, styled } from '@mui/material';
 import clsx from 'clsx';
+
+import { LinearProgress } from '../layout/LinearProgress';
 
 /**
  * A component used to render the previous and next buttons in a Show or Edit view.
@@ -105,7 +107,11 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
     const translate = useTranslate();
 
     if (isLoading) {
-        return <LinearProgress />;
+        return (
+            <Box minHeight={theme => theme.spacing(4)}>
+                <LinearProgress />
+            </Box>
+        );
     }
     if (error) {
         return (
@@ -116,6 +122,9 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
                 aria-errormessage={error.message}
             />
         );
+    }
+    if (!hasPrev && !hasNext) {
+        return <Box minHeight={theme => theme.spacing(5)} />;
     }
 
     return (

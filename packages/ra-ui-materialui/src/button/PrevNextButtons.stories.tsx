@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { AdminContext } from '../AdminContext';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import {
     RecordContextProvider,
@@ -26,6 +25,8 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import { MemoryRouter } from 'react-router';
 import { seed, address, internet, name } from 'faker/locale/en_GB';
 import { QueryClient } from 'react-query';
+
+import { AdminContext } from '../AdminContext';
 
 export default { title: 'ra-ui-materialui/button/PrevNextButtons' };
 
@@ -264,9 +265,12 @@ export const WithQueryFilter = () => (
     </MemoryRouter>
 );
 
-export const WithLimit = () => (
+export const WithLimit = ({ customDataProvider = dataProvider }) => (
     <MemoryRouter>
-        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+        <AdminContext
+            dataProvider={customDataProvider}
+            i18nProvider={i18nProvider}
+        >
             <AdminUI>
                 <Resource
                     name="customers"

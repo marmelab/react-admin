@@ -45,6 +45,7 @@ export const CustomerEdit = () => (
 | Prop           | Required | Type             | Default                             | Description                                                                                 |
 | -------------- | -------- | ---------------- | ----------------------------------- | ------------------------------------------------------------------------------------------- |
 | `filter`       | Optional | `object`         | `{}`                                | The permanent filter values.                                                                |
+| `filter DefaultValues` | Optional | `object`  | `{}`                                | The default filter values.                                                                |
 | `limit`        | Optional | `number`         | `1000`                              | Maximum number of records to fetch.                                                         |
 | `linkType`     | Optional | `string`         | 'edit'                              | Specifies the view to redirect to when navigating.                                          |
 | `queryOptions` | Optional | `object`         | `{ staleTime: 5 * 60 * 1000 }`      | The options to pass to the useQuery hook.                                                   |
@@ -55,7 +56,7 @@ export const CustomerEdit = () => (
 
 ## `filter`
 
-Just like [Permanent `filter` in `<List>`](./List.md#filter-permanent-filter), you can specify what filter when fetching the list of records.
+Just like [Permanent `filter` in `<List>`](./List.md#filter-permanent-filter), you can specify a filter always applied when fetching the list of records.
 
 {% raw %}
 ```jsx
@@ -91,6 +92,56 @@ export const MyAdmin = () => (
                     actions={
                         <TopToolbar>
                             <PrevNextButtons filter={{ city: 'Hill Valley' }} />
+                        </TopToolbar>
+                    }
+                >
+                ...
+                </Edit>
+            }
+        />
+    </Admin>
+);
+```
+{% endraw %}
+
+## `filterDefaultValues`
+
+To use a default filter value, set the `filterDefaultValues` prop. 
+
+{% raw %}
+```jsx
+export const CustomerEdit = () => (
+    <Edit
+        actions={
+            <TopToolbar>
+                <PrevNextButtons filterDefaultValues={{ city: 'Hill Valley' }} />
+            </TopToolbar>
+        }
+    >
+    ...
+    </Edit>
+);
+```
+{% endraw %}
+
+This prop is useful to set the same default filter as the `<List>` for the same resource:
+
+{% raw %}
+```tsx
+export const MyAdmin = () => (
+    <Admin>
+        <Resource
+            name="customers"
+            list={
+                <List filterDefaultValues={{ city: 'Hill Valley' }}>
+                ...
+                </List>
+            }
+            edit={
+                <Edit
+                    actions={
+                        <TopToolbar>
+                            <PrevNextButtons filterDefaultValues={{ city: 'Hill Valley' }} />
                         </TopToolbar>
                     }
                 >
@@ -311,7 +362,7 @@ export const CustomerShow = () => (
 ```
 {% endraw %}
 
-## Navigating Through Records In`<Edit>` Views After Submit
+## Navigating Through Records In `<Edit>` Views After Submit
 
 Let's says users want to edit customer records and to navigate between records in the `<Edit>` view. The default react-admin behaviors causes two problems: 
 - when they save a record the user is redirected to the `<List>` view,
@@ -339,3 +390,11 @@ export const CustomerEdit = () => (
 );
 ```
 {% endraw %}
+
+## Performance
+
+This components tries to avoid fetching the API to determine the previous and next item link. It does so by inspecting the cache of the list view. If the user has already rendered the list view for the current resource, `<PrevNextButtons>` will not need to call the `dataProvider` at all. 
+
+However, if the user has never displayed a list view, or if the current record is outside of the boundaries of the list view cache, `<PrevNextButtons>` will have to **fetch the entire list of records** for the current resource to determine the previous and next item link. This can be costly in terms of server and network performance. 
+
+If this is a problem, use [the `limit` prop](#limit) to limit the number of records fetched from the API. You can also pass a `meta` parameter to select only the `id` field in the records.

@@ -5,6 +5,7 @@ import {
     Edit,
     Form,
     Labeled,
+    PrevNextButtons,
     ReferenceField,
     SelectInput,
     TextField,
@@ -83,6 +84,10 @@ const OrderForm = () => {
     return (
         <Form>
             <Box maxWidth="50em">
+                <PrevNextButtons
+                    filterDefaultValues={{ status: 'ordered' }}
+                    sort={{ field: 'date', order: 'DESC' }}
+                />
                 <Card>
                     <CardContent>
                         <Grid container spacing={1}>
