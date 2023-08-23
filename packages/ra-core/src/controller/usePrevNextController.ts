@@ -189,7 +189,7 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
         }
     );
 
-    let finalData = canUseCacheData ? queryData.data : data?.data || [];
+    const finalData = canUseCacheData ? queryData.data : data?.data || [];
 
     if (!record || isLoading) return { isLoading: true };
 
