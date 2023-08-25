@@ -1,5 +1,19 @@
 # Changelog
 
+## v4.13.2
+
+* Fix Guessers should not log in CI by default ([#9218](https://github.com/marmelab/react-admin/pull/9218)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `package.json` should mention peer dependency on `react-is` ([#9201](https://github.com/marmelab/react-admin/pull/9201)) ([kamiyo](https://github.com/kamiyo))
+* Fix validation errors from resolvers are not translated ([#9191](https://github.com/marmelab/react-admin/pull/9191)) ([djhi](https://github.com/djhi))
+* [Doc] WizardForm: document ability to pass `progress={false}` ([#9216](https://github.com/marmelab/react-admin/pull/9216)) ([slax57](https://github.com/slax57))
+* [Doc] Fix typo in useInfiniteGetList doc ([#9210](https://github.com/marmelab/react-admin/pull/9210)) ([codyavila](https://github.com/codyavila))
+* [Doc] Convert `<Datagrid>` documentation to TS ([#9207](https://github.com/marmelab/react-admin/pull/9207)) ([djhi](https://github.com/djhi))
+* [Doc] Convert `<Admin>` documentation to TS ([#9206](https://github.com/marmelab/react-admin/pull/9206)) ([djhi](https://github.com/djhi))
+* [Doc] display a comment inviting to switch to TS if transpiled code is empty ([#9205](https://github.com/marmelab/react-admin/pull/9205)) ([adguernier](https://github.com/adguernier))
+* [Doc] Add screenshot and screencast for `<ReferenceManyToManyInput>` and `<ReferenceManyToManyField>` ([#9204](https://github.com/marmelab/react-admin/pull/9204)) ([adguernier](https://github.com/adguernier))
+* [Doc] Update the Data Fetching documentation ([#9200](https://github.com/marmelab/react-admin/pull/9200)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix `withLifecycleCallbacks` `beforeSave` return type ([#9199](https://github.com/marmelab/react-admin/pull/9199)) ([djhi](https://github.com/djhi))
+
 ## v4.13.1
 
 * Fix `<ArrayInput>` does not apply default values set on inputs ([#9198](https://github.com/marmelab/react-admin/pull/9198)) ([djhi](https://github.com/djhi))
