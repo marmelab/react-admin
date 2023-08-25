@@ -8,6 +8,7 @@ import {
     IconButton,
     useMediaQuery,
     Theme,
+    SxProps,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import SortIcon from '@mui/icons-material/Sort';
@@ -45,7 +46,7 @@ import {
  * );
  */
 const SortButton = (props: SortButtonProps) => {
-    const { fields, label = 'ra.sort.sort_by', icon = defaultIcon } = props;
+    const { fields, label = 'ra.sort.sort_by', icon = defaultIcon, sx } = props;
     const { resource, sort, setSort } = useListSortContext();
     const translate = useTranslate();
     const translateLabel = useTranslateLabel();
@@ -82,7 +83,7 @@ const SortButton = (props: SortButtonProps) => {
     });
 
     return (
-        <>
+        <Root sx={sx}>
             {isXSmall ? (
                 <Tooltip title={buttonLabel}>
                     <IconButton
@@ -95,7 +96,7 @@ const SortButton = (props: SortButtonProps) => {
                     </IconButton>
                 </Tooltip>
             ) : (
-                <StyledButton
+                <Button
                     aria-controls="simple-menu"
                     aria-haspopup="true"
                     color="primary"
@@ -105,7 +106,7 @@ const SortButton = (props: SortButtonProps) => {
                     size="small"
                 >
                     {buttonLabel}
-                </StyledButton>
+                </Button>
             )}
             <Menu
                 id="simple-menu"
@@ -134,7 +135,7 @@ const SortButton = (props: SortButtonProps) => {
                     </MenuItem>
                 ))}
             </Menu>
-        </>
+        </Root>
     );
 };
 
@@ -150,13 +151,14 @@ export interface SortButtonProps {
     icon?: ReactElement;
     label?: string;
     resource?: string;
+    sx?: SxProps;
 }
 
-const StyledButton = styled(Button, {
+const Root = styled('span', {
     name: 'RaSortButton',
     overridesResolver: (props, styles) => styles.root,
 })({
-    '&.MuiButton-sizeSmall': {
+    '& .MuiButton-sizeSmall': {
         // fix for icon misalignment on small buttons, see https://github.com/mui/material-ui/pull/30240
         lineHeight: 1.5,
     },
