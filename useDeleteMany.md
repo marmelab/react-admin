@@ -7,8 +7,9 @@ title: "useDeleteMany"
 
 This hook allows to call `dataProvider.deleteMany()` when the callback is executed, and delete an array of records based on their `ids`.
 
+## Syntax
+
 ```jsx
-// syntax
 const [deleteMany, { data, isLoading, error }] = useDeleteMany(
     resource,
     { ids, meta },
@@ -27,6 +28,8 @@ deleteMany(
 ```
 
 So, should you pass the parameters when calling the hook, or when executing the callback? It's up to you; but if you have the choice, we recommend passing the parameters when calling the `deleteMany` callback (second example below).
+
+## Usage
 
 ```jsx
 // set params when calling the hook

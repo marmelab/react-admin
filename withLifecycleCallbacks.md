@@ -5,7 +5,7 @@ title: "withLifecycleCallbacks"
 
 # `withLifecycleCallbacks`
 
-This helper function adds logic to an existing [`dataProvider`](./DataProviderIntroduction.md) for particular resources, using pre- and post- event handlers like `beforeGetOne` and `afterSave`.
+This helper function adds logic to an existing [`dataProvider`](./DataProviders.md) for particular resources, using pre- and post- event handlers like `beforeGetOne` and `afterSave`.
 
 **Note**: It's always preferable to **define custom business logic on the server side**. This helper is useful when you can't alter the underlying API, but has some serious [limitations](#limitations).
 

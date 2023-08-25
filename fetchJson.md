@@ -15,7 +15,7 @@ React-admin includes a `fetchJson` utility function to make HTTP calls. It's a w
 
 ## Usage
 
-You can use it to make HTTP calls directly, to build a custom [`dataProvider`](./DataProviderIntroduction.md), or pass it directly to any `dataProvider` that supports it, such as [`ra-data-simple-rest`](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-simple-rest).
+You can use it to make HTTP calls directly, to build a custom [`dataProvider`](./DataProviders.md), or pass it directly to any `dataProvider` that supports it, such as [`ra-data-simple-rest`](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-simple-rest).
 
 ```jsx
 import { fetchUtils, Admin, Resource } from 'react-admin';

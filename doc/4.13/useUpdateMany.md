@@ -7,9 +7,9 @@ title: "useUpdateMany"
 
 This hook allows to call `dataProvider.updateMany()` when the callback is executed, and update an array of records based on their `ids` and a `data` argument.
 
+## Syntax
 
 ```jsx
-// syntax
 const [updateMany, { data, isLoading, error }] = useUpdateMany(
     resource,
     { ids, data },
@@ -28,6 +28,8 @@ updateMany(
 ```
 
 So, should you pass the parameters when calling the hook, or when executing the callback? It's up to you; but if you have the choice, we recommend passing the parameters when calling the `updateMany` callback (second example below).
+
+## Usage
 
 ```jsx
 // set params when calling the hook

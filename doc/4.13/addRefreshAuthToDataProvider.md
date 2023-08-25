@@ -5,7 +5,7 @@ title: "addRefreshAuthToDataProvider"
 
 # `addRefreshAuthToDataProvider`
 
-This helper function wraps an existing [`dataProvider`](./DataProviderIntroduction.md) to support authentication token refreshing mechanisms.
+This helper function wraps an existing [`dataProvider`](./DataProviders.md) to support authentication token refreshing mechanisms.
 
 ## Usage
 

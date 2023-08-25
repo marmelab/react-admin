@@ -17,7 +17,7 @@ To better understand how to use the various react-admin hooks and components ded
 
 ### A Show View Built By Hand
 
-Here is how you could write a simple book show view, leveraging react-admin's [data fetching hooks](./DataProviderIntroduction.md):
+Here is how you could write a simple book show view, leveraging react-admin's [data fetching hooks](./DataProviders.md):
 
 ```jsx
 import { useParams } from 'react-router-dom';
