@@ -29,7 +29,7 @@ describe('<ListGuesser />', () => {
         render(
             <ThemeProvider theme={{}}>
                 <CoreAdminContext dataProvider={dataProvider as any}>
-                    <ListGuesser resource="comments" />
+                    <ListGuesser resource="comments" enableLog />
                 </CoreAdminContext>
             </ThemeProvider>
         );
