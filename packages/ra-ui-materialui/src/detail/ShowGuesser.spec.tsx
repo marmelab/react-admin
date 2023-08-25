@@ -26,7 +26,7 @@ describe('<ShowGuesser />', () => {
         render(
             <ThemeProvider theme={{}}>
                 <CoreAdminContext dataProvider={dataProvider as any}>
-                    <ShowGuesser resource="comments" id={123} />
+                    <ShowGuesser resource="comments" id={123} enableLog />
                 </CoreAdminContext>
             </ThemeProvider>
         );

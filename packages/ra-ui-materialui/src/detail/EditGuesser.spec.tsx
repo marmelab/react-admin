@@ -27,7 +27,7 @@ describe('<EditGuesser />', () => {
         render(
             <ThemeProvider theme={{}}>
                 <CoreAdminContext dataProvider={dataProvider as any}>
-                    <EditGuesser resource="comments" id={123} />
+                    <EditGuesser resource="comments" id={123} enableLog />
                 </CoreAdminContext>
             </ThemeProvider>
         );

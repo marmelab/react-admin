@@ -15,7 +15,7 @@ import { EditView } from './EditView';
 import { editFieldTypes } from './editFieldTypes';
 
 export const EditGuesser = <RecordType extends RaRecord = RaRecord>(
-    props: EditProps<RecordType>
+    props: EditProps<RecordType> & { enableLog?: boolean }
 ) => {
     const {
         resource,
@@ -44,10 +44,16 @@ export const EditGuesser = <RecordType extends RaRecord = RaRecord>(
     );
 };
 
-const EditViewGuesser = props => {
+const EditViewGuesser = (
+    props: Omit<EditProps, 'children'> & { enableLog?: boolean }
+) => {
     const resource = useResourceContext(props);
     const { record } = useEditContext();
     const [child, setChild] = useState(null);
+    const {
+        enableLog = process.env.NODE_ENV === 'development',
+        ...rest
+    } = props;
 
     useEffect(() => {
         setChild(null);
@@ -66,7 +72,7 @@ const EditViewGuesser = props => {
             );
             setChild(inferredChild.getElement());
 
-            if (process.env.NODE_ENV === 'production') return;
+            if (!enableLog) return;
 
             const representation = inferredChild.getRepresentation();
 
@@ -97,9 +103,9 @@ ${representation}
 );`
             );
         }
-    }, [record, child, resource]);
+    }, [record, child, resource, enableLog]);
 
-    return <EditView {...props}>{child}</EditView>;
+    return <EditView {...rest}>{child}</EditView>;
 };
 
 EditViewGuesser.propTypes = EditView.propTypes;
