@@ -7,6 +7,7 @@ import englishMessages from 'ra-language-english';
 import { AdminContext } from '../AdminContext';
 import SortButton from './SortButton';
 import { List, SimpleList } from '../list';
+import { Box, Typography } from '@mui/material';
 
 export default { title: 'ra-ui-materialui/button/SortButton' };
 
@@ -33,17 +34,23 @@ const dataProvider = fakerestDataProvider(
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const PlayerList = () => (
-    <List
-        exporter={false}
-        sort={{ field: 'lastName', order: 'ASC' }}
-        disableSyncWithLocation
-    >
-        <SortButton fields={['firstName', 'lastName', 'position']} />
-        <SimpleList
-            primaryText={record => `${record.firstName} ${record.lastName}`}
-            tertiaryText={record => record.position}
-        />
-    </List>
+    <Box p={2} bgcolor="#fafafb">
+        <Typography variant="h5">Players</Typography>
+        <List
+            exporter={false}
+            sort={{ field: 'lastName', order: 'ASC' }}
+            disableSyncWithLocation
+            actions={
+                <SortButton fields={['firstName', 'lastName', 'position']} />
+            }
+            sx={{ '& .RaList-actions': { minHeight: 0 } }}
+        >
+            <SimpleList
+                primaryText={record => `${record.firstName} ${record.lastName}`}
+                tertiaryText={record => record.position}
+            />
+        </List>
+    </Box>
 );
 
 export const Basic = () => (
@@ -63,11 +70,13 @@ const PlayerListSX = () => (
         exporter={false}
         sort={{ field: 'lastName', order: 'ASC' }}
         disableSyncWithLocation
+        actions={
+            <SortButton
+                fields={['firstName', 'lastName', 'position']}
+                sx={{ mx: 4, border: '1px solid red', p: 1 }}
+            />
+        }
     >
-        <SortButton
-            fields={['firstName', 'lastName', 'position']}
-            sx={{ mx: 4, border: '1px solid red', p: 1 }}
-        />
         <SimpleList
             primaryText={record => `${record.firstName} ${record.lastName}`}
             tertiaryText={record => record.position}
