@@ -57,7 +57,9 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
     const anchorEl = useRef();
 
     if (filters === undefined) {
-        throw new Error('FilterButton requires filters prop to be set');
+        throw new Error(
+            'The <FilterButton> component requires the <List filters> prop to be set'
+        );
     }
 
     const hiddenFilters = filters.filter(

@@ -110,8 +110,13 @@ const ListActions = () => (
     </TopToolbar>
 );
 
+const postFilters = [
+    <TextInput label="Search" source="q" alwaysOn />,
+    <TextInput label="Title" source="title" defaultValue="Hello, World!" />,
+];
+
 export const PostList = () => (
-    <List actions={<ListActions/>}>
+    <List actions={<ListActions/>} filters={postFilters}>
         <DatagridConfigurable>
             ...
         </DatagridConfigurable>
