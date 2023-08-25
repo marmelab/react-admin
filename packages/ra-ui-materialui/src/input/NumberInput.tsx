@@ -121,10 +121,12 @@ export const NumberInput = ({
     const renderHelperText =
         helperText !== false || ((isTouched || isSubmitted) && invalid);
 
+    const { ref, ...fieldWithoutRef } = field;
     return (
         <TextField
             id={id}
-            {...field}
+            {...fieldWithoutRef}
+            inputRef={ref}
             // use the locally controlled state instead of the react-hook-form field state
             value={value}
             onChange={handleChange}

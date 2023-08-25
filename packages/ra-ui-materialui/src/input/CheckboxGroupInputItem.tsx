@@ -17,6 +17,7 @@ export const CheckboxGroupInputItem = props => {
         translateChoice,
         value,
         labelPlacement,
+        inputRef,
         ...rest
     } = props;
 
@@ -34,6 +35,7 @@ export const CheckboxGroupInputItem = props => {
             key={getChoiceValue(choice)}
             onChange={onChange}
             className={className}
+            inputRef={inputRef}
             control={
                 <Checkbox
                     id={`${id}_${getChoiceValue(choice)}`}
