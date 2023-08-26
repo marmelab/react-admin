@@ -72,6 +72,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
             sx={sx}
         >
             <FormControlLabel
+                inputRef={field.ref}
                 control={
                     <Switch
                         id={id}

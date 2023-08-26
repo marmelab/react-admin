@@ -4,6 +4,7 @@ import englishMessages from 'ra-language-english';
 import { Typography } from '@mui/material';
 import { FavoriteBorder, Favorite } from '@mui/icons-material';
 import { required, testDataProvider, useRecordContext } from 'ra-core';
+import { useFormContext } from 'react-hook-form';
 
 import { AdminContext } from '../AdminContext';
 import { Create, Edit } from '../detail';
@@ -177,9 +178,9 @@ const OptionText = () => {
     const record = useRecordContext();
     return (
         <>
-            <Typography sx={{ marginTop: 0.5 }}>{record.name}</Typography>
+            <Typography sx={{ marginTop: 0.5 }}>{record?.name}</Typography>
             <Typography color="textSecondary" sx={{ marginBottom: 2 }}>
-                {record.details}
+                {record?.details}
             </Typography>
         </>
     );
@@ -292,3 +293,28 @@ export const TranslateChoice = () => {
         </AdminContext>
     );
 };
+
+const SetFocusButton = ({ source }) => {
+    const { setFocus } = useFormContext();
+    return (
+        <button onClick={() => setFocus(source)}>Set focus on {source}</button>
+    );
+};
+
+export const SetFocus = () => (
+    <AdminContext>
+        <Create resource="posts" sx={{ width: 600 }}>
+            <SimpleForm>
+                <TextInput source="title" />
+                <CheckboxGroupInput
+                    source="tags"
+                    choices={[
+                        { id: 'tech', name: 'option.tech' },
+                        { id: 'business', name: 'option.business' },
+                    ]}
+                />
+                <SetFocusButton source="tags" />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);

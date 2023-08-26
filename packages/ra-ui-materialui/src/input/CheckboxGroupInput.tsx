@@ -138,7 +138,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
     }
 
     const {
-        field: { onChange: formOnChange, onBlur: formOnBlur, value },
+        field: { onChange: formOnChange, onBlur: formOnBlur, value, ref },
         fieldState: { error, invalid, isTouched },
         formState: { isSubmitted },
         id,
@@ -225,7 +225,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                 />
             </FormLabel>
             <FormGroup row={row}>
-                {allChoices?.map(choice => (
+                {allChoices?.map((choice, index) => (
                     <CheckboxGroupInputItem
                         key={get(choice, optionValue)}
                         choice={choice}
@@ -237,6 +237,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                         translateChoice={translateChoice ?? !isFromReference}
                         value={value}
                         labelPlacement={labelPlacement}
+                        inputRef={index === 0 ? ref : undefined}
                         {...sanitizeRestProps(rest)}
                     />
                 ))}
