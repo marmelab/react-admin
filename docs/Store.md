@@ -54,7 +54,7 @@ React-admin components don't access the store directly ; instead, they use purpo
 
 - `useSidebarState()` for the open/closed sidebar state
 - `useLocaleState()` for the locale
-- `useTheme()` for the theme
+- [`useTheme()`](./useTheme.md) for the theme
 - `useUnselect()`, `useUnselectAll()`, `useRecordSelection()` for the selected records for a resource
 - `useExpanded()` for the expanded rows in a datagrid
 

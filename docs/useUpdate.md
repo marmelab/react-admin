@@ -7,8 +7,9 @@ title: "useUpdate"
 
 This hook allows to call `dataProvider.update()` when the callback is executed, and update a single record based on its `id` and a `data` argument.
 
+## Syntax
+
 ```jsx
-// syntax
 const [update, { data, isLoading, error }] = useUpdate(
     resource,
     { id, data, previousData },
@@ -27,6 +28,8 @@ update(
 ```
 
 This means the parameters can be passed either when calling the hook, or when calling the callback. It's up to you to pick the syntax that best suits your component. If you have the choice, we recommend passing the parameters when calling the `update` callback (second example below).
+
+## Usage
 
 ```jsx
 // set params when calling the hook

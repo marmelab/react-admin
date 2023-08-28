@@ -21,7 +21,7 @@ import {
     useRecordContext,
     useTranslate,
 } from 'ra-core';
-import { UseFieldArrayReturn } from 'react-hook-form';
+import { UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 
 import { useArrayInput } from './useArrayInput';
 import {
@@ -60,6 +60,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     } = props;
     const [confirmIsOpen, setConfirmIsOpen] = useState<boolean>(false);
     const { append, fields, move, remove, replace } = useArrayInput(props);
+    const { resetField } = useFormContext();
     const translate = useTranslate();
     const record = useRecordContext(props);
     const initialDefaultValue = useRef({});
@@ -117,8 +118,10 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                 }
             }
             append(defaultValue);
+            // Make sure the newly added inputs are not considered dirty by react-hook-form
+            resetField(`${source}.${fields.length}`, { defaultValue });
         },
-        [append, children]
+        [append, children, resetField, source, fields.length]
     );
 
     // add field and call the onClick event of the button passed as addButton prop

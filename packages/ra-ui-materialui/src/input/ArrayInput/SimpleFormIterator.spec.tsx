@@ -546,7 +546,7 @@ describe('<SimpleFormIterator />', () => {
             screen
                 .queryAllByLabelText('Email')
                 .map(inputElement => (inputElement as HTMLInputElement).value)
-        ).toEqual(['']);
+        ).toEqual(['default@marmelab.com']);
         expect(
             screen
                 .queryAllByLabelText('Name')

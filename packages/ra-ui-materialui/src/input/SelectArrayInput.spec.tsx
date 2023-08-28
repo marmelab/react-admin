@@ -7,7 +7,11 @@ import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { SelectArrayInput } from './SelectArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
-import { DifferentIdTypes, TranslateChoice } from './SelectArrayInput.stories';
+import {
+    DifferentIdTypes,
+    TranslateChoice,
+    InsideArrayInput,
+} from './SelectArrayInput.stories';
 
 describe('<SelectArrayInput />', () => {
     const defaultProps = {
@@ -635,5 +639,24 @@ describe('<SelectArrayInput />', () => {
             </AdminContext>
         );
         expect(screen.queryByTestId('selectArray')).toBeDefined();
+    });
+
+    it('should always apply its default value inside an ArrayInput', async () => {
+        render(<InsideArrayInput />);
+        await screen.findByText('Foo');
+        fireEvent.click(screen.getByLabelText('Remove'));
+        await waitFor(() => {
+            expect(screen.queryByText('Foo')).toBeNull();
+        });
+        fireEvent.click(screen.getByLabelText('Add'));
+        await screen.findByText('Foo');
+        fireEvent.click(screen.getByLabelText('Remove'));
+        await waitFor(() => {
+            expect(screen.queryByText('Foo')).toBeNull();
+        });
+        fireEvent.click(screen.getByLabelText('Add'));
+        await screen.findByText('Foo');
+        fireEvent.click(screen.getByLabelText('Add'));
+        expect(await screen.findAllByText('Foo')).toHaveLength(2);
     });
 });

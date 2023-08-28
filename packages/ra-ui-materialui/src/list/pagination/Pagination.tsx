@@ -16,7 +16,7 @@ import {
     ListPaginationContextValue,
 } from 'ra-core';
 
-import { PaginationActions } from './PaginationActions';
+import { PaginationActions, PaginationActionsProps } from './PaginationActions';
 
 export const Pagination: FC<PaginationProps> = memo(props => {
     const {
@@ -160,6 +160,6 @@ export interface PaginationProps
     extends TablePaginationBaseProps,
         Partial<ListPaginationContextValue> {
     rowsPerPageOptions?: number[];
-    actions?: FC;
+    actions?: FC<PaginationActionsProps>;
     limit?: ReactElement;
 }

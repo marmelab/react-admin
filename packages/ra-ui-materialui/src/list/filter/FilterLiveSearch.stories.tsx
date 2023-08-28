@@ -81,6 +81,13 @@ export const Label = () => (
     </Wrapper>
 );
 
+export const HiddenLabel = () => (
+    <Wrapper>
+        <FilterLiveSearch source="q" hiddenLabel />
+        <CountryList />
+    </Wrapper>
+);
+
 export const Variant = () => (
     <Wrapper>
         <FilterLiveSearch source="q" variant="outlined" />

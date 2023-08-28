@@ -1,5 +1,52 @@
 # Changelog
 
+## v4.13.2
+
+* Fix Guessers should not log in CI by default ([#9218](https://github.com/marmelab/react-admin/pull/9218)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `package.json` should mention peer dependency on `react-is` ([#9201](https://github.com/marmelab/react-admin/pull/9201)) ([kamiyo](https://github.com/kamiyo))
+* Fix validation errors from resolvers are not translated ([#9191](https://github.com/marmelab/react-admin/pull/9191)) ([djhi](https://github.com/djhi))
+* [Doc] WizardForm: document ability to pass `progress={false}` ([#9216](https://github.com/marmelab/react-admin/pull/9216)) ([slax57](https://github.com/slax57))
+* [Doc] Fix typo in useInfiniteGetList doc ([#9210](https://github.com/marmelab/react-admin/pull/9210)) ([codyavila](https://github.com/codyavila))
+* [Doc] Convert `<Datagrid>` documentation to TS ([#9207](https://github.com/marmelab/react-admin/pull/9207)) ([djhi](https://github.com/djhi))
+* [Doc] Convert `<Admin>` documentation to TS ([#9206](https://github.com/marmelab/react-admin/pull/9206)) ([djhi](https://github.com/djhi))
+* [Doc] display a comment inviting to switch to TS if transpiled code is empty ([#9205](https://github.com/marmelab/react-admin/pull/9205)) ([adguernier](https://github.com/adguernier))
+* [Doc] Add screenshot and screencast for `<ReferenceManyToManyInput>` and `<ReferenceManyToManyField>` ([#9204](https://github.com/marmelab/react-admin/pull/9204)) ([adguernier](https://github.com/adguernier))
+* [Doc] Update the Data Fetching documentation ([#9200](https://github.com/marmelab/react-admin/pull/9200)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix `withLifecycleCallbacks` `beforeSave` return type ([#9199](https://github.com/marmelab/react-admin/pull/9199)) ([djhi](https://github.com/djhi))
+
+## v4.13.1
+
+* Fix `<ArrayInput>` does not apply default values set on inputs ([#9198](https://github.com/marmelab/react-admin/pull/9198)) ([djhi](https://github.com/djhi))
+* Fix `<ReferenceInput queryOptions>` does not apply to `getMany` query ([#9197](https://github.com/marmelab/react-admin/pull/9197)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<UpdateButton>` with custom notification doesn't close the confirmation dialog ([#9196](https://github.com/marmelab/react-admin/pull/9196)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<FilterLiveSearch>` uses label as placeholder by default ([#9185](https://github.com/marmelab/react-admin/pull/9185)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix missing types for `TranslationMessages` ([#9187](https://github.com/marmelab/react-admin/pull/9187)) ([bicstone](https://github.com/bicstone))
+* [Doc] Refactor Theming documentation ([#9193](https://github.com/marmelab/react-admin/pull/9193)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<NumberInput>` usage in Filter Forms ([#9186](https://github.com/marmelab/react-admin/pull/9186)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Convert Inputs Tutorial Examples to TS ([#9183](https://github.com/marmelab/react-admin/pull/9183)) ([djhi](https://github.com/djhi))
+* [Doc] Convert List Tutorial Examples to TS ([#9181](https://github.com/marmelab/react-admin/pull/9181)) ([djhi](https://github.com/djhi))
+
+## v4.13.0
+
+* Add `<FilterListItem icon>` prop to show an icon for each filter list item ([#9150](https://github.com/marmelab/react-admin/pull/9150)) ([Guy-Adler](https://github.com/Guy-Adler))
+* Add `transform` prop to `<DateField>` and `<NumberField>` ([#9147](https://github.com/marmelab/react-admin/pull/9147)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<RecordRepresentation>` to streamline rendering a record as string ([#9095](https://github.com/marmelab/react-admin/pull/9095)) ([djhi](https://github.com/djhi))
+* Add `<UpdateButton>` to let users update the current record ([#9088](https://github.com/marmelab/react-admin/pull/9088)) ([djhi](https://github.com/djhi))
+* Add `<CheckForApplicationUpdate>` to suggest a reload when the application code has changed ([#9059](https://github.com/marmelab/react-admin/pull/9059)) ([djhi](https://github.com/djhi))
+* Add `<Datagrid rowSx>` prop to customize row style for each record ([#8925](https://github.com/marmelab/react-admin/pull/8925)) ([zhujinxuan](https://github.com/zhujinxuan))
+* Update `<SimpleList>` to fallback to `recordRepresentation` when not given `primaryText` ([#9172](https://github.com/marmelab/react-admin/pull/9172)) ([fzaninotto](https://github.com/fzaninotto))
+* Update `<TitlePortal>` to allow customization of the the page title style ([#9171](https://github.com/marmelab/react-admin/pull/9171)) ([fzaninotto](https://github.com/fzaninotto))
+* Update `<List>` mobile layout to display actions first ([#9170](https://github.com/marmelab/react-admin/pull/9170)) ([fzaninotto](https://github.com/fzaninotto))
+* Update `<Input>` components width on mobile to make them full width by default ([#9169](https://github.com/marmelab/react-admin/pull/9169)) ([fzaninotto](https://github.com/fzaninotto))
+* Update `<TranslatableInputs>` to allow vertical layout ([#9126](https://github.com/marmelab/react-admin/pull/9126)) ([slax57](https://github.com/slax57))
+* Update `<Confirm>` to accept a React node as `confirmTitle` or `confirmContent` ([#9115](https://github.com/marmelab/react-admin/pull/9115)) ([yurassic](https://github.com/yurassic))
+* Fix `<SelectInput>` throws error when fetching choices manually ([#9179](https://github.com/marmelab/react-admin/pull/9179)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<SelectInput>` translates choices even inside a `<ReferenceInput>` ([#9176](https://github.com/marmelab/react-admin/pull/9176)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<SingleFieldList>` children don't use default link color ([#9174](https://github.com/marmelab/react-admin/pull/9174)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix ra-data-provider-fakerest getMany doesn't preserve the ids order ([#9168](https://github.com/marmelab/react-admin/pull/9168)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix Fields Record Type Parameter ([#9092](https://github.com/marmelab/react-admin/pull/9092)) ([djhi](https://github.com/djhi))
+* [Doc] Fix tutorial misses step to link references together ([#9167](https://github.com/marmelab/react-admin/pull/9167)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v4.12.4
 
 * Fix `<FilterLiveSearch>` reset button does not reset the value ([#9149](https://github.com/marmelab/react-admin/pull/9149)) ([fzaninotto](https://github.com/fzaninotto))
