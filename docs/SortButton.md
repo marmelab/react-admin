@@ -84,7 +84,7 @@ You can customize the label of the button by passing a `label` prop.
 
 ## `sx`: CSS API
 
-Pass an `sx` prop to customize the style of the main component and the underlying elements.
+You can override the style of `<SortButton>` and its inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for details).
 
 {% raw %}
 ```jsx
@@ -102,6 +102,6 @@ Pass an `sx` prop to customize the style of the main component and the underlyin
 
 This property accepts the following subclasses:
 
-| Rule name              | Description                        |
-|------------------------|------------------------------------|
-| `& .RaSortButton-root` | Applied to the root `span` element |
+| Rule name             | Description                        |
+|-----------------------|------------------------------------|
+| `&.RaSortButton-root` | Applied to the root `span` element |
