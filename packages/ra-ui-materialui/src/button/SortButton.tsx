@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ReactElement, memo } from 'react';
+import clsx from 'clsx';
 import {
     Button,
     Menu,
@@ -46,7 +47,13 @@ import {
  * );
  */
 const SortButton = (props: SortButtonProps) => {
-    const { fields, label = 'ra.sort.sort_by', icon = defaultIcon, sx } = props;
+    const {
+        fields,
+        label = 'ra.sort.sort_by',
+        icon = defaultIcon,
+        sx,
+        className,
+    } = props;
     const { resource, sort, setSort } = useListSortContext();
     const translate = useTranslate();
     const translateLabel = useTranslateLabel();
@@ -83,7 +90,7 @@ const SortButton = (props: SortButtonProps) => {
     });
 
     return (
-        <Root sx={sx}>
+        <Root sx={sx} className={clsx(className, classNames.root)}>
             {isXSmall ? (
                 <Tooltip title={buttonLabel}>
                     <IconButton
@@ -147,6 +154,7 @@ const arePropsEqual = (prevProps, nextProps) =>
     shallowEqual(prevProps.fields, nextProps.fields);
 
 export interface SortButtonProps {
+    className?: string;
     fields: string[];
     icon?: ReactElement;
     label?: string;
@@ -154,10 +162,17 @@ export interface SortButtonProps {
     sx?: SxProps;
 }
 
+const PREFIX = 'RaSortButton';
+
+const classNames = {
+    root: `${PREFIX}-root`,
+};
+
 const Root = styled('span', {
-    name: 'RaSortButton',
+    name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })({
+    [`.${classNames.root}`]: {},
     '& .MuiButton-sizeSmall': {
         // fix for icon misalignment on small buttons, see https://github.com/mui/material-ui/pull/30240
         lineHeight: 1.5,
