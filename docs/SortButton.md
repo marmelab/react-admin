@@ -33,11 +33,24 @@ const ListActions = () => (
 
 ## Props
 
-| Prop     | Required | Type           | Default               | Description                         |
-|----------|----------|----------------|-----------------------|-------------------------------------|
-| `fields` | Required | `string[]`     | -                     | List of fields to offer sort on     |
-| `icon`   | Optional | `ReactElement` | `<ArrowDropDownIcon>` | iconElement, e.g. `<CommentIcon />` |
-| `label`  | Optional | `string`       | 'ra.sort.sort_by'     | label or translation message to use |
+| Prop        | Required | Type           | Default               | Description                         |
+|-------------|----------|----------------|-----------------------|-------------------------------------|
+| `fields`    | Required | `string[]`     | -                     | List of fields to offer sort on     |
+| `className` | Optional | `string  `     | -                     | class name for the button container |
+| `icon`      | Optional | `ReactElement` | `<ArrowDropDownIcon>` | iconElement, e.g. `<CommentIcon />` |
+| `label`     | Optional | `string`       | 'ra.sort.sort_by'     | label or translation message to use |
+| `sx`        | Optional | `SxProps`      | -                     | Styling                             |
+
+## `className`
+
+The `className` prop is passed down to the button container. Use it to customize the button style.
+
+```jsx
+<SortButton 
+    fields={['reference', 'sales', 'stock']}
+    className="my-sort-button"
+/>
+```
 
 ## `fields`
 
@@ -68,3 +81,27 @@ You can customize the label of the button by passing a `label` prop.
     label="Sort by"
 />
 ```
+
+## `sx`: CSS API
+
+Pass an `sx` prop to customize the style of the main component and the underlying elements.
+
+{% raw %}
+```jsx
+<SortButton 
+    fields={['reference', 'sales', 'stock']}
+    sx={{
+        mx: 1,
+        '& .MuiButton-root': {
+            color: 'text.secondary',
+        },
+    }}
+/>
+```
+{% endraw %}
+
+This property accepts the following subclasses:
+
+| Rule name              | Description                        |
+|------------------------|------------------------------------|
+| `& .RaSortButton-root` | Applied to the root `span` element |

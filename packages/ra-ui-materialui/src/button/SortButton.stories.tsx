@@ -73,7 +73,14 @@ const PlayerListSX = () => (
         actions={
             <SortButton
                 fields={['firstName', 'lastName', 'position']}
-                sx={{ mx: 4, border: '1px solid red', p: 1 }}
+                sx={{
+                    mx: 4,
+                    border: '1px solid red',
+                    p: 1,
+                    '& .MuiButton-root': {
+                        color: 'text.secondary',
+                    },
+                }}
             />
         }
     >
