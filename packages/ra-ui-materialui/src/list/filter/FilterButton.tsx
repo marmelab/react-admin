@@ -85,6 +85,16 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
     const handleShow = useCallback(
         ({ source, defaultValue }) => {
             showFilter(source, defaultValue === '' ? undefined : defaultValue);
+            // We have to fallback to imperative code because the new FilterFormInput
+            // has no way of knowing it has just been displayed (and thus that it should focus its input)
+            setTimeout(() => {
+                const inputElement = document.querySelector(
+                    `input[name='${source}']`
+                ) as HTMLInputElement;
+                if (inputElement) {
+                    inputElement.focus();
+                }
+            }, 50);
             setOpen(false);
         },
         [showFilter, setOpen]

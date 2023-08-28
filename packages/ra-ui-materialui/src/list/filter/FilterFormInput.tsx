@@ -2,7 +2,7 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import { IconButton } from '@mui/material';
-import ActionHide from '@mui/icons-material/HighlightOff';
+import ActionHide from '@mui/icons-material/RemoveCircleOutline';
 import clsx from 'clsx';
 import { useResourceContext, useTranslate } from 'ra-core';
 
@@ -16,6 +16,14 @@ export const FilterFormInput = props => {
             data-source={filterElement.props.source}
             className={clsx('filter-field', className)}
         >
+            {React.cloneElement(filterElement, {
+                resource,
+                record: emptyRecord,
+                size: filterElement.props.size ?? 'small',
+                helperText: false,
+                // ignore defaultValue in Field because it was already set in Form (via mergedInitialValuesWithDefaultValues)
+                defaultValue: undefined,
+            })}
             {!filterElement.props.alwaysOn && (
                 <IconButton
                     className={clsx(
@@ -30,14 +38,7 @@ export const FilterFormInput = props => {
                     <ActionHide />
                 </IconButton>
             )}
-            {React.cloneElement(filterElement, {
-                resource,
-                record: emptyRecord,
-                size: filterElement.props.size ?? 'small',
-                helperText: false,
-                // ignore defaultValue in Field because it was already set in Form (via mergedInitialValuesWithDefaultValues)
-                defaultValue: undefined,
-            })}
+
             <div className={FilterFormInputClasses.spacer}>&nbsp;</div>
         </Root>
     );
