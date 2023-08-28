@@ -200,7 +200,7 @@ export interface UpdateResult<RecordType extends RaRecord = any> {
 
 export interface UpdateManyParams<T = any> {
     ids: Identifier[];
-    data: T;
+    data: Partial<T>;
     meta?: any;
 }
 export interface UpdateManyResult<RecordType extends RaRecord = any> {
@@ -208,7 +208,7 @@ export interface UpdateManyResult<RecordType extends RaRecord = any> {
 }
 
 export interface CreateParams<T = any> {
-    data: T;
+    data: Partial<T>;
     meta?: any;
 }
 export interface CreateResult<RecordType extends RaRecord = any> {

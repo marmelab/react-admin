@@ -7,6 +7,7 @@ import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
 import { SimpleForm } from '../form';
 import { FormInspector } from './common';
+import { TextInput } from './TextInput';
 
 export default { title: 'ra-ui-materialui/input/NumberInput' };
 
@@ -323,6 +324,25 @@ export const ShouldUnregister = () => (
         >
             <SimpleForm>
                 <NumberInput source="views" shouldUnregister />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+const SetFocusButton = ({ source }) => {
+    const { setFocus } = useFormContext();
+    return (
+        <button onClick={() => setFocus(source)}>Set focus on {source}</button>
+    );
+};
+
+export const SetFocus = () => (
+    <AdminContext>
+        <Create resource="posts" sx={{ width: 600 }}>
+            <SimpleForm>
+                <TextInput source="title" />
+                <NumberInput source="views" />
+                <SetFocusButton source="views" />
             </SimpleForm>
         </Create>
     </AdminContext>

@@ -2,7 +2,7 @@ import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
-import { Resource, withLifecycleCallbacks } from 'ra-core';
+import { Resource, useNotify, withLifecycleCallbacks } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { createMemoryHistory } from 'history';
 
@@ -157,6 +157,47 @@ export const Optimistic = () => (
     >
         <AdminUI>
             <Resource name="posts" show={<PostShowOptimistic />} />
+        </AdminUI>
+    </AdminContext>
+);
+
+const PostShowMutationOptions = () => {
+    const notify = useNotify();
+    return (
+        <Show
+            actions={
+                <TopToolbar>
+                    <UpdateButton
+                        mutationMode="pessimistic"
+                        label="Reset views"
+                        data={{ views: 0 }}
+                        mutationOptions={{
+                            onSuccess: () => {
+                                notify('Reset views success');
+                            },
+                        }}
+                    />
+                </TopToolbar>
+            }
+        >
+            <SimpleShowLayout>
+                <TextField source="id" />
+                <TextField source="title" />
+                <TextField source="body" />
+                <NumberField source="views" />
+            </SimpleShowLayout>
+        </Show>
+    );
+};
+
+export const MutationOptions = () => (
+    <AdminContext
+        dataProvider={getDataProvider()}
+        i18nProvider={i18nProvider}
+        history={createMemoryHistory({ initialEntries: ['/posts/1/show'] })}
+    >
+        <AdminUI>
+            <Resource name="posts" show={<PostShowMutationOptions />} />
         </AdminUI>
     </AdminContext>
 );

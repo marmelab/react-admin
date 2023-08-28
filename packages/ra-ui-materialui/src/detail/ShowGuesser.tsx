@@ -18,16 +18,22 @@ export const ShowGuesser = ({
     queryOptions,
     resource,
     ...rest
-}: Omit<ShowProps, 'children'>) => (
+}: Omit<ShowProps, 'children'> & { enableLog?: boolean }) => (
     <ShowBase id={id} resource={resource} queryOptions={queryOptions}>
         <ShowViewGuesser {...rest} />
     </ShowBase>
 );
 
-const ShowViewGuesser = props => {
+const ShowViewGuesser = (
+    props: Omit<ShowProps, 'children'> & { enableLog?: boolean }
+) => {
     const resource = useResourceContext(props);
     const { record } = useShowContext();
     const [child, setChild] = useState(null);
+    const {
+        enableLog = process.env.NODE_ENV === 'development',
+        ...rest
+    } = props;
 
     useEffect(() => {
         setChild(null);
@@ -46,7 +52,7 @@ const ShowViewGuesser = props => {
             );
             setChild(inferredChild.getElement());
 
-            if (process.env.NODE_ENV === 'production') return;
+            if (!enableLog) return;
 
             const representation = inferredChild.getRepresentation();
             const components = ['Show']
@@ -76,9 +82,9 @@ ${inferredChild.getRepresentation()}
 );`
             );
         }
-    }, [record, child, resource]);
+    }, [record, child, resource, enableLog]);
 
-    return <ShowView {...props}>{child}</ShowView>;
+    return <ShowView {...rest}>{child}</ShowView>;
 };
 
 ShowViewGuesser.propTypes = ShowView.propTypes;

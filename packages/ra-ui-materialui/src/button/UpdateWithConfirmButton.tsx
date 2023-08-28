@@ -48,7 +48,6 @@ export const UpdateWithConfirmButton = (
                 messageArgs: { smart_count: 1 },
                 undoable: mutationMode === 'undoable',
             });
-            setOpen(false);
         },
         onError = (error: Error | string) => {
             notify(
@@ -67,6 +66,8 @@ export const UpdateWithConfirmButton = (
                     },
                 }
             );
+        },
+        onSettled = () => {
             setOpen(false);
         },
         ...otherMutationOptions
@@ -90,6 +91,7 @@ export const UpdateWithConfirmButton = (
             {
                 onSuccess,
                 onError,
+                onSettled,
                 mutationMode,
                 ...otherMutationOptions,
             }

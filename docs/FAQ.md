@@ -147,7 +147,7 @@ See this [issue for more information](https://github.com/marmelab/react-admin/is
 
 ## My Resource is defined but not displayed on the Menu
 
-You can declare a resource without `list` prop, to manage reference for example:
+You may have declared a resource without `list` prop. But with the default menu, only resources with a `list` prop are shown.
 
 ```jsx
 <Admin>
@@ -155,9 +155,7 @@ You can declare a resource without `list` prop, to manage reference for example:
 </Admin>
 ```
 
-But with the default menu, resources without `list` prop aren't shown.
-
-In order to have a specific resource without `list` prop listed on the menu, you have to [write your own custom menu](./Theming.md#using-a-custom-menu).
+In order to have a specific resource without `list` prop listed on the menu, you have to [write your own custom menu](./Layout.md#menu).
 
 ```jsx
  const MyMenu = ({ resources, onMenuClick }) => (

@@ -49,7 +49,7 @@ If your data provider doesn't return the `total` number of records (see [Partial
 For instance, to render the latest news:
 
 ```jsx
-import { useInfinteGetList } from 'react-admin';
+import { useInfiniteGetList } from 'react-admin';
 
 const LatestNews = () => {
     const { 

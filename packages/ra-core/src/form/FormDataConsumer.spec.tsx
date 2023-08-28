@@ -30,6 +30,7 @@ describe('FormDataConsumerView', () => {
 
         expect(children).toHaveBeenCalledWith({
             formData,
+            getSource: expect.anything(),
         });
     });
 

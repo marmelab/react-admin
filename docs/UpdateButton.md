@@ -182,13 +182,11 @@ import { useNotify, useRefresh, useRedirect, TopToolbar, UpdateButton } from 're
 
 const PostEditActions = () => {
     const notify = useNotify();
-    const refresh = useRefresh();
     const redirect = useRedirect();
 
     const onSuccess = () => {
         notify(`Changes saved`);
         redirect('/posts');
-        refresh();
     };
 
     return (
@@ -212,7 +210,6 @@ The default `onSuccess` function is:
         messageArgs: { smart_count: 1 },
         undoable: mutationMode === 'undoable'
     });
-    refresh();
 }
 ```
 
@@ -225,13 +222,11 @@ import { useNotify, useRefresh, useRedirect, TopToolbar, UpdateButton } from 're
 
 const PostEditActions = () => {
     const notify = useNotify();
-    const refresh = useRefresh();
     const redirect = useRedirect();
 
     const onSuccess = (data) => {
         notify(`Changes to post "${data.title}" saved`);
         redirect('/posts');
-        refresh();
     };
 
     return (
