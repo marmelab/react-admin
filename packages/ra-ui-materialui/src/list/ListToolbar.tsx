@@ -3,7 +3,7 @@ import { FC, memo } from 'react';
 import { styled } from '@mui/material/styles';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { Toolbar, ToolbarProps } from '@mui/material';
+import { ToolbarProps } from '@mui/material';
 import { Exporter } from 'ra-core';
 
 import { FilterForm } from './filter';
@@ -63,18 +63,16 @@ export interface ListToolbarProps
 
 const PREFIX = 'RaListToolbar';
 
-const Root = styled(Toolbar, {
+const Root = styled('div', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
+    display: 'flex',
     position: 'relative',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
     width: '100%',
-    padding: '0 !important',
-    minHeight: theme.spacing(8),
     [theme.breakpoints.down('md')]: {
-        margin: 0,
         flexWrap: 'wrap',
     },
     [theme.breakpoints.down('sm')]: {

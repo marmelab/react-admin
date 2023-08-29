@@ -1,9 +1,21 @@
 import * as React from 'react';
+import { useMediaQuery, Theme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import Toolbar, { ToolbarProps } from '@mui/material/Toolbar';
 
-export const TopToolbar = (props: ToolbarProps) => <StyledToolbar {...props} />;
+export const TopToolbar = (props: ToolbarProps) => {
+    const isXSmall = useMediaQuery<Theme>(theme =>
+        theme.breakpoints.down('sm')
+    );
+    return (
+        <StyledToolbar
+            disableGutters
+            variant={isXSmall ? 'regular' : 'dense'}
+            {...props}
+        />
+    );
+};
 
 TopToolbar.propTypes = {
     children: PropTypes.node,
@@ -23,17 +35,14 @@ const StyledToolbar = styled(Toolbar, {
     gap: theme.spacing(1),
     whiteSpace: 'nowrap',
     flex: '0 1 auto',
-    minHeight: theme.spacing(8),
-    [theme.breakpoints.up('md')]: {
-        padding: theme.spacing(0.5),
-        paddingTop: theme.spacing(1),
-    },
+    padding: theme.spacing(0.5),
+    paddingBottom: theme.spacing(1),
     [theme.breakpoints.down('md')]: {
         flex: '0 1 100%',
-        padding: theme.spacing(0.5),
-        paddingBottom: theme.spacing(1),
     },
     [theme.breakpoints.down('sm')]: {
         backgroundColor: theme.palette.background.paper,
+        padding: 0,
+        paddingBottom: 0,
     },
 }));
