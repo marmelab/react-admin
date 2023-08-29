@@ -193,7 +193,7 @@ Clone this repository and run `make install` to grab the dependencies, then `mak
 
 ### Online one-click Setup
 
-You can use Gitpod (an open source, online VS Code-like IDE) for working on issues and making PRs. With a single click it will launch a workspace and automatically clone the repo, run `make install` and `make start` so that you can start straight away.
+You can use Gitpod (an open source, online VS Code-like IDE) for working on issues and making PRs. With a single click it will launch a workspace and automatically clone the repo, run `make install` and `make run` so that you can start straight away.
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
 
