@@ -176,4 +176,4 @@ ReferenceManyFieldView.propTypes = {
 };
 
 const defaultFilter = {};
-const defaultSort = { field: 'id', order: 'DESC' };
+const defaultSort = { field: 'id', order: 'DESC' as const };
