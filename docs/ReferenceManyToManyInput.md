@@ -13,7 +13,7 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
   Your browser does not support the video tag.
 </video>
 
-In this example, `artists.id` matches `performances.artist_id`, and `performances.event_id` matches `events.id`:
+In this example, `bands.id` matches `performances.band_id`, and `performances.venue_id` matches `venues.id`:
 
 ```
 ┌─────────┐       ┌──────────────┐      ┌───────────────┐
