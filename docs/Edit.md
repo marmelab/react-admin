@@ -508,7 +508,7 @@ const PostEdit = () => (
 
 ## `sx`: CSS API
 
-The `<Edit>` components accept the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following keys:
+The `<Edit>` components accept the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following keys:
 
 | Rule name               | Description                                                                          |
 |-------------------------|--------------------------------------------------------------------------------------|
@@ -516,7 +516,7 @@ The `<Edit>` components accept the usual `className` prop, but you can override 
 | `& .RaEdit-noActions` | Applied to the main container when `actions` prop is `false`                         |
 | `& .RaEdit-card`      | Applied to the child component inside the main container (Material UI's `Card` by default)   |
 
-To override the style of all instances of `<Edit>` components using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaEdit` key.
+To override the style of all instances of `<Edit>` components using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaEdit` key.
 
 ## `title`
 

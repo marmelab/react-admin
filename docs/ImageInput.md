@@ -162,11 +162,11 @@ Use the `removeIcon` prop to change the icon displayed as the remove button:
 
 ## `sx`: CSS API
 
-The `<ImageInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<ImageInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
 | Rule name                       | Description                                         |
 |---------------------------------|-----------------------------------------------------|
 | `& .RaFileInput-dropZone`      | Styles pass to the underlying `FileInput` component |
 | `& .RaFileInput-removeButton`  | Styles pass to the underlying `FileInput` component |
 
-To override the style of all instances of `<ImageInput>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaImageInput` key.
+To override the style of all instances of `<ImageInput>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaImageInput` key.

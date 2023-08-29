@@ -150,7 +150,7 @@ export const MyAppBar = () => <AppBar color="primary" />;
 
 ## `sx`: CSS API
 
-Pass an `sx` prop to customize the style of the main component and the underlying elements.
+Pass an `sx` prop to customize the style of the main component and the underlying elements (see [the `sx` documentation](./SX.md) for syntax and examples).
 
 {% raw %}
 ```jsx
@@ -176,7 +176,7 @@ This property accepts the following subclasses:
 | `& .RaAppBar-menuButton` | Applied to the hamburger icon |
 | `& .RaAppBar-title`      | Applied to the title portal   |
 
-To override the style of `<AppBar>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaAppBar` key.
+To override the style of `<AppBar>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaAppBar` key.
 
 ## `toolbar`
 

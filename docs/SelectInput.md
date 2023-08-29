@@ -460,13 +460,13 @@ You can make the `SelectInput` component resettable using the `resettable` prop.
 
 ## `sx`: CSS API
 
-The `<SelectInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<SelectInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
 | Rule name                | Description                                               |
 |--------------------------|-----------------------------------------------------------|
 | `& .RaSelectInput-input` | Applied to the underlying `ResettableTextField` component |
 
-To override the style of all instances of `<SelectInput>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaSelectInput` key.
+To override the style of all instances of `<SelectInput>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaSelectInput` key.
 
 ## `translateChoice`
 

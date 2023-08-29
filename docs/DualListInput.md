@@ -236,7 +236,7 @@ const choices = [
 
 ## `sx`: CSS API
 
-The `<DualListInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<DualListInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
 | Rule name                          | Description                      |
 |------------------------------------|----------------------------------|
@@ -251,7 +251,7 @@ The `<DualListInput>` component accepts the usual `className` prop. You can also
 | `& .RaDualListInput-selectedList`  | Applied to the selected list     |
 | `& .RaDualListInput-availableList` | Applied to the available list    |
 
-To override the style of all instances of `<DualListInput>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaDualListInput` key.
+To override the style of all instances of `<DualListInput>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaDualListInput` key.
 
 
 ## `translateChoice`
