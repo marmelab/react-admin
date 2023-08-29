@@ -123,7 +123,7 @@ InfiniteList.propTypes = {
     //@ts-ignore-line
     sort: PropTypes.shape({
         field: PropTypes.string,
-        order: PropTypes.string,
+        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
     }),
     sx: PropTypes.any,
     title: TitlePropType,
