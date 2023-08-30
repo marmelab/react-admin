@@ -43,7 +43,7 @@ import { RichTextField } from 'react-admin';
 
 The `purifyOptions` prop allows to pass additional options to the DomPurify library when calling `sanitize()`.
 
-For instance you can use the `ADD_ATTR` option to allow additional attributes, like `'target'`:
+For instance, you can use the `ADD_ATTR` option to allow additional attributes, like `'target'`:
 
 {% raw %}
 ```jsx

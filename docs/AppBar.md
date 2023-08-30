@@ -100,7 +100,7 @@ export const MyAppBar = () => (
 
 ![App bar with a settings button](./img/AppBar-children.png)
 
-**Tip**: Whats the `<TitlePortal>`? It's a placeholder for the page title, that components in the page can fill using [the `<Title>` component](./Title.md). `<Title>` uses a [React Portal](https://react.dev/reference/react-dom/createPortal) under the hood. `<TitlePortal>` takes all the available space in the app bar, so it "pushes" the following children to the right.
+**Tip**: What's the `<TitlePortal>`? It's a placeholder for the page title, that components in the page can fill using [the `<Title>` component](./Title.md). `<Title>` uses a [React Portal](https://react.dev/reference/react-dom/createPortal) under the hood. `<TitlePortal>` takes all the available space in the app bar, so it "pushes" the following children to the right.
 
 **Tip**: `<TitlePortal>` renders a [Material-ui `<Typography>`](https://mui.com/material-ui/react-typography/) element that you can customize by passing your own props:
 
@@ -135,7 +135,7 @@ const MyAppBar = () => (
 
 ## `color`
 
-React-admin's `<AppBar>` renders an Material UI `<AppBar>`, which supports a `color` prop to set the app bar color depending on the theme. By default, the app bar color is set to the `secondary` theme color.
+React-admin's `<AppBar>` renders a Material UI `<AppBar>`, which supports a `color` prop to set the app bar color depending on the theme. By default, the app bar color is set to the `secondary` theme color.
 
 This means you can set the app bar color to 'default', 'inherit', 'primary', 'secondary', 'transparent', or any string.
 

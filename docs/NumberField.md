@@ -119,7 +119,7 @@ import { NumberField }  from 'react-admin';
 
 For information, the default `transform` function is:
 
-```jsx
+```tsx
 const defaultTransform = value => {
     if (!value || typeof value === 'number') {
         return value;

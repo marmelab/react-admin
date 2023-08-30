@@ -473,7 +473,7 @@ const PostCreate = () => (
 
 ## Role-Based Access Control (RBAC)
 
-Fine-grained permissions control can be added by using the [`<WizardForm>`](./AuthRBAC.md#wizardform) and [`<WizardFormStep>`](./AuthRBAC.md#wizardformstep) components provided by the `@react-admin/ra-enterprise` package. 
+Fine-grained permissions control can be added by using the [`<WizardForm>`](./AuthRBAC.md#wizardform) and [`<WizardFormStep>`](./AuthRBAC.md#wizardform) components provided by the `@react-admin/ra-enterprise` package. 
 
 {% raw %}
 ```tsx

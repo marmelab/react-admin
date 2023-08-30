@@ -5,7 +5,7 @@ title: "The useGetRecordRepresentation Component"
 
 Returns a function that get the record representation, leveraging the [`recordRepresentation`](./Resource.md#recordrepresentation) prop of the parent `<Resource>` component.
 
-You can also uses its component version: [`<RecordRepresentation>`](./RecordRepresentation.md).
+You can also use its component version: [`<RecordRepresentation>`](./RecordRepresentation.md).
 
 ## Usage
 

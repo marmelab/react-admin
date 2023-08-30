@@ -741,7 +741,7 @@ When users submit a form, or delete a record, the UI reflects their change immed
 
 This undo feature is enabled by default, and requires no particular setup on the server side. In fact, react-admin delays the call to the data provider for mutations, to give users a "grace" period. That's why the actual call to `dataProvider.update()` occurs 5 seconds after the user submits an update form - even though the UI reflects the changes immediately.
 
-You can disable this feature page by page by choosing a different [mutationMode](./Edit.md#mutationmode).
+You can disable this feature page by page, by choosing a different [mutationMode](./Edit.md#mutationmode).
 
 ## Roles & Permissions
 
@@ -1157,7 +1157,7 @@ For instance, the Saved Queries feature lets users **save a combination of filte
 </video>
 
 
-Saved queries persist between sessions, so users can find their custom queries even after closing and reopening the admin. Saved queries are available both for the Filter Button/Form combo and for the `<FilterList>` Sidebar. It's enabled by default for the Filter Button/Form combo but you have to add it yourself in the `<FilterList>` Sidebar.
+Saved queries persist between sessions, so users can find their custom queries even after closing and reopening the admin. Saved queries are available both for the Filter Button/Form combo and for the `<FilterList>` Sidebar. It's enabled by default for the Filter Button/Form combo, but you have to add it yourself in the `<FilterList>` Sidebar.
 
 ```diff
 import { FilterList, FilterListItem, List, Datagrid } from 'react-admin';
@@ -1373,7 +1373,7 @@ React-admin is **fully internationalized**.
 </video>
 
 
-The default interface messages (for buttons, tooltips, input labels, etc) are in English. You can translate them to any of [the 30+ languages supported by react-admin](./TranslationLocales.md) by importing the appropriate translation package. For instance, to translate to French:
+The default interface messages (for buttons, tooltips, input labels, etc.) are in English. You can translate them to any of [the 30+ languages supported by react-admin](./TranslationLocales.md) by importing the appropriate translation package. For instance, to translate to French:
 
 ```jsx
 import { Admin } from 'react-admin';
