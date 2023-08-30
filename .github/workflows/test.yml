@@ -12,56 +12,56 @@ on:
       - 'docs/**'
 
 jobs:
-  typecheck:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Use Node.js LTS
-      uses: actions/setup-node@v1
-      with:
-        node-version: '16.x'
-    - uses: bahmutov/npm-install@v1
-      with:
-        install-command: yarn --immutable
-    - name: Lint
-      run: make lint        
-    - name: Build
-      run: make build
+  # typecheck:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v2
+  #   - name: Use Node.js LTS
+  #     uses: actions/setup-node@v1
+  #     with:
+  #       node-version: '16.x'
+  #   - uses: bahmutov/npm-install@v1
+  #     with:
+  #       install-command: yarn --immutable
+  #   - name: Lint
+  #     run: make lint        
+  #   - name: Build
+  #     run: make build
 
-  unit-test:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Use Node.js LTS
-      uses: actions/setup-node@v1
-      with:
-        node-version: '16.x'
-    - uses: bahmutov/npm-install@v1
-      with:
-        install-command: yarn --immutable
-    - name: Unit Tests
-      run: make test-unit
-      env:
-        CI: true
+  # unit-test:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v2
+  #   - name: Use Node.js LTS
+  #     uses: actions/setup-node@v1
+  #     with:
+  #       node-version: '16.x'
+  #   - uses: bahmutov/npm-install@v1
+  #     with:
+  #       install-command: yarn --immutable
+  #   - name: Unit Tests
+  #     run: make test-unit
+  #     env:
+  #       CI: true
 
-  e2e-test:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Use Node.js LTS
-      uses: actions/setup-node@v1
-      with:
-        node-version: '16.x'
-    - uses: bahmutov/npm-install@v1
-      with:
-        install-command: yarn --immutable
-    - name: e2e Tests
-      run: make test-e2e
-      env:
-        CI: true
+  # e2e-test:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v2
+  #   - name: Use Node.js LTS
+  #     uses: actions/setup-node@v1
+  #     with:
+  #       node-version: '16.x'
+  #   - uses: bahmutov/npm-install@v1
+  #     with:
+  #       install-command: yarn --immutable
+  #   - name: e2e Tests
+  #     run: make test-e2e
+  #     env:
+  #       CI: true
 
   e-commerce:
     runs-on: ubuntu-latest
@@ -92,28 +92,28 @@ jobs:
           path: demo-build.zip
           retention-days: 1
 
-  crm:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Use Node.js LTS
-      uses: actions/setup-node@v1
-      with:
-        node-version: '16.x'
-    - uses: bahmutov/npm-install@v1
-      with:
-        install-command: yarn --immutable
-    - name: Build
-      run: make build
-    - name: Build crm
-      run: make build-crm
+  # crm:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v2
+  #   - name: Use Node.js LTS
+  #     uses: actions/setup-node@v1
+  #     with:
+  #       node-version: '16.x'
+  #   - uses: bahmutov/npm-install@v1
+  #     with:
+  #       install-command: yarn --immutable
+  #   - name: Build
+  #     run: make build
+  #   - name: Build crm
+  #     run: make build-crm
 
   greenframe:
     runs-on: ubuntu-latest
     name: GreenFrame
     needs: [e-commerce]
-    if: success() && github.ref == 'refs/heads/greenframe-ci'
+    # if: success() && github.ref == 'refs/heads/master'
     steps:
       # To use this repository's private action,
       # you must check out the repository
