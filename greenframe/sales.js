@@ -10,6 +10,19 @@ async page => {
     const waitForUndoableNotification = async () =>
         await page.waitForTimeout(raNotificationAutoHideDuration + 300);
 
+    const addMonths = (date, count) => {
+        if (date && count) {
+            var m,
+                d = (date = new Date(+date)).getDate();
+
+            date.setMonth(date.getMonth() + count, 1);
+            m = date.getMonth();
+            date.setDate(d);
+            if (date.getMonth() !== m) date.setDate(0);
+        }
+        return date;
+    };
+
     await page.goto('', {
         waitUntil: 'networkidle',
     });
@@ -57,10 +70,13 @@ async page => {
     await page.getByRole('tab', { name: /delivered/ }).click();
     await waitForRaSettled();
 
-    await page.addMilestone('Filter all orders passed since 2023-06-14');
+    await page.addMilestone('Filter all orders passed since one month');
     await page.getByRole('button', { name: 'Add filter' }).click();
     await page.getByText('Passed Since').click();
-    await page.getByLabel('Passed Since').fill('2023-06-14');
+    const oneMonthAgo = addMonths(new Date(), -1)
+        .toISOString()
+        .substring(0, 10);
+    await page.getByLabel('Passed Since').fill(oneMonthAgo);
     await page.waitForNavigation();
     await waitForRaSettled();
 };

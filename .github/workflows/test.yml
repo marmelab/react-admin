@@ -113,21 +113,14 @@ jobs:
     runs-on: ubuntu-latest
     name: GreenFrame
     needs: [e-commerce]
-    if: success() && github.ref == 'refs/heads/master'
+    if: success() && github.ref == 'refs/heads/greenframe-ci'
     steps:
       # To use this repository's private action,
       # you must check out the repository
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0 # Fetch all the git history to enable git comparison
-      - name: Use Node.js LTS
-        uses: actions/setup-node@v1
-        with:
-          node-version: '16.x'
-      - uses: bahmutov/npm-install@v1
-        with:
-          install-command: yarn --immutable                 
+          fetch-depth: 2 # Fetch HEAD^ to enable git comparison
       - name: Download demo build
         uses: actions/download-artifact@v3
         with:
@@ -136,7 +129,7 @@ jobs:
         run: unzip -o -u demo-build.zip
       - name: Run e-commerce
         # Run the demo in production mode
-        run: cd ./examples/demo && yarn preview --no-open --host 0.0.0.0 &
+        run: cd ./examples/demo/dist && python3 -m http.server 4173 &
       - name: Run GreenFrame Analysis
         uses: marmelab/greenframe-action@1.0.0
         env:
