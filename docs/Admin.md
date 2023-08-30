@@ -250,10 +250,17 @@ React-admin apps contain a special route called `/auth-callback` to let external
 If you need a different behavior for this route, you can render a custom component by passing it as the `authCallbackPage` prop.
 
 ```tsx
+import { Admin } from 'react-admin';
+import { dataProvider } from './dataProvider';
+import { authProvider } from './authProvider';
 import MyAuthCallbackPage from './MyAuthCallbackPage';
 
 const App = () => (
-    <Admin authCallbackPage={MyAuthCallbackPage}>
+    <Admin
+        authCallbackPage={MyAuthCallbackPage}
+        authProvider={authProvider}
+        dataProvider={dataProvider}
+    >
         ...
     </Admin>
 );
@@ -330,17 +337,18 @@ The Auth Provider also lets you configure redirections after login/logout, anony
 
 ## `basename`
 
-Use this prop to make all routes and links in your Admin relative to a "base" portion of the URL pathname that they all share. This is required when using the [`BrowserHistory`](https://github.com/remix-run/history/blob/main/docs/api-reference.md#createbrowserhistory) to serve the application under a sub-path of your domain (for example https://marmelab.com/ra-enterprise-demo), or when embedding react-admin inside a single-page app with its own routing.
+Use this prop to make all routes and links in your Admin relative to a "base" portion of the URL pathname that they all share. This is required when using the [`BrowserRouter`](https://reactrouter.com/en/main/router-components/browser-router) to serve the application under a sub-path of your domain (for example https://marmelab.com/ra-enterprise-demo), or when embedding react-admin inside a single-page app with its own routing.
 
 ```tsx
 import { Admin } from 'react-admin';
-import { createBrowserHistory } from 'history';
+import { BrowserRouter } from 'react-router-dom';
 
-const history = createBrowserHistory();
 const App = () => (
-    <Admin basename="/admin" history={history}>
-        ...
-    </Admin>
+    <BrowserRouter>
+        <Admin basename="/admin">
+            ...
+        </Admin>
+    </BrowserRouter>
 );
 ```
 
@@ -434,6 +442,7 @@ If you want to support both light and dark mode, you can provide a `darkTheme` i
 
 ```tsx
 import { Admin } from 'react-admin';
+import { dataProvider } from './dataProvider';
 import { darkTheme, lightTheme } from './themes';
 
 const App = () => (
@@ -482,11 +491,11 @@ You can opt out of telemetry by simply adding `disableTelemetry` to the `<Admin>
 
 ```tsx
 // in src/App.js
-import * as React from "react";
 import { Admin } from 'react-admin';
+import { dataProvider } from './dataProvider';
 
 const App = () => (
-    <Admin disableTelemetry>
+    <Admin disableTelemetry dataProvider={dataProvider}>
         // ...
     </Admin>
 );
@@ -572,10 +581,17 @@ Finally, you can also pass a custom component as the `layout` prop. It must cont
 If you want to customize the Login page, or switch to another authentication strategy than a username/password form, pass a component of your own as the `loginPage` prop. React-admin will display this component whenever the `/login` route is called.
 
 ```tsx
+import { Admin } from 'react-admin';
+import { dataProvider } from './dataProvider';
+import { authProvider } from './authProvider';
 import MyLoginPage from './MyLoginPage';
 
 const App = () => (
-    <Admin loginPage={MyLoginPage}>
+    <Admin
+        loginPage={MyLoginPage}
+        authProvider={authProvider}
+        dataProvider={dataProvider}
+    >
         ...
     </Admin>
 );
@@ -737,9 +753,17 @@ Some pages in react-admin apps may allow anonymous access. For that reason, reac
 If you know your app will never accept anonymous access, you can force the app to wait for the `authProvider.checkAuth()` to resolve before rendering the page layout, by setting the `<Admin requireAuth>` prop.
 
 ```tsx
+import { Admin } from 'react-admin';
+import { dataProvider } from './dataProvider';
+import { authProvider } from './authProvider';
+
 const App = () => (
-    <Admin dataProvider={dataProvider} authProvider={authProvider} requireAuth>
-        <Resource name="posts" list={PostList} />
+    <Admin
+        requireAuth
+        authProvider={authProvider}
+        dataProvider={dataProvider}
+    >
+        ...
     </Admin>
 );
 ```
@@ -748,7 +772,12 @@ const App = () => (
 
 The `<Admin>` component initializes a [Store](./Store.md) for user preferences using `localStorage` as the storage engine. You can override this by passing a custom `store` prop.
 
-For instance, you can store the data in memory instead of `localStorage`. This is useful e.g. for tests, or for apps that should not persist user data between sessions:
+Built-in stores are:
+
+- `memoryStore`: stores data in memory
+- `localStorageStore`: stores data in `localStorage`
+
+For instance, you can store the user preferences in memory, e.g. for tests, or for apps that should not persist user data between sessions:
 
 ```tsx
 import { Admin, Resource, memoryStore } from 'react-admin';
@@ -854,10 +883,11 @@ const App = () => (
 
 React-admin links are absolute (e.g. `/posts/123/show`). If you serve your admin from a sub path (e.g. `/admin`), react-admin works seamlessly as it only appends a hash (URLs will look like `/admin#/posts/123/show`).
 
-However, if you serve your admin from a sub path AND use another Router (like `BrowserRouter` for instance), you need to set the `<Admin basename>` prop, so that react-admin routes include the basename in all links (e.g. `/admin/posts/123/show`).
+However, if you serve your admin from a sub path AND use another Router (like [`<BrowserRouter>`](https://reactrouter.com/en/main/router-components/browser-router) for instance), you need to set the `<Admin basename>` prop, so that react-admin routes include the basename in all links (e.g. `/admin/posts/123/show`).
 
 ```tsx
 import { Admin, Resource } from 'react-admin';
+import { BrowserRouter } from 'react-router-dom';
 
 const App = () => (
     <BrowserRouter>
@@ -870,7 +900,7 @@ const App = () => (
 
 This makes all links be prefixed with `/admin`.
 
-Note that it is your responsibility to serve the admin from the sub path, e.g. by setting the `homepage` field in your `package.json` if you use [Create React App](https://create-react-app.dev/docs/deployment/#building-for-relative-paths).
+Note that it is your responsibility to serve the admin from the sub path, e.g. by setting the `base` field in `vite.config.ts` if you use [Vite.js](https://vitejs.dev/config/shared-options.html#base), or the `homepage` field in `package.json` if you use [Create React App](https://create-react-app.dev/docs/deployment/#building-for-relative-paths).
 
 If you want to use react-admin as a sub path of a larger React application, check the next section for instructions. 
 

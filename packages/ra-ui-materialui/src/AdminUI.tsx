@@ -34,5 +34,21 @@ export const AdminUI = ({
 );
 
 export interface AdminUIProps extends CoreAdminUIProps {
+    /**
+     * The component used to display notifications
+     *
+     * @see https://marmelab.com/react-admin/Admin.html#notification
+     * @example
+     * import { Admin, Notification } from 'react-admin';
+     * import { dataProvider } from './dataProvider';
+     *
+     * const MyNotification = () => <Notification autoHideDuration={5000} />;
+     *
+     * const App = () => (
+     *     <Admin notification={MyNotification} dataProvider={dataProvider}>
+     *         ...
+     *     </Admin>
+     * );
+     */
     notification?: ComponentType;
 }

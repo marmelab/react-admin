@@ -179,16 +179,163 @@ export const useListController = <RecordType extends RaRecord = any>(
 };
 
 export interface ListControllerProps<RecordType extends RaRecord = any> {
+    /**
+     * The debounce delay for filter queries in milliseconds. Defaults to 500ms.
+     *
+     * @see https://marmelab.com/react-admin/List.html#debounce
+     * @example
+     * // wait 1 seconds instead of 500 milliseconds befoce calling the dataProvider
+     * const PostList = () => (
+     *     <List debounce={1000}>
+     *         ...
+     *     </List>
+     * );
+     */
     debounce?: number;
+
+    /**
+     * Allow anonymous access to the list view. Defaults to false.
+     *
+     * @see https://marmelab.com/react-admin/List.html#disableauthentication
+     * @example
+     * import { List } from 'react-admin';
+     *
+     * const BoolkList = () => (
+     *     <List disableAuthentication>
+     *         ...
+     *     </List>
+     * );
+     */
     disableAuthentication?: boolean;
+
     /**
      * Whether to disable the synchronization of the list parameters with the current location (URL search parameters)
+     *
+     * @see https://marmelab.com/react-admin/List.html#disablesyncwithlocation
+     * @example
+     * const Dashboard = () => (
+     *     <div>
+     *         // ...
+     *         <ResourceContextProvider value="posts">
+     *             <List disableSyncWithLocation>
+     *                 <SimpleList
+     *                     primaryText={record => record.title}
+     *                     secondaryText={record => `${record.views} views`}
+     *                     tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+     *                 />
+     *             </List>
+     *         </ResourceContextProvider>
+     *         <ResourceContextProvider value="comments">
+     *             <List disableSyncWithLocation>
+     *                 <SimpleList
+     *                     primaryText={record => record.title}
+     *                     secondaryText={record => `${record.views} views`}
+     *                     tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+     *                 />
+     *             </List>
+     *         </ResourceContextProvider>
+     *     </div>
+     * )
      */
     disableSyncWithLocation?: boolean;
+
+    /**
+     * The function called when a user exports the list
+     *
+     * @see https://marmelab.com/react-admin/List.html#exporter
+     * @example
+     * import { List, downloadCSV } from 'react-admin';
+     * import jsonExport from 'jsonexport/dist';
+     *
+     * const exporter = posts => {
+     *     const postsForExport = posts.map(post => {
+     *         const { backLinks, author, ...postForExport } = post; // omit backLinks and author
+     *         postForExport.author_name = post.author.name; // add a field
+     *         return postForExport;
+     *     });
+     *     jsonExport(postsForExport, {
+     *         headers: ['id', 'title', 'author_name', 'body'] // order fields in the export
+     *     }, (err, csv) => {
+     *         downloadCSV(csv, 'posts'); // download as 'posts.csv` file
+     *     });
+     * };
+     *
+     * const PostList = () => (
+     *     <List exporter={exporter}>
+     *         ...
+     *     </List>
+     * )
+     */
     exporter?: Exporter | false;
+
+    /**
+     * Permanent filter applied to all getList queries, regardless of the user selected filters.
+     *
+     * @see https://marmelab.com/react-admin/List.html#filter
+     * @example
+     * export const PostList = () => (
+     *     <List filter={{ is_published: true }}>
+     *         ...
+     *     </List>
+     * );
+     */
     filter?: FilterPayload;
+
+    /**
+     * The filter to apply when calling getList if the filter is empty.
+     *
+     * @see https://marmelab.com/react-admin/List.html#filterdefaultvalues
+     * @example
+     * const postFilters = [
+     *     <TextInput label="Search" source="q" alwaysOn />,
+     *     <BooleanInput source="is_published" alwaysOn />,
+     *     <TextInput source="title" defaultValue="Hello, World!" />,
+     * ];
+     *
+     * export const PostList = () => (
+     *     <List filters={postFilters} filterDefaultValues={{ is_published: true }}>
+     *         ...
+     *     </List>
+     * );
+     */
     filterDefaultValues?: object;
+
+    /**
+     * The number of results per page. Defaults to 10.
+     *
+     * @see https://marmelab.com/react-admin/List.html#perpage
+     * @example
+     * export const PostList = () => (
+     *     <List perPage={25}>
+     *         ...
+     *     </List>
+     * );
+     */
     perPage?: number;
+
+    /**
+     * The options passed to react-query's useQuery when calling getList.
+     *
+     * @see https://marmelab.com/react-admin/List.html#queryoptions
+     * @example
+     * import { useNotify, useRedirect, List } from 'react-admin';
+     *
+     * const PostList = () => {
+     *     const notify = useNotify();
+     *     const redirect = useRedirect();
+     *
+     *     const onError = (error) => {
+     *         notify(`Could not load list: ${error.message}`, { type: 'error' });
+     *         redirect('/dashboard');
+     *     };
+     *
+     *     return (
+     *         <List queryOptions={{ onError }}>
+     *             ...
+     *         </List>
+     *     );
+     * }
+     */
     queryOptions?: UseQueryOptions<{
         data: RecordType[];
         total?: number;
@@ -197,8 +344,50 @@ export interface ListControllerProps<RecordType extends RaRecord = any> {
             hasPreviousPage?: boolean;
         };
     }> & { meta?: any };
+
+    /**
+     * The resource name. Defaults to the resource from ResourceContext.
+     *
+     * @see https://marmelab.com/react-admin/List.html#resource
+     * @example
+     * import { List } from 'react-admin';
+     *
+     * const PostList = () => (
+     *    <List resource="posts">
+     *       ...
+     *   </List>
+     * );
+     */
     resource?: string;
+
+    /**
+     * The default sort field and order. Defaults to { field: 'id', order: 'ASC' }.
+     *
+     * @see https://marmelab.com/react-admin/List.html#sort
+     * @example
+     * export const PostList = () => (
+     *     <List sort={{ field: 'published_at', order: 'DESC' }}>
+     *         ...
+     *     </List>
+     * );
+     */
     sort?: SortPayload;
+
+    /**
+     * The key to use to store the current filter & sort. Pass false to disable.
+     *
+     * @see https://marmelab.com/react-admin/List.html#storekey
+     * @example
+     * const NewerBooks = () => (
+     *     <List
+     *         resource="books"
+     *         storeKey="newerBooks"
+     *         sort={{ field: 'year', order: 'DESC' }}
+     *     >
+     *         ...
+     *     </List>
+     * );
+     */
     storeKey?: string | false;
 }
 
