@@ -346,7 +346,7 @@ export interface ListControllerProps<RecordType extends RaRecord = any> {
     }> & { meta?: any };
 
     /**
-     * Rhe resource name. Defaults to the resource from ResourceContext.
+     * The resource name. Defaults to the resource from ResourceContext.
      *
      * @see https://marmelab.com/react-admin/List.html#resource
      * @example
