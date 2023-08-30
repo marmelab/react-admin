@@ -216,6 +216,9 @@ const StyledForm = styled('form', {
     [theme.breakpoints.down('sm')]: {
         width: '100%',
     },
+    [theme.breakpoints.up('sm')]: {
+        minHeight: theme.spacing(8),
+    },
     [theme.breakpoints.up('md')]: {
         flex: '0 1 100%',
     },

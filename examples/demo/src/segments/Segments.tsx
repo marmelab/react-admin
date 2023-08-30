@@ -16,7 +16,7 @@ const Segments = () => {
     const translate = useTranslate();
 
     return (
-        <Card sx={{ mt: 8 }}>
+        <Card sx={{ mt: 2 }}>
             <Title
                 title={translate('resources.segments.name', { smart_count: 2 })}
             />

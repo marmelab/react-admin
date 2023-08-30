@@ -36,7 +36,7 @@ const CategoryGrid = () => {
         return null;
     }
     return (
-        <Grid container spacing={2} sx={{ marginTop: '1em' }}>
+        <Grid container spacing={2} sx={{ mt: 0 }}>
             {data.map(record => (
                 <RecordContextProvider key={record.id} value={record}>
                     <Grid
