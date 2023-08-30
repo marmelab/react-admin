@@ -49,7 +49,7 @@ The routes call the following `dataProvider` methods:
 * `edit` calls `getOne()` on mount, and `update()` or `delete()` on submission
 * `create` calls `create()` on submission
 
-**Tip**: Which API endpoint does a resource rely on? The `<Resource>` component doesn't know this mapping - it's [the `dataProvider`'s job](./DataProviderIntroduction.md) to define it.
+**Tip**: Which API endpoint does a resource rely on? The `<Resource>` component doesn't know this mapping - it's [the `dataProvider`'s job](./DataProviders.md) to define it.
 
 ## `name`
 
@@ -225,6 +225,8 @@ For instance, to change the default representation of "users" records to render 
 - a string (e.g. `'title'`) to specify the field to use as representation
 - a function (e.g. `(record) => record.title`) to specify a custom string representation
 - a React component (e.g. `<MyCustomRecordRepresentation />`). In such components, use [`useRecordContext`](./useRecordContext.md) to access the record.
+
+If you want to display this record representation somewhere, you can leverage the [`useGetRecordRepresentation`](./useGetRecordRepresentation.md) hook or the [`<RecordRepresentation>`](./RecordRepresentation.md) component.
 
 ## `hasCreate`, `hasEdit`, `hasShow`
 

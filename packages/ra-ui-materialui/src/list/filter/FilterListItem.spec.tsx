@@ -3,6 +3,7 @@ import expect from 'expect';
 import { render, screen } from '@testing-library/react';
 
 import { ListContextProvider, ListControllerResult } from 'ra-core';
+import GoogleIcon from '@mui/icons-material/Google';
 import { FilterListItem } from './FilterListItem';
 import { Cumulative } from './FilterList.stories';
 
@@ -52,6 +53,19 @@ describe('<FilterListItem/>', () => {
             </ListContextProvider>
         );
         expect(screen.queryByTestId('123')).not.toBeNull();
+    });
+
+    it("should display the item icon if it's provided", () => {
+        render(
+            <ListContextProvider value={defaultListContext}>
+                <FilterListItem
+                    label="Foo"
+                    value={{ foo: 'bar' }}
+                    icon={<GoogleIcon />}
+                />
+            </ListContextProvider>
+        );
+        expect(screen.queryByTestId('GoogleIcon')).not.toBeNull();
     });
 
     it('should not appear selected if filterValues is empty', () => {

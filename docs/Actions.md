@@ -30,6 +30,21 @@ Refer to [the `useDataProvider` hook documentation](./useDataProvider.md) for mo
 
 React-admin provides one hook for each of the Data Provider methods. They are useful shortcuts that make your code more readable and more robust.
 
+The query hooks execute on mount. They return an object with the following properties: `{ data, isLoading, error }`. Query hooks are:
+
+* [`useGetList`](./useGetList.md)
+* [`useGetOne`](./useGetOne.md)
+* [`useGetMany`](./useGetMany.md)
+* [`useGetManyReference`](./useGetManyReference.md)
+
+The mutation hooks execute the query when you call a callback. They return an array with the following items: `[mutate, { data, isLoading, error }]`. Mutation hooks are:
+
+* [`useCreate`](./useCreate.md)
+* [`useUpdate`](./useUpdate.md)
+* [`useUpdateMany`](./useUpdateMany.md)
+* [`useDelete`](./useDelete.md)
+* [`useDeleteMany`](./useDeleteMany.md)
+
 Their signature is the same as the related dataProvider method, e.g.:
 
 ```jsx
@@ -59,29 +74,7 @@ const UserProfile = ({ userId }) => {
 };
 ```
 
-**Tip**: If you use TypeScript, you can specify the record type for more type safety:
-
-```jsx
-const { data, isLoading } = useGetOne<Product>('products', { id: 123 });
-//        \- type of data is Product
-```
-
-The query hooks execute on mount. They return an object with the following properties: `{ data, isLoading, error }`. Query hooks are:
-
-* [`useGetList`](./useGetList.md)
-* [`useGetOne`](./useGetOne.md)
-* [`useGetMany`](./useGetMany.md)
-* [`useGetManyReference`](./useGetManyReference.md)
-
-The mutation hooks execute the query when you call a callback. They return an array with the following items: `[mutate, { data, isLoading, error }]`. Mutation hooks are:
-
-* [`useCreate`](./useCreate.md)
-* [`useUpdate`](./useUpdate.md)
-* [`useUpdateMany`](./useUpdateMany.md)
-* [`useDelete`](./useDelete.md)
-* [`useDeleteMany`](./useDeleteMany.md)
-
-For instance, here is an example using `useUpdate()`:
+Here is another example, using `useUpdate()`:
 
 ```jsx
 import * as React from 'react';
@@ -102,6 +95,13 @@ const { data: user, isLoading, error } = useGetOne(
     { id: userId },
     { enabled: userId !== undefined }
 );
+```
+
+**Tip**: If you use TypeScript, you can specify the record type for more type safety:
+
+```jsx
+const { data, isLoading } = useGetOne<Product>('products', { id: 123 });
+//        \- type of data is Product
 ```
 
 ## `meta` Parameter
@@ -227,12 +227,12 @@ const dataProvider = {
     getList: /* ... */,
     getOne: /* ... */,
     getMany: /* ... */,
-    getManyReference /* ... */,
+    getManyReference: /* ... */,
     create: /* ... */,
     update: /* ... */,
-    updateMany /* ... */,
+    updateMany: /* ... */,
     delete: /* ... */,
-    deleteMany /* ... */,
+    deleteMany: /* ... */,
     banUser: (userId) => {
         return fetch(`/api/user/${userId}/ban`, { method: 'POST' })
             .then(response => response.json());

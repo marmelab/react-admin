@@ -43,15 +43,20 @@ main > .container .markdown-section {
 .toc-container {
     position: sticky;
     align-self: start;
-    top: 20px;
+    top: 10px;
     padding-left: 1em;
+}
+.toc {
     overflow-y: auto;
     max-height: calc(
         100vh - 114px
-    ); /* 114px = 50px container top padding + 64px navbar height  */
+    ); /* 104px = 50px container top padding + 64px navbar height  */
 }
 .toc.is-position-fixed {
     position: static !important;
+    max-height: calc(
+        100vh - 10px 
+    ); /* container top padding */
 }
 
 /* Navigation */

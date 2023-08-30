@@ -10,6 +10,7 @@ import {
     DataProvider,
     EditBase,
     FormDataConsumer,
+    ValidationError,
     mergeTranslations,
     useUnique,
 } from '..';
@@ -30,7 +31,9 @@ const Input = props => {
                 aria-invalid={fieldState.invalid}
                 {...field}
             />
-            <p>{fieldState.error?.message}</p>
+            {fieldState.error && fieldState.error?.message ? (
+                <ValidationError error={fieldState.error?.message} />
+            ) : null}
         </>
     );
 };

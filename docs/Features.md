@@ -59,7 +59,7 @@ Which kind of API? **All kinds**. React-admin is backend agnostic. It doesn't ca
 
 <img src="./img/data-provider.png" class="no-shadow" alt="Backend agnostic" />
 
-React-admin ships with [more than 45 adapters](./DataProviderList.md) for popular API flavors, and gives you all the tools to build your own adapter. This works thanks to a powerful abstraction layer called the [Data Provider](./DataProviderIntroduction.md).
+React-admin ships with [more than 50 adapters](./DataProviderList.md) for popular API flavors, and gives you all the tools to build your own adapter. This works thanks to a powerful abstraction layer called the [Data Provider](./DataProviders.md).
 
 In a react-admin app, you don't write API Calls. Instead, you communicate with your API using a set of high-level functions, called "Data Provider methods". For instance, to fetch a list of posts, you call the `getList()` method, passing the resource name and the query parameters. 
 
@@ -265,7 +265,7 @@ On the other hand, the default React-admin skin is designed to be dense, giving 
 
 [![Dense layout](./img/dense.webp)](https://marmelab.com/react-admin-demo/#/)
 
-We have made many improvements to this default layout based on user feedback. In our experience, for admin apps, dashboards, and B2B apps, efficiency is more important than large margins. If this is not your use case, you can easily **customize the margin and density** of the UI using the [theme](./Theming.md).
+We have made many improvements to this default layout based on user feedback. In our experience, for admin apps, dashboards, and B2B apps, efficiency is more important than large margins. If this is not your use case, you can easily **customize the margin and density** of the UI using the [theme](./AppTheme.md).
 
 And for mobile users, react-admin renders a different layout with larger margins and less information density (see [Responsive](#responsive)).
 
@@ -968,7 +968,7 @@ These building blocks include:
 - [Import](https://github.com/benwinding/react-admin-import-csv) / [export](./Buttons.md#exportbutton) buttons
 - An [editable datagrid](./EditableDatagrid.md)
 - A [guided tour system](https://marmelab.com/ra-enterprise/modules/ra-tour)
-- A [user menu](./Theming.md#usermenu-customization)
+- A [user menu](./Menu.md)
 - A [rich text editor](./RichTextInput.md),
 - A [markdown editor](./MarkdownInput.md)
 - A [clone button](./Buttons.md#clonebutton)
@@ -981,7 +981,7 @@ And if you want to create your building blocks, you can use any of the [75+ hook
 - [`useRecordContext`](./useRecordContext.md) to get the current record anywhere in the app
 - [`useWarnWhenUnsavedChanges`](./EditTutorial.md#warning-about-unsaved-changes) to warn the user when he tries to leave a page with unsaved changes
 - [`useSaveContext`](./useSaveContext.md) to tweak form submission
-- [`useTheme`](./Theming.md#changing-the-theme-programmatically) to change the theme programmatically
+- [`useTheme`](./useTheme.md) to change the theme programmatically
 
 ## Pub/Sub and Live Updates
 
@@ -1355,12 +1355,12 @@ const App = () => (
 
 To learn more about theming in react-admin, check the following sections:
 
-- [The `sx` prop](./Theming.md#sx-overriding-a-component-style)
-- [Global theme overrides](./Theming.md#global-theme-overrides)
-- [Writing a custom theme](./Theming.md#writing-a-custom-theme)
-- [`<ToggleThemeButton>`](./Theming.md#letting-users-choose-the-theme)
-- [`useTheme`](./Theming.md#changing-the-theme-programmatically)
-- [`useMediaQuery`](./Theming.md#usemediaquery-hook)
+- [The `sx` prop](./SX.md)
+- [App-wide component overrides](./AppTheme.md#theming-individual-components)
+- [Writing a custom theme](./AppTheme.md)
+- [`<ToggleThemeButton>`](./ToggleThemeButton.md)
+- [`useTheme`](./useTheme.md)
+- [`useMediaQuery`](./useMediaQuery.md)
 
 ## I18n
 
@@ -1507,9 +1507,9 @@ export const PostList = () => {
 
 Check the following sections for help on making your app responsive:
 
-- [The `sx` prop](./Theming.md#sx-overriding-a-component-style)
+- [The `sx` prop](./SX.md)
 - [`<SimpleList>`](./SimpleList.md)
-- [`useMediaQuery`](./Theming.md#usemediaquery-hook)
+- [`useMediaQuery`](./useMediaQuery.md)
 
 ## Type-Safe
 

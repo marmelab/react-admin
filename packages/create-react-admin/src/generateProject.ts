@@ -183,7 +183,7 @@ const BasePackageJson = {
     },
     dependencies: {
         react: '^18.2.0',
-        'react-admin': '^4.12.0',
+        'react-admin': '^4.13.0',
         'react-dom': '^18.2.0',
     },
     devDependencies: {

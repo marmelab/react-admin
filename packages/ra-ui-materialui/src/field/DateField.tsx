@@ -33,7 +33,7 @@ import { genericMemo } from './genericMemo';
  * <span>mercredi 7 novembre 2012</span>
  */
 const DateFieldImpl = <
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>
 >(
     props: DateFieldProps<RecordType>
 ) => {
@@ -45,6 +45,7 @@ const DateFieldImpl = <
         showTime = false,
         showDate = true,
         source,
+        transform = defaultTransform,
         ...rest
     } = props;
     const translate = useTranslate();
@@ -60,7 +61,7 @@ const DateFieldImpl = <
         return null;
     }
 
-    const value = get(record, source);
+    const value = get(record, source) as any;
     if (value == null || value === '') {
         return emptyText ? (
             <Typography
@@ -74,31 +75,22 @@ const DateFieldImpl = <
         ) : null;
     }
 
-    const date =
-        value instanceof Date
-            ? value
-            : typeof value === 'string' || typeof value === 'number'
-            ? new Date(value)
-            : undefined;
+    const date = transform(value);
 
-    let dateOptions = options;
-    if (
-        typeof value === 'string' &&
-        value.length <= 10 &&
-        !showTime &&
-        !options
-    ) {
-        // Input is a date string (e.g. '2022-02-15') without time and time zone.
-        // Force timezone to UTC to fix issue with people in negative time zones
-        // who may see a different date when calling toLocaleDateString().
-        dateOptions = { timeZone: 'UTC' };
-    }
     let dateString = '';
     if (showTime && showDate) {
         dateString = toLocaleStringSupportsLocales
             ? date.toLocaleString(locales, options)
             : date.toLocaleString();
     } else if (showDate) {
+        // If input is a date string (e.g. '2022-02-15') without time and time zone,
+        // force timezone to UTC to fix issue with people in negative time zones
+        // who may see a different date when calling toLocaleDateString().
+        const dateOptions =
+            options ??
+            (typeof value === 'string' && value.length <= 10
+                ? { timeZone: 'UTC' }
+                : undefined);
         dateString = toLocaleStringSupportsLocales
             ? date.toLocaleDateString(locales, dateOptions)
             : date.toLocaleDateString();
@@ -137,14 +129,22 @@ DateFieldImpl.displayName = 'DateFieldImpl';
 export const DateField = genericMemo(DateFieldImpl);
 
 export interface DateFieldProps<
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>
 > extends FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     locales?: Intl.LocalesArgument;
     options?: Intl.DateTimeFormatOptions;
     showTime?: boolean;
     showDate?: boolean;
+    transform?: (value: any) => Date;
 }
+
+const defaultTransform = value =>
+    value instanceof Date
+        ? value
+        : typeof value === 'string' || typeof value === 'number'
+        ? new Date(value)
+        : undefined;
 
 const toLocaleStringSupportsLocales = (() => {
     // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString

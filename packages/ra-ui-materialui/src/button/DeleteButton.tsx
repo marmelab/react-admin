@@ -84,8 +84,8 @@ export interface DeleteButtonProps<
     MutationOptionsError = unknown
 > extends ButtonProps,
         SaveContextValue {
-    confirmTitle?: string;
-    confirmContent?: string;
+    confirmTitle?: React.ReactNode;
+    confirmContent?: React.ReactNode;
     icon?: ReactElement;
     mutationMode?: MutationMode;
     mutationOptions?: UseMutationOptions<

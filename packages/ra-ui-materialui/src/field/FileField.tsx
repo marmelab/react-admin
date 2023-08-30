@@ -24,7 +24,7 @@ import { Link } from '@mui/material';
  * </div>
  */
 export const FileField = <
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>
 >(
     props: FileFieldProps<RecordType>
 ) => {
@@ -76,6 +76,7 @@ export const FileField = <
                                 ping={ping}
                                 rel={rel}
                                 variant="body2"
+                                onClick={e => e.stopPropagation()}
                             >
                                 {fileTitleValue}
                             </Link>
@@ -106,7 +107,7 @@ export const FileField = <
 };
 
 export interface FileFieldProps<
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>
 > extends FieldProps<RecordType> {
     src?: string;
     title?: string;

@@ -7,15 +7,19 @@ title: "useGetMany"
 
 This hook calls `dataProvider.getMany()` when the component mounts. It queries the data provider for several records, based on an array of `ids`.
 
+## Syntax
+
 ```jsx
-// syntax
 const { data, isLoading, error, refetch } = useGetMany(
     resource,
     { ids, meta },
     options
 );
+```
 
-// example
+## Usage
+
+```jsx
 import { useGetMany, useRecordContext } from 'react-admin';
 
 const PostTags = () => {

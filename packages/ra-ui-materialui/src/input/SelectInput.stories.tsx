@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createMemoryHistory } from 'history';
 import { Admin, AdminContext } from 'react-admin';
-import { Resource, required } from 'ra-core';
+import { Resource, required, useGetList } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 
@@ -10,7 +10,7 @@ import { SimpleForm } from '../form';
 import { SelectInput } from './SelectInput';
 import { TextInput } from './TextInput';
 import { ReferenceInput } from './ReferenceInput';
-import { SaveButton } from '../button//SaveButton';
+import { SaveButton } from '../button/SaveButton';
 import { Toolbar } from '../form/Toolbar';
 import { FormInspector } from './common';
 
@@ -254,6 +254,50 @@ const dataProviderWithAuthors = {
 
 const history = createMemoryHistory({ initialEntries: ['/books/1'] });
 
+export const FetchChoices = () => {
+    const BookAuthorsInput = () => {
+        const { data, isLoading } = useGetList('authors');
+        return (
+            <SelectInput
+                source="author"
+                choices={data}
+                optionText={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+                isLoading={isLoading}
+            />
+        );
+    };
+    return (
+        <Admin dataProvider={dataProviderWithAuthors} history={history}>
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+            />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <BookAuthorsInput />
+                            <FormInspector name="author" />
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    );
+};
+
 export const InsideReferenceInput = () => (
     <Admin dataProvider={dataProviderWithAuthors} history={history}>
         <Resource
@@ -368,3 +412,86 @@ export const InsideReferenceInputWithError = () => (
         />
     </Admin>
 );
+
+export const TranslateChoice = () => {
+    const i18nProvider = polyglotI18nProvider(() => ({
+        ...englishMessages,
+        'option.male': 'Male',
+        'option.female': 'Female',
+    }));
+    return (
+        <AdminContext
+            i18nProvider={i18nProvider}
+            dataProvider={
+                {
+                    getOne: () =>
+                        Promise.resolve({ data: { id: 1, gender: 'F' } }),
+                    getList: () =>
+                        Promise.resolve({
+                            data: [
+                                { id: 'M', name: 'option.male' },
+                                { id: 'F', name: 'option.female' },
+                            ],
+                            total: 2,
+                        }),
+                    getMany: (_resource, { ids }) =>
+                        Promise.resolve({
+                            data: [
+                                { id: 'M', name: 'option.male' },
+                                { id: 'F', name: 'option.female' },
+                            ].filter(({ id }) => ids.includes(id)),
+                        }),
+                } as any
+            }
+        >
+            <Edit resource="posts" id="1">
+                <SimpleForm>
+                    <SelectInput
+                        label="translateChoice default"
+                        source="gender"
+                        id="gender1"
+                        choices={[
+                            { id: 'M', name: 'option.male' },
+                            { id: 'F', name: 'option.female' },
+                        ]}
+                    />
+                    <SelectInput
+                        label="translateChoice true"
+                        source="gender"
+                        id="gender2"
+                        choices={[
+                            { id: 'M', name: 'option.male' },
+                            { id: 'F', name: 'option.female' },
+                        ]}
+                        translateChoice
+                    />
+                    <SelectInput
+                        label="translateChoice false"
+                        source="gender"
+                        id="gender3"
+                        choices={[
+                            { id: 'M', name: 'option.male' },
+                            { id: 'F', name: 'option.female' },
+                        ]}
+                        translateChoice={false}
+                    />
+                    <ReferenceInput reference="genders" source="gender">
+                        <SelectInput
+                            optionText="name"
+                            label="inside ReferenceInput"
+                            id="gender4"
+                        />
+                    </ReferenceInput>
+                    <ReferenceInput reference="genders" source="gender">
+                        <SelectInput
+                            optionText="name"
+                            label="inside ReferenceInput forced"
+                            id="gender5"
+                            translateChoice
+                        />
+                    </ReferenceInput>
+                </SimpleForm>
+            </Edit>
+        </AdminContext>
+    );
+};

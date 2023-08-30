@@ -118,6 +118,11 @@ const StyledTextField = styled(TextField, {
     [`&.${NullableBooleanInputClasses.input}`]: {
         width: fullWidth ? '100%' : theme.spacing(16),
     },
+    [theme.breakpoints.down('sm')]: {
+        [`&.${NullableBooleanInputClasses.input}`]: {
+            width: '100%',
+        },
+    },
 }));
 
 const getBooleanFromString = (value: string): boolean | null => {

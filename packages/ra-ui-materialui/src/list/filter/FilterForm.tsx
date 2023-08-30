@@ -213,6 +213,9 @@ const StyledForm = styled('form', {
 })(({ theme }) => ({
     display: 'flex',
     flex: '0 1 auto',
+    [theme.breakpoints.down('sm')]: {
+        width: '100%',
+    },
     [theme.breakpoints.up('md')]: {
         flex: '0 1 100%',
     },

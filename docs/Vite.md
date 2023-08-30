@@ -100,6 +100,46 @@ Now, start the server with `yarn dev`, browse to `http://localhost:5173/`, and y
 
 Your app is now up and running, you can start tweaking it. 
 
+## Ensuring Users Have The Latest Version
+
+If your users might keep the application open for a long time, it's a good idea to add the [`<CheckForApplicationUpdate>`](./CheckForApplicationUpdate.md) component. It will check whether a more recent version of your application is available and prompt users to reload their browser tab.
+
+To determine whether your application has been updated, it fetches the current page at a regular interval, builds an hash of the response content (usually the HTML) and compares it with the previous hash.
+
+To enable it, start by creating a custom layout:
+
+```tsx
+// in src/admin/MyLayout.tsx
+import { CheckForApplicationUpdate, Layout, LayoutProps } from 'react-admin';
+
+export const MyLayout = ({ children, ...props }: LayoutProps) => (
+    <Layout {...props}>
+        {children}
+        <CheckForApplicationUpdate />
+    </Layout>
+);
+```
+
+Then use this layout in your app:
+
+```diff
+import { Admin, Resource, ListGuesser } from "react-admin";
+import jsonServerProvider from "ra-data-json-server";
++import { MyLayout } from './MyLayout';
+
+const dataProvider = jsonServerProvider("https://jsonplaceholder.typicode.com");
+
+const App = () => (
+-  <Admin dataProvider={dataProvider}>
++  <Admin dataProvider={dataProvider} layout={MyLayout}>
+    <Resource name="posts" list={ListGuesser} />
+    <Resource name="comments" list={ListGuesser} />
+  </Admin>
+);
+
+export default App;
+```
+
 ## Troubleshooting
 
 ### Error about `global` Being `undefined`

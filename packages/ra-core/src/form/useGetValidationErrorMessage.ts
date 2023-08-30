@@ -5,6 +5,7 @@ import {
 import { useTranslate } from '../i18n';
 
 /**
+ * @deprecated
  * This internal hook returns a function that can translate an error message.
  * It handles simple string errors and those which have a message and args.
  * Only useful if you are implementing custom inputs without leveraging our useInput hook.

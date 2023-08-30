@@ -13,11 +13,12 @@ export const TestTranslationProvider = ({
             translate: messages
                 ? (key: string, options?: any) => {
                       const message = lodashGet(messages, key);
+                      console.log({ key, options, message });
                       return message
                           ? typeof message === 'function'
                               ? message(options)
                               : message
-                          : options._;
+                          : options?._ || key;
                   }
                 : translate,
             changeLocale: () => Promise.resolve(),

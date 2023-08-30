@@ -19,7 +19,7 @@ To better understand how to use the various react-admin hooks and components ded
 
 ### An Edition View Built By Hand
 
-Here is how you could write a book edition view in pure React, leveraging react-admin's [data fetching hooks](./DataProviderIntroduction.md), and [react-hook-form](https://react-hook-form.com/) to bind form inputs with a record object:
+Here is how you could write a book edition view in pure React, leveraging react-admin's [data fetching hooks](./Actions.md), and [react-hook-form](https://react-hook-form.com/) to bind form inputs with a record object:
 
 ```jsx
 import * as React from "react";
@@ -785,7 +785,7 @@ const PersonEdit = () => (
     <Edit mutationMode="optimistic">
         <SimpleForm
             resetOptions={{ keepDirtyValues: true }}
-            toolbar={AutoSaveToolbar}
+            toolbar={<AutoSaveToolbar />}
         >
             <TextInput source="first_name" />
             <TextInput source="last_name" />

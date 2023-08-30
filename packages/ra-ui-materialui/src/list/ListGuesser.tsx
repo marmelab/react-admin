@@ -36,7 +36,7 @@ import { listFieldTypes } from './listFieldTypes';
  * );
  */
 export const ListGuesser = <RecordType extends RaRecord = any>(
-    props: Omit<ListProps, 'children'>
+    props: Omit<ListProps, 'children'> & { enableLog?: boolean }
 ) => {
     const {
         debounce,
@@ -69,11 +69,17 @@ export const ListGuesser = <RecordType extends RaRecord = any>(
     );
 };
 
-const ListViewGuesser = (props: Omit<ListViewProps, 'children'>) => {
+const ListViewGuesser = (
+    props: Omit<ListViewProps, 'children'> & { enableLog?: boolean }
+) => {
     const { data } = useListContext(props);
     const resource = useResourceContext();
     const { hasEdit, hasShow } = useResourceDefinition(props);
     const [child, setChild] = useState(null);
+    const {
+        enableLog = process.env.NODE_ENV === 'development',
+        ...rest
+    } = props;
 
     useEffect(() => {
         setChild(null);
@@ -92,7 +98,7 @@ const ListViewGuesser = (props: Omit<ListViewProps, 'children'>) => {
             );
             setChild(inferredChild.getElement());
 
-            if (process.env.NODE_ENV === 'production') return;
+            if (!enableLog) return;
 
             const representation = inferredChild.getRepresentation();
             const components = ['List']
@@ -122,9 +128,9 @@ ${inferredChild.getRepresentation()}
 );`
             );
         }
-    }, [data, child, resource, hasEdit, hasShow]);
+    }, [data, child, resource, hasEdit, hasShow, enableLog]);
 
-    return <ListView {...props}>{child}</ListView>;
+    return <ListView {...rest}>{child}</ListView>;
 };
 
 ListViewGuesser.propTypes = ListView.propTypes;

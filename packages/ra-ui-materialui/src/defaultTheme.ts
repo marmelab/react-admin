@@ -11,12 +11,30 @@ const defaultThemeInvariants = {
         closedWidth: 50,
     },
     components: {
+        MuiAutocomplete: {
+            variants: [
+                {
+                    props: {},
+                    style: ({ theme }) => ({
+                        [theme.breakpoints.down('sm')]: { width: '100%' },
+                    }),
+                },
+            ],
+        },
         MuiTextField: {
             defaultProps: {
                 variant: 'filled' as const,
                 margin: 'dense' as const,
                 size: 'small' as const,
             },
+            variants: [
+                {
+                    props: {},
+                    style: ({ theme }) => ({
+                        [theme.breakpoints.down('sm')]: { width: '100%' },
+                    }),
+                },
+            ],
         },
         MuiFormControl: {
             defaultProps: {

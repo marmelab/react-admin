@@ -12,7 +12,7 @@ import { FieldProps, fieldPropTypes } from './types';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 
 const BooleanFieldImpl = <
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>
 >(
     props: BooleanFieldProps<RecordType>
 ) => {
@@ -49,12 +49,20 @@ const BooleanFieldImpl = <
                 <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
                     {isTruthyValue ? (
                         TrueIcon ? (
-                            <TrueIcon data-testid="true" fontSize="small" />
+                            <TrueIcon
+                                data-testid="true"
+                                fontSize="small"
+                                className={classes.trueIcon}
+                            />
                         ) : (
                             <></>
                         )
                     ) : FalseIcon ? (
-                        <FalseIcon data-testid="false" fontSize="small" />
+                        <FalseIcon
+                            data-testid="false"
+                            fontSize="small"
+                            className={classes.falseIcon}
+                        />
                     ) : (
                         <></>
                     )}
@@ -90,7 +98,7 @@ BooleanFieldImpl.displayName = 'BooleanFieldImpl';
 export const BooleanField = genericMemo(BooleanFieldImpl);
 
 export interface BooleanFieldProps<
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>
 > extends FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     valueLabelTrue?: string;
@@ -102,6 +110,11 @@ export interface BooleanFieldProps<
 
 const PREFIX = 'RaBooleanField';
 
+const classes = {
+    trueIcon: `${PREFIX}-trueIcon`,
+    falseIcon: `${PREFIX}-falseIcon`,
+};
+
 const StyledTypography = styled(Typography, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
@@ -109,4 +122,6 @@ const StyledTypography = styled(Typography, {
     display: 'inline-flex',
     verticalAlign: 'middle',
     lineHeight: 0,
+    [`& .${classes.trueIcon}`]: {},
+    [`& .${classes.falseIcon}`]: {},
 });

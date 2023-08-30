@@ -43,15 +43,15 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
         children,
         className,
         expand,
-        hasBulkActions,
-        hover,
+        hasBulkActions = false,
+        hover = true,
         id,
         onToggleItem,
         record: recordOverride,
         rowClick,
-        selected,
+        selected = false,
         style,
-        selectable,
+        selectable = true,
         ...rest
     } = props;
 
@@ -234,7 +234,7 @@ DatagridRow.propTypes = {
     className: PropTypes.string,
     // @ts-ignore
     expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
-    hasBulkActions: PropTypes.bool.isRequired,
+    hasBulkActions: PropTypes.bool,
     hover: PropTypes.bool,
     id: PropTypes.any,
     onToggleItem: PropTypes.func,
@@ -250,13 +250,6 @@ DatagridRow.propTypes = {
     selected: PropTypes.bool,
     style: PropTypes.object,
     selectable: PropTypes.bool,
-};
-
-DatagridRow.defaultProps = {
-    hasBulkActions: false,
-    hover: true,
-    selected: false,
-    selectable: true,
 };
 
 export interface DatagridRowProps

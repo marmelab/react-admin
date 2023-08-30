@@ -87,8 +87,6 @@ import { LoadingInput } from './LoadingInput';
  * @example
  * <SelectInput source="gender" choices={choices} translateChoice={false}/>
  *
- * The object passed as `options` props is passed to the Material UI <Select> component
- *
  * You can disable some choices by providing a `disableValue` field which name is `disabled` by default
  * @example
  * const choices = [
@@ -114,9 +112,9 @@ export const SelectInput = (props: SelectInputProps) => {
         createLabel,
         createValue,
         defaultValue,
-        disableValue,
-        emptyText,
-        emptyValue,
+        disableValue = 'disabled',
+        emptyText = '',
+        emptyValue = '',
         format,
         filter,
         helperText,
@@ -181,7 +179,7 @@ export const SelectInput = (props: SelectInputProps) => {
             (isFromReference ? getRecordRepresentation : undefined),
         optionValue,
         disableValue,
-        translateChoice,
+        translateChoice: translateChoice ?? !isFromReference,
     });
     const {
         field,
@@ -362,7 +360,6 @@ SelectInput.propTypes = {
         PropTypes.bool,
         PropTypes.element,
     ]),
-    options: PropTypes.object,
     optionText: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.func,
@@ -374,14 +371,6 @@ SelectInput.propTypes = {
     resource: PropTypes.string,
     source: PropTypes.string,
     translateChoice: PropTypes.bool,
-};
-
-SelectInput.defaultProps = {
-    emptyText: '',
-    emptyValue: '',
-    options: {},
-    translateChoice: true,
-    disableValue: 'disabled',
 };
 
 const sanitizeRestProps = ({

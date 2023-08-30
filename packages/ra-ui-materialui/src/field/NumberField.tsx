@@ -37,7 +37,7 @@ import { genericMemo } from './genericMemo';
  * <span>25,99 $US</span>
  */
 const NumberFieldImpl = <
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>
 >(
     props: NumberFieldProps<RecordType>
 ) => {
@@ -48,6 +48,7 @@ const NumberFieldImpl = <
         locales,
         options,
         textAlign,
+        transform = defaultTransform,
         ...rest
     } = props;
     const record = useRecordContext<RecordType>(props);
@@ -56,7 +57,7 @@ const NumberFieldImpl = <
     if (!record) {
         return null;
     }
-    const value = get(record, source);
+    let value: any = get(record, source);
 
     if (value == null) {
         return emptyText ? (
@@ -69,6 +70,10 @@ const NumberFieldImpl = <
                 {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
         ) : null;
+    }
+
+    if (transform) {
+        value = transform(value);
     }
 
     return (
@@ -84,6 +89,9 @@ const NumberFieldImpl = <
         </Typography>
     );
 };
+
+const defaultTransform = value =>
+    value && typeof value === 'string' && !isNaN(value as any) ? +value : value;
 
 NumberFieldImpl.propTypes = {
     // @ts-ignore
@@ -105,11 +113,12 @@ NumberFieldImpl.defaultProps = {
 export const NumberField = genericMemo(NumberFieldImpl);
 
 export interface NumberFieldProps<
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>
 > extends FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
     locales?: string | string[];
     options?: object;
+    transform?: (value: any) => number;
 }
 
 const hasNumberFormat = !!(

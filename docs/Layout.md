@@ -40,7 +40,7 @@ export const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 
 Then pass this custom layout to the `<Admin>` component:
 
-Instead of the default layout, you can use your own component as the admin layout. Just use the layout prop of the <Admin> component:
+Instead of the default layout, you can use your own component as the admin layout. Just use the layout prop of the `<Admin>` component:
 
 ```jsx
 // in src/App.js
@@ -98,7 +98,7 @@ export const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
 
 You can use [react-admin's `<AppBar>` component](./AppBar.md) as a base for your custom app bar, or the component of your choice. 
 
-By default, react-admin's `<AppBar>` displays the page title. You can override this default by passing children to `<AppBar>` - they will replace the default title. And if you still want to include the page title, make sure you include an element with id `react-admin-title` in the top bar (this uses [React Portals](https://react.dev/reference/react-dom/createPortal)).
+By default, react-admin's `<AppBar>` displays the page title. You can override this default by passing children to `<AppBar>` - they will replace the default title. And if you still want to include the page title defined by each page, make sure you include the `<TitlePortal>` element (which uses [React Portals](https://react.dev/reference/react-dom/createPortal)).
 
 Here is a custom app bar component extending `<AppBar>` to include a company logo in the center of the page header:
 
@@ -211,6 +211,8 @@ export const MyError = ({
 };
 ```
 
+**Tip:** [React's Error Boundaries](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary) are used internally to display the Error Page whenever an error occurs. Error Boundaries only catch errors during rendering, in lifecycle methods, and in constructors of the components tree. This implies in particular that errors during event callbacks (such as 'onClick') are not concerned. Also note that the Error Boundary component is only set around the main container of React Admin. In particular, you won't see it for errors thrown by the [sidebar Menu](./Menu.md), nor the [AppBar](#customizing-the-appbar-content). This ensures the user is always able to navigate away from the Error Page.
+
 ## `menu`
 
 Lets you override the menu.
@@ -301,6 +303,47 @@ export const MySidebar = ({ children }) => {
 };
 ```
 
+You can specify the `Sidebar` width by setting the `width` and `closedWidth` properties on a custom Material UI theme:
+
+```jsx
+import { defaultTheme } from 'react-admin';
+
+const theme = {
+    ...defaultTheme,
+    sidebar: {
+        width: 300, // The default value is 240
+        closedWidth: 70, // The default value is 55
+    },
+};
+
+const App = () => (
+    <Admin theme={theme} dataProvider={...}>
+        // ...
+    </Admin>
+);
+```
+
+For more advanced sidebar theming, create a new `Sidebar` component overiding the default one with the `sx` prop:
+
+{% raw %}
+```jsx
+import { Sidebar, Layout } from 'react-admin';
+
+const MySidebar = (props) => (
+    <Sidebar
+        sx={{
+            "& .RaSidebar-drawerPaper": {
+                backgroundColor: "red",
+            },
+        }}
+        {...props}
+    />
+);
+
+const MyLayout = props => <Layout {...props} sidebar={MySidebar} />
+```
+{% endraw %}
+
 ## `sx`: CSS API
 
 Pass an `sx` prop to customize the style of the main component and the underlying elements.
@@ -323,7 +366,7 @@ This property accepts the following subclasses:
 
 To override the style of `<Layout>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaLayout` key.
 
-**Tip**: If you need to override global styles (like the default font size or family), you should [write a custom theme](./Theming.md#theming) rather than override the `<Layout sx>` prop. And if you need to tweak the default layout to add a right column or move the menu to the top, you're probably better off [writing your own layout component](./Theming.md#layout-from-scratch). 
+**Tip**: If you need to override global styles (like the default font size or family), you should [write a custom theme](./AppTheme.md) rather than override the `<Layout sx>` prop. And if you need to tweak the default layout to add a right column or move the menu to the top, you're probably better off [writing your own layout component](./Layout.md#writing-a-layout-from-scratch). 
 
 ## Adding A Custom Context
 
@@ -370,8 +413,59 @@ export const MyLayout = (props) => (
 
 ## Alternative Layouts
 
-If you can't configure `<Layout>` to render the layout you want, you can use an alternative layout component, such as [`<ContainerLayout>`](./ContainerLayout.md): A centered layout with horizontal navigation.
+If you can't configure `<Layout>` to render the layout you want, you can use an alternative layout component:
+
+- [`<ContainerLayout>`](./ContainerLayout.md): A centered layout with horizontal navigation.
 
 ![Container layout](https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/container-layout.png)
 
-You can also write your own layout component from scratch. Check [the Theming documentation](./Theming.md#using-a-custom-layout) for examples
+You can also write your own layout component from scratch (see below).
+
+## Writing A Layout From Scratch
+
+For more custom layouts, write a component from scratch. It must contain a `{children}` placeholder, where react-admin will render the resources. Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point. Here is a simplified version (with no responsive support):
+
+{% raw %}
+```jsx
+// in src/MyLayout.js
+import * as React from 'react';
+import { Box } from '@mui/material';
+import { AppBar, Menu, Sidebar } from 'react-admin';
+
+const MyLayout = ({ children, dashboard }) => (
+    <Box 
+        display="flex"
+        flexDirection="column"
+        zIndex={1}
+        minHeight="100vh"
+        backgroundColor="theme.palette.background.default"
+        position="relative"
+    >
+        <Box
+            display="flex"
+            flexDirection="column"
+            overflowX="auto"
+        >
+            <AppBar />
+            <Box display="flex" flexGrow={1}>
+                <Sidebar>
+                    <Menu hasDashboard={!!dashboard} />
+                </Sidebar>
+                <Box
+                    display="flex"
+                    flexDirection="column"
+                    flexGrow={2}
+                    p={3}
+                    marginTop="4em"
+                    paddingLeft={5}
+                >
+                    {children}
+                </Box>
+            </Box>
+        </Box>
+    </Box>
+);
+
+export default MyLayout;
+```
+{% endraw %}

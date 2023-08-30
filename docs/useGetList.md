@@ -13,10 +13,51 @@ This hook calls `dataProvider.getList()` when the component mounts. It's ideal f
 ```jsx
 const { data, total, isLoading, error, refetch } = useGetList(
     resource,
-    { pagination, sort, filter, meta },
+    {
+        pagination: { page, perPage },
+        sort: { field, order },
+        filter,
+        meta
+    },
     options
 );
 ```
+
+The `meta` argument is optional. It can be anything you want to pass to the data provider, e.g. a list of fields to show in the result.
+
+The `options` parameter is optional, and is passed to [react-query's `useQuery` hook](https://tanstack.com/query/v3/docs/react/reference/useQuery). It may contain the following options:
+
+* `cacheTime`
+* `enabled`
+* `initialData`
+* `initialDataUpdatedAt`
+* `isDataEqual`
+* `keepPreviousData`
+* `meta`
+* `notifyOnChangeProps`
+* `notifyOnChangePropsExclusions`
+* `onError`
+* `onSettled`
+* `onSuccess`
+* `placeholderData`
+* `queryKeyHashFn`
+* `refetchInterval`
+* `refetchIntervalInBackground`
+* `refetchOnMount`
+* `refetchOnReconnect`
+* `refetchOnWindowFocus`
+* `retry`
+* `retryOnMount`
+* `retryDelay`
+* `select`
+* `staleTime`
+* `structuralSharing`
+* `suspense`
+* `useErrorBoundary`
+
+Check [react-query's `useQuery` hook documentation](https://tanstack.com/query/v3/docs/react/reference/useQuery) for details on each of these options.
+
+The react-query [query key](https://react-query-v3.tanstack.com/guides/query-keys) for this hook is `[resource, 'getList', { pagination, sort, filter, meta }]`.
 
 ## Usage
 

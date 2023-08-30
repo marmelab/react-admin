@@ -29,6 +29,26 @@ export const FullWidth = () => (
     </Wrapper>
 );
 
+export const SingleInput = () => (
+    <Wrapper>
+        <TranslatableInputs locales={['en', 'fr']}>
+            <TextInput source="title" />
+        </TranslatableInputs>
+    </Wrapper>
+);
+
+export const Row = () => (
+    <Wrapper>
+        <TranslatableInputs
+            locales={['en', 'fr']}
+            StackProps={{ direction: 'row' }}
+        >
+            <TextInput source="title" />
+            <TextInput source="description" sx={{ marginLeft: 2 }} />
+        </TranslatableInputs>
+    </Wrapper>
+);
+
 export const Sx = () => (
     <Wrapper>
         <TranslatableInputs
@@ -48,7 +68,7 @@ const Wrapper = ({ children }) => (
         <Create resource="posts">
             <SimpleForm>
                 {children}
-                <FormInspector name="published" />
+                <FormInspector name="title" />
             </SimpleForm>
         </Create>
     </AdminContext>

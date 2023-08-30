@@ -76,7 +76,7 @@ import { genericMemo } from './genericMemo';
  * **Tip**: <ReferenceField> sets `translateChoice` to false by default.
  */
 const SelectFieldImpl = <
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>
 >(
     props: SelectFieldProps<RecordType>
 ) => {
@@ -85,9 +85,9 @@ const SelectFieldImpl = <
         emptyText,
         source,
         choices,
-        optionValue,
-        optionText,
-        translateChoice,
+        optionValue = 'id',
+        optionText = 'name',
+        translateChoice = true,
         ...rest
     } = props;
     const record = useRecordContext(props);
@@ -142,17 +142,12 @@ SelectFieldImpl.propTypes = {
     translateChoice: PropTypes.bool,
 };
 
-SelectFieldImpl.defaultProps = {
-    optionText: 'name',
-    optionValue: 'id',
-    translateChoice: true,
-};
 SelectFieldImpl.displayName = 'SelectFieldImpl';
 
 export const SelectField = genericMemo(SelectFieldImpl);
 
 export interface SelectFieldProps<
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>
 > extends ChoicesProps,
         FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {}

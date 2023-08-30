@@ -67,14 +67,14 @@ export const ReferenceManyField = <
 ) => {
     const {
         children,
-        filter,
+        filter = defaultFilter,
         page = 1,
         pagination = null,
-        perPage,
+        perPage = 25,
         reference,
         resource,
-        sort,
-        source,
+        sort = defaultSort,
+        source = 'id',
         target,
     } = props;
     const record = useRecordContext(props);
@@ -105,7 +105,7 @@ export const ReferenceManyField = <
 };
 
 export interface ReferenceManyFieldProps<
-    RecordType extends Record<string, unknown> = Record<string, any>
+    RecordType extends Record<string, any> = Record<string, any>
 > extends FieldProps<RecordType> {
     children: ReactNode;
     filter?: FilterPayload;
@@ -128,19 +128,12 @@ ReferenceManyField.propTypes = {
     resource: PropTypes.string,
     sortBy: PropTypes.string,
     sortByOrder: fieldPropTypes.sortByOrder,
-    source: PropTypes.string.isRequired,
+    source: PropTypes.string,
     sort: PropTypes.exact({
         field: PropTypes.string,
         order: PropTypes.string,
     }),
     target: PropTypes.string.isRequired,
-};
-
-ReferenceManyField.defaultProps = {
-    filter: {},
-    perPage: 25,
-    sort: { field: 'id', order: 'DESC' },
-    source: 'id',
 };
 
 // FIXME kept for backwards compatibility, unused, to be removed in v5
@@ -181,3 +174,6 @@ ReferenceManyFieldView.propTypes = {
     reference: PropTypes.string,
     setSort: PropTypes.func,
 };
+
+const defaultFilter = {};
+const defaultSort = { field: 'id', order: 'DESC' };

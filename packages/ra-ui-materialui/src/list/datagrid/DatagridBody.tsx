@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { cloneElement, memo, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { TableBody, TableBodyProps } from '@mui/material';
+import { SxProps, TableBody, TableBodyProps } from '@mui/material';
 import clsx from 'clsx';
 import { Identifier, RaRecord } from 'ra-core';
 
@@ -13,14 +13,15 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
         {
             children,
             className,
-            data,
+            data = defaultData,
             expand,
-            hasBulkActions,
+            hasBulkActions = false,
             hover,
             onToggleItem,
             resource,
-            row,
+            row = defaultChildren,
             rowClick,
+            rowSx,
             rowStyle,
             selectedIds,
             isRowSelectable,
@@ -52,7 +53,8 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
                         rowClick,
                         selectable: !isRowSelectable || isRowSelectable(record),
                         selected: selectedIds?.includes(record.id),
-                        style: rowStyle ? rowStyle(record, rowIndex) : null,
+                        sx: rowSx?.(record, rowIndex),
+                        style: rowStyle?.(record, rowIndex),
                     },
                     children
                 )
@@ -61,14 +63,16 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
     )
 );
 
+const defaultChildren = <DatagridRow />;
+
 DatagridBody.propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
     // @ts-ignore
-    data: PropTypes.arrayOf(PropTypes.object).isRequired,
+    data: PropTypes.arrayOf(PropTypes.object),
     // @ts-ignore
     expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
-    hasBulkActions: PropTypes.bool.isRequired,
+    hasBulkActions: PropTypes.bool,
     hover: PropTypes.bool,
     onToggleItem: PropTypes.func,
     resource: PropTypes.string,
@@ -79,16 +83,11 @@ DatagridBody.propTypes = {
         PropTypes.func,
         PropTypes.bool,
     ]),
+    rowSx: PropTypes.func,
     rowStyle: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     styles: PropTypes.object,
     isRowSelectable: PropTypes.func,
-};
-
-DatagridBody.defaultProps = {
-    data: [],
-    hasBulkActions: false,
-    row: <DatagridRow />,
 };
 
 export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
@@ -111,23 +110,24 @@ export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
     resource?: string;
     row?: ReactElement;
     rowClick?: string | RowClickFunction | false;
+    rowSx?: (record: RaRecord, index: number) => SxProps;
     rowStyle?: (record: RaRecord, index: number) => any;
     selectedIds?: Identifier[];
     isRowSelectable?: (record: RaRecord) => boolean;
 }
 
+const defaultData = [];
+
 // trick Material UI Table into thinking this is one of the child type it supports
 // @ts-ignore
 DatagridBody.muiName = 'TableBody';
 
-export const PureDatagridBody = memo(DatagridBody);
+export const PureDatagridBody = memo(props => (
+    <DatagridBody row={<PureDatagridRow />} {...props} />
+));
 
 // trick Material UI Table into thinking this is one of the child type it supports
 // @ts-ignore
 PureDatagridBody.muiName = 'TableBody';
-// @ts-ignore
-PureDatagridBody.defaultProps = {
-    row: <PureDatagridRow />,
-};
 
 export default DatagridBody;

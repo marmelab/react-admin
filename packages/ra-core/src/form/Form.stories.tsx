@@ -4,10 +4,18 @@ import {
     UseControllerProps,
     useFormState,
 } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
 
 import { CoreAdminContext } from '../core';
 import { Form } from './Form';
 import { useInput } from './useInput';
+import { required } from './validate';
+import ValidationError from './ValidationError';
+import { mergeTranslations } from '../i18n';
+import { I18nProvider } from '../types';
 
 export default {
     title: 'ra-core/form/Form',
@@ -32,7 +40,9 @@ const Input = props => {
                 aria-invalid={fieldState.invalid}
                 {...field}
             />
-            <p>{fieldState.error?.message}</p>
+            {fieldState.error && fieldState.error.message ? (
+                <ValidationError error={fieldState.error.message} />
+            ) : null}
         </div>
     );
 };
@@ -158,6 +168,122 @@ export const UndefinedValue = () => {
         <CoreAdminContext>
             <Form record={{}} onSubmit={data => setResult(data)}>
                 <Input source="foo" />
+                <button type="submit">Submit</button>
+            </Form>
+            <pre>{JSON.stringify(result, null, 2)}</pre>
+        </CoreAdminContext>
+    );
+};
+
+const defaultI18nProvider = polyglotI18nProvider(() =>
+    mergeTranslations(englishMessages, {
+        app: { validation: { required: 'This field must be provided' } },
+    })
+);
+
+export const FormLevelValidation = ({
+    i18nProvider = defaultI18nProvider,
+}: {
+    i18nProvider?: I18nProvider;
+}) => {
+    const [submittedData, setSubmittedData] = React.useState<any>();
+    return (
+        <CoreAdminContext i18nProvider={i18nProvider}>
+            <Form
+                onSubmit={data => setSubmittedData(data)}
+                record={{ id: 1, field1: 'bar', field6: null }}
+                validate={(values: any) => {
+                    const errors: any = {};
+                    if (!values.defaultMessage) {
+                        errors.defaultMessage = 'ra.validation.required';
+                    }
+                    if (!values.customMessage) {
+                        errors.customMessage = 'This field is required';
+                    }
+                    if (!values.customMessageTranslationKey) {
+                        errors.customMessageTranslationKey =
+                            'app.validation.required';
+                    }
+                    if (!values.missingCustomMessageTranslationKey) {
+                        errors.missingCustomMessageTranslationKey =
+                            'app.validation.missing';
+                    }
+                    return errors;
+                }}
+            >
+                <Input source="defaultMessage" />
+                <Input source="customMessage" />
+                <Input source="customMessageTranslationKey" />
+                <Input source="missingCustomMessageTranslationKey" />
+                <button type="submit">Submit</button>
+            </Form>
+            <pre>{JSON.stringify(submittedData, null, 2)}</pre>
+        </CoreAdminContext>
+    );
+};
+
+export const InputLevelValidation = ({
+    i18nProvider = defaultI18nProvider,
+}: {
+    i18nProvider?: I18nProvider;
+}) => {
+    const [submittedData, setSubmittedData] = React.useState<any>();
+    return (
+        <CoreAdminContext i18nProvider={i18nProvider}>
+            <Form
+                onSubmit={data => setSubmittedData(data)}
+                record={{ id: 1, field1: 'bar', field6: null }}
+            >
+                <Input source="defaultMessage" validate={required()} />
+                <Input
+                    source="customMessage"
+                    validate={required('This field is required')}
+                />
+                <Input
+                    source="customMessageTranslationKey"
+                    validate={required('app.validation.required')}
+                />
+                <Input
+                    source="missingCustomMessageTranslationKey"
+                    validate={required('app.validation.missing')}
+                />
+                <button type="submit">Submit</button>
+            </Form>
+            <pre>{JSON.stringify(submittedData, null, 2)}</pre>
+        </CoreAdminContext>
+    );
+};
+
+const zodSchema = z.object({
+    defaultMessage: z.string(), //.min(1),
+    customMessage: z.string({
+        required_error: 'This field is required',
+    }),
+    customMessageTranslationKey: z.string({
+        required_error: 'app.validation.required',
+    }),
+    missingCustomMessageTranslationKey: z.string({
+        required_error: 'app.validation.missing',
+    }),
+});
+
+export const ZodResolver = ({
+    i18nProvider = defaultI18nProvider,
+}: {
+    i18nProvider?: I18nProvider;
+}) => {
+    const [result, setResult] = React.useState<any>();
+    return (
+        <CoreAdminContext i18nProvider={i18nProvider}>
+            <Form
+                record={{}}
+                onSubmit={data => setResult(data)}
+                resolver={zodResolver(zodSchema)}
+            >
+                <Input source="defaultMessage" />
+                <Input source="customMessage" />
+                <Input source="customMessageTranslationKey" />
+                <Input source="missingCustomMessageTranslationKey" />
                 <button type="submit">Submit</button>
             </Form>
             <pre>{JSON.stringify(result, null, 2)}</pre>
