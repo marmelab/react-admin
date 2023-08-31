@@ -162,6 +162,7 @@ export const useReferenceManyFieldController = <
             filter: filterValues,
         },
         {
+            // enabled: !!get(record, source),
             keepPreviousData: true,
             onError: error =>
                 notify(
