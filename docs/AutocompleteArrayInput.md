@@ -414,9 +414,9 @@ If you're using `<AutocompleteArrayInput>` inside a [`<ReferenceArrayInput>`](./
 
 ## `sx`: CSS API
 
-The `<AutocompleteArrayInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)).
+The `<AutocompleteArrayInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples).
 
-`<AutocompleteArrayInput>` renders an [`<AutocompleteInput>`](./AutocompleteInput.md) and reuses its styles. To override the style of all instances of `<AutocompleteInput>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaAutocompleteInput` key.
+`<AutocompleteArrayInput>` renders an [`<AutocompleteInput>`](./AutocompleteInput.md) and reuses its styles. To override the style of all instances of `<AutocompleteInput>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaAutocompleteInput` key.
 
 Refer to the [Material UI `<Autocomplete>` component](https://mui.com/material-ui/react-autocomplete/) to know its CSS API.
 

@@ -364,7 +364,7 @@ This property accepts the following subclasses:
 | `& .RaLayout-contentWithSidebar` | Applied to the main part containing the sidebar and the content                           |
 | `& .RaLayout-content`            | Applied to the content area                                                               |
 
-To override the style of `<Layout>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaLayout` key.
+To override the style of `<Layout>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaLayout` key.
 
 **Tip**: If you need to override global styles (like the default font size or family), you should [write a custom theme](./AppTheme.md) rather than override the `<Layout sx>` prop. And if you need to tweak the default layout to add a right column or move the menu to the top, you're probably better off [writing your own layout component](./Layout.md#writing-a-layout-from-scratch). 
 

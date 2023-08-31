@@ -762,7 +762,9 @@ export const PostList = () => (
 
 ## `sx`: CSS API
 
-The `<Datagrid>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property. This property accepts the following subclasses:
+The `<Datagrid>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples).
+
+This property accepts the following subclasses:
 
 | Rule name                      | Description                                      |
 | ------------------------------ |--------------------------------------------------|
@@ -809,8 +811,6 @@ const PostList = () => (
 );
 ```
 {% endraw %}
-
-**Tip**: `sx` is the standard for style customization in Material UI . Check [the sx documentation](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles) for more advanced usage.
 
 **Tip**: The `Datagrid` component `classes` can also be customized for all instances of the component with its global css name `"RaDatagrid"` as [describe here](https://marmelab.com/blog/2019/12/18/react-admin-3-1.html#theme-overrides)
 

@@ -307,13 +307,13 @@ When passed a `record`, `<TabbedShowLayout>` creates a `RecordContext` with the 
 
 ## `sx`: CSS API
 
-The `<TabbedShowLayout>` component accepts the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<TabbedShowLayout>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
 | Rule name                       | Description                                              |
 |---------------------------------| ---------------------------------------------------------|
 | `& .RaTabbedShowLayout-content` | Applied to the content zone (under the tabs)             |
 
-To override the style of all instances of `<TabbedShowLayout>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaTabbedShowLayout` key.
+To override the style of all instances of `<TabbedShowLayout>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaTabbedShowLayout` key.
 
 To style the tabs, the `<TabbedShowLayout.Tab>` component accepts two props:
 

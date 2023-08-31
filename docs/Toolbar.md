@@ -92,4 +92,4 @@ You can override the style of the toolbar using the `sx` prop. Use the class nam
 | `&.RaToolbar-mobileToolbar`    | Applied to the underlying `MuiToolbar` component for small screens                     |
 | `& .RaToolbar-defaultToolbar`  | Applied to the internal wrapper of the `<Toolbar>` buttons when no children are passed |
 
-To override the style of all instances of `<Toolbar>` components using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaToolbar` key.
+To override the style of all instances of `<Toolbar>` components using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaToolbar` key.
