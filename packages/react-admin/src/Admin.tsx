@@ -1,7 +1,11 @@
 import * as React from 'react';
-import { ComponentType } from 'react';
-import { CoreAdminProps, localStorageStore } from 'ra-core';
-import { AdminUI, AdminContext, RaThemeOptions } from 'ra-ui-materialui';
+import { localStorageStore } from 'ra-core';
+import {
+    AdminUI,
+    AdminContext,
+    AdminContextProps,
+    AdminUIProps,
+} from 'ra-ui-materialui';
 
 import { defaultI18nProvider } from './defaultI18nProvider';
 const defaultStore = localStorageStore();
@@ -159,10 +163,4 @@ export const Admin = (props: AdminProps) => {
 
 export default Admin;
 
-export interface AdminProps extends CoreAdminProps {
-    theme?: RaThemeOptions;
-    lightTheme?: RaThemeOptions;
-    darkTheme?: RaThemeOptions;
-    defaultTheme?: 'light' | 'dark';
-    notification?: ComponentType;
-}
+export interface AdminProps extends AdminContextProps, AdminUIProps {}

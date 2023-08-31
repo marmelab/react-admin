@@ -54,7 +54,7 @@ All input components accept the following props:
 
 React-admin uses [react-hook-form](https://react-hook-form.com/) to control form inputs. Each input component also accepts all react-hook-form [useController](https://react-hook-form.com/docs/usecontroller) hook options.
 
-Additional props are passed down to the underlying component (usually an Material UI component). For instance, when setting the `variant` prop on a `<TextInput>` component, the underlying Material UI `<TextField>` receives it, and renders it with a different variant. Refer to the documentation of each Input component to see the underlying Material UI component and its props.
+Additional props are passed down to the underlying component (usually a Material UI component). For instance, when setting the `variant` prop on a `<TextInput>` component, the underlying Material UI `<TextField>` receives it, and renders it with a different variant. Refer to the documentation of each Input component to see the underlying Material UI component and its props.
 
 ## Which Input Component to Use?
 
@@ -596,7 +596,7 @@ import { FormDataConsumer } from 'react-admin';
 
 Material UI offers [3 variants for text fields](https://mui.com/material-ui/react-text-field/#basic-textfield): `outlined`, `filled`, and `standard`. The default react-admin theme uses the `filled` variant.
 
-Most Input components pass their additional props down to the root component, which is often an Material UI Field component. This means you can pass a `variant` prop to override the variant of a single input:
+Most Input components pass their additional props down to the root component, which is often a Material UI Field component. This means you can pass a `variant` prop to override the variant of a single input:
 
 ```tsx
 <TextInput source="name" variant="outlined" />
@@ -761,7 +761,7 @@ Now the component will render with a label:
 
 ### Using Material UI Field Components
 
-Instead of HTML `input` elements, you can use an Material UI component like `TextField`. To bind Material UI components to the form values, use the `useController()` hook:
+Instead of HTML `input` elements, you can use a Material UI component like `TextField`. To bind Material UI components to the form values, use the `useController()` hook:
 
 ```tsx
 // in LatLongInput.js
@@ -885,7 +885,7 @@ const LatLngInput = (props: BoundedTextFieldProps) => {
 };
 ```
 
-Here is another example, this time using an Material UI `Select` component:
+Here is another example, this time using a Material UI `Select` component:
 
 ```tsx
 // in SexInput.js

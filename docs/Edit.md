@@ -103,7 +103,7 @@ export const PostEdit = () => (
 
 Common buttons used as Edit actions are:
 
-- [`<CreateButton>`](./CreateButton.md) to create a new record
+- [`<CreateButton>`](./Buttons.md#createbutton) to create a new record
 - [`<ListButton>`](./Buttons.md#listbutton) to go back to the list
 - [`<ShowButton>`](./Buttons.md#showbutton) to go to the show page
 - [`<UpdateButton>`](./UpdateButton.md) to trigger a change in the data

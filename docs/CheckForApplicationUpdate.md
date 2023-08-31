@@ -122,13 +122,13 @@ If you just want to customize the notification texts, including the button, chec
 
 ## `url`
 
-You can customize the URL fetched to detect updates by providing the `url` prop. By default it's the current URL.
+You can customize the URL fetched to detect updates by providing the `url` prop. By default, it's the current URL.
 
 ```tsx
 // in src/MyLayout.tsx
 import { CheckForApplicationUpdate, Layout, LayoutProps } from 'react-admin';
 
-const MY_APP_ROOT_URL = 'http://admin.mycompany.com';
+const MY_APP_ROOT_URL = 'https://admin.mycompany.com';
 
 export const MyLayout = ({ children, ...props }: LayoutProps) => (
     <Layout {...props}>
