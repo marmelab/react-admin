@@ -123,7 +123,7 @@ ExportButton.propTypes = {
     resource: PropTypes.string,
     sort: PropTypes.exact({
         field: PropTypes.string,
-        order: PropTypes.string,
+        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
     }),
     icon: PropTypes.element,
     meta: PropTypes.any,

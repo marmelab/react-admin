@@ -15,7 +15,7 @@ export interface RaRecord<IdentifierType extends Identifier = Identifier>
 
 export interface SortPayload {
     field: string;
-    order: string;
+    order: 'ASC' | 'DESC';
 }
 export interface FilterPayload {
     [k: string]: any;

@@ -108,7 +108,10 @@ export const ListActions = (props: ListActionsProps) => {
 
 ListActions.propTypes = {
     className: PropTypes.string,
-    sort: PropTypes.any,
+    sort: PropTypes.shape({
+        field: PropTypes.string,
+        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
+    }),
     displayedFilters: PropTypes.object,
     exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     filters: PropTypes.element,

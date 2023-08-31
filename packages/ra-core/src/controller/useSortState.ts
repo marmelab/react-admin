@@ -46,7 +46,7 @@ const sortReducer = (state: SortPayload, action: Action): SortPayload => {
     }
 };
 
-export const defaultSort = { field: '', order: 'ASC' };
+export const defaultSort = { field: '', order: 'ASC' } as const;
 
 /**
  * Set the sort { field, order }
@@ -123,7 +123,7 @@ const useSortState = (initialSort: SortPayload = defaultSort): SortProps => {
             [dispatch]
         ),
         setSortOrder: useCallback(
-            (order: string) =>
+            (order: 'ASC' | 'DESC') =>
                 dispatch({ type: 'SET_SORT_ORDER', payload: order }),
             [dispatch]
         ),

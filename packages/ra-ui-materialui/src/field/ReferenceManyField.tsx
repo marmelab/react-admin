@@ -131,7 +131,7 @@ ReferenceManyField.propTypes = {
     source: PropTypes.string,
     sort: PropTypes.exact({
         field: PropTypes.string,
-        order: PropTypes.string,
+        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
     }),
     target: PropTypes.string.isRequired,
 };
@@ -166,7 +166,7 @@ ReferenceManyFieldView.propTypes = {
     className: PropTypes.string,
     sort: PropTypes.exact({
         field: PropTypes.string,
-        order: PropTypes.string,
+        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
     }),
     data: PropTypes.any,
     isLoading: PropTypes.bool,
@@ -176,4 +176,4 @@ ReferenceManyFieldView.propTypes = {
 };
 
 const defaultFilter = {};
-const defaultSort = { field: 'id', order: 'DESC' };
+const defaultSort = { field: 'id', order: 'DESC' as const };
