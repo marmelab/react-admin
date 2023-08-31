@@ -24,7 +24,7 @@ title: "The ArrayField Component"
         {
             uuid: '34fdf393-f449-4b04-a423-38ad02ae159e',
             date: '2012-08-10T00:00:00.000Z',
-            url: 'http://example.com/foo/bar.html',
+            url: 'https://example.com/foo/bar.html',
         },
         {
             uuid: 'd907743a-253d-4ec1-8329-404d4c5e6cf1',

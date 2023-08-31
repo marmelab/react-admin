@@ -19,7 +19,7 @@ yarn create react-admin your-admin-name
 
 The terminal will then ask you to choose:
 - a data provider
-- a auth provider
+- an auth provider
 - the names of the resources to add
 - the package manager to use to install the dependencies
 

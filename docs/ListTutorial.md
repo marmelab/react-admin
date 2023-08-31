@@ -514,8 +514,8 @@ On Mobile, `<Datagrid>` doesn't work well - the screen is too narrow. You should
 
 To use `<Datagrid>` on desktop and `<SimpleList>` on mobile, use the `useMediaQuery` hook:
 
-```jsx
-// in src/posts.js
+```tsx
+// in src/posts.tsx
 import * as React from 'react';
 import { useMediaQuery, Theme } from '@mui/material';
 import { List, SimpleList, Datagrid, TextField, ReferenceField } from 'react-admin';

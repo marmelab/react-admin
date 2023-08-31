@@ -824,7 +824,7 @@ Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details
 
 ## Role-Based Access Control (RBAC)
 
-Fine-grained permissions control can be added by using the [`<TabbedForm>`](./AuthRBAC.md#tabbedform) and [`<FormTab>`](./AuthRBAC.md#formtab) components provided by the `@react-admin/ra-rbac` package. 
+Fine-grained permissions control can be added by using the [`<TabbedForm>`](./AuthRBAC.md#tabbedform) and [`<FormTab>`](./AuthRBAC.md#tabbedform) components provided by the `@react-admin/ra-rbac` package. 
 
 {% raw %}
 ```jsx
