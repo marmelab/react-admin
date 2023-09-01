@@ -474,10 +474,10 @@ type Book = {
 const BookList = () => (
     <List filters={filters}>
         <Datagrid>
-            <TextField<Book> source="id" />
-            <TextField<Book> source="title" />
-            <TextField<Book> source="author" />
-            <TextField<Book> source="year" />
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
         </Datagrid>
     </List>
 );
@@ -559,7 +559,7 @@ export const PostList = () => {
                 />
             ) : (
                 <Datagrid rowClick="edit">
-                    <TextField<Post> source="id" />
+                    <TextField source="id" />
                     <ReferenceField<Post> label="User" source="userId" reference="users">
                         <TextField<User> source="name" />
                     </ReferenceField>
