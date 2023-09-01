@@ -457,13 +457,6 @@ import {
 
 const filters = [<TextInput label="Search" source="q" size="small" alwaysOn />];
 
-type Book = {
-    id: string;
-    title: string;
-    author: string;
-    year: number;
-};
-
 const BookList = () => (
     <List filters={filters}>
         <Datagrid>
