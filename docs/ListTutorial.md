@@ -24,7 +24,7 @@ To better understand how to use the various react-admin hooks and components ded
 You've probably developed it a dozen times, and in fact you don't need react-admin to build, say, a book List view:
 
 {% raw %}
-```jsx
+```tsx
 import { useState } from 'react';
 import { Title, useGetList } from 'react-admin';
 import {
@@ -39,11 +39,18 @@ import {
     TableCell,
 } from '@mui/material';
 
+type Book = {
+    id: string;
+    title: string;
+    author: string;
+    year: number;
+};
+
 const BookList = () => {
     const [filter, setFilter] = useState('');
     const [page, setPage] = useState(1);
     const perPage = 10;
-    const { data, total, isLoading } = useGetList('books', {
+    const { data, total, isLoading } = useGetList<Book>('books', {
         filter: { q: filter },
         pagination: { page, perPage },
         sort: { field: 'id', order: 'ASC' }
@@ -388,7 +395,7 @@ Using the `<ListBase>` component has one drawback: you can no longer access the 
 
 The following example illustrates the usage of `useListContext` with a custom pagination component:
 
-```jsx
+```tsx
 import { useListContext } from 'react-admin';
 import { Toolbar, Button } from '@mui/material';
 
@@ -447,7 +454,7 @@ const BookList = () => (
 
 Remember the first snippet in this page? The react-admin version is much shorter, and more expressive:
 
-```jsx
+```tsx
 import { 
     List,
     Datagrid,
@@ -457,13 +464,20 @@ import {
 
 const filters = [<TextInput label="Search" source="q" size="small" alwaysOn />];
 
+type Book = {
+    id: string;
+    title: string;
+    author: string;
+    year: number;
+};
+
 const BookList = () => (
     <List filters={filters}>
         <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="year" />
+            <TextField<Book> source="id" />
+            <TextField<Book> source="title" />
+            <TextField<Book> source="author" />
+            <TextField<Book> source="year" />
         </Datagrid>
     </List>
 );
@@ -477,7 +491,7 @@ Sometimes typing `<Datagrid>` and a few `<Field>` components is too much - for i
 
 For these cases, react-admin provides a `<ListGuesser>` component that will guess the datagrid columns from the data. It's a bit like the `<List>` component, but it doesn't require any configuration.
 
-```jsx
+```tsx
 import { Admin, Resource, ListGuesser } from 'react-admin';
 
 const App = () => (
@@ -522,9 +536,15 @@ import { List, SimpleList, Datagrid, TextField, ReferenceField } from 'react-adm
 
 type Post = {
     id: number;
+    userId: number;
     title: string;
     views: number;
     published_at: string;
+}
+
+type User = {
+    id: number;
+    name: string;
 }
 
 export const PostList = () => {
@@ -539,12 +559,12 @@ export const PostList = () => {
                 />
             ) : (
                 <Datagrid rowClick="edit">
-                    <TextField source="id" />
-                    <ReferenceField label="User" source="userId" reference="users">
-                        <TextField source="name" />
+                    <TextField<Post> source="id" />
+                    <ReferenceField<Post> label="User" source="userId" reference="users">
+                        <TextField<User> source="name" />
                     </ReferenceField>
-                    <TextField source="title" />
-                    <TextField source="body" />
+                    <TextField<Post> source="title" />
+                    <TextField<Post> source="body" />
                 </Datagrid>
             )}
         </List>
