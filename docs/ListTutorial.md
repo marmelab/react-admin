@@ -542,10 +542,6 @@ type Post = {
     published_at: string;
 }
 
-type User = {
-    id: number;
-    name: string;
-}
 
 export const PostList = () => {
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
@@ -560,8 +556,8 @@ export const PostList = () => {
             ) : (
                 <Datagrid rowClick="edit">
                     <TextField source="id" />
-                    <ReferenceField<Post> label="User" source="userId" reference="users">
-                        <TextField<User> source="name" />
+                    <ReferenceField label="User" source="userId" reference="users">
+                        <TextField source="name" />
                     </ReferenceField>
                     <TextField<Post> source="title" />
                     <TextField<Post> source="body" />
