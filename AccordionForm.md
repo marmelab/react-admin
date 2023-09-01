@@ -520,7 +520,7 @@ Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details
 
 ## Role-Based Access Control (RBAC)
 
-Fine-grained permissions control can be added by using the [`<AccordionForm>`](./AuthRBAC.md#accordionform), [`<AccordionFormPanel>`](./AuthRBAC.md#accordionformpanel) and [`<AccordionSection>`](./AuthRBAC.md#accordionsection) components provided by the `@react-admin/ra-enterprise` package. 
+Fine-grained permissions control can be added by using the [`<AccordionForm>`](./AuthRBAC.md#accordionform), [`<AccordionFormPanel>`](./AuthRBAC.md#accordionform) and [`<AccordionSection>`](./AuthRBAC.md#accordionsection) components provided by the `@react-admin/ra-enterprise` package. 
 
 {% raw %}
 ```tsx

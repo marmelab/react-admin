@@ -28,7 +28,7 @@ const PostEditActions = () => (
 );
 
 export const PostEdit = () => (
-    <Edit actions={<PostEditActions>}>
+    <Edit actions={<PostEditActions />}>
         <SimpleForm>
             <TextInput source="title" />
             <TextInput source="body" />

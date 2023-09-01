@@ -57,6 +57,7 @@ const PostList = () => (
                 sortable={false}
                 sx={{ '& .RaBooleanField-falseIcon': { visibility: 'hidden' } }}
             />
+        </Datagrid>
     </List>
 );
 ```
@@ -72,7 +73,7 @@ If you need to customize the look and feel of the whole application, you can use
 | --- | --- |
 | [![Default style](./img/datagrid-theme-unstyled.webp)](./img/datagrid-theme-unstyled.webp) | [![Styled with `theme`](./img/datagrid-theme-styled.webp)](./img/datagrid-theme-styled.webp) |
 
-```jsx
+```tsx
 import { Admin, defaultTheme } from 'react-admin';
 import indigo from '@mui/material/colors/indigo';
 import pink from '@mui/material/colors/pink';

@@ -1932,7 +1932,7 @@ If this sanitization strategy doesn't suit your needs, you can use the `transfor
 
 ### `useFormGroup` Hook Returned State Has Changed
 
-The `useFormGroup` hook used to returned the form group state props (`dirty`, `invalid`, `pristine`, `touched`, `valid` and `errors`). They don't exist in `react-hook-form` so now it will return `isDirty`, `isValid`, `isTouched` and `errors`:
+The `useFormGroup` hook used to return the form group state props (`dirty`, `invalid`, `pristine`, `touched`, `valid` and `errors`). They don't exist in `react-hook-form` so now it will return `isDirty`, `isValid`, `isTouched` and `errors`:
 
 ```diff
 const AccordionSectionTitle = ({ children, name }) => {

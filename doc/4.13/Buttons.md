@@ -101,7 +101,7 @@ It also supports [all the other `<Button>` props](#button).
 |-----------------------------|--------------------------------------------------------------------|
 | `&.RaCreateButton-floating` | Applied to the underlying `MuiFab` component used in small screens |
 
-To override the style of all instances of `<CreateButton>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaCreateButton` key.
+To override the style of all instances of `<CreateButton>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaCreateButton` key.
 
 ### `<ListButton>`
 
@@ -621,7 +621,7 @@ This button is an internal component used by react-admin in [the Filter button/f
 
 #### `sx`: CSS API
 
-To override the style of all instances of `<FilterButton>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaFilterButton` key.
+To override the style of all instances of `<FilterButton>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaFilterButton` key.
 
 ## Record Buttons
 
@@ -640,7 +640,7 @@ const PostEditActions = () => (
 );
 
 export const PostEdit = () => (
-    <Edit actions={<PostEditActions>}>
+    <Edit actions={<PostEditActions />}>
         <SimpleForm>
             <TextInput source="title" />
             <TextInput source="body" />
@@ -736,7 +736,7 @@ Other props are passed down to [the underlying Material UI `<Button>`](https://m
 | `& .RaButton-mediumIcon`     | Applied to the Button's `children` when `size` prop is `medium` and `alignIcon` prop is 'right' |
 | `& .RaButton-largeIcon`      | Applied to the Button's `children` when `size` prop is `large` and `alignIcon` prop is 'right'  |
 
-To override the style of all instances of `<Button>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaButton` key.
+To override the style of all instances of `<Button>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaButton` key.
 
 ### `<RefreshButton>`
 ### `<SkipNavigationButton>`
@@ -747,7 +747,7 @@ To override the style of all instances of `<Button>` using the [Material UI styl
 |-----------------------------------------------|-------------------------------------------------|
 | `&.RaSkipNavigationButton-skipToContentButton` | Applied to the underlying `MuiButton` component |
 
-To override the style of all instances of `<SkipNavigationButton>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaSkipNavigationButton` key.
+To override the style of all instances of `<SkipNavigationButton>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaSkipNavigationButton` key.
 
 ### `<MenuItemLink>`
 
@@ -836,7 +836,7 @@ See [The Menu documentation](./Menu.md) for more details.
 | `&.RaMenuItemLink-active`  | Applied to the underlying `MuiMenuItem`'s `activeClassName` prop    |
 | `& .RaMenuItemLink-icon`    | Applied to the `ListItemIcon` component when `leftIcon` prop is set |
 
-To override the style of all instances of `<MenuItemLink>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaMenuItemLink` key.
+To override the style of all instances of `<MenuItemLink>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaMenuItemLink` key.
 
 ### `<UserMenu>`
 
@@ -853,6 +853,6 @@ To override the style of all instances of `<MenuItemLink>` using the [Material U
 | `& .RaUserMenu-userButton` | Applied to the underlying `MuiButton` component when `useGetIdentity().loaded` is `true` and `useGetIdentity().identity.fullName` is set |
 | `& .RaUserMenu-avatar`     | Applied to the underlying `MuiAvatar` component when `useGetIdentity().avatar` is `true`                                                 |
 
-To override the style of all instances of `<UserMenu>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaUserMenu` key.
+To override the style of all instances of `<UserMenu>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaUserMenu` key.
 
 See [The AppBar documentation](./AppBar.md#usermenu) for more details.

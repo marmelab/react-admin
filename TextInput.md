@@ -5,7 +5,7 @@ title: "The TextInput Component"
 
 # `<TextInput>`
 
-`<TextInput>` is the most common input. It is used for texts, emails, URL or passwords. In translates into [an Material UI `<TextField>`](https://mui.com/material-ui/react-text-field/), and renders as `<input type="text">` in HTML.
+`<TextInput>` is the most common input. It is used for texts, emails, URL or passwords. In translates into [a Material UI `<TextField>`](https://mui.com/material-ui/react-text-field/), and renders as `<input type="text">` in HTML.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/text-input.webm" type="video/webm"/>

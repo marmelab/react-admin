@@ -168,7 +168,7 @@ export const MyMenu = () => (
 ```
 {% endraw %}
 
-To override the style of `<MultiLevelMenu>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaMenuRoot` key.
+To override the style of `<MultiLevelMenu>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaMenuRoot` key.
 
 ## `<MultiLevelMenu.Item>`
 

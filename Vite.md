@@ -104,7 +104,7 @@ Your app is now up and running, you can start tweaking it.
 
 If your users might keep the application open for a long time, it's a good idea to add the [`<CheckForApplicationUpdate>`](./CheckForApplicationUpdate.md) component. It will check whether a more recent version of your application is available and prompt users to reload their browser tab.
 
-To determine whether your application has been updated, it fetches the current page at a regular interval, builds an hash of the response content (usually the HTML) and compares it with the previous hash.
+To determine whether your application has been updated, it fetches the current page at a regular interval, builds a hash of the response content (usually the HTML) and compares it with the previous hash.
 
 To enable it, start by creating a custom layout:
 

@@ -80,7 +80,7 @@ const BookShow = () => (
 
 ## `sx`: CSS API
 
-The `<Labeled>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<Labeled>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
 | Rule name                 | Description                                             |
 |---------------------------|---------------------------------------------------------|
@@ -88,4 +88,4 @@ The `<Labeled>` component accepts the usual `className` prop. You can also overr
 | `& .RaLabeled-label`      | Applied to the underlying Material UI's `Typography` component  |
 
 
-To override the style of all instances of `<Labeled>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaLabeled` key.
+To override the style of all instances of `<Labeled>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaLabeled` key.

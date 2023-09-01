@@ -211,7 +211,7 @@ export const MyError = ({
 };
 ```
 
-**Tip:** [React's Error Boundaries](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary) are used internally to display the Error Page whenever an error occurs. Error Boundaries only catch errors during rendering, in lifecycle methods, and in constructors of the components tree. This implies in particular that errors during event callbacks (such as 'onClick') are not concerned. Also note that the Error Boundary component is only set around the main container of React Admin. In particular, you won't see it for errors thrown by the [sidebar Menu](./Menu.md), nor the [AppBar](#customizing-the-appbar-content). This ensures the user is always able to navigate away from the Error Page.
+**Tip:** [React's Error Boundaries](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary) are used internally to display the Error Page whenever an error occurs. Error Boundaries only catch errors during rendering, in lifecycle methods, and in constructors of the components tree. This implies in particular that errors during event callbacks (such as 'onClick') are not concerned. Also note that the Error Boundary component is only set around the main container of React Admin. In particular, you won't see it for errors thrown by the [sidebar Menu](./Menu.md), nor the [AppBar](#adding-a-custom-context). This ensures the user is always able to navigate away from the Error Page.
 
 ## `menu`
 
@@ -364,7 +364,7 @@ This property accepts the following subclasses:
 | `& .RaLayout-contentWithSidebar` | Applied to the main part containing the sidebar and the content                           |
 | `& .RaLayout-content`            | Applied to the content area                                                               |
 
-To override the style of `<Layout>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaLayout` key.
+To override the style of `<Layout>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaLayout` key.
 
 **Tip**: If you need to override global styles (like the default font size or family), you should [write a custom theme](./AppTheme.md) rather than override the `<Layout sx>` prop. And if you need to tweak the default layout to add a right column or move the menu to the top, you're probably better off [writing your own layout component](./Layout.md#writing-a-layout-from-scratch). 
 

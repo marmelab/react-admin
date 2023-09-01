@@ -253,13 +253,13 @@ By default, the radio buttons are displayed in a row. You can change that and le
 
 ## `sx`: CSS API
 
-The `<RadioButtonGroupInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<RadioButtonGroupInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
 | Rule name                          | Description                                                   |
 |------------------------------------|---------------------------------------------------------------|
 | `& .RaRadioButtonGroupInput-label` | Applied to the underlying Material UI's `FormLabel` component |
 
-To override the style of all instances of `<RadioButtonGroupInput>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaRadioButtonGroupInput` key.
+To override the style of all instances of `<RadioButtonGroupInput>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaRadioButtonGroupInput` key.
 
 ## `translateChoice`
 

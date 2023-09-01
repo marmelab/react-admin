@@ -58,7 +58,7 @@ const CompanyShow = () => (
 
 It accepts the following props:
 
-* `inline`: set to true to display only an Material UI `<IconButton>` instead of the full `<Button>`. The label will still be available as a `<Tooltip>` though.
+* `inline`: set to true to display only a Material UI `<IconButton>` instead of the full `<Button>`. The label will still be available as a `<Tooltip>` though.
 * `icon`: allows to override the default icon.
 * `label`: allows to override the default button label. I18N is supported.
 * `ButtonProps`: object containing props to pass to Material UI's `<Button>`.

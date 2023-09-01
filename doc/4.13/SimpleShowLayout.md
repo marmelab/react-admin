@@ -157,14 +157,14 @@ const PostShow = () => (
 
 ## `sx`: CSS API
 
-The `<SimpleShowLayout>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<SimpleShowLayout>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
 | Rule name                     | Description                                             |
 |-------------------------------|---------------------------------------------------------|
 | `& .RaSimpleShowLayout-stack` | Applied to the `<Stack>` element                        |
 | `& .RaSimpleShowLayout-row`   | Applied to each child of the stack (i.e. to each field) |
 
-To override the style of all instances of `<SimpleShowLayout>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaSimpleShowLayout` key.
+To override the style of all instances of `<SimpleShowLayout>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaSimpleShowLayout` key.
 
 ## Controlled Mode
 

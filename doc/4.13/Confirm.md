@@ -78,14 +78,14 @@ Text props such as `title`, `content`, `cancel`, `confirm` and `translateOptions
 
 ## `sx`: CSS API
 
-The `<Confirm>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<Confirm>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
 | Rule name                       | Description                                                    |
 |---------------------------------|----------------------------------------------------------------|
 | `& .RaConfirm-confirmPrimary`   | Applied to the confirm button when `confirmColor` is `primary` |
 | `& .RaConfirm-confirmWarning`   | Applied to the confirm button when `confirmColor` is `warning` |
 
-To override the style of all instances of `<Confirm>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaConfirm` key.
+To override the style of all instances of `<Confirm>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaConfirm` key.
 
 ## Delete With Confirmation
 

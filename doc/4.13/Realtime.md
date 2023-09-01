@@ -209,7 +209,7 @@ To create your own translations, you can use the TypeScript types to see the str
 
 Here is an example of how to customize translations in your app:
 
-```jsx
+```tsx
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';

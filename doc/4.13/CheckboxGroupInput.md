@@ -225,13 +225,13 @@ By default, the checkboxes are displayed in a row. You can change that and let r
 
 ## `sx`: CSS API
 
-The `<CheckboxGroupInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<CheckboxGroupInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
 | Rule name                       | Description                                              |
 |---------------------------------|----------------------------------------------------------|
 | `& .RaCheckboxGroupInput-label` | Applied to the underlying Material UI's `FormLabel` component    |
 
-To override the style of all instances of `<CheckboxGroupInput>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaCheckboxGroupInput` key.
+To override the style of all instances of `<CheckboxGroupInput>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaCheckboxGroupInput` key.
 
 ## `translateChoice`
 

@@ -355,7 +355,7 @@ export const TagEdit = () => (
 
 The children of `<LongForm>` must be `<LongForm.Section>` elements.
 
-This component adds a section title (using a `<Typography variant="h4">`), then renders each child inside a [Material UI `<Stack>`](https://mui.com/material-ui/react-stack/), and finally adds an Material UI `<Divider>` at the bottom of the section.
+This component adds a section title (using a `<Typography variant="h4">`), then renders each child inside a [Material UI `<Stack>`](https://mui.com/material-ui/react-stack/), and finally adds a Material UI `<Divider>` at the bottom of the section.
 
 It accepts the following props:
 
@@ -470,7 +470,7 @@ Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details
 
 ## Role-Based Access Control (RBAC)
 
-Fine-grained permissions control can be added by using the [`<LongForm>`](./AuthRBAC.md#longform) and [`<LongFormSection>`](./AuthRBAC.md#longformsection) components provided by the `@react-admin/ra-enterprise` package. 
+Fine-grained permissions control can be added by using the [`<LongForm>`](./AuthRBAC.md#longform) and [`<LongFormSection>`](./AuthRBAC.md#longform) components provided by the `@react-admin/ra-enterprise` package. 
 
 {% raw %}
 ```tsx

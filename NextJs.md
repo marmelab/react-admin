@@ -115,7 +115,7 @@ This implies the creation of a new page in the Next.js app. Create a new file at
 - App Router: `src/app/admin/page.tsx`
 - Pages Router: `src/pages/admin/index.tsx`
 
-No matter which system you choose, the file should contains the same code:
+No matter which system you choose, the file should contain the same code:
 
 ```tsx
 import { NextPage } from "next";

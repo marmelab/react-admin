@@ -356,7 +356,7 @@ const OrderEdit = () => (
 
 ## `sx`
 
-You can override the style of the root element (a `<div>` element) as well as those of the inner components thanks to the `sx` property. It relies on MUI System and supports CSS and shorthand properties (see [their documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)).
+You can override the style of the root element (a `<div>` element) as well as those of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples).
 
 This property accepts the following subclasses:
 

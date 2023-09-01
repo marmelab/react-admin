@@ -84,7 +84,7 @@ Additional props are passed to the Material UI `<Stack>` component.
 
 ## `children`
 
-`<ReferenceOneInput>` expects input components as its children (like `<TextInput>`, `<NumberInput>`, etc.), which will allow to edit the related record. The inputs will be rendered inside an [Material UI `<Stack>`](https://mui.com/material-ui/react-stack/).
+`<ReferenceOneInput>` expects input components as its children (like `<TextInput>`, `<NumberInput>`, etc.), which will allow to edit the related record. The inputs will be rendered inside a [Material UI `<Stack>`](https://mui.com/material-ui/react-stack/).
 
 ```jsx
 <ReferenceOneInput reference="book_details" target="book_id">

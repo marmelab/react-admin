@@ -253,7 +253,7 @@ export const UserCreate = () => {
 }
 ```
 
-**Tip**: If you use RBAC, use [`ra-rbac`'s `<SimpleForm>` component](./AuthRBAC.md#simpleform) instead. It render its children only if the user has the required permissions.
+**Tip**: If you use RBAC, use [`ra-rbac`'s `<SimpleForm>` component](./AuthRBAC.md#simpleform) instead. It renders its children only if the user has the required permissions.
 
 ```jsx
 import { Create, TextInput } from 'react-admin';
