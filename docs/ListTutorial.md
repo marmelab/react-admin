@@ -559,8 +559,8 @@ export const PostList = () => {
                     <ReferenceField label="User" source="userId" reference="users">
                         <TextField source="name" />
                     </ReferenceField>
-                    <TextField<Post> source="title" />
-                    <TextField<Post> source="body" />
+                    <TextField source="title" />
+                    <TextField source="body" />
                 </Datagrid>
             )}
         </List>
