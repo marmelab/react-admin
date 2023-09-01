@@ -173,6 +173,7 @@ export const AutocompleteInput = <
         translateChoice,
         validate,
         variant,
+        onInputChange,
         ...rest
     } = props;
 
@@ -450,7 +451,7 @@ If you provided a React element for the optionText prop, you must also provide t
     }, [getOptionLabel, multiple, selectedChoice]);
 
     const handleInputChange = (
-        event: any,
+        event: React.SyntheticEvent,
         newInputValue: string,
         _reason: string
     ) => {
@@ -461,6 +462,8 @@ If you provided a React element for the optionText prop, you must also provide t
             setFilterValue(newInputValue);
             debouncedSetFilter(newInputValue);
         }
+
+        onInputChange?.(event);
     };
 
     const doesQueryMatchSelection = useCallback(
