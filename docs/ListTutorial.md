@@ -39,13 +39,6 @@ import {
     TableCell,
 } from '@mui/material';
 
-type Book = {
-    id: string;
-    title: string;
-    author: string;
-    year: number;
-};
-
 const BookList = () => {
     const [filter, setFilter] = useState('');
     const [page, setPage] = useState(1);
