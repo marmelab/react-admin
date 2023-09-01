@@ -450,11 +450,12 @@ If you provided a React element for the optionText prop, you must also provide t
         }
     }, [getOptionLabel, multiple, selectedChoice]);
 
-    const handleInputChange = (
-        event: React.SyntheticEvent,
-        newInputValue: string,
-        _reason: string
-    ) => {
+    const handleInputChange: AutocompleteProps<
+        OptionType,
+        Multiple,
+        DisableClearable,
+        SupportCreate
+    >['onInputChange'] = (event, newInputValue, reason) => {
         if (
             event?.type === 'change' ||
             !doesQueryMatchSelection(newInputValue)
@@ -463,7 +464,7 @@ If you provided a React element for the optionText prop, you must also provide t
             debouncedSetFilter(newInputValue);
         }
 
-        onInputChange?.(event);
+        onInputChange?.(event, newInputValue, reason);
     };
 
     const doesQueryMatchSelection = useCallback(
