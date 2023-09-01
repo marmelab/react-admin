@@ -1,5 +1,17 @@
 # Changelog
 
+## v4.13.3
+
+* Fix `<NumberInput>` and `<BooleanInput>` programmatic focus ([#9221](https://github.com/marmelab/react-admin/pull/9221)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `useReferenceManyFieldController` fails with error when the record is not yet present ([#9236](https://github.com/marmelab/react-admin/pull/9236)) ([djhi](https://github.com/djhi))
+* Fix bulk actions toolbar styling issue on mobile ([#9222](https://github.com/marmelab/react-admin/pull/9222)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Add inline documentation for most common components ([#9234](https://github.com/marmelab/react-admin/pull/9234)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Update sx sections to point to the new SX documentation ([#9233](https://github.com/marmelab/react-admin/pull/9233)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix docs anchors and typos ([#9235](https://github.com/marmelab/react-admin/pull/9235)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix explanations context in `<ReferenceManyToManyInput>` documentation ([#9228](https://github.com/marmelab/react-admin/pull/9228)) ([adguernier](https://github.com/adguernier))
+* [Doc] Fix `<List actions>` example throws an error ([#9220](https://github.com/marmelab/react-admin/pull/9220)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix startup command in project Readme file ([#9231](https://github.com/marmelab/react-admin/pull/9231)) ([azizChebbi](https://github.com/azizChebbi))
+
 ## v4.13.2
 
 * Fix Guessers should not log in CI by default ([#9218](https://github.com/marmelab/react-admin/pull/9218)) ([fzaninotto](https://github.com/fzaninotto))
