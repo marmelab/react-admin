@@ -73,6 +73,7 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>((props, ref) => {
         onClick,
         sidebarIsOpen,
         tooltipProps,
+        children,
         ...rest
     } = props;
 
@@ -113,9 +114,12 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>((props, ref) => {
                         {leftIcon}
                     </ListItemIcon>
                 )}
-                {typeof primaryText === 'string'
+                {!children && typeof primaryText === 'string'
                     ? translate(primaryText, { _: primaryText })
                     : primaryText}
+                {!primaryText && typeof children === 'string'
+                    ? translate(children, { _: primaryText })
+                    : children}
             </StyledMenuItem>
         );
     };

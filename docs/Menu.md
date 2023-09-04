@@ -24,7 +24,7 @@ export const MyMenu = () => (
         <Menu.ResourceItem name="posts" />
         <Menu.ResourceItem name="comments" />
         <Menu.ResourceItem name="users" />
-        <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
+        <Menu.Item to="/custom-route" leftIcon={<LabelIcon />}>Miscellaneous</Menu.Item>
     </Menu>
 );
 ```
@@ -117,7 +117,7 @@ export const MyMenu = () => (
         <Menu.ResourceItem name="posts" />
         <Menu.ResourceItem name="comments" />
         <Menu.ResourceItem name="users" />
-        <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
+        <Menu.Item to="/custom-route" leftIcon={<LabelIcon />}>Miscellaneous</Menu.Item>
     </Menu>
 );
 ```
@@ -166,12 +166,12 @@ import LabelIcon from '@mui/icons-material/Label';
 export const MyMenu = () => (
     <Menu>
         ...
-        <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
+        <Menu.Item to="/custom-route" leftIcon={<LabelIcon />}>Miscellaneous</Menu.Item>
     </Menu>
 );
 ```
 
-The `primaryText` prop accepts a string or a React node. You can use it e.g. to display a badge on top of the menu item:
+The `children` prop accepts a string or a React node. You can use it e.g. to display a badge on top of the menu item:
 
 ```jsx
 import Badge from '@mui/material/Badge';
@@ -179,11 +179,11 @@ import Badge from '@mui/material/Badge';
 export const MyMenu = () => (
     <Menu>
         ...
-        <Menu.Item to="/custom-route" primaryText={
+        <Menu.Item to="/custom-route">
             <Badge badgeContent={4} color="primary">
                 Notifications
             </Badge>
-        } />
+        </Menu.Item>
     </Menu>
 );
 ```
@@ -309,7 +309,7 @@ the following code:
 translates to:
 
 ```jsx
-<Menu.Item to="/posts" primaryText="Posts" leftIcon={<BookIcon />}/>
+<Menu.Item to="/posts" leftIcon={<BookIcon />}>Posts</Menu.Item>
 ```
 
 ## Creating Menu Items For Resources
@@ -340,7 +340,7 @@ import LabelIcon from '@mui/icons-material/Label';
 export const MyMenu = () => (
     <Menu>
         <Menu.ResourceItems />
-        <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />} />
+        <Menu.Item to="/custom-route" leftIcon={<LabelIcon />}>Miscellaneous</Menu.Item>
     </Menu>
 );
 ```
@@ -358,9 +358,10 @@ For instance, to include a menu to a list of published posts:
         pathname: '/posts',
         search: `filter=${JSON.stringify({ is_published: true })}`,
     }}
-    primaryText="Posts"
     leftIcon={<BookIcon />}
-/>
+>
+    Posts
+</Menu.Item>
 ```
 {% endraw %}
 
@@ -373,9 +374,10 @@ Just use an empty `filter` query parameter to force empty filters:
 ```jsx
 <Menu.Item
     to="/posts?filter=%7B%7D" // %7B%7D is JSON.stringify({})
-    primaryText="Posts"
     leftIcon={<BookIcon />}
-/>
+>
+    Posts
+</Menu.Item>
 ```
 
 ## Nested Menu Items
