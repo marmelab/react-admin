@@ -67,6 +67,7 @@ The form value for the source must be an array of the selected values, e.g.
 | `filterToQuery`            | Optional | `string` => `Object`  | `q => ({ q })`           | How to transform the searchText into a parameter for the data provider                                                                                  |
 | `inputText`                | Optional | `Function`            | `-`                      | Required if `optionText` is a custom Component, this function must return the text displayed for the current selection.                                 |
 | `matchSuggestion`          | Optional | `Function`            | `-`                      | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean` |
+| `onChange`                 | Optional | `Function`            | `-`                      | A function called with the new value, along with the selected records, when the input value changes |
 | `onCreate`                 | Optional | `Function`            | `-`                      | A function called with the current filter value when users choose to create a new choice.                                                               |
 | `optionText`               | Optional | `string` &#124; `Function` &#124; `Component` | `name` | Field name of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`)           |
 | `optionValue`              | Optional | `string`              | `id`                     | Field name of record containing the value to use as input value                                                                                         |
@@ -254,6 +255,85 @@ const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
     <AutocompleteArrayInput filterToQuery={filterToQuery} />
 </ReferenceArrayInput>
 ```
+
+## `onChange`
+
+Use the `onChange` prop to get notified when the input value changes.
+
+Its value must be a function, defined as follows:
+
+```ts
+type OnChange = (
+        value: any[], // the new value
+        record: RaRecord[] // the selected records
+    ) => void;
+```
+
+In the following example, the `onChange` prop is used to update the `language` field whenever the user selects a new author:
+
+{% raw %}
+```tsx
+import * as React from 'react';
+import { useFormContext } from 'react-hook-form';
+
+import {
+    ArrayInput,
+    AutocompleteArrayInput,
+    AutocompleteArrayInputProps,
+    Create,
+    ReferenceArrayInput,
+    SimpleForm,
+    SimpleFormIterator,
+    TextInput,
+} from 'react-admin';
+
+const LanguageChangingAuthorInput = () => {
+    const { setValue } = useFormContext();
+    const handleChange: AutocompleteArrayInputProps['onChange'] = (
+        value,
+        records
+    ) => {
+        // handleChange will be called with, for instance:
+        //   value: [2],
+        //   record: [{ id: 2, name: 'Victor Hugo', language: 'French' }]
+        setValue(
+            'language',
+            records?.map(record => record.language)
+        );
+    };
+    return (
+        <ReferenceArrayInput reference="authors" source="author">
+            <AutocompleteArrayInput
+                fullWidth
+                optionText="name"
+                onChange={handleChange}
+                label="Authors"
+            />
+        </ReferenceArrayInput>
+    );
+};
+
+const BookEdit = () => (
+    <Create
+        mutationOptions={{
+            onSuccess: data => {
+                console.log(data);
+            },
+        }}
+        redirect={false}
+    >
+        <SimpleForm>
+            <LanguageChangingAuthorInput />
+            <ArrayInput source="language" label="Languages">
+                <SimpleFormIterator>
+                    <TextInput source="." label="Language" />
+                </SimpleFormIterator>
+            </ArrayInput>
+        </SimpleForm>
+    </Create>
+);
+```
+{% endraw %}
 
 ## `onCreate`
 
