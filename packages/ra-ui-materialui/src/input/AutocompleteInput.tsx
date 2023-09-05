@@ -702,13 +702,7 @@ export interface AutocompleteInputProps<
     filterToQuery?: (searchText: string) => any;
     inputText?: (option: any) => string;
     onChange?: (
-        value: OptionType extends RaRecord
-            ? Multiple extends true
-                ? OptionType['id'][]
-                : OptionType['id']
-            : Multiple extends true
-            ? Identifier[]
-            : Identifier,
+        value: Multiple extends true ? any[] : any, // We can't know upfront what the value type will be
         record: Multiple extends true ? OptionType[] : OptionType
     ) => void;
     setFilter?: (value: string) => void;
