@@ -11,7 +11,11 @@ import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
-import { InsideReferenceArrayInput } from './AutocompleteArrayInput.stories';
+import {
+    InsideReferenceArrayInput,
+    InsideReferenceArrayInputOnChange,
+    OnChange,
+} from './AutocompleteArrayInput.stories';
 
 describe('<AutocompleteArrayInput />', () => {
     const defaultProps = {
@@ -357,7 +361,10 @@ describe('<AutocompleteArrayInput />', () => {
         fireEvent.blur(input);
 
         expect(onChange).toHaveBeenCalledTimes(1);
-        expect(onChange).toHaveBeenCalledWith(['t']);
+        expect(onChange).toHaveBeenCalledWith(
+            ['t'],
+            [{ id: 't', name: 'Technical' }]
+        );
     });
 
     it('should reset filter when input value changed', async () => {
@@ -1026,5 +1033,73 @@ describe('<AutocompleteArrayInput />', () => {
             </AdminContext>
         );
         expect(screen.queryByRole('textbox')).not.toBeNull();
+    });
+
+    it('should include full records when calling onChange', async () => {
+        const onChange = jest.fn();
+        render(<OnChange onChange={onChange} />);
+        await screen.findByText('Editor');
+        await screen.findByText('Reviewer');
+        screen.getByRole('textbox').focus();
+        fireEvent.click(await screen.findByText('Admin'));
+        await waitFor(() => {
+            expect(onChange).toHaveBeenCalledWith(
+                ['u001', 'u003', 'admin'],
+                [
+                    {
+                        id: 'u001',
+                        name: 'Editor',
+                    },
+                    {
+                        id: 'u003',
+                        name: 'Reviewer',
+                    },
+                    {
+                        id: 'admin',
+                        name: 'Admin',
+                    },
+                ]
+            );
+        });
+    });
+
+    it('should include full records when calling onChange inside ReferenceArrayInput', async () => {
+        const onChange = jest.fn();
+        render(<InsideReferenceArrayInputOnChange onChange={onChange} />);
+        (await screen.findByRole('textbox')).focus();
+        fireEvent.click(await screen.findByText('Leo Tolstoy'));
+        await waitFor(() => {
+            expect(onChange).toHaveBeenCalledWith(
+                [1],
+                [
+                    {
+                        id: 1,
+                        name: 'Leo Tolstoy',
+                        language: 'Russian',
+                    },
+                ]
+            );
+        });
+        expect(screen.getByDisplayValue('Russian')).not.toBeNull();
+        screen.getAllByRole('textbox')[0].focus();
+        fireEvent.click(await screen.findByText('Victor Hugo'));
+        await waitFor(() => {
+            expect(onChange).toHaveBeenCalledWith(
+                [1, 2],
+                [
+                    {
+                        id: 1,
+                        name: 'Leo Tolstoy',
+                        language: 'Russian',
+                    },
+                    {
+                        id: 2,
+                        name: 'Victor Hugo',
+                        language: 'French',
+                    },
+                ]
+            );
+        });
+        expect(screen.getByDisplayValue('French')).not.toBeNull();
     });
 });
