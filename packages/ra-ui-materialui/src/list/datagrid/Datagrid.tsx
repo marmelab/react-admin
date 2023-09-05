@@ -549,7 +549,7 @@ export interface DatagridProps<RecordType extends RaRecord = any>
     rowSx?: (record: RecordType, index: number) => SxProps;
 
     /**
-     * @deprecated use rowStyle instead
+     * @deprecated use rowSx instead
      */
     rowStyle?: (record: RecordType, index: number) => any;
 
