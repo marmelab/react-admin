@@ -155,15 +155,15 @@ You may have declared a resource without `list` prop. But with the default menu,
 </Admin>
 ```
 
-In order to have a specific resource without `list` prop listed on the menu, you have to [write your own custom menu](./Layout.md#menu).
+In order to have a specific resource without `list` prop listed on the menu, you have to [write your own custom menu](./Menu.md).
 
 ```jsx
- const MyMenu = ({ resources, onMenuClick }) => (
-    <div>
-        {resources.map(resource => (
-            <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
-        ))}
-        <MenuItemLink to="/reference/create" primaryText="New Reference" onClick={onMenuClick} />
-    </div>
+import { Menu } from 'react-admin';
+
+export const MyMenu = () => (
+    <Menu>
+        <Menu.ResourceItems />
+        <Menu.Item to="/reference/create" primaryText="New Reference" />
+    </Menu>
 );
 ```
