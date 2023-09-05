@@ -12,6 +12,7 @@ import {
     Button,
     Stack,
 } from '@mui/material';
+import { useFormContext } from 'react-hook-form';
 
 import { AdminContext } from '../AdminContext';
 import { Create, Edit } from '../detail';
@@ -19,6 +20,7 @@ import { SimpleForm } from '../form';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
+import { TextInput } from './TextInput';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteArrayInput' };
 
@@ -446,35 +448,50 @@ export const InsideReferenceArrayInput = () => (
     </Admin>
 );
 
+const LanguageChangingAuthorInput = ({ onChange }) => {
+    const { setValue } = useFormContext();
+    const handleChange = (value, records) => {
+        setValue(
+            'language',
+            records?.map(record => record.language).join(', ')
+        );
+        onChange(value, records);
+    };
+    return (
+        <ReferenceArrayInput reference="authors" source="author">
+            <AutocompleteArrayInput
+                fullWidth
+                optionText="name"
+                onChange={handleChange}
+            />
+        </ReferenceArrayInput>
+    );
+};
+
 export const InsideReferenceArrayInputOnChange = ({
     onChange = (value, records) => console.log({ value, records }),
 }) => (
-    <Admin dataProvider={dataProviderWithAuthors} history={history}>
+    <Admin
+        dataProvider={dataProviderWithAuthors}
+        history={createMemoryHistory({ initialEntries: ['/books/create'] })}
+    >
         <Resource name="authors" />
         <Resource
             name="books"
-            edit={() => (
-                <Edit
-                    mutationMode="pessimistic"
+            create={() => (
+                <Create
                     mutationOptions={{
                         onSuccess: data => {
                             console.log(data);
                         },
                     }}
+                    redirect={false}
                 >
                     <SimpleForm>
-                        <ReferenceArrayInput
-                            reference="authors"
-                            source="author"
-                        >
-                            <AutocompleteArrayInput
-                                fullWidth
-                                optionText="name"
-                                onChange={onChange}
-                            />
-                        </ReferenceArrayInput>
+                        <LanguageChangingAuthorInput onChange={onChange} />
+                        <TextInput source="language" />
                     </SimpleForm>
-                </Edit>
+                </Create>
             )}
         />
     </Admin>

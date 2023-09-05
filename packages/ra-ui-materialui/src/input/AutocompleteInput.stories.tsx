@@ -20,11 +20,12 @@ import {
     Typography,
     Box,
 } from '@mui/material';
+import { useFormContext } from 'react-hook-form';
 import fakeRestProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 
-import { Edit } from '../detail';
+import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { AutocompleteInput, AutocompleteInputProps } from './AutocompleteInput';
 import { ReferenceInput } from './ReferenceInput';
@@ -574,32 +575,47 @@ export const InsideReferenceInput = () => (
     </Admin>
 );
 
+const LanguageChangingAuthorInput = ({ onChange }) => {
+    const { setValue } = useFormContext();
+    const handleChange = (value, record) => {
+        setValue('language', record?.language);
+        onChange(value, record);
+    };
+    return (
+        <ReferenceInput reference="authors" source="author">
+            <AutocompleteInput
+                fullWidth
+                optionText="name"
+                onChange={handleChange}
+            />
+        </ReferenceInput>
+    );
+};
+
 export const InsideReferenceInputOnChange = ({
     onChange = (value, record) => console.log({ value, record }),
 }) => (
-    <Admin dataProvider={dataProviderWithAuthors} history={history}>
+    <Admin
+        dataProvider={dataProviderWithAuthors}
+        history={createMemoryHistory({ initialEntries: ['/books/create'] })}
+    >
         <Resource name="authors" />
         <Resource
             name="books"
-            edit={() => (
-                <Edit
-                    mutationMode="pessimistic"
+            create={() => (
+                <Create
                     mutationOptions={{
                         onSuccess: data => {
                             console.log(data);
                         },
                     }}
+                    redirect={false}
                 >
                     <SimpleForm>
-                        <ReferenceInput reference="authors" source="author">
-                            <AutocompleteInput
-                                fullWidth
-                                optionText="name"
-                                onChange={onChange}
-                            />
-                        </ReferenceInput>
+                        <LanguageChangingAuthorInput onChange={onChange} />
+                        <TextInput source="language" />
                     </SimpleForm>
-                </Edit>
+                </Create>
             )}
         />
     </Admin>
