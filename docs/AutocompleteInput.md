@@ -652,7 +652,7 @@ const CompanyInput = () => {
             choices={choicesWithCurrentCompany}
             optionText="name"
             disabled={isLoading}
-            onInputChange={e => setFilter({ q: e.target.value })}
+            onInputChange={(_, newInputValue) => setFilter({ q: newInputValue })}
         />
     );
 }

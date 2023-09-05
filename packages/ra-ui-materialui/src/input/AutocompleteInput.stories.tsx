@@ -1240,3 +1240,28 @@ export const WithInputProps = () => {
         </Admin>
     );
 };
+
+export const WithInputOnChange = () => {
+    const [searchText, setSearchText] = React.useState('');
+
+    return (
+        <AdminContext dataProvider={dataProviderWithAuthors}>
+            <div>Search text: {searchText}</div>
+            <SimpleForm onSubmit={() => {}} defaultValues={{ role: 2 }}>
+                <AutocompleteInput
+                    fullWidth
+                    source="role"
+                    resource="users"
+                    choices={[
+                        { id: 1, name: 'ab' },
+                        { id: 2, name: 'abc' },
+                        { id: 3, name: '123' },
+                    ]}
+                    onInputChange={(_, value) => {
+                        setSearchText(value);
+                    }}
+                />
+            </SimpleForm>
+        </AdminContext>
+    );
+};

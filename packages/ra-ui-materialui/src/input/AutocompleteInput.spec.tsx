@@ -995,7 +995,7 @@ describe('<AutocompleteInput />', () => {
             </AdminContext>
         );
         const input = screen.getByLabelText('resources.users.fields.role');
-        fireEvent.change(input, { target: { value: 'a' } });
+        userEvent.type(input, 'a');
         await waitFor(() => {
             expect(screen.queryAllByRole('option').length).toEqual(2);
         });
@@ -1022,7 +1022,7 @@ describe('<AutocompleteInput />', () => {
             </AdminContext>
         );
         const input = screen.getByLabelText('resources.users.fields.role');
-        fireEvent.change(input, { target: { value: 'ab' } });
+        userEvent.type(input, 'ab');
         await waitFor(() =>
             expect(screen.queryAllByRole('option').length).toEqual(2)
         );
@@ -1376,8 +1376,7 @@ describe('<AutocompleteInput />', () => {
                 'Author'
             )) as HTMLInputElement;
             expect(input.value).toBe('Leo Tolstoy');
-            fireEvent.mouseDown(input);
-            fireEvent.change(input, { target: { value: 'Leo Tolstoy test' } });
+            userEvent.type(input, 'Leo Tolstoy test');
             // Make sure that 'Leo Tolstoy' did not reappear
             let testFailed = false;
             try {

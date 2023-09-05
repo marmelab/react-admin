@@ -111,6 +111,13 @@ const defaultFilterOptions = createFilterOptions();
  *
  * @example
  * <AutocompleteInput source="author_id" options={{ color: 'secondary', InputLabelProps: { shrink: true } }} />
+ *
+ * Retrieve the value displayed in the textbox using the `onInputChange` prop:
+ *
+ * @example
+ * const [state, setState] = useState('')
+ *
+ * <AutocompleteInput source="gender" choices={choices} onInputChange={(_, newInputValue) => setState(newInputValue)} />
  */
 export const AutocompleteInput = <
     OptionType extends RaRecord = RaRecord,
@@ -440,32 +447,13 @@ If you provided a React element for the optionText prop, you must also provide t
     useEffect(() => {
         if (!multiple) {
             const optionLabel = getOptionLabel(selectedChoice);
-            if (typeof optionLabel === 'string') {
-                setFilterValue(optionLabel);
-            } else {
+            if (typeof optionLabel !== 'string') {
                 throw new Error(
                     'When optionText returns a React element, you must also provide the inputText prop'
                 );
             }
         }
     }, [getOptionLabel, multiple, selectedChoice]);
-
-    const handleInputChange: AutocompleteProps<
-        OptionType,
-        Multiple,
-        DisableClearable,
-        SupportCreate
-    >['onInputChange'] = (event, newInputValue, reason) => {
-        if (
-            event?.type === 'change' ||
-            !doesQueryMatchSelection(newInputValue)
-        ) {
-            setFilterValue(newInputValue);
-            debouncedSetFilter(newInputValue);
-        }
-
-        onInputChange?.(event, newInputValue, reason);
-    };
 
     const doesQueryMatchSelection = useCallback(
         (filter: string) => {
@@ -515,13 +503,39 @@ If you provided a React element for the optionText prop, you must also provide t
         return filteredOptions;
     };
 
-    const handleAutocompleteChange = (
-        event: any,
-        newValue: any,
-        _reason: string
-    ) => {
-        handleChangeWithCreateSupport(newValue != null ? newValue : emptyValue);
-    };
+    const handleAutocompleteChange = useCallback<
+        AutocompleteProps<
+            OptionType,
+            Multiple,
+            DisableClearable,
+            SupportCreate
+        >['onChange']
+    >(
+        (_event, newValue, _reason) => {
+            handleChangeWithCreateSupport(
+                newValue != null ? newValue : emptyValue
+            );
+        },
+        [emptyValue, handleChangeWithCreateSupport]
+    );
+
+    const handleInputChange = useCallback<
+        AutocompleteProps<
+            OptionType,
+            Multiple,
+            DisableClearable,
+            SupportCreate
+        >['onInputChange']
+    >(
+        (event, newInputValue, reason) => {
+            setFilterValue(newInputValue);
+            if (!doesQueryMatchSelection(newInputValue)) {
+                debouncedSetFilter(newInputValue);
+            }
+            onInputChange?.(event, newInputValue, reason);
+        },
+        [debouncedSetFilter, doesQueryMatchSelection, onInputChange]
+    );
 
     const oneSecondHasPassed = useTimeout(1000, filterValue);
 
