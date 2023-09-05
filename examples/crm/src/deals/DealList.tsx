@@ -17,7 +17,7 @@ import { DealShow } from './DealShow';
 import { OnlyMineInput } from './OnlyMineInput';
 import { typeChoices } from './types';
 
-export const DealList = () => {
+const DealList = () => {
     const { identity } = useGetIdentity();
     const location = useLocation();
     const matchCreate = matchPath('/deals/create', location.pathname);
@@ -61,3 +61,5 @@ const DealActions = () => {
         </TopToolbar>
     );
 };
+
+export default DealList;
