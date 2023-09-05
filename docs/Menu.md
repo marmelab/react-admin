@@ -24,7 +24,7 @@ export const MyMenu = () => (
         <Menu.ResourceItem name="posts" />
         <Menu.ResourceItem name="comments" />
         <Menu.ResourceItem name="users" />
-        <Menu.Item to="/custom-route" leftIcon={<LabelIcon />}>Miscellaneous</Menu.Item>
+        <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />} />
     </Menu>
 );
 ```
@@ -117,7 +117,7 @@ export const MyMenu = () => (
         <Menu.ResourceItem name="posts" />
         <Menu.ResourceItem name="comments" />
         <Menu.ResourceItem name="users" />
-        <Menu.Item to="/custom-route" leftIcon={<LabelIcon />}>Miscellaneous</Menu.Item>
+        <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />} />
     </Menu>
 );
 ```
@@ -381,8 +381,8 @@ For instance, to include a menu to a list of published posts:
         pathname: '/posts',
         search: `filter=${JSON.stringify({ is_published: true })}`,
     }}
-    leftIcon={<BookIcon />}
     primaryText="Published Posts"
+    leftIcon={<BookIcon />}
 />
 ```
 {% endraw %}
@@ -396,8 +396,8 @@ Just use an empty `filter` query parameter to force empty filters:
 ```jsx
 <Menu.Item
     to="/posts?filter=%7B%7D" // %7B%7D is JSON.stringify({})
-    leftIcon={<BookIcon />}
     primaryText="Posts"
+    leftIcon={<BookIcon />}
 />
 ```
 
