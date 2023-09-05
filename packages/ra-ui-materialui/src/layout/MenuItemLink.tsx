@@ -114,12 +114,10 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>((props, ref) => {
                         {leftIcon}
                     </ListItemIcon>
                 )}
-                {!children && typeof primaryText === 'string'
+                {typeof primaryText === 'string'
                     ? translate(primaryText, { _: primaryText })
                     : primaryText}
-                {!primaryText && typeof children === 'string'
-                    ? translate(children, { _: primaryText })
-                    : children}
+                {children}
             </StyledMenuItem>
         );
     };
@@ -131,7 +129,7 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>((props, ref) => {
             title={
                 typeof primaryText === 'string'
                     ? translate(primaryText, { _: primaryText })
-                    : primaryText
+                    : null
             }
             placement="right"
             {...tooltipProps}

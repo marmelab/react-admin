@@ -161,20 +161,20 @@ The `<Menu.Item>` component displays a menu item with a label and an icon - or o
 ```jsx
 // in src/MyMenu.js
 import { Menu } from 'react-admin';
-import LabelIcon from '@mui/icons-material/Label';
 
 export const MyMenu = () => (
     <Menu>
         ...
-        <Menu.Item to="/custom-route" leftIcon={<LabelIcon />}>Miscellaneous</Menu.Item>
+        <Menu.Item to="/custom-route" primaryText="Miscellaneous" />
     </Menu>
 );
 ```
 
-The `children` prop accepts a string or a React node. You can use it e.g. to display a badge on top of the menu item:
+The `primaryText` prop accepts a string, that react-admin passes through the [translation utility](./Translation.md). Alternately, you can set the menu item content using the `children`, e.g. to display a badge on top of the menu item:
 
 ```jsx
 import Badge from '@mui/material/Badge';
+import { Menu } from 'react-admin';
 
 export const MyMenu = () => (
     <Menu>
@@ -188,7 +188,26 @@ export const MyMenu = () => (
 );
 ```
 
+Note that if you use the `children` prop, you'll have to translate the menu item content yourself using [`useTranslate`](./useTranslate.md).
+
 The `letfIcon` prop allows setting the menu left icon.
+
+```jsx
+// in src/MyMenu.js
+import { Menu } from 'react-admin';
+import LabelIcon from '@mui/icons-material/Label';
+
+export const MyMenu = () => (
+    <Menu>
+        ...
+        <Menu.Item 
+            to="/custom-route"
+            primaryText="Miscellaneous"
+            leftIcon={<LabelIcon />}
+        />
+    </Menu>
+);
+```
 
 Additional props are passed down to [the underling Material UI `<MenuItem>` component](https://mui.com/material-ui/api/menu-item/).
 
@@ -236,6 +255,8 @@ export const MyMenu = () => (
 ```
 
 Clicking on the dashboard menu item leads to the `/` route and renders the component defined in [the `<Admin dashboard>` prop](./Admin.md#dashboard).
+
+You can customize this menu item label by using the `primaryText` or `children` prop (see [the `<Menu.Item>` section](#menuitem) for more information).
 
 ## `<Menu.ResourceItems>`
 
@@ -309,8 +330,10 @@ the following code:
 translates to:
 
 ```jsx
-<Menu.Item to="/posts" leftIcon={<BookIcon />}>Posts</Menu.Item>
+<Menu.Item to="/posts" primaryText="Posts" leftIcon={<BookIcon />} />
 ```
+
+You can customize this menu item label by using the `primaryText` or `children` prop (see [the `<Menu.Item>` section](#menuitem) for more information).
 
 ## Creating Menu Items For Resources
 
@@ -340,7 +363,7 @@ import LabelIcon from '@mui/icons-material/Label';
 export const MyMenu = () => (
     <Menu>
         <Menu.ResourceItems />
-        <Menu.Item to="/custom-route" leftIcon={<LabelIcon />}>Miscellaneous</Menu.Item>
+        <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />} />
     </Menu>
 );
 ```
@@ -359,9 +382,8 @@ For instance, to include a menu to a list of published posts:
         search: `filter=${JSON.stringify({ is_published: true })}`,
     }}
     leftIcon={<BookIcon />}
->
-    Posts
-</Menu.Item>
+    primaryText="Published Posts"
+/>
 ```
 {% endraw %}
 
@@ -375,9 +397,8 @@ Just use an empty `filter` query parameter to force empty filters:
 <Menu.Item
     to="/posts?filter=%7B%7D" // %7B%7D is JSON.stringify({})
     leftIcon={<BookIcon />}
->
-    Posts
-</Menu.Item>
+    primaryText="Posts"
+/>
 ```
 
 ## Nested Menu Items

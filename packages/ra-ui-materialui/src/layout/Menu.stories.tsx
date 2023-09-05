@@ -1,12 +1,25 @@
 import * as React from 'react';
 import { Resource, CustomRoutes, testDataProvider } from 'ra-core';
-import { defaultTheme, Admin } from 'react-admin';
-import { Typography, Skeleton, ThemeOptions } from '@mui/material';
+import { defaultTheme, Admin, useSidebarState } from 'react-admin';
+import {
+    Typography,
+    Skeleton,
+    ThemeOptions,
+    MenuItem,
+    ListItemText,
+    ListItemIcon,
+    Divider,
+    Collapse,
+    List,
+} from '@mui/material';
 import {
     Dashboard,
     PieChartOutlined,
     PeopleOutlined,
     Inventory,
+    ExpandLess,
+    ExpandMore,
+    QrCode,
 } from '@mui/icons-material';
 import { MemoryRouter, Route } from 'react-router-dom';
 
@@ -70,18 +83,26 @@ export const Dense = () => {
 export const Custom = () => {
     const CustomMenu = () => (
         <Menu>
-            <Menu.Item to="/" leftIcon={<Dashboard />}>
-                Dashboard
-            </Menu.Item>
-            <Menu.Item to="/sales" leftIcon={<PieChartOutlined />}>
-                Sales
-            </Menu.Item>
-            <Menu.Item to="/customers" leftIcon={<PeopleOutlined />}>
-                Customers
-            </Menu.Item>
-            <Menu.Item to="/products" leftIcon={<Inventory />}>
-                Catalog
-            </Menu.Item>
+            <Menu.Item
+                to="/"
+                leftIcon={<Dashboard />}
+                primaryText="Dashboard"
+            />
+            <Menu.Item
+                to="/sales"
+                leftIcon={<PieChartOutlined />}
+                primaryText="Sales"
+            />
+            <Menu.Item
+                to="/customers"
+                leftIcon={<PeopleOutlined />}
+                primaryText="Customers"
+            />
+            <Menu.Item
+                to="/products"
+                leftIcon={<Inventory />}
+                primaryText="Catalog"
+            />
         </Menu>
     );
     const CustomLayout = props => <Layout {...props} menu={CustomMenu} />;
@@ -114,3 +135,80 @@ const Page = ({ title }) => (
         <Skeleton height={300} />
     </>
 );
+
+export const MenuItemChild = () => {
+    const CustomMenu = () => {
+        const [open, setOpen] = React.useState(true);
+        const [sidebarOpen] = useSidebarState();
+
+        const handleClick = () => {
+            setOpen(!open);
+        };
+        return (
+            <Menu>
+                <Menu.Item to="/">
+                    <ListItemIcon>
+                        <Dashboard />
+                    </ListItemIcon>
+                    <ListItemText>Dashboard</ListItemText>
+                    <Typography variant="body2" color="text.secondary">
+                        ⌘D
+                    </Typography>
+                </Menu.Item>
+                <Divider />
+                <Menu.Item to="/sales">
+                    <ListItemIcon>
+                        <PieChartOutlined />
+                    </ListItemIcon>
+                    <ListItemText>Sales</ListItemText>
+                </Menu.Item>
+                <Menu.Item to="/customers">
+                    <ListItemIcon>
+                        <PeopleOutlined />
+                    </ListItemIcon>
+                    <ListItemText>Customers</ListItemText>
+                </Menu.Item>
+                <MenuItem onClick={handleClick}>
+                    <ListItemIcon>
+                        <Inventory />
+                    </ListItemIcon>
+                    <ListItemText>Catalog</ListItemText>
+                    {open ? <ExpandLess /> : <ExpandMore />}
+                </MenuItem>
+                <Collapse in={open}>
+                    <List disablePadding>
+                        <Menu.Item
+                            to="/products"
+                            sx={{ pl: sidebarOpen ? 4 : 2 }}
+                        >
+                            <ListItemIcon>
+                                <QrCode />
+                            </ListItemIcon>
+                            <ListItemText>Products</ListItemText>
+                        </Menu.Item>
+                    </List>
+                </Collapse>
+            </Menu>
+        );
+    };
+    const CustomLayout = props => <Layout {...props} menu={CustomMenu} />;
+
+    return (
+        <MemoryRouter initialEntries={['/']}>
+            <Admin dataProvider={testDataProvider()} layout={CustomLayout}>
+                <CustomRoutes>
+                    <Route path="/" element={<Page title="Dashboard" />} />
+                    <Route path="/sales" element={<Page title="Sales" />} />
+                    <Route
+                        path="/customers"
+                        element={<Page title="Customers" />}
+                    />
+                    <Route
+                        path="/products"
+                        element={<Page title="Products" />}
+                    />
+                </CustomRoutes>
+            </Admin>
+        </MemoryRouter>
+    );
+};
