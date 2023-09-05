@@ -702,8 +702,10 @@ export interface AutocompleteInputProps<
     filterToQuery?: (searchText: string) => any;
     inputText?: (option: any) => string;
     onChange?: (
-        value: Multiple extends true ? any[] : any, // We can't know upfront what the value type will be
-        record: Multiple extends true ? OptionType[] : OptionType
+        // We can't know upfront what the value type will be
+        value: Multiple extends true ? any[] : any,
+        // We return an empty string when the input is cleared in single mode
+        record: Multiple extends true ? OptionType[] : OptionType | ''
     ) => void;
     setFilter?: (value: string) => void;
     shouldRenderSuggestions?: any;
