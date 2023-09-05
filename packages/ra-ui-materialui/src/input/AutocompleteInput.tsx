@@ -34,7 +34,6 @@ import {
     warning,
     useGetRecordRepresentation,
     useEvent,
-    Identifier,
 } from 'ra-core';
 import {
     SupportCreateSuggestionOptions,
