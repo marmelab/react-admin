@@ -69,6 +69,7 @@ The form value for the source must be the selected value, e.g.
 | `isLoading`                | Optional | `boolean`             | `false`                                                             | If `true`, the component will display a loading indicator.                                                                                                                                                          |
 | `inputText`                | Optional | `Function`            | `-`                                                                 | Required if `optionText` is a custom Component, this function must return the text displayed for the current selection.                                                                                             |
 | `matchSuggestion`          | Optional | `Function`            | `-`                                                                 | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`                                                             |
+| `onChange`                 | Optional | `Function`            | `-`                                                                 | A function called with the new value, along with the selected record, when the input value changes |
 | `onCreate`                 | Optional | `Function`            | `-`                                                                 | A function called with the current filter value when users choose to create a new choice.                                                                                                                           |
 | `optionText`               | Optional | `string` &#124; `Function` &#124; `Component` |  `undefined` &#124; `record Representation` | Field name of record to display in the suggestion item or function using the choice object as argument                                                                                                              |
 | `optionValue`              | Optional | `string`              | `id`                                                                | Field name of record containing the value to use as input value                                                                                                                                                     |
@@ -297,6 +298,74 @@ const UserCountry = () => {
     );
 }
 ```
+
+## `onChange`
+
+Use the `onChange` prop to get notified when the input value changes.
+
+Its value must be a function, defined as follows:
+
+```ts
+type OnChange = (
+        value: any, // the new value
+        record: RaRecord // the selected record
+    ) => void;
+```
+
+In the following example, the `onChange` prop is used to update the `language` field whenever the user selects a new author:
+
+{% raw %}
+```tsx
+import * as React from 'react';
+import {
+    AutocompleteInput,
+    AutocompleteInputProps,
+    Create,
+    ReferenceInput,
+    SimpleForm,
+    TextInput,
+} from 'react-admin';
+import { useFormContext } from 'react-hook-form';
+
+const LanguageChangingAuthorInput = () => {
+    const { setValue } = useFormContext();
+    const handleChange: AutocompleteInputProps['onChange'] = (
+        value,
+        record
+    ) => {
+        // handleChange will be called with, for instance:
+        //   value: 2,
+        //   record: { id: 2, name: 'Victor Hugo', language: 'French' }
+        setValue('language', record?.language);
+    };
+    return (
+        <ReferenceInput reference="authors" source="author">
+            <AutocompleteInput
+                fullWidth
+                optionText="name"
+                onChange={handleChange}
+            />
+        </ReferenceInput>
+    );
+};
+
+const BookCreate = () => (
+    <Create
+        mutationOptions={{
+            onSuccess: data => {
+                console.log(data);
+            },
+        }}
+        redirect={false}
+    >
+        <SimpleForm>
+            <LanguageChangingAuthorInput />
+            <TextInput source="language" />
+        </SimpleForm>
+    </Create>
+);
+```
+{% endraw %}
 
 ## `onCreate`
 

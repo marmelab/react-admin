@@ -319,15 +319,15 @@ If you provided a React element for the optionText prop, you must also provide t
     const handleChange = (newValue: any) => {
         if (multiple) {
             if (Array.isArray(newValue)) {
-                field.onChange(newValue.map(getChoiceValue));
+                field.onChange(newValue.map(getChoiceValue), newValue);
             } else {
-                field.onChange([
-                    ...(field.value ?? []),
-                    getChoiceValue(newValue),
-                ]);
+                field.onChange(
+                    [...(field.value ?? []), getChoiceValue(newValue)],
+                    newValue
+                );
             }
         } else {
-            field.onChange(getChoiceValue(newValue) ?? emptyValue);
+            field.onChange(getChoiceValue(newValue) ?? emptyValue, newValue);
         }
     };
 
@@ -681,7 +681,7 @@ export interface AutocompleteInputProps<
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
     SupportCreate extends boolean | undefined = false
-> extends Omit<CommonInputProps, 'source'>,
+> extends Omit<CommonInputProps, 'source' | 'onChange'>,
         ChoicesProps,
         UseSuggestionsOptions,
         Omit<SupportCreateSuggestionOptions, 'handleChange' | 'optionText'>,
@@ -700,6 +700,12 @@ export interface AutocompleteInputProps<
     emptyValue?: any;
     filterToQuery?: (searchText: string) => any;
     inputText?: (option: any) => string;
+    onChange?: (
+        // We can't know upfront what the value type will be
+        value: Multiple extends true ? any[] : any,
+        // We return an empty string when the input is cleared in single mode
+        record: Multiple extends true ? OptionType[] : OptionType | ''
+    ) => void;
     setFilter?: (value: string) => void;
     shouldRenderSuggestions?: any;
     // Source is optional as AutocompleteInput can be used inside a ReferenceInput that already defines the source

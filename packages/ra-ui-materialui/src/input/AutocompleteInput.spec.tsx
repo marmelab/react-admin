@@ -21,6 +21,8 @@ import {
     NullishValuesSupport,
     VeryLargeOptionsNumber,
     TranslateChoice,
+    OnChange,
+    InsideReferenceInputOnChange,
 } from './AutocompleteInput.stories';
 import { act } from '@testing-library/react-hooks';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
@@ -1262,6 +1264,24 @@ describe('<AutocompleteInput />', () => {
         });
     });
 
+    it('should include full record when calling onChange', async () => {
+        const onChange = jest.fn();
+        render(<OnChange onChange={onChange} />);
+        await waitFor(() => {
+            expect(
+                (screen.getByRole('textbox') as HTMLInputElement).value
+            ).toBe('Leo Tolstoy');
+        });
+        screen.getByRole('textbox').focus();
+        fireEvent.click(await screen.findByText('Victor Hugo'));
+        await waitFor(() => {
+            expect(onChange).toHaveBeenCalledWith(2, {
+                id: 2,
+                name: 'Victor Hugo',
+            });
+        });
+    });
+
     describe('Inside <ReferenceInput>', () => {
         it('should work inside a ReferenceInput field', async () => {
             render(<InsideReferenceInput />);
@@ -1402,6 +1422,21 @@ describe('<AutocompleteInput />', () => {
                 { timeout: 2000 }
             );
             expect(matchSuggestion).not.toHaveBeenCalled();
+        });
+
+        it('should include full record when calling onChange', async () => {
+            const onChange = jest.fn();
+            render(<InsideReferenceInputOnChange onChange={onChange} />);
+            (await screen.findAllByRole('textbox'))[0].focus();
+            fireEvent.click(await screen.findByText('Victor Hugo'));
+            await waitFor(() => {
+                expect(onChange).toHaveBeenCalledWith(2, {
+                    id: 2,
+                    language: 'French',
+                    name: 'Victor Hugo',
+                });
+            });
+            expect(screen.getByDisplayValue('French')).not.toBeNull();
         });
     });
 

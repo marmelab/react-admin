@@ -12,13 +12,19 @@ import {
     Button,
     Stack,
 } from '@mui/material';
+import { useFormContext } from 'react-hook-form';
 
 import { AdminContext } from '../AdminContext';
 import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
-import { AutocompleteArrayInput } from './AutocompleteArrayInput';
+import {
+    AutocompleteArrayInput,
+    AutocompleteArrayInputProps,
+} from './AutocompleteArrayInput';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
+import { TextInput } from './TextInput';
+import { ArrayInput, SimpleFormIterator } from './ArrayInput';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteArrayInput' };
 
@@ -40,6 +46,31 @@ export const Basic = () => (
                         { id: 'u002', name: 'Moderator' },
                         { id: 'u003', name: 'Reviewer' },
                     ]}
+                />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+export const OnChange = ({
+    onChange = (value, records) => console.log({ value, records }),
+}: Pick<AutocompleteArrayInputProps, 'onChange'>) => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <Create
+            resource="posts"
+            record={{ roles: ['u001', 'u003'] }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <AutocompleteArrayInput
+                    source="roles"
+                    choices={[
+                        { id: 'admin', name: 'Admin' },
+                        { id: 'u001', name: 'Editor' },
+                        { id: 'u002', name: 'Moderator' },
+                        { id: 'u003', name: 'Reviewer' },
+                    ]}
+                    onChange={onChange}
                 />
             </SimpleForm>
         </Create>
@@ -418,6 +449,60 @@ export const InsideReferenceArrayInput = () => (
     <Admin dataProvider={dataProviderWithAuthors} history={history}>
         <Resource name="authors" />
         <Resource name="books" edit={BookEditWithReference} />
+    </Admin>
+);
+
+const LanguageChangingAuthorInput = ({ onChange }) => {
+    const { setValue } = useFormContext();
+    const handleChange = (value, records) => {
+        setValue(
+            'language',
+            records?.map(record => record.language)
+        );
+        onChange(value, records);
+    };
+    return (
+        <ReferenceArrayInput reference="authors" source="author">
+            <AutocompleteArrayInput
+                fullWidth
+                optionText="name"
+                onChange={handleChange}
+                label="Authors"
+            />
+        </ReferenceArrayInput>
+    );
+};
+
+export const InsideReferenceArrayInputOnChange = ({
+    onChange = (value, records) => console.log({ value, records }),
+}: Pick<AutocompleteArrayInputProps, 'onChange'>) => (
+    <Admin
+        dataProvider={dataProviderWithAuthors}
+        history={createMemoryHistory({ initialEntries: ['/books/create'] })}
+    >
+        <Resource name="authors" />
+        <Resource
+            name="books"
+            create={() => (
+                <Create
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                    redirect={false}
+                >
+                    <SimpleForm>
+                        <LanguageChangingAuthorInput onChange={onChange} />
+                        <ArrayInput source="language" label="Languages">
+                            <SimpleFormIterator>
+                                <TextInput source="." label="Language" />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </Create>
+            )}
+        />
     </Admin>
 );
 
