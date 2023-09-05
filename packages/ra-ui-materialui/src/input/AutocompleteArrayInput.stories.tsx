@@ -17,7 +17,10 @@ import { useFormContext } from 'react-hook-form';
 import { AdminContext } from '../AdminContext';
 import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
-import { AutocompleteArrayInput } from './AutocompleteArrayInput';
+import {
+    AutocompleteArrayInput,
+    AutocompleteArrayInputProps,
+} from './AutocompleteArrayInput';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import { TextInput } from './TextInput';
@@ -51,7 +54,7 @@ export const Basic = () => (
 
 export const OnChange = ({
     onChange = (value, records) => console.log({ value, records }),
-}) => (
+}: Pick<AutocompleteArrayInputProps, 'onChange'>) => (
     <AdminContext i18nProvider={i18nProvider}>
         <Create
             resource="posts"
@@ -472,7 +475,7 @@ const LanguageChangingAuthorInput = ({ onChange }) => {
 
 export const InsideReferenceArrayInputOnChange = ({
     onChange = (value, records) => console.log({ value, records }),
-}) => (
+}: Pick<AutocompleteArrayInputProps, 'onChange'>) => (
     <Admin
         dataProvider={dataProviderWithAuthors}
         history={createMemoryHistory({ initialEntries: ['/books/create'] })}

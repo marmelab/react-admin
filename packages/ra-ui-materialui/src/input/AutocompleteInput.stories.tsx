@@ -156,7 +156,7 @@ export const IsLoading = () => {
 
 export const OnChange = ({
     onChange = (value, record) => console.log({ value, record }),
-}) => {
+}: Pick<AutocompleteInputProps, 'onChange'>) => {
     const choices = [
         { id: 1, name: 'Leo Tolstoy' },
         { id: 2, name: 'Victor Hugo' },
@@ -594,7 +594,7 @@ const LanguageChangingAuthorInput = ({ onChange }) => {
 
 export const InsideReferenceInputOnChange = ({
     onChange = (value, record) => console.log({ value, record }),
-}) => (
+}: Pick<AutocompleteInputProps, 'onChange'>) => (
     <Admin
         dataProvider={dataProviderWithAuthors}
         history={createMemoryHistory({ initialEntries: ['/books/create'] })}

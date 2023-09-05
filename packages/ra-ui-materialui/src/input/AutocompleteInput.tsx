@@ -34,6 +34,7 @@ import {
     warning,
     useGetRecordRepresentation,
     useEvent,
+    Identifier,
 } from 'ra-core';
 import {
     SupportCreateSuggestionOptions,
@@ -681,7 +682,7 @@ export interface AutocompleteInputProps<
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
     SupportCreate extends boolean | undefined = false
-> extends Omit<CommonInputProps, 'source'>,
+> extends Omit<CommonInputProps, 'source' | 'onChange'>,
         ChoicesProps,
         UseSuggestionsOptions,
         Omit<SupportCreateSuggestionOptions, 'handleChange' | 'optionText'>,
@@ -700,6 +701,16 @@ export interface AutocompleteInputProps<
     emptyValue?: any;
     filterToQuery?: (searchText: string) => any;
     inputText?: (option: any) => string;
+    onChange?: (
+        value: OptionType extends RaRecord
+            ? Multiple extends true
+                ? OptionType['id'][]
+                : OptionType['id']
+            : Multiple extends true
+            ? Identifier[]
+            : Identifier,
+        record: Multiple extends true ? OptionType[] : OptionType
+    ) => void;
     setFilter?: (value: string) => void;
     shouldRenderSuggestions?: any;
     // Source is optional as AutocompleteInput can be used inside a ReferenceInput that already defines the source
