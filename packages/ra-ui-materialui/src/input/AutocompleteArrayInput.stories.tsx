@@ -21,6 +21,7 @@ import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import { TextInput } from './TextInput';
+import { ArrayInput, SimpleFormIterator } from './ArrayInput';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteArrayInput' };
 
@@ -453,7 +454,7 @@ const LanguageChangingAuthorInput = ({ onChange }) => {
     const handleChange = (value, records) => {
         setValue(
             'language',
-            records?.map(record => record.language).join(', ')
+            records?.map(record => record.language)
         );
         onChange(value, records);
     };
@@ -463,6 +464,7 @@ const LanguageChangingAuthorInput = ({ onChange }) => {
                 fullWidth
                 optionText="name"
                 onChange={handleChange}
+                label="Authors"
             />
         </ReferenceArrayInput>
     );
@@ -489,7 +491,11 @@ export const InsideReferenceArrayInputOnChange = ({
                 >
                     <SimpleForm>
                         <LanguageChangingAuthorInput onChange={onChange} />
-                        <TextInput source="language" />
+                        <ArrayInput source="language" label="Languages">
+                            <SimpleFormIterator>
+                                <TextInput source="." label="Language" />
+                            </SimpleFormIterator>
+                        </ArrayInput>
                     </SimpleForm>
                 </Create>
             )}
