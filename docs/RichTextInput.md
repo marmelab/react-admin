@@ -173,7 +173,7 @@ const MyRichTextInput = ({ size, ...props }) => (
 
 ## AI Writing Assistant
 
-Modern AI tools can be a great help for editors. React-admin proposes an AI-powered writing assistant for the `<RichTextInput>` component, called [`<SmartRichTetInput>`](./SmartRichTextInput.md):
+Modern AI tools can be a great help for editors. React-admin proposes an AI-powered writing assistant for the `<RichTextInput>` component, called [`<SmartRichTextInput>`](./SmartRichTextInput.md):
 
 <video controls playsinline muted loop poster="https://marmelab.com/ra-enterprise/modules/assets/SmartRichTextInput.png" >
   <source src="https://marmelab.com/ra-enterprise/modules/assets/SmartRichTextInput.mp4" type="video/mp4" />
