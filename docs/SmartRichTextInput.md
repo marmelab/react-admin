@@ -139,7 +139,7 @@ For instance, the OpenAI implementation uses the `meta` parameter as a way to ad
 
 ## `mutationOptions`
 
-`<SmartRichTextInput>` uses react-query's `useMutation`' to fetch the corrected text when users press a smart button. You can set [any of `useMutation` options](https://react-query-v3.tanstack.com/reference/useMutation) via the the `mutationOptions` prop.
+`<SmartRichTextInput>` uses react-query's `useMutation`' to fetch the corrected text when users press a smart button. You can set [any of `useMutation` options](https://react-query-v3.tanstack.com/reference/useMutation) via the `mutationOptions` prop.
 
 For instance, if you want to disable the retry on failure for this mutation, you can use:
 
