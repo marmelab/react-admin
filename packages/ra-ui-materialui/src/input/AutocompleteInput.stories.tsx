@@ -153,6 +153,45 @@ export const IsLoading = () => {
     );
 };
 
+export const OnChange = ({
+    onChange = (value, record) => console.log({ value, record }),
+}) => {
+    const choices = [
+        { id: 1, name: 'Leo Tolstoy' },
+        { id: 2, name: 'Victor Hugo' },
+        { id: 3, name: 'William Shakespeare' },
+        { id: 4, name: 'Charles Baudelaire' },
+        { id: 5, name: 'Marcel Proust' },
+    ];
+    return (
+        <Admin dataProvider={dataProvider} history={history}>
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <AutocompleteInput
+                                source="author"
+                                choices={choices}
+                                validate={required()}
+                                fullWidth
+                                onChange={onChange}
+                            />
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    );
+};
+
 const BookEditCustomText = () => {
     const choices = [
         { id: 1, fullName: 'Leo Tolstoy' },
@@ -527,6 +566,37 @@ export const InsideReferenceInput = () => (
                     <SimpleForm>
                         <ReferenceInput reference="authors" source="author">
                             <AutocompleteInput fullWidth optionText="name" />
+                        </ReferenceInput>
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
+    </Admin>
+);
+
+export const InsideReferenceInputOnChange = ({
+    onChange = (value, record) => console.log({ value, record }),
+}) => (
+    <Admin dataProvider={dataProviderWithAuthors} history={history}>
+        <Resource name="authors" />
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                >
+                    <SimpleForm>
+                        <ReferenceInput reference="authors" source="author">
+                            <AutocompleteInput
+                                fullWidth
+                                optionText="name"
+                                onChange={onChange}
+                            />
                         </ReferenceInput>
                     </SimpleForm>
                 </Edit>

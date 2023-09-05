@@ -319,15 +319,15 @@ If you provided a React element for the optionText prop, you must also provide t
     const handleChange = (newValue: any) => {
         if (multiple) {
             if (Array.isArray(newValue)) {
-                field.onChange(newValue.map(getChoiceValue));
+                field.onChange(newValue.map(getChoiceValue), newValue);
             } else {
-                field.onChange([
-                    ...(field.value ?? []),
-                    getChoiceValue(newValue),
-                ]);
+                field.onChange(
+                    [...(field.value ?? []), getChoiceValue(newValue)],
+                    newValue
+                );
             }
         } else {
-            field.onChange(getChoiceValue(newValue) ?? emptyValue);
+            field.onChange(getChoiceValue(newValue) ?? emptyValue, newValue);
         }
     };
 

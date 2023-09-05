@@ -46,6 +46,31 @@ export const Basic = () => (
     </AdminContext>
 );
 
+export const OnChange = ({
+    onChange = (value, records) => console.log({ value, records }),
+}) => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <Create
+            resource="posts"
+            record={{ roles: ['u001', 'u003'] }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <AutocompleteArrayInput
+                    source="roles"
+                    choices={[
+                        { id: 'admin', name: 'Admin' },
+                        { id: 'u001', name: 'Editor' },
+                        { id: 'u002', name: 'Moderator' },
+                        { id: 'u003', name: 'Reviewer' },
+                    ]}
+                    onChange={onChange}
+                />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
 const choices = [
     { id: 'admin', name: 'Admin' },
     { id: 'u001', name: 'Editor' },
@@ -418,6 +443,40 @@ export const InsideReferenceArrayInput = () => (
     <Admin dataProvider={dataProviderWithAuthors} history={history}>
         <Resource name="authors" />
         <Resource name="books" edit={BookEditWithReference} />
+    </Admin>
+);
+
+export const InsideReferenceArrayInputOnChange = ({
+    onChange = (value, records) => console.log({ value, records }),
+}) => (
+    <Admin dataProvider={dataProviderWithAuthors} history={history}>
+        <Resource name="authors" />
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                >
+                    <SimpleForm>
+                        <ReferenceArrayInput
+                            reference="authors"
+                            source="author"
+                        >
+                            <AutocompleteArrayInput
+                                fullWidth
+                                optionText="name"
+                                onChange={onChange}
+                            />
+                        </ReferenceArrayInput>
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
     </Admin>
 );
 
