@@ -2,6 +2,7 @@ import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { I18nContextProvider, Resource, testDataProvider } from 'ra-core';
+import { MemoryRouter } from 'react-router-dom';
 
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
@@ -38,20 +39,34 @@ export const InBox = () => (
     </div>
 );
 
+const authProvider = {
+    login: () => Promise.resolve(),
+    logout: () => Promise.resolve(),
+    checkAuth: () => Promise.resolve(),
+    checkError: () => Promise.resolve(),
+    getPermissions: () => Promise.resolve(),
+};
+
 export const FullApp = () => (
-    <AdminContext dataProvider={testDataProvider()} i18nProvider={i18nProvider}>
-        <AdminUI>
-            {async () => {
-                await new Promise(resolve => setTimeout(resolve, 5000));
-                return (
-                    <>
-                        <Resource name="users" list={UserList} />
-                        <Resource name="posts" list={PostList} />
-                    </>
-                );
-            }}
-        </AdminUI>
-    </AdminContext>
+    <MemoryRouter>
+        <AdminContext
+            dataProvider={testDataProvider()}
+            authProvider={authProvider}
+            i18nProvider={i18nProvider}
+        >
+            <AdminUI>
+                {async () => {
+                    await new Promise(resolve => setTimeout(resolve, 5000));
+                    return (
+                        <>
+                            <Resource name="users" list={UserList} />
+                            <Resource name="posts" list={PostList} />
+                        </>
+                    );
+                }}
+            </AdminUI>
+        </AdminContext>
+    </MemoryRouter>
 );
 
 const LazyPostList = React.lazy(
@@ -63,12 +78,17 @@ const LazyPostList = React.lazy(
 );
 
 export const LazyPage = () => (
-    <AdminContext dataProvider={testDataProvider()} i18nProvider={i18nProvider}>
-        <AdminUI>
-            <Resource name="users" list={UserList} />
-            <Resource name="posts" list={LazyPostList} />
-        </AdminUI>
-    </AdminContext>
+    <MemoryRouter>
+        <AdminContext
+            dataProvider={testDataProvider()}
+            i18nProvider={i18nProvider}
+        >
+            <AdminUI>
+                <Resource name="users" list={UserList} />
+                <Resource name="posts" list={LazyPostList} />
+            </AdminUI>
+        </AdminContext>
+    </MemoryRouter>
 );
 
 const UserList = () => <div style={{ marginTop: 10 }}>User list</div>;
