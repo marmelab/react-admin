@@ -7,22 +7,22 @@ English messages for [react-admin](https://github.com/marmelab/react-admin), the
 ## Installation
 
 ```sh
-npm install --save ra-language-english
+npm install --save ra-language-japan
 ```
 
 ## Usage
 
 ```jsx
 import { Admin } from 'react-admin';
-import englishMessages from 'ra-language-english';
+import japanMessages from 'ra-language-japan';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 const messages = {
-    'en': englishMessages,
+    'jp': japanMessages,
 };
 const i18nProvider = polyglotI18nProvider(locale => messages[locale]);
 
-<Admin locale="en" i18nProvider={i18nProvider}>
+<Admin locale="jp" i18nProvider={i18nProvider}>
     ...
 </Admin>
 ```
