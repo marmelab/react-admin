@@ -12,13 +12,11 @@ async page => {
 
     const addMonths = (date, count) => {
         if (date && count) {
-            var m,
-                d = (date = new Date(+date)).getDate();
-
+            const day = (date = new Date(+date)).getDate();
             date.setMonth(date.getMonth() + count, 1);
-            m = date.getMonth();
-            date.setDate(d);
-            if (date.getMonth() !== m) date.setDate(0);
+            const month = date.getMonth();
+            date.setDate(day);
+            if (date.getMonth() !== month) date.setDate(0); // 0 gives the last day of the previous month
         }
         return date;
     };
