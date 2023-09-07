@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
-import { Route } from 'react-router-dom';
+import { MemoryRouter, Route } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
 import { CoreAdminContext } from './CoreAdminContext';
@@ -216,22 +216,25 @@ describe('<CoreAdminRoutes>', () => {
                 getPermissions: jest.fn().mockResolvedValue(''),
             };
 
-            const history = createMemoryHistory();
             render(
-                <CoreAdminContext
-                    authProvider={authProvider}
-                    dataProvider={testDataProvider()}
-                    history={history}
-                >
-                    <CoreAdminRoutes
-                        {...defaultProps}
-                        layout={Layout}
-                        loading={Loading}
-                        catchAll={CatchAll}
+                <MemoryRouter>
+                    <CoreAdminContext
+                        authProvider={authProvider}
+                        dataProvider={testDataProvider()}
                     >
-                        <Resource name="posts" list={() => <i>PostList</i>} />
-                    </CoreAdminRoutes>
-                </CoreAdminContext>
+                        <CoreAdminRoutes
+                            {...defaultProps}
+                            layout={Layout}
+                            loading={Loading}
+                            catchAll={CatchAll}
+                        >
+                            <Resource
+                                name="posts"
+                                list={() => <i>PostList</i>}
+                            />
+                        </CoreAdminRoutes>
+                    </CoreAdminContext>
+                </MemoryRouter>
             );
             expect(screen.queryByText('PostList')).not.toBeNull();
             expect(screen.queryByText('Loading')).toBeNull();
@@ -247,61 +250,27 @@ describe('<CoreAdminRoutes>', () => {
                 getPermissions: jest.fn().mockResolvedValue(''),
             };
 
-            const history = createMemoryHistory();
             render(
-                <CoreAdminContext
-                    authProvider={authProvider}
-                    dataProvider={testDataProvider()}
-                    history={history}
-                >
-                    <CoreAdminRoutes
-                        layout={Layout}
-                        loading={Loading}
-                        catchAll={CatchAll}
-                        requireAuth
+                <MemoryRouter>
+                    <CoreAdminContext
+                        authProvider={authProvider}
+                        dataProvider={testDataProvider()}
                     >
-                        <Resource name="posts" list={() => <i>PostList</i>} />
-                    </CoreAdminRoutes>
-                </CoreAdminContext>
+                        <CoreAdminRoutes
+                            layout={Layout}
+                            loading={Loading}
+                            catchAll={CatchAll}
+                            requireAuth
+                        >
+                            <Resource
+                                name="posts"
+                                list={() => <i>PostList</i>}
+                            />
+                        </CoreAdminRoutes>
+                    </CoreAdminContext>
+                </MemoryRouter>
             );
             expect(screen.queryByText('PostList')).toBeNull();
-            expect(screen.queryByText('Loading')).toBeNull();
-            resolve();
-            await waitFor(() =>
-                expect(screen.queryByText('PostList')).not.toBeNull()
-            );
-        });
-        it('should show a loader when requireAuth is true and dataProvider.checkAuth() takes more than 1s to reply', async () => {
-            let resolve;
-            const authProvider = {
-                login: jest.fn().mockResolvedValue(''),
-                logout: jest.fn().mockResolvedValue(''),
-                checkAuth: (): Promise<void> =>
-                    new Promise(res => (resolve = res)),
-                checkError: jest.fn().mockResolvedValue(''),
-                getPermissions: jest.fn().mockResolvedValue(''),
-            };
-
-            const history = createMemoryHistory();
-            render(
-                <CoreAdminContext
-                    authProvider={authProvider}
-                    dataProvider={testDataProvider()}
-                    history={history}
-                >
-                    <CoreAdminRoutes
-                        layout={Layout}
-                        loading={Loading}
-                        catchAll={CatchAll}
-                        requireAuth
-                    >
-                        <Resource name="posts" list={() => <i>PostList</i>} />
-                    </CoreAdminRoutes>
-                </CoreAdminContext>
-            );
-            expect(screen.queryByText('PostList')).toBeNull();
-            expect(screen.queryByText('Loading')).toBeNull();
-            await new Promise(resolve => setTimeout(resolve, 1100));
             expect(screen.queryByText('Loading')).not.toBeNull();
             resolve();
             await waitFor(() =>
@@ -340,7 +309,7 @@ describe('<CoreAdminRoutes>', () => {
                 </CoreAdminContext>
             );
             expect(screen.queryByText('PostList')).toBeNull();
-            expect(screen.queryByText('Loading')).toBeNull();
+            expect(screen.queryByText('Loading')).not.toBeNull();
             reject();
             await waitFor(() =>
                 expect(screen.queryByText('Login')).not.toBeNull()
