@@ -658,7 +658,7 @@ React-admin uses [react-query](https://react-query-v3.tanstack.com/) to fetch, c
 * Query results that are no longer used in the current page are labeled as "inactive" and remain in the cache in case they are used again at a later time.
 * By default, "inactive" queries are garbage collected after 5 minutes.
 * Queries that fail are silently retried 3 times, with exponential backoff delay before capturing and displaying an error to the UI.
-* Query results by default are structurally shared to detect if data has actually changed and if not, the data reference remains unchanged to better help with value stabilization with regards to `useMemo` and `useCallback`. 
+* Query results by default are structurally shared to detect if data have actually changed and if not, the data reference remains unchanged to better help with value stabilization with regards to `useMemo` and `useCallback`. 
 
 If you want to override the react-query default query and mutation default options, or use a specific client or mutation cache, you can create your own `QueryClient` instance and pass it to the `<Admin queryClient>` prop:
 

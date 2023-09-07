@@ -610,7 +610,7 @@ You can find components for react-admin in third-party repositories.
 
 ## TypeScript
 
-All field components accept a generic type that describes the record. This lets TypeScript validate that the `source` prop targets an actual field of the record:
+All field components accept a generic type that describes the record. This lets TypeScript validates that the `source` prop targets an actual field of the record:
 
 ```tsx
 import * as React from "react";
