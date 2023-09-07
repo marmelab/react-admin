@@ -44,38 +44,32 @@ export const FullApp = () => (
             {async () => {
                 await new Promise(resolve => setTimeout(resolve, 5000));
                 return (
-                    <Resource
-                        name="posts"
-                        list={() => (
-                            <div style={{ marginTop: 10 }}>Post list</div>
-                        )}
-                    />
+                    <>
+                        <Resource name="users" list={UserList} />
+                        <Resource name="posts" list={PostList} />
+                    </>
                 );
             }}
         </AdminUI>
     </AdminContext>
 );
 
-const LazyList = React.lazy(
+const LazyPostList = React.lazy(
     () =>
         new Promise(resolve =>
-            setTimeout(
-                () =>
-                    resolve({
-                        // @ts-ignore
-                        default: () => (
-                            <div style={{ marginTop: 10 }}>Post list</div>
-                        ),
-                    }),
-                5000
-            )
+            // @ts-ignore
+            setTimeout(() => resolve({ default: PostList }), 5000)
         )
 );
 
 export const LazyPage = () => (
     <AdminContext dataProvider={testDataProvider()} i18nProvider={i18nProvider}>
         <AdminUI>
-            <Resource name="posts" list={LazyList} />
+            <Resource name="users" list={UserList} />
+            <Resource name="posts" list={LazyPostList} />
         </AdminUI>
     </AdminContext>
 );
+
+const UserList = () => <div style={{ marginTop: 10 }}>User list</div>;
+const PostList = () => <div style={{ marginTop: 10 }}>Post list</div>;
