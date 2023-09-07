@@ -104,7 +104,7 @@ const englishMessages: TranslationMessages = {
                 "A client error occurred and your request couldn't be completed.",
 
             invalid_form: 'The form is not valid. Please check for errors',
-            loading: 'The page is loading, just a moment please',
+            loading: 'Please wait',
             no: 'No',
             not_found:
                 'Either you typed a wrong URL, or you followed a bad link.',
