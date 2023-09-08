@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useHandleAuthCallback, useTimeout } from 'ra-core';
+import { useHandleAuthCallback } from 'ra-core';
 import { Loading } from '..';
 import { AuthError } from './AuthError';
 
@@ -20,8 +20,6 @@ import { AuthError } from './AuthError';
  */
 export const AuthCallback = () => {
     const { error } = useHandleAuthCallback();
-    const hasOneSecondPassed = useTimeout(1000);
-
     if (error) {
         return (
             <AuthError
@@ -31,6 +29,5 @@ export const AuthCallback = () => {
             />
         );
     }
-
-    return hasOneSecondPassed ? <Loading /> : null;
+    return <Loading />;
 };

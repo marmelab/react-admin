@@ -400,3 +400,30 @@ export const SongDetail = () => {
 {% endraw %}
 
 **Tip**: As seen in the screencast above, when browsing to nested resources, users can get lost unless they have a breadcrumb path displayed on screen. Check [the `<Breadcrumb>` component](./Breadcrumb.md#nested-resources) for more details about how to set up this navigation element.
+
+## Lazy Loading
+
+If you need to speed up the initial loading of your application, you may want to enable code splitting using [`React.lazy()`](https://react.dev/reference/react/lazy#suspense-for-code-splitting). The default react-admin layout uses Suspense, so there is no special setup required to use lazy loaded components in `<Resource>`.
+
+```jsx
+// in src/App.js
+import * as React from 'react';
+import { Admin, Resource } from 'react-admin';
+
+import { dataProvider } from './dataProvider';
+import { users } from './users';
+
+const PostList = React.lazy(() => import('./posts/PostList'));
+const PostEdit = React.lazy(() => import('./posts/PostEdit'));
+
+const App = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource name="users" {...users} />
+        <Resource name="posts" list={PostList} edit={PostEdit} />
+    </Admin>
+);
+```
+
+When users navigate to the `/posts` route, react-admin will display a loading indicator while the `PostList` component is being loaded.
+
+![Loading indicator](./img/lazy-resource.png)
