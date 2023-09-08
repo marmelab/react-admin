@@ -114,10 +114,11 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>((props, ref) => {
                         {leftIcon}
                     </ListItemIcon>
                 )}
-                {typeof primaryText === 'string'
+                {children
+                    ? children
+                    : typeof primaryText === 'string'
                     ? translate(primaryText, { _: primaryText })
                     : primaryText}
-                {children}
             </StyledMenuItem>
         );
     };

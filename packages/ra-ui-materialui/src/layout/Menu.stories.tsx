@@ -11,6 +11,7 @@ import {
     Divider,
     Collapse,
     List,
+    Tooltip,
 } from '@mui/material';
 import {
     Dashboard,
@@ -146,7 +147,7 @@ export const MenuItemChild = () => {
         };
         return (
             <Menu>
-                <Menu.Item to="/">
+                <Menu.Item to="/" primaryText="Dashboard">
                     <ListItemIcon>
                         <Dashboard />
                     </ListItemIcon>
@@ -156,30 +157,33 @@ export const MenuItemChild = () => {
                     </Typography>
                 </Menu.Item>
                 <Divider />
-                <Menu.Item to="/sales">
+                <Menu.Item to="/sales" primaryText="Sales">
                     <ListItemIcon>
                         <PieChartOutlined />
                     </ListItemIcon>
                     <ListItemText>Sales</ListItemText>
                 </Menu.Item>
-                <Menu.Item to="/customers">
+                <Menu.Item to="/customers" primaryText="Customers">
                     <ListItemIcon>
                         <PeopleOutlined />
                     </ListItemIcon>
                     <ListItemText>Customers</ListItemText>
                 </Menu.Item>
-                <MenuItem onClick={handleClick}>
-                    <ListItemIcon>
-                        <Inventory />
-                    </ListItemIcon>
-                    <ListItemText>Catalog</ListItemText>
-                    {open ? <ExpandLess /> : <ExpandMore />}
-                </MenuItem>
+                <Tooltip title="Catalog" placement="right">
+                    <MenuItem onClick={handleClick}>
+                        <ListItemIcon>
+                            <Inventory />
+                        </ListItemIcon>
+                        <ListItemText>Catalog</ListItemText>
+                        {open ? <ExpandLess /> : <ExpandMore />}
+                    </MenuItem>
+                </Tooltip>
                 <Collapse in={open}>
                     <List disablePadding>
                         <Menu.Item
                             to="/products"
                             sx={{ pl: sidebarOpen ? 4 : 2 }}
+                            primaryText="Products"
                         >
                             <ListItemIcon>
                                 <QrCode />
