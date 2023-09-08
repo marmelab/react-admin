@@ -1567,4 +1567,24 @@ describe('<AutocompleteInput />', () => {
         await checkInputValue('prefers_zero-number', '0');
         await checkInputValue('prefers_valid-value', '1');
     });
+
+    it('should call the onInputChange callback', async () => {
+        const onInputChange = jest.fn();
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <AutocompleteInput
+                        {...defaultProps}
+                        onInputChange={onInputChange}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+        const input = screen.getByLabelText(
+            'resources.users.fields.role'
+        ) as HTMLInputElement;
+        fireEvent.change(input, { target: { value: 'newValue' } });
+        await waitFor(() => expect(onInputChange).toHaveBeenCalled());
+    });
 });

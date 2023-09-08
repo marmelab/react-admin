@@ -47,7 +47,10 @@ export const DealListContent = () => {
         const sourceDeal = dealsByStage[sourceStage][source.index]!;
         const destinationDeal = dealsByStage[destinationStage][
             destination.index
-        ] ?? { stage: destinationStage, index: destination.index + 1 };
+        ] ?? {
+            stage: destinationStage,
+            index: undefined, // undefined if dropped after the last item
+        };
 
         // compute local state change synchronously
         setDealsByStage(
@@ -83,14 +86,17 @@ export const DealListContent = () => {
 const updateDealStageLocal = (
     sourceDeal: Deal,
     source: { stage: string; index: number },
-    destination: { stage: string; index: number },
+    destination: {
+        stage: string;
+        index?: number; // undefined if dropped after the last item
+    },
     dealsByStage: DealsByStage
 ) => {
     if (source.stage === destination.stage) {
         // moving deal inside the same column
         const column = dealsByStage[source.stage];
         column.splice(source.index, 1);
-        column.splice(destination.index, 0, sourceDeal);
+        column.splice(destination.index ?? column.length + 1, 0, sourceDeal);
         return {
             ...dealsByStage,
             [destination.stage]: column,
@@ -100,7 +106,11 @@ const updateDealStageLocal = (
         const sourceColumn = dealsByStage[source.stage];
         const destinationColumn = dealsByStage[destination.stage];
         sourceColumn.splice(source.index, 1);
-        destinationColumn.splice(destination.index, 0, sourceDeal);
+        destinationColumn.splice(
+            destination.index ?? destinationColumn.length + 1,
+            0,
+            sourceDeal
+        );
         return {
             ...dealsByStage,
             [source.stage]: sourceColumn,
@@ -111,7 +121,10 @@ const updateDealStageLocal = (
 
 const updateDealStage = async (
     source: Deal,
-    destination: { stage: string; index: number },
+    destination: {
+        stage: string;
+        index?: number; // undefined if dropped after the last item
+    },
     dataProvider: DataProvider
 ) => {
     if (source.stage === destination.stage) {
@@ -122,18 +135,19 @@ const updateDealStage = async (
             pagination: { page: 1, perPage: 100 },
             filter: { stage: source.stage },
         });
+        const destinationIndex = destination.index ?? columnDeals.length + 1;
 
-        if (source.index > destination.index) {
+        if (source.index > destinationIndex) {
             // deal moved up, eg
             // dest   src
             //  <------
             // [4, 7, 23, 5]
             await Promise.all([
-                // for all deals between destination.index and source.index, increase the index
+                // for all deals between destinationIndex and source.index, increase the index
                 ...columnDeals
                     .filter(
                         deal =>
-                            deal.index >= destination.index &&
+                            deal.index >= destinationIndex &&
                             deal.index < source.index
                     )
                     .map(deal =>
@@ -146,7 +160,7 @@ const updateDealStage = async (
                 // for the deal that was moved, update its index
                 dataProvider.update('deals', {
                     id: source.id,
-                    data: { index: destination.index },
+                    data: { index: destinationIndex },
                     previousData: source,
                 }),
             ]);
@@ -156,11 +170,11 @@ const updateDealStage = async (
             //  ------>
             // [4, 7, 23, 5]
             await Promise.all([
-                // for all deals between source.index and destination.index, decrease the index
+                // for all deals between source.index and destinationIndex, decrease the index
                 ...columnDeals
                     .filter(
                         deal =>
-                            deal.index <= destination.index &&
+                            deal.index <= destinationIndex &&
                             deal.index > source.index
                     )
                     .map(deal =>
@@ -173,7 +187,7 @@ const updateDealStage = async (
                 // for the deal that was moved, update its index
                 dataProvider.update('deals', {
                     id: source.id,
-                    data: { index: destination.index },
+                    data: { index: destinationIndex },
                     previousData: source,
                 }),
             ]);
@@ -196,6 +210,8 @@ const updateDealStage = async (
                 filter: { stage: destination.stage },
             }),
         ]);
+        const destinationIndex =
+            destination.index ?? destinationDeals.length + 1;
 
         await Promise.all([
             // decrease index on the deals after the source index in the source columns
@@ -210,7 +226,7 @@ const updateDealStage = async (
                 ),
             // increase index on the deals after the destination index in the destination columns
             ...destinationDeals
-                .filter(deal => deal.index >= destination.index)
+                .filter(deal => deal.index >= destinationIndex)
                 .map(deal =>
                     dataProvider.update('deals', {
                         id: deal.id,
@@ -222,7 +238,7 @@ const updateDealStage = async (
             dataProvider.update('deals', {
                 id: source.id,
                 data: {
-                    index: destination.index,
+                    index: destinationIndex,
                     stage: destination.stage,
                 },
                 previousData: source,

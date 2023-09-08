@@ -100,7 +100,7 @@ export const MyAppBar = () => (
 
 ![App bar with a settings button](./img/AppBar-children.png)
 
-**Tip**: Whats the `<TitlePortal>`? It's a placeholder for the page title, that components in the page can fill using [the `<Title>` component](./Title.md). `<Title>` uses a [React Portal](https://react.dev/reference/react-dom/createPortal) under the hood. `<TitlePortal>` takes all the available space in the app bar, so it "pushes" the following children to the right.
+**Tip**: What's the `<TitlePortal>`? It's a placeholder for the page title, that components in the page can fill using [the `<Title>` component](./Title.md). `<Title>` uses a [React Portal](https://react.dev/reference/react-dom/createPortal) under the hood. `<TitlePortal>` takes all the available space in the app bar, so it "pushes" the following children to the right.
 
 **Tip**: `<TitlePortal>` renders a [Material-ui `<Typography>`](https://mui.com/material-ui/react-typography/) element that you can customize by passing your own props:
 
@@ -135,7 +135,7 @@ const MyAppBar = () => (
 
 ## `color`
 
-React-admin's `<AppBar>` renders an Material UI `<AppBar>`, which supports a `color` prop to set the app bar color depending on the theme. By default, the app bar color is set to the `secondary` theme color.
+React-admin's `<AppBar>` renders a Material UI `<AppBar>`, which supports a `color` prop to set the app bar color depending on the theme. By default, the app bar color is set to the `secondary` theme color.
 
 This means you can set the app bar color to 'default', 'inherit', 'primary', 'secondary', 'transparent', or any string.
 
@@ -150,7 +150,7 @@ export const MyAppBar = () => <AppBar color="primary" />;
 
 ## `sx`: CSS API
 
-Pass an `sx` prop to customize the style of the main component and the underlying elements.
+Pass an `sx` prop to customize the style of the main component and the underlying elements (see [the `sx` documentation](./SX.md) for syntax and examples).
 
 {% raw %}
 ```jsx
@@ -176,7 +176,7 @@ This property accepts the following subclasses:
 | `& .RaAppBar-menuButton` | Applied to the hamburger icon |
 | `& .RaAppBar-title`      | Applied to the title portal   |
 
-To override the style of `<AppBar>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaAppBar` key.
+To override the style of `<AppBar>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaAppBar` key.
 
 ## `toolbar`
 

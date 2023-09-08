@@ -80,9 +80,9 @@ The `locale` will be passed to `setLocale` when the user selects the language, a
 
 ## `sx`: CSS API
 
-The `<LocalesMenuButton>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)).
+The `<LocalesMenuButton>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples).
 
-To override the style of all instances of `<LocalesMenuButton>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaLocalesMenuButton` key.
+To override the style of all instances of `<LocalesMenuButton>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaLocalesMenuButton` key.
 
 ## API
 

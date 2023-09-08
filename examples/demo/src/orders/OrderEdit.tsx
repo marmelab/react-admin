@@ -50,6 +50,7 @@ const CustomerDetails = () => {
             >
                 {record?.first_name} {record?.last_name}
             </Typography>
+            <br />
             <Typography
                 component={Link}
                 color="primary"
@@ -77,7 +78,7 @@ const CustomerAddress = () => {
     );
 };
 
-const Spacer = () => <Box m={1}>&nbsp;</Box>;
+const Spacer = () => <Box mb={1}>&nbsp;</Box>;
 
 const OrderForm = () => {
     const translate = useTranslate();

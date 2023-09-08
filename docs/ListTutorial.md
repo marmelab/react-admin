@@ -24,7 +24,7 @@ To better understand how to use the various react-admin hooks and components ded
 You've probably developed it a dozen times, and in fact you don't need react-admin to build, say, a book List view:
 
 {% raw %}
-```jsx
+```tsx
 import { useState } from 'react';
 import { Title, useGetList } from 'react-admin';
 import {
@@ -43,7 +43,7 @@ const BookList = () => {
     const [filter, setFilter] = useState('');
     const [page, setPage] = useState(1);
     const perPage = 10;
-    const { data, total, isLoading } = useGetList('books', {
+    const { data, total, isLoading } = useGetList<Book>('books', {
         filter: { q: filter },
         pagination: { page, perPage },
         sort: { field: 'id', order: 'ASC' }
@@ -388,7 +388,7 @@ Using the `<ListBase>` component has one drawback: you can no longer access the 
 
 The following example illustrates the usage of `useListContext` with a custom pagination component:
 
-```jsx
+```tsx
 import { useListContext } from 'react-admin';
 import { Toolbar, Button } from '@mui/material';
 
@@ -447,7 +447,7 @@ const BookList = () => (
 
 Remember the first snippet in this page? The react-admin version is much shorter, and more expressive:
 
-```jsx
+```tsx
 import { 
     List,
     Datagrid,
@@ -477,7 +477,7 @@ Sometimes typing `<Datagrid>` and a few `<Field>` components is too much - for i
 
 For these cases, react-admin provides a `<ListGuesser>` component that will guess the datagrid columns from the data. It's a bit like the `<List>` component, but it doesn't require any configuration.
 
-```jsx
+```tsx
 import { Admin, Resource, ListGuesser } from 'react-admin';
 
 const App = () => (
@@ -514,18 +514,20 @@ On Mobile, `<Datagrid>` doesn't work well - the screen is too narrow. You should
 
 To use `<Datagrid>` on desktop and `<SimpleList>` on mobile, use the `useMediaQuery` hook:
 
-```jsx
-// in src/posts.js
+```tsx
+// in src/posts.tsx
 import * as React from 'react';
 import { useMediaQuery, Theme } from '@mui/material';
 import { List, SimpleList, Datagrid, TextField, ReferenceField } from 'react-admin';
 
 type Post = {
     id: number;
+    userId: number;
     title: string;
     views: number;
     published_at: string;
 }
+
 
 export const PostList = () => {
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));

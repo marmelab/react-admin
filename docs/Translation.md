@@ -28,8 +28,8 @@ Just like for data fetching and authentication, react-admin is agnostic to your 
 
 It should be an object with the following methods:
 
-```tsx
-// in src/i18nProvider.js
+```ts
+// in src/i18nProvider.ts
 export const i18nProvider = {
     // required
     translate: (key, options) => string,
