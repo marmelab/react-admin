@@ -200,7 +200,7 @@ export const PostEdit = () => (
 
 ## Lazy Loading
 
-The `<RichTextInput>` component depends on TipTap, which in turns depends on ProseMirror. Together, these libraries represent about 120kB of minified JavaScript. If you don't use `<RichTextInput>` on all your forms, you can lazy load it to reduce the size of your bundle.
+The `<RichTextInput>` component depends on TipTap, which in turns depends on ProseMirror. Together, these libraries represent about 120kB of minified JavaScript. If you don't use `<RichTextInput>` on all your forms, you can [lazy load](https://react.dev/reference/react/lazy#suspense-for-code-splitting) it to reduce the size of your bundle.
 
 To do so, replace the import:
 
