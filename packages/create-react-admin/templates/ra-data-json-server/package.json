@@ -1,5 +1,5 @@
 {
     "dependencies": {
-        "ra-data-json-server": "^4.13.0"
+        "ra-data-json-server": "^4.14.0"
     }
 }
