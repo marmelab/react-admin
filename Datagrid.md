@@ -547,7 +547,7 @@ import { DatagridHeaderProps, FieldProps, List, Datagrid } from "react-admin";
 const DatagridHeader = ({ children }: DatagridHeaderProps) => (
     <TableHead>
         <TableRow>
-            <TableCell></TableCell>{" "}
+            <TableCell></TableCell>
             {/* empty cell to account for the select row checkbox in the body */}
             {React.Children.map(children, (child) =>
                 React.isValidElement<FieldProps>(child) ? (
