@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { Create, TabbedForm, TextInput, required } from 'react-admin';
-import { RichTextInput } from 'ra-input-rich-text';
-
 import { ProductEditDetails } from './ProductEditDetails';
+const RichTextInput = React.lazy(() =>
+    import('ra-input-rich-text').then(module => ({
+        default: module.RichTextInput,
+    }))
+);
 
 const ProductCreate = () => (
     <Create>
