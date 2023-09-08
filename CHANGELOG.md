@@ -1,5 +1,17 @@
 # Changelog
 
+## v4.14.0
+
+* Add support for lazy-loaded React components ([#9260](https://github.com/marmelab/react-admin/pull/9260)) ([fzaninotto](https://github.com/fzaninotto))
+* Include full record in `<AutocompleteInput>` and `<AutocompleteArrayInput>`'s `onChange` ([#9245](https://github.com/marmelab/react-admin/pull/9245)) ([slax57](https://github.com/slax57))
+* Fix top margin of `<TopToolbar>` to move content up when there is no filter ([#9232](https://github.com/marmelab/react-admin/pull/9232)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<SortButton sx>` prop to customize button style ([#9223](https://github.com/marmelab/react-admin/pull/9223)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<ResourceMenuItems>` to facilitate custom menus ([#9212](https://github.com/marmelab/react-admin/pull/9212)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<PrevNextButtons>` for `<Show>` and `<Edit>` views ([#9165](https://github.com/marmelab/react-admin/pull/9165)) ([adguernier](https://github.com/adguernier))
+* Fix Filter Form to show remove button after the input ([#9224](https://github.com/marmelab/react-admin/pull/9224)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<PrevNextButtons>` to fetch less aggressively ([#9209](https://github.com/marmelab/react-admin/pull/9209)) ([fzaninotto](https://github.com/fzaninotto))
+* Change the definition of sort order to `ASC|DESC` ([#8466](https://github.com/marmelab/react-admin/pull/8466)) ([zhujinxuan](https://github.com/zhujinxuan))
+
 ## v4.13.4
 
 * Fix `<AutocompleteInput>`'s `onInputChange` is never called ([#9240](https://github.com/marmelab/react-admin/pull/9240)) ([tdnl](https://github.com/tdnl))
