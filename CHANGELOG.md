@@ -1,5 +1,14 @@
 # Changelog
 
+## v4.13.4
+
+* Fix `<AutocompleteInput>`'s `onInputChange` is never called ([#9240](https://github.com/marmelab/react-admin/pull/9240)) ([tdnl](https://github.com/tdnl))
+* Fix typo in deprecated `<Datagrid>` `rowStyle` message ([#9252](https://github.com/marmelab/react-admin/pull/9252)) ([onefifth](https://github.com/onefifth))
+* [Demo] Add lazy loading to CRM demo to illustrate code splitting ([#9255](https://github.com/marmelab/react-admin/pull/9255)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix typo double text ([#9253](https://github.com/marmelab/react-admin/pull/9253)) ([oxwazz](https://github.com/oxwazz))
+* [Doc] Fix typo in `<RichTextInput>` documentation ([#9244](https://github.com/marmelab/react-admin/pull/9244)) ([mhfortuna](https://github.com/mhfortuna))
+* [Doc] Fix typos and invalid code fences languages ([#9238](https://github.com/marmelab/react-admin/pull/9238)) ([djhi](https://github.com/djhi))
+
 ## v4.13.3
 
 * Fix `<NumberInput>` and `<BooleanInput>` programmatic focus ([#9221](https://github.com/marmelab/react-admin/pull/9221)) ([fzaninotto](https://github.com/fzaninotto))
