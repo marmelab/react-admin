@@ -21,6 +21,8 @@ Here is an overview of the result:
 React-admin uses React. We'll use [create-react-admin](https://github.com/marmelab/react-admin/tree/master/packages/create-react-admin) to bootstrap a new admin:
 
 ```sh
+npm init react-admin test-admin
+# or
 yarn create react-admin test-admin
 ```
 
@@ -320,7 +322,7 @@ This shows that the `<List>` child can be anything you want - even a custom Reac
 
 Let's get back to `<Datagrid>`. It reads the data fetched by `<List>`, then renders a table with one row for each record. `<Datagrid>` uses its child components (here, a list of `<TextField>` and `<EmailField>`) to determine the columns to render. Each Field component maps a different field in the API response, specified by the `source` prop.
 
-`<ListGuesser>` created one column for every field in the response. That's a bit too much for a usable grid, so let's remove a couple `<TextField>` from the Datagrid and see the effect:
+`<ListGuesser>` created one column for every field in the response. That's a bit too much for a usable grid, so let's remove a couple of `<TextField>` components from the Datagrid and see the effect:
 
 ```diff
 // in src/users.tsx
