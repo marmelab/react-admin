@@ -130,7 +130,7 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>((props, ref) => {
             title={
                 typeof primaryText === 'string'
                     ? translate(primaryText, { _: primaryText })
-                    : null
+                    : primaryText
             }
             placement="right"
             {...tooltipProps}
