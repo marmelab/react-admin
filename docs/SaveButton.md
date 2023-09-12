@@ -21,11 +21,13 @@ import { SaveButton, Toolbar, Edit, SimpleForm, useNotify, useRedirect } from 'r
 const PostSaveButton = props => {
     const notify = useNotify();
     const redirect = useRedirect();
-    const onSuccess = (response) => {
+    const onSuccess = (values, response) => {
         notify(`Post "${response.data.title}" saved!`);
         redirect('/posts');
     };
-    return <SaveButton {...props} mutationOptions={{ onSuccess }} />;
+    return (
+        <SaveButton {...props} type="button" mutationOptions={{ onSuccess }} />
+    );
 };
 
 const PostEditToolbar = () => (
