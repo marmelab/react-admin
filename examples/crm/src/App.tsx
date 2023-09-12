@@ -1,17 +1,24 @@
-import * as React from 'react';
-import { Admin, Resource, ListGuesser, defaultTheme } from 'react-admin';
-import { dataProvider } from './dataProvider';
-import { authProvider } from './authProvider';
+import {
+    Admin,
+    ListGuesser,
+    Resource,
+    defaultTheme,
+    localStorageStore,
+} from 'react-admin';
+
 import Layout from './Layout';
-import contacts from './contacts';
+import { authProvider } from './authProvider';
 import companies from './companies';
-import deals from './deals';
+import contacts from './contacts';
 import { Dashboard } from './dashboard/Dashboard';
+import { dataProvider } from './dataProvider';
+import deals from './deals';
 
 const App = () => (
     <Admin
         dataProvider={dataProvider}
         authProvider={authProvider}
+        store={localStorageStore(undefined, 'CRM')}
         layout={Layout}
         dashboard={Dashboard}
         theme={{

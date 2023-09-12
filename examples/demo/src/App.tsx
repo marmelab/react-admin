@@ -1,22 +1,20 @@
-import * as React from 'react';
-import { Admin, CustomRoutes, Resource } from 'react-admin';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
+import { Admin, CustomRoutes, Resource, localStorageStore } from 'react-admin';
 import { Route } from 'react-router';
 
 import authProvider from './authProvider';
-import { Login, Layout } from './layout';
+import categories from './categories';
 import { Dashboard } from './dashboard';
+import dataProviderFactory from './dataProvider';
 import englishMessages from './i18n/en';
-import { lightTheme, darkTheme } from './layout/themes';
-
-import visitors from './visitors';
+import invoices from './invoices';
+import { Layout, Login } from './layout';
+import { darkTheme, lightTheme } from './layout/themes';
 import orders from './orders';
 import products from './products';
-import invoices from './invoices';
-import categories from './categories';
 import reviews from './reviews';
-import dataProviderFactory from './dataProvider';
 import Segments from './segments/Segments';
+import visitors from './visitors';
 
 const i18nProvider = polyglotI18nProvider(
     locale => {
@@ -40,6 +38,7 @@ const App = () => (
         dataProvider={dataProviderFactory(
             process.env.REACT_APP_DATA_PROVIDER || ''
         )}
+        store={localStorageStore(undefined, 'ECommerce')}
         authProvider={authProvider}
         dashboard={Dashboard}
         loginPage={Login}
