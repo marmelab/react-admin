@@ -38,7 +38,7 @@ const App = () => (
         dataProvider={dataProviderFactory(
             process.env.REACT_APP_DATA_PROVIDER || ''
         )}
-        store={localStorageStore(undefined, 'Demo')}
+        store={localStorageStore(undefined, 'ECommerce')}
         authProvider={authProvider}
         dashboard={Dashboard}
         loginPage={Login}
