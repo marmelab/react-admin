@@ -179,7 +179,7 @@ import { Menu } from 'react-admin';
 export const MyMenu = () => (
     <Menu>
         ...
-        <Menu.Item to="/custom-route">
+        <Menu.Item to="/custom-route" primaryText="Notifications">
             <Badge badgeContent={4} color="primary">
                 Notifications
             </Badge>
@@ -188,7 +188,7 @@ export const MyMenu = () => (
 );
 ```
 
-Note that if you use the `children` prop, you'll have to translate the menu item content yourself using [`useTranslate`](./useTranslate.md).
+Note that if you use the `children` prop, you'll have to translate the menu item content yourself using [`useTranslate`](./useTranslate.md). You'll also need to provide a `primaryText` either way, because it will be rendered in the tooltip when the side menu is collapsed.
 
 The `letfIcon` prop allows setting the menu left icon.
 
