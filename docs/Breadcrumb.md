@@ -120,7 +120,7 @@ Each page in a react-admin application can define its app location using a custo
 
 You don't need to define the app location for CRUD pages as react-admin does it by default:
 
--   List: `[resource].list`
+-   List: `[resource]`
 -   Create: `[resource].create`
 -   Edit: `[resource].edit`. The location also contains the current `record`
 -   Show: `[resource].show`. The location also contains the current `record`
