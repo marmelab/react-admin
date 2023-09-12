@@ -21,7 +21,7 @@ import { SaveButton, Toolbar, Edit, SimpleForm, useNotify, useRedirect } from 'r
 const PostSaveButton = props => {
     const notify = useNotify();
     const redirect = useRedirect();
-    const onSuccess = (data) => {
+    const onSuccess = data => {
         notify(`Post "${data.title}" saved!`);
         redirect('/posts');
     };
