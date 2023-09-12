@@ -68,8 +68,8 @@ import { useState, useEffect } from 'react';
 import { useDataProvider } from 'react-admin';
 
 const PostList = () => {
-    const [posts, setPosts] = useState();
-    const [error, setError] = useState([]);
+    const [posts, setPosts] = useState([]);
+    const [error, setError] = useState();
     const dataProvider = useDataProvider();
     useEffect(() => {
         dataProvider.getList('posts', { 
@@ -80,7 +80,7 @@ const PostList = () => {
             .then(({ data }) => setPosts(data))
             .catch(error => setError(error));
     }, []);
-    if (posts) { return <Loading />; }
+    if (posts.length === 0 && !error) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return (
         <ul>
