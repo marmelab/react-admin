@@ -15,11 +15,9 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 **Note**: The `<ReferenceManyToManyInput>` cannot currently display multiple records with the same id from the end reference resource even though they might have different properties in the associative table.
 
-Check [the `ra-relationships` Enterprise documentation](https://marmelab.com/ra-enterprise/modules/ra-relationships#referencemanytomanyinput).
-
 ## Usage
 
-For instance, here is how to edit the `venues` related to an `bands` record through a `performances` associative table.
+Let's imagine that you're writing an app managing concerts for artists. The data model features a many-to-many relationship between the `bands` and `venues` tables through a `performances` associative table.
 
 ```
 ┌─────────┐       ┌──────────────┐      ┌───────────────┐
@@ -32,7 +30,9 @@ For instance, here is how to edit the `venues` related to an `bands` record thro
 └─────────┘       └──────────────┘      └───────────────┘
 ```
 
-In this example, `bands.id` matches `performances.band_id`, and `performances.venue_id` matches `venues.id`. The form displays the venues name in a `<AutocompleteArrayInput>`:
+In this example, `bands.id` matches `performances.band_id`, and `performances.venue_id` matches `venues.id`. 
+
+To let users edit the `venues` for given `band` in an `<AutocompleteArrayInput>`, wrap that input in a `<ReferenceManyToManyInput>` where you define the relationship via the `reference`, `through` and `using` props:
 
 ```tsx
 import React from 'react';
@@ -58,27 +58,29 @@ export const BandEdit = () => (
 );
 ```
 
-`<ReferenceManyToManyInput>` expects an input allowing to select multiple values as child - like `<AutocompleteArrayInput>` in the example above. Other possible children are `<SelectArrayInput>`, `<CheckboxGroupInput>`, and `<DualListInput>`.
+`<ReferenceManyToManyInput>` expects a child that is an input allowing to select multiple values as child - like `<AutocompleteArrayInput>` in the example above. Other possible children are `<SelectArrayInput>`, `<CheckboxGroupInput>`, and `<DualListInput>`.
 
 ## Props
 
 | Prop             | Required | Type                                        | Default                            | Description                                                                                                                                                                                                       |
 | ---------------- | -------- | ------------------------------------------- | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `children`       | Required | `element`                                   | -                                  | A select array input element (e.g. `<SelectArrayInput>`).                                                                                                                                                         |
-| `filter`         | Optional | `object`                                    | `{}`                               | Filter for the associative table (passed to the `getManyReference()` call)                                                                                                                                        |
-| `filterChoices`  | Optional | `object`                                    | `{}`                               | Filter for the possible choices fetched from the reference table (passed to the `getList()` call)                                                                                                                 |
-| `perPage`        | Optional | `number`                                    | 25                                 | Limit for the number of results fetched from the associative table                                                                                                                                                |
-| `perPageChoices` | Optional | `number`                                    | 25                                 | Limit for the number of possible choices fetched from the reference table                                                                                                                                         |
 | `reference`      | Required | `string`                                    | -                                  | Name of the reference resource, e.g. 'venues'                                                                                                                                                                    |
-| `sort`           | Optional | `{ field: string, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`   | Sort for the associative table (passed to the `getManyReference()` call)                                                                                                                                          |
-| `sortChoices`    | Optional | `{ field: string, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`   | Sort for the possible choices fetched from the reference table (passed to the `getList()` call)                                                                                                                   |
-| `source`         | Optional | `string`                                    | `'id'`                             | Name of the field containing the identity of the main resource. Used determine the value to look for in the associative table.                                                                                    |
 | `through`        | Required | `string`                                    | -                                  | Name of the resource for the associative table, e.g. 'book_authors'                                                                                                                                               |
+| `filter`         | Optional | `object`                                    | `{}`                               | Filter for the associative table (passed to the `getManyReference()` call)                                                                                                                                        |
+| `filter Choices`  | Optional | `object`                                    | `{}`                               | Filter for the possible choices fetched from the reference table (passed to the `getList()` call)                                                                                                                 |
+| `perPage`        | Optional | `number`                                    | 25                                 | Limit for the number of results fetched from the associative table                                                                                                                                                |
+| `perPage Choices` | Optional | `number`                                    | 25                                 | Limit for the number of possible choices fetched from the reference table                                                                                                                                         |
+| `sort`           | Optional | `{ field: string, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`   | Sort for the associative table (passed to the `getManyReference()` call)                                                                                                                                          |
+| `sort Choices`    | Optional | `{ field: string, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`   | Sort for the possible choices fetched from the reference table (passed to the `getList()` call)                                                                                                                   |
+| `source`         | Optional | `string`                                    | `'id'`                             | Name of the field containing the identity of the main resource. Used determine the value to look for in the associative table.                                                                                    |
 | `using`          | Optional | `string`                                    | `'([resource]_id,[reference]_id)'` | Tuple (comma separated) of the two field names used as foreign keys, e.g 'book_id,author_id'. The tuple should start with the field pointing to the resource, and finish with the field pointing to the reference |
 
 ## `children`
 
-`<ReferenceManyToManyInput>` expects an _select_ component as child, i.e. a component working inside a `ChoiceContext`. That means you can use a [`<SelectArrayInput>`](./SelectArrayInput.md), or a [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md). For instance, to allow user choses `performances` through a `<SelectArrayInput>`: 
+`<ReferenceManyToManyInput>` expects an _select_ component as child, i.e. a component working inside a `ChoiceContext`. That means you can use a [`<SelectArrayInput>`](./SelectArrayInput.md), or a [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md). 
+
+For instance, to allow user to choose `performances` using a `<SelectArrayInput>` instead of an `<AutocompleteArrayInput>`, you can write:
 
 ```diff
 import React from 'react';
@@ -109,7 +111,7 @@ export const BandEdit = () => (
 
 ## `filter`
 
-You can filter the records of the associative table (eg: `performances`) using the `filter` prop. This `filter` is passed to the `getManyReference()` call.
+You can filter the records of the associative table (e.g. `performances`) using the `filter` prop. This `filter` is passed to the `getManyReference()` call.
 
 {% raw %}
 ```tsx
@@ -125,7 +127,10 @@ You can filter the records of the associative table (eg: `performances`) using t
 {% endraw %}
 
 ## `filterChoices`
-You can also filter the records of the reference table (eg: `venues`) using the `filterChoice` prop. This `filterChoice` is passed to the `getList()` call.
+
+`<ReferenceManyToManyInput>` displays a list of possible values from the reference table (e.g. `venues`) as suggestions in the input. It uses the `getList()` dataProvider call to fetch these possible values.
+
+You can filter the possible values of the reference table using the `filterChoices` prop. This `filterChoices` is passed to the `getList()` call.
 
 {% raw %}
 ```tsx
@@ -142,7 +147,7 @@ You can also filter the records of the reference table (eg: `venues`) using the 
 
 ## `perPage`
 
-By default, react-admin displays 25 entries from the associative table (eg: 25 `performances`). You can change the limit by setting the `perPage` prop:
+By default, react-admin displays at most 25 entries from the associative table (e.g. 25 `performances`). You can change the limit by setting the `perPage` prop:
 
 ```tsx
 <ReferenceManyToManyInput
@@ -157,7 +162,9 @@ By default, react-admin displays 25 entries from the associative table (eg: 25 `
 
 ## `perPageChoices`
 
-By default, react-admin displays 25 entries from the reference table (eg: 25 `venues`). You can change the limit by setting the `perPageChoices` prop:
+`<ReferenceManyToManyInput>` displays a list of possible values from the reference table (e.g. `venues`) as suggestions in the input. It uses the `getList()` dataProvider call to fetch these possible values.
+
+By default, react-admin displays at most 25 possible values from the reference table (e.g. 25 `venues`). You can change the limit by setting the `perPageChoices` prop:
 
 ```tsx
 <ReferenceManyToManyInput
@@ -187,7 +194,7 @@ For instance, if you want to display the venues of a given bands, through perfor
 ```
 ## `sort`
 
-By default, react-admin orders the possible values by `id` desc for the associative table (eg: `performances`). You can change this order by setting the `sort` prop (an object with `field` and `order` properties) to be applied to the associative resource.
+By default, react-admin orders the possible values by `id` desc for the associative table (e.g. `performances`). You can change this order by setting the `sort` prop (an object with `field` and `order` properties) to be applied to the associative resource.
 
 {% raw %}
 ```tsx
@@ -204,7 +211,7 @@ By default, react-admin orders the possible values by `id` desc for the associat
 
 ## `sortChoices`
 
-By default, react-admin orders the possible values by `id` desc for the reference table (eg: `venues`). You can change this order by setting the `sortChoices` prop (an object with `field` and `order` properties) to be applied to the reference resource.
+By default, react-admin orders the possible values by `id` desc for the reference table (e.g. `venues`). You can change this order by setting the `sortChoices` prop (an object with `field` and `order` properties).
 
 {% raw %}
 ```tsx
@@ -221,7 +228,7 @@ By default, react-admin orders the possible values by `id` desc for the referenc
 
 ## `source`
 
-By default, ReferenceManyToManyField uses the `id` field as target for the reference. If the foreign key points to another field of your record, you can select it with the source prop
+By default, ReferenceManyToManyField uses the `id` field as target for the reference. If the foreign key points to another field of your record, you can select it with the `source` prop:
 
 ```tsx
 <ReferenceManyToManyInput
@@ -236,7 +243,7 @@ By default, ReferenceManyToManyField uses the `id` field as target for the refer
 
 ## `through`
 
-You can specify the associative table name using the `through` prop.
+You must specify the associative table name using the `through` prop.
 
 ```tsx
 <ReferenceManyToManyInput reference="venues" through="performances">
@@ -246,7 +253,7 @@ You can specify the associative table name using the `through` prop.
 
 ## `using`
 
-You can specify the associative table columns using the `using` prop.
+You can specify the columns to use in the associative using the `using` prop.
 
 ```tsx
 <ReferenceManyToManyInput
