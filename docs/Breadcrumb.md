@@ -5,7 +5,7 @@ title: "The Breadcrumb Component"
 
 # `<Breadcrumb>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component renders a breadcrumb path that automatically adapts to the page location. It helps users navigate on large web applications. 
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component renders a breadcrumb path that automatically adapts to the page location. It helps users navigate large web applications. 
 
 <video controls autoplay playsinline muted loop width="100%">
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/breadcumb-nested-resource.webm" type="video/webm" />
@@ -17,7 +17,7 @@ Test it live on [the Enterprise Edition demo](https://marmelab.com/ra-enterprise
 
 The breadcrumb path can complement and/or replace navigation menus, back buttons, page titles, and site maps. It's a small but effective navigation control.
 
-React-admin's `<Breadcrumb>` is not a pure UI component that you use in each individual page to manually render a breadcrumb path (for that, you can use [Material-UI's `<Breadcrumbs>`](https://mui.com/material-ui/react-breadcrumbs/)). It's a smart component designed to be inserted in the application layout that renders the breadcrumb path of the current page. Breadcrumb items can be completely customized, and may include data from the current context (e.g. the name or title of the current record).
+React-admin's `<Breadcrumb>` is not a pure UI component that you use in each  page to manually render a breadcrumb path (for that, you can use [Material-UI's `<Breadcrumbs>`](https://mui.com/material-ui/react-breadcrumbs/)). It's a smart component designed to be inserted in the application layout that renders the breadcrumb path of the current page. Breadcrumb items can be completely customized, and may include data from the current context (e.g. the name or title of the current record).
 
 ## Usage
 
@@ -110,13 +110,13 @@ With this setup, the breadcrumb on the post pages now renders as:
 -   "Dashboard / Posts / Lorem ipsum" on the Post Show page with id = 1
 -   "Dashboard / Posts / Create" on the Post Creation page
 
-You can customize the breadcrumb path of each page, as well as adding custom pages to the breadcrumb, by passing `children` to the `<Breadcrumb>` component. See [the `children` section](#children) below for more information.
+You can customize the breadcrumb path of each page, as well as add custom pages to the breadcrumb, by adding `children` to the `<Breadcrumb>` component. See [the `children` section](#children) below for more information.
 
 ## App Location
 
 `<Breadcrumb>` relies on the **application location**, which is distinct from the **browser location**. This distinction is important as it allows displaying a navigation UI independent of the URL (e.g. grouping resources under a common section, like "Catalog / Products" and "Catalog / Categories", or nesting resources, like "Customers / John Doe / Orders / 1234").
 
-Each page in a react-admin application can define its app location using a custom hook called [`useDefineAppLocation`](./useDefineAppLocation.md). `ra-navigation` stores this location in the `<AppLocationContext>`. UI components like `<Breadcrumb>` use that context to display navigation information in a consistent way.
+Each page in a react-admin application can define its app location using a custom hook called [`useDefineAppLocation`](./useDefineAppLocation.md). `ra-navigation` stores this location in the `<AppLocationContext>`. UI components like `<Breadcrumb>` use that context to display consistent navigation information.
 
 You don't need to define the app location for CRUD pages as react-admin does it by default:
 
@@ -139,7 +139,7 @@ Additional props are passed down to the root `<nav>` component.
 
 ## `children`
 
-Use the `<Breadcrumb>` `children` prop to define how a given app location renders in the breadcrumb. Children of the `<Breadcrumb>` component must be [`<Breadcrumb.Item>`](#breadcrumbitem) components, or any of its derivatives ([`<Breadcrumb.ResourceItem>`](#breadcrumbresourceitem), [`<Breadcrumb.ResourceItems>`](#breadcrumbresourceitems)). These components can themselves have children to create a breadcrumb path of any depth.
+Use the `<Breadcrumb>` `children` prop to define how a given app location renders in the breadcrumb. Children of the `<Breadcrumb>` component must be [`<Breadcrumb.Item>`](#breadcrumbitem) components, or any of its derivatives ([`<Breadcrumb.ResourceItem>`](#breadcrumbresourceitem), [`<Breadcrumb.ResourceItems>`](#breadcrumbresourceitems)). These components can themselves have children in order to create a breadcrumb path of any depth.
 
 Every `<Breadcrumb>` child must have a `name` prop. This `name` corresponds to a segment of the app location. For example, for an app location `catalog.categories.list`, the `<Breadcrumb>` will display the child with the `name` prop set to `catalog`. If no child matches the current app location, the` <Breadcrumb>` won't display anything.
 
@@ -228,7 +228,7 @@ export const MyBreadcrumb = () => (
 );
 ```
 
-This means you can use the default breadcrumb for CRUD pages, and only define breadcrumb items for custom pages. For instance, to setup a breadcrumb for an app with a Settings page, you can do the following:
+This means you can use the default breadcrumb for CRUD pages, and only define breadcrumb items for custom pages. For instance, to set up a breadcrumb for an app with a Settings page, you can do the following:
 
 ```jsx
 // in src/MyBreadcrumb.jsx
@@ -306,7 +306,7 @@ It accepts the following optional props:
 
 **Note**: If the `to` prop is provided, `<Breadcrumb.Item>` will render as a link. Without it, the component will render as a `<span>`.
 
-Here is an example breadcrumb rendering the CRUD path for a posts resource:
+Here is an example breadcrumb rendering the CRUD path for a `posts` resource:
 
 ```jsx
 import { Breadcrumb } from '@react-admin/ra-navigation';
@@ -335,7 +335,7 @@ const MyBreadcrumb = () => (
 
 ## `<Breadcrumb.ResourceItem>`
 
-This component renders the 4 breadcrumb items for the CRUD routes of a given resource. It only takes the `resource` name, and relies on the `label` prop defined in the [`<Resource options>`](./Resource.md#options) for the label.
+This component renders the 4 breadcrumb items for the CRUD routes of a given resource. It only takes the `resource` name and relies on the `label` prop defined in the [`<Resource options>`](./Resource.md#options) for the label.
 
 ```jsx
 import { Breadcrumb } from '@react-admin/ra-navigation';
@@ -606,7 +606,7 @@ const App = () => (
 
 When using [nested resources](./Resource.md#nested-resources), you should create breadcrumb items for the sub-resources. 
 
-For instance, the screencast at the top of this page shows a `songs` resource nested in an `artists` resources, using the following routes:
+For instance, the screencast at the top of this page shows a `songs` resource nested in an `artists` resource, using the following routes:
 
 ```jsx
 import { Admin, Resource } from 'react-admin';
@@ -746,7 +746,7 @@ const MyBreadcrumb = () => (
 
 ## Grouping Resources
 
-You may want to group CRUD pages for several resources under a common parent item. For instance, let's say that the pages for the `songs` and `artists` resources have to be be grouped under a "Music" item. The breadcrumb path for the list pages of these resources should look like the following:
+You may want to group CRUD pages for several resources under a common parent item. For instance, let's say that the pages for the `songs` and `artists` resources have to be grouped under a "Music" item. The breadcrumb path for the list pages of these resources should look like the following:
 
 -   "Music / Songs" on the Song List page
 -   "Music / Artists" on the Artist List page
