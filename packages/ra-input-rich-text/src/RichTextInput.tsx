@@ -1,3 +1,5 @@
+import * as React from 'react';
+import { ReactElement, ReactNode, useEffect } from 'react';
 import { FormHelperText } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Color } from '@tiptap/extension-color';
@@ -17,8 +19,7 @@ import {
     Labeled,
     LabeledProps,
 } from 'ra-ui-materialui';
-import * as React from 'react';
-import { ReactElement, ReactNode, useEffect } from 'react';
+
 import { RichTextInputToolbar } from './RichTextInputToolbar';
 import { TiptapEditorProvider } from './TiptapEditorProvider';
 
