@@ -5,13 +5,11 @@ title: "The ReferenceManyToManyField Component"
 
 # `<ReferenceManyToManyField>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component fetches a list of referenced records by lookup in an associative table, and passes the records down to its child component, which must be an iterator component.
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component fetches a list of referenced records by lookup in an associative table, and passes the records down to its child component, which must be an iterator component (e.g. `<SingleFieldList>`).
 
 !["ReferenceManyToManyField example showing band's venues"](./img/reference-many-to-many-field.png)
 
 Note: The `<ReferenceManyToManyField>` cannot currently display multiple records with the same id from the end reference resource, even though they might have different properties in the associative table.
-
-Feel free to check [the `ra-relationships` Enterprise documentation](https://marmelab.com/ra-enterprise/modules/ra-relationships#referencemanytomanyfield).
 
 ## Usage
 
@@ -73,9 +71,9 @@ export const BandShow = () => (
 
 ## `children`
 
-`<ReferenceManyToManyField>` expects an _iterator_ component as child, i.e. a component working inside a `ListContext`. That means you can use a `<Datagrid>` instead of a `<SingleFieldList>` - but not inside another `<Datagrid>`! 
+`<ReferenceManyToManyField>` expects an _iterator_ component as child, i.e. a component working inside a `ListContext`. 
 
-This is useful if you want to display a more detailed view of related records. For instance, to display the venue `name` and `location`:
+This means you can use a `<Datagrid>` instead of a `<SingleFieldList>`, which is useful if you want to display more details about related records. For instance, to display the venue `name` and `location`:
 
 ```diff
 export const BandShow = (props) => (
@@ -138,7 +136,7 @@ import { Pagination } from 'react-admin';
 
 ## `perPage`
 
-By default, react-admin displays at most 25 entries from the assiociative table (e.g. 25 `performances`). You can change the limit by setting the `perPage` prop:
+By default, react-admin displays at most 25 entries from the associative table (e.g. 25 `performances`). You can change the limit by setting the `perPage` prop:
 
 ```tsx
 <ReferenceManyToManyField
@@ -151,7 +149,7 @@ By default, react-admin displays at most 25 entries from the assiociative table 
 </ReferenceManyToManyField>
 ```
 
-Thanks to the `perPage` props, you can add a pagination system by using the `<Pagination>` component:
+**Note**: You can add a pagination system by adding the `<Pagination>` component to the `<ReferenceManyToManyField>` children:
 
 ```tsx
 import { Pagination } from 'react-admin';
@@ -183,9 +181,10 @@ For instance, if you want to display the `venues` of a given `bands`, through `p
     {/* ... */}
 </ReferenceManyToManyField>
 ```
+
 ## `sort`
 
-By default, react-admin orders the possible values by `id` desc for the assiotive table (e.g. `performances`). You can change this order by setting the `sort` prop (an object with `field` and `order` properties) to be applied to the associative resource.
+By default, react-admin orders the possible values by `id` desc for the associative table (e.g. `performances`). You can change this order by setting the `sort` prop (an object with `field` and `order` properties) to be applied to the associative resource.
 
 {% raw %}
 ```tsx
