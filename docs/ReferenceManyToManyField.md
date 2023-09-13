@@ -15,7 +15,7 @@ Feel free to check [the `ra-relationships` Enterprise documentation](https://mar
 
 ## Usage
 
-Let's consider this schema:
+Let's imagine that you're writing an app managing concerts for artists. The data model features a many-to-many relationship between the `bands` and `venues` tables through a `performances` associative table.
 
 ```
 ┌─────────┐       ┌──────────────┐      ┌───────────────┐
@@ -27,18 +27,14 @@ Let's consider this schema:
 │         │       │ date         │      │               │
 └─────────┘       └──────────────┘      └───────────────┘
 ```
-For instance, here is how to fetch the venues related to a band record by matching `band.id` to `performances.band_id`, then matching `performances.venue_id` to `venue.id`, and then display the venue name for each, in a `<ChipField>`. 
+
+In this example, `bands.id` matches `performances.band_id`, and `performances.venue_id` matches `venues.id`.
+
+To allow users see the `venues` for a given `band` in `<SingleFieldList>`, wrap that component in `<ReferenceManyToManyField>` where you define the relationship via the `reference`, `through` and `using` props: 
 
 ```tsx
 import React from 'react';
-import {
-    Show,
-    SimpleShowLayout,
-    TextField,
-    DateField,
-    SingleFieldList,
-    ChipField,
-} from 'react-admin';
+import { Show, SimpleShowLayout, TextField, DateField, SingleFieldList, ChipField } from 'react-admin';
 import { ReferenceManyToManyField } from '@react-admin/ra-relationships';
 
 export const BandShow = () => (
@@ -69,15 +65,17 @@ export const BandShow = () => (
 | `filter`    | Optional | `object`                                    | `{}`                             | Filter for the associative table (passed to the `getManyReference()` call)                                                                                                                                        |
 | `joinLimit` | Optional | `number`                                    | 100                              | Limit for the number of results fetched from the associative table. Should be **greater than `perPage`**                                                                                                          |
 | `perPage`   | Optional | `number`                                    | 25                               | Limit the number of displayed result after  `getManyReference` is called. Useful when using a pagination component. Should be **smaller than `joinLimit`**                                                        |
-| `reference` | Required | `string`                                    | -                                | Name of the reference resource, e.g. 'authors'                                                                                                                                                                    |
+| `reference` | Required | `string`                                    | -                                | Name of the reference resource, e.g. 'venues'                                                                                                                                                                    |
 | `sort`      | Optional | `{ field: string, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }` | Sort for the associative table (passed to the `getManyReference()` call)                                                                                                                                          |
 | `source`    | Optional | `string`                                    | `'id'`                           | Name of the field containing the identity of the main resource. Used determine the value to look for in the associative table.                                                                                    |
-| `through`   | Required | `string`                                    | -                                | Name of the resource for the associative table, e.g. 'book_authors'                                                                                                                                               
-| `using`     | Optional | `string`                                    | `'[resource]_id,[reference]_id'` | Tuple (comma separated) of the two field names used as foreign keys, e.g 'book_id,author_id'. The tuple should start with the field pointing to the resource, and finish with the field pointing to the reference |
+| `through`   | Required | `string`                                    | -                                | Name of the resource for the associative table, e.g. 'performances'                                                                                                                                               
+| `using`     | Optional | `string`                                    | `'[resource]_id,[reference]_id'` | Tuple (comma separated) of the two field names used as foreign keys, e.g 'band_id,venue_id'. The tuple should start with the field pointing to the resource, and finish with the field pointing to the reference |
 
 ## `children`
 
-`<ReferenceManyToManyField>` expects an _iterator_ component as child, i.e. a component working inside a `ListContext`. That means you can use a `<Datagrid>` instead of a `<SingleFieldList>` - but not inside another `<Datagrid>`! This is useful if you want to display a more detailed view of related records. For instance, to display the author `first_name` and `last_name`:
+`<ReferenceManyToManyField>` expects an _iterator_ component as child, i.e. a component working inside a `ListContext`. That means you can use a `<Datagrid>` instead of a `<SingleFieldList>` - but not inside another `<Datagrid>`! 
+
+This is useful if you want to display a more detailed view of related records. For instance, to display the venue `name` and `location`:
 
 ```diff
 export const BandShow = (props) => (
@@ -95,6 +93,7 @@ export const BandShow = (props) => (
 -               </SingleFieldList>
 +               <Datagrid>
 +                   <TextField source="name" />
++                   <TextField source="location" />
 +               </Datagrid>
             </ReferenceManyToManyField>
             <EditButton />
@@ -105,7 +104,7 @@ export const BandShow = (props) => (
 
 ## `filter`
 
-Also, you can filter the records of the associative table using the `filter` prop.
+You can filter the records of the associative table (e.g. `performances`) using the `filter` prop. This `filter` is passed to the `getManyReference()` call.
 
 {% raw %}
 ```tsx
@@ -113,7 +112,7 @@ Also, you can filter the records of the associative table using the `filter` pro
     reference="venues"
     through="performances"
     using="band_id,venue_id"
-    filter={{ is_public: true }}
+    filter={{ date: '2018-08-31' }}
 >
     {/* ... */}
 </ReferenceManyToManyField>
@@ -122,7 +121,7 @@ Also, you can filter the records of the associative table using the `filter` pro
 
 ## `joinLimit`
 
-By default, react-admin fetches 100 entries in the join table. You can decrease or increase the number of entries fetched from the associative table by modifying the `joinLimit` prop:
+By default, react-admin fetches 100 entries in the join table (e.g. `performances`). You can decrease or increase the number of entries fetched from the associative table by modifying the `joinLimit` prop:
 
 ```tsx
 import { Pagination } from 'react-admin';
@@ -139,7 +138,7 @@ import { Pagination } from 'react-admin';
 
 ## `perPage`
 
-By default, react-admin displays 25 entries. You can change the limit by setting the `perPage` prop:
+By default, react-admin displays at most 25 entries from the assiociative table (e.g. 25 `performances`). You can change the limit by setting the `perPage` prop:
 
 ```tsx
 <ReferenceManyToManyField
@@ -172,7 +171,7 @@ import { Pagination } from 'react-admin';
 
 The name of the target resource to fetch.
 
-For instance, if you want to display the venues of a given bands, through performances, the reference name should be venues:
+For instance, if you want to display the `venues` of a given `bands`, through `performances`, the `reference` name should be `venues`:
 
 ```tsx
 <ReferenceManyToManyField
@@ -186,7 +185,7 @@ For instance, if you want to display the venues of a given bands, through perfor
 ```
 ## `sort`
 
-By default, react-admin orders the possible values by `id` desc. You can change this order by setting the `sort` prop (an object with `field` and `order` properties) to be applied to the associative resource.
+By default, react-admin orders the possible values by `id` desc for the assiotive table (e.g. `performances`). You can change this order by setting the `sort` prop (an object with `field` and `order` properties) to be applied to the associative resource.
 
 {% raw %}
 ```tsx
@@ -203,7 +202,7 @@ By default, react-admin orders the possible values by `id` desc. You can change 
 
 ## `source`
 
-By default, ReferenceManyToManyField uses the `id`` field as target for the reference. If the foreign key points to another field of your record, you can select it with the source prop
+By default, `<ReferenceManyToManyField>` uses the `id` field as target for the reference. If the foreign key points to another field of your record, you can select it with the `source` prop
 
 ```tsx
 <ReferenceManyToManyField
@@ -218,7 +217,7 @@ By default, ReferenceManyToManyField uses the `id`` field as target for the refe
 
 ## `through`
 
-You can specify the associative table name using the `through` prop.
+You must specify the associative table name using the `through` prop.
 
 ```tsx
 <ReferenceManyToManyField reference="venues" through="performances">
@@ -228,7 +227,7 @@ You can specify the associative table name using the `through` prop.
 
 ## `using`
 
-You can specify the associative table columns using the `using` prop.
+You can specify the columns to use in the associative `using` the using prop.
 
 ```tsx
 <ReferenceManyToManyField
