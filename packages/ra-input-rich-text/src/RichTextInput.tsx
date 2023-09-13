@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { ReactElement, ReactNode, useEffect } from 'react';
-import clsx from 'clsx';
-import { useEditor, Editor, EditorOptions, EditorContent } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import Underline from '@tiptap/extension-underline';
-import Link from '@tiptap/extension-link';
-import TextAlign from '@tiptap/extension-text-align';
-import Image from '@tiptap/extension-image';
-import TextStyle from '@tiptap/extension-text-style';
-import { Color } from '@tiptap/extension-color';
-import Highlight from '@tiptap/extension-highlight';
 import { FormHelperText } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { Color } from '@tiptap/extension-color';
+import Highlight from '@tiptap/extension-highlight';
+import Image from '@tiptap/extension-image';
+import Link from '@tiptap/extension-link';
+import TextAlign from '@tiptap/extension-text-align';
+import TextStyle from '@tiptap/extension-text-style';
+import Underline from '@tiptap/extension-underline';
+import { Editor, EditorContent, EditorOptions, useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import clsx from 'clsx';
 import { useInput, useResourceContext } from 'ra-core';
 import {
     CommonInputProps,
@@ -19,8 +19,9 @@ import {
     Labeled,
     LabeledProps,
 } from 'ra-ui-materialui';
-import { TiptapEditorProvider } from './TiptapEditorProvider';
+
 import { RichTextInputToolbar } from './RichTextInputToolbar';
+import { TiptapEditorProvider } from './TiptapEditorProvider';
 
 /**
  * A rich text editor for the react-admin that is accessible and supports translations. Based on [Tiptap](https://www.tiptap.dev/).
@@ -163,8 +164,10 @@ export const RichTextInput = (props: RichTextInputProps) => {
         };
 
         editor.on('update', handleEditorUpdate);
+        editor.on('blur', field.onBlur);
         return () => {
             editor.off('update', handleEditorUpdate);
+            editor.off('blur', field.onBlur);
         };
     }, [editor, field]);
 
