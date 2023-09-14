@@ -642,7 +642,7 @@ export default {
             method: 'POST',
             body: JSON.stringify(params.data),
         })
-        return { data: { ...params.data, id: json.id } };
+        return { data: json };
     },
 
     update: async (resource, params) => {
