@@ -20,9 +20,11 @@ const fakeData = {
 
 export default { title: 'ra-ui-materialui/fields/ReferenceArrayField' };
 
+const dataProvider = fakeRestProvider(fakeData, false);
+
 export const DifferentIdTypes = () => {
     return (
-        <AdminContext dataProvider={fakeRestProvider(fakeData, false)}>
+        <AdminContext dataProvider={dataProvider}>
             <CardContent>
                 <Show resource="bands" id={1} sx={{ width: 600 }}>
                     <TextField source="name" fullWidth />
@@ -30,6 +32,38 @@ export const DifferentIdTypes = () => {
                         fullWidth
                         source="members"
                         reference="artists"
+                    >
+                        <Datagrid bulkActionButtons={false}>
+                            <TextField source="id" />
+                            <TextField source="name" />
+                        </Datagrid>
+                    </ReferenceArrayField>
+                </Show>
+            </CardContent>
+        </AdminContext>
+    );
+};
+
+const dataProviderWithLog = {
+    ...dataProvider,
+    getMany: (resource, params) => {
+        console.log('getMany', resource, params);
+        return dataProvider.getMany(resource, params);
+    },
+} as any;
+
+export const WithMeta = () => {
+    return (
+        <AdminContext dataProvider={dataProviderWithLog}>
+            <CardContent>
+                <Show resource="bands" id={1} sx={{ width: 600 }}>
+                    <TextField source="name" />
+                    <ReferenceArrayField
+                        source="members"
+                        reference="artists"
+                        queryOptions={{
+                            meta: { foo: 'bar' },
+                        }}
                     >
                         <Datagrid bulkActionButtons={false}>
                             <TextField source="id" />
