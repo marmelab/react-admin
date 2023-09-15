@@ -1,5 +1,22 @@
 # Changelog
 
+## v4.14.1
+
+* Fix filters not matching inputs are ignored without `syncWithLocation` ([#9283](https://github.com/marmelab/react-admin/pull/9283)) ([djhi](https://github.com/djhi))
+* Fix `create-react-admin` does not include `gitignore` ([#9280](https://github.com/marmelab/react-admin/pull/9280)) ([djhi](https://github.com/djhi))
+* Fix `<RichTextInput>` does not trigger `onBlur` ([#9272](https://github.com/marmelab/react-admin/pull/9272)) ([slax57](https://github.com/slax57))
+* Fix `<TopToolbar>`: React does not recognize the hasCreate prop on a DOM element ([#9267](https://github.com/marmelab/react-admin/pull/9267)) ([slax57](https://github.com/slax57))
+* Fix `usePermissions` should only log errors in development mode ([#9262](https://github.com/marmelab/react-admin/pull/9262)) ([NidhiSharma63](https://github.com/NidhiSharma63))
+* [Doc] Improve Example REST Implementation when calling create with partial data ([#9276](https://github.com/marmelab/react-admin/pull/9276)) ([slax57](https://github.com/slax57))
+* [Doc] Improve `<Breadcrumb>` documentation ([#9271](https://github.com/marmelab/react-admin/pull/9271)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Improve `<ReferenceManyToManyInput>` documentation ([#9270](https://github.com/marmelab/react-admin/pull/9270)) ([adguernier](https://github.com/adguernier))
+* [Doc] Improve and reorder `<ReferenceManyToManyField>` documentation ([#9269](https://github.com/marmelab/react-admin/pull/9269)) ([adguernier](https://github.com/adguernier))
+* [Doc] Fix external link in `<FileInput>` and `<ImageInput>` ([#9268](https://github.com/marmelab/react-admin/pull/9268)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `<SaveButton>` example ([#9266](https://github.com/marmelab/react-admin/pull/9266)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Explain how to lazy load `<RichTextInput>` ([#9263](https://github.com/marmelab/react-admin/pull/9263)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix typos on Admin, Architecture, EditTutorial, Features, Fields, Inputs, and Tutorial pages ([#9259](https://github.com/marmelab/react-admin/pull/9259)) ([mchaffotte](https://github.com/mchaffotte))
+* [Demo] Fix preferences are shared between demos ([#9264](https://github.com/marmelab/react-admin/pull/9264)) ([mchaffotte](https://github.com/mchaffotte))
+
 ## v4.14.0
 
 * Add support for lazy-loaded React components ([#9260](https://github.com/marmelab/react-admin/pull/9260)) ([fzaninotto](https://github.com/fzaninotto))
