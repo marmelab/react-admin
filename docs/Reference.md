@@ -82,7 +82,7 @@ title: "Index"
 * [`<FunctionField>`](./FunctionField.md)
 
 **- H -**
-* [`<HorizontalMenu>`](./HorizontalMenu.md)<img class="icon" src="./img/premium.svg" />
+* [`<HorizontalMenu>`](./ContainerLayout.md#horizontalmenu)<img class="icon" src="./img/premium.svg" />
 
 **- I -**
 * [`<IfCanAccess>`](./IfCanAccess.md)<img class="icon" src="./img/premium.svg" />

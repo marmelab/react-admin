@@ -3,11 +3,13 @@ layout: default
 title: "ContainerLayout"
 ---
 
-# ContainerLayout
+# `<ContainerLayout>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers an alternative to react-admin's `<Layout>` for applications with a limited number of resources. It replaces the sidebar menu by an AppBar menu, and displays the content in a centered container.
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers an alternative to react-admin's `<Layout>` for applications with a limited number of resources. It displays the content in a centered container, has no sidebar, and uses the top bar for navigation.
 
 ![Container layout](https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/container-layout.png)
+
+`<ContainerLayout>` is part of the [ra-navigation](https://marmelab.com/ra-enterprise/modules/ra-navigation#containerlayout) package.
 
 ## Usage
 
@@ -24,8 +26,6 @@ export const App = () => (
     </Admin>
 );
 ```
-
-See more details in the [ra-navigation documentation](https://marmelab.com/ra-enterprise/modules/ra-navigation#containerlayout).
 
 ## Props
 
@@ -72,7 +72,7 @@ const MyLayout = props => <ContainerLayout {...props} maxWidth="md" />;
 
 ## `menu`
 
-By default, `<ContainerLayout>` renders one menu item per resource in the admin. To reorder the menu, omit resources, or add custom pages, pass a custom menu element to the `menu` prop. This element should be [a `<HorizontalMenu>` component](./HorizontalMenu.md) with `<HorizontalMenu.Item>` children. Each child should have a `value` corresponding to the [application location](https://marmelab.com/ra-enterprise/modules/ra-navigation#concepts) of the target, and can have a `to` prop corresponding to the target location if different from the app location.
+By default, `<ContainerLayout>` renders one menu item per resource in the admin. To reorder the menu, omit resources, or add custom pages, pass a custom menu element to the `menu` prop. This element should be [a `<HorizontalMenu>` component](#horizontalmenu) with `<HorizontalMenu.Item>` children. Each child should have a `value` corresponding to the [application location](https://marmelab.com/ra-enterprise/modules/ra-navigation#concepts) of the target, and can have a `to` prop corresponding to the target location if different from the app location.
 
 ```jsx
 import {
@@ -200,3 +200,44 @@ export const MyLayout = props => (
 );
 ```
 {% endraw %}
+
+## `<HorizontalMenu>`
+
+This component renders a horizontal menu, to be used in the AppBar of the [`<ContainerLayout>`](./ContainerLayout.md).
+
+![Container layout](./img/HorizontalMenu.png)
+
+This menu automatically detects and highlights the current location.
+
+### Usage
+
+Create a menu component based on `<HorizontalMenu>` and `<HorizontalMenu.Item>` children. Each child should have a `value` corresponding to the [application location](https://marmelab.com/ra-enterprise/modules/ra-navigation#concepts) of the target, and can have a `to` prop corresponding to the target location if different from the app location.
+
+```jsx
+import { HorizontalMenu } from '@react-admin/ra-navigation';
+
+export const Menu = () => (
+    <HorizontalMenu>
+        <HorizontalMenu.Item label="Dashboard" to="/" value="" />
+        <HorizontalMenu.Item label="Songs" to="/songs" value="songs" />
+        <HorizontalMenu.Item label="Artists" to="/artists" value="artists" />
+    </HorizontalMenu>
+);
+```
+
+Then pass this custom menu to the `<ContainerLayout menu>` prop:
+
+```jsx
+import { Admin, Resource } from 'react-admin';
+import { ContainerLayout } from '@react-admin/ra-navigation';
+
+import { Menu } from './Menu';
+
+const MyLayout = props => <ContainerLayout {...props} menu={<Menu />} />;
+
+const App = () => (
+    <Admin dataProvider={dataProvider} layout={MyLayout}>
+        ...
+    </Admin>
+);
+```

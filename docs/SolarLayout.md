@@ -5,7 +5,7 @@ title: "The SolarLayout Component"
 
 # `<SolarLayout>`
 
-An alternative application layout without top bar, and using a narrow menu to maximize the usable screen real estate. The menu items can reveal a secondary panel to show sub menus, preference forms, a search engine, etc. Ideal for applications with a large number of resources.
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component is an alternative application layout without top bar, and using a narrow menu to maximize the usable screen real estate. The menu items can reveal a secondary panel to show sub menus, preference forms, a search engine, etc. Ideal for applications with a large number of resources.
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-solar-layout.mp4" type="video/mp4"/>
@@ -19,7 +19,7 @@ On mobile, it shows the AppBar to allow opening the navigation menu:
   Your browser does not support the video tag.
 </video>
 
-It includes and leverages the [`AppLocationContext`](#applocationcontext)
+`<SolarLayout>` is part of the [ra-navigation](https://marmelab.com/ra-enterprise/modules/ra-navigation#containerlayout) package.
 
 ## Usage
 
@@ -36,6 +36,21 @@ export const App = () => (
 ```
 
 By default, `<SolarLayout>` creates a menu based on the `<Resource>` components passed to `<Admin>`. You can customize the menu by passing a custom menu component to [the `menu` prop](#menu).
+
+## App Location
+
+`<SolarLayout>` relies on the **application location**, which is distinct from the **browser location**. This distinction is important as it allows displaying a navigation UI independent of the URL (e.g. grouping resources under a common section).
+
+Each page in a react-admin application can define its app location using a custom hook called [`useDefineAppLocation`](./useDefineAppLocation.md). `ra-navigation` stores this location in the `<AppLocationContext>`. UI components like `<SolarLayout>` use that context to display consistent navigation information.
+
+You don't need to define the app location for CRUD pages as react-admin does it by default:
+
+-   List: `[resource]`
+-   Create: `[resource].create`
+-   Edit: `[resource].edit`. The location also contains the current `record`
+-   Show: `[resource].show`. The location also contains the current `record`
+
+However, you can customize these default app locations in your CRUD pages, and you must define the location for custom pages. 
 
 ## Props
 
@@ -169,7 +184,7 @@ export const MyError = ({
 };
 ```
 
-**Tip:** [React's Error Boundaries](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary) are used internally to display the Error Page whenever an error occurs. Error Boundaries only catch errors during rendering, in lifecycle methods, and in constructors of the components tree. This implies in particular that errors during event callbacks (such as 'onClick') are not concerned. Also note that the Error Boundary component is only set around the main container of React Admin. In particular, you won't see it for errors thrown by the [sidebar Menu](./Menu.md), nor the [AppBar](#customizing-the-appbar-content). This ensures the user is always able to navigate away from the Error Page.
+**Tip:** [React's Error Boundaries](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary) are used internally to display the Error Page whenever an error occurs. Error Boundaries only catch errors during rendering, in lifecycle methods, and in constructors of the components tree. This implies in particular that errors during event callbacks (such as 'onClick') are not concerned. Also note that the Error Boundary component is only set around the main container of React Admin. In particular, you won't see it for errors thrown by the [sidebar Menu](#solarmenu), nor the [AppBar](#solarappbar). This ensures the user is always able to navigate away from the Error Page.
 
 ## `logo`
 
@@ -304,7 +319,7 @@ const CustomMenu = () => (
 
 ## `sx`
 
-The `sx` prop allows you to customize the layout styles using a MUI [SX](https://marmelab.com/react-admin/SX.html) object:
+The `sx` prop allows you to customize the layout styles using a MUI [SX](./SX.md) object:
 
 {% raw %}
 ```tsx
