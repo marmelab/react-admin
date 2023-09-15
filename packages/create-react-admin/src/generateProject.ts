@@ -34,6 +34,7 @@ export const generateProject = async (state: ProjectConfiguration) => {
 
     generateAppFile(projectDirectory, state);
     generatePackageJson(projectDirectory, state);
+    generateGitIgnore(projectDirectory);
     generateEnvFile(projectDirectory, state);
     generateReadme(projectDirectory, state);
 
@@ -134,6 +135,13 @@ const generatePackageJson = (
     fs.writeFileSync(
         path.join(projectDirectory, 'package.json'),
         JSON.stringify(packageJson, null, 2)
+    );
+};
+
+const generateGitIgnore = (projectDirectory: string) => {
+    fs.writeFileSync(
+        path.join(projectDirectory, '.gitignore'),
+        defaultGitIgnore
     );
 };
 
@@ -238,16 +246,22 @@ const initializeProjectDirectory = (projectName: string) => {
 const copyDirectoryFiles = (
     source: string,
     destination: string,
-    excludes: string[] = []
+    excludes?: string[]
 ) => {
-    fsExtra.copySync(source, destination, {
-        filter: (src: string) => {
-            if (excludes.some(exclude => src.endsWith(exclude))) {
-                return false;
-            }
-            return true;
-        },
-    });
+    fsExtra.copySync(
+        source,
+        destination,
+        excludes && excludes.length
+            ? {
+                  filter: (src: string) => {
+                      if (excludes.some(exclude => src.endsWith(exclude))) {
+                          return false;
+                      }
+                      return true;
+                  },
+              }
+            : undefined
+    );
 };
 
 const generateReadme = (
@@ -327,3 +341,29 @@ const replaceTokensInFile = (filePath: string, state: ProjectConfiguration) => {
     fileContent = replaceTokens(fileContent, state);
     fs.writeFileSync(filePath, fileContent);
 };
+
+const defaultGitIgnore = `# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+`;
