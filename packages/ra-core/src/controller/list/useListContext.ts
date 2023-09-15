@@ -1,9 +1,9 @@
-import { useContext, useMemo } from 'react';
 import defaults from 'lodash/defaults';
+import { useContext, useMemo } from 'react';
 
+import { RaRecord } from '../../types';
 import { ListContext } from './ListContext';
 import { ListControllerResult } from './useListController';
-import { RaRecord } from '../../types';
 
 /**
  * Hook to read the list controller props from the ListContext.
@@ -29,7 +29,8 @@ import { RaRecord } from '../../types';
  * @prop {Function} setSort a callback to change the sort, e.g. setSort({ field : 'name', order: 'ASC' })
  * @prop {Object}   filterValues a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
  * @prop {Function} setFilters a callback to update the filters, e.g. setFilters(filters, displayedFilters)
- * @prop {Object}   displayedFilters a dictionary of the displayed filters, e.g. { title: true, nationality: true }
+ * @prop {Object}   displayedFilters deprecated - a dictionary of the displayed filters, e.g. { title: true, nationality: true }. Use shownFilters instead.
+ * @prop {Array}    shownFilters an array of the displayed filters, e.g. ['title', 'nationality']
  * @prop {Function} showFilter a callback to show one of the filters, e.g. showFilter('title', defaultValue)
  * @prop {Function} hideFilter a callback to hide one of the filters, e.g. hideFilter('title')
  * @prop {Array}    selectedIds an array listing the ids of the selected rows, e.g. [123, 456]
@@ -119,6 +120,7 @@ const extractListContextProps = ({
     data,
     defaultTitle,
     displayedFilters,
+    shownFilters,
     exporter,
     filterValues,
     hasCreate,
@@ -144,6 +146,7 @@ const extractListContextProps = ({
     data,
     defaultTitle,
     displayedFilters,
+    shownFilters,
     exporter,
     filterValues,
     hasCreate,

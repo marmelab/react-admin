@@ -1,40 +1,38 @@
-import * as React from 'react';
-import {
-    HtmlHTMLAttributes,
-    ReactNode,
-    useEffect,
-    useCallback,
-    useContext,
-} from 'react';
-import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
+import cloneDeep from 'lodash/cloneDeep';
+import get from 'lodash/get';
+import isEqual from 'lodash/isEqual';
+import set from 'lodash/set';
+import unset from 'lodash/unset';
+import PropTypes from 'prop-types';
 import {
     LabelPrefixContextProvider,
     ListFilterContextValue,
     useListContext,
     useResourceContext,
 } from 'ra-core';
+import * as React from 'react';
+import {
+    HtmlHTMLAttributes,
+    ReactNode,
+    useCallback,
+    useContext,
+    useEffect,
+} from 'react';
 import {
     FieldValues,
     FormProvider,
     useForm,
     useFormContext,
 } from 'react-hook-form';
-import set from 'lodash/set';
-import unset from 'lodash/unset';
-import get from 'lodash/get';
-import cloneDeep from 'lodash/cloneDeep';
-import isEqual from 'lodash/isEqual';
 
-import { FilterFormInput } from './FilterFormInput';
 import { FilterContext } from '../FilterContext';
+import { FilterFormInput } from './FilterFormInput';
 
 export const FilterForm = (props: FilterFormProps) => {
     const { defaultValues, filters: filtersProps, ...rest } = props;
 
-    const { setFilters, displayedFilters, filterValues } = useListContext(
-        props
-    );
+    const { setFilters, shownFilters, filterValues } = useListContext(props);
     const filters = useContext(FilterContext) || filtersProps;
 
     const mergedInitialValuesWithDefaultValues = mergeInitialValuesWithDefaultValues(
@@ -64,14 +62,14 @@ export const FilterForm = (props: FilterFormProps) => {
                 if (get(values, name) === '') {
                     const newValues = cloneDeep(values);
                     unset(newValues, name);
-                    setFilters(newValues, displayedFilters);
+                    setFilters(newValues, shownFilters);
                 } else {
-                    setFilters(values, displayedFilters);
+                    setFilters(values, shownFilters);
                 }
             }
         });
         return () => subscription.unsubscribe();
-    }, [displayedFilters, form, setFilters]);
+    }, [shownFilters, form, setFilters]);
 
     return (
         <FormProvider {...form}>

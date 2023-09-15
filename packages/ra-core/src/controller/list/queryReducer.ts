@@ -1,5 +1,5 @@
-import { Reducer } from 'react';
 import set from 'lodash/set';
+import { Reducer } from 'react';
 
 import removeEmpty from '../../util/removeEmpty';
 import removeKey from '../../util/removeKey';
@@ -40,6 +40,7 @@ type ActionTypes =
           payload: {
               filter: any;
               displayedFilters?: { [key: string]: boolean };
+              shownFilters?: string[];
           };
       }
     | {
@@ -89,6 +90,9 @@ export const queryReducer: Reducer<ListParams, ActionTypes> = (
                 displayedFilters: action.payload.displayedFilters
                     ? action.payload.displayedFilters
                     : previousState.displayedFilters,
+                shownFilters: action.payload.shownFilters
+                    ? action.payload.shownFilters
+                    : previousState.shownFilters,
             };
         }
 
@@ -116,6 +120,9 @@ export const queryReducer: Reducer<ListParams, ActionTypes> = (
                     ...previousState.displayedFilters,
                     [action.payload.filterName]: true,
                 },
+                shownFilters: previousState.shownFilters.concat(
+                    action.payload.filterName
+                ),
             };
         }
 
@@ -137,6 +144,9 @@ export const queryReducer: Reducer<ListParams, ActionTypes> = (
                           {}
                       )
                     : previousState.displayedFilters,
+                shownFilters: previousState.shownFilters.filter(
+                    filter => filter !== action.payload
+                ),
             };
         }
 

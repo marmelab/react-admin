@@ -2,15 +2,15 @@ import { isValidElement, useEffect, useMemo } from 'react';
 import { UseQueryOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
+import { useGetResourceLabel, useResourceContext } from '../../core';
+import { UseGetListHookValue, useGetList } from '../../dataProvider';
+import { defaultExporter } from '../../export';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../notification';
-import { useGetList, UseGetListHookValue } from '../../dataProvider';
+import { Exporter, FilterPayload, RaRecord, SortPayload } from '../../types';
 import { SORT_ASC } from './queryReducer';
-import { defaultExporter } from '../../export';
-import { FilterPayload, SortPayload, RaRecord, Exporter } from '../../types';
-import { useResourceContext, useGetResourceLabel } from '../../core';
-import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
+import { useRecordSelection } from './useRecordSelection';
 
 /**
  * Prepare data for the List view
@@ -148,6 +148,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         data,
         defaultTitle,
         displayedFilters: query.displayedFilters,
+        shownFilters: query.shownFilters,
         error,
         exporter,
         filter,
@@ -401,6 +402,7 @@ export interface ListControllerResult<RecordType extends RaRecord = any> {
     data: RecordType[];
     defaultTitle?: string;
     displayedFilters: any;
+    shownFilters: string[];
     error?: any;
     exporter?: Exporter | false;
     filter?: FilterPayload;
@@ -418,7 +420,7 @@ export interface ListControllerResult<RecordType extends RaRecord = any> {
     selectedIds: RecordType['id'][];
     setFilters: (
         filters: any,
-        displayedFilters: any,
+        shownFilters: string[] | any,
         debounce?: boolean
     ) => void;
     setPage: (page: number) => void;
@@ -435,6 +437,7 @@ export const injectedProps = [
     'data',
     'defaultTitle',
     'displayedFilters',
+    'shownFilters',
     'error',
     'exporter',
     'filterValues',

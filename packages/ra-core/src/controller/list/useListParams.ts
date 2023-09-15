@@ -1,22 +1,22 @@
-import { useCallback, useMemo, useEffect, useState, useRef } from 'react';
-import { parse, stringify } from 'query-string';
 import lodashDebounce from 'lodash/debounce';
 import pickBy from 'lodash/pickBy';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { parse, stringify } from 'query-string';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useStore } from '../../store';
+import { FilterPayload, SortPayload } from '../../types';
+import { useIsMounted } from '../../util/hooks';
+import removeEmpty from '../../util/removeEmpty';
 import queryReducer, {
-    SET_FILTER,
     HIDE_FILTER,
-    SHOW_FILTER,
+    SET_FILTER,
     SET_PAGE,
     SET_PER_PAGE,
     SET_SORT,
+    SHOW_FILTER,
     SORT_ASC,
 } from './queryReducer';
-import { SortPayload, FilterPayload } from '../../types';
-import removeEmpty from '../../util/removeEmpty';
-import { useIsMounted } from '../../util/hooks';
 
 export interface ListParams {
     sort: string;
@@ -25,6 +25,7 @@ export interface ListParams {
     perPage: number;
     filter: any;
     displayedFilters: any;
+    shownFilters: string[];
 }
 
 /**
@@ -401,6 +402,7 @@ interface Parameters extends ListParams {
     displayedFilters: {
         [key: string]: boolean;
     };
+    shownFilters: string[];
     requestSignature: any[];
 }
 
@@ -409,7 +411,7 @@ interface Modifiers {
     setPage: (page: number) => void;
     setPerPage: (pageSize: number) => void;
     setSort: (sort: SortPayload) => void;
-    setFilters: (filters: any, displayedFilters: any) => void;
+    setFilters: (filters: any, shownFilters: string[] | any) => void;
     hideFilter: (filterName: string) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
 }
