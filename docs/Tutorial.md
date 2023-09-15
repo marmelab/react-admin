@@ -18,7 +18,7 @@ Here is an overview of the result:
 
 ## Setting Up
 
-React-admin uses React. We'll use [create-react-admin](https://github.com/marmelab/react-admin/tree/master/packages/create-react-admin) to bootstrap a new admin:
+React-admin uses React. We'll use [create-react-admin](./CreateReactAdmin.md) to bootstrap a new admin:
 
 ```sh
 npm init react-admin test-admin
