@@ -238,22 +238,16 @@ const initializeProjectDirectory = (projectName: string) => {
 const copyDirectoryFiles = (
     source: string,
     destination: string,
-    excludes?: string[]
+    excludes: string[] = []
 ) => {
-    fsExtra.copySync(
-        source,
-        destination,
-        excludes && excludes.length
-            ? {
-                  filter: (src: string) => {
-                      if (excludes.some(exclude => src.endsWith(exclude))) {
-                          return false;
-                      }
-                      return true;
-                  },
-              }
-            : undefined
-    );
+    fsExtra.copySync(source, destination, {
+        filter: (src: string) => {
+            if (excludes.some(exclude => src.endsWith(exclude))) {
+                return false;
+            }
+            return true;
+        },
+    });
 };
 
 const generateReadme = (
