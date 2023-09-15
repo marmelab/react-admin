@@ -256,7 +256,7 @@ const DeleteButton = () => {
 ```
 {% endraw %}
 
-The fact that hook names often end with `Controller` is intentional and reflects the use of [the Model-View-Controller (MCV) pattern](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) for complex components in react-admin. 
+The fact that hook names often end with `Controller` is intentional and reflects the use of [the Model-View-Controller (MVC) pattern](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) for complex components in react-admin. 
 
 - The Controller logic is handled by React hooks (e.g. `useListController`).
 - The view logic is managed by React components (e.g. `<List>`).
@@ -518,5 +518,3 @@ That's because the `react-admin` package simply re-exports components from inter
 * `react-admin`: the standard distribution of react-admin
 
 You can construct your own distribution of react-admin by combining various packages. Alternatively, you can import hooks and components directly from one of these packages if you don't want to import the entire react-admin distribution.
-
-

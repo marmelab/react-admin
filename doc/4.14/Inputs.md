@@ -526,7 +526,7 @@ const OrderEdit = () => (
 );
 ```
 
-**Tip**: When using a `FormDataConsumer` inside an `ArrayInput`, the `FormDataConsumer` will provide three additional properties to its children function:
+**Tip**: When using a `FormDataConsumer` inside an `ArrayInput`, the `FormDataConsumer` will provide two additional properties to its children function:
 
 - `scopedFormData`: an object containing the current values of the currently rendered item from the `ArrayInput`
 - `getSource`: a function that translates the source into a valid one for the `ArrayInput`

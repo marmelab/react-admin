@@ -15,6 +15,8 @@ Use `<ReferenceOneInput>` in an `<Edit>` or `<Create>` view to edit a record lin
 
 `<ReferenceOneInput>` renders the inputs provided as its children, and fetches the related record to populate them. When users change the related record fields, the `<ReferenceOneInput>` component stores these changes locally. Then, when users actually submit the form, `<ReferenceOneInput>` will update both the base record and the related record.
 
+**Tip**: If you need to edit an *array* of related records, i.e. if there are several book details for a given book, you should use [`<ReferenceManyInput>`](./ReferenceManyInput.md) instead.
+
 ## Usage
 
 Here is an example one-to-one relationship: a `book` has at most one `book_details` row associated to it.

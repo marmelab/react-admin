@@ -22,7 +22,6 @@ title: "Index"
 
 **- B -**
 * [`<Breadcrumb>`](./Breadcrumb.md)<img class="icon" src="./img/premium.svg" />
-* [`<BreadcrumbItem>`](./Breadcrumb.md#breadcrumbitem)<img class="icon" src="./img/premium.svg" />
 * [`<BooleanField>`](./BooleanField.md)
 * [`<BooleanInput>`](./BooleanInput.md)
 * [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton)
@@ -224,6 +223,7 @@ title: "Index"
 
 **- D -**
 * [`useDataProvider`](./useDataProvider.md#usedataprovider)
+* [`useDefineAppLocation`](./useDefineAppLocation.md)<img class="icon" src="./img/premium.svg" />
 * [`useDelete`](./useDelete.md)
 * [`useDeleteMany`](./useDeleteMany.md)
 

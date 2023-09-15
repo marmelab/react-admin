@@ -13,8 +13,11 @@ Use `<ReferenceManyInput>` in an `<Edit>` or `<Create>` view to edit one-to-many
   Your browser does not support the video tag.
 </video>
 
-
 `<ReferenceManyInput>` fetches the related records, and renders them in a sub-form. When users add, remove or update related records, the `<ReferenceManyInput>` component stores these changes locally. When the users actually submit the form, `<ReferenceManyInput>` computes a diff with the existing relationship, and sends the related changes (additions, deletions, and updates) to the server.
+
+**Tip**: If you need to edit an array of *embedded* records, i.e. if the `variants` above are actually embedded in the `product` record, you should use [`<ArrayInput>`](./ArrayInput.md) instead.
+
+**Tip**: If there is only one related record, you should use [`<ReferenceOneInput>`](./ReferenceOneInput.md) instead.
 
 ## Usage
 

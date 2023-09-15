@@ -530,7 +530,7 @@ The [Translation Documentation](./Translation.md) details this process.
 
 ## `layout`
 
-If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. 
+If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component.
 
 React-admin offers predefined layouts for you to use:
 
@@ -548,14 +548,14 @@ export const App = () => (
 );
 ```
 
-These layouts can be customized by passing props to them. For instance, you can pass a custom `appBar` prop to `<Layout>` to override the default app bar:
+Layout components can be customized via props. For instance, you can pass a custom `menu` prop to `<Layout>` to override the default menu:
 
 ```tsx
 // in src/MyLayout.js
 import { Layout } from 'react-admin';
-import MyAppBar from './MyAppBar';
+import MyMenu from './MyMenu';
 
-export const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
+export const MyLayout = (props) => <Layout {...props} menu={MyMenu} />;
 ```
 
 Then, pass it to the `<Admin>` component as the `layout` prop:
@@ -572,9 +572,9 @@ const App = () => (
 );
 ```
 
-Refer to each component documentation to understand the props it accepts.
+Refer to each layout component documentation to understand the props it accepts.
 
-Finally, you can also pass a custom component as the `layout` prop. It must contain a `{children}` placeholder, where react-admin will render the content. Use the [default `<Layout>`](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point, and check [the custom layout documentation](./Layout.md#writing-a-layout-from-scratch) for examples.
+Finally, you can also pass a custom component as the `layout` prop. It must contain a `{children}` placeholder, where react-admin will render the page content. Check [the custom layout documentation](./Layout.md#writing-a-layout-from-scratch) for examples, and use the [default `<Layout>`](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point.
 
 ## `loginPage`
 
@@ -658,7 +658,7 @@ React-admin uses [react-query](https://react-query-v3.tanstack.com/) to fetch, c
 * Query results that are no longer used in the current page are labeled as "inactive" and remain in the cache in case they are used again at a later time.
 * By default, "inactive" queries are garbage collected after 5 minutes.
 * Queries that fail are silently retried 3 times, with exponential backoff delay before capturing and displaying an error to the UI.
-* Query results by default are structurally shared to detect if data has actually changed and if not, the data reference remains unchanged to better help with value stabilization with regards to `useMemo` and `useCallback`. 
+* Query results by default are structurally shared to detect if data have actually changed and if not, the data reference remains unchanged to better help with value stabilization with regards to `useMemo` and `useCallback`. 
 
 If you want to override the react-query default query and mutation default options, or use a specific client or mutation cache, you can create your own `QueryClient` instance and pass it to the `<Admin queryClient>` prop:
 

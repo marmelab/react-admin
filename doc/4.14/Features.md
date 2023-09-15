@@ -11,7 +11,7 @@ React-admin is a **rich framework** that covers most of the needs of typical adm
 
 With react-admin, developers assemble application components without having to worry about low-level details. They need less code for the same result, and they can **focus on the business logic** of their app.
 
-[![List view without and with react-admin](./img/list-from-react-to-react-admin.webp)](./ListTutorial.md#from-pure-react-to-react-admin)
+[![List view without and with react-admin](./img/list-from-react-to-react-admin.webp)](./img/list-from-react-to-react-admin.webp)
 
 We've crafted the API of react-admin's components and hooks to be as **intuitive** as possible. The react-admin core team uses react-admin every day, and we're always looking for ways to improve the developer experience.
 
