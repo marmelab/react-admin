@@ -166,6 +166,9 @@ title: "Index"
 * [`<SimpleShowLayout>`](./SimpleShowLayout.md)
 * [`<SingleFieldList>`](./SingleFieldList.md)
 * [`<SmartRichTextInput>`](./SmartRichTextInput.md)<img class="icon" src="./img/premium.svg" />
+* [`<SolarLayout>`](./SolarLayout.md)<img class="icon" src="./img/premium.svg" />
+* [`<SolarMenu>`](./SolarLayout.md#solarmenu)<img class="icon" src="./img/premium.svg" />
+* [`<SolarAppBar>`](./SolarLayout.md#solarappbar)<img class="icon" src="./img/premium.svg" />
 * [`<SortButton>`](./SortButton.md)
 * [`<StackedFilters>`](./StackedFilters.md)<img class="icon" src="./img/premium.svg" />
 
