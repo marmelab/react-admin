@@ -162,8 +162,9 @@ const {
     setSort, // a callback to change the sort, e.g. setSort({ field: 'name', order: 'ASC' })
     // filtering
     filterValues, // a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
-    displayedFilters, // a dictionary of the displayed filters, e.g. { title: true, nationality: true }
-    setFilters, // a callback to update the filters, e.g. setFilters(filters, displayedFilters)
+    displayedFilters, // deprecated - a dictionary of the displayed filters, e.g. { title: true, nationality: true }. Use shownFilters instead.
+    shownFilters, // an array of the displayed filters, e.g. ['title', 'nationality']
+    setFilters, // a callback to update the filters, e.g. setFilters(filters, shownFilters)
     showFilter, // a callback to show one of the filters, e.g. showFilter('title', defaultValue)
     hideFilter, // a callback to hide one of the filters, e.g. hideFilter('title')
     // record selection

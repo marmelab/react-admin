@@ -90,7 +90,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
     const { className, filters, ...rest } = props;
     const resource = useResourceContext(props);
     const form = useFormContext();
-    const { displayedFilters = {}, hideFilter } = useListContext(props);
+    const { shownFilters = [], hideFilter } = useListContext(props);
 
     useEffect(() => {
         filters.forEach((filter: JSX.Element) => {
@@ -104,14 +104,24 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
 
     const getShownFilters = () => {
         const values = form.getValues();
-        return filters.filter((filterElement: JSX.Element) => {
-            const filterValue = get(values, filterElement.props.source);
-            return (
-                filterElement.props.alwaysOn ||
-                displayedFilters[filterElement.props.source] ||
-                (filterValue !== '' && typeof filterValue !== 'undefined')
-            );
-        });
+        const alwaysOnShownFilters = filters.filter(
+            (filterElement: JSX.Element) => filterElement.props.alwaysOn
+        );
+        const optionalShownFilters = shownFilters.reduce(
+            (filterElements: React.ReactNode[], filterName: string) => {
+                const filterValue = get(values, filterName);
+                if (filterValue !== '' && typeof filterValue !== 'undefined') {
+                    const filter = filters.find(
+                        (filterElement: JSX.Element) =>
+                            filterElement.props.source === filterName
+                    );
+                    filterElements.push(filter);
+                }
+                return filterElements;
+            },
+            []
+        );
+        return alwaysOnShownFilters.concat(optionalShownFilters);
     };
 
     const handleHide = useCallback(
@@ -150,6 +160,7 @@ FilterFormBase.propTypes = {
     resource: PropTypes.string,
     filters: PropTypes.arrayOf(PropTypes.node).isRequired,
     displayedFilters: PropTypes.object,
+    shownFilters: PropTypes.arrayOf(PropTypes.string),
     hideFilter: PropTypes.func,
     initialValues: PropTypes.object,
     className: PropTypes.string,
@@ -157,6 +168,7 @@ FilterFormBase.propTypes = {
 
 const sanitizeRestProps = ({
     displayedFilters,
+    shownFilters,
     filterValues,
     hasCreate,
     hideFilter,

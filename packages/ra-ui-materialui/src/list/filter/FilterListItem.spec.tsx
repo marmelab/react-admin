@@ -1,15 +1,16 @@
-import * as React from 'react';
-import expect from 'expect';
 import { render, screen } from '@testing-library/react';
+import expect from 'expect';
+import * as React from 'react';
 
-import { ListContextProvider, ListControllerResult } from 'ra-core';
 import GoogleIcon from '@mui/icons-material/Google';
-import { FilterListItem } from './FilterListItem';
+import { ListContextProvider, ListControllerResult } from 'ra-core';
 import { Cumulative } from './FilterList.stories';
+import { FilterListItem } from './FilterListItem';
 
 const defaultListContext: ListControllerResult = {
     data: [],
     displayedFilters: null,
+    shownFilters: [],
     filterValues: null,
     hasNextPage: false,
     hasPreviousPage: false,

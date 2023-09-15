@@ -10,8 +10,9 @@ import { ListFilterContext, ListFilterContextValue } from './ListFilterContext';
  *
  * @typedef {Object} ListFilterContextValue
  * @prop {Object}   filterValues a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
- * @prop {Function} setFilters a callback to update the filters, e.g. setFilters(filters, displayedFilters)
- * @prop {Object}   displayedFilters a dictionary of the displayed filters, e.g. { title: true, nationality: true }
+ * @prop {Function} setFilters a callback to update the filters, e.g. setFilters(filters, shownFilters)
+ * @prop {Object}   displayedFilters deprecated a dictionary of the displayed filters, e.g. { title: true, nationality: true }
+ * @prop {Arrray}   shownFilters an array of the displayed filters, e.g. ['title', 'nationality']
  * @prop {Function} showFilter a callback to show one of the filters, e.g. showFilter('title', defaultValue)
  * @prop {Function} hideFilter a callback to hide one of the filters, e.g. hideFilter('title')
  * @prop {string}   resource the resource name, deduced from the location. e.g. 'posts'

@@ -1,6 +1,6 @@
 import { useContext, useMemo } from 'react';
-import { RaRecord } from '../../types';
 import { useList } from '../../controller';
+import { RaRecord } from '../../types';
 import { ChoicesContext, ChoicesContextValue } from './ChoicesContext';
 
 export const useChoicesContext = <ChoicesType extends RaRecord = RaRecord>(
@@ -24,6 +24,7 @@ export const useChoicesContext = <ChoicesType extends RaRecord = RaRecord>(
                 selectedChoices: options.selectedChoices ?? data,
                 displayedFilters:
                     options.selectedChoices ?? list.displayedFilters,
+                shownFilters: options.selectedChoices ?? list.shownFilters,
                 error: options.error,
                 filter: options.filter ?? list.filter,
                 filterValues: options.filterValues ?? list.filterValues,

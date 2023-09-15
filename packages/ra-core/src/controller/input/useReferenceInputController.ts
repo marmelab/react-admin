@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useWatch } from 'react-hook-form';
+import { UseQueryOptions } from 'react-query';
 import { useGetList } from '../../dataProvider';
+import { ChoicesContextValue } from '../../form';
 import { FilterPayload, RaRecord, SortPayload } from '../../types';
 import { useReference } from '../useReference';
-import { ChoicesContextValue } from '../../form';
 import { useReferenceParams } from './useReferenceParams';
-import { UseQueryOptions } from 'react-query';
 
 const defaultReferenceSource = (resource: string, source: string) =>
     `${resource}@${source}`;
@@ -161,6 +161,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         availableChoices: possibleValuesData,
         selectedChoices: [referenceRecord],
         displayedFilters: params.displayedFilters,
+        shownFilters: params.shownFilters,
         error: referenceError || possibleValuesError,
         filter: params.filter,
         filterValues: params.filterValues,

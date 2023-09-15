@@ -1,14 +1,14 @@
-import { useCallback, useEffect, useRef } from 'react';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
-import { removeEmpty, useSafeSetState } from '../../util';
-import { FilterPayload, RaRecord, SortPayload } from '../../types';
+import { useCallback, useEffect, useRef } from 'react';
 import { useResourceContext } from '../../core';
+import { flattenObject } from '../../dataProvider/fetch';
+import { FilterPayload, RaRecord, SortPayload } from '../../types';
+import { removeEmpty, useSafeSetState } from '../../util';
 import usePaginationState from '../usePaginationState';
 import useSortState from '../useSortState';
-import { useRecordSelection } from './useRecordSelection';
 import { ListControllerResult } from './useListController';
-import { flattenObject } from '../../dataProvider/fetch';
+import { useRecordSelection } from './useRecordSelection';
 
 const refetch = () => {
     throw new Error(
@@ -107,6 +107,7 @@ export const useList = <RecordType extends RaRecord = any>(
     const [displayedFilters, setDisplayedFilters] = useSafeSetState<{
         [key: string]: boolean;
     }>({});
+    const [shownFilters, setShownFilters] = useSafeSetState<string[]>([]);
     const [filterValues, setFilterValues] = useSafeSetState<{
         [key: string]: any;
     }>(filter);
@@ -116,12 +117,15 @@ export const useList = <RecordType extends RaRecord = any>(
                 const { [filterName]: _, ...newState } = previousState;
                 return newState;
             });
+            setShownFilters(previousState =>
+                previousState.filter(filter => filter !== filterName)
+            );
             setFilterValues(previousState => {
                 const { [filterName]: _, ...newState } = previousState;
                 return newState;
             });
         },
-        [setDisplayedFilters, setFilterValues]
+        [setDisplayedFilters, setShownFilters, setFilterValues]
     );
     const showFilter = useCallback(
         (filterName: string, defaultValue: any) => {
@@ -129,6 +133,7 @@ export const useList = <RecordType extends RaRecord = any>(
                 ...previousState,
                 [filterName]: true,
             }));
+            setShownFilters(previousState => [...previousState, filterName]);
             setFilterValues(previousState =>
                 removeEmpty({
                     ...previousState,
@@ -136,17 +141,21 @@ export const useList = <RecordType extends RaRecord = any>(
                 })
             );
         },
-        [setDisplayedFilters, setFilterValues]
+        [setDisplayedFilters, setShownFilters, setFilterValues]
     );
     const setFilters = useCallback(
-        (filters, displayedFilters) => {
+        (filters, shownFilters) => {
             setFilterValues(removeEmpty(filters));
-            if (displayedFilters) {
-                setDisplayedFilters(displayedFilters);
+            if (shownFilters) {
+                if (Array.isArray(shownFilters)) {
+                    setShownFilters(shownFilters);
+                } else {
+                    setDisplayedFilters(shownFilters);
+                }
             }
             setPage(1);
         },
-        [setDisplayedFilters, setFilterValues, setPage]
+        [setDisplayedFilters, setShownFilters, setFilterValues, setPage]
     );
     // handle filter prop change
     useEffect(() => {
@@ -249,6 +258,7 @@ export const useList = <RecordType extends RaRecord = any>(
         defaultTitle: '',
         error,
         displayedFilters,
+        shownFilters,
         filterValues,
         hasNextPage:
             finalItems?.total == null

@@ -1,10 +1,9 @@
-import { useCallback, useMemo, useState, useRef, useEffect } from 'react';
 import lodashDebounce from 'lodash/debounce';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { SortPayload, FilterPayload } from '../../types';
+import { FilterPayload, SortPayload } from '../../types';
 import removeEmpty from '../../util/removeEmpty';
 import {
-    queryReducer,
     HIDE_FILTER,
     SET_FILTER,
     SET_PAGE,
@@ -12,6 +11,7 @@ import {
     SET_SORT,
     SHOW_FILTER,
     SORT_ASC,
+    queryReducer,
 } from '../list';
 
 /**
@@ -295,6 +295,7 @@ export interface ReferenceParams {
     perPage: number;
     filter: any;
     displayedFilters: any;
+    shownFilters: string[];
 }
 
 interface Parameters extends ReferenceParams {
@@ -302,6 +303,7 @@ interface Parameters extends ReferenceParams {
     displayedFilters: {
         [key: string]: boolean;
     };
+    shownFilters: string[];
     requestSignature: any[];
 }
 

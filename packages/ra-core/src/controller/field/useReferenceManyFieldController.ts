@@ -1,16 +1,16 @@
-import { useCallback, useEffect, useRef } from 'react';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
+import { useCallback, useEffect, useRef } from 'react';
 
-import { useSafeSetState, removeEmpty } from '../../util';
+import { useResourceContext } from '../../core';
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
 import { Identifier, RaRecord, SortPayload } from '../../types';
+import { removeEmpty, useSafeSetState } from '../../util';
 import { ListControllerResult } from '../list';
-import usePaginationState from '../usePaginationState';
 import { useRecordSelection } from '../list/useRecordSelection';
+import usePaginationState from '../usePaginationState';
 import useSortState from '../useSortState';
-import { useResourceContext } from '../../core';
 
 export interface UseReferenceManyFieldControllerParams<
     RecordType extends RaRecord = RaRecord
@@ -99,6 +99,7 @@ export const useReferenceManyFieldController = <
     const [displayedFilters, setDisplayedFilters] = useSafeSetState<{
         [key: string]: boolean;
     }>({});
+    const [shownFilters, setShownFilters] = useSafeSetState<string[]>([]);
     const [filterValues, setFilterValues] = useSafeSetState<{
         [key: string]: any;
     }>(filter);
@@ -108,12 +109,15 @@ export const useReferenceManyFieldController = <
                 const { [filterName]: _, ...newState } = previousState;
                 return newState;
             });
+            setShownFilters(previousState => {
+                return previousState.filter(filter => filter !== filterName);
+            });
             setFilterValues(previousState => {
                 const { [filterName]: _, ...newState } = previousState;
                 return newState;
             });
         },
-        [setDisplayedFilters, setFilterValues]
+        [setDisplayedFilters, setShownFilters, setFilterValues]
     );
     const showFilter = useCallback(
         (filterName: string, defaultValue: any) => {
@@ -121,20 +125,27 @@ export const useReferenceManyFieldController = <
                 ...previousState,
                 [filterName]: true,
             }));
+            setShownFilters(previousState => [...previousState, filterName]);
             setFilterValues(previousState => ({
                 ...previousState,
                 [filterName]: defaultValue,
             }));
         },
-        [setDisplayedFilters, setFilterValues]
+        [setDisplayedFilters, setShownFilters, setFilterValues]
     );
     const setFilters = useCallback(
-        (filters, displayedFilters) => {
+        (filters, shownFilters) => {
             setFilterValues(removeEmpty(filters));
-            setDisplayedFilters(displayedFilters);
+            if (shownFilters) {
+                if (Array.isArray(shownFilters)) {
+                    setShownFilters(shownFilters);
+                } else {
+                    setDisplayedFilters(shownFilters);
+                }
+            }
             setPage(1);
         },
-        [setDisplayedFilters, setFilterValues, setPage]
+        [setDisplayedFilters, setShownFilters, setFilterValues, setPage]
     );
     // handle filter prop change
     useEffect(() => {
@@ -189,6 +200,7 @@ export const useReferenceManyFieldController = <
         data,
         defaultTitle: null,
         displayedFilters,
+        shownFilters,
         error,
         filterValues,
         hideFilter,

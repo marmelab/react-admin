@@ -472,7 +472,7 @@ The new element can use [the `useListContext` hook](./useListContext.md) to inte
 
 - `filterValues`: Value of the filters based on the URI, e.g. `{ "commentable": true, "q": "lorem" }`
 - `setFilters()`: Callback to set the filter values, e.g. `setFilters({ "commentable":true })`
-- `displayedFilters`: Names of the filters displayed in the form, e.g. `['commentable', 'title']`
+- `shownFilters`: Names of the filters displayed in the form, e.g. `['commentable', 'title']`
 - `showFilter()`: Callback to display an additional filter in the form, e.g. `showFilter('views')`
 - `hideFilter()`: Callback to hide a filter in the form, e.g. `hideFilter('title')`
 
@@ -502,7 +502,7 @@ const PostFilterButton = () => {
 };
 ```
 
-Normally, `showFilter()` adds one input to the `displayedFilters` list. As the filter form will be entirely hidden or shown, we use `showFilter()` with a virtual "main" input, which represents the entire form. 
+Normally, `showFilter()` adds one input to the `shownFilters` list. As the filter form will be entirely hidden or shown, we use `showFilter()` with a virtual "main" input, which represents the entire form. 
 
 ### Custom Filter Form
 

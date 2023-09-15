@@ -1,13 +1,8 @@
-import * as React from 'react';
-import { useListFilterContext, useGetIdentity } from 'react-admin';
-import { Box, Switch, FormControlLabel } from '@mui/material';
+import { Box, FormControlLabel, Switch } from '@mui/material';
+import { useGetIdentity, useListFilterContext } from 'react-admin';
 
 export const OnlyMineInput = (_: { alwaysOn: boolean }) => {
-    const {
-        filterValues,
-        displayedFilters,
-        setFilters,
-    } = useListFilterContext();
+    const { filterValues, shownFilters, setFilters } = useListFilterContext();
     const { identity } = useGetIdentity();
 
     const handleChange = () => {
@@ -17,7 +12,7 @@ export const OnlyMineInput = (_: { alwaysOn: boolean }) => {
         } else {
             newFilterValues.sales_id = identity && identity?.id;
         }
-        setFilters(newFilterValues, displayedFilters);
+        setFilters(newFilterValues, shownFilters);
     };
     return (
         <Box sx={{ marginBottom: 1, marginLeft: 1 }}>

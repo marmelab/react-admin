@@ -1,24 +1,24 @@
 import { isValidElement, useEffect, useMemo } from 'react';
 import {
-    UseInfiniteQueryOptions,
     InfiniteQueryObserverBaseResult,
+    UseInfiniteQueryOptions,
 } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
-import { useTranslate } from '../../i18n';
-import { useNotify } from '../../notification';
+import { useGetResourceLabel, useResourceContext } from '../../core';
 import { useInfiniteGetList } from '../../dataProvider';
 import { defaultExporter } from '../../export';
+import { useTranslate } from '../../i18n';
+import { useNotify } from '../../notification';
 import {
+    Exporter,
+    FilterPayload,
+    GetInfiniteListResult,
     RaRecord,
     SortPayload,
-    FilterPayload,
-    Exporter,
-    GetInfiniteListResult,
 } from '../../types';
-import { useResourceContext, useGetResourceLabel } from '../../core';
-import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
+import { useRecordSelection } from './useRecordSelection';
 
 import { ListControllerResult } from './useListController';
 
@@ -168,6 +168,7 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         data: unwrappedData,
         defaultTitle,
         displayedFilters: query.displayedFilters,
+        shownFilters: query.shownFilters,
         error,
         exporter,
         filter,

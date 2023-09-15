@@ -1,3 +1,4 @@
+import { Divider, Tab, Tabs, Theme, useMediaQuery } from '@mui/material';
 import * as React from 'react';
 import { Fragment, useCallback } from 'react';
 import {
@@ -21,13 +22,12 @@ import {
     TopToolbar,
     useListContext,
 } from 'react-admin';
-import { useMediaQuery, Divider, Tabs, Tab, Theme } from '@mui/material';
 
-import NbItemsField from './NbItemsField';
-import CustomerReferenceField from '../visitors/CustomerReferenceField';
-import AddressField from '../visitors/AddressField';
-import MobileGrid from './MobileGrid';
 import { Customer } from '../types';
+import AddressField from '../visitors/AddressField';
+import CustomerReferenceField from '../visitors/CustomerReferenceField';
+import MobileGrid from './MobileGrid';
+import NbItemsField from './NbItemsField';
 
 const ListActions = () => (
     <TopToolbar>
@@ -74,7 +74,7 @@ const tabs = [
 
 const TabbedDatagrid = () => {
     const listContext = useListContext();
-    const { filterValues, setFilters, displayedFilters } = listContext;
+    const { filterValues, setFilters, shownFilters } = listContext;
     const isXSmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('sm')
     );
@@ -84,11 +84,11 @@ const TabbedDatagrid = () => {
             setFilters &&
                 setFilters(
                     { ...filterValues, status: value },
-                    displayedFilters,
+                    shownFilters,
                     false // no debounce, we want the filter to fire immediately
                 );
         },
-        [displayedFilters, filterValues, setFilters]
+        [shownFilters, filterValues, setFilters]
     );
 
     return (

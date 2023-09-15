@@ -1,11 +1,11 @@
 import { useCallback, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 
-import { FilterPayload, RaRecord, SortPayload } from '../../types';
-import { useGetList, useGetManyAggregate } from '../../dataProvider';
-import { useReferenceParams } from './useReferenceParams';
-import { ChoicesContextValue } from '../../form';
 import { UseQueryOptions } from 'react-query';
+import { useGetList, useGetManyAggregate } from '../../dataProvider';
+import { ChoicesContextValue } from '../../form';
+import { FilterPayload, RaRecord, SortPayload } from '../../types';
+import { useReferenceParams } from './useReferenceParams';
 
 /**
  * Prepare data for the ReferenceArrayInput components
@@ -143,6 +143,7 @@ export const useReferenceArrayInputController = <
         availableChoices: matchingReferences,
         selectedChoices: finalReferenceRecords,
         displayedFilters: params.displayedFilters,
+        shownFilters: params.shownFilters,
         error: errorGetMany || errorGetList,
         filter,
         filterValues: params.filterValues,
