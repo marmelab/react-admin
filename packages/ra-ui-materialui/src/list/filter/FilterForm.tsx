@@ -25,7 +25,6 @@ import unset from 'lodash/unset';
 import get from 'lodash/get';
 import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
-import merge from 'lodash/merge';
 
 import { FilterFormInput } from './FilterFormInput';
 import { FilterContext } from '../FilterContext';
@@ -55,9 +54,11 @@ export const FilterForm = (props: FilterFormProps) => {
             reset(newValues);
         }
         // The reference to the filterValues object is not updated when it changes,
-        // so we must stringify it to compare it by value
+        // so we must stringify it to compare it by value and also compare the reference.
+        // This makes it work for both input values and filters applied directly through
+        // the ListContext.setFilter (e.g. QuickFilter in the simple example)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [JSON.stringify(filterValues), getValues, reset]);
+    }, [JSON.stringify(filterValues), filterValues, getValues, reset]);
 
     useEffect(() => {
         const subscription = watch(async (values, { name }) => {
