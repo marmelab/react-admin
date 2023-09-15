@@ -25,6 +25,7 @@ import unset from 'lodash/unset';
 import get from 'lodash/get';
 import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
+import merge from 'lodash/merge';
 
 import { FilterFormInput } from './FilterFormInput';
 import { FilterContext } from '../FilterContext';
@@ -45,20 +46,24 @@ export const FilterForm = (props: FilterFormProps) => {
     const form = useForm({
         defaultValues: mergedInitialValuesWithDefaultValues,
     });
+    const { getValues, reset, trigger, watch } = form;
 
     // Reapply filterValues when the URL changes or a user removes a filter
     useEffect(() => {
-        const newValues = getFilterFormValues(form.getValues(), filterValues);
-        if (!isEqual(newValues, form.getValues())) {
-            form.reset(newValues);
+        const newValues = getFilterFormValues(getValues(), filterValues);
+        if (!isEqual(newValues, getValues())) {
+            reset(newValues);
         }
-    }, [filterValues, form]);
+        // The reference to the filterValues object is not updated when it changes,
+        // so we must stringify it to compare it by value
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [JSON.stringify(filterValues), getValues, reset]);
 
     useEffect(() => {
-        const subscription = form.watch(async (values, { name }) => {
+        const subscription = watch(async (values, { name }) => {
             // We must check whether the form is valid as watch will not check that for us.
             // We can't rely on form state as it might not be synchronized yet
-            const isFormValid = await form.trigger();
+            const isFormValid = await trigger();
 
             if (isFormValid) {
                 if (get(values, name) === '') {
@@ -71,7 +76,7 @@ export const FilterForm = (props: FilterFormProps) => {
             }
         });
         return () => subscription.unsubscribe();
-    }, [displayedFilters, form, setFilters]);
+    }, [displayedFilters, setFilters, trigger, watch]);
 
     return (
         <FormProvider {...form}>
