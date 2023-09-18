@@ -8,7 +8,14 @@ import {
 import { NavigateBefore, NavigateNext } from '@mui/icons-material';
 import ErrorIcon from '@mui/icons-material/Error';
 import { Link } from 'react-router-dom';
-import { Box, IconButton, SxProps, styled } from '@mui/material';
+import {
+    Box,
+    Stack,
+    Typography,
+    IconButton,
+    SxProps,
+    styled,
+} from '@mui/material';
 import clsx from 'clsx';
 
 import { LinearProgress } from '../layout/LinearProgress';
@@ -108,7 +115,7 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
 
     if (isLoading) {
         return (
-            <Box minHeight={theme => theme.spacing(4)}>
+            <Box minHeight={34} display="flex" alignItems="center">
                 <LinearProgress />
             </Box>
         );
@@ -124,38 +131,40 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
         );
     }
     if (!hasPrev && !hasNext) {
-        return <Box minHeight={theme => theme.spacing(5)} />;
+        return <Box minHeight={34} />;
     }
 
     return (
-        <Root sx={sx}>
-            <ul className={clsx(PrevNextButtonClasses.list)}>
-                <li>
-                    <IconButton
-                        component={hasPrev ? Link : undefined}
-                        to={prevPath}
-                        aria-label={translate('ra.navigation.previous')}
-                        disabled={!hasPrev}
-                    >
-                        <NavigateBefore />
-                    </IconButton>
-                </li>
-                {typeof index === 'number' && (
-                    <li>
-                        {index + 1} / {total}
-                    </li>
-                )}
-                <li>
-                    <IconButton
-                        component={hasNext ? Link : undefined}
-                        to={nextPath}
-                        aria-label={translate('ra.navigation.next')}
-                        disabled={!hasNext}
-                    >
-                        <NavigateNext />
-                    </IconButton>
-                </li>
-            </ul>
+        <Root
+            sx={sx}
+            direction="row"
+            className={clsx(PrevNextButtonClasses.root)}
+        >
+            <IconButton
+                component={hasPrev ? Link : undefined}
+                to={prevPath}
+                aria-label={translate('ra.navigation.previous')}
+                disabled={!hasPrev}
+                size="small"
+            >
+                <NavigateBefore />
+            </IconButton>
+
+            {typeof index === 'number' && (
+                <Typography variant="body2">
+                    {index + 1} / {total}
+                </Typography>
+            )}
+
+            <IconButton
+                component={hasNext ? Link : undefined}
+                to={nextPath}
+                aria-label={translate('ra.navigation.next')}
+                disabled={!hasNext}
+                size="small"
+            >
+                <NavigateNext />
+            </IconButton>
         </Root>
     );
 };
@@ -168,19 +177,14 @@ export interface PrevNextButtonProps<RecordType extends RaRecord = any>
 const PREFIX = 'RaPrevNextButton';
 
 export const PrevNextButtonClasses = {
-    list: `${PREFIX}-list`,
+    root: `${PREFIX}-root`,
 };
 
-const Root = styled('nav', {
+const Root = styled(Stack, {
     name: PREFIX,
     overridesResolver: (_props, styles) => styles.root,
 })({
-    [`& .${PrevNextButtonClasses.list}`]: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        padding: 0,
-        margin: 0,
-        listStyle: 'none',
-    },
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '0.5em',
 });
