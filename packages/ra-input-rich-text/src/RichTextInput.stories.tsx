@@ -1,9 +1,33 @@
 import * as React from 'react';
-import { I18nProvider, required } from 'ra-core';
-import { AdminContext, SimpleForm, SimpleFormProps } from 'ra-ui-materialui';
-import { RichTextInput } from './RichTextInput';
-import { RichTextInputToolbar } from './RichTextInputToolbar';
+import {
+    I18nProvider,
+    Resource,
+    required,
+    useGetManyReference,
+    useRecordContext,
+} from 'ra-core';
+import {
+    AdminContext,
+    Edit,
+    PrevNextButtons,
+    SimpleForm,
+    SimpleFormProps,
+    TopToolbar,
+} from 'ra-ui-materialui';
+import { Admin } from 'react-admin';
 import { useWatch } from 'react-hook-form';
+import fakeRestDataProvider from 'ra-data-fakerest';
+import { MemoryRouter } from 'react-router-dom';
+import Mention from '@tiptap/extension-mention';
+
+import {
+    DefaultEditorOptions,
+    RichTextInput,
+    RichTextInputProps,
+} from './RichTextInput';
+import { RichTextInputToolbar } from './RichTextInputToolbar';
+import { ReactRenderer } from '@tiptap/react';
+import tippy from 'tippy.js';
 
 export default { title: 'ra-input-rich-text/RichTextInput' };
 
@@ -145,3 +169,212 @@ export const Validation = (props: Partial<SimpleFormProps>) => (
         </SimpleForm>
     </AdminContext>
 );
+
+const dataProvider = fakeRestDataProvider({
+    posts: [
+        { id: 1, body: 'Post 1' },
+        { id: 2, body: 'Post 2' },
+        { id: 3, body: 'Post 3' },
+    ],
+    tags: [
+        { id: 1, name: 'tag1', post_id: 1 },
+        { id: 2, name: 'tag2', post_id: 1 },
+        { id: 3, name: 'tag3', post_id: 2 },
+        { id: 4, name: 'tag4', post_id: 2 },
+        { id: 5, name: 'tag5', post_id: 3 },
+        { id: 6, name: 'tag6', post_id: 3 },
+    ],
+});
+
+const PostEdit = () => (
+    <Edit
+        actions={
+            <TopToolbar>
+                <PrevNextButtons />
+            </TopToolbar>
+        }
+    >
+        <SimpleForm>
+            <MyRichTextInput source="body" />
+        </SimpleForm>
+    </Edit>
+);
+
+const MyRichTextInput = (props: RichTextInputProps) => {
+    const record = useRecordContext();
+    const tags = useGetManyReference('tags', {
+        target: 'post_id',
+        id: record.id,
+    });
+
+    const editorOptions = React.useMemo(() => {
+        return {
+            ...DefaultEditorOptions,
+            extensions: [
+                ...DefaultEditorOptions.extensions,
+                Mention.configure({
+                    HTMLAttributes: {
+                        class: 'mention',
+                    },
+                    suggestion: suggestions(tags.data?.map(t => t.name) ?? []),
+                }),
+            ],
+        };
+    }, [tags.data]);
+
+    return <RichTextInput editorOptions={editorOptions} {...props} />;
+};
+
+export const CustomOptions = () => (
+    <MemoryRouter initialEntries={['/posts/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="posts" edit={PostEdit} />
+        </Admin>
+    </MemoryRouter>
+);
+
+const MentionList = React.forwardRef<
+    any,
+    {
+        items: string[];
+        command: (props: { id: string }) => void;
+    }
+>((props, ref) => {
+    const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+    const selectItem = index => {
+        const item = props.items[index];
+
+        if (item) {
+            props.command({ id: item });
+        }
+    };
+
+    const upHandler = () => {
+        setSelectedIndex(
+            (selectedIndex + props.items.length - 1) % props.items.length
+        );
+    };
+
+    const downHandler = () => {
+        setSelectedIndex((selectedIndex + 1) % props.items.length);
+    };
+
+    const enterHandler = () => {
+        selectItem(selectedIndex);
+    };
+
+    React.useEffect(() => setSelectedIndex(0), [props.items]);
+
+    React.useImperativeHandle(ref, () => ({
+        onKeyDown: ({ event }) => {
+            if (event.key === 'ArrowUp') {
+                upHandler();
+                return true;
+            }
+
+            if (event.key === 'ArrowDown') {
+                downHandler();
+                return true;
+            }
+
+            if (event.key === 'Enter') {
+                enterHandler();
+                return true;
+            }
+
+            return false;
+        },
+    }));
+
+    return (
+        <div className="items">
+            {props.items.length ? (
+                props.items.map((item, index) => (
+                    <button
+                        className={`item ${
+                            index === selectedIndex ? 'is-selected' : ''
+                        }`}
+                        key={index}
+                        onClick={() => selectItem(index)}
+                    >
+                        {item}
+                    </button>
+                ))
+            ) : (
+                <div className="item">No result</div>
+            )}
+        </div>
+    );
+});
+
+const suggestions = tags => {
+    return {
+        items: ({ query }) => {
+            return tags
+                .filter(item =>
+                    item.toLowerCase().startsWith(query.toLowerCase())
+                )
+                .slice(0, 5);
+        },
+
+        render: () => {
+            let component;
+            let popup;
+
+            return {
+                onStart: props => {
+                    component = new ReactRenderer(MentionList, {
+                        props,
+                        editor: props.editor,
+                    });
+
+                    if (!props.clientRect) {
+                        return;
+                    }
+
+                    popup = tippy('body', {
+                        getReferenceClientRect: props.clientRect,
+                        appendTo: () => document.body,
+                        content: component.element,
+                        showOnCreate: true,
+                        interactive: true,
+                        trigger: 'manual',
+                        placement: 'bottom-start',
+                    });
+                },
+
+                onUpdate(props) {
+                    component.updateProps(props);
+
+                    if (!props.clientRect) {
+                        return;
+                    }
+
+                    popup[0].setProps({
+                        getReferenceClientRect: props.clientRect,
+                    });
+                },
+
+                onKeyDown(props) {
+                    if (props.event.key === 'Escape') {
+                        popup[0].hide();
+
+                        return true;
+                    }
+
+                    return component.ref?.onKeyDown(props);
+                },
+
+                onExit() {
+                    if (popup && popup[0]) {
+                        popup[0].destroy();
+                    }
+                    if (component) {
+                        component.destroy();
+                    }
+                },
+            };
+        },
+    };
+};
