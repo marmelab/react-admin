@@ -19,7 +19,7 @@ On mobile, it shows the AppBar to allow opening the navigation menu:
   Your browser does not support the video tag.
 </video>
 
-`<SolarLayout>` is part of the [ra-navigation](https://marmelab.com/ra-enterprise/modules/ra-navigation#containerlayout) package.
+`<SolarLayout>` is part of the [ra-navigation](https://marmelab.com/ra-enterprise/modules/ra-navigation#solarlayout) package.
 
 ## Usage
 

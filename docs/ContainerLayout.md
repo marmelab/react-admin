@@ -203,7 +203,7 @@ export const MyLayout = props => (
 
 ## `<HorizontalMenu>`
 
-This component renders a horizontal menu, to be used in the AppBar of the [`<ContainerLayout>`](./ContainerLayout.md).
+This component renders a horizontal menu, to be used in the AppBar of the [`<ContainerLayout>`](#containerLayout).
 
 ![Container layout](./img/HorizontalMenu.png)
 
