@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
     I18nProvider,
-    Resource,
     required,
     useGetManyReference,
     useRecordContext,
@@ -14,10 +13,9 @@ import {
     SimpleFormProps,
     TopToolbar,
 } from 'ra-ui-materialui';
-import { Admin } from 'react-admin';
 import { useWatch } from 'react-hook-form';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import Mention from '@tiptap/extension-mention';
 
 import {
@@ -186,20 +184,6 @@ const dataProvider = fakeRestDataProvider({
     ],
 });
 
-const PostEdit = () => (
-    <Edit
-        actions={
-            <TopToolbar>
-                <PrevNextButtons />
-            </TopToolbar>
-        }
-    >
-        <SimpleForm>
-            <MyRichTextInput source="body" />
-        </SimpleForm>
-    </Edit>
-);
-
 const MyRichTextInput = (props: RichTextInputProps) => {
     const record = useRecordContext();
     const tags = useGetManyReference('tags', {
@@ -227,9 +211,27 @@ const MyRichTextInput = (props: RichTextInputProps) => {
 
 export const CustomOptions = () => (
     <MemoryRouter initialEntries={['/posts/1']}>
-        <Admin dataProvider={dataProvider}>
-            <Resource name="posts" edit={PostEdit} />
-        </Admin>
+        <AdminContext dataProvider={dataProvider}>
+            <Routes>
+                <Route
+                    path="/posts/:id"
+                    element={
+                        <Edit
+                            resource="posts"
+                            actions={
+                                <TopToolbar>
+                                    <PrevNextButtons />
+                                </TopToolbar>
+                            }
+                        >
+                            <SimpleForm>
+                                <MyRichTextInput source="body" />
+                            </SimpleForm>
+                        </Edit>
+                    }
+                />
+            </Routes>
+        </AdminContext>
     </MemoryRouter>
 );
 
