@@ -17,15 +17,21 @@ import { useWatch } from 'react-hook-form';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import Mention from '@tiptap/extension-mention';
-
+import { ReactRenderer } from '@tiptap/react';
+import tippy, { Instance as TippyInstance } from 'tippy.js';
 import {
     DefaultEditorOptions,
     RichTextInput,
     RichTextInputProps,
 } from './RichTextInput';
 import { RichTextInputToolbar } from './RichTextInputToolbar';
-import { ReactRenderer } from '@tiptap/react';
-import tippy from 'tippy.js';
+import {
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemText,
+    Paper,
+} from '@mui/material';
 
 export default { title: 'ra-input-rich-text/RichTextInput' };
 
@@ -236,7 +242,7 @@ export const CustomOptions = () => (
 );
 
 const MentionList = React.forwardRef<
-    any,
+    MentionListRef,
     {
         items: string[];
         command: (props: { id: string }) => void;
@@ -290,26 +296,32 @@ const MentionList = React.forwardRef<
     }));
 
     return (
-        <div className="items">
-            {props.items.length ? (
-                props.items.map((item, index) => (
-                    <button
-                        className={`item ${
-                            index === selectedIndex ? 'is-selected' : ''
-                        }`}
-                        key={index}
-                        onClick={() => selectItem(index)}
-                    >
-                        {item}
-                    </button>
-                ))
-            ) : (
-                <div className="item">No result</div>
-            )}
-        </div>
+        <Paper>
+            <List dense disablePadding>
+                {props.items.length ? (
+                    props.items.map((item, index) => (
+                        <ListItemButton
+                            dense
+                            selected={index === selectedIndex}
+                            key={index}
+                            onClick={() => selectItem(index)}
+                        >
+                            {item}
+                        </ListItemButton>
+                    ))
+                ) : (
+                    <ListItem className="item" dense>
+                        <ListItemText>No result</ListItemText>
+                    </ListItem>
+                )}
+            </List>
+        </Paper>
     );
 });
 
+type MentionListRef = {
+    onKeyDown: (props: { event: React.KeyboardEvent }) => boolean;
+};
 const suggestions = tags => {
     return {
         items: ({ query }) => {
@@ -321,8 +333,8 @@ const suggestions = tags => {
         },
 
         render: () => {
-            let component;
-            let popup;
+            let component: ReactRenderer<MentionListRef>;
+            let popup: TippyInstance[];
 
             return {
                 onStart: props => {
@@ -347,15 +359,19 @@ const suggestions = tags => {
                 },
 
                 onUpdate(props) {
-                    component.updateProps(props);
+                    if (component) {
+                        component.updateProps(props);
+                    }
 
                     if (!props.clientRect) {
                         return;
                     }
 
-                    popup[0].setProps({
-                        getReferenceClientRect: props.clientRect,
-                    });
+                    if (popup && popup[0]) {
+                        popup[0].setProps({
+                            getReferenceClientRect: props.clientRect,
+                        });
+                    }
                 },
 
                 onKeyDown(props) {
@@ -365,16 +381,30 @@ const suggestions = tags => {
                         return true;
                     }
 
-                    return component.ref?.onKeyDown(props);
+                    if (!component.ref) {
+                        return false;
+                    }
+
+                    return component.ref.onKeyDown(props);
                 },
 
                 onExit() {
-                    if (popup && popup[0]) {
-                        popup[0].destroy();
-                    }
-                    if (component) {
-                        component.destroy();
-                    }
+                    queueMicrotask(() => {
+                        if (popup && popup[0] && !popup[0].state.isDestroyed) {
+                            popup[0].destroy();
+                        }
+                        if (component) {
+                            component.destroy();
+                        }
+                    });
+
+                    // Remove references to the old popup and component upon destruction/exit.
+                    // (This should prevent redundant calls to `popup.destroy()`, which Tippy
+                    // warns in the console is a sign of a memory leak, as the `suggestion`
+                    // plugin seems to call `onExit` both when a suggestion menu is closed after
+                    // a user chooses an option, *and* when the editor itself is destroyed.)
+                    popup = undefined;
+                    component = undefined;
                 },
             };
         },
