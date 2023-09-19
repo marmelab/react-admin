@@ -692,7 +692,7 @@ It accepts the same props as MUI's `<SolarMenuItem>` component.
 
 If you provided an icon on the `<Resource>` component, it will be used by default. It sets the `<SolarMenuItem>` `to` prop to the resource list page and the `label` prop to the resource label.
 
-## `<SolarMenuDashboardItem>`
+## `<SolarMenu.DashboardItem>`
 
 An item for the `<SolarMenu>` component. Its children will be rendered inside the secondary sliding sidebar.
 
