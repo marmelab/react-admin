@@ -6,12 +6,18 @@ import {
     ResourceContext,
     testDataProvider,
 } from 'ra-core';
+import englishMessages from 'ra-language-english';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import { MemoryRouter } from 'react-router';
+import { seed, address, internet, name } from 'faker/locale/en_GB';
+import { QueryClient } from 'react-query';
+
 import {
     AdminUI,
+    AdminContext,
     Edit,
     EditButton,
     ListGuesser,
-    PrevNextButtons,
     Show,
     ShowButton,
     SimpleForm,
@@ -19,20 +25,15 @@ import {
     TextField,
     TextInput,
     TopToolbar,
-} from 'react-admin';
-import englishMessages from 'ra-language-english';
-import polyglotI18nProvider from 'ra-i18n-polyglot';
-import { MemoryRouter } from 'react-router';
-import { seed, address, internet, name } from 'faker/locale/en_GB';
-import { QueryClient } from 'react-query';
-
-import { AdminContext } from '../AdminContext';
+} from '../';
+import { PrevNextButtons } from './PrevNextButtons';
 
 export default { title: 'ra-ui-materialui/button/PrevNextButtons' };
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages, 'en');
 
 seed(123); // we want consistent results
+
 const data = {
     customers: Array.from(Array(900).keys()).map(id => {
         const first_name = name.firstName();
@@ -52,35 +53,30 @@ const data = {
 const dataProvider = fakeRestDataProvider(data);
 
 const MyTopToolbar = ({ children }) => (
-    <TopToolbar
-        sx={{
-            justifyContent: 'space-between',
-        }}
-    >
-        {children}
-    </TopToolbar>
+    <TopToolbar sx={{ justifyContent: 'space-between' }}>{children}</TopToolbar>
 );
 
-const defaultFields = [
-    <TextField source="id" key="id" />,
-    <TextField source="first_name" key="first_name" />,
-    <TextField source="last_name" key="last_name" />,
-    <TextField source="email" key="email" />,
-    <TextField source="city" key="city" />,
-];
-
-const defaultInputs = [
-    <TextInput source="first_name" key="first_name" />,
-    <TextInput source="last_name" key="last_name" />,
-    <TextInput source="email" key="email" />,
-    <TextInput source="city" key="city" />,
-];
-
-const DefaultSimpleForm = () => (
-    <SimpleForm warnWhenUnsavedChanges>{defaultInputs}</SimpleForm>
+const CustomerEdit = ({ actions }: any) => (
+    <Edit redirect={false} actions={actions}>
+        <SimpleForm warnWhenUnsavedChanges>
+            <TextInput source="first_name" key="first_name" />
+            <TextInput source="last_name" key="last_name" />
+            <TextInput source="email" key="email" />
+            <TextInput source="city" key="city" />
+        </SimpleForm>
+    </Edit>
 );
-const DefaultSimpleShowLayout = () => (
-    <SimpleShowLayout>{defaultFields}</SimpleShowLayout>
+
+const CustomerShow = ({ actions }: any) => (
+    <Show actions={actions}>
+        <SimpleShowLayout>
+            <TextField source="id" key="id" />
+            <TextField source="first_name" key="first_name" />
+            <TextField source="last_name" key="last_name" />
+            <TextField source="email" key="email" />
+            <TextField source="city" key="city" />
+        </SimpleShowLayout>
+    </Show>
 );
 
 export const Basic = () => (
@@ -91,28 +87,24 @@ export const Basic = () => (
                     name="customers"
                     list={<ListGuesser />}
                     edit={
-                        <Edit
-                            redirect={false}
+                        <CustomerEdit
                             actions={
                                 <MyTopToolbar>
                                     <PrevNextButtons />
                                     <ShowButton />
                                 </MyTopToolbar>
                             }
-                        >
-                            <DefaultSimpleForm />
-                        </Edit>
+                        />
                     }
                     show={
-                        <Show
+                        <CustomerShow
                             actions={
                                 <MyTopToolbar>
                                     <PrevNextButtons linkType="show" />
+                                    <EditButton />
                                 </MyTopToolbar>
                             }
-                        >
-                            <DefaultSimpleShowLayout />
-                        </Show>
+                        />
                     }
                 />
             </AdminUI>
@@ -128,20 +120,17 @@ export const WithStoreKey = () => (
                     name="customers"
                     list={<ListGuesser storeKey="withStoreKey" />}
                     edit={
-                        <Edit
-                            redirect={false}
+                        <CustomerEdit
                             actions={
                                 <MyTopToolbar>
                                     <PrevNextButtons storeKey="withStoreKey" />
                                     <ShowButton />
                                 </MyTopToolbar>
                             }
-                        >
-                            <DefaultSimpleForm />
-                        </Edit>
+                        />
                     }
                     show={
-                        <Show
+                        <CustomerShow
                             actions={
                                 <MyTopToolbar>
                                     <PrevNextButtons
@@ -151,9 +140,7 @@ export const WithStoreKey = () => (
                                     <EditButton />
                                 </MyTopToolbar>
                             }
-                        >
-                            <DefaultSimpleShowLayout />
-                        </Show>
+                        />
                     }
                 />
             </AdminUI>
@@ -174,8 +161,7 @@ export const WithFilter = () => (
                         />
                     }
                     edit={
-                        <Edit
-                            redirect={false}
+                        <CustomerEdit
                             actions={
                                 <MyTopToolbar>
                                     <PrevNextButtons
@@ -188,12 +174,10 @@ export const WithFilter = () => (
                                     <ShowButton />
                                 </MyTopToolbar>
                             }
-                        >
-                            <DefaultSimpleForm />
-                        </Edit>
+                        />
                     }
                     show={
-                        <Show
+                        <CustomerShow
                             actions={
                                 <MyTopToolbar>
                                     <PrevNextButtons
@@ -207,9 +191,7 @@ export const WithFilter = () => (
                                     <EditButton />
                                 </MyTopToolbar>
                             }
-                        >
-                            <DefaultSimpleShowLayout />
-                        </Show>
+                        />
                     }
                 />
             </AdminUI>
@@ -235,29 +217,24 @@ export const WithQueryFilter = () => (
                         />
                     }
                     edit={
-                        <Edit
-                            redirect={false}
+                        <CustomerEdit
                             actions={
                                 <MyTopToolbar>
                                     <PrevNextButtons />
                                     <ShowButton />
                                 </MyTopToolbar>
                             }
-                        >
-                            <DefaultSimpleForm />
-                        </Edit>
+                        />
                     }
                     show={
-                        <Show
+                        <CustomerShow
                             actions={
                                 <MyTopToolbar>
                                     <PrevNextButtons linkType="show" />
                                     <EditButton />
                                 </MyTopToolbar>
                             }
-                        >
-                            <DefaultSimpleShowLayout />
-                        </Show>
+                        />
                     }
                 />
             </AdminUI>
@@ -276,32 +253,27 @@ export const WithLimit = ({ customDataProvider = dataProvider }) => (
                     name="customers"
                     list={<ListGuesser />}
                     edit={
-                        <Edit
-                            redirect={false}
+                        <CustomerEdit
                             actions={
                                 <MyTopToolbar>
                                     <PrevNextButtons limit={500} />
                                     <ShowButton />
                                 </MyTopToolbar>
                             }
-                        >
-                            <DefaultSimpleForm />
-                        </Edit>
+                        />
                     }
                     show={
-                        <Show
+                        <CustomerShow
                             actions={
                                 <MyTopToolbar>
                                     <PrevNextButtons
                                         linkType="show"
                                         limit={500}
                                     />
-                                    <ShowButton />
+                                    <EditButton />
                                 </MyTopToolbar>
                             }
-                        >
-                            <DefaultSimpleShowLayout />
-                        </Show>
+                        />
                     }
                 />
             </AdminUI>
@@ -313,19 +285,10 @@ export const WithStyle = () => (
     <AdminContext dataProvider={dataProvider}>
         <ResourceContext.Provider value="customers">
             <RecordContextProvider value={data.customers[0]}>
-                <PrevNextButtons
-                    sx={{
-                        color: 'blue',
-                    }}
-                />
+                <PrevNextButtons sx={{ color: 'blue' }} />
                 <PrevNextButtons
                     linkType="show"
-                    sx={{
-                        '& .RaPrevNextButton-list': {
-                            marginBottom: '20px',
-                            color: 'red',
-                        },
-                    }}
+                    sx={{ marginBottom: '20px', color: 'red' }}
                 />
             </RecordContextProvider>
         </ResourceContext.Provider>
