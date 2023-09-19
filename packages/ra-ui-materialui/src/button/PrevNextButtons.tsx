@@ -137,6 +137,7 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
     return (
         <Root
             sx={sx}
+            role="navigation"
             direction="row"
             className={clsx(PrevNextButtonClasses.root)}
         >
