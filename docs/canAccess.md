@@ -241,3 +241,111 @@ const ProductList = () => {
 ```
 
 **Tip**: Ra-rbac actually proposes a `<Datagrid>` component that hides columns depending on permissions. Check [the RBAC documentation](./AuthRBAC.md) for details.
+
+## Disable Menu Items Instead Of Not Showing Them
+
+The `ra-rbac` `<Menu>` component does not show menu items the current user has not access to.
+It is considered good security practice not to disclose to a potentially malicious user that a page exists if they are not allowed to see it.
+
+However, you might want to disable menu items instead of not showing them.
+
+To achieve this, you can build a custom menu with the core `<Menu>` component provided by React-admin and leverage the 
+[`usePermissions`](./usePermissions.md) hook with the [`canAccess`](#canaccess) function to disable a `<Menu.Item>`
+
+Let's take a look at the following code: 
+
+{% raw %}
+```tsx
+// In src/App.tsx
+import { Admin, Resource } from "react-admin";
+import { dataProvider } from "./dataProvider";
+import {
+    Admin,
+    usePermissions,
+    ListGuesser,
+    Menu,
+    Layout,
+    Title,
+} from 'react-admin';
+import { canAccess, Permissions, Resource } from '@react-admin/ra-rbac';
+import { Card, CardContent } from '@mui/material';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import ClassIcon from '@mui/icons-material/Class';
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+
+const authProvider = () => ({
+    checkAuth: () => Promise.resolve(),
+    login: () => Promise.resolve(),
+    logout: () => Promise.resolve(),
+    checkError: () => Promise.resolve(),
+    getPermissions: () =>
+        promiseFor([{ action: 'list', resource: 'products' }]),
+});
+
+const MyDashboard = () => {
+    return (
+        <Card sx={{ marginTop: 5 }}>
+            <Title title="Welcome to the administration" />
+            <CardContent>Lorem ipsum sic dolor amet...</CardContent>
+        </Card>
+    );
+};
+
+const MyMenu = () => {
+    const { permissions } = usePermissions();
+    return (
+        <Menu>
+            <Menu.DashboardItem />
+            <Menu.Item
+                to="/categories"
+                primaryText="Categories"
+                leftIcon={<ClassIcon />}
+                disabled={
+                    !canAccess({
+                        permissions,
+                        resource: 'categories',
+                    })
+                }
+            />
+            <Menu.Item
+                to="/products"
+                primaryText="Products"
+                leftIcon={<InventoryIcon />}
+                disabled={
+                    !canAccess({
+                        permissions,
+                        resource: 'products',
+                    })
+                }
+            />
+            <Menu.Item
+                to="/commands"
+                primaryText="Commands"
+                leftIcon={<ShoppingCartCheckoutIcon />}
+                disabled={
+                    !canAccess({
+                        permissions,
+                        resource: 'commands',
+                    })
+                }
+            />
+        </Menu>
+    );
+};
+
+const MyLayout = props => <Layout {...props} menu={MyMenu} />;
+
+export const App = () => (
+    <Admin
+        authProvider={authProvider}
+        dataProvider={dataProvider}
+        layout={MyLayout}
+        dashboard={MyDashboard}
+    >
+        <Resource name="categories" list={ListGuesser} />
+        <Resource name="products" list={ListGuesser} />
+        <Resource name="commands" list={ListGuesser} />
+    </Admin>
+);
+```
+{% endraw %}
