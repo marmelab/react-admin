@@ -240,6 +240,7 @@ Name of the field carrying the relationship on the referenced resource. For inst
 
 In this example, the `<TextInput>` component is wrapped inside a `<MyCustomInput>` component. That adds an icon and additional styling.
 
+{% raw %}
 ```tsx
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
@@ -279,6 +280,7 @@ export const CustomInputs = () => (
     </ReferenceOneInput>
 );
 ```
+{% endraw %}
 
 ![ReferenceOneInput with custom inputs](https://marmelab.com/ra-enterprise/modules/assets/ra-relationships/latest/reference-one-input-custom-inputs.png)
 
