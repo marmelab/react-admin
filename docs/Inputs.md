@@ -766,20 +766,33 @@ Instead of HTML `input` elements, you can use a Material UI component like `Text
 ```tsx
 // in LatLongInput.js
 import TextField from '@mui/material/TextField';
+import { InputHelperText } from 'react-admin';
 import { useController } from 'react-hook-form';
 
-const BoundedTextField = ({ name, label }: { name: string; label: string }) => {
+const BoundedTextField = ({ name, label, helperText }: { name: string; label: string, helperText?: string | ReactElement | boolean }) => {
     const {
         field,
         fieldState: { isTouched, invalid, error },
         formState: { isSubmitted }
     } = useController({ name, defaultValue: '' });
+
+    const renderHelperText =
+        helperText !== false || ((isTouched || isSubmitted) && invalid);
+
     return (
         <TextField
             {...field}
             label={label}
             error={(isTouched || isSubmitted) && invalid}
-            helperText={(isTouched || isSubmitted) && invalid ? error?.message : ''}
+            helperText={
+                renderHelperText ? (
+                    <InputHelperText
+                        touched={isTouched || isSubmitted}
+                        error={error?.message}
+                        helperText={helperText}
+                    />
+                ) : null
+            }
         />
     );
 };
@@ -793,6 +806,8 @@ const LatLngInput = () => (
 ```
 
 **Tip**: Material UI's `<TextField>` component already includes a label, so you don't need to use `<Labeled>` in this case.
+
+**Tip** Notice that our custom input makes use of the react-admin component `<InputHelperText>`. This component returns a properly formatted `helperText` passed through `useTranslate`, which is important for correctly displaying form errors.
 
 **Tip**: Notice that we have added `defaultValue: ''` as one of the `useController` params. This is a good practice to avoid getting console warnings about controlled/uncontrolled components, that may arise if the value of `record.lat` or `record.lng` is `undefined` or `null`.
 
@@ -827,17 +842,17 @@ So internally, react-admin components use another hook, which wraps react-hook-f
 ```tsx
 // in LatLongInput.js
 import { TextField, TextFieldProps } from "@mui/material";
-import { useInput, required, InputProps } from "react-admin";
+import { useInput, required, InputHelperText, InputProps } from "react-admin";
 
 interface BoundedTextFieldProps
     extends Omit<
         TextFieldProps,
-        "label" | "helperText" | "onChange" | "onBlur" | "type" | "defaultValue"
+        "label" | "onChange" | "onBlur" | "type" | "defaultValue"
     >,
     InputProps {}
 
 const BoundedTextField = (props: BoundedTextFieldProps) => {
-    const { onChange, onBlur, label, ...rest } = props;
+    const { onChange, onBlur, label, helperText, ...rest } = props;
     const {
         field,
         fieldState: { isTouched, invalid, error },
@@ -851,12 +866,23 @@ const BoundedTextField = (props: BoundedTextFieldProps) => {
         ...rest,
     });
 
+    const renderHelperText =
+        helperText !== false || ((isTouched || isSubmitted) && invalid);
+
     return (
         <TextField
             {...field}
             label={label}
             error={(isTouched || isSubmitted) && invalid}
-            helperText={(isTouched || isSubmitted) && invalid ? error?.message : ""}
+            helperText={
+                renderHelperText ? (
+                    <InputHelperText
+                        touched={isTouched || isSubmitted}
+                        error={error?.message}
+                        helperText={helperText}
+                    />
+                ) : null
+            }
             required={isRequired}
             {...rest}
         />
