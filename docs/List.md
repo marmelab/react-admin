@@ -60,7 +60,7 @@ You can find more advanced examples of `<List>` usage in the [demos](./Demos.md)
 | `disable Authentication`  | Optional | `boolean`      | `false`        | Set to `true` to disable the authentication check.                                           |
 | `disable SyncWithLocation`| Optional | `boolean`      | `false`        | Set to `true` to disable the synchronization of the list parameters with the URL.            |
 | `empty`                   | Optional | `ReactElement` | -              | The component to display when the list is empty.                                             |
-| `emptyWhileLoading`      | Optional | `boolean`      | `false`        | Set to `true` to return `null` while the list is loading.                                    |
+| `empty WhileLoading`      | Optional | `boolean`      | `false`        | Set to `true` to return `null` while the list is loading.                                    |
 | `exporter`                | Optional | `function`     | -              | The function to call to export the list.                                                     |
 | `filters`                 | Optional | `ReactElement` | -              | The filters to display in the toolbar.                                                       |
 | `filter`                  | Optional | `object`       | -              | The permanent filter values.                                                                 |
