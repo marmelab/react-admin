@@ -60,6 +60,8 @@ export const BandEdit = () => (
 
 `<ReferenceManyToManyInput>` expects a child that is an input allowing to select multiple values as child - like `<AutocompleteArrayInput>` in the example above. Other possible children are `<SelectArrayInput>`, `<CheckboxGroupInput>`, and `<DualListInput>`.
 
+Note that although all possible child components support a `defaultValue` prop, it will only be applied on create views.
+
 **Tip**: If you need to edit the fields of the associative table (e.g. the `date` in `performances`), you can use a [`<ReferenceManyInput>`](./ReferenceManyInput.md) instead.
 
 ## Props

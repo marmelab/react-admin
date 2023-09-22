@@ -534,8 +534,32 @@ If you want to deeply customize the app header, the menu, or the notifications, 
 
 React-admin offers predefined layouts for you to use:
 
+<figure>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1177 290" preserveAspectRatio="xMinYMin meet">
+        <image width="1177" height="290" xlink:href="./img/layouts.png" />
+        <g opacity="0">
+            <a href="./Layout.html" aria-label="Layout">
+                <rect x="0" y="0" width="348" height="290"/>
+            </a>
+        </g>
+        <g opacity="0">
+            <a href="./ContainerLayout.html" aria-label="ContainerLayout">
+                <rect x="373" y="0" width="408" height="290"/>
+            </a>
+        </g>
+        <g opacity="0">
+            <a href="./SolarLayout.html" aria-label="SolarLayout">
+                <rect x="801" y="0" width="376" height="290"/>
+            </a>
+        </g>
+    </svg>
+</figure>
+
 - [`<Layout>`](./Layout.md): The default layout. It renders a top app bar and the navigation menu in a side bar.
-- [`<ContainerLayout>`](./ContainerLayout.md): A centered layout with horizontal navigation.
+- [`<ContainerLayout>`](./ContainerLayout.md) is centered layout with horizontal navigation.
+- [`<SolarLayout>`](./SolarLayout.md) is a layout with a small icon sidebar, no top bar, and a full-width content area.
+
+For instance, here is how to replace the default `Layout` with the `ContainerLayout`:
 
 ```tsx
 import { Admin } from 'react-admin';

@@ -3,6 +3,8 @@ layout: default
 title: "The RecordRepresentation Component"
 ---
 
+# `<RecordRepresentation>`
+
 Render the record representation, leveraging the [`recordRepresentation`](./Resource.md#recordrepresentation) prop of the parent `<Resource>` component.
 
 You can also use its hook version: [`<useGetRecordRepresentation>`](./useGetRecordRepresentation.md).

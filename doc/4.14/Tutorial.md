@@ -9,8 +9,7 @@ This 30 minutes tutorial will expose how to create a new admin app based on an e
 
 Here is an overview of the result:
 
-<video controls autoplay playsinline muted loop>
-  <source src="./img/tutorial_overview.webm" type="video/webm"/>
+<video controls autoplay playsinline muted loop poster="./img/tutorial_overview.png">
   <source src="./img/tutorial_overview.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
@@ -873,7 +872,6 @@ The first filter, 'q', takes advantage of a full-text functionality offered by J
   <source src="./img/filters.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
-
 
 Filters are "search-as-you-type", meaning that when the user enters new values in the filter form, the list refreshes (via an API request) immediately.
 
