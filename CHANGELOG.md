@@ -1,6 +1,6 @@
 # Changelog
 
-## v4.14.2
+## v4.14.3
 
 * Fix `<PrevNextButton>` default style ([#9290](https://github.com/marmelab/react-admin/pull/9290)) ([fzaninotto](https://github.com/fzaninotto))
 * [Doc] Add `<SolarLayout>` component ([#9282](https://github.com/marmelab/react-admin/pull/9282)) ([fzaninotto](https://github.com/fzaninotto))
@@ -13,6 +13,10 @@
 * [Doc] Fix typo in useRegisterMutationMiddleware introduction part ([#9291](https://github.com/marmelab/react-admin/pull/9291)) ([youjin-10](https://github.com/youjin-10))
 * [Doc] Fix typo in Features example ([#9286](https://github.com/marmelab/react-admin/pull/9286)) ([fzaninotto](https://github.com/fzaninotto))
 * [Demo] Fix ReviewList shows horizontal scrollbar on mobile ([#9297](https://github.com/marmelab/react-admin/pull/9297)) ([fzaninotto](https://github.com/fzaninotto))
+
+## v4.14.2
+
+Failed release, do not use.
 
 ## v4.14.1
 
