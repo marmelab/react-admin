@@ -8,6 +8,7 @@ import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 import { useTranslate, useResourceContext, useCreatePath } from 'ra-core';
 import isEqual from 'lodash/isEqual';
+import merge from 'lodash/merge';
 
 import { Button, ButtonProps } from './Button';
 
@@ -32,6 +33,7 @@ const CreateButton = (props: CreateButtonProps) => {
         resource: resourceProp,
         scrollToTop = true,
         variant,
+        state = {},
         ...rest
     } = props;
 
@@ -46,7 +48,7 @@ const CreateButton = (props: CreateButtonProps) => {
         <StyledFab
             component={Link}
             to={createPath({ resource, type: 'create' })}
-            state={scrollStates[String(scrollToTop)]}
+            state={merge(scrollStates[String(scrollToTop)], state)}
             // @ts-ignore FabProps ships its own runtime palette `FabPropsColorOverrides` provoking an overlap error with `ButtonProps`
             color="primary"
             className={clsx(CreateButtonClasses.floating, className)}
@@ -59,7 +61,7 @@ const CreateButton = (props: CreateButtonProps) => {
         <StyledButton
             component={Link}
             to={createPath({ resource, type: 'create' })}
-            state={scrollStates[String(scrollToTop)]}
+            state={merge(scrollStates[String(scrollToTop)], state)}
             className={clsx(CreateButtonClasses.root, className)}
             label={label}
             variant={variant}

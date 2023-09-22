@@ -12,6 +12,8 @@ import {
 import { styled } from '@mui/material/styles';
 import { useTranslate } from 'ra-core';
 import { Path } from 'react-router';
+import { LinkProps } from 'react-router-dom';
+import { merge } from 'lodash';
 
 /**
  * A generic Button with side icon. Only the icon is displayed on small screens.
@@ -36,11 +38,12 @@ export const Button = (props: ButtonProps) => {
         color = 'primary',
         size = 'small',
         to: locationDescriptor,
+        state = {},
         ...rest
     } = props;
     const translate = useTranslate();
     const translatedLabel = label ? translate(label, { _: label }) : undefined;
-    const linkParams = getLinkParams(locationDescriptor);
+    const linkParams = merge(getLinkParams(locationDescriptor), { state });
 
     const isXSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')
@@ -101,7 +104,7 @@ interface Props {
     variant?: string;
 }
 
-export type ButtonProps = Props & MuiButtonProps;
+export type ButtonProps = Props & Partial<LinkProps> & MuiButtonProps;
 
 Button.propTypes = {
     alignIcon: PropTypes.oneOf(['left', 'right']),
