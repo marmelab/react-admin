@@ -138,7 +138,7 @@ Finally, create a component to actually call this function and show a notificati
 ```jsx
 import { useState, useCallback } from 'react';
 import { useDataProvider, useRecordContext } from 'react-admin';
-import { Button, Card, Alert, AlertTitle, LinearProgress } from '@mui/material';
+import { Box, Button, Card, Alert, AlertTitle, LinearProgress, Typography } from '@mui/material';
 import { useSubscribeCallback } from '@react-admin/ra-realtime';
 
 export const RecomputeProjectStatsButton = () => {
@@ -182,6 +182,22 @@ export const RecomputeProjectStatsButton = () => {
                 </Card>
             )}
         </div>
+    );
+};
+
+const LinearProgressWithLabel = props => {
+    return (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ width: '100%', mr: 1 }}>
+                <LinearProgress variant="determinate" {...props} />
+            </Box>
+            <Box sx={{ minWidth: 35 }}>
+                <Typography
+                    variant="body2"
+                    color="text.secondary"
+                >{`${Math.round(props.value)}%`}</Typography>
+            </Box>
+        </Box>
     );
 };
 ```
