@@ -97,6 +97,112 @@ And the following components:
 -   [`<EditLive>`](./EditLive.md)
 -   [`<ShowLive>`](./ShowLive.md)
 
+## Real Time Notifications
+
+Thanks to the Ra-realtime hooks, you can implement custom notifications based on events. For instance, consider a long server action called `recompute` for which you'd like to show the progression.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/useSubscribeCallback.webm" type="video/webm"/>
+  <source src="./img/useSubscribeCallback.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+First, leverage the ability to [add custom dataProvider methods](https://marmelab.com/react-admin/Actions.html#calling-custom-methods) to allow calling this custom end point from the UI:
+
+```ts
+export const dataProvider = {
+    // ...standard dataProvider methods such as getList, etc.
+    recompute: async (params) => {
+        httpClient(`${apiUrl}/recompute`, {
+            method: 'POST',
+            body: JSON.stringify(params.data), // contains the project's id
+        }).then(({ json }) => ({ data: json }));
+    }
+}
+```
+
+Then, make sure your API sends events with a topic named `recompute_PROJECT_ID` where `PROJECT_ID` is the project identifier:
+
+```json
+{
+    "type": "recompute_PROJECT_ID",
+    "payload": {
+        "progress": 10
+    },
+}
+```
+
+Finally, create a component to actually call this function and show a notification, leveraging the [useSubscribeCallback](./useSubscribeCallback.md) hook:
+
+{% raw %}
+```jsx
+import { useState, useCallback } from 'react';
+import { useDataProvider, useRecordContext } from 'react-admin';
+import { Box, Button, Card, Alert, AlertTitle, LinearProgress, Typography } from '@mui/material';
+import { useSubscribeCallback } from '@react-admin/ra-realtime';
+
+export const RecomputeProjectStatsButton = () => {
+    const dataProvider = useDataProvider();
+    const record = useRecordContext();
+    const [progress, setProgress] = useState(0);
+
+    const callback = useCallback(
+        (event, unsubscribe) => {
+            setProgress(event.payload?.progress || 0);
+            if (event.payload?.progress === 100) {
+                unsubscribe();
+            }
+        },
+        [setProgress]
+    );
+    const subscribe = useSubscribeCallback(
+        `recompute_${record.id}`,
+        callback
+    );
+
+    return (
+        <div>
+            <Button
+                onClick={() => {
+                    subscribe();
+                    dataProvider.recomputeProjectStats({ id: record.id });
+                }}
+            >
+                Recompute
+            </Button>
+            {progress > 0 && (
+                <Card sx={{ m: 2, maxWidth: 400 }}>
+                    <Alert severity={progress === 100 ? 'success' : 'info'}>
+                        <AlertTitle>
+                            Recomputing stats{' '}
+                            {progress === 100 ? 'complete' : 'in progress'}
+                        </AlertTitle>
+                        <LinearProgressWithLabel value={progress} />
+                    </Alert>
+                </Card>
+            )}
+        </div>
+    );
+};
+
+const LinearProgressWithLabel = props => {
+    return (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ width: '100%', mr: 1 }}>
+                <LinearProgress variant="determinate" {...props} />
+            </Box>
+            <Box sx={{ minWidth: 35 }}>
+                <Typography
+                    variant="body2"
+                    color="text.secondary"
+                >{`${Math.round(props.value)}%`}</Typography>
+            </Box>
+        </Box>
+    );
+};
+```
+{% endraw %}
+
 ## Menu Badges
 
 Ra-realtime also provides **badge notifications in the Menu**, so that users can see that something new happened to a resource list while working on another one.
