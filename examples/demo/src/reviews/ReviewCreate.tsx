@@ -15,17 +15,17 @@ import {
 import StarRatingInput from './StarRatingInput';
 import { useLocation } from 'react-router';
 
-const customerOptionRenderer = choice =>
+const customerOptionRenderer = (choice: any) =>
     `${choice.first_name} ${choice.last_name}`;
 
-const productOptionRenderer = choice => `${choice.reference}`;
+const productOptionRenderer = (choice: any) => `${choice.reference}`;
 
 const ReviewCreate = () => {
     const notify = useNotify();
     const redirect = useRedirect();
     const location = useLocation();
 
-    const onSuccess = data => {
+    const onSuccess = (_: any) => {
         const record = getRecordFromLocation(location);
         notify(`Changes saved`);
         if (record && record.product_id) {
