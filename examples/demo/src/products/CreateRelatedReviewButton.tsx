@@ -6,9 +6,7 @@ const CreateRelatedReviewButton = () => {
 
     return (
         <CreateButton
-            to={{
-                pathname: '/reviews/create',
-            }}
+            resource="reviews"
             state={{ record: { product_id: record.id } }}
         />
     );

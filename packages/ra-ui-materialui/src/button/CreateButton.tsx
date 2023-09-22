@@ -33,7 +33,7 @@ const CreateButton = (props: CreateButtonProps) => {
         resource: resourceProp,
         scrollToTop = true,
         variant,
-        state = {},
+        state: initialState = {},
         ...rest
     } = props;
 
@@ -43,12 +43,13 @@ const CreateButton = (props: CreateButtonProps) => {
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('md')
     );
+    const state = merge(scrollStates[String(scrollToTop)], initialState);
 
     return isSmall ? (
         <StyledFab
             component={Link}
             to={createPath({ resource, type: 'create' })}
-            state={merge(scrollStates[String(scrollToTop)], state)}
+            state={state}
             // @ts-ignore FabProps ships its own runtime palette `FabPropsColorOverrides` provoking an overlap error with `ButtonProps`
             color="primary"
             className={clsx(CreateButtonClasses.floating, className)}
@@ -61,7 +62,7 @@ const CreateButton = (props: CreateButtonProps) => {
         <StyledButton
             component={Link}
             to={createPath({ resource, type: 'create' })}
-            state={merge(scrollStates[String(scrollToTop)], state)}
+            state={state}
             className={clsx(CreateButtonClasses.root, className)}
             label={label}
             variant={variant}
