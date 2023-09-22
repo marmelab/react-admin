@@ -439,9 +439,7 @@ const CreateRelatedCommentButton = () => {
     const record = useRecordContext();
     return (
         <CreateButton
-            to={{
-                pathname: '/comments/create',
-            }}
+            resource="reviews"
             state={{ record: { post_id: record.id } }}
         />
     );
@@ -469,8 +467,8 @@ const CreateRelatedCommentButton = () => {
     const record = useRecordContext();
     return (
         <CreateButton
+            resource="reviews"
             to={{
-                pathname: '/comments/create',
                 search: `?source=${JSON.stringify({ post_id: record.id })}`,
             }}
         />

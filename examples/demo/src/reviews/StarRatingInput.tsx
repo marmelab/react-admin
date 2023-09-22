@@ -17,13 +17,7 @@ const StarRatingInput = (props: InputProps) => {
     const translate = useTranslate();
 
     return (
-        <Box
-            sx={{
-                flexDirection: 'column',
-                marginBottom: '1rem',
-            }}
-            display="flex"
-        >
+        <Box display="flex" flexDirection="column" marginBottom="1rem">
             <Typography>{translate(name)}</Typography>
             <StyledRating
                 {...field}
