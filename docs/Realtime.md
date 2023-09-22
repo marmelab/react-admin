@@ -125,14 +125,14 @@ Then, make sure your API sends events with a topic named `recompute_PROJECT_ID` 
 
 ```json
 {
-    "type": "recompute_PROJECT_ID",
+    "topic": "recompute_PROJECT_ID",
     "payload": {
         "progress": 10
     },
 }
 ```
 
-Finally, create a component to actually call this function and show a notification, leveraging the [useSubscribeCallback](./useSubscribeCallback.md) hook:
+Finally, create a component to actually call the `dataProvider.recompute` function and show a notification, leveraging the [useSubscribeCallback](./useSubscribeCallback.md) hook:
 
 {% raw %}
 ```jsx
