@@ -290,6 +290,48 @@ function loadNewsletterScript() {
     }
 }
 
+/**
+ * Beginner mode
+ */
+
+let beginnerMode = window.localStorage.getItem('beginner-mode') === 'true';
+
+function hideNonBeginnerDoc() {
+    const chapters = document.querySelectorAll('.sidenav > ul  li');
+    chapters.forEach(chapter => {
+        if (!chapter.classList.contains('beginner')) {
+            chapter.style.display = 'none';
+        }
+    });
+}
+
+function showNonBeginnerDoc() {
+    const chapters = document.querySelectorAll('.sidenav > ul  li');
+    chapters.forEach(chapter => {
+        chapter.style.display = 'list-item';
+    });
+}
+
+document
+    .getElementById('beginner-mode-trigger')
+    .addEventListener('click', () => {
+        beginnerMode = !beginnerMode;
+        if (beginnerMode) {
+            window.localStorage.setItem('beginner-mode', 'true');
+            hideNonBeginnerDoc();
+        } else {
+            window.localStorage.removeItem('beginner-mode');
+            showNonBeginnerDoc();
+        }
+    });
+
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('beginner-mode-trigger').checked = beginnerMode;
+    if (beginnerMode) {
+        hideNonBeginnerDoc();
+    }
+});
+
 // Replace full page reloads by a fill of the content area
 // so that the side navigation keeps its state
 // use a global event listener to also catch links inside the content area
