@@ -961,6 +961,51 @@ const { isDirty } = useFormState(); // ✅
 const formState = useFormState(); // ❌ should deconstruct the formState      
 ```
 
+## i18n
+
+In order to properly format the input's `helperText` and error messages from `useInput()`, custom inputs should make use of the react-admin component `<InputHelperText>`, which ensures that the text below the input returns consistently whether it's a string or a React component, and whether it's a simple message or an error. Importantly, react-admin messages from `useInput()` are passed through `useTranslate()` inside `<InputHelperText>`, which makes this component important for localization.
+
+```jsx
+import TextField from '@mui/material/TextField';
+import { useInput, InputHelperText } from 'react-admin';
+
+const BoundedTextField = (props: BoundedTextFieldProps) => {
+    const { onChange, onBlur, label, helperText, ...rest } = props;
+    const {
+        field,
+        fieldState: { isTouched, invalid, error },
+        formState: { isSubmitted },
+        isRequired,
+    } = useInput({
+        onChange,
+        onBlur,
+        ...rest,
+    });
+
+    const renderHelperText =
+        helperText !== false || ((isTouched || isSubmitted) && invalid);
+
+    return (
+        <TextField
+            {...field}
+            label={label}
+            error={(isTouched || isSubmitted) && invalid}
+            helperText={
+                renderHelperText ? (
+                    <InputHelperText
+                        touched={isTouched || isSubmitted}
+                        error={error?.message}
+                        helperText={helperText}
+                    />
+                ) : null
+            }
+            required={isRequired}
+            {...rest}
+        />
+    );
+};
+```
+
 ## Third-Party Components
 
 You can find components for react-admin in third-party repositories.
