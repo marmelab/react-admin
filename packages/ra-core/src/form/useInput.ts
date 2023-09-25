@@ -65,7 +65,7 @@ export const useInput = <ValueType = any>(
     // (i.e. field level defaultValue override form level defaultValues for this field).
     const { field: controllerField, fieldState, formState } = useController({
         name: finalName,
-        defaultValue: get(record, source, defaultValue), // here ?
+        defaultValue: get(record, source, defaultValue),
         rules: {
             validate: async (value, values) => {
                 if (!sanitizedValidate) return true;
