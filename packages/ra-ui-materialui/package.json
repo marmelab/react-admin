@@ -27,7 +27,7 @@
     },
     "devDependencies": {
         "@mui/icons-material": "^5.0.1",
-        "@mui/material": "^5.0.2",
+        "@mui/material": "^5.14.10",
         "@testing-library/react": "^11.2.3",
         "@types/dompurify": "^3.0.2",
         "cross-env": "^5.2.0",
@@ -50,7 +50,7 @@
     },
     "peerDependencies": {
         "@mui/icons-material": "^5.0.1",
-        "@mui/material": "^5.0.2",
+        "@mui/material": "^5.14.10",
         "ra-core": "^4.0.0",
         "react": "^16.9.0 || ^17.0.0 || ^18.0.0",
         "react-dom": "^16.9.0 || ^17.0.0 || ^18.0.0",

@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import { ReactElement, memo } from 'react';
-import PropTypes from 'prop-types';
-import { Fab, useMediaQuery, Theme } from '@mui/material';
 import ContentAdd from '@mui/icons-material/Add';
+import { Fab, useMediaQuery, Theme } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
-import { Link } from 'react-router-dom';
-import { useTranslate, useResourceContext, useCreatePath } from 'ra-core';
 import isEqual from 'lodash/isEqual';
 import merge from 'lodash/merge';
+import PropTypes from 'prop-types';
+import { useTranslate, useResourceContext, useCreatePath } from 'ra-core';
+import { Path } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import { Button, ButtonProps } from './Button';
 
@@ -33,6 +33,7 @@ const CreateButton = (props: CreateButtonProps) => {
         resource: resourceProp,
         scrollToTop = true,
         variant,
+        to: locationDescriptor,
         state: initialState = {},
         ...rest
     } = props;
@@ -43,7 +44,11 @@ const CreateButton = (props: CreateButtonProps) => {
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('md')
     );
-    const state = merge(scrollStates[String(scrollToTop)], initialState);
+    const state = merge(
+        scrollStates[String(scrollToTop)],
+        getLinkParams(locationDescriptor),
+        initialState
+    );
 
     return isSmall ? (
         <StyledFab
@@ -83,11 +88,18 @@ const defaultIcon = <ContentAdd />;
 
 interface Props {
     resource?: string;
-    icon?: ReactElement;
+    icon?: React.ReactElement;
     scrollToTop?: boolean;
+    to?: string | LocationDescriptor;
 }
 
-export type CreateButtonProps = Props & ButtonProps;
+export type LocationDescriptor = Partial<Path> & {
+    redirect?: boolean;
+    state?: any;
+    replace?: boolean;
+};
+
+export type CreateButtonProps = Props & ButtonProps<typeof Link>;
 
 CreateButton.propTypes = {
     resource: PropTypes.string,
@@ -124,7 +136,7 @@ const StyledButton = styled(Button, {
     overridesResolver: (_props, styles) => styles.root,
 })({});
 
-export default memo(CreateButton, (prevProps, nextProps) => {
+export default React.memo(CreateButton, (prevProps, nextProps) => {
     return (
         prevProps.resource === nextProps.resource &&
         prevProps.label === nextProps.label &&
@@ -133,3 +145,22 @@ export default memo(CreateButton, (prevProps, nextProps) => {
         isEqual(prevProps.to, nextProps.to)
     );
 });
+
+const getLinkParams = (locationDescriptor?: LocationDescriptor | string) => {
+    // eslint-disable-next-line eqeqeq
+    if (locationDescriptor == undefined) {
+        return undefined;
+    }
+
+    if (typeof locationDescriptor === 'string') {
+        return { to: locationDescriptor };
+    }
+
+    const { redirect, replace, state, ...to } = locationDescriptor;
+    return {
+        to,
+        redirect,
+        replace,
+        state,
+    };
+};
