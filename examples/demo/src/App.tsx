@@ -9,12 +9,13 @@ import dataProviderFactory from './dataProvider';
 import englishMessages from './i18n/en';
 import invoices from './invoices';
 import { Layout, Login } from './layout';
-import { darkTheme, lightTheme } from './layout/themes';
 import orders from './orders';
 import products from './products';
 import reviews from './reviews';
 import Segments from './segments/Segments';
 import visitors from './visitors';
+import { lightTheme } from './themes/lightTheme';
+import { darkTheme } from './themes/darkTheme';
 
 const i18nProvider = polyglotI18nProvider(
     locale => {
