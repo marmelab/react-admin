@@ -61,7 +61,7 @@ interface Props {
     scrollToTop?: boolean;
 }
 
-export type CloneButtonProps = Props & ButtonProps;
+export type CloneButtonProps = Props & ButtonProps<typeof Link>;
 
 CloneButton.propTypes = {
     icon: PropTypes.element,

@@ -39,7 +39,7 @@
     },
     "peerDependencies": {
         "@mui/icons-material": "^5.0.1",
-        "@mui/material": "^5.0.2",
+        "@mui/material": "^5.14.10",
         "ra-core": "^4.0.0",
         "ra-ui-materialui": "^4.0.0",
         "react": "^16.9.0 || ^17.0.0 || ^18.0.0",
@@ -47,7 +47,7 @@
     },
     "devDependencies": {
         "@mui/icons-material": "^5.0.1",
-        "@mui/material": "^5.0.2",
+        "@mui/material": "^5.14.10",
         "@testing-library/react": "^11.2.3",
         "data-generator-retail": "^4.13.4",
         "ra-core": "^4.13.4",

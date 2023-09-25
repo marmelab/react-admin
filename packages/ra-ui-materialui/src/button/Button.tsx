@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { ReactElement, ElementType } from 'react';
-import PropTypes from 'prop-types';
 import {
     Button as MuiButton,
     ButtonProps as MuiButtonProps,
@@ -9,11 +7,11 @@ import {
     useMediaQuery,
     Theme,
 } from '@mui/material';
+import { PolymorphicProps } from '@mui/base';
+
 import { styled } from '@mui/material/styles';
+import PropTypes from 'prop-types';
 import { useTranslate } from 'ra-core';
-import { Path } from 'react-router';
-import { LinkProps } from 'react-router-dom';
-import { merge } from 'lodash';
 
 /**
  * A generic Button with side icon. Only the icon is displayed on small screens.
@@ -28,7 +26,9 @@ import { merge } from 'lodash';
  * </Button>
  *
  */
-export const Button = (props: ButtonProps) => {
+export const Button = <RootComponent extends React.ElementType = 'button'>(
+    props: ButtonProps<RootComponent>
+) => {
     const {
         alignIcon = 'left',
         children,
@@ -37,13 +37,10 @@ export const Button = (props: ButtonProps) => {
         label,
         color = 'primary',
         size = 'small',
-        to: locationDescriptor,
-        state = {},
         ...rest
     } = props;
     const translate = useTranslate();
     const translatedLabel = label ? translate(label, { _: label }) : undefined;
-    const linkParams = merge(getLinkParams(locationDescriptor), { state });
 
     const isXSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')
@@ -58,7 +55,6 @@ export const Button = (props: ButtonProps) => {
                     color={color}
                     size="large"
                     {...rest}
-                    {...linkParams}
                 >
                     {children}
                 </IconButton>
@@ -70,7 +66,6 @@ export const Button = (props: ButtonProps) => {
                 disabled={disabled}
                 size="large"
                 {...rest}
-                {...linkParams}
             >
                 {children}
             </IconButton>
@@ -85,26 +80,26 @@ export const Button = (props: ButtonProps) => {
             startIcon={alignIcon === 'left' && children ? children : undefined}
             endIcon={alignIcon === 'right' && children ? children : undefined}
             {...rest}
-            {...linkParams}
         >
             {translatedLabel}
         </StyledButton>
     );
 };
 
-interface Props {
+interface Props<RootComponent extends React.ElementType> {
     alignIcon?: 'left' | 'right';
-    children?: ReactElement;
+    children?: React.ReactElement;
     className?: string;
-    component?: ElementType;
-    to?: string | LocationDescriptor;
+    component?: RootComponent;
     disabled?: boolean;
     label?: string;
     size?: 'small' | 'medium' | 'large';
     variant?: string;
 }
 
-export type ButtonProps = Props & Partial<LinkProps> & MuiButtonProps;
+export type ButtonProps<
+    RootComponent extends React.ElementType = 'button'
+> = Props<RootComponent> & MuiButtonProps<RootComponent>;
 
 Button.propTypes = {
     alignIcon: PropTypes.oneOf(['left', 'right']),
@@ -139,28 +134,3 @@ const StyledButton = styled(MuiButton, {
         lineHeight: 1.5,
     },
 });
-
-const getLinkParams = (locationDescriptor?: LocationDescriptor | string) => {
-    // eslint-disable-next-line eqeqeq
-    if (locationDescriptor == undefined) {
-        return undefined;
-    }
-
-    if (typeof locationDescriptor === 'string') {
-        return { to: locationDescriptor };
-    }
-
-    const { redirect, replace, state, ...to } = locationDescriptor;
-    return {
-        to,
-        redirect,
-        replace,
-        state,
-    };
-};
-
-export type LocationDescriptor = Partial<Path> & {
-    redirect?: boolean;
-    state?: any;
-    replace?: boolean;
-};
