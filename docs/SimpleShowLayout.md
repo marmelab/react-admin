@@ -27,7 +27,7 @@ const PostShow = () => (
 
 ## Props
 
-* [`children`](#fields): components rendering a record field
+* [`children`](#children): components rendering a record field
 * `className`: passed to the root component
 * [`divider`](#divider): optional element to render between each field
 * [`record`](#controlled-mode): can be injected when outside a RecordContext 

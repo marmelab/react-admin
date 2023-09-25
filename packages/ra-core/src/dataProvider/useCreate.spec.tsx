@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { render, waitFor, screen } from '@testing-library/react';
 import expect from 'expect';
 
 import { RaRecord } from '../types';
 import { testDataProvider } from './testDataProvider';
 import { useCreate } from './useCreate';
+import { useGetList } from './useGetList';
 import { CoreAdminContext } from '../core';
 
 describe('useCreate', () => {
@@ -131,6 +132,53 @@ describe('useCreate', () => {
         localCreate('products', { data: { sku: 'abc' } });
         await waitFor(() => {
             expect(sku).toEqual('abc');
+        });
+    });
+
+    it('invalidates the getList cache', async () => {
+        const products = [
+            { id: 1, sku: 'abc' },
+            { id: 2, sku: 'def' },
+        ];
+        const dataProvider = testDataProvider({
+            getList: () =>
+                Promise.resolve({
+                    data: products as any,
+                    total: products.length,
+                }),
+            create: () => {
+                const newProduct = { id: 3, sku: 'ghi' };
+                products.push(newProduct);
+                return Promise.resolve({ data: newProduct as any });
+            },
+        });
+        const ProductPage = () => {
+            const { data: products, isLoading } = useGetList('products');
+            if (isLoading) return null;
+            return (
+                <ul>
+                    {products?.map(product => (
+                        <li key={product.id}>{product.sku}</li>
+                    ))}
+                    <li>
+                        <AddProductButton />
+                    </li>
+                </ul>
+            );
+        };
+        const AddProductButton = () => {
+            const [create] = useCreate('products', { data: { sku: 'ghi' } });
+            return <button onClick={() => create()}>Create</button>;
+        };
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <ProductPage />
+            </CoreAdminContext>
+        );
+        const createButton = await screen.findByText('Create');
+        createButton.click();
+        await waitFor(() => {
+            expect(screen.queryByText('ghi')).not.toBeNull();
         });
     });
 });

@@ -34,6 +34,7 @@ export const generateProject = async (state: ProjectConfiguration) => {
 
     generateAppFile(projectDirectory, state);
     generatePackageJson(projectDirectory, state);
+    generateGitIgnore(projectDirectory);
     generateEnvFile(projectDirectory, state);
     generateReadme(projectDirectory, state);
 
@@ -137,6 +138,13 @@ const generatePackageJson = (
     );
 };
 
+const generateGitIgnore = (projectDirectory: string) => {
+    fs.writeFileSync(
+        path.join(projectDirectory, '.gitignore'),
+        defaultGitIgnore
+    );
+};
+
 const generateEnvFile = (
     projectDirectory: string,
     state: ProjectConfiguration
@@ -183,7 +191,7 @@ const BasePackageJson = {
     },
     dependencies: {
         react: '^18.2.0',
-        'react-admin': '^4.13.0',
+        'react-admin': '^4.14.0',
         'react-dom': '^18.2.0',
     },
     devDependencies: {
@@ -333,3 +341,29 @@ const replaceTokensInFile = (filePath: string, state: ProjectConfiguration) => {
     fileContent = replaceTokens(fileContent, state);
     fs.writeFileSync(filePath, fileContent);
 };
+
+const defaultGitIgnore = `# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+`;

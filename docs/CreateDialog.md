@@ -55,6 +55,8 @@ In the related `<Resource>`, you don't need to declare a `create` component as t
 <Resource name="customers" list={CustomerList} />
 ```
 
+**Note**: You can't use the `<CreateDialog>` and have a standard `<Edit>` specified on your `<Resource>`, because the `<Routes>` declarations would conflict. If you need this, use the [`<CreateInDialogButton>`](./CreateInDialogButton.md) instead.
+
 `<CreateDialog>` accepts the same props as the [`<Create>`](./Create.md) component, and the same type of children (e.g. a [`<SimpleForm>`](./SimpleForm.md) element).
 
 * `children`: the components that renders the form

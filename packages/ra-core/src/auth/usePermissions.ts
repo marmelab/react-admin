@@ -51,7 +51,7 @@ const usePermissions = <Permissions = any, Error = any>(
             : async () => [],
         {
             onError: error => {
-                if (process.env.NODE_ENV !== 'production') {
+                if (process.env.NODE_ENV === 'development') {
                     console.error(error);
                 }
                 logoutIfAccessDenied(error);
