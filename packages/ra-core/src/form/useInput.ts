@@ -63,9 +63,23 @@ export const useInput = <ValueType = any>(
     // This ensures dynamically added inputs have their value set correctly (ArrayInput for example).
     // We don't do this for the form level defaultValues so that it works as it should in react-hook-form
     // (i.e. field level defaultValue override form level defaultValues for this field).
-    const { field: controllerField, fieldState, formState } = useController({
+    console.log('useController', {
         name: finalName,
         defaultValue: get(record, source, defaultValue),
+        rules: {
+            validate: async (value, values) => {
+                if (!sanitizedValidate) return true;
+                const error = await sanitizedValidate(value, values, props);
+
+                if (!error) return true;
+                return `@@react-admin@@${JSON.stringify(error)}`;
+            },
+        },
+        ...options,
+    });
+    const { field: controllerField, fieldState, formState } = useController({
+        name: finalName,
+        defaultValue: get(record, source, defaultValue), // here ?
         rules: {
             validate: async (value, values) => {
                 if (!sanitizedValidate) return true;
@@ -82,6 +96,9 @@ export const useInput = <ValueType = any>(
             },
         },
         ...options,
+        // Workaround for https://github.com/react-hook-form/react-hook-form/issues/10907
+        // FIXME - remove when fixed
+        disabled: options.disabled || undefined,
     });
 
     // Because our forms may receive an asynchronously loaded record for instance,
