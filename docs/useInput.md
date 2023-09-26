@@ -148,9 +148,20 @@ const PersonEdit = () => (
 
 **Tip**: Remember to use react-admin's `<InputHelperText>` component in custom inputs to properly translate and render messages and errors coming from `useInput()`.
 
-**Reminder:** [react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/docs/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+## Important note about formState
+
+[react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/docs/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
 
 ```js
 const { isDirty } = useFormState(); // ✅
 const formState = useFormState(); // ❌ should deconstruct the formState      
+```
+
+This pattern should be followed when writing a custom input with `useInput()`.
+
+```jsx
+const { formState: { isSubmitted }} = useInput(props); // ✅
+
+const { formState } = useInput(props);
+const submitted = formState.isSubmitted; // ❌
 ```
