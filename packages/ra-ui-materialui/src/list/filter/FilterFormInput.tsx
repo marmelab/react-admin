@@ -30,7 +30,9 @@ export const FilterFormInput = props => {
                         'hide-filter',
                         FilterFormInputClasses.hideButton
                     )}
-                    onClick={handleHide}
+                    onClick={ev =>
+                        handleHide(ev, filterElement.props.onBeforeHideFilter)
+                    }
                     data-key={filterElement.props.source}
                     title={translate('ra.action.remove_filter')}
                     size="small"

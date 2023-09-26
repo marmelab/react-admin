@@ -117,7 +117,15 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
     };
 
     const handleHide = useCallback(
-        event => hideFilter(event.currentTarget.dataset.key),
+        (event, onBeforeHideFilter) => {
+            if (
+                onBeforeHideFilter &&
+                'function' === typeof onBeforeHideFilter
+            ) {
+                return onBeforeHideFilter(event);
+            }
+            hideFilter(event.currentTarget.dataset.key);
+        },
         [hideFilter]
     );
 
