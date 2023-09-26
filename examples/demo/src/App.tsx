@@ -37,7 +37,7 @@ const i18nProvider = polyglotI18nProvider(
 const App = () => {
     return (
         <ThemeContextProvider>
-            <MyAdmin />;
+            <MyAdmin />
         </ThemeContextProvider>
     );
 };
@@ -59,6 +59,8 @@ const MyAdmin = () => {
             i18nProvider={i18nProvider}
             disableTelemetry
             theme={theme.theme}
+            lightTheme={theme.theme}
+            darkTheme={theme.theme}
         >
             <CustomRoutes>
                 <Route path="/segments" element={<Segments />} />
