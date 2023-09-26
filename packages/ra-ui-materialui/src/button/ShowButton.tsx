@@ -76,7 +76,7 @@ interface Props<RecordType extends RaRecord = any> {
 export type ShowButtonProps<RecordType extends RaRecord = any> = Props<
     RecordType
 > &
-    ButtonProps<typeof Link>;
+    Omit<ButtonProps<typeof Link>, 'to'>;
 
 ShowButton.propTypes = {
     icon: PropTypes.element,

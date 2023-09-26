@@ -99,7 +99,7 @@ export type LocationDescriptor = Partial<Path> & {
     replace?: boolean;
 };
 
-export type CreateButtonProps = Props & ButtonProps<typeof Link>;
+export type CreateButtonProps = Props & Omit<ButtonProps<typeof Link>, 'to'>;
 
 CreateButton.propTypes = {
     resource: PropTypes.string,
