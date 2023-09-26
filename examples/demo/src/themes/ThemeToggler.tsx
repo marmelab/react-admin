@@ -6,17 +6,23 @@ import {
     Select,
     SelectChangeEvent,
 } from '@mui/material';
+import { useContext } from 'react';
 import { useStore, useTranslate } from 'react-admin';
-
-type ThemeType = 'light' | 'dark' | 'synthwave';
-const themes: ThemeType[] = ['light', 'dark', 'synthwave'];
+import { ThemeContext, ThemeType, themes } from './themeContext';
 
 export const ThemeToggler = () => {
-    const [themeStore, setThemeStore] = useStore<ThemeType>('theme');
+    const [_, setThemeStore] = useStore<ThemeType>('theme');
     const translate = useTranslate();
+
+    const { theme, changeTheme } = useContext(ThemeContext);
 
     const handleChange = (event: SelectChangeEvent) => {
         setThemeStore(event.target.value as ThemeType);
+        changeTheme(
+            themes.find(
+                theme => theme.name === (event.target.value as ThemeType)
+            )
+        );
     };
 
     return (
@@ -28,12 +34,14 @@ export const ThemeToggler = () => {
                 <Select
                     labelId="theme-select-label"
                     id="theme-select"
-                    value={themeStore}
+                    value={theme.name}
                     label="Theme"
                     onChange={handleChange}
                 >
-                    {themes.map(themeName => (
-                        <MenuItem value={themeName}>{themeName}</MenuItem>
+                    {themes.map(theme => (
+                        <MenuItem value={theme.name} key={theme.name}>
+                            {theme.name}
+                        </MenuItem>
                     ))}
                 </Select>
             </FormControl>

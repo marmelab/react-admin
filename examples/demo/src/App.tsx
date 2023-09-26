@@ -14,8 +14,9 @@ import products from './products';
 import reviews from './reviews';
 import Segments from './segments/Segments';
 import visitors from './visitors';
-import { lightTheme } from './themes/lightTheme';
-import { darkTheme } from './themes/darkTheme';
+import { ThemeContext } from './themes/themeContext';
+import { useContext } from 'react';
+import { ThemeContextProvider } from './themes/ThemContextProvider';
 
 const i18nProvider = polyglotI18nProvider(
     locale => {
@@ -33,33 +34,47 @@ const i18nProvider = polyglotI18nProvider(
     ]
 );
 
-const App = () => (
-    <Admin
-        title=""
-        dataProvider={dataProviderFactory(
-            process.env.REACT_APP_DATA_PROVIDER || ''
-        )}
-        store={localStorageStore(undefined, 'ECommerce')}
-        authProvider={authProvider}
-        dashboard={Dashboard}
-        loginPage={Login}
-        layout={Layout}
-        i18nProvider={i18nProvider}
-        disableTelemetry
-        theme={lightTheme}
-        darkTheme={darkTheme}
-        defaultTheme="light"
-    >
-        <CustomRoutes>
-            <Route path="/segments" element={<Segments />} />
-        </CustomRoutes>
-        <Resource name="customers" {...visitors} />
-        <Resource name="commands" {...orders} options={{ label: 'Orders' }} />
-        <Resource name="invoices" {...invoices} />
-        <Resource name="products" {...products} />
-        <Resource name="categories" {...categories} />
-        <Resource name="reviews" {...reviews} />
-    </Admin>
-);
+const App = () => {
+    return (
+        <ThemeContextProvider>
+            <MyAdmin />;
+        </ThemeContextProvider>
+    );
+};
+
+const MyAdmin = () => {
+    const { theme } = useContext(ThemeContext);
+
+    return (
+        <Admin
+            title=""
+            dataProvider={dataProviderFactory(
+                process.env.REACT_APP_DATA_PROVIDER || ''
+            )}
+            store={localStorageStore(undefined, 'ECommerce')}
+            authProvider={authProvider}
+            dashboard={Dashboard}
+            loginPage={Login}
+            layout={Layout}
+            i18nProvider={i18nProvider}
+            disableTelemetry
+            theme={theme.theme}
+        >
+            <CustomRoutes>
+                <Route path="/segments" element={<Segments />} />
+            </CustomRoutes>
+            <Resource name="customers" {...visitors} />
+            <Resource
+                name="commands"
+                {...orders}
+                options={{ label: 'Orders' }}
+            />
+            <Resource name="invoices" {...invoices} />
+            <Resource name="products" {...products} />
+            <Resource name="categories" {...categories} />
+            <Resource name="reviews" {...reviews} />
+        </Admin>
+    );
+};
 
 export default App;
