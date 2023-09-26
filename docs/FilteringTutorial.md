@@ -407,6 +407,10 @@ export default {
 }
 ```
 
+For complex filters such as the one above, or for cases involving pre-filtered lists, you may want to change the way filters are hidden. For example, in the above example, you may want to remove both the `released_gte` and `released_lte` filters when a user attempts to hide one of them. Or, you may want to provide users with a warning if they attempt to hide an important filter. For these and many other applications, you may use the prop `onBeforeHideFilter`, which, when passed to an input, will be called when the hide icon is clicked, interrupting the default process. `onBeforeHideFilter` receives the click event as an argument.
+
+**Tip**: If you make use of `onBeforeHideFilter`, you are responsible for re-initiating the `hideFilter` method from `useListContext()` after your function has run. Otherwise, the filter will not be removed.
+
 ## Saved Queries: Let Users Save Filter And Sort
 
 <video controls autoplay playsinline muted loop>
