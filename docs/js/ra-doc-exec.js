@@ -303,12 +303,18 @@ function hideNonBeginnerDoc() {
             chapter.style.display = 'none';
         }
     });
+    document.querySelectorAll('.beginner-mode-on').forEach(el => {
+        el.style.display = 'block';
+    });
 }
 
 function showNonBeginnerDoc() {
     const chapters = document.querySelectorAll('.sidenav > ul  li');
     chapters.forEach(chapter => {
         chapter.style.display = 'list-item';
+    });
+    document.querySelectorAll('.beginner-mode-on').forEach(el => {
+        el.style.display = 'none';
     });
 }
 
