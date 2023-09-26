@@ -7,12 +7,14 @@ title: "Remix Integration"
 
 [Remix](https://remix.run/) is a Node.js framework for server-side-rendered React apps. But even if react-admin is designed to build Single-Page Applications, Remix and react-admin integrate seamlessly. 
 
-## Setting Up Remix
+## Remix v1
+
+### Setting Up Remix
 
 Let's start by creating a new Remix project. Run the following command:
 
 ```sh
-npx create-remix@latest
+npx create-remix@1.19.3
 ```
 
 This script will ask you for more details about your project. You can use the following options:
@@ -23,11 +25,11 @@ This script will ask you for more details about your project. You can use the fo
 - "TypeScript"
 - "Run npm install"
 
-The project structure should look something like this:
+The project structure should look something like this:  
 
 ![Remix project structure](./img/remix-structure.png)
 
-## Setting Up React-Admin In Remix
+### Setting Up React-Admin In Remix
 
 Add the `react-admin` npm package, as well as a data provider package. In this example, we'll use `ra-data-json-server` to connect to a test API provided by [JSONPlaceholder](https://jsonplaceholder.typicode.com).
 
@@ -73,10 +75,6 @@ export default App;
 ```
 
 This is a minimal admin for 2 resources. React-admin should be able to render a list of posts and a list of comments, guessing the data structure from the API response. 
-
-## Remix v1
-
-This section is for projects using [the current routing file conventions (v1)](https://remix.run/docs/en/main/file-conventions/routes-files).
 
 ### Using React-Admin As The Root Application
 
@@ -271,14 +269,57 @@ Note that the Supabase credentials never leave the server. It's up to you to add
 
 ## Remix v2
 
-This section is for projects using [the new routing file conventions (v2)](https://remix.run/docs/en/main/file-conventions/route-files-v2).
+### Setting Up Remix
+
+Let's start by creating a new Remix project. Run the following command:
+
+```sh
+npx create-remix@latest
+```
+
+This script will ask you for more details about your project. You can use the following options:
+
+- The name you want to give to your project, e.g. `remix-admin`
+- Initialize a new git repository? Choose Yes
+- Install dependencies with npm? Choose Yes
+
+The project structure should look something like this:  
+
+![Remix v2 project structure](./img/remix-v2-structure.png)
+
+### Setting Up React-Admin In Remix
+
+Add the `react-admin` npm package, as well as a data provider package. In this example, we'll use `ra-data-json-server` to connect to a test API provided by [JSONPlaceholder](https://jsonplaceholder.typicode.com).
+
+```sh
+cd remix-admin
+npm add react-admin ra-data-json-server
+```
+**Tip**: If you're using yarn, Remix and react-admin both install `react-router`, and due to the way each library handles its dependency, this results in duplicate packages. To avoid this, use [yarn resolutions](https://classic.yarnpkg.com/en/docs/selective-version-resolutions/) to force Remix to use the same version of `react-router` as react-admin. So add the following to the `package.json` file:
+
+```js
+{
+  // ...
+  "resolutions": {
+    "react-router": "6.8.1",
+    "react-router-dom": "6.8.1"
+  }
+}
+```
+
+And call `yarn` again to install the dependencies:
+
+```sh
+yarn
+```
 
 ### Using React-Admin As The Root Application
 
-If you want to serve the admin app component in the root path ('/'), edit the file called `_routes/index.tsx`, and replace the content with the following:
+Remix and react-admin both use [react-router](https://reactrouter.com/) for routing. React-admin detects when it is included inside an existing React Router context and reuses it. This is problematic because Remix uses file-based routing. So when react-admin changes the route to `/posts` for instance, Remix will look for a corresponding `app/routes/posts.tsx` file. As it doesn't exist, Remix will render a 404.
+
+The solution is to create both an [index route](https://remix.run/docs/en/main/file-conventions/routes#basic-routes) and a [splat route](https://remix.run/docs/en/main/file-conventions/routes#splat-routes), i.e. a route that matches all URLs, and make them render the same content. A splat route is named `$.tsx`. Create the splat route file then edit both the index route (`app/route/_index.tsx`) and the splat route (`app/route/$.tsx`) so they have the following code:
 
 ```jsx
-// in app/routes/_index.tsx
 import App from "../components/App";
 import styles from "~/styles/app.css";
 
@@ -295,23 +336,28 @@ The stylesheet link is necessary to reset the default styles of the admin app. C
 body { margin: 0; }
 ```
 
-Remix and react-admin both use [react-router](https://reactrouter.com/) for routing. React-admin detects when it is included inside an existing React Router context and reuses it. This is problematic because Remix uses file-based routing. So when react-admin changes the route to `/posts` for instance, Remix will look for a corresponding `app/routes/posts.tsx` file. As it doesn't exist, Remix will render a 404.
+**Tip**: Remix doesn't let splat routes catch requests to the index page ('/'), so you must have both the `app/routes/index.tsx` and `app/routes/$.tsx` routes to correctly render the admin app.
 
-The solution is to create a [splat route](https://remix.run/docs/en/main/file-conventions/route-files-v2#splat-routes), i.e. a route that matches all URLs. A splat route is named `$.tsx`. Duplicate the `app/routes/_index.tsx` code into the `app/routes/$.tsx` file:
+Next, create the admin app component in `app/components/App.tsx`:
 
 ```jsx
-// in app/routes/$.tsx
-import App from "../components/App";
-import styles from "~/styles/app.css";
+// in app/components/App.tsx
+import { Admin, Resource, ListGuesser } from "react-admin";
+import jsonServerProvider from "ra-data-json-server";
 
-export function links() {
-  return [{ rel: "stylesheet", href: styles }];
-}
+const dataProvider = jsonServerProvider("https://jsonplaceholder.typicode.com");
+
+const App = () => (
+  <Admin dataProvider={dataProvider}>
+    <Resource name="posts" list={ListGuesser} />
+    <Resource name="comments" list={ListGuesser} />
+  </Admin>
+);
 
 export default App;
 ```
 
-**Tip**: Remix doesn't let splat routes catch requests to the index page ('/'), so you must have both the `app/routes/index.tsx` and `app/routes/$.tsx` routes to correctly render the admin app.
+This is a minimal admin for 2 resources. React-admin should be able to render a list of posts and a list of comments, guessing the data structure from the API response. 
 
 Now, start the server with `npm run dev`, browse to `http://localhost:3000/`, and you should see the working admin:
 
@@ -321,18 +367,31 @@ Now, start the server with `npm run dev`, browse to `http://localhost:3000/`, an
 
 In many cases, the admin is only a part of the application. For instance, you may want to render the admin in a subpath like `/admin`.
 
-To do so, add a [splat route](https://remix.run/docs/en/main/file-conventions/route-files-v2#splat-routes), i.e. a route that matches all URLs inside a sub path. A splat route is named `$.tsx`. Create a file called `app/routes/admin.$.tsx` file with the following content:
+To do so, add a [splat route](https://remix.run/docs/en/main/file-conventions/routes#splat-routes), i.e. a route that matches all URLs inside a sub path. A splat route is named `$.tsx`. Create a file called `app/routes/admin.$.tsx` file with the following content:
 
 ```jsx
 // in app/routes/admin.$.tsx
-import App from "../components/App";
+import { Admin, Resource, ListGuesser } from "react-admin";
+import jsonServerProvider from "ra-data-json-server";
 import styles from "~/styles/app.css";
 
 export function links() {
   return [{ rel: "stylesheet", href: styles }];
 }
 
-export default App;
+const dataProvider = jsonServerProvider.default
+  ? jsonServerProvider.default("https://jsonplaceholder.typicode.com")
+  : jsonServerProvider("https://jsonplaceholder.typicode.com");
+
+export default function App() {
+  return (
+    <Admin basename="/admin" dataProvider={dataProvider}>
+      <Resource name="posts" list={ListGuesser} />
+      <Resource name="comments" list={ListGuesser} />
+    </Admin>
+  );
+}
+
 ```
 
 The stylesheet link is necessary to reset the default styles of the admin app. Create it in `app/styles/app.css`:
@@ -341,25 +400,7 @@ The stylesheet link is necessary to reset the default styles of the admin app. C
 body { margin: 0; }
 ```
 
-And finally, update the react-admin app to specify the `<Admin basename>` prop, so that react-admin generates links relative to the "/admin" subpath:
-
-```diff
-// in app/components/App.tsx
-import { Admin, Resource, ListGuesser } from "react-admin";
-import jsonServerProvider from "ra-data-json-server";
-
-const dataProvider = jsonServerProvider("https://jsonplaceholder.typicode.com");
-
-const App = () => (
-- <Admin dataProvider={dataProvider}>
-+ <Admin basename="/admin" dataProvider={dataProvider}>
-    <Resource name="posts" list={ListGuesser} />
-    <Resource name="comments" list={ListGuesser} />
-  </Admin>
-);
-
-export default App;
-```
+**Tip** Don't forget to set the `<Admin basename>` prop, so that react-admin generates links relative to the "/admin" subpath:
 
 Now the admin renders at `http://localhost:3000/admin`, and you can use the Remix routing system to add more pages.
 
@@ -393,7 +434,7 @@ SUPABASE_SERVICE_ROLE="MY_SERVICE_ROLE_KEY"
 Time to bootstrap the API Proxy. Create a new Remix route at `app/routes/admin.api.$.tsx`. Inside this file, a `loader` function should convert the GET requests into Supabase API calls, and an `action` function should do the same for POST, PUT, and DELETE requests.
 
 ```tsx
-// in app/routes/app/routes/admin.api.$.tsx
+// in /app/routes/admin.api.$.tsx
 import type, { ActionFunction, LoaderFunction } from '@remix-run/node';
 
 // handle read requests (getOne, getList, getMany, getManyReference) 
@@ -435,7 +476,7 @@ const getSupabaseUrlFromRequestUrl = (url: string) => {
 };
 ```
 
-**Tip**: Some of this code is really PostgREST-specific. The `prefer` header is required to let PostgREST return one record instead of an array containing one record in response to `getOne` requests. A proxy for another CRUD API will require different parameters.
+**Tip**: Some of this code is really PostgREST-specific. The `prefer` header is required to let PostgREST returns one record instead of an array containing one record in response to `getOne` requests. A proxy for another CRUD API will require different parameters.
 
 Finally, update the react-admin data provider to use the Supabase adapter instead of the JSON Server one. As Supabase provides a PostgREST endpoint, we'll use [`ra-data-postgrest`](https://github.com/raphiniert-com/ra-data-postgrest):
 
