@@ -21,7 +21,7 @@ export const ThemeToggler = () => {
         changeTheme(
             themes.find(
                 theme => theme.name === (event.target.value as ThemeType)
-            )
+            ) || themes[0]
         );
     };
 

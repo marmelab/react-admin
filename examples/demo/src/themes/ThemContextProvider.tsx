@@ -1,11 +1,18 @@
 import { useState } from 'react';
 import { lightTheme } from './lightTheme';
-import { ThemeContext } from './themeContext';
+import { Theme, ThemeContext } from './themeContext';
 
-export const ThemeContextProvider = ({ children }) => {
-    const [theme, setTheme] = useState({ name: 'light', theme: lightTheme });
+export const ThemeContextProvider = ({
+    children,
+}: {
+    children: React.ReactNode;
+}) => {
+    const [theme, setTheme] = useState<Theme>({
+        name: 'light',
+        theme: lightTheme,
+    });
 
-    const changeTheme = theme => {
+    const changeTheme = (theme: Theme) => {
         setTheme(theme);
     };
 
