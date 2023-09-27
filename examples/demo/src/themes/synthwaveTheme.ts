@@ -57,6 +57,9 @@ export const synthwaveTheme = {
                 root: {
                     backgroundColor: '#28243d',
                 },
+                regular: {
+                    backgroundColor: '#28243d',
+                },
             },
         },
         RaMenuItemLink: {
@@ -130,6 +133,29 @@ export const synthwaveTheme = {
                     [`&.Mui-focused .${outlinedInputClasses.notchedOutline}`]: {
                         borderColor: '#9155fd',
                     },
+                },
+            },
+        },
+        MuiTableHead: {
+            styleOverrides: {
+                root: {
+                    border: '1px solid #494850',
+                },
+            },
+        },
+        RaDatagrid: {
+            styleOverrides: {
+                root: {
+                    '& .RaDatagrid-headerCell': {
+                        backgroundColor: '#3d3759',
+                    },
+                },
+            },
+        },
+        MuiTableCell: {
+            styleOverrides: {
+                root: {
+                    padding: 16,
                 },
             },
         },
