@@ -10,7 +10,7 @@ import { useContext } from 'react';
 import { useStore, useTranslate } from 'react-admin';
 import { ThemeContext, ThemeType, themes } from './themeContext';
 
-export const ThemeToggler = () => {
+export const ThemeSwipper = () => {
     const [_, setThemeStore] = useStore<ThemeType>('theme');
     const translate = useTranslate();
 
