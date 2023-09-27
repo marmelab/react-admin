@@ -24,6 +24,13 @@ export const lightTheme = {
     },
     components: {
         ...defaultTheme.components,
+        RaLayout: {
+            styleOverrides: {
+                root: {
+                    marginTop: 20,
+                },
+            },
+        },
         RaMenuItemLink: {
             styleOverrides: {
                 root: {

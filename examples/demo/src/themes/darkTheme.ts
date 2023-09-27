@@ -15,6 +15,13 @@ export const darkTheme = {
     },
     components: {
         ...defaultTheme.components,
+        RaLayout: {
+            styleOverrides: {
+                root: {
+                    marginTop: 20,
+                },
+            },
+        },
         RaMenuItemLink: {
             styleOverrides: {
                 root: {
@@ -29,7 +36,7 @@ export const darkTheme = {
             styleOverrides: {
                 colorSecondary: {
                     color: '#ffffffb3',
-                    backgroundColor: '#616161e6',
+                    backgroundColor: '#616161',
                 },
             },
         },
