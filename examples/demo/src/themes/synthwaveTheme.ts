@@ -58,7 +58,7 @@ export const synthwaveTheme = {
                     backgroundColor: '#28243d',
                 },
                 regular: {
-                    backgroundColor: '#28243d',
+                    backgroundColor: '#312d4b',
                 },
             },
         },
