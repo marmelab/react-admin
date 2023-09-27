@@ -5,6 +5,7 @@ import { synthwaveTheme } from './synthwaveTheme';
 import { minimalTheme } from './minimalTheme';
 import { RaThemeOptions } from 'react-admin';
 import { popTheme } from './popTheme';
+import { chiptuneTheme } from './chiptuneTheme';
 
 export const ThemeContext = createContext<ThemeContextProps>({
     theme: {
@@ -14,7 +15,13 @@ export const ThemeContext = createContext<ThemeContextProps>({
     changeTheme: () => {},
 });
 
-export type ThemeType = 'light' | 'dark' | 'synthwave' | 'minimal' | 'pop';
+export type ThemeType =
+    | 'light'
+    | 'dark'
+    | 'synthwave'
+    | 'minimal'
+    | 'pop'
+    | 'chiptune';
 export interface Theme {
     name: ThemeType;
     theme: RaThemeOptions;
@@ -31,4 +38,5 @@ export const themes: Theme[] = [
     { name: 'synthwave', theme: synthwaveTheme },
     { name: 'minimal', theme: minimalTheme },
     { name: 'pop', theme: popTheme },
+    { name: 'chiptune', theme: chiptuneTheme },
 ];
