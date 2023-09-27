@@ -203,8 +203,6 @@ const breakpoints = {
 const mixins = {
     toolbar: {
         minHeight: 60,
-        paddingTop: 8,
-        paddingBottom: 8,
     },
 };
 
@@ -455,7 +453,6 @@ const TableCell = (theme: PopTheme) => ({
         styleOverrides: {
             root: {
                 fontSize: '0.875rem',
-                padding: 12,
                 borderColor: theme.palette.divider,
             },
             head: {
@@ -487,6 +484,18 @@ const Typography = () => ({
     },
 });
 
+const RaLayout = () => {
+    return {
+        RaLayout: {
+            styleOverrides: {
+                root: {
+                    marginTop: 20,
+                },
+            },
+        },
+    };
+};
+
 const componentsOverrides = (theme: PopTheme) =>
     Object.assign(
         Button(theme),
@@ -503,7 +512,8 @@ const componentsOverrides = (theme: PopTheme) =>
         Tab(theme),
         TableCell(theme),
         Tabs(),
-        Typography()
+        Typography(),
+        RaLayout()
     );
 
 const createPopTheme = (themeOptions: ThemeOptions): PopTheme => {
