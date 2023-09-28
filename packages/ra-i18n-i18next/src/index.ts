@@ -22,8 +22,13 @@ export default (i18nInstance: I18n, options?: InitOptions): I18nProvider => {
         });
     return {
         translate: (key: string, options: any = {}) => {
-            const { _: defaultValue, ...otherOptions } = options || {};
-            return translate(key, { defaultValue, ...otherOptions }).toString();
+            const { _: defaultValue, smart_count: count, ...otherOptions } =
+                options || {};
+            return translate(key, {
+                defaultValue,
+                count,
+                ...otherOptions,
+            }).toString();
         },
         changeLocale: async (newLocale: string) => {
             await i18nInstance.changeLanguage(newLocale);
@@ -43,7 +48,7 @@ export const convertRaMessagesToI18next = (
 ) => {
     return Object.keys(raMessages).reduce((acc, key) => {
         if (typeof acc[key] === 'object') {
-            acc[key] = convertRaMessagesToI18next(acc[key]);
+            acc[key] = convertRaMessagesToI18next(acc[key], { prefix, suffix });
             return acc;
         }
 
@@ -81,8 +86,10 @@ const convertMessage = (
     message: string,
     { prefix = '{{', suffix = '}}' } = {}
 ) => {
-    return message.replace(
+    const result = message.replace(
         /%\{([a-zA-Z0-9-_]*)\}/g,
         (match, p1) => `${prefix}${p1}${suffix}`
     );
+
+    return result;
 };
