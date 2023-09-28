@@ -6044,15 +6044,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-is@npm:^18.2.1":
-  version: 18.2.2
-  resolution: "@types/react-is@npm:18.2.2"
-  dependencies:
-    "@types/react": "*"
-  checksum: c08d1ef3164527a84aa0bcbf2b8c58b9999f44911be24e7733b1325ccd9c53ab4c284a2abaf5a884fc4e672d73fa192775def602ff283022c10cfe589cdfb240
-  languageName: node
-  linkType: hard
-
 "@types/react-test-renderer@npm:>=16.9.0":
   version: 17.0.1
   resolution: "@types/react-test-renderer@npm:17.0.1"
@@ -18228,7 +18219,6 @@ __metadata:
     "@types/node": ^17.0.8
     "@types/node-polyglot": ^0.4.31
     "@types/react": ^17.0.20
-    "@types/react-is": ^18.2.1
     clsx: ^1.1.1
     cross-env: ^5.2.0
     date-fns: ^2.19.0

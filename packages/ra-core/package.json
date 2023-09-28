@@ -33,7 +33,6 @@
         "@types/node": "^17.0.8",
         "@types/node-polyglot": "^0.4.31",
         "@types/react": "^17.0.20",
-        "@types/react-is": "^18.2.1",
         "cross-env": "^5.2.0",
         "expect": "^27.4.6",
         "history": "^5.1.0",
