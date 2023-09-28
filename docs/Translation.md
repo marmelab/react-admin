@@ -130,6 +130,60 @@ const App = () => (
 
 Check [the translation setup documentation](./TranslationSetup.md) for details about `ra-i18n-polyglot` and how to configure it.
 
+## `ra-i18n-i18next`
+
+React-admin also provides a package called `ra-i18n-i18next` that leverages [the i18next library](https://www.i18next.com/) to build an `i18nProvider` based on a dictionary of translations.
+
+```tsx
+// in src/i18nProvider.js
+import { useI18nextProvider, convertRaTranslationsToI18next } from 'ra-i18n-i18next';
+import en from 'ra-language-english';
+import fr from 'ra-language-french';
+
+const i18nInstance = i18n.use(
+    resourcesToBackend(language => {
+        if (language === 'fr') {
+            return import(
+                `ra-language-french`
+            ).then(({ default: messages }) =>
+                convertRaTranslationsToI18next(messages)
+            );
+        }
+        return import(`ra-language-english`).then(({ default: messages }) =>
+            convertRaTranslationsToI18next(messages)
+        );
+    })
+);
+
+export const useMyI18nProvider = useI18nextProvider({
+    i18nInstance,
+    availableLocales: [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'French' },
+    ],
+});
+
+// in src/App.js
+import { Admin } from 'react-admin';
+import { useMyI18nProvider } from './i18nProvider';
+
+const App = () => {
+    const i18nProvider = useMyI18nProvider();
+    if (!i18nProvider) return null;
+
+    return (
+        <Admin
+            i18nProvider={i18nProvider}
+            dataProvider={dataProvider}
+        >
+            ...
+        </Admin>
+    );
+};
+```
+
+Check [the useI18nextProvider documentation](./useI18nextProvider.md) for details about `ra-i18n-i18next` and how to configure it.
+
 ## Translation Files
 
 `ra-i18n-polyglot` relies on JSON objects for translations. This means that the only thing required to add support for a new language is a JSON file.
