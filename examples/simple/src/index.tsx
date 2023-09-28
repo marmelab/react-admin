@@ -9,9 +9,7 @@ import comments from './comments';
 import CustomRouteLayout from './customRouteLayout';
 import CustomRouteNoLayout from './customRouteNoLayout';
 import dataProvider from './dataProvider';
-// TODO: revert
-// import i18nProvider from './i18nProvider';
-import i18nProvider from './i18nProvider-next';
+import i18nProvider from './i18nProvider';
 import Layout from './Layout';
 import posts from './posts';
 import users from './users';
