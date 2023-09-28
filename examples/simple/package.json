@@ -12,7 +12,7 @@
         "@emotion/react": "^11.7.1",
         "@emotion/styled": "^11.6.0",
         "@mui/icons-material": "^5.0.1",
-        "@mui/material": "^5.14.10",
+        "@mui/material": "^5.0.2",
         "jsonexport": "^3.2.0",
         "lodash": "~4.17.5",
         "prop-types": "^15.7.2",

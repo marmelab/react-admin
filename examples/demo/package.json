@@ -5,7 +5,7 @@
     "dependencies": {
         "@apollo/client": "^3.3.19",
         "@mui/icons-material": "^5.0.1",
-        "@mui/material": "^5.14.10",
+        "@mui/material": "^5.0.2",
         "@types/inflection": "^1.5.28",
         "@types/recharts": "^1.8.10",
         "@vitejs/plugin-react": "^2.2.0",

@@ -7,7 +7,6 @@ import {
     useMediaQuery,
     Theme,
 } from '@mui/material';
-import { PolymorphicProps } from '@mui/base';
 
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';

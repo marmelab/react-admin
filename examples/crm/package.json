@@ -5,7 +5,7 @@
     "dependencies": {
         "@hello-pangea/dnd": "^16.3.0",
         "@mui/icons-material": "^5.0.1",
-        "@mui/material": "^5.14.10",
+        "@mui/material": "^5.0.2",
         "@nivo/bar": "^0.80.0",
         "@nivo/core": "^0.80.0",
         "clsx": "^1.1.1",

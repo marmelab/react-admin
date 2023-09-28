@@ -41,7 +41,7 @@
     },
     "dependencies": {
         "@mui/icons-material": "^5.0.1",
-        "@mui/material": "^5.14.10",
+        "@mui/material": "^5.0.2",
         "clsx": "^1.1.1",
         "date-fns": "^2.19.0",
         "inflection": "~1.12.0",
