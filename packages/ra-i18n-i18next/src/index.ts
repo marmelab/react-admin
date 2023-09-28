@@ -1,16 +1,47 @@
 import { InitOptions, i18n as I18n, TFunction } from 'i18next';
 import clone from 'lodash/clone';
-import { I18nProvider } from 'ra-core';
+import { I18nProvider, Locale } from 'ra-core';
+import { useEffect, useRef, useState } from 'react';
 /**
  * Build a i18next-based i18nProvider.
  *
  * @example
  * TODO
  */
-export default (i18nInstance: I18n, options?: InitOptions): I18nProvider => {
+export const useI18nextProvider = (
+    i18nInstance: I18n,
+    options?: InitOptions,
+    availableLocales: Locale[] = [{ locale: 'en', name: 'English' }]
+) => {
+    const [i18nProvider, setI18nProvider] = useState<I18nProvider>(null);
+    const initializationPromise = useRef<Promise<I18nProvider>>(null);
+
+    useEffect(() => {
+        if (initializationPromise.current) {
+            return;
+        }
+
+        initializationPromise.current = getI18nProvider(
+            i18nInstance,
+            options,
+            availableLocales
+        ).then(provider => {
+            setI18nProvider(provider);
+            return provider;
+        });
+    }, []);
+
+    return i18nProvider;
+};
+
+export const getI18nProvider = async (
+    i18nInstance: I18n,
+    options?: InitOptions,
+    availableLocales: Locale[] = [{ locale: 'en', name: 'English' }]
+): Promise<I18nProvider> => {
     let translate: TFunction;
 
-    i18nInstance
+    await i18nInstance
         .init({
             lng: 'en',
             fallbackLng: 'en',
@@ -20,6 +51,7 @@ export default (i18nInstance: I18n, options?: InitOptions): I18nProvider => {
         .then(t => {
             translate = t;
         });
+
     return {
         translate: (key: string, options: any = {}) => {
             const { _: defaultValue, smart_count: count, ...otherOptions } =
@@ -31,13 +63,13 @@ export default (i18nInstance: I18n, options?: InitOptions): I18nProvider => {
             }).toString();
         },
         changeLocale: async (newLocale: string) => {
-            await i18nInstance.changeLanguage(newLocale);
+            await i18nInstance.loadLanguages(newLocale);
+            const t = await i18nInstance.changeLanguage(newLocale);
+            translate = t;
         },
         getLocale: () => i18nInstance.language,
         getLocales: () => {
-            return i18nInstance.languages
-                ? i18nInstance.languages.map(l => ({ locale: l, name: l }))
-                : undefined;
+            return availableLocales;
         },
     };
 };

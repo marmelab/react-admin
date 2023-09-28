@@ -2,9 +2,10 @@ import * as React from 'react';
 import { Admin, EditGuesser, ListGuesser, Resource } from 'react-admin';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import resourcesToBackend from 'i18next-resources-to-backend';
 import englishMessages from 'ra-language-english';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import i18nextProvider, { convertRaMessagesToI18next } from './index';
+import { useI18nextProvider, convertRaMessagesToI18next } from './index';
 
 export default {
     title: 'ra-i18n-18next',
@@ -12,22 +13,78 @@ export default {
 
 export const Basic = () => {
     const instance = i18n.use(initReactI18next);
-    const i18nProvider = i18nextProvider(instance, {
+    const i18nProvider = useI18nextProvider(instance, {
         resources: {
-            en: { translation: convertRaMessagesToI18next(englishMessages) },
+            en: {
+                translation: convertRaMessagesToI18next(englishMessages),
+            },
         },
     });
+
+    if (!i18nProvider) return null;
+
     return (
         <Admin dataProvider={dataProvider} i18nProvider={i18nProvider}>
-            <Resource name="posts" list={ListGuesser} edit={EditGuesser} />
-            <Resource name="comments" list={ListGuesser} edit={EditGuesser} />
+            <Resource
+                name="posts"
+                list={<ListGuesser enableLog={false} />}
+                edit={<EditGuesser enableLog={false} />}
+            />
+            <Resource
+                name="comments"
+                list={<ListGuesser enableLog={false} />}
+                edit={<EditGuesser enableLog={false} />}
+            />
+        </Admin>
+    );
+};
+
+export const WithLazyLoadedLanguages = () => {
+    const instance = i18n
+        .use(
+            resourcesToBackend(language => {
+                if (language === 'fr') {
+                    return import(
+                        `ra-language-french`
+                    ).then(({ default: messages }) =>
+                        convertRaMessagesToI18next(messages)
+                    );
+                }
+                return import(
+                    `ra-language-english`
+                ).then(({ default: messages }) =>
+                    convertRaMessagesToI18next(messages)
+                );
+            })
+        )
+        .use(initReactI18next);
+
+    const i18nProvider = useI18nextProvider(instance, {}, [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'French' },
+    ]);
+
+    if (!i18nProvider) return null;
+
+    return (
+        <Admin dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <Resource
+                name="posts"
+                list={<ListGuesser enableLog={false} />}
+                edit={<EditGuesser enableLog={false} />}
+            />
+            <Resource
+                name="comments"
+                list={<ListGuesser enableLog={false} />}
+                edit={<EditGuesser enableLog={false} />}
+            />
         </Admin>
     );
 };
 
 export const WithCustomTranslations = () => {
     const instance = i18n.use(initReactI18next);
-    const i18nProvider = i18nextProvider(instance, {
+    const i18nProvider = useI18nextProvider(instance, {
         resources: {
             en: {
                 translation: {
@@ -45,13 +102,25 @@ export const WithCustomTranslations = () => {
             },
         },
     });
+
+    if (!i18nProvider) return null;
+
     return (
         <Admin dataProvider={dataProvider} i18nProvider={i18nProvider}>
-            <Resource name="posts" list={ListGuesser} edit={EditGuesser} />
-            <Resource name="comments" list={ListGuesser} edit={EditGuesser} />
+            <Resource
+                name="posts"
+                list={<ListGuesser enableLog={false} />}
+                edit={<EditGuesser enableLog={false} />}
+            />
+            <Resource
+                name="comments"
+                list={<ListGuesser enableLog={false} />}
+                edit={<EditGuesser enableLog={false} />}
+            />
         </Admin>
     );
 };
+
 export const WithCustomOptions = () => {
     const instance = i18n.use(initReactI18next);
     const defaultMessages = convertRaMessagesToI18next(englishMessages, {
@@ -59,7 +128,7 @@ export const WithCustomOptions = () => {
         suffix: '}#',
     });
 
-    const i18nProvider = i18nextProvider(instance, {
+    const i18nProvider = useI18nextProvider(instance, {
         interpolation: {
             prefix: '#{',
             suffix: '}#',
@@ -81,10 +150,21 @@ export const WithCustomOptions = () => {
             },
         },
     });
+
+    if (!i18nProvider) return null;
+
     return (
         <Admin dataProvider={dataProvider} i18nProvider={i18nProvider}>
-            <Resource name="posts" list={ListGuesser} edit={EditGuesser} />
-            <Resource name="comments" list={ListGuesser} edit={EditGuesser} />
+            <Resource
+                name="posts"
+                list={<ListGuesser enableLog={false} />}
+                edit={<EditGuesser enableLog={false} />}
+            />
+            <Resource
+                name="comments"
+                list={<ListGuesser enableLog={false} />}
+                edit={<EditGuesser enableLog={false} />}
+            />
         </Admin>
     );
 };

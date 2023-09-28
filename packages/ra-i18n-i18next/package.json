@@ -30,6 +30,8 @@
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
+        "i18next-resources-to-backend": "^1.1.4",
+        "react-i18next": "^13.2.2",
         "rimraf": "^3.0.2",
         "typescript": "^5.1.3"
     },
