@@ -1,10 +1,10 @@
-import { convertRaMessagesToI18next } from './convertRaMessagesToI18next';
+import { convertRaTranslationsToI18next } from './convertRaMessagesToI18next';
 
 describe('i18next i18nProvider', () => {
     describe('convertRaMessagesToI18next', () => {
         test('should convert react-admin default messages to i18next format', () => {
             expect(
-                convertRaMessagesToI18next(
+                convertRaTranslationsToI18next(
                     {
                         simple: 'simple',
                         interpolation: 'interpolation %{variable}',
@@ -37,7 +37,7 @@ describe('i18next i18nProvider', () => {
 
         test('should convert react-admin default messages to i18next format with custom prefix/suffix', () => {
             expect(
-                convertRaMessagesToI18next(
+                convertRaTranslationsToI18next(
                     {
                         simple: 'simple',
                         interpolation: 'interpolation %{variable}',

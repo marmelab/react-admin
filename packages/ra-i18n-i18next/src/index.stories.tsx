@@ -6,7 +6,7 @@ import englishMessages from 'ra-language-english';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { MemoryRouter } from 'react-router-dom';
 import { useI18nextProvider } from './index';
-import { convertRaMessagesToI18next } from './convertRaMessagesToI18next';
+import { convertRaTranslationsToI18next } from './convertRaMessagesToI18next';
 
 export default {
     title: 'ra-i18n-18next',
@@ -17,7 +17,9 @@ export const Basic = () => {
         options: {
             resources: {
                 en: {
-                    translation: convertRaMessagesToI18next(englishMessages),
+                    translation: convertRaTranslationsToI18next(
+                        englishMessages
+                    ),
                 },
             },
         },
@@ -50,11 +52,11 @@ export const WithLazyLoadedLanguages = () => {
                 return import(
                     `ra-language-french`
                 ).then(({ default: messages }) =>
-                    convertRaMessagesToI18next(messages)
+                    convertRaTranslationsToI18next(messages)
                 );
             }
             return import(`ra-language-english`).then(({ default: messages }) =>
-                convertRaMessagesToI18next(messages)
+                convertRaTranslationsToI18next(messages)
             );
         })
     );
@@ -93,7 +95,7 @@ export const WithCustomTranslations = () => {
             resources: {
                 en: {
                     translation: {
-                        ...convertRaMessagesToI18next(englishMessages),
+                        ...convertRaTranslationsToI18next(englishMessages),
                         resources: {
                             posts: {
                                 name_one: 'Blog post',
@@ -130,7 +132,7 @@ export const WithCustomTranslations = () => {
 };
 
 export const WithCustomOptions = () => {
-    const defaultMessages = convertRaMessagesToI18next(englishMessages, {
+    const defaultMessages = convertRaTranslationsToI18next(englishMessages, {
         prefix: '#{',
         suffix: '}#',
     });
