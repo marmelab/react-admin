@@ -4,7 +4,9 @@ import i18n from 'i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import englishMessages from 'ra-language-english';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { useI18nextProvider, convertRaMessagesToI18next } from './index';
+import { MemoryRouter } from 'react-router-dom';
+import { useI18nextProvider } from './index';
+import { convertRaMessagesToI18next } from './convertRaMessagesToI18next';
 
 export default {
     title: 'ra-i18n-18next',
@@ -24,18 +26,20 @@ export const Basic = () => {
     if (!i18nProvider) return null;
 
     return (
-        <Admin dataProvider={dataProvider} i18nProvider={i18nProvider}>
-            <Resource
-                name="posts"
-                list={<ListGuesser enableLog={false} />}
-                edit={<EditGuesser enableLog={false} />}
-            />
-            <Resource
-                name="comments"
-                list={<ListGuesser enableLog={false} />}
-                edit={<EditGuesser enableLog={false} />}
-            />
-        </Admin>
+        <MemoryRouter>
+            <Admin dataProvider={dataProvider} i18nProvider={i18nProvider}>
+                <Resource
+                    name="posts"
+                    list={<ListGuesser enableLog={false} />}
+                    edit={<EditGuesser enableLog={false} />}
+                />
+                <Resource
+                    name="comments"
+                    list={<ListGuesser enableLog={false} />}
+                    edit={<EditGuesser enableLog={false} />}
+                />
+            </Admin>
+        </MemoryRouter>
     );
 };
 
@@ -66,18 +70,20 @@ export const WithLazyLoadedLanguages = () => {
     if (!i18nProvider) return null;
 
     return (
-        <Admin dataProvider={dataProvider} i18nProvider={i18nProvider}>
-            <Resource
-                name="posts"
-                list={<ListGuesser enableLog={false} />}
-                edit={<EditGuesser enableLog={false} />}
-            />
-            <Resource
-                name="comments"
-                list={<ListGuesser enableLog={false} />}
-                edit={<EditGuesser enableLog={false} />}
-            />
-        </Admin>
+        <MemoryRouter>
+            <Admin dataProvider={dataProvider} i18nProvider={i18nProvider}>
+                <Resource
+                    name="posts"
+                    list={<ListGuesser enableLog={false} />}
+                    edit={<EditGuesser enableLog={false} />}
+                />
+                <Resource
+                    name="comments"
+                    list={<ListGuesser enableLog={false} />}
+                    edit={<EditGuesser enableLog={false} />}
+                />
+            </Admin>
+        </MemoryRouter>
     );
 };
 
@@ -106,18 +112,20 @@ export const WithCustomTranslations = () => {
     if (!i18nProvider) return null;
 
     return (
-        <Admin dataProvider={dataProvider} i18nProvider={i18nProvider}>
-            <Resource
-                name="posts"
-                list={<ListGuesser enableLog={false} />}
-                edit={<EditGuesser enableLog={false} />}
-            />
-            <Resource
-                name="comments"
-                list={<ListGuesser enableLog={false} />}
-                edit={<EditGuesser enableLog={false} />}
-            />
-        </Admin>
+        <MemoryRouter>
+            <Admin dataProvider={dataProvider} i18nProvider={i18nProvider}>
+                <Resource
+                    name="posts"
+                    list={<ListGuesser enableLog={false} />}
+                    edit={<EditGuesser enableLog={false} />}
+                />
+                <Resource
+                    name="comments"
+                    list={<ListGuesser enableLog={false} />}
+                    edit={<EditGuesser enableLog={false} />}
+                />
+            </Admin>
+        </MemoryRouter>
     );
 };
 
@@ -135,18 +143,7 @@ export const WithCustomOptions = () => {
             },
             resources: {
                 en: {
-                    translation: {
-                        ...defaultMessages,
-                        resources: {
-                            posts: {
-                                name_one: 'Blog post',
-                                name_other: 'Blog posts',
-                                fields: {
-                                    title: 'Title',
-                                },
-                            },
-                        },
-                    },
+                    translation: defaultMessages,
                 },
             },
         },
@@ -155,18 +152,20 @@ export const WithCustomOptions = () => {
     if (!i18nProvider) return null;
 
     return (
-        <Admin dataProvider={dataProvider} i18nProvider={i18nProvider}>
-            <Resource
-                name="posts"
-                list={<ListGuesser enableLog={false} />}
-                edit={<EditGuesser enableLog={false} />}
-            />
-            <Resource
-                name="comments"
-                list={<ListGuesser enableLog={false} />}
-                edit={<EditGuesser enableLog={false} />}
-            />
-        </Admin>
+        <MemoryRouter>
+            <Admin dataProvider={dataProvider} i18nProvider={i18nProvider}>
+                <Resource
+                    name="posts"
+                    list={<ListGuesser enableLog={false} />}
+                    edit={<EditGuesser enableLog={false} />}
+                />
+                <Resource
+                    name="comments"
+                    list={<ListGuesser enableLog={false} />}
+                    edit={<EditGuesser enableLog={false} />}
+                />
+            </Admin>
+        </MemoryRouter>
     );
 };
 
