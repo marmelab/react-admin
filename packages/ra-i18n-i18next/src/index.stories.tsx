@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Admin, EditGuesser, ListGuesser, Resource } from 'react-admin';
 import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import englishMessages from 'ra-language-english';
 import fakeRestDataProvider from 'ra-data-fakerest';
@@ -12,11 +11,12 @@ export default {
 };
 
 export const Basic = () => {
-    const instance = i18n.use(initReactI18next);
-    const i18nProvider = useI18nextProvider(instance, {
-        resources: {
-            en: {
-                translation: convertRaMessagesToI18next(englishMessages),
+    const i18nProvider = useI18nextProvider({
+        options: {
+            resources: {
+                en: {
+                    translation: convertRaMessagesToI18next(englishMessages),
+                },
             },
         },
     });
@@ -40,29 +40,28 @@ export const Basic = () => {
 };
 
 export const WithLazyLoadedLanguages = () => {
-    const instance = i18n
-        .use(
-            resourcesToBackend(language => {
-                if (language === 'fr') {
-                    return import(
-                        `ra-language-french`
-                    ).then(({ default: messages }) =>
-                        convertRaMessagesToI18next(messages)
-                    );
-                }
+    const i18nInstance = i18n.use(
+        resourcesToBackend(language => {
+            if (language === 'fr') {
                 return import(
-                    `ra-language-english`
+                    `ra-language-french`
                 ).then(({ default: messages }) =>
                     convertRaMessagesToI18next(messages)
                 );
-            })
-        )
-        .use(initReactI18next);
+            }
+            return import(`ra-language-english`).then(({ default: messages }) =>
+                convertRaMessagesToI18next(messages)
+            );
+        })
+    );
 
-    const i18nProvider = useI18nextProvider(instance, {}, [
-        { locale: 'en', name: 'English' },
-        { locale: 'fr', name: 'French' },
-    ]);
+    const i18nProvider = useI18nextProvider({
+        i18nInstance,
+        availableLocales: [
+            { locale: 'en', name: 'English' },
+            { locale: 'fr', name: 'French' },
+        ],
+    });
 
     if (!i18nProvider) return null;
 
@@ -83,18 +82,19 @@ export const WithLazyLoadedLanguages = () => {
 };
 
 export const WithCustomTranslations = () => {
-    const instance = i18n.use(initReactI18next);
-    const i18nProvider = useI18nextProvider(instance, {
-        resources: {
-            en: {
-                translation: {
-                    ...convertRaMessagesToI18next(englishMessages),
-                    resources: {
-                        posts: {
-                            name_one: 'Blog post',
-                            name_other: 'Blog posts',
-                            fields: {
-                                title: 'Title',
+    const i18nProvider = useI18nextProvider({
+        options: {
+            resources: {
+                en: {
+                    translation: {
+                        ...convertRaMessagesToI18next(englishMessages),
+                        resources: {
+                            posts: {
+                                name_one: 'Blog post',
+                                name_other: 'Blog posts',
+                                fields: {
+                                    title: 'Title',
+                                },
                             },
                         },
                     },
@@ -122,27 +122,28 @@ export const WithCustomTranslations = () => {
 };
 
 export const WithCustomOptions = () => {
-    const instance = i18n.use(initReactI18next);
     const defaultMessages = convertRaMessagesToI18next(englishMessages, {
         prefix: '#{',
         suffix: '}#',
     });
 
-    const i18nProvider = useI18nextProvider(instance, {
-        interpolation: {
-            prefix: '#{',
-            suffix: '}#',
-        },
-        resources: {
-            en: {
-                translation: {
-                    ...defaultMessages,
-                    resources: {
-                        posts: {
-                            name_one: 'Blog post',
-                            name_other: 'Blog posts',
-                            fields: {
-                                title: 'Title',
+    const i18nProvider = useI18nextProvider({
+        options: {
+            interpolation: {
+                prefix: '#{',
+                suffix: '}#',
+            },
+            resources: {
+                en: {
+                    translation: {
+                        ...defaultMessages,
+                        resources: {
+                            posts: {
+                                name_one: 'Blog post',
+                                name_other: 'Blog posts',
+                                fields: {
+                                    title: 'Title',
+                                },
                             },
                         },
                     },

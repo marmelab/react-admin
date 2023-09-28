@@ -1,18 +1,24 @@
-import { InitOptions, i18n as I18n, TFunction } from 'i18next';
+import { useEffect, useRef, useState } from 'react';
+import { createInstance, InitOptions, i18n as I18n, TFunction } from 'i18next';
+import { initReactI18next } from 'react-i18next';
 import clone from 'lodash/clone';
 import { I18nProvider, Locale } from 'ra-core';
-import { useEffect, useRef, useState } from 'react';
+
 /**
  * Build a i18next-based i18nProvider.
  *
  * @example
  * TODO
  */
-export const useI18nextProvider = (
-    i18nInstance: I18n,
-    options?: InitOptions,
-    availableLocales: Locale[] = [{ locale: 'en', name: 'English' }]
-) => {
+export const useI18nextProvider = ({
+    i18nInstance = createInstance(),
+    options = {},
+    availableLocales = [{ locale: 'en', name: 'English' }],
+}: {
+    i18nInstance?: I18n;
+    options?: InitOptions;
+    availableLocales?: Locale[];
+} = {}) => {
     const [i18nProvider, setI18nProvider] = useState<I18nProvider>(null);
     const initializationPromise = useRef<Promise<I18nProvider>>(null);
 
@@ -29,7 +35,7 @@ export const useI18nextProvider = (
             setI18nProvider(provider);
             return provider;
         });
-    }, []);
+    }, [availableLocales, i18nInstance, options]);
 
     return i18nProvider;
 };
@@ -42,6 +48,7 @@ export const getI18nProvider = async (
     let translate: TFunction;
 
     await i18nInstance
+        .use(initReactI18next)
         .init({
             lng: 'en',
             fallbackLng: 'en',
