@@ -22,7 +22,7 @@ describe('i18next i18nProvider', () => {
         await screen.findByText('Post #1');
     });
 
-    test('should work with custom interpolation options', async () => {
+    test('should work with multiple languages', async () => {
         render(<WithLazyLoadedLanguages />);
 
         await screen.findByText('Export');
@@ -50,17 +50,17 @@ describe('i18next i18nProvider', () => {
         await screen.findByText('Blog post #1');
     });
 
-    test('should work with multiple languages', async () => {
-        render(<WithCustomTranslations />);
+    test('should work with custom interpolation options', async () => {
+        render(<WithCustomOptions />);
 
         await screen.findByText('Comments');
         await screen.findByText('Export');
-        expect(await screen.findAllByText('Blog posts')).toHaveLength(2);
+        expect(await screen.findAllByText('Posts')).toHaveLength(2);
 
         // Check interpolation
         await screen.findByText('1-1 of 1');
         fireEvent.click(await screen.findByText('Lorem Ipsum'));
         // Check singularization
-        await screen.findByText('Blog post #1');
+        await screen.findByText('Post #1');
     });
 });
