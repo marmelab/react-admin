@@ -428,7 +428,7 @@ You sometimes need to pre-populate a record based on a *related* record. For ins
 
 By default, the `<Create>` view starts with an empty `record`. However, if the `location` object (injected by [react-router-dom](https://reacttraining.com/react-router/web/api/location)) contains a `record` in its `state`, the `<Create>` view uses that `record` instead of the empty object. That's how the `<CloneButton>` works under the hood.
 
-That means that if you want to create a link to a creation form, presetting *some* values, all you have to do is to set the location `state`. `react-router-dom` provides the `<Link>` component for that:
+That means that if you want to create a link to a creation form, presetting *some* values, all you have to do is to set the prop `state` of the `<CreateButton>`:
 
 {% raw %}
 ```jsx
@@ -439,7 +439,7 @@ const CreateRelatedCommentButton = () => {
     const record = useRecordContext();
     return (
         <CreateButton
-            resource="reviews"
+            resource="comments"
             state={{ record: { post_id: record.id } }}
         />
     );

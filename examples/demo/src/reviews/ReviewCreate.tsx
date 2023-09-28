@@ -15,11 +15,6 @@ import {
 import StarRatingInput from './StarRatingInput';
 import { useLocation } from 'react-router';
 
-const customerOptionRenderer = (choice: any) =>
-    `${choice.first_name} ${choice.last_name}`;
-
-const productOptionRenderer = (choice: any) => `${choice.reference}`;
-
 const ReviewCreate = () => {
     const notify = useNotify();
     const redirect = useRedirect();
@@ -46,7 +41,7 @@ const ReviewCreate = () => {
                 </ReferenceInput>
                 <ReferenceInput source="product_id" reference="products">
                     <AutocompleteInput
-                        optionText={productOptionRenderer}
+                        optionText="reference"
                         validate={required()}
                     />
                 </ReferenceInput>
@@ -67,5 +62,8 @@ const ReviewCreate = () => {
         </Create>
     );
 };
+
+const customerOptionRenderer = (choice: any) =>
+    `${choice.first_name} ${choice.last_name}`;
 
 export default ReviewCreate;
