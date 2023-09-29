@@ -49,22 +49,22 @@ const lightPalette: PaletteOptions = {
 };
 
 const typography = {
-    fontFamily: 'Inter, sans-serif',
+    fontFamily: 'Gabarito, sans-serif',
     h1: {
         fontWeight: 500,
         fontSize: '6rem',
     },
     h2: {
-        fontWeight: 500,
+        fontWeight: 600,
     },
     h3: {
-        fontWeight: 500,
+        fontWeight: 700,
     },
     h4: {
-        fontWeight: 500,
+        fontWeight: 800,
     },
     h5: {
-        fontWeight: 500,
+        fontWeight: 900,
     },
 };
 
@@ -221,16 +221,6 @@ const Toolbar = (theme: Theme) => ({
     },
 });
 
-const Typography = () => ({
-    MuiTypography: {
-        styleOverrides: {
-            root: {
-                fontFamily: 'Inter, sans-serif',
-            },
-        },
-    },
-});
-
 const componentsOverrides = (theme: Theme) => ({
     ...AppBar(theme),
     ...Button(),
@@ -243,7 +233,6 @@ const componentsOverrides = (theme: Theme) => ({
     ...Table(),
     ...TextField(),
     ...Toolbar(theme),
-    ...Typography(),
 });
 
 const createSynthTheme = (themeOptions: RaThemeOptions) => {
