@@ -8,8 +8,7 @@ import { chiptuneTheme } from './chiptuneTheme';
 import { coldwaveTheme } from './coldwaveTheme';
 import { futureHouseDarkTheme } from './futureHouseDarkTheme';
 import { futureHouseLightTheme } from './futureHouseLightTheme';
-import { synthwaveLightTheme } from './synthwaveLightTheme';
-import { synthwaveDarkTheme } from './synthwaveDarkTheme';
+import { synthwaveDarkTheme, synthwaveLightTheme } from './synthwaveTheme';
 
 export const ThemeContext = createContext<ThemeContextProps>({
     theme: {

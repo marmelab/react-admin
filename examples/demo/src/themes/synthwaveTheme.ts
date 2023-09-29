@@ -1,7 +1,36 @@
 import { alpha, createTheme, PaletteOptions, Theme } from '@mui/material';
 import { RaThemeOptions, defaultTheme } from 'react-admin';
 
-const palette: PaletteOptions = {
+const alert = {
+    error: {
+        main: '#DB488B',
+    },
+    warning: {
+        main: '#F2E963',
+    },
+    info: {
+        main: '#3ED0EB',
+    },
+    success: {
+        main: '#0FBF9F',
+    },
+};
+
+const darkPalette: PaletteOptions = {
+    primary: {
+        main: '#9055fd',
+    },
+    secondary: {
+        main: '#FF83F6',
+    },
+    background: {
+        default: '#1A0E3E',
+    },
+    ...alert,
+    mode: 'dark' as 'dark',
+};
+
+const lightPalette: PaletteOptions = {
     primary: {
         main: '#9055fd',
     },
@@ -15,18 +44,7 @@ const palette: PaletteOptions = {
         primary: '#544f5a',
         secondary: '#89868D',
     },
-    error: {
-        main: '#E64449',
-    },
-    success: {
-        main: '#4db600',
-    },
-    info: {
-        main: '#149fe6',
-    },
-    warning: {
-        main: '#e6a200',
-    },
+    ...alert,
     mode: 'light' as 'light',
 };
 
@@ -228,7 +246,7 @@ const componentsOverrides = (theme: Theme) => ({
     ...Typography(),
 });
 
-const createPopTheme = (themeOptions: RaThemeOptions) => {
+const createSynthTheme = (themeOptions: RaThemeOptions) => {
     const theme = createTheme(themeOptions);
     theme.components = {
         ...defaultTheme.components,
@@ -237,9 +255,18 @@ const createPopTheme = (themeOptions: RaThemeOptions) => {
     return theme;
 };
 
-export const synthwaveLightTheme = createPopTheme({
+export const synthwaveLightTheme = createSynthTheme({
     ...defaultTheme,
-    palette,
+    palette: lightPalette,
+    shape,
+    typography,
+    sidebar,
+    spacing,
+});
+
+export const synthwaveDarkTheme = createSynthTheme({
+    ...defaultTheme,
+    palette: darkPalette,
     shape,
     typography,
     sidebar,
