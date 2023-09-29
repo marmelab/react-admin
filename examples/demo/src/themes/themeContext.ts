@@ -8,7 +8,8 @@ import { chiptuneTheme } from './chiptuneTheme';
 import { coldwaveTheme } from './coldwaveTheme';
 import { futureHouseDarkTheme } from './futureHouseDarkTheme';
 import { futureHouseLightTheme } from './futureHouseLightTheme';
-import { synthwaveDarkTheme } from './synthwaveLightTheme';
+import { synthwaveLightTheme } from './synthwaveLightTheme';
+import { synthwaveDarkTheme } from './synthwaveDarkTheme';
 
 export const ThemeContext = createContext<ThemeContextProps>({
     theme: {
@@ -22,6 +23,7 @@ export type ThemeType =
     | 'light'
     | 'dark'
     | 'synthwaveDark'
+    | 'synthwaveLight'
     | 'minimal'
     | 'pop'
     | 'chiptune'
@@ -42,6 +44,7 @@ export const themes: Theme[] = [
     { name: 'light', theme: lightTheme },
     { name: 'dark', theme: darkTheme },
     { name: 'synthwaveDark', theme: synthwaveDarkTheme },
+    { name: 'synthwaveLight', theme: synthwaveLightTheme },
     { name: 'minimal', theme: minimalTheme },
     { name: 'pop', theme: popTheme },
     { name: 'chiptune', theme: chiptuneTheme },

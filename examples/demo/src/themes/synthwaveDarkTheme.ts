@@ -1,7 +1,7 @@
 import { outlinedInputClasses } from '@mui/material';
 import { defaultTheme } from 'react-admin';
 
-export const darkSynthwaveTheme = {
+export const synthwaveDarkTheme = {
     typography: {
         fontFamily: 'Inter, sans-serif',
     },
