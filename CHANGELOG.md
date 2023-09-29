@@ -1,5 +1,13 @@
 # Changelog
 
+## v4.14.4
+
+* Fix inputs with `disabled={false}` throw an error (workaround) ([#9313](https://github.com/marmelab/react-admin/pull/9313)) ([slax57](https://github.com/slax57))
+* Fix `useCreate` does not refresh the list cache ([#9312](https://github.com/marmelab/react-admin/pull/9312)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add i18n `InputHelperText` section to Inputs/useInputs docs ([#9315](https://github.com/marmelab/react-admin/pull/9315)) ([ZachSelindh](https://github.com/ZachSelindh))
+* [Doc] Add beginner mode to hide advanced doc chapters ([#9306](https://github.com/marmelab/react-admin/pull/9306)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix anchors ([#9305](https://github.com/marmelab/react-admin/pull/9305)) ([WiXSL](https://github.com/WiXSL))
+
 ## v4.14.3
 
 * Fix `<PrevNextButton>` default style ([#9290](https://github.com/marmelab/react-admin/pull/9290)) ([fzaninotto](https://github.com/fzaninotto))
