@@ -249,6 +249,7 @@ title: "Index"
 * [`useGetOneLive`](./useGetOneLive.md)<img class="icon" src="./img/premium.svg" />
 * [`useGetPermissions`](./WithPermissions.md)
 * [`useGetRecordId`](./useGetRecordId.md)
+* [`useGetRecordRepresentation`](./useGetRecordRepresentation.md) 
 
 **- I -**
 * [`useInfiniteGetList`](./useInfiniteGetList.md)
@@ -278,7 +279,6 @@ title: "Index"
 
 **- R -**
 * [`useRecordContext`](./useRecordContext.md)
-* [`useRecordRepresentation`](./useRecordRepresentation.md)
 * [`useRedirect`](./useRedirect.md)
 * [`useReference`](./useGetOne.md#aggregating-getone-calls)
 * [`useRefresh`](./useRefresh.md)

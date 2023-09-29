@@ -1166,6 +1166,8 @@ After that, the best way to learn react-admin is by reading the introduction cha
 - [Preferences](./Store.md)
 - [Realtime](./Realtime.md)
 
+**Tip**: React-admin is a large framework, so its documentation is quite large. Don't get intimidated! React-admin works well for projects of any size. To continue your discovery of react-admin, we recommend that you **[enable the beginner mode](#beginner-mode)**, that hides the advanced features from the sidebar. Just remember to disable it when you're ready to go further.
+
 And to help you close the gap between theoretical knowledge and practical experience, take advantage of the react-admin [Demos](./Demos.md). They are great examples of how to use react-admin in a real world application. They also show the best practices for going beyond simple CRUD apps.
 
 <video controls autoplay playsinline muted loop width="100%">

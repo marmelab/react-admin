@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Vite Integration"
+title: "Installing React-admin With Vite"
 ---
 
-# Vite Integration
+# Installing React-admin With Vite
 
 [Vite](https://vitejs.dev/) is a JavaScript bundler which improves speed of dev server and production build compared to Webpack.
 

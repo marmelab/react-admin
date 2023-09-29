@@ -772,4 +772,4 @@ export const PostEdit = () => (
 );
 ```
 
-**Tips:** If you want users to be warned if they haven't pressed the Save button when they browse to another record, you can follow the tutorial [Navigating Through Records In`<Edit>` Views](./PrevNextButtons.md#navigating-through-records-inedit-views-after-submit).
+**Tips:** If you want users to be warned if they haven't pressed the Save button when they browse to another record, you can follow the tutorial [Navigating Through Records In`<Edit>` Views](./PrevNextButtons.md#navigating-through-records-in-edit-views-after-submit).
