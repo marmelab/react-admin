@@ -3,11 +3,11 @@ import { lightTheme } from './lightTheme';
 import { darkTheme } from './darkTheme';
 import { RaThemeOptions } from 'react-admin';
 import { chiptuneTheme } from './chiptuneTheme';
-import { coldwaveTheme } from './coldwaveTheme';
 import { futureHouseDarkTheme } from './futureHouseDarkTheme';
 import { futureHouseLightTheme } from './futureHouseLightTheme';
 import { synthwaveDarkTheme, synthwaveLightTheme } from './synthwaveTheme';
 import { minimalDarkTheme, minimalLightTheme } from './minimalTheme';
+import { ecoDarkTheme, ecoLightTheme } from './ecoTheme';
 
 export const ThemeContext = createContext<ThemeContextProps>({
     theme: {
@@ -25,7 +25,8 @@ export type ThemeType =
     | 'minimalDark'
     | 'minimalLight'
     | 'chiptune'
-    | 'coldwaveTheme'
+    | 'ecoDarkTheme'
+    | 'ecoLightTheme'
     | 'futureHouseDarkTheme'
     | 'futureHouseLightTheme';
 export interface Theme {
@@ -46,7 +47,8 @@ export const themes: Theme[] = [
     { name: 'minimalLight', theme: minimalLightTheme },
     { name: 'minimalDark', theme: minimalDarkTheme },
     { name: 'chiptune', theme: chiptuneTheme },
-    { name: 'coldwaveTheme', theme: coldwaveTheme },
+    { name: 'ecoLightTheme', theme: ecoLightTheme },
+    { name: 'ecoDarkTheme', theme: ecoDarkTheme },
     { name: 'futureHouseDarkTheme', theme: futureHouseDarkTheme },
     { name: 'futureHouseLightTheme', theme: futureHouseLightTheme },
 ];
