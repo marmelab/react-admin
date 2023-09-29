@@ -1,7 +1,6 @@
 import { createContext } from 'react';
 import { lightTheme } from './lightTheme';
 import { darkTheme } from './darkTheme';
-import { darkSynthwaveTheme } from './darkSynthwaveTheme';
 import { minimalTheme } from './minimalTheme';
 import { RaThemeOptions } from 'react-admin';
 import { popTheme } from './popTheme';
@@ -9,6 +8,7 @@ import { chiptuneTheme } from './chiptuneTheme';
 import { coldwaveTheme } from './coldwaveTheme';
 import { futureHouseDarkTheme } from './futureHouseDarkTheme';
 import { futureHouseLightTheme } from './futureHouseLightTheme';
+import { synthwaveDarkTheme } from './synthwaveLightTheme';
 
 export const ThemeContext = createContext<ThemeContextProps>({
     theme: {
@@ -21,7 +21,7 @@ export const ThemeContext = createContext<ThemeContextProps>({
 export type ThemeType =
     | 'light'
     | 'dark'
-    | 'darkSynthwave'
+    | 'synthwaveDark'
     | 'minimal'
     | 'pop'
     | 'chiptune'
@@ -41,7 +41,7 @@ export interface ThemeContextProps {
 export const themes: Theme[] = [
     { name: 'light', theme: lightTheme },
     { name: 'dark', theme: darkTheme },
-    { name: 'darkSynthwave', theme: darkSynthwaveTheme },
+    { name: 'synthwaveDark', theme: synthwaveDarkTheme },
     { name: 'minimal', theme: minimalTheme },
     { name: 'pop', theme: popTheme },
     { name: 'chiptune', theme: chiptuneTheme },
