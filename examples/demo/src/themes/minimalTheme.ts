@@ -218,7 +218,7 @@ const Paper = (theme: Theme) => {
                     boxShadow: theme.shadows[1],
                 },
                 root: {
-                    backgroundClip: 'padding-box',
+                    backgroundColor: theme.palette.background.default,
                 },
             },
         },
