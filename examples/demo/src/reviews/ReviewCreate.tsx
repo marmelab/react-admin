@@ -22,7 +22,7 @@ const ReviewCreate = () => {
 
     const onSuccess = (_: any) => {
         const record = getRecordFromLocation(location);
-        notify(`Changes saved`);
+        notify('ra.notification.created');
         if (record && record.product_id) {
             redirect(`/products/${record.product_id}/reviews`);
         } else {
