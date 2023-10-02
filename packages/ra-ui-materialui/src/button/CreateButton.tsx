@@ -3,14 +3,12 @@ import ContentAdd from '@mui/icons-material/Add';
 import { Fab, useMediaQuery, Theme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
-import isEqual from 'lodash/isEqual';
-import merge from 'lodash/merge';
+import { isEqual, merge } from 'lodash';
 import PropTypes from 'prop-types';
 import { useTranslate, useResourceContext, useCreatePath } from 'ra-core';
-import { Path } from 'react-router';
-import { Link } from 'react-router-dom';
+import { Link, To } from 'react-router-dom';
 
-import { Button, ButtonProps } from './Button';
+import { Button, ButtonProps, LocationDescriptor } from './Button';
 
 /**
  * Opens the Create view of a given resource
@@ -44,11 +42,7 @@ const CreateButton = (props: CreateButtonProps) => {
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('md')
     );
-    const state = merge(
-        scrollStates[String(scrollToTop)],
-        getLinkParams(locationDescriptor),
-        initialState
-    );
+    const state = merge(scrollStates[String(scrollToTop)], initialState);
 
     return isSmall ? (
         <StyledFab
@@ -90,14 +84,8 @@ interface Props {
     resource?: string;
     icon?: React.ReactElement;
     scrollToTop?: boolean;
-    to?: string | LocationDescriptor;
+    to?: LocationDescriptor | To;
 }
-
-export type LocationDescriptor = Partial<Path> & {
-    redirect?: boolean;
-    state?: any;
-    replace?: boolean;
-};
 
 export type CreateButtonProps = Props & Omit<ButtonProps<typeof Link>, 'to'>;
 
@@ -145,22 +133,3 @@ export default React.memo(CreateButton, (prevProps, nextProps) => {
         isEqual(prevProps.to, nextProps.to)
     );
 });
-
-const getLinkParams = (locationDescriptor?: LocationDescriptor | string) => {
-    // eslint-disable-next-line eqeqeq
-    if (locationDescriptor == undefined) {
-        return undefined;
-    }
-
-    if (typeof locationDescriptor === 'string') {
-        return { to: locationDescriptor };
-    }
-
-    const { redirect, replace, state, ...to } = locationDescriptor;
-    return {
-        to,
-        redirect,
-        replace,
-        state,
-    };
-};
