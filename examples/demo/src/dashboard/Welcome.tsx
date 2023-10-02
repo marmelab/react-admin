@@ -8,16 +8,12 @@ import publishArticleImage from './welcome_illustration.svg';
 
 const Welcome = () => {
     const translate = useTranslate();
-
     return (
         <Card
             sx={{
                 background: theme =>
-                    theme.palette.mode === 'dark'
-                        ? '#535353'
-                        : `linear-gradient(to right, #8975fb 0%, #746be7 35%), linear-gradient(to bottom, #8975fb 0%, #6f4ceb 50%), #6f4ceb`,
-
-                color: '#fff',
+                    `linear-gradient(${theme.palette.primary.main}, ${theme.palette.primary.light}), linear-gradient(${theme.palette.secondary.light}, ${theme.palette.secondary.dark}), ${theme.palette.primary.main}`,
+                color: theme => theme.palette.primary.contrastText,
                 padding: '20px',
                 marginTop: 2,
                 marginBottom: '1em',
