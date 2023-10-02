@@ -283,7 +283,7 @@ This script will ask you for more details about your project. You can use the fo
 - Initialize a new git repository? Choose Yes
 - Install dependencies with npm? Choose Yes
 
-The project structure should look something like this:  
+The project structure should look like this:  
 
 ![Remix v2 project structure](./img/remix-v2-structure.png)
 
@@ -295,7 +295,7 @@ Add the `react-admin` npm package, as well as a data provider package. In this e
 cd remix-admin
 npm add react-admin ra-data-json-server
 ```
-**Tip**: If you're using yarn, Remix and react-admin both install `react-router`, and due to the way each library handles its dependency, this results in duplicate packages. To avoid this, use [yarn resolutions](https://classic.yarnpkg.com/en/docs/selective-version-resolutions/) to force Remix to use the same version of `react-router` as react-admin. So add the following to the `package.json` file:
+**Tip**: If you're using yarn, Remix and react-admin both install `react-router`, and due to the way each library handles its dependencies, this results in duplicate packages. To avoid this, use [yarn resolutions](https://classic.yarnpkg.com/en/docs/selective-version-resolutions/) to force Remix to use the same version of `react-router` as react-admin. So add the following to the `package.json` file:
 
 ```js
 {
@@ -315,7 +315,7 @@ yarn
 
 ### Using React-Admin As The Root Application
 
-Remix and react-admin both use [react-router](https://reactrouter.com/) for routing. React-admin detects when it is included inside an existing React Router context and reuses it. This is problematic because Remix uses file-based routing. So when react-admin changes the route to `/posts` for instance, Remix will look for a corresponding `app/routes/posts.tsx` file. As it doesn't exist, Remix will render a 404.
+Remix and react-admin both use [react-router](https://reactrouter.com/) for routing. React-admin detects when it is included inside an existing React Router context. If so, react-admin will reuses it. This is problematic because Remix uses file-based routing. So when react-admin changes the route to `/posts` for instance, Remix will look for a corresponding `app/routes/posts.tsx` file. As it doesn't exist, Remix will render a 404.
 
 The solution is to create both an [index route](https://remix.run/docs/en/main/file-conventions/routes#basic-routes) and a [splat route](https://remix.run/docs/en/main/file-conventions/routes#splat-routes), i.e. a route that matches all URLs, and make them render the same content. A splat route is named `$.tsx`. Create the splat route file then edit both the index route (`app/route/_index.tsx`) and the splat route (`app/route/$.tsx`) so they have the following code:
 
@@ -336,7 +336,7 @@ The stylesheet link is necessary to reset the default styles of the admin app. C
 body { margin: 0; }
 ```
 
-**Tip**: Remix doesn't let splat routes catch requests to the index page ('/'), so you must have both the `app/routes/index.tsx` and `app/routes/$.tsx` routes to correctly render the admin app.
+**Tip**: Remix doesn't let splat routes catch requests to the index page ('/'), so you need to have both the `app/routes/index.tsx` and `app/routes/$.tsx` files to correctly render the admin app.
 
 Next, create the admin app component in `app/components/App.tsx`:
 
@@ -357,7 +357,7 @@ const App = () => (
 export default App;
 ```
 
-This is a minimal admin for 2 resources. React-admin should be able to render a list of posts and a list of comments, guessing the data structure from the API response. 
+This is a minimal admin for two resources. React-admin should be able to render a list of posts and a list of comments, guessing the data structure from the API response. 
 
 Now, start the server with `npm run dev`, browse to `http://localhost:3000/`, and you should see the working admin:
 
