@@ -315,7 +315,7 @@ yarn
 
 ### Using React-Admin As The Root Application
 
-Remix and react-admin both use [react-router](https://reactrouter.com/) for routing. React-admin detects when it is included inside an existing React Router context. If so, react-admin will reuses it. This is problematic because Remix uses file-based routing. So when react-admin changes the route to `/posts` for instance, Remix will look for a corresponding `app/routes/posts.tsx` file. As it doesn't exist, Remix will render a 404.
+Remix and react-admin both use [react-router](https://reactrouter.com/) for routing. React-admin detects when it is included inside an existing React Router context. If so, react-admin will reuse it. This is problematic because Remix uses file-based routing. So when react-admin changes the route to `/posts` for instance, Remix will look for a corresponding `app/routes/posts.tsx` file. As it doesn't exist, Remix will render a 404.
 
 The solution is to create both an [index route](https://remix.run/docs/en/main/file-conventions/routes#basic-routes) and a [splat route](https://remix.run/docs/en/main/file-conventions/routes#splat-routes), i.e. a route that matches all URLs, and make them render the same content. A splat route is named `$.tsx`. Create the splat route file then edit both the index route (`app/route/_index.tsx`) and the splat route (`app/route/$.tsx`) so they have the following code:
 
@@ -476,7 +476,7 @@ const getSupabaseUrlFromRequestUrl = (url: string) => {
 };
 ```
 
-**Tip**: Some of this code is really PostgREST-specific. The `prefer` header is required to let PostgREST returns one record instead of an array containing one record in response to `getOne` requests. A proxy for another CRUD API will require different parameters.
+**Tip**: Some of this code is really PostgREST-specific. The `prefer` header is required to let PostgREST return one record instead of an array containing one record in response to `getOne` requests. A proxy for another CRUD API will require different parameters.
 
 Finally, update the react-admin data provider to use the Supabase adapter instead of the JSON Server one. As Supabase provides a PostgREST endpoint, we'll use [`ra-data-postgrest`](https://github.com/raphiniert-com/ra-data-postgrest):
 
