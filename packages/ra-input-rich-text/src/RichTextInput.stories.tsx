@@ -375,7 +375,7 @@ const suggestions = tags => {
                 },
 
                 onKeyDown(props) {
-                    if (props.event.key === 'Escape') {
+                    if (popup && popup[0] && props.event.key === 'Escape') {
                         popup[0].hide();
 
                         return true;
@@ -396,15 +396,14 @@ const suggestions = tags => {
                         if (component) {
                             component.destroy();
                         }
+                        // Remove references to the old popup and component upon destruction/exit.
+                        // (This should prevent redundant calls to `popup.destroy()`, which Tippy
+                        // warns in the console is a sign of a memory leak, as the `suggestion`
+                        // plugin seems to call `onExit` both when a suggestion menu is closed after
+                        // a user chooses an option, *and* when the editor itself is destroyed.)
+                        popup = undefined;
+                        component = undefined;
                     });
-
-                    // Remove references to the old popup and component upon destruction/exit.
-                    // (This should prevent redundant calls to `popup.destroy()`, which Tippy
-                    // warns in the console is a sign of a memory leak, as the `suggestion`
-                    // plugin seems to call `onExit` both when a suggestion menu is closed after
-                    // a user chooses an option, *and* when the editor itself is destroyed.)
-                    popup = undefined;
-                    component = undefined;
                 },
             };
         },
