@@ -44,7 +44,6 @@ const App = () => {
 
 const MyAdmin = () => {
     const { theme } = useContext(ThemeContext);
-
     return (
         <Admin
             title=""
@@ -58,9 +57,9 @@ const MyAdmin = () => {
             layout={Layout}
             i18nProvider={i18nProvider}
             disableTelemetry
-            theme={theme.theme}
-            lightTheme={theme.theme}
-            darkTheme={theme.theme}
+            theme={theme.light}
+            lightTheme={theme.light}
+            darkTheme={theme.dark}
         >
             <CustomRoutes>
                 <Route path="/segments" element={<Segments />} />

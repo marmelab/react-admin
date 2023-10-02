@@ -1,13 +1,13 @@
 import {
-    Box,
     FormControl,
     InputLabel,
     MenuItem,
     Select,
     SelectChangeEvent,
+    Stack,
 } from '@mui/material';
 import { useContext } from 'react';
-import { useStore, useTranslate } from 'react-admin';
+import { ToggleThemeButton, useStore, useTranslate } from 'react-admin';
 import { ThemeContext, ThemeType, themes } from './themeContext';
 
 export const ThemeSwipper = () => {
@@ -26,7 +26,7 @@ export const ThemeSwipper = () => {
     };
 
     return (
-        <Box sx={{ minWidth: 120 }}>
+        <Stack direction={'row'} alignItems={'center'}>
             <FormControl fullWidth>
                 <InputLabel id="theme-select-label">
                     {translate('pos.theme.name')}
@@ -45,6 +45,7 @@ export const ThemeSwipper = () => {
                     ))}
                 </Select>
             </FormControl>
-        </Box>
+            {theme.dark ? <ToggleThemeButton /> : null}
+        </Stack>
     );
 };
