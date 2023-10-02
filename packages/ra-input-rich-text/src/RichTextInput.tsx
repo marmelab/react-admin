@@ -97,18 +97,21 @@ export const RichTextInput = (props: RichTextInputProps) => {
         formState: { isSubmitted },
     } = useInput({ ...props, source, defaultValue });
 
-    const editor = useEditor({
-        ...editorOptions,
-        editable: !disabled && !readOnly,
-        content: field.value,
-        editorProps: {
-            ...editorOptions?.editorProps,
-            attributes: {
-                ...editorOptions?.editorProps?.attributes,
-                id,
+    const editor = useEditor(
+        {
+            ...editorOptions,
+            editable: !disabled && !readOnly,
+            content: field.value,
+            editorProps: {
+                ...editorOptions?.editorProps,
+                attributes: {
+                    ...editorOptions?.editorProps?.attributes,
+                    id,
+                },
             },
         },
-    });
+        [disabled, editorOptions, readOnly, id]
+    );
 
     const { error, invalid, isTouched } = fieldState;
 
@@ -120,31 +123,8 @@ export const RichTextInput = (props: RichTextInputProps) => {
         editor.commands.setContent(field.value, false, {
             preserveWhitespace: true,
         });
-
         editor.commands.setTextSelection({ from, to });
     }, [editor, field.value]);
-
-    useEffect(() => {
-        if (!editor) return;
-
-        editor.setOptions({
-            editable: !disabled && !readOnly,
-            editorProps: {
-                ...editorOptions?.editorProps,
-                attributes: {
-                    ...editorOptions?.editorProps?.attributes,
-                    id,
-                },
-            },
-        });
-    }, [
-        disabled,
-        editor,
-        readOnly,
-        id,
-        editorOptions?.editorProps,
-        editorOptions?.editorProps?.attributes,
-    ]);
 
     useEffect(() => {
         if (!editor) {
