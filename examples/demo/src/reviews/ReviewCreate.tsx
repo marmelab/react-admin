@@ -34,10 +34,7 @@ const ReviewCreate = () => {
         <Create mutationOptions={{ onSuccess }}>
             <SimpleForm>
                 <ReferenceInput source="customer_id" reference="customers">
-                    <AutocompleteInput
-                        optionText={customerOptionRenderer}
-                        validate={required()}
-                    />
+                    <AutocompleteInput validate={required()} />
                 </ReferenceInput>
                 <ReferenceInput source="product_id" reference="products">
                     <AutocompleteInput
@@ -62,8 +59,5 @@ const ReviewCreate = () => {
         </Create>
     );
 };
-
-const customerOptionRenderer = (choice: any) =>
-    `${choice.first_name} ${choice.last_name}`;
 
 export default ReviewCreate;

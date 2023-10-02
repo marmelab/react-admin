@@ -8,7 +8,12 @@ import PropTypes from 'prop-types';
 import { useTranslate, useResourceContext, useCreatePath } from 'ra-core';
 import { Link, To } from 'react-router-dom';
 
-import { Button, ButtonProps, LocationDescriptor } from './Button';
+import {
+    Button,
+    ButtonProps,
+    LocationDescriptor,
+    getLinkParams,
+} from './Button';
 
 /**
  * Opens the Create view of a given resource
@@ -43,6 +48,8 @@ const CreateButton = (props: CreateButtonProps) => {
         theme.breakpoints.down('md')
     );
     const state = merge(scrollStates[String(scrollToTop)], initialState);
+    // Duplicated behaviour of Button component (legacy use) which will be removed in v5.
+    const linkParams = getLinkParams(locationDescriptor);
 
     return isSmall ? (
         <StyledFab
@@ -54,6 +61,7 @@ const CreateButton = (props: CreateButtonProps) => {
             className={clsx(CreateButtonClasses.floating, className)}
             aria-label={label && translate(label)}
             {...rest}
+            {...linkParams}
         >
             {icon}
         </StyledFab>
@@ -66,6 +74,7 @@ const CreateButton = (props: CreateButtonProps) => {
             label={label}
             variant={variant}
             {...(rest as any)}
+            {...linkParams}
         >
             {icon}
         </StyledButton>
