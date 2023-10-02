@@ -108,30 +108,6 @@ const Input = () => ({
     },
 });
 
-const ItemLink = (theme: Theme) => ({
-    RaMenuItemLink: {
-        styleOverrides: {
-            root: {
-                /*borderLeft: `3px solid ${theme.palette.primary.contrastText}`,
-                '&:hover': {
-                    borderRadius: '0px 100px 100px 0px',
-                },
-                '&.RaMenuItemLink-active': {
-                    borderLeft: `3px solid ${theme.palette.primary.main}`,
-                    borderRadius: '0px 100px 100px 0px',
-                    backgroundImage: `linear-gradient(98deg, ${theme.palette.primary.light}, ${theme.palette.primary.dark} 94%)`,
-                    boxShadow: theme.shadows[1],
-                    color: theme.palette.primary.contrastText,
-
-                    '& .MuiSvgIcon-root': {
-                        fill: theme.palette.primary.contrastText,
-                    },
-                },*/
-            },
-        },
-    },
-});
-
 const Paper = (theme: Theme) => {
     return {
         MuiPaper: {
@@ -204,7 +180,6 @@ const componentsOverrides = (theme: Theme) => ({
     ...Datagrid(theme),
     ...FormControl(),
     ...Input(),
-    ...ItemLink(theme),
     ...Paper(theme),
     ...Table(),
     ...TextField(),
