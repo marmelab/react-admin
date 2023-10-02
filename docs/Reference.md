@@ -250,7 +250,6 @@ title: "Index"
 **- I -**
 * [`useInfiniteGetList`](./useInfiniteGetList.md)
 * [`useInput`](./useInput.md)
-* [`useI18nextProvider`](./useI18nextProvider.md)
 
 **- L -**
 * [`useList`](./useList.md)
