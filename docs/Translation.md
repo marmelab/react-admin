@@ -145,6 +145,7 @@ You might prefer this package over `ra-i18n-polyglot` when:
 
 ```tsx
 // in src/i18nProvider.js
+import i18n from 'i18next';
 import { useI18nextProvider, convertRaTranslationsToI18next } from 'ra-i18n-i18next';
 import en from 'ra-language-english';
 import fr from 'ra-language-french';
@@ -172,7 +173,7 @@ export const useMyI18nProvider = useI18nextProvider({
     ],
 });
 
-// in src/App.js
+// in src/App.tsx
 import { Admin } from 'react-admin';
 import { useMyI18nProvider } from './i18nProvider';
 
@@ -191,7 +192,7 @@ const App = () => {
 };
 ```
 
-Check [the ra-i18n-18next documentation](https://github.com/marmelab/react-admin/tree/master/packages/ra-i18n-18next) for details.
+Check [the ra-i18n-i18next documentation](https://github.com/marmelab/react-admin/tree/master/packages/ra-i18n-i18next) for details.
 
 ## Translation Files
 

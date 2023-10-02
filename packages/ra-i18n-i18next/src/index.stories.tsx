@@ -6,10 +6,10 @@ import englishMessages from 'ra-language-english';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { MemoryRouter } from 'react-router-dom';
 import { useI18nextProvider } from './index';
-import { convertRaTranslationsToI18next } from './convertRaMessagesToI18next';
+import { convertRaTranslationsToI18next } from './convertRaTranslationsToI18next';
 
 export default {
-    title: 'ra-i18n-18next',
+    title: 'ra-i18n-i18next',
 };
 
 export const Basic = () => {
@@ -49,13 +49,11 @@ export const WithLazyLoadedLanguages = () => {
     const i18nextInstance = i18n.use(
         resourcesToBackend(language => {
             if (language === 'fr') {
-                return import(
-                    `ra-language-french`
-                ).then(({ default: messages }) =>
+                return import(`./stories-fr`).then(({ default: messages }) =>
                     convertRaTranslationsToI18next(messages)
                 );
             }
-            return import(`ra-language-english`).then(({ default: messages }) =>
+            return import(`./stories-en`).then(({ default: messages }) =>
                 convertRaTranslationsToI18next(messages)
             );
         })

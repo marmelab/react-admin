@@ -2,6 +2,15 @@
 
 i18next i18n provider for [react-admin](https://github.com/marmelab/react-admin), the frontend framework for building admin applications on top of REST/GraphQL services. It relies on [i18next](https://www.i18next.com/).
 
+You might prefer this package over `ra-i18n-polyglot` when:
+- you already use i18next services such as [locize](https://locize.com/)
+- you want more control on how you organize translations, leveraging [multiple files and namespaces](https://www.i18next.com/principles/namespaces)
+- you want more control on how you [load translations](https://www.i18next.com/how-to/add-or-load-translations)
+- you want to use features not available in Polyglot such as:
+    - [advanced formatting](https://www.i18next.com/translation-function/formatting);
+    - [nested translations](https://www.i18next.com/translation-function/nesting)
+    - [context](https://www.i18next.com/translation-function/context)
+
 ## Installation
 
 ```sh
@@ -138,7 +147,7 @@ This parameter lets you provide the list of available locales for your applicati
 
 ```tsx
 import { Admin } from 'react-admin';
-import { useI18nextProvider } from 'ra-i18n-i18next';
+import { useI18nextProvider, convertRaTranslationsToI18next } from 'ra-i18n-i18next';
 import i18n from 'i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
 
@@ -203,8 +212,6 @@ const messages = convertRaMessagesToI18next(englishMessages);
 | -------------------- | -------- | ----------- | ------- | ---------------------------------------------------------------- |
 | `raMessages`         | Required | object      |         | An object containing standard react-admin translations such as provided by ra-language-english |
 | `options`            | Optional | object      |         | An object providing custom interpolation suffix and/or suffix |
-
-@example Convert the english translations from ra-language-english to i18next format with custom interpolation wrappers
 
 ##### `options`
 
