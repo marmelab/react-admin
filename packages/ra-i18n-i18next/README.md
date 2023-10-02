@@ -76,7 +76,7 @@ const App = () => {
 
 ##### `i18nextInstance`
 
-This parameter let you pass your own instance of i18next, allowing you to customize its plugins such as the backends.
+This parameter lets you pass your own instance of i18next, allowing you to customize its plugins such as the backends.
 
 ```tsx
 import { Admin } from 'react-admin';
@@ -91,14 +91,7 @@ const App = () => {
         .use(LanguageDetector);
 
     const i18nProvider = useI18nextProvider({
-        i18nInstance: i18nextInstance,
-        options: {
-            fallbackLng: 'en',
-            debug: true,
-            interpolation: {
-                escapeValue: false, // not needed for react!!
-            },
-        }
+        i18nextInstance
     });
 
     if (!i18nProvider) return (<div>Loading...</div>);
@@ -113,7 +106,9 @@ const App = () => {
 
 ##### `options`
 
-This parameter let you pass your own options for the i18n `init` function.
+This parameter lets you pass your own options for the i18n `init` function.
+
+Please refer to [the i18next documentation](https://www.i18next.com/overview/configuration-options) for details.
 
 ```tsx
 import { Admin } from 'react-admin';
@@ -123,7 +118,6 @@ import i18n from 'i18next';
 const App = () => {
     const i18nProvider = useI18nextProvider({
         options: {
-            fallbackLng: 'en',
             debug: true,
         }
     });
@@ -140,7 +134,7 @@ const App = () => {
 
 #### `availableLocales`
 
-This parameter let you provide the list of available locales for your application. This is used by the default react-admin AppBar to detect whether to display a locale selector.
+This parameter lets you provide the list of available locales for your application. This is used by the default react-admin AppBar to detect whether to display a locale selector.
 
 ```tsx
 import { Admin } from 'react-admin';
@@ -149,15 +143,20 @@ import i18n from 'i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
 
 const App = () => {
-    const i18nInstance = i18n.use(
+    const i18nextInstance = i18n.use(
+        // Here we use a Backend provided by i18next that allows us to load
+        // the translations however we want.
+        // See https://www.i18next.com/how-to/add-or-load-translations#lazy-load-in-memory-translations
         resourcesToBackend(language => {
             if (language === 'fr') {
+                // Load the ra-language-french package and convert its translations in i18next format
                 return import(
                     `ra-language-french`
                 ).then(({ default: messages }) =>
                     convertRaTranslationsToI18next(messages)
                 );
             }
+            // Load the ra-language-english package and convert its translations in i18next format
             return import(`ra-language-english`).then(({ default: messages }) =>
                 convertRaTranslationsToI18next(messages)
             );
@@ -165,7 +164,7 @@ const App = () => {
     );
 
     const i18nProvider = useI18nextProvider({
-        i18nInstance,
+        i18nextInstance,
         availableLocales: [
             { locale: 'en', name: 'English' },
             { locale: 'fr', name: 'French' },

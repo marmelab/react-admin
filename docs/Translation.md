@@ -134,6 +134,15 @@ Check [the translation setup documentation](./TranslationSetup.md) for details a
 
 React-admin also provides a package called `ra-i18n-i18next` that leverages [the i18next library](https://www.i18next.com/) to build an `i18nProvider` based on a dictionary of translations.
 
+You might prefer this package over `ra-i18n-polyglot` when:
+- you already use i18next services such as [locize](https://locize.com/)
+- you want more control on how you organize translations, leveraging [multiple files and namespaces](https://www.i18next.com/principles/namespaces)
+- you want more control on how you [load translations](https://www.i18next.com/how-to/add-or-load-translations)
+- you want to use features not available in Polyglot such as:
+    - [advanced formatting](https://www.i18next.com/translation-function/formatting);
+    - [nested translations](https://www.i18next.com/translation-function/nesting)
+    - [context](https://www.i18next.com/translation-function/context)
+
 ```tsx
 // in src/i18nProvider.js
 import { useI18nextProvider, convertRaTranslationsToI18next } from 'ra-i18n-i18next';
@@ -182,7 +191,7 @@ const App = () => {
 };
 ```
 
-Check [the useI18nextProvider documentation](./useI18nextProvider.md) for details about `ra-i18n-i18next` and how to configure it.
+Check [the ra-i18n-18next documentation](https://github.com/marmelab/react-admin/tree/master/packages/ra-i18n-18next) for details.
 
 ## Translation Files
 

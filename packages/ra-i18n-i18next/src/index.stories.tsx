@@ -46,7 +46,7 @@ export const Basic = () => {
 };
 
 export const WithLazyLoadedLanguages = () => {
-    const i18nInstance = i18n.use(
+    const i18nextInstance = i18n.use(
         resourcesToBackend(language => {
             if (language === 'fr') {
                 return import(
@@ -62,7 +62,7 @@ export const WithLazyLoadedLanguages = () => {
     );
 
     const i18nProvider = useI18nextProvider({
-        i18nInstance,
+        i18nextInstance,
         availableLocales: [
             { locale: 'en', name: 'English' },
             { locale: 'fr', name: 'French' },

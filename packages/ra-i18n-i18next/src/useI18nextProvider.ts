@@ -56,11 +56,11 @@ import { I18nProvider, Locale } from 'ra-core';
  * };
  */
 export const useI18nextProvider = ({
-    i18nInstance = createInstance(),
+    i18nextInstance = createInstance(),
     options = {},
     availableLocales = [{ locale: 'en', name: 'English' }],
 }: {
-    i18nInstance?: I18n;
+    i18nextInstance?: I18n;
     options?: InitOptions;
     availableLocales?: Locale[];
 } = {}) => {
@@ -73,26 +73,26 @@ export const useI18nextProvider = ({
         }
 
         initializationPromise.current = getI18nProvider(
-            i18nInstance,
+            i18nextInstance,
             options,
             availableLocales
         ).then(provider => {
             setI18nProvider(provider);
             return provider;
         });
-    }, [availableLocales, i18nInstance, options]);
+    }, [availableLocales, i18nextInstance, options]);
 
     return i18nProvider;
 };
 
 export const getI18nProvider = async (
-    i18nInstance: I18n,
+    i18nextInstance: I18n,
     options?: InitOptions,
     availableLocales: Locale[] = [{ locale: 'en', name: 'English' }]
 ): Promise<I18nProvider> => {
     let translate: TFunction;
 
-    await i18nInstance
+    await i18nextInstance
         .use(initReactI18next)
         .init({
             lng: 'en',
@@ -115,11 +115,11 @@ export const getI18nProvider = async (
             }).toString();
         },
         changeLocale: async (newLocale: string) => {
-            await i18nInstance.loadLanguages(newLocale);
-            const t = await i18nInstance.changeLanguage(newLocale);
+            await i18nextInstance.loadLanguages(newLocale);
+            const t = await i18nextInstance.changeLanguage(newLocale);
             translate = t;
         },
-        getLocale: () => i18nInstance.language,
+        getLocale: () => i18nextInstance.language,
         getLocales: () => {
             return availableLocales;
         },
