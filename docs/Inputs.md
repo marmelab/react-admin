@@ -986,7 +986,7 @@ const BoundedTextField = (props: BoundedTextFieldProps) => {
 You can find components for react-admin in third-party repositories.
 
 - [alexgschwend/react-admin-color-picker](https://github.com/alexgschwend/react-admin-color-picker): a color input using [React Color](https://casesandberg.github.io/react-color/), a collection of color pickers.
-- [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs): a collection of Date Inputs, based on [material-ui-pickers](https://material-ui-pickers.firebaseapp.com/)
+- [react-admin-mui-dateinputs](https://www.npmjs.com/package/react-admin-mui-dateinputs): a collection of Date/Time Inputs for react-admin based on [MUI X Date Pickers](https://mui.com/x/react-date-pickers/date-picker/).
 - [MrHertal/react-admin-json-view](https://github.com/MrHertal/react-admin-json-view): JSON field and input for react-admin.
 - [@bb-tech/ra-components](https://github.com/bigbasket/ra-components): `JsonInput` which allows only valid JSON as input, `JsonField` to view JSON properly on show card and `TrimField` to trim the fields while showing in `Datagrid` in `List` component.
 - [@react-page/react-admin](https://react-page.github.io/docs/#/integration-react-admin): ReactPage is a rich content editor and comes with a ready-to-use React-admin input component. [check out the demo](https://react-page.github.io/examples/reactadmin)
