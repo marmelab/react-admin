@@ -35,7 +35,7 @@ const lightPalette: PaletteOptions = {
         main: '#388e3c',
     },
     secondary: {
-        main: '#FFEC97',
+        main: '#F2B705',
     },
     background: {
         default: '#f7f9fc',
