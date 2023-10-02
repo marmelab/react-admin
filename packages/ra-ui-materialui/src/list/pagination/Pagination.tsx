@@ -111,7 +111,7 @@ export const Pagination: FC<PaginationProps> = memo(props => {
                 rowsPerPage={perPage}
                 page={page - 1}
                 onPageChange={handlePageChange}
-                rowsPerPageOptions={rowsPerPageOptions}
+                rowsPerPageOptions={emptyArray}
                 component="span"
                 labelDisplayedRows={labelDisplayedRows}
                 {...sanitizeListRestProps(rest)}
