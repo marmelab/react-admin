@@ -336,8 +336,6 @@ The stylesheet link is necessary to reset the default styles of the admin app. C
 body { margin: 0; }
 ```
 
-**Tip**: Remix doesn't let splat routes catch requests to the index page ('/'), so you need to have both the `app/routes/index.tsx` and `app/routes/$.tsx` files to correctly render the admin app.
-
 Next, create the admin app component in `app/components/App.tsx`:
 
 ```jsx
