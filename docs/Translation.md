@@ -165,7 +165,7 @@ const i18nInstance = i18n.use(
     })
 );
 
-export const useMyI18nProvider = useI18nextProvider({
+export const useMyI18nProvider = () => useI18nextProvider({
     i18nInstance,
     availableLocales: [
         { locale: 'en', name: 'English' },
