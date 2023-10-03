@@ -82,6 +82,14 @@ const Backdrop = () => ({
     },
 });
 
+const FormControl = () => ({
+    MuiFormControl: {
+        defaultProps: {
+            padding: 20,
+        },
+    },
+});
+
 const Input = () => ({
     MuiOutlinedInput: {
         styleOverrides: {
@@ -234,6 +242,7 @@ const Toolbar = (theme: Theme) => ({
 
 const componentsOverrides = (theme: Theme) => ({
     ...Backdrop(),
+    ...FormControl(),
     ...Input(),
     ...ItemLink(theme),
     ...Sidebar(),
