@@ -8,12 +8,7 @@ import PropTypes from 'prop-types';
 import { useTranslate, useResourceContext, useCreatePath } from 'ra-core';
 import { Link, To } from 'react-router-dom';
 
-import {
-    Button,
-    ButtonProps,
-    LocationDescriptor,
-    getLinkParams,
-} from './Button';
+import { Button, ButtonProps, LocationDescriptor } from './Button';
 
 /**
  * Opens the Create view of a given resource
@@ -142,3 +137,22 @@ export default React.memo(CreateButton, (prevProps, nextProps) => {
         isEqual(prevProps.to, nextProps.to)
     );
 });
+
+const getLinkParams = (locationDescriptor?: LocationDescriptor | string) => {
+    // eslint-disable-next-line eqeqeq
+    if (locationDescriptor == undefined) {
+        return undefined;
+    }
+
+    if (typeof locationDescriptor === 'string') {
+        return { to: locationDescriptor };
+    }
+
+    const { redirect, replace, state, ...to } = locationDescriptor;
+    return {
+        to,
+        redirect,
+        replace,
+        state,
+    };
+};
