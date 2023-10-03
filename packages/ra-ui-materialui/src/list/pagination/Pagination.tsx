@@ -19,6 +19,14 @@ import {
 import { PaginationActions, PaginationActionsProps } from './PaginationActions';
 
 export const Pagination: FC<PaginationProps> = memo(props => {
+    const translate = useTranslate();
+    const DefaultRowsPerPageOptions = [
+        { label: translate('ra.rowCount.per_page_5'), value: 5 },
+        { label: translate('ra.rowCount.per_page_10'), value: 10 },
+        { label: translate('ra.rowCount.per_page_25'), value: 25 },
+        { label: translate('ra.rowCount.per_page_50'), value: 50 },
+    ];
+    const emptyArray = [];
     const {
         rowsPerPageOptions = DefaultRowsPerPageOptions,
         actions,
@@ -34,7 +42,6 @@ export const Pagination: FC<PaginationProps> = memo(props => {
         setPage,
         setPerPage,
     } = useListPaginationContext(props);
-    const translate = useTranslate();
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('md')
     );
@@ -152,9 +159,6 @@ Pagination.propTypes = {
     limit: PropTypes.element,
     rowsPerPageOptions: PropTypes.arrayOf(PropTypes.number),
 };
-
-const DefaultRowsPerPageOptions = [5, 10, 25, 50];
-const emptyArray = [];
 
 export interface PaginationProps
     extends TablePaginationBaseProps,
