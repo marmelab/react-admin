@@ -1,7 +1,7 @@
-import { convertRaTranslationsToI18next } from './convertRaMessagesToI18next';
+import { convertRaTranslationsToI18next } from './convertRaTranslationsToI18next';
 
 describe('i18next i18nProvider', () => {
-    describe('convertRaMessagesToI18next', () => {
+    describe('convertRaTranslationsToI18next', () => {
         test('should convert react-admin default messages to i18next format', () => {
             expect(
                 convertRaTranslationsToI18next(
