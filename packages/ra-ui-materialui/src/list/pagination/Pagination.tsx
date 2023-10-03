@@ -153,7 +153,12 @@ Pagination.propTypes = {
     rowsPerPageOptions: PropTypes.arrayOf(PropTypes.number),
 };
 
-const DefaultRowsPerPageOptions = [5, 10, 25, 50];
+const DefaultRowsPerPageOptions = [
+    { label: '5 per page', value: 5 },
+    { label: '10 per page', value: 10 },
+    { label: '25 per page', value: 25 },
+    { label: '50 per page', value: 50 },
+];
 const emptyArray = [];
 
 export interface PaginationProps
