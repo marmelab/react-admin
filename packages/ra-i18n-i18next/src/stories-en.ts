@@ -1,4 +1,4 @@
-import raMessages from 'ra-language-french';
+import raMessages from 'ra-language-english';
 import { convertRaTranslationsToI18next } from './convertRaTranslationsToI18next';
 
 export default {
