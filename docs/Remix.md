@@ -9,7 +9,7 @@ title: "Remix Integration"
 
 These instructions are targeting Remix v2.
 
-### Setting Up Remix
+## Setting Up Remix
 
 Let's start by creating a new Remix project. Run the following command:
 
@@ -27,7 +27,7 @@ The project structure should look like this:
 
 ![Remix v2 project structure](./img/remix-structure.png)
 
-### Setting Up React-Admin In Remix
+## Setting Up React-Admin In Remix
 
 Add the `react-admin` npm package, as well as a data provider package. In this example, we'll use `ra-data-json-server` to connect to a test API provided by [JSONPlaceholder](https://jsonplaceholder.typicode.com).
 
@@ -53,7 +53,7 @@ And call `yarn` again to install the dependencies:
 yarn
 ```
 
-### Adding React-Admin In A Sub Route
+## Adding React-Admin In A Sub Route
 
 In many cases, the admin is only a part of the application. For instance, you may want to render the admin in a subpath like `/admin`.
 
@@ -105,7 +105,7 @@ export default {
 
 Now the admin renders at `http://localhost:3000/admin`, and you can use the Remix routing system to add more pages.
 
-### Adding an API
+## Adding an API
 
 [Remix allows to serve an API](https://remix.run/docs/en/main/guides/api-routes) from the same server. You *could* use this to build a CRUD API by hand. However, we consider that building a CRUD API on top of a relational database is a solved problem and that developers shouldn't spend time reimplementing it. 
 
