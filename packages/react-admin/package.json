@@ -11,6 +11,14 @@
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
     "types": "dist/cjs/index.d.ts",
+    "exports": {
+        ".": {
+            "require": "./dist/cjs/index.js",
+            "import": "./dist/esm/index.js",
+            "types": "./dist/cjs/index.d.ts"
+        },
+        "./*": "./*"
+    },
     "sideEffects": false,
     "authors": [
         "François Zaninotto"
