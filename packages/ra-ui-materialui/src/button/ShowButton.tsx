@@ -9,7 +9,6 @@ import {
     useRecordContext,
     useCreatePath,
 } from 'ra-core';
-import isEqual from 'lodash/isEqual';
 
 import { Button, ButtonProps } from './Button';
 
@@ -77,7 +76,7 @@ interface Props<RecordType extends RaRecord = any> {
 export type ShowButtonProps<RecordType extends RaRecord = any> = Props<
     RecordType
 > &
-    ButtonProps;
+    Omit<ButtonProps<typeof Link>, 'to'>;
 
 ShowButton.propTypes = {
     icon: PropTypes.element,
@@ -94,8 +93,7 @@ const PureShowButton = memo(
             ? prevProps.record.id === nextProps.record.id
             : prevProps.record == nextProps.record) && // eslint-disable-line eqeqeq
         prevProps.label === nextProps.label &&
-        prevProps.disabled === nextProps.disabled &&
-        isEqual(prevProps.to, nextProps.to)
+        prevProps.disabled === nextProps.disabled
 );
 
 export default PureShowButton;
