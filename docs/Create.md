@@ -467,7 +467,7 @@ const CreateRelatedCommentButton = () => {
     const record = useRecordContext();
     return (
         <CreateButton
-            resource="reviews"
+            resource="comments"
             to={{
                 search: `?source=${JSON.stringify({ post_id: record.id })}`,
             }}

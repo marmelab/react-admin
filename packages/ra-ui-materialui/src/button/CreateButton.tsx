@@ -77,10 +77,10 @@ const CreateButton = (props: CreateButtonProps) => {
 };
 
 // avoids using useMemo to get a constant value for the link state
-const scrollStates = {
-    true: { _scrollToTop: true },
-    false: {},
-};
+const scrollStates = new Map([
+    ['true', { _scrollToTop: true }],
+    ['false', {}],
+]);
 
 const defaultIcon = <ContentAdd />;
 

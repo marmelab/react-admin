@@ -11,9 +11,9 @@ import {
     useRedirect,
     getRecordFromLocation,
 } from 'react-admin';
+import { useLocation } from 'react-router';
 
 import StarRatingInput from './StarRatingInput';
-import { useLocation } from 'react-router';
 
 const ReviewCreate = () => {
     const notify = useNotify();
@@ -32,7 +32,7 @@ const ReviewCreate = () => {
 
     return (
         <Create mutationOptions={{ onSuccess }}>
-            <SimpleForm>
+            <SimpleForm defaultValues={{ status: 'pending' }}>
                 <ReferenceInput source="customer_id" reference="customers">
                     <AutocompleteInput validate={required()} />
                 </ReferenceInput>
