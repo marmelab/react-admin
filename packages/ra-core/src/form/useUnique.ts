@@ -87,6 +87,9 @@ export const useUnique = (options?: UseUniqueOptions) => {
             );
 
             return async (value: any, allValues: any, props: InputProps) => {
+                if (!value) {
+                    return undefined;
+                }
                 try {
                     const finalFilter = set(
                         merge({}, filter),
