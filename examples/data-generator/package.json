@@ -7,6 +7,14 @@
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
     "types": "dist/cjs/index.d.ts",
+    "exports": {
+        ".": {
+            "require": "./dist/cjs/index.js",
+            "import": "./dist/esm/index.js",
+            "types": "./dist/cjs/index.d.ts"
+        },
+        "./*": "./*"
+    },
     "scripts": {
         "build": "yarn run build-cjs && yarn run build-esm",
         "build-cjs": "rimraf ./dist/cjs && tsc --outDir dist/cjs",
