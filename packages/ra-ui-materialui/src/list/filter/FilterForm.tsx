@@ -50,7 +50,8 @@ export const FilterForm = (props: FilterFormProps) => {
     // Reapply filterValues when the URL changes or a user removes a filter
     useEffect(() => {
         const newValues = getFilterFormValues(getValues(), filterValues);
-        if (!isEqual(newValues, getValues())) {
+        const previousValues = getValues();
+        if (!isEqual(newValues, previousValues)) {
             reset(newValues);
         }
         // The reference to the filterValues object is not updated when it changes,
@@ -66,7 +67,9 @@ export const FilterForm = (props: FilterFormProps) => {
             // We can't rely on form state as it might not be synchronized yet
             const isFormValid = await trigger();
 
-            if (isFormValid) {
+            // Check that the name is present to avoid setting filters when watch was
+            // triggered by a change on the ListContext values.
+            if (name && isFormValid) {
                 if (get(values, name) === '') {
                     const newValues = cloneDeep(values);
                     unset(newValues, name);
@@ -204,7 +207,11 @@ export const mergeInitialValuesWithDefaultValues = (
     ...initialValues,
 });
 
-const handleFormSubmit = () => {};
+const handleFormSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    return false;
+};
 
 const PREFIX = 'RaFilterForm';
 
