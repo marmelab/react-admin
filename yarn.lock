@@ -9639,14 +9639,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"data-generator-retail@^4.12.0, data-generator-retail@^4.14.4, data-generator-retail@workspace:examples/data-generator":
+"data-generator-retail@^4.12.0, data-generator-retail@^4.14.5, data-generator-retail@workspace:examples/data-generator":
   version: 0.0.0-use.local
   resolution: "data-generator-retail@workspace:examples/data-generator"
   dependencies:
     cross-env: ^5.2.0
     date-fns: ^2.19.0
     faker: ^4.1.0
-    ra-core: ^4.14.4
+    ra-core: ^4.14.5
     rimraf: ^3.0.2
     typescript: ^5.1.3
   peerDependencies:
@@ -16153,15 +16153,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^3.3.4":
-  version: 3.3.4
-  resolution: "nanoid@npm:3.3.4"
-  bin:
-    nanoid: bin/nanoid.cjs
-  checksum: a0747d5c6021828fe8d38334e5afb05d3268d7d4b06024058ec894ccc47070e4e81d268a6b75488d2ff3485fa79a75c251d4b7c6f31051bb54bb662b6fd2a27d
-  languageName: node
-  linkType: hard
-
 "natural-compare-lite@npm:^1.4.0":
   version: 1.4.0
   resolution: "natural-compare-lite@npm:1.4.0"
@@ -17563,25 +17554,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.18":
-  version: 8.4.18
-  resolution: "postcss@npm:8.4.18"
-  dependencies:
-    nanoid: ^3.3.4
-    picocolors: ^1.0.0
-    source-map-js: ^1.0.2
-  checksum: df38b43e0cd79b115305fb787f4586d376b38c515692ef7429785af84d00ebe86f2276b98071d3f62848daf8639ee4ef6057618b34c292196dc6af072eeede5e
-  languageName: node
-  linkType: hard
-
-"postcss@npm:^8.4.21":
-  version: 8.4.23
-  resolution: "postcss@npm:8.4.23"
+"postcss@npm:^8.4.18, postcss@npm:^8.4.21":
+  version: 8.4.31
+  resolution: "postcss@npm:8.4.31"
   dependencies:
     nanoid: ^3.3.6
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
-  checksum: 35c2e26496be286a63706a0b8240fc4d2075a746466df530989208f60ea33cbc80c89420221cffb7d4fdd605afc385993f5f60302447e3047a7c0a8756b6471d
+  checksum: 748b82e6e5fc34034dcf2ae88ea3d11fd09f69b6c50ecdd3b4a875cfc7cdca435c958b211e2cb52355422ab6fccb7d8f2f2923161d7a1b281029e4a913d59acf
   languageName: node
   linkType: hard
 
@@ -18229,7 +18209,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ra-core@^4.14.4, ra-core@workspace:packages/ra-core":
+"ra-core@^4.14.5, ra-core@workspace:packages/ra-core":
   version: 0.0.0-use.local
   resolution: "ra-core@workspace:packages/ra-core"
   dependencies:
@@ -18275,7 +18255,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-fakerest@^4.12.0, ra-data-fakerest@^4.14.4, ra-data-fakerest@workspace:packages/ra-data-fakerest":
+"ra-data-fakerest@^4.12.0, ra-data-fakerest@^4.14.5, ra-data-fakerest@workspace:packages/ra-data-fakerest":
   version: 0.0.0-use.local
   resolution: "ra-data-fakerest@workspace:packages/ra-data-fakerest"
   dependencies:
@@ -18283,7 +18263,7 @@ __metadata:
     cross-env: ^5.2.0
     expect: ^27.4.6
     fakerest: ^3.0.0
-    ra-core: ^4.14.4
+    ra-core: ^4.14.5
     rimraf: ^3.0.2
     typescript: ^5.1.3
   peerDependencies:
@@ -18333,7 +18313,7 @@ __metadata:
   dependencies:
     cross-env: ^5.2.0
     query-string: ^7.1.1
-    ra-core: ^4.14.4
+    ra-core: ^4.14.5
     rimraf: ^3.0.2
     typescript: ^5.1.3
   languageName: unknown
@@ -18346,7 +18326,7 @@ __metadata:
     cross-env: ^5.2.0
     localforage: ^1.7.1
     lodash: ~4.17.5
-    ra-data-fakerest: ^4.14.4
+    ra-data-fakerest: ^4.14.5
     rimraf: ^3.0.2
     typescript: ^5.1.3
   peerDependencies:
@@ -18354,13 +18334,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-local-storage@^4.12.0, ra-data-local-storage@^4.14.4, ra-data-local-storage@workspace:packages/ra-data-localstorage":
+"ra-data-local-storage@^4.12.0, ra-data-local-storage@^4.14.5, ra-data-local-storage@workspace:packages/ra-data-localstorage":
   version: 0.0.0-use.local
   resolution: "ra-data-local-storage@workspace:packages/ra-data-localstorage"
   dependencies:
     cross-env: ^5.2.0
     lodash: ~4.17.5
-    ra-data-fakerest: ^4.14.4
+    ra-data-fakerest: ^4.14.5
     rimraf: ^3.0.2
     typescript: ^5.1.3
   peerDependencies:
@@ -18374,7 +18354,7 @@ __metadata:
   dependencies:
     cross-env: ^5.2.0
     query-string: ^7.1.1
-    ra-core: ^4.14.4
+    ra-core: ^4.14.5
     rimraf: ^3.0.2
     typescript: ^5.1.3
   peerDependencies:
@@ -18382,19 +18362,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-i18n-polyglot@^4.12.0, ra-i18n-polyglot@^4.14.4, ra-i18n-polyglot@workspace:packages/ra-i18n-polyglot":
+"ra-i18n-polyglot@^4.12.0, ra-i18n-polyglot@^4.14.5, ra-i18n-polyglot@workspace:packages/ra-i18n-polyglot":
   version: 0.0.0-use.local
   resolution: "ra-i18n-polyglot@workspace:packages/ra-i18n-polyglot"
   dependencies:
     cross-env: ^5.2.0
     node-polyglot: ^2.2.2
-    ra-core: ^4.14.4
+    ra-core: ^4.14.5
     rimraf: ^3.0.2
     typescript: ^5.1.3
   languageName: unknown
   linkType: soft
 
-"ra-input-rich-text@^4.12.0, ra-input-rich-text@^4.14.4, ra-input-rich-text@workspace:packages/ra-input-rich-text":
+"ra-input-rich-text@^4.12.0, ra-input-rich-text@^4.14.5, ra-input-rich-text@workspace:packages/ra-input-rich-text":
   version: 0.0.0-use.local
   resolution: "ra-input-rich-text@workspace:packages/ra-input-rich-text"
   dependencies:
@@ -18416,10 +18396,10 @@ __metadata:
     "@tiptap/starter-kit": ^2.0.3
     "@tiptap/suggestion": ^2.0.3
     clsx: ^1.1.1
-    data-generator-retail: ^4.14.4
-    ra-core: ^4.14.4
-    ra-data-fakerest: ^4.14.4
-    ra-ui-materialui: ^4.14.4
+    data-generator-retail: ^4.14.5
+    ra-core: ^4.14.5
+    ra-data-fakerest: ^4.14.5
+    ra-ui-materialui: ^4.14.5
     react: ^17.0.0
     react-dom: ^17.0.0
     react-hook-form: ^7.43.9
@@ -18436,21 +18416,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-language-english@^4.12.0, ra-language-english@^4.14.4, ra-language-english@workspace:packages/ra-language-english":
+"ra-language-english@^4.12.0, ra-language-english@^4.14.5, ra-language-english@workspace:packages/ra-language-english":
   version: 0.0.0-use.local
   resolution: "ra-language-english@workspace:packages/ra-language-english"
   dependencies:
-    ra-core: ^4.14.4
+    ra-core: ^4.14.5
     rimraf: ^3.0.2
     typescript: ^5.1.3
   languageName: unknown
   linkType: soft
 
-"ra-language-french@^4.12.0, ra-language-french@^4.14.4, ra-language-french@workspace:packages/ra-language-french":
+"ra-language-french@^4.12.0, ra-language-french@^4.14.5, ra-language-french@workspace:packages/ra-language-french":
   version: 0.0.0-use.local
   resolution: "ra-language-french@workspace:packages/ra-language-french"
   dependencies:
-    ra-core: ^4.14.4
+    ra-core: ^4.14.5
     rimraf: ^3.0.2
     typescript: ^5.1.3
   languageName: unknown
@@ -18471,9 +18451,9 @@ __metadata:
     lodash: ~4.17.5
     papaparse: ^5.3.0
     prop-types: ^15.6.1
-    ra-data-local-storage: ^4.14.4
+    ra-data-local-storage: ^4.14.5
     react: ^17.0.0
-    react-admin: ^4.14.4
+    react-admin: ^4.14.5
     react-dom: ^17.0.0
     react-dropzone: ^12.0.4
     react-query: ^3.32.1
@@ -18487,7 +18467,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-ui-materialui@^4.14.4, ra-ui-materialui@workspace:packages/ra-ui-materialui":
+"ra-ui-materialui@^4.14.5, ra-ui-materialui@workspace:packages/ra-ui-materialui":
   version: 0.0.0-use.local
   resolution: "ra-ui-materialui@workspace:packages/ra-ui-materialui"
   dependencies:
@@ -18510,9 +18490,9 @@ __metadata:
     lodash: ~4.17.5
     prop-types: ^15.7.0
     query-string: ^7.1.1
-    ra-core: ^4.14.4
-    ra-i18n-polyglot: ^4.14.4
-    ra-language-english: ^4.14.4
+    ra-core: ^4.14.5
+    ra-i18n-polyglot: ^4.14.5
+    ra-language-english: ^4.14.5
     react: ^17.0.0
     react-dom: ^17.0.0
     react-dropzone: ^12.0.4
@@ -18701,7 +18681,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-admin@^4.12.0, react-admin@^4.14.4, react-admin@workspace:packages/react-admin":
+"react-admin@^4.12.0, react-admin@^4.14.5, react-admin@workspace:packages/react-admin":
   version: 0.0.0-use.local
   resolution: "react-admin@workspace:packages/react-admin"
   dependencies:
@@ -18712,10 +18692,10 @@ __metadata:
     cross-env: ^5.2.0
     expect: ^27.4.6
     history: ^5.1.0
-    ra-core: ^4.14.4
-    ra-i18n-polyglot: ^4.14.4
-    ra-language-english: ^4.14.4
-    ra-ui-materialui: ^4.14.4
+    ra-core: ^4.14.5
+    ra-i18n-polyglot: ^4.14.5
+    ra-language-english: ^4.14.5
+    ra-ui-materialui: ^4.14.5
     react-hook-form: ^7.43.9
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
@@ -20323,13 +20303,13 @@ __metadata:
     lodash: ~4.17.5
     prop-types: ^15.7.2
     proxy-polyfill: ^0.3.0
-    ra-data-fakerest: ^4.14.4
-    ra-i18n-polyglot: ^4.14.4
-    ra-input-rich-text: ^4.14.4
-    ra-language-english: ^4.14.4
-    ra-language-french: ^4.14.4
+    ra-data-fakerest: ^4.14.5
+    ra-i18n-polyglot: ^4.14.5
+    ra-input-rich-text: ^4.14.5
+    ra-language-english: ^4.14.5
+    ra-language-french: ^4.14.5
     react: ^17.0.0
-    react-admin: ^4.14.4
+    react-admin: ^4.14.5
     react-app-polyfill: ^1.0.4
     react-dom: ^17.0.0
     react-hook-form: ^7.43.9
