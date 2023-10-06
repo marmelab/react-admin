@@ -17,6 +17,7 @@ import queryReducer, {
 import { SortPayload, FilterPayload } from '../../types';
 import removeEmpty from '../../util/removeEmpty';
 import { useIsMounted } from '../../util/hooks';
+import { ParamsType } from './useListController';
 
 export interface ListParams {
     sort: string;
@@ -275,6 +276,7 @@ export const useListParams = ({
             setFilters,
             hideFilter,
             showFilter,
+            setParams,
         },
     ];
 };
@@ -412,6 +414,7 @@ interface Modifiers {
     setFilters: (filters: any, displayedFilters: any) => void;
     hideFilter: (filterName: string) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
+    setParams: (params: ParamsType) => void;
 }
 
 const emptyObject = {};

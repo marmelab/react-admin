@@ -168,6 +168,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         setPerPage: queryModifiers.setPerPage,
         setSort: queryModifiers.setSort,
         showFilter: queryModifiers.showFilter,
+        setParams: queryModifiers.setParams,
         total: total,
         hasNextPage: pageInfo
             ? pageInfo.hasNextPage
@@ -428,6 +429,13 @@ export interface ListControllerResult<RecordType extends RaRecord = any> {
     total: number;
     hasNextPage: boolean;
     hasPreviousPage: boolean;
+    setParams: (params: ParamsType) => void;
+}
+
+export interface ParamsType {
+    page: number;
+    perPage: number;
+    sort: SortPayload;
 }
 
 export const injectedProps = [

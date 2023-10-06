@@ -30,6 +30,7 @@ import { ListControllerResult } from './useListController';
  * @prop {string}   defaultTitle the translated title based on the resource, e.g. 'Posts'
  * @prop {string}   resource the resource name, deduced from the location. e.g. 'posts'
  * @prop {Function} refetch a function for triggering a refetch of the list data
+ * @prop {Function} setParams a callback to update the params namely page, perPage, sort and filters, e.g. setParams({sort: { field: 'name', order: 'ASC' }, page: 5, perPage: 20})
  *
  * @typedef Props
  * @prop {ListControllerResult} value
@@ -78,6 +79,7 @@ export const ListContext = createContext<ListControllerResult>({
     setSort: null,
     showFilter: null,
     total: null,
+    setParams: null,
 });
 
 ListContext.displayName = 'ListContext';

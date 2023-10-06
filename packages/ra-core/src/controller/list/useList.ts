@@ -271,6 +271,7 @@ export const useList = <RecordType extends RaRecord = any>(
         setPerPage,
         setSort,
         showFilter,
+        setParams,
         total: finalItems?.total,
     };
 };

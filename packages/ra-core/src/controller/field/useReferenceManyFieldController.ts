@@ -213,6 +213,7 @@ export const useReferenceManyFieldController = <
         hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : page > 1,
         setSort,
         showFilter,
+        setParams,
         total,
     };
 };

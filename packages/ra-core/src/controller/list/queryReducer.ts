@@ -16,25 +16,45 @@ export const SET_FILTER = 'SET_FILTER';
 export const SHOW_FILTER = 'SHOW_FILTER';
 export const HIDE_FILTER = 'HIDE_FILTER';
 
-const oppositeOrder = direction =>
+export const SET_PARAMS = 'SET_PARAMS';
+
+const oppositeOrder = (direction: OrderBy) =>
     direction === SORT_DESC ? SORT_ASC : SORT_DESC;
 
+type SetSortActionType = {
+    type: typeof SET_SORT;
+    payload: {
+        field: string;
+        order?: OrderBy;
+    };
+};
+
+type SetPageActionType = {
+    type: typeof SET_PAGE;
+    payload: number;
+};
+
+type SetPerPageActionType = {
+    type: typeof SET_PER_PAGE;
+    payload: number;
+};
+
+type SetParamsActionType = {
+    type: typeof SET_PARAMS;
+    payload: {
+        sort: {
+            field: string;
+            order?: OrderBy;
+        };
+        page: number;
+        perPage: number;
+    };
+};
+
 type ActionTypes =
-    | {
-          type: typeof SET_SORT;
-          payload: {
-              field: string;
-              order?: typeof SORT_ASC | typeof SORT_DESC;
-          };
-      }
-    | {
-          type: typeof SET_PAGE;
-          payload: number;
-      }
-    | {
-          type: typeof SET_PER_PAGE;
-          payload: number;
-      }
+    | SetSortActionType
+    | SetPageActionType
+    | SetPerPageActionType
     | {
           type: typeof SET_FILTER;
           payload: {
@@ -49,7 +69,63 @@ type ActionTypes =
     | {
           type: typeof HIDE_FILTER;
           payload: string;
-      };
+      }
+    | SetParamsActionType;
+
+const setSort = (
+    previousState: ListParams,
+    action: SetSortActionType
+): ListParams => {
+    if (action.payload.field === previousState.sort) {
+        return {
+            ...previousState,
+            order: oppositeOrder(previousState.order),
+            page: 1,
+        };
+    }
+
+    return {
+        ...previousState,
+        sort: action.payload.field,
+        order: action.payload.order || SORT_ASC,
+        page: 1,
+    };
+};
+
+const setPage = (
+    previousState: ListParams,
+    action: SetPageActionType
+): ListParams => {
+    return { ...previousState, page: action.payload };
+};
+
+const setPerPage = (
+    previousState: ListParams,
+    action: SetPerPageActionType
+): ListParams => {
+    return { ...previousState, page: 1, perPage: action.payload };
+};
+
+const setParams = (
+    previousState: ListParams,
+    action: SetParamsActionType
+): ListParams => {
+    const { page, perPage, sort } = action.payload;
+    let newState = previousState;
+    if (!!perPage) {
+        newState = setPerPage(previousState, {
+            type: SET_PER_PAGE,
+            payload: perPage,
+        });
+    }
+    if (!!page) {
+        newState = setPage(previousState, { type: SET_PAGE, payload: page });
+    }
+    if (!!sort) {
+        newState = setSort(previousState, { type: SET_SORT, payload: sort });
+    }
+    return newState;
+};
 
 /**
  * This reducer is for the react-router query string.
@@ -60,26 +136,13 @@ export const queryReducer: Reducer<ListParams, ActionTypes> = (
 ) => {
     switch (action.type) {
         case SET_SORT:
-            if (action.payload.field === previousState.sort) {
-                return {
-                    ...previousState,
-                    order: oppositeOrder(previousState.order),
-                    page: 1,
-                };
-            }
-
-            return {
-                ...previousState,
-                sort: action.payload.field,
-                order: action.payload.order || SORT_ASC,
-                page: 1,
-            };
+            return setSort(previousState, action);
 
         case SET_PAGE:
-            return { ...previousState, page: action.payload };
+            return setPage(previousState, action);
 
         case SET_PER_PAGE:
-            return { ...previousState, page: 1, perPage: action.payload };
+            return setPerPage(previousState, action);
 
         case SET_FILTER: {
             return {
@@ -140,9 +203,14 @@ export const queryReducer: Reducer<ListParams, ActionTypes> = (
             };
         }
 
+        case SET_PARAMS:
+            return setParams(previousState, action);
+
         default:
             return previousState;
     }
 };
+
+type OrderBy = 'ASC' | 'DESC';
 
 export default queryReducer;

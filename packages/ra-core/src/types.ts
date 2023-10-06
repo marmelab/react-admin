@@ -24,6 +24,11 @@ export interface PaginationPayload {
     page: number;
     perPage: number;
 }
+
+export interface ParamsPayload extends PaginationPayload {
+    sort: SortPayload;
+}
+
 export type ValidUntil = Date;
 /**
  * i18nProvider types
