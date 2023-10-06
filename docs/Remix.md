@@ -89,7 +89,7 @@ body { margin: 0; }
 
 **Tip** Don't forget to set the `<Admin basename>` prop, so that react-admin generates links relative to the "/admin" subpath:
 
-Finally, update your `remix.config.ts` to add `ra-data-json-server` to the `serverDependenciesToBundle` array:
+Finally, update your `remix.config.js` to add `ra-data-json-server` to the `serverDependenciesToBundle` array:
 
 ```diff
 /** @type {import('@remix-run/dev').AppConfig} */
@@ -103,7 +103,7 @@ export default {
 };
 ```
 
-Now the admin renders at `http://localhost:3000/admin`, and you can use the Remix routing system to add more pages.
+You can now start the app in `development` mode with `npm run dev`. The admin should render at `http://localhost:3000/admin`, and you can use the Remix routing system to add more pages.
 
 ## Adding an API
 
@@ -185,7 +185,7 @@ Update the react-admin data provider to use the Supabase adapter instead of the 
 npm add @raphiniert/ra-data-postgrest
 ```
 
-Update your `remix.config.ts` to add `@raphiniert/ra-data-postgrest` to the `serverDependenciesToBundle` array:
+Update your `remix.config.js` to add `@raphiniert/ra-data-postgrest` to the `serverDependenciesToBundle` array:
 
 ```diff
 /** @type {import('@remix-run/dev').AppConfig} */
@@ -204,18 +204,14 @@ Finally, update your Admin dataProvider:
 ```jsx
 // in app/routes/admin.$.tsx
 import { Admin, Resource, ListGuesser, fetchUtils } from "react-admin";
-import postgrestRestProvider, {
-  IDataProviderConfig, 
-  defaultPrimaryKeys, 
-  defaultSchema
-} from '@raphiniert/ra-data-postgrest';
+import postgrestRestProvider, { defaultPrimaryKeys, defaultSchema } from '@raphiniert/ra-data-postgrest';
 import styles from "~/styles/admin.css";
 
 export function links() {
   return [{ rel: "stylesheet", href: styles }];
 }
 
-const dataProvider = jsonServerProvider({
+const dataProvider = postgrestRestProvider({
     apiUrl: '/admin/api',
     httpClient: fetchUtils.fetchJson,
     defaultListOp: 'eq',
