@@ -73,9 +73,9 @@ export const FilterForm = (props: FilterFormProps) => {
                 if (get(values, name) === '') {
                     const newValues = cloneDeep(values);
                     unset(newValues, name);
-                    setFilters(newValues, displayedFilters, true);
+                    setFilters(newValues, displayedFilters);
                 } else {
-                    setFilters(values, displayedFilters, true);
+                    setFilters(values, displayedFilters);
                 }
             }
         });
