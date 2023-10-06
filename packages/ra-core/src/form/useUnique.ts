@@ -7,6 +7,7 @@ import { useCallback, useRef } from 'react';
 import set from 'lodash/set';
 import { asyncDebounce } from '../util';
 import { useRecordContext } from '../controller';
+import { isEmpty } from './validate';
 
 /**
  * A hook that returns a validation function checking for a record field uniqueness
@@ -87,7 +88,7 @@ export const useUnique = (options?: UseUniqueOptions) => {
             );
 
             return async (value: any, allValues: any, props: InputProps) => {
-                if (!value) {
+                if (isEmpty(value)) {
                     return undefined;
                 }
                 try {
