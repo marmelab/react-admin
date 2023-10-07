@@ -165,6 +165,7 @@ export const WithCustomDialogContent = () => (
                                     Are you sure you want to delete this user?
                                 </Alert>
                             }
+                            confirmColor="warning"
                         />
                     </BookList>
                 }

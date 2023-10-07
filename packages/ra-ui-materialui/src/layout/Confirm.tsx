@@ -121,7 +121,7 @@ export interface ConfirmProps
     cancel?: string;
     className?: string;
     confirm?: string;
-    confirmColor?: string;
+    confirmColor?: 'primary' | 'warning';
     ConfirmIcon?: ReactComponentLike;
     CancelIcon?: ReactComponentLike;
     content: React.ReactNode;
