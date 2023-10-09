@@ -5,7 +5,7 @@ import { ToggleThemeButton, useStore, useTranslate } from 'react-admin';
 
 import { ThemeContext, ThemeType, themes } from './themeContext';
 
-export const ThemeSwipper = () => {
+export const ThemeSwapper = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
