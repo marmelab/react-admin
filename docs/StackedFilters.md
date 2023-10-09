@@ -17,7 +17,7 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 Create a filter configuration object by specifying the operators and UI for each source that can be used as a filter. Then, pass it to the `<StackedFilters>` component, and pass that component to the `filters` prop of the `<List>` component.
 
 ```jsx
-import { Datagrid, List, TextField, NumberField, BooleanField, ReferenceArrayField } from 'react-admin';
+import { CreateButton, Datagrid, List, TextField, NumberField, BooleanField, ReferenceArrayField, TopToolbar } from 'react-admin';
 import { StackedFilters, textFilter, dateFilter, referenceFilter, booleanFilter } from '@react-admin/ra-form-layout';
 
 const postListFilters = {
@@ -28,8 +28,15 @@ const postListFilters = {
     tags: referenceFilter({ reference: 'tags' }),
 };
 
+const PostListToolbar = () => (
+    <TopToolbar>
+        <CreateButton />
+        <StackedFilters config={postListFilters} />
+    </TopToolbar>
+);
+
 const PostList = () => (
-    <List filters={<StackedFilters config={postListFilters} />}>
+    <List actions={<PostListToolbar />}>
         <Datagrid>
             <TextField source="title" />
             <NumberField source="views" />
@@ -120,8 +127,15 @@ const postListFilters = {
     tags: referenceFilter({ reference: 'tags' }),
 };
 
+const PostListToolbar = () => (
+    <TopToolbar>
+        <CreateButton />
+        <StackedFilters config={postListFilters} />
+    </TopToolbar>
+);
+
 const PostList = () => (
-    <List filters={<StackedFilters config={postListFilters} />}>
+    <List actions={<PostListToolbar />}>
         {/* ... */}
     </List>
 );
