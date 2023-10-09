@@ -1,7 +1,13 @@
 import { IconButton, Menu, MenuItem, Tooltip } from '@mui/material';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
 import { useContext, useState } from 'react';
-import { ToggleThemeButton, useStore, useTranslate } from 'react-admin';
+import {
+    LoadingIndicator,
+    LocalesMenuButton,
+    ToggleThemeButton,
+    useStore,
+    useTranslate,
+} from 'react-admin';
 
 import { ThemeContext, ThemeType, themes } from './themeContext';
 
@@ -32,6 +38,7 @@ export const ThemeSwapper = () => {
 
     return (
         <>
+            <LocalesMenuButton />
             <Tooltip title={toggleThemeTitle} enterDelay={300}>
                 <IconButton
                     onClick={handleClick}
@@ -53,8 +60,8 @@ export const ThemeSwapper = () => {
                     </MenuItem>
                 ))}
             </Menu>
-
             {themeFromContext.dark ? <ToggleThemeButton /> : null}
+            <LoadingIndicator />
         </>
     );
 };

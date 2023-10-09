@@ -152,16 +152,6 @@ const ItemLink = (theme: Theme) => ({
     },
 });
 
-const Layout = () => ({
-    RaLayout: {
-        styleOverrides: {
-            root: {
-                marginTop: 20,
-            },
-        },
-    },
-});
-
 const Paper = (theme: Theme) => {
     const shadows = [
         alpha(theme.palette.primary.main, 0.2),
@@ -228,7 +218,6 @@ const componentsOverrides = (theme: Theme) => ({
     ...FormControl(),
     ...Input(),
     ...ItemLink(theme),
-    ...Layout(),
     ...Paper(theme),
     ...Table(),
     ...TextField(),

@@ -15,13 +15,6 @@ export const basicDarkTheme = {
     },
     components: {
         ...defaultTheme.components,
-        RaLayout: {
-            styleOverrides: {
-                root: {
-                    marginTop: 20,
-                },
-            },
-        },
         RaMenuItemLink: {
             styleOverrides: {
                 root: {
@@ -67,13 +60,6 @@ export const basicLightTheme = {
     },
     components: {
         ...defaultTheme.components,
-        RaLayout: {
-            styleOverrides: {
-                root: {
-                    marginTop: 20,
-                },
-            },
-        },
         RaMenuItemLink: {
             styleOverrides: {
                 root: {

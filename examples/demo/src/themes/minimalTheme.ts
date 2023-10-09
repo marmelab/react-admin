@@ -1,50 +1,6 @@
 import { createTheme, PaletteOptions, Theme } from '@mui/material';
 import { RaThemeOptions, defaultTheme } from 'react-admin';
 
-const alert = {
-    error: { main: '#B57185' },
-    warning: { main: '#F2CB05' },
-    info: { main: '#39AEA9' },
-    success: { main: '#00745F' },
-};
-
-const darkPalette: PaletteOptions = {
-    mode: 'dark' as 'dark',
-    primary: { main: '#f9fafb' },
-    secondary: { main: '#a0a0a0' },
-    background: { default: '#363D40' },
-    ...alert,
-};
-
-const lightPalette: PaletteOptions = {
-    mode: 'light' as 'light',
-    primary: { main: '#00585C' },
-    secondary: { main: '#64B4B8' },
-    background: { default: '#f9fafb' },
-    text: { primary: '#212b36' },
-    ...alert,
-};
-
-const typography = {
-    fontFamily: 'Onest, sans-serif',
-    fontSize: 12,
-    h1: { fontSize: '7rem' },
-    h2: { fontWeight: 400 },
-    h3: { fontWeight: 500 },
-    h4: { fontWeight: 700 },
-    h5: { fontWeight: 700 },
-};
-
-const shape = {
-    borderRadius: 0,
-};
-
-const sidebar = {
-    width: 200,
-};
-
-const spacing = 8;
-
 const componentsOverrides = (theme: Theme) => ({
     MuiAlert: {
         defaultProps: {
@@ -61,6 +17,7 @@ const componentsOverrides = (theme: Theme) => ({
     MuiButton: {
         defaultProps: {
             variant: 'outlined' as const,
+            size: 'small' as const,
         },
         styleOverrides: {
             root: {
@@ -81,11 +38,38 @@ const componentsOverrides = (theme: Theme) => ({
             size: 'small' as const,
         },
     },
+    MuiFormHelperText: {
+        defaultProps: {
+            margin: 'dense' as const,
+        },
+    },
+    MuiIconButton: {
+        defaultProps: {
+            size: 'small' as const,
+        },
+    },
+    MuiInputBase: {
+        styleOverrides: {
+            input: {
+                padding: theme.spacing(0.5),
+            },
+        },
+    },
+    MuiInputLabel: {
+        defaultProps: {
+            margin: 'dense' as const,
+        },
+    },
+    MuiListItem: {
+        defaultProps: {
+            dense: true,
+        },
+    },
     MuiListItemIcon: {
         styleOverrides: {
             root: {
                 '&.MuiListItemIcon-root': {
-                    minWidth: theme.spacing(3),
+                    minWidth: theme.spacing(3.5),
                 },
             },
         },
@@ -93,14 +77,17 @@ const componentsOverrides = (theme: Theme) => ({
     MuiMenuItem: {
         styleOverrides: {
             root: {
-                '&.MuiMenuItem-root': {
-                    paddingTop: theme.spacing(0.5),
-                    paddingBottom: theme.spacing(0.5),
-                },
+                paddingTop: theme.spacing(0.5),
+                paddingBottom: theme.spacing(0.5),
+                paddingLeft: theme.spacing(1),
+                paddingRight: theme.spacing(1),
             },
         },
     },
     MuiOutlinedInput: {
+        defaultProps: {
+            margin: 'dense' as const,
+        },
         styleOverrides: {
             input: {
                 padding: 16,
@@ -163,6 +150,11 @@ const componentsOverrides = (theme: Theme) => ({
             },
         },
     },
+    MuiTable: {
+        defaultProps: {
+            size: 'small' as const,
+        },
+    },
     MuiTableCell: {
         styleOverrides: {
             root: {
@@ -184,10 +176,14 @@ const componentsOverrides = (theme: Theme) => ({
         },
     },
     MuiToolbar: {
+        defaultProps: {
+            variant: 'dense' as const,
+        },
         styleOverrides: {
             root: {
                 backgroundColor: theme.palette.background.default,
                 color: theme.palette.text.primary,
+                minHeight: theme.spacing(4),
             },
             regular: {
                 backgroundColor: theme.palette.background.paper,
@@ -203,9 +199,20 @@ const componentsOverrides = (theme: Theme) => ({
             },
         },
     },
+    RaLayout: {
+        styleOverrides: {
+            root: {
+                '& .RaLayout-appFrame': {
+                    marginTop: theme.spacing(4),
+                },
+            },
+        },
+    },
     RaMenuItemLink: {
         styleOverrides: {
             root: {
+                paddingLeft: theme.spacing(1),
+                paddingRight: theme.spacing(1),
                 '&.RaMenuItemLink-active': {
                     color: theme.palette.primary.dark,
                     fontWeight: 700,
@@ -218,7 +225,50 @@ const componentsOverrides = (theme: Theme) => ({
     },
 });
 
-const createMinimalTheme = (themeOptions: RaThemeOptions) => {
+const alert = {
+    error: { main: '#B57185' },
+    warning: { main: '#F2CB05' },
+    info: { main: '#39AEA9' },
+    success: { main: '#00745F' },
+};
+
+const darkPalette: PaletteOptions = {
+    mode: 'dark' as 'dark',
+    primary: { main: '#f9fafb' },
+    secondary: { main: '#a0a0a0' },
+    background: { default: '#363D40' },
+    ...alert,
+};
+
+const lightPalette: PaletteOptions = {
+    mode: 'light' as 'light',
+    primary: { main: '#00585C' },
+    secondary: { main: '#64B4B8' },
+    background: { default: '#f9fafb' },
+    text: { primary: '#212b36' },
+    ...alert,
+};
+
+const createMinimalTheme = (palette: RaThemeOptions['palette']) => {
+    const themeOptions = {
+        ...defaultTheme,
+        palette,
+        shape: { borderRadius: 0 },
+        sidebar: {
+            width: 200,
+            closedWidth: 36,
+        },
+        spacing: 8,
+        typography: {
+            fontFamily: 'Onest, sans-serif',
+            fontSize: 12,
+            h1: { fontSize: '7rem' },
+            h2: { fontWeight: 400 },
+            h3: { fontWeight: 500 },
+            h4: { fontWeight: 700 },
+            h5: { fontWeight: 700 },
+        },
+    };
     const theme = createTheme(themeOptions);
     theme.components = {
         ...defaultTheme.components,
@@ -227,20 +277,5 @@ const createMinimalTheme = (themeOptions: RaThemeOptions) => {
     return theme;
 };
 
-export const minimalLightTheme = createMinimalTheme({
-    ...defaultTheme,
-    palette: lightPalette,
-    shape,
-    typography,
-    sidebar,
-    spacing,
-});
-
-export const minimalDarkTheme = createMinimalTheme({
-    ...defaultTheme,
-    palette: darkPalette,
-    shape,
-    typography,
-    sidebar,
-    spacing,
-});
+export const minimalLightTheme = createMinimalTheme(lightPalette);
+export const minimalDarkTheme = createMinimalTheme(darkPalette);
