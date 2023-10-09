@@ -1,6 +1,10 @@
 import { defaultTheme } from 'react-admin';
 
-export const basicDarkTheme = {
+/**
+ * Soft: A gentle theme with rounder corners and light colors.
+ */
+
+export const softDarkTheme = {
     palette: {
         primary: {
             main: '#90caf9',
@@ -36,7 +40,7 @@ export const basicDarkTheme = {
     },
 };
 
-export const basicLightTheme = {
+export const softLightTheme = {
     palette: {
         primary: {
             main: '#4f3cc9',

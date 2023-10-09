@@ -1,25 +1,30 @@
 import { createContext } from 'react';
-import { RaThemeOptions } from 'react-admin';
+import {
+    RaThemeOptions,
+    defaultLightTheme,
+    defaultDarkTheme,
+} from 'react-admin';
+import { softDarkTheme, softLightTheme } from './softTheme';
+import { nanoDarkTheme, nanoLightTheme } from './nanoTheme';
 import { chiptuneTheme } from './chiptuneTheme';
 import { synthwaveDarkTheme, synthwaveLightTheme } from './synthwaveTheme';
-import { minimalDarkTheme, minimalLightTheme } from './minimalTheme';
 import { ecoDarkTheme, ecoLightTheme } from './ecoTheme';
 import { houseDarkTheme, houseLightTheme } from './houseTheme';
-import { basicDarkTheme, basicLightTheme } from './basicTheme';
 
 export const ThemeContext = createContext<ThemeContextProps>({
     theme: {
-        name: 'basic',
-        light: basicLightTheme,
-        dark: basicDarkTheme,
+        name: 'soft',
+        light: softLightTheme,
+        dark: softDarkTheme,
     },
     changeTheme: () => {},
 });
 
 export type ThemeType =
-    | 'basic'
+    | 'soft'
+    | 'default'
+    | 'nano'
     | 'synthwave'
-    | 'minimal'
     | 'chiptune'
     | 'eco'
     | 'house';
@@ -35,9 +40,10 @@ export interface ThemeContextProps {
 }
 
 export const themes: Theme[] = [
-    { name: 'basic', light: basicLightTheme, dark: basicDarkTheme },
+    { name: 'soft', light: softLightTheme, dark: softDarkTheme },
+    { name: 'default', light: defaultLightTheme, dark: defaultDarkTheme },
+    { name: 'nano', light: nanoLightTheme, dark: nanoDarkTheme },
     { name: 'synthwave', light: synthwaveLightTheme, dark: synthwaveDarkTheme },
-    { name: 'minimal', light: minimalLightTheme, dark: minimalDarkTheme },
     { name: 'chiptune', light: chiptuneTheme },
     { name: 'eco', light: ecoLightTheme, dark: ecoDarkTheme },
     { name: 'house', light: houseLightTheme, dark: houseDarkTheme },

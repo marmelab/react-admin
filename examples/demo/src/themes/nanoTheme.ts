@@ -1,5 +1,11 @@
 import { createTheme, PaletteOptions, Theme } from '@mui/material';
-import { RaThemeOptions, defaultTheme } from 'react-admin';
+import { RaThemeOptions } from 'react-admin';
+
+/**
+ * Nano: A dense theme with minimal chrome, ideal for complex apps.
+ *
+ * Uses a small font size, reduced spacing, text buttons, standard variant inputs, pale colors.
+ */
 
 const componentsOverrides = (theme: Theme) => ({
     MuiAlert: {
@@ -14,9 +20,19 @@ const componentsOverrides = (theme: Theme) => ({
             },
         },
     },
+    MuiAutocomplete: {
+        variants: [
+            {
+                props: {},
+                style: ({ theme }: { theme: Theme }) => ({
+                    [theme.breakpoints.down('sm')]: { width: '100%' },
+                }),
+            },
+        ],
+    },
     MuiButton: {
         defaultProps: {
-            variant: 'outlined' as const,
+            variant: 'text' as const,
             size: 'small' as const,
         },
         styleOverrides: {
@@ -174,6 +190,14 @@ const componentsOverrides = (theme: Theme) => ({
             margin: 'dense' as const,
             size: 'small' as const,
         },
+        variants: [
+            {
+                props: {},
+                style: ({ theme }: { theme: Theme }) => ({
+                    [theme.breakpoints.down('sm')]: { width: '100%' },
+                }),
+            },
+        ],
     },
     MuiToolbar: {
         defaultProps: {
@@ -183,7 +207,7 @@ const componentsOverrides = (theme: Theme) => ({
             root: {
                 backgroundColor: theme.palette.background.default,
                 color: theme.palette.text.primary,
-                minHeight: theme.spacing(4),
+                minHeight: theme.spacing(4.5),
             },
             regular: {
                 backgroundColor: theme.palette.background.paper,
@@ -203,7 +227,7 @@ const componentsOverrides = (theme: Theme) => ({
         styleOverrides: {
             root: {
                 '& .RaLayout-appFrame': {
-                    marginTop: theme.spacing(4),
+                    marginTop: theme.spacing(5),
                 },
             },
         },
@@ -249,9 +273,8 @@ const lightPalette: PaletteOptions = {
     ...alert,
 };
 
-const createMinimalTheme = (palette: RaThemeOptions['palette']) => {
+const createNanoTheme = (palette: RaThemeOptions['palette']) => {
     const themeOptions = {
-        ...defaultTheme,
         palette,
         shape: { borderRadius: 0 },
         sidebar: {
@@ -270,12 +293,9 @@ const createMinimalTheme = (palette: RaThemeOptions['palette']) => {
         },
     };
     const theme = createTheme(themeOptions);
-    theme.components = {
-        ...defaultTheme.components,
-        ...componentsOverrides(theme),
-    };
+    theme.components = componentsOverrides(theme);
     return theme;
 };
 
-export const minimalLightTheme = createMinimalTheme(lightPalette);
-export const minimalDarkTheme = createMinimalTheme(darkPalette);
+export const nanoLightTheme = createNanoTheme(lightPalette);
+export const nanoDarkTheme = createNanoTheme(darkPalette);

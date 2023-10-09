@@ -1,13 +1,7 @@
 import { IconButton, Menu, MenuItem, Tooltip } from '@mui/material';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
 import { useContext, useState } from 'react';
-import {
-    LoadingIndicator,
-    LocalesMenuButton,
-    ToggleThemeButton,
-    useStore,
-    useTranslate,
-} from 'react-admin';
+import { useStore, useTranslate } from 'react-admin';
 
 import { ThemeContext, ThemeType, themes } from './themeContext';
 
@@ -24,7 +18,6 @@ export const ThemeSwapper = () => {
     const [_, setThemeStore] = useStore<ThemeType>('theme');
     const { theme: themeFromContext, changeTheme } = useContext(ThemeContext);
     const handleChange = (_: React.MouseEvent<HTMLElement>, index: number) => {
-        console.log(index);
         const newTheme = themes[index];
         setThemeStore(newTheme.name);
         changeTheme(newTheme);
@@ -38,7 +31,6 @@ export const ThemeSwapper = () => {
 
     return (
         <>
-            <LocalesMenuButton />
             <Tooltip title={toggleThemeTitle} enterDelay={300}>
                 <IconButton
                     onClick={handleClick}
@@ -60,8 +52,6 @@ export const ThemeSwapper = () => {
                     </MenuItem>
                 ))}
             </Menu>
-            {themeFromContext.dark ? <ToggleThemeButton /> : null}
-            <LoadingIndicator />
         </>
     );
 };
