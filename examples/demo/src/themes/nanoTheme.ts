@@ -14,10 +14,8 @@ const componentsOverrides = (theme: Theme) => ({
         },
     },
     MuiAppBar: {
-        styleOverrides: {
-            colorSecondary: {
-                backgroundColor: theme.palette.background.default,
-            },
+        defaultProps: {
+            elevation: 1,
         },
     },
     MuiAutocomplete: {
@@ -205,8 +203,6 @@ const componentsOverrides = (theme: Theme) => ({
         },
         styleOverrides: {
             root: {
-                backgroundColor: theme.palette.background.default,
-                color: theme.palette.text.primary,
                 minHeight: theme.spacing(4.5),
             },
             regular: {

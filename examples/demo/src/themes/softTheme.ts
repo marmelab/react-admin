@@ -1,7 +1,9 @@
 import { defaultTheme } from 'react-admin';
 
 /**
- * Soft: A gentle theme with rounder corners and light colors.
+ * Soft: A gentle theme for apps with rich content (images, charts, maps, etc).
+ *
+ * Uses white app bar, rounder corners, light colors, and a light gray background.
  */
 
 export const softDarkTheme = {
@@ -35,6 +37,9 @@ export const softDarkTheme = {
                     color: '#ffffffb3',
                     backgroundColor: '#616161',
                 },
+            },
+            defaultProps: {
+                elevation: 1,
             },
         },
     },
@@ -91,6 +96,9 @@ export const softLightTheme = {
                     color: '#808080',
                     backgroundColor: '#fff',
                 },
+            },
+            defaultProps: {
+                elevation: 1,
             },
         },
         MuiLinearProgress: {
