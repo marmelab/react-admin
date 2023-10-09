@@ -18,8 +18,8 @@ const darkPalette: PaletteOptions = {
 
 const lightPalette: PaletteOptions = {
     mode: 'light' as 'light',
-    primary: { main: '#363D40' },
-    secondary: { main: '#6C7A80' },
+    primary: { main: '#00585C' },
+    secondary: { main: '#64B4B8' },
     background: { default: '#f9fafb' },
     text: { primary: '#212b36' },
     ...alert,
@@ -173,16 +173,6 @@ const componentsOverrides = (theme: Theme) => ({
                 '&.MuiTableCell-paddingNone': {
                     padding: 0,
                 },
-            },
-        },
-    },
-    MuiTablePagination: {
-        styleOverrides: {
-            root: {
-                backgroundClip: 'padding-box',
-                boxShadow: theme.shadows[1],
-                marginTop: 5,
-                borderRadius: theme.shape.borderRadius,
             },
         },
     },
