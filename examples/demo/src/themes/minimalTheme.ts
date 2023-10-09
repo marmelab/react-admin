@@ -2,72 +2,41 @@ import { createTheme, PaletteOptions, Theme } from '@mui/material';
 import { RaThemeOptions, defaultTheme } from 'react-admin';
 
 const alert = {
-    error: {
-        main: '#B57185',
-    },
-    warning: {
-        main: '#F2CB05',
-    },
-    info: {
-        main: '#39AEA9',
-    },
-    success: {
-        main: '#00745F',
-    },
+    error: { main: '#B57185' },
+    warning: { main: '#F2CB05' },
+    info: { main: '#39AEA9' },
+    success: { main: '#00745F' },
 };
 
 const darkPalette: PaletteOptions = {
-    primary: {
-        main: '#f9fafb',
-    },
-    secondary: {
-        main: '#a0a0a0',
-    },
-    background: {
-        default: '#363D40',
-    },
-    ...alert,
     mode: 'dark' as 'dark',
+    primary: { main: '#f9fafb' },
+    secondary: { main: '#a0a0a0' },
+    background: { default: '#363D40' },
+    ...alert,
 };
 
 const lightPalette: PaletteOptions = {
-    primary: {
-        main: '#363D40',
-    },
-    secondary: {
-        main: '#6C7A80',
-    },
-    background: {
-        default: '#f9fafb',
-    },
-    text: {
-        primary: '#212b36',
-    },
-    ...alert,
     mode: 'light' as 'light',
+    primary: { main: '#363D40' },
+    secondary: { main: '#6C7A80' },
+    background: { default: '#f9fafb' },
+    text: { primary: '#212b36' },
+    ...alert,
 };
 
 const typography = {
     fontFamily: 'Onest, sans-serif',
-    h1: {
-        fontSize: '7rem',
-    },
-    h2: {
-        fontWeight: 400,
-    },
-    h3: {
-        fontWeight: 500,
-    },
-    h4: {
-        fontWeight: 700,
-    },
-    h5: {
-        fontWeight: 700,
-    },
+    fontSize: 12,
+    h1: { fontSize: '7rem' },
+    h2: { fontWeight: 400 },
+    h3: { fontWeight: 500 },
+    h4: { fontWeight: 700 },
+    h5: { fontWeight: 700 },
 };
 
 const shape = {
-    borderRadius: 5,
+    borderRadius: 0,
 };
 
 const sidebar = {
@@ -76,15 +45,12 @@ const sidebar = {
 
 const spacing = 8;
 
-const Alert = () => ({
+const componentsOverrides = (theme: Theme) => ({
     MuiAlert: {
         defaultProps: {
             variant: 'outlined' as const,
         },
     },
-});
-
-const AppBar = (theme: Theme) => ({
     MuiAppBar: {
         styleOverrides: {
             colorSecondary: {
@@ -92,37 +58,22 @@ const AppBar = (theme: Theme) => ({
             },
         },
     },
-});
-
-const Button = () => ({
     MuiButton: {
         defaultProps: {
             variant: 'outlined' as const,
         },
+        styleOverrides: {
+            root: {
+                paddingTop: theme.spacing(0.2),
+                paddingBottom: theme.spacing(0.2),
+            },
+        },
     },
-});
-
-const Chip = () => ({
     MuiChip: {
         defaultProps: {
             variant: 'outlined' as const,
         },
     },
-});
-
-const Datagrid = (theme: Theme) => ({
-    RaDatagrid: {
-        styleOverrides: {
-            root: {
-                '& .RaDatagrid-headerCell': {
-                    color: theme.palette.primary.main,
-                },
-            },
-        },
-    },
-});
-
-const FormControl = () => ({
     MuiFormControl: {
         defaultProps: {
             variant: 'standard' as const,
@@ -130,9 +81,25 @@ const FormControl = () => ({
             size: 'small' as const,
         },
     },
-});
-
-const Input = () => ({
+    MuiListItemIcon: {
+        styleOverrides: {
+            root: {
+                '&.MuiListItemIcon-root': {
+                    minWidth: theme.spacing(3),
+                },
+            },
+        },
+    },
+    MuiMenuItem: {
+        styleOverrides: {
+            root: {
+                '&.MuiMenuItem-root': {
+                    paddingTop: theme.spacing(0.5),
+                    paddingBottom: theme.spacing(0.5),
+                },
+            },
+        },
+    },
     MuiOutlinedInput: {
         styleOverrides: {
             input: {
@@ -140,35 +107,16 @@ const Input = () => ({
             },
         },
     },
-});
-
-const ItemLink = (theme: Theme) => ({
-    RaMenuItemLink: {
+    MuiPaper: {
         styleOverrides: {
+            elevation1: {
+                boxShadow: theme.shadows[1],
+            },
             root: {
-                '&.RaMenuItemLink-active': {
-                    color: theme.palette.primary.dark,
-                    fontWeight: 700,
-                    '& .MuiSvgIcon-root': {
-                        fill: theme.palette.primary.dark,
-                    },
-                },
+                backgroundColor: theme.palette.background.default,
             },
         },
     },
-});
-
-const Layout = () => ({
-    RaLayout: {
-        styleOverrides: {
-            root: {
-                marginTop: 20,
-            },
-        },
-    },
-});
-
-const Notification = (theme: Theme) => ({
     MuiSnackbar: {
         styleOverrides: {
             root: {
@@ -195,9 +143,39 @@ const Notification = (theme: Theme) => ({
             },
         },
     },
-});
-
-const Pagination = (theme: Theme) => ({
+    MuiTabs: {
+        styleOverrides: {
+            root: {
+                '&.MuiTabs-root': {
+                    minHeight: theme.spacing(3.5),
+                },
+            },
+        },
+    },
+    MuiTab: {
+        styleOverrides: {
+            root: {
+                '&.MuiTab-root': {
+                    padding: `${theme.spacing(0.5)} ${theme.spacing(1)}`,
+                    minHeight: theme.spacing(3.5),
+                    minWidth: theme.spacing(10),
+                },
+            },
+        },
+    },
+    MuiTableCell: {
+        styleOverrides: {
+            root: {
+                padding: theme.spacing(1),
+                '&.MuiTableCell-sizeSmall': {
+                    padding: theme.spacing(0.5),
+                },
+                '&.MuiTableCell-paddingNone': {
+                    padding: 0,
+                },
+            },
+        },
+    },
     MuiTablePagination: {
         styleOverrides: {
             root: {
@@ -208,24 +186,6 @@ const Pagination = (theme: Theme) => ({
             },
         },
     },
-});
-
-const Paper = (theme: Theme) => {
-    return {
-        MuiPaper: {
-            styleOverrides: {
-                elevation1: {
-                    boxShadow: theme.shadows[1],
-                },
-                root: {
-                    backgroundColor: theme.palette.background.default,
-                },
-            },
-        },
-    };
-};
-
-const TextField = () => ({
     MuiTextField: {
         defaultProps: {
             variant: 'standard' as const,
@@ -233,9 +193,6 @@ const TextField = () => ({
             size: 'small' as const,
         },
     },
-});
-
-const Toolbar = (theme: Theme) => ({
     MuiToolbar: {
         styleOverrides: {
             root: {
@@ -247,23 +204,28 @@ const Toolbar = (theme: Theme) => ({
             },
         },
     },
-});
-
-const componentsOverrides = (theme: Theme) => ({
-    ...Alert(),
-    ...AppBar(theme),
-    ...Button(),
-    ...Chip(),
-    ...Datagrid(theme),
-    ...FormControl(),
-    ...Input(),
-    ...ItemLink(theme),
-    ...Layout(),
-    ...Notification(theme),
-    ...Pagination(theme),
-    ...Paper(theme),
-    ...TextField(),
-    ...Toolbar(theme),
+    RaDatagrid: {
+        styleOverrides: {
+            root: {
+                '& .RaDatagrid-headerCell': {
+                    color: theme.palette.primary.main,
+                },
+            },
+        },
+    },
+    RaMenuItemLink: {
+        styleOverrides: {
+            root: {
+                '&.RaMenuItemLink-active': {
+                    color: theme.palette.primary.dark,
+                    fontWeight: 700,
+                    '& .MuiSvgIcon-root': {
+                        fill: theme.palette.primary.dark,
+                    },
+                },
+            },
+        },
+    },
 });
 
 const createMinimalTheme = (themeOptions: RaThemeOptions) => {

@@ -99,6 +99,7 @@ export const UserMenu = (props: UserMenuProps) => {
                         )
                     }
                     onClick={handleMenu}
+                    variant="text"
                 >
                     {identity.fullName}
                 </Button>
@@ -171,8 +172,8 @@ const Root = styled('div', {
     },
 
     [`& .${UserMenuClasses.avatar}`]: {
-        width: theme.spacing(4),
-        height: theme.spacing(4),
+        width: theme.spacing(3),
+        height: theme.spacing(3),
     },
 }));
 
