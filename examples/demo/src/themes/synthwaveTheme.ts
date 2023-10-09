@@ -66,6 +66,7 @@ const typography = {
     h5: {
         fontWeight: 900,
     },
+    button: { textTransform: undefined, fontWeight: 700 },
 };
 
 const shape = {

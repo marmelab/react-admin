@@ -3,7 +3,7 @@ import { defaultTheme } from 'react-admin';
 /**
  * Soft: A gentle theme for apps with rich content (images, charts, maps, etc).
  *
- * Uses white app bar, rounder corners, light colors, and a light gray background.
+ * Uses white app bar, rounder corners, light colors.
  */
 
 export const softDarkTheme = {

@@ -48,10 +48,12 @@ export const ThemeSwapper = () => {
                         key={theme.name}
                         selected={theme.name === themeFromContext.name}
                     >
-                        {theme.name}
+                        {ucFirst(theme.name)}
                     </MenuItem>
                 ))}
             </Menu>
         </>
     );
 };
+
+const ucFirst = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);

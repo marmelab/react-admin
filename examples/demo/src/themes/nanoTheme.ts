@@ -40,6 +40,11 @@ const componentsOverrides = (theme: Theme) => ({
             },
         },
     },
+    MuiCard: {
+        defaultProps: {
+            square: true,
+        },
+    },
     MuiChip: {
         defaultProps: {
             variant: 'outlined' as const,
@@ -64,12 +69,26 @@ const componentsOverrides = (theme: Theme) => ({
     },
     MuiInputBase: {
         styleOverrides: {
+            root: {
+                'label+&.MuiInputBase-root': {
+                    marginTop: theme.spacing(1),
+                },
+                'label[data-shrink=false]+&.MuiInputBase-root': {
+                    marginTop: 0,
+                    paddingBottom: theme.spacing(2),
+                },
+            },
             input: {
                 padding: theme.spacing(0.5),
             },
         },
     },
     MuiInputLabel: {
+        styleOverrides: {
+            root: {
+                paddingLeft: theme.spacing(0.5),
+            },
+        },
         defaultProps: {
             margin: 'dense' as const,
         },
@@ -215,6 +234,15 @@ const componentsOverrides = (theme: Theme) => ({
             root: {
                 '& .RaDatagrid-headerCell': {
                     color: theme.palette.primary.main,
+                },
+            },
+        },
+    },
+    RaFilterForm: {
+        styleOverrides: {
+            root: {
+                [theme.breakpoints.up('sm')]: {
+                    minHeight: theme.spacing(7.1),
                 },
             },
         },
