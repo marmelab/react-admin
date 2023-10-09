@@ -900,6 +900,8 @@ const PostList = () => (
 );
 ```
 
+**Tip:** You may need to clear your local storage to reflect the changes, as react-admin saves the computed column names in the Store.
+
 `<DatagridConfigurable>` accepts the same props as `<Datagrid>`.
 
 ## Editable Spreadsheet
