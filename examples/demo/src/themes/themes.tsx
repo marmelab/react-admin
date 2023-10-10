@@ -2,9 +2,10 @@ import {
     RaThemeOptions,
     defaultLightTheme,
     defaultDarkTheme,
+    nanoDarkTheme,
+    nanoLightTheme,
 } from 'react-admin';
 import { softDarkTheme, softLightTheme } from './softTheme';
-import { nanoDarkTheme, nanoLightTheme } from './nanoTheme';
 import { chiptuneTheme } from './chiptuneTheme';
 import { synthwaveDarkTheme, synthwaveLightTheme } from './synthwaveTheme';
 import { ecoDarkTheme, ecoLightTheme } from './ecoTheme';

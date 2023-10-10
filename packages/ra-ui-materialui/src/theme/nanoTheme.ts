@@ -1,5 +1,5 @@
 import { createTheme, PaletteOptions, Theme } from '@mui/material';
-import { RaThemeOptions } from 'react-admin';
+import { RaThemeOptions } from '../layout/Theme';
 
 /**
  * Nano: A dense theme with minimal chrome, ideal for complex apps.
@@ -27,6 +27,20 @@ const componentsOverrides = (theme: Theme) => ({
                 }),
             },
         ],
+        styleOverrides: {
+            root: {
+                '& label+.MuiInputBase-root': {
+                    marginTop: theme.spacing(1.5),
+                },
+                '& label[data-shrink=false]+.MuiInputBase-root': {
+                    marginTop: 0,
+                    paddingBottom: theme.spacing(2),
+                },
+            },
+            input: {
+                padding: theme.spacing(0.5),
+            },
+        },
     },
     MuiButton: {
         defaultProps: {
@@ -71,11 +85,11 @@ const componentsOverrides = (theme: Theme) => ({
         styleOverrides: {
             root: {
                 'label+&.MuiInputBase-root': {
-                    marginTop: theme.spacing(1),
+                    marginTop: theme.spacing(1.5),
                 },
                 'label[data-shrink=false]+&.MuiInputBase-root': {
                     marginTop: 0,
-                    paddingBottom: theme.spacing(2),
+                    paddingBottom: theme.spacing(1.5),
                 },
             },
             input: {
@@ -243,6 +257,15 @@ const componentsOverrides = (theme: Theme) => ({
             root: {
                 [theme.breakpoints.up('sm')]: {
                     minHeight: theme.spacing(7.1),
+                },
+            },
+        },
+    },
+    RaFilterFormInput: {
+        styleOverrides: {
+            root: {
+                '& .RaFilterFormInput-hideButton': {
+                    marginBottom: theme.spacing(0.5),
                 },
             },
         },
