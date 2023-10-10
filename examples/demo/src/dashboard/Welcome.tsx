@@ -12,7 +12,7 @@ const Welcome = () => {
         <Card
             sx={{
                 background: theme =>
-                    `linear-gradient(${theme.palette.primary.main}, ${theme.palette.primary.light}), linear-gradient(${theme.palette.secondary.light}, ${theme.palette.secondary.dark}), ${theme.palette.primary.main}`,
+                    `linear-gradient(45deg, ${theme.palette.secondary.dark} 0%, ${theme.palette.secondary.light} 50%, ${theme.palette.primary.dark} 100%)`,
                 color: theme => theme.palette.primary.contrastText,
                 padding: '20px',
                 marginTop: 2,
