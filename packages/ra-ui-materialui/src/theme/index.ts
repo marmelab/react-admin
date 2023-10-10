@@ -6,3 +6,4 @@ export * from './types';
 export * from './defaultTheme';
 export * from './nanoTheme';
 export * from './radiantTheme';
+export * from './houseTheme';

@@ -5,7 +5,7 @@ import {
     Theme,
     PaletteOptions,
 } from '@mui/material';
-import { RaThemeOptions } from 'react-admin';
+import { RaThemeOptions } from './types';
 
 /**
  * House: A young and joyful theme.

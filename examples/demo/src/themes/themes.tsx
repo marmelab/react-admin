@@ -6,11 +6,12 @@ import {
     nanoLightTheme,
     radiantDarkTheme,
     radiantLightTheme,
+    houseDarkTheme,
+    houseLightTheme,
 } from 'react-admin';
-import { softDarkTheme, softLightTheme } from './softTheme';
 
+import { softDarkTheme, softLightTheme } from './softTheme';
 import { chiptuneTheme } from './chiptuneTheme';
-import { houseDarkTheme, houseLightTheme } from './houseTheme';
 
 export type ThemeName =
     | 'soft'
