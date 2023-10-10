@@ -6,7 +6,7 @@ import { Button, ThemeOptions } from '@mui/material';
 
 import { ThemeProvider } from './ThemeProvider';
 import { ThemesContext } from './ThemesContext';
-import { ThemeTestWrapper } from '../ThemeTestWrapper';
+import { ThemeTestWrapper } from '../layout/ThemeTestWrapper';
 
 const lightTheme: ThemeOptions = {};
 const darkTheme: ThemeOptions = { palette: { mode: 'dark' } };

@@ -5,7 +5,7 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useTranslate } from 'ra-core';
 
 import { ToggleThemeLegacyButton } from './ToggleThemeLegacyButton';
-import { RaThemeOptions, useThemesContext, useTheme } from '../layout';
+import { RaThemeOptions, useThemesContext, useTheme } from '../theme';
 
 /**
  * Button toggling the theme (light or dark).

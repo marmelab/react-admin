@@ -1,4 +1,4 @@
-import { RaThemeOptions } from '../layout/Theme';
+import { RaThemeOptions } from '.';
 
 const defaultThemeInvariants = {
     typography: {

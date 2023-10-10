@@ -2,7 +2,7 @@ import * as React from 'react';
 import { CoreAdminContext, CoreAdminContextProps } from 'ra-core';
 
 import { defaultLightTheme } from './theme/defaultTheme';
-import { ThemeProvider, ThemesContext, RaThemeOptions } from './layout/Theme';
+import { ThemeProvider, ThemesContext, RaThemeOptions } from './theme';
 
 export const AdminContext = (props: AdminContextProps) => {
     const {

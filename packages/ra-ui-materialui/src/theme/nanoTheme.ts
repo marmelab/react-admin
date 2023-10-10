@@ -1,5 +1,5 @@
 import { createTheme, PaletteOptions, Theme } from '@mui/material';
-import { RaThemeOptions } from '../layout/Theme';
+import { RaThemeOptions } from '.';
 
 /**
  * Nano: A dense theme with minimal chrome, ideal for complex apps.
