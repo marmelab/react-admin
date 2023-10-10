@@ -4,9 +4,11 @@ import {
     defaultDarkTheme,
     nanoDarkTheme,
     nanoLightTheme,
+    radiantDarkTheme,
+    radiantLightTheme,
 } from 'react-admin';
 import { softDarkTheme, softLightTheme } from './softTheme';
-import { radiantDarkTheme, radiantLightTheme } from './radiantTheme';
+
 import { chiptuneTheme } from './chiptuneTheme';
 import { houseDarkTheme, houseLightTheme } from './houseTheme';
 

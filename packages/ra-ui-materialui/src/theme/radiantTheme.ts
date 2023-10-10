@@ -1,5 +1,5 @@
 import { alpha, createTheme, PaletteOptions, Theme } from '@mui/material';
-import { RaThemeOptions } from 'react-admin';
+import { RaThemeOptions } from './types';
 
 /**
  * Neon: A theme emphasizing clarity and ease of use.

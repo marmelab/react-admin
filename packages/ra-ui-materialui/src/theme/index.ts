@@ -5,3 +5,4 @@ export * from './useThemesContext';
 export * from './types';
 export * from './defaultTheme';
 export * from './nanoTheme';
+export * from './radiantTheme';
