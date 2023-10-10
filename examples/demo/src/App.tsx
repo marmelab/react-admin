@@ -1,5 +1,12 @@
 import polyglotI18nProvider from 'ra-i18n-polyglot';
-import { Admin, CustomRoutes, Resource, localStorageStore } from 'react-admin';
+import {
+    Admin,
+    CustomRoutes,
+    Resource,
+    localStorageStore,
+    useStore,
+    StoreContextProvider,
+} from 'react-admin';
 import { Route } from 'react-router';
 
 import authProvider from './authProvider';
@@ -14,9 +21,7 @@ import products from './products';
 import reviews from './reviews';
 import Segments from './segments/Segments';
 import visitors from './visitors';
-import { ThemeContext } from './themes/themeContext';
-import { useContext } from 'react';
-import { ThemeContextProvider } from './themes/ThemContextProvider';
+import { themes, ThemeName } from './themes/themes';
 
 const i18nProvider = polyglotI18nProvider(
     locale => {
@@ -34,32 +39,27 @@ const i18nProvider = polyglotI18nProvider(
     ]
 );
 
-const App = () => {
-    return (
-        <ThemeContextProvider>
-            <MyAdmin />
-        </ThemeContextProvider>
-    );
-};
+const store = localStorageStore(undefined, 'ECommerce');
 
-const MyAdmin = () => {
-    const { theme } = useContext(ThemeContext);
+const App = () => {
+    const [themeName] = useStore<ThemeName>('themeName', 'soft');
+    const lightTheme = themes.find(theme => theme.name === themeName)?.light;
+    const darkTheme = themes.find(theme => theme.name === themeName)?.dark;
     return (
         <Admin
             title=""
             dataProvider={dataProviderFactory(
                 process.env.REACT_APP_DATA_PROVIDER || ''
             )}
-            store={localStorageStore(undefined, 'ECommerce')}
+            store={store}
             authProvider={authProvider}
             dashboard={Dashboard}
             loginPage={Login}
             layout={Layout}
             i18nProvider={i18nProvider}
             disableTelemetry
-            theme={theme.light}
-            lightTheme={theme.light}
-            darkTheme={theme.dark}
+            lightTheme={lightTheme}
+            darkTheme={darkTheme}
         >
             <CustomRoutes>
                 <Route path="/segments" element={<Segments />} />
@@ -78,4 +78,10 @@ const MyAdmin = () => {
     );
 };
 
-export default App;
+const AppWrapper = () => (
+    <StoreContextProvider value={store}>
+        <App />
+    </StoreContextProvider>
+);
+
+export default AppWrapper;

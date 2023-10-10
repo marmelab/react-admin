@@ -1,4 +1,3 @@
-import { createContext } from 'react';
 import {
     RaThemeOptions,
     defaultLightTheme,
@@ -11,16 +10,7 @@ import { synthwaveDarkTheme, synthwaveLightTheme } from './synthwaveTheme';
 import { ecoDarkTheme, ecoLightTheme } from './ecoTheme';
 import { houseDarkTheme, houseLightTheme } from './houseTheme';
 
-export const ThemeContext = createContext<ThemeContextProps>({
-    theme: {
-        name: 'soft',
-        light: softLightTheme,
-        dark: softDarkTheme,
-    },
-    changeTheme: () => {},
-});
-
-export type ThemeType =
+export type ThemeName =
     | 'soft'
     | 'default'
     | 'nano'
@@ -28,15 +18,11 @@ export type ThemeType =
     | 'chiptune'
     | 'eco'
     | 'house';
+
 export interface Theme {
-    name: ThemeType;
+    name: ThemeName;
     light: RaThemeOptions;
     dark?: RaThemeOptions;
-}
-
-export interface ThemeContextProps {
-    theme: Theme;
-    changeTheme: (theme: Theme) => void;
 }
 
 export const themes: Theme[] = [

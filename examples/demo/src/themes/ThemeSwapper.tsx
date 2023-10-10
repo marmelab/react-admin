@@ -1,9 +1,9 @@
+import { useState } from 'react';
+import { useStore, useTranslate, ToggleThemeButton } from 'react-admin';
 import { IconButton, Menu, MenuItem, Tooltip } from '@mui/material';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
-import { useContext, useState } from 'react';
-import { useStore, useTranslate } from 'react-admin';
 
-import { ThemeContext, ThemeType, themes } from './themeContext';
+import { themes, ThemeName } from './themes';
 
 export const ThemeSwapper = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -15,14 +15,13 @@ export const ThemeSwapper = () => {
         setAnchorEl(null);
     };
 
-    const [_, setThemeStore] = useStore<ThemeType>('theme');
-    const { theme: themeFromContext, changeTheme } = useContext(ThemeContext);
+    const [themeName, setThemeName] = useStore<ThemeName>('themeName', 'soft');
     const handleChange = (_: React.MouseEvent<HTMLElement>, index: number) => {
         const newTheme = themes[index];
-        setThemeStore(newTheme.name);
-        changeTheme(newTheme);
+        setThemeName(newTheme.name);
         setAnchorEl(null);
     };
+    const currentTheme = themes.find(theme => theme.name === themeName);
 
     const translate = useTranslate();
     const toggleThemeTitle = translate('pos.action.change_theme', {
@@ -40,13 +39,14 @@ export const ThemeSwapper = () => {
                     <ColorLensIcon />
                 </IconButton>
             </Tooltip>
+            {currentTheme?.dark ? <ToggleThemeButton /> : null}
             <Menu open={open} onClose={handleClose} anchorEl={anchorEl}>
-                {themes.map((theme, index) => (
+                {themes.map((theme, index: number) => (
                     <MenuItem
                         onClick={event => handleChange(event, index)}
                         value={theme.name}
                         key={theme.name}
-                        selected={theme.name === themeFromContext.name}
+                        selected={theme.name === themeName}
                     >
                         {ucFirst(theme.name)}
                     </MenuItem>
