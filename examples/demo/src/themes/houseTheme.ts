@@ -120,7 +120,7 @@ const ItemLink = (theme: Theme) => ({
                         top: '0; right: 0; bottom: 0; left: 0',
                         zIndex: '-1',
                         margin: '-2px',
-                        borderRadius: 'inherit',
+                        borderRadius: '12px',
                         background: `linear-gradient(310deg, ${theme.palette.primary.light}, ${theme.palette.secondary.main})`,
                     },
                     '& .MuiSvgIcon-root': {
