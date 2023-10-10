@@ -6,19 +6,17 @@ import {
     nanoLightTheme,
 } from 'react-admin';
 import { softDarkTheme, softLightTheme } from './softTheme';
+import { radiantDarkTheme, radiantLightTheme } from './radiantTheme';
 import { chiptuneTheme } from './chiptuneTheme';
-import { synthwaveDarkTheme, synthwaveLightTheme } from './synthwaveTheme';
-import { ecoDarkTheme, ecoLightTheme } from './ecoTheme';
 import { houseDarkTheme, houseLightTheme } from './houseTheme';
 
 export type ThemeName =
     | 'soft'
     | 'default'
     | 'nano'
-    | 'synthwave'
-    | 'chiptune'
-    | 'eco'
-    | 'house';
+    | 'radiant'
+    | 'house'
+    | 'chiptune';
 
 export interface Theme {
     name: ThemeName;
@@ -30,8 +28,7 @@ export const themes: Theme[] = [
     { name: 'soft', light: softLightTheme, dark: softDarkTheme },
     { name: 'default', light: defaultLightTheme, dark: defaultDarkTheme },
     { name: 'nano', light: nanoLightTheme, dark: nanoDarkTheme },
-    { name: 'synthwave', light: synthwaveLightTheme, dark: synthwaveDarkTheme },
-    { name: 'chiptune', light: chiptuneTheme },
-    { name: 'eco', light: ecoLightTheme, dark: ecoDarkTheme },
+    { name: 'radiant', light: radiantLightTheme, dark: radiantDarkTheme },
     { name: 'house', light: houseLightTheme, dark: houseDarkTheme },
+    { name: 'chiptune', light: chiptuneTheme },
 ];
