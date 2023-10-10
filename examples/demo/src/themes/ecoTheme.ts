@@ -156,7 +156,7 @@ const Toolbar = (theme: Theme) => ({
                 color: theme.palette.text.primary,
             },
             regular: {
-                backgroundColor: theme.palette.background.paper,
+                backgroundColor: theme.palette.background.default,
             },
         },
     },
