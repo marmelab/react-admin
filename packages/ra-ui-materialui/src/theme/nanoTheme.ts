@@ -29,10 +29,10 @@ const componentsOverrides = (theme: Theme) => ({
         ],
         styleOverrides: {
             root: {
-                '& label+.MuiInputBase-root': {
+                '& label+.MuiInput-root.MuiInputBase-root': {
                     marginTop: theme.spacing(1.5),
                 },
-                '& label[data-shrink=false]+.MuiInputBase-root': {
+                '& label[data-shrink=false]+.MuiInput-root.MuiInputBase-root': {
                     marginTop: 0,
                     paddingBottom: theme.spacing(2),
                 },
@@ -275,6 +275,16 @@ const componentsOverrides = (theme: Theme) => ({
             root: {
                 '& .RaLayout-appFrame': {
                     marginTop: theme.spacing(5),
+                },
+            },
+        },
+    },
+    RaLoadingIndicator: {
+        styleOverrides: {
+            root: {
+                '& .RaLoadingIndicator-loader': {
+                    top: '20%',
+                    left: '20%',
                 },
             },
         },
