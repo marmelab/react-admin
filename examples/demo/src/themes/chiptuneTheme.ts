@@ -1,5 +1,7 @@
 import { RaThemeOptions } from 'react-admin';
 
+/** Just for fun */
+
 export const chiptuneTheme: RaThemeOptions = {
     palette: {
         mode: 'dark' as 'dark',

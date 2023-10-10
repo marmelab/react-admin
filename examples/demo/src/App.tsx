@@ -60,6 +60,7 @@ const App = () => {
             disableTelemetry
             lightTheme={lightTheme}
             darkTheme={darkTheme}
+            defaultTheme="light"
         >
             <CustomRoutes>
                 <Route path="/segments" element={<Segments />} />
