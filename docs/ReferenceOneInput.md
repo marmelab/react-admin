@@ -234,7 +234,7 @@ Name of the field carrying the relationship on the referenced resource. For inst
 </ReferenceOneInput>
 ```
 
-### Customizing The Child Inputs
+## Customizing The Child Inputs
 
 `<ReferenceOneInput>` works by cloning its children and overriding their `source` prop, to add a temporary field name prefix. This means that, if you need to nest your inputs inside another component, you will need to propagate the `source` prop to them.
 
