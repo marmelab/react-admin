@@ -85,10 +85,19 @@ const componentsOverrides = (theme: Theme) => {
                 },
             },
         },
+        RaFilterForm: {
+            styleOverrides: {
+                root: {
+                    [theme.breakpoints.up('sm')]: {
+                        minHeight: theme.spacing(6),
+                    },
+                },
+            },
+        },
         RaLayout: {
             styleOverrides: {
                 root: {
-                    '& .RaLayout-appFrame': { marginTop: theme.spacing(4.5) },
+                    '& .RaLayout-appFrame': { marginTop: theme.spacing(5) },
                 },
             },
         },
