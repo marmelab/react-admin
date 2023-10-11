@@ -21,8 +21,8 @@ import { Title } from './Title';
 import { TitlePortal } from './TitlePortal';
 import { UserMenu } from './UserMenu';
 import { useUserMenu } from './useUserMenu';
-import { defaultTheme } from '../defaultTheme';
-import { ThemesContext, ThemeProvider } from './Theme';
+import { defaultTheme } from '../theme/defaultTheme';
+import { ThemesContext, ThemeProvider } from '../theme';
 import { Logout } from '../auth';
 
 export default {
