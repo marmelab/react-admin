@@ -26,6 +26,11 @@ const componentsOverrides = (theme: Theme) => ({
             },
         },
     },
+    MuiFormControl: {
+        defaultProps: {
+            margin: 'dense' as const,
+        },
+    },
     MuiOutlinedInput: {
         styleOverrides: {
             input: {
