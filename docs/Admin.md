@@ -819,28 +819,31 @@ Check the [Preferences documentation](./Store.md) for more details.
 
 Material UI supports [theming](https://mui.com/material-ui/customization/theming/). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom Material UI theme by using the `theme` prop.
 
-For instance, to use a dark theme by default:
+React-admin comes with 4 built-in themes: [Default](./AppTheme.md#default), [Nano](./AppTheme.md#nano), [Radiant](./AppTheme.md#radiant), and [House](./AppTheme.md#house). The [e-commerce demo](https://marmelab.com/react-admin-demo/) contains a theme switcher, so you can test them in a real application. 
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/demo-themes.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+For instance, to use the Nano theme instead of the default theme:
 
 ```tsx
-import { defaultTheme } from 'react-admin';
-
-const theme = {
-    ...defaultTheme,
-    palette: { mode: 'dark' },
-};
+import { Admin, nanoLightTheme } from 'react-admin';
+import { dataProvider } from './dataProvider';
 
 const App = () => (
-    <Admin theme={theme} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin theme={nanoLightTheme} dataProvider={dataProvider}>
         // ...
     </Admin>
 );
 ```
 
-![Dark theme](./img/dark-theme.png)
+![Nano light theme](./img/nanoLightTheme1.jpg)
+
+You can also [write your own theme](./AppTheme.md#writing-a-custom-theme) to fit your company branding. For more details on predefined and custom themes, refer to [the Application Theme chapter](./AppTheme.md).
 
 If you want to support both a light and a dark theme, check out [the `<Admin darkTheme>` prop](#darktheme). 
-
-For more details on predefined and custom themes, refer to [the Application Theme chapter](./AppTheme.md).
 
 ## `title`
 

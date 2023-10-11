@@ -1257,7 +1257,31 @@ Check the following components for details:
 
 The default [Material Design](https://material.io/) look and feel is nice, but a bit... Google-y. If this bothers you, or if you need to brand your app, rest assured: react-admin is fully themeable.
 
-For instance, you can use react-admin to build a [Music Player](https://demo.navidrome.org/app/):
+React-admin comes with 4 built-in themes: [Default](./AppTheme.md#default), [Nano](./AppTheme.md#nano), [Radiant](./AppTheme.md#radiant), and [House](./AppTheme.md#house). The [e-commerce demo](https://marmelab.com/react-admin-demo/) contains a theme switcher, so you can test them in a real application. 
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/demo-themes.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+To use a custom theme, pass a theme object to the `<Admin>` [`theme`](./Admin.md#theme) and [`darkTheme`](./Admin.md#darktheme) props:
+
+```jsx
+import { Admin, nanoLightTheme, nanoDarkTheme } from 'react-admin';
+import { dataProvider } from './dataProvider';
+
+export const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+        theme={nanoLightTheme}
+        darkTheme={nanoDarkTheme}
+    >
+        // ...
+    </Admin>
+);
+```
+
+Theming is so powerful that you can even use react-admin to build a [Music Player](https://demo.navidrome.org/app/):
 
 ![Music Player](./img/navidrome.png)
 
@@ -1357,9 +1381,12 @@ const App = () => (
 
 To learn more about theming in react-admin, check the following sections:
 
+- [Introduction to Theming](./Theming.md)
+- [Page Layouts](./Theming.md#customizing-the-page-layout)
 - [The `sx` prop](./SX.md)
-- [App-wide component overrides](./AppTheme.md#theming-individual-components)
-- [Writing a custom theme](./AppTheme.md)
+- [Built-In Themes](./AppTheme.md#built-in-themes)
+- [App-wide theming](./AppTheme.md#theming-individual-components)
+- [Helper Components For Layouts](./BoxStackGrid.md)
 - [`<ToggleThemeButton>`](./ToggleThemeButton.md)
 - [`useTheme`](./useTheme.md)
 - [`useMediaQuery`](./useMediaQuery.md)

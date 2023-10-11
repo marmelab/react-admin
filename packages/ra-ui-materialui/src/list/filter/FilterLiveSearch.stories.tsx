@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 
 import { FilterLiveSearch } from './FilterLiveSearch';
-import { defaultTheme } from '../../defaultTheme';
+import { defaultTheme } from '../../theme/defaultTheme';
 
 export default {
     title: 'ra-ui-materialui/list/filter/FilterLiveSearch',

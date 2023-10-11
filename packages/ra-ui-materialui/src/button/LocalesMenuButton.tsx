@@ -48,6 +48,7 @@ export const LocalesMenuButton = (props: LocalesMenuButtonProps) => {
         <Root component="span">
             <Button
                 color="inherit"
+                variant="text"
                 aria-controls="simple-menu"
                 aria-label=""
                 aria-haspopup="true"

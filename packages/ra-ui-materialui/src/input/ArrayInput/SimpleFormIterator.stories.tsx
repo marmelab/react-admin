@@ -7,7 +7,7 @@ import { ArrayInput } from './ArrayInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
 import { TextInput } from '../TextInput';
 import { AdminContext } from '../../AdminContext';
-import { defaultTheme } from '../../defaultTheme';
+import { defaultTheme } from '../../theme/defaultTheme';
 
 export default { title: 'ra-ui-materialui/input/SimpleFormIterator' };
 
