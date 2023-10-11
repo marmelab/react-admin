@@ -7,7 +7,7 @@ import { Basic } from './ToggleThemeButton.stories';
 describe('ToggleThemeButton', () => {
     it('should display a button', () => {
         render(<Basic />);
-        screen.getByLabelText('Toggle Theme');
+        screen.getByLabelText('Toggle light/dark mode');
     });
     it('should allow to change the theme between light and dark', () => {
         const { container } = render(<Basic />);
@@ -18,9 +18,9 @@ describe('ToggleThemeButton', () => {
             throw new Error('No root element found');
         }
         expect(getComputedStyle(root).colorScheme).toBe('light');
-        screen.getByLabelText('Toggle Theme').click();
+        screen.getByLabelText('Toggle light/dark mode').click();
         expect(getComputedStyle(root).colorScheme).toBe('dark');
-        screen.getByLabelText('Toggle Theme').click();
+        screen.getByLabelText('Toggle light/dark mode').click();
         expect(getComputedStyle(root).colorScheme).toBe('light');
     });
 });
