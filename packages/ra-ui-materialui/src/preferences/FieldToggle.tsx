@@ -27,18 +27,22 @@ export const FieldToggle = props => {
         // imperative DOM manipulations using the native Drag API
         const selectedItem = event.target;
         selectedItem.classList.add('drag-active');
-        const list = selectedItem.parentNode;
+        const list = selectedItem.closest('ul');
         let dropItem =
             document.elementFromPoint(x.current, y.current) === null
                 ? selectedItem
-                : document.elementFromPoint(x.current, y.current);
+                : document.elementFromPoint(x.current, y.current).closest('li');
+
+        if (!dropItem) {
+            return;
+        }
         if (dropItem.classList.contains('dragIcon')) {
             dropItem = dropItem.parentNode;
         }
         if (dropItem === selectedItem) {
             return;
         }
-        if (list === dropItem.parentNode) {
+        if (list === dropItem.parentNode.closest('ul')) {
             dropIndex.current = dropItem.dataset.index;
             if (dropItem === selectedItem.nextSibling) {
                 dropItem = dropItem.nextSibling;
@@ -49,7 +53,15 @@ export const FieldToggle = props => {
 
     const handleDragEnd = event => {
         const selectedItem = event.target;
-        onMove(selectedItem.dataset.index, dropIndex.current);
+        const list = selectedItem.closest('ul');
+        let dropItem =
+            document.elementFromPoint(x.current, y.current) === null
+                ? selectedItem
+                : document.elementFromPoint(x.current, y.current).closest('li');
+
+        if (dropItem && list === dropItem.closest('ul')) {
+            onMove(selectedItem.dataset.index, dropIndex.current);
+        }
         selectedItem.classList.remove('drag-active');
         document.removeEventListener('dragover', handleDocumentDragOver);
     };
@@ -97,9 +109,10 @@ export const FieldToggle = props => {
     );
 };
 
-const Root = styled('div')(({ theme }) => ({
+const Root = styled('li')(({ theme }) => ({
     display: 'flex',
     justifyContent: 'space-between',
+    paddingLeft: 0,
     '& svg': {
         cursor: 'move',
     },
