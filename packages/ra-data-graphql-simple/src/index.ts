@@ -3,11 +3,16 @@ import buildDataProvider, { BuildQueryFactory, Options } from 'ra-data-graphql';
 import { DataProvider, Identifier } from 'ra-core';
 
 import defaultBuildQuery from './buildQuery';
+
+export const buildQuery = defaultBuildQuery;
+export { buildQueryFactory } from './buildQuery';
+export { default as buildGqlQuery } from './buildGqlQuery';
+export { default as buildVariables } from './buildVariables';
+export { default as getResponseParser } from './getResponseParser';
+
 const defaultOptions = {
     buildQuery: defaultBuildQuery,
 };
-
-export const buildQuery = defaultBuildQuery;
 
 export default (
     options: Omit<Options, 'buildQuery'> & { buildQuery?: BuildQueryFactory }

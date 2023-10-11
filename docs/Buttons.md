@@ -246,14 +246,15 @@ export const PostList = () => (
 
 ![Bulk Delete button](./img/bulk-delete-button.png)
 
-| Prop              | Required | Type           | Default            | Description                                                                                                         |
-|-------------------|----------|----------------|--------------------|---------------------------------------------------------------------------------------------------------------------|
-| `confirmContent`  | Optional | React node     | -                  | Lets you customize the content of the confirm dialog. Only used in `'pessimistic'` or `'optimistic'` mutation modes |
-| `confirmTitle`    | Optional | `string`       | -                  | Lets you customize the title of the confirm dialog. Only used in `'pessimistic'` or `'optimistic'` mutation modes   |
-| `label`           | Optional | `string`       | 'ra.action.delete' | label or translation message to use                                                                                 |
-| `icon`            | Optional | `ReactElement` | `<DeleteIcon>`     | iconElement, e.g. `<CommentIcon />`                                                                                 |
-| `mutationMode`    | Optional | `string`       | `'undoable'`       | Mutation mode (`'undoable'`, `'pessimistic'` or `'optimistic'`)                                                     |
-| `mutationOptions` | Optional | `object`       | null               | options for react-query `useMutation` hook                                                                          |
+| Prop              | Required | Type                                    | Default            | Description                                                                                                                          |
+|-------------------|----------|-----------------------------------------|--------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| `confirmContent`  | Optional | React node                              | -                  | Lets you customize the content of the confirm dialog. Only used in `'pessimistic'` or `'optimistic'` mutation modes                  |
+| `confirmTitle`    | Optional | `string`                                | -                  | Lets you customize the title of the confirm dialog. Only used in `'pessimistic'` or `'optimistic'` mutation modes                    |
+| `confirmColor`    | Optional | <code>'primary' &#124; 'warning'</code> | 'primary'          | Lets you customize the color of the confirm dialog's "Confirm" button. Only used in `'pessimistic'` or `'optimistic'` mutation modes |
+| `label`           | Optional | `string`                                | 'ra.action.delete' | label or translation message to use                                                                                                  |
+| `icon`            | Optional | `ReactElement`                          | `<DeleteIcon>`     | iconElement, e.g. `<CommentIcon />`                                                                                                  |
+| `mutationMode`    | Optional | `string`                                | `'undoable'`       | Mutation mode (`'undoable'`, `'pessimistic'` or `'optimistic'`)                                                                      |
+| `mutationOptions` | Optional | `object`                                | null               | options for react-query `useMutation` hook                                                                                           |
 
 **Tip:** If you choose the `'pessimistic'` or `'optimistic'` mutation mode, a confirm dialog will be displayed to the user before the mutation is executed.
 
@@ -658,16 +659,17 @@ See [its documentation](./UpdateButton.md) for more details.
 
 Delete the current record after a confirm dialog has been accepted. To be used inside a `<Toolbar/>` component.
 
-| Prop                                                       | Required | Type                             | Default                     | Description                                                             |
-|------------------------------------------------------------|----------|----------------------------------|-----------------------------|-------------------------------------------------------------------------|
-| `className`                                                | Optional | `string`                         | -                           | Class name to customize the look and feel of the button element itself  |
-| `label`                                                    | Optional | `string`                         | 'ra.action.delete'          | label or translation message to use                                     |
-| `icon`                                                     | Optional | `ReactElement`                   | `<DeleteIcon>`              | iconElement, e.g. `<CommentIcon />`                                     |
-| `confirmTitle`                                             | Optional | `ReactNode`                      | 'ra.message.delete_title'   | Title of the confirm dialog                                             |
-| `confirmContent`                                           | Optional | `ReactNode`                      | 'ra.message.delete_content' | Message or React component to be used as the body of the confirm dialog |
-| `redirect`                                                 | Optional | `string | false | Function`      | 'list'                      | Custom redirection after success side effect                            |
-| `translateOptions`                                         | Optional | `{ id?: string, name?: string }` | {}                          | Custom id and name to be used in the confirm dialog's title             |
-| `mutationOptions`                                          | Optional |                                  | null                        | options for react-query `useMutation` hook                              |
+| Prop               | Required | Type                                             | Default                     | Description                                                             |
+|--------------------|----------|--------------------------------------------------|-----------------------------|-------------------------------------------------------------------------|
+| `className`        | Optional | `string`                                         | -                           | Class name to customize the look and feel of the button element itself  |
+| `label`            | Optional | `string`                                         | 'ra.action.delete'          | label or translation message to use                                     |
+| `icon`             | Optional | `ReactElement`                                   | `<DeleteIcon>`              | iconElement, e.g. `<CommentIcon />`                                     |
+| `confirmTitle`     | Optional | `ReactNode`                                      | 'ra.message.delete_title'   | Title of the confirm dialog                                             |
+| `confirmContent`   | Optional | `ReactNode`                                      | 'ra.message.delete_content' | Message or React component to be used as the body of the confirm dialog |
+| `confirmColor`     | Optional | <code>'primary' &#124; 'warning'</code>          | 'primary'                   | The color of the confirm dialog's "Confirm" button                      |
+| `redirect`         | Optional | <code>string &#124; false &#124; Function</code> | 'list'                      | Custom redirection after success side effect                            |
+| `translateOptions` | Optional | `{ id?: string, name?: string }`                 | {}                          | Custom id and name to be used in the confirm dialog's title             |
+| `mutationOptions`  | Optional |                                                  | null                        | options for react-query `useMutation` hook                              |
 
 {% raw %}
 ```jsx
@@ -681,6 +683,7 @@ const EditToolbar = props => {
         <SaveButton/>
         <DeleteWithConfirmButton
             confirmContent="You will not be able to recover this record. Are you sure?"
+            confirmColor="warning"
             translateOptions={{ name: record.name }}
         />
     </Toolbar>

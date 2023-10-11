@@ -228,13 +228,15 @@ Another alternative filter UI is the Stacked Filters dialog, an [Enterprise Edit
 Here is an example StackedFilters configuration:
 
 ```jsx
-import { 
-    List,
+import {
+    BooleanField,
+    CreateButton,
     Datagrid,
-    TextField,
+    List,
     NumberField,
     ReferenceArrayField,
-    BooleanField,
+    TextField,
+    TopToolbar,
 } from 'react-admin';
 import {
     textFilter,
@@ -252,8 +254,15 @@ const postListFilters = {
     tags: referenceFilter({ reference: 'tags' }),
 };
 
+const PostListToolbar = () => (
+    <TopToolbar>
+        <CreateButton />
+        <StackedFilters config={postListFilters} />
+    </TopToolbar>
+);
+
 const PostList = () => (
-    <List filters={<StackedFilters config={postListFilters} />}>
+    <List actions={<PostListToolbar />}>
         <Datagrid>
             <TextField source="title" />
             <NumberField source="views" />

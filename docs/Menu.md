@@ -24,7 +24,7 @@ export const MyMenu = () => (
         <Menu.ResourceItem name="posts" />
         <Menu.ResourceItem name="comments" />
         <Menu.ResourceItem name="users" />
-        <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
+        <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />} />
     </Menu>
 );
 ```
@@ -117,7 +117,7 @@ export const MyMenu = () => (
         <Menu.ResourceItem name="posts" />
         <Menu.ResourceItem name="comments" />
         <Menu.ResourceItem name="users" />
-        <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
+        <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />} />
     </Menu>
 );
 ```
@@ -161,34 +161,53 @@ The `<Menu.Item>` component displays a menu item with a label and an icon - or o
 ```jsx
 // in src/MyMenu.js
 import { Menu } from 'react-admin';
+
+export const MyMenu = () => (
+    <Menu>
+        ...
+        <Menu.Item to="/custom-route" primaryText="Miscellaneous" />
+    </Menu>
+);
+```
+
+The `primaryText` prop accepts a string, that react-admin passes through the [translation utility](./Translation.md). Alternately, you can set the menu item content using the `children`, e.g. to display a badge on top of the menu item:
+
+```jsx
+import Badge from '@mui/material/Badge';
+import { Menu } from 'react-admin';
+
+export const MyMenu = () => (
+    <Menu>
+        ...
+        <Menu.Item to="/custom-route" primaryText="Notifications">
+            <Badge badgeContent={4} color="primary">
+                Notifications
+            </Badge>
+        </Menu.Item>
+    </Menu>
+);
+```
+
+Note that if you use the `children` prop, you'll have to translate the menu item content yourself using [`useTranslate`](./useTranslate.md). You'll also need to provide a `primaryText` either way, because it will be rendered in the tooltip when the side menu is collapsed.
+
+The `letfIcon` prop allows setting the menu left icon.
+
+```jsx
+// in src/MyMenu.js
+import { Menu } from 'react-admin';
 import LabelIcon from '@mui/icons-material/Label';
 
 export const MyMenu = () => (
     <Menu>
         ...
-        <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
+        <Menu.Item 
+            to="/custom-route"
+            primaryText="Miscellaneous"
+            leftIcon={<LabelIcon />}
+        />
     </Menu>
 );
 ```
-
-The `primaryText` prop accepts a string or a React node. You can use it e.g. to display a badge on top of the menu item:
-
-```jsx
-import Badge from '@mui/material/Badge';
-
-export const MyMenu = () => (
-    <Menu>
-        ...
-        <Menu.Item to="/custom-route" primaryText={
-            <Badge badgeContent={4} color="primary">
-                Notifications
-            </Badge>
-        } />
-    </Menu>
-);
-```
-
-The `letfIcon` prop allows setting the menu left icon.
 
 Additional props are passed down to [the underling Material UI `<MenuItem>` component](https://mui.com/material-ui/api/menu-item/).
 
@@ -236,6 +255,8 @@ export const MyMenu = () => (
 ```
 
 Clicking on the dashboard menu item leads to the `/` route and renders the component defined in [the `<Admin dashboard>` prop](./Admin.md#dashboard).
+
+You can customize this menu item label by using the `primaryText` or `children` prop (see [the `<Menu.Item>` section](#menuitem) for more information).
 
 ## `<Menu.ResourceItems>`
 
@@ -309,8 +330,10 @@ the following code:
 translates to:
 
 ```jsx
-<Menu.Item to="/posts" primaryText="Posts" leftIcon={<BookIcon />}/>
+<Menu.Item to="/posts" primaryText="Posts" leftIcon={<BookIcon />} />
 ```
+
+You can customize this menu item label by using the `primaryText` or `children` prop (see [the `<Menu.Item>` section](#menuitem) for more information).
 
 ## Creating Menu Items For Resources
 
@@ -358,7 +381,7 @@ For instance, to include a menu to a list of published posts:
         pathname: '/posts',
         search: `filter=${JSON.stringify({ is_published: true })}`,
     }}
-    primaryText="Posts"
+    primaryText="Published Posts"
     leftIcon={<BookIcon />}
 />
 ```
