@@ -258,4 +258,20 @@ describe('useUnique', () => {
         fireEvent.click(screen.getByText('Submit'));
         expect(screen.queryByText('Must be unique')).toBeNull();
     });
+
+    it('should not show an error when the field value is empty', async () => {
+        const dataProvider = baseDataProvider();
+        render(<Create dataProvider={dataProvider} />);
+
+        const input = await screen.findByDisplayValue('John Doe');
+        fireEvent.change(input, { target: { value: '' } });
+        fireEvent.click(screen.getByText('Submit'));
+
+        await waitFor(() => {
+            expect(dataProvider.create).toHaveBeenCalled();
+        });
+
+        expect(dataProvider.getList).not.toHaveBeenCalled();
+        expect(screen.queryByText('Must be unique')).toBeNull();
+    });
 });

@@ -112,6 +112,16 @@ export const useCreate = <
                     [callTimeResource, 'getOne', { id: String(data.id) }],
                     data
                 );
+                queryClient.invalidateQueries([callTimeResource, 'getList']);
+                queryClient.invalidateQueries([
+                    callTimeResource,
+                    'getInfiniteList',
+                ]);
+                queryClient.invalidateQueries([callTimeResource, 'getMany']);
+                queryClient.invalidateQueries([
+                    callTimeResource,
+                    'getManyReference',
+                ]);
 
                 if (options.onSuccess) {
                     options.onSuccess(data, variables, context);

@@ -11,7 +11,7 @@ React-admin is a **rich framework** that covers most of the needs of typical adm
 
 With react-admin, developers assemble application components without having to worry about low-level details. They need less code for the same result, and they can **focus on the business logic** of their app.
 
-[![List view without and with react-admin](./img/list-from-react-to-react-admin.webp)](./ListTutorial.md#from-pure-react-to-react-admin)
+[![List view without and with react-admin](./img/list-from-react-to-react-admin.webp)](./img/list-from-react-to-react-admin.webp)
 
 We've crafted the API of react-admin's components and hooks to be as **intuitive** as possible. The react-admin core team uses react-admin every day, and we're always looking for ways to improve the developer experience.
 
@@ -68,8 +68,9 @@ import { useState, useEffect } from 'react';
 import { useDataProvider } from 'react-admin';
 
 const PostList = () => {
-    const [posts, setPosts] = useState();
-    const [error, setError] = useState([]);
+    const [posts, setPosts] = useState([]);
+    const [error, setError] = useState();
+    const [isLoading, setIsLoading] = useState(true);
     const dataProvider = useDataProvider();
     useEffect(() => {
         dataProvider.getList('posts', { 
@@ -78,9 +79,10 @@ const PostList = () => {
             filter: { status: 'published' } 
         })
             .then(({ data }) => setPosts(data))
-            .catch(error => setError(error));
+            .catch(error => setError(error))
+            .finally(() => setIsLoading(false));
     }, []);
-    if (posts) { return <Loading />; }
+    if (isLoading) { return <p>Loading</p>; }
     if (error) { return <p>ERROR</p>; }
     return (
         <ul>

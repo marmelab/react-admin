@@ -15,6 +15,8 @@ Use `<ReferenceOneInput>` in an `<Edit>` or `<Create>` view to edit a record lin
 
 `<ReferenceOneInput>` renders the inputs provided as its children, and fetches the related record to populate them. When users change the related record fields, the `<ReferenceOneInput>` component stores these changes locally. Then, when users actually submit the form, `<ReferenceOneInput>` will update both the base record and the related record.
 
+**Tip**: If you need to edit an *array* of related records, i.e. if there are several book details for a given book, you should use [`<ReferenceManyInput>`](./ReferenceManyInput.md) instead.
+
 ## Usage
 
 Here is an example one-to-one relationship: a `book` has at most one `book_details` row associated to it.
@@ -64,7 +66,7 @@ const BookEdit = () => (
 
 `<ReferenceOneInput>` persists the changes in the referenced record (book details in the above example) after persisting the changes in the main resource (book in the above example). This means that you can also use `<ReferenceOneInput>` in `<Create>` views.
 
-**Tip**: `<ReferenceOneInput>` cannot be used with `undoable` mutations. You have to set `mutationMode="optimistic"` or `mutationMode="pessimistic"` in the parent `<Edit>` or `<Create>`, as in the example above.
+**Tip**: `<ReferenceOneInput>` cannot be used with `undoable` mutations. You have to set `mutationMode="optimistic"` or `mutationMode="pessimistic"` in the parent `<Edit>`, as in the example above.
 
 ## Props
 
@@ -231,6 +233,56 @@ Name of the field carrying the relationship on the referenced resource. For inst
     ...
 </ReferenceOneInput>
 ```
+
+## Customizing The Child Inputs
+
+`<ReferenceOneInput>` works by cloning its children and overriding their `source` prop, to add a temporary field name prefix. This means that, if you need to nest your inputs inside another component, you will need to propagate the `source` prop to them.
+
+In this example, the `<TextInput>` component is wrapped inside a `<MyCustomInput>` component. That adds an icon and additional styling.
+
+{% raw %}
+```tsx
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import ClassIcon from '@mui/icons-material/Class';
+import LanguageIcon from '@mui/icons-material/Language';
+import { Box, SxProps } from '@mui/material';
+import * as React from 'react';
+import { TextInput } from 'react-admin';
+import { ReferenceOneInput } from '@react-admin/ra-relationships';
+
+const MyCustomInput = ({
+    source,
+    icon: Icon,
+}: {
+    source: string;
+    icon: React.FunctionComponent<{ sx?: SxProps }>;
+}) => (
+    <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+        <Icon sx={{ color: 'action.active', mr: 1.5, my: 1 }} />
+        <TextInput
+            source={source} // Propagate the source prop to the real input
+            variant="standard"
+            size="small"
+            helperText={false}
+        />
+    </Box>
+);
+
+export const CustomInputs = () => (
+    <ReferenceOneInput reference="book_details" target="book_id">
+        <MyCustomInput source="year" icon={CalendarMonthIcon} />
+        <MyCustomInput source="author" icon={AccountCircle} />
+        <MyCustomInput source="country" icon={LanguageIcon} />
+        <MyCustomInput source="genre" icon={ClassIcon} />
+        <MyCustomInput source="pages" icon={AutoStoriesIcon} />
+    </ReferenceOneInput>
+);
+```
+{% endraw %}
+
+![ReferenceOneInput with custom inputs](https://marmelab.com/ra-enterprise/modules/assets/ra-relationships/latest/reference-one-input-custom-inputs.png)
 
 ## Limitations
 

@@ -124,7 +124,7 @@ Internally, react-admin uses [react-query](https://tanstack.com/query/v3/) to ca
 1. It triggers the loader in the AppBar when the query is running.
 2. It reduces the boilerplate code since you don't need to use `useState`.
 3. It supports a vast array of options
-3. It displays stale data while fetching up-to-date data, leading to a snappier UI
+4. It displays stale data while fetching up-to-date data, leading to a snappier UI
 
 React-query offers 2 main hooks to interact with the dataProvider:
 

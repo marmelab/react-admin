@@ -22,7 +22,6 @@ title: "Index"
 
 **- B -**
 * [`<Breadcrumb>`](./Breadcrumb.md)<img class="icon" src="./img/premium.svg" />
-* [`<BreadcrumbItem>`](./Breadcrumb.md#breadcrumbitem)<img class="icon" src="./img/premium.svg" />
 * [`<BooleanField>`](./BooleanField.md)
 * [`<BooleanInput>`](./BooleanInput.md)
 * [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton)
@@ -83,7 +82,7 @@ title: "Index"
 * [`<FunctionField>`](./FunctionField.md)
 
 **- H -**
-* [`<HorizontalMenu>`](./HorizontalMenu.md)<img class="icon" src="./img/premium.svg" />
+* [`<HorizontalMenu>`](./ContainerLayout.md#horizontalmenu)<img class="icon" src="./img/premium.svg" />
 
 **- I -**
 * [`<IfCanAccess>`](./IfCanAccess.md)<img class="icon" src="./img/premium.svg" />
@@ -167,6 +166,9 @@ title: "Index"
 * [`<SimpleShowLayout>`](./SimpleShowLayout.md)
 * [`<SingleFieldList>`](./SingleFieldList.md)
 * [`<SmartRichTextInput>`](./SmartRichTextInput.md)<img class="icon" src="./img/premium.svg" />
+* [`<SolarLayout>`](./SolarLayout.md)<img class="icon" src="./img/premium.svg" />
+* [`<SolarMenu>`](./SolarLayout.md#solarmenu)<img class="icon" src="./img/premium.svg" />
+* [`<SolarAppBar>`](./SolarLayout.md#solarappbar)<img class="icon" src="./img/premium.svg" />
 * [`<SortButton>`](./SortButton.md)
 * [`<StackedFilters>`](./StackedFilters.md)<img class="icon" src="./img/premium.svg" />
 
@@ -224,6 +226,7 @@ title: "Index"
 
 **- D -**
 * [`useDataProvider`](./useDataProvider.md#usedataprovider)
+* [`useDefineAppLocation`](./useDefineAppLocation.md)<img class="icon" src="./img/premium.svg" />
 * [`useDelete`](./useDelete.md)
 * [`useDeleteMany`](./useDeleteMany.md)
 
@@ -246,6 +249,7 @@ title: "Index"
 * [`useGetOneLive`](./useGetOneLive.md)<img class="icon" src="./img/premium.svg" />
 * [`useGetPermissions`](./WithPermissions.md)
 * [`useGetRecordId`](./useGetRecordId.md)
+* [`useGetRecordRepresentation`](./useGetRecordRepresentation.md) 
 
 **- I -**
 * [`useInfiniteGetList`](./useInfiniteGetList.md)
@@ -275,7 +279,6 @@ title: "Index"
 
 **- R -**
 * [`useRecordContext`](./useRecordContext.md)
-* [`useRecordRepresentation`](./useRecordRepresentation.md)
 * [`useRedirect`](./useRedirect.md)
 * [`useReference`](./useGetOne.md#aggregating-getone-calls)
 * [`useRefresh`](./useRefresh.md)

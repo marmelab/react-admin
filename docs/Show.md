@@ -516,7 +516,7 @@ export const PostShow = () => (
 );
 ```
 
-**Tips:** If you want the `<PrevNextButtons>` to link to the `<Show>` view, you have to set the `linkType` to `show`. See [the `<PrevNextButtons linkType>` prop](./PrevNextButtons.md##linktype).
+**Tips:** If you want the `<PrevNextButtons>` to link to the `<Show>` view, you have to set the `linkType` to `show`. See [the `<PrevNextButtons linkType>` prop](./PrevNextButtons.md#linktype).
 
 ## API
 

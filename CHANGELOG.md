@@ -1,5 +1,68 @@
 # Changelog
 
+## v4.14.5
+
+* Fix `<FilterForm>` freezes the app when a deeply nested filters are reset ([#9337](https://github.com/marmelab/react-admin/pull/9337)) ([djhi](https://github.com/djhi))
+* Fix `useUnique` send request even if the field value is empty ([#9334](https://github.com/marmelab/react-admin/pull/9334)) ([adguernier](https://github.com/adguernier))
+* Fix `<RichTextInput>` does not update when its `editorOptions` prop changes ([#9289](https://github.com/marmelab/react-admin/pull/9289)) ([djhi](https://github.com/djhi))
+* [Docs] Update Remix Instructions ([#9329](https://github.com/marmelab/react-admin/pull/9329)) ([djhi](https://github.com/djhi))
+* [Docs] Update third-party component section; new date/time inputs ([#9326](https://github.com/marmelab/react-admin/pull/9326)) ([ZachSelindh](https://github.com/ZachSelindh))
+
+## v4.14.4
+
+* Fix inputs with `disabled={false}` throw an error (workaround) ([#9313](https://github.com/marmelab/react-admin/pull/9313)) ([slax57](https://github.com/slax57))
+* Fix `useCreate` does not refresh the list cache ([#9312](https://github.com/marmelab/react-admin/pull/9312)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add i18n `InputHelperText` section to Inputs/useInputs docs ([#9315](https://github.com/marmelab/react-admin/pull/9315)) ([ZachSelindh](https://github.com/ZachSelindh))
+* [Doc] Add beginner mode to hide advanced doc chapters ([#9306](https://github.com/marmelab/react-admin/pull/9306)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix anchors ([#9305](https://github.com/marmelab/react-admin/pull/9305)) ([WiXSL](https://github.com/WiXSL))
+
+## v4.14.3
+
+* Fix `<PrevNextButton>` default style ([#9290](https://github.com/marmelab/react-admin/pull/9290)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add `<SolarLayout>` component ([#9282](https://github.com/marmelab/react-admin/pull/9282)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add link to ra-auth-google, authProvider for Google Identity ([#9284](https://github.com/marmelab/react-admin/pull/9284)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Improve tutorial screencast ([#9298](https://github.com/marmelab/react-admin/pull/9298)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Explain how to disable menu item with RBAC ([#9293](https://github.com/marmelab/react-admin/pull/9293)) ([adguernier](https://github.com/adguernier))
+* [Doc] Add Real Time Notifications section in Realtime introduction ([#9304](https://github.com/marmelab/react-admin/pull/9304)) ([djhi](https://github.com/djhi))
+* [Doc] Update `<CreateDialog>` documentation about `edit` conflict ([#9295](https://github.com/marmelab/react-admin/pull/9295)) ([djhi](https://github.com/djhi))
+* [Doc] Update `<ReferenceManyToManyInput>` documentation about children default value ([#9294](https://github.com/marmelab/react-admin/pull/9294)) ([djhi](https://github.com/djhi))
+* [Doc] Fix typo in useRegisterMutationMiddleware introduction part ([#9291](https://github.com/marmelab/react-admin/pull/9291)) ([youjin-10](https://github.com/youjin-10))
+* [Doc] Fix typo in Features example ([#9286](https://github.com/marmelab/react-admin/pull/9286)) ([fzaninotto](https://github.com/fzaninotto))
+* [Demo] Fix ReviewList shows horizontal scrollbar on mobile ([#9297](https://github.com/marmelab/react-admin/pull/9297)) ([fzaninotto](https://github.com/fzaninotto))
+
+## v4.14.2
+
+Failed release, do not use.
+
+## v4.14.1
+
+* Fix filters not matching inputs are ignored without `syncWithLocation` ([#9283](https://github.com/marmelab/react-admin/pull/9283)) ([djhi](https://github.com/djhi))
+* Fix `create-react-admin` does not include `gitignore` ([#9280](https://github.com/marmelab/react-admin/pull/9280)) ([djhi](https://github.com/djhi))
+* Fix `<RichTextInput>` does not trigger `onBlur` ([#9272](https://github.com/marmelab/react-admin/pull/9272)) ([slax57](https://github.com/slax57))
+* Fix `<TopToolbar>`: React does not recognize the hasCreate prop on a DOM element ([#9267](https://github.com/marmelab/react-admin/pull/9267)) ([slax57](https://github.com/slax57))
+* Fix `usePermissions` should only log errors in development mode ([#9262](https://github.com/marmelab/react-admin/pull/9262)) ([NidhiSharma63](https://github.com/NidhiSharma63))
+* [Doc] Improve Example REST Implementation when calling create with partial data ([#9276](https://github.com/marmelab/react-admin/pull/9276)) ([slax57](https://github.com/slax57))
+* [Doc] Improve `<Breadcrumb>` documentation ([#9271](https://github.com/marmelab/react-admin/pull/9271)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Improve `<ReferenceManyToManyInput>` documentation ([#9270](https://github.com/marmelab/react-admin/pull/9270)) ([adguernier](https://github.com/adguernier))
+* [Doc] Improve and reorder `<ReferenceManyToManyField>` documentation ([#9269](https://github.com/marmelab/react-admin/pull/9269)) ([adguernier](https://github.com/adguernier))
+* [Doc] Fix external link in `<FileInput>` and `<ImageInput>` ([#9268](https://github.com/marmelab/react-admin/pull/9268)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `<SaveButton>` example ([#9266](https://github.com/marmelab/react-admin/pull/9266)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Explain how to lazy load `<RichTextInput>` ([#9263](https://github.com/marmelab/react-admin/pull/9263)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix typos on Admin, Architecture, EditTutorial, Features, Fields, Inputs, and Tutorial pages ([#9259](https://github.com/marmelab/react-admin/pull/9259)) ([mchaffotte](https://github.com/mchaffotte))
+* [Demo] Fix preferences are shared between demos ([#9264](https://github.com/marmelab/react-admin/pull/9264)) ([mchaffotte](https://github.com/mchaffotte))
+
+## v4.14.0
+
+* Add support for lazy-loaded React components ([#9260](https://github.com/marmelab/react-admin/pull/9260)) ([fzaninotto](https://github.com/fzaninotto))
+* Include full record in `<AutocompleteInput>` and `<AutocompleteArrayInput>`'s `onChange` ([#9245](https://github.com/marmelab/react-admin/pull/9245)) ([slax57](https://github.com/slax57))
+* Fix top margin of `<TopToolbar>` to move content up when there is no filter ([#9232](https://github.com/marmelab/react-admin/pull/9232)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<SortButton sx>` prop to customize button style ([#9223](https://github.com/marmelab/react-admin/pull/9223)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<ResourceMenuItems>` to facilitate custom menus ([#9212](https://github.com/marmelab/react-admin/pull/9212)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<PrevNextButtons>` for `<Show>` and `<Edit>` views ([#9165](https://github.com/marmelab/react-admin/pull/9165)) ([adguernier](https://github.com/adguernier))
+* Fix Filter Form to show remove button after the input ([#9224](https://github.com/marmelab/react-admin/pull/9224)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<PrevNextButtons>` to fetch less aggressively ([#9209](https://github.com/marmelab/react-admin/pull/9209)) ([fzaninotto](https://github.com/fzaninotto))
+* Change the definition of sort order to `ASC|DESC` ([#8466](https://github.com/marmelab/react-admin/pull/8466)) ([zhujinxuan](https://github.com/zhujinxuan))
+
 ## v4.13.4
 
 * Fix `<AutocompleteInput>`'s `onInputChange` is never called ([#9240](https://github.com/marmelab/react-admin/pull/9240)) ([tdnl](https://github.com/tdnl))

@@ -164,6 +164,20 @@ ul.sidenav code {
     box-shadow: none;
 }
 
+.switch label input[type=checkbox]:checked+.lever {
+    background-color: #85b3df;
+}
+
+.switch label .lever:before {
+    background-color: rgba(38,77,166,0.15);
+}
+
+.switch label input[type=checkbox]:checked+.lever:after {
+    background-color: #145dc2;
+}
+
+/* Table of contents */
+
 .table-of-contents {
     overflow-y: auto;
     height: calc(100% - 75px);
