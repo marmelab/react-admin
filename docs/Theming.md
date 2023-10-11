@@ -119,6 +119,13 @@ const App = () => (
 );
 ```
 
+React-admin comes with 4 built-in themes: [Default](./AppTheme.md#default), [Nano](./AppTheme.md#nano), [Radiant](./AppTheme.md#radiant), and [House](./AppTheme.md#radiant). The [e-commerce demo](https://marmelab.com/react-admin-demo/) contains a theme switcher, so you can test them in a real application. 
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/demo-themes.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 The application theme lets you customize color, typography, spacing, and component defaults. Check the [dedicated Application Theme chapter](./AppTheme.md) for more information.
 
 ## Customizing The Page Layout

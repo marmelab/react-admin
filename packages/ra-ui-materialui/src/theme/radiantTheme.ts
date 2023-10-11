@@ -2,7 +2,7 @@ import { alpha, createTheme, PaletteOptions, Theme } from '@mui/material';
 import { RaThemeOptions } from './types';
 
 /**
- * Neon: A theme emphasizing clarity and ease of use.
+ * Radiant: A theme emphasizing clarity and ease of use.
  *
  * Uses generous margins, outlined inputs and buttons, no uppercase, and an acid color palette.
  */

@@ -7,11 +7,16 @@ title: "Application Theme"
 
 If you want to override some styles across the entire application, you can use a custom theme, leveraging [the Material UI Theming support](https://mui.com/material-ui/customization/theming/). Custom themes let you override colors, fonts, spacing, and even the style of individual components.
 
-![Music Player](./img/navidrome.png)
+The [e-commerce demo](https://marmelab.com/react-admin-demo/) contains a theme switcher, so you can test them in a real application. 
 
-## Using A Custom Theme
+<video controls autoplay playsinline muted loop>
+  <source src="./img/demo-themes.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
-Pass a custom `theme` to the `<Admin>` component to override the style of the entire application:
+## Setting The Application Theme
+
+You can override the style of the entire application by passing a custom `theme` to the `<Admin>` component:
 
 ```jsx
 import { Admin, defaultTheme } from 'react-admin';
@@ -41,7 +46,161 @@ const App = () => (
 );
 ```
 
+You can either use [built-in themes](#built-in-themes), or [write your own](#writing-a-custom-theme).
+
 Note that you don't need to call Material-UI's `createTheme` yourself. React-admin will do it for you.
+
+## Light And Dark Themes
+
+It's a common practice to support both a light theme and a dark theme in an application, and let users choose which one they prefer. 
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/ToggleThemeButton.webm" type="video/webm"/>
+  <source src="./img/ToggleThemeButton.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+
+React-admin's `<Admin>` component accepts a `darkTheme` prop in addition to the `theme` prop. 
+
+```jsx
+import { Admin, defaultTheme } from 'react-admin';
+
+const lightTheme = defaultTheme;
+const darkTheme = { ...defaultTheme, palette: { mode: 'dark' } };
+
+const App = () => (
+    <Admin
+        dataProvider={...}
+        theme={lightTheme}
+        darkTheme={darkTheme}
+    >
+        // ...
+    </Admin>
+);
+```
+
+With this setup, the default application theme depends on the user's system settings. If the user has chosen a dark mode in their OS, react-admin will use the dark theme. Otherwise, it will use the light theme.
+
+In addition, users can switch from one theme to the other using [the `<ToggleThemeButton>` component](./ToggleThemeButton.md), which appears in the AppBar as soon as you define a `darkTheme` prop.
+
+## Built-In Themes
+
+React-admin comes with 4 built-in themes, each one having a light and a dark variant. You can use them as a starting point for your custom theme, or use them as-is.
+
+### Default
+
+The default theme is a good fit for every application, and works equally well on desktop and mobile. 
+
+[![Default light theme](./img/defaultLightTheme1.jpg)](./img/defaultLightTheme1.jpg)
+[![Default light theme](./img/defaultLightTheme2.jpg)](./img/defaultLightTheme2.jpg)
+[![Default dark theme](./img/defaultDarkTheme1.jpg)](./img/defaultDarkTheme1.jpg)
+[![Default dark theme](./img/defaultDarkTheme2.jpg)](./img/defaultDarkTheme2.jpg)
+
+You don't need to configure anything to use the default theme - it comes out of the box with react-admin.
+
+### Nano
+
+A dense theme with minimal chrome, ideal for complex apps. It uses a small font size, reduced spacing, text buttons, standard variant inputs, pale colors. Only fit for desktop apps. 
+
+[![Nano light theme](./img/nanoLightTheme1.jpg)](./img/nanoLightTheme1.jpg)
+[![Nano light theme](./img/nanoLightTheme2.jpg)](./img/nanoLightTheme2.jpg)
+[![Nano dark theme](./img/nanoDarkTheme1.jpg)](./img/nanoDarkTheme1.jpg)
+[![Nano dark theme](./img/nanoDarkTheme2.jpg)](./img/nanoDarkTheme2.jpg)
+
+To use the Nano theme, import the `nanoLightTheme` and `nanoDarkTheme` objects, and pass them to the `<Admin>` component:
+
+```jsx
+import { Admin, nanoLightTheme, nanoDarkTheme } from 'react-admin';
+import { dataProvider } from './dataProvider';
+
+export const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+        theme={nanoLightTheme}
+        darkTheme={nanoDarkTheme}
+    >
+        // ...
+    </Admin>
+);
+```
+
+You must also import the Onest font in your `index.html` file:
+
+```html
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;700&display=swap" rel="stylesheet">
+```
+
+### Radiant
+
+A theme emphasizing clarity and ease of use. It uses generous margins, outlined inputs and buttons, no uppercase, and an acid color palette.
+
+[![Radiant light theme](./img/radiantLightTheme1.jpg)](./img/radiantLightTheme1.jpg)
+[![Radiant light theme](./img/radiantLightTheme2.jpg)](./img/radiantLightTheme2.jpg)
+[![Radiant dark theme](./img/radiantDarkTheme1.jpg)](./img/radiantDarkTheme1.jpg)
+[![Radiant dark theme](./img/radiantDarkTheme2.jpg)](./img/radiantDarkTheme2.jpg)
+
+To use the Radiant theme, import the `radiantLightTheme` and `radiantDarkTheme` objects, and pass them to the `<Admin>` component:
+
+```jsx
+import { Admin, radiantLightTheme, radiantDarkTheme } from 'react-admin';
+import { dataProvider } from './dataProvider';
+
+export const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+        theme={radiantLightTheme}
+        darkTheme={radiantDarkTheme}
+    >
+        // ...
+    </Admin>
+);
+```
+
+### House
+
+A young and joyful theme. It uses rounded corners, blurry backdrop, large padding, and a bright color palette.
+
+[![House light theme](./img/houseLightTheme1.jpg)](./img/houseLightTheme1.jpg)
+[![House light theme](./img/houseLightTheme2.jpg)](./img/houseLightTheme2.jpg)
+[![House dark theme](./img/houseDarkTheme1.jpg)](./img/houseDarkTheme1.jpg)
+[![House dark theme](./img/houseDarkTheme2.jpg)](./img/houseDarkTheme2.jpg)
+
+To use the House theme, import the `houseLightTheme` and `houseDarkTheme` objects, and pass them to the `<Admin>` component:
+
+```jsx
+import { Admin, houseLightTheme, houseDarkTheme } from 'react-admin';
+import { dataProvider } from './dataProvider';
+
+export const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+        theme={houseLightTheme}
+        darkTheme={houseDarkTheme}
+    >
+        // ...
+    </Admin>
+);
+```
+
+## Changing the Theme Programmatically
+
+React-admin provides the `useTheme` hook to read and update the theme programmatically. It uses the same syntax as `useState`. Its used internally by [the `<ToggleThemeButton>` component](./ToggleThemeButton.md).
+
+```jsx
+import { defaultTheme, useTheme } from 'react-admin';
+import { Button } from '@mui/material';
+
+const ThemeToggler = () => {
+    const [theme, setTheme] = useTheme();
+
+    return (
+        <Button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+            {theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+        </Button>
+    );
+}
+```
 
 ## Theming Individual Components
 
@@ -131,92 +290,6 @@ const theme = {
         },
     }
 };
-```
-
-## Using A Dark Theme
-
-React-admin ships two base themes: light and dark. To use the dark theme, import the `darkTheme` and pass it as the `<Admin theme>` prop:
-
-```jsx
-import { darkTheme } from 'react-admin';
-
-const App = () => (
-    <Admin theme={darkTheme} dataProvider={...}>
-        // ...
-    </Admin>
-);
-```
-
-![Dark theme](./img/dark-theme.png)
-
-Alternatively, you can create a custom theme object with a `mode: 'dark'` palette:
-
-```jsx
-import { defaultTheme } from 'react-admin';
-
-const darkTheme = {
-    ...defaultTheme,
-    palette: { mode: 'dark' }
-};
-
-const App = () => (
-    <Admin theme={darkTheme} dataProvider={...}>
-        // ...
-    </Admin>
-);
-```
-
-## Letting Users Choose The Theme
-
-It's a common practice to support both a light theme and a dark theme in an application, and let users choose which one they prefer. 
-
-<video controls autoplay playsinline muted loop>
-  <source src="./img/ToggleThemeButton.webm" type="video/webm"/>
-  <source src="./img/ToggleThemeButton.mp4" type="video/mp4"/>
-  Your browser does not support the video tag.
-</video>
-
-
-React-admin's `<Admin>` component accepts a `darkTheme` prop in addition to the `theme` prop. 
-
-```jsx
-import { Admin, defaultTheme } from 'react-admin';
-
-const lightTheme = defaultTheme;
-const darkTheme = { ...defaultTheme, palette: { mode: 'dark' } };
-
-const App = () => (
-    <Admin
-        dataProvider={...}
-        theme={lightTheme}
-        darkTheme={darkTheme}
-    >
-        // ...
-    </Admin>
-);
-```
-
-With this setup, the default application theme depends on the user's system settings. If the user has chosen a dark mode in their OS, react-admin will use the dark theme. Otherwise, it will use the light theme.
-
-In addition, users can switch from one theme to the other using [the `<ToggleThemeButton>` component](./ToggleThemeButton.md), which appears in the AppBar as soon as you define a `darkTheme` prop.
-
-## Changing the Theme Programmatically
-
-React-admin provides the `useTheme` hook to read and update the theme programmatically. It uses the same syntax as `useState`. Its used internally by [the `<ToggleThemeButton>` component](./ToggleThemeButton.md).
-
-```jsx
-import { defaultTheme, useTheme } from 'react-admin';
-import { Button } from '@mui/material';
-
-const ThemeToggler = () => {
-    const [theme, setTheme] = useTheme();
-
-    return (
-        <Button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
-            {theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
-        </Button>
-    );
-}
 ```
 
 ## Customizing The Sidebar Width
