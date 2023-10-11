@@ -157,6 +157,12 @@ export const App = () => (
 );
 ```
 
+You must also import the Gabarito font in your `index.html` file:
+
+```html
+<link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@500;600;700;900&display=swap" rel="stylesheet">
+```
+
 ### House
 
 A young and joyful theme. It uses rounded corners, blurry backdrop, large padding, and a bright color palette.
@@ -181,6 +187,12 @@ export const App = () => (
         // ...
     </Admin>
 );
+```
+
+You must also import the Open Sans font in your `index.html` file:
+
+```html
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;500;600;700&display=swap" rel="stylesheet">
 ```
 
 ## Changing the Theme Programmatically
