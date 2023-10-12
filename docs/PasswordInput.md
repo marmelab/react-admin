@@ -58,6 +58,45 @@ Set the [`autocomplete` attribute](https://developer.mozilla.org/en-US/docs/Web/
 ```
 {% endraw %}
 
+## Validating Identical Passwords
+
+If you want to validate that the user has entered the same password in two different password inputs, you must use [global validation](./Validation.md#global-validation) at the form level:
+
+```jsx
+import { Create, SimpleForm, TextInput, PasswordInput } from 'react-admin';
+
+const validate = values => {
+    const errors = {} as any;
+    if (!values.name) {
+        errors.name = 'Name is required';
+    }
+    if (!values.email) {
+        errors.email = 'Email is required';
+    }
+    if (!values.password) {
+        errors.password = 'Password is required';
+    }
+    if (values.password && values.password !== values.confirm_password) {
+        errors.confirm_password = 'The two password fields must match';
+    }
+    return errors;
+}
+
+const UserCreate = () => (
+    <Create validate={validate}>
+        <SimpleForm>
+            <TextInput source="name" isRequired />
+            <TextInput source="email" isRequired />
+            <PasswordInput source="password" isRequired />
+            <PasswordInput source="confirm_password" />
+        </SimpleForm>
+    </Create>
+);
+```
+
+You can't use the `validate` prop in the Input components, as global and field-level validation are mutually exclusive. To show that an input is required, use the `isRequired` prop instead of `validate`.
+
+
 ## Usage in Edit Views
 
 You may want to allow users to *update* a password on an existing record. The usual solution to this is to include a `new_password` input in the Edition form. The API will then check if this field is present in the payload, and update the password accordingly.
