@@ -90,3 +90,25 @@ const BookList = () => {
     );
 };
 ```
+
+## Adding a label to unlabeled columns
+
+The inspector used by `<SelectColumnsButton>` uses the field's `source` (or `label` when it's a string) prop to display the column name. If you use non-field children (e.g. action buttons), then it's your responsibility to wrap them in a component with a `label` prop, that will be used by the inspector. You can use a [`<WrapperField>`](./WrapperField.md) for that purpose:
+
+```tsx
+const PostList = () => (
+    <List>
+        <DatagridConfigurable>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+            <WrapperField label="Actions">
+                <EditButton />
+            </WrapperField>
+        </DatagridConfigurable>
+    </List>
+);
+```
+
+**Tip:** You may need to clear your local storage to reflect the changes, as react-admin saves the computed column names in the Store. For the same reason, you users may need to log out and in again to see the changes. Alternatively, you can leverage [Store Invalidation](./Store.md#store-invalidation) to do it automatically.
