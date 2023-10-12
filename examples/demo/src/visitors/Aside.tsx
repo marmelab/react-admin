@@ -157,7 +157,7 @@ const EventList = () => {
                 </CardContent>
             </Card>
 
-            {events && <History events={events} />}
+            {events && <Timeline events={events} />}
         </Box>
     );
 };
@@ -193,20 +193,19 @@ const mixOrdersAndReviews = (
     return events;
 };
 
-const History = ({ events }: { events: AsideEvent[] }) => (
+const Timeline = ({ events }: { events: AsideEvent[] }) => (
     <Stepper orientation="vertical" sx={{ my: 1, ml: 1.5 }}>
         {events.map(event => (
-            <Link
-                to={`/${event.type === 'order' ? 'commands' : 'reviews'}/${
-                    event.data.id
-                }`}
-                variant="body2"
+            <Step
+                key={`${event.type}-${event.data.id}`}
+                expanded
+                active
+                completed
             >
-                <Step
-                    key={`${event.type}-${event.data.id}`}
-                    expanded
-                    active
-                    completed
+                <Link
+                    to={`/${event.type === 'order' ? 'commands' : 'reviews'}/${
+                        event.data.id
+                    }`}
                 >
                     <RecordContextProvider value={event.data}>
                         <StepLabel
@@ -234,8 +233,8 @@ const History = ({ events }: { events: AsideEvent[] }) => (
                             {event.type === 'order' ? <Order /> : <Review />}
                         </StepContent>
                     </RecordContextProvider>
-                </Step>
-            </Link>
+                </Link>
+            </Step>
         ))}
     </Stepper>
 );
