@@ -1,5 +1,16 @@
 # Changelog
 
+## v4.15.0
+
+* Add Nano, Radiant and House themes ([#9316](https://github.com/marmelab/react-admin/pull/9316)) ([adguernier](https://github.com/adguernier))
+* Add `ra-i18n-i18next`, an i18n adapter for i18next ([#9314](https://github.com/marmelab/react-admin/pull/9314)) ([djhi](https://github.com/djhi))
+* Add `<Menu.Item>content</Menu.Item>` syntax ([#9242](https://github.com/marmelab/react-admin/pull/9242)) ([fzaninotto](https://github.com/fzaninotto))
+* Add support for `<ReferenceArrayField queryOptions>` ([#9275](https://github.com/marmelab/react-admin/pull/9275)) ([adguernier](https://github.com/adguernier))
+* Add support for `confirmColor` prop to `<DeleteButton>` and `<BulkDeleteButton>` ([#9342](https://github.com/marmelab/react-admin/pull/9342)) ([IAmVisco](https://github.com/IAmVisco))
+* Add ability to pass url state in `<CreateButton>` ([#9319](https://github.com/marmelab/react-admin/pull/9319)) ([mchaffotte](https://github.com/mchaffotte))
+* Add ability to customize `ra-data-graphql-simple` further ([#9296](https://github.com/marmelab/react-admin/pull/9296)) ([dricholm](https://github.com/dricholm))
+* [Doc] Update yarn linking instruction ([#9341](https://github.com/marmelab/react-admin/pull/9341)) ([smeng9](https://github.com/smeng9))
+
 ## v4.14.6
 
 * Fix `<DatagridConfigurable>` editor allows to drag fields outside its list ([#9351](https://github.com/marmelab/react-admin/pull/9351)) ([djhi](https://github.com/djhi))

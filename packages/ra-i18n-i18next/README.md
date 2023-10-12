@@ -1,6 +1,6 @@
 # i18next i18n provider for react-admin
 
-i18next i18n provider for [react-admin](https://github.com/marmelab/react-admin), the frontend framework for building admin applications on top of REST/GraphQL services. It relies on [i18next](https://www.i18next.com/).
+[i18next](https://www.i18next.com/) adapter for [react-admin](https://github.com/marmelab/react-admin), the frontend framework for building admin applications on top of REST/GraphQL services.
 
 You might prefer this package over `ra-i18n-polyglot` when:
 - you already use i18next services such as [locize](https://locize.com/)
