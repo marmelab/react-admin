@@ -899,7 +899,7 @@ const PostList = () => (
 );
 ```
 
-**Tip:** You may need to clear your local storage to reflect the changes, as react-admin saves the computed column names in the Store. For the same reason, you users may need to log out and in again to see the changes. Alternatively, you can leverage [Store Invalidation](./Store.md#store-invalidation) to do it automatically.
+**Tip:** You may need to clear your local storage to reflect the changes, as react-admin saves the computed column names in the Store. For the same reason, your users may need to log out and in again to see the changes. Alternatively, you can leverage [Store Invalidation](./Store.md#store-invalidation) to do it automatically.
 
 `<DatagridConfigurable>` accepts the same props as `<Datagrid>`.
 
