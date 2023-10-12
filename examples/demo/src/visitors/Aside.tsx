@@ -196,36 +196,46 @@ const mixOrdersAndReviews = (
 const History = ({ events }: { events: AsideEvent[] }) => (
     <Stepper orientation="vertical" sx={{ my: 1, ml: 1.5 }}>
         {events.map(event => (
-            <Step
-                key={`${event.type}-${event.data.id}`}
-                expanded
-                active
-                completed
+            <Link
+                to={`/${event.type === 'order' ? 'commands' : 'reviews'}/${
+                    event.data.id
+                }`}
+                variant="body2"
             >
-                <RecordContextProvider value={event.data}>
-                    <StepLabel
-                        icon={
-                            event.type === 'order' ? (
-                                <order.icon color="disabled" sx={{ pl: 0.5 }} />
+                <Step
+                    key={`${event.type}-${event.data.id}`}
+                    expanded
+                    active
+                    completed
+                >
+                    <RecordContextProvider value={event.data}>
+                        <StepLabel
+                            icon={
+                                event.type === 'order' ? (
+                                    <order.icon
+                                        color="disabled"
+                                        sx={{ pl: 0.5 }}
+                                    />
+                                ) : (
+                                    <review.icon
+                                        color="disabled"
+                                        sx={{ pl: 0.5 }}
+                                    />
+                                )
+                            }
+                        >
+                            {event.type === 'order' ? (
+                                <OrderTitle />
                             ) : (
-                                <review.icon
-                                    color="disabled"
-                                    sx={{ pl: 0.5 }}
-                                />
-                            )
-                        }
-                    >
-                        {event.type === 'order' ? (
-                            <OrderTitle />
-                        ) : (
-                            <ReviewTitle />
-                        )}
-                    </StepLabel>
-                    <StepContent>
-                        {event.type === 'order' ? <Order /> : <Review />}
-                    </StepContent>
-                </RecordContextProvider>
-            </Step>
+                                <ReviewTitle />
+                            )}
+                        </StepLabel>
+                        <StepContent>
+                            {event.type === 'order' ? <Order /> : <Review />}
+                        </StepContent>
+                    </RecordContextProvider>
+                </Step>
+            </Link>
         ))}
     </Stepper>
 );
@@ -235,11 +245,11 @@ const OrderTitle = () => {
     const translate = useTranslate();
     if (!record) return null;
     return (
-        <Link to={`/commands/${record.id}`} variant="body2">
+        <>
             {translate('pos.events.order.title', {
                 smart_count: record.basket.length,
             })}
-        </Link>
+        </>
     );
 };
 
@@ -281,11 +291,11 @@ const ReviewTitle = () => {
     });
     if (!record) return null;
     return (
-        <Link to={`/reviews/${record.id}`} variant="body2">
+        <>
             {translate('pos.events.review.title', {
                 product: referenceRecord?.reference,
             })}
-        </Link>
+        </>
     );
 };
 
