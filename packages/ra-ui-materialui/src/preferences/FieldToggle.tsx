@@ -70,7 +70,6 @@ export const FieldToggle = props => {
             }
         }
 
-        console.log({ dropItem });
         if (dropItem && list === dropItem.closest('ul')) {
             onMove(selectedItem.dataset.index, dropIndex.current);
         } else {
