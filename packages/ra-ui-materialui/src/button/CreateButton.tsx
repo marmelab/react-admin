@@ -1,15 +1,14 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import { ReactElement, memo } from 'react';
-import PropTypes from 'prop-types';
-import { Fab, useMediaQuery, Theme } from '@mui/material';
 import ContentAdd from '@mui/icons-material/Add';
+import { Fab, useMediaQuery, Theme } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
-import { Link } from 'react-router-dom';
+import { isEqual, merge } from 'lodash';
+import PropTypes from 'prop-types';
 import { useTranslate, useResourceContext, useCreatePath } from 'ra-core';
-import isEqual from 'lodash/isEqual';
+import { Link, To } from 'react-router-dom';
 
-import { Button, ButtonProps } from './Button';
+import { Button, ButtonProps, LocationDescriptor } from './Button';
 
 /**
  * Opens the Create view of a given resource
@@ -32,6 +31,8 @@ const CreateButton = (props: CreateButtonProps) => {
         resource: resourceProp,
         scrollToTop = true,
         variant,
+        to: locationDescriptor,
+        state: initialState = {},
         ...rest
     } = props;
 
@@ -41,17 +42,21 @@ const CreateButton = (props: CreateButtonProps) => {
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('md')
     );
+    const state = merge(scrollStates.get(String(scrollToTop)), initialState);
+    // Duplicated behaviour of Button component (legacy use) which will be removed in v5.
+    const linkParams = getLinkParams(locationDescriptor);
 
     return isSmall ? (
         <StyledFab
             component={Link}
             to={createPath({ resource, type: 'create' })}
-            state={scrollStates[String(scrollToTop)]}
+            state={state}
             // @ts-ignore FabProps ships its own runtime palette `FabPropsColorOverrides` provoking an overlap error with `ButtonProps`
             color="primary"
             className={clsx(CreateButtonClasses.floating, className)}
             aria-label={label && translate(label)}
             {...rest}
+            {...linkParams}
         >
             {icon}
         </StyledFab>
@@ -59,11 +64,12 @@ const CreateButton = (props: CreateButtonProps) => {
         <StyledButton
             component={Link}
             to={createPath({ resource, type: 'create' })}
-            state={scrollStates[String(scrollToTop)]}
+            state={state}
             className={clsx(CreateButtonClasses.root, className)}
             label={label}
             variant={variant}
             {...(rest as any)}
+            {...linkParams}
         >
             {icon}
         </StyledButton>
@@ -71,20 +77,21 @@ const CreateButton = (props: CreateButtonProps) => {
 };
 
 // avoids using useMemo to get a constant value for the link state
-const scrollStates = {
-    true: { _scrollToTop: true },
-    false: {},
-};
+const scrollStates = new Map([
+    ['true', { _scrollToTop: true }],
+    ['false', {}],
+]);
 
 const defaultIcon = <ContentAdd />;
 
 interface Props {
     resource?: string;
-    icon?: ReactElement;
+    icon?: React.ReactElement;
     scrollToTop?: boolean;
+    to?: LocationDescriptor | To;
 }
 
-export type CreateButtonProps = Props & ButtonProps;
+export type CreateButtonProps = Props & Omit<ButtonProps<typeof Link>, 'to'>;
 
 CreateButton.propTypes = {
     resource: PropTypes.string,
@@ -121,7 +128,7 @@ const StyledButton = styled(Button, {
     overridesResolver: (_props, styles) => styles.root,
 })({});
 
-export default memo(CreateButton, (prevProps, nextProps) => {
+export default React.memo(CreateButton, (prevProps, nextProps) => {
     return (
         prevProps.resource === nextProps.resource &&
         prevProps.label === nextProps.label &&
@@ -130,3 +137,22 @@ export default memo(CreateButton, (prevProps, nextProps) => {
         isEqual(prevProps.to, nextProps.to)
     );
 });
+
+const getLinkParams = (locationDescriptor?: LocationDescriptor | string) => {
+    // eslint-disable-next-line eqeqeq
+    if (locationDescriptor == undefined) {
+        return undefined;
+    }
+
+    if (typeof locationDescriptor === 'string') {
+        return { to: locationDescriptor };
+    }
+
+    const { redirect, replace, state, ...to } = locationDescriptor;
+    return {
+        to,
+        redirect,
+        replace,
+        state,
+    };
+};

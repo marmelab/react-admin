@@ -18,7 +18,7 @@ import { UserMenu } from './UserMenu';
 import { HideOnScroll } from './HideOnScroll';
 import { TitlePortal } from './TitlePortal';
 import { LocalesMenuButton } from '../button';
-import { useThemesContext } from './Theme/useThemesContext';
+import { useThemesContext } from '../theme/useThemesContext';
 import { ToggleThemeButton } from '../button/ToggleThemeButton';
 
 /**

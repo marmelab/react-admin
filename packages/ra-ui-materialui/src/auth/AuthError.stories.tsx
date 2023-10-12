@@ -3,7 +3,7 @@ import { I18nContextProvider } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { AuthError } from './AuthError';
-import { defaultTheme } from '../defaultTheme';
+import { defaultTheme } from '../theme/defaultTheme';
 import { createTheme, ThemeProvider } from '@mui/material';
 
 export default { title: 'ra-ui-materialui/auth/AuthError' };

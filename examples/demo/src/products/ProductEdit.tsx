@@ -19,6 +19,7 @@ import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from '../reviews/StarRatingField';
 import Poster from './Poster';
 import { Product } from '../types';
+import CreateRelatedReviewButton from './CreateRelatedReviewButton';
 
 const RichTextInput = React.lazy(() =>
     import('ra-input-rich-text').then(module => ({
@@ -90,6 +91,7 @@ const ProductEdit = () => (
                         <TextField source="status" />
                         <EditButton />
                     </Datagrid>
+                    <CreateRelatedReviewButton />
                 </ReferenceManyField>
             </TabbedForm.Tab>
         </TabbedForm>

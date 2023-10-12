@@ -67,7 +67,6 @@ export const DeleteButton = <RecordType extends RaRecord = any>(
         : 'undoable';
 
     return finalMutationMode === 'undoable' ? (
-        // @ts-ignore I looked for the error for one hour without finding it
         <DeleteWithUndoButton<RecordType> record={record} {...rest} />
     ) : (
         <DeleteWithConfirmButton<RecordType>
@@ -86,6 +85,7 @@ export interface DeleteButtonProps<
         SaveContextValue {
     confirmTitle?: React.ReactNode;
     confirmContent?: React.ReactNode;
+    confirmColor?: 'primary' | 'warning';
     icon?: ReactElement;
     mutationMode?: MutationMode;
     mutationOptions?: UseMutationOptions<

@@ -5,7 +5,7 @@ import { CoreAdminContext, testDataProvider, useListContext } from 'ra-core';
 import { createMemoryHistory } from 'history';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { defaultTheme } from '../defaultTheme';
+import { defaultTheme } from '../theme/defaultTheme';
 import { List } from './List';
 import { Filter } from './filter';
 import { TextInput } from '../input';

@@ -1,6 +1,12 @@
 import { defaultTheme } from 'react-admin';
 
-export const darkTheme = {
+/**
+ * Soft: A gentle theme for apps with rich content (images, charts, maps, etc).
+ *
+ * Uses white app bar, rounder corners, light colors.
+ */
+
+export const softDarkTheme = {
     palette: {
         primary: {
             main: '#90caf9',
@@ -29,14 +35,17 @@ export const darkTheme = {
             styleOverrides: {
                 colorSecondary: {
                     color: '#ffffffb3',
-                    backgroundColor: '#616161e6',
+                    backgroundColor: '#616161',
                 },
+            },
+            defaultProps: {
+                elevation: 1,
             },
         },
     },
 };
 
-export const lightTheme = {
+export const softLightTheme = {
     palette: {
         primary: {
             main: '#4f3cc9',
@@ -87,6 +96,9 @@ export const lightTheme = {
                     color: '#808080',
                     backgroundColor: '#fff',
                 },
+            },
+            defaultProps: {
+                elevation: 1,
             },
         },
         MuiLinearProgress: {

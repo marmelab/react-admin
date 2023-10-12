@@ -29,10 +29,10 @@ export const CloneButton = (props: CloneButtonProps) => {
                           search: stringify({
                               source: JSON.stringify(omitId(record)),
                           }),
-                          state: { _scrollToTop: scrollToTop },
                       }
                     : pathname
             }
+            state={{ _scrollToTop: scrollToTop }}
             label={label}
             onClick={stopPropagation}
             {...sanitizeRestProps(rest)}
@@ -61,7 +61,7 @@ interface Props {
     scrollToTop?: boolean;
 }
 
-export type CloneButtonProps = Props & ButtonProps;
+export type CloneButtonProps = Props & Omit<ButtonProps<typeof Link>, 'to'>;
 
 CloneButton.propTypes = {
     icon: PropTypes.element,

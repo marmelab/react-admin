@@ -1816,6 +1816,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.21.5":
+  version: 7.23.1
+  resolution: "@babel/runtime@npm:7.23.1"
+  dependencies:
+    regenerator-runtime: ^0.14.0
+  checksum: e57ab1436d4845efe67c3f76d578508bb584173690ecfeac105bc4e09d64b2aa6a53c1e03bca3c97cc238e5390a804e5a4ded211e6350243b735905ca45a4822
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.16.7, @babel/template@npm:^7.22.5":
   version: 7.22.5
   resolution: "@babel/template@npm:7.22.5"
@@ -12853,6 +12862,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"html-parse-stringify@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "html-parse-stringify@npm:3.0.1"
+  dependencies:
+    void-elements: 3.1.0
+  checksum: 159292753d48b84d216d61121054ae5a33466b3db5b446e2ffc093ac077a411a99ce6cbe0d18e55b87cf25fa3c5a86c4d8b130b9719ec9b66623259000c72c15
+  languageName: node
+  linkType: hard
+
 "html-tags@npm:^3.1.0":
   version: 3.3.1
   resolution: "html-tags@npm:3.3.1"
@@ -13054,6 +13072,24 @@ __metadata:
   bin:
     husky-upgrade: ./lib/upgrader/bin.js
   checksum: b15bd477e19a3ca6d4edfa8dc080d322a95a906b2a630d0f8f6298b8afe0713ba5ef713ce4d87c0a3f151452c4a8693b32f73e3c8c289348e6e56df519fb51f2
+  languageName: node
+  linkType: hard
+
+"i18next-resources-to-backend@npm:^1.1.4":
+  version: 1.1.4
+  resolution: "i18next-resources-to-backend@npm:1.1.4"
+  dependencies:
+    "@babel/runtime": ^7.21.5
+  checksum: 221a22d08eccdd946c12c11de1910c70d8bf61b9834f17b72ddad24ea304264a12ea50953a740e5fa1f56d32a2290dcef6f7eb699fd30984f7e8676944e41aed
+  languageName: node
+  linkType: hard
+
+"i18next@npm:^23.5.1":
+  version: 23.5.1
+  resolution: "i18next@npm:23.5.1"
+  dependencies:
+    "@babel/runtime": ^7.22.5
+  checksum: af49c399a90505ae26c1a022d06c4a11c4adcde6524b31c315dcaa43443c85892adef6de934b2af737abbdd2ffa66449d2854f135af8691223a8bb4ffaf6e1af
   languageName: node
   linkType: hard
 
@@ -18209,7 +18245,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ra-core@^4.14.5, ra-core@workspace:packages/ra-core":
+"ra-core@^4.13.4, ra-core@^4.14.5, ra-core@workspace:packages/ra-core":
   version: 0.0.0-use.local
   resolution: "ra-core@workspace:packages/ra-core"
   dependencies:
@@ -18359,6 +18395,20 @@ __metadata:
     typescript: ^5.1.3
   peerDependencies:
     ra-core: ^4.0.0
+  languageName: unknown
+  linkType: soft
+
+"ra-i18n-i18next@workspace:packages/ra-i18n-i18next":
+  version: 0.0.0-use.local
+  resolution: "ra-i18n-i18next@workspace:packages/ra-i18n-i18next"
+  dependencies:
+    cross-env: ^5.2.0
+    i18next: ^23.5.1
+    i18next-resources-to-backend: ^1.1.4
+    ra-core: ^4.13.4
+    react-i18next: ^13.2.2
+    rimraf: ^3.0.2
+    typescript: ^5.1.3
   languageName: unknown
   linkType: soft
 
@@ -18853,6 +18903,24 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18
   checksum: 5aab031ae15b32daffb45abe32e00c9d66c511348b68589d4faa6c2309db54b9d2f738b400319b0c2ea87dfd5d85f3760393feafe2bf7a97d608aa736934151f
+  languageName: node
+  linkType: hard
+
+"react-i18next@npm:^13.2.2":
+  version: 13.2.2
+  resolution: "react-i18next@npm:13.2.2"
+  dependencies:
+    "@babel/runtime": ^7.22.5
+    html-parse-stringify: ^3.0.1
+  peerDependencies:
+    i18next: ">= 23.2.3"
+    react: ">= 16.8.0"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+    react-native:
+      optional: true
+  checksum: 846e73130414989304c395c247cec8371ec25b5a0284588c913542741ce0cc33b4681d573980c64320138601d08a2ddec5042dc6f841e48a575e3f11ab83a368
   languageName: node
   linkType: hard
 
@@ -19427,6 +19495,13 @@ __metadata:
   version: 0.13.9
   resolution: "regenerator-runtime@npm:0.13.9"
   checksum: b0f26612204f061a84064d2f3361629eae09993939112b9ffc3680bb369ecd125764d6654eace9ef11b36b44282ee52b988dda946ea52d372e7599a30eea73ee
+  languageName: node
+  linkType: hard
+
+"regenerator-runtime@npm:^0.14.0":
+  version: 0.14.0
+  resolution: "regenerator-runtime@npm:0.14.0"
+  checksum: e25f062c1a183f81c99681691a342760e65c55e8d3a4d4fe347ebe72433b123754b942b70b622959894e11f8a9131dc549bd3c9a5234677db06a4af42add8d12
   languageName: node
   linkType: hard
 
@@ -22110,6 +22185,13 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: c2886de0ddf365afdec5fbdba84e85ed65db6b1c6bae216c29afdf3eac91111a4db1fb92e5039c078bd69df3342f7c7c486f6e1ba8185cbaad08e0977ba410f2
+  languageName: node
+  linkType: hard
+
+"void-elements@npm:3.1.0":
+  version: 3.1.0
+  resolution: "void-elements@npm:3.1.0"
+  checksum: 0b8686f9f9aa44012e9bd5eabf287ae0cde409b9a2854c5a2335cb83920c957668ac5876e3f0d158dd424744ac411a7270e64128556b451ed3bec875ef18534d
   languageName: node
   linkType: hard
 

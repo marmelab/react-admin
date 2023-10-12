@@ -25,6 +25,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
         className,
         confirmTitle = 'ra.message.delete_title',
         confirmContent = 'ra.message.delete_content',
+        confirmColor = 'primary',
         icon = defaultIcon,
         label = 'ra.action.delete',
         mutationMode = 'pessimistic',
@@ -71,6 +72,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
                 loading={isLoading}
                 title={confirmTitle}
                 content={confirmContent}
+                confirmColor={confirmColor}
                 translateOptions={{
                     name: translate(`resources.${resource}.forcedCaseName`, {
                         smart_count: 1,
@@ -100,6 +102,7 @@ export interface DeleteWithConfirmButtonProps<
 > extends ButtonProps {
     confirmTitle?: React.ReactNode;
     confirmContent?: React.ReactNode;
+    confirmColor?: 'primary' | 'warning';
     icon?: ReactElement;
     mutationMode?: MutationMode;
     onClick?: ReactEventHandler<any>;
@@ -119,6 +122,7 @@ DeleteWithConfirmButton.propTypes = {
     className: PropTypes.string,
     confirmTitle: PropTypes.node,
     confirmContent: PropTypes.node,
+    confirmColor: PropTypes.string,
     label: PropTypes.string,
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     record: PropTypes.any,

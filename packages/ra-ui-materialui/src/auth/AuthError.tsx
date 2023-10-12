@@ -4,6 +4,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import PropTypes from 'prop-types';
 import { useTranslate } from 'ra-core';
 import { Button } from '../button';
+import { Link } from 'react-router-dom';
 
 export const AuthError = (props: AuthErrorProps) => {
     const {
@@ -19,7 +20,7 @@ export const AuthError = (props: AuthErrorProps) => {
             <div className={AuthErrorClasses.message}>
                 <h1>{translate(title, { _: title })}</h1>
                 <div>{translate(message, { _: message })}</div>
-                <Button to="/login" label="ra.auth.sign_in">
+                <Button component={Link} to="/login" label="ra.auth.sign_in">
                     <LockIcon />
                 </Button>
             </div>

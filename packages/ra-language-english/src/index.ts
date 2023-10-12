@@ -38,7 +38,7 @@ const englishMessages: TranslationMessages = {
             move_up: 'Move up',
             move_down: 'Move down',
             open: 'Open',
-            toggle_theme: 'Toggle Theme',
+            toggle_theme: 'Toggle light/dark mode',
             select_columns: 'Columns',
             update_application: 'Reload Application',
         },
