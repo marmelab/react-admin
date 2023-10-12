@@ -100,7 +100,13 @@ export const FieldsSelector = ({
                     />
                 ))}
             </Box>
-            <Box display="flex" justifyContent="space-between" mx={-0.5} mt={1}>
+            <Box
+                onDrop={e => e.preventDefault()}
+                display="flex"
+                justifyContent="space-between"
+                mx={-0.5}
+                mt={1}
+            >
                 <Button size="small" onClick={handleHideAll}>
                     {translate('ra.inspector.hideAll', {
                         _: 'Hide All',

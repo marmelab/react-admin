@@ -52,15 +52,30 @@ export const FieldToggle = props => {
     };
 
     const handleDragEnd = event => {
-        const selectedItem = event.target;
+        const selectedItem = event.target as HTMLElement;
         const list = selectedItem.closest('ul');
         let dropItem =
             document.elementFromPoint(x.current, y.current) === null
                 ? selectedItem
                 : document.elementFromPoint(x.current, y.current).closest('li');
 
+        if (!dropItem) {
+            if (
+                y.current >
+                selectedItem.closest('ul').getBoundingClientRect().bottom
+            ) {
+                dropItem = list.lastChild as HTMLElement;
+            } else {
+                dropItem = list.firstChild as HTMLElement;
+            }
+        }
+
+        console.log({ dropItem });
         if (dropItem && list === dropItem.closest('ul')) {
             onMove(selectedItem.dataset.index, dropIndex.current);
+        } else {
+            event.preventDefault();
+            event.stopPropagation();
         }
         selectedItem.classList.remove('drag-active');
         document.removeEventListener('dragover', handleDocumentDragOver);
