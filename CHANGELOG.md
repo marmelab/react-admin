@@ -1,12 +1,20 @@
 # Changelog
 
+## v4.14.6
+
+* Fix `<DatagridConfigurable>` editor allows to drag fields outside its list ([#9351](https://github.com/marmelab/react-admin/pull/9351)) ([djhi](https://github.com/djhi))
+* [Doc] Fix `<DatagridConfigurable>` docs missing tip about unlabeled column ([slax57](https://github.com/slax57))
+* [Doc] Fix `<StackedFilters>` usage examples ([#9345](https://github.com/marmelab/react-admin/pull/9345)) ([mchaffotte](https://github.com/mchaffotte))
+* Bump postcss from 8.4.18 to 8.4.31 ([#9339](https://github.com/marmelab/react-admin/pull/9339)) ([dependabot](https://github.com/dependabot))
+* Bump zod from 3.22.1 to 3.22.3 ([#9338](https://github.com/marmelab/react-admin/pull/9338)) ([dependabot bot](https://github.com/dependabot))
+
 ## v4.14.5
 
 * Fix `<FilterForm>` freezes the app when a deeply nested filters are reset ([#9337](https://github.com/marmelab/react-admin/pull/9337)) ([djhi](https://github.com/djhi))
 * Fix `useUnique` send request even if the field value is empty ([#9334](https://github.com/marmelab/react-admin/pull/9334)) ([adguernier](https://github.com/adguernier))
 * Fix `<RichTextInput>` does not update when its `editorOptions` prop changes ([#9289](https://github.com/marmelab/react-admin/pull/9289)) ([djhi](https://github.com/djhi))
-* [Docs] Update Remix Instructions ([#9329](https://github.com/marmelab/react-admin/pull/9329)) ([djhi](https://github.com/djhi))
-* [Docs] Update third-party component section; new date/time inputs ([#9326](https://github.com/marmelab/react-admin/pull/9326)) ([ZachSelindh](https://github.com/ZachSelindh))
+* [Doc] Update Remix Instructions ([#9329](https://github.com/marmelab/react-admin/pull/9329)) ([djhi](https://github.com/djhi))
+* [Doc] Update third-party component section; new date/time inputs ([#9326](https://github.com/marmelab/react-admin/pull/9326)) ([ZachSelindh](https://github.com/ZachSelindh))
 
 ## v4.14.4
 
