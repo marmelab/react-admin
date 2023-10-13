@@ -271,7 +271,7 @@ const Order = () => {
                 Reference &nbsp;#{record.reference}&nbsp;-&nbsp;
                 <TextField source="status" />
             </Typography>
-            <Typography variant="body2" color="textSecondary" gutterBottom>
+            <Typography variant="body2" color="textSecondary">
                 <NumberField
                     source="total"
                     options={{ style: 'currency', currency: 'USD' }}
@@ -326,7 +326,7 @@ const Review = () => {
             >
                 {record.comment}
             </Typography>
-            <Typography variant="body2" color="textSecondary" gutterBottom>
+            <Typography variant="body2" color="textSecondary">
                 <StarRatingField />
             </Typography>
         </>
