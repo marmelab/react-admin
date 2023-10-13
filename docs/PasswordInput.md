@@ -16,7 +16,7 @@ Use it like a [`<TextInput>`](./TextInput.md):
 ```jsx
 import { Create, SimpleForm, TextInput, PasswordInput } from 'react-admin';
 
-const UserCreate = () => (
+export const UserCreate = () => (
     <Create>
         <SimpleForm>
             <TextInput source="name" />
@@ -82,7 +82,7 @@ const validate = values => {
     return errors;
 }
 
-const UserCreate = () => (
+export const UserCreate = () => (
     <Create validate={validate}>
         <SimpleForm>
             <TextInput source="name" isRequired />
@@ -99,12 +99,12 @@ You can't use the `validate` prop in the Input components, as global and field-l
 
 ## Usage in Edit Views
 
-You may want to allow users to *update* a password on an existing record. The usual solution to this is to include a `new_password` input in the Edition form. The API will then check if this field is present in the payload, and update the password accordingly.
+You may want to allow users to *update* a password on an existing record. The usual solution to this is to include a `new_password` input in the Edition form. Your API should then check if this field is present in the payload, and update the password accordingly.
 
 ```jsx
 import { Edit, SimpleForm, TextInput, PasswordInput } from 'react-admin';
 
-const UserEdit = () => (
+export const UserEdit = () => (
     <Edit>
         <SimpleForm>
             <TextInput source="name" />
