@@ -60,42 +60,28 @@ Set the [`autocomplete` attribute](https://developer.mozilla.org/en-US/docs/Web/
 
 ## Validating Identical Passwords
 
-If you want to validate that the user has entered the same password in two different password inputs, you must use [global validation](./Validation.md#global-validation) at the form level:
+If you want to validate that the user has entered the same password in two different password inputs, use a [custom function validator](./Validation.md#per-input-validation-custom-function-validator):
 
 ```jsx
 import { Create, SimpleForm, TextInput, PasswordInput } from 'react-admin';
 
-const validate = values => {
-    const errors = {} as any;
-    if (!values.name) {
-        errors.name = 'Name is required';
+const equalToPassword = (value, allValues) => {
+    if (value !== allValues.password) {
+        return 'The two passwords must match';
     }
-    if (!values.email) {
-        errors.email = 'Email is required';
-    }
-    if (!values.password) {
-        errors.password = 'Password is required';
-    }
-    if (values.password && values.password !== values.confirm_password) {
-        errors.confirm_password = 'The two password fields must match';
-    }
-    return errors;
 }
 
 export const UserCreate = () => (
-    <Create validate={validate}>
+    <Create>
         <SimpleForm>
-            <TextInput source="name" isRequired />
-            <TextInput source="email" isRequired />
-            <PasswordInput source="password" isRequired />
-            <PasswordInput source="confirm_password" />
+            <TextInput source="name" />
+            <TextInput source="email" />
+            <PasswordInput source="password" />
+            <PasswordInput source="confirm_password" validate={equalToPassword} />
         </SimpleForm>
     </Create>
 );
 ```
-
-You can't use the `validate` prop in the Input components, as global and field-level validation are mutually exclusive. To show that an input is required, use the `isRequired` prop instead of `validate`.
-
 
 ## Usage in Edit Views
 
