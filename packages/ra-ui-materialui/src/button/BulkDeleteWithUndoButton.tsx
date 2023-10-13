@@ -12,7 +12,6 @@ import {
     useListContext,
     RaRecord,
     DeleteManyParams,
-    MutationMode,
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
@@ -110,7 +109,7 @@ export interface BulkDeleteWithUndoButtonProps<
         RecordType,
         MutationOptionsError,
         DeleteManyParams<RecordType>
-    > & { meta?: any; mutationMode?: MutationMode };
+    > & { meta?: any };
 }
 
 const PREFIX = 'RaBulkDeleteWithUndoButton';
