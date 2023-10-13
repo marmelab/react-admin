@@ -9,6 +9,8 @@ import {
 import { RaRecord, GetListParams, GetListResult } from '../types';
 import { useDataProvider } from './useDataProvider';
 
+const MAX_DATA_LENGTH_TO_CACHE = 100;
+
 /**
  * Call the dataProvider.getList() method and return the resolved result
  * as well as the loading state.
@@ -87,12 +89,21 @@ export const useGetList = <RecordType extends RaRecord = any>(
             ...options,
             onSuccess: value => {
                 // optimistically populate the getOne cache
-                value?.data?.forEach(record => {
-                    queryClient.setQueryData(
-                        [resource, 'getOne', { id: String(record.id), meta }],
-                        oldRecord => oldRecord ?? record
-                    );
-                });
+                if (
+                    value?.data &&
+                    value?.data?.length <= MAX_DATA_LENGTH_TO_CACHE
+                ) {
+                    value?.data?.forEach(record => {
+                        queryClient.setQueryData(
+                            [
+                                resource,
+                                'getOne',
+                                { id: String(record.id), meta },
+                            ],
+                            oldRecord => oldRecord ?? record
+                        );
+                    });
+                }
                 // execute call-time onSuccess if provided
                 if (options?.onSuccess) {
                     options.onSuccess(value);

@@ -344,6 +344,43 @@ describe('useGetList', () => {
         ).toEqual({ id: 1, title: 'live' });
     });
 
+    it('should not pre-populate getOne Query Cache if more than 100 results', async () => {
+        const callback: any = jest.fn();
+        const queryClient = new QueryClient();
+        const dataProvider: any = {
+            getList: jest.fn(() =>
+                Promise.resolve({
+                    data: Array.from(Array(101).keys()).map(index => ({
+                        id: index + 1,
+                        title: `item ${index + 1}`,
+                    })),
+                    total: 101,
+                })
+            ),
+        };
+        render(
+            <CoreAdminContext
+                queryClient={queryClient}
+                dataProvider={dataProvider}
+            >
+                <UseGetList callback={callback} />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(callback).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    data: expect.arrayContaining([
+                        { id: 1, title: 'item 1' },
+                        { id: 101, title: 'item 101' },
+                    ]),
+                })
+            );
+        });
+        expect(
+            queryClient.getQueryData(['posts', 'getOne', { id: '1' }])
+        ).toBeUndefined();
+    });
+
     it('should not fail when the query is disabled and the cache gets updated by another query', async () => {
         const callback: any = jest.fn();
         const onSuccess = jest.fn();
