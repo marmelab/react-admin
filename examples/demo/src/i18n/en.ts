@@ -38,6 +38,14 @@ const customEnglishMessages: TranslationMessages = {
             catalog: 'Catalog',
             customers: 'Customers',
         },
+        events: {
+            review: {
+                title: 'Posted review on "%{product}"',
+            },
+            order: {
+                title: 'Ordered 1 poster |||| Ordered %{smart_count} posters',
+            },
+        },
     },
     resources: {
         customers: {

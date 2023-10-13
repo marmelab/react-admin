@@ -25,6 +25,7 @@ const reviewFilters = [
                     ? `${choice.first_name} ${choice.last_name}`
                     : ''
             }
+            sx={{ minWidth: 200 }}
         />
     </ReferenceInput>,
     <ReferenceInput source="product_id" reference="products">
