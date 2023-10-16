@@ -91,9 +91,9 @@ export const useGetList = <RecordType extends RaRecord = any>(
                 // optimistically populate the getOne cache
                 if (
                     value?.data &&
-                    value?.data?.length <= MAX_DATA_LENGTH_TO_CACHE
+                    value.data.length <= MAX_DATA_LENGTH_TO_CACHE
                 ) {
-                    value?.data?.forEach(record => {
+                    value.data.forEach(record => {
                         queryClient.setQueryData(
                             [
                                 resource,
