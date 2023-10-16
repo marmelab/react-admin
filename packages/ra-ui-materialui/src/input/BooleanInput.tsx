@@ -77,7 +77,6 @@ export const BooleanInput = (props: BooleanInputProps) => {
                     <Switch
                         id={id}
                         name={field.name}
-                        color="primary"
                         onChange={handleChange}
                         onFocus={onFocus}
                         checked={Boolean(field.value)}
