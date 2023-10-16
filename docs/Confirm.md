@@ -114,7 +114,7 @@ import { List, Datagrid, TextField, BulkDeleteButton } from 'react-admin';
 
 const PostList = () => (
     <List>
-        <Datagrid PostBulkActionButtons={<BulkDeleteButton mutationMode="pessimistic" />}>
+        <Datagrid bulkActionButtons={<BulkDeleteButton mutationMode="pessimistic" />}>
             <TextField source="id" />
             <TextField source="title" />
         </Datagrid>
