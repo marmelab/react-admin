@@ -290,6 +290,8 @@ An options object used for the event mutation when it's updated or created by th
 
 The `mutationOptions` prop provided directly through `CalendarProps`, `EditDialogProps` or `CreateDialogProps` will take precedence.
 
+{% raw %}
+
 ```tsx
 import React, { ComponentProps } from 'react';
 import { List, useNotify } from 'react-admin';
@@ -313,6 +315,8 @@ const EventList = () => {
     );
 };
 ```
+
+{% endraw %}
 
 ### `transform`
 
@@ -663,6 +667,8 @@ const EventList = () => (
 
 An options object used for the event mutation when it has been resized or moved. Use it e.g. to override success or error side effects.
 
+{% raw %}
+
 ```tsx
 import { List, useNotify } from 'react-admin';
 import { Calendar } from '@react-admin/ra-calendar';
@@ -681,6 +687,8 @@ const EventList = () => {
     );
 };
 ```
+
+{% endraw %}
 
 ### `transform`
 
