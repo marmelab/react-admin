@@ -241,6 +241,8 @@ const PostList = () => (
 
 This prop lets you pass additional props for the [MUI Badge](https://mui.com/material-ui/react-badge/).
 
+{% raw %}
+
 ```tsx
 import { StackedFilters, StackedFiltersProps } from '@react-admin/ra-form-layout';
 
@@ -249,9 +251,13 @@ export const MyStackedFilter = (props: StackedFiltersProps) => (
 );
 ```
 
+{% endraw %}
+
 ### `ButtonProps`
 
 This prop lets you pass additional props for the [Button](./Buttons.html#button).
+
+{% raw %}
 
 ```tsx
 import { StackedFilters, StackedFiltersProps } from '@react-admin/ra-form-layout';
@@ -260,6 +266,8 @@ export const MyStackedFilter = (props: StackedFiltersProps) => (
     <StackedFilters {...props} ButtonProps={{ variant: 'contained' }} />
 );
 ```
+
+{% endraw %}
 
 ### `className`
 
@@ -306,6 +314,8 @@ export const MyStackedFilter = (props: StackedFiltersProps) => (
 
 This prop lets you pass additional props for the [MUI Popover](https://mui.com/material-ui/react-popover/).
 
+{% raw %}
+
 ```tsx
 import { StackedFilters, StackedFiltersProps } from '@react-admin/ra-form-layout';
 
@@ -314,9 +324,13 @@ export const MyStackedFilter = (props: StackedFiltersProps) => (
 );
 ```
 
+{% endraw %}
+
 ### `StackedFiltersFormProps`
 
 This prop lets you pass additional props for the [StackedFiltersForm](#stackedfiltersform).
+
+{% raw %}
 
 ```tsx
 import { StackedFilters, StackedFiltersProps } from '@react-admin/ra-form-layout';
@@ -325,6 +339,8 @@ export const MyStackedFilter = (props: StackedFiltersProps) => (
     <StackedFilters {...props} StackedFiltersForm={{ className: 'my-css-class' }} />
 );
 ```
+
+{% endraw %}
 
 ### `sx`: CSS API
 
@@ -341,6 +357,8 @@ This prop lets you override the styles of the inner components thanks to the `sx
 This component is responsible for handling the filtering form. It must be given the [filtering configuration](#filters-configuration) through its `config` prop.
 
 If you need to be notified when users have applied filters, pass a function to the `onFiltersApplied` prop. This is useful if you want to close the filters container (`<Modal>`, `<Drawer>`, etc.).
+
+{% raw %}
 
 ```tsx
 import {
@@ -400,6 +418,8 @@ const PostList = () => (
     </ListBase>
 );
 ```
+
+{% endraw %}
 
 ### Props
 
