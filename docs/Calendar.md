@@ -186,6 +186,7 @@ import React from 'react';
 import { DateTimeInput, SimpleForm, TextInput } from 'react-admin';
 import { CompleteCalendar } from '@react-admin/ra-calendar';
 import frLocale from '@fullcalendar/core/locales/fr';
+import { EventInput } from '@fullcalendar/core';
 
 const EventList = () => (
     <CompleteCalendar
@@ -216,7 +217,7 @@ const EventList = () => (
 );
 ```
 
-Check the possible values for `CalendarProps` in the [`<Calendar>`](#calendar) and [`<FullCalendar>`]((https://fullcalendar.io/docs#toc) documentation.
+Check the possible values for `CalendarProps` in the [`<Calendar>`](#calendar) and [`<FullCalendar>`](https://fullcalendar.io/docs#toc) documentation.
 
 ### `EditDialogProps`
 
@@ -228,14 +229,18 @@ For instance, to customize the title of the Edit dialog:
 
 ```tsx
 import React from 'react';
-import { DateTimeInput, SimpleForm, TextInput } from 'react-admin';
+import { DateTimeInput, SimpleForm, TextInput, useRecordContext } from 'react-admin';
 import { CompleteCalendar } from '@react-admin/ra-calendar';
+
+const EventEditTitle = () => {
+    const record = useRecordContext();
+    return <span>Edit {record ? `"${record.title}"` : ''}</span>;
+}
 
 const EventList = () => (
     <CompleteCalendar
         EditDialogProps={{
-            title: ({ record }) =>
-                record ? <span>Edit {record.title}</span> : null,
+            title: <EventEditTitle />,
         }}
     >
         <SimpleForm>
@@ -472,6 +477,33 @@ const EventList = () => (
 );
 ```
 
+**Tip:** You don't need to load the `'en'` locale as it is already loaded by default.
+
+If you'd like the calendar to use the same locale as the rest of your admin, simply use the locale provided by [`useLocaleState`](./useLocaleState.md):
+
+```tsx
+import { List, useLocaleState } from 'react-admin';
+import {
+    Calendar,
+    getFilterValuesFromInterval,
+} from '@react-admin/ra-calendar';
+import esLocale from '@fullcalendar/core/locales/es';
+import frLocale from '@fullcalendar/core/locales/fr';
+
+const EventList = () => {
+    const [locale] = useLocaleState();
+    return (
+        <List
+            filterDefaultValues={getFilterValuesFromInterval()}
+            perPage={1000}
+            pagination={false}
+        >
+            <Calendar locales={[esLocale, frLocale]} locale={locale} />
+        </List>
+    )
+};
+```
+
 And if you want to support all locales and initialize the calendar based on the user navigator preferences, use ra-calendar's `getNavigatorLanguage()` helper:
 
 ```tsx
@@ -587,10 +619,9 @@ Full Calendar won't work unless you convert these rcords to events looking like 
 Pass a convertion function as the `convertToEvent` prop of the `<Calendar>` element:
 
 ```tsx
-import React, { ComponentProps } from 'react';
 import { List } from 'react-admin';
 import { Calendar } from '@react-admin/ra-calendar';
-import { EventInput, DatesSetArg } from '@full-calendar/react';
+import { EventInput, DatesSetArg } from '@fullcalendar/core';
 
 const converter = (event: any): EventInput => ({
     id: String(event.id),
@@ -633,7 +664,6 @@ const EventList = () => (
 An options object used for the event mutation when it has been resized or moved. Use it e.g. to override success or error side effects.
 
 ```tsx
-import React, { ComponentProps } from 'react';
 import { List, useNotify } from 'react-admin';
 import { Calendar } from '@react-admin/ra-calendar';
 
@@ -657,7 +687,6 @@ const EventList = () => {
 A function that receives the event from `full-calendar` and return the data that should be sent to the `dataProvider` method:
 
 ```tsx
-import React, { ComponentProps } from 'react';
 import { List } from 'react-admin';
 import { Calendar } from '@react-admin/ra-calendar';
 
@@ -673,3 +702,38 @@ const EventList = () => {
     );
 };
 ```
+
+### `plugins`
+
+FullCalendar offers a variety of [plugins](https://fullcalendar.io/docs/plugin-index), allowing to add more features to the calendar.
+
+For instance, let's add the [`rrule` plugin](https://fullcalendar.io/docs/rrule-plugin), which will add support for recurring events.
+
+To add a new plugin, you must first install it.
+
+```sh
+npm install --save @fullcalendar/rrule
+# or
+yarn add @fullcalendar/rrule
+```
+
+Then, import it in your app, and pass it to the `<Calendar>` component via the `plugins` prop.
+
+**Tip:** `ra-calendar` already comes with pre-enabled plugins: `dayGridPlugin`, `timeGridPlugin` and `interactionPlugin`. You will probably want to include them too.
+
+```tsx
+import { List } from 'react-admin';
+import { Calendar } from '@react-admin/ra-calendar';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import rrulePlugin from '@fullcalendar/rrule';
+
+const EventList = () => (
+    <List perPage={1000} pagination={false}>
+        <Calendar plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin, rrulePlugin ]} />
+    </List>
+);
+```
+
+That's it! You can now use the `rrule` plugin's features in your calendar.
