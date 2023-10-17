@@ -15,17 +15,33 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 ## Usage
 
+Use a `<StackedFilters>` component in the [`<List actions>`](./List.md#actions) element. Define the filters using the `config` prop, which must contain a [filtering configuration](#filters-configuration).
+
 ```tsx
+// in src/posts/PostList.tsx
 import {
     BooleanField,
-    CreateButton,
     Datagrid,
     List,
     NumberField,
     ReferenceArrayField,
     TextField,
-    TopToolbar,
 } from 'react-admin';
+import { PostListToolbar } from './PostListToolbar';
+
+const PostList = () => (
+    <List actions={<PostListToolbar />}>
+        <Datagrid>
+            <TextField source="title" />
+            <NumberField source="views" />
+            <ReferenceArrayField tags="tags" source="tag_ids" />
+            <BooleanField source="published" />
+        </Datagrid>
+    </List>
+);
+
+// in src/posts/PostListToolbar.tsx
+import { CreateButton, TopToolbar } from 'react-admin';
 import {
     StackedFilters,
     FiltersConfig,
@@ -42,37 +58,27 @@ const postListFilters: FiltersConfig = {
     published: booleanFilter(),
 };
 
-const PostListToolbar = () => (
+export const PostListToolbar = () => (
     <TopToolbar>
         <CreateButton />
         <StackedFilters config={postListFilters} />
     </TopToolbar>
 );
-
-const PostList = () => (
-    <List actions={<PostListToolbar />}>
-        <Datagrid>
-            <TextField source="title" />
-            <NumberField source="views" />
-            <ReferenceArrayField tags="tags" source="tag_ids" />
-            <BooleanField source="published" />
-        </Datagrid>
-    </List>
-);
 ```
 
 ## Filters Configuration
 
-`<StackedFilters>` and its underlying component, `<StackedFiltersForm>` needs a filter configuration. This is an object defining the operators and UI for each source that can be used as a filter.
+Define the filter configuration in the `<StackedFilters config>` prop. The value must be an object defining the operators and UI for each field that can be used as a filter.
 
 It looks like this:
 
 ```tsx
-import { FiltersConfig } from '@react-admin/ra-form-layout';
+import { FiltersConfig, StackedFilters, textFilter } from '@react-admin/ra-form-layout';
 import { NumberInput } from 'react-admin';
 import { MyNumberRangeInput } from './MyNumberRangeInput';
 
 const postListFilters: FiltersConfig = {
+    title: textFilter(),
     views: {
         operators: [
             { value: 'eq', label: 'Equals' },
@@ -86,23 +92,31 @@ const postListFilters: FiltersConfig = {
         input: ({ source }) => <NumberInput source={source} />,
     },
 };
+
+export const PostListToolbar = () => (
+    <TopToolbar>
+        // ...
+        <StackedFilters config={postListFilters} />
+    </TopToolbar>
+);
 ```
 
-As you can see, the `source` is the `config` object key. It contains an array of `operators` and a default `input`, used for operators that don't define their own.
+For a given field, the filter configuration should be an object containing an array of `operators` and a default `input`, used for operators that don't define their own. You can use the [filter configuration builders](#filter-configuration-builders) (like `textFilter`) to build filter configuration objects.
 
-An operator is an object that has a `label` and a `value`. The `label` can be a translation key. The `value` will be used as a suffix to the `source` and passed to the list filters. For instance, with the source `views`, the operator `eq` and value set to `0` using the `NumberInput`, the dataProvider will receive the following filter:
+An operator is an object that has a `label` and a `value`. 
+
+- The `label` is a string, and can be a translation key.
+- The `value` is used as a suffix to the `source` and passed to the list filters.
+
+For instance, if the user adds the `views` filter with the `eq` operator and a value of `0`, the `dataProvider.getList()` will receive the following `filter` parameter:
 
 ```js
-{
-    views_eq: 0;
-}
+{ views_eq: 0 }
 ```
-
-Besides, any operator can provide its own input if it needs.
 
 ## Filter Configuration Builders
 
-To make it easier to create a filter configuration, we provide some helper functions. Each of them has predefined operators and inputs. They accept an array of operators if you want to remove some of them.
+To make it easier to create a filter configuration, `ra-form-layout` provides some helper functions. Each of them has predefined operators and inputs. They accept an array of operators if you want to remove some of them.
 
 -   `textFilter`: A filter for text fields. Defines the following operator: `eq`, `neq` and `q`.
 -   `numberFilter`: A filter for number fields. Defines the following operator: `eq`, `neq`, `lt` and `gt`.
@@ -131,13 +145,133 @@ const postListFilters: FiltersConfig = {
 };
 ```
 
+## Props
+
+| Prop                      | Required      | Type     | Default         | Description                                            |
+| ------------------------- | ------------- | -------- | --------------- | ------------------------------------------------------ |
+| `config`                  | Required      | object   | -               | The stacked filters configuration                                          |
+| `BadgeProps`              | Optional      | object   | -               | Additional props to pass to the [MUI Badge](https://mui.com/material-ui/react-badge/) element |
+| `ButtonProps`             | Optional      | object   | -               | Additional props to pass to the [Button](./Buttons.html#button) element |
+| `className`               | Optional      | string   | -               | Additional CSS class applied on the root component                                              |
+| `PopoverProps`            | Optional      | Object   | -               | Additional props to pass to the [MUI Popover](https://mui.com/material-ui/react-popover/) element |
+| `StackedFilters FormProps` | Optional      | Object   | -               | Additional props to pass to the [StackedFiltersForm](#stackedfiltersform) element |
+| `sx`                      | Optional      | Object   | -               | An object containing the MUI style overrides to apply to the root component               |
+
+## `BadgeProps`
+
+This prop lets you pass additional props for the [MUI Badge](https://mui.com/material-ui/react-badge/).
+
+{% raw %}
+```tsx
+import { StackedFilters } from '@react-admin/ra-form-layout';
+
+export const MyStackedFilter = () => (
+    <StackedFilters config={config} BadgeProps={{ showZero: true }} />
+);
+```
+{% endraw %}
+
+## `ButtonProps`
+
+This prop lets you pass additional props for the [Button](./Buttons.html#button).
+
+{% raw %}
+```tsx
+import { StackedFilters } from '@react-admin/ra-form-layout';
+
+export const MyStackedFilter = () => (
+    <StackedFilters config={config} ButtonProps={{ variant: 'contained' }} />
+);
+```
+{% endraw %}
+
+## `className`
+
+This prop lets you pass additional CSS classes to apply to the root element (a `div`).
+
+```tsx
+import { StackedFilters } from '@react-admin/ra-form-layout';
+
+export const MyStackedFilter = () => (
+    <StackedFilters config={config} className="my-css-class" />
+);
+```
+
+## `config`
+
+This prop lets you define the filter configuration, which is required. This is an object defining the operators and UI for each source that can be used as a filter:
+
+```tsx
+import { FiltersConfig, StackedFilters } from '@react-admin/ra-form-layout';
+import { NumberInput } from 'react-admin';
+import { MyNumberRangeInput } from './MyNumberRangeInput';
+
+const postListFilters: FiltersConfig = {
+    views: {
+        operators: [
+            { value: 'eq', label: 'Equals' },
+            { value: 'neq', label: 'Not Equals' },
+            {
+                value: 'between',
+                label: 'Between',
+                input: ({ source }) => <MyNumberRangeInput source={source} />,
+            },
+        ],
+        input: ({ source }) => <NumberInput source={source} />,
+    },
+};
+
+export const MyStackedFilter = () => (
+    <StackedFilters config={postListFilters} />
+);
+```
+
+## `PopoverProps`
+
+This prop lets you pass additional props for the [MUI Popover](https://mui.com/material-ui/react-popover/).
+
+{% raw %}
+```tsx
+import { StackedFilters } from '@react-admin/ra-form-layout';
+
+export const MyStackedFilter = () => (
+    <StackedFilters config={config} PopoverProps={{ elevation: 4 }} />
+);
+```
+{% endraw %}
+
+## `StackedFiltersFormProps`
+
+This prop lets you pass additional props for the [StackedFiltersForm](#stackedfiltersform).
+
+{% raw %}
+```tsx
+import { StackedFilters } from '@react-admin/ra-form-layout';
+
+export const MyStackedFilter = () => (
+    <StackedFilters config={config} StackedFiltersForm={{ className: 'my-css-class' }} />
+);
+```
+{% endraw %}
+
+## `sx`: CSS API
+
+This prop lets you override the styles of the inner components thanks to the `sx` property. This property accepts the following subclasses:
+
+| Rule name                           | Description                                                              |
+| ----------------------------------- | ------------------------------------------------------------------------ |
+| `RaStackedFilters`                  | Applied to the root component                                            |
+| `& .RaStackedFilters-popover`       | Applied to the [MUI Popover](https://mui.com/material-ui/react-popover/) |
+| `& .RaStackedFilters-formContainer` | Applied to the form container (a `div`)                                  |
+
 ## Internationalization
 
-The source field names are translatable. `ra-form-layout` uses the react-admin [resource and field name translation system](./Translation.md#translation-files). This is an example of an English translation file:
+The source field names are translatable. `ra-form-layout` uses the react-admin [resource and field name translation system](./Translation.md#translation-files). 
+
+This is an example of an English translation file for the `customer` resource:
 
 ```ts
 // in i18n/en.js
-
 export default {
     resources: {
         customer: {
@@ -175,191 +309,17 @@ const MyFilterConfig: FiltersConfig = {
 };
 ```
 
-## `<StackedFilters>`
-
-This component is responsible for showing the Filters button that displays the filtering form inside a MUI Popover. It must be given the [filtering configuration](#filters-configuration) through its `config` prop.
-
-```tsx
-import {
-    BooleanField,
-    CreateButton,
-    Datagrid,
-    List,
-    NumberField,
-    ReferenceArrayField,
-    TopToolbar,
-    TextField,
-} from 'react-admin';
-import {
-    StackedFilters,
-    FiltersConfig,
-    textFilter,
-    numberFilter,
-    referenceFilter,
-    booleanFilter,
-} from '@react-admin/ra-form-layout';
-
-const postListFilters: FiltersConfig = {
-    title: textFilter(),
-    views: numberFilter(),
-    tag_ids: referenceFilter({ reference: 'tags' }),
-    published: booleanFilter(),
-};
-
-const PostListToolbar = () => (
-    <TopToolbar>
-        <CreateButton />
-        <StackedFilters config={postListFilters} />
-    </TopToolbar>
-);
-
-const PostList = () => (
-    <List actions={<PostListToolbar />}>
-        <Datagrid>
-            <TextField source="title" />
-            <NumberField source="views" />
-            <ReferenceArrayField tags="tags" source="tag_ids" />
-            <BooleanField source="published" />
-        </Datagrid>
-    </List>
-);
-```
-
-### Props
-
-| Prop                      | Required      | Type     | Default         | Description                                            |
-| ------------------------- | ------------- | -------- | --------------- | ------------------------------------------------------ |
-| `BadgeProps`              | Optional      | object   | -               | Additional props to pass to the [MUI Badge](https://mui.com/material-ui/react-badge/)       |
-| `ButtonProps`             | Optional      | object   | -               | Additional props to pass to the [Button](./Buttons.html#button) |
-| `className`               | Optional      | string   | -               | Additional CSS class applied on the root component                                              |
-| `config`                  | Required (\*) | object   | -               | The stacked filters configuration                                          |
-| `PopoverProps`            | Optional      | Object   | -               | Additional props to pass to the [MUI Popover](https://mui.com/material-ui/react-popover/)   |
-| `StackedFiltersFormProps` | Optional      | Object   | -               | Additional props to pass to the [StackedFiltersForm](#stackedfiltersform)              |
-| `sx`                      | Optional      | Object   | -               | An object containing the MUI style overrides to apply to the root component               |
-
-### `BadgeProps`
-
-This prop lets you pass additional props for the [MUI Badge](https://mui.com/material-ui/react-badge/).
-
-{% raw %}
-
-```tsx
-import { StackedFilters, StackedFiltersProps } from '@react-admin/ra-form-layout';
-
-export const MyStackedFilter = (props: StackedFiltersProps) => (
-    <StackedFilters {...props} BadgeProps={{ showZero: true }} />
-);
-```
-
-{% endraw %}
-
-### `ButtonProps`
-
-This prop lets you pass additional props for the [Button](./Buttons.html#button).
-
-{% raw %}
-
-```tsx
-import { StackedFilters, StackedFiltersProps } from '@react-admin/ra-form-layout';
-
-export const MyStackedFilter = (props: StackedFiltersProps) => (
-    <StackedFilters {...props} ButtonProps={{ variant: 'contained' }} />
-);
-```
-
-{% endraw %}
-
-### `className`
-
-This prop lets you pass additional CSS classes to apply to the root element (a `div`).
-
-```tsx
-import { StackedFilters, StackedFiltersProps } from '@react-admin/ra-form-layout';
-
-export const MyStackedFilter = (props: StackedFiltersProps) => (
-    <StackedFilters {...props} className="my-css-class" />
-);
-```
-
-### `config`
-
-This prop lets you define the filter configuration, which is required. This is an object defining the operators and UI for each source that can be used as a filter:
-
-```tsx
-import { FiltersConfig, StackedFilters } from '@react-admin/ra-form-layout';
-import { NumberInput } from 'react-admin';
-import { MyNumberRangeInput } from './MyNumberRangeInput';
-
-const postListFilters: FiltersConfig = {
-    views: {
-        operators: [
-            { value: 'eq', label: 'Equals' },
-            { value: 'neq', label: 'Not Equals' },
-            {
-                value: 'between',
-                label: 'Between',
-                input: ({ source }) => <MyNumberRangeInput source={source} />,
-            },
-        ],
-        input: ({ source }) => <NumberInput source={source} />,
-    },
-};
-
-export const MyStackedFilter = (props: StackedFiltersProps) => (
-    <StackedFilters {...props} config={postListFilters} />
-);
-```
-
-### `PopoverProps`
-
-This prop lets you pass additional props for the [MUI Popover](https://mui.com/material-ui/react-popover/).
-
-{% raw %}
-
-```tsx
-import { StackedFilters, StackedFiltersProps } from '@react-admin/ra-form-layout';
-
-export const MyStackedFilter = (props: StackedFiltersProps) => (
-    <StackedFilters {...props} PopoverProps={{ elevation: 4 }} />
-);
-```
-
-{% endraw %}
-
-### `StackedFiltersFormProps`
-
-This prop lets you pass additional props for the [StackedFiltersForm](#stackedfiltersform).
-
-{% raw %}
-
-```tsx
-import { StackedFilters, StackedFiltersProps } from '@react-admin/ra-form-layout';
-
-export const MyStackedFilter = (props: StackedFiltersProps) => (
-    <StackedFilters {...props} StackedFiltersForm={{ className: 'my-css-class' }} />
-);
-```
-
-{% endraw %}
-
-### `sx`: CSS API
-
-This prop lets you override the styles of the inner components thanks to the `sx` property. This property accepts the following subclasses:
-
-| Rule name                           | Description                                                              |
-| ----------------------------------- | ------------------------------------------------------------------------ |
-| `RaStackedFilters`                  | Applied to the root component                                            |
-| `& .RaStackedFilters-popover`       | Applied to the [MUI Popover](https://mui.com/material-ui/react-popover/) |
-| `& .RaStackedFilters-formContainer` | Applied to the form container (a `div`)                                  |
-
 ## `<StackedFiltersForm>`
 
-This component is responsible for handling the filtering form. It must be given the [filtering configuration](#filters-configuration) through its `config` prop.
+This component is responsible for rendering the filtering form, and is used internally by `<StackedFilters>`. You can use it if you want to use the filter form without the `<FilterButton>` component, e.g. to always show the filter form.
 
-If you need to be notified when users have applied filters, pass a function to the `onFiltersApplied` prop. This is useful if you want to close the filters container (`<Modal>`, `<Drawer>`, etc.).
+![StackedFiltersForm](./img/StackedFiltersForm.png)
+
+### Usage
+
+Just like `<StackedFilters>`, `<StackedFiltersForm>` requires a [filtering configuration](#filters-configuration) as its `config` prop value.
 
 {% raw %}
-
 ```tsx
 import {
     Datagrid,
@@ -418,15 +378,16 @@ const PostList = () => (
     </ListBase>
 );
 ```
-
 {% endraw %}
+
+If you need to be notified when users have applied filters, pass a function to the `onFiltersApplied` prop. This is useful if you want to close the filters container (`<Modal>`, `<Drawer>`, etc.).
 
 ### Props
 
 | Prop                      | Required      | Type     | Default         | Description                                            |
 | ------------------------- | ------------- | -------- | --------------- | ------------------------------------------------------ |
+| `config`                  | Required      | object   | -               | The stacked filters configuration                                          |
 | `className`               | Optional      | string   | -               | Additional CSS class applied on the root component                                              |
-| `config`                  | Required (\*) | object   | -               | The stacked filters configuration                                          |
 | `onFiltersApplied`        | Optional      | Function | -               | A function called when users click on the apply button                                           |
 | `sx`                      | Optional      | Object   | -               | An object containing the MUI style overrides to apply to the root component               |
 
@@ -435,10 +396,10 @@ const PostList = () => (
 This prop lets you pass additional CSS classes to apply to the root element (a `Form`).
 
 ```tsx
-import { StackedFiltersForm, StackedFiltersFormProps } from '@react-admin/ra-form-layout';
+import { StackedFiltersForm } from '@react-admin/ra-form-layout';
 
-export const MyStackedFilterForm = (props: StackedFiltersFormProps) => (
-    <StackedFiltersForm {...props} className="my-css-class" />
+export const MyStackedFilterForm = () => (
+    <StackedFiltersForm config={config} className="my-css-class" />
 );
 ```
 
@@ -447,7 +408,7 @@ export const MyStackedFilterForm = (props: StackedFiltersFormProps) => (
 This prop lets you define the filter configuration, which is required. This is an object defining the operators and UI for each source that can be used as a filter:
 
 ```tsx
-import { FiltersConfig, StackedFiltersForm, StackedFiltersFormProps } from '@react-admin/ra-form-layout';
+import { FiltersConfig, StackedFiltersForm } from '@react-admin/ra-form-layout';
 import { NumberInput } from 'react-admin';
 import { MyNumberRangeInput } from './MyNumberRangeInput';
 
@@ -466,8 +427,8 @@ const postListFilters: FiltersConfig = {
     },
 };
 
-export const MyStackedFiltersForm = (props: StackedFiltersFormProps) => (
-    <StackedFiltersForm {...props} config={postListFilters} />
+export const MyStackedFiltersForm = () => (
+    <StackedFiltersForm config={postListFilters} />
 );
 ```
 
@@ -476,10 +437,10 @@ export const MyStackedFiltersForm = (props: StackedFiltersFormProps) => (
 This prop lets you provide a function that will be called when users click the apply button:
 
 ```tsx
-import { FiltersConfig, StackedFiltersForm } from '@react-admin/ra-form-layout';
+import { FiltersConfig } from '@react-admin/ra-form-layout';
 
-export const MyStackedFiltersForm = (props: StackedFiltersProps) => (
-    <StackedFiltersForm {...props} onFiltersApplied={() => alert('Filters applied')} />
+export const MyStackedFiltersForm = () => (
+    <StackedFiltersForm config={config} onFiltersApplied={() => alert('Filters applied')} />
 );
 ```
 
