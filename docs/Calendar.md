@@ -30,13 +30,60 @@ The user interface offers everything you expect:
 
 ## Usage
 
-Use `<Calendar>` as a child of `<List>` to render a list of events in a calendar:
+React-admin provides 2 components for viewing and editing events in a calendar: `<CompleteCalendar>` and `<Calendar>`.
+
+`<CompleteCalendar>` is an all-in one component that renders a calendar, as well as a dialog with an event form when users want to edit or create an event. 
+
+![CompleteCalendar](./img/CompleteCalendar.png)
+
+`<CompleteCalendar>` is a full replacement for the `<List>` component, expecting an event form as child:
 
 ```jsx
+// in src/events/EventList.tsx
+import { CompleteCalendar } from '@react-admin/ra-calendar';
+import { SimpleForm, TextInput, DateTimeInput } from 'react-admin';
+
+export const EventList = () => (
+    <CompleteCalendar>
+        <SimpleForm>
+            <TextInput source="title" autoFocus />
+            <DateTimeInput source="start" />
+            <DateTimeInput source="end" />
+        </SimpleForm>
+    </CompleteCalendar>
+);
+```
+
+Use it as the `list` prop of a `<Resource>`. No need to specify an `edit` or `create` prop for this resource, as `<CompleteCalendar>` will the edit and create forms in a dialog. 
+
+```jsx
+import { Admin, Resource } from 'react-admin';
+
+import dataProvider from './dataProvider';
+import { EventList } from './events/EventList.tsx';
+
+export const App = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource name="events" list={EventList} />
+    </Admin>
+);
+```
+
+`<Calendar>`, on the other hand, doesn't render the event form in a dialog. Instead, it redirects to the Edition or Creation pages when users click on an event or the Create button.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/calendar.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+`<Calendar>` must be used as a child of react-admin's `<List>` component:
+
+```jsx
+// in src/events/EventList.tsx
 import { Calendar, getFilterValuesFromInterval } from '@react-admin/ra-calendar';
 import { List } from 'react-admin';
 
-const EventList = () => (
+export const EventList = () => (
     <List
         filterDefaultValues={getFilterValuesFromInterval()}
         perPage={1000}
@@ -47,36 +94,27 @@ const EventList = () => (
 );
 ```
 
-The `ra-calendar` module also offers a full replacement for the `<List>` component, complete with show and edit views for events, called `<CompleteCalendar>`:
+To allow creation and edition of events with `<Calendar>`, you must provide `edit` and `create` components to the event resource:
 
 ```jsx
-import {
-    Admin,
-    Resource,
-    SimpleForm,
-    TextInput,
-    DateTimeInput,
-} from 'react-admin';
-import { CompleteCalendar } from '@react-admin/ra-calendar';
+import { Admin, Resource } from 'react-admin';
 
 import dataProvider from './dataProvider';
-
-const EventList = () => (
-    <CompleteCalendar>
-        <SimpleForm>
-            <TextInput source="title" autoFocus />
-            <DateTimeInput source="start" />
-            <DateTimeInput source="end" />
-        </SimpleForm>
-    </CompleteCalendar>
-);
+import { EventList, EventEdit, EventCreate } from './events';
 
 export const App = () => (
     <Admin dataProvider={dataProvider}>
-        <Resource name="events" list={EventList} />
+        <Resource 
+            name="events"
+            list={EventList}
+            edit={EventEdit}
+            create={EventCreate}
+        />
     </Admin>
 );
 ```
+
+Both `<CompleteCalendar>` and `<Calendar>` expect the dataProvider to return events in a predefined format (see [Event format](#events-format) below). 
 
 ## Events Format
 
@@ -153,6 +191,7 @@ export const Basic = () => (
 
 For instance, to limit the number of events fetched from the server to 100 (instead of the default 1000), you can override the `<List perPage>` prop as follows:
 
+{% raw %}
 ```tsx
 import React from 'react';
 import { DateTimeInput, SimpleForm, TextInput } from 'react-admin';
@@ -172,6 +211,7 @@ const EventList = () => (
     </CompleteCalendar>
 );
 ```
+{% endraw %}
 
 Check the possible values for `ListProps` in [the `<List>` component documentation](./List.html#the-list-component).
 
@@ -181,6 +221,7 @@ Under the hood, `<CompleteCalendar>` renders a `<Calendar>` element, which is a 
 
 For instance, to set a French locale, map non-standard event records to the expected Event type, and define boundaries to the possible events:
 
+{% raw %}
 ```tsx
 import React from 'react';
 import { DateTimeInput, SimpleForm, TextInput } from 'react-admin';
@@ -216,6 +257,7 @@ const EventList = () => (
     </CompleteCalendar>
 );
 ```
+{% endraw %}
 
 Check the possible values for `CalendarProps` in the [`<Calendar>`](#calendar) and [`<FullCalendar>`](https://fullcalendar.io/docs#toc) documentation.
 
@@ -227,6 +269,7 @@ You can customize `<EditDialog>` props like `title`, `redirect`, `onSuccess` and
 
 For instance, to customize the title of the Edit dialog:
 
+{% raw %}
 ```tsx
 import React from 'react';
 import { DateTimeInput, SimpleForm, TextInput, useRecordContext } from 'react-admin';
@@ -251,6 +294,7 @@ const EventList = () => (
     </CompleteCalendar>
 );
 ```
+{% endraw %}
 
 Check the possible values for `EditDialogProps` in [the `<EditDialog>` component documentation](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog--editdialog).
 
@@ -262,6 +306,7 @@ You can customize `<CreateDialog>` props like `title`, `redirect`, `onSuccess` a
 
 For instance, to customize the title of the Creation dialog:
 
+{% raw %}
 ```tsx
 import React from 'react';
 import { DateTimeInput, SimpleForm, TextInput } from 'react-admin';
@@ -281,6 +326,7 @@ const EventList = () => (
     </CompleteCalendar>
 );
 ```
+{% endraw %}
 
 Check the possible values for `CreateDialogProps` in [the `<CreateDialog>` component documentation](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog--editdialog).
 
