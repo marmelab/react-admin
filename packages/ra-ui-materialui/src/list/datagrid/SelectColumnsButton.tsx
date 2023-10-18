@@ -163,7 +163,7 @@ export const SelectColumnsButton = (props: SelectColumnsButtonProps) => {
                     horizontal: 'center',
                 }}
             >
-                <Box p={1}>
+                <Box component="ul" p={1} my={0}>
                     {availableColumns.map(column => (
                         <FieldToggle
                             key={column.index}
