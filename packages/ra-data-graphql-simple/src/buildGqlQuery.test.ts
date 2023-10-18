@@ -8,6 +8,7 @@ import {
     CREATE,
     DELETE,
 } from 'ra-core';
+
 import buildGqlQuery, {
     buildApolloArgs,
     buildArgs,
@@ -18,50 +19,13 @@ import buildGqlQuery, {
 describe('getArgType', () => {
     it('returns the arg type', () => {
         expect(
-            print(getArgType({ type: { kind: TypeKind.SCALAR, name: 'foo' } }))
+            print(
+                getArgType({
+                    name: 'arg',
+                    type: { kind: TypeKind.SCALAR, name: 'foo' },
+                })
+            )
         ).toEqual('foo');
-    });
-    it('returns the arg type for NON_NULL types', () => {
-        expect(
-            print(
-                getArgType({
-                    type: {
-                        kind: TypeKind.NON_NULL,
-                        ofType: { name: 'ID', kind: TypeKind.SCALAR },
-                    },
-                })
-            )
-        ).toEqual('ID!');
-    });
-    it('returns the arg type for LIST types', () => {
-        expect(
-            print(
-                getArgType({
-                    type: {
-                        kind: TypeKind.LIST,
-                        ofType: { name: 'ID', kind: TypeKind.SCALAR },
-                    },
-                })
-            )
-        ).toEqual('[ID]');
-    });
-    it('returns the arg type for LIST types of NON_NULL type', () => {
-        expect(
-            print(
-                getArgType({
-                    type: {
-                        kind: TypeKind.LIST,
-                        ofType: {
-                            kind: TypeKind.NON_NULL,
-                            ofType: {
-                                kind: TypeKind.SCALAR,
-                                name: 'ID',
-                            },
-                        },
-                    },
-                })
-            )
-        ).toEqual('[ID!]');
     });
 });
 

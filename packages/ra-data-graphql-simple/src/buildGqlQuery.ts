@@ -18,8 +18,7 @@ import {
 import * as gqlTypes from 'graphql-ast-types-browser';
 
 import getFinalType from './getFinalType';
-import isList from './isList';
-import isRequired from './isRequired';
+import { getGqlType } from './getGqlType';
 
 export default (introspectionResults: IntrospectionResult) => (
     resource: IntrospectedResource,
@@ -241,27 +240,5 @@ export const buildApolloArgs = (
     return args;
 };
 
-export const getArgType = (arg: IntrospectionInputValue): TypeNode => {
-    const type = getFinalType(arg.type);
-    const required = isRequired(arg.type);
-    const list = isList(arg.type);
-
-    if (list) {
-        if (required) {
-            return gqlTypes.listType(
-                gqlTypes.nonNullType(
-                    gqlTypes.namedType(gqlTypes.name(type.name))
-                )
-            );
-        }
-        return gqlTypes.listType(gqlTypes.namedType(gqlTypes.name(type.name)));
-    }
-
-    if (required) {
-        return gqlTypes.nonNullType(
-            gqlTypes.namedType(gqlTypes.name(type.name))
-        );
-    }
-
-    return gqlTypes.namedType(gqlTypes.name(type.name));
-};
+export const getArgType = (arg: IntrospectionInputValue): TypeNode =>
+    getGqlType(arg.type);
