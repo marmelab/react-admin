@@ -5,7 +5,7 @@ title: "useInput"
 
 # `useInput`
 
-This hook lets you build custom inputs for react-admin. It's a wrapper around [react-hook-form's `useController`](https://react-hook-form.com/api/usecontroller).
+This hook lets you build custom inputs for react-admin. It's a wrapper around [react-hook-form's `useController`](https://react-hook-form.com/docs/usecontroller).
 
 React-admin adds functionality to react-hook-form:
 
@@ -52,9 +52,9 @@ const TitleInput = ({ source, label }) => {
 | `onChange`     | Optional | `Function`                     | -       | A function to call when the input value changes                   |
 | `onBlur`       | Optional | `Function`                     | -       | A function to call when the input is blurred                      |
 
-Additional props are passed to [react-hook-form's `useController` hook](https://react-hook-form.com/api/usecontroller).
+Additional props are passed to [react-hook-form's `useController` hook](https://react-hook-form.com/docs/usecontroller).
 
-## Usage with MUI `<TextField>`
+## Usage with Material UI `<TextField>`
 
 ```jsx
 // in LatLongInput.js
@@ -62,7 +62,7 @@ import TextField from '@mui/material/TextField';
 import { useInput, required } from 'react-admin';
 
 const BoundedTextField = (props) => {
-    const { onChange, onBlur, ...rest } = props;
+    const { onChange, onBlur, label, ...rest } = props;
     const {
         field,
         fieldState: { isTouched, invalid, error },
@@ -73,13 +73,13 @@ const BoundedTextField = (props) => {
         // useInput will call the provided onChange and onBlur in addition to the default needed by react-hook-form.
         onChange,
         onBlur,
-        ...props,
+        ...rest,
     });
 
     return (
         <TextField
             {...field}
-            label={props.label}
+            label={label}
             error={(isTouched || isSubmitted) && invalid}
             helperText={(isTouched || isSubmitted) && invalid ? error : ''}
             required={isRequired}
@@ -99,8 +99,7 @@ const LatLngInput = props => {
     );
 };
 ```
-
-## Usage with MUI `<Select>`
+## Usage with Material UI `<Select>`
 
 ```jsx
 // in SexInput.js
@@ -145,4 +144,24 @@ const PersonEdit = () => (
         </SimpleForm>
     </Edit>
 );
+```
+
+**Tip**: Remember to use react-admin's `<InputHelperText>` component in custom inputs to properly translate and render messages and errors coming from `useInput()`.
+
+## Important note about formState
+
+[react-hook-form's `formState` is wrapped with a Proxy](https://react-hook-form.com/docs/useformstate/#rules) to improve render performance and skip extra computation if specific state is not subscribed. So, make sure you deconstruct or read the `formState` before render in order to enable the subscription.
+
+```js
+const { isDirty } = useFormState(); // ✅
+const formState = useFormState(); // ❌ should deconstruct the formState      
+```
+
+This pattern should be followed when writing a custom input with `useInput()`.
+
+```jsx
+const { formState: { isSubmitted }} = useInput(props); // ✅
+
+const { formState } = useInput(props);
+const submitted = formState.isSubmitted; // ❌
 ```

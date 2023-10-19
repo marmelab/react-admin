@@ -41,6 +41,7 @@ const frenchMessages: TranslationMessages = {
             open: 'Ouvrir',
             toggle_theme: 'Thème clair/sombre',
             select_columns: 'Colonnes',
+            update_application: "Recharger l'application",
         },
         boolean: {
             true: 'Oui',
@@ -166,6 +167,7 @@ const frenchMessages: TranslationMessages = {
             logged_out: 'Votre session a pris fin, veuillez vous reconnecter.',
             not_authorized:
                 "Vous n'êtes pas autorisé(e) à accéder à cette ressource.",
+            application_update_available: 'Une mise à jour est disponible.',
         },
         validation: {
             required: 'Ce champ est requis',
@@ -177,6 +179,7 @@ const frenchMessages: TranslationMessages = {
             email: 'Doit être un email',
             oneOf: 'Doit être au choix: %{options}',
             regex: 'Doit respecter un format spécifique (regexp): %{pattern}',
+            unique: 'Doit être unique',
         },
         saved_queries: {
             label: 'Mes requêtes',

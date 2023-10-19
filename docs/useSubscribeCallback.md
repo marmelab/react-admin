@@ -9,7 +9,12 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 This is useful to start a subscription from an event handler, like a button click.
 
-![useSubscribeCallback](./img/useSubscribeCallback.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/useSubscribeCallback.webm" type="video/webm"/>
+  <source src="./img/useSubscribeCallback.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 ## Usage
 
@@ -164,7 +169,12 @@ const LaunchBackgroundJob = () => {
 };
 ```
 
-![useSubscribeOnceCallback](./img/useSubscribeOnceCallback.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/useSubscribeOnceCallback.webm" type="video/webm"/>
+  <source src="./img/useSubscribeOnceCallback.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 You can use the `unsubscribeOnUnmount` option to keep the subscription alive after the component unmounts.
 

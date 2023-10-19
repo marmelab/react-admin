@@ -49,7 +49,7 @@ const TextBlock = ({
     );
 };
 
-const TextBlocWithPreferences = props => {
+const TextBlockWithPreferences = props => {
     const [color] = usePreference('color', '#ffffff');
     return <TextBlock color={color} {...props} />;
 };
@@ -75,7 +75,7 @@ const ConfigurableTextBlock = ({
     ...props
 }: any) => (
     <Configurable editor={<TextBlockEditor />} preferenceKey={preferenceKey}>
-        <TextBlocWithPreferences {...props} />
+        <TextBlockWithPreferences {...props} />
     </Configurable>
 );
 
@@ -115,7 +115,7 @@ const SalesBlockEditor = () => {
             <input
                 type="checkbox"
                 defaultChecked={showDate}
-                onChange={e => setShowDate(v => !v)}
+                onChange={() => setShowDate(v => !v)}
                 id="showDate"
             />
         </>

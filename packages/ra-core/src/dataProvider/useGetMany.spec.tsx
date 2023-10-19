@@ -13,7 +13,6 @@ const UseGetMany = ({
     meta = undefined,
     options = {},
     callback = null,
-    ...rest
 }) => {
     const hookValue = useGetMany(resource, { ids, meta }, options);
     if (callback) callback(hookValue);
@@ -22,13 +21,7 @@ const UseGetMany = ({
 
 let updateState;
 
-const UseCustomGetMany = ({
-    resource,
-    ids,
-    options = {},
-    callback = null,
-    ...rest
-}) => {
+const UseCustomGetMany = ({ resource, ids, options = {}, callback = null }) => {
     const [stateIds, setStateIds] = useState(ids);
     const hookValue = useGetMany(resource, { ids: stateIds }, options);
     if (callback) callback(hookValue);

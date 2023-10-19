@@ -13,11 +13,14 @@ import {
     useUnselectAll,
     useResourceContext,
     MutationMode,
+    RaRecord,
+    UpdateManyParams,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
+import { UseMutationOptions } from 'react-query';
 
 export const BulkUpdateWithConfirmButton = (
     props: BulkUpdateWithConfirmButtonProps
@@ -67,16 +70,19 @@ export const BulkUpdateWithConfirmButton = (
             );
             setOpen(false);
         },
+        mutationOptions = {},
         ...rest
     } = props;
+    const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
 
     const [updateMany, { isLoading }] = useUpdateMany(
         resource,
-        { ids: selectedIds, data },
+        { ids: selectedIds, data, meta: mutationMeta },
         {
             onSuccess,
             onError,
             mutationMode,
+            ...otherMutationOptions,
         }
     );
 
@@ -145,21 +151,28 @@ const sanitizeRestProps = ({
     'resource' | 'selectedIds' | 'icon' | 'data'
 >) => rest;
 
-export interface BulkUpdateWithConfirmButtonProps
-    extends BulkActionProps,
+export interface BulkUpdateWithConfirmButtonProps<
+    RecordType extends RaRecord = any,
+    MutationOptionsError = unknown
+> extends BulkActionProps,
         ButtonProps {
     confirmContent?: React.ReactNode;
-    confirmTitle?: string;
+    confirmTitle?: React.ReactNode;
     icon?: ReactElement;
     data: any;
     onSuccess?: () => void;
     onError?: (error: any) => void;
     mutationMode?: MutationMode;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        MutationOptionsError,
+        UpdateManyParams<RecordType>
+    > & { meta?: any };
 }
 
 BulkUpdateWithConfirmButton.propTypes = {
-    confirmTitle: PropTypes.string,
-    confirmContent: PropTypes.string,
+    confirmTitle: PropTypes.node,
+    confirmContent: PropTypes.node,
     label: PropTypes.string,
     resource: PropTypes.string,
     selectedIds: PropTypes.arrayOf(PropTypes.any),

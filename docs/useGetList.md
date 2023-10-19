@@ -13,10 +13,51 @@ This hook calls `dataProvider.getList()` when the component mounts. It's ideal f
 ```jsx
 const { data, total, isLoading, error, refetch } = useGetList(
     resource,
-    { pagination, sort, filter, meta },
+    {
+        pagination: { page, perPage },
+        sort: { field, order },
+        filter,
+        meta
+    },
     options
 );
 ```
+
+The `meta` argument is optional. It can be anything you want to pass to the data provider, e.g. a list of fields to show in the result.
+
+The `options` parameter is optional, and is passed to [react-query's `useQuery` hook](https://tanstack.com/query/v3/docs/react/reference/useQuery). It may contain the following options:
+
+* `cacheTime`
+* `enabled`
+* `initialData`
+* `initialDataUpdatedAt`
+* `isDataEqual`
+* `keepPreviousData`
+* `meta`
+* `notifyOnChangeProps`
+* `notifyOnChangePropsExclusions`
+* `onError`
+* `onSettled`
+* `onSuccess`
+* `placeholderData`
+* `queryKeyHashFn`
+* `refetchInterval`
+* `refetchIntervalInBackground`
+* `refetchOnMount`
+* `refetchOnReconnect`
+* `refetchOnWindowFocus`
+* `retry`
+* `retryOnMount`
+* `retryDelay`
+* `select`
+* `staleTime`
+* `structuralSharing`
+* `suspense`
+* `useErrorBoundary`
+
+Check [react-query's `useQuery` hook documentation](https://tanstack.com/query/v3/docs/react/reference/useQuery) for details on each of these options.
+
+The react-query [query key](https://react-query-v3.tanstack.com/guides/query-keys) for this hook is `[resource, 'getList', { pagination, sort, filter, meta }]`.
 
 ## Usage
 
@@ -118,3 +159,40 @@ const LatestNews = () => {
 ```
 
 The `data` will automatically update when a new record is created, or an existing record is updated or deleted.
+
+## TypeScript
+
+The `useGetList` hook accepts a generic parameter for the record type:
+
+```tsx
+import { useGetList } from 'react-admin';
+
+type Post = {
+    id: number;
+    title: string;
+};
+
+const LatestNews = () => {
+    const { data: posts, total, isLoading, error } = useGetList<Post>(
+        'posts',
+        { 
+            pagination: { page: 1, perPage: 10 },
+            sort: { field: 'published_at', order: 'DESC' }
+        }
+    );
+    if (isLoading) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    return (
+        <>
+            <h1>Latest news</h1>
+            <ul>
+                {/* TypeScript knows that posts is of type Post[] */}
+                {posts.map(post =>
+                    <li key={post.id}>{post.title}</li>
+                )}
+            </ul>
+            <p>{posts.length} / {total} articles</p>
+        </>
+    );
+};
+```

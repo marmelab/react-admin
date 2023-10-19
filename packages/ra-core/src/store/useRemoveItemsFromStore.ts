@@ -11,7 +11,7 @@ import { useStoreContext } from './useStoreContext';
  * const ResetDatagridPrefs = () {
  *    const removeItems = useRemoveItemsFromStore();
  *
- *    const hancleClick = () => {
+ *    const handleClick = () => {
  *        removeItems('datagrid.prefs');
  *    };
  *

@@ -1,1 +1,2 @@
 *.md
+packages/create-react-admin/templates/**

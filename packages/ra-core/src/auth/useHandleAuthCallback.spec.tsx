@@ -98,50 +98,6 @@ describe('useHandleAuthCallback', () => {
         });
     });
 
-    it('should logout and not redirect to any page when the callback was not successfully handled', async () => {
-        const history = createMemoryHistory({ initialEntries: ['/'] });
-        render(
-            <HistoryRouter history={history}>
-                <AuthContext.Provider
-                    value={{
-                        ...authProvider,
-                        handleCallback: () => Promise.reject(),
-                    }}
-                >
-                    <QueryClientProvider client={queryClient}>
-                        <TestComponent />
-                    </QueryClientProvider>
-                </AuthContext.Provider>
-            </HistoryRouter>
-        );
-        await waitFor(() => {
-            expect(logout).toHaveBeenCalled();
-            expect(redirect).not.toHaveBeenCalled();
-        });
-    });
-
-    it('should redirect to the provided route when the callback was not successfully handled', async () => {
-        const history = createMemoryHistory({ initialEntries: ['/'] });
-        render(
-            <HistoryRouter history={history}>
-                <AuthContext.Provider
-                    value={{
-                        ...authProvider,
-                        handleCallback: () =>
-                            Promise.reject({ redirectTo: '/test' }),
-                    }}
-                >
-                    <QueryClientProvider client={queryClient}>
-                        <TestComponent />
-                    </QueryClientProvider>
-                </AuthContext.Provider>
-            </HistoryRouter>
-        );
-        await waitFor(() => {
-            expect(redirect).toHaveBeenCalledWith('/test');
-        });
-    });
-
     it('should use custom useQuery options such as onError', async () => {
         const history = createMemoryHistory({ initialEntries: ['/'] });
         render(

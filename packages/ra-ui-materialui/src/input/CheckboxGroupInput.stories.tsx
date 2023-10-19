@@ -4,9 +4,10 @@ import englishMessages from 'ra-language-english';
 import { Typography } from '@mui/material';
 import { FavoriteBorder, Favorite } from '@mui/icons-material';
 import { required, testDataProvider, useRecordContext } from 'ra-core';
+import { useFormContext } from 'react-hook-form';
 
 import { AdminContext } from '../AdminContext';
-import { Create } from '../detail';
+import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { CheckboxGroupInput } from './CheckboxGroupInput';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
@@ -177,9 +178,9 @@ const OptionText = () => {
     const record = useRecordContext();
     return (
         <>
-            <Typography sx={{ marginTop: 0.5 }}>{record.name}</Typography>
+            <Typography sx={{ marginTop: 0.5 }}>{record?.name}</Typography>
             <Typography color="textSecondary" sx={{ marginBottom: 2 }}>
-                {record.details}
+                {record?.details}
             </Typography>
         </>
     );
@@ -210,6 +211,109 @@ export const HelperText = () => (
                     validate={[required()]}
                     helperText="Helper text"
                 />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+export const TranslateChoice = () => {
+    const i18nProvider = polyglotI18nProvider(() => ({
+        ...englishMessages,
+        'option.tech': 'Tech',
+        'option.business': 'Business',
+    }));
+    return (
+        <AdminContext
+            i18nProvider={i18nProvider}
+            dataProvider={
+                {
+                    getOne: () =>
+                        Promise.resolve({ data: { id: 1, tags: ['tech'] } }),
+                    getList: () =>
+                        Promise.resolve({
+                            data: [
+                                { id: 'tech', name: 'option.tech' },
+                                { id: 'business', name: 'option.business' },
+                            ],
+                            total: 2,
+                        }),
+                    getMany: (_resource, { ids }) =>
+                        Promise.resolve({
+                            data: [
+                                { id: 'tech', name: 'option.tech' },
+                                { id: 'business', name: 'option.business' },
+                            ].filter(({ id }) => ids.includes(id)),
+                        }),
+                } as any
+            }
+        >
+            <Edit resource="posts" id="1">
+                <SimpleForm>
+                    <CheckboxGroupInput
+                        label="translateChoice default"
+                        source="tags"
+                        choices={[
+                            { id: 'tech', name: 'option.tech' },
+                            { id: 'business', name: 'option.business' },
+                        ]}
+                    />
+                    <CheckboxGroupInput
+                        label="translateChoice true"
+                        source="tags"
+                        choices={[
+                            { id: 'tech', name: 'option.tech' },
+                            { id: 'business', name: 'option.business' },
+                        ]}
+                        translateChoice
+                    />
+                    <CheckboxGroupInput
+                        label="translateChoice false"
+                        source="tags"
+                        choices={[
+                            { id: 'tech', name: 'option.tech' },
+                            { id: 'business', name: 'option.business' },
+                        ]}
+                        translateChoice={false}
+                    />
+                    <ReferenceArrayInput reference="tags" source="tags">
+                        <CheckboxGroupInput
+                            optionText="name"
+                            label="inside ReferenceArrayInput"
+                        />
+                    </ReferenceArrayInput>
+                    <ReferenceArrayInput reference="tags" source="tags">
+                        <CheckboxGroupInput
+                            optionText="name"
+                            label="inside ReferenceArrayInput forced"
+                            translateChoice
+                        />
+                    </ReferenceArrayInput>
+                </SimpleForm>
+            </Edit>
+        </AdminContext>
+    );
+};
+
+const SetFocusButton = ({ source }) => {
+    const { setFocus } = useFormContext();
+    return (
+        <button onClick={() => setFocus(source)}>Set focus on {source}</button>
+    );
+};
+
+export const SetFocus = () => (
+    <AdminContext>
+        <Create resource="posts" sx={{ width: 600 }}>
+            <SimpleForm>
+                <TextInput source="title" />
+                <CheckboxGroupInput
+                    source="tags"
+                    choices={[
+                        { id: 'tech', name: 'option.tech' },
+                        { id: 'business', name: 'option.business' },
+                    ]}
+                />
+                <SetFocusButton source="tags" />
             </SimpleForm>
         </Create>
     </AdminContext>

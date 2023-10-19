@@ -1,6 +1,6 @@
 {
     "name": "ra-core",
-    "version": "4.8.4",
+    "version": "4.14.5",
     "description": "Core components of react-admin, a frontend Framework for building admin applications on top of REST services, using ES6, React",
     "files": [
         "*.md",
@@ -26,10 +26,10 @@
         "watch": "tsc --outDir dist/esm --module es2015 --watch"
     },
     "devDependencies": {
-        "@hookform/resolvers": "^2.8.8",
+        "@hookform/resolvers": "^3.2.0",
         "@testing-library/react": "^11.2.3",
         "@testing-library/react-hooks": "^7.0.2",
-        "@types/jest": "^26.0.19",
+        "@types/jest": "^29.5.2",
         "@types/node": "^17.0.8",
         "@types/node-polyglot": "^0.4.31",
         "@types/react": "^17.0.20",
@@ -39,19 +39,21 @@
         "ignore-styles": "~5.0.1",
         "react": "^17.0.0",
         "react-dom": "^17.0.0",
-        "react-hook-form": "^7.40.0",
+        "react-hook-form": "^7.43.9",
         "react-router": "^6.1.0",
         "react-router-dom": "^6.1.0",
         "react-test-renderer": "^16.9.0 || ^17.0.0",
+        "recharts": "^2.1.15",
         "rimraf": "^3.0.2",
-        "typescript": "^4.4.0",
-        "yup": "^0.32.11"
+        "typescript": "^5.1.3",
+        "yup": "^0.32.11",
+        "zod": "^3.22.1"
     },
     "peerDependencies": {
         "history": "^5.1.0",
         "react": "^16.9.0 || ^17.0.0 || ^18.0.0",
         "react-dom": "^16.9.0 || ^17.0.0 || ^18.0.0",
-        "react-hook-form": "^7.40.0",
+        "react-hook-form": "^7.43.9",
         "react-router": "^6.1.0",
         "react-router-dom": "^6.1.0"
     },
@@ -67,5 +69,5 @@
         "react-is": "^17.0.2",
         "react-query": "^3.32.1"
     },
-    "gitHead": "8748248e40742bbd367338e0573a00213e17d3ab"
+    "gitHead": "e936ff2c3f887d2e98ef136cf3b3f3d254725fc4"
 }

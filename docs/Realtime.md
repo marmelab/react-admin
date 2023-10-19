@@ -7,8 +7,8 @@ title: "Realtime"
 
 React-admin provides hooks and UI components for collaborative applications where several people work in parallel. It allows publishing and subscribing to real-time events, updating views when another user pushes a change, notifying end users of events, and preventing data loss when two editors work on the same resource concurrently.
 
-<video controls autoplay muted width="100%">
-  <source src="./img/CollaborativeDemo.mp4" type="video/mp4">
+<video controls autoplay playsinline muted width="100%">
+  <source src="./img/CollaborativeDemo.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -79,7 +79,12 @@ const PostList = () => (
 );
 ```
 
-![useSubscribeToRecordList](./img/useSubscribeToRecordList.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/useSubscribeToRecordList.webm" type="video/webm"/>
+  <source src="./img/useSubscribeToRecordList.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 This feature leverages the following hooks:
 
@@ -91,6 +96,112 @@ And the following components:
 -   [`<ListLive>`](./ListLive.md)
 -   [`<EditLive>`](./EditLive.md)
 -   [`<ShowLive>`](./ShowLive.md)
+
+## Real Time Notifications
+
+Thanks to the Ra-realtime hooks, you can implement custom notifications based on events. For instance, consider a long server action called `recompute` for which you'd like to show the progression.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/useSubscribeCallback.webm" type="video/webm"/>
+  <source src="./img/useSubscribeCallback.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+First, leverage the ability to [add custom dataProvider methods](https://marmelab.com/react-admin/Actions.html#calling-custom-methods) to allow calling this custom end point from the UI:
+
+```ts
+export const dataProvider = {
+    // ...standard dataProvider methods such as getList, etc.
+    recompute: async (params) => {
+        httpClient(`${apiUrl}/recompute`, {
+            method: 'POST',
+            body: JSON.stringify(params.data), // contains the project's id
+        }).then(({ json }) => ({ data: json }));
+    }
+}
+```
+
+Then, make sure your API sends events with a topic named `recompute_PROJECT_ID` where `PROJECT_ID` is the project identifier:
+
+```json
+{
+    "type": "recompute_PROJECT_ID",
+    "payload": {
+        "progress": 10
+    },
+}
+```
+
+Finally, create a component to actually call this function and show a notification, leveraging the [useSubscribeCallback](./useSubscribeCallback.md) hook:
+
+{% raw %}
+```jsx
+import { useState, useCallback } from 'react';
+import { useDataProvider, useRecordContext } from 'react-admin';
+import { Box, Button, Card, Alert, AlertTitle, LinearProgress, Typography } from '@mui/material';
+import { useSubscribeCallback } from '@react-admin/ra-realtime';
+
+export const RecomputeProjectStatsButton = () => {
+    const dataProvider = useDataProvider();
+    const record = useRecordContext();
+    const [progress, setProgress] = useState(0);
+
+    const callback = useCallback(
+        (event, unsubscribe) => {
+            setProgress(event.payload?.progress || 0);
+            if (event.payload?.progress === 100) {
+                unsubscribe();
+            }
+        },
+        [setProgress]
+    );
+    const subscribe = useSubscribeCallback(
+        `recompute_${record.id}`,
+        callback
+    );
+
+    return (
+        <div>
+            <Button
+                onClick={() => {
+                    subscribe();
+                    dataProvider.recomputeProjectStats({ id: record.id });
+                }}
+            >
+                Recompute
+            </Button>
+            {progress > 0 && (
+                <Card sx={{ m: 2, maxWidth: 400 }}>
+                    <Alert severity={progress === 100 ? 'success' : 'info'}>
+                        <AlertTitle>
+                            Recomputing stats{' '}
+                            {progress === 100 ? 'complete' : 'in progress'}
+                        </AlertTitle>
+                        <LinearProgressWithLabel value={progress} />
+                    </Alert>
+                </Card>
+            )}
+        </div>
+    );
+};
+
+const LinearProgressWithLabel = props => {
+    return (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ width: '100%', mr: 1 }}>
+                <LinearProgress variant="determinate" {...props} />
+            </Box>
+            <Box sx={{ minWidth: 35 }}>
+                <Typography
+                    variant="body2"
+                    color="text.secondary"
+                >{`${Math.round(props.value)}%`}</Typography>
+            </Box>
+        </Box>
+    );
+};
+```
+{% endraw %}
 
 ## Menu Badges
 
@@ -127,11 +238,16 @@ This feature leverages the following components:
 
 And last but not least, ra-realtime provides a **lock mechanism** to prevent two users from editing the same resource at the same time.
 
-![Edit With Locks](./img/locks-demo.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/locks-demo.webm" type="video/webm"/>
+  <source src="./img/locks-demo.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 A user can lock a resource, either by voluntarily asking for a lock or by editing a resource. When a resource is locked, other users can't edit it. When the lock is released, other users can edit the resource again.
 
-```jsx
+```tsx
 export const NewMessageForm = () => {
     const [create, { isLoading: isCreating }] = useCreate();
     const record = useRecordContext();
@@ -189,7 +305,7 @@ yarn add @react-admin/ra-realtime
 
 `ra-realtime` is part of the [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to install this package.
 
-You will need a data provider that supports real-time subscriptions. Check out the [Data Provider Requirements](./RealTimeDataProvider.md) section for more information.
+You will need a data provider that supports real-time subscriptions. Check out the [Data Provider Requirements](./RealtimeDataProvider.md) section for more information.
 
 ## I18N
 
@@ -199,7 +315,7 @@ To create your own translations, you can use the TypeScript types to see the str
 
 Here is an example of how to customize translations in your app:
 
-```jsx
+```tsx
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';

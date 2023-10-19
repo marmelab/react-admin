@@ -26,6 +26,8 @@ This field fetches a one-to-one relationship, e.g. the details of a book, when u
 
 For the inverse relationships (the book linked to a book_detail), you can use a [`<ReferenceField>`](./ReferenceField.md).
 
+**Tip**: To edit the records of a one-to-one relationship, use [the `<ReferenceOneInput>` component](./ReferenceOneInput.md).
+
 ## Usage
 
 Here is how to render a field of the `book_details` resource inside a Show view for the `books` resource:
@@ -59,7 +61,7 @@ const BookShow = () => (
 | `children`     | Optional | `Element`                                   | -                                | The Field element used to render the referenced record                              |
 | `filter`       | Optional | `Object`                                    | `{}`                             | Used to filter referenced records                                                   |
 | `link`         | Optional | `string | Function`                         | `edit`                           | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
-| `queryOptions` | Optional | [`UseQueryOptions`](https://tanstack.com/query/v4/docs/reference/useQuery?from=reactQueryV3&original=https://react-query-v3.tanstack.com/reference/useQuery) | `{}` | `react-query` client options |
+| `queryOptions` | Optional | [`UseQueryOptions`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | `{}` | `react-query` client options |
 | `sort`         | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'ASC' }`  | Used to order referenced records                                                    |
 
 `<ReferenceOneField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
@@ -105,7 +107,7 @@ By default, `<ReferenceOneField>` links to the edition page of the related recor
 </ReferenceOneField>
 ```
 
-You can also set the `link` prop to a string, which will be used as the link type. It can be either `edit`, `show`, a route path, or a fiunction returning a route path based on the given record.
+You can also set the `link` prop to a string, which will be used as the link type. It can be either `edit`, `show`, a route path, or a function returning a route path based on the given record.
 
 ```jsx
 <ReferenceOneField 
@@ -120,7 +122,7 @@ You can also set the `link` prop to a string, which will be used as the link typ
 
 ## `queryOptions`
 
-`<ReferenceOneField>` uses `react-query` to fetch the related record. You can set [any of `useQuery` options](https://react-query-v3.tanstack.com/reference/useQuery) via the the `queryOptions` prop.
+`<ReferenceOneField>` uses `react-query` to fetch the related record. You can set [any of `useQuery` options](https://tanstack.com/query/v3/docs/react/reference/useQuery) via the `queryOptions` prop.
 
 For instance, if you want to disable the refetch on window focus for this query, you can use:
 
@@ -221,3 +223,13 @@ const BookShow = () => (
 );
 ```
 {% endraw %}
+
+## Removing The Link
+
+By default, `<ReferenceOneField>` links to the edition page of the related record. You can disable this behavior by setting the `link` prop to `false`.
+
+```jsx
+<ReferenceOneField label="Genre" reference="book_details" target="book_id" link={false}>
+    <TextField source="genre" />
+</ReferenceOneField>
+```

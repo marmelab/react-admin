@@ -4,7 +4,7 @@ import { parsePath } from 'history';
 
 import { Identifier, RaRecord } from '../types';
 import { useBasename } from './useBasename';
-import { useCreatePath } from './useCreatePath';
+import { CreatePathType, useCreatePath } from './useCreatePath';
 
 type RedirectToFunction = (
     resource?: string,
@@ -13,7 +13,7 @@ type RedirectToFunction = (
     state?: object
 ) => To;
 
-export type RedirectionSideEffect = string | false | RedirectToFunction;
+export type RedirectionSideEffect = CreatePathType | false | RedirectToFunction;
 
 /**
  * Hook for Redirection Side Effect

@@ -1,0 +1,5 @@
+{
+    "dependencies": {
+        "ra-data-simple-rest": "^4.14.0"
+    }
+}

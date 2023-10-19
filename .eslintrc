@@ -1,5 +1,9 @@
+
 {
     "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "warnOnUnsupportedTypeScriptVersion": false
+    },
     "extends": ["react-app", "plugin:prettier/recommended"],
     "plugins": [
         "@typescript-eslint",
@@ -26,6 +30,16 @@
         ],
         "no-redeclare": "off",
         "import/no-anonymous-default-export": "off",
-        "@typescript-eslint/no-redeclare": ["error"]
+        "@typescript-eslint/no-redeclare": ["error"],
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": [
+            "warn", // or "error"
+            { 
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_",
+                "caughtErrorsIgnorePattern": "^_",
+                "ignoreRestSiblings": true
+            }
+        ]
     }
 }

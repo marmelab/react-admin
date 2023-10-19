@@ -5,7 +5,6 @@ import {
     FormDataConsumer,
     required,
     testDataProvider,
-    TestTranslationProvider,
     useRecordContext,
 } from 'ra-core';
 import { AdminContext } from '../AdminContext';
@@ -17,9 +16,13 @@ import {
     DifferentShapeInGetMany,
     InsideReferenceInput,
     InsideReferenceInputDefaultValue,
+    InsideReferenceInputWithCustomizedItemRendering,
     Nullable,
     NullishValuesSupport,
     VeryLargeOptionsNumber,
+    TranslateChoice,
+    OnChange,
+    InsideReferenceInputOnChange,
 } from './AutocompleteInput.stories';
 import { act } from '@testing-library/react-hooks';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
@@ -600,62 +603,38 @@ describe('<AutocompleteInput />', () => {
         });
     });
 
-    it('should translate the value by default', async () => {
-        render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <TestTranslationProvider translate={x => `**${x}**`}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ role: 2 }}
-                    >
-                        <AutocompleteInput
-                            {...defaultProps}
-                            choices={[
-                                { id: 2, name: 'foo' },
-                                { id: 3, name: 'bar' },
-                            ]}
-                        />
-                    </SimpleForm>
-                </TestTranslationProvider>
-            </AdminContext>
-        );
-        expect(screen.queryByDisplayValue('**foo**')).not.toBeNull();
-        fireEvent.focus(
-            screen.getByLabelText('**resources.users.fields.role**')
-        );
-        await waitFor(() => {
-            expect(screen.queryByText('**bar**')).not.toBeNull();
+    describe('translateChoice', () => {
+        it('should translate the choices by default', async () => {
+            render(<TranslateChoice />);
+            const inputElement = (await screen.findByLabelText(
+                'translateChoice default'
+            )) as HTMLInputElement;
+            expect(inputElement.value).toBe('Female');
         });
-    });
-
-    it('should not translate the value if translateChoice is false', async () => {
-        render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <TestTranslationProvider translate={x => `**${x}**`}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ role: 2 }}
-                    >
-                        <AutocompleteInput
-                            {...defaultProps}
-                            translateChoice={false}
-                            choices={[
-                                { id: 2, name: 'foo' },
-                                { id: 3, name: 'bar' },
-                            ]}
-                        />
-                    </SimpleForm>
-                </TestTranslationProvider>
-            </AdminContext>
-        );
-        expect(screen.queryByDisplayValue('foo')).not.toBeNull();
-        expect(screen.queryByDisplayValue('**foo**')).toBeNull();
-        fireEvent.focus(
-            screen.getByLabelText('**resources.users.fields.role**')
-        );
-        await waitFor(() => {
-            expect(screen.queryByText('bar')).not.toBeNull();
-            expect(screen.queryByText('**bar**')).toBeNull();
+        it('should not translate the choices when translateChoice is false', async () => {
+            render(<TranslateChoice />);
+            const inputElement = (await screen.findByLabelText(
+                'translateChoice false'
+            )) as HTMLInputElement;
+            expect(inputElement.value).toBe('option.female');
+        });
+        it('should not translate the choices when inside ReferenceInput by default', async () => {
+            render(<TranslateChoice />);
+            await waitFor(() => {
+                const inputElement = screen.getByLabelText(
+                    'inside ReferenceInput'
+                ) as HTMLInputElement;
+                expect(inputElement.value).toBe('option.female');
+            });
+        });
+        it('should translate the choices when inside ReferenceInput when translateChoice is true', async () => {
+            render(<TranslateChoice />);
+            await waitFor(() => {
+                const inputElement = screen.getByLabelText(
+                    'inside ReferenceInput forced'
+                ) as HTMLInputElement;
+                expect(inputElement.value).toBe('Female');
+            });
         });
     });
 
@@ -1119,7 +1098,7 @@ describe('<AutocompleteInput />', () => {
                 <SimpleForm
                     mode="onBlur"
                     onSubmit={jest.fn()}
-                    defaultValues={{ role: 2 }}
+                    defaultValues={{ language: 'ang' }}
                 >
                     <AutocompleteInput
                         source="language"
@@ -1184,7 +1163,7 @@ describe('<AutocompleteInput />', () => {
                 <SimpleForm
                     mode="onBlur"
                     onSubmit={jest.fn()}
-                    defaultValues={{ role: 2 }}
+                    defaultValues={{ language: 'ang' }}
                 >
                     <AutocompleteInput
                         source="language"
@@ -1250,7 +1229,7 @@ describe('<AutocompleteInput />', () => {
                 <SimpleForm
                     mode="onBlur"
                     onSubmit={jest.fn()}
-                    defaultValues={{ role: 2 }}
+                    defaultValues={{ language: 'ang' }}
                 >
                     <AutocompleteInput
                         source="language"
@@ -1282,6 +1261,24 @@ describe('<AutocompleteInput />', () => {
                 expect.anything(),
                 expect.anything()
             );
+        });
+    });
+
+    it('should include full record when calling onChange', async () => {
+        const onChange = jest.fn();
+        render(<OnChange onChange={onChange} />);
+        await waitFor(() => {
+            expect(
+                (screen.getByRole('textbox') as HTMLInputElement).value
+            ).toBe('Leo Tolstoy');
+        });
+        screen.getByRole('textbox').focus();
+        fireEvent.click(await screen.findByText('Victor Hugo'));
+        await waitFor(() => {
+            expect(onChange).toHaveBeenCalledWith(2, {
+                id: 2,
+                name: 'Victor Hugo',
+            });
         });
     });
 
@@ -1393,6 +1390,54 @@ describe('<AutocompleteInput />', () => {
             expect(testFailed).toBe(false);
             expect(input.value).toBe('Leo Tolstoy test');
         });
+
+        it('should not use getSuggestions to do client-side filtering', async () => {
+            // filtering should be done server-side only, and hence matchSuggestion should never be called
+            const matchSuggestion = jest.fn().mockReturnValue(true);
+            render(
+                <InsideReferenceInputWithCustomizedItemRendering
+                    matchSuggestion={matchSuggestion}
+                />
+            );
+            await waitFor(
+                () => {
+                    expect(
+                        (screen.getByRole('textbox') as HTMLInputElement).value
+                    ).toBe('Leo Tolstoy - Russian');
+                },
+                { timeout: 2000 }
+            );
+            screen.getByRole('textbox').focus();
+            fireEvent.click(screen.getByLabelText('Clear value'));
+            await waitFor(() => {
+                expect(screen.getByRole('listbox').children).toHaveLength(5);
+            });
+            fireEvent.change(screen.getByRole('textbox'), {
+                target: { value: 'French' },
+            });
+            await waitFor(
+                () => {
+                    screen.getByText('No options');
+                },
+                { timeout: 2000 }
+            );
+            expect(matchSuggestion).not.toHaveBeenCalled();
+        });
+
+        it('should include full record when calling onChange', async () => {
+            const onChange = jest.fn();
+            render(<InsideReferenceInputOnChange onChange={onChange} />);
+            (await screen.findAllByRole('textbox'))[0].focus();
+            fireEvent.click(await screen.findByText('Victor Hugo'));
+            await waitFor(() => {
+                expect(onChange).toHaveBeenCalledWith(2, {
+                    id: 2,
+                    language: 'French',
+                    name: 'Victor Hugo',
+                });
+            });
+            expect(screen.getByDisplayValue('French')).not.toBeNull();
+        });
     });
 
     it("should allow to edit the input if it's inside a FormDataConsumer", () => {
@@ -1405,7 +1450,7 @@ describe('<AutocompleteInput />', () => {
                     defaultValues={{ role: 2 }}
                 >
                     <FormDataConsumer>
-                        {({ formData, ...rest }) => {
+                        {() => {
                             return (
                                 <AutocompleteInput
                                     label="Id"
@@ -1521,5 +1566,25 @@ describe('<AutocompleteInput />', () => {
         await checkInputValue('prefers_zero-string', '0');
         await checkInputValue('prefers_zero-number', '0');
         await checkInputValue('prefers_valid-value', '1');
+    });
+
+    it('should call the onInputChange callback', async () => {
+        const onInputChange = jest.fn();
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <AutocompleteInput
+                        {...defaultProps}
+                        onInputChange={onInputChange}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+        const input = screen.getByLabelText(
+            'resources.users.fields.role'
+        ) as HTMLInputElement;
+        fireEvent.change(input, { target: { value: 'newValue' } });
+        await waitFor(() => expect(onInputChange).toHaveBeenCalled());
     });
 });

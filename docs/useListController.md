@@ -39,11 +39,11 @@ const MyList = () => {
 * [`exporter`](./List.md#exporter): exporter function
 * [`filter`](./List.md#filter-permanent-filter): permanent filter, forced over the user filter
 * [`filterDefaultValues`](./List.md#filterdefaultvalues): default values for the filter form
-* [`perPage`](./List.md#perpage-pagination-size): number of results per page
+* [`perPage`](./List.md#perpage): number of results per page
 * [`queryOptions`](./List.md#queryoptions): react-query options for the useQuery call
 * [`resource`](./List.md#resource): resource name, e.g. 'posts' ; defaults to the current resource context
-* [`sort`](./List.md#sort-default-sort-field--order), current sort value, e.g. { field: 'published_at', order: 'DESC' }
-* [`storeKey`](#storekey): key used to differenciate the list from another sharing the same resource, in store managed states
+* [`sort`](./List.md#sort), current sort value, e.g. `{ field: 'published_at', order: 'DESC' }`
+* [`storeKey`](#storekey): key used to differentiate the list from another sharing the same resource, in store managed states
 
 Here are their default values:
 
@@ -96,6 +96,8 @@ In case no `storeKey` is provided, the states will be stored with the following 
 
 **Note:** Please note that selection state will remain linked to a resource-based key as described [here](./List.md#disablesyncwithlocation).
 
+If you want to disable the storage of list parameters altogether for a given list, you can use [the `disableSyncWithLocation` prop](./List.md#disablesyncwithlocation).
+
 In the example below, both lists `TopPosts` and `FlopPosts` use the same resource ('posts'), but their controller states are stored separately (under the store keys `'top'` and `'flop'` respectively).
 
 {% raw %}
@@ -133,6 +135,9 @@ const FlopPosts = (
 );
 ```
 {% endraw %}
+
+You can disable this feature by setting the `storeKey` prop to `false`. When disabled, parameters will not be persisted in the store.
+
 
 ## Return Value
 

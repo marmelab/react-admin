@@ -30,6 +30,7 @@ describe('FormDataConsumerView', () => {
 
         expect(children).toHaveBeenCalledWith({
             formData,
+            getSource: expect.anything(),
         });
     });
 
@@ -146,7 +147,7 @@ describe('FormDataConsumerView', () => {
 
         fireEvent.click(screen.getByLabelText('ra.action.add'));
 
-        expect(globalScopedFormData).toEqual({ name: '' });
+        expect(globalScopedFormData).toEqual({ name: null });
 
         fireEvent.change(
             screen.getByLabelText('resources.undefined.fields.authors.name'),

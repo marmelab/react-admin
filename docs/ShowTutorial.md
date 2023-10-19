@@ -17,7 +17,7 @@ To better understand how to use the various react-admin hooks and components ded
 
 ### A Show View Built By Hand
 
-Here is how you could write a simple book show view, leveraging react-admin's [data fetching hooks](./DataProviderIntroduction.md):
+Here is how you could write a simple book show view, leveraging react-admin's [data fetching hooks](./DataProviders.md):
 
 ```jsx
 import { useParams } from 'react-router-dom';
@@ -388,7 +388,7 @@ const BookShow = () => (
 
 In many cases, neither the `<SimpleShowLayout>` nor the `<TabbedShowLayout>` components are enough to display the fields you want. In these cases, pass your layout components directly as children of the `<Show>` component. As `<Show>` takes care of fetching the record and putting it in a `<RecordContextProvider>`, you can use Field components directly. 
 
-For instance, to display several fields in a single line, you can use MUI's `<Grid>` component:
+For instance, to display several fields in a single line, you can use Material UI's `<Grid>` component:
 
 {% raw %}
 ```jsx

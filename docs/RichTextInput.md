@@ -5,13 +5,17 @@ title: "The RichTextInput Component"
 
 # `<RichTextInput>`
 
-`<RichTextInput>` is the ideal component to let users edit HTML content. It is powered by [TipTap](https://www.tiptap.dev/).
+`<RichTextInput>` lets users edit rich text in a WYSIWYG editor, and store the result as HTML. It is powered by [TipTap](https://www.tiptap.dev/).
 
-![RichTextInput](./img/rich-text-input.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/rich-text-input.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 ## Usage
 
-**Note**: Due to its size, `<RichTextInput>` is not bundled by default with react-admin. You must install it first, using npm:
+Due to its size, `<RichTextInput>` is not bundled by default with react-admin. You must install it first, using npm:
 
 ```sh
 npm install ra-input-rich-text
@@ -25,8 +29,8 @@ Use it as you would any react-admin inputs:
 import { Edit, SimpleForm, TextInput } from 'react-admin';
 import { RichTextInput } from 'ra-input-rich-text';
 
-export const PostEdit = (props) => (
-	<Edit {...props}>
+export const PostEdit = () => (
+	<Edit>
 		<SimpleForm>
 			<TextInput source="title" />
 			<RichTextInput source="body" />
@@ -167,3 +171,51 @@ const MyRichTextInput = ({ size, ...props }) => (
 );
 ```
 
+## AI Writing Assistant
+
+Modern AI tools can be a great help for editors. React-admin proposes an AI-powered writing assistant for the `<RichTextInput>` component, called [`<SmartRichTextInput>`](./SmartRichTextInput.md):
+
+<video controls playsinline muted loop poster="https://marmelab.com/ra-enterprise/modules/assets/SmartRichTextInput.png" >
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/SmartRichTextInput.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+`<SmartRichTextInput>` is a drop-in replacement for `<RichTextInput>`: 
+
+```jsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { SmartRichTextInput } from '@react-admin/ra-ai';
+
+export const PostEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="title" />
+            <SmartRichTextInput source="body" />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+`<SmartRichTextInput>` is available as part of the [ra-ai](https://marmelab.com/ra-enterprise/modules/ra-ai) enterprise package.
+
+## Lazy Loading
+
+The `<RichTextInput>` component depends on TipTap, which in turns depends on ProseMirror. Together, these libraries represent about 120kB of minified JavaScript. If you don't use `<RichTextInput>` on all your forms, you can [lazy load](https://react.dev/reference/react/lazy#suspense-for-code-splitting) it to reduce the size of your bundle.
+
+To do so, replace the import:
+
+```jsx
+import { RichTextInput } from 'ra-input-rich-text';
+```
+
+with a dynamic import:
+
+```jsx
+const RichTextInput = React.lazy(() =>
+    import('ra-input-rich-text').then(module => ({
+        default: module.RichTextInput,
+    }))
+);
+```
+
+Once compiled, your application will load the `<RichTextInput>` only when needed.

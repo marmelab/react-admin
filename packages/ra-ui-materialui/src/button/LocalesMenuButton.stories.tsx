@@ -12,7 +12,7 @@ import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
 import { List, Datagrid } from '../list';
 import { TextField } from '../field';
-import { AppBar, Layout } from '../layout';
+import { AppBar, Layout, TitlePortal } from '../layout';
 
 export default { title: 'ra-ui-materialui/button/LocalesMenuButton' };
 
@@ -142,9 +142,9 @@ const BookList = () => {
     );
 };
 
-const MyAppBar = props => (
-    <AppBar {...props}>
-        <Typography flex="1" variant="h6" id="react-admin-title"></Typography>
+const MyAppBar = () => (
+    <AppBar>
+        <TitlePortal />
         <LocalesMenuButton
             languages={[
                 { locale: 'en', name: 'English' },

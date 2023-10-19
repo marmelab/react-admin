@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { SxProps } from '@mui/material';
+import { Typography, SxProps } from '@mui/material';
 import PropTypes from 'prop-types';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useTranslate } from 'ra-core';
+import { useTimeout, useTranslate } from 'ra-core';
 
 export const Loading = (props: LoadingProps) => {
     const {
@@ -12,31 +12,27 @@ export const Loading = (props: LoadingProps) => {
         loadingSecondary = 'ra.message.loading',
         ...rest
     } = props;
-
+    const oneSecondHasPassed = useTimeout(1000);
     const translate = useTranslate();
-    return (
+    return oneSecondHasPassed ? (
         <Root className={className} {...rest}>
             <div className={LoadingClasses.message}>
-                <CircularProgress
-                    className={LoadingClasses.icon}
-                    color="primary"
-                />
-                <h1>{translate(loadingPrimary)}</h1>
-                <div>{translate(loadingSecondary)}</div>
+                <CircularProgress className={LoadingClasses.icon} />
+                <Typography variant="h5" mt={3} color="text.secondary">
+                    {translate(loadingPrimary, { _: loadingPrimary })}
+                </Typography>
+                <Typography variant="body2">
+                    {translate(loadingSecondary, { _: loadingSecondary })}
+                </Typography>
             </div>
         </Root>
-    );
+    ) : null;
 };
 
 Loading.propTypes = {
     className: PropTypes.string,
     loadingPrimary: PropTypes.string,
     loadingSecondary: PropTypes.string,
-};
-
-Loading.defaultProps = {
-    loadingPrimary: 'ra.page.loading',
-    loadingSecondary: 'ra.message.loading',
 };
 
 export interface LoadingProps {
@@ -61,23 +57,17 @@ const Root = styled('div', {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    [theme.breakpoints.up('md')]: {
-        height: '100%',
-    },
-    [theme.breakpoints.down('xl')]: {
-        height: '100vh',
-        marginTop: '-3em',
-    },
-
-    [`& .${LoadingClasses.icon}`]: {
-        width: '9em',
-        height: '9em',
-    },
-
+    alignItems: 'center',
+    height: '100%',
     [`& .${LoadingClasses.message}`]: {
         textAlign: 'center',
         fontFamily: 'Roboto, sans-serif',
-        opacity: 0.5,
-        margin: '0 1em',
+        color: theme.palette.text.disabled,
+        paddingTop: '1em',
+        paddingBottom: '1em',
+    },
+    [`& .${LoadingClasses.icon}`]: {
+        width: '9em',
+        height: '9em',
     },
 }));

@@ -157,7 +157,7 @@ describe('<DateInput />', () => {
                     onSubmit={onSubmit}
                     defaultValues={{ publishedAt: new Date('2021-09-11') }}
                 >
-                    <DateInput {...defaultProps} parse={val => null} />
+                    <DateInput {...defaultProps} parse={() => null} />
                 </SimpleForm>
             </AdminContext>
         );

@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { useRecordContext, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { FieldProps, fieldPropTypes } from './types';
 import { SxProps } from '@mui/system';
 import { Link } from '@mui/material';
 
@@ -23,7 +23,11 @@ import { Link } from '@mui/material';
  *     <a href="doc.pdf" title="Presentation">Presentation</a>
  * </div>
  */
-export const FileField = (props: FileFieldProps) => {
+export const FileField = <
+    RecordType extends Record<string, any> = Record<string, any>
+>(
+    props: FileFieldProps<RecordType>
+) => {
     const {
         className,
         emptyText,
@@ -72,6 +76,7 @@ export const FileField = (props: FileFieldProps) => {
                                 ping={ping}
                                 rel={rel}
                                 variant="body2"
+                                onClick={e => e.stopPropagation()}
                             >
                                 {fileTitleValue}
                             </Link>
@@ -82,12 +87,12 @@ export const FileField = (props: FileFieldProps) => {
         );
     }
 
-    const titleValue = get(record, title) || title;
+    const titleValue = get(record, title)?.toString() || title;
 
     return (
         <Root className={className} {...sanitizeFieldRestProps(rest)}>
             <Link
-                href={sourceValue}
+                href={sourceValue?.toString()}
                 title={titleValue}
                 target={target}
                 download={download}
@@ -101,7 +106,9 @@ export const FileField = (props: FileFieldProps) => {
     );
 };
 
-export interface FileFieldProps extends PublicFieldProps, InjectedFieldProps {
+export interface FileFieldProps<
+    RecordType extends Record<string, any> = Record<string, any>
+> extends FieldProps<RecordType> {
     src?: string;
     title?: string;
     target?: string;

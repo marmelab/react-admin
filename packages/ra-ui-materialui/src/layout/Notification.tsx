@@ -43,6 +43,17 @@ export const Notification = (props: NotificationProps) => {
     const translate = useTranslate();
 
     useEffect(() => {
+        const beforeunload = (e: BeforeUnloadEvent) => {
+            e.preventDefault();
+            const confirmationMessage = '';
+            e.returnValue = confirmationMessage;
+            return confirmationMessage;
+        };
+
+        if (messageInfo?.notificationOptions?.undoable) {
+            window.addEventListener('beforeunload', beforeunload);
+        }
+
         if (notifications.length && !messageInfo) {
             // Set a new snack when we don't have an active one
             setMessageInfo(takeNotification());
@@ -51,6 +62,12 @@ export const Notification = (props: NotificationProps) => {
             // Close an active snack when a new one is added
             setOpen(false);
         }
+
+        return () => {
+            if (messageInfo?.notificationOptions?.undoable) {
+                window.removeEventListener('beforeunload', beforeunload);
+            }
+        };
     }, [notifications, messageInfo, open, takeNotification]);
 
     const handleRequestClose = useCallback(() => {
@@ -91,7 +108,13 @@ export const Notification = (props: NotificationProps) => {
                 typeof message === 'string' &&
                 translate(message, messageArgs)
             }
-            autoHideDuration={autoHideDurationFromMessage || autoHideDuration}
+            autoHideDuration={
+                // Only apply the default autoHideDuration when autoHideDurationFromMessage is undefined
+                // as 0 and null are valid values
+                autoHideDurationFromMessage === undefined
+                    ? autoHideDuration
+                    : autoHideDurationFromMessage
+            }
             disableWindowBlurListener={undoable}
             TransitionProps={{ onExited: handleExited }}
             onClose={handleRequestClose}

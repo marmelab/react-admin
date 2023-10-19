@@ -73,7 +73,6 @@ interface EditViewProps
 EditView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     aside: PropTypes.element,
-    children: PropTypes.element,
     className: PropTypes.string,
     component: ComponentPropType,
     defaultTitle: PropTypes.any,
@@ -92,6 +91,7 @@ EditView.propTypes = {
     title: PropTypes.node,
 };
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const sanitizeRestProps = ({
     addMiddleware = null,
     defaultTitle = null,
@@ -117,6 +117,7 @@ const sanitizeRestProps = ({
     transform = null,
     ...rest
 }) => rest;
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 const PREFIX = 'RaEdit';
 

@@ -1,16 +1,23 @@
 import * as React from 'react';
+import { isElement } from 'react-is';
 import { styled } from '@mui/material/styles';
-import { memo, isValidElement, ReactElement } from 'react';
+import { memo, ReactElement } from 'react';
 import {
     IconButton,
     ListItem,
     ListItemButton,
+    ListItemIcon,
     ListItemProps,
     ListItemText,
     ListItemSecondaryAction,
 } from '@mui/material';
 import CancelIcon from '@mui/icons-material/CancelOutlined';
-import { useTranslate, useListFilterContext, shallowEqual } from 'ra-core';
+import {
+    useTranslate,
+    useListFilterContext,
+    shallowEqual,
+    useEvent,
+} from 'ra-core';
 import matches from 'lodash/matches';
 import pickBy from 'lodash/pickBy';
 
@@ -141,36 +148,27 @@ const arePropsEqual = (prevProps, nextProps) =>
  * );
  */
 export const FilterListItem = memo((props: FilterListItemProps) => {
-    const { label, value, ...rest } = props;
+    const {
+        label,
+        value,
+        icon,
+        isSelected: getIsSelected = DefaultIsSelected,
+        toggleFilter: userToggleFilter = DefaultToggleFilter,
+        ...rest
+    } = props;
     const { filterValues, setFilters } = useListFilterContext();
     const translate = useTranslate();
+    const toggleFilter = useEvent(userToggleFilter);
 
-    const isSelected = matches(
-        pickBy(value, val => typeof val !== 'undefined')
-    )(filterValues);
+    // We can't wrap this function with useEvent as it is called in the render phase
+    const isSelected = getIsSelected(value, filterValues);
 
-    const addFilter = () => {
-        setFilters({ ...filterValues, ...value }, null, false);
-    };
-
-    const removeFilter = () => {
-        const keysToRemove = Object.keys(value);
-        const filters = Object.keys(filterValues).reduce(
-            (acc, key) =>
-                keysToRemove.includes(key)
-                    ? acc
-                    : { ...acc, [key]: filterValues[key] },
-            {}
-        );
-
-        setFilters(filters, null, false);
-    };
-
-    const toggleFilter = () => (isSelected ? removeFilter() : addFilter());
+    const handleClick = () =>
+        setFilters(toggleFilter(value, filterValues), null, false);
 
     return (
         <StyledListItem
-            onClick={toggleFilter}
+            onClick={handleClick}
             selected={isSelected}
             disablePadding
             {...rest}
@@ -179,9 +177,16 @@ export const FilterListItem = memo((props: FilterListItemProps) => {
                 disableGutters
                 className={FilterListItemClasses.listItemButton}
             >
+                {icon && (
+                    <ListItemIcon
+                        className={FilterListItemClasses.listItemIcon}
+                    >
+                        {icon}
+                    </ListItemIcon>
+                )}
                 <ListItemText
                     primary={
-                        isValidElement(label)
+                        isElement(label)
                             ? label
                             : translate(label, { _: label })
                     }
@@ -192,7 +197,7 @@ export const FilterListItem = memo((props: FilterListItemProps) => {
                     <ListItemSecondaryAction
                         onClick={event => {
                             event.stopPropagation();
-                            toggleFilter();
+                            handleClick();
                         }}
                     >
                         <IconButton size="small">
@@ -205,17 +210,40 @@ export const FilterListItem = memo((props: FilterListItemProps) => {
     );
 }, arePropsEqual);
 
+const DefaultIsSelected = (value, filters) =>
+    matches(pickBy(value, val => typeof val !== 'undefined'))(filters);
+
+const DefaultToggleFilter = (value, filters) => {
+    const isSelected = matches(
+        pickBy(value, val => typeof val !== 'undefined')
+    )(filters);
+
+    if (isSelected) {
+        const keysToRemove = Object.keys(value);
+        return Object.keys(filters).reduce(
+            (acc, key) =>
+                keysToRemove.includes(key)
+                    ? acc
+                    : { ...acc, [key]: filters[key] },
+            {}
+        );
+    }
+
+    return { ...filters, ...value };
+};
+
 const PREFIX = 'RaFilterListItem';
 
 export const FilterListItemClasses = {
     listItemButton: `${PREFIX}-listItemButton`,
     listItemText: `${PREFIX}-listItemText`,
+    listItemIcon: `${PREFIX}-listItemIcon`,
 };
 
 const StyledListItem = styled(ListItem, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
+})({
     [`& .${FilterListItemClasses.listItemButton}`]: {
         paddingRight: '2em',
         paddingLeft: '2em',
@@ -223,9 +251,16 @@ const StyledListItem = styled(ListItem, {
     [`& .${FilterListItemClasses.listItemText}`]: {
         margin: 0,
     },
-}));
+    [`& .${FilterListItemClasses.listItemIcon}`]: {
+        minWidth: 0,
+        marginRight: '0.5em',
+    },
+});
 
 export interface FilterListItemProps extends Omit<ListItemProps, 'value'> {
     label: string | ReactElement;
     value: any;
+    icon?: ReactElement;
+    toggleFilter?: (value: any, filters: any) => any;
+    isSelected?: (value: any, filters: any) => boolean;
 }

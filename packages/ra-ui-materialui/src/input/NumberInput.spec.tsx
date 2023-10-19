@@ -212,7 +212,7 @@ describe('<NumberInput />', () => {
             fireEvent.blur(input);
             fireEvent.click(screen.getByText('ra.action.save'));
             await screen.findByText(
-                'views:{"invalid":true,"isDirty":true,"isTouched":true,"error":{"type":"validate","message":"error","ref":{}}}'
+                'views:{"invalid":true,"isDirty":true,"isTouched":true,"error":{"type":"validate","message":"@@react-admin@@\\"error\\"","ref":{}}}'
             );
         });
     });
@@ -550,7 +550,7 @@ describe('<NumberInput />', () => {
                     >
                         <NumberInput
                             {...defaultProps}
-                            validate={value => undefined}
+                            validate={() => undefined}
                         />
                     </SimpleForm>
                 </AdminContext>

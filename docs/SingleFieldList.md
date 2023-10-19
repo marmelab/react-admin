@@ -7,7 +7,7 @@ title: "The SingleFieldList Component"
 
 Use `<SingleFieldList>` when you want to display only one property for each record in a list, for instance, to display the list of tag names for a post.
 
-![SingleFieldList](./img/singlefieldlist.png)
+![SingleFieldList](./img/ReferenceArrayField-default-child.png)
 
 `<SingleFieldList>` is an **iterator** component: it gets `data` from the `ListContext`, and iterates over it to display each record. It creates a `<RecordContext>` for each record, and delegates the actual rendering to its child - usually a Field component. 
 
@@ -56,10 +56,14 @@ const PostList = () => (
 
 ![SingleFieldList in Datagrid](./img/singlefieldlist-datagrid.png)
 
+## Props
+
 `<SingleFieldList>` accepts the following props:
 
-* [`linkType`](#linktype)
-* [`sx`](#sx-css-api)
+| Prop        | Required | Type                      | Default | Description                                   |
+| ----------- | -------- | ------------------------- | ------- | --------------------------------------------- |
+| `linkType`  | Optional | `'edit' | 'show' | false` | `edit`  | The target of the link on each item           |
+| `sx`        | Optional | `object`                  |         | The sx props of the Material UI Box component |
 
 ## `linkType`
 
@@ -78,13 +82,11 @@ The `<SingleFieldList>` items link to the edition page by default. You can set t
 </ReferenceArrayField>
 ```
 
-
 `linkType` accepts the following values:
 
 * `linkType="edit"`: links to the edit page. This is the default behavior.
 * `linkType="show"`: links to the show page.
 * `linkType={false}`: does not create any link.
-
 
 ## `sx`: CSS API
 
@@ -94,4 +96,4 @@ The `<SingleFieldList>` component accepts the usual `className` prop. You can al
 |-----------------------------|-------------------------|
 | `& .RaSingleFieldList-link` | Applied to each link    |
 
-**Tip**: You can override these classes for all `<SingleFieldList>` instances by overriding them in a MUI theme, using the key "RaSingleFieldList".
+**Tip**: You can override these classes for all `<SingleFieldList>` instances by overriding them in a Material UI theme, using the key "RaSingleFieldList".

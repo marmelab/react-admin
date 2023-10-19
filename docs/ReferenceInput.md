@@ -7,7 +7,12 @@ title: "The ReferenceInput Component"
 
 Use `<ReferenceInput>` for foreign-key values, for instance, to edit the `company_id` of a `contact` resource. 
 
-![ReferenceInput](./img/reference-input.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/reference-input.webm" type="video/webm"/>
+  <source src="./img/reference-input.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 ## Usage
 
@@ -68,7 +73,7 @@ dataProvider.getList('companies', {
 
 ```js
 dataProvider.getList('companies', { 
-    filter: { q: [search term] },
+    filter: { q: ['search term'] },
     sort: { field: 'id', order: 'DESC' },
     pagination: { page: 1, perPage: 25 }
 });
@@ -102,7 +107,7 @@ See the [`children`](#children) section for more details.
 | `label`            | Optional | `string`                                    | -                                | Useful only when `ReferenceInput` is in a Filter array, the label is used as the Filter label. |
 | `page`             | Optional | `number`                                    | 1                                | The current page number                                                                        |
 | `perPage`          | Optional | `number`                                    | 25                               | Number of suggestions to show                                                                  |
-| `queryOptions`     | Optional | [`UseQueryOptions`](https://tanstack.com/query/v4/docs/reference/useQuery?from=reactQueryV3&original=https://react-query-v3.tanstack.com/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
+| `queryOptions`     | Optional | [`UseQueryOptions`](https://tanstack.com/query/v3/docs/react/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
 | `sort`             | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field:'id', order:'DESC' }` | How to order the list of suggestions                                                           |
 
 **Note**: `<ReferenceInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) (like `label`) ; it is the responsibility of the child component to apply them.
@@ -335,6 +340,37 @@ const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
     <AutocompleteInput filterToQuery={filterToQuery} />
 </ReferenceInput>
 ```
+
+## Tree Structure
+
+If the reference resource is a tree, use [`<ReferenceNodeInput>`](./ReferenceNodeInput.md) instead of `<ReferenceInput>`.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/ReferenceNodeInput-TreeInput-basic.webm" type="video/webm"/>
+  <source src="./img/ReferenceNodeInput-TreeInput-basic.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+For instance, to edit the category of a product and let the user choose the category in a tree:
+
+```tsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { ReferenceNodeInput } from '@react-admin/ra-tree';
+
+const ProductEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="id" disabled />
+            <TextInput source="name" />
+            <ReferenceNodeInput
+                source="category_id"
+                reference="categories"
+            />
+        </SimpleForm>
+    </Edit>
+);
+```
+
 
 ## Performance 
 

@@ -8,9 +8,10 @@ import {
     ListControllerResult,
     ResourceContextProvider,
     useRecordContext,
+    RaRecord,
 } from 'ra-core';
 
-import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
+import { fieldPropTypes, FieldProps } from './types';
 
 /**
  * Render related records to the current one.
@@ -58,22 +59,30 @@ import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
  *    ...
  * </ReferenceManyField>
  */
-export const ReferenceManyField = (props: ReferenceManyFieldProps) => {
+export const ReferenceManyField = <
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord
+>(
+    props: ReferenceManyFieldProps<RecordType>
+) => {
     const {
         children,
-        filter,
+        filter = defaultFilter,
         page = 1,
         pagination = null,
-        perPage,
+        perPage = 25,
         reference,
         resource,
-        sort,
-        source,
+        sort = defaultSort,
+        source = 'id',
         target,
     } = props;
     const record = useRecordContext(props);
 
-    const controllerProps = useReferenceManyFieldController({
+    const controllerProps = useReferenceManyFieldController<
+        RecordType,
+        ReferenceRecordType
+    >({
         filter,
         page,
         perPage,
@@ -95,9 +104,9 @@ export const ReferenceManyField = (props: ReferenceManyFieldProps) => {
     );
 };
 
-export interface ReferenceManyFieldProps
-    extends PublicFieldProps,
-        InjectedFieldProps {
+export interface ReferenceManyFieldProps<
+    RecordType extends Record<string, any> = Record<string, any>
+> extends FieldProps<RecordType> {
     children: ReactNode;
     filter?: FilterPayload;
     page?: number;
@@ -119,19 +128,12 @@ ReferenceManyField.propTypes = {
     resource: PropTypes.string,
     sortBy: PropTypes.string,
     sortByOrder: fieldPropTypes.sortByOrder,
-    source: PropTypes.string.isRequired,
+    source: PropTypes.string,
     sort: PropTypes.exact({
         field: PropTypes.string,
-        order: PropTypes.string,
+        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
     }),
     target: PropTypes.string.isRequired,
-};
-
-ReferenceManyField.defaultProps = {
-    filter: {},
-    perPage: 25,
-    sort: { field: 'id', order: 'DESC' },
-    source: 'id',
 };
 
 // FIXME kept for backwards compatibility, unused, to be removed in v5
@@ -164,7 +166,7 @@ ReferenceManyFieldView.propTypes = {
     className: PropTypes.string,
     sort: PropTypes.exact({
         field: PropTypes.string,
-        order: PropTypes.string,
+        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
     }),
     data: PropTypes.any,
     isLoading: PropTypes.bool,
@@ -172,3 +174,6 @@ ReferenceManyFieldView.propTypes = {
     reference: PropTypes.string,
     setSort: PropTypes.func,
 };
+
+const defaultFilter = {};
+const defaultSort = { field: 'id', order: 'DESC' as const };

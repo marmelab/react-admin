@@ -5,7 +5,12 @@ title: "Translation"
 
 # Internationalization
 
-![Switching interface language](./img/translation.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/translation.webm" type="video/webm"/>
+  <source src="./img/translation.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 The react-admin user interface uses English as the default language. But you can also display the UI and content in other languages, allow changing language at runtime, and even lazy-loading optional languages to avoid increasing the bundle size with all translations. 
 
@@ -23,15 +28,15 @@ Just like for data fetching and authentication, react-admin is agnostic to your 
 
 It should be an object with the following methods:
 
-```jsx
-// in src/i18nProvider.js
+```ts
+// in src/i18nProvider.ts
 export const i18nProvider = {
     // required
     translate: (key, options) => string,
     changeLocale: locale => Promise<void>,
     getLocale: () => string,
     // optional
-    getLocales: () => [{ locale: string; name: string; }],
+    getLocales: () => [{ locale: string, name: string }],
 }
 ```
 
@@ -124,6 +129,70 @@ const App = () => (
 ```
 
 Check [the translation setup documentation](./TranslationSetup.md) for details about `ra-i18n-polyglot` and how to configure it.
+
+## `ra-i18n-i18next`
+
+React-admin also provides a package called `ra-i18n-i18next` that leverages [the i18next library](https://www.i18next.com/) to build an `i18nProvider` based on a dictionary of translations.
+
+You might prefer this package over `ra-i18n-polyglot` when:
+- you already use i18next services such as [locize](https://locize.com/)
+- you want more control on how you organize translations, leveraging [multiple files and namespaces](https://www.i18next.com/principles/namespaces)
+- you want more control on how you [load translations](https://www.i18next.com/how-to/add-or-load-translations)
+- you want to use features not available in Polyglot such as:
+    - [advanced formatting](https://www.i18next.com/translation-function/formatting);
+    - [nested translations](https://www.i18next.com/translation-function/nesting)
+    - [context](https://www.i18next.com/translation-function/context)
+
+```tsx
+// in src/i18nProvider.js
+import i18n from 'i18next';
+import { useI18nextProvider, convertRaTranslationsToI18next } from 'ra-i18n-i18next';
+import en from 'ra-language-english';
+import fr from 'ra-language-french';
+
+const i18nInstance = i18n.use(
+    resourcesToBackend(language => {
+        if (language === 'fr') {
+            return import(
+                `ra-language-french`
+            ).then(({ default: messages }) =>
+                convertRaTranslationsToI18next(messages)
+            );
+        }
+        return import(`ra-language-english`).then(({ default: messages }) =>
+            convertRaTranslationsToI18next(messages)
+        );
+    })
+);
+
+export const useMyI18nProvider = () => useI18nextProvider({
+    i18nInstance,
+    availableLocales: [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'French' },
+    ],
+});
+
+// in src/App.tsx
+import { Admin } from 'react-admin';
+import { useMyI18nProvider } from './i18nProvider';
+
+const App = () => {
+    const i18nProvider = useMyI18nProvider();
+    if (!i18nProvider) return null;
+
+    return (
+        <Admin
+            i18nProvider={i18nProvider}
+            dataProvider={dataProvider}
+        >
+            ...
+        </Admin>
+    );
+};
+```
+
+Check [the ra-i18n-i18next documentation](https://github.com/marmelab/react-admin/tree/master/packages/ra-i18n-i18next) for details.
 
 ## Translation Files
 

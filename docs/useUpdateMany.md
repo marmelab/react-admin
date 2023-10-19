@@ -7,9 +7,9 @@ title: "useUpdateMany"
 
 This hook allows to call `dataProvider.updateMany()` when the callback is executed, and update an array of records based on their `ids` and a `data` argument.
 
+## Syntax
 
 ```jsx
-// syntax
 const [updateMany, { data, isLoading, error }] = useUpdateMany(
     resource,
     { ids, data },
@@ -28,6 +28,8 @@ updateMany(
 ```
 
 So, should you pass the parameters when calling the hook, or when executing the callback? It's up to you; but if you have the choice, we recommend passing the parameters when calling the `updateMany` callback (second example below).
+
+## Usage
 
 ```jsx
 // set params when calling the hook
@@ -63,16 +65,18 @@ const BulkResetViewsButton = () => {
 };
 ```
 
-**Tip**: If you use TypeScript, you can specify the record and error types for more type safety:
+## TypeScript
+
+The `useUpdateMany` hook accepts a generic parameter for the record type and another for the error type:
 
 ```tsx
 useUpdateMany<Product, Error>(undefined, undefined, {
     onError: (error) => {
-        // error is an instance of Error.
+        // TypeScript knows that error is of type Error
     },
     onSettled: (data, error) => {
-        // data is an instance of Product.
-        // error is an instance of Error.
+        // TypeScript knows that data is of type Product[]
+        // TypeScript knows that error is of type Error
     },
 })
 ```

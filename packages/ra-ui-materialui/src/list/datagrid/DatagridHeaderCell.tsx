@@ -73,7 +73,7 @@ DatagridHeaderCell.propTypes = {
     field: PropTypes.element,
     sort: PropTypes.shape({
         field: PropTypes.string,
-        order: PropTypes.string,
+        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
     }).isRequired,
     isSorting: PropTypes.bool,
     resource: PropTypes.string,
@@ -110,11 +110,11 @@ export const DatagridHeaderCellClasses = {
 const StyledTableCell = styled(TableCell, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
+})({
     [`& .MuiTableSortLabel-icon`]: {
         display: 'none',
     },
     [`& .Mui-active .MuiTableSortLabel-icon`]: {
         display: 'inline',
     },
-}));
+});

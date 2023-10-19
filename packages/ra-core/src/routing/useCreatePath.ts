@@ -76,8 +76,11 @@ export const useCreatePath = () => {
     );
 };
 
+type AnyString = string & {};
+export type CreatePathType = 'list' | 'edit' | 'show' | 'create' | AnyString;
+
 export interface CreatePathParams {
-    type: string;
+    type: CreatePathType;
     resource: string;
     id?: Identifier;
 }

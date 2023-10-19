@@ -73,7 +73,7 @@ export const useExpandAll = (
         []
     );
 
-    const isEexpanded = Array.isArray(expandedIds)
+    const isExpanded = Array.isArray(expandedIds)
         ? // eslint-disable-next-line eqeqeq
           expandedIds.some(id => ids.some(id2 => id2 == id))
         : false;
@@ -84,11 +84,11 @@ export const useExpandAll = (
             expanded_id => !ids.some(id => id == expanded_id)
         );
         setExpandedIds(
-            isEexpanded
+            isExpanded
                 ? unaffectedExpandedIds
                 : unaffectedExpandedIds.concat(ids)
         );
-    }, [expandedIds, setExpandedIds, isEexpanded, ids]);
+    }, [expandedIds, setExpandedIds, isExpanded, ids]);
 
-    return [isEexpanded, toggleExpandedAll];
+    return [isExpanded, toggleExpandedAll];
 };

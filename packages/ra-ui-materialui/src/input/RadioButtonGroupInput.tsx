@@ -78,7 +78,7 @@ import { LinearProgress } from '../layout';
  * @example
  * <RadioButtonGroupInput source="gender" choices={choices} translateChoice={false}/>
  *
- * The object passed as `options` props is passed to the MUI <RadioButtonGroup> component
+ * The object passed as `options` props is passed to the Material UI <RadioButtonGroup> component
  */
 export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
     const {
@@ -92,12 +92,12 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         margin = 'dense',
         onBlur,
         onChange,
-        options,
-        optionText,
-        optionValue,
+        options = defaultOptions,
+        optionText = 'name',
+        optionValue = 'id',
         parse,
         resource: resourceProp,
-        row,
+        row = true,
         source: sourceProp,
         translateChoice,
         validate,
@@ -110,6 +110,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         error: fetchError,
         resource,
         source,
+        isFromReference,
     } = useChoicesContext({
         choices: choicesProp,
         isFetching: isFetchingProp,
@@ -158,6 +159,12 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
             </Labeled>
         );
     }
+
+    const renderHelperText =
+        !!fetchError ||
+        helperText !== false ||
+        ((isTouched || isSubmitted) && invalid);
+
     return (
         <StyledFormControl
             component="fieldset"
@@ -191,18 +198,20 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
                         choice={choice}
                         optionText={optionText}
                         optionValue={optionValue}
-                        source={source}
-                        translateChoice={translateChoice}
+                        source={id}
+                        translateChoice={translateChoice ?? !isFromReference}
                     />
                 ))}
             </RadioGroup>
-            <FormHelperText>
-                <InputHelperText
-                    touched={isTouched || isSubmitted || fetchError}
-                    error={error?.message || fetchError?.message}
-                    helperText={helperText}
-                />
-            </FormHelperText>
+            {renderHelperText ? (
+                <FormHelperText>
+                    <InputHelperText
+                        touched={isTouched || isSubmitted || fetchError}
+                        error={error?.message || fetchError?.message}
+                        helperText={helperText}
+                    />
+                </FormHelperText>
+            ) : null}
         </StyledFormControl>
     );
 };
@@ -224,14 +233,6 @@ RadioButtonGroupInput.propTypes = {
     resource: PropTypes.string,
     source: PropTypes.string,
     translateChoice: PropTypes.bool,
-};
-
-RadioButtonGroupInput.defaultProps = {
-    options: {},
-    optionText: 'name',
-    optionValue: 'id',
-    row: true,
-    translateChoice: true,
 };
 
 const sanitizeRestProps = ({
@@ -291,3 +292,5 @@ const StyledFormControl = styled(FormControl, {
         transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
     },
 }));
+
+const defaultOptions = {};

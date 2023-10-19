@@ -1,9 +1,9 @@
 import React, {
-    useState,
-    ErrorInfo,
-    ReactNode,
     ComponentType,
+    ErrorInfo,
     HtmlHTMLAttributes,
+    Suspense,
+    useState,
 } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import clsx from 'clsx';
@@ -11,16 +11,18 @@ import { styled, SxProps } from '@mui/material/styles';
 import { CoreLayoutProps } from 'ra-core';
 
 import { AppBar as DefaultAppBar, AppBarProps } from './AppBar';
-import { Sidebar as DefaultSidebar } from './Sidebar';
+import { Sidebar as DefaultSidebar, SidebarProps } from './Sidebar';
 import { Menu as DefaultMenu, MenuProps } from './Menu';
 import { Error, ErrorProps } from './Error';
 import { SkipNavigationButton } from '../button';
 import { useSidebarState } from './useSidebarState';
 import { Inspector } from '../preferences';
+import { Loading } from './Loading';
 
 export const Layout = (props: LayoutProps) => {
     const {
         appBar: AppBar = DefaultAppBar,
+        appBarAlwaysOn,
         children,
         className,
         dashboard,
@@ -39,12 +41,12 @@ export const Layout = (props: LayoutProps) => {
     };
 
     return (
-        <StyledLayout className={clsx('layout', className)} {...rest}>
+        <Core className={clsx('layout', className)} {...rest}>
             <SkipNavigationButton />
             <div className={LayoutClasses.appFrame}>
-                <AppBar open={open} title={title} />
+                <AppBar open={open} title={title} alwaysOn={appBarAlwaysOn} />
                 <main className={LayoutClasses.contentWithSidebar}>
-                    <Sidebar>
+                    <Sidebar appBarAlwaysOn={appBarAlwaysOn}>
                         <Menu hasDashboard={!!dashboard} />
                     </Sidebar>
                     <div id="main-content" className={LayoutClasses.content}>
@@ -60,13 +62,15 @@ export const Layout = (props: LayoutProps) => {
                                 />
                             )}
                         >
-                            {children}
+                            <Suspense fallback={<Loading />}>
+                                {children}
+                            </Suspense>
                         </ErrorBoundary>
                     </div>
                 </main>
                 <Inspector />
             </div>
-        </StyledLayout>
+        </Core>
     );
 };
 
@@ -74,10 +78,11 @@ export interface LayoutProps
     extends CoreLayoutProps,
         Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'> {
     appBar?: ComponentType<AppBarProps>;
+    appBarAlwaysOn?: boolean;
     className?: string;
     error?: ComponentType<ErrorProps>;
     menu?: ComponentType<MenuProps>;
-    sidebar?: ComponentType<{ children: ReactNode }>;
+    sidebar?: ComponentType<SidebarProps>;
     sx?: SxProps;
 }
 
@@ -94,7 +99,7 @@ export const LayoutClasses = {
     content: `${PREFIX}-content`,
 };
 
-const StyledLayout = styled('div', {
+const Core = styled('div', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
@@ -134,7 +139,7 @@ const StyledLayout = styled('div', {
         flexBasis: 0,
         padding: 0,
         [theme.breakpoints.up('xs')]: {
-            paddingRight: theme.spacing(2),
+            paddingRight: theme.spacing(1),
             paddingLeft: theme.spacing(1),
         },
     },

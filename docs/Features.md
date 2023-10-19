@@ -11,7 +11,7 @@ React-admin is a **rich framework** that covers most of the needs of typical adm
 
 With react-admin, developers assemble application components without having to worry about low-level details. They need less code for the same result, and they can **focus on the business logic** of their app.
 
-[![List view without and with react-admin](./img/list-from-react-to-react-admin.webp)](./ListTutorial.md#from-pure-react-to-react-admin)
+[![List view without and with react-admin](./img/list-from-react-to-react-admin.webp)](./img/list-from-react-to-react-admin.webp)
 
 We've crafted the API of react-admin's components and hooks to be as **intuitive** as possible. The react-admin core team uses react-admin every day, and we're always looking for ways to improve the developer experience.
 
@@ -19,7 +19,7 @@ React-admin provides the **best-in-class documentation**, demo apps, and support
 
 That probably explains why more than 3,000 new apps are published every month using react-admin. 
 
-So react-admin is not just the assembly of [react-query](https://react-query.tanstack.com/), [react-hook-form](https://marmelab.com/react-admin/assets/techs/react-hook-form.jpeg), [react-router](https://reacttraining.com/react-router/), [MUI](https://mui.com/) and [Emotion](https://github.com/emotion-js/emotion). It's a **framework** made to speed up and facilitate the development of single-page apps in React.
+So react-admin is not just the assembly of [react-query](https://react-query.tanstack.com/), [react-hook-form](https://marmelab.com/react-admin/assets/techs/react-hook-form.jpeg), [react-router](https://reacttraining.com/react-router/), [Material UI](https://mui.com/material-ui/getting-started/) and [Emotion](https://github.com/emotion-js/emotion). It's a **framework** made to speed up and facilitate the development of single-page apps in React.
 
 ## Basic CRUD
 
@@ -34,8 +34,9 @@ We call this type of interface a "CRUD" interface because it allows us to Create
 
 React-admin started as an engine to generate such CRUD interfaces, and it still does it very well. **Building CRUD interfaces with react-admin requires little to no effort**, and it's very easy to customize them.
 
-<video controls autoplay muted loop width="100%">
-  <source src="./img/CRUD.webm" type="video/webm">
+<video controls autoplay playsinline muted loop width="100%">
+  <source src="./img/CRUD.webm" type="video/webm" />
+  <source src="./img/CRUD.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -56,9 +57,9 @@ React-admin apps run in the browser - they are "Single-Page Apps". They rely on 
 
 Which kind of API? **All kinds**. React-admin is backend agnostic. It doesn't care if your API is a REST API, a GraphQL API, a SOAP API, a JSON-RPC API, or even a local API. It doesn't care if your API is written in PHP, Python, Ruby, Java, or even JavaScript. It doesn't care if your API is a third-party API or a home-grown API.
 
-![Backend agnostic](./img/data-provider.png)
+<img src="./img/data-provider.png" class="no-shadow" alt="Backend agnostic" />
 
-React-admin ships with [more than 45 adapters](./DataProviderList.md) for popular API flavors, and gives you all the tools to build your own adapter. This works thanks to a powerful abstraction layer called the [Data Provider](./DataProviderIntroduction.md).
+React-admin ships with [more than 50 adapters](./DataProviderList.md) for popular API flavors, and gives you all the tools to build your own adapter. This works thanks to a powerful abstraction layer called the [Data Provider](./DataProviders.md).
 
 In a react-admin app, you don't write API Calls. Instead, you communicate with your API using a set of high-level functions, called "Data Provider methods". For instance, to fetch a list of posts, you call the `getList()` method, passing the resource name and the query parameters. 
 
@@ -67,8 +68,9 @@ import { useState, useEffect } from 'react';
 import { useDataProvider } from 'react-admin';
 
 const PostList = () => {
-    const [posts, setPosts] = useState();
-    const [error, setError] = useState([]);
+    const [posts, setPosts] = useState([]);
+    const [error, setError] = useState();
+    const [isLoading, setIsLoading] = useState(true);
     const dataProvider = useDataProvider();
     useEffect(() => {
         dataProvider.getList('posts', { 
@@ -77,9 +79,10 @@ const PostList = () => {
             filter: { status: 'published' } 
         })
             .then(({ data }) => setPosts(data))
-            .catch(error => setError(error));
+            .catch(error => setError(error))
+            .finally(() => setIsLoading(false));
     }, []);
-    if (posts) { return <Loading />; }
+    if (isLoading) { return <p>Loading</p>; }
     if (error) { return <p>ERROR</p>; }
     return (
         <ul>
@@ -197,7 +200,12 @@ const ProductEdit = () => (
 );
 ```
 
-![ReferenceManyInput](./img/reference-many-input.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/reference-many-input.webm" type="video/webm"/>
+  <source src="./img/reference-many-input.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 Reference Input components are also very useful to filter a view by a related record. For instance, to display the list of books of a given author:
 
@@ -216,25 +224,25 @@ const BookList = () => (
 );
 ```
 
-<video controls autoplay muted loop width="100%">
-  <source src="./img/reference-input-filter.webm" type="video/webm">
+<video controls autoplay playsinline muted loop width="100%">
+  <source src="./img/reference-input-filter.webm" type="video/webm" />
+  <source src="./img/reference-input-filter.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
-React-admin supports **one-to-many**, **many-to-one**, **one-to-one**, and **many-to-many relationships**. Check the following components to learn more about relationships:
+React-admin supports **one-to-many**, **many-to-one**, **one-to-one**, and **many-to-many relationships**. The [Fields For Relationships](./FieldsForRelationships.md) page lists all reference fields together with their common usage. Check the following components to learn more about relationships:
 
-- [`ReferenceField`](./ReferenceField.md)
-- [`ReferenceArrayField`](./ReferenceArrayField.md)
-- [`ReferenceManyField`](./ReferenceManyField.md)
-- [`ReferenceManyCount`](./ReferenceManyCount.md)
-- [`ReferenceManyToManyField`](./ReferenceManyToManyField.md)
-- [`ReferenceOneField`](./ReferenceOneField.md)
-- [`ReferenceInput`](./ReferenceInput.md)
-- [`ReferenceArrayInput`](./ReferenceArrayInput.md)
-- [`ReferenceManyInput`](./ReferenceManyInput.md)
-- [`ReferenceManyToManyInput`](./ReferenceManyToManyInput.md)
-
-The [Fields For Relationships](./FieldsForRelationships.md) page lists all reference fields together with their common usage.
+- [`<ReferenceField>`](./ReferenceField.md)
+- [`<ReferenceArrayField>`](./ReferenceArrayField.md)
+- [`<ReferenceManyField>`](./ReferenceManyField.md)
+- [`<ReferenceManyCount>`](./ReferenceManyCount.md)
+- [`<ReferenceManyToManyField>`](./ReferenceManyToManyField.md)
+- [`<ReferenceOneField>`](./ReferenceOneField.md)
+- [`<ReferenceInput>`](./ReferenceInput.md)
+- [`<ReferenceArrayInput>`](./ReferenceArrayInput.md)
+- [`<ReferenceManyInput>`](./ReferenceManyInput.md)
+- [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md)
+- [`<ReferenceOneInput>`](./ReferenceOneInput.md)
 
 Reference components are a tremendous development accelerator for complex frontend features. They also liberate the backend developers from the burden of implementing complex joins.
 
@@ -242,10 +250,10 @@ Reference components are a tremendous development accelerator for complex fronte
 
 Let's be realistic: Many developers focus on features first and don't have much time to spend polishing the User Interface (UI). We tend to be like that, too! The result is that quite often, admin apps are ugly. Spacing isn't consistent, buttons aren't in the best place, and color schemes hurt the eyes.
 
-React-admin provides **components that look pretty good out of the box**, so even if you don't spend time on the UI, it won't look bad (unless you try hard). React-admin uses [MUI](https://mui.com), which is a React implementation of the [Material Design](https://m3.material.io/) guidelines, the most battle-tested design system.
+React-admin provides **components that look pretty good out of the box**, so even if you don't spend time on the UI, it won't look bad (unless you try hard). React-admin uses [Material UI](https://mui.com/material-ui/getting-started/), which is a React implementation of the [Material Design](https://material.io/) guidelines, the most battle-tested design system.
 
-<video controls autoplay muted loop width="100%">
-  <source src="https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4" type="video/webm">
+<video controls autoplay playsinline muted loop width="100%">
+  <source src="https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4" type="video/webm" />
   Your browser does not support the video tag.
 </video>
 
@@ -259,7 +267,7 @@ On the other hand, the default React-admin skin is designed to be dense, giving 
 
 [![Dense layout](./img/dense.webp)](https://marmelab.com/react-admin-demo/#/)
 
-We have made many improvements to this default layout based on user feedback. In our experience, for admin apps, dashboards, and B2B apps, efficiency is more important than large margins. If this is not your use case, you can easily **customize the margin and density** of the UI using the [theme](./Theming.md).
+We have made many improvements to this default layout based on user feedback. In our experience, for admin apps, dashboards, and B2B apps, efficiency is more important than large margins. If this is not your use case, you can easily **customize the margin and density** of the UI using the [theme](./AppTheme.md).
 
 And for mobile users, react-admin renders a different layout with larger margins and less information density (see [Responsive](#responsive)).
 
@@ -285,9 +293,9 @@ Guesser components start by fetching data from the API, analyzing the shape of t
 
 Check the following components to learn more about guessers:
 
-- [`ListGuesser`](./ListGuesser.md)
-- [`EditGuesser`](./EditGuesser.md)
-- [`ShowGuesser`](./ShowGuesser.md)
+- [`<ListGuesser>`](./ListGuesser.md)
+- [`<EditGuesser>`](./EditGuesser.md)
+- [`<ShowGuesser>`](./ShowGuesser.md)
 
 ## Search & Filtering
 
@@ -296,19 +304,31 @@ In most admin and B2B apps, the most common task is to look for a record. React-
 <table><tbody>
 <tr style="border:none">
     <td style="width:50%;border:none;text-align:center">
-        <a title="Filter Button/Form Combo" href="./img/list_filter.gif"><img src="./img/list_filter.gif" /></a>
+        <a title="Filter Button/Form Combo" href="./img/list_filter.webm">
+            <video controls autoplay playsinline muted loop>
+                <source src="./img/list_filter.webm" type="video/webm"/>
+                <source src="./img/list_filter.mp4" type="video/mp4"/>
+                Your browser does not support the video tag.
+            </video>
+        </a>
         <a href="./FilteringTutorial.html#the-filter-buttonform-combo" style="display: block;transform: translateY(-10px);">Filter Button/Form Combo</a>
     </td>
     <td style="width:50%;border:none;text-align:center">
-        <a title="<FilterList> Sidebar" href="./img/filter-sidebar.gif"><img src="./img/filter-sidebar.gif" /></a>
+         <a title="<FilterList> Sidebar" href="./img/filter-sidebar.webm">
+            <video controls autoplay playsinline muted loop>
+                <source src="./img/filter-sidebar.webm" type="video/webm"/>
+                <source src="./img/filter-sidebar.mp4" type="video/mp4"/>
+                Your browser does not support the video tag.
+            </video>
+        </a>
         <a href="./FilteringTutorial.html#the-filterlist-sidebar" style="display: block;transform: translateY(-10px);"><code>&lt;FilterList&gt;</code> Sidebar</a>
     </td>
 </tr>
 <tr style="border:none;background-color:#fff;">
     <td style="width:50%;border:none;text-align:center">
         <a title="Stacked Filters" href="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm">
-            <video controls autoplay muted loop width="90%" style="margin:1rem;box-shadow:0px 4px 4px 0px rgb(0 0 0 / 24%);">
-                <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4">
+            <video controls autoplay playsinline muted loop width="90%" style="margin:1rem;box-shadow:0px 4px 4px 0px rgb(0 0 0 / 24%);">
+                <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4" />
                     Your browser does not support the video tag.
             </video>
         </a>
@@ -347,7 +367,12 @@ Check the following chapters to learn more about each search and filtering compo
 
 Users often apply the same filters over and over again. Saved Queries **let users save a combination of filters** and sort parameters into a new, personal filter, that persists between sessions. 
 
-[![Saved Queries in FilterList](./img/SavedQueriesList.gif)](./img/SavedQueriesList.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/SavedQueriesList.webm" type="video/webm"/>
+  <source src="./img/SavedQueriesList.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 Here is an example `<FilterList>` sidebar with saved queries:
 
@@ -380,7 +405,7 @@ const SongList = () => (
 );
 ```
 
-Check [the Saved Queries Tutorial](./FilteringTutorial.md##saved-queries-let-users-save-filter-and-sort) to learn more.
+Check [the Saved Queries Tutorial](./FilteringTutorial.md#saved-queries-let-users-save-filter-and-sort) to learn more.
 
 Finally, react-admin offers low-level components and hooks to **build your own search UI**:
 
@@ -397,9 +422,9 @@ Check the [Building A Custom Filter Tutorial](./FilteringTutorial.md#building-a-
 
 Many admin apps let users perform complex tasks implying the update of many fields and records. To allow such complex workflows, developers must be able to build sophisticated forms, with elaborate validation rules.
 
-React-admin offers a **rich set of input components** to build forms, powered by [MUI](https://mui.com) and [react-hook-form](https://react-hook-form.com/). React-admin's form components also take care of binding the form values to the record being edited and validating the form inputs.
+React-admin offers a **rich set of input components and form layouts** to build forms, powered by [Material UI](https://mui.com/material-ui/getting-started/) and [react-hook-form](https://react-hook-form.com/). React-admin's form components also take care of binding the form values to the record being edited and validating the form inputs.
 
-For instance, here is how to group inputs into tabs using `<TabbedForm>`:
+For instance, here is how to build a tabbed form for editing a blog post:
 
 ```jsx
 import {
@@ -448,19 +473,27 @@ export const PostEdit = () => (
 );
 ```
 
-![Tabbed Form](./img/tabbed-form.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/tabbed-form.webm" type="video/webm"/>
+  <source src="./img/tabbed-form.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
-React-admin offers, out of the box, several **form layouts**:
+### Form Layouts
 
-- [`SimpleForm`](./SimpleForm.md) for a single-column layout
-- [`TabbedForm`](./TabbedForm.md) for a tabbed layout
-- [`AccordionForm`](./AccordionForm.md) for long forms with collapsible sections
-- [`LongForm`](./LongForm.md) for long forms with a navigation sidebar
-- [`WizardForm`](./WizardForm.md) for multi-step forms
-- [`EditInDialog`](./EditInDialog.md) for sub-forms in a modal dialog
+React-admin offers, out of the box, several form layouts:
+
+- [`<SimpleForm>`](./SimpleForm.md) for a single-column layout
+- [`<TabbedForm>`](./TabbedForm.md) for a tabbed layout
+- [`<AccordionForm>`](./AccordionForm.md) for long forms with collapsible sections
+- [`<LongForm>`](./LongForm.md) for long forms with a navigation sidebar
+- [`<WizardForm>`](./WizardForm.md) for multi-step forms
+- [`<EditDialog>`](./EditDialog.md) for sub-forms in a modal dialog
 - and [`Form`](./Form.md), a headless component to use as a base for your custom layouts
 
-Inside forms, you can use [react-admin input components](./Inputs.md), designed for many types of data: 
+### Input Components
+
+Inside forms, you can use specialize [input components](./Inputs.md), designed for many types of data: 
 
 | Data Type             | Example value                                                | Input Components                                                                                                                                                                                     |
 |-----------------------|--------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -475,16 +508,18 @@ Inside forms, you can use [react-admin input components](./Inputs.md), designed 
 | Date                  | `'2022-10-23'`                                               | [`<DateInput>`](./DateInput.md)                                                                                                                                                                      |
 | Time                  | `'14:30:00'`                                                 | [`<TimeInput>`](./TimeInput.md)                                                                                                                                                                      |
 | Date & time           | `'2022-10-24T19:40:28.003Z'`                                 | [`<DateTimeInput>`](./DateTimeInput.md)                                                                                                                                                              |
-| Object                | `{ foo: 'bar' }`                                             | All inputs (see [ `source`](#source))                                                                                                                                                                |
+| Object                | `{ foo: 'bar' }`                                             | All inputs (see [ `source`](./Inputs.md#source))                                                                                                                                                                |
 | Enum                  | `'foo'`                                                      | [`<SelectInput>`](./SelectInput.md), [`<AutocompleteInput>`](./AutocompleteInput.md), [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md)                                                        |
 | Foreign key           | `42`                                                         | [`<ReferenceInput>`](./ReferenceInput.md)                                                                                                                                                            |
 | Array of objects      | `[{ item: 'jeans', qty: 3 }, { item: 'shirt', qty: 1 }]`     | [`<ArrayInput>`](./ArrayInput.md)                                                                                                                                                                    |
 | Array of Enums        | `['foo', 'bar']`                                             | [`<SelectArrayInput>`](./SelectArrayInput.md), [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md), [`<CheckboxGroupInput>`](./CheckboxGroupInput.md), [`<DualListInput>`](./DualListInput.md) |
 | Array of foreign keys | `[42, 43]`                                                   | [`<ReferenceArrayInput>`](./ReferenceArrayInput.md)                                                                                                                                                  |
-| Translations          | `{ en: 'Hello', fr: 'Bonjour' }`                             | [`<TranslatableInputs>`](./TranslatableInputs.md)                                                                                                                                                        |
-| Related records       | `[{ id: 42, title: 'Hello' }, { id: 43, title: 'World' }]` | [`<ReferenceManyInput>`](./ReferenceManyInput.md), [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md)                                                                                     |
+| Translations          | `{ en: 'Hello', fr: 'Bonjour' }`                             | [`<TranslatableInputs>`](./TranslatableInputs.md)                                                                                                                                                    |
+| Related records       | `[{ id: 42, title: 'Hello' }, { id: 43, title: 'World' }]`   | [`<ReferenceManyInput>`](./ReferenceManyInput.md), [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md), [`<ReferenceOneInput>`](./ReferenceOneInput.md)                                    |
 
-You can build **dependent inputs**, using the [react-hook-form's `useWatch` hook](https://react-hook-form.com/api/usewatch). For instance, here is a `CityInput` that displays the cities of the selected country:
+### Dependent Inputs 
+
+You can build dependent inputs, using the [react-hook-form's `useWatch` hook](https://react-hook-form.com/docs/usewatch). For instance, here is a `CityInput` that displays the cities of the selected country:
 
 ```jsx
 import * as React from 'react';
@@ -523,7 +558,20 @@ const OrderEdit = () => (
 export default OrderEdit;
 ```
 
-For validation, you can use react-admin's [per field validators](https://marmelab.com/react-admin/Validation.html#per-input-validation-built-in-field-validators), or a [validation schema powered by yup or zod](https://marmelab.com/react-admin/Validation.html#schema-validation). Here is an example of per-field validation:
+### Validation
+
+React-admin ships with a powerful and versatile validation engine.
+
+![Validation example](./img/validation.png)
+
+React-admin forms support the most common validation strategies:
+
+* [per field validators](./Validation.md#per-input-validation-built-in-field-validators),
+* [form validation](./Validation.md#global-validation),
+* [validation schema powered by yup or zod](./Validation.md#schema-validation),
+* [server-side validation](./Validation.md#server-side-validation).
+
+Here is an example of per-field validation:
 
 ```jsx
 import {
@@ -560,6 +608,18 @@ export const UserCreate = () => (
     </Create>
 );
 ```
+
+### AutoSave
+
+React-admin lets you build forms saving changes automatically with [`<AutoSave>`](./AutoSave.md), so that users never lose their changes.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/AutoSave.webm" type="video/webm"/>
+  <source src="./img/AutoSave.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+### JSON Schema Forms
 
 Finally, you can generate entire **forms based on a JSON schema**, using the [`<JsonSchemaForm>` component](./JsonSchemaForm.md).
 
@@ -620,17 +680,70 @@ const CustomerEdit = () => (
 
 And if you want something super custom that react-admin doesn't support out of the box, you can always use [react-hook-form](https://react-hook-form.com/) directly.
 
-## Optimistic Updates And Undo
+## AI-Powered Components
 
-When a user edits a record and hits the "Save" button, the UI shows a confirmation and displays the updated data *before sending the update query to the server*. The main benefit is that UI changes are immediate - **no need to wait for the server response**. It's a great comfort for users.
+React-admin leverages recent breakthroughs in Artificial Intelligence (AI) to **boost user productivity**.
 
-But there is an additional benefit: it also allows the "Undo" feature. Undo is already functional in the admin at that point. Try editing a record, then hit the "Undo" link in the black confirmation box before it slides out. You'll see that the app does not send the `UPDATE` query to the API, and displays the non-modified data.
+One example is [`<PredictiveTextInput>`](./PredictiveTextInput.md), which suggests completion for the input value, using your favorite AI backend. Users can accept the completion by pressing the `Tab` key. It's like Intellisense or Copilot for your forms.
 
-[![Undo Post Editing](./img/tutorial_post_edit_undo.gif)](./img/tutorial_post_edit_undo.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/PredictiveTextInput.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
-Even though updates appear immediately due to Optimistic Updates, React-admin only sends them to the server after a short delay (about 5 seconds). During this delay, **the user can undo the action**, and react-admin will never send the update. 
+Use `<PredictiveTextInput>` in any react-admin form:
 
-Optimistic updates and undo require no specific code on the API side - react-admin handles them purely on the client side. That means that you'll get them for free with your API!
+```jsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { PredictiveTextInput } from '@react-admin/ra-ai';
+
+const PersonEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="firstName" />
+            <TextInput source="lastName" />
+            <TextInput source="company" />
+            <PredictiveTextInput source="email" />
+            <PredictiveTextInput source="website" />
+            <PredictiveTextInput source="bio" multiline />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+You can also use the [`<SmartRichTextInput>`](./SmartRichTextInput.md) component, which lets users edit HTML documents in WYSIWYG with superpowers:
+
+<video controls playsinline muted loop poster="https://marmelab.com/ra-enterprise/modules/assets/SmartRichTextInput.png" >
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/SmartRichTextInput.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+## Fast
+
+
+React-admin takes advantage of the Single-Page-Application architecture, implementing various performance optimizations that make react-admin apps incredibly fast by default.
+
+- **Non-Blocking Data Fetching**: Instead of waiting for API data before starting to render the UI, React-admin initiates the rendering process immediately. This strategy ensures a snappy application where user interactions receive instant feedback, outperforming Server-side Rendered apps by eliminating waiting times for server responses.
+- **Stale While Revalidate**: This technique allows pages to display data from previous requests while newer data is being fetched. In most instances, the fresh data remains the same (e.g., when revisiting a list page), ensuring users won't notice any delays due to network requests.
+- **Local Database Mirror**: React-admin populates its internal cache with individual records fetched using `dataProvider.getList()`. When a user views a specific record, React-admin leverages its internal database to pre-fill the `dataProvider.getOne()` query response. As a result, record details are displayed instantaneously, without any wait time for server responses.
+- **Optimistic Updates**: When a user edits a record and hits the "Save" button, React-admin immediately updates its local database and displays the revised data, prior to sending the update query to the server. The resulting UI changes are instant - no server response wait time required. The same logic applies to record deletions.
+- **Query Deduplication**: React-admin identifies instances where multiple components on a page call the same data provider query for identical data. In such cases, it ensures only a single call to the data provider is made.
+- **Query Aggregation**: React-admin intercepts all calls to `dataProvider.getOne()` for related data when a `<ReferenceField>` is used in a list. It aggregates and deduplicates the requested ids, and issues a single `dataProvider.getMany()` request. This technique effectively addresses the n+1 query problem, reduces server queries, and accelerates list view rendering.
+- **Opt-In Query Cache**: React-admin provides an option to prevent refetching an API endpoint for a specified duration, which can be used when you're confident that the API response will remain consistent over time.
+
+## Undo
+
+When users submit a form, or delete a record, the UI reflects their change immediately. They also see a confirmation message for the change, containing an "Undo" button. If they click on it before the confirmation slides out (the default delay is 5s), react-admin reverts to the previous state and cancels the call to the data provider. 
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/tutorial_post_edit_undo.webm" type="video/webm"/>
+  <source src="./img/tutorial_post_edit_undo.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+This undo feature is enabled by default, and requires no particular setup on the server side. In fact, react-admin delays the call to the data provider for mutations, to give users a "grace" period. That's why the actual call to `dataProvider.update()` occurs 5 seconds after the user submits an update form - even though the UI reflects the changes immediately.
+
+You can disable this feature page by page, by choosing a different [mutationMode](./Edit.md#mutationmode).
 
 ## Roles & Permissions
 
@@ -698,7 +811,7 @@ To learn more about authentication, roles, and permissions, check out the follow
 - [`WithPermissions`](./WithPermissions.md)
 - [`useAuthProvider`](./useAuthProvider.md)
 - [`useAuthenticated`](./useAuthenticated.md)
-- [`useAuthstate`](./useAuthstate.md)
+- [`useAuthstate`](./useAuthState.md)
 - [`useGetIdentity`](./useGetIdentity.md)
 - [`useLogin`](./useLogin.md)
 - [`useLogout`](./useLogout.md)
@@ -710,7 +823,11 @@ To learn more about authentication, roles, and permissions, check out the follow
 
 Most admin and B2B apps require that user actions are recorded for audit purposes. React-admin provides templates for displaying such audit logs, and helpers to automatically **record user actions**.
 
-![Audit log](https://marmelab.com/ra-enterprise/modules/assets/ra-audit-log/latest/ra-audit-log.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-audit-log/latest/ra-audit-log.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-audit-log/latest/ra-audit-log.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 ```jsx
 import { useGetList } from "react-admin";
@@ -750,7 +867,11 @@ const dataProvider = addEventsForMutations(
 
 If your app needs to display **events**, **appointments**, **time intervals**, or any other kind of time-based data, you can use the [`<Calendar>`](./Calendar.md) component.
 
-![the `<Calendar>` component](https://marmelab.com/ra-enterprise/modules/assets/ra-calendar.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-calendar.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-calendar.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 ```jsx
 import { Calendar, getFilterValuesFromInterval } from '@react-admin/ra-calendar';
@@ -791,7 +912,12 @@ Check the following components for more details:
 
 To manage directories, categories, and any other **hierarchical data**, admins often rely on tree structures. Navigating and editing tree structures can be tricky, but React-admin provides a set of components to make it easy.
 
-![TreeWithDetails](./img/treewithdetails.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/treewithdetails.webm" type="video/webm"/>
+  <source src="./img/treewithdetails.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 ```jsx
 import { Create, Edit, SimpleForm, TextInput } from 'react-admin';
@@ -824,13 +950,18 @@ export const CategoriesList = () => (
 Check out the following components for displaying hierarchical data:
 
 - [`<TreeWithDetails>`](./TreeWithDetails.md): A list view for tree structures, with a details panel.
-- [`<Tree>`](https://marmelab.com/ra-enterprise/modules/ra-tree#tree-component): A list view for tree structures, with a MUI skin.
+- [`<TreeInput>`](./TreeInput.md): An input component for tree structures.
+- [`<Tree>`](https://marmelab.com/ra-enterprise/modules/ra-tree#tree-component): A list view for tree structures, with a Material UI skin.
 
 ## Application Building Blocks
 
-A UI kit like MUI provides basic building blocks like a button, a form, a table, etc. React-admin goes one level higher and provides a set of **[application components](./Reference.md#components)** specifically designed for building admin and B2B *applications*.
+A UI kit like Material UI provides basic building blocks like a button, a form, a table, etc. React-admin goes one level higher and provides a set of **[application components](./Reference.md#components)** specifically designed for building admin and B2B *applications*.
 
-![editable Datagrid](https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid/latest/ra-editable-datagrid-overview.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid/latest/ra-editable-datagrid-overview.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid/latest/ra-editable-datagrid-overview.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 These building blocks include:
 
@@ -839,7 +970,7 @@ These building blocks include:
 - [Import](https://github.com/benwinding/react-admin-import-csv) / [export](./Buttons.md#exportbutton) buttons
 - An [editable datagrid](./EditableDatagrid.md)
 - A [guided tour system](https://marmelab.com/ra-enterprise/modules/ra-tour)
-- A [user menu](./Theming.md#usermenu-customization)
+- A [user menu](./Menu.md)
 - A [rich text editor](./RichTextInput.md),
 - A [markdown editor](./MarkdownInput.md)
 - A [clone button](./Buttons.md#clonebutton)
@@ -850,16 +981,16 @@ These building blocks include:
 And if you want to create your building blocks, you can use any of the [75+ hooks](./Reference.md#hooks) that carry **headless, reusable logic**. To name a few of them:
 
 - [`useRecordContext`](./useRecordContext.md) to get the current record anywhere in the app
-- [`useWarnWhenUnsavedChanges`](./useWarnWhenUnsavedChanges.md) to warn the user when he tries to leave a page with unsaved changes
+- [`useWarnWhenUnsavedChanges`](./EditTutorial.md#warning-about-unsaved-changes) to warn the user when he tries to leave a page with unsaved changes
 - [`useSaveContext`](./useSaveContext.md) to tweak form submission
-- [`useTheme`](./Theming.md#changing-the-theme-programmatically) to change the theme programmatically
+- [`useTheme`](./useTheme.md) to change the theme programmatically
 
 ## Pub/Sub and Live Updates
 
 React-admin provides hooks and UI components for **collaborative applications** where several people work in parallel. It allows publishing and subscribing to real-time events, updating views when another user pushes a change, notifying end users of events, and **preventing data loss** when two editors work on the same resource concurrently.
 
-<video controls autoplay muted width="100%">
-  <source src="./img/CollaborativeDemo.mp4" type="video/mp4">
+<video controls autoplay playsinline muted width="100%">
+  <source src="./img/CollaborativeDemo.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -909,7 +1040,12 @@ const PostList = () => (
 );
 ```
 
-![useSubscribeToRecordList](./img/useSubscribeToRecordList.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/useSubscribeToRecordList.webm" type="video/webm"/>
+  <source src="./img/useSubscribeToRecordList.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 This feature leverages the following hooks:
 
@@ -953,11 +1089,16 @@ This feature leverages the following components:
 
 And last but not least, react-admin provides a **lock mechanism** to prevent two users from editing the same resource at the same time.
 
-![Edit With Locks](./img/locks-demo.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/locks-demo.webm" type="video/webm"/>
+  <source src="./img/locks-demo.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 A user can lock a resource, either by voluntarily asking for a lock or by editing a resource. When a resource is locked, other users can't edit it. When the lock is released, other users can edit the resource again.
 
-```jsx
+```tsx
 export const NewMessageForm = () => {
     const [create, { isLoading: isCreating }] = useCreate();
     const record = useRecordContext();
@@ -1011,9 +1152,14 @@ End-users tweak the UI to their liking, and **they expect these preferences to b
 
 For instance, the Saved Queries feature lets users **save a combination of filters** and sort parameters into a new, personal filter.
 
-[![Saved Queries in FilterList](./img/SavedQueriesList.gif)](./img/SavedQueriesList.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/SavedQueriesList.webm" type="video/webm"/>
+  <source src="./img/SavedQueriesList.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
-Saved queries persist between sessions, so users can find their custom queries even after closing and reopening the admin. Saved queries are available both for the Filter Button/Form combo and for the `<FilterList>` Sidebar. It's enabled by default for the Filter Button/Form combo but you have to add it yourself in the `<FilterList>` Sidebar.
+
+Saved queries persist between sessions, so users can find their custom queries even after closing and reopening the admin. Saved queries are available both for the Filter Button/Form combo and for the `<FilterList>` Sidebar. It's enabled by default for the Filter Button/Form combo, but you have to add it yourself in the `<FilterList>` Sidebar.
 
 ```diff
 import { FilterList, FilterListItem, List, Datagrid } from 'react-admin';
@@ -1046,7 +1192,12 @@ const SongList = () => (
 
 React-admin also **persists the light/dark mode and the language choice** of end-users. 
 
-![Dark Mode support](./img/ToggleThemeButton.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/ToggleThemeButton.webm" type="video/webm"/>
+  <source src="./img/ToggleThemeButton.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 To learn more about the `Store` and how to use it, check the following sections:
 
@@ -1062,7 +1213,12 @@ To learn more about the `Store` and how to use it, check the following sections:
 
 An extension of preferences is Configurable components. Because no matter how polished your UI is, it will never fit all use cases. That's why react-admin provides a way to let end users **customize the features of many components visually**, via the inspector.
 
-![DatagridConfigurable](./img/DatagridConfigurable.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/DatagridConfigurable.webm" type="video/webm"/>
+  <source src="./img/DatagridConfigurable.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 To enable this feature, replace a component (in that example, `<Datagrid>`) with its configurable counterpart:
 
@@ -1099,9 +1255,33 @@ Check the following components for details:
 
 ## Theming
 
-The default [Material Design](https://m3.material.io/) look and feel is nice, but a bit... Google-y. If this bothers you, or if you need to brand your app, rest assured: react-admin is fully themeable.
+The default [Material Design](https://material.io/) look and feel is nice, but a bit... Google-y. If this bothers you, or if you need to brand your app, rest assured: react-admin is fully themeable.
 
-For instance, you can use react-admin to build a [Music Player](https://demo.navidrome.org/app/):
+React-admin comes with 4 built-in themes: [Default](./AppTheme.md#default), [Nano](./AppTheme.md#nano), [Radiant](./AppTheme.md#radiant), and [House](./AppTheme.md#house). The [e-commerce demo](https://marmelab.com/react-admin-demo/) contains a theme switcher, so you can test them in a real application. 
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/demo-themes.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+To use a custom theme, pass a theme object to the `<Admin>` [`theme`](./Admin.md#theme) and [`darkTheme`](./Admin.md#darktheme) props:
+
+```jsx
+import { Admin, nanoLightTheme, nanoDarkTheme } from 'react-admin';
+import { dataProvider } from './dataProvider';
+
+export const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+        theme={nanoLightTheme}
+        darkTheme={nanoDarkTheme}
+    >
+        // ...
+    </Admin>
+);
+```
+
+Theming is so powerful that you can even use react-admin to build a [Music Player](https://demo.navidrome.org/app/):
 
 ![Music Player](./img/navidrome.png)
 
@@ -1201,20 +1381,28 @@ const App = () => (
 
 To learn more about theming in react-admin, check the following sections:
 
-- [The `sx` prop](./Theming.md#sx-overriding-a-component-style)
-- [Global theme overrides](./Theming.md#global-theme-overrides)
-- [Writing a custom theme](./Theming.md#writing-a-custom-theme)
-- [`<ToggleThemeButton>`](./Theming.md#letting-users-choose-the-theme)
-- [`useTheme`](./Theming.md#changing-the-theme-programmatically)
-- [`useMediaQuery`](./Theming.md#usemediaquery-hook)
+- [Introduction to Theming](./Theming.md)
+- [Page Layouts](./Theming.md#customizing-the-page-layout)
+- [The `sx` prop](./SX.md)
+- [Built-In Themes](./AppTheme.md#built-in-themes)
+- [App-wide theming](./AppTheme.md#theming-individual-components)
+- [Helper Components For Layouts](./BoxStackGrid.md)
+- [`<ToggleThemeButton>`](./ToggleThemeButton.md)
+- [`useTheme`](./useTheme.md)
+- [`useMediaQuery`](./useMediaQuery.md)
 
 ## I18n
 
 React-admin is **fully internationalized**.
 
-![LocalesMenuButton](./img/LocalesMenuButton.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/LocalesMenuButton.webm" type="video/webm"/>
+  <source src="./img/LocalesMenuButton.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
-The default interface messages (for buttons, tooltips, input labels, etc) are in English. You can translate them to any of [the 30+ languages supported by react-admin](./TranslationLocales.md) by importing the appropriate translation package. For instance, to translate to French:
+
+The default interface messages (for buttons, tooltips, input labels, etc.) are in English. You can translate them to any of [the 30+ languages supported by react-admin](./TranslationLocales.md) by importing the appropriate translation package. For instance, to translate to French:
 
 ```jsx
 import { Admin } from 'react-admin';
@@ -1235,13 +1423,13 @@ If you need to translate to a language not yet supported by react-admin, you can
 If your app needs to support more than one language, you can use the [`<LocalesMenuButton>`](./LocalesMenuButton.md) component to **let users choose their language**:
 
 ```jsx
-import { LocalesMenuButton } from 'react-admin';
-import { AppBar, Toolbar, Typography } from '@mui/material';
+import { LocalesMenuButton, TitlePortal } from 'react-admin';
+import { AppBar, Toolbar } from '@mui/material';
 
-export const MyAppBar = (props) => (
-    <AppBar {...props}>
+export const MyAppBar = () => (
+    <AppBar>
         <Toolbar>
-            <Typography flex="1" variant="h6" id="react-admin-title"></Typography>
+            <TitlePortal />
             <LocalesMenuButton />
         </Toolbar>
     </AppBar>
@@ -1275,7 +1463,7 @@ React-admin is used by thousands of companies across the world, so the internati
 
 ## Accessibility
 
-The react-admin core team has a **strong commitment to accessibility**. React-admin uses the [MUI](https://mui.com/) components, which are accessible by default. For its own components, react-admin uses the [WAI-ARIA](https://www.w3.org/TR/wai-aria/) standard to make them accessible. This includes `aria-` attributes, keyboard navigation, and focus management.
+The react-admin core team has a **strong commitment to accessibility**. React-admin uses the [Material UI](https://mui.com/material-ui/getting-started/) components, which are accessible by default. For its own components, react-admin uses the [WAI-ARIA](https://www.w3.org/TR/wai-aria/) standard to make them accessible. This includes `aria-` attributes, keyboard navigation, and focus management.
 
 We routinely test react-admin with the [WAVE](https://wave.webaim.org/) and [Axe](https://www.deque.com/axe/) accessibility tools.
 
@@ -1285,8 +1473,9 @@ We routinely test react-admin with the [WAVE](https://wave.webaim.org/) and [Axe
 
 The react-admin layouts and components are primarily designed for desktop screens. But they also **work well on mobile devices**. On mobile, buttons with a label become icon buttons, the sidebar menu becomes a drawer, the size of clickable elements is increased, the form toolbar becomes fixed, and many more adjustments.
 
-<video controls autoplay muted loop width="100%">
-  <source src="./img/responsive.webm" type="video/webm">
+<video controls autoplay playsinline muted loop width="100%">
+  <source src="./img/responsive.webm" type="video/webm" />
+  <source src="./img/responsive.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -1347,9 +1536,9 @@ export const PostList = () => {
 
 Check the following sections for help on making your app responsive:
 
-- [The `sx` prop](./Theming.md#sx-overriding-a-component-style)
+- [The `sx` prop](./SX.md)
 - [`<SimpleList>`](./SimpleList.md)
-- [`useMediaQuery`](./Theming.md#usemediaquery-hook)
+- [`useMediaQuery`](./useMediaQuery.md)
 
 ## Type-Safe
 
@@ -1357,8 +1546,9 @@ React-admin is written in TypeScript. That doesn't mean you have to use TypeScri
 
 And if your IDE supports TypeScript, you get autocompletion and inline documentation for all react-admin components and hooks.
 
-<video controls autoplay muted loop width="100%">
-  <source src="./img/typescript.webm" type="video/webm">
+<video controls autoplay playsinline muted loop width="100%">
+  <source src="./img/typescript.webm" type="video/webm" />
+  <source src="./img/typescript.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

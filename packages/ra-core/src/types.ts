@@ -1,5 +1,4 @@
-import { ReactNode, ReactElement, ComponentType } from 'react';
-
+import { ComponentType, ReactElement, ReactNode } from 'react';
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 import { AuthActionType } from './auth/types';
 
@@ -9,14 +8,14 @@ import { AuthActionType } from './auth/types';
 
 export type Identifier = string | number;
 
-export interface RaRecord {
-    id: Identifier;
-    [key: string]: any;
+export interface RaRecord<IdentifierType extends Identifier = Identifier>
+    extends Record<string, any> {
+    id: IdentifierType;
 }
 
 export interface SortPayload {
     field: string;
-    order: string;
+    order: 'ASC' | 'DESC';
 }
 export interface FilterPayload {
     [k: string]: any;
@@ -93,7 +92,7 @@ export type DataProvider<ResourceType extends string = string> = {
 
     getOne: <RecordType extends RaRecord = any>(
         resource: ResourceType,
-        params: GetOneParams
+        params: GetOneParams<RecordType>
     ) => Promise<GetOneResult<RecordType>>;
 
     getMany: <RecordType extends RaRecord = any>(
@@ -116,10 +115,13 @@ export type DataProvider<ResourceType extends string = string> = {
         params: UpdateManyParams
     ) => Promise<UpdateManyResult<RecordType>>;
 
-    create: <RecordType extends RaRecord = any>(
+    create: <
+        RecordType extends Omit<RaRecord, 'id'> = any,
+        ResultRecordType extends RaRecord = RecordType & { id: Identifier }
+    >(
         resource: ResourceType,
         params: CreateParams
-    ) => Promise<CreateResult<RecordType>>;
+    ) => Promise<CreateResult<ResultRecordType>>;
 
     delete: <RecordType extends RaRecord = any>(
         resource: ResourceType,
@@ -186,10 +188,10 @@ export interface GetManyReferenceResult<RecordType extends RaRecord = any> {
     };
 }
 
-export interface UpdateParams<T = any> {
-    id: Identifier;
-    data: Partial<T>;
-    previousData: T;
+export interface UpdateParams<RecordType extends RaRecord = any> {
+    id: RecordType['id'];
+    data: Partial<RecordType>;
+    previousData: RecordType;
     meta?: any;
 }
 export interface UpdateResult<RecordType extends RaRecord = any> {
@@ -198,7 +200,7 @@ export interface UpdateResult<RecordType extends RaRecord = any> {
 
 export interface UpdateManyParams<T = any> {
     ids: Identifier[];
-    data: T;
+    data: Partial<T>;
     meta?: any;
 }
 export interface UpdateManyResult<RecordType extends RaRecord = any> {
@@ -206,7 +208,7 @@ export interface UpdateManyResult<RecordType extends RaRecord = any> {
 }
 
 export interface CreateParams<T = any> {
-    data: T;
+    data: Partial<T>;
     meta?: any;
 }
 export interface CreateResult<RecordType extends RaRecord = any> {
@@ -275,9 +277,9 @@ export type LegacyDataProvider = (
 
 export type RecordToStringFunction = (record: any) => string;
 
-export interface ResourceDefinition {
+export interface ResourceDefinition<OptionsType extends ResourceOptions = any> {
     readonly name: string;
-    readonly options?: any;
+    readonly options?: OptionsType;
     readonly hasList?: boolean;
     readonly hasEdit?: boolean;
     readonly hasShow?: boolean;

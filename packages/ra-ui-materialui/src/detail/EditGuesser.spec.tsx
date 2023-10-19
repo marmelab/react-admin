@@ -4,7 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { CoreAdminContext } from 'ra-core';
 
 import { EditGuesser } from './EditGuesser';
-import { ThemeProvider } from '../layout';
+import { ThemeProvider } from '../theme/ThemeProvider';
 
 describe('<EditGuesser />', () => {
     it('should log the guessed Edit view based on the fetched record', async () => {
@@ -27,7 +27,7 @@ describe('<EditGuesser />', () => {
         render(
             <ThemeProvider theme={{}}>
                 <CoreAdminContext dataProvider={dataProvider as any}>
-                    <EditGuesser resource="comments" id={123} />
+                    <EditGuesser resource="comments" id={123} enableLog />
                 </CoreAdminContext>
             </ThemeProvider>
         );

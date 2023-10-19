@@ -20,10 +20,11 @@ import {
     useForm,
     useFormContext,
 } from 'react-hook-form';
-import lodashSet from 'lodash/set';
-import lodashUnset from 'lodash/unset';
-import lodashGet from 'lodash/get';
+import set from 'lodash/set';
+import unset from 'lodash/unset';
+import get from 'lodash/get';
 import cloneDeep from 'lodash/cloneDeep';
+import isEqual from 'lodash/isEqual';
 
 import { FilterFormInput } from './FilterFormInput';
 import { FilterContext } from '../FilterContext';
@@ -44,23 +45,34 @@ export const FilterForm = (props: FilterFormProps) => {
     const form = useForm({
         defaultValues: mergedInitialValuesWithDefaultValues,
     });
+    const { getValues, reset, trigger, watch } = form;
 
     // Reapply filterValues when the URL changes or a user removes a filter
     useEffect(() => {
-        const newValues = getFilterFormValues(form.getValues(), filterValues);
-        form.reset(newValues);
-    }, [filterValues, form]);
+        const newValues = getFilterFormValues(getValues(), filterValues);
+        const previousValues = getValues();
+        if (!isEqual(newValues, previousValues)) {
+            reset(newValues);
+        }
+        // The reference to the filterValues object is not updated when it changes,
+        // so we must stringify it to compare it by value and also compare the reference.
+        // This makes it work for both input values and filters applied directly through
+        // the ListContext.setFilter (e.g. QuickFilter in the simple example)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [JSON.stringify(filterValues), filterValues, getValues, reset]);
 
     useEffect(() => {
-        const subscription = form.watch(async (values, { name, type }) => {
+        const subscription = watch(async (values, { name }) => {
             // We must check whether the form is valid as watch will not check that for us.
             // We can't rely on form state as it might not be synchronized yet
-            const isFormValid = await form.trigger();
+            const isFormValid = await trigger();
 
-            if (isFormValid) {
-                if (lodashGet(values, name) === '') {
+            // Check that the name is present to avoid setting filters when watch was
+            // triggered by a change on the ListContext values.
+            if (name && isFormValid) {
+                if (get(values, name) === '') {
                     const newValues = cloneDeep(values);
-                    lodashUnset(newValues, name);
+                    unset(newValues, name);
                     setFilters(newValues, displayedFilters);
                 } else {
                     setFilters(values, displayedFilters);
@@ -68,7 +80,7 @@ export const FilterForm = (props: FilterFormProps) => {
             }
         });
         return () => subscription.unsubscribe();
-    }, [displayedFilters, form, setFilters]);
+    }, [displayedFilters, setFilters, trigger, watch]);
 
     return (
         <FormProvider {...form}>
@@ -104,7 +116,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
     const getShownFilters = () => {
         const values = form.getValues();
         return filters.filter((filterElement: JSX.Element) => {
-            const filterValue = lodashGet(values, filterElement.props.source);
+            const filterValue = get(values, filterElement.props.source);
             return (
                 filterElement.props.alwaysOn ||
                 displayedFilters[filterElement.props.source] ||
@@ -185,7 +197,7 @@ export const mergeInitialValuesWithDefaultValues = (
         )
         .reduce(
             (acc, filterElement: JSX.Element) =>
-                lodashSet(
+                set(
                     { ...acc },
                     filterElement.props.source,
                     filterElement.props.defaultValue
@@ -195,7 +207,11 @@ export const mergeInitialValuesWithDefaultValues = (
     ...initialValues,
 });
 
-const handleFormSubmit = () => {};
+const handleFormSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    return false;
+};
 
 const PREFIX = 'RaFilterForm';
 
@@ -210,6 +226,12 @@ const StyledForm = styled('form', {
 })(({ theme }) => ({
     display: 'flex',
     flex: '0 1 auto',
+    [theme.breakpoints.down('sm')]: {
+        width: '100%',
+    },
+    [theme.breakpoints.up('sm')]: {
+        minHeight: theme.spacing(8),
+    },
     [theme.breakpoints.up('md')]: {
         flex: '0 1 100%',
     },
@@ -226,7 +248,7 @@ const StyledForm = styled('form', {
 
 /**
  * Because we are using controlled inputs with react-hook-form, we must provide a default value
- * for each input when resetting the form. (see https://react-hook-form.com/api/useform/reset).
+ * for each input when resetting the form. (see https://react-hook-form.com/docs/useform/reset).
  * To ensure we don't provide undefined which will result to the current input value being reapplied
  * and due to the dynamic nature of the filter form, we rebuild the filter form values from its current
  * values and make sure to pass at least an empty string for each input.
@@ -250,10 +272,10 @@ const getInputValue = (
         return '';
     }
     if (Array.isArray(formValues[key])) {
-        return lodashGet(filterValues, key, '');
+        return get(filterValues, key, '');
     }
     if (formValues[key] instanceof Date) {
-        return lodashGet(filterValues, key, '');
+        return get(filterValues, key, '');
     }
     if (typeof formValues[key] === 'object') {
         const inputValues = Object.keys(formValues[key]).reduce(
@@ -274,5 +296,5 @@ const getInputValue = (
         if (!Object.keys(inputValues).length) return '';
         return inputValues;
     }
-    return lodashGet(filterValues, key, '');
+    return get(filterValues, key, '');
 };

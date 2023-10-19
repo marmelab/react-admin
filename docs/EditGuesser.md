@@ -5,7 +5,7 @@ title: "The EditGuesser Component"
 
 # `<EditGuesser>`
 
-Use `<EditGuesser>` to quickly bootstrap an Edit view on top of an existing API, without adding the innputs one by one.
+Use `<EditGuesser>` to quickly bootstrap an Edit view on top of an existing API, without adding the inputs one by one.
 
 Just like [`<Edit>`](./Edit.md), `<EditGuesser>` fetches the data. It then analyzes the response, and guesses the inputs it should use to display a basic `<SimpleForm>` with the data. It also dumps the components it has guessed in the console, so you can copy it into your own code.
 

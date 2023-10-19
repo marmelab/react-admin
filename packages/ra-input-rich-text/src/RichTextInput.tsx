@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { ReactElement, ReactNode, useEffect } from 'react';
-import clsx from 'clsx';
-import { useEditor, Editor, EditorOptions, EditorContent } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import Underline from '@tiptap/extension-underline';
-import Link from '@tiptap/extension-link';
-import TextAlign from '@tiptap/extension-text-align';
-import Image from '@tiptap/extension-image';
-import TextStyle from '@tiptap/extension-text-style';
-import { Color } from '@tiptap/extension-color';
-import Highlight from '@tiptap/extension-highlight';
 import { FormHelperText } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { Color } from '@tiptap/extension-color';
+import Highlight from '@tiptap/extension-highlight';
+import Image from '@tiptap/extension-image';
+import Link from '@tiptap/extension-link';
+import TextAlign from '@tiptap/extension-text-align';
+import TextStyle from '@tiptap/extension-text-style';
+import Underline from '@tiptap/extension-underline';
+import { Editor, EditorContent, EditorOptions, useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import clsx from 'clsx';
 import { useInput, useResourceContext } from 'ra-core';
 import {
     CommonInputProps,
@@ -19,13 +19,14 @@ import {
     Labeled,
     LabeledProps,
 } from 'ra-ui-materialui';
-import { TiptapEditorProvider } from './TiptapEditorProvider';
+
 import { RichTextInputToolbar } from './RichTextInputToolbar';
+import { TiptapEditorProvider } from './TiptapEditorProvider';
 
 /**
  * A rich text editor for the react-admin that is accessible and supports translations. Based on [Tiptap](https://www.tiptap.dev/).
  * @param props The input props. Accept all common react-admin input props.
- * @param {EditorOptions} props.editorOptions The options to pass to the Tiptap editor.
+ * @param {EditorOptions} props.editorOptions The options to pass to the Tiptap editor. See Tiptap settings [here](https://tiptap.dev/api/editor#settings).
  * @param {ReactNode} props.toolbar The toolbar containing the editors commands.
  *
  * @example <caption>Customizing the editors options</caption>
@@ -83,6 +84,7 @@ export const RichTextInput = (props: RichTextInputProps) => {
         label,
         readOnly = false,
         source,
+        sx,
         toolbar,
     } = props;
 
@@ -95,16 +97,21 @@ export const RichTextInput = (props: RichTextInputProps) => {
         formState: { isSubmitted },
     } = useInput({ ...props, source, defaultValue });
 
-    const editor = useEditor({
-        ...editorOptions,
-        editable: !disabled && !readOnly,
-        content: field.value,
-        editorProps: {
-            attributes: {
-                id,
+    const editor = useEditor(
+        {
+            ...editorOptions,
+            editable: !disabled && !readOnly,
+            content: field.value,
+            editorProps: {
+                ...editorOptions?.editorProps,
+                attributes: {
+                    ...editorOptions?.editorProps?.attributes,
+                    id,
+                },
             },
         },
-    });
+        [disabled, editorOptions, readOnly, id]
+    );
 
     const { error, invalid, isTouched } = fieldState;
 
@@ -116,22 +123,8 @@ export const RichTextInput = (props: RichTextInputProps) => {
         editor.commands.setContent(field.value, false, {
             preserveWhitespace: true,
         });
-
         editor.commands.setTextSelection({ from, to });
     }, [editor, field.value]);
-
-    useEffect(() => {
-        if (!editor) return;
-
-        editor.setOptions({
-            editable: !disabled && !readOnly,
-            editorProps: {
-                attributes: {
-                    id,
-                },
-            },
-        });
-    }, [disabled, editor, readOnly, id]);
 
     useEffect(() => {
         if (!editor) {
@@ -151,79 +144,48 @@ export const RichTextInput = (props: RichTextInputProps) => {
         };
 
         editor.on('update', handleEditorUpdate);
+        editor.on('blur', field.onBlur);
         return () => {
             editor.off('update', handleEditorUpdate);
+            editor.off('blur', field.onBlur);
         };
     }, [editor, field]);
 
     return (
-        <Labeled
-            isRequired={isRequired}
-            label={label}
-            id={`${id}-label`}
-            color={fieldState?.invalid ? 'error' : undefined}
-            source={source}
-            resource={resource}
-            fullWidth={fullWidth}
+        <Root
+            className={clsx(
+                'ra-input',
+                `ra-input-${source}`,
+                className,
+                fullWidth ? 'fullWidth' : ''
+            )}
+            sx={sx}
         >
-            <RichTextInputContent
-                className={clsx('ra-input', `ra-input-${source}`, className)}
-                editor={editor}
-                error={error}
-                helperText={helperText}
-                id={id}
-                isTouched={isTouched}
-                isSubmitted={isSubmitted}
-                invalid={invalid}
-                toolbar={toolbar || <RichTextInputToolbar />}
-            />
-        </Labeled>
+            <Labeled
+                isRequired={isRequired}
+                label={label}
+                id={`${id}-label`}
+                color={fieldState?.invalid ? 'error' : undefined}
+                source={source}
+                resource={resource}
+                fullWidth={fullWidth}
+            >
+                <RichTextInputContent
+                    editor={editor}
+                    error={error}
+                    helperText={helperText}
+                    id={id}
+                    isTouched={isTouched}
+                    isSubmitted={isSubmitted}
+                    invalid={invalid}
+                    toolbar={toolbar || <RichTextInputToolbar />}
+                />
+            </Labeled>
+        </Root>
     );
 };
 
-/**
- * Extracted in a separate component so that we can remove fullWidth from the props injected by Labeled
- * and avoid warnings about unknown props on Root.
- */
-const RichTextInputContent = ({
-    className,
-    editor,
-    error,
-    fullWidth,
-    helperText,
-    id,
-    isTouched,
-    isSubmitted,
-    invalid,
-    toolbar,
-}: RichTextInputContentProps) => (
-    <Root className={className}>
-        <TiptapEditorProvider value={editor}>
-            {toolbar}
-            <EditorContent
-                aria-labelledby={`${id}-label`}
-                className={classes.editorContent}
-                editor={editor}
-            />
-        </TiptapEditorProvider>
-        <FormHelperText
-            className={
-                (isTouched || isSubmitted) && invalid
-                    ? 'ra-rich-text-input-error'
-                    : ''
-            }
-            error={(isTouched || isSubmitted) && invalid}
-        >
-            <InputHelperText
-                touched={isTouched || isSubmitted}
-                error={error?.message}
-                helperText={helperText}
-            />
-        </FormHelperText>
-    </Root>
-);
-
-export const DefaultEditorOptions = {
+export const DefaultEditorOptions: Partial<EditorOptions> = {
     extensions: [
         StarterKit,
         Underline,
@@ -240,6 +202,15 @@ export const DefaultEditorOptions = {
     ],
 };
 
+export type RichTextInputProps = CommonInputProps &
+    Omit<LabeledProps, 'children'> & {
+        disabled?: boolean;
+        readOnly?: boolean;
+        editorOptions?: Partial<EditorOptions>;
+        toolbar?: ReactNode;
+        sx?: typeof Root['defaultProps']['sx'];
+    };
+
 const PREFIX = 'RaRichTextInput';
 const classes = {
     editorContent: `${PREFIX}-editorContent`,
@@ -248,10 +219,9 @@ const Root = styled('div', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-
+    '&.fullWidth': {
+        width: '100%',
+    },
     [`& .${classes.editorContent}`]: {
         width: '100%',
         '& .ProseMirror': {
@@ -285,19 +255,50 @@ const Root = styled('div', {
     },
 }));
 
-export type RichTextInputProps = CommonInputProps &
-    Omit<LabeledProps, 'children'> & {
-        disabled?: boolean;
-        readOnly?: boolean;
-        editorOptions?: Partial<EditorOptions>;
-        toolbar?: ReactNode;
-    };
+/**
+ * Extracted in a separate component so that we can remove fullWidth from the props injected by Labeled
+ * and avoid warnings about unknown props on Root.
+ */
+const RichTextInputContent = ({
+    editor,
+    error,
+    helperText,
+    id,
+    isTouched,
+    isSubmitted,
+    invalid,
+    toolbar,
+}: RichTextInputContentProps) => (
+    <>
+        <TiptapEditorProvider value={editor}>
+            {toolbar}
+            <EditorContent
+                aria-labelledby={`${id}-label`}
+                className={classes.editorContent}
+                editor={editor}
+            />
+        </TiptapEditorProvider>
+        <FormHelperText
+            className={
+                (isTouched || isSubmitted) && invalid
+                    ? 'ra-rich-text-input-error'
+                    : ''
+            }
+            error={(isTouched || isSubmitted) && invalid}
+        >
+            <InputHelperText
+                touched={isTouched || isSubmitted}
+                error={error?.message}
+                helperText={helperText}
+            />
+        </FormHelperText>
+    </>
+);
 
 export type RichTextInputContentProps = {
     className?: string;
     editor?: Editor;
     error?: any;
-    fullWidth?: boolean;
     helperText?: string | ReactElement | false;
     id: string;
     isTouched: boolean;

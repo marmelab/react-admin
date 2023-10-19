@@ -7,7 +7,11 @@ title: "The IconMenu Component"
 
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers an alternative menu user interface. It renders a reduced menu bar with a sliding panel for second-level menu items. This menu saves a lot of screen real estate, and allows for sub menus of any level of complexity.
 
-![icon menu](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 Test it live on [the Enterprise Edition Storybook](https://storybook.ra-enterprise.marmelab.com/?path=/story/ra-navigation-iconmenu--basic).
 
@@ -37,7 +41,7 @@ Then, create a custom layout using [the `<Layout>` component](./Layout.md) and p
 ```jsx
 // in src/MyLayout.js
 import { Layout } from 'react-admin';
-import { AppLocationContext } from '@react-admin/ra-navigation';
+import { AppLocationContext } from '@react-admin/ra-navigation';
 
 import { MyMenu } from './MyMenu';
 
@@ -55,7 +59,7 @@ Finally, pass this custom layout to the `<Admin>` component. You should apply th
 ```jsx
 // in src/App.js
 import { Admin, Resource } from "react-admin";
-import { theme } from '@react-admin/ra-navigation';
+import { theme } from '@react-admin/ra-navigation';
 
 import { MyLayout } from './MyLayout';
 
@@ -116,7 +120,7 @@ export const MyMenu = () => (
 ```
 {% endraw %}
 
-To override the style of `<IconMenu>` using the [MUI style overrides](https://mui.com/customization/theme-components/), use the `RaMenuRoot` key.
+To override the style of `<IconMenu>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaMenuRoot` key.
 
 ## `<IconMenu.Item>`
 
@@ -143,11 +147,11 @@ It accepts optional props:
 - `children`: Content of a sliding panel displayed when the menu is clicked (see [Adding sub menus](#adding-sub-menus) below)
 - `sx`: Style overrides, powered by MUI System
 
-Additional props are passed down to [the underling MUI `<listItem>` component](https://mui.com/api/list-item/#listitem-api).
+Additional props are passed down to [the underling Material UI `<listItem>` component](https://mui.com/material-ui/api/list-item/).
 
 ## Adding Sub Menus
 
-You can define the content of the sliding panel revealed when the user clicks on a menu by adding children to `<IconMenu.Item>`. `<IconMenu>` renders its children inside a MUI `<Card>`, so it's common to wrap the content in `<CardContent>`.
+You can define the content of the sliding panel revealed when the user clicks on a menu by adding children to `<IconMenu.Item>`. `<IconMenu>` renders its children inside a Material UI `<Card>`, so it's common to wrap the content in `<CardContent>`.
 
 For instance, here is how to add a sub menu to the Artists menu with one entry for each artist category:
 

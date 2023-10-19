@@ -21,11 +21,13 @@ import { SaveButton, Toolbar, Edit, SimpleForm, useNotify, useRedirect } from 'r
 const PostSaveButton = props => {
     const notify = useNotify();
     const redirect = useRedirect();
-    const onSuccess = (response) => {
-        notify(`Post "${response.data.title}" saved!`);
+    const onSuccess = data => {
+        notify(`Post "${data.title}" saved!`);
         redirect('/posts');
     };
-    return <SaveButton {...props} mutationOptions={{ onSuccess }} />;
+    return (
+        <SaveButton {...props} type="button" mutationOptions={{ onSuccess }} />
+    );
 };
 
 const PostEditToolbar = () => (
@@ -55,7 +57,7 @@ const PostEdit = () => (
 - [`transform`](#transform)
 - [`type`](#type)
 
-Additional props (e.g. `color`, `variant`) are passed to [the underlying MUI `<Button>` component](https://mui.com/components/buttons/).
+Additional props (e.g. `color`, `variant`) are passed to [the underlying Material UI `<Button>` component](https://mui.com/components/buttons/).
 
 ## `icon`
 
@@ -223,7 +225,7 @@ const MyToolbar = () => (
 
 ## `sx`: CSS API
 
-The `<SaveButton>` components accept the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)).
+The `<SaveButton>` components accept the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples).
 
 {% raw %}
 ```jsx
@@ -235,7 +237,7 @@ const PostCreateToolbar = () => (
 ```
 {% endraw %}
 
-To override the style of all instances of `<SaveButton>` components using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaSaveButton` key.
+To override the style of all instances of `<SaveButton>` components using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaSaveButton` key.
 
 ## `transform`
 

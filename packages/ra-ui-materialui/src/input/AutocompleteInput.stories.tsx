@@ -20,11 +20,14 @@ import {
     Typography,
     Box,
 } from '@mui/material';
+import { useFormContext } from 'react-hook-form';
 import fakeRestProvider from 'ra-data-fakerest';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
 
-import { Edit } from '../detail';
+import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
-import { AutocompleteInput } from './AutocompleteInput';
+import { AutocompleteInput, AutocompleteInputProps } from './AutocompleteInput';
 import { ReferenceInput } from './ReferenceInput';
 import { TextInput } from './TextInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
@@ -32,7 +35,7 @@ import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 export default { title: 'ra-ui-materialui/input/AutocompleteInput' };
 
 const dataProvider = {
-    getOne: (resource, params) =>
+    getOne: () =>
         Promise.resolve({
             data: {
                 id: 1,
@@ -43,11 +46,11 @@ const dataProvider = {
                 year: 1869,
             },
         }),
-    update: (resource, params) => Promise.resolve(params),
+    update: (_resource, params) => Promise.resolve(params),
 } as any;
 
 const dataProviderEmpty = {
-    getOne: (resource, params) =>
+    getOne: () =>
         Promise.resolve({
             data: {
                 id: 1,
@@ -61,7 +64,7 @@ const dataProviderEmpty = {
                 year: 1869,
             },
         }),
-    update: (resource, params) => Promise.resolve(params),
+    update: (_resource, params) => Promise.resolve(params),
 } as any;
 
 const history = createMemoryHistory({ initialEntries: ['/books/1'] });
@@ -125,6 +128,62 @@ export const Nullable = ({ onSuccess = console.log }) => {
                                 source="author"
                                 choices={choices}
                                 fullWidth
+                            />
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    );
+};
+
+export const IsLoading = () => {
+    return (
+        <Admin dataProvider={dataProvider} history={history}>
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit>
+                        <SimpleForm>
+                            <AutocompleteInput source="author" isLoading />
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    );
+};
+
+export const OnChange = ({
+    onChange = (value, record) => console.log({ value, record }),
+}: Pick<AutocompleteInputProps, 'onChange'>) => {
+    const choices = [
+        { id: 1, name: 'Leo Tolstoy' },
+        { id: 2, name: 'Victor Hugo' },
+        { id: 3, name: 'William Shakespeare' },
+        { id: 4, name: 'Charles Baudelaire' },
+        { id: 5, name: 'Marcel Proust' },
+    ];
+    return (
+        <Admin dataProvider={dataProvider} history={history}>
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <AutocompleteInput
+                                source="author"
+                                choices={choices}
+                                validate={required()}
+                                fullWidth
+                                onChange={onChange}
                             />
                         </SimpleForm>
                     </Edit>
@@ -331,7 +390,7 @@ const authorsWithFirstAndLastName = [
 ];
 
 const dataProviderWithAuthorsWithFirstAndLastName = {
-    getOne: (resource, params) =>
+    getOne: () =>
         Promise.resolve({
             data: {
                 id: 1,
@@ -342,13 +401,13 @@ const dataProviderWithAuthorsWithFirstAndLastName = {
                 year: 1869,
             },
         }),
-    getMany: (resource, params) =>
+    getMany: (_resource, params) =>
         Promise.resolve({
             data: authorsWithFirstAndLastName.filter(author =>
                 params.ids.includes(author.id)
             ),
         }),
-    getList: (resource, params) =>
+    getList: (_resource, params) =>
         new Promise(resolve => {
             // eslint-disable-next-line eqeqeq
             if (params.filter.q == undefined) {
@@ -378,8 +437,8 @@ const dataProviderWithAuthorsWithFirstAndLastName = {
                 500
             );
         }),
-    update: (resource, params) => Promise.resolve(params),
-    create: (resource, params) => {
+    update: (_resource, params) => Promise.resolve(params),
+    create: (_resource, params) => {
         const newAuthor = {
             id: authorsWithFirstAndLastName.length + 1,
             name: params.data.name,
@@ -434,7 +493,7 @@ const authors = [
 ];
 
 const dataProviderWithAuthors = {
-    getOne: (resource, params) =>
+    getOne: () =>
         Promise.resolve({
             data: {
                 id: 1,
@@ -445,11 +504,11 @@ const dataProviderWithAuthors = {
                 year: 1869,
             },
         }),
-    getMany: (resource, params) =>
+    getMany: (_resource, params) =>
         Promise.resolve({
             data: authors.filter(author => params.ids.includes(author.id)),
         }),
-    getList: (resource, params) =>
+    getList: (_resource, params) =>
         new Promise(resolve => {
             // eslint-disable-next-line eqeqeq
             if (params.filter.q == undefined) {
@@ -479,8 +538,8 @@ const dataProviderWithAuthors = {
                 500
             );
         }),
-    update: (resource, params) => Promise.resolve(params),
-    create: (resource, params) => {
+    update: (_resource, params) => Promise.resolve(params),
+    create: (_resource, params) => {
         const newAuthor = {
             id: authors.length + 1,
             name: params.data.name,
@@ -516,13 +575,59 @@ export const InsideReferenceInput = () => (
     </Admin>
 );
 
+const LanguageChangingAuthorInput = ({ onChange }) => {
+    const { setValue } = useFormContext();
+    const handleChange = (value, record) => {
+        setValue('language', record?.language);
+        onChange(value, record);
+    };
+    return (
+        <ReferenceInput reference="authors" source="author">
+            <AutocompleteInput
+                fullWidth
+                optionText="name"
+                onChange={handleChange}
+            />
+        </ReferenceInput>
+    );
+};
+
+export const InsideReferenceInputOnChange = ({
+    onChange = (value, record) => console.log({ value, record }),
+}: Pick<AutocompleteInputProps, 'onChange'>) => (
+    <Admin
+        dataProvider={dataProviderWithAuthors}
+        history={createMemoryHistory({ initialEntries: ['/books/create'] })}
+    >
+        <Resource name="authors" />
+        <Resource
+            name="books"
+            create={() => (
+                <Create
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                    redirect={false}
+                >
+                    <SimpleForm>
+                        <LanguageChangingAuthorInput onChange={onChange} />
+                        <TextInput source="language" />
+                    </SimpleForm>
+                </Create>
+            )}
+        />
+    </Admin>
+);
+
 export const InsideReferenceInputDefaultValue = ({
     onSuccess = console.log,
 }) => (
     <Admin
         dataProvider={{
             ...dataProviderWithAuthors,
-            getOne: (resource, params) =>
+            getOne: () =>
                 Promise.resolve({
                     data: {
                         id: 1,
@@ -672,6 +777,46 @@ export const InsideReferenceInputWithCreationSupport = () => (
     </Admin>
 );
 
+const BookOptionText = () => {
+    const book = useRecordContext();
+    if (!book) return null;
+    return <div>{`${book.name} - ${book.language}`}</div>;
+};
+
+export const InsideReferenceInputWithCustomizedItemRendering = (
+    props: Partial<AutocompleteInputProps>
+) => (
+    <Admin dataProvider={dataProviderWithAuthors} history={history}>
+        <Resource name="authors" />
+        <Resource
+            name="books"
+            edit={() => (
+                <Edit
+                    mutationMode="pessimistic"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                >
+                    <SimpleForm>
+                        <ReferenceInput reference="authors" source="author">
+                            <AutocompleteInput
+                                fullWidth
+                                optionText={<BookOptionText />}
+                                inputText={book =>
+                                    `${book.name} - ${book.language}`
+                                }
+                                {...props}
+                            />
+                        </ReferenceInput>
+                    </SimpleForm>
+                </Edit>
+            )}
+        />
+    </Admin>
+);
+
 const OptionItem = props => {
     const record = useRecordContext();
     return (
@@ -814,7 +959,7 @@ const nullishValuesFakeData = {
     artists: [{ id: 0 }, { id: 1 }],
 };
 
-const FanList = props => {
+const FanList = () => {
     const { data } = useListContext();
     return data ? (
         <>
@@ -877,7 +1022,7 @@ export const NullishValuesSupport = () => {
 };
 
 const dataProviderWithDifferentShapeInGetMany = {
-    getOne: (resource, params) =>
+    getOne: () =>
         Promise.resolve({
             data: {
                 id: 1,
@@ -888,7 +1033,7 @@ const dataProviderWithDifferentShapeInGetMany = {
                 year: 1869,
             },
         }),
-    getMany: (resource, params) =>
+    getMany: (_resource, params) =>
         Promise.resolve({
             data: authors
                 .filter(author => params.ids.includes(author.id))
@@ -897,7 +1042,7 @@ const dataProviderWithDifferentShapeInGetMany = {
                     newField: 'newField',
                 })),
         }),
-    getList: (resource, params) =>
+    getList: (_resource, params) =>
         new Promise(resolve => {
             // eslint-disable-next-line eqeqeq
             if (params.filter.q == undefined) {
@@ -927,8 +1072,8 @@ const dataProviderWithDifferentShapeInGetMany = {
                 500
             );
         }),
-    update: (resource, params) => Promise.resolve(params),
-    create: (resource, params) => {
+    update: (_resource, params) => Promise.resolve(params),
+    create: (last_nameresource, params) => {
         const newAuthor = {
             id: authors.length + 1,
             name: params.data.name,
@@ -966,3 +1111,86 @@ export const DifferentShapeInGetMany = () => (
         />
     </Admin>
 );
+
+export const TranslateChoice = () => {
+    const i18nProvider = polyglotI18nProvider(() => ({
+        ...englishMessages,
+        'option.male': 'Male',
+        'option.female': 'Female',
+    }));
+    return (
+        <AdminContext
+            i18nProvider={i18nProvider}
+            dataProvider={
+                {
+                    getOne: () =>
+                        Promise.resolve({ data: { id: 1, gender: 'F' } }),
+                    getList: () =>
+                        Promise.resolve({
+                            data: [
+                                { id: 'M', name: 'option.male' },
+                                { id: 'F', name: 'option.female' },
+                            ],
+                            total: 2,
+                        }),
+                    getMany: (_resource, { ids }) =>
+                        Promise.resolve({
+                            data: [
+                                { id: 'M', name: 'option.male' },
+                                { id: 'F', name: 'option.female' },
+                            ].filter(({ id }) => ids.includes(id)),
+                        }),
+                } as any
+            }
+        >
+            <Edit resource="posts" id="1">
+                <SimpleForm>
+                    <AutocompleteInput
+                        label="translateChoice default"
+                        source="gender"
+                        id="gender1"
+                        choices={[
+                            { id: 'M', name: 'option.male' },
+                            { id: 'F', name: 'option.female' },
+                        ]}
+                    />
+                    <AutocompleteInput
+                        label="translateChoice true"
+                        source="gender"
+                        id="gender2"
+                        choices={[
+                            { id: 'M', name: 'option.male' },
+                            { id: 'F', name: 'option.female' },
+                        ]}
+                        translateChoice
+                    />
+                    <AutocompleteInput
+                        label="translateChoice false"
+                        source="gender"
+                        id="gender3"
+                        choices={[
+                            { id: 'M', name: 'option.male' },
+                            { id: 'F', name: 'option.female' },
+                        ]}
+                        translateChoice={false}
+                    />
+                    <ReferenceInput reference="genders" source="gender">
+                        <AutocompleteInput
+                            optionText="name"
+                            label="inside ReferenceInput"
+                            id="gender4"
+                        />
+                    </ReferenceInput>
+                    <ReferenceInput reference="genders" source="gender">
+                        <AutocompleteInput
+                            optionText="name"
+                            label="inside ReferenceInput forced"
+                            id="gender5"
+                            translateChoice
+                        />
+                    </ReferenceInput>
+                </SimpleForm>
+            </Edit>
+        </AdminContext>
+    );
+};

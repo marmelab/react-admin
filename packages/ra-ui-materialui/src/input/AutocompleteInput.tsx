@@ -33,6 +33,7 @@ import {
     useTranslate,
     warning,
     useGetRecordRepresentation,
+    useEvent,
 } from 'ra-core';
 import {
     SupportCreateSuggestionOptions,
@@ -106,7 +107,7 @@ const defaultFilterOptions = createFilterOptions();
  * @example
  * <AutocompleteInput source="gender" choices={choices} translateChoice={false}/>
  *
- * The object passed as `options` props is passed to the MUI <TextField> component
+ * The object passed as `options` props is passed to the Material UI <TextField> component
  *
  * @example
  * <AutocompleteInput source="author_id" options={{ color: 'secondary', InputLabelProps: { shrink: true } }} />
@@ -151,7 +152,7 @@ export const AutocompleteInput = <
         matchSuggestion,
         margin,
         fieldState: fieldStateOverride,
-        filterToQuery = DefaultFilterToQuery,
+        filterToQuery: filterToQueryProp = DefaultFilterToQuery,
         formState: formStateOverride,
         multiple = false,
         noOptionsText,
@@ -172,8 +173,11 @@ export const AutocompleteInput = <
         translateChoice,
         validate,
         variant,
+        onInputChange,
         ...rest
     } = props;
+
+    const filterToQuery = useEvent(filterToQueryProp);
 
     const {
         allChoices,
@@ -276,12 +280,16 @@ export const AutocompleteInput = <
             throw new Error(`
 If you provided a React element for the optionText prop, you must also provide the inputText prop (used for the text input)`);
         }
-        // eslint-disable-next-line eqeqeq
-        if (isValidElement(optionText) && matchSuggestion == undefined) {
+        if (
+            isValidElement(optionText) &&
+            !isFromReference &&
+            // eslint-disable-next-line eqeqeq
+            matchSuggestion == undefined
+        ) {
             throw new Error(`
 If you provided a React element for the optionText prop, you must also provide the matchSuggestion prop (used to match the user input with a choice)`);
         }
-    }, [optionText, inputText, matchSuggestion, emptyText]);
+    }, [optionText, inputText, matchSuggestion, emptyText, isFromReference]);
 
     useEffect(() => {
         warning(
@@ -304,7 +312,7 @@ If you provided a React element for the optionText prop, you must also provide t
         optionValue,
         selectedItem: selectedChoice,
         suggestionLimit,
-        translateChoice,
+        translateChoice: translateChoice ?? !isFromReference,
     });
 
     const [filterValue, setFilterValue] = useState('');
@@ -312,15 +320,15 @@ If you provided a React element for the optionText prop, you must also provide t
     const handleChange = (newValue: any) => {
         if (multiple) {
             if (Array.isArray(newValue)) {
-                field.onChange(newValue.map(getChoiceValue));
+                field.onChange(newValue.map(getChoiceValue), newValue);
             } else {
-                field.onChange([
-                    ...(field.value ?? []),
-                    getChoiceValue(newValue),
-                ]);
+                field.onChange(
+                    [...(field.value ?? []), getChoiceValue(newValue)],
+                    newValue
+                );
             }
         } else {
-            field.onChange(getChoiceValue(newValue) ?? emptyValue);
+            field.onChange(getChoiceValue(newValue) ?? emptyValue, newValue);
         }
     };
 
@@ -442,11 +450,12 @@ If you provided a React element for the optionText prop, you must also provide t
         }
     }, [getOptionLabel, multiple, selectedChoice]);
 
-    const handleInputChange = (
-        event: any,
-        newInputValue: string,
-        reason: string
-    ) => {
+    const handleInputChange: AutocompleteProps<
+        OptionType,
+        Multiple,
+        DisableClearable,
+        SupportCreate
+    >['onInputChange'] = (event, newInputValue, reason) => {
         if (
             event?.type === 'change' ||
             !doesQueryMatchSelection(newInputValue)
@@ -454,6 +463,8 @@ If you provided a React element for the optionText prop, you must also provide t
             setFilterValue(newInputValue);
             debouncedSetFilter(newInputValue);
         }
+
+        onInputChange?.(event, newInputValue, reason);
     };
 
     const doesQueryMatchSelection = useCallback(
@@ -489,7 +500,7 @@ If you provided a React element for the optionText prop, you must also provide t
             matchSuggestion || // When using element as optionText (and matchSuggestion), options are filtered by getSuggestions, so they shouldn't be filtered here
             limitChoicesToValue // When limiting choices to values (why? it's legacy!), options are also filtered by getSuggestions, so they shouldn't be filtered here
                 ? options
-                : defaultFilterOptions(options, params); // Otherwise, we let MUI's Autocomplete do the filtering
+                : defaultFilterOptions(options, params); // Otherwise, we let Material UI's Autocomplete do the filtering
 
         // add create option if necessary
         const { inputValue } = params;
@@ -507,7 +518,7 @@ If you provided a React element for the optionText prop, you must also provide t
     const handleAutocompleteChange = (
         event: any,
         newValue: any,
-        reason: string
+        _reason: string
     ) => {
         handleChangeWithCreateSupport(newValue != null ? newValue : emptyValue);
     };
@@ -515,7 +526,7 @@ If you provided a React element for the optionText prop, you must also provide t
     const oneSecondHasPassed = useTimeout(1000, filterValue);
 
     const suggestions = useMemo(() => {
-        if (matchSuggestion || limitChoicesToValue) {
+        if (!isFromReference && (matchSuggestion || limitChoicesToValue)) {
             return getSuggestions(filterValue);
         }
         return finalChoices?.slice(0, suggestionLimit) || [];
@@ -526,11 +537,16 @@ If you provided a React element for the optionText prop, you must also provide t
         limitChoicesToValue,
         matchSuggestion,
         suggestionLimit,
+        isFromReference,
     ]);
 
     const isOptionEqualToValue = (option, value) => {
         return String(getChoiceValue(option)) === String(getChoiceValue(value));
     };
+    const renderHelperText =
+        !!fetchError ||
+        helperText !== false ||
+        ((isTouched || isSubmitted) && invalid);
 
     return (
         <>
@@ -560,11 +576,17 @@ If you provided a React element for the optionText prop, you must also provide t
                             ((isTouched || isSubmitted) && invalid)
                         }
                         helperText={
-                            <InputHelperText
-                                touched={isTouched || isSubmitted || fetchError}
-                                error={error?.message || fetchError?.message}
-                                helperText={helperText}
-                            />
+                            renderHelperText ? (
+                                <InputHelperText
+                                    touched={
+                                        isTouched || isSubmitted || fetchError
+                                    }
+                                    error={
+                                        error?.message || fetchError?.message
+                                    }
+                                    helperText={helperText}
+                                />
+                            ) : null
                         }
                         margin={margin}
                         variant={variant}
@@ -663,7 +685,7 @@ export interface AutocompleteInputProps<
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
     SupportCreate extends boolean | undefined = false
-> extends Omit<CommonInputProps, 'source'>,
+> extends Omit<CommonInputProps, 'source' | 'onChange'>,
         ChoicesProps,
         UseSuggestionsOptions,
         Omit<SupportCreateSuggestionOptions, 'handleChange' | 'optionText'>,
@@ -682,6 +704,12 @@ export interface AutocompleteInputProps<
     emptyValue?: any;
     filterToQuery?: (searchText: string) => any;
     inputText?: (option: any) => string;
+    onChange?: (
+        // We can't know upfront what the value type will be
+        value: Multiple extends true ? any[] : any,
+        // We return an empty string when the input is cleared in single mode
+        record: Multiple extends true ? OptionType[] : OptionType | ''
+    ) => void;
     setFilter?: (value: string) => void;
     shouldRenderSuggestions?: any;
     // Source is optional as AutocompleteInput can be used inside a ReferenceInput that already defines the source

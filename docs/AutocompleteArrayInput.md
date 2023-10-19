@@ -6,11 +6,16 @@ title: "The AutocompleteArrayInput Component"
 # `<AutocompleteArrayInput>`
 
 To let users choose multiple values in a list using a dropdown with autocompletion, use `<AutocompleteArrayInput>`.
-It renders using MUI [Autocomplete](https://mui.com/components/autocomplete/).
+It renders using Material UI [Autocomplete](https://mui.com/material-ui/react-autocomplete/).
 
-![AutocompleteArrayInput](./img/autocomplete-array-input.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/autocomplete-array-input.webm" type="video/webm"/>
+  <source src="./img/autocomplete-array-input.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
-This input allows editing values that are arrays of scalar values, e.g. `[123, 456]`. 
+
+This input allows editing values that are arrays of scalar values, e.g. `[123, 456]`.
 
 **Tip**: React-admin includes other components allowing the edition of such values:
 
@@ -18,7 +23,7 @@ This input allows editing values that are arrays of scalar values, e.g. `[123, 4
 - [`<CheckboxGroupInput>`](./CheckboxGroupInput.md) renders a list of checkbox options
 - [`<DualListInput>`](./DualListInput.md) renders a list of choices that can be moved from one list to another
 
-**Tip**: `<AutocompleteArrayInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceArrayInput>`](./ReferenceArrayInput.md) doesn't cover your need), you'll have to [write your own Input component](./Inputs.md#writing-your-own-input-component) based on MUI `<Autocomplete>` component.
+**Tip**: `<AutocompleteArrayInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceArrayInput>`](./ReferenceArrayInput.md) doesn't cover your need), you'll have to [write your own Input component](./Inputs.md#writing-your-own-input-component) based on Material UI `<Autocomplete>` component.
 
 ## Usage
 
@@ -58,11 +63,11 @@ The form value for the source must be an array of the selected values, e.g.
 | `createLabel`              | Optional | `string`              | `ra.action. create`       | The label for the menu item allowing users to create a new choice. Used when the filter is empty                                       |
 | `createItemLabel`          | Optional | `string`              | `ra.action .create_item` | The label for the menu item allowing users to create a new choice. Used when the filter is not empty                                                    |
 | `debounce`                 | Optional | `number`              | `250`                    | The delay to wait before calling the setFilter function injected when used in a ReferenceArray Input.                                                         |
-| `emptyText`                | Optional | `string`              | `''`                     | The text to use for the empty element                                                                                                                   |
 | `emptyValue`               | Optional | `any`                 | `''`                     | The value to use for the empty element                                                                                                                  |
 | `filterToQuery`            | Optional | `string` => `Object`  | `q => ({ q })`           | How to transform the searchText into a parameter for the data provider                                                                                  |
 | `inputText`                | Optional | `Function`            | `-`                      | Required if `optionText` is a custom Component, this function must return the text displayed for the current selection.                                 |
 | `matchSuggestion`          | Optional | `Function`            | `-`                      | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean` |
+| `onChange`                 | Optional | `Function`            | `-`                      | A function called with the new value, along with the selected records, when the input value changes |
 | `onCreate`                 | Optional | `Function`            | `-`                      | A function called with the current filter value when users choose to create a new choice.                                                               |
 | `optionText`               | Optional | `string` &#124; `Function` &#124; `Component` | `name` | Field name of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`)           |
 | `optionValue`              | Optional | `string`              | `id`                     | Field name of record containing the value to use as input value                                                                                         |
@@ -133,7 +138,12 @@ const choices = possibleValues.map(value => ({ id: value, name: ucfirst(value) }
 
 To allow users to add new options, pass a React element as the `create` prop. `<AutocompleteArrayInput>` will then render a "Create" option at the bottom of the choices list. When clicked, it will render the create element.
 
-![create option](./img/autocomplete-array-input-create.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/autocomplete-array-input-create.webm" type="video/webm"/>
+  <source src="./img/autocomplete-array-input-create.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 {% raw %}
 ```jsx
@@ -218,22 +228,6 @@ This delay can be customized by setting the `debounce` prop.
 </ReferenceArrayInput>
 ```
 
-## `emptyText`
-
-If the input isn't required (using `validate={required()}`), and you need a choice to represent the empty value, set `emptyText` prop and a choice will be added at the top, with its value as label.
-
-```jsx
-<AutocompleteArrayInput source="roles" choices={choices} emptyText="No role" />
-```
-
-The `emptyText` prop accepts either a string or a React Element.
-
-And if you want to hide that empty choice, make the input required. 
-
-```jsx
-<AutocompleteArrayInput source="roles" choices={choices} validate={required()} />
-```
-
 ## `emptyValue`
 
 If the input isn't required (using `validate={required()}`), users can select an empty choice. The default value for that empty choice is the empty string (`''`), or `null` if the input is inside a [`<ReferenceArrayInput>`](./ReferenceArrayInput.md).
@@ -244,7 +238,7 @@ You can override this value with the `emptyValue` prop.
 <AutocompleteArrayInput source="roles" choices={choices} emptyValue={0} />
 ```
 
-**Tip**: While you can set `emptyValue` to a non-string value (e.g. `0`), you cannot use `null` or `undefined`, as it would turn the `<AutocompleteArrayInput>` into an [uncontrolled component](https://reactjs.org/docs/uncontrolled-components.html). If you need the empty choice to be stored as `null` or `undefined`, use [the `parse` prop](./Inputs.md#parse) to convert the default empty value ('') to `null` or `undefined`, or use [the `sanitizeEmptyValues` prop](./SimpleForm.md#sanitizeemptyvalues) on the Form component. 
+**Tip**: While you can set `emptyValue` to a non-string value (e.g. `0`), you cannot use `null` or `undefined`, as it would turn the `<AutocompleteArrayInput>` into an [uncontrolled component](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components). If you need the empty choice to be stored as `null` or `undefined`, use [the `parse` prop](./Inputs.md#parse) to convert the default empty value (`''`) to `null` or `undefined`, or use [the `sanitizeEmptyValues` prop](./SimpleForm.md#sanitizeemptyvalues) on the Form component. 
 
 ## `filterToQuery`
 
@@ -261,6 +255,85 @@ const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
     <AutocompleteArrayInput filterToQuery={filterToQuery} />
 </ReferenceArrayInput>
 ```
+
+## `onChange`
+
+Use the `onChange` prop to get notified when the input value changes.
+
+Its value must be a function, defined as follows:
+
+```ts
+type OnChange = (
+        value: any[], // the new value
+        record: RaRecord[] // the selected records
+    ) => void;
+```
+
+In the following example, the `onChange` prop is used to update the `language` field whenever the user selects a new author:
+
+{% raw %}
+```tsx
+import * as React from 'react';
+import { useFormContext } from 'react-hook-form';
+
+import {
+    ArrayInput,
+    AutocompleteArrayInput,
+    AutocompleteArrayInputProps,
+    Create,
+    ReferenceArrayInput,
+    SimpleForm,
+    SimpleFormIterator,
+    TextInput,
+} from 'react-admin';
+
+const LanguageChangingAuthorInput = () => {
+    const { setValue } = useFormContext();
+    const handleChange: AutocompleteArrayInputProps['onChange'] = (
+        value,
+        records
+    ) => {
+        // handleChange will be called with, for instance:
+        //   value: [2],
+        //   record: [{ id: 2, name: 'Victor Hugo', language: 'French' }]
+        setValue(
+            'language',
+            records?.map(record => record.language)
+        );
+    };
+    return (
+        <ReferenceArrayInput reference="authors" source="author">
+            <AutocompleteArrayInput
+                fullWidth
+                optionText="name"
+                onChange={handleChange}
+                label="Authors"
+            />
+        </ReferenceArrayInput>
+    );
+};
+
+const BookEdit = () => (
+    <Create
+        mutationOptions={{
+            onSuccess: data => {
+                console.log(data);
+            },
+        }}
+        redirect={false}
+    >
+        <SimpleForm>
+            <LanguageChangingAuthorInput />
+            <ArrayInput source="language" label="Languages">
+                <SimpleFormIterator>
+                    <TextInput source="." label="Language" />
+                </SimpleFormIterator>
+            </ArrayInput>
+        </SimpleForm>
+    </Create>
+);
+```
+{% endraw %}
 
 ## `onCreate`
 
@@ -300,52 +373,77 @@ If a prompt is not enough, you can use [the `create` prop](#create) to render a 
 
 ## `optionText`
 
-You can customize the properties to use for the option name (instead of the default `name`) thanks to the `optionText` prop:
+By default, `<AutocompleteArrayInput>` uses the `name` property as the text content of each option.
 
 ```jsx
-const choices = [
-    { id: 'admin', label: 'Admin' },
-    { id: 'u001', label: 'Editor' },
-    { id: 'u002', label: 'Moderator' },
-    { id: 'u003', label: 'Reviewer' },
-];
-<AutocompleteArrayInput source="roles" choices={choices} optionText="label" />
+import { AutocompleteArrayInput } from 'react-admin';
+
+<AutocompleteArrayInput
+    source="categories"
+    choices={[
+        { id: 'tech', name: 'Tech' },
+        { id: 'lifestyle', name: 'Lifestyle' },
+        { id: 'people', name: 'People' },
+    ]}
+/>
+// renders the following list of choices
+// - Tech
+// - Lifestyle
+// - People
 ```
 
-`optionText` is especially useful when the choices are records coming from a `<ReferenceArrayInput>` or a `<ReferenceManyToManyInput>`. By default, react-admin uses the [`recordRepresentation`](./Resource.md#recordrepresentation) function to display the record label. But if you set the `optionText` prop, react-admin will use it instead.
+If your `choices` don't have a `name` property, or if you want to use another property, you can use the `optionText` prop to specify which property to use:
 
 ```jsx
-<ReferenceArrayInput source="tag_ids" reference="tags">
-    <AutocompleteArrayInput optionText="tag" />
-</ReferenceArrayInput>
+<AutocompleteArrayInput
+    source="categories"
+    optionText="label"
+    choices={[
+        { id: 'tech', label: 'Tech' },
+        { id: 'lifestyle', label: 'Lifestyle' },
+        { id: 'people', label: 'People' },
+    ]}
+/>
 ```
 
-`optionText` also accepts a function, so you can shape the option text based on the entire choice object:
+`optionText` also accepts a function, so you can shape the option text at will:
 
 ```jsx
 const choices = [
    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
 ];
+
+// Note we declared the function outside the component to avoid rerenders
 const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 
 <AutocompleteArrayInput source="authors" choices={choices} optionText={optionRenderer} />
 ```
 
-`optionText` also accepts a React Element, that will be rendered inside a [`<RecordContext>`](./useRecordContext.md) using the related choice as the `record` prop. You can use Field components there.
+**Tip**: Make sure you provide a stable reference to the function passed as `optionText`. Either declare it outside the component render function or wrap it inside a [`useCallback`](https://react.dev/reference/react/useCallback).
+
+`optionText` also accepts a React Element, that will be rendered inside a [`<RecordContext>`](./useRecordContext.md) using the related choice as the `record` prop. You can use Field components there. However, using an element as `optionText` implies that you also set two more props, `inputText` and `matchSuggestion`. See [Using A Custom Element For Options](#using-a-custom-element-for-options) for more details.
+
+`optionText` is also useful when the choices are records [fetched from another resource](#fetching-choices), and `<AutocompleteArrayInput>` is a child of a [`<ReferenceArrayInput>`](./ReferenceArrayInput.md). 
 
 ```jsx
-const choices = [
-   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
-   { id: 456, first_name: 'Jane', last_name: 'Austen' },
-];
+import { AutocompleteArrayInput, ReferenceArrayInput } from 'react-admin';
 
-const FullNameField = () => {
-    const record = useRecordContext();
-    return <span>{record.first_name} {record.last_name}</span>;
-}
+<ReferenceArrayInput label="Author" source="authors_ids" reference="authors">
+    <AutocompleteArrayInput />
+</ReferenceArrayInput>
+```
 
-<AutocompleteArrayInput source="authors" choices={choices} optionText={<FullNameField />}/>
+In that case, react-admin uses the [`recordRepresentation`](./Resource.md#recordrepresentation) of the related resource to display the record label. In the example above, `<AutocompleteArrayInput>` uses the resource representation of the `authors` resource, which is the `name` property.
+
+But if you set the `optionText` prop, react-admin uses it instead of relying on `recordRepresentation`.
+
+```jsx
+import { AutocompleteArrayInput, ReferenceArrayInput } from 'react-admin';
+
+<ReferenceArrayInput label="Author" source="authors_ids" reference="authors">
+    <AutocompleteArrayInput optionText="last_name" />
+</ReferenceArrayInput>
 ```
 
 ## `optionValue`
@@ -396,11 +494,11 @@ If you're using `<AutocompleteArrayInput>` inside a [`<ReferenceArrayInput>`](./
 
 ## `sx`: CSS API
 
-The `<AutocompleteArrayInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)).
+The `<AutocompleteArrayInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples).
 
-`<AutocompleteArrayInput>` renders an [`<AutocompleteInput>`](./AutocompleteInput.md) and reuses its styles. To override the style of all instances of `<AutocompleteInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaAutocompleteInput` key.
+`<AutocompleteArrayInput>` renders an [`<AutocompleteInput>`](./AutocompleteInput.md) and reuses its styles. To override the style of all instances of `<AutocompleteInput>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaAutocompleteInput` key.
 
-Refer to the [MUI `<Autocomplete>` component](https://mui.com/components/autocomplete/) to know its CSS API.
+Refer to the [Material UI `<Autocomplete>` component](https://mui.com/material-ui/react-autocomplete/) to know its CSS API.
 
 ## `translateChoice`
 
@@ -424,7 +522,7 @@ In that case, set the `translateChoice` prop to `false`.
 
 ## Additional Props
 
-`<AutocompleteArrayInput>` renders a [MUI `<Autocomplete>` component](https://mui.com/components/autocomplete/) and accepts the `<Autocomplete>` props:
+`<AutocompleteArrayInput>` renders a [Material UI `<Autocomplete>` component](https://mui.com/material-ui/react-autocomplete/) and accepts the `<Autocomplete>` props:
 
 {% raw %}
 ```jsx
@@ -436,7 +534,7 @@ In that case, set the `translateChoice` prop to `false`.
 
 **Tip**: To use the `disableCloseOnSelect` prop, you must also set `blurOnSelect={false}`, since this is enabled by default.
 
-## Using In A ReferenceArrayInput
+## Fetching Choices
 
 If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteArrayInput>` with [`<ReferenceArrayInput>`](./ReferenceArrayInput.md), and leave the `choices` empty:
 
@@ -447,6 +545,8 @@ import { AutocompleteArrayInput, ReferenceArrayInput } from 'react-admin';
     <AutocompleteArrayInput />
 </ReferenceArrayInput>
 ```
+
+Check [the `<ReferenceArrayInput>` documentation](./ReferenceArrayInput.md) for more details.
 
 ## Working With Object Values
 
@@ -489,7 +589,7 @@ You can pass a custom element as [`optionText`](#optiontext) to have `<Autocompl
 
 `<AutocompleteArrayInput>` will render the custom option element inside a [`<RecordContext>`](./useRecordContext.md), using the related choice as the `record` prop. You can use Field components there.
 
-However, as the underlying MUI `<Autocomplete>` component requires that the current selection is a string, you must also pass a function as the `inputText` prop. This function should return a text representation of the current selection. You should also pass a `matchSuggestion` function to filter the choices based on the current selection.
+However, as the underlying Material UI `<Autocomplete>` component requires that the current selection is a string, you must also pass a function as the `inputText` prop. This function should return a text representation of the current selection. You should also pass a `matchSuggestion` function to filter the choices based on the current selection.
 
 ```jsx
 const choices = [
@@ -505,6 +605,7 @@ const OptionRenderer = () => {
         </span>
     );
 };
+const optionText = <OptionRenderer />;
 const inputText = choice => `${choice.first_name} ${choice.last_name}`;
 const matchSuggestion = (filter, choice) => {
     return (
@@ -516,10 +617,28 @@ const matchSuggestion = (filter, choice) => {
 <AutocompleteArrayInput
     source="author_ids"
     choices={choices}
-    optionText={<OptionRenderer />}
+    optionText={optionText}
     inputText={inputText}
     matchSuggestion={matchSuggestion}
 />
+```
+
+**Tip**: Make sure you pass stable references to the functions passed to the `inputText` and `matchSuggestion` by either declaring them outside the component render function or by wrapping them in a [`useCallback`](https://react.dev/reference/react/useCallback).
+
+**Tip**: Make sure you pass a stable reference to the element passed to the `optionText` prop by calling it outside the component render function like so:
+
+```jsx
+const OptionRenderer = () => {
+    const record = useRecordContext();
+    return (
+        <span>
+            <img src={record.avatar} />
+            {record.first_name} {record.last_name}
+        </span>
+    );
+};
+
+const optionText = <OptionRenderer />;
 ```
 
 ## Creating New Choices
@@ -558,7 +677,7 @@ const PostCreate = () => {
 ```
 {% endraw %}
 
-Use the `create` prop when you want a more polished or complex UI. For example a MUI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
+Use the `create` prop when you want a more polished or complex UI. For example a Material UI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
 
 {% raw %}
 ```jsx

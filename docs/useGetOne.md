@@ -19,7 +19,7 @@ const { data, isLoading, error, refetch } = useGetOne(
 
 The `meta` argument is optional. It can be anything you want to pass to the data provider, e.g. a list of fields to show in the result.
 
-The `options` parameter is optional, and is passed to [react-query's `useQuery` hook](https://react-query-v3.tanstack.com/reference/useQuery). It may contain the following options:
+The `options` parameter is optional, and is passed to [react-query's `useQuery` hook](https://tanstack.com/query/v3/docs/react/reference/useQuery). It may contain the following options:
 
 * `cacheTime`
 * `enabled`
@@ -49,7 +49,7 @@ The `options` parameter is optional, and is passed to [react-query's `useQuery` 
 * `suspense`
 * `useErrorBoundary`
 
-Check [react-query's `useQuery` hook documentation](https://react-query-v3.tanstack.com/reference/useQuery) for details on each of these options.
+Check [react-query's `useQuery` hook documentation](https://tanstack.com/query/v3/docs/react/reference/useQuery) for details on each of these options.
 
 The react-query [query key](https://react-query-v3.tanstack.com/guides/query-keys) for this hook is `[resource, 'getOne', { id: String(id), meta }]`.
 
@@ -126,5 +126,33 @@ const UserProfile = () => {
         return <p>ERROR</p>;
     }
     return <div>User {data.username}</div>;
+};
+```
+
+## TypeScript
+
+The `useGetOne` hook accepts a generic parameter for the record type:
+
+```tsx
+import { useGetOne, useRecordContext } from 'react-admin';
+
+type Ticket = {
+    id: number;
+    userId: string;
+    message: string;
+};
+
+type User = {
+    id: number;
+    username: string;
+}
+
+const UserProfile = () => {
+    const ticket = useRecordContext<Ticket>();
+    const { data: user, isLoading, error } = useGetOne<User>('users', { id: ticket.userId });
+    if (isLoading) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    // TypeScript knows that user is of type User
+    return <div>User {user.username}</div>;
 };
 ```

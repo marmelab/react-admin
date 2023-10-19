@@ -1,34 +1,48 @@
 import React from 'react';
-import { Tooltip, IconButton } from '@mui/material';
+import { Tooltip, IconButton, useMediaQuery } from '@mui/material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useTranslate } from 'ra-core';
-import { useTheme } from '../layout';
-import { RaThemeOptions } from '..';
+
+import { ToggleThemeLegacyButton } from './ToggleThemeLegacyButton';
+import { RaThemeOptions, useThemesContext, useTheme } from '../theme';
 
 /**
  * Button toggling the theme (light or dark).
  *
- * @example
+ * Enabled by default in the <AppBar> when the <Admin> component has a darkMode.
  *
- * const MyAppBar = props => (
- *     <AppBar {...props}>
- *         <Box flex="1">
- *             <Typography variant="h6" id="react-admin-title"></Typography>
- *         </Box>
- *         <ToggleThemeButton lightTheme={lightTheme} darkTheme={darkTheme} />
- *     </AppBar>
+ * @example
+ * import { AppBar, ToggleThemeButton } from 'react-admin';
+ *
+ * const MyAppBar = () => (
+ *     <AppBar toolbar={<ToggleThemeButton />} />
  * );
  *
  * const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
  */
 export const ToggleThemeButton = (props: ToggleThemeButtonProps) => {
     const translate = useTranslate();
-    const { darkTheme, lightTheme } = props;
-    const [theme, setTheme] = useTheme();
+    const { darkTheme, defaultTheme } = useThemesContext(props);
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)', {
+        noSsr: true,
+    });
+    const [theme, setTheme] = useTheme(
+        defaultTheme || (prefersDarkMode && darkTheme ? 'dark' : 'light')
+    );
+
+    // FIXME: remove in v5
+    if (props.darkTheme) {
+        return (
+            <ToggleThemeLegacyButton
+                darkTheme={props.darkTheme}
+                lightTheme={props.lightTheme}
+            />
+        );
+    }
 
     const handleTogglePaletteType = (): void => {
-        setTheme(theme?.palette.mode === 'dark' ? lightTheme : darkTheme);
+        setTheme(theme === 'dark' ? 'light' : 'dark');
     };
     const toggleThemeTitle = translate('ra.action.toggle_theme', {
         _: 'Toggle Theme',
@@ -41,17 +55,19 @@ export const ToggleThemeButton = (props: ToggleThemeButtonProps) => {
                 onClick={handleTogglePaletteType}
                 aria-label={toggleThemeTitle}
             >
-                {theme?.palette.mode === 'dark' ? (
-                    <Brightness7Icon />
-                ) : (
-                    <Brightness4Icon />
-                )}
+                {theme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
             </IconButton>
         </Tooltip>
     );
 };
 
 export interface ToggleThemeButtonProps {
-    darkTheme: RaThemeOptions;
+    /**
+     * @deprecated Set the lightTheme in the `<Admin>` component instead.
+     */
     lightTheme?: RaThemeOptions;
+    /**
+     * @deprecated Set the darkTheme in the `<Admin>` component instead.
+     */
+    darkTheme?: RaThemeOptions;
 }

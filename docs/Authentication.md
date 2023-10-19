@@ -5,7 +5,12 @@ title: "security"
 
 # Security
 
-![Login](./img/login.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/login.webm" type="video/webm"/>
+  <source src="./img/login.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 React-admin lets you secure your admin app with the authentication strategy of your choice. Since there are many possible strategies (Basic Auth, JWT, OAuth, etc.), react-admin delegates authentication logic to an `authProvider`.
 
@@ -184,7 +189,7 @@ For instance, here's what a simple authProvider for Auth0 might look like:
 import { Auth0Client } from './Auth0Client';
 
 export const authProvider = {
-    async login() => { /* Nothing to do here, this function will never be called */ },
+    async login() { /* Nothing to do here, this function will never be called */ },
     async checkAuth() {
         const isAuthenticated = await Auth0Client.isAuthenticated();
         if (isAuthenticated) {
@@ -232,6 +237,42 @@ It's up to you to decide when to redirect users to the third party authenticatio
 * Directly in the `AuthProvider.checkAuth()` method as above;
 * When users click a button on a [custom login page](#customizing-the-login-component)
 
+## Handling Refresh Tokens
+
+[Refresh tokens](https://oauth.net/2/refresh-tokens/) are an important security mechanism. In order to leverage them, you should decorate the `dataProvider` and the `authProvider` so that they can check whether the authentication must be refreshed and actually refresh it.
+
+You can use the [`addRefreshAuthToDataProvider`](./addRefreshAuthToDataProvider.md) and [`addRefreshAuthToAuthProvider`](./addRefreshAuthToAuthProvider.md) functions for this purpose. They accept a `dataProvider` or `authProvider` respectively and a function that should refresh the authentication token if necessary:
+
+```jsx
+// in src/refreshAuth.js
+import { getAuthTokensFromLocalStorage } from './getAuthTokensFromLocalStorage';
+import { refreshAuthTokens } from './refreshAuthTokens';
+
+export const refreshAuth = () => {
+    const { accessToken, refreshToken } = getAuthTokensFromLocalStorage();
+    if (accessToken.exp < Date.now().getTime() / 1000) {
+        // This function will fetch the new tokens from the authentication service and update them in localStorage
+        return refreshAuthTokens(refreshToken);
+    }
+    return Promise.resolve();
+}
+
+// in src/authProvider.js
+import { addRefreshAuthToAuthProvider } from 'react-admin';
+import { refreshAuth } from 'refreshAuth';
+const myAuthProvider = {
+    // ...Usual AuthProvider methods
+};
+export const authProvider = addRefreshAuthToAuthProvider(myAuthProvider, refreshAuth);
+
+// in src/dataProvider.js
+import { addRefreshAuthToDataProvider } from 'react-admin';
+import simpleRestProvider from 'ra-data-simple-rest';
+import { refreshAuth } from 'refreshAuth';
+const baseDataProvider = simpleRestProvider('http://path.to.my.api/');
+export const dataProvider = addRefreshAuthToDataProvider(baseDataProvider, refreshAuth);
+```
+
 ## Customizing The Login Component
 
 Using `authProvider` is enough to implement a full-featured authorization system if the authentication relies on a username and password.
@@ -242,7 +283,6 @@ For all these cases, it's up to you to implement your own `LoginPage` component,
 
 ```jsx
 // in src/App.js
-import * as React from "react";
 import { Admin } from 'react-admin';
 
 import MyLoginPage from './MyLoginPage';
@@ -254,11 +294,24 @@ const App = () => (
 );
 ```
 
-Use the `useLogin` hook in your custom `LoginPage` component.
+By default, the login page displays a gradient background. If you just want to change the background, you can use the default Login page component and pass an image URL as the `backgroundImage` prop.
 
 ```jsx
 // in src/MyLoginPage.js
-import * as React from 'react';
+import { Login } from 'react-admin';
+
+const MyLoginPage = () => (
+    <Login
+        // A random image that changes everyday
+        backgroundImage="https://source.unsplash.com/random/1600x900/daily"
+    />
+);
+```
+
+If you want to build a Login page from scratch, you'll need the [`useLogin` hook](./useLogin.md).
+
+```jsx
+// in src/MyLoginPage.js
 import { useState } from 'react';
 import { useLogin, useNotify, Notification } from 'react-admin';
 
@@ -306,6 +359,7 @@ import { useLogout } from 'react-admin';
 import MenuItem from '@mui/material/MenuItem';
 import ExitIcon from '@mui/icons-material/PowerSettingsNew';
 
+// It's important to pass the ref to allow Material UI to manage the keyboard navigation
 const MyLogoutButton = forwardRef((props, ref) => {
     const logout = useLogout();
     const handleClick = () => logout();
@@ -313,6 +367,8 @@ const MyLogoutButton = forwardRef((props, ref) => {
         <MenuItem
             onClick={handleClick}
             ref={ref}
+            // It's important to pass the props to allow Material UI to manage the keyboard navigation
+            {...props}
         >
             <ExitIcon /> Logout
         </MenuItem>

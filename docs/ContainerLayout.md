@@ -3,11 +3,13 @@ layout: default
 title: "ContainerLayout"
 ---
 
-# ContainerLayout
+# `<ContainerLayout>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers an alternative to react-admin's `<Layout>` for applications with a limited number of resources. It replaces the sidebar menu by an AppBar menu, and displays the content in a centered container.
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers an alternative to react-admin's `<Layout>` for applications with a limited number of resources. It displays the content in a centered container, has no sidebar, and uses the top bar for navigation.
 
 ![Container layout](https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/container-layout.png)
+
+`<ContainerLayout>` is part of the [ra-navigation](https://marmelab.com/ra-enterprise/modules/ra-navigation#containerlayout) package.
 
 ## Usage
 
@@ -25,8 +27,6 @@ export const App = () => (
 );
 ```
 
-See more details in the [ra-navigation documentation](https://marmelab.com/ra-enterprise/modules/ra-navigation#containerlayout).
-
 ## Props
 
 `<ContainerLayout>` accepts the following props, all optional:
@@ -41,7 +41,7 @@ See more details in the [ra-navigation documentation](https://marmelab.com/ra-en
 
 ## `appBar`
 
-If you want to use a different color for the AppBar, or to make it sticky, pass a custom `appBar` element based on `<Header>`, which is a simple wrapper around [MUI's `<AppBar>` component](https://mui.com/material-ui/react-app-bar/#main-content).
+If you want to use a different color for the AppBar, or to make it sticky, pass a custom `appBar` element based on `<Header>`, which is a simple wrapper around [Material UI's `<AppBar>` component](https://mui.com/material-ui/react-app-bar/).
 
 ```jsx
 import { ContainerLayout, Header } from '@react-admin/ra-navigation';
@@ -62,7 +62,7 @@ const MyLayout = props => <ContainerLayout {...props} fixed />;
 
 ## `maxWidth`
 
-This prop allows to set the maximum width of the content [`<Container>`](https://mui.com/material-ui/react-container/#main-content). It accepts a string, one of `xs`, `sm`, `md`, `lg`, `xl`, or `false` to remove side margins and occupy the full width of the screen.
+This prop allows to set the maximum width of the content [`<Container>`](https://mui.com/material-ui/react-container/). It accepts a string, one of `xs`, `sm`, `md`, `lg`, `xl`, or `false` to remove side margins and occupy the full width of the screen.
 
 ```jsx
 import { ContainerLayout } from '@react-admin/ra-navigation';
@@ -72,7 +72,7 @@ const MyLayout = props => <ContainerLayout {...props} maxWidth="md" />;
 
 ## `menu`
 
-By default, `<ContainerLayout>` renders one menu item per resource in the admin. To reorder the menu, omit resources, or add custom pages, pass a custom menu element to the `menu` prop. This element should be [a `<HorizontalMenu>` component](./HorizontalMenu.md) with `<HorizontalMenu.Item>` children. Each child should have a `value` corresponding to the [application location](https://marmelab.com/ra-enterprise/modules/ra-navigation#concepts) of the target, and can have a `to` prop corresponding to the target location if different from the app location.
+By default, `<ContainerLayout>` renders one menu item per resource in the admin. To reorder the menu, omit resources, or add custom pages, pass a custom menu element to the `menu` prop. This element should be [a `<HorizontalMenu>` component](#horizontalmenu) with `<HorizontalMenu.Item>` children. Each child should have a `value` corresponding to the [application location](https://marmelab.com/ra-enterprise/modules/ra-navigation#concepts) of the target, and can have a `to` prop corresponding to the target location if different from the app location.
 
 ```jsx
 import {
@@ -121,7 +121,7 @@ export const App = () => (
 
 ## `sx`
 
-The `sx` prop allows to customize the style of the layout, and the underlying component. It accepts a [MUI `sx` prop](https://mui.com/system/the-sx-prop/#main-content).
+The `sx` prop allows to customize the style of the layout, and the underlying component. It accepts a [Material UI `sx` prop](https://mui.com/system/the-sx-prop/).
 
 {% raw %}
 ```jsx
@@ -161,23 +161,25 @@ By default, the `<ContainerLayout>` shows a user menu with a single item (logout
 
 {% raw %}
 ```jsx
+import * as React from 'react';
 import { Logout, UserMenu, useUserMenu } from 'react-admin';
 import { MenuList, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { ContainerLayout } from '@react-admin/ra-navigation';
 
+// It's important to pass the ref to allow Material UI to manage the keyboard navigation
 const ConfigurationMenu = React.forwardRef((props, ref) => {
     const { onClose } = useUserMenu();
     return (
         <MenuItem
             ref={ref}
+            // It's important to pass the props to allow Material UI to manage the keyboard navigation
             {...props}
             to="/configuration"
             onClick={onClose}
-            sx={{ color: 'text.secondary' }}
         >
             <ListItemIcon>
-                <SettingsIcon />
+                <SettingsIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText>Configuration</ListItemText>
         </MenuItem>
@@ -198,3 +200,44 @@ export const MyLayout = props => (
 );
 ```
 {% endraw %}
+
+## `<HorizontalMenu>`
+
+This component renders a horizontal menu, to be used in the AppBar of the [`<ContainerLayout>`](#containerLayout).
+
+![Container layout](./img/HorizontalMenu.png)
+
+This menu automatically detects and highlights the current location.
+
+### Usage
+
+Create a menu component based on `<HorizontalMenu>` and `<HorizontalMenu.Item>` children. Each child should have a `value` corresponding to the [application location](https://marmelab.com/ra-enterprise/modules/ra-navigation#concepts) of the target, and can have a `to` prop corresponding to the target location if different from the app location.
+
+```jsx
+import { HorizontalMenu } from '@react-admin/ra-navigation';
+
+export const Menu = () => (
+    <HorizontalMenu>
+        <HorizontalMenu.Item label="Dashboard" to="/" value="" />
+        <HorizontalMenu.Item label="Songs" to="/songs" value="songs" />
+        <HorizontalMenu.Item label="Artists" to="/artists" value="artists" />
+    </HorizontalMenu>
+);
+```
+
+Then pass this custom menu to the `<ContainerLayout menu>` prop:
+
+```jsx
+import { Admin, Resource } from 'react-admin';
+import { ContainerLayout } from '@react-admin/ra-navigation';
+
+import { Menu } from './Menu';
+
+const MyLayout = props => <ContainerLayout {...props} menu={<Menu />} />;
+
+const App = () => (
+    <Admin dataProvider={dataProvider} layout={MyLayout}>
+        ...
+    </Admin>
+);
+```

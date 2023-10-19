@@ -11,6 +11,7 @@ import {
     FormHelperText,
     FormControl,
     Chip,
+    OutlinedInput,
 } from '@mui/material';
 import {
     ChoicesProps,
@@ -93,7 +94,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         create,
         createLabel,
         createValue,
-        disableValue,
+        disableValue = 'disabled',
         format,
         helperText,
         label,
@@ -103,11 +104,12 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         onBlur,
         onChange,
         onCreate,
-        options,
-        optionText,
-        optionValue,
+        options = defaultOptions,
+        optionText = 'name',
+        optionValue = 'id',
         parse,
         resource: resourceProp,
+        size = 'small',
         source: sourceProp,
         translateChoice,
         validate,
@@ -123,6 +125,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         error: fetchError,
         source,
         resource,
+        isFromReference,
     } = useChoicesContext({
         choices: choicesProp,
         isLoading: isLoadingProp,
@@ -135,7 +138,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         optionText,
         optionValue,
         disableValue,
-        translateChoice,
+        translateChoice: translateChoice ?? !isFromReference,
     });
 
     const {
@@ -143,6 +146,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         isRequired,
         fieldState: { error, invalid, isTouched },
         formState: { isSubmitted },
+        id,
     } = useInput({
         format,
         onBlur,
@@ -254,6 +258,29 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         ? [field.value]
         : [];
 
+    const outlinedInputProps =
+        variant === 'outlined'
+            ? {
+                  input: (
+                      <OutlinedInput
+                          id="select-multiple-chip"
+                          label={
+                              <FieldTitle
+                                  label={label}
+                                  source={source}
+                                  resource={resource}
+                                  isRequired={isRequired}
+                              />
+                          }
+                      />
+                  ),
+              }
+            : {};
+    const renderHelperText =
+        !!fetchError ||
+        helperText !== false ||
+        ((isTouched || isSubmitted) && invalid);
+
     return (
         <>
             <StyledFormControl
@@ -263,7 +290,11 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                 variant={variant}
                 {...sanitizeRestProps(rest)}
             >
-                <InputLabel ref={inputLabel} id={`${label}-outlined-label`}>
+                <InputLabel
+                    ref={inputLabel}
+                    id={`${id}-outlined-label`}
+                    htmlFor={id}
+                >
                     <FieldTitle
                         label={label}
                         source={source}
@@ -272,8 +303,9 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     />
                 </InputLabel>
                 <Select
+                    id={id}
                     autoWidth
-                    labelId={`${label}-outlined-label`}
+                    labelId={`${id}-outlined-label`}
                     label={
                         <FieldTitle
                             label={label}
@@ -307,21 +339,26 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                         </div>
                     )}
                     data-testid="selectArray"
-                    size="small"
+                    size={size}
                     {...field}
                     {...options}
                     onChange={handleChangeWithCreateSupport}
                     value={finalValue}
+                    {...outlinedInputProps}
                 >
                     {finalChoices.map(renderMenuItem)}
                 </Select>
-                <FormHelperText error={fetchError || (isTouched && !!error)}>
-                    <InputHelperText
-                        touched={isTouched || isSubmitted || fetchError}
-                        error={error?.message || fetchError?.message}
-                        helperText={helperText}
-                    />
-                </FormHelperText>
+                {renderHelperText ? (
+                    <FormHelperText
+                        error={fetchError || (isTouched && !!error)}
+                    >
+                        <InputHelperText
+                            touched={isTouched || isSubmitted || fetchError}
+                            error={error?.message || fetchError?.message}
+                            helperText={helperText}
+                        />
+                    </FormHelperText>
+                ) : null}
             </StyledFormControl>
             {createElement}
         </>
@@ -352,20 +389,12 @@ SelectArrayInput.propTypes = {
         PropTypes.string,
         PropTypes.func,
         PropTypes.element,
-    ]).isRequired,
-    optionValue: PropTypes.string.isRequired,
+    ]),
+    optionValue: PropTypes.string,
     disableValue: PropTypes.string,
     resource: PropTypes.string,
     source: PropTypes.string,
     translateChoice: PropTypes.bool,
-};
-
-SelectArrayInput.defaultProps = {
-    options: {},
-    optionText: 'name',
-    optionValue: 'id',
-    disableValue: 'disabled',
-    translateChoice: true,
 };
 
 const sanitizeRestProps = ({
@@ -423,6 +452,9 @@ const StyledFormControl = styled(FormControl, {
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     minWidth: theme.spacing(20),
+    [theme.breakpoints.down('sm')]: {
+        width: '100%',
+    },
     [`& .${SelectArrayInputClasses.chips}`]: {
         display: 'flex',
         flexWrap: 'wrap',
@@ -433,3 +465,5 @@ const StyledFormControl = styled(FormControl, {
         marginRight: theme.spacing(0.5),
     },
 }));
+
+const defaultOptions = {};

@@ -139,7 +139,7 @@ For all those cases, you can use the [`<FormDataConsumer>`](https://marmelab.com
 
 ## UI in production build is empty or broke
 
-You have probably specified a version requirement for `@mui/material` that is incompatible with the one required by `react-admin`. As a consequence, npm bundled two copies of `MUI` in your application, and `MUI` doesn't work in that case.
+You have probably specified a version requirement for `@mui/material` that is incompatible with the one required by `react-admin`. As a consequence, npm bundled two copies of Material UI in your application, and doesn't work in that case.
 
 Please align your version requirement with the one of the `ra-ui-materialui` package.
 
@@ -147,7 +147,7 @@ See this [issue for more information](https://github.com/marmelab/react-admin/is
 
 ## My Resource is defined but not displayed on the Menu
 
-You can declare a resource without `list` prop, to manage reference for example:
+You may have declared a resource without `list` prop. But with the default menu, only resources with a `list` prop are shown.
 
 ```jsx
 <Admin>
@@ -155,17 +155,15 @@ You can declare a resource without `list` prop, to manage reference for example:
 </Admin>
 ```
 
-But with the default menu, resources without `list` prop aren't shown.
-
-In order to have a specific resource without `list` prop listed on the menu, you have to [write your own custom menu](./Theming.md#using-a-custom-menu).
+In order to have a specific resource without `list` prop listed on the menu, you have to [write your own custom menu](./Menu.md).
 
 ```jsx
- const MyMenu = ({ resources, onMenuClick }) => (
-    <div>
-        {resources.map(resource => (
-            <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />
-        ))}
-        <MenuItemLink to="/reference/create" primaryText="New Reference" onClick={onMenuClick} />
-    </div>
+import { Menu } from 'react-admin';
+
+export const MyMenu = () => (
+    <Menu>
+        <Menu.ResourceItems />
+        <Menu.Item to="/reference/create" primaryText="New Reference" />
+    </Menu>
 );
 ```

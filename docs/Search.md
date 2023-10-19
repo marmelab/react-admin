@@ -7,7 +7,11 @@ title: "The Search Component"
 
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component, part of [`ra-search`](https://marmelab.com/ra-enterprise/modules/ra-search), lets user do a site-wide search via a smart Omnibox.
 
-![ra-search](https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 `<Search>` renders a global search input. It's designed to be integrated into the top `<AppBar>`.
 
@@ -78,31 +82,18 @@ Check [the `ra-search` documentation](https://marmelab.com/ra-enterprise/modules
 
 If you're using [the `<Layout` component](./Layout.md), include the `<Search>` component inside a custom `<AppBar>` component:
 
-{% raw %}
 ```jsx
 // in src/MyAppBar.jsx
-import { AppBar } from "react-admin";
-import { Typography } from "@mui/material";
+import { AppBar, TitlePortal } from "react-admin";
 import { Search } from "@react-admin/ra-search";
 
-export const MyAppbar = (props) => (
-  <AppBar {...props}>
-    <Typography
-      variant="h6"
-      color="inherit"
-      sx={{
-        flex: 1,
-        textOverflow: "ellipsis",
-        whiteSpace: "nowrap",
-        overflow: "hidden",
-      }}
-      id="react-admin-title"
-    />
+export const MyAppbar = () => (
+  <AppBar>
+    <TitlePortal />
     <Search />
   </AppBar>
 );
 ```
-{% endraw %}
 
 Include that AppBar in [a custom layout component](./Layout.md):
 
@@ -137,7 +128,7 @@ export const App = () => (
 
 If you're using [the `<ContainerLayout>` component](./ContainerLayout.md), you can use the `<Search>` component directly in the `toolbar` prop:
 
-```jsx
+```tsx
 // in src/MyLayout.jsx
 import { ContainerLayout } from "@react-admin/ra-navigation";
 import { Search } from "@react-admin/ra-search";

@@ -25,8 +25,8 @@ import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
  * @prop {string} className
  * @prop {string} label Button label. Defaults to 'ra.action.delete, translated.
  * @prop {boolean} disabled Disable the button.
- * @prop {string} variant MUI variant for the button. Defaults to 'contained'.
- * @prop {ReactElement} icon Override the icon. Defaults to the Delete icon from MUI.
+ * @prop {string} variant Material UI variant for the button. Defaults to 'contained'.
+ * @prop {ReactElement} icon Override the icon. Defaults to the Delete icon from Material UI.
  *
  * @param {Props} props
  *
@@ -67,7 +67,6 @@ export const DeleteButton = <RecordType extends RaRecord = any>(
         : 'undoable';
 
     return finalMutationMode === 'undoable' ? (
-        // @ts-ignore I looked for the error for one hour without finding it
         <DeleteWithUndoButton<RecordType> record={record} {...rest} />
     ) : (
         <DeleteWithConfirmButton<RecordType>
@@ -84,8 +83,9 @@ export interface DeleteButtonProps<
     MutationOptionsError = unknown
 > extends ButtonProps,
         SaveContextValue {
-    confirmTitle?: string;
-    confirmContent?: string;
+    confirmTitle?: React.ReactNode;
+    confirmContent?: React.ReactNode;
+    confirmColor?: 'primary' | 'warning';
     icon?: ReactElement;
     mutationMode?: MutationMode;
     mutationOptions?: UseMutationOptions<

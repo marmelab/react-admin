@@ -9,6 +9,7 @@ import React, {
     FC,
     ReactElement,
 } from 'react';
+import { isElement } from 'react-is';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { TableCell, TableRow, TableRowProps, Checkbox } from '@mui/material';
@@ -42,15 +43,15 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
         children,
         className,
         expand,
-        hasBulkActions,
-        hover,
+        hasBulkActions = false,
+        hover = true,
         id,
         onToggleItem,
         record: recordOverride,
         rowClick,
-        selected,
+        selected = false,
         style,
-        selectable,
+        selectable = true,
         ...rest
     } = props;
 
@@ -209,7 +210,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                     className={DatagridClasses.expandedPanel}
                 >
                     <TableCell colSpan={nbColumns}>
-                        {isValidElement(expand)
+                        {isElement(expand)
                             ? cloneElement(expand, {
                                   // @ts-ignore
                                   record,
@@ -233,7 +234,7 @@ DatagridRow.propTypes = {
     className: PropTypes.string,
     // @ts-ignore
     expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
-    hasBulkActions: PropTypes.bool.isRequired,
+    hasBulkActions: PropTypes.bool,
     hover: PropTypes.bool,
     id: PropTypes.any,
     onToggleItem: PropTypes.func,
@@ -241,17 +242,14 @@ DatagridRow.propTypes = {
     record: PropTypes.object,
     resource: PropTypes.string,
     // @ts-ignore
-    rowClick: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+    rowClick: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.func,
+        PropTypes.bool,
+    ]),
     selected: PropTypes.bool,
     style: PropTypes.object,
     selectable: PropTypes.bool,
-};
-
-DatagridRow.defaultProps = {
-    hasBulkActions: false,
-    hover: true,
-    selected: false,
-    selectable: true,
 };
 
 export interface DatagridRowProps

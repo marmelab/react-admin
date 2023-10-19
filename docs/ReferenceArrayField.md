@@ -96,6 +96,8 @@ You can change how the list of related records is rendered by passing a custom c
 
 By default, `<ReferenceArrayField>` renders one string by related record, via a [`<SingleFieldList>`](./SingleFieldList.md) with a [`<ChipField>`](./ChipField.md) using the resource [`recordRepresentation`](./Resource.md#recordrepresentation). 
 
+![ReferenceArrayField with default children](./img/ReferenceArrayField-default-child.png)
+
 You can pass any component of your own as child, to render the list of related records in another way.
 
 That means that using the field without child:
@@ -121,16 +123,15 @@ Is equivalent to:
 - [`<SimpleList>`](./SimpleList.md)
 - [`<EditableDatagrid>`](./EditableDatagrid.md)
 - [`<Calendar>`](./Calendar.md)
-- Or a component of your own (check the [`usListContext`](./useListContext.md) chapter to learn how). 
+- Or a component of your own (check the [`<WithListContext>`](./WithListContext.md) and the [`useListContext`](./useListContext.md) chapters to learn how). 
 
 For instance, use a `<Datagrid>` to render the related records in a table:
 
 ```jsx
-import * as React from "react";
 import { Show, SimpleShowLayout, TextField, ReferenceArrayField, Datagrid, ShowButton } from 'react-admin';
 
-export const PostShow = (props) => (
-    <Show {...props}>
+export const PostShow = () => (
+    <Show>
         <SimpleShowLayout>
             <TextField source="id" />
             <TextField source="title" />
@@ -140,6 +141,31 @@ export const PostShow = (props) => (
                     <TextField source="name" />
                     <ShowButton />
                 </Datagrid>
+            </ReferenceArrayField>
+            <EditButton />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+Or [`<WithListContext>`](./WithListContext.md) to render the related records in a custom way:
+
+```jsx
+import { Show, SimpleShowLayout, TextField, ReferenceArrayField, WithListContext } from 'react-admin';
+
+export const PostShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <TextField source="id" />
+            <TextField source="title" />
+            <ReferenceArrayField label="Tags" reference="tags" source="tag_ids">
+                <WithListContext render={({ data }) => (
+                    <ul>
+                        {data.map(tag => (
+                            <li key={tag.id}>{tag.name}</li>
+                        ))}
+                    </ul>
+                )} />
             </ReferenceArrayField>
             <EditButton />
         </SimpleShowLayout>
@@ -246,11 +272,11 @@ For instance, to sort tags by title in ascending order, you can use the followin
 
 ## `sx`: CSS API
 
-The `<ReferenceArrayField>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<ReferenceArrayField>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
 | Rule name                           | Description                                                                              |
 |-------------------------------------|------------------------------------------------------------------------------------------|
-| `& .RaReferenceArrayField-progress` | Applied to the MUI's `LinearProgress` component while `isLoading` prop is `true` |
+| `& .RaReferenceArrayField-progress` | Applied to the Material UI's `LinearProgress` component while `isLoading` prop is `true` |
 
-To override the style of all instances of `<ReferenceArrayField>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaReferenceArrayField` key.
+To override the style of all instances of `<ReferenceArrayField>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaReferenceArrayField` key.
 

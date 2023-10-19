@@ -24,7 +24,7 @@ import {
  * @prop {string} className
  * @prop {string} label Button label. Defaults to 'ra.action.save', translated.
  * @prop {boolean} disabled Disable the button.
- * @prop {string} variant MUI variant for the button. Defaults to 'contained'.
+ * @prop {string} variant Material UI variant for the button. Defaults to 'contained'.
  * @prop {ReactElement} icon
  * @prop {function} mutationOptions Object of options passed to react-query.
  * @prop {function} transform Callback to execute before calling the dataProvider. Receives the data from the form, must return that transformed data. Can be asynchronous (and return a Promise)
@@ -54,7 +54,6 @@ export const SaveButton = <RecordType extends RaRecord = any>(
         label = 'ra.action.save',
         onClick,
         mutationOptions,
-        saving,
         disabled: disabledProp,
         type = 'submit',
         transform,
@@ -74,11 +73,7 @@ export const SaveButton = <RecordType extends RaRecord = any>(
         alwaysEnable === false || alwaysEnable === undefined
             ? undefined
             : !alwaysEnable,
-        disabledProp ||
-            !isDirty ||
-            isValidating ||
-            saveContext?.saving ||
-            isSubmitting
+        disabledProp || !isDirty || isValidating || isSubmitting
     );
 
     warning(
@@ -124,10 +119,6 @@ export const SaveButton = <RecordType extends RaRecord = any>(
     );
 
     const displayedLabel = label && translate(label, { _: label });
-    const finalSaving =
-        typeof saving !== 'undefined'
-            ? saving
-            : saveContext?.saving || isSubmitting;
 
     return (
         <StyledButton
@@ -137,13 +128,28 @@ export const SaveButton = <RecordType extends RaRecord = any>(
             aria-label={displayedLabel}
             disabled={disabled}
             onClick={handleClick}
-            // TODO: find a way to display the loading state (LoadingButton from mui Lab?)
             {...rest}
         >
-            {finalSaving ? <CircularProgress size={18} thickness={2} /> : icon}
+            {isSubmitting ? (
+                <CircularProgress
+                    sx={circularProgressStyle}
+                    size={14}
+                    thickness={3}
+                    color="inherit"
+                />
+            ) : (
+                icon
+            )}
             {displayedLabel}
         </StyledButton>
     );
+};
+
+const circularProgressStyle = {
+    '&.MuiCircularProgress-root': {
+        marginRight: '10px',
+        marginLeft: '2px',
+    },
 };
 
 const defaultIcon = <ContentSave />;
@@ -163,7 +169,6 @@ interface Props<
         CreateParams<RecordType> | UpdateParams<RecordType>
     >;
     transform?: TransformData;
-    saving?: boolean;
     variant?: string;
 }
 
@@ -178,7 +183,6 @@ SaveButton.propTypes = {
     className: PropTypes.string,
     invalid: PropTypes.bool,
     label: PropTypes.string,
-    saving: PropTypes.bool,
     variant: PropTypes.oneOf(['text', 'outlined', 'contained']),
     icon: PropTypes.element,
     alwaysEnable: PropTypes.bool,

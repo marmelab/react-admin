@@ -21,7 +21,7 @@ import {
     useRecordContext,
     useTranslate,
 } from 'ra-core';
-import { UseFieldArrayReturn } from 'react-hook-form';
+import { UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 
 import { useArrayInput } from './useArrayInput';
 import {
@@ -49,9 +49,9 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         resource,
         source,
         disabled,
-        disableAdd,
+        disableAdd = false,
         disableClear,
-        disableRemove,
+        disableRemove = false,
         disableReordering,
         inline,
         getItemLabel = false,
@@ -60,6 +60,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     } = props;
     const [confirmIsOpen, setConfirmIsOpen] = useState<boolean>(false);
     const { append, fields, move, remove, replace } = useArrayInput(props);
+    const { resetField } = useFormContext();
     const translate = useTranslate();
     const record = useRecordContext(props);
     const initialDefaultValue = useRef({});
@@ -75,7 +76,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         const { id, ...rest } = fields[0];
         initialDefaultValue.current = rest;
         for (const k in initialDefaultValue.current)
-            initialDefaultValue.current[k] = '';
+            initialDefaultValue.current[k] = null;
     }
 
     const addField = useCallback(
@@ -87,7 +88,14 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                     Children.count(children) === 1 &&
                     React.isValidElement(Children.only(children)) &&
                     // @ts-ignore
-                    !Children.only(children).props.source
+                    !Children.only(children).props.source &&
+                    // Make sure it's not a FormDataConsumer
+                    Children.map(
+                        children,
+                        input =>
+                            React.isValidElement(input) &&
+                            input.type !== FormDataConsumer
+                    ).some(Boolean)
                 ) {
                     // ArrayInput used for an array of scalar values
                     // (e.g. tags: ['foo', 'bar'])
@@ -104,14 +112,16 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                             input.props.source
                         ) {
                             defaultValue[input.props.source] =
-                                input.props.defaultValue ?? '';
+                                input.props.defaultValue ?? null;
                         }
                     });
                 }
             }
             append(defaultValue);
+            // Make sure the newly added inputs are not considered dirty by react-hook-form
+            resetField(`${source}.${fields.length}`, { defaultValue });
         },
-        [append, children]
+        [append, children, resetField, source, fields.length]
     );
 
     // add field and call the onClick event of the button passed as addButton prop
@@ -220,11 +230,6 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
             </Root>
         </SimpleFormIteratorContext.Provider>
     ) : null;
-};
-
-SimpleFormIterator.defaultProps = {
-    disableAdd: false,
-    disableRemove: false,
 };
 
 SimpleFormIterator.propTypes = {

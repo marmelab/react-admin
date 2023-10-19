@@ -7,8 +7,9 @@ title: "useDeleteMany"
 
 This hook allows to call `dataProvider.deleteMany()` when the callback is executed, and delete an array of records based on their `ids`.
 
+## Syntax
+
 ```jsx
-// syntax
 const [deleteMany, { data, isLoading, error }] = useDeleteMany(
     resource,
     { ids, meta },
@@ -27,6 +28,8 @@ deleteMany(
 ```
 
 So, should you pass the parameters when calling the hook, or when executing the callback? It's up to you; but if you have the choice, we recommend passing the parameters when calling the `deleteMany` callback (second example below).
+
+## Usage
 
 ```jsx
 // set params when calling the hook
@@ -60,16 +63,18 @@ const BulkDeletePostsButton = ({ selectedIds }) => {
 };
 ```
 
-**Tip**: If you use TypeScript, you can specify the record and error types for more type safety:
+## TypeScript
+
+The `useDeleteMany` hook accepts a generic parameter for the record type and another for the error type:
 
 ```tsx
 useDeleteMany<Product, Error>(undefined, undefined, {
     onError: (error) => {
-        // error is an instance of Error.
+        // TypeScript knows that error is of type Error
     },
     onSettled: (data, error) => {
-        // data is an instance of Product.
-        // error is an instance of Error.
+        // TypeScript knows that data is of type Product[]
+        // TypeScript knows that error is of type Error
     },
 })
 ```

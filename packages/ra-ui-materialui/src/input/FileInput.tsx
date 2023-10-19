@@ -1,5 +1,6 @@
 import React, {
     Children,
+    FC,
     isValidElement,
     ReactElement,
     ReactNode,
@@ -22,6 +23,7 @@ import { FileInputPreview } from './FileInputPreview';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 import { SxProps } from '@mui/system';
+import { SvgIconProps } from '@mui/material';
 
 export const FileInput = (props: FileInputProps) => {
     const {
@@ -41,6 +43,7 @@ export const FileInput = (props: FileInputProps) => {
         onRemove: onRemoveProp,
         parse,
         placeholder,
+        removeIcon,
         resource,
         source,
         validate,
@@ -144,6 +147,9 @@ export const FileInput = (props: FileInputProps) => {
         onDrop,
     });
 
+    const renderHelperText =
+        helperText !== false || ((isTouched || isSubmitted) && invalid);
+
     return (
         <StyledLabeled
             htmlFor={id}
@@ -177,13 +183,18 @@ export const FileInput = (props: FileInputProps) => {
                         <p>{translate(labelSingle)}</p>
                     )}
                 </div>
-                <FormHelperText error={(isTouched || isSubmitted) && invalid}>
-                    <InputHelperText
-                        touched={isTouched || isSubmitted}
-                        error={error?.message}
-                        helperText={helperText}
-                    />
-                </FormHelperText>
+                {renderHelperText ? (
+                    <FormHelperText
+                        error={(isTouched || isSubmitted) && invalid}
+                    >
+                        <InputHelperText
+                            touched={isTouched || isSubmitted}
+                            error={error?.message}
+                            helperText={helperText}
+                        />
+                    </FormHelperText>
+                ) : null}
+
                 {children && (
                     <div className="previews">
                         {files.map((file, index) => (
@@ -192,6 +203,7 @@ export const FileInput = (props: FileInputProps) => {
                                 file={file}
                                 onRemove={onRemove(file)}
                                 className={FileInputClasses.removeButton}
+                                removeIcon={removeIcon}
                             >
                                 <RecordContextProvider value={file}>
                                     {childrenElement}
@@ -223,6 +235,7 @@ FileInput.propTypes = {
     multiple: PropTypes.bool,
     validateFileRemoval: PropTypes.func,
     options: PropTypes.object,
+    removeIcon: PropTypes.elementType,
     resource: PropTypes.string,
     source: PropTypes.string,
     placeholder: PropTypes.node,
@@ -264,6 +277,7 @@ export type FileInputProps = CommonInputProps & {
     options?: DropzoneOptions;
     onRemove?: Function;
     placeholder?: ReactNode;
+    removeIcon?: FC<SvgIconProps>;
     inputProps?: any;
     validateFileRemoval?(file): boolean | Promise<boolean>;
     sx?: SxProps;

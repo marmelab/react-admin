@@ -42,7 +42,7 @@ The input value must be an object or an array of objects with a `title` and a `s
 After modification by the user, the value is stored as an array of objects with 3 properties: 
 
 * `title`: the file name with extension, e.g. 'Invoice-2929-01-06.pdf',
-* `src`: An [object URL](https://developer.mozilla.org/fr/docs/Web/API/URL/createObjectURL) for the `File`, e.g. 'blob:https://example.com/1e67e00e-860d-40a5-89ae-6ab0cbee6273'
+* `src`: An [object URL](https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL) for the `File`, e.g. 'blob:https://example.com/1e67e00e-860d-40a5-89ae-6ab0cbee6273'
 * `rawFile`: [The `File` object](https://developer.mozilla.org/fr/docs/Web/API/File) itself
 
 It is the responsibility of your `dataProvider` to send the file to the server (encoded in Base64, or using multipart upload) and to transform the `src` property. See [the Data Provider documentation](./DataProviders.md#handling-file-uploads) for an example.
@@ -53,13 +53,14 @@ Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and 
 
 | Prop                   | Required | Type                | Default    | Description                                                         |
 |------------------------|----------|---------------------|------------|---------------------------------------------------------------------|
-| `accept`               | Optional | `string | string[]` | -          | Accepted file type(s). When empty, all file types are accepted.     |
+| `accept`               | Optional | `string | string[]` | -                                                                   | Accepted file type(s). When empty, all file types are accepted.     |
 | `children`             | Optional | `ReactNode`         | -          | Element used to preview file(s)                                     |
 | `minSize`              | Optional | `number`            | 0          | Minimum file size (in bytes), e.g. 5000 for 5KB                     |
 | `maxSize`              | Optional | `number`            | `Infinity` | Maximum file size (in bytes), e.g. 5000000 for 5MB                  |
 | `multiple`             | Optional | `boolean`           | `false`    | Whether the inputs can accept multiple files.                       |
 | `options`              | Optional | `Object`            | `{}`       | Additional options passed to react-dropzone's `useDropzone()` hook. |
 | `placeholder`          | Optional | `ReactNode`         | -          | Invite displayed in the drop zone                                   |
+| `removeIcon`           | Optional | `ReactNode`         | [MUI's RemoveCircle icon](https://mui.com/material-ui/material-icons/?query=removeCir&selected=RemoveCircle) | The clickable icon for removing images                              |
 | `validateFile Removal` | Optional | `function`          | -          | Allows to cancel the removal of files                               |
 
 `<ImageInput>` also accepts the [common input props](./Inputs.md#common-input-props).
@@ -149,13 +150,23 @@ If that's not enough, you can pass a `placeholder` prop to overwrite it. The val
 </ImageInput>
 ```
 
+## `removeIcon`
+
+Use the `removeIcon` prop to change the icon displayed as the remove button:
+
+```jsx
+<ImageInput source="pictures" removeIcon={CustomSvgIcon}>
+    <ImageField source="src" title="title" />
+</ImageInput>
+```
+
 ## `sx`: CSS API
 
-The `<ImageInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<ImageInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
 | Rule name                       | Description                                         |
 |---------------------------------|-----------------------------------------------------|
 | `& .RaFileInput-dropZone`      | Styles pass to the underlying `FileInput` component |
 | `& .RaFileInput-removeButton`  | Styles pass to the underlying `FileInput` component |
 
-To override the style of all instances of `<ImageInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaImageInput` key.
+To override the style of all instances of `<ImageInput>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaImageInput` key.

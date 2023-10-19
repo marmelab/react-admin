@@ -7,9 +7,14 @@ title: "useInfiniteGetList"
 
 This hook calls `dataProvider.getList()` when the component mounts. It returns a list of "pages" of records, and a callback to fetch the previous or next page. It's ideal to render a feed of events or messages, where the total number of records is unknown, and the user requires the next page via a button (or a scroll listener).
 
-![useInfiniteGetList](./img/useInfiniteGetList.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/useInfiniteGetList.webm" type="video/webm"/>
+  <source src="./img/useInfiniteGetList.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
-It is based on react-query's [`useInfiniteQuery`](https://react-query-v3.tanstack.com/reference/useInfiniteQuery) hook.
+
+It is based on react-query's [`useInfiniteQuery`](https://tanstack.com/query/v3/docs/react/reference/useInfiniteQuery) hook.
 
 ## Syntax
 
@@ -44,7 +49,7 @@ If your data provider doesn't return the `total` number of records (see [Partial
 For instance, to render the latest news:
 
 ```jsx
-import { useInfinteGetList } from 'react-admin';
+import { useInfiniteGetList } from 'react-admin';
 
 const LatestNews = () => {
     const { 
@@ -84,7 +89,7 @@ const LatestNews = () => {
 };
 ```
 
-Check [react-query's `useInfiniteQuery` documentation](https://react-query-v3.tanstack.com/reference/useInfiniteQuery) for more details and examples.
+Check [react-query's `useInfiniteQuery` documentation](https://tanstack.com/query/v3/docs/react/reference/useInfiniteQuery) for more details and examples.
 
 ## `resource`
 
@@ -163,7 +168,7 @@ const { data } = useInfiniteGetList(
 );
 ```
 
-Additional options are passed to react-query's `useQuery` hook. Check the [react-query documentation](https://react-query-v3.tanstack.com/reference/useQuery) for more information.
+Additional options are passed to react-query's `useQuery` hook. Check the [react-query documentation](https://tanstack.com/query/v3/docs/react/reference/useQuery) for more information.
 
 ## Infinite Scrolling
 

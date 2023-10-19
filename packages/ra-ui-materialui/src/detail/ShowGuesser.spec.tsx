@@ -4,7 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { CoreAdminContext } from 'ra-core';
 
 import { ShowGuesser } from './ShowGuesser';
-import { ThemeProvider } from '../layout';
+import { ThemeProvider } from '../theme/ThemeProvider';
 
 describe('<ShowGuesser />', () => {
     it('should log the guessed Show view based on the fetched record', async () => {
@@ -26,7 +26,7 @@ describe('<ShowGuesser />', () => {
         render(
             <ThemeProvider theme={{}}>
                 <CoreAdminContext dataProvider={dataProvider as any}>
-                    <ShowGuesser resource="comments" id={123} />
+                    <ShowGuesser resource="comments" id={123} enableLog />
                 </CoreAdminContext>
             </ThemeProvider>
         );

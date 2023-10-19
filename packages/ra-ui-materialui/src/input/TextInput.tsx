@@ -23,7 +23,6 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
  * <TextInput source="email" type="email" />
  * <NumberInput source="nb_views" />
  *
- * The object passed as `options` props is passed to the <ResettableTextField> component
  */
 export const TextInput = (props: TextInputProps) => {
     const {
@@ -58,6 +57,10 @@ export const TextInput = (props: TextInputProps) => {
         onChange,
         ...rest,
     });
+
+    const renderHelperText =
+        helperText !== false || ((isTouched || isSubmitted) && invalid);
+
     return (
         <ResettableTextField
             id={id}
@@ -75,11 +78,13 @@ export const TextInput = (props: TextInputProps) => {
             }
             error={(isTouched || isSubmitted) && invalid}
             helperText={
-                <InputHelperText
-                    touched={isTouched || isSubmitted}
-                    error={error?.message}
-                    helperText={helperText}
-                />
+                renderHelperText ? (
+                    <InputHelperText
+                        touched={isTouched || isSubmitted}
+                        error={error?.message}
+                        helperText={helperText}
+                    />
+                ) : null
             }
             {...sanitizeInputRestProps(rest)}
         />
@@ -93,13 +98,8 @@ TextInput.propTypes = {
         PropTypes.bool,
         PropTypes.element,
     ]),
-    options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
-};
-
-TextInput.defaultProps = {
-    options: {},
 };
 
 export type TextInputProps = CommonInputProps &

@@ -49,7 +49,7 @@ The routes call the following `dataProvider` methods:
 * `edit` calls `getOne()` on mount, and `update()` or `delete()` on submission
 * `create` calls `create()` on submission
 
-**Tip**: Which API endpoint does a resource rely on? The `<Resource>` component doesn't know this mapping - it's [the `dataProvider`'s job](./DataProviderIntroduction.md) to define it.
+**Tip**: Which API endpoint does a resource rely on? The `<Resource>` component doesn't know this mapping - it's [the `dataProvider`'s job](./DataProviders.md) to define it.
 
 ## `name`
 
@@ -226,6 +226,8 @@ For instance, to change the default representation of "users" records to render 
 - a function (e.g. `(record) => record.title`) to specify a custom string representation
 - a React component (e.g. `<MyCustomRecordRepresentation />`). In such components, use [`useRecordContext`](./useRecordContext.md) to access the record.
 
+If you want to display this record representation somewhere, you can leverage the [`useGetRecordRepresentation`](./useGetRecordRepresentation.md) hook or the [`<RecordRepresentation>`](./RecordRepresentation.md) component.
+
 ## `hasCreate`, `hasEdit`, `hasShow`
 
 Some components, like [`<CreateDialog>`](./CreateDialog.md), [`<EditDialog>`](./EditDialog.md) or [`<ShowDialog>`](./ShowDialog.md) need to declare the CRUD components outside of the `<Resource>` component. In such cases, you can use the `hasCreate`, `hasEdit` and `hasShow` props to tell react-admin which CRUD components are available for a given resource.
@@ -319,8 +321,9 @@ export const App = () => (
 );
 ```
 
-<video controls autoplay muted loop width="100%">
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/breadcumb-nested-resource.webm" type="video/webm">
+<video controls autoplay playsinline muted loop width="100%">
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/breadcumb-nested-resource.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/breadcumb-nested-resource.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -397,3 +400,30 @@ export const SongDetail = () => {
 {% endraw %}
 
 **Tip**: As seen in the screencast above, when browsing to nested resources, users can get lost unless they have a breadcrumb path displayed on screen. Check [the `<Breadcrumb>` component](./Breadcrumb.md#nested-resources) for more details about how to set up this navigation element.
+
+## Lazy Loading
+
+If you need to speed up the initial loading of your application, you may want to enable code splitting using [`React.lazy()`](https://react.dev/reference/react/lazy#suspense-for-code-splitting). The default react-admin layout uses Suspense, so there is no special setup required to use lazy loaded components in `<Resource>`.
+
+```jsx
+// in src/App.js
+import * as React from 'react';
+import { Admin, Resource } from 'react-admin';
+
+import { dataProvider } from './dataProvider';
+import { users } from './users';
+
+const PostList = React.lazy(() => import('./posts/PostList'));
+const PostEdit = React.lazy(() => import('./posts/PostEdit'));
+
+const App = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource name="users" {...users} />
+        <Resource name="posts" list={PostList} edit={PostEdit} />
+    </Admin>
+);
+```
+
+When users navigate to the `/posts` route, react-admin will display a loading indicator while the `PostList` component is being loaded.
+
+![Loading indicator](./img/lazy-resource.png)

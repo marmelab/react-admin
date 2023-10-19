@@ -7,7 +7,10 @@ import { DatagridHeaderCell } from './DatagridHeaderCell';
 describe('<DatagridHeaderCell />', () => {
     it('should accept a React element as Field label', () => {
         const Label = () => <>Label</>;
-        const Field = ({ source, label }) => <div />;
+        const Field = (_props: {
+            source?: string;
+            label?: React.ReactNode;
+        }) => <div />;
         const { getByText } = render(
             <table>
                 <tbody>
@@ -26,7 +29,7 @@ describe('<DatagridHeaderCell />', () => {
     });
 
     describe('sorting on a column', () => {
-        const Field = (props: {
+        const Field = (_props: {
             source?: string;
             sortBy?: string;
             sortByOrder?: string;
@@ -170,7 +173,7 @@ describe('<DatagridHeaderCell />', () => {
                     </tbody>
                 </table>
             );
-            expect(container.querySelector('td').className).toContain('blue');
+            expect(container.querySelector('td')?.className).toContain('blue');
         });
     });
 });

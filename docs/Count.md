@@ -76,7 +76,7 @@ const TicketListAside = () => {
 | `sort`     | Optional | `{ field: string, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`  | The sort option sent to `getList`                                       |
 | `timeout`  | Optional | number                                     | 1000                              | Number of milliseconds to wait before displaying the loading indicator. |
 
-Additional props are passed to [the underlying MUI `<Typography>` element](https://mui.com/material-ui/api/typography/).
+Additional props are passed to [the underlying Material UI `<Typography>` element](https://mui.com/material-ui/api/typography/).
 
 ## `filter`
 
@@ -99,7 +99,7 @@ When used in conjunction to the `filter` prop, the link will point to the list v
 
 {% raw %}
 ```jsx
-<Count link filter={{ is_published: true }} link />
+<Count link filter={{ is_published: true }} />
 ```
 {% endraw %}
 
@@ -143,7 +143,7 @@ If you need to count the number of records related to the current one via a one-
 
 ```jsx
 import { 
-    ChipField
+    ChipField,
     Datagrid,
     DateField,
     List,

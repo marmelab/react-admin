@@ -1,11 +1,6 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import {
-    required,
-    testDataProvider,
-    TestTranslationProvider,
-    useRecordContext,
-} from 'ra-core';
+import { required, testDataProvider, useRecordContext } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
@@ -16,6 +11,8 @@ import {
     InsideReferenceInput,
     InsideReferenceInputDefaultValue,
     Sort,
+    TranslateChoice,
+    FetchChoices,
 } from './SelectInput.stories';
 
 describe('<SelectInput />', () => {
@@ -334,53 +331,37 @@ describe('<SelectInput />', () => {
     });
 
     describe('translateChoice', () => {
-        it('should translate the choices by default', () => {
-            render(
-                <AdminContext dataProvider={testDataProvider()}>
-                    <TestTranslationProvider translate={x => `**${x}**`}>
-                        <SimpleForm onSubmit={jest.fn()}>
-                            <SelectInput {...defaultProps} />
-                        </SimpleForm>
-                    </TestTranslationProvider>
-                </AdminContext>
+        it('should translate the choices by default', async () => {
+            render(<TranslateChoice />);
+            const selectedElement = await screen.findByLabelText(
+                'translateChoice default'
             );
-            fireEvent.mouseDown(
-                screen.getByLabelText('**resources.posts.fields.language**')
-            );
-
-            expect(screen.queryAllByRole('option').length).toEqual(3);
-            expect(
-                screen.getByText('**Angular**').getAttribute('data-value')
-            ).toEqual('ang');
-            expect(
-                screen.getByText('**React**').getAttribute('data-value')
-            ).toEqual('rea');
+            expect(selectedElement.textContent).toBe('Female');
         });
-
-        it('should not translate the choices if translateChoice is false', () => {
-            render(
-                <AdminContext dataProvider={testDataProvider()}>
-                    <TestTranslationProvider translate={x => `**${x}**`}>
-                        <SimpleForm onSubmit={jest.fn()}>
-                            <SelectInput
-                                {...defaultProps}
-                                translateChoice={false}
-                            />
-                        </SimpleForm>
-                    </TestTranslationProvider>
-                </AdminContext>
+        it('should not translate the choices when translateChoice is false', async () => {
+            render(<TranslateChoice />);
+            const selectedElement = await screen.findByLabelText(
+                'translateChoice false'
             );
-            fireEvent.mouseDown(
-                screen.getByLabelText('**resources.posts.fields.language**')
-            );
-
-            expect(screen.queryAllByRole('option').length).toEqual(3);
-            expect(
-                screen.getByText('Angular').getAttribute('data-value')
-            ).toEqual('ang');
-            expect(
-                screen.getByText('React').getAttribute('data-value')
-            ).toEqual('rea');
+            expect(selectedElement.textContent).toBe('option.female');
+        });
+        it('should not translate the choices when inside ReferenceInput by default', async () => {
+            render(<TranslateChoice />);
+            await waitFor(() => {
+                const selectedElement = screen.getByLabelText(
+                    'inside ReferenceInput'
+                );
+                expect(selectedElement.textContent).toBe('option.female');
+            });
+        });
+        it('should translate the choices when inside ReferenceInput when translateChoice is true', async () => {
+            render(<TranslateChoice />);
+            await waitFor(() => {
+                const selectedElement = screen.getByLabelText(
+                    'inside ReferenceInput forced'
+                );
+                expect(selectedElement.textContent).toBe('Female');
+            });
         });
     });
 
@@ -741,6 +722,14 @@ describe('<SelectInput />', () => {
             expect(onChange).toHaveBeenCalledWith('js_fatigue');
         });
     });
+
+    describe('fetching choices', () => {
+        it('should display the choices once fetched', async () => {
+            render(<FetchChoices />);
+            await screen.findByText('Leo Tolstoy');
+        });
+    });
+
     describe('inside ReferenceInput', () => {
         it('should use the recordRepresentation as optionText', async () => {
             render(<InsideReferenceInput />);

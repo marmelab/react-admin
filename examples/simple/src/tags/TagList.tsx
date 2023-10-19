@@ -15,18 +15,21 @@ import {
     ListItemSecondaryAction,
     Collapse,
     Card,
+    Stack,
 } from '@mui/material';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 
 const TagList = () => (
     <ListBase perPage={1000}>
-        <ListActions />
-        <Box maxWidth="20em" marginTop="1em">
-            <Card>
-                <Tree />
-            </Card>
-        </Box>
+        <Stack>
+            <ListActions />
+            <Box maxWidth="20em" marginTop="1em">
+                <Card>
+                    <Tree />
+                </Card>
+            </Box>
+        </Stack>
     </ListBase>
 );
 

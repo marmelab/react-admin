@@ -7,7 +7,12 @@ title: "The SortButton Component"
 
 Some List views don't have a natural UI for sorting - e.g. the `<SimpleList>`, or a list of images, don't have column headers like the `<Datagrid>`. For these cases, react-admin offers the `<SortButton>`, which displays a dropdown list of fields that the user can choose to sort on.
 
-![Sort Button](./img/sort-button.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/sort-button.webm" type="video/webm"/>
+  <source src="./img/sort-button.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 ## Usage
 
@@ -28,11 +33,24 @@ const ListActions = () => (
 
 ## Props
 
-| Prop     | Required | Type           | Default               | Description                         |
-|----------|----------|----------------|-----------------------|-------------------------------------|
-| `fields` | Required | `string[]`     | -                     | List of fields to offer sort on     |
-| `icon`   | Optional | `ReactElement` | `<ArrowDropDownIcon>` | iconElement, e.g. `<CommentIcon />` |
-| `label`  | Optional | `string`       | 'ra.sort.sort_by'     | label or translation message to use |
+| Prop        | Required | Type           | Default               | Description                         |
+|-------------|----------|----------------|-----------------------|-------------------------------------|
+| `fields`    | Required | `string[]`     | -                     | List of fields to offer sort on     |
+| `className` | Optional | `string  `     | -                     | class name for the button container |
+| `icon`      | Optional | `ReactElement` | `<ArrowDropDownIcon>` | iconElement, e.g. `<CommentIcon />` |
+| `label`     | Optional | `string`       | 'ra.sort.sort_by'     | label or translation message to use |
+| `sx`        | Optional | `SxProps`      | -                     | Styling                             |
+
+## `className`
+
+The `className` prop is passed down to the button container. Use it to customize the button style.
+
+```jsx
+<SortButton 
+    fields={['reference', 'sales', 'stock']}
+    className="my-sort-button"
+/>
+```
 
 ## `fields`
 
@@ -63,3 +81,27 @@ You can customize the label of the button by passing a `label` prop.
     label="Sort by"
 />
 ```
+
+## `sx`: CSS API
+
+You can override the style of `<SortButton>` and its inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for details).
+
+{% raw %}
+```jsx
+<SortButton 
+    fields={['reference', 'sales', 'stock']}
+    sx={{
+        mx: 1,
+        '& .MuiButton-root': {
+            color: 'text.secondary',
+        },
+    }}
+/>
+```
+{% endraw %}
+
+This property accepts the following subclasses:
+
+| Rule name             | Description                        |
+|-----------------------|------------------------------------|
+| `&.RaSortButton-root` | Applied to the root `span` element |

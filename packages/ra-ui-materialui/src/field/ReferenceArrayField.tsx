@@ -11,14 +11,16 @@ import {
     ResourceContextProvider,
     useRecordContext,
     useResourceDefinition,
+    RaRecord,
 } from 'ra-core';
 import { styled } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
 
-import { fieldPropTypes, PublicFieldProps, InjectedFieldProps } from './types';
+import { fieldPropTypes, FieldProps } from './types';
 import { LinearProgress } from '../layout';
 import { SingleFieldList } from '../list/SingleFieldList';
 import { ChipField } from './ChipField';
+import { UseQueryOptions } from 'react-query';
 
 /**
  * A container component that fetches records from another resource specified
@@ -76,7 +78,12 @@ import { ChipField } from './ChipField';
  *    ...
  * </ReferenceArrayField>
  */
-export const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
+export const ReferenceArrayField = <
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord
+>(
+    props: ReferenceArrayFieldProps<RecordType, ReferenceRecordType>
+) => {
     const {
         filter,
         page = 1,
@@ -85,9 +92,13 @@ export const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
         resource,
         sort,
         source,
+        queryOptions,
     } = props;
     const record = useRecordContext(props);
-    const controllerProps = useReferenceArrayFieldController({
+    const controllerProps = useReferenceArrayFieldController<
+        RecordType,
+        ReferenceRecordType
+    >({
         filter,
         page,
         perPage,
@@ -96,6 +107,7 @@ export const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
         resource,
         sort,
         source,
+        queryOptions,
     });
     return (
         <ResourceContextProvider value={reference}>
@@ -117,25 +129,27 @@ ReferenceArrayField.propTypes = {
     sortBy: PropTypes.string,
     sortByOrder: fieldPropTypes.sortByOrder,
     source: PropTypes.string.isRequired,
+    queryOptions: PropTypes.any,
 };
 
-export interface ReferenceArrayFieldProps
-    extends PublicFieldProps,
-        InjectedFieldProps {
+export interface ReferenceArrayFieldProps<
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord
+> extends FieldProps<RecordType> {
     children?: ReactNode;
     filter?: FilterPayload;
     page?: number;
     pagination?: ReactElement;
     perPage?: number;
     reference: string;
-    resource?: string;
     sort?: SortPayload;
     sx?: SxProps;
+    queryOptions?: UseQueryOptions<ReferenceRecordType[], Error>;
 }
 
 export interface ReferenceArrayFieldViewProps
     extends Omit<ReferenceArrayFieldProps, 'resource' | 'page' | 'perPage'>,
-        ListControllerProps {}
+        Omit<ListControllerProps, 'queryOptions'> {}
 
 export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props => {
     const { children, pagination, reference, className, sx } = props;

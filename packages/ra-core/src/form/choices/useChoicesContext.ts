@@ -11,6 +11,7 @@ export const useChoicesContext = <ChoicesType extends RaRecord = RaRecord>(
     >;
     const { data, ...list } = useList<ChoicesType>({
         data: options.choices,
+        isLoading: options.isLoading,
         // When not in a ChoicesContext, paginating does not make sense (e.g. AutocompleteInput).
         perPage: Infinity,
     });
@@ -30,8 +31,8 @@ export const useChoicesContext = <ChoicesType extends RaRecord = RaRecord>(
                 hasPreviousPage:
                     options.hasPreviousPage ?? list.hasPreviousPage,
                 hideFilter: options.hideFilter ?? list.hideFilter,
-                isFetching: options.isFetching ?? list.isFetching,
-                isLoading: options.isLoading ?? list.isLoading,
+                isLoading: list.isLoading, // we must take the one for useList, otherwise the loading state isn't synchronized with the data
+                isFetching: list.isFetching, // same
                 page: options.page ?? list.page,
                 perPage: options.perPage ?? list.perPage,
                 refetch: options.refetch ?? list.refetch,

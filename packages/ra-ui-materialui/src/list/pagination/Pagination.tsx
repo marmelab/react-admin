@@ -16,7 +16,7 @@ import {
     ListPaginationContextValue,
 } from 'ra-core';
 
-import { PaginationActions } from './PaginationActions';
+import { PaginationActions, PaginationActionsProps } from './PaginationActions';
 
 export const Pagination: FC<PaginationProps> = memo(props => {
     const {
@@ -44,7 +44,7 @@ export const Pagination: FC<PaginationProps> = memo(props => {
     }, [perPage, total]);
 
     /**
-     * Warning: MUI's page is 0-based
+     * Warning: Material UI's page is 0-based
      */
     const handlePageChange = useCallback(
         (event, page) => {
@@ -196,7 +196,7 @@ const emptyArray = [];
 export interface PaginationProps
     extends TablePaginationBaseProps,
         Partial<ListPaginationContextValue> {
-    rowsPerPageOptions?: rowsPerPageOptionsTypes;
-    actions?: FC;
+    rowsPerPageOptions?: number[];
+    actions?: FC<PaginationActionsProps>;
     limit?: ReactElement;
 }

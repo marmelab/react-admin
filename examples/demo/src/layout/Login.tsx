@@ -68,7 +68,7 @@ const Login = () => {
                     alignItems: 'center',
                     justifyContent: 'flex-start',
                     background:
-                        'url(https://source.unsplash.com/random/1600x900)',
+                        'url(https://source.unsplash.com/featured/1600x900)',
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: 'cover',
                 }}

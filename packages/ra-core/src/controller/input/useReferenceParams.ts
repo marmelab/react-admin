@@ -290,7 +290,7 @@ export interface ReferenceParamsOptions {
 
 export interface ReferenceParams {
     sort: string;
-    order: string;
+    order: 'ASC' | 'DESC';
     page: number;
     perPage: number;
     filter: any;
@@ -320,6 +320,6 @@ const emptyObject = {};
 const defaultSort = {
     field: 'id',
     order: SORT_ASC,
-};
+} as const;
 
 const defaultParams = {};

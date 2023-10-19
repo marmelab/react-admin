@@ -125,7 +125,7 @@ export default App;
 
 ## Using A Custom Router 
 
-By default, react-admin creates a [HashRouter](https://reactrouter.com/docs/en/v6/api#hashrouter). The hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers. 
+By default, react-admin creates a [HashRouter](https://reactrouter.com/en/6/router-components/hash-router#hashrouter). The hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers. 
 
 But you may want to use another routing strategy, e.g. to allow server-side rendering. React-router offers various Router components to implement such routing strategies. If you want to use a different router, simply wrap it around your app. React-admin will detect that it's already inside a router, and skip its own router. 
 
@@ -239,4 +239,4 @@ If there are duplicates, you need to make sure to use only the same version as r
 }
 ```
 
-This may also happen inside a [Remix](https://remix.run/) application. See [Setting up react-admin for Remix](./Remix.md#setting-up-react-admin) for instructions to overcome that problem.
+This may also happen inside a [Remix](https://remix.run/) application. See [Setting up react-admin for Remix](./Remix.md#setting-up-react-admin-in-remix) for instructions to overcome that problem.

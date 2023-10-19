@@ -70,7 +70,7 @@ export const Basic = () => (
 );
 
 const slowDataProvider = {
-    getManyReference: (resource, params) =>
+    getManyReference: () =>
         new Promise(resolve => {
             setTimeout(
                 () =>
@@ -92,7 +92,7 @@ export const Loading = () => (
 );
 
 const emptyDataProvider = {
-    getManyReference: (resource, params) =>
+    getManyReference: () =>
         Promise.resolve({
             data: [],
             total: 0,
@@ -209,7 +209,8 @@ const ListWrapper = ({ children }) => (
                     {
                         total: 1,
                         data: [{ id: 1, title: 'War and Peace' }],
-                        sort: { field: 'title', order: 'ASC' },
+                        sort: { field: 'id', order: 'ASC' },
+                        setSort: () => {},
                     } as any
                 }
             >
@@ -222,6 +223,7 @@ const ListWrapper = ({ children }) => (
 export const InDatagrid = () => (
     <ListWrapper>
         <Datagrid>
+            <TextField source="id" />
             <TextField source="title" />
             <ReferenceOneField
                 label="ISBN"

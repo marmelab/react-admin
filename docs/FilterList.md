@@ -7,7 +7,12 @@ title: "The FilterList Component"
 
 An alternative UI to the Filter Button/Form Combo is the FilterList Sidebar. Similar to what users usually see on e-commerce websites, it's a panel with many simple filters that can be enabled and combined using the mouse.
 
-![Filter Sidebar](./img/filter-sidebar.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/filter-sidebar.webm" type="video/webm"/>
+  <source src="./img/filter-sidebar.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 The user experience is better than the Button/Form Combo, because the filter values are explicit, and it doesn't require typing anything in a form. But it's a bit less powerful, as only filters with a finite set of values (or intervals) can be used in the `<FilterList>`.
 
@@ -45,7 +50,7 @@ export const PostFilterSidebar = () => (
 ```
 {% endraw %}
 
-Add this component to the list view using [the `<List aside>` prop](./List.md#aside-side-component):
+Add this component to the list view using [the `<List aside>` prop](./List.md#aside):
 
 ```jsx
 import { PostFilterSidebar } from './PostFilterSidebar';
@@ -63,11 +68,15 @@ A more sophisticated example is the filter sidebar for the visitors list visible
 
 **Tip**: In a Filter List sidebar, you can use [the `<FilterLiveSearch>` component](./FilterLiveSearch.md) to add a search input at the top of the sidebar, and [the `<SavedQueriesList>` component](./SavedQueriesList.md) to add a list of saved queries.
 
+## Props
+
 `<FilterList>` accepts 3 props:
 
-* [`children`](#children), which must be a list of `<FilterListItem>`
-* [`icon`](#icon)
-* [`label`](#label)
+| Prop | Required | Type | Default | Description |
+|------|----------|------|---------|-------------|
+| [`children`](#children) | Required | node | | The children of `<FilterList>` must be a list of `<FilterListItem>` components. |
+| [`icon`](#icon) | Optional | element | | When set, the `<FilterList icon>` prop appears on the left side of the filter label. |
+| [`label`](#label) | Optional | string | | React-admin renders the `<FilterList label>` on top of the child filter items. The string is passed through the `useTranslate` hook, and therefore can be translated. |
 
 ## `children`
 
@@ -185,3 +194,88 @@ const CustomerList = props => (
 {% endraw %}
 
 **Tip**: The `<FilterList>` Sidebar is not a good UI for small screens. You can choose to hide it on small screens (as in the previous example). A good tradeoff is to use `<FilterList>` on large screens, and the Filter Button/Form combo on Mobile.
+
+## Cumulative Filters
+
+By default, selecting a filter item replaces the current filter value. But for some filter types, like categories, you may want to allow users to select more than one item. 
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/filter-list-cumulative.webm" type="video/webm"/>
+  <source src="./img/filter-list-cumulative.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+To do so, you can use the `isSelected` and `toggleFilter` props of the `<FilterListItem>` component.
+
+- The `isSelected` prop accepts a function that receives the item value and the currently applied filters. It must return a boolean.
+- The `toggleFilter` prop accepts a function that receives the item value and the currently applied filters. It is called when user toggles a filter and must return the new filters to apply.
+
+Here's how you could implement cumulative filters, e.g. allowing users to filter items having one of several categories:
+
+{% raw %}
+```jsx
+import { FilterList, FilterListItem } from 'react-admin';
+import CategoryIcon from '@mui/icons-material/LocalOffer';
+
+export const CategoriesFilter = () => {
+    const isSelected = (value, filters) => {
+        const categories = filters.categories || [];
+        return categories.includes(value.category);
+    };
+
+    const toggleFilter = (value, filters) => {
+        const categories = filters.categories || [];
+        return {
+            ...filters,
+            categories: categories.includes(value.category)
+                // Remove the category if it was already present
+                ? categories.filter(v => v !== value.category)
+                // Add the category if it wasn't already present
+                : [...categories, value.category],
+        };
+    };
+
+    return (
+        <FilterList label="Categories" icon={<CategoryIcon />}>
+            <FilterListItem
+                label="Tests"
+                value={{ category: 'tests' }}
+                isSelected={isSelected}
+                toggleFilter={toggleFilter}
+            />
+            <FilterListItem
+                label="News"
+                value={{ category: 'news' }}
+                isSelected={isSelected}
+                toggleFilter={toggleFilter}
+            />
+            <FilterListItem
+                label="Deals"
+                value={{ category: 'deals' }}
+                isSelected={isSelected}
+                toggleFilter={toggleFilter}
+            />
+            <FilterListItem
+                label="Tutorials"
+                value={{ category: 'tutorials' }}
+                isSelected={isSelected}
+                toggleFilter={toggleFilter}
+            />
+        </FilterList>
+    )
+}
+```
+{% endraw %}
+
+## `<FilterListItem>`
+
+The children of `<FilterList>` must be a list of `<FilterListItem>` components. The `<FilterListItem>` accepts the following props:
+
+| Prop | Required | Type | Default | Description |
+|------|----------|------|---------|-------------|
+| `label` | Required | string | | The label of the filter item. It is passed through the `useTranslate` hook, and therefore can be translated. |
+| `value` | Required | object | | The value of the filter item. It is merged with the current filter value when enabled by the user. |
+| `icon` | Optional | `ReactElement` | | When set, the icon appears to the left of the item label.  |
+| `isSelected` | Optional | function | | A function that receives the item value and the currently applied filters. It must return a boolean. |
+| `toggleFilter` | Optional | function | | A function that receives the item value and the currently applied filters. It is called when user toggles a filter and must return the new filters to apply. |
+

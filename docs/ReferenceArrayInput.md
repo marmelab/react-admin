@@ -7,7 +7,12 @@ title: "The ReferenceArrayInput Component"
 
 Use `<ReferenceArrayInput>` to edit an array of reference values, i.e. to let users choose a list of values (usually foreign keys) from another REST endpoint.
 
-![ReferenceArrayInput](./img/reference-array-input.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/reference-array-input.webm" type="video/webm"/>
+  <source src="./img/reference-array-input.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 ## Usage
 
@@ -67,7 +72,7 @@ dataProvider.getList('tags', {
 
 ```js
 dataProvider.getList('tags', { 
-    filter: { q: [search term] },
+    filter: { q: ['search term'] },
     sort: { field: 'id', order: 'DESC' },
     pagination: { page: 1, perPage: 25 }
 });
@@ -101,7 +106,7 @@ See the [`children`](#children) section for more details.
 | `label`            | Optional | `string`                                    | -                                  | Useful only when `ReferenceArrayInput` is in a Filter array, the label is used as the Filter label.                 |
 | `page`             | Optional | `number`                                    | 1                                  | The current page number                                                                                             |
 | `perPage`          | Optional | `number`                                    | 25                                 | Number of suggestions to show                                                                                       |
-| `queryOptions`     | Optional | [`UseQueryOptions`](https://tanstack.com/query/v4/docs/reference/useQuery?from=reactQueryV3&original=https://react-query-v3.tanstack.com/reference/useQuery) | `{}` | `react-query` client options     |
+| `queryOptions`     | Optional | [`UseQueryOptions`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | `{}` | `react-query` client options     |
 | `sort`             | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`   | How to order the list of suggestions                                                                                |
 
 **Note**: `<ReferenceArrayInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) ; it is the responsability of children to apply them.
@@ -333,6 +338,6 @@ If you want to customize the conversion between the search term and the query fi
 const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
 
 <ReferenceArrayInput source="tags_ids" reference="tags">
-    <ReferenceArrayInput filterToQuery={filterToQuery} />
+    <AutocompleteArrayInput filterToQuery={filterToQuery} />
 </ReferenceArrayInput>
 ```

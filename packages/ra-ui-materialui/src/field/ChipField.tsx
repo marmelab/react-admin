@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { memo, FC } from 'react';
 import get from 'lodash/get';
 import Chip, { ChipProps } from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
@@ -8,11 +7,16 @@ import clsx from 'clsx';
 import { useRecordContext, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { FieldProps, fieldPropTypes } from './types';
+import { genericMemo } from './genericMemo';
 
-export const ChipField: FC<ChipFieldProps> = memo(props => {
+const ChipFieldImpl = <
+    RecordType extends Record<string, any> = Record<string, any>
+>(
+    props: ChipFieldProps<RecordType>
+) => {
     const { className, source, emptyText, ...rest } = props;
-    const record = useRecordContext(props);
+    const record = useRecordContext<RecordType>(props);
     const value = get(record, source);
     const translate = useTranslate();
 
@@ -36,20 +40,26 @@ export const ChipField: FC<ChipFieldProps> = memo(props => {
             {...sanitizeFieldRestProps(rest)}
         />
     );
-});
-
-ChipField.propTypes = {
-    // @ts-ignore
-    ...ChipField.propTypes,
-    ...fieldPropTypes,
 };
 
-ChipField.displayName = 'ChipField';
+ChipFieldImpl.propTypes = {
+    // @ts-ignore
+    ...Chip.propTypes,
+    ...fieldPropTypes,
+};
+ChipFieldImpl.displayName = 'ChipFieldImpl';
 
-export interface ChipFieldProps
-    extends PublicFieldProps,
-        InjectedFieldProps,
-        Omit<ChipProps, 'label'> {}
+export const ChipField = genericMemo(ChipFieldImpl);
+
+export interface ChipFieldProps<
+    RecordType extends Record<string, any> = Record<string, any>
+> extends FieldProps<RecordType>,
+        Omit<ChipProps, 'label' | 'children'> {
+    /**
+     * @internal do not use (prop required for TS to be able to cast ChipField as FunctionComponent)
+     */
+    children?: React.ReactNode;
+}
 
 const PREFIX = 'RaChipField';
 

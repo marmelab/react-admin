@@ -35,8 +35,8 @@ import { Link } from '../Link';
  * Set the linkType prop to "show" to link to the <Show> page instead.
  *
  * @example
- * <ReferenceManyField reference="books" target="author_id" linkType="show">
- *     <SingleFieldList>
+ * <ReferenceManyField reference="books" target="author_id">
+ *     <SingleFieldList linkType="show">
  *         <ChipField source="title" />
  *     </SingleFieldList>
  * </ReferenceManyField>
@@ -45,8 +45,8 @@ import { Link } from '../Link';
  * `linkType` to false.
  *
  * @example
- * <ReferenceManyField reference="books" target="author_id" linkType={false}>
- *     <SingleFieldList>
+ * <ReferenceManyField reference="books" target="author_id">
+ *     <SingleFieldList linkType={false}>
  *         <ChipField source="title" />
  *     </SingleFieldList>
  * </ReferenceManyField>
@@ -162,11 +162,12 @@ const Root = styled('div', {
 })(({ theme }) => ({
     display: 'flex',
     flexWrap: 'wrap',
-    marginTop: theme.spacing(-1),
-    marginBottom: theme.spacing(-1),
 
     [`& .${SingleFieldListClasses.link}`]: {
         textDecoration: 'none',
+        '& > *': {
+            color: theme.palette.primary.main,
+        },
     },
 }));
 
@@ -174,6 +175,6 @@ const Root = styled('div', {
 const stopPropagation = e => e.stopPropagation();
 
 // Our handleClick does nothing as we wrap the children inside a Link but it is
-// required by ChipField, which uses a Chip from MUI.
-// The MUI Chip requires an onClick handler to behave like a clickable element.
+// required by ChipField, which uses a Chip from Material UI.
+// The Material UI Chip requires an onClick handler to behave like a clickable element.
 const handleClick = () => {};

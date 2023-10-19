@@ -5,7 +5,7 @@ import { UseQueryOptions } from 'react-query';
 interface UseReferenceProps<RecordType extends RaRecord = any> {
     id: Identifier;
     reference: string;
-    options?: UseQueryOptions<RecordType[], Error>;
+    options?: UseQueryOptions<RecordType[], Error> & { meta?: any };
 }
 
 export interface UseReferenceResult<RecordType extends RaRecord = any> {
@@ -40,10 +40,11 @@ export interface UseReferenceResult<RecordType extends RaRecord = any> {
  * @param {Object} option
  * @param {string} option.reference The linked resource name
  * @param {string} option.id The id of the reference
+ * @param {Object} option.options Options passed to the dataProvider
  *
  * @returns {UseReferenceResult} The reference record
  */
-export const useReference = <RecordType extends RaRecord = any>({
+export const useReference = <RecordType extends RaRecord = RaRecord>({
     reference,
     id,
     options = {},

@@ -13,7 +13,7 @@ import {
     RaRecord,
 } from 'ra-core';
 
-import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
+import { fieldPropTypes, FieldProps } from './types';
 import { ReferenceFieldView } from './ReferenceField';
 
 /**
@@ -26,13 +26,16 @@ import { ReferenceFieldView } from './ReferenceField';
  *     <TextField source="body" />
  * </ReferenceOneField>
  */
-export const ReferenceOneField = <RecordType extends RaRecord = any>(
-    props: ReferenceOneFieldProps<RecordType>
+export const ReferenceOneField = <
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord
+>(
+    props: ReferenceOneFieldProps<RecordType, ReferenceRecordType>
 ) => {
     const {
         children,
         reference,
-        source,
+        source = 'id',
         target,
         emptyText,
         sort,
@@ -40,7 +43,7 @@ export const ReferenceOneField = <RecordType extends RaRecord = any>(
         link = false,
         queryOptions,
     } = props;
-    const record = useRecordContext(props);
+    const record = useRecordContext<RecordType>(props);
     const createPath = useCreatePath();
     const translate = useTranslate();
 
@@ -50,7 +53,7 @@ export const ReferenceOneField = <RecordType extends RaRecord = any>(
         referenceRecord,
         error,
         refetch,
-    } = useReferenceOneFieldController<RecordType>({
+    } = useReferenceOneFieldController<ReferenceRecordType>({
         record,
         reference,
         source,
@@ -95,17 +98,18 @@ export const ReferenceOneField = <RecordType extends RaRecord = any>(
     );
 };
 
-export interface ReferenceOneFieldProps<RecordType extends RaRecord = any>
-    extends PublicFieldProps,
-        InjectedFieldProps {
+export interface ReferenceOneFieldProps<
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord
+> extends FieldProps<RecordType> {
     children?: ReactNode;
     reference: string;
     target: string;
     sort?: SortPayload;
     filter?: any;
-    link?: LinkToType;
+    link?: LinkToType<RecordType>;
     queryOptions?: UseQueryOptions<{
-        data: RecordType[];
+        data: ReferenceRecordType[];
         total: number;
     }> & { meta?: any };
 }
@@ -116,11 +120,14 @@ ReferenceOneField.propTypes = {
     label: fieldPropTypes.label,
     record: PropTypes.any,
     reference: PropTypes.string.isRequired,
-    source: PropTypes.string.isRequired,
+    source: PropTypes.string,
     target: PropTypes.string.isRequired,
     queryOptions: PropTypes.any,
 };
 
 ReferenceOneField.defaultProps = {
-    source: 'id',
+    // disable sorting on this field by default as its default source prop ('id')
+    // will match the default sort ({ field: 'id', order: 'DESC'})
+    // leading to an incorrect sort indicator in a datagrid header
+    sortable: false,
 };

@@ -32,7 +32,7 @@ export const NumberInput = ({
     parse,
     resource,
     source,
-    step,
+    step = 'any',
     min,
     max,
     validate,
@@ -118,10 +118,15 @@ export const NumberInput = ({
         setValue(value => (value !== stringValue ? stringValue : value));
     };
 
+    const renderHelperText =
+        helperText !== false || ((isTouched || isSubmitted) && invalid);
+
+    const { ref, ...fieldWithoutRef } = field;
     return (
         <TextField
             id={id}
-            {...field}
+            {...fieldWithoutRef}
+            inputRef={ref}
             // use the locally controlled state instead of the react-hook-form field state
             value={value}
             onChange={handleChange}
@@ -133,11 +138,13 @@ export const NumberInput = ({
             variant={variant}
             error={(isTouched || isSubmitted) && invalid}
             helperText={
-                <InputHelperText
-                    touched={isTouched || isSubmitted}
-                    error={error?.message}
-                    helperText={helperText}
-                />
+                renderHelperText ? (
+                    <InputHelperText
+                        touched={isTouched || isSubmitted}
+                        error={error?.message}
+                        helperText={helperText}
+                    />
+                ) : null
             }
             label={
                 <FieldTitle
@@ -160,14 +167,12 @@ NumberInput.propTypes = {
         PropTypes.bool,
         PropTypes.element,
     ]),
-    options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
     step: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 NumberInput.defaultProps = {
-    options: {},
     step: 'any',
     textAlign: 'right',
 };

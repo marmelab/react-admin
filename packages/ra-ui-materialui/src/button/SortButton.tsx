@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ReactElement, memo } from 'react';
+import clsx from 'clsx';
 import {
     Button,
     Menu,
@@ -8,6 +9,7 @@ import {
     IconButton,
     useMediaQuery,
     Theme,
+    SxProps,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import SortIcon from '@mui/icons-material/Sort';
@@ -45,7 +47,13 @@ import {
  * );
  */
 const SortButton = (props: SortButtonProps) => {
-    const { fields, label = 'ra.sort.sort_by', icon = defaultIcon } = props;
+    const {
+        fields,
+        label = 'ra.sort.sort_by',
+        icon = defaultIcon,
+        sx,
+        className,
+    } = props;
     const { resource, sort, setSort } = useListSortContext();
     const translate = useTranslate();
     const translateLabel = useTranslateLabel();
@@ -82,7 +90,7 @@ const SortButton = (props: SortButtonProps) => {
     });
 
     return (
-        <>
+        <Root sx={sx} className={clsx(className, classNames.root)}>
             {isXSmall ? (
                 <Tooltip title={buttonLabel}>
                     <IconButton
@@ -95,7 +103,7 @@ const SortButton = (props: SortButtonProps) => {
                     </IconButton>
                 </Tooltip>
             ) : (
-                <StyledButton
+                <Button
                     aria-controls="simple-menu"
                     aria-haspopup="true"
                     color="primary"
@@ -105,7 +113,7 @@ const SortButton = (props: SortButtonProps) => {
                     size="small"
                 >
                     {buttonLabel}
-                </StyledButton>
+                </Button>
             )}
             <Menu
                 id="simple-menu"
@@ -134,7 +142,7 @@ const SortButton = (props: SortButtonProps) => {
                     </MenuItem>
                 ))}
             </Menu>
-        </>
+        </Root>
     );
 };
 
@@ -146,17 +154,26 @@ const arePropsEqual = (prevProps, nextProps) =>
     shallowEqual(prevProps.fields, nextProps.fields);
 
 export interface SortButtonProps {
+    className?: string;
     fields: string[];
     icon?: ReactElement;
     label?: string;
     resource?: string;
+    sx?: SxProps;
 }
 
-const StyledButton = styled(Button, {
-    name: 'RaSortButton',
+const PREFIX = 'RaSortButton';
+
+const classNames = {
+    root: `${PREFIX}-root`,
+};
+
+const Root = styled('span', {
+    name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })({
-    '&.MuiButton-sizeSmall': {
+    [`.${classNames.root}`]: {},
+    '& .MuiButton-sizeSmall': {
         // fix for icon misalignment on small buttons, see https://github.com/mui/material-ui/pull/30240
         lineHeight: 1.5,
     },

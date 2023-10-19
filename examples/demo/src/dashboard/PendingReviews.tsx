@@ -71,8 +71,8 @@ const PendingReviews = () => {
                                 reference="customers"
                                 link={false}
                             >
-                                <FunctionField
-                                    render={(customer: Customer) => (
+                                <FunctionField<Customer>
+                                    render={customer => (
                                         <Avatar
                                             src={`${customer.avatar}?size=32x32`}
                                             sx={{

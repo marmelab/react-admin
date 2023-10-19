@@ -18,7 +18,7 @@ const { data } = useGetLocks('posts');
 Here is how to use it in a custom Datagrid, to disable edit and delete buttons for locked records:
 
 {% raw %}
-```jsx
+```tsx
 const MyPostGrid = () => {
     const resource = useResourceContext();
     const { data: locks } = useGetLocks(resource);

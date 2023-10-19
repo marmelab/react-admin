@@ -38,7 +38,7 @@ const FullNameField = (props: Props) => {
 };
 
 FullNameField.defaultProps = {
-    source: 'last_name',
+    source: 'last_name' as const,
     label: 'resources.customers.fields.name',
 };
 

@@ -7,7 +7,12 @@ title: "The NullableBooleanInput Component"
 
 `<NullableBooleanInput />` renders as a dropdown list, allowing choosing between `true`, `false`, and `null` values.
 
-![NullableBooleanInput](./img/nullable-boolean-input.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/nullable-boolean-input.webm" type="video/webm"/>
+  <source src="./img/nullable-boolean-input.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 ## Usage
 
@@ -23,13 +28,13 @@ import { NullableBooleanInput } from 'react-admin';
 
 ## `sx`: CSS API
 
-The `<NullableBooleanInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<NullableBooleanInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
 | Rule name                         | Description                                                   |
 |-----------------------------------|---------------------------------------------------------------|
-| `& .RaNullableBooleanInput-input` | Applied to the underlying MUI's `TextField` component |
+| `& .RaNullableBooleanInput-input` | Applied to the underlying Material UI's `TextField` component |
 
-To override the style of all instances of `<NullableBooleanInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaNullableBooleanInput` key.
+To override the style of all instances of `<NullableBooleanInput>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaNullableBooleanInput` key.
 
 ## Translation
 

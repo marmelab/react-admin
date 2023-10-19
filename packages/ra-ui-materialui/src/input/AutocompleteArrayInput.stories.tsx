@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import { RaRecord, Resource, required, useCreate } from 'ra-core';
+import { Resource, required, useCreate, useRecordContext } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { createMemoryHistory } from 'history';
@@ -12,13 +12,19 @@ import {
     Button,
     Stack,
 } from '@mui/material';
+import { useFormContext } from 'react-hook-form';
 
 import { AdminContext } from '../AdminContext';
 import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
-import { AutocompleteArrayInput } from './AutocompleteArrayInput';
+import {
+    AutocompleteArrayInput,
+    AutocompleteArrayInputProps,
+} from './AutocompleteArrayInput';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
+import { TextInput } from './TextInput';
+import { ArrayInput, SimpleFormIterator } from './ArrayInput';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteArrayInput' };
 
@@ -40,6 +46,31 @@ export const Basic = () => (
                         { id: 'u002', name: 'Moderator' },
                         { id: 'u003', name: 'Reviewer' },
                     ]}
+                />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+export const OnChange = ({
+    onChange = (value, records) => console.log({ value, records }),
+}: Pick<AutocompleteArrayInputProps, 'onChange'>) => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <Create
+            resource="posts"
+            record={{ roles: ['u001', 'u003'] }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <AutocompleteArrayInput
+                    source="roles"
+                    choices={[
+                        { id: 'admin', name: 'Admin' },
+                        { id: 'u001', name: 'Editor' },
+                        { id: 'u002', name: 'Moderator' },
+                        { id: 'u003', name: 'Reviewer' },
+                    ]}
+                    onChange={onChange}
                 />
             </SimpleForm>
         </Create>
@@ -105,7 +136,7 @@ export const CreateProp = () => (
 );
 
 const dataProvider = {
-    getOne: (resource, params) =>
+    getOne: () =>
         Promise.resolve({
             data: {
                 id: 1,
@@ -116,7 +147,7 @@ const dataProvider = {
                 year: 1869,
             },
         }),
-    update: (resource, params) => Promise.resolve(params),
+    update: (_resource, params) => Promise.resolve(params),
 } as any;
 
 const history = createMemoryHistory({ initialEntries: ['/books/1'] });
@@ -226,11 +257,14 @@ export const CustomTextFunction = () => (
     </Admin>
 );
 
-const CustomOption = ({ record, ...rest }: { record?: RaRecord }) => (
-    <div {...rest}>
-        {record?.fullName}&nbsp;<i>({record?.language})</i>
-    </div>
-);
+const CustomOption = () => {
+    const record = useRecordContext();
+    return (
+        <div>
+            {record?.fullName}&nbsp;<i>({record?.language})</i>
+        </div>
+    );
+};
 
 const BookEditCustomOptions = () => {
     const choices = [
@@ -337,7 +371,7 @@ const authors = [
 ];
 
 const dataProviderWithAuthors = {
-    getOne: (resource, params) =>
+    getOne: () =>
         Promise.resolve({
             data: {
                 id: 1,
@@ -348,11 +382,11 @@ const dataProviderWithAuthors = {
                 year: 1869,
             },
         }),
-    getMany: (resource, params) =>
+    getMany: (_resource, params) =>
         Promise.resolve({
             data: authors.filter(author => params.ids.includes(author.id)),
         }),
-    getList: (resource, params) =>
+    getList: (_resource, params) =>
         new Promise(resolve => {
             // eslint-disable-next-line eqeqeq
             if (params.filter.q == undefined) {
@@ -382,8 +416,8 @@ const dataProviderWithAuthors = {
                 500
             );
         }),
-    update: (resource, params) => Promise.resolve(params),
-    create: (resource, params) => {
+    update: (_resource, params) => Promise.resolve(params),
+    create: (_resource, params) => {
         const newAuthor = {
             id: authors.length + 1,
             name: params.data.name,
@@ -415,6 +449,60 @@ export const InsideReferenceArrayInput = () => (
     <Admin dataProvider={dataProviderWithAuthors} history={history}>
         <Resource name="authors" />
         <Resource name="books" edit={BookEditWithReference} />
+    </Admin>
+);
+
+const LanguageChangingAuthorInput = ({ onChange }) => {
+    const { setValue } = useFormContext();
+    const handleChange = (value, records) => {
+        setValue(
+            'language',
+            records?.map(record => record.language)
+        );
+        onChange(value, records);
+    };
+    return (
+        <ReferenceArrayInput reference="authors" source="author">
+            <AutocompleteArrayInput
+                fullWidth
+                optionText="name"
+                onChange={handleChange}
+                label="Authors"
+            />
+        </ReferenceArrayInput>
+    );
+};
+
+export const InsideReferenceArrayInputOnChange = ({
+    onChange = (value, records) => console.log({ value, records }),
+}: Pick<AutocompleteArrayInputProps, 'onChange'>) => (
+    <Admin
+        dataProvider={dataProviderWithAuthors}
+        history={createMemoryHistory({ initialEntries: ['/books/create'] })}
+    >
+        <Resource name="authors" />
+        <Resource
+            name="books"
+            create={() => (
+                <Create
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                    redirect={false}
+                >
+                    <SimpleForm>
+                        <LanguageChangingAuthorInput onChange={onChange} />
+                        <ArrayInput source="language" label="Languages">
+                            <SimpleFormIterator>
+                                <TextInput source="." label="Language" />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </Create>
+            )}
+        />
     </Admin>
 );
 

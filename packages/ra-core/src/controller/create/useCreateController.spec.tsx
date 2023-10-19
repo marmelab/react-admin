@@ -1,18 +1,26 @@
-import React from 'react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import expect from 'expect';
-import { render, act } from '@testing-library/react';
-import { Location } from 'react-router-dom';
+import React from 'react';
+import { Location, MemoryRouter, Route, Routes } from 'react-router-dom';
 
-import { getRecordFromLocation } from './useCreateController';
-import { CreateController } from './CreateController';
+import {
+    CreateContextProvider,
+    DataProvider,
+    Form,
+    InputProps,
+    useCreateController,
+    useInput,
+} from '../..';
+import { CoreAdminContext } from '../../core';
 import { testDataProvider, useCreate } from '../../dataProvider';
 import { useNotificationContext } from '../../notification';
-import { CoreAdminContext } from '../../core';
 import {
     Middleware,
     SaveContextProvider,
     useRegisterMutationMiddleware,
 } from '../saveContext';
+import { CreateController } from './CreateController';
+import { getRecordFromLocation } from './useCreateController';
 
 describe('useCreateController', () => {
     describe('getRecordFromLocation', () => {
@@ -316,6 +324,37 @@ describe('useCreateController', () => {
         });
     });
 
+    it('should accept meta as a save option', async () => {
+        let saveCallback;
+        const create = jest
+            .fn()
+            .mockImplementationOnce((_, { data }) =>
+                Promise.resolve({ data: { id: 123, ...data } })
+            );
+        const dataProvider = testDataProvider({
+            getOne: () => Promise.resolve({ data: { id: 12 } } as any),
+            create,
+        });
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <CreateController {...defaultProps}>
+                    {({ save }) => {
+                        saveCallback = save;
+                        return null;
+                    }}
+                </CreateController>
+            </CoreAdminContext>
+        );
+        await act(async () =>
+            saveCallback({ foo: 'bar' }, { meta: { lorem: 'ipsum' } })
+        );
+        expect(create).toHaveBeenCalledWith('posts', {
+            data: { foo: 'bar' },
+            meta: { lorem: 'ipsum' },
+        });
+    });
+
     it('should allow the save onError option to override the failure side effects override', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         let saveCallback;
@@ -501,5 +540,91 @@ describe('useCreateController', () => {
             expect.any(Object),
             expect.any(Function)
         );
+    });
+
+    it('should return errors from the create call', async () => {
+        const create = jest.fn().mockImplementationOnce(() => {
+            return Promise.reject({ body: { errors: { foo: 'invalid' } } });
+        });
+        const dataProvider = ({
+            create,
+        } as unknown) as DataProvider;
+        let saveCallback;
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <CreateController {...defaultProps}>
+                    {({ save }) => {
+                        saveCallback = save;
+                        return <div />;
+                    }}
+                </CreateController>
+            </CoreAdminContext>
+        );
+        await new Promise(resolve => setTimeout(resolve, 10));
+        let errors;
+        await act(async () => {
+            errors = await saveCallback({ foo: 'bar' });
+        });
+        expect(errors).toEqual({ foo: 'invalid' });
+        expect(create).toHaveBeenCalledWith('posts', {
+            data: { foo: 'bar' },
+        });
+    });
+
+    it('should allow custom redirect with warnWhenUnsavedChanges', async () => {
+        const dataProvider = testDataProvider({
+            getOne: () => Promise.resolve({ data: { id: 123 } } as any),
+            create: (_, { data }) =>
+                new Promise(resolve =>
+                    setTimeout(
+                        () => resolve({ data: { id: 123, ...data } }),
+                        300
+                    )
+                ),
+        });
+        const Input = (props: InputProps) => {
+            const name = props.source;
+            const { field } = useInput(props);
+            return (
+                <>
+                    <label htmlFor={name}>{name}</label>
+                    <input id={name} type="text" {...field} />
+                </>
+            );
+        };
+        const CreateView = () => {
+            const controllerProps = useCreateController({
+                ...defaultProps,
+                redirect: 'show',
+            });
+            return (
+                <CreateContextProvider value={controllerProps}>
+                    <Form warnWhenUnsavedChanges>
+                        <>
+                            <div>Create</div>
+                            <Input source="foo" />
+                            <input type="submit" value="Submit" />
+                        </>
+                    </Form>
+                </CreateContextProvider>
+            );
+        };
+        const ShowView = () => <div>Show</div>;
+        render(
+            <MemoryRouter initialEntries={['/posts/create']}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Routes>
+                        <Route path="/posts/create" element={<CreateView />} />
+                        <Route path="/posts/123/show" element={<ShowView />} />
+                    </Routes>
+                </CoreAdminContext>
+            </MemoryRouter>
+        );
+        await screen.findByText('Create');
+        fireEvent.change(screen.getByLabelText('foo'), {
+            target: { value: 'bar' },
+        });
+        fireEvent.click(screen.getByText('Submit'));
+        expect(await screen.findByText('Show')).not.toBeNull();
     });
 });

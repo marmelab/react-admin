@@ -5,7 +5,9 @@ import { QueryClient } from 'react-query';
 import { Resource, Form, testDataProvider, useRedirect } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { Stack, Divider, Typography } from '@mui/material';
+import fakeRestDataProvider from 'ra-data-fakerest';
+import { Stack, Divider, Typography, Button } from '@mui/material';
+import { MemoryRouter } from 'react-router-dom';
 
 import { Edit } from '../detail';
 import { SimpleForm } from '../form';
@@ -36,7 +38,7 @@ const authors = [
 ];
 
 export const dataProviderWithAuthors = {
-    getOne: (resource, params) =>
+    getOne: () =>
         Promise.resolve({
             data: {
                 id: 1,
@@ -47,11 +49,11 @@ export const dataProviderWithAuthors = {
                 year: 1869,
             },
         }),
-    getMany: (resource, params) =>
+    getMany: (_resource, params) =>
         Promise.resolve({
             data: authors.filter(author => params.ids.includes(author.id)),
         }),
-    getList: (resource, params) =>
+    getList: () =>
         new Promise(resolve => {
             // eslint-disable-next-line eqeqeq
             setTimeout(
@@ -64,7 +66,7 @@ export const dataProviderWithAuthors = {
             );
             return;
         }),
-    update: (resource, params) => Promise.resolve(params),
+    update: (_resource, params) => Promise.resolve(params),
 } as any;
 
 const BookEdit = () => (
@@ -288,14 +290,14 @@ export const ErrorAutocomplete = () => (
     <Admin
         dataProvider={
             {
-                getOne: (resource, params) => Promise.resolve({ data: book }),
-                getMany: (resource, params) =>
+                getOne: () => Promise.resolve({ data: book }),
+                getMany: (_resource, params) =>
                     Promise.resolve({
                         data: authors.filter(author =>
                             params.ids.includes(author.id)
                         ),
                     }),
-                getList: (resource, params) =>
+                getList: (_resource, params) =>
                     params.filter.q === 'lorem'
                         ? Promise.reject(new Error('An error occured'))
                         : Promise.resolve({
@@ -360,14 +362,14 @@ export const ErrorSelectInput = () => (
     <Admin
         dataProvider={
             {
-                getOne: (resource, params) => Promise.resolve({ data: book }),
-                getMany: (resource, params) =>
+                getOne: () => Promise.resolve({ data: book }),
+                getMany: (_resource, params) =>
                     Promise.resolve({
                         data: authors.filter(author =>
                             params.ids.includes(author.id)
                         ),
                     }),
-                getList: (resource, params) =>
+                getList: (_resource, _params) =>
                     Promise.reject(new Error('An error occured')),
             } as any
         }
@@ -429,14 +431,14 @@ export const ErrorRadioButtonGroupInput = () => (
     <Admin
         dataProvider={
             {
-                getOne: (resource, params) => Promise.resolve({ data: book }),
-                getMany: (resource, params) =>
+                getOne: () => Promise.resolve({ data: book }),
+                getMany: (_resource, params) =>
                     Promise.resolve({
                         data: authors.filter(author =>
                             params.ids.includes(author.id)
                         ),
                     }),
-                getList: (resource, params) =>
+                getList: (_resource, _params) =>
                     Promise.reject(new Error('An error occured')),
             } as any
         }
@@ -479,7 +481,7 @@ const BookEditWithSelfReference = () => {
         <Edit
             mutationMode="pessimistic"
             mutationOptions={{
-                onSuccess: data => {
+                onSuccess: () => {
                     // Redirecting to another page is an indirect way to make sure that
                     // no errors happened during the update nor its side effects
                     // (used by the jest tests)
@@ -506,4 +508,86 @@ export const SelfReference = ({ dataProvider = dataProviderWithAuthors }) => (
         />
         <Resource name="books" edit={BookEditWithSelfReference} />
     </Admin>
+);
+
+const BookEditQueryOptions = () => {
+    const [enabled, setEnabled] = React.useState(false);
+    return (
+        <Edit mutationMode="pessimistic">
+            <Button onClick={() => setEnabled(!enabled)}>
+                Toggle queryOptions
+            </Button>
+            <SimpleForm>
+                <TextInput source="title" />
+                <ReferenceInput
+                    reference="authors"
+                    source="author"
+                    queryOptions={{ enabled }}
+                />
+            </SimpleForm>
+        </Edit>
+    );
+};
+
+export const QueryOptions = () => (
+    <MemoryRouter initialEntries={['/books/1']}>
+        <Admin
+            dataProvider={fakeRestDataProvider(
+                {
+                    books: [
+                        {
+                            id: 1,
+                            title: 'War and Peace',
+                            author: 1,
+                            summary:
+                                "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                            year: 1869,
+                        },
+                    ],
+                    authors: [
+                        {
+                            id: 1,
+                            first_name: 'Leo',
+                            last_name: 'Tolstoy',
+                            language: 'Russian',
+                        },
+                        {
+                            id: 2,
+                            first_name: 'Victor',
+                            last_name: 'Hugo',
+                            language: 'French',
+                        },
+                        {
+                            id: 3,
+                            first_name: 'William',
+                            last_name: 'Shakespeare',
+                            language: 'English',
+                        },
+                        {
+                            id: 4,
+                            first_name: 'Charles',
+                            last_name: 'Baudelaire',
+                            language: 'French',
+                        },
+                        {
+                            id: 5,
+                            first_name: 'Marcel',
+                            last_name: 'Proust',
+                            language: 'French',
+                        },
+                    ],
+                },
+                process.env.NODE_ENV === 'development'
+            )}
+        >
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+                list={AuthorList}
+            />
+            <Resource name="books" edit={BookEditQueryOptions} />
+        </Admin>
+    </MemoryRouter>
 );

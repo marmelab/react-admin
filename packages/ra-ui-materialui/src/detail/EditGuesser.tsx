@@ -7,13 +7,16 @@ import {
     useResourceContext,
     useEditContext,
     getElementsFromRecords,
+    RaRecord,
 } from 'ra-core';
 
 import { EditProps } from '../types';
 import { EditView } from './EditView';
 import { editFieldTypes } from './editFieldTypes';
 
-export const EditGuesser = (props: EditProps) => {
+export const EditGuesser = <RecordType extends RaRecord = RaRecord>(
+    props: EditProps<RecordType> & { enableLog?: boolean }
+) => {
     const {
         resource,
         id,
@@ -26,7 +29,7 @@ export const EditGuesser = (props: EditProps) => {
         ...rest
     } = props;
     return (
-        <EditBase
+        <EditBase<RecordType>
             resource={resource}
             id={id}
             mutationMode={mutationMode}
@@ -41,10 +44,16 @@ export const EditGuesser = (props: EditProps) => {
     );
 };
 
-const EditViewGuesser = props => {
+const EditViewGuesser = (
+    props: Omit<EditProps, 'children'> & { enableLog?: boolean }
+) => {
     const resource = useResourceContext(props);
     const { record } = useEditContext();
     const [child, setChild] = useState(null);
+    const {
+        enableLog = process.env.NODE_ENV === 'development',
+        ...rest
+    } = props;
 
     useEffect(() => {
         setChild(null);
@@ -63,7 +72,7 @@ const EditViewGuesser = props => {
             );
             setChild(inferredChild.getElement());
 
-            if (process.env.NODE_ENV === 'production') return;
+            if (!enableLog) return;
 
             const representation = inferredChild.getRepresentation();
 
@@ -94,9 +103,9 @@ ${representation}
 );`
             );
         }
-    }, [record, child, resource]);
+    }, [record, child, resource, enableLog]);
 
-    return <EditView {...props}>{child}</EditView>;
+    return <EditView {...rest}>{child}</EditView>;
 };
 
 EditViewGuesser.propTypes = EditView.propTypes;

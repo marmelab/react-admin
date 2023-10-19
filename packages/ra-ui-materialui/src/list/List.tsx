@@ -62,9 +62,9 @@ export const List = <RecordType extends RaRecord = any>({
     disableAuthentication,
     disableSyncWithLocation,
     exporter,
-    filter,
+    filter = defaultFilter,
     filterDefaultValues,
-    perPage,
+    perPage = 10,
     queryOptions,
     resource,
     sort,
@@ -108,24 +108,18 @@ List.propTypes = {
     ]),
     // @ts-ignore-line
     pagination: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    perPage: PropTypes.number.isRequired,
+    perPage: PropTypes.number,
     //@ts-ignore-line
     sort: PropTypes.shape({
         field: PropTypes.string,
-        order: PropTypes.string,
+        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
     }),
     sx: PropTypes.any,
     title: TitlePropType,
     // the props managed by react-admin
     disableSyncWithLocation: PropTypes.bool,
     hasCreate: PropTypes.bool,
-    hasEdit: PropTypes.bool,
-    hasList: PropTypes.bool,
-    hasShow: PropTypes.bool,
     resource: PropTypes.string,
 };
 
-List.defaultProps = {
-    filter: {},
-    perPage: 10,
-};
+const defaultFilter = {};

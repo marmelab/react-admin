@@ -7,8 +7,8 @@ title: "The StackedFilters Component"
 
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component provides an alternative filter UI for `<List>` pages. It lets users build complex filters by combining a field, an operator, and a value.
 
-<video controls autoplay muted loop width="100%">
-  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4">
+<video controls autoplay playsinline muted loop width="100%">
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/stackedfilters-overview.webm" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -17,7 +17,7 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 Create a filter configuration object by specifying the operators and UI for each source that can be used as a filter. Then, pass it to the `<StackedFilters>` component, and pass that component to the `filters` prop of the `<List>` component.
 
 ```jsx
-import { Datagrid, List, TextField, NumberField, BooleanField, ReferenceArrayField } from 'react-admin';
+import { CreateButton, Datagrid, List, TextField, NumberField, BooleanField, ReferenceArrayField, TopToolbar } from 'react-admin';
 import { StackedFilters, textFilter, dateFilter, referenceFilter, booleanFilter } from '@react-admin/ra-form-layout';
 
 const postListFilters = {
@@ -28,8 +28,15 @@ const postListFilters = {
     tags: referenceFilter({ reference: 'tags' }),
 };
 
+const PostListToolbar = () => (
+    <TopToolbar>
+        <CreateButton />
+        <StackedFilters config={postListFilters} />
+    </TopToolbar>
+);
+
 const PostList = () => (
-    <List filters={<StackedFilters config={postListFilters} />}>
+    <List actions={<PostListToolbar />}>
         <Datagrid>
             <TextField source="title" />
             <NumberField source="views" />
@@ -120,8 +127,15 @@ const postListFilters = {
     tags: referenceFilter({ reference: 'tags' }),
 };
 
+const PostListToolbar = () => (
+    <TopToolbar>
+        <CreateButton />
+        <StackedFilters config={postListFilters} />
+    </TopToolbar>
+);
+
 const PostList = () => (
-    <List filters={<StackedFilters config={postListFilters} />}>
+    <List actions={<PostListToolbar />}>
         {/* ... */}
     </List>
 );
@@ -237,7 +251,7 @@ With the configuration above, the possible filter keys are:
 
 ## Internationalization
 
-React-admin uses the keys of the filter configuration to display the field names. Each key goes through the standard [resource and field name translation system](./Translation.md#translating-resource-and-field-names), so you can customize them using a translation file.
+React-admin uses the keys of the filter configuration to display the field names. Each key goes through the standard [resource and field name translation system](./Translation.md#translation-files), so you can customize them using a translation file.
 
 ```jsx
 // in i18n/en.js

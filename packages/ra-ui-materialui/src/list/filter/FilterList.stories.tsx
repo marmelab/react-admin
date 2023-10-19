@@ -9,6 +9,10 @@ import fakeRestDataProvider from 'ra-data-fakerest';
 import { Box, Typography, Card, CardContent } from '@mui/material';
 import MailIcon from '@mui/icons-material/MailOutline';
 import CategoryIcon from '@mui/icons-material/LocalOffer';
+import BiotechIcon from '@mui/icons-material/Biotech';
+import NewspaperIcon from '@mui/icons-material/Newspaper';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import HelpCenterIcon from '@mui/icons-material/HelpCenter';
 
 import { FilterList } from './FilterList';
 import { FilterListItem } from './FilterListItem';
@@ -77,12 +81,144 @@ export const Basic = () => {
     );
 };
 
+export const Icon = () => {
+    const listContext = useList({
+        data: [
+            { id: 1, title: 'Hello', has_newsletter: true },
+            { id: 2, title: 'World', has_newsletter: false },
+        ],
+        filter: {
+            category: 'deals',
+        },
+    });
+    return (
+        <ListContextProvider value={listContext}>
+            <Card
+                sx={{
+                    width: '17em',
+                    margin: '1em',
+                }}
+            >
+                <CardContent>
+                    <FilterList
+                        label="Subscribed to newsletter"
+                        icon={<MailIcon />}
+                    >
+                        <FilterListItem
+                            label="Yes"
+                            value={{ has_newsletter: true }}
+                        />
+                        <FilterListItem
+                            label="No"
+                            value={{ has_newsletter: false }}
+                        />
+                    </FilterList>
+                    <FilterList label="Category" icon={<CategoryIcon />}>
+                        <FilterListItem
+                            label="Tests"
+                            value={{ category: 'tests' }}
+                            icon={<BiotechIcon />}
+                        />
+                        <FilterListItem
+                            label="News"
+                            value={{ category: 'news' }}
+                            icon={<NewspaperIcon />}
+                        />
+                        <FilterListItem
+                            label="Deals"
+                            value={{ category: 'deals' }}
+                            icon={<LocalOfferIcon />}
+                        />
+                        <FilterListItem
+                            label="Tutorials"
+                            value={{ category: 'tutorials' }}
+                            icon={<HelpCenterIcon />}
+                        />
+                    </FilterList>
+                </CardContent>
+            </Card>
+            <FilterValue />
+        </ListContextProvider>
+    );
+};
+
+export const Cumulative = () => {
+    const listContext = useList({
+        data: [
+            { id: 1, title: 'Article test', category: 'tests' },
+            { id: 2, title: 'Article news', category: 'news' },
+            { id: 3, title: 'Article deals', category: 'deals' },
+            { id: 4, title: 'Article tutorials', category: 'tutorials' },
+        ],
+        filter: {
+            category: ['tutorials', 'news'],
+        },
+    });
+    const isSelected = (value, filters) => {
+        const category = filters.category || [];
+        return category.includes(value.category);
+    };
+
+    const toggleFilter = (value, filters) => {
+        const category = filters.category || [];
+        return {
+            ...filters,
+            category: category.includes(value.category)
+                ? category.filter(v => v !== value.category)
+                : [...category, value.category],
+        };
+    };
+    return (
+        <ListContextProvider value={listContext}>
+            <Card
+                sx={{
+                    width: '17em',
+                    margin: '1em',
+                }}
+            >
+                <CardContent>
+                    <FilterList label="Categories" icon={<CategoryIcon />}>
+                        <FilterListItem
+                            label="Tests"
+                            value={{ category: 'tests' }}
+                            isSelected={isSelected}
+                            toggleFilter={toggleFilter}
+                        />
+                        <FilterListItem
+                            label="News"
+                            value={{ category: 'news' }}
+                            isSelected={isSelected}
+                            toggleFilter={toggleFilter}
+                        />
+                        <FilterListItem
+                            label="Deals"
+                            value={{ category: 'deals' }}
+                            isSelected={isSelected}
+                            toggleFilter={toggleFilter}
+                        />
+                        <FilterListItem
+                            label="Tutorials"
+                            value={{ category: 'tutorials' }}
+                            isSelected={isSelected}
+                            toggleFilter={toggleFilter}
+                        />
+                    </FilterList>
+                </CardContent>
+            </Card>
+            <FilterValue />
+        </ListContextProvider>
+    );
+};
+
 const FilterValue = () => {
     const { filterValues } = useListContext();
     return (
         <Box sx={{ margin: '1em' }}>
             <Typography>Filter values:</Typography>
             <pre>{JSON.stringify(filterValues, null, 2)}</pre>
+            <pre style={{ display: 'none' }}>
+                {JSON.stringify(filterValues)}
+            </pre>
         </Box>
     );
 };

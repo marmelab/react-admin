@@ -101,6 +101,44 @@ export const PostEdit = () => (
 );
 ```
 
+Common buttons used as Edit actions are:
+
+- [`<CreateButton>`](./Buttons.md#createbutton) to create a new record
+- [`<ListButton>`](./Buttons.md#listbutton) to go back to the list
+- [`<ShowButton>`](./Buttons.md#showbutton) to go to the show page
+- [`<UpdateButton>`](./UpdateButton.md) to trigger a change in the data
+- [`<CloneButton>`](./Buttons.md#clonebutton) to clone the current record
+
+And you can add your own button, leveraging the `useRecordContext()` hook:
+
+```jsx
+import * as React from "react";
+import { useRecordContext, useUpdate, useNotify } from 'react-admin';
+
+const ResetViewsButton = () => {
+    const record = useRecordContext();
+    const [update, { isLoading }] = useUpdate();
+    const notify  = useNotify();
+    const handleClick = () => {
+        update(
+            'posts',
+            { id: record.id, data: { views: 0 }, previousData: record },
+            {
+                onSuccess: () => {
+                    notify('Views reset');
+                },
+                onFailure: error => notify(`Error: ${error.message}`, 'warning'),
+            }
+        );
+    };
+    return (
+        <Button onClick={handleClick} disabled={isLoading}>
+            Reset views
+        </Button>
+    );
+};
+```
+
 ## `aside`
 
 ![Aside component](./img/aside.png)
@@ -150,7 +188,7 @@ const Aside = () => {
 
 ## `component`
 
-By default, the `<Edit>` view render the main form inside a MUI `<Card>` element. The actual layout of the form depends on the `Form` component you're using ([`<SimpleForm>`](./SimpleForm.md), [`<TabbedForm>`](./TabbedForm.md), or a custom form component).
+By default, the `<Edit>` view render the main form inside a Material UI `<Card>` element. The actual layout of the form depends on the `Form` component you're using ([`<SimpleForm>`](./SimpleForm.md), [`<TabbedForm>`](./TabbedForm.md), or a custom form component).
 
 Some form layouts also use `Card`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main page container by passing a `component` prop :
 
@@ -281,7 +319,7 @@ const PostEdit = () => (
 ```
 {% endraw %}
 
-You can also use `mutationOptions` to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://react-query-v3.tanstack.com/reference/useMutation) in the react-query website for a list of the possible options.
+You can also use `mutationOptions` to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://tanstack.com/query/v3/docs/react/reference/useMutation) in the react-query website for a list of the possible options.
 
 Let's see an example with the success side effect. By default, when the save action succeeds, react-admin shows a notification, and redirects to the list page. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
 
@@ -316,7 +354,7 @@ The default `onSuccess` function is:
 
 ```js
 () => {
-    notify('ra.notification.created', {
+    notify('ra.notification.updated', {
         messageArgs: { smart_count: 1 },
         undoable: mutationMode === 'undoable'
     });
@@ -384,7 +422,7 @@ const PostEdit = () => {
 ```
 {% endraw %}
 
-The `onError` function receives the error from the `dataProvider.edit()` call. It is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
+The `onError` function receives the error from the `dataProvider.update()` call. It is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
 
 The default `onError` function is:
 
@@ -431,7 +469,7 @@ const PostEdit = () => (
 ```
 {% endraw %}
 
-Refer to the [useQuery documentation](https://react-query-v3.tanstack.com/reference/useQuery) in the react-query website for a list of the possible options.
+Refer to the [useQuery documentation](https://tanstack.com/query/v3/docs/react/reference/useQuery) in the react-query website for a list of the possible options.
 
 ## `redirect`
 
@@ -470,15 +508,15 @@ const PostEdit = () => (
 
 ## `sx`: CSS API
 
-The `<Edit>` components accept the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following keys:
+The `<Edit>` components accept the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following keys:
 
 | Rule name               | Description                                                                          |
 |-------------------------|--------------------------------------------------------------------------------------|
 | `& .RaEdit-main`      | Applied to the main container                                                        |
 | `& .RaEdit-noActions` | Applied to the main container when `actions` prop is `false`                         |
-| `& .RaEdit-card`      | Applied to the child component inside the main container (MUI's `Card` by default)   |
+| `& .RaEdit-card`      | Applied to the child component inside the main container (Material UI's `Card` by default)   |
 
-To override the style of all instances of `<Edit>` components using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaEdit` key.
+To override the style of all instances of `<Edit>` components using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaEdit` key.
 
 ## `title`
 
@@ -634,7 +672,11 @@ You can do the same for error notifications, by passing a custom `onError`  call
 
 `<Edit>` is designed to be a page component, passed to the `edit` prop of the `<Resource>` component. But you may want to let users edit a record from another page. 
 
-![EditDialog](https://marmelab.com/ra-enterprise/modules/assets/edit-dialog.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/edit-dialog.webm" type="video/webm" />
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/edit-dialog.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 * If you want to allow edition from the `list` page, use [the `<EditDialog>` component](./EditDialog.md)
 * If you want to allow edition from another page, use [the `<EditInDialogButton>` component](./EditInDialogButton.md)
@@ -660,3 +702,74 @@ const PostEdit = () => (
 ```
 
 The user will see alerts when other users update or delete the record.
+
+## Linking Two Inputs
+
+Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
+
+React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://react-hook-form.com/docs/usewatch) hook.
+
+```jsx
+import * as React from 'react';
+import { Edit, SimpleForm, SelectInput } from 'react-admin';
+import { useWatch } from 'react-hook-form';
+
+const countries = ['USA', 'UK', 'France'];
+const cities = {
+    USA: ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'],
+    UK: ['London', 'Birmingham', 'Glasgow', 'Liverpool', 'Bristol'],
+    France: ['Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice'],
+};
+const toChoices = items => items.map(item => ({ id: item, name: item }));
+
+const CityInput = props => {
+    const country = useWatch({ name: 'country' });
+    return (
+        <SelectInput
+            choices={country ? toChoices(cities[country]) : []}
+            {...props}
+        />
+    );
+};
+
+const OrderEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <SelectInput source="country" choices={toChoices(countries)} />
+            <CityInput source="cities" />
+        </SimpleForm>
+    </Edit>
+);
+
+export default OrderEdit;
+```
+
+**Tip:** If you'd like to avoid creating an intermediate component like `<CityInput>`, or are using an `<ArrayInput>`, you can use the [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs) component as an alternative.
+
+## Navigating Through Records
+
+[`<PrevNextButtons`](./PrevNextButtons.md) renders a navigation with two buttons, allowing users to navigate through records without leaving an `<Edit>` view. 
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/prev-next-buttons-edit.webm" type="video/webm" />
+  <source src="./img/prev-next-buttons-edit.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+The following code is an example of how you can use it:
+
+```tsx
+export const PostEdit = () => (
+    <Edit
+        actions={
+            <TopToolbar>
+                <PrevNextButtons />
+            </TopToolbar>
+        }
+    >
+    ...
+    </Edit>
+);
+```
+
+**Tips:** If you want users to be warned if they haven't pressed the Save button when they browse to another record, you can follow the tutorial [Navigating Through Records In`<Edit>` Views](./PrevNextButtons.md#navigating-through-records-in-edit-views-after-submit).

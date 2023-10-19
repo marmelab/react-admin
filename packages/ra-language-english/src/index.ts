@@ -38,8 +38,9 @@ const englishMessages: TranslationMessages = {
             move_up: 'Move up',
             move_down: 'Move down',
             open: 'Open',
-            toggle_theme: 'Toggle Theme',
+            toggle_theme: 'Toggle light/dark mode',
             select_columns: 'Columns',
+            update_application: 'Reload Application',
         },
         boolean: {
             true: 'Yes',
@@ -86,7 +87,7 @@ const englishMessages: TranslationMessages = {
             about: 'About',
             are_you_sure: 'Are you sure?',
             auth_error:
-                'A error occurred while validating the authentication token.',
+                'An error occurred while validating the authentication token.',
             bulk_delete_content:
                 'Are you sure you want to delete this %{name}? |||| Are you sure you want to delete these %{smart_count} items?',
             bulk_delete_title:
@@ -103,7 +104,7 @@ const englishMessages: TranslationMessages = {
                 "A client error occurred and your request couldn't be completed.",
 
             invalid_form: 'The form is not valid. Please check for errors',
-            loading: 'The page is loading, just a moment please',
+            loading: 'Please wait',
             no: 'No',
             not_found:
                 'Either you typed a wrong URL, or you followed a bad link.',
@@ -159,6 +160,7 @@ const englishMessages: TranslationMessages = {
             canceled: 'Action cancelled',
             logged_out: 'Your session has ended, please reconnect.',
             not_authorized: "You're not authorized to access this resource.",
+            application_update_available: 'A new version is available.',
         },
         validation: {
             required: 'Required',
@@ -170,6 +172,7 @@ const englishMessages: TranslationMessages = {
             email: 'Must be a valid email',
             oneOf: 'Must be one of: %{options}',
             regex: 'Must match a specific format (regexp): %{pattern}',
+            unique: 'Must be unique',
         },
         saved_queries: {
             label: 'Saved queries',

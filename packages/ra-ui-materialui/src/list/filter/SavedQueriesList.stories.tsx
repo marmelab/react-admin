@@ -3,11 +3,7 @@ import merge from 'lodash/merge';
 
 import {
     Admin,
-    AppBar,
-    AppBarProps,
     defaultTheme,
-    Layout,
-    LayoutProps,
     Resource,
     Datagrid,
     List,
@@ -17,7 +13,7 @@ import {
     FilterList,
     FilterListItem,
 } from 'react-admin';
-import { Card, CardContent, Box, Typography, styled } from '@mui/material';
+import { Card, CardContent, styled } from '@mui/material';
 import BusinessIcon from '@mui/icons-material/Business';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
@@ -26,7 +22,6 @@ import frenchMessages from 'ra-language-french';
 import { createMemoryHistory } from 'history';
 
 import { SavedQueriesList } from './SavedQueriesList';
-import { LocalesMenuButton, ToggleThemeButton } from '../../button';
 import { RaThemeOptions } from '../..';
 import fakeRestProvider from 'ra-data-fakerest';
 
@@ -185,8 +180,13 @@ const i18nProvider = polyglotI18nProvider(
         locale === 'fr'
             ? merge(frenchMessages, frenchAppMessages)
             : englishMessages,
-    'en' // Default locale
+    'en', // Default locale
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' },
+    ]
 );
+
 const darkTheme: RaThemeOptions = {
     ...defaultTheme,
     palette: {
@@ -200,31 +200,12 @@ const darkTheme: RaThemeOptions = {
     },
 };
 
-const MyAppBar = (props: AppBarProps) => (
-    <AppBar {...props}>
-        <Box flex="1">
-            <Typography variant="h6" id="react-admin-title"></Typography>
-        </Box>
-        <ToggleThemeButton lightTheme={defaultTheme} darkTheme={darkTheme} />
-        <LocalesMenuButton
-            languages={[
-                { locale: 'en', name: 'English' },
-                { locale: 'fr', name: 'Français' },
-            ]}
-        />
-    </AppBar>
-);
-
-const MyLayout = (props: LayoutProps) => (
-    <Layout {...props} appBar={MyAppBar} />
-);
-
 export const WithThemeAndLocale = () => (
     <Admin
         history={createMemoryHistory()}
         i18nProvider={i18nProvider}
         dataProvider={dataProvider}
-        layout={MyLayout}
+        darkTheme={darkTheme}
     >
         <Resource name="songs" list={SongList} />
     </Admin>

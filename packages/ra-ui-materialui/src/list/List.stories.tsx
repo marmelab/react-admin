@@ -102,9 +102,12 @@ const dataProvider = fakeRestDataProvider(data);
 const history = createMemoryHistory({ initialEntries: ['/books'] });
 
 const BookList = () => {
-    const { data, isLoading } = useListContext();
+    const { data, error, isLoading } = useListContext();
     if (isLoading) {
         return <div>Loading...</div>;
+    }
+    if (error) {
+        return <div>Error: {error.message}</div>;
     }
     return (
         <Stack spacing={2} sx={{ padding: 2 }}>
@@ -386,3 +389,87 @@ export const StoreKey = () => {
         </Admin>
     );
 };
+
+const BooksWithStoreEnabled = () => (
+    <List
+        resource="books"
+        storeKey="booksStore"
+        sort={{ field: 'year', order: 'DESC' }}
+    >
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </List>
+);
+
+const BooksWithStoreDisabled = () => (
+    <List
+        resource="books"
+        storeKey={false}
+        sort={{ field: 'year', order: 'ASC' }}
+    >
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </List>
+);
+
+const DisabledStoreDashboard = () => (
+    <>
+        <Box>
+            <Button
+                component={Link}
+                sx={{ margin: 2 }}
+                to="/store"
+                variant="contained"
+            >
+                See books with store enabled
+            </Button>
+            <Button
+                component={Link}
+                sx={{ margin: 2 }}
+                to="/nostore"
+                variant="contained"
+            >
+                See books with store disabled
+            </Button>
+        </Box>
+    </>
+);
+
+export const StoreDisabled = () => {
+    history.push('/');
+    return (
+        <Admin
+            dataProvider={dataProvider}
+            history={history}
+            dashboard={DisabledStoreDashboard}
+        >
+            <CustomRoutes>
+                <Route path="/store" element={<BooksWithStoreEnabled />} />
+                <Route path="/nostore" element={<BooksWithStoreDisabled />} />
+            </CustomRoutes>
+            <Resource name="books" />
+        </Admin>
+    );
+};
+
+export const ErrorInFetch = () => (
+    <Admin
+        dataProvider={
+            {
+                getList: () =>
+                    Promise.reject(new Error('Error in dataProvider')),
+            } as any
+        }
+        history={history}
+    >
+        <Resource name="books" list={BookListBasic} />
+    </Admin>
+);

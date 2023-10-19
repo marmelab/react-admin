@@ -6,9 +6,14 @@ title: "The AutocompleteInput Component"
 # `<AutocompleteInput>`
 
 To let users choose a value in a list using a dropdown with autocompletion, use `<AutocompleteInput>`.
-It renders using [MUI's `<Autocomplete>`](https://mui.com/components/autocomplete/).
+It renders using [Material UI's `<Autocomplete>`](https://mui.com/material-ui/react-autocomplete/).
 
-![AutocompleteInput](./img/autocomplete-input.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="./img/autocomplete-input.webm" type="video/webm"/>
+  <source src="./img/autocomplete-input.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 
 This input allows editing record fields that are scalar values, e.g. `123`, `'admin'`, etc. 
 
@@ -47,7 +52,7 @@ The form value for the source must be the selected value, e.g.
 
 **Tip**: If you need to let users select more than one item in the list, check out the [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md) component.
 
-**Tip**: `<AutocompleteInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceInput>`](./ReferenceInput.md) doesn't cover your need), you'll have to [write your own Input component](./Inputs.md#writing-your-own-input-component) based on MUI `<Autocomplete>` component.
+**Tip**: `<AutocompleteInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceInput>`](./ReferenceInput.md) doesn't cover your need), you'll have to [write your own Input component](./Inputs.md#writing-your-own-input-component) based on Material UI `<Autocomplete>` component.
 
 ## Props
 
@@ -61,8 +66,10 @@ The form value for the source must be the selected value, e.g.
 | `emptyText`                | Optional | `string`              | `''`                                                                | The text to use for the empty element                                                                                                                                                                               |
 | `emptyValue`               | Optional | `any`                 | `''`                                                                | The value to use for the empty element                                                                                                                                                                              |
 | `filterToQuery`            | Optional | `string` => `Object`  | `q => ({ q })`                                                      | How to transform the searchText into a parameter for the data provider                                                                                                                                              |
+| `isLoading`                | Optional | `boolean`             | `false`                                                             | If `true`, the component will display a loading indicator.                                                                                                                                                          |
 | `inputText`                | Optional | `Function`            | `-`                                                                 | Required if `optionText` is a custom Component, this function must return the text displayed for the current selection.                                                                                             |
 | `matchSuggestion`          | Optional | `Function`            | `-`                                                                 | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`                                                             |
+| `onChange`                 | Optional | `Function`            | `-`                                                                 | A function called with the new value, along with the selected record, when the input value changes |
 | `onCreate`                 | Optional | `Function`            | `-`                                                                 | A function called with the current filter value when users choose to create a new choice.                                                                                                                           |
 | `optionText`               | Optional | `string` &#124; `Function` &#124; `Component` |  `undefined` &#124; `record Representation` | Field name of record to display in the suggestion item or function using the choice object as argument                                                                                                              |
 | `optionValue`              | Optional | `string`              | `id`                                                                | Field name of record containing the value to use as input value                                                                                                                                                     |
@@ -70,7 +77,6 @@ The form value for the source must be the selected value, e.g.
 | `shouldRender Suggestions` | Optional | `Function`            | `() => true`                                                        | A function that returns a `boolean` to determine whether or not suggestions are rendered.                                                                                                                           |
 | `suggestionLimit`          | Optional | `number`              | `null`                                                              | Limits the numbers of suggestions that are shown in the dropdown list                                                                                                                                               |
 | `translateChoice`          | Optional | `boolean`             | `true`                                                              | Whether the choices should be translated                                                                                                                                                                            |
-
 
 `<AutocompleteInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
@@ -116,7 +122,7 @@ const choices = [
 
 You can opt-out of this translation by setting [the `translateChoice` prop](#translatechoice) to `false`.
 
-If you need to *fetch* the options from another resource, you're actually editing a many-to-one or a one-to-one relationship. In this case, wrap the `<AutocompleteInput>` in a [`<ReferenceInput>`](./ReferenceInput.md). You don't need to specify the `choices` prop - the parent component injects it based on the possible values of the related resource.
+If you need to *fetch* the options from another resource, you're usually editing a many-to-one or a one-to-one relationship. In this case, wrap the `<AutocompleteInput>` in a [`<ReferenceInput>`](./ReferenceInput.md). You don't need to specify the `choices` prop - the parent component injects it based on the possible values of the related resource.
 
 ```jsx
 <ReferenceInput label="Author" source="author_id" reference="authors">
@@ -124,7 +130,7 @@ If you need to *fetch* the options from another resource, you're actually editin
 </ReferenceInput>
 ```
 
-See [Using in a `ReferenceInput>`](#using-in-a-referenceinput) below for more information.
+See [Selecting a foreign key](#selecting-a-foreign-key) below for more information.
 
 If you have an *array of values* for the options, turn it into an array of objects with the `id` and `name` properties:
 
@@ -139,6 +145,12 @@ const choices = possibleValues.map(value => ({ id: value, name: ucfirst(value) }
 ## `create`
 
 To allow users to add new options, pass a React element as the `create` prop. `<AutocompleteInput>` will then render a menu item at the bottom of the list, which will render the passed element when clicked.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/autocomplete-input-with-create.webm" type="video/webm"/>
+  <source src="./img/autocomplete-input-with-create.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
 {% raw %}
 ```jsx
@@ -247,7 +259,7 @@ You can override this value with the `emptyValue` prop.
 <AutocompleteInput source="author_id" choices={choices} emptyValue={0} />
 ```
 
-**Tip**: While you can set `emptyValue` to a non-string value (e.g. `0`), you cannot use `null` or `undefined`, as it would turn the `<AutocompleteInput>` into an [uncontrolled component](https://reactjs.org/docs/uncontrolled-components.html). If you need the empty choice to be stored as `null` or `undefined`, use [the `parse` prop](./Inputs.md#parse) to convert the default empty value ('') to `null` or `undefined`, or use [the `sanitizeEmptyValues` prop](./SimpleForm.md#sanitizeemptyvalues) on the Form component. 
+**Tip**: While you can set `emptyValue` to a non-string value (e.g. `0`), you cannot use `null` or `undefined`, as it would turn the `<AutocompleteInput>` into an [uncontrolled component](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components). If you need the empty choice to be stored as `null` or `undefined`, use [the `parse` prop](./Inputs.md#parse) to convert the default empty value ('') to `null` or `undefined`, or use [the `sanitizeEmptyValues` prop](./SimpleForm.md#sanitizeemptyvalues) on the Form component. 
 
 ## `filterToQuery`
 
@@ -264,6 +276,96 @@ const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
     <AutocompleteInput filterToQuery={filterToQuery} />
 </ReferenceInput>
 ```
+
+## `isLoading`
+
+When [fetching choices from a remote API](#fetching-choices), the `<AutocompleteInput>` can't be used until the choices are fetched. To let the user know, you can pass the `isLoading` prop to `<AutocompleteInput>`. This displays a loading message in the autocomplete box while the choices are being fetched.
+
+```jsx
+import { useGetList, AutocompleteInput } from 'react-admin';
+
+const UserCountry = () => {
+    const { data, isLoading } = useGetList('countries');
+    // data is an array of { id: 123, code: 'FR', name: 'France' }
+    return (
+        <AutocompleteInput 
+            source="country"
+            choices={data}
+            optionText="name"
+            optionValue="code"
+            isLoading={isLoading}
+        />
+    );
+}
+```
+
+## `onChange`
+
+Use the `onChange` prop to get notified when the input value changes.
+
+Its value must be a function, defined as follows:
+
+```ts
+type OnChange = (
+        value: any, // the new value
+        record: RaRecord // the selected record
+    ) => void;
+```
+
+In the following example, the `onChange` prop is used to update the `language` field whenever the user selects a new author:
+
+{% raw %}
+```tsx
+import * as React from 'react';
+import {
+    AutocompleteInput,
+    AutocompleteInputProps,
+    Create,
+    ReferenceInput,
+    SimpleForm,
+    TextInput,
+} from 'react-admin';
+import { useFormContext } from 'react-hook-form';
+
+const LanguageChangingAuthorInput = () => {
+    const { setValue } = useFormContext();
+    const handleChange: AutocompleteInputProps['onChange'] = (
+        value,
+        record
+    ) => {
+        // handleChange will be called with, for instance:
+        //   value: 2,
+        //   record: { id: 2, name: 'Victor Hugo', language: 'French' }
+        setValue('language', record?.language);
+    };
+    return (
+        <ReferenceInput reference="authors" source="author">
+            <AutocompleteInput
+                fullWidth
+                optionText="name"
+                onChange={handleChange}
+            />
+        </ReferenceInput>
+    );
+};
+
+const BookCreate = () => (
+    <Create
+        mutationOptions={{
+            onSuccess: data => {
+                console.log(data);
+            },
+        }}
+        redirect={false}
+    >
+        <SimpleForm>
+            <LanguageChangingAuthorInput />
+            <TextInput source="language" />
+        </SimpleForm>
+    </Create>
+);
+```
+{% endraw %}
 
 ## `onCreate`
 
@@ -303,25 +405,37 @@ If a prompt is not enough, you can use [the `create` prop](#create) to render a 
 
 ## `optionText`
 
-You can customize the property to use for the option name (instead of the default `name`) thanks to the `optionText` prop:
+By default, `<AutocompleteInput>` uses the `name` property as the text content of each option.
 
 ```jsx
-const choices = [
-    { id: 'tech', label: 'Tech' },
-    { id: 'lifestyle', label: 'Lifestyle' },
-    { id: 'people', label: 'People' },
-];
-<AutocompleteInput source="category" choices={choices} optionText="label" />
+import { AutocompleteInput } from 'react-admin';
+
+<AutocompleteInput
+    source="category"
+    choices={[
+        { id: 'tech', name: 'Tech' },
+        { id: 'lifestyle', name: 'Lifestyle' },
+        { id: 'people', name: 'People' },
+    ]}
+/>
+// renders the following list of choices
+// - Tech
+// - Lifestyle
+// - People
 ```
 
-`optionText` is particularly useful when the choices are records fetched from another resource, and `<AutocompleteInput>` is a child of a [`<ReferenceInput>`](./ReferenceInput.md). By default, react-admin uses the [`recordRepresentation`](./Resource.md#recordrepresentation) function to display the record label. But if you set the `optionText` prop, react-admin will use it instead.
+If your `choices` don't have a `name` property, or if you want to use another property, you can use the `optionText` prop to specify which property to use:
 
 ```jsx
-import { AutocompleteInput, ReferenceInput } from 'react-admin';
-
-<ReferenceInput label="Author" source="author_id" reference="authors">
-    <AutocompleteInput optionText="last_name" />
-</ReferenceInput>
+<AutocompleteInput
+    source="category"
+    optionText="label"
+    choices={[
+        { id: 'tech', label: 'Tech' },
+        { id: 'lifestyle', label: 'Lifestyle' },
+        { id: 'people', label: 'People' },
+    ]}
+/>
 ```
 
 `optionText` also accepts a function, so you can shape the option text at will:
@@ -331,11 +445,64 @@ const choices = [
    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
    { id: 456, first_name: 'Jane', last_name: 'Austen' },
 ];
+
+// Note we declared the function outside the component to avoid rerenders
 const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
+
 <AutocompleteInput source="author_id" choices={choices} optionText={optionRenderer} />
 ```
 
+**Tip**: Make sure you provide a stable reference to the function passed as `optionText`. Either declare it outside the component render function or wrap it inside a [`useCallback`](https://react.dev/reference/react/useCallback).
+
 `optionText` also accepts a React Element, that will be rendered inside a [`<RecordContext>`](./useRecordContext.md) using the related choice as the `record` prop. You can use Field components there. However, using an element as `optionText` implies that you also set two more props, `inputText` and `matchSuggestion`. See [Using A Custom Element For Options](#using-a-custom-element-for-options) for more details.
+
+`optionText` can also be useful when the choices are records [fetched from another resource](#fetching-choices), and `<AutocompleteInput>` is a child of a [`<ReferenceInput>`](./ReferenceInput.md). In that case, react-admin uses the [`recordRepresentation`](./Resource.md#recordrepresentation) of the related resource to display the record label. In the example below, `<AutocompleteInput>` renders author options via their `last_name` attribute, because it's the record representation defined in the `<Resource name="authors">`:
+
+```jsx
+// in src/PostCreate.jsx
+import { AutocompleteInput, Create, ReferenceInput, SimpleForm } from 'react-admin';
+
+export const PostCreate = () => (
+    <Create>
+        <SimpleForm>
+            <ReferenceInput label="Author" source="author_id" reference="authors">
+                <AutocompleteInput />
+            </ReferenceInput>
+        </SimpleForm>
+    </Create>
+);
+
+// in src/App.js
+import { Admin, Resource, ListGuesser } from 'react-admin';
+import { dataProvider } from './dataProvider';
+import { PostCreate } from './PostCreate';
+
+export const App = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource name="posts" list={ListGuesser} create={PostCreate} />
+        <Resource name="authors" recordRepresentation="last_name" />
+    </Admin>
+)
+```
+
+If you set the `optionText` prop, react-admin uses it instead of relying on `recordRepresentation`:
+
+```jsx
+// in src/PostCreate.jsx
+import { AutocompleteInput, Create, ReferenceInput, SimpleForm } from 'react-admin';
+
+export const PostCreate = () => (
+    <Create>
+        <SimpleForm>
+            <ReferenceInput label="Author" source="author_id" reference="authors">
+                <AutocompleteInput optionText={author => `${author.first_name} ${author.last_name}`} />
+            </ReferenceInput>
+        </SimpleForm>
+    </Create>
+);
+```
+
+Now `<AutocompleteInput>` will render author options using their full name.
 
 ## `optionValue`
 
@@ -388,15 +555,15 @@ If you're using `<AutocompleteInput>` inside a [`<ReferenceInput>`](./ReferenceI
 
 ## `sx`: CSS API
 
-The `<AutocompleteInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<AutocompleteInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
 | Rule name                    | Description                                     |
 |------------------------------|-------------------------------------------------|
 | `& .RaSelectInput-textField` | Applied to the underlying `TextField` component |
 
-To override the style of all instances of `<AutocompleteInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaAutocompleteInput` key.
+To override the style of all instances of `<AutocompleteInput>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaAutocompleteInput` key.
 
-Refer to the [MUI `<Autocomplete>` component](https://mui.com/components/autocomplete/) to know its CSS API.
+Refer to the [Material UI `<Autocomplete>` component](https://mui.com/material-ui/react-autocomplete/) to know its CSS API.
 
 ## `translateChoice`
 
@@ -418,7 +585,7 @@ In that case, set the `translateChoice` prop to `false`.
 
 ## Additional Props
 
-`<AutocompleteInput>` renders a [MUI `<Autocomplete>` component](https://mui.com/components/autocomplete/) and it accepts the `<Autocomplete>` props:
+`<AutocompleteInput>` renders a [Material UI `<Autocomplete>` component](https://mui.com/material-ui/react-autocomplete/) and it accepts the `<Autocomplete>` props:
 
 {% raw %}
 ```jsx
@@ -426,42 +593,130 @@ In that case, set the `translateChoice` prop to `false`.
 ```
 {% endraw %}
 
-## Using In A ReferenceInput
+## Fetching Choices
 
-If you want to populate the `choices` attribute with a list of related records, you should decorate `<AutocompleteInput>` with [`<ReferenceInput>`](./ReferenceInput.md), and leave the `choices` empty:
-
-```jsx
-import { AutocompleteInput, ReferenceInput } from 'react-admin';
-
-<ReferenceInput label="Author" source="author_id" reference="authors">
-    <AutocompleteInput />
-</ReferenceInput>
-```
-
-In that case, `<AutocompleteInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to render each choice from the list of possible records. You can override this behavior by setting the `optionText` prop:
+You can use [`useGetList`](./useGetList.md) to fetch choices. For example, to fetch a list of countries for a user profile:
 
 ```jsx
-import { AutocompleteInput, ReferenceInput } from 'react-admin';
+import { useGetList, AutocompleteInput } from 'react-admin';
 
-<ReferenceInput label="Author" source="author_id" reference="authors">
-    <AutocompleteInput optionText="last_name" />
-</ReferenceInput>
+const CountryInput = () => {
+    const { data, isLoading } = useGetList('countries');
+    // data is an array of { id: 123, code: 'FR', name: 'France' }
+    return (
+        <AutocompleteInput 
+            source="country"
+            choices={data}
+            optionText="name"
+            optionValue="code"
+            isLoading={isLoading}
+        />
+    );
+}
 ```
 
-Whenever users type a string in the autocomplete input, `<AutocompleteInput>` calls `dataProvider.getList()` using the string as filter, to return a filtered list of possible options from the reference resource. This filter is built using the `filterToQuery` prop. You may want to customize that function to match the filtering capabilities of your API:
+The `isLoading` prop is used to display a loading indicator while the data is being fetched.
+
+However, most of the time, if you need to populate a `<AutocompleteInput>` with choices fetched from another resource, it's because you are trying to set a foreign key. In that case, you should use [`<ReferenceInput>`](./ReferenceInput.md) to fetch the choices instead (see next section). 
+
+## Selecting a Foreign Key
+
+If you use `<AutocompleteInput>` to set a foreign key for a many-to-one or a one-to-one relationship, you'll have to [fetch choices](#fetching-choices), as explained in the previous section. You'll also have to fetch the record corresponding to the current value of the foreign key, as it may not be in the list of choices. 
+
+For example, if a `contact` has one `company` via the `company_id` foreign key, a contact form can let users select a company as follows:
+
+```jsx
+import { useState } from 'react';
+import { useGetList, useGetOne, AutocompleteInput } from 'react-admin';
+import { useWatch } from 'react-hook-form';
+
+const CompanyInput = () => {
+    const [filter, setFilter] = useState({ q: '' });
+    // fetch possible companies
+    const { data: choices, isLoading: isLoadingChoices } = useGetList('companies', { filter });
+    // companies are like { id: 123, name: 'Acme' }
+    // get the current value of the foreign key
+    const companyId = useWatch({ name: 'company_id'})
+    // fetch the current company
+    const { data: currentCompany, isLoading: isLoadingCurrentCompany } = useGetOne('companies', { id: companyId });
+    // if the current company is not in the list of possible companies, add it
+    const choicesWithCurrentCompany = choices
+        ? choices.find(choice => choice.id === companyId)
+            ? choices
+            : [...choices, currentCompany]
+        : [];
+    return (
+        <AutocompleteInput 
+            label="Company"
+            source="company_id"
+            choices={choicesWithCurrentCompany}
+            optionText="name"
+            disabled={isLoading}
+            onInputChange={e => setFilter({ q: e.target.value })}
+        />
+    );
+}
+```
+
+As this is a common task, react-admin provides a shortcut to do the same in a declarative way: [`<ReferenceInput>`](./ReferenceInput.md):
+
+```jsx
+import { ReferenceInput, AutocompleteInput } from 'react-admin';
+
+const CompanyInput = () => (
+    <ReferenceInput reference="companies" source="company_id">
+        <AutocompleteInput 
+            label="Company"
+            source="company_id"
+            optionText="name"
+        />
+    </ReferenceInput>
+);
+```
+
+`<ReferenceInput>` is a headless component that:
+ 
+ - fetches a list of records with `dataProvider.getList()` and `dataProvider.getOne()`, using the `reference` prop for the resource,
+ - puts the result of the fetch in the `ChoiceContext` as the `choices` prop, as well as the `isLoading` state,
+ - and renders its child component
+
+When rendered as a child of `<ReferenceInput>`, `<AutocompleteInput>` reads that `ChoiceContext` to populate its own `choices` and `isLoading` props. It also sends the current input prop to the `useGetList` hook, so that the list of choices is filtered as the user types.
+
+In fact, you can simplify the code even further:
+
+- `<ReferenceInput>` puts all its props inside the `ChoiceContext`, including `source`, so `<AutocompleteInput>` doesn't need to repeat it.
+- You can also put the `label` prop on the `<ReferenceInput>` rather than `<AutocompleteInput>` so that it looks just like [`<ReferenceField>`](./ReferenceField.md) (for easier memorization). 
+- `<AutocompleteInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to determine how to represent the related choices. In the example above, the `companies` resource uses `name` as its `recordRepresentation`, so `<AutocompleteInput>` will default to `optionText="name"`. 
+- `<ReferenceInput>`'s default child is `<AutocompleteInput>`, so you can omit it entirely.
+
+The code for the `<CompanyInput>` component can be reduced to:
+
+```jsx
+import { ReferenceInput } from 'react-admin';
+
+const CompanyInput = () => (
+    <ReferenceInput reference="companies" source="company_id" label="Company" />
+);
+```
+
+This is the recommended approach for using `<AutocompleteInput>` to select a foreign key. This not only signifies that the input is a `<AutocompleteInput>` but also highlights its function in fetching choices from another resource, ultimately enhancing the code's readability.
+
+**Tip**: `<ReferenceInput>` is much more powerful than the initial snippet. It optimizes and caches API calls, enables refetching of both API calls with a single command, and stores supplementary data in the `<ChoicesContext>`. `<ReferenceInput>` can provide choices to `<AutocompleteInput>`, but also to [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md) and [`<SelectInput>`](./SelectInput.md). For further information, refer to [the `<ReferenceInput>` documentation](./ReferenceInput.md).
+
+`<AutocompleteInput>` uses [the `filterToQuery` prop](#filtertoquery) to determine how to map the input string into a filter. You may want to customize that function to match the filtering capabilities of your API:
 
 ```jsx
 const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
 
-<ReferenceInput label="Author" source="author_id" reference="authors">
+<ReferenceInput reference="companies" source="company_id" label="Company">
     <AutocompleteInput filterToQuery={filterToQuery} />
 </ReferenceInput>
 ```
 
-Also, `<AutocompleteInput>` doesn't call `dataProvider.getList()` on every keystroke. It waits for the user to stop typing for 250ms before calling the API. You can customize this delay using the `debounce` prop:
+Also, `<ReferenceInput>` doesn't call `dataProvider.getList()` on every keystroke. It waits for the user to stop typing for 250ms before calling the API. You can customize this delay using the `debounce` prop:
 
 ```jsx
-<ReferenceInput label="Author" source="author_id" reference="authors">
+<ReferenceInput reference="companies" source="company_id" label="Company">
     <AutocompleteInput debounce={500} />
 </ReferenceInput>
 ```
@@ -472,7 +727,7 @@ You can pass a custom element as [`optionText`](#optiontext) to have `<Autocompl
 
 `<AutocompleteInput>` will render the custom option element inside a [`<RecordContext>`](./useRecordContext.md), using the related choice as the `record` prop. You can use Field components there.
 
-However, as the underlying MUI `<Autocomplete>` component requires that the current selection is a string, you must also pass a function as the `inputText` prop. This function should return a text representation of the current selection. You should also pass a `matchSuggestion` function to filter the choices based on the current selection.
+However, as the underlying Material UI `<Autocomplete>` component requires that the current selection is a string, you must also pass a function as the `inputText` prop. This function should return a text representation of the current selection. You should also pass a `matchSuggestion` function to filter the choices based on the current selection.
 
 ```jsx
 const choices = [
@@ -488,6 +743,8 @@ const OptionRenderer = () => {
         </span>
     );
 };
+
+const optionText = <OptionRenderer />;
 const inputText = choice => `${choice.first_name} ${choice.last_name}`;
 const matchSuggestion = (filter, choice) => {
     return (
@@ -499,10 +756,28 @@ const matchSuggestion = (filter, choice) => {
 <AutocompleteInput
     source="author_id"
     choices={choices}
-    optionText={<OptionRenderer />}
+    optionText={optionText}
     inputText={inputText}
     matchSuggestion={matchSuggestion}
 />
+```
+
+**Tip**: Make sure you pass stable references to the functions passed to the `inputText` and `matchSuggestion` by either declaring them outside the component render function or by wrapping them in a [`useCallback`](https://react.dev/reference/react/useCallback).
+
+**Tip**: Make sure you pass a stable reference to the element passed to the `optionText` prop by calling it outside the component render function like so:
+
+```jsx
+const OptionRenderer = () => {
+    const record = useRecordContext();
+    return (
+        <span>
+            <img src={record.avatar} />
+            {record.first_name} {record.last_name}
+        </span>
+    );
+};
+
+const optionText = <OptionRenderer />;
 ```
 
 ## Creating New Choices
@@ -541,7 +816,7 @@ const PostCreate = () => {
 ```
 {% endraw %}
 
-Use the `create` prop when you want a more polished or complex UI. For example an MUI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
+Use the `create` prop when you want a more polished or complex UI. For example a Material UI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
 
 {% raw %}
 ```js

@@ -83,7 +83,7 @@ describe('Edit Page', () => {
             cy.contains('Required');
             // FIXME: We navigate away from the page and confirm the unsaved changes
             // This is needed because HashHistory would prevent further navigation
-            cy.window().then(win => {
+            cy.window().then(() => {
                 cy.on('window:confirm', () => true);
             });
             cy.get('.RaSidebar-fixed [role="menuitem"]:first-child').click();
@@ -319,7 +319,7 @@ describe('Edit Page', () => {
         cy.get('body').click('left'); // dismiss notification
 
         cy.get('div[role="alert"]').should(el =>
-            expect(el).to.have.text('this title cannot be used')
+            expect(el).to.have.text('The form is invalid')
         );
 
         cy.get(ListPagePosts.elements.recordRows)

@@ -2,10 +2,10 @@ import * as React from 'react';
 import { createContext, useCallback, useState, useMemo } from 'react';
 import isEqual from 'lodash/isEqual';
 
-import { ResourceDefinition } from '../types';
+import { ResourceDefinition, ResourceOptions } from '../types';
 
-export type ResourceDefinitions = {
-    [name: string]: ResourceDefinition;
+export type ResourceDefinitions<OptionsType extends ResourceOptions = any> = {
+    [name: string]: ResourceDefinition<OptionsType>;
 };
 
 export type ResourceDefinitionContextValue = {

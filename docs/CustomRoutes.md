@@ -5,11 +5,11 @@ title: "The CustomRoutes Component"
 
 # `<CustomRoutes>`
 
-Lets you define custom pages in your react-admin application, using [react-router-dom](https://reactrouter.com/docs/en/v6/api#routes-and-route) `<Routes>` elements.
+Lets you define custom pages in your react-admin application, using [react-router-dom](https://reactrouter.com/en/6/start/concepts#defining-routes) `<Routes>` elements.
 
 ## Usage
 
-To register your own routes, pass one or several `<CustomRoutes>` elements as children of `<Admin>`. Declare as many [react-router-dom](https://reactrouter.com/docs/en/v6/api#routes-and-route) `<Route>` as you want inside them.
+To register your own routes, pass one or several `<CustomRoutes>` elements as children of `<Admin>`. Declare as many [react-router-dom](https://reactrouter.com/en/6/start/concepts#defining-routes) `<Route>` as you want inside them.
 Alternatively, you can add your custom routes to resources. They will be available under the resource prefix.
 
 ```jsx
@@ -41,7 +41,7 @@ Now, when a user browses to `/settings` or `/profile`, the components you define
 
 ## `children`
 
-`children` of the `<CustomRoutes>` component must be `<Route>` elements from [react-router-dom](https://reactrouter.com/docs/en/v6/api#routes-and-route), and map a path with a custom element.
+`children` of the `<CustomRoutes>` component must be `<Route>` elements from [react-router-dom](https://reactrouter.com/en/6/start/concepts#defining-routes), and map a path with a custom element.
 
 ```jsx
 // in src/App.js
@@ -95,7 +95,7 @@ As illustrated above, there can be more than one `<CustomRoutes>` element inside
 
 ## Custom Page Title
 
-To define the page title (displayed in the app bar), your custom pages can use the `<Title>` component from react-admin:
+To define the page title (displayed in the app bar), your custom pages can use [the `<Title>` component](./Title.md) from react-admin:
 
 ```jsx
 // in src/Settings.js
@@ -115,7 +115,7 @@ const Settings = () => (
 export default Settings;
 ```
 
-`<Title>` uses a [React Portal](https://reactjs.org/docs/portals.html), so it doesn't matter *where* you put it in your component. The title will always be rendered in the app bar.
+`<Title>` uses a [React Portal](https://react.dev/reference/react-dom/createPortal), so it doesn't matter *where* you put it in your component. The title will always be rendered in the app bar.
 
 ## Linking To Custom Routes
 
@@ -143,8 +143,8 @@ import PeopleIcon from '@mui/icons-material/People';
 export const MyMenu = () => (
     <Menu>
         <Menu.DashboardItem />
-        <Menu.ResourceItem to="/posts"  />
-        <Menu.ResourceItem to="/comments" />
+        <Menu.ResourceItem name="posts"  />
+        <Menu.ResourceItem name="comments" />
         <Menu.Item to="/settings" primaryText="Users" leftIcon={<SettingsIcon />}/>
         <Menu.Item to="/profile" primaryText="Miscellaneous" leftIcon={<PeopleIcon />}/>
     </Menu>

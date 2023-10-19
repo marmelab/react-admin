@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {
+    Resource,
     ResourceContextProvider,
     ListContextProvider,
     CoreAdminContext,
@@ -9,13 +10,22 @@ import {
     useGetList,
     useList,
 } from 'ra-core';
-import { Box } from '@mui/material';
+import fakeRestDataProvider from 'ra-data-fakerest';
+import defaultMessages from 'ra-language-english';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+
+import { Box, styled } from '@mui/material';
+import { MemoryRouter } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { TextField } from '../../field';
 import { BulkDeleteButton, BulkExportButton } from '../../button';
 import { Datagrid } from './Datagrid';
 import { SimpleShowLayout } from '../../detail';
+import { AdminUI } from '../../AdminUI';
+import { AdminContext } from '../../AdminContext';
+import { List } from '../List';
+import { EditGuesser } from '../../detail';
 
 export default { title: 'ra-ui-materialui/list/Datagrid' };
 
@@ -54,16 +64,18 @@ const SubWrapper = ({ children }) => {
         <ThemeProvider theme={theme}>
             <ResourceContextProvider value="books">
                 <ListContextProvider
-                    value={{
-                        data,
-                        total: 4,
-                        isLoading: false,
-                        sort: { field: 'id', order: 'ASC' },
-                        selectedIds,
-                        onSelect: selectionModifiers.select,
-                        onToggleItem: selectionModifiers.toggle,
-                        onUnselectItems: selectionModifiers.clearSelection,
-                    }}
+                    value={
+                        {
+                            data,
+                            total: 4,
+                            isLoading: false,
+                            sort: { field: 'id', order: 'ASC' },
+                            selectedIds,
+                            onSelect: selectionModifiers.select,
+                            onToggleItem: selectionModifiers.toggle,
+                            onUnselectItems: selectionModifiers.clearSelection,
+                        } as any
+                    }
                 >
                     <Box sx={{ pt: 7, px: 4 }}>{children}</Box>
                 </ListContextProvider>
@@ -136,6 +148,24 @@ export const RowStyle = () => (
         <Datagrid
             rowStyle={(record: any) => ({
                 backgroundColor: record.id % 2 ? 'white' : '#eee',
+            })}
+        >
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </Wrapper>
+);
+
+export const RowSx = () => (
+    <Wrapper>
+        <Datagrid
+            rowSx={(record: any) => ({
+                backgroundColor: record.id % 2 ? 'white' : '#eee',
+                ...(record.year > 1900 && {
+                    '& td.column-year': { color: 'primary.main' },
+                }),
             })}
         >
             <TextField source="id" />
@@ -339,7 +369,7 @@ export const Standalone = () => (
     <ThemeProvider theme={theme}>
         <CoreAdminContext
             dataProvider={testDataProvider({
-                getList: () => Promise.resolve({ data, total: 4 }),
+                getList: () => Promise.resolve({ data, total: 4 }) as any,
             })}
         >
             <h1>Static</h1>
@@ -380,4 +410,79 @@ export const IsRowExpandable = () => (
             <TextField source="year" />
         </Datagrid>
     </Wrapper>
+);
+
+const StyledDatagrid = styled(Datagrid, {
+    name: 'MyStyledDatagrid',
+    overridesResolver: (props, styles) => styles.root,
+})(() => ({
+    width: '70%',
+    backgroundColor: '#ffb',
+}));
+
+export const StyledComponent = () => (
+    <Wrapper>
+        <StyledDatagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </StyledDatagrid>
+    </Wrapper>
+);
+
+export const ErrorInFetch = () => (
+    <MemoryRouter>
+        <ListContextProvider
+            value={
+                {
+                    error: new Error('Error in dataProvider'),
+                } as any
+            }
+        >
+            <Datagrid>
+                <TextField source="id" />
+                <TextField source="title" />
+                <TextField source="author" />
+                <TextField source="year" />
+            </Datagrid>
+        </ListContextProvider>
+    </MemoryRouter>
+);
+
+export const RowClickFalse = () => (
+    <Wrapper>
+        <Datagrid rowClick={false}>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </Wrapper>
+);
+
+const dataProvider = fakeRestDataProvider({ books: data });
+
+export const FullApp = () => (
+    <AdminContext
+        dataProvider={dataProvider}
+        i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+    >
+        <AdminUI>
+            <Resource
+                name="books"
+                list={() => (
+                    <List>
+                        <Datagrid>
+                            <TextField source="id" />
+                            <TextField source="title" />
+                            <TextField source="author" />
+                            <TextField source="year" />
+                        </Datagrid>
+                    </List>
+                )}
+                edit={EditGuesser}
+            />
+        </AdminUI>
+    </AdminContext>
 );

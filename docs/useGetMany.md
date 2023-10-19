@@ -7,15 +7,19 @@ title: "useGetMany"
 
 This hook calls `dataProvider.getMany()` when the component mounts. It queries the data provider for several records, based on an array of `ids`.
 
+## Syntax
+
 ```jsx
-// syntax
 const { data, isLoading, error, refetch } = useGetMany(
     resource,
     { ids, meta },
     options
 );
+```
 
-// example
+## Usage
+
+```jsx
 import { useGetMany, useRecordContext } from 'react-admin';
 
 const PostTags = () => {
@@ -49,3 +53,41 @@ dataProvider.getMany('tags', { ids: [1, 2, 3, 4, 5, 6, 7] });
 ```
 
 React-admin uses `useGetMany` in [the `<ReferenceField>` component](./ReferenceField.md), to overcome the n+1 problem when using this component in a list. 
+
+## TypeScript
+
+The `useGetMany` hook accepts a generic parameter for the record type:
+
+```tsx
+import { useGetMany, useRecordContext } from 'react-admin';
+
+type Post = {
+    id: number;
+    title: string;
+    tagIds: number[];
+};
+
+type Tag = {
+    id: number;
+    name: string;
+}
+
+const PostTags = () => {
+    const post = useRecordContext<Post>();
+
+    const { data: tags, isLoading, error } = useGetMany<Tag>(
+        'tags',
+        { ids: post.tagIds }
+    );
+    if (isLoading) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    return (
+        <ul>
+            {/* TypeScript knows that tags is of type Tag[] */}
+            {tags.map(tag => (
+                <li key={tag.id}>{tag.name}</li>
+            ))}
+        </ul>
+    );
+};
+```

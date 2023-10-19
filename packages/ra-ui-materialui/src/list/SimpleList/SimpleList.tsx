@@ -1,5 +1,7 @@
 import * as React from 'react';
+import { isElement } from 'react-is';
 import { styled } from '@mui/material/styles';
+import type { SxProps } from '@mui/material';
 import { isValidElement, ReactNode, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -22,6 +24,7 @@ import {
     sanitizeListRestProps,
     useListContext,
     useResourceContext,
+    useGetRecordRepresentation,
     useCreatePath,
     useTranslate,
 } from 'ra-core';
@@ -30,7 +33,7 @@ import { SimpleListLoading } from './SimpleListLoading';
 import { ListNoResults } from '../ListNoResults';
 
 /**
- * The <SimpleList> component renders a list of records as a MUI <List>.
+ * The <SimpleList> component renders a list of records as a Material UI <List>.
  * It is usually used as a child of react-admin's <List> and <ReferenceManyField> components.
  *
  * Also widely used on Mobile.
@@ -45,9 +48,10 @@ import { ListNoResults } from '../ListNoResults';
  * - rightIcon: same
  * - linkType: 'edit' or 'show', or a function returning 'edit' or 'show' based on the record
  * - rowStyle: function returning a style object based on (record, index)
+ * - rowSx: function returning a sx object based on (record, index)
  *
  * @example // Display all posts as a List
- * const postRowStyle = (record, index) => ({
+ * const postRowSx = (record, index) => ({
  *     backgroundColor: record.views >= 500 ? '#efe' : 'white',
  * });
  * export const PostList = () => (
@@ -58,7 +62,7 @@ import { ListNoResults } from '../ListNoResults';
  *             tertiaryText={record =>
  *                 new Date(record.published_at).toLocaleDateString()
  *             }
- *             rowStyle={postRowStyle}
+ *             rowSx={postRowSx}
  *          />
  *     </List>
  * );
@@ -78,11 +82,13 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         rightIcon,
         secondaryText,
         tertiaryText,
+        rowSx,
         rowStyle,
         ...rest
     } = props;
     const { data, isLoading, total } = useListContext<RecordType>(props);
     const resource = useResourceContext(props);
+    const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
 
     if (isLoading === true) {
@@ -139,6 +145,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                     ? rowStyle(record, rowIndex)
                                     : undefined
                             }
+                            sx={rowSx?.(record, rowIndex)}
                         >
                             {leftIcon && (
                                 <ListItemIcon>
@@ -153,14 +160,16 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                             <ListItemText
                                 primary={
                                     <div>
-                                        {typeof primaryText === 'string'
-                                            ? translate(primaryText, {
-                                                  ...record,
-                                                  _: primaryText,
-                                              })
-                                            : isValidElement(primaryText)
-                                            ? primaryText
-                                            : primaryText(record, record.id)}
+                                        {primaryText
+                                            ? typeof primaryText === 'string'
+                                                ? translate(primaryText, {
+                                                      ...record,
+                                                      _: primaryText,
+                                                  })
+                                                : isElement(primaryText)
+                                                ? primaryText
+                                                : primaryText(record, record.id)
+                                            : getRecordRepresentation(record)}
 
                                         {!!tertiaryText &&
                                             (isValidElement(tertiaryText) ? (
@@ -180,6 +189,10 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                                                   _: tertiaryText,
                                                               }
                                                           )
+                                                        : isElement(
+                                                              tertiaryText
+                                                          )
+                                                        ? tertiaryText
                                                         : tertiaryText(
                                                               record,
                                                               record.id
@@ -195,7 +208,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                               ...record,
                                               _: secondaryText,
                                           })
-                                        : isValidElement(secondaryText)
+                                        : isElement(secondaryText)
                                         ? secondaryText
                                         : secondaryText(record, record.id))
                                 }
@@ -249,6 +262,7 @@ SimpleList.propTypes = {
         PropTypes.string,
     ]),
     rowStyle: PropTypes.func,
+    rowSx: PropTypes.func,
 };
 
 export type FunctionToElement<RecordType extends RaRecord = any> = (
@@ -269,6 +283,10 @@ export interface SimpleListProps<RecordType extends RaRecord = any>
     rightIcon?: FunctionToElement<RecordType>;
     secondaryText?: FunctionToElement<RecordType> | ReactElement | string;
     tertiaryText?: FunctionToElement<RecordType> | ReactElement | string;
+    rowSx?: (record: RecordType, index: number) => SxProps;
+    /**
+     * @deprecated Use rowSx instead
+     */
     rowStyle?: (record: RecordType, index: number) => any;
     // can be injected when using the component without context
     resource?: string;

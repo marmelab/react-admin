@@ -16,7 +16,12 @@ export const LoadingIndicator = (props: LoadingIndicatorProps) => {
     const theme = useTheme();
     return (
         <Root className={className} sx={sx}>
-            {loading ? (
+            <RefreshIconButton
+                className={`${LoadingIndicatorClasses.loadedIcon} ${
+                    loading && LoadingIndicatorClasses.loadedLoading
+                }`}
+            />
+            {loading && (
                 <CircularProgress
                     className={clsx(
                         'app-loader',
@@ -26,10 +31,6 @@ export const LoadingIndicator = (props: LoadingIndicatorProps) => {
                     size={theme.spacing(2)}
                     thickness={6}
                     {...rest}
-                />
-            ) : (
-                <RefreshIconButton
-                    className={LoadingIndicatorClasses.loadedIcon}
                 />
             )}
         </Root>
@@ -51,6 +52,7 @@ const PREFIX = 'RaLoadingIndicator';
 
 export const LoadingIndicatorClasses = {
     loader: `${PREFIX}-loader`,
+    loadedLoading: `${PREFIX}-loadedLoading`,
     loadedIcon: `${PREFIX}-loadedIcon`,
 };
 
@@ -58,10 +60,15 @@ const Root = styled('div', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    [`& .${LoadingIndicatorClasses.loader}`]: {
-        marginLeft: theme.spacing(1.5),
-        marginRight: theme.spacing(1.5),
+    position: 'relative',
+    [`& .${LoadingIndicatorClasses.loadedIcon}`]: {
+        [`&.${LoadingIndicatorClasses.loadedLoading}`]: {
+            opacity: 0,
+        },
     },
-
-    [`& .${LoadingIndicatorClasses.loadedIcon}`]: {},
+    [`& .${LoadingIndicatorClasses.loader}`]: {
+        position: 'absolute',
+        top: '30%',
+        left: '30%',
+    },
 }));

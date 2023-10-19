@@ -3,11 +3,10 @@ import { Admin } from 'react-admin';
 import { Resource } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { createMemoryHistory } from 'history';
-import { Typography } from '@mui/material';
 
 import { List, Datagrid } from '../list';
 import { TextField } from '../field';
-import { AppBar, Layout } from '../layout';
+import { AppBar, Layout, TitlePortal } from '../layout';
 import { ToggleThemeButton } from './ToggleThemeButton';
 
 export default { title: 'ra-ui-materialui/button/ToggleThemeButton' };
@@ -86,32 +85,36 @@ const dataProvider = fakeRestDataProvider({
 
 const history = createMemoryHistory({ initialEntries: ['/books'] });
 
-const BookList = () => {
-    return (
-        <List>
-            <Datagrid>
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="author" />
-                <TextField source="year" />
-            </Datagrid>
-        </List>
-    );
-};
+const BookList = () => (
+    <List>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </List>
+);
 
-const MyAppBar = props => (
-    <AppBar {...props}>
-        <Typography flex="1" variant="h6" id="react-admin-title"></Typography>
-        <ToggleThemeButton
-            darkTheme={{
-                palette: { mode: 'dark' },
-            }}
-        />
+export const Basic = () => (
+    <Admin
+        dataProvider={dataProvider}
+        history={history}
+        darkTheme={{ palette: { mode: 'dark' } }}
+    >
+        <Resource name="books" list={BookList} />
+    </Admin>
+);
+
+const MyAppBar = () => (
+    <AppBar>
+        <TitlePortal />
+        <ToggleThemeButton darkTheme={{ palette: { mode: 'dark' } }} />
     </AppBar>
 );
 const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 
-export const Basic = () => (
+export const Legacy = () => (
     <Admin dataProvider={dataProvider} history={history} layout={MyLayout}>
         <Resource name="books" list={BookList} />
     </Admin>

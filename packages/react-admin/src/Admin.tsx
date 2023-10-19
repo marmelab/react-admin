@@ -1,10 +1,14 @@
 import * as React from 'react';
-import { ComponentType } from 'react';
-import { CoreAdminProps, localStorageStore } from 'ra-core';
-import { AdminUI, AdminContext } from 'ra-ui-materialui';
-import { ThemeOptions } from '@mui/material';
+import { localStorageStore } from 'ra-core';
+import {
+    AdminUI,
+    AdminContext,
+    AdminContextProps,
+    AdminUIProps,
+} from 'ra-ui-materialui';
 
 import { defaultI18nProvider } from './defaultI18nProvider';
+const defaultStore = localStorageStore();
 
 /**
  * Main admin component, entry point to the application.
@@ -99,7 +103,7 @@ export const Admin = (props: AdminProps) => {
         dataProvider,
         disableTelemetry,
         history,
-        i18nProvider,
+        i18nProvider = defaultI18nProvider,
         layout,
         loading,
         loginPage,
@@ -108,9 +112,12 @@ export const Admin = (props: AdminProps) => {
         notification,
         queryClient,
         requireAuth,
-        store,
+        store = defaultStore,
         ready,
         theme,
+        lightTheme,
+        darkTheme,
+        defaultTheme,
         title = 'React Admin',
     } = props;
 
@@ -130,6 +137,9 @@ export const Admin = (props: AdminProps) => {
             history={history}
             queryClient={queryClient}
             theme={theme}
+            lightTheme={lightTheme}
+            darkTheme={darkTheme}
+            defaultTheme={defaultTheme}
         >
             <AdminUI
                 layout={layout}
@@ -151,14 +161,6 @@ export const Admin = (props: AdminProps) => {
     );
 };
 
-Admin.defaultProps = {
-    i18nProvider: defaultI18nProvider,
-    store: localStorageStore(),
-};
-
 export default Admin;
 
-export interface AdminProps extends CoreAdminProps {
-    theme?: ThemeOptions;
-    notification?: ComponentType;
-}
+export interface AdminProps extends AdminContextProps, AdminUIProps {}

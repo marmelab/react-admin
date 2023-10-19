@@ -11,22 +11,44 @@ import {
 } from './layout';
 import { Login, AuthCallback } from './auth';
 
-export const AdminUI = ({ notification, ...props }: AdminUIProps) => (
+export const AdminUI = ({
+    layout = DefaultLayout,
+    catchAll = NotFound,
+    loading = LoadingPage,
+    loginPage = Login,
+    authCallbackPage = AuthCallback,
+    notification = Notification,
+    ...props
+}: AdminUIProps) => (
     <ScopedCssBaseline enableColorScheme>
-        <CoreAdminUI {...props} />
+        <CoreAdminUI
+            layout={layout}
+            catchAll={catchAll}
+            loading={loading}
+            loginPage={loginPage}
+            authCallbackPage={authCallbackPage}
+            {...props}
+        />
         {createElement(notification)}
     </ScopedCssBaseline>
 );
 
 export interface AdminUIProps extends CoreAdminUIProps {
+    /**
+     * The component used to display notifications
+     *
+     * @see https://marmelab.com/react-admin/Admin.html#notification
+     * @example
+     * import { Admin, Notification } from 'react-admin';
+     * import { dataProvider } from './dataProvider';
+     *
+     * const MyNotification = () => <Notification autoHideDuration={5000} />;
+     *
+     * const App = () => (
+     *     <Admin notification={MyNotification} dataProvider={dataProvider}>
+     *         ...
+     *     </Admin>
+     * );
+     */
     notification?: ComponentType;
 }
-
-AdminUI.defaultProps = {
-    layout: DefaultLayout,
-    catchAll: NotFound,
-    loading: LoadingPage,
-    loginPage: Login,
-    authCallbackPage: AuthCallback,
-    notification: Notification,
-};

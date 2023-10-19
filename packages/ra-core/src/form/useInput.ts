@@ -5,7 +5,6 @@ import {
     useController,
     UseControllerProps,
     UseControllerReturn,
-    useFormContext,
     UseFormStateReturn,
 } from 'react-hook-form';
 import get from 'lodash/get';
@@ -14,24 +13,26 @@ import { useRecordContext } from '../controller';
 import { composeValidators, Validator } from './validate';
 import isRequired from './isRequired';
 import { useFormGroupContext } from './useFormGroupContext';
-import { useGetValidationErrorMessage } from './useGetValidationErrorMessage';
 import { useFormGroups } from './useFormGroups';
 import { useApplyInputDefaultValues } from './useApplyInputDefaultValues';
+import { useEvent } from '../util';
 
 // replace null or undefined values by empty string to avoid controlled/uncontrolled input warning
 const defaultFormat = (value: any) => (value == null ? '' : value);
 // parse empty string into null as it's more suitable for a majority of backends
 const defaultParse = (value: string) => (value === '' ? null : value);
 
-export const useInput = (props: InputProps): UseInputValue => {
+export const useInput = <ValueType = any>(
+    props: InputProps<ValueType>
+): UseInputValue => {
     const {
         defaultValue,
         format = defaultFormat,
         id,
         isRequired: isRequiredOption,
         name,
-        onBlur,
-        onChange,
+        onBlur: initialOnBlur,
+        onChange: initialOnChange,
         parse = defaultParse,
         source,
         validate,
@@ -41,8 +42,6 @@ export const useInput = (props: InputProps): UseInputValue => {
     const formGroupName = useFormGroupContext();
     const formGroups = useFormGroups();
     const record = useRecordContext();
-    const getValidationErrorMessage = useGetValidationErrorMessage();
-    const formContext = useFormContext();
 
     useEffect(() => {
         if (!formGroups || formGroupName == null) {
@@ -68,48 +67,56 @@ export const useInput = (props: InputProps): UseInputValue => {
         name: finalName,
         defaultValue: get(record, source, defaultValue),
         rules: {
-            validate: async value => {
+            validate: async (value, values) => {
                 if (!sanitizedValidate) return true;
-                const error = await sanitizedValidate(
-                    value,
-                    formContext.getValues(),
-                    props
-                );
+                const error = await sanitizedValidate(value, values, props);
 
                 if (!error) return true;
-                return getValidationErrorMessage(error);
+                // react-hook-form expects errors to be plain strings but our validators can return objects
+                // that have message and args.
+                // To avoid double translation for users that validate with a schema instead of our validators
+                // we use a special format for our validators errors.
+                // The ValidationError component will check for this format and extract the message and args
+                // to translate.
+                return `@@react-admin@@${JSON.stringify(error)}`;
             },
         },
         ...options,
+        // Workaround for https://github.com/react-hook-form/react-hook-form/issues/10907
+        // FIXME - remove when fixed
+        // @ts-ignore - only exists since react-hook-form 7.46.0
+        disabled: options.disabled || undefined,
     });
 
     // Because our forms may receive an asynchronously loaded record for instance,
     // they may reset their default values which would override the input default value.
     // This hook ensures that the input default value is applied when a new record is loaded but has
     // no value for the input.
-    useApplyInputDefaultValues(props);
+    useApplyInputDefaultValues({ inputProps: props });
+
+    const onBlur = useEvent((...event: any[]) => {
+        controllerField.onBlur();
+        if (initialOnBlur) {
+            initialOnBlur(...event);
+        }
+    });
+
+    const onChange = useEvent((...event: any[]) => {
+        const eventOrValue = (props.type === 'checkbox' &&
+        event[0]?.target?.value === 'on'
+            ? event[0].target.checked
+            : event[0]?.target?.value ?? event[0]) as any;
+        controllerField.onChange(parse ? parse(eventOrValue) : eventOrValue);
+        if (initialOnChange) {
+            initialOnChange(...event);
+        }
+    });
 
     const field = {
         ...controllerField,
         value: format ? format(controllerField.value) : controllerField.value,
-        onBlur: (...event: any[]) => {
-            if (onBlur) {
-                onBlur(...event);
-            }
-            controllerField.onBlur();
-        },
-        onChange: (...event: any[]) => {
-            if (onChange) {
-                onChange(...event);
-            }
-            const eventOrValue = (props.type === 'checkbox' &&
-            event[0]?.target?.value === 'on'
-                ? event[0].target.checked
-                : event[0]?.target?.value ?? event[0]) as any;
-            controllerField.onChange(
-                parse ? parse(eventOrValue) : eventOrValue
-            );
-        },
+        onBlur,
+        onChange,
     };
 
     return {

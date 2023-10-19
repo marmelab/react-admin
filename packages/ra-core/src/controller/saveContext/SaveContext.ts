@@ -13,6 +13,9 @@ export interface SaveContextValue<
     MutateFunc extends (...args: any[]) => any = (...args: any[]) => any
 > {
     save?: SaveHandler<RecordType>;
+    /**
+     * @deprecated. Rely on the form isSubmitting value instead
+     */
     saving?: boolean;
     mutationMode?: MutationMode;
     registerMutationMiddleware?: (callback: Middleware<MutateFunc>) => void;

@@ -6,12 +6,16 @@ import { Location } from 'history';
 import { UseMutationOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
-import { useCreate, UseCreateMutateParams } from '../../dataProvider';
+import {
+    HttpError,
+    useCreate,
+    UseCreateMutateParams,
+} from '../../dataProvider';
 import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
 import { SaveContextValue, useMutationMiddlewares } from '../saveContext';
 import { useTranslate } from '../../i18n';
-import { RaRecord, TransformData } from '../../types';
+import { Identifier, RaRecord, TransformData } from '../../types';
 import {
     useResourceContext,
     useResourceDefinition,
@@ -36,10 +40,15 @@ import {
  * }
  */
 export const useCreateController = <
-    RecordType extends RaRecord = RaRecord,
-    MutationOptionsError = unknown
+    RecordType extends Omit<RaRecord, 'id'> = any,
+    MutationOptionsError = unknown,
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
 >(
-    props: CreateControllerProps<RecordType, MutationOptionsError> = {}
+    props: CreateControllerProps<
+        RecordType,
+        MutationOptionsError,
+        ResultRecordType
+    > = {}
 ): CreateControllerResult<RecordType> => {
     const {
         disableAuthentication,
@@ -73,8 +82,9 @@ export const useCreateController = <
 
     const [create, { isLoading: saving }] = useCreate<
         RecordType,
-        MutationOptionsError
-    >(resource, undefined, otherMutationOptions);
+        MutationOptionsError,
+        ResultRecordType
+    >(resource, undefined, { ...otherMutationOptions, returnPromise: true });
 
     const save = useCallback(
         (
@@ -83,6 +93,7 @@ export const useCreateController = <
                 onSuccess: onSuccessFromSave,
                 onError: onErrorFromSave,
                 transform: transformFromSave,
+                meta: metaFromSave,
             } = {}
         ) =>
             Promise.resolve(
@@ -91,55 +102,67 @@ export const useCreateController = <
                     : transform
                     ? transform(data)
                     : data
-            ).then((data: Partial<RecordType>) => {
+            ).then(async (data: Partial<RecordType>) => {
                 const mutate = getMutateWithMiddlewares(create);
-                mutate(
-                    resource,
-                    { data, meta },
-                    {
-                        onSuccess: async (data, variables, context) => {
-                            if (onSuccessFromSave) {
-                                return onSuccessFromSave(
-                                    data,
-                                    variables,
-                                    context
-                                );
-                            }
-                            if (onSuccess) {
-                                return onSuccess(data, variables, context);
-                            }
+                try {
+                    await mutate(
+                        resource,
+                        { data, meta: metaFromSave ?? meta },
+                        {
+                            onSuccess: async (data, variables, context) => {
+                                if (onSuccessFromSave) {
+                                    return onSuccessFromSave(
+                                        data,
+                                        variables,
+                                        context
+                                    );
+                                }
+                                if (onSuccess) {
+                                    return onSuccess(data, variables, context);
+                                }
 
-                            notify('ra.notification.created', {
-                                type: 'info',
-                                messageArgs: { smart_count: 1 },
-                            });
-                            redirect(finalRedirectTo, resource, data.id, data);
-                        },
-                        onError: onErrorFromSave
-                            ? onErrorFromSave
-                            : onError
-                            ? onError
-                            : (error: Error | string) => {
-                                  notify(
-                                      typeof error === 'string'
-                                          ? error
-                                          : error.message ||
-                                                'ra.notification.http_error',
-                                      {
-                                          type: 'error',
-                                          messageArgs: {
-                                              _:
-                                                  typeof error === 'string'
-                                                      ? error
-                                                      : error && error.message
-                                                      ? error.message
-                                                      : undefined,
-                                          },
-                                      }
-                                  );
-                              },
+                                notify('ra.notification.created', {
+                                    type: 'info',
+                                    messageArgs: { smart_count: 1 },
+                                });
+                                redirect(
+                                    finalRedirectTo,
+                                    resource,
+                                    data.id,
+                                    data
+                                );
+                            },
+                            onError: onErrorFromSave
+                                ? onErrorFromSave
+                                : onError
+                                ? onError
+                                : (error: Error) => {
+                                      notify(
+                                          typeof error === 'string'
+                                              ? error
+                                              : error.message ||
+                                                    'ra.notification.http_error',
+                                          {
+                                              type: 'error',
+                                              messageArgs: {
+                                                  _:
+                                                      typeof error === 'string'
+                                                          ? error
+                                                          : error &&
+                                                            error.message
+                                                          ? error.message
+                                                          : undefined,
+                                              },
+                                          }
+                                      );
+                                  },
+                        }
+                    );
+                } catch (error) {
+                    if ((error as HttpError).body?.errors != null) {
+                        return (error as HttpError).body.errors;
                     }
-                );
+                }
             }),
         [
             create,
@@ -175,8 +198,9 @@ export const useCreateController = <
 };
 
 export interface CreateControllerProps<
-    RecordType extends RaRecord = RaRecord,
-    MutationOptionsError = unknown
+    RecordType extends Omit<RaRecord, 'id'> = any,
+    MutationOptionsError = unknown,
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier }
 > {
     disableAuthentication?: boolean;
     hasEdit?: boolean;
@@ -185,15 +209,16 @@ export interface CreateControllerProps<
     redirect?: RedirectionSideEffect;
     resource?: string;
     mutationOptions?: UseMutationOptions<
-        RecordType,
+        ResultRecordType,
         MutationOptionsError,
         UseCreateMutateParams<RecordType>
     > & { meta?: any };
     transform?: TransformData;
 }
 
-export interface CreateControllerResult<RecordType extends RaRecord = RaRecord>
-    extends SaveContextValue {
+export interface CreateControllerResult<
+    RecordType extends Omit<RaRecord, 'id'> = any
+> extends SaveContextValue {
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
     data?: RecordType;
