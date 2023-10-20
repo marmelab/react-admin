@@ -58,8 +58,8 @@ export const LoadingIndicatorClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
+    overridesResolver: (_, styles) => styles.root,
+})({
     position: 'relative',
     [`& .${LoadingIndicatorClasses.loadedIcon}`]: {
         [`&.${LoadingIndicatorClasses.loadedLoading}`]: {
@@ -71,4 +71,4 @@ const Root = styled('div', {
         top: '30%',
         left: '30%',
     },
-}));
+});
