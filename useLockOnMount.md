@@ -23,7 +23,7 @@ Use this hook e.g. in an `<Edit>` component to lock the record so that it only a
 ```jsx
 import { Edit, SimpleForm, TextInput } from 'react-admin';
 import { useLockOnMount } from '@react-admin/ra-realtime';
-import { Alert, AlertTitle, Box } from '@material-ui/core';
+import { Alert, AlertTitle, Box } from '@mui/material';
 
 const PostAside = () => {
     const { isLocked, error, isLoading } = useLockOnMount();

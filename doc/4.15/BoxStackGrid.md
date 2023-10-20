@@ -17,7 +17,7 @@ It accepts all [the `sx` prop](./SX.md), which makes it easy to style:
 
 {% raw %}
 ```jsx
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 
 const MyComponent = () => (
     <Box
@@ -104,7 +104,7 @@ To learn more, read the [Material-UI Box documentation](https://mui.com/material
 ![Stack](./img/stack.webp)
 
 ```jsx
-import { Stack } from '@material-ui/core';
+import { Stack } from '@mui/material';
 
 const Items = () => (
     <Stack spacing={2}>
@@ -154,7 +154,7 @@ Use the `divider` prop to insert an element between each child.
 
 {% raw %}
 ```jsx
-import { Stack } from '@material-ui/core';
+import { Stack } from '@mui/material';
 
 export const DividerStack = () => (
     <div>

@@ -9,10 +9,13 @@ title: "Advanced Tutorials"
 
 This tutorial explains how to add a button on a show or edit page to create a new resource related to the one displayed.
 
-![Screencast](https://marmelab.com/images/blog/react-admin/react-admin-tutorials-form-for-related-records.gif)
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/5b5e4e19163f7baca76cce020c23c41a/create-related.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
-* [Article](https://marmelab.com/blog/2020/09/16/react-admin-tutorials-form-for-related-records.html)
-* [Codesandbox](https://codesandbox.io/s/2393m2k5rj)
+* [Article](https://marmelab.com/blog/2023/10/12/react-admin-v4-advanced-recipes-creating-a-record-related-to-the-current-one.html)
+* [Code](https://github.com/marmelab/react-admin/blob/master/examples/demo/src/products/ProductEdit.tsx)
 
 ## Custom Forms and UI for related records
 
