@@ -232,13 +232,10 @@ export const buildApolloArgs = (
                 ...acc,
                 gqlTypes.variableDefinition(
                     gqlTypes.variable(gqlTypes.name(arg.name)),
-                    getArgType(arg)
+                    getGqlType(arg.type)
                 ),
             ];
         }, []);
 
     return args;
 };
-
-export const getArgType = (arg: IntrospectionInputValue): TypeNode =>
-    getGqlType(arg.type);

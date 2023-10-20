@@ -13,21 +13,7 @@ import buildGqlQuery, {
     buildApolloArgs,
     buildArgs,
     buildFields,
-    getArgType,
 } from './buildGqlQuery';
-
-describe('getArgType', () => {
-    it('returns the arg type', () => {
-        expect(
-            print(
-                getArgType({
-                    name: 'arg',
-                    type: { kind: TypeKind.SCALAR, name: 'foo' },
-                })
-            )
-        ).toEqual('foo');
-    });
-});
 
 describe('buildArgs', () => {
     it('returns an empty array when query does not have any arguments', () => {
