@@ -26,6 +26,7 @@
         "build-storybook": "storybook build -c .storybook -o public --quiet"
     },
     "devDependencies": {
+        "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
         "@storybook/addon-actions": "^7.5.1",
         "@storybook/addon-controls": "^7.5.1",
         "@storybook/addon-docs": "^7.5.1",
