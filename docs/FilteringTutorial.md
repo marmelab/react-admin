@@ -5,7 +5,7 @@ title: "Filtering the List"
 
 # Filtering the List
 
-One of the most important features of the List page is the ability to filter the results. React-admin offers powerful filter components, and gets out of the way when you want to go further. 
+One of the most important features of the List page is the ability to filter the results. React-admin offers powerful filter components, and gets out of the way when you want to go further.
 
 ## Overview
 
@@ -60,13 +60,13 @@ React-admin offers 4 different ways to filter the list. Depending on the type of
 </video>
 
 
-The default appearance for filters is an inline form displayed on top of the list. Users also see a dropdown button allowing to add more inputs to that form. This functionality relies on the `<List filters>` prop: 
+The default appearance for filters is an inline form displayed on top of the list. Users also see a dropdown button allowing to add more inputs to that form. This functionality relies on the `<List filters>` prop:
 
 ```jsx
-import { TextInput } from 'react-admin';
+import { TextInput, SearchInput } from 'react-admin';
 
 const postFilters = [
-    <TextInput label="Search" source="q" alwaysOn />,
+    <SearchInput source="q" alwaysOn />,
     <TextInput label="Title" source="title" defaultValue="Hello, World!" />,
 ];
 
@@ -83,7 +83,7 @@ Elements passed as `filters` are regular inputs. That means you can build sophis
 
 `<List>` uses the elements passed as `filters` twice:
 
-- once to render the filter *form* 
+- once to render the filter *form*
 - once to render the filter *button* (using each element `label`, falling back to the humanized `source`)
 
 ### `<SearchInput>`
@@ -95,7 +95,7 @@ Elements passed as `filters` are regular inputs. That means you can build sophis
 </video>
 
 
-In addition to [the usual input types](./Inputs.md) (`<TextInput>`, `<SelectInput>`, `<ReferenceInput>`, etc.), you can use the `<SearchInput>` in the `filters` array. This input is designed especially for the [`Filter Form`](./FilterForm.md). It's like a `<TextInput resettable>` with a magnifier glass icon - exactly the type of input users look for when they want to do a full-text search. 
+In addition to [the usual input types](./Inputs.md) (`<TextInput>`, `<SelectInput>`, `<ReferenceInput>`, etc.), you can use the `<SearchInput>` in the `filters` array. This input is designed especially for the [`Filter Form`](./FilterForm.md). It's like a `<TextInput resettable>` with a magnifier glass icon - exactly the type of input users look for when they want to do a full-text search.
 
 ```jsx
 import { SearchInput, TextInput } from 'react-admin';
@@ -116,7 +116,7 @@ In the example given above, the `q` filter triggers a full-text search on all fi
 </video>
 
 
-Users usually dislike using their keyboard to filter a list (especially on mobile). A good way to satisfy this user requirement is to turn filters into *quick filter*. A Quick filter is a filter with a non-editable `defaultValue`. Users can only enable or disable them. 
+Users usually dislike using their keyboard to filter a list (especially on mobile). A good way to satisfy this user requirement is to turn filters into *quick filter*. A Quick filter is a filter with a non-editable `defaultValue`. Users can only enable or disable them.
 
 Here is how to implement a generic `<QuickFilter>` component:
 
@@ -139,7 +139,7 @@ const postFilters = [
 ```
 {% endraw %}
 
-**Tip**: It's currently not possible to use two quick filters for the same source. 
+**Tip**: It's currently not possible to use two quick filters for the same source.
 
 ## The `<FilterList>` Sidebar
 
@@ -283,11 +283,11 @@ Check the [`<StackedFilters>` documentation](./StackedFilters.md) for more infor
   Your browser does not support the video tag.
 </video>
 
-Although list filters allow to make precise queries using per-field criteria, users often prefer simpler interfaces like full-text search. After all, that's what they use every day on search engines, email clients, and in their file explorer. 
+Although list filters allow to make precise queries using per-field criteria, users often prefer simpler interfaces like full-text search. After all, that's what they use every day on search engines, email clients, and in their file explorer.
 
 If you want to display a full-text search allowing to look for any record in the admin using a single form input, check out [the `<Search>` component](./Search.md), an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> exclusive.
 
-`<Search>` can plug to any existing search engine (ElasticSearch, Lucene, or custom search engine), and lets you customize the search results to provide quick navigation to related items, turning the search engine into an "Omnibox": 
+`<Search>` can plug to any existing search engine (ElasticSearch, Lucene, or custom search engine), and lets you customize the search results to provide quick navigation to related items, turning the search engine into an "Omnibox":
 
 <video controls autoplay playsinline muted loop>
   <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.webm" type="video/webm" />
@@ -295,11 +295,11 @@ If you want to display a full-text search allowing to look for any record in the
   Your browser does not support the video tag.
 </video>
 
-For mode details about the global search, check the [`<Search>` documentation](./Search.md). 
+For mode details about the global search, check the [`<Search>` documentation](./Search.md).
 
 ## Filter Query Parameter
 
-React-admin uses the `filter` query parameter from the URL to determine the filters to apply to the list. 
+React-admin uses the `filter` query parameter from the URL to determine the filters to apply to the list.
 
 Here is a typical List page URL in a react-admin application:
 
@@ -325,7 +325,7 @@ When a user adds or remove a filter, react-admin changes the `filter` query para
 
 **Tip**: Once a user sets a filter, react-admin persists the filter value in the application state, so that when the user comes back to the list, they should see the filtered list. That's a design choice.
 
-**Tip**: You can change the filters programmatically by updating the query parameter, e.g. using the `<Link>` component or the `useNavigate()` hook from `react-router-dom`. 
+**Tip**: You can change the filters programmatically by updating the query parameter, e.g. using the `<Link>` component or the `useNavigate()` hook from `react-router-dom`.
 
 ## Linking To A Pre-Filtered List
 
@@ -351,7 +351,7 @@ const LinkToRelatedProducts = () => {
                 search: `filter=${JSON.stringify({ category_id: record.id })}`,
             }}
         >
-            All posts with the category {record.name} ; 
+            All posts with the category {record.name} ;
         </Button>
     ) : null;
 };
@@ -425,7 +425,7 @@ export default {
 </video>
 
 
-Saved Queries let users save a combination of filters and sort parameters into a new, personal filter. Saved queries persist between sessions, so users can find their custom queries even after closing and reopening the admin. Saved queries are available both for the Filter Button/Form combo and for the `<FilterList>` Sidebar. It's enabled by default for the Filter Button/Form combo but you have to add it yourself in the `<FilterList>` Sidebar. 
+Saved Queries let users save a combination of filters and sort parameters into a new, personal filter. Saved queries persist between sessions, so users can find their custom queries even after closing and reopening the admin. Saved queries are available both for the Filter Button/Form combo and for the `<FilterList>` Sidebar. It's enabled by default for the Filter Button/Form combo but you have to add it yourself in the `<FilterList>` Sidebar.
 
 `<SavedQueriesList>` is a complement to `<FilterList>` sections for the filter sidebar
 
@@ -469,7 +469,7 @@ const SongList = () => (
 
 If neither the Filter button/form combo nor the `<FilterList>` sidebar match your need, you can always build your own. React-admin provides shortcuts to facilitate the development of custom filters.
 
-For instance, by default, the filter button/form combo doesn't provide a submit button, and submits automatically after the user has finished interacting with the form. This provides a smooth user experience, but for some APIs, it can cause too many calls. 
+For instance, by default, the filter button/form combo doesn't provide a submit button, and submits automatically after the user has finished interacting with the form. This provides a smooth user experience, but for some APIs, it can cause too many calls.
 
 In that case, the solution is to process the filter when users click on a submit button, rather than when they type values in form inputs. React-admin doesn't provide any component for that, but it's a good opportunity to illustrate the internals of the filter functionality. We'll actually provide an alternative implementation to the Filter button/form combo.
 
@@ -511,7 +511,7 @@ const PostFilterButton = () => {
 };
 ```
 
-Normally, `showFilter()` adds one input to the `displayedFilters` list. As the filter form will be entirely hidden or shown, we use `showFilter()` with a virtual "main" input, which represents the entire form. 
+Normally, `showFilter()` adds one input to the `displayedFilters` list. As the filter form will be entirely hidden or shown, we use `showFilter()` with a virtual "main" input, which represents the entire form.
 
 ### Custom Filter Form
 
