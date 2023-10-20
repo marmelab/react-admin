@@ -1,5 +1,19 @@
 # Changelog
 
+## v4.15.1
+
+* Fix `<SelectColumnsButton>` throws errors when reordering the columns ([#9369](https://github.com/marmelab/react-admin/pull/9369)) ([slax57](https://github.com/slax57))
+* Fix `<ReferenceField sx>` is ignored when `link={false}` ([#9373](https://github.com/marmelab/react-admin/pull/9373)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `useGetList` optimistic cache update leads to ui freeze when too many records are returned ([#9359](https://github.com/marmelab/react-admin/pull/9359)) ([slax57](https://github.com/slax57))
+* Fix `<BooleanInput>` `color` prop should be configurable globally via  MUI defaultProps system ([#9361](https://github.com/marmelab/react-admin/pull/9361)) ([septentrion-730n](https://github.com/septentrion-730n))
+* Fix security vulnerability in dev dependencies due to outdated storybook ([#9374](https://github.com/marmelab/react-admin/pull/9374)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<Confirm>` doc snippet mentions wrong Datagrid prop name ([#9362](https://github.com/marmelab/react-admin/pull/9362)) ([omegastripes](https://github.com/omegastripes))
+* [Doc] Explain how `<PasswordInput>` can be used to update a password ([#9354](https://github.com/marmelab/react-admin/pull/9354)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Improve `<Calendar>` documentation ([#9367](https://github.com/marmelab/react-admin/pull/9367)) ([mchaffotte](https://github.com/mchaffotte))
+* [Doc] Improve `<StackedFilters>` documentation ([#9364](https://github.com/marmelab/react-admin/pull/9364)) ([mchaffotte](https://github.com/mchaffotte))
+* [Doc] Fix old MUI import path in code snippets ([#9372](https://github.com/marmelab/react-admin/pull/9372)) ([fzaninotto](https://github.com/fzaninotto))
+* [Demo] Improve customer aside ([#9356](https://github.com/marmelab/react-admin/pull/9356)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v4.15.0
 
 * Add Nano, Radiant and House themes ([#9316](https://github.com/marmelab/react-admin/pull/9316)) ([adguernier](https://github.com/adguernier))
