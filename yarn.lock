@@ -18626,12 +18626,12 @@ __metadata:
   linkType: hard
 
 "react-devtools-core@npm:^4.19.1":
-  version: 4.27.4
-  resolution: "react-devtools-core@npm:4.27.4"
+  version: 4.28.4
+  resolution: "react-devtools-core@npm:4.28.4"
   dependencies:
     shell-quote: ^1.6.1
     ws: ^7
-  checksum: aad2bcf472d348cf98493ced7d69393ebf84d43906a182a53f991927711ff567cf78047f42051b6305ade5b310e22b157a7625d21ad1338e90cb34f7b8c40a1a
+  checksum: 3fbb61a11f79aad2cda9c499f23f74f748d0c8c4b65d133d0dd6ed4495beaccd6cd4b223dc47aabc5196f75362de687d38110851bcd3b386855486d6da8f953c
   languageName: node
   linkType: hard
 
