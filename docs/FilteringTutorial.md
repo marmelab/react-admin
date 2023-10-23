@@ -63,10 +63,10 @@ React-admin offers 4 different ways to filter the list. Depending on the type of
 The default appearance for filters is an inline form displayed on top of the list. Users also see a dropdown button allowing to add more inputs to that form. This functionality relies on the `<List filters>` prop:
 
 ```jsx
-import { TextInput, SearchInput } from 'react-admin';
+import { TextInput } from 'react-admin';
 
 const postFilters = [
-    <SearchInput source="q" alwaysOn />,
+    <TextInput label="Search" source="q" alwaysOn />,
     <TextInput label="Title" source="title" defaultValue="Hello, World!" />,
 ];
 

@@ -344,10 +344,10 @@ In most admin and B2B apps, the most common task is to look for a record. React-
 These features rely on powerful components with an intuitive API. For instance, you can set the Filter Button/Form Combo with the `<List filters>` prop, using the same input components as in edition forms:
 
 ```jsx
-import { List, TextInput, SearchInput } from 'react-admin';
+import { List, TextInput } from 'react-admin';
 
 const postFilters = [
-    <SearchInput source="q" alwaysOn />,
+    <TextInput label="Search" source="q" alwaysOn />,
     <TextInput label="Title" source="title" defaultValue="Hello, World!" />,
 ];
 
