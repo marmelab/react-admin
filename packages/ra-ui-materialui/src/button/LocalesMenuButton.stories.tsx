@@ -6,6 +6,7 @@ import { useTranslate, Resource } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { createMemoryHistory } from 'history';
 import { Typography } from '@mui/material';
+import LanguageIcon from '@mui/icons-material/Language';
 
 import { LocalesMenuButton } from './LocalesMenuButton';
 import { AdminContext } from '../AdminContext';
@@ -50,6 +51,19 @@ export const Basic = () => (
                 { locale: 'en', name: 'English' },
                 { locale: 'fr', name: 'Français' },
             ]}
+        />
+        <Component />
+    </AdminContext>
+);
+
+export const CustomIcon = () => (
+    <AdminContext i18nProvider={i18nProvider}>
+        <LocalesMenuButton
+            languages={[
+                { locale: 'en', name: 'English' },
+                { locale: 'fr', name: 'Français' },
+            ]}
+            icon={<LanguageIcon />}
         />
         <Component />
     </AdminContext>
