@@ -78,6 +78,22 @@ An array of objects (`{ locale, name }`) representing the key and the label of t
 
 The `locale` will be passed to `setLocale` when the user selects the language, and must be supported by the `i18nProvider`.
 
+## `icon`
+
+A React node for the icon:
+
+```jsx
+import LanguageIcon from '@mui/icons-material/Language';
+
+<LocalesMenuButton
+    languages={[
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' },
+    ]}
+    icon={<LanguageIcon />}
+/>
+```
+
 ## `sx`: CSS API
 
 The `<LocalesMenuButton>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples).
