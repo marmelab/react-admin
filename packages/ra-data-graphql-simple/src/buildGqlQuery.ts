@@ -7,12 +7,10 @@ import {
 import {
     ArgumentNode,
     IntrospectionField,
-    IntrospectionInputValue,
     IntrospectionNamedTypeRef,
     IntrospectionObjectType,
     IntrospectionUnionType,
     TypeKind,
-    TypeNode,
     VariableDefinitionNode,
 } from 'graphql';
 import * as gqlTypes from 'graphql-ast-types-browser';
