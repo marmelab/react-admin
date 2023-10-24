@@ -129,7 +129,11 @@ const CommentEdit = props => {
                             onSubmit={save}
                             warnWhenUnsavedChanges
                         >
-                            <TextInput disabled source="id" fullWidth />
+                            <TextInput
+                                source="id"
+                                fullWidth
+                                inputProps={{ disabled: true }}
+                            />
                             <ReferenceInput
                                 source="post_id"
                                 reference="posts"

@@ -82,13 +82,13 @@ const PostTitle = () => {
 export const PostEdit = () => (
     <Edit title={<PostTitle />}>
         <SimpleForm>
-            <TextInput disabled source="id" />
+            <TextInput source="id" inputProps={{ disabled: true }} />
             <TextInput source="title" />
             <TextInput source="teaser" options={{ multiline: true }} />
             <TextInput multiline source="body" />
             <DateInput label="Publication date" source="published_at" />
             <TextInput source="average_note" />
-            <TextInput disabled label="Nb views" source="views" />
+            <TextInput label="Nb views" source="views" inputProps={{ disabled: true }}/>
         </SimpleForm>
     </Edit>
 );

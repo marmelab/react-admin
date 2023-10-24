@@ -426,6 +426,7 @@ React-admin offers a **rich set of input components and form layouts** to build 
 
 For instance, here is how to build a tabbed form for editing a blog post:
 
+{% raw %}
 ```jsx
 import {
     TabbedForm,
@@ -445,7 +446,7 @@ export const PostEdit = () => (
     <Edit>
         <TabbedForm>
             <TabbedForm.Tab label="summary">
-                <TextInput disabled label="Id" source="id" />
+                <TextInput label="Id" source="id" inputProps={{ disabled: true }} />
                 <TextInput source="title" validate={required()} />
                 <TextInput multiline source="teaser" validate={required()} />
             </TabbedForm.Tab>
@@ -457,7 +458,7 @@ export const PostEdit = () => (
                 <DateInput label="Publication date" source="published_at" />
                 <NumberInput source="average_note" validate={[ number(), minValue(0) ]} />
                 <BooleanInput label="Allow comments?" source="commentable" defaultValue />
-                <TextInput disabled label="Nb views" source="views" />
+                <TextInput label="Nb views" source="views" inputProps={{ disabled: true }} />
             </TabbedForm.Tab>
             <TabbedForm.Tab label="comments">
                 <ReferenceManyField reference="comments" target="post_id" label={false}>
@@ -472,6 +473,7 @@ export const PostEdit = () => (
     </Edit>
 );
 ```
+{% endraw %}
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/tabbed-form.webm" type="video/webm"/>
