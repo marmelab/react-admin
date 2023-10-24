@@ -132,7 +132,7 @@ const CommentEdit = props => {
                             <TextInput
                                 source="id"
                                 fullWidth
-                                inputProps={{ disabled: true }}
+                                InputProps={{ disabled: true }}
                             />
                             <ReferenceInput
                                 source="post_id"

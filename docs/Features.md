@@ -446,7 +446,7 @@ export const PostEdit = () => (
     <Edit>
         <TabbedForm>
             <TabbedForm.Tab label="summary">
-                <TextInput label="Id" source="id" inputProps={{ disabled: true }} />
+                <TextInput label="Id" source="id" InputProps={{ disabled: true }} />
                 <TextInput source="title" validate={required()} />
                 <TextInput multiline source="teaser" validate={required()} />
             </TabbedForm.Tab>
@@ -458,7 +458,7 @@ export const PostEdit = () => (
                 <DateInput label="Publication date" source="published_at" />
                 <NumberInput source="average_note" validate={[ number(), minValue(0) ]} />
                 <BooleanInput label="Allow comments?" source="commentable" defaultValue />
-                <TextInput label="Nb views" source="views" inputProps={{ disabled: true }} />
+                <TextInput label="Nb views" source="views" InputProps={{ disabled: true }} />
             </TabbedForm.Tab>
             <TabbedForm.Tab label="comments">
                 <ReferenceManyField reference="comments" target="post_id" label={false}>
