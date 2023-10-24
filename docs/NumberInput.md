@@ -13,18 +13,36 @@ title: "The NumberInput Component"
   Your browser does not support the video tag.
 </video>
 
+Upon submission, the `dataProvider` will receive a number, not a string.
 
 ## Usage
 
-```jsx
-import { NumberInput } from 'react-admin';
+Use `<NumberInput>` for number values, or for string values that convert to a number. For instance, if your API expects Post records to look like this:
 
-<NumberInput source="nb_views" />
+```json
+{
+    "id": 123,
+    "title": "Lorem Ipsum",
+    "average_note": 4
+}
 ```
 
-`<NumberInput>` converts the input value to a number (integer or float) *on blur*. This is because if the input updates the form value on every keystroke, it will prevent users from entering certain float values. For instance, to enter the number `1.02`, a user would type `1.0`, that JavaScript converts to the number `1`.
+Then you can use a `<NumberInput>` for the `average_note` field:
 
-If you need the form value to update on change instead of on blur (for instance to update another input based on the number input value), you can build your own number input using `<TextInput>`, and the `format` and `parse` props. But be aware that this only works for integer values. 
+```jsx
+import { Edit, SimpleForm, TextInput, NumberInput, required } from 'react-admin';
+
+export const PostEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="title" />
+            <NumberInput source="average_note" validate={[required()]} />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+`<NumberInput>` works for integer and float values. 
 
 ## Props
 
@@ -34,7 +52,7 @@ If you need the form value to update on change instead of on blur (for instance 
 | `min`  | Optional | `number` | ''      | The minimum value to accept for this input                                                              |
 | `step` | Optional | `number` | `any`   | A stepping interval to use when using up and down arrows to adjust the value, as well as for validation |
 
-`<NumberInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+`<NumberInput>` also accepts the [common input props](./Inputs.md#common-input-props) (including `parse` and `format`, which you can use to customize the string to number conversion).
 
 ## `step`
 
@@ -42,31 +60,4 @@ You can customize the `step` props (which defaults to "any"). For instance, to r
 
 ```jsx
 <NumberInput source="nb_views" step={1} />
-```
-
-## Usage In Filter Form
-
-The [Filter Button/Form combo](https://marmelab.com/react-admin/FilteringTutorial.html#the-filter-buttonform-combo) changes the filter value as the user types. But, as explained earlier in this page, `<NumberInput>` converts the input value to a number on blur.
-
-This means that using `<NumberInput>` in a filter form will not work as expected. The filter will only change when the user presses the Enter key, which differs from the other input types.
-
-In a filter form, you should use a `<TextInput type="number">` instead:
-
-```jsx
-import { TextInput } from 'react-admin';
-
-const convertStringToNumber = value => {
-    const float = parseFloat(value);
-    return isNaN(float) ? null : float;
-};
-
-const productFilters = [
-    <TextInput label="Stock less than" source="stock_lte" type="number" parse={convertStringToNumber} />,
-];
-
-export const ProductList = () => (
-    <List filters={productFilters}>
-        ...
-    </List>
-);
 ```

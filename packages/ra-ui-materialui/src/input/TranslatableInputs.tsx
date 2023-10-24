@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { SxProps, styled } from '@mui/material/styles';
+import { StackProps } from '@mui/material';
 import { ReactElement, ReactNode } from 'react';
 import {
     TranslatableContextProvider,
@@ -69,20 +70,21 @@ export const TranslatableInputs = (
     const {
         className,
         defaultLocale,
+        fullWidth,
         locales,
         groupKey = '',
         selector = <TranslatableInputsTabs groupKey={groupKey} />,
         children,
-        variant,
         margin,
         sx,
+        StackProps = {},
     } = props;
     const context = useTranslatable({ defaultLocale, locales });
 
     return (
         <Root
             className={clsx(className, TranslatableInputsClasses.root, {
-                [TranslatableInputsClasses.fullWidth]: props.fullWidth,
+                [TranslatableInputsClasses.fullWidth]: fullWidth,
             })}
             sx={sx}
         >
@@ -93,8 +95,8 @@ export const TranslatableInputs = (
                         key={locale}
                         locale={locale}
                         groupKey={groupKey}
-                        variant={variant}
                         margin={margin}
+                        {...StackProps}
                     >
                         {children}
                     </TranslatableInputsTabContent>
@@ -111,8 +113,8 @@ export interface TranslatableInputsProps extends UseTranslatableOptions {
     fullWidth?: boolean;
     groupKey?: string;
     margin?: 'none' | 'normal' | 'dense';
-    variant?: 'standard' | 'outlined' | 'filled';
     sx?: SxProps;
+    StackProps?: StackProps;
 }
 
 const PREFIX = 'RaTranslatableInputs';

@@ -7,8 +7,9 @@ title: "useDelete"
 
 This hook allows calling `dataProvider.delete()` when the callback is executed and deleting a single record based on its `id`.
 
+## Syntax
+
 ```jsx
-// syntax
 const [deleteOne, { data, isLoading, error }] = useDelete(
     resource,
     { id, previousData, meta },
@@ -27,6 +28,8 @@ deleteOne(
 ```
 
 So, should you pass the parameters when calling the hook, or when executing the callback? It's up to you; but if you have the choice, we recommend passing the parameters when calling the `deleteOne` callback (second example below).
+
+## Usage
 
 ```jsx
 // set params when calling the hook

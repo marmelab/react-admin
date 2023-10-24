@@ -10,7 +10,10 @@ import {
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { RadioButtonGroupInput } from './RadioButtonGroupInput';
-import { InsideReferenceArrayInput } from './RadioButtonGroupInput.stories';
+import {
+    InsideReferenceArrayInput,
+    TranslateChoice,
+} from './RadioButtonGroupInput.stories';
 
 describe('<RadioButtonGroupInput />', () => {
     const defaultProps = {
@@ -261,23 +264,39 @@ describe('<RadioButtonGroupInput />', () => {
         expect(screen.queryByText('Mastercard')).not.toBeNull();
     });
 
-    it('should translate the choices by default', () => {
-        render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <TestTranslationProvider translate={x => `**${x}**`}>
-                    <SimpleForm
-                        defaultValues={{ type: 'mc' }}
-                        onSubmit={jest.fn()}
-                    >
-                        <RadioButtonGroupInput
-                            {...defaultProps}
-                            choices={[{ id: 'mc', name: 'Mastercard' }]}
-                        />
-                    </SimpleForm>
-                </TestTranslationProvider>
-            </AdminContext>
-        );
-        expect(screen.queryByText('**Mastercard**')).not.toBeNull();
+    describe('translateChoice', () => {
+        it('should translate the choices by default', async () => {
+            render(<TranslateChoice />);
+            const label = await screen.findByText('translateChoice default');
+            const options =
+                label.parentNode?.parentNode?.childNodes[1].childNodes;
+            expect(options![1].textContent).toBe('Female');
+        });
+        it('should not translate the choices when translateChoice is false', async () => {
+            render(<TranslateChoice />);
+            const label = await screen.findByText('translateChoice false');
+            const options =
+                label.parentNode?.parentNode?.childNodes[1].childNodes;
+            expect(options![1].textContent).toBe('option.female');
+        });
+        it('should not translate the choices when inside ReferenceInput by default', async () => {
+            render(<TranslateChoice />);
+            await waitFor(() => {
+                const label = screen.getByText('inside ReferenceInput');
+                const options =
+                    label.parentNode?.parentNode?.childNodes[1].childNodes;
+                expect(options![1].textContent).toBe('option.female');
+            });
+        });
+        it('should translate the choices when inside ReferenceInput when translateChoice is true', async () => {
+            render(<TranslateChoice />);
+            await waitFor(() => {
+                const label = screen.getByText('inside ReferenceInput forced');
+                const options =
+                    label.parentNode?.parentNode?.childNodes[1].childNodes;
+                expect(options![1].textContent).toBe('Female');
+            });
+        });
     });
 
     it('should not translate the choices if translateChoice is false', () => {

@@ -300,7 +300,7 @@ const PostShow = () => (
 
 ## `sx`: CSS API
 
-The `<Show>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<Show>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
 | Rule name        | Description                                                   |
 |------------------| ------------------------------------------------------------- |
@@ -326,7 +326,7 @@ const PostShow = () => (
 ```
 {% endraw %}
 
-To override the style of all instances of `<Show>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaShow` key.
+To override the style of all instances of `<Show>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaShow` key.
 
 ## Loading State
 
@@ -489,6 +489,34 @@ const PostShow = () => (
 ```
 
 It shows a notification and refreshes the page when the record is updated by another user. Also, it displays a warning when the record is deleted by another user.
+
+## Navigating Through Records
+
+The [`<PrevNextButtons`](./PrevNextButtons.md) renders a navigation with two buttons, allowing users to navigate through records without leaving a `<Show>` view. 
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/prev-next-buttons-show.webm" type="video/webm" />
+  <source src="./img/prev-next-buttons-show.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+The following code is an example of how you can use it:
+
+```tsx
+export const PostShow = () => (
+    <Show
+        actions={
+            <TopToolbar>
+                <PrevNextButtons linkType="show"/>
+            </TopToolbar>
+        }
+    >
+    ...
+    </Show>
+);
+```
+
+**Tips:** If you want the `<PrevNextButtons>` to link to the `<Show>` view, you have to set the `linkType` to `show`. See [the `<PrevNextButtons linkType>` prop](./PrevNextButtons.md#linktype).
 
 ## API
 

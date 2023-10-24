@@ -52,10 +52,13 @@ const SubMenu = (props: Props) => {
                     component="div"
                     disablePadding
                     sx={{
-                        '& a': {
+                        '& .MuiMenuItem-root': {
                             transition:
                                 'padding-left 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
-                            paddingLeft: sidebarIsOpen ? 4 : 2,
+                            paddingLeft: theme =>
+                                sidebarIsOpen
+                                    ? theme.spacing(4)
+                                    : theme.spacing(2),
                         },
                     }}
                 >

@@ -38,6 +38,14 @@ const customFrenchMessages: TranslationMessages = {
             catalog: 'Catalogue',
             customers: 'Clients',
         },
+        events: {
+            review: {
+                title: 'Commente sur "%{product}"',
+            },
+            order: {
+                title: 'Commande 1 poster |||| Commande %{smart_count} posters',
+            },
+        },
     },
     resources: {
         customers: {

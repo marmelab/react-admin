@@ -157,7 +157,7 @@ DatagridHeader.propTypes = {
     className: PropTypes.string,
     sort: PropTypes.exact({
         field: PropTypes.string,
-        order: PropTypes.string,
+        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
     }),
     data: PropTypes.arrayOf(PropTypes.any),
     hasExpand: PropTypes.bool,

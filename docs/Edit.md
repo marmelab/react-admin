@@ -101,6 +101,44 @@ export const PostEdit = () => (
 );
 ```
 
+Common buttons used as Edit actions are:
+
+- [`<CreateButton>`](./Buttons.md#createbutton) to create a new record
+- [`<ListButton>`](./Buttons.md#listbutton) to go back to the list
+- [`<ShowButton>`](./Buttons.md#showbutton) to go to the show page
+- [`<UpdateButton>`](./UpdateButton.md) to trigger a change in the data
+- [`<CloneButton>`](./Buttons.md#clonebutton) to clone the current record
+
+And you can add your own button, leveraging the `useRecordContext()` hook:
+
+```jsx
+import * as React from "react";
+import { useRecordContext, useUpdate, useNotify } from 'react-admin';
+
+const ResetViewsButton = () => {
+    const record = useRecordContext();
+    const [update, { isLoading }] = useUpdate();
+    const notify  = useNotify();
+    const handleClick = () => {
+        update(
+            'posts',
+            { id: record.id, data: { views: 0 }, previousData: record },
+            {
+                onSuccess: () => {
+                    notify('Views reset');
+                },
+                onFailure: error => notify(`Error: ${error.message}`, 'warning'),
+            }
+        );
+    };
+    return (
+        <Button onClick={handleClick} disabled={isLoading}>
+            Reset views
+        </Button>
+    );
+};
+```
+
 ## `aside`
 
 ![Aside component](./img/aside.png)
@@ -316,7 +354,7 @@ The default `onSuccess` function is:
 
 ```js
 () => {
-    notify('ra.notification.created', {
+    notify('ra.notification.updated', {
         messageArgs: { smart_count: 1 },
         undoable: mutationMode === 'undoable'
     });
@@ -384,7 +422,7 @@ const PostEdit = () => {
 ```
 {% endraw %}
 
-The `onError` function receives the error from the `dataProvider.edit()` call. It is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
+The `onError` function receives the error from the `dataProvider.update()` call. It is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
 
 The default `onError` function is:
 
@@ -470,7 +508,7 @@ const PostEdit = () => (
 
 ## `sx`: CSS API
 
-The `<Edit>` components accept the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following keys:
+The `<Edit>` components accept the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following keys:
 
 | Rule name               | Description                                                                          |
 |-------------------------|--------------------------------------------------------------------------------------|
@@ -478,7 +516,7 @@ The `<Edit>` components accept the usual `className` prop, but you can override 
 | `& .RaEdit-noActions` | Applied to the main container when `actions` prop is `false`                         |
 | `& .RaEdit-card`      | Applied to the child component inside the main container (Material UI's `Card` by default)   |
 
-To override the style of all instances of `<Edit>` components using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaEdit` key.
+To override the style of all instances of `<Edit>` components using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaEdit` key.
 
 ## `title`
 
@@ -707,3 +745,31 @@ export default OrderEdit;
 ```
 
 **Tip:** If you'd like to avoid creating an intermediate component like `<CityInput>`, or are using an `<ArrayInput>`, you can use the [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs) component as an alternative.
+
+## Navigating Through Records
+
+[`<PrevNextButtons`](./PrevNextButtons.md) renders a navigation with two buttons, allowing users to navigate through records without leaving an `<Edit>` view. 
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/prev-next-buttons-edit.webm" type="video/webm" />
+  <source src="./img/prev-next-buttons-edit.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+The following code is an example of how you can use it:
+
+```tsx
+export const PostEdit = () => (
+    <Edit
+        actions={
+            <TopToolbar>
+                <PrevNextButtons />
+            </TopToolbar>
+        }
+    >
+    ...
+    </Edit>
+);
+```
+
+**Tips:** If you want users to be warned if they haven't pressed the Save button when they browse to another record, you can follow the tutorial [Navigating Through Records In`<Edit>` Views](./PrevNextButtons.md#navigating-through-records-in-edit-views-after-submit).

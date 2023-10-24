@@ -10,7 +10,7 @@ import {
 import ProductReferenceField from '../products/ProductReferenceField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from './StarRatingField';
-import rowStyle from './rowStyle';
+import rowSx from './rowSx';
 
 import BulkAcceptButton from './BulkAcceptButton';
 import BulkRejectButton from './BulkRejectButton';
@@ -30,7 +30,7 @@ const ReviewsBulkActionButtons = () => (
 const ReviewListDesktop = ({ selectedRow }: ReviewListDesktopProps) => (
     <Datagrid
         rowClick="edit"
-        rowStyle={rowStyle(selectedRow)}
+        rowSx={rowSx(selectedRow)}
         optimized
         bulkActionButtons={<ReviewsBulkActionButtons />}
         sx={{

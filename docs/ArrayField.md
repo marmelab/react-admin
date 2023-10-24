@@ -24,7 +24,7 @@ title: "The ArrayField Component"
         {
             uuid: '34fdf393-f449-4b04-a423-38ad02ae159e',
             date: '2012-08-10T00:00:00.000Z',
-            url: 'http://example.com/foo/bar.html',
+            url: 'https://example.com/foo/bar.html',
         },
         {
             uuid: 'd907743a-253d-4ec1-8329-404d4c5e6cf1',
@@ -53,7 +53,7 @@ const PostShow = () => (
         <SimpleShowLayout>
             <TextField source="title" />
             <ArrayField source="tags">
-                <SingleFieldList>
+                <SingleFieldList linkType={false}>
                     <ChipField source="name" size="small" />
                 </SingleFieldList>
             </ArrayField>
@@ -89,7 +89,7 @@ const PostShow = () => (
 ```jsx
 {/* using SingleFieldList as child */}
 <ArrayField source="tags">
-    <SingleFieldList>
+    <SingleFieldList linkType={false}>
         <ChipField source="name" />
     </SingleFieldList>
 </ArrayField>
@@ -210,7 +210,7 @@ By default, `<ArrayField>` displays the items in the order they are stored in th
 {% raw %}
 ```jsx
 <ArrayField source="tags" sort={{ field: 'name', order: 'ASC' }}>
-    <SingleFieldList>
+    <SingleFieldList linkType={false}>
         <ChipField source="name" />
     </SingleFieldList>
 </ArrayField>
@@ -244,7 +244,7 @@ const PostShow = () => (
         <SimpleShowLayout>
             <TextField source="title" />
             <ArrayField source="tags">
-                <SingleFieldList>
+                <SingleFieldList linkType={false}>
                     <SelectedChip />
                 </SingleFieldList>
             </ArrayField>

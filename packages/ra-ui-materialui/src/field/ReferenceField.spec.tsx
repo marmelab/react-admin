@@ -16,6 +16,8 @@ import {
     Children,
     EmptyWithTranslate,
     MissingReference,
+    SXLink,
+    SXNoLink,
 } from './ReferenceField.stories';
 import { TextField } from './TextField';
 
@@ -651,6 +653,24 @@ describe('<ReferenceField />', () => {
                 ids: [123],
                 meta: { foo: 'bar' },
             });
+        });
+    });
+    describe('sx', () => {
+        it('should override the default styles', async () => {
+            render(<SXNoLink />);
+            const elt = await screen.findByText('9780393966473');
+            const root = elt.parentNode as HTMLElement;
+            expect(
+                getComputedStyle(root).getPropertyValue('background-color')
+            ).toBe('red');
+        });
+        it('should override the default styles when using link', async () => {
+            render(<SXLink />);
+            const elt = await screen.findByText('9780393966473');
+            const root = elt.parentNode!.parentNode as HTMLElement;
+            expect(
+                getComputedStyle(root).getPropertyValue('background-color')
+            ).toBe('red');
         });
     });
 });

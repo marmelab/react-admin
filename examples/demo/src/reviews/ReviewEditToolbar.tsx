@@ -25,7 +25,6 @@ const ReviewEditToolbar = (props: ToolbarProps) => {
     return (
         <Toolbar
             sx={{
-                backgroundColor: 'background.paper',
                 display: 'flex',
                 justifyContent: 'space-between',
                 minHeight: { sm: 0 },

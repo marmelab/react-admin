@@ -14,10 +14,20 @@ title: "The PasswordInput Component"
 Use it like a [`<TextInput>`](./TextInput.md):
 
 ```jsx
-import { PasswordInput } from 'react-admin';
+import { Create, SimpleForm, TextInput, PasswordInput } from 'react-admin';
 
-<PasswordInput source="password" />
+export const UserCreate = () => (
+    <Create>
+        <SimpleForm>
+            <TextInput source="name" />
+            <TextInput source="email" />
+            <PasswordInput source="password" />
+        </SimpleForm>
+    </Create>
+);
 ```
+
+**Tip**: Your API should never send the password in any of its responses, because the API backend shouldn't store the password in clear. In particular, the response to the `dataProvider.create()` call should not contain the password passed as input.
 
 ## Props
 
@@ -47,3 +57,47 @@ Set the [`autocomplete` attribute](https://developer.mozilla.org/en-US/docs/Web/
 <PasswordInput source="password" inputProps={{ autocomplete: 'current-password' }} />
 ```
 {% endraw %}
+
+## Validating Identical Passwords
+
+If you want to validate that the user has entered the same password in two different password inputs, use a [custom function validator](./Validation.md#per-input-validation-custom-function-validator):
+
+```jsx
+import { Create, SimpleForm, TextInput, PasswordInput } from 'react-admin';
+
+const equalToPassword = (value, allValues) => {
+    if (value !== allValues.password) {
+        return 'The two passwords must match';
+    }
+}
+
+export const UserCreate = () => (
+    <Create>
+        <SimpleForm>
+            <TextInput source="name" />
+            <TextInput source="email" />
+            <PasswordInput source="password" />
+            <PasswordInput source="confirm_password" validate={equalToPassword} />
+        </SimpleForm>
+    </Create>
+);
+```
+
+## Usage in Edit Views
+
+You may want to allow users to *update* a password on an existing record. The usual solution to this is to include a `new_password` input in the Edition form. Your API should then check if this field is present in the payload, and update the password accordingly.
+
+```jsx
+import { Edit, SimpleForm, TextInput, PasswordInput } from 'react-admin';
+
+export const UserEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="name" />
+            <TextInput source="email" />
+            <PasswordInput source="new_password" />
+        </SimpleForm>
+    </Edit>
+);
+```
+

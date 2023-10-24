@@ -28,6 +28,8 @@ export const TranslatableFieldsTabContent = (
     } = props;
     const { selectedLocale, getLabel, getSource } = useTranslatableContext();
 
+    const addLabel = Children.count(children) > 1;
+
     return (
         <Root
             role="tabpanel"
@@ -40,7 +42,7 @@ export const TranslatableFieldsTabContent = (
             {Children.map(children, field =>
                 field && isValidElement<any>(field) ? (
                     <div key={field.props.source}>
-                        {field.props.addLabel ? (
+                        {addLabel ? (
                             <Labeled
                                 resource={resource}
                                 label={field.props.label}

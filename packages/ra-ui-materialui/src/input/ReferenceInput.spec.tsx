@@ -17,6 +17,7 @@ import {
     WithSelectInput,
     dataProviderWithAuthors,
     SelfReference,
+    QueryOptions,
 } from './ReferenceInput.stories';
 
 describe('<ReferenceInput />', () => {
@@ -25,6 +26,10 @@ describe('<ReferenceInput />', () => {
         resource: 'comments',
         source: 'post_id',
     };
+
+    beforeAll(() => {
+        window.scrollTo = jest.fn();
+    });
 
     it('should display an error if error is defined', async () => {
         jest.spyOn(console, 'error')
@@ -152,6 +157,16 @@ describe('<ReferenceInput />', () => {
                 ids: [23],
                 meta: { foo: 'bar' },
             });
+        });
+    });
+
+    it('should pass queryOptions to both queries', async () => {
+        render(<QueryOptions />);
+        await waitFor(() => new Promise(resolve => setTimeout(resolve, 100)));
+        expect(screen.queryByDisplayValue('Leo Tolstoy')).toBeNull();
+        fireEvent.click(screen.getByText('Toggle queryOptions'));
+        await waitFor(() => {
+            expect(screen.queryByDisplayValue('Leo Tolstoy')).not.toBeNull();
         });
     });
 

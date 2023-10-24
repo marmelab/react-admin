@@ -319,6 +319,32 @@ export const InDatagrid = () => (
     </ListWrapper>
 );
 
+export const SXLink = () => (
+    <Wrapper>
+        <ReferenceField
+            source="detail_id"
+            reference="book_details"
+            link="show"
+            sx={{ bgcolor: 'red' }}
+        >
+            <TextField source="ISBN" />
+        </ReferenceField>
+    </Wrapper>
+);
+
+export const SXNoLink = () => (
+    <Wrapper>
+        <ReferenceField
+            source="detail_id"
+            reference="book_details"
+            link={false}
+            sx={{ bgcolor: 'red' }}
+        >
+            <TextField source="ISBN" />
+        </ReferenceField>
+    </Wrapper>
+);
+
 const BookDetailsRepresentation = () => {
     const record = useRecordContext();
     return (

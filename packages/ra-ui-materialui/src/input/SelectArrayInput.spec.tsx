@@ -1,17 +1,17 @@
 import * as React from 'react';
 import expect from 'expect';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import {
-    testDataProvider,
-    TestTranslationProvider,
-    useRecordContext,
-} from 'ra-core';
+import { testDataProvider, useRecordContext } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { SelectArrayInput } from './SelectArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
-import { DifferentIdTypes } from './SelectArrayInput.stories';
+import {
+    DifferentIdTypes,
+    TranslateChoice,
+    InsideArrayInput,
+} from './SelectArrayInput.stories';
 
 describe('<SelectArrayInput />', () => {
     const defaultProps = {
@@ -220,21 +220,39 @@ describe('<SelectArrayInput />', () => {
         expect(option2.getAttribute('aria-disabled')).toEqual('true');
     });
 
-    it('should translate the choices', () => {
-        render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <TestTranslationProvider translate={x => `**${x}**`}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectArrayInput {...defaultProps} />
-                    </SimpleForm>
-                </TestTranslationProvider>
-            </AdminContext>
-        );
-        fireEvent.mouseDown(
-            screen.getByLabelText('**resources.posts.fields.categories**')
-        );
-        expect(screen.queryByText('**Programming**')).not.toBeNull();
-        expect(screen.queryByText('**Lifestyle**')).not.toBeNull();
+    describe('translateChoice', () => {
+        it('should translate the choices by default', async () => {
+            render(<TranslateChoice />);
+            const selectedElement = await screen.findByLabelText(
+                'translateChoice default'
+            );
+            expect(selectedElement.textContent).toBe('Tech');
+        });
+        it('should not translate the choices when translateChoice is false', async () => {
+            render(<TranslateChoice />);
+            const selectedElement = await screen.findByLabelText(
+                'translateChoice false'
+            );
+            expect(selectedElement.textContent).toBe('option.tech');
+        });
+        it('should not translate the choices when inside ReferenceInput by default', async () => {
+            render(<TranslateChoice />);
+            await waitFor(() => {
+                const selectedElement = screen.getByLabelText(
+                    'inside ReferenceArrayInput'
+                );
+                expect(selectedElement.textContent).toBe('option.tech');
+            });
+        });
+        it('should translate the choices when inside ReferenceInput when translateChoice is true', async () => {
+            render(<TranslateChoice />);
+            await waitFor(() => {
+                const selectedElement = screen.getByLabelText(
+                    'inside ReferenceArrayInput forced'
+                );
+                expect(selectedElement.textContent).toBe('Tech');
+            });
+        });
     });
 
     it('should display helperText if prop is specified', () => {
@@ -621,5 +639,24 @@ describe('<SelectArrayInput />', () => {
             </AdminContext>
         );
         expect(screen.queryByTestId('selectArray')).toBeDefined();
+    });
+
+    it('should always apply its default value inside an ArrayInput', async () => {
+        render(<InsideArrayInput />);
+        await screen.findByText('Foo');
+        fireEvent.click(screen.getByLabelText('Remove'));
+        await waitFor(() => {
+            expect(screen.queryByText('Foo')).toBeNull();
+        });
+        fireEvent.click(screen.getByLabelText('Add'));
+        await screen.findByText('Foo');
+        fireEvent.click(screen.getByLabelText('Remove'));
+        await waitFor(() => {
+            expect(screen.queryByText('Foo')).toBeNull();
+        });
+        fireEvent.click(screen.getByLabelText('Add'));
+        await screen.findByText('Foo');
+        fireEvent.click(screen.getByLabelText('Add'));
+        expect(await screen.findAllByText('Foo')).toHaveLength(2);
     });
 });

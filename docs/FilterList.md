@@ -275,6 +275,7 @@ The children of `<FilterList>` must be a list of `<FilterListItem>` components. 
 |------|----------|------|---------|-------------|
 | `label` | Required | string | | The label of the filter item. It is passed through the `useTranslate` hook, and therefore can be translated. |
 | `value` | Required | object | | The value of the filter item. It is merged with the current filter value when enabled by the user. |
+| `icon` | Optional | `ReactElement` | | When set, the icon appears to the left of the item label.  |
 | `isSelected` | Optional | function | | A function that receives the item value and the currently applied filters. It must return a boolean. |
 | `toggleFilter` | Optional | function | | A function that receives the item value and the currently applied filters. It is called when user toggles a filter and must return the new filters to apply. |
 

@@ -22,7 +22,6 @@ title: "Index"
 
 **- B -**
 * [`<Breadcrumb>`](./Breadcrumb.md)<img class="icon" src="./img/premium.svg" />
-* [`<BreadcrumbItem>`](./Breadcrumb.md#breadcrumbitem)<img class="icon" src="./img/premium.svg" />
 * [`<BooleanField>`](./BooleanField.md)
 * [`<BooleanInput>`](./BooleanInput.md)
 * [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton)
@@ -32,6 +31,7 @@ title: "Index"
 **- C -**
 * [`<Calendar>`](./Calendar.md)<img class="icon" src="./img/premium.svg" />
 * [`<CheckboxGroupInput>`](./CheckboxGroupInput.md)
+* [`<CheckForApplicationUpdate>`](./CheckForApplicationUpdate.md)
 * [`<ChipField>`](./ChipField.md)
 * [`<CloneButton>`](./CloneButton.md)
 * [`<CompleteCalendar>`](https://marmelab.com/ra-enterprise/modules/ra-calendar#completecalendar)<img class="icon" src="./img/premium.svg" />
@@ -45,7 +45,7 @@ title: "Index"
 * [`<CustomRoutes>`](./CustomRoutes.md)
 
 **- D -**
-* [`<DashboardMenuItem>`](./Theming.md#using-a-custom-menu)
+* [`<DashboardMenuItem>`](./Menu.md#menudashboarditem)
 * [`<Datagrid>`](./Datagrid.md)
 * [`<DatagridBody>`](./Datagrid.md#body)
 * [`<DatagridRow>`](./Datagrid.md#body)
@@ -82,7 +82,7 @@ title: "Index"
 * [`<FunctionField>`](./FunctionField.md)
 
 **- H -**
-* [`<HorizontalMenu>`](./HorizontalMenu.md)<img class="icon" src="./img/premium.svg" />
+* [`<HorizontalMenu>`](./ContainerLayout.md#horizontalmenu)<img class="icon" src="./img/premium.svg" />
 
 **- I -**
 * [`<IfCanAccess>`](./IfCanAccess.md)<img class="icon" src="./img/premium.svg" />
@@ -95,17 +95,15 @@ title: "Index"
 
 **- L -**
 * [`<Labeled>`](./Labeled.md)
-* [`<Layout>`](./Theming.md#using-a-custom-layout)
-* [`<LinearProgress>`](./Theming.md#linearprogress)
+* [`<Layout>`](./Layout.md)
 * [`<List>`](./List.md#usage)
 * [`<ListBase>`](./ListBase.md#usage)
 * [`<ListButton>`](./Buttons.md#listbutton)
 * [`<ListGuesser>`](./ListGuesser.md#usage)
 * [`<ListLive>`](./ListLive.md)<img class="icon" src="./img/premium.svg" />
-* [`<Loading>`](./Theming.md#loading)
 * [`<LocalesMenuButton>`](./LocalesMenuButton.md)
 * [`<LongForm>`](./LongForm.md)<img class="icon" src="./img/premium.svg" />
-* [`<Logout>`](./Theming.md#using-a-custom-logout-button)
+* [`<Logout>`](./Authentication.md#customizing-the-logout-component)
 
 **- M -**
 * [`<MarkdownField>`](./MarkdownField.md)<img class="icon" src="./img/premium.svg" />
@@ -115,7 +113,7 @@ title: "Index"
 * [`<MultiLevelMenu>`](./MultiLevelMenu.md)<img class="icon" src="./img/premium.svg" />
 
 **- N -**
-* [`<Notification>`](./Theming.md#notifications)
+* [`<Notification>`](./Admin.md#notification)
 * [`<NullableBooleanInput>`](./NullableBooleanInput.md)
 * [`<NumberField>`](./NumberField.md)
 * [`<NumberInput>`](./NumberInput.md)
@@ -127,6 +125,7 @@ title: "Index"
 
 **- R -**
 * [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md)
+* [`<RecordRepresentation>`](./RecordRepresentation.md)
 * [`<ReferenceArrayField>`](./ReferenceArrayField.md)
 * [`<ReferenceArrayInput>`](./ReferenceArrayInput.md)
 * [`<ReferenceField>`](./ReferenceField.md)
@@ -159,7 +158,7 @@ title: "Index"
 * [`<ShowDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog-editdialog--showdialog)<img class="icon" src="./img/premium.svg" />
 * [`<ShowInDialogButton>`](./ShowInDialogButton.md)<img class="icon" src="./img/premium.svg" />
 * [`<ShowLive>`](./ShowLive.md)<img class="icon" src="./img/premium.svg" />
-* [`<Sidebar>`](./Theming.md#sidebar-customization)
+* [`<Sidebar>`](./Layout.md#sidebar)
 * [`<SidebarOpenPreferenceSync>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#sidebaropenpreferencesync-store-the-sidebar-openclose-state-in-preferences)<img class="icon" src="./img/premium.svg" />
 * [`<SimpleForm>`](./SimpleForm.md)
 * [`<SimpleFormIterator>`](./SimpleFormIterator.md)
@@ -167,6 +166,9 @@ title: "Index"
 * [`<SimpleShowLayout>`](./SimpleShowLayout.md)
 * [`<SingleFieldList>`](./SingleFieldList.md)
 * [`<SmartRichTextInput>`](./SmartRichTextInput.md)<img class="icon" src="./img/premium.svg" />
+* [`<SolarLayout>`](./SolarLayout.md)<img class="icon" src="./img/premium.svg" />
+* [`<SolarMenu>`](./SolarLayout.md#solarmenu)<img class="icon" src="./img/premium.svg" />
+* [`<SolarAppBar>`](./SolarLayout.md#solarappbar)<img class="icon" src="./img/premium.svg" />
 * [`<SortButton>`](./SortButton.md)
 * [`<StackedFilters>`](./StackedFilters.md)<img class="icon" src="./img/premium.svg" />
 
@@ -189,6 +191,7 @@ title: "Index"
 * [`<Toolbar>`](./Toolbar.md)
 
 **- U -**
+* [`<UpdateButton>`](./UpdateButton.md)
 * [`<UrlField>`](./UrlField.md)
 * [`<UserMenu>`](./AppBar.md#usermenu)
 
@@ -223,6 +226,7 @@ title: "Index"
 
 **- D -**
 * [`useDataProvider`](./useDataProvider.md#usedataprovider)
+* [`useDefineAppLocation`](./useDefineAppLocation.md)<img class="icon" src="./img/premium.svg" />
 * [`useDelete`](./useDelete.md)
 * [`useDeleteMany`](./useDeleteMany.md)
 
@@ -245,6 +249,7 @@ title: "Index"
 * [`useGetOneLive`](./useGetOneLive.md)<img class="icon" src="./img/premium.svg" />
 * [`useGetPermissions`](./WithPermissions.md)
 * [`useGetRecordId`](./useGetRecordId.md)
+* [`useGetRecordRepresentation`](./useGetRecordRepresentation.md) 
 
 **- I -**
 * [`useInfiniteGetList`](./useInfiniteGetList.md)
@@ -262,7 +267,7 @@ title: "Index"
 * [`useLogout`](./useLogout.md)
 
 **- M -**
-* [`useMediaQuery`](./Theming.md#usemediaquery-hook)
+* [`useMediaQuery`](./useMediaQuery.md)
 
 **- N -**
 * [`useNotify`](./useNotify.md)
@@ -295,7 +300,7 @@ title: "Index"
 * [`useSubscribeToRecordList`](./useSubscribeToRecordList.md)<img class="icon" src="./img/premium.svg" />
 
 **- T -**
-* [`useTheme`](./Theming.md#changing-the-theme-programmatically)
+* [`useTheme`](./useTheme.md)
 * [`useTour`](https://marmelab.com/ra-enterprise/modules/ra-tour)<img class="icon" src="./img/premium.svg" />
 * [`useTranslate`](./useTranslate.md)
 

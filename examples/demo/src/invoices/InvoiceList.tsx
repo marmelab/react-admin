@@ -22,7 +22,7 @@ const InvoiceList = () => (
     <List
         filters={listFilters}
         perPage={25}
-        sort={{ field: 'date', order: 'desc' }}
+        sort={{ field: 'date', order: 'DESC' }}
     >
         <Datagrid
             rowClick="expand"

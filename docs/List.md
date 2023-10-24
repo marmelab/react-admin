@@ -5,7 +5,7 @@ title: "The List Component"
 
 # `<List>`
 
-The `<List>` component is the root component for list pages. It fetches a list of records from the data provider, puts it in a [`ListContext`](./useListContext.md), renders the default list page layout (title, buttons, filters, pagination), and renders its children. Usual children of `<List>`, like [`<Datagrid>`](./Datagrid.md), are responsible for displaying the list of records. 
+The `<List>` component is the root component for list pages. It fetches a list of records from the data provider, puts it in a [`ListContext`](./useListContext.md), renders the default list page layout (title, buttons, filters, pagination), and renders its children. Usual children of `<List>`, like [`<Datagrid>`](./Datagrid.md), are responsible for displaying the list of records.
 
 ![Simple posts list](./img/simple-post-list.png)
 
@@ -46,7 +46,7 @@ export default App;
 
 That's enough to display a basic post list, with functional sort and pagination.
 
-You can find more advanced examples of `<List>` usage in the [demos](./Demos.md). 
+You can find more advanced examples of `<List>` usage in the [demos](./Demos.md).
 
 ## Props
 
@@ -79,39 +79,48 @@ Additional props are passed down to the root component (a MUI `<Card>` by defaul
 
 ## `actions`
 
+By default, the `<List>` view displays a toolbar on top of the list. It contains:
+
+- A `<FilterButton>` to display the filter form if you set [the `filters` prop](#filters-filter-inputs)
+- A `<CreateButton>` if the resource has a creation view, or if you set [the `hasCreate` prop](#hascreate)
+- An `<ExportButton>`
+
 ![Actions Toolbar](./img/actions-toolbar.png)
 
-You can replace the list of default actions by your own elements using the `actions` prop:
+You can replace this toolbar  by your own using the `actions` prop. For instance, to add a [`<SelectColumnsButton>`](./SelectColumnsButton.md) to let the user choose which columns to display in the list:
 
 ```jsx
-import { 
-    TopToolbar,
-    FilterButton,
+import {
     CreateButton,
+    DatagridConfigurable,
     ExportButton,
-    Button,
-    List
+    FilterButton,
+    List,
+    SelectColumnsButton,
+    TopToolbar,
+    SearchInput,
 } from 'react-admin';
 import IconEvent from '@mui/icons-material/Event';
 
 const ListActions = () => (
     <TopToolbar>
+        <SelectColumnsButton />
         <FilterButton/>
         <CreateButton/>
         <ExportButton/>
-        {/* Add your custom actions */}
-        <Button
-            onClick={() => { alert('Your custom action'); }}
-            label="Show calendar"
-        >
-            <IconEvent/>
-        </Button>
     </TopToolbar>
 );
 
+const postFilters = [
+    <SearchInput source="q" alwaysOn />,
+    <TextInput label="Title" source="title" defaultValue="Hello, World!" />,
+];
+
 export const PostList = () => (
-    <List actions={<ListActions/>}>
-        ...
+    <List actions={<ListActions/>} filters={postFilters}>
+        <DatagridConfigurable>
+            ...
+        </DatagridConfigurable>
     </List>
 );
 ```
@@ -119,7 +128,7 @@ export const PostList = () => (
 Use the `useListContext` hook to customize the actions depending on the list context, and the `usePermissions` to show/hide buttons depending on permissions. For example, you can hide the `<CreateButton>` when the user doesn't have the right permission, and disable the `<ExportButton>` when the list is empty:
 
 ```jsx
-import { 
+import {
     useListContext,
     usePermissions,
     TopToolbar,
@@ -145,12 +154,16 @@ const ListActions = () => {
 
 ## `aside`
 
-You may want to display additional information on the side of the list. Use the `aside` prop for that, passing the component of your choice:
+The default `<List>` layout lets you render the component of your choice on the side of the list.
+
+![List with aside](./img/list_aside.webp)
+
+Pass a React element as the `aside` prop for that purpose:
 
 {% raw %}
 ```jsx
 const Aside = () => (
-    <div style={{ width: 200, margin: '1em' }}>
+    <div style={{ width: 200, margin: '4em 1em' }}>
         <Typography variant="h6">Post details</Typography>
         <Typography variant="body2">
             Posts will only be published once an editor approves them
@@ -166,7 +179,7 @@ const PostList = () => (
 ```
 {% endraw %}
 
-The `aside` component can call the `useListContext()` hook to receive the same props as the `<List>` child component. This means you can display additional details of the current list in the aside component:
+The `aside` component can call the `useListContext()` hook to receive the same props as the `<List>` child component. This means you can display additional details of the current list in the aside component. For instance, you can display the total number of views of all posts in the list:
 
 {% raw %}
 ```jsx
@@ -177,7 +190,7 @@ const Aside = () => {
     const { data, isLoading } = useListContext();
     if (isLoading) return null;
     return (
-        <div style={{ width: 200, margin: '1em' }}>
+        <div style={{ width: 200, margin: '4em 1em' }}>
             <Typography variant="h6">Posts stats</Typography>
             <Typography variant="body2">
                 Total views: {data.reduce((sum, post) => sum + post.views, 0)}
@@ -188,7 +201,7 @@ const Aside = () => {
 ```
 {% endraw %}
 
-The `aside` prop is also the preferred way to add a [Filter Sidebar](./FilteringTutorial.md#the-filterlist-sidebar) to a list view: 
+The `aside` prop is also the preferred way to add a [Filter Sidebar](./FilteringTutorial.md#the-filterlist-sidebar) to a list view:
 
 {% raw %}
 ```jsx
@@ -236,7 +249,9 @@ export const PostList = () => (
 
 `<List>` itself doesn't render the list of records. It delegates this task to its children components. These children components grab the `data` from the `ListContext` and render them on screen.
 
-The most common List child is `<Datagrid>`:
+![List children](./img/list-children.webp)
+
+The most common List child is [`<Datagrid>`](./Datagrid.md):
 
 ```jsx
 export const BookList = () => (
@@ -244,8 +259,14 @@ export const BookList = () => (
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="year" />
+            <DateField source="published_at" />
+            <ReferenceManyCount label="Nb comments" reference="comments" target="post_id" link />
+            <BooleanField source="commentable" label="Com." />
+            <NumberField source="nb_views" label="Views" />
+            <>
+                <EditButton />
+                <ShowButton />
+            </>
         </Datagrid>
     </List>
 );
@@ -258,28 +279,42 @@ React-admin provides several components that can read and display a list of reco
 - [`<SimpleList>`](./SimpleList.md) displays records in a list without many details - suitable for mobile devices
 - [`<Tree>`](./TreeWithDetails.md) displays records in a tree structure
 - [`<Calendar>`](./Calendar.md) displays event records in a calendar
-- [`<SingleFieldList>`](./SingleFieldList.md) displays records inline, showing one field per record 
+- [`<SingleFieldList>`](./SingleFieldList.md) displays records inline, showing one field per record
 
-So for instance, you can use a `<SimpleList>` instead of a `<Datagrid>` to display a list of books on a mobile device:
+So for instance, you can use a `<SimpleList>` instead of a `<Datagrid>` on mobile devices:
 
-```diff
-export const BookList = () => (
-    <List>
--       <Datagrid>
--           <TextField source="id" />
--           <TextField source="title" />
--           <TextField source="author" />
--           <TextField source="year" />
--       </Datagrid>
-+       <SimpleList 
-+           primaryText={record => <i>record.title</i>}
-+           secondaryText={record => <>By {record.author} ({record.year})</>}
-+       />
-+   </List>
-);
+```jsx
+// in src/posts.js
+import * as React from 'react';
+import { useMediaQuery } from '@mui/material';
+import { List, SimpleList, Datagrid, TextField, ReferenceField } from 'react-admin';
+
+export const PostList = () => {
+    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    return (
+        <List>
+            {isSmall ? (
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => `${record.views} views`}
+                    tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+                />
+            ) : (
+                <Datagrid rowClick="edit">
+                    <TextField source="id" />
+                    <ReferenceField label="User" source="userId" reference="users">
+                        <TextField source="name" />
+                    </ReferenceField>
+                    <TextField source="title" />
+                    <TextField source="body" />
+                </Datagrid>
+            )}
+        </List>
+    );
+};
 ```
 
-You can also render the list of records in a custom way. You'll need to grab the data from the `ListContext` using [`<WithListContext>`](./WithListContext.md):
+You can also render the list of records using a custom React component. You'll need to grab the data from the `ListContext` using [`<WithListContext>`](./WithListContext.md):
 
 {% raw %}
 ```tsx
@@ -318,7 +353,7 @@ const PostList = () => (
     </List>
 );
 
-// use a custom component as root component 
+// use a custom component as root component
 const PostList = () => (
     <List component={MyComponent}>
         ...
@@ -345,7 +380,7 @@ const PostList = () => (
 
 ## `disableAuthentication`
 
-By default, all pages using `<List>` require the user to be authenticated - any anonymous access redirects the user to the login page. 
+By default, all pages using `<List>` require the user to be authenticated - any anonymous access redirects the user to the login page.
 
 If you want to allow anonymous access to a List page, set the `disableAuthentication` prop to `true`.
 
@@ -431,7 +466,7 @@ const ProductList = () => (
 ```
 {% endraw %}
 
-The `empty` component can call the `useListContext()` hook to receive the same props as the `List` child component. 
+The `empty` component can call the `useListContext()` hook to receive the same props as the `List` child component.
 
 You can also set the `empty` props value to `false` to bypass the empty page display and render an empty list instead.
 
@@ -493,7 +528,7 @@ const SimpleBookList = () => {
 }
 ```
 
-The `<List emptyWhileLoading>` prop provides a convenient shortcut for that use case. When enabled, `<List>` won't render its child until `data` is defined. 
+The `<List emptyWhileLoading>` prop provides a convenient shortcut for that use case. When enabled, `<List>` won't render its child until `data` is defined.
 
 ```diff
 const BookList = () => (
@@ -511,7 +546,6 @@ const BookList = () => (
   <source src="./img/export-button.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
-
 
 Among the default list actions, react-admin includes an `<ExportButton>`. This button is disabled when there is no record in the current `<List>`.
 
@@ -608,7 +642,7 @@ You can add an array of filter Inputs to the List using the `filters` prop:
 
 ```jsx
 const postFilters = [
-    <TextInput label="Search" source="q" alwaysOn />,
+    <SearchInput source="q" alwaysOn />,
     <TextInput label="Title" source="title" defaultValue="Hello, World!" />,
 ];
 
@@ -623,7 +657,7 @@ export const PostList = () => (
 
 **Tip**: Filters will render as disabled inputs or menu items (depending on filter context) if passed the prop `disabled`.
 
-Filter Inputs are regular inputs. `<List>` hides them all by default, except those that have the `alwaysOn` prop. 
+Filter Inputs are regular inputs. `<List>` hides them all by default, except those that have the `alwaysOn` prop.
 
 You can also display filters as a sidebar:
 
@@ -634,7 +668,7 @@ You can also display filters as a sidebar:
 </video>
 
 
-For more details about customizing filters, see the [Filtering the List](./FilteringTutorial.md#filtering-the-list) section. 
+For more details about customizing filters, see the [Filtering the List](./FilteringTutorial.md#filtering-the-list) documentation.
 
 ## `filter`: Permanent Filter
 
@@ -696,6 +730,10 @@ export const PostList = () => (
 
 ## `pagination`
 
+By default, the `<List>` view displays a set of pagination controls at the bottom of the list.
+
+![Pagination](./img/list-pagination.webp)
+
 The `pagination` prop allows to replace the default pagination controls by your own.
 
 ```jsx
@@ -710,6 +748,8 @@ export const PostList = () => (
     </List>
 );
 ```
+
+**Tip**: If you want the new pages to be automatically fetched when users scroll down, you can use the [`<InfiniteList>`](#infinite-scroll-pagination) component.
 
 See [Paginating the List](./ListTutorial.md#building-a-custom-pagination) for details.
 
@@ -743,7 +783,7 @@ export const PostList = () => (
 
 ## `queryOptions`
 
-`<List>` accepts a `queryOptions` prop to pass options to the react-query client. 
+`<List>` accepts a `queryOptions` prop to pass options to the react-query client.
 
 This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getList()` call.
 
@@ -817,7 +857,7 @@ export const PostList = () => (
 
 `sort` defines the *default* sort order ; the list remains sortable by clicking on column headers.
 
-For more details on list sort, see the [Sorting The List](./ListTutorial.md#sorting-the-list) section below. 
+For more details on list sort, see the [Sorting The List](./ListTutorial.md#sorting-the-list) section below.
 
 ## `storeKey`
 
@@ -889,7 +929,11 @@ const Admin = () => {
 
 ## `title`
 
-The default title for a list view is "[resource] list" (e.g. "Posts list"). Use the `title` prop to customize the List view title:
+The default title for a list view is the plural name of the resource (e.g. "Posts").
+
+![List title](./img/list-title.png)
+
+Use the `title` prop to customize the List view title:
 
 ```jsx
 export const PostList = () => (
@@ -899,11 +943,11 @@ export const PostList = () => (
 );
 ```
 
-The title can be either a string or an element of your own.
+The title can be either a string or a React element.
 
 ## `sx`: CSS API
 
-The `<List>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<List>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
 | Rule name             | Description                                                   |
 |-----------------------|---------------------------------------------------------------|
@@ -917,7 +961,7 @@ Here is an example:
 {% raw %}
 ```jsx
 const PostList = () => (
-    <List 
+    <List
         sx={{
             backgroundColor: 'yellow',
             '& .RaList-content': {

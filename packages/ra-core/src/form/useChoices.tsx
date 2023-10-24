@@ -12,8 +12,8 @@ export type OptionTextElement = ReactElement<{
 export type OptionTextFunc = (choice: any) => React.ReactNode;
 export type OptionText = OptionTextElement | OptionTextFunc | string;
 
-export interface ChoicesProps<T> {
-    choices?: T[];
+export interface ChoicesProps {
+    choices?: readonly any[];
     isFetching?: boolean;
     isLoading?: boolean;
     optionValue?: string;

@@ -22,11 +22,15 @@ export * from './ExportButton';
 export * from './IconButtonWithTooltip';
 export * from './LocalesMenuButton';
 export * from './ListButton';
+export * from './PrevNextButtons';
 export * from './RefreshButton';
 export * from './RefreshIconButton';
 export * from './SaveButton';
 export * from './SkipNavigationButton';
 export * from './ToggleThemeButton';
+export * from './UpdateButton';
+export * from './UpdateWithUndoButton';
+export * from './UpdateWithConfirmButton';
 
 export type {
     CloneButtonProps,

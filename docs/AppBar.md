@@ -100,7 +100,18 @@ export const MyAppBar = () => (
 
 ![App bar with a settings button](./img/AppBar-children.png)
 
-**Tip**: Whats the `<TitlePortal>`? It's a placeholder for the page title, that components in the page can fill using [the `<Title>` component](./Title.md). `<Title>` uses a [React Portal](https://react.dev/reference/react-dom/createPortal) under the hood. `<TitlePortal>` takes all the available space in the app bar, so it "pushes" the following children to the right.
+**Tip**: What's the `<TitlePortal>`? It's a placeholder for the page title, that components in the page can fill using [the `<Title>` component](./Title.md). `<Title>` uses a [React Portal](https://react.dev/reference/react-dom/createPortal) under the hood. `<TitlePortal>` takes all the available space in the app bar, so it "pushes" the following children to the right.
+
+**Tip**: `<TitlePortal>` renders a [Material-ui `<Typography>`](https://mui.com/material-ui/react-typography/) element that you can customize by passing your own props:
+
+```jsx
+export const MyAppBar = () => (
+    <AppBar>
+        <TitlePortal variant="body2" component="h3" />
+        <SettingsButton />
+    </AppBar>
+);
+```
  
 If you omit `<TitlePortal>`, `<AppBar>` will no longer display the page title. This can be done on purpose, e.g. if you want to render something completely different in the AppBar, like a company logo and a search engine:
 
@@ -124,7 +135,7 @@ const MyAppBar = () => (
 
 ## `color`
 
-React-admin's `<AppBar>` renders an Material UI `<AppBar>`, which supports a `color` prop to set the app bar color depending on the theme. By default, the app bar color is set to the `secondary` theme color.
+React-admin's `<AppBar>` renders a Material UI `<AppBar>`, which supports a `color` prop to set the app bar color depending on the theme. By default, the app bar color is set to the `secondary` theme color.
 
 This means you can set the app bar color to 'default', 'inherit', 'primary', 'secondary', 'transparent', or any string.
 
@@ -139,7 +150,7 @@ export const MyAppBar = () => <AppBar color="primary" />;
 
 ## `sx`: CSS API
 
-Pass an `sx` prop to customize the style of the main component and the underlying elements.
+Pass an `sx` prop to customize the style of the main component and the underlying elements (see [the `sx` documentation](./SX.md) for syntax and examples).
 
 {% raw %}
 ```jsx
@@ -165,7 +176,7 @@ This property accepts the following subclasses:
 | `& .RaAppBar-menuButton` | Applied to the hamburger icon |
 | `& .RaAppBar-title`      | Applied to the title portal   |
 
-To override the style of `<AppBar>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaAppBar` key.
+To override the style of `<AppBar>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaAppBar` key.
 
 ## `toolbar`
 
@@ -273,7 +284,30 @@ const MyAppBar = () => (
 
 Note that you still have to include the `<Logout>` component in the user menu, as it is responsible for the logout action. Also, for other menu items to work, you must call the `onClose` callback when the user clicks on them to close the user menu.
 
-You can also hide the user menu by setting the `userMenu` prop to `false`.
+You can also customize the default icon by setting the `icon` prop to the `<UserMenu />` component.
+
+{% raw %}
+``` jsx
+import { AppBar, UserMenu } from 'react-admin';
+import Avatar from '@mui/material/Avatar';
+
+const MyCustomIcon = () => (
+    <Avatar
+        sx={{
+            height: 30,
+            width: 30,
+        }}
+        src="https://marmelab.com/images/avatars/adrien.jpg"
+    />
+);
+
+const MyUserMenu = props => (<UserMenu {...props} icon={<MyCustomIcon />} />);
+
+const MyAppBar = () => <AppBar userMenu={<MyUserMenu />} />;
+```
+{% endraw %}
+
+Finally, you can hide the user menu by setting the `userMenu` prop to `false`.
 
 ```jsx
 const MyAppBar = () => <AppBar userMenu={false} />;

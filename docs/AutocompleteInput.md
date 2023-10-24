@@ -69,6 +69,7 @@ The form value for the source must be the selected value, e.g.
 | `isLoading`                | Optional | `boolean`             | `false`                                                             | If `true`, the component will display a loading indicator.                                                                                                                                                          |
 | `inputText`                | Optional | `Function`            | `-`                                                                 | Required if `optionText` is a custom Component, this function must return the text displayed for the current selection.                                                                                             |
 | `matchSuggestion`          | Optional | `Function`            | `-`                                                                 | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`                                                             |
+| `onChange`                 | Optional | `Function`            | `-`                                                                 | A function called with the new value, along with the selected record, when the input value changes |
 | `onCreate`                 | Optional | `Function`            | `-`                                                                 | A function called with the current filter value when users choose to create a new choice.                                                                                                                           |
 | `optionText`               | Optional | `string` &#124; `Function` &#124; `Component` |  `undefined` &#124; `record Representation` | Field name of record to display in the suggestion item or function using the choice object as argument                                                                                                              |
 | `optionValue`              | Optional | `string`              | `id`                                                                | Field name of record containing the value to use as input value                                                                                                                                                     |
@@ -298,6 +299,74 @@ const UserCountry = () => {
 }
 ```
 
+## `onChange`
+
+Use the `onChange` prop to get notified when the input value changes.
+
+Its value must be a function, defined as follows:
+
+```ts
+type OnChange = (
+        value: any, // the new value
+        record: RaRecord // the selected record
+    ) => void;
+```
+
+In the following example, the `onChange` prop is used to update the `language` field whenever the user selects a new author:
+
+{% raw %}
+```tsx
+import * as React from 'react';
+import {
+    AutocompleteInput,
+    AutocompleteInputProps,
+    Create,
+    ReferenceInput,
+    SimpleForm,
+    TextInput,
+} from 'react-admin';
+import { useFormContext } from 'react-hook-form';
+
+const LanguageChangingAuthorInput = () => {
+    const { setValue } = useFormContext();
+    const handleChange: AutocompleteInputProps['onChange'] = (
+        value,
+        record
+    ) => {
+        // handleChange will be called with, for instance:
+        //   value: 2,
+        //   record: { id: 2, name: 'Victor Hugo', language: 'French' }
+        setValue('language', record?.language);
+    };
+    return (
+        <ReferenceInput reference="authors" source="author">
+            <AutocompleteInput
+                fullWidth
+                optionText="name"
+                onChange={handleChange}
+            />
+        </ReferenceInput>
+    );
+};
+
+const BookCreate = () => (
+    <Create
+        mutationOptions={{
+            onSuccess: data => {
+                console.log(data);
+            },
+        }}
+        redirect={false}
+    >
+        <SimpleForm>
+            <LanguageChangingAuthorInput />
+            <TextInput source="language" />
+        </SimpleForm>
+    </Create>
+);
+```
+{% endraw %}
+
 ## `onCreate`
 
 Use the `onCreate` prop to allow users to create new options on-the-fly. Its value must be a function. This lets you render a `prompt` to ask users about the new value. You can return either the new choice directly or a Promise resolving to the new choice.
@@ -486,13 +555,13 @@ If you're using `<AutocompleteInput>` inside a [`<ReferenceInput>`](./ReferenceI
 
 ## `sx`: CSS API
 
-The `<AutocompleteInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<AutocompleteInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
 | Rule name                    | Description                                     |
 |------------------------------|-------------------------------------------------|
 | `& .RaSelectInput-textField` | Applied to the underlying `TextField` component |
 
-To override the style of all instances of `<AutocompleteInput>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaAutocompleteInput` key.
+To override the style of all instances of `<AutocompleteInput>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaAutocompleteInput` key.
 
 Refer to the [Material UI `<Autocomplete>` component](https://mui.com/material-ui/react-autocomplete/) to know its CSS API.
 
@@ -747,7 +816,7 @@ const PostCreate = () => {
 ```
 {% endraw %}
 
-Use the `create` prop when you want a more polished or complex UI. For example an Material UI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
+Use the `create` prop when you want a more polished or complex UI. For example a Material UI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
 
 {% raw %}
 ```js

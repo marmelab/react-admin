@@ -19,7 +19,7 @@ To better understand how to use the various react-admin hooks and components ded
 
 ### An Edition View Built By Hand
 
-Here is how you could write a book edition view in pure React, leveraging react-admin's [data fetching hooks](./DataProviderIntroduction.md), and [react-hook-form](https://react-hook-form.com/) to bind form inputs with a record object:
+Here is how you could write a book edition view in pure React, leveraging react-admin's [data fetching hooks](./Actions.md), and [react-hook-form](https://react-hook-form.com/) to bind form inputs with a record object:
 
 ```jsx
 import * as React from "react";
@@ -562,7 +562,7 @@ Sometimes, you may want to alter the form values before sending them to the `dat
 
 In the following example, a create view for a Post displays a form with two submit buttons. Both buttons create a new record, but the 'save and notify' button should trigger an email to other admins on the server side. The `POST /posts` API route only sends the email when the request contains a special HTTP header.
 
-So the save button with 'save and notify' will *transform* the record before react-admin calls the `dataProvier.create()` method, adding a `notify` field:
+So the save button with 'save and notify' will *transform* the record before react-admin calls the `dataProvider.create()` method, adding a `notify` field:
 
 ```jsx
 const PostCreateToolbar = props => (
@@ -959,4 +959,3 @@ Users often need to edit data from several resources in the same form. React-adm
   <source src="./img/reference-many-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
-

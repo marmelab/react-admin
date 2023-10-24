@@ -5,6 +5,7 @@ import { ListContext, ResourceContextProvider } from 'ra-core';
 import { AdminContext } from '../../AdminContext';
 import { SimpleList } from './SimpleList';
 import { TextField } from '../../field';
+import { NoPrimaryText } from './SimpleList.stories';
 
 const Wrapper = ({ children }: any) => (
     <AdminContext>
@@ -145,5 +146,10 @@ describe('<SimpleList />', () => {
             </ListContext.Provider>
         );
         expect(screen.queryByText('ra.navigation.no_results')).not.toBeNull();
+    });
+
+    it('should fall back to record representation when no primaryText is provided', async () => {
+        render(<NoPrimaryText />);
+        await screen.findByText('War and Peace');
     });
 });

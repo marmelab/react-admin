@@ -19,7 +19,7 @@ import {
     RaRecord,
     SortPayload,
 } from 'ra-core';
-import { Table, TableProps } from '@mui/material';
+import { Table, TableProps, SxProps } from '@mui/material';
 import clsx from 'clsx';
 import union from 'lodash/union';
 import difference from 'lodash/difference';
@@ -51,18 +51,18 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
  *  - isRowExpandable
  *  - isRowSelectable
  *  - optimized
- *  - rowStyle
  *  - rowClick
+ *  - rowSx
  *  - size
  *  - sx
  *
  * @example // Display all posts as a datagrid
- * const postRowStyle = (record, index) => ({
+ * const postRowSx = (record, index) => ({
  *     backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
  * });
  * export const PostList = () => (
  *     <List>
- *         <Datagrid rowStyle={postRowStyle}>
+ *         <Datagrid rowSx={postRowSx}>
  *             <TextField source="id" />
  *             <TextField source="title" />
  *             <TextField source="body" />
@@ -129,6 +129,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         isRowExpandable,
         resource,
         rowClick,
+        rowSx,
         rowStyle,
         size = 'small',
         sx,
@@ -272,6 +273,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                                 hover,
                                 onToggleItem: handleToggleItem,
                                 resource,
+                                rowSx,
                                 rowStyle,
                                 selectedIds,
                                 isRowSelectable,
@@ -299,7 +301,7 @@ Datagrid.propTypes = {
     className: PropTypes.string,
     sort: PropTypes.exact({
         field: PropTypes.string,
-        order: PropTypes.string,
+        order: PropTypes.oneOf(['ASC', 'DESC'] as const),
     }),
     data: PropTypes.arrayOf(PropTypes.any),
     empty: PropTypes.element,
@@ -318,6 +320,7 @@ Datagrid.propTypes = {
         PropTypes.func,
         PropTypes.bool,
     ]),
+    rowSx: PropTypes.func,
     rowStyle: PropTypes.func,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     setSort: PropTypes.func,
@@ -329,9 +332,66 @@ Datagrid.propTypes = {
 
 export interface DatagridProps<RecordType extends RaRecord = any>
     extends Omit<TableProps, 'size' | 'classes' | 'onSelect'> {
+    /**
+     * The component used to render the body of the table. Defaults to <DatagridBody>.
+     *
+     * @see https://marmelab.com/react-admin/Datagrid.html#body
+     */
     body?: ReactElement | ComponentType;
+
+    /**
+     * A class name to apply to the root table element
+     */
     className?: string;
+
+    /**
+     * The component used to render the bulk action buttons. Defaults to <BulkDeleteButton>.
+     *
+     * @see https://marmelab.com/react-admin/Datagrid.html#bulkactionbuttons
+     * @example
+     * import { List, Datagrid, BulkDeleteButton } from 'react-admin';
+     * import { Button } from '@mui/material';
+     * import ResetViewsButton from './ResetViewsButton';
+     *
+     * const PostBulkActionButtons = () => (
+     *     <>
+     *         <ResetViewsButton label="Reset Views" />
+     *         <BulkDeleteButton />
+     *     </>
+     * );
+     *
+     * export const PostList = () => (
+     *     <List>
+     *         <Datagrid bulkActionButtons={<PostBulkActionButtons />}>
+     *             ...
+     *         </Datagrid>
+     *     </List>
+     * );
+     */
     bulkActionButtons?: ReactElement | false;
+
+    /**
+     * The component used to render the expand panel for each row.
+     *
+     * @see https://marmelab.com/react-admin/Datagrid.html#expand
+     * @example
+     * import { List, Datagrid, useRecordContext } from 'react-admin';
+     *
+     * const PostPanel = () => {
+     *     const record = useRecordContext();
+     *     return (
+     *         <div dangerouslySetInnerHTML={{ __html: record.body }} />
+     *     );
+     * };
+     *
+     * const PostList = () => (
+     *     <List>
+     *         <Datagrid expand={<PostPanel />}>
+     *             ...
+     *         </Datagrid>
+     *     </List>
+     * )
+     */
     expand?:
         | ReactElement
         | FC<{
@@ -339,15 +399,177 @@ export interface DatagridProps<RecordType extends RaRecord = any>
               record: RecordType;
               resource: string;
           }>;
+
+    /**
+     * The component used to render the header row. Defaults to <DatagridHeader>.
+     *
+     * @see https://marmelab.com/react-admin/Datagrid.html#header
+     */
     header?: ReactElement | ComponentType;
+
+    /**
+     * Whether to allow only one expanded row at a time. Defaults to false.
+     *
+     * @see https://marmelab.com/react-admin/Datagrid.html#expandsingle
+     * @example
+     * import { List, Datagrid } from 'react-admin';
+     *
+     * export const PostList = () => (
+     *    <List>
+     *       <Datagrid expandSingle>
+     *          ...
+     *      </Datagrid>
+     *   </List>
+     * );
+     */
+    expandSingle?: boolean;
+
+    /**
+     * Set to false to disable the hover effect on rows.
+     *
+     * @see https://marmelab.com/react-admin/Datagrid.html#hover
+     * @example
+     * import { List, Datagrid } from 'react-admin';
+     *
+     * const PostList = () => (
+     *     <List>
+     *         <Datagrid hover={false}>
+     *             ...
+     *         </Datagrid>
+     *     </List>
+     * );
+     */
     hover?: boolean;
+
+    /**
+     * The component used to render the empty table.
+     *
+     * @see https://marmelab.com/react-admin/Datagrid.html#empty
+     * @example
+     * import { List, Datagrid } from 'react-admin';
+     *
+     * const CustomEmpty = () => <div>No books found</div>;
+     *
+     * const PostList = () => (
+     *     <List>
+     *         <Datagrid empty={<CustomEmpty />}>
+     *             ...
+     *         </Datagrid>
+     *     </List>
+     * );
+     */
     empty?: ReactElement;
-    isRowSelectable?: (record: RecordType) => boolean;
+
+    /**
+     * A function that returns whether the row for a record is expandable.
+     *
+     * @see https://marmelab.com/react-admin/Datagrid.html#isrowexpandable
+     * @example
+     * import { List, Datagrid, useRecordContext } from 'react-admin';
+     *
+     * const PostPanel = () => {
+     *     const record = useRecordContext();
+     *     return (
+     *         <div dangerouslySetInnerHTML={{ __html: record.body }} />
+     *     );
+     * };
+     *
+     * const PostList = () => (
+     *     <List>
+     *         <Datagrid
+     *             expand={<PostPanel />}
+     *             isRowExpandable={row => row.has_detail}
+     *         >
+     *             ...
+     *         </Datagrid>
+     *     </List>
+     * )
+     */
     isRowExpandable?: (record: RecordType) => boolean;
+
+    /**
+     * A function that returns whether the row for a record is selectable.
+     *
+     * @see https://marmelab.com/react-admin/Datagrid.html#isrowselectable
+     * @example
+     * import { List, Datagrid } from 'react-admin';
+     *
+     * export const PostList = () => (
+     *     <List>
+     *         <Datagrid isRowSelectable={ record => record.id > 300 }>
+     *             ...
+     *         </Datagrid>
+     *     </List>
+     * );
+     */
+    isRowSelectable?: (record: RecordType) => boolean;
+
+    /**
+     * Set to true to optimize datagrid rendering if the children never vary.
+     *
+     * @see https://marmelab.com/react-admin/Datagrid.html#optimized
+     */
     optimized?: boolean;
+
+    /**
+     * The action to trigger when the user clicks on a row.
+     *
+     * @see https://marmelab.com/react-admin/Datagrid.html#rowclick
+     * @example
+     * import { List, Datagrid } from 'react-admin';
+     *
+     * export const PostList = () => (
+     *     <List>
+     *         <Datagrid rowClick="edit">
+     *             ...
+     *         </Datagrid>
+     *     </List>
+     * );
+     */
     rowClick?: string | RowClickFunction | false;
+
+    /**
+     * A function that returns the sx prop to apply to a row.
+     *
+     * @see https://marmelab.com/react-admin/Datagrid.html#rowsx
+     * @example
+     * import { List, Datagrid } from 'react-admin';
+     *
+     * const postRowSx = (record, index) => ({
+     *     backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
+     * });
+     * export const PostList = () => (
+     *     <List>
+     *         <Datagrid rowSx={postRowSx}>
+     *             ...
+     *         </Datagrid>
+     *     </List>
+     * );
+     */
+    rowSx?: (record: RecordType, index: number) => SxProps;
+
+    /**
+     * @deprecated use rowSx instead
+     */
     rowStyle?: (record: RecordType, index: number) => any;
+
+    /**
+     * Density setting, can be either 'small' or 'medium'. Defaults to 'small'.
+     *
+     * @see https://marmelab.com/react-admin/Datagrid.html#size
+     * @example
+     * import { List, Datagrid } from 'react-admin';
+     *
+     * export const PostList = () => (
+     *     <List>
+     *         <Datagrid size="medium">
+     *             ...
+     *         </Datagrid>
+     *     </List>
+     * );
+     */
     size?: 'medium' | 'small';
+
     // can be injected when using the component without context
     sort?: SortPayload;
     data?: RecordType[];
@@ -356,7 +578,6 @@ export interface DatagridProps<RecordType extends RaRecord = any>
     onToggleItem?: (id: Identifier) => void;
     setSort?: (sort: SortPayload) => void;
     selectedIds?: Identifier[];
-    expandSingle?: boolean;
     total?: number;
 }
 

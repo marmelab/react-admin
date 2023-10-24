@@ -11,7 +11,7 @@ React-admin relies on a several design decisions that structure its codebase.
 
 React-admin is specifically designed to build [Single-Page Applications (SPA)](https://en.wikipedia.org/wiki/Single-page_application). In a react-admin app, the browser fetches the required HTML, CSS, and JavaScript to render the application only once. Subsequently, data is fetched from APIs through AJAX calls. This is in contrast to traditional web applications, where the browser fetches a new HTML page for each screen.
 
-![SPA lifecycle](./img/SPA-lifecycle.png)
+<img class="no-shadow" src="./img/SPA-lifecycle.png" alt="SPA lifecycle" />
 
 The SPA architecture ensures that react-admin apps are [exceptionally fast](./Features.md#fast), easy to host, and compatible with existing APIs without requiring a dedicated backend. 
 
@@ -163,7 +163,7 @@ In this example, `<Menu.DashboardItem>` links to the `/dashboard` route, `<Menu.
 
 Before creating your custom component, it's a good practice to check if react-admin already provides a suitable component with a generic name for your purpose. In many cases, react-admin can save you hours, if not days, of development effort.
 
-Some of the other useful react-admin components include those for guided tours, sub-forms, login screens, action buttons, calendars, and much more. Each react-admin component can be customized using props, children, and [theme](./Theming.md) to fit your application's specific needs.
+Some of the other useful react-admin components include those for guided tours, sub-forms, login screens, action buttons, calendars, and much more. Each react-admin component can be customized using props, children, and [theme](./AppTheme.md) to fit your application's specific needs.
 
 ## Composition
 
@@ -256,7 +256,7 @@ const DeleteButton = () => {
 ```
 {% endraw %}
 
-The fact that hook names often end with `Controller` is intentional and reflects the use of [the Model-View-Controller (MCV) pattern](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) for complex components in react-admin. 
+The fact that hook names often end with `Controller` is intentional and reflects the use of [the Model-View-Controller (MVC) pattern](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) for complex components in react-admin. 
 
 - The Controller logic is handled by React hooks (e.g. `useListController`).
 - The view logic is managed by React components (e.g. `<List>`).
@@ -518,5 +518,3 @@ That's because the `react-admin` package simply re-exports components from inter
 * `react-admin`: the standard distribution of react-admin
 
 You can construct your own distribution of react-admin by combining various packages. Alternatively, you can import hooks and components directly from one of these packages if you don't want to import the entire react-admin distribution.
-
-

@@ -72,11 +72,11 @@ export const BooleanInput = (props: BooleanInputProps) => {
             sx={sx}
         >
             <FormControlLabel
+                inputRef={field.ref}
                 control={
                     <Switch
                         id={id}
                         name={field.name}
-                        color="primary"
                         onChange={handleChange}
                         onFocus={onFocus}
                         checked={Boolean(field.value)}

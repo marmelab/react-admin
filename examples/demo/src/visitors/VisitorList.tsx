@@ -56,7 +56,6 @@ const VisitorList = () => {
                     <NumberField
                         source="nb_commands"
                         label="resources.customers.fields.commands"
-                        sx={{ color: 'purple' }}
                     />
                     <ColoredNumberField
                         source="total_spent"

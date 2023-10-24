@@ -101,7 +101,7 @@ It also supports [all the other `<Button>` props](#button).
 |-----------------------------|--------------------------------------------------------------------|
 | `&.RaCreateButton-floating` | Applied to the underlying `MuiFab` component used in small screens |
 
-To override the style of all instances of `<CreateButton>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaCreateButton` key.
+To override the style of all instances of `<CreateButton>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaCreateButton` key.
 
 ### `<ListButton>`
 
@@ -246,14 +246,15 @@ export const PostList = () => (
 
 ![Bulk Delete button](./img/bulk-delete-button.png)
 
-| Prop              | Required | Type           | Default            | Description                                                                                                         |
-|-------------------|----------|----------------|--------------------|---------------------------------------------------------------------------------------------------------------------|
-| `confirmContent`  | Optional | React node     | -                  | Lets you customize the content of the confirm dialog. Only used in `'pessimistic'` or `'optimistic'` mutation modes |
-| `confirmTitle`    | Optional | `string`       | -                  | Lets you customize the title of the confirm dialog. Only used in `'pessimistic'` or `'optimistic'` mutation modes   |
-| `label`           | Optional | `string`       | 'ra.action.delete' | label or translation message to use                                                                                 |
-| `icon`            | Optional | `ReactElement` | `<DeleteIcon>`     | iconElement, e.g. `<CommentIcon />`                                                                                 |
-| `mutationMode`    | Optional | `string`       | `'undoable'`       | Mutation mode (`'undoable'`, `'pessimistic'` or `'optimistic'`)                                                     |
-| `mutationOptions` | Optional | `object`       | null               | options for react-query `useMutation` hook                                                                          |
+| Prop              | Required | Type                                    | Default            | Description                                                                                                                          |
+|-------------------|----------|-----------------------------------------|--------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| `confirmContent`  | Optional | React node                              | -                  | Lets you customize the content of the confirm dialog. Only used in `'pessimistic'` or `'optimistic'` mutation modes                  |
+| `confirmTitle`    | Optional | `string`                                | -                  | Lets you customize the title of the confirm dialog. Only used in `'pessimistic'` or `'optimistic'` mutation modes                    |
+| `confirmColor`    | Optional | <code>'primary' &#124; 'warning'</code> | 'primary'          | Lets you customize the color of the confirm dialog's "Confirm" button. Only used in `'pessimistic'` or `'optimistic'` mutation modes |
+| `label`           | Optional | `string`                                | 'ra.action.delete' | label or translation message to use                                                                                                  |
+| `icon`            | Optional | `ReactElement`                          | `<DeleteIcon>`     | iconElement, e.g. `<CommentIcon />`                                                                                                  |
+| `mutationMode`    | Optional | `string`                                | `'undoable'`       | Mutation mode (`'undoable'`, `'pessimistic'` or `'optimistic'`)                                                                      |
+| `mutationOptions` | Optional | `object`                                | null               | options for react-query `useMutation` hook                                                                                           |
 
 **Tip:** If you choose the `'pessimistic'` or `'optimistic'` mutation mode, a confirm dialog will be displayed to the user before the mutation is executed.
 
@@ -621,9 +622,36 @@ This button is an internal component used by react-admin in [the Filter button/f
 
 #### `sx`: CSS API
 
-To override the style of all instances of `<FilterButton>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaFilterButton` key.
+To override the style of all instances of `<FilterButton>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaFilterButton` key.
 
 ## Record Buttons
+
+### `<UpdateButton>`
+
+This component allows to create a button that updates a record by calling the [`useUpdate hook`](./useUpdate.md).
+
+{% raw %}
+```jsx
+import { Edit, SimpleForm, TextInput, TopToolbar, UpdateButton } from 'react-admin';
+
+const PostEditActions = () => (
+    <TopToolbar>
+        <UpdateButton label="Reset views" data={{ views: 0 }} />
+    </TopToolbar>
+);
+
+export const PostEdit = () => (
+    <Edit actions={<PostEditActions />}>
+        <SimpleForm>
+            <TextInput source="title" />
+            <TextInput source="body" />
+        </SimpleForm>
+    </Edit>
+);
+```
+{% endraw %}
+
+See [its documentation](./UpdateButton.md) for more details.
 
 ### `<DeleteButton>`
 
@@ -631,16 +659,17 @@ To override the style of all instances of `<FilterButton>` using the [Material U
 
 Delete the current record after a confirm dialog has been accepted. To be used inside a `<Toolbar/>` component.
 
-| Prop                                                       | Required | Type                             | Default                     | Description                                                             |
-|------------------------------------------------------------|----------|----------------------------------|-----------------------------|-------------------------------------------------------------------------|
-| `className`                                                | Optional | `string`                         | -                           | Class name to customize the look and feel of the button element itself  |
-| `label`                                                    | Optional | `string`                         | 'ra.action.delete'          | label or translation message to use                                     |
-| `icon`                                                     | Optional | `ReactElement`                   | `<DeleteIcon>`              | iconElement, e.g. `<CommentIcon />`                                     |
-| `confirmTitle`                                             | Optional | `string`                         | 'ra.message.delete_title'   | Title of the confirm dialog                                             |
-| `confirmContent`                                           | Optional | `ReactNode`                      | 'ra.message.delete_content' | Message or React component to be used as the body of the confirm dialog |
-| `redirect`                                                 | Optional | `string | false | Function`      | 'list'                      | Custom redirection after success side effect                            |
-| `translateOptions`                                         | Optional | `{ id?: string, name?: string }` | {}                          | Custom id and name to be used in the confirm dialog's title             |
-| `mutationOptions`                                          | Optional |                                  | null                        | options for react-query `useMutation` hook                              |
+| Prop               | Required | Type                                             | Default                     | Description                                                             |
+|--------------------|----------|--------------------------------------------------|-----------------------------|-------------------------------------------------------------------------|
+| `className`        | Optional | `string`                                         | -                           | Class name to customize the look and feel of the button element itself  |
+| `label`            | Optional | `string`                                         | 'ra.action.delete'          | label or translation message to use                                     |
+| `icon`             | Optional | `ReactElement`                                   | `<DeleteIcon>`              | iconElement, e.g. `<CommentIcon />`                                     |
+| `confirmTitle`     | Optional | `ReactNode`                                      | 'ra.message.delete_title'   | Title of the confirm dialog                                             |
+| `confirmContent`   | Optional | `ReactNode`                                      | 'ra.message.delete_content' | Message or React component to be used as the body of the confirm dialog |
+| `confirmColor`     | Optional | <code>'primary' &#124; 'warning'</code>          | 'primary'                   | The color of the confirm dialog's "Confirm" button                      |
+| `redirect`         | Optional | <code>string &#124; false &#124; Function</code> | 'list'                      | Custom redirection after success side effect                            |
+| `translateOptions` | Optional | `{ id?: string, name?: string }`                 | {}                          | Custom id and name to be used in the confirm dialog's title             |
+| `mutationOptions`  | Optional |                                                  | null                        | options for react-query `useMutation` hook                              |
 
 {% raw %}
 ```jsx
@@ -654,6 +683,7 @@ const EditToolbar = props => {
         <SaveButton/>
         <DeleteWithConfirmButton
             confirmContent="You will not be able to recover this record. Are you sure?"
+            confirmColor="warning"
             translateOptions={{ name: record.name }}
         />
     </Toolbar>
@@ -709,7 +739,7 @@ Other props are passed down to [the underlying Material UI `<Button>`](https://m
 | `& .RaButton-mediumIcon`     | Applied to the Button's `children` when `size` prop is `medium` and `alignIcon` prop is 'right' |
 | `& .RaButton-largeIcon`      | Applied to the Button's `children` when `size` prop is `large` and `alignIcon` prop is 'right'  |
 
-To override the style of all instances of `<Button>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaButton` key.
+To override the style of all instances of `<Button>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaButton` key.
 
 ### `<RefreshButton>`
 ### `<SkipNavigationButton>`
@@ -720,7 +750,7 @@ To override the style of all instances of `<Button>` using the [Material UI styl
 |-----------------------------------------------|-------------------------------------------------|
 | `&.RaSkipNavigationButton-skipToContentButton` | Applied to the underlying `MuiButton` component |
 
-To override the style of all instances of `<SkipNavigationButton>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaSkipNavigationButton` key.
+To override the style of all instances of `<SkipNavigationButton>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaSkipNavigationButton` key.
 
 ### `<MenuItemLink>`
 
@@ -786,7 +816,7 @@ const App = () => (
 );
 ```
 
-See [The theming documentation](./Theming.md#menuitemlink) for more details.
+See [The Menu documentation](./Menu.md) for more details.
 
 **Tip**: If you need a multi-level menu, or a Mega Menu opening panels with custom content, check out [the `ra-navigation`<img class="icon" src="./img/premium.svg" /> module](https://marmelab.com/ra-enterprise/modules/ra-navigation) (part of the [Enterprise Edition](https://marmelab.com/ra-enterprise))
 
@@ -809,7 +839,7 @@ See [The theming documentation](./Theming.md#menuitemlink) for more details.
 | `&.RaMenuItemLink-active`  | Applied to the underlying `MuiMenuItem`'s `activeClassName` prop    |
 | `& .RaMenuItemLink-icon`    | Applied to the `ListItemIcon` component when `leftIcon` prop is set |
 
-To override the style of all instances of `<MenuItemLink>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaMenuItemLink` key.
+To override the style of all instances of `<MenuItemLink>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaMenuItemLink` key.
 
 ### `<UserMenu>`
 
@@ -826,6 +856,6 @@ To override the style of all instances of `<MenuItemLink>` using the [Material U
 | `& .RaUserMenu-userButton` | Applied to the underlying `MuiButton` component when `useGetIdentity().loaded` is `true` and `useGetIdentity().identity.fullName` is set |
 | `& .RaUserMenu-avatar`     | Applied to the underlying `MuiAvatar` component when `useGetIdentity().avatar` is `true`                                                 |
 
-To override the style of all instances of `<UserMenu>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaUserMenu` key.
+To override the style of all instances of `<UserMenu>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaUserMenu` key.
 
-See [The theming documentation](./Theming.md#usermenu-customization) for more details.
+See [The AppBar documentation](./AppBar.md#usermenu) for more details.

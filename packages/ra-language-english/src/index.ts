@@ -38,8 +38,9 @@ const englishMessages: TranslationMessages = {
             move_up: 'Move up',
             move_down: 'Move down',
             open: 'Open',
-            toggle_theme: 'Toggle Theme',
+            toggle_theme: 'Toggle light/dark mode',
             select_columns: 'Columns',
+            update_application: 'Reload Application',
         },
         boolean: {
             true: 'Yes',
@@ -103,7 +104,7 @@ const englishMessages: TranslationMessages = {
                 "A client error occurred and your request couldn't be completed.",
 
             invalid_form: 'The form is not valid. Please check for errors',
-            loading: 'The page is loading, just a moment please',
+            loading: 'Please wait',
             no: 'No',
             not_found:
                 'Either you typed a wrong URL, or you followed a bad link.',
@@ -158,6 +159,7 @@ const englishMessages: TranslationMessages = {
             canceled: 'Action cancelled',
             logged_out: 'Your session has ended, please reconnect.',
             not_authorized: "You're not authorized to access this resource.",
+            application_update_available: 'A new version is available.',
         },
         validation: {
             required: 'Required',

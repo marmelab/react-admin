@@ -111,7 +111,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         resource: resourceProp,
         size = 'small',
         source: sourceProp,
-        translateChoice = true,
+        translateChoice,
         validate,
         variant,
         ...rest
@@ -125,8 +125,9 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         error: fetchError,
         source,
         resource,
+        isFromReference,
     } = useChoicesContext({
-        choices: choicesProp,
+        choices: choicesProp as any[],
         isLoading: isLoadingProp,
         isFetching: isFetchingProp,
         resource: resourceProp,
@@ -137,7 +138,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         optionText,
         optionValue,
         disableValue,
-        translateChoice,
+        translateChoice: translateChoice ?? !isFromReference,
     });
 
     const {
@@ -145,6 +146,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         isRequired,
         fieldState: { error, invalid, isTouched },
         formState: { isSubmitted },
+        id,
     } = useInput({
         format,
         onBlur,
@@ -288,7 +290,11 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                 variant={variant}
                 {...sanitizeRestProps(rest)}
             >
-                <InputLabel ref={inputLabel} id={`${label}-outlined-label`}>
+                <InputLabel
+                    ref={inputLabel}
+                    id={`${id}-outlined-label`}
+                    htmlFor={id}
+                >
                     <FieldTitle
                         label={label}
                         source={source}
@@ -297,8 +303,9 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     />
                 </InputLabel>
                 <Select
+                    id={id}
                     autoWidth
-                    labelId={`${label}-outlined-label`}
+                    labelId={`${id}-outlined-label`}
                     label={
                         <FieldTitle
                             label={label}
@@ -358,7 +365,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
     );
 };
 
-export type SelectArrayInputProps = ChoicesProps<any> &
+export type SelectArrayInputProps = ChoicesProps &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
     Omit<CommonInputProps, 'source'> &
     Omit<FormControlProps, 'defaultValue' | 'onBlur' | 'onChange'> & {
@@ -445,6 +452,9 @@ const StyledFormControl = styled(FormControl, {
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     minWidth: theme.spacing(20),
+    [theme.breakpoints.down('sm')]: {
+        width: '100%',
+    },
     [`& .${SelectArrayInputClasses.chips}`]: {
         display: 'flex',
         flexWrap: 'wrap',

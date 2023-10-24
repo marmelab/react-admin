@@ -6,6 +6,7 @@ import {
     IconButton,
     ListItem,
     ListItemButton,
+    ListItemIcon,
     ListItemProps,
     ListItemText,
     ListItemSecondaryAction,
@@ -150,6 +151,7 @@ export const FilterListItem = memo((props: FilterListItemProps) => {
     const {
         label,
         value,
+        icon,
         isSelected: getIsSelected = DefaultIsSelected,
         toggleFilter: userToggleFilter = DefaultToggleFilter,
         ...rest
@@ -175,6 +177,13 @@ export const FilterListItem = memo((props: FilterListItemProps) => {
                 disableGutters
                 className={FilterListItemClasses.listItemButton}
             >
+                {icon && (
+                    <ListItemIcon
+                        className={FilterListItemClasses.listItemIcon}
+                    >
+                        {icon}
+                    </ListItemIcon>
+                )}
                 <ListItemText
                     primary={
                         isElement(label)
@@ -228,6 +237,7 @@ const PREFIX = 'RaFilterListItem';
 export const FilterListItemClasses = {
     listItemButton: `${PREFIX}-listItemButton`,
     listItemText: `${PREFIX}-listItemText`,
+    listItemIcon: `${PREFIX}-listItemIcon`,
 };
 
 const StyledListItem = styled(ListItem, {
@@ -241,11 +251,16 @@ const StyledListItem = styled(ListItem, {
     [`& .${FilterListItemClasses.listItemText}`]: {
         margin: 0,
     },
+    [`& .${FilterListItemClasses.listItemIcon}`]: {
+        minWidth: 0,
+        marginRight: '0.5em',
+    },
 });
 
 export interface FilterListItemProps extends Omit<ListItemProps, 'value'> {
     label: string | ReactElement;
     value: any;
+    icon?: ReactElement;
     toggleFilter?: (value: any, filters: any) => any;
     isSelected?: (value: any, filters: any) => boolean;
 }

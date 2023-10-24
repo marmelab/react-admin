@@ -290,7 +290,7 @@ const PostCreate = () => (
 
 ## `sx`: CSS API
 
-The `<Create>` components accept the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following keys:
+The `<Create>` components accept the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following keys:
 
 | Rule name               | Description                                                                          |
 |-------------------------|--------------------------------------------------------------------------------------|
@@ -298,7 +298,7 @@ The `<Create>` components accept the usual `className` prop, but you can overrid
 | `& .RaCreate-noActions` | Applied to the main container when `actions` prop is `false`                         |
 | `& .RaCreate-card`      | Applied to the child component inside the main container (Material UI's `Card` by default)   |
 
-To override the style of all instances of `<Create>` components using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaCreate` key.
+To override the style of all instances of `<Create>` components using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaCreate` key.
 
 ## `title`
 
@@ -424,31 +424,24 @@ You can do the same for error notifications, by passing a custom `onError`  call
 
 ## Prefilling the Form
 
-You sometimes need to pre-populate a record based on a *related* record. For instance, to create a comment related to an existing post. 
+You sometimes need to pre-populate a record based on a *related* record. For instance, to create a comment related to an existing post.
 
 By default, the `<Create>` view starts with an empty `record`. However, if the `location` object (injected by [react-router-dom](https://reacttraining.com/react-router/web/api/location)) contains a `record` in its `state`, the `<Create>` view uses that `record` instead of the empty object. That's how the `<CloneButton>` works under the hood.
 
-That means that if you want to create a link to a creation form, presetting *some* values, all you have to do is to set the location `state`. `react-router-dom` provides the `<Link>` component for that:
+That means that if you want to create a link to a creation form, presetting *some* values, all you have to do is to set the `state` prop of the `<CreateButton>`:
 
 {% raw %}
 ```jsx
 import * as React from 'react';
-import { Datagrid, useRecordContext } from 'react-admin';
-import { Button } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { CreateButton, Datagrid, List, useRecordContext } from 'react-admin';
 
 const CreateRelatedCommentButton = () => {
     const record = useRecordContext();
     return (
-        <Button
-            component={Link}
-            to={{
-                pathname: '/comments/create',
-            }}
+        <CreateButton
+            resource="comments"
             state={{ record: { post_id: record.id } }}
-        >
-            Write a comment for that post
-        </Button>
+        />
     );
 };
 
@@ -463,29 +456,22 @@ export default PostList = () => (
 ```
 {% endraw %}
 
-**Tip**: To style the button with the main color from the Material UI theme, use the `Link` component from the `react-admin` package rather than the one from `react-router-dom`.
-
 **Tip**: The `<Create>` component also watches the "source" parameter of `location.search` (the query string in the URL) in addition to `location.state` (a cross-page message hidden in the router memory). So the `CreateRelatedCommentButton` could also be written as:
 
 {% raw %}
 ```jsx
 import * as React from 'react';
-import { useRecordContext } from 'react-admin';
-import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
+import { CreateButton, useRecordContext } from 'react-admin';
 
 const CreateRelatedCommentButton = () => {
     const record = useRecordContext();
     return (
-        <Button
-            component={Link}
+        <CreateButton
+            resource="comments"
             to={{
-                pathname: '/comments/create',
                 search: `?source=${JSON.stringify({ post_id: record.id })}`,
             }}
-        >
-            Write a comment for that post
-        </Button>
+        />
     );
 };
 ```

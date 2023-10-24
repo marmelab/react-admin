@@ -7,8 +7,9 @@ title: "useCreate"
 
 This hook allows to call `dataProvider.create()` when the callback is executed.
 
+## Syntax
+
 ```jsx
-// syntax
 const [create, { data, isLoading, error }] = useCreate(
     resource,
     { data, meta },
@@ -27,6 +28,8 @@ create(
 ```
 
 So, should you pass the parameters when calling the hook, or when executing the callback? It's up to you; but if you have the choice, we recommend passing the parameters when calling the `create` callback (second example below).
+
+## Usage
 
 ```jsx
 // set params when calling the hook

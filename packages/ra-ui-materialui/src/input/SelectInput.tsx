@@ -130,7 +130,7 @@ export const SelectInput = (props: SelectInputProps) => {
         parse,
         resource: resourceProp,
         source: sourceProp,
-        translateChoice = true,
+        translateChoice,
         validate,
         ...rest
     } = props;
@@ -153,7 +153,7 @@ export const SelectInput = (props: SelectInputProps) => {
         resource,
         isFromReference,
     } = useChoicesContext({
-        choices: choicesProp,
+        choices: choicesProp as any[],
         isLoading: isLoadingProp,
         isFetching: isFetchingProp,
         resource: resourceProp,
@@ -179,7 +179,7 @@ export const SelectInput = (props: SelectInputProps) => {
             (isFromReference ? getRecordRepresentation : undefined),
         optionValue,
         disableValue,
-        translateChoice,
+        translateChoice: translateChoice ?? !isFromReference,
     });
     const {
         field,
@@ -423,7 +423,7 @@ const StyledResettableTextField = styled(ResettableTextField, {
 }));
 
 export type SelectInputProps = Omit<CommonInputProps, 'source'> &
-    ChoicesProps<any> &
+    ChoicesProps &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
     Omit<TextFieldProps, 'label' | 'helperText' | 'classes' | 'onChange'> & {
         disableValue?: string;

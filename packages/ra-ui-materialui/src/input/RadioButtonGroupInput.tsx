@@ -99,7 +99,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         resource: resourceProp,
         row = true,
         source: sourceProp,
-        translateChoice = true,
+        translateChoice,
         validate,
         ...rest
     } = props;
@@ -110,8 +110,9 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         error: fetchError,
         resource,
         source,
+        isFromReference,
     } = useChoicesContext({
-        choices: choicesProp,
+        choices: choicesProp as any[],
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
         resource: resourceProp,
@@ -198,7 +199,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
                         optionText={optionText}
                         optionValue={optionValue}
                         source={id}
-                        translateChoice={translateChoice}
+                        translateChoice={translateChoice ?? !isFromReference}
                     />
                 ))}
             </RadioGroup>
@@ -269,7 +270,7 @@ const sanitizeRestProps = ({
 }: any) => sanitizeInputRestProps(rest);
 
 export type RadioButtonGroupInputProps = Omit<CommonInputProps, 'source'> &
-    ChoicesProps<any> &
+    ChoicesProps &
     FormControlProps &
     RadioGroupProps & {
         options?: RadioGroupProps;

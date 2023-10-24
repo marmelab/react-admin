@@ -73,7 +73,9 @@ export const Confirm = (props: ConfirmProps) => {
             {...rest}
         >
             <DialogTitle id="alert-dialog-title">
-                {translate(title, { _: title, ...translateOptions })}
+                {typeof title === 'string'
+                    ? translate(title, { _: title, ...translateOptions })
+                    : title}
             </DialogTitle>
             <DialogContent>
                 {typeof content === 'string' ? (
@@ -114,11 +116,12 @@ export const Confirm = (props: ConfirmProps) => {
     );
 };
 
-export interface ConfirmProps extends Omit<DialogProps, 'open' | 'onClose'> {
+export interface ConfirmProps
+    extends Omit<DialogProps, 'open' | 'onClose' | 'title'> {
     cancel?: string;
     className?: string;
     confirm?: string;
-    confirmColor?: string;
+    confirmColor?: 'primary' | 'warning';
     ConfirmIcon?: ReactComponentLike;
     CancelIcon?: ReactComponentLike;
     content: React.ReactNode;
@@ -126,7 +129,7 @@ export interface ConfirmProps extends Omit<DialogProps, 'open' | 'onClose'> {
     loading?: boolean;
     onClose: MouseEventHandler;
     onConfirm: MouseEventHandler;
-    title: string;
+    title: React.ReactNode;
     translateOptions?: object;
 }
 
@@ -142,7 +145,7 @@ Confirm.propTypes = {
     loading: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
     onConfirm: PropTypes.func.isRequired,
-    title: PropTypes.string.isRequired,
+    title: PropTypes.node.isRequired,
     sx: PropTypes.any,
 };
 

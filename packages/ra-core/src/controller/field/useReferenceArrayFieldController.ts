@@ -4,9 +4,11 @@ import { RaRecord, SortPayload } from '../../types';
 import { useGetManyAggregate } from '../../dataProvider';
 import { ListControllerResult, useList } from '../list';
 import { useNotify } from '../../notification';
+import { UseQueryOptions } from 'react-query';
 
 export interface UseReferenceArrayFieldControllerParams<
-    RecordType extends RaRecord = RaRecord
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord
 > {
     filter?: any;
     page?: number;
@@ -16,6 +18,7 @@ export interface UseReferenceArrayFieldControllerParams<
     resource: string;
     sort?: SortPayload;
     source: string;
+    queryOptions?: UseQueryOptions<ReferenceRecordType[], Error>;
 }
 
 const emptyArray = [];
@@ -49,7 +52,10 @@ export const useReferenceArrayFieldController = <
     RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord
 >(
-    props: UseReferenceArrayFieldControllerParams<RecordType>
+    props: UseReferenceArrayFieldControllerParams<
+        RecordType,
+        ReferenceRecordType
+    >
 ): ListControllerResult => {
     const {
         filter = defaultFilter,
@@ -59,9 +65,11 @@ export const useReferenceArrayFieldController = <
         reference,
         sort = defaultSort,
         source,
+        queryOptions = {},
     } = props;
     const notify = useNotify();
     const value = get(record, source);
+    const { meta, ...otherQueryOptions } = queryOptions;
 
     const ids = useMemo(() => {
         if (Array.isArray(value)) return value;
@@ -73,7 +81,7 @@ export const useReferenceArrayFieldController = <
         ReferenceRecordType
     >(
         reference,
-        { ids },
+        { ids, meta },
         {
             onError: error =>
                 notify(
@@ -92,6 +100,7 @@ export const useReferenceArrayFieldController = <
                         },
                     }
                 ),
+            ...otherQueryOptions,
         }
     );
 

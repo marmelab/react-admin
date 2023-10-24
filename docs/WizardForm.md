@@ -170,6 +170,7 @@ export const PostCreate = () => {
 
 You can also customize the progress stepper by passing a custom component in the `progress` prop.
 
+{% raw %}
 ```tsx
 import React from 'react';
 import { Create, TextInput, required } from 'react-admin';
@@ -216,8 +217,33 @@ const PostCreate = () => (
     </Create>
 );
 ```
+{% endraw %}
 
 Any additional props will be passed to the `<Progress>` component.
+
+You can also hide the progress stepper completely by setting `progress` to `false`.
+
+```tsx
+import React from 'react';
+import { Create, TextInput, required } from 'react-admin';
+import { WizardForm } from '@react-admin/ra-form-layout';
+
+const PostCreate = () => (
+    <Create>
+        <WizardForm progress={false}>
+            <WizardForm.Step label="First step">
+                <TextInput source="title" validate={required()} />
+            </WizardForm.Step>
+            <WizardForm.Step label="Second step">
+                <TextInput source="description" />
+            </WizardForm.Step>
+            <WizardForm.Step label="Third step">
+                <TextInput source="fullDescription" validate={required()} />
+            </WizardForm.Step>
+        </WizardForm>
+    </Create>
+);
+```
 
 ## `sanitizeEmptyValues`
 
@@ -447,7 +473,7 @@ const PostCreate = () => (
 
 ## Role-Based Access Control (RBAC)
 
-Fine-grained permissions control can be added by using the [`<WizardForm>`](./AuthRBAC.md#wizardform) and [`<WizardFormStep>`](./AuthRBAC.md#wizardformstep) components provided by the `@react-admin/ra-enterprise` package. 
+Fine-grained permissions control can be added by using the [`<WizardForm>`](./AuthRBAC.md#wizardform) and [`<WizardFormStep>`](./AuthRBAC.md#wizardform) components provided by the `@react-admin/ra-enterprise` package. 
 
 {% raw %}
 ```tsx

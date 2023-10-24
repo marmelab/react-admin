@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 
 import { FilterLiveSearch } from './FilterLiveSearch';
-import { defaultTheme } from '../../defaultTheme';
+import { defaultTheme } from '../../theme/defaultTheme';
 
 export default {
     title: 'ra-ui-materialui/list/filter/FilterLiveSearch',
@@ -77,6 +77,13 @@ export const Basic = () => (
 export const Label = () => (
     <Wrapper>
         <FilterLiveSearch source="q" label="search" />
+        <CountryList />
+    </Wrapper>
+);
+
+export const HiddenLabel = () => (
+    <Wrapper>
+        <FilterLiveSearch source="q" hiddenLabel />
         <CountryList />
     </Wrapper>
 );

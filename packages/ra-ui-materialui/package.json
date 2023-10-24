@@ -1,6 +1,6 @@
 {
     "name": "ra-ui-materialui",
-    "version": "4.12.3",
+    "version": "4.15.1",
     "description": "UI Components for react-admin with Material UI",
     "files": [
         "*.md",
@@ -35,12 +35,13 @@
         "file-api": "~0.10.4",
         "history": "^5.1.0",
         "ignore-styles": "~5.0.1",
-        "ra-core": "^4.12.2",
-        "ra-i18n-polyglot": "^4.12.2",
-        "ra-language-english": "^4.12.2",
+        "ra-core": "^4.15.1",
+        "ra-i18n-polyglot": "^4.15.1",
+        "ra-language-english": "^4.15.1",
         "react": "^17.0.0",
         "react-dom": "^17.0.0",
         "react-hook-form": "^7.43.9",
+        "react-is": "^17.0.0",
         "react-router": "^6.1.0",
         "react-router-dom": "^6.1.0",
         "react-test-renderer": "~16.8.6",
@@ -54,6 +55,7 @@
         "react": "^16.9.0 || ^17.0.0 || ^18.0.0",
         "react-dom": "^16.9.0 || ^17.0.0 || ^18.0.0",
         "react-hook-form": "*",
+        "react-is": "^16.9.0 || ^17.0.0 || ^18.0.0",
         "react-router": "^6.1.0",
         "react-router-dom": "^6.1.0"
     },
@@ -73,5 +75,5 @@
         "react-query": "^3.32.1",
         "react-transition-group": "^4.4.1"
     },
-    "gitHead": "e936ff2c3f887d2e98ef136cf3b3f3d254725fc4"
+    "gitHead": "b227592132da6ae5f01438fa8269e04596cdfdd8"
 }

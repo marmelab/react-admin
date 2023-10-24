@@ -7,8 +7,8 @@ title: "Writing An I18nProvider"
 
 An `i18nProvider` should be an object with three required methods and one optional method:
 
-```jsx
-// in src/i18nProvider.js
+```ts
+// in src/i18nProvider.ts
 export const i18nProvider = {
     // required
     translate: (key, options) => string,

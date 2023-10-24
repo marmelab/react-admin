@@ -42,7 +42,7 @@ The input value must be an object or an array of objects with a `title` and a `s
 After modification by the user, the value is stored as an array of objects with 3 properties: 
 
 * `title`: the file name with extension, e.g. 'Invoice-2929-01-06.pdf',
-* `src`: An [object URL](https://developer.mozilla.org/fr/docs/Web/API/URL/createObjectURL) for the `File`, e.g. 'blob:https://example.com/1e67e00e-860d-40a5-89ae-6ab0cbee6273'
+* `src`: An [object URL](https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL) for the `File`, e.g. 'blob:https://example.com/1e67e00e-860d-40a5-89ae-6ab0cbee6273'
 * `rawFile`: [The `File` object](https://developer.mozilla.org/fr/docs/Web/API/File) itself
 
 It is the responsibility of your `dataProvider` to send the file to the server (encoded in Base64, or using multipart upload) and to transform the `src` property. See [the Data Provider documentation](./DataProviders.md#handling-file-uploads) for an example.
@@ -162,11 +162,11 @@ Use the `removeIcon` prop to change the icon displayed as the remove button:
 
 ## `sx`: CSS API
 
-The `<ImageInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<ImageInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
 | Rule name                       | Description                                         |
 |---------------------------------|-----------------------------------------------------|
 | `& .RaFileInput-dropZone`      | Styles pass to the underlying `FileInput` component |
 | `& .RaFileInput-removeButton`  | Styles pass to the underlying `FileInput` component |
 
-To override the style of all instances of `<ImageInput>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaImageInput` key.
+To override the style of all instances of `<ImageInput>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaImageInput` key.

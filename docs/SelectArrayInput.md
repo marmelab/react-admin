@@ -364,14 +364,14 @@ const choices = [
 
 ## `sx`: CSS API
 
-The `<SelectArrayInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/material-ui/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<SelectArrayInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
 | Rule name                     | Description                                                                        |
 |-------------------------------|------------------------------------------------------------------------------------|
 | `& .RaSelectArrayInput-chip`  | Applied to each Material UI's `Chip` component used as selected item               |
 | `& .RaSelectArrayInput-chips` | Applied to the container of Material UI's `Chip` components used as selected items |
 
-To override the style of all instances of `<SelectArrayInput>` using the [Material UI style overrides](https://mui.com/material-ui/customization/theme-components/#theme-style-overrides), use the `RaSelectArrayInput` key.
+To override the style of all instances of `<SelectArrayInput>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaSelectArrayInput` key.
 
 ## `translateChoice`
 

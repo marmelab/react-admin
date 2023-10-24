@@ -20,9 +20,12 @@ import {
     Typography,
     Box,
 } from '@mui/material';
+import { useFormContext } from 'react-hook-form';
 import fakeRestProvider from 'ra-data-fakerest';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
 
-import { Edit } from '../detail';
+import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { AutocompleteInput, AutocompleteInputProps } from './AutocompleteInput';
 import { ReferenceInput } from './ReferenceInput';
@@ -143,6 +146,45 @@ export const IsLoading = () => {
                     <Edit>
                         <SimpleForm>
                             <AutocompleteInput source="author" isLoading />
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    );
+};
+
+export const OnChange = ({
+    onChange = (value, record) => console.log({ value, record }),
+}: Pick<AutocompleteInputProps, 'onChange'>) => {
+    const choices = [
+        { id: 1, name: 'Leo Tolstoy' },
+        { id: 2, name: 'Victor Hugo' },
+        { id: 3, name: 'William Shakespeare' },
+        { id: 4, name: 'Charles Baudelaire' },
+        { id: 5, name: 'Marcel Proust' },
+    ];
+    return (
+        <Admin dataProvider={dataProvider} history={history}>
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <AutocompleteInput
+                                source="author"
+                                choices={choices}
+                                validate={required()}
+                                fullWidth
+                                onChange={onChange}
+                            />
                         </SimpleForm>
                     </Edit>
                 )}
@@ -528,6 +570,52 @@ export const InsideReferenceInput = () => (
                         </ReferenceInput>
                     </SimpleForm>
                 </Edit>
+            )}
+        />
+    </Admin>
+);
+
+const LanguageChangingAuthorInput = ({ onChange }) => {
+    const { setValue } = useFormContext();
+    const handleChange = (value, record) => {
+        setValue('language', record?.language);
+        onChange(value, record);
+    };
+    return (
+        <ReferenceInput reference="authors" source="author">
+            <AutocompleteInput
+                fullWidth
+                optionText="name"
+                onChange={handleChange}
+            />
+        </ReferenceInput>
+    );
+};
+
+export const InsideReferenceInputOnChange = ({
+    onChange = (value, record) => console.log({ value, record }),
+}: Pick<AutocompleteInputProps, 'onChange'>) => (
+    <Admin
+        dataProvider={dataProviderWithAuthors}
+        history={createMemoryHistory({ initialEntries: ['/books/create'] })}
+    >
+        <Resource name="authors" />
+        <Resource
+            name="books"
+            create={() => (
+                <Create
+                    mutationOptions={{
+                        onSuccess: data => {
+                            console.log(data);
+                        },
+                    }}
+                    redirect={false}
+                >
+                    <SimpleForm>
+                        <LanguageChangingAuthorInput onChange={onChange} />
+                        <TextInput source="language" />
+                    </SimpleForm>
+                </Create>
             )}
         />
     </Admin>
@@ -1023,3 +1111,86 @@ export const DifferentShapeInGetMany = () => (
         />
     </Admin>
 );
+
+export const TranslateChoice = () => {
+    const i18nProvider = polyglotI18nProvider(() => ({
+        ...englishMessages,
+        'option.male': 'Male',
+        'option.female': 'Female',
+    }));
+    return (
+        <AdminContext
+            i18nProvider={i18nProvider}
+            dataProvider={
+                {
+                    getOne: () =>
+                        Promise.resolve({ data: { id: 1, gender: 'F' } }),
+                    getList: () =>
+                        Promise.resolve({
+                            data: [
+                                { id: 'M', name: 'option.male' },
+                                { id: 'F', name: 'option.female' },
+                            ],
+                            total: 2,
+                        }),
+                    getMany: (_resource, { ids }) =>
+                        Promise.resolve({
+                            data: [
+                                { id: 'M', name: 'option.male' },
+                                { id: 'F', name: 'option.female' },
+                            ].filter(({ id }) => ids.includes(id)),
+                        }),
+                } as any
+            }
+        >
+            <Edit resource="posts" id="1">
+                <SimpleForm>
+                    <AutocompleteInput
+                        label="translateChoice default"
+                        source="gender"
+                        id="gender1"
+                        choices={[
+                            { id: 'M', name: 'option.male' },
+                            { id: 'F', name: 'option.female' },
+                        ]}
+                    />
+                    <AutocompleteInput
+                        label="translateChoice true"
+                        source="gender"
+                        id="gender2"
+                        choices={[
+                            { id: 'M', name: 'option.male' },
+                            { id: 'F', name: 'option.female' },
+                        ]}
+                        translateChoice
+                    />
+                    <AutocompleteInput
+                        label="translateChoice false"
+                        source="gender"
+                        id="gender3"
+                        choices={[
+                            { id: 'M', name: 'option.male' },
+                            { id: 'F', name: 'option.female' },
+                        ]}
+                        translateChoice={false}
+                    />
+                    <ReferenceInput reference="genders" source="gender">
+                        <AutocompleteInput
+                            optionText="name"
+                            label="inside ReferenceInput"
+                            id="gender4"
+                        />
+                    </ReferenceInput>
+                    <ReferenceInput reference="genders" source="gender">
+                        <AutocompleteInput
+                            optionText="name"
+                            label="inside ReferenceInput forced"
+                            id="gender5"
+                            translateChoice
+                        />
+                    </ReferenceInput>
+                </SimpleForm>
+            </Edit>
+        </AdminContext>
+    );
+};

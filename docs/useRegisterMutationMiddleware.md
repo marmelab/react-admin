@@ -5,7 +5,7 @@ title: "useRegisterMutationMiddleware"
 
 # `useRegisterMutationMiddleware`
 
-React-admin lets you hook into the save logic of the forms in Creation and Edition pages using middleware functions. These functions "wrap" the main mutation (`dataProvider.create()` in a Creation page, `dataProvider.update()` in an Edition page), so you can add you own code to be executed before and after it. This allows you to perform various advanced form use cases, such as:
+React-admin lets you hook into the save logic of the forms in Creation and Edition pages using middleware functions. These functions "wrap" the main mutation (`dataProvider.create()` in a Creation page, `dataProvider.update()` in an Edition page), so you can add your own code to be executed before and after it. This allows you to perform various advanced form use cases, such as:
 
 - transforming the data passed to the main mutation,
 - updating the mutation parameters before it is called,

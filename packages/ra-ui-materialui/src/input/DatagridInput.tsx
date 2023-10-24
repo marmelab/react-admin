@@ -68,7 +68,7 @@ export const DatagridInput = (props: DatagridInputProps) => {
         source,
         ...choicesContext
     } = useChoicesContext({
-        choices,
+        choices: choices as any[],
         resource: resourceProp,
         source: sourceProp,
     });
@@ -160,7 +160,7 @@ export const DatagridInput = (props: DatagridInputProps) => {
 };
 
 export type DatagridInputProps = Omit<CommonInputProps, 'source'> &
-    ChoicesProps<any> &
+    ChoicesProps &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
     DatagridProps & {
         children?: ReactNode;

@@ -23,7 +23,7 @@ Use this hook in a toolbar, to let the user lock the record manually.
 ```jsx
 import { Edit, SimpleForm, TextInput } from 'react-admin';
 import { useLockOnMount } from '@react-admin/ra-realtime';
-import { Alert, AlertTitle, Box, Button } from '@material-ui/core';
+import { Alert, AlertTitle, Box, Button } from '@mui/material';
 
 const PostAside = () => {
     const [doLock, { data, error, isLoading }] = useLockOnCall();

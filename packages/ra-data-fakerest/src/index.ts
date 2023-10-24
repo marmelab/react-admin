@@ -64,9 +64,10 @@ export default (data, loggingEnabled = false): DataProvider => {
                 };
             case 'getMany':
                 return {
-                    data: restServer.getAll(resource, {
-                        filter: { id: params.ids },
-                    }),
+                    data: params.ids.map(
+                        id => restServer.getOne(resource, id),
+                        { ...params }
+                    ),
                 };
             case 'getManyReference': {
                 const { page, perPage } = params.pagination;

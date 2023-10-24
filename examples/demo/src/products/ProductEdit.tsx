@@ -13,13 +13,19 @@ import {
     TextInput,
     useRecordContext,
 } from 'react-admin';
-import { RichTextInput } from 'ra-input-rich-text';
 
 import { ProductEditDetails } from './ProductEditDetails';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from '../reviews/StarRatingField';
 import Poster from './Poster';
 import { Product } from '../types';
+import CreateRelatedReviewButton from './CreateRelatedReviewButton';
+
+const RichTextInput = React.lazy(() =>
+    import('ra-input-rich-text').then(module => ({
+        default: module.RichTextInput,
+    }))
+);
 
 const ProductTitle = () => {
     const record = useRecordContext<Product>();
@@ -85,6 +91,7 @@ const ProductEdit = () => (
                         <TextField source="status" />
                         <EditButton />
                     </Datagrid>
+                    <CreateRelatedReviewButton />
                 </ReferenceManyField>
             </TabbedForm.Tab>
         </TabbedForm>

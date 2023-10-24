@@ -29,8 +29,8 @@ export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
 
     const {
         source = 'q',
-        variant,
         label = translate('ra.action.search'),
+        placeholder,
         ...rest
     } = props;
 
@@ -69,13 +69,10 @@ export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
                     }}
                     onChange={handleChange}
                     size="small"
-                    {...(variant === 'outlined'
-                        ? { variant: 'outlined', label }
-                        : {
-                              placeholder: label,
-                              label: false,
-                              hiddenLabel: true,
-                          })}
+                    label={rest.hiddenLabel ? false : label}
+                    placeholder={
+                        placeholder ?? (rest.hiddenLabel ? label : undefined)
+                    }
                     {...rest}
                 />
             </form>

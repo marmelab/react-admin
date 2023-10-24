@@ -44,6 +44,7 @@ export interface TranslationMessages extends StringMap {
             open: string;
             toggle_theme: string;
             select_columns: string;
+            update_application: string;
         };
         boolean: {
             [key: string]: StringMap | string;
@@ -155,6 +156,7 @@ export interface TranslationMessages extends StringMap {
             canceled: string;
             logged_out: string;
             not_authorized: string;
+            application_update_available: string;
         };
         validation: {
             [key: string]: StringMap | string;

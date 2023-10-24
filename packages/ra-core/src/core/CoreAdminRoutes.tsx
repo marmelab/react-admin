@@ -3,7 +3,6 @@ import { useState, useEffect, Children, ComponentType } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { WithPermissions, useCheckAuth } from '../auth';
-import { useTimeout } from '../util';
 import { useScrollToTop, useCreatePath } from '../routing';
 import {
     AdminChildren,
@@ -15,7 +14,6 @@ import {
 import { useConfigureAdminRouterFromChildren } from './useConfigureAdminRouterFromChildren';
 
 export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
-    const oneSecondHasPassed = useTimeout(1000);
     useScrollToTop();
     const createPath = useCreatePath();
 
@@ -58,11 +56,14 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
         return (
             <Routes>
                 {customRoutesWithoutLayout}
-                {oneSecondHasPassed ? (
-                    <Route path="*" element={<LoadingPage />} />
-                ) : (
-                    <Route path="*" element={null} />
-                )}
+                <Route
+                    path="*"
+                    element={
+                        <div style={{ height: '100vh' }}>
+                            <LoadingPage />
+                        </div>
+                    }
+                />
             </Routes>
         );
     }

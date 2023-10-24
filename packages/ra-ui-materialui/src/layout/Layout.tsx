@@ -1,8 +1,9 @@
 import React, {
-    useState,
-    ErrorInfo,
     ComponentType,
+    ErrorInfo,
     HtmlHTMLAttributes,
+    Suspense,
+    useState,
 } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import clsx from 'clsx';
@@ -16,6 +17,7 @@ import { Error, ErrorProps } from './Error';
 import { SkipNavigationButton } from '../button';
 import { useSidebarState } from './useSidebarState';
 import { Inspector } from '../preferences';
+import { Loading } from './Loading';
 
 export const Layout = (props: LayoutProps) => {
     const {
@@ -39,7 +41,7 @@ export const Layout = (props: LayoutProps) => {
     };
 
     return (
-        <StyledLayout className={clsx('layout', className)} {...rest}>
+        <Core className={clsx('layout', className)} {...rest}>
             <SkipNavigationButton />
             <div className={LayoutClasses.appFrame}>
                 <AppBar open={open} title={title} alwaysOn={appBarAlwaysOn} />
@@ -60,13 +62,15 @@ export const Layout = (props: LayoutProps) => {
                                 />
                             )}
                         >
-                            {children}
+                            <Suspense fallback={<Loading />}>
+                                {children}
+                            </Suspense>
                         </ErrorBoundary>
                     </div>
                 </main>
                 <Inspector />
             </div>
-        </StyledLayout>
+        </Core>
     );
 };
 
@@ -95,7 +99,7 @@ export const LayoutClasses = {
     content: `${PREFIX}-content`,
 };
 
-const StyledLayout = styled('div', {
+const Core = styled('div', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({

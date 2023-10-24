@@ -5,7 +5,7 @@ title: "The Admin Component"
 
 # `<Admin>`
 
-The `<Admin>` component is the root component of a react-admin app. It allows to configure the application adapters and UI.
+The `<Admin>` component is the root component of a react-admin app. It allows to configure the application adapters, routes, and UI.
 
 `<Admin>` creates a series of context providers to allow its children to access the app configuration. It renders the main routes and layout. It delegates the rendering of the content area to its `<Resource>` children.
 
@@ -15,7 +15,7 @@ The `<Admin>` component is the root component of a react-admin app. It allows to
 
 `<Admin>` requires only a `dataProvider` prop, and at least one child `<Resource>` to work. Here is the most basic example:
 
-```jsx
+```tsx
 // in src/App.js
 import { Admin, Resource } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
@@ -36,7 +36,7 @@ export default App;
 In most apps, you need to pass more props to `<Admin>`. Here is a more complete example taken from [the e-commerce demo](https://marmelab.com/react-admin-demo/):
 
 {% raw %}
-```jsx
+```tsx
 // in src/App.js
 import { Admin, Resource, CustomRoutes } from 'react-admin';
 import { Route } from "react-router-dom";
@@ -82,7 +82,7 @@ const App = () => (
 
 To make the main app component more concise, a good practice is to move the resources props to separate files. For instance, the previous example can be rewritten as:
 
-```jsx
+```tsx
 // in src/App.js
 import { Admin, Resource, CustomRoutes } from 'react-admin';
 import { Route } from "react-router-dom";
@@ -166,7 +166,7 @@ Here are all the props accepted by the component:
 
 In many cases, you won't have to write a data provider, as one of the [50+ existing data providers](./DataProviderList.md) will probably fit your needs. For instance, if your API is REST-based, you can use the [Simple REST Data Provider](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-simple-rest) as follows:
 
-```jsx
+```tsx
 // in src/App.js
 import simpleRestProvider from 'ra-data-simple-rest';
 import { Admin, Resource } from 'react-admin';
@@ -184,23 +184,23 @@ const App = () => (
 
 If you need to write your own, the data provider must have the following methods, all returning a promise:
 
-```jsx
+```tsx
 const dataProvider = {
-    getList:    (resource, params) => Promise,
-    getOne:     (resource, params) => Promise,
-    getMany:    (resource, params) => Promise,
-    getManyReference: (resource, params) => Promise,
-    create:     (resource, params) => Promise,
-    update:     (resource, params) => Promise,
-    updateMany: (resource, params) => Promise,
-    delete:     (resource, params) => Promise,
-    deleteMany: (resource, params) => Promise,
+    getList:    (resource, params) => Promise.resolve(),
+    getOne:     (resource, params) => Promise.resolve(),
+    getMany:    (resource, params) => Promise.resolve(),
+    getManyReference: (resource, params) => Promise.resolve(),
+    create:     (resource, params) => Promise.resolve(),
+    update:     (resource, params) => Promise.resolve(),
+    updateMany: (resource, params) => Promise.resolve(),
+    delete:     (resource, params) => Promise.resolve(),
+    deleteMany: (resource, params) => Promise.resolve(),
 }
 ```
 
 Check the [Writing a Data Provider](./DataProviderWriting.md) chapter for detailed instructions on how to write a data provider for your API.
 
-The `dataProvider` is also the ideal place to add custom HTTP headers, handle file uploads, map resource names to API endpoints, pass credentials to the API, put business logic, reformat API errors, etc. Check [the Data Provider documentation](./DataProviderIntroduction.md) for more details.
+The `dataProvider` is also the ideal place to add custom HTTP headers, handle file uploads, map resource names to API endpoints, pass credentials to the API, put business logic, reformat API errors, etc. Check [the Data Provider documentation](./DataProviders.md) for more details.
 
 ## `children`
 
@@ -209,7 +209,7 @@ The `<Admin>` component expects to receive [`<Resource>`](./Resource.md) and [`<
 For instance:
 
 {% raw %}
-```jsx
+```tsx
 const App = () => (
     <Admin dataProvider={dataProvider} dashboard={Dashboard}>
         <Resource name="customers" list={CustomerList} edit={CustomerEdit} />
@@ -249,11 +249,18 @@ React-admin apps contain a special route called `/auth-callback` to let external
 
 If you need a different behavior for this route, you can render a custom component by passing it as the `authCallbackPage` prop.
 
-```jsx
+```tsx
+import { Admin } from 'react-admin';
+import { dataProvider } from './dataProvider';
+import { authProvider } from './authProvider';
 import MyAuthCallbackPage from './MyAuthCallbackPage';
 
 const App = () => (
-    <Admin authCallbackPage={MyAuthCallbackPage}>
+    <Admin
+        authCallbackPage={MyAuthCallbackPage}
+        authProvider={authProvider}
+        dataProvider={dataProvider}
+    >
         ...
     </Admin>
 );
@@ -271,7 +278,7 @@ The `authProvider` is responsible for managing authentication and permissions, u
 
 If you use a standard authentication strategy, you can use one of the [existing auth providers](./AuthProviderList.md). For instance, to use [Auth0](https://auth0.com/), you can use [`ra-auth-auth0`](https://github.com/marmelab/ra-auth-auth0):
 
-```jsx
+```tsx
 // in src/App.tsx
 import React, { useEffect, useRef, useState } from 'react';
 import { Admin, Resource } from 'react-admin';
@@ -309,7 +316,7 @@ export default App;
 
 If your authentication backend isn't supported, you'll have to [write your own `authProvider`](./AuthProviderWriting.md). It's an object with 6 methods, each returning a Promise:
 
-```jsx
+```tsx
 const authProvider = {
     login: params => Promise.resolve(),
     logout: params => Promise.resolve(),
@@ -330,21 +337,22 @@ The Auth Provider also lets you configure redirections after login/logout, anony
 
 ## `basename`
 
-Use this prop to make all routes and links in your Admin relative to a "base" portion of the URL pathname that they all share. This is required when using the [`BrowserHistory`](https://github.com/remix-run/history/blob/main/docs/api-reference.md#createbrowserhistory) to serve the application under a sub-path of your domain (for example https://marmelab.com/ra-enterprise-demo), or when embedding react-admin inside a single-page app with its own routing.
+Use this prop to make all routes and links in your Admin relative to a "base" portion of the URL pathname that they all share. This is required when using the [`BrowserRouter`](https://reactrouter.com/en/main/router-components/browser-router) to serve the application under a sub-path of your domain (for example https://marmelab.com/ra-enterprise-demo), or when embedding react-admin inside a single-page app with its own routing.
 
-```jsx
+```tsx
 import { Admin } from 'react-admin';
-import { createBrowserHistory } from 'history';
+import { BrowserRouter } from 'react-router-dom';
 
-const history = createBrowserHistory();
 const App = () => (
-    <Admin basename="/admin" history={history}>
-        ...
-    </Admin>
+    <BrowserRouter>
+        <Admin basename="/admin">
+            ...
+        </Admin>
+    </BrowserRouter>
 );
 ```
 
-See [Using React-Admin In A Sub Path](./Routing.md#using-react-admin-in-a-sub-path) for more usage examples.
+See [Using React-Admin In A Sub Path](#using-react-admin-in-a-sub-path) for more usage examples.
 
 ## `catchAll`
 
@@ -354,7 +362,7 @@ When users type URLs that don't match any of the children `<Resource>` component
 
 You can customize this page to use the component of your choice by passing it as the `catchAll` prop. To fit in the general design, use Material UI's `<Card>` component, and [react-admin's `<Title>` component](./Title.md):
 
-```jsx
+```tsx
 // in src/NotFound.js
 import * as React from "react";
 import Card from '@mui/material/Card';
@@ -371,7 +379,7 @@ export default () => (
 );
 ```
 
-```jsx
+```tsx
 // in src/App.js
 import * as React from "react";
 import { Admin } from 'react-admin';
@@ -392,7 +400,7 @@ const App = () => (
 
 By default, the homepage of an admin app is the `list` of the first child `<Resource>`. But you can also specify a custom component instead. To fit in the general design, use Material UI's `<Card>` component, and [react-admin's `<Title>` component](./Title.md) to set the title in the AppBar:
 
-```jsx
+```tsx
 // in src/Dashboard.js
 import * as React from "react";
 import Card from '@mui/material/Card';
@@ -406,7 +414,7 @@ export default () => (
 );
 ```
 
-```jsx
+```tsx
 // in src/App.js
 import * as React from "react";
 import { Admin } from 'react-admin';
@@ -432,8 +440,9 @@ If you want to support both light and dark mode, you can provide a `darkTheme` i
   Your browser does not support the video tag.
 </video>
 
-```jsx
+```tsx
 import { Admin } from 'react-admin';
+import { dataProvider } from './dataProvider';
 import { darkTheme, lightTheme } from './themes';
 
 const App = () => (
@@ -455,7 +464,7 @@ If you provide both a `lightTheme` and a `darkTheme`, react-admin will choose th
 
 If you prefer to always default to the light or the dark theme regardless of the user's OS preference, you can set the `defaultTheme` prop to either `light` or `dark`:
 
-```jsx
+```tsx
 import { Admin } from 'react-admin';
 
 const App = () => (
@@ -480,13 +489,13 @@ The only data sent to the telemetry server is the admin domain (e.g. "example.co
 
 You can opt out of telemetry by simply adding `disableTelemetry` to the `<Admin>` component:
 
-```jsx
+```tsx
 // in src/App.js
-import * as React from "react";
 import { Admin } from 'react-admin';
+import { dataProvider } from './dataProvider';
 
 const App = () => (
-    <Admin disableTelemetry>
+    <Admin disableTelemetry dataProvider={dataProvider}>
         // ...
     </Admin>
 );
@@ -497,7 +506,7 @@ const App = () => (
 
 The `i18nProvider` props let you translate the GUI. For instance, to switch the UI to French instead of the default English:
 
-```jsx
+```tsx
 // in src/i18nProvider.js
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import fr from 'ra-language-french';
@@ -521,14 +530,38 @@ The [Translation Documentation](./Translation.md) details this process.
 
 ## `layout`
 
-If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. 
+If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component.
 
 React-admin offers predefined layouts for you to use:
 
-- [`<Layout>`](./Layout.md): The default layout. It renders a top app bar and the navigation menu in a side bar.
-- [`<ContainerLayout>`](./ContainerLayout.md): A centered layout with horizontal navigation.
+<figure>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1177 290" preserveAspectRatio="xMinYMin meet">
+        <image width="1177" height="290" xlink:href="./img/layouts.png" />
+        <g opacity="0">
+            <a href="./Layout.html" aria-label="Layout">
+                <rect x="0" y="0" width="348" height="290"/>
+            </a>
+        </g>
+        <g opacity="0">
+            <a href="./ContainerLayout.html" aria-label="ContainerLayout">
+                <rect x="373" y="0" width="408" height="290"/>
+            </a>
+        </g>
+        <g opacity="0">
+            <a href="./SolarLayout.html" aria-label="SolarLayout">
+                <rect x="801" y="0" width="376" height="290"/>
+            </a>
+        </g>
+    </svg>
+</figure>
 
-```jsx
+- [`<Layout>`](./Layout.md): The default layout. It renders a top app bar and the navigation menu in a side bar.
+- [`<ContainerLayout>`](./ContainerLayout.md) is centered layout with horizontal navigation.
+- [`<SolarLayout>`](./SolarLayout.md) is a layout with a small icon sidebar, no top bar, and a full-width content area.
+
+For instance, here is how to replace the default `Layout` with the `ContainerLayout`:
+
+```tsx
 import { Admin } from 'react-admin';
 import { ContainerLayout } from '@react-admin/ra-navigation';
 
@@ -539,19 +572,19 @@ export const App = () => (
 );
 ```
 
-These layouts can be customized by passing props to them. For instance, you can pass a custom `appBar` prop to `<Layout>` to override the default app bar:
+Layout components can be customized via props. For instance, you can pass a custom `menu` prop to `<Layout>` to override the default menu:
 
-```jsx
+```tsx
 // in src/MyLayout.js
 import { Layout } from 'react-admin';
-import MyAppBar from './MyAppBar';
+import MyMenu from './MyMenu';
 
-export const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
+export const MyLayout = (props) => <Layout {...props} menu={MyMenu} />;
 ```
 
 Then, pass it to the `<Admin>` component as the `layout` prop:
 
-```jsx
+```tsx
 // in src/App.js
 import { Admin } from 'react-admin';
 import { MyLayout } from './MyLayout';
@@ -563,35 +596,57 @@ const App = () => (
 );
 ```
 
-Refer to each component documentation to understand the props it accepts.
+Refer to each layout component documentation to understand the props it accepts.
 
-Finally, you can also pass a custom component as the `layout` prop. It must contain a `{children}` placeholder, where react-admin will render the content. Use the [default `<Layout>`](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point, and check [the Theming documentation](./Theming.md#using-a-custom-layout) for examples.
+Finally, you can also pass a custom component as the `layout` prop. It must contain a `{children}` placeholder, where react-admin will render the page content. Check [the custom layout documentation](./Layout.md#writing-a-layout-from-scratch) for examples, and use the [default `<Layout>`](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point.
 
 ## `loginPage`
 
 If you want to customize the Login page, or switch to another authentication strategy than a username/password form, pass a component of your own as the `loginPage` prop. React-admin will display this component whenever the `/login` route is called.
 
-```jsx
+```tsx
+import { Admin } from 'react-admin';
+import { dataProvider } from './dataProvider';
+import { authProvider } from './authProvider';
 import MyLoginPage from './MyLoginPage';
 
 const App = () => (
-    <Admin loginPage={MyLoginPage}>
+    <Admin
+        loginPage={MyLoginPage}
+        authProvider={authProvider}
+        dataProvider={dataProvider}
+    >
         ...
     </Admin>
 );
 ```
 
-You can also disable it completely along with the `/login` route by passing `false` to this prop.
-
 See The [Authentication documentation](./Authentication.md#customizing-the-login-component) for more details.
 
-**Tip**: Before considering writing your own login page component, please take a look at how to change the default [background image](./Theming.md#using-a-custom-login-page) or the [Material UI theme](#theme). See the [Authentication documentation](./Authentication.md#customizing-the-login-component) for more details.
+You can also disable the `/login` route completely by passing `false` to this prop. In this case, it's the `authProvider`'s responsibility to redirect unauthenticated users to a custom login page, by returning a `redirectTo` field in response to `checkAuth` (see [`authProvider.checkAuth()`](./AuthProviderWriting.md#checkauth) for details). If you fail to customize the redirection, the app will end up in an infinite loop.
+
+```tsx
+const authProvider = {
+    // ...
+    async checkAuth() {
+        if (/* not authenticated */) {
+            throw { redirectTo: '/no-access' };
+        }
+    },
+};
+
+const App = () => (
+    <Admin authProvider={authProvider} loginPage={false}>
+        ...
+    </Admin>
+);
+```
 
 ## `notification`
 
 You can override the notification component, for instance to change the notification duration. A common use case is to change the `autoHideDuration`, and force the notification to remain on screen longer than the default 4 seconds. For instance, to create a custom Notification component with a 5 seconds default:
 
-```jsx
+```tsx
 // in src/MyNotification.js
 import { Notification } from 'react-admin';
 
@@ -602,7 +657,7 @@ export default MyNotification;
 
 To use this custom notification component, pass it to the `<Admin>` component as the `notification` prop:
 
-```jsx
+```tsx
 // in src/App.js
 import MyNotification from './MyNotification';
 import dataProvider from './dataProvider';
@@ -627,11 +682,11 @@ React-admin uses [react-query](https://react-query-v3.tanstack.com/) to fetch, c
 * Query results that are no longer used in the current page are labeled as "inactive" and remain in the cache in case they are used again at a later time.
 * By default, "inactive" queries are garbage collected after 5 minutes.
 * Queries that fail are silently retried 3 times, with exponential backoff delay before capturing and displaying an error to the UI.
-* Query results by default are structurally shared to detect if data has actually changed and if not, the data reference remains unchanged to better help with value stabilization with regards to `useMemo` and `useCallback`. 
+* Query results by default are structurally shared to detect if data have actually changed and if not, the data reference remains unchanged to better help with value stabilization with regards to `useMemo` and `useCallback`. 
 
 If you want to override the react-query default query and mutation default options, or use a specific client or mutation cache, you can create your own `QueryClient` instance and pass it to the `<Admin queryClient>` prop:
 
-```jsx
+```tsx
 import { Admin } from 'react-admin';
 import { QueryClient } from 'react-query';
 
@@ -658,7 +713,7 @@ To know which options you can pass to the `QueryClient` constructor, check the [
 
 The common settings that react-admin developers often overwrite are:
 
-```jsx
+```tsx
 import { QueryClient } from 'react-query';
 
 const queryClient = new QueryClient({
@@ -697,7 +752,7 @@ When you run an `<Admin>` with no child `<Resource>` nor `<CustomRoutes>`, react
 
 You can replace that "ready" screen by passing a custom component as the `ready` prop:
 
-```jsx
+```tsx
 import * as React from 'react';
 import { Admin } from 'react-admin';
 
@@ -721,10 +776,18 @@ Some pages in react-admin apps may allow anonymous access. For that reason, reac
 
 If you know your app will never accept anonymous access, you can force the app to wait for the `authProvider.checkAuth()` to resolve before rendering the page layout, by setting the `<Admin requireAuth>` prop.
 
-```jsx
+```tsx
+import { Admin } from 'react-admin';
+import { dataProvider } from './dataProvider';
+import { authProvider } from './authProvider';
+
 const App = () => (
-    <Admin dataProvider={dataProvider} authProvider={authProvider} requireAuth>
-        <Resource name="posts" list={PostList} />
+    <Admin
+        requireAuth
+        authProvider={authProvider}
+        dataProvider={dataProvider}
+    >
+        ...
     </Admin>
 );
 ```
@@ -733,9 +796,14 @@ const App = () => (
 
 The `<Admin>` component initializes a [Store](./Store.md) for user preferences using `localStorage` as the storage engine. You can override this by passing a custom `store` prop.
 
-For instance, you can store the data in memory instead of `localStorage`. This is useful e.g. for tests, or for apps that should not persist user data between sessions:
+Built-in stores are:
 
-```jsx
+- `memoryStore`: stores data in memory
+- `localStorageStore`: stores data in `localStorage`
+
+For instance, you can store the user preferences in memory, e.g. for tests, or for apps that should not persist user data between sessions:
+
+```tsx
 import { Admin, Resource, memoryStore } from 'react-admin';
 
 const App = () => (
@@ -751,40 +819,151 @@ Check the [Preferences documentation](./Store.md) for more details.
 
 Material UI supports [theming](https://mui.com/material-ui/customization/theming/). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom Material UI theme by using the `theme` prop.
 
-For instance, to use a dark theme by default:
+React-admin comes with 4 built-in themes: [Default](./AppTheme.md#default), [Nano](./AppTheme.md#nano), [Radiant](./AppTheme.md#radiant), and [House](./AppTheme.md#house). The [e-commerce demo](https://marmelab.com/react-admin-demo/) contains a theme switcher, so you can test them in a real application. 
 
-```jsx
-import { defaultTheme } from 'react-admin';
+<video controls autoplay playsinline muted loop>
+  <source src="./img/demo-themes.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
-const theme = {
-    ...defaultTheme,
-    palette: { mode: 'dark' },
-};
+For instance, to use the Nano theme instead of the default theme:
+
+```tsx
+import { Admin, nanoLightTheme } from 'react-admin';
+import { dataProvider } from './dataProvider';
 
 const App = () => (
-    <Admin theme={theme} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin theme={nanoLightTheme} dataProvider={dataProvider}>
         // ...
     </Admin>
 );
 ```
 
-![Dark theme](./img/dark-theme.png)
+![Nano light theme](./img/nanoLightTheme1.jpg)
+
+You can also [write your own theme](./AppTheme.md#writing-a-custom-theme) to fit your company branding. For more details on predefined and custom themes, refer to [the Application Theme chapter](./AppTheme.md).
 
 If you want to support both a light and a dark theme, check out [the `<Admin darkTheme>` prop](#darktheme). 
-
-For more details on predefined themes and custom themes, refer to [the Theming chapter](./Theming.md#global-theme-overrides) of the react-admin documentation.
 
 ## `title`
 
 On error pages, the header of an admin app uses 'React Admin' as the main app title. Use the `title` to customize it.
 
-```jsx
+```tsx
 const App = () => (
     <Admin title="My Custom Admin" dataProvider={simpleRestProvider('http://path.to.my.api')}>
         // ...
     </Admin>
 );
 ```
+
+## Adding Custom Pages
+
+The [`children`](#children) prop of the `<Admin>` component define the routes of the application.
+
+In addition to [`<Resource> elements`](./Resource.md) for CRUD pages, you can use [the `<CustomRoutes>` component](./CustomRoutes.md) to do add custom routes.
+
+```tsx
+// in src/App.js
+import * as React from "react";
+import { Route } from 'react-router-dom';
+import { Admin, Resource, CustomRoutes } from 'react-admin';
+import posts from './posts';
+import comments from './comments';
+import Settings from './Settings';
+import Profile from './Profile';
+
+const App = () => (
+    <Admin dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        <Resource name="posts" {...posts} />
+        <Resource name="comments" {...comments} />
+        <CustomRoutes>
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/profile" element={<Profile />} />
+        </CustomRoutes>
+    </Admin>
+);
+
+export default App;
+```
+
+## Using A Custom Router 
+
+React-admin uses [the react-router library](https://reactrouter.com/) to handle routing, with a [HashRouter](https://reactrouter.com/en/6/router-components/hash-router#hashrouter). This means that the hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers. 
+
+But you may want to use another routing strategy, e.g. to allow server-side rendering of individual pages. React-router offers various Router components to implement such routing strategies. If you want to use a different router, simply wrap it around your app. React-admin will detect that it's already inside a router, and skip its own router. 
+
+```tsx
+import { BrowserRouter } from 'react-router-dom';
+import { Admin, Resource } from 'react-admin';
+
+const App = () => (
+    <BrowserRouter>
+        <Admin dataProvider={...}>
+            <Resource name="posts" />
+        </Admin>
+    </BrowserRouter>
+);
+```
+
+## Using React-Admin In A Sub Path
+
+React-admin links are absolute (e.g. `/posts/123/show`). If you serve your admin from a sub path (e.g. `/admin`), react-admin works seamlessly as it only appends a hash (URLs will look like `/admin#/posts/123/show`).
+
+However, if you serve your admin from a sub path AND use another Router (like [`<BrowserRouter>`](https://reactrouter.com/en/main/router-components/browser-router) for instance), you need to set the `<Admin basename>` prop, so that react-admin routes include the basename in all links (e.g. `/admin/posts/123/show`).
+
+```tsx
+import { Admin, Resource } from 'react-admin';
+import { BrowserRouter } from 'react-router-dom';
+
+const App = () => (
+    <BrowserRouter>
+        <Admin basename="/admin" dataProvider={...}>
+            <Resource name="posts" />
+        </Admin>
+    </BrowserRouter>
+);
+```
+
+This makes all links be prefixed with `/admin`.
+
+Note that it is your responsibility to serve the admin from the sub path, e.g. by setting the `base` field in `vite.config.ts` if you use [Vite.js](https://vitejs.dev/config/shared-options.html#base), or the `homepage` field in `package.json` if you use [Create React App](https://create-react-app.dev/docs/deployment/#building-for-relative-paths).
+
+If you want to use react-admin as a sub path of a larger React application, check the next section for instructions. 
+
+## Using React-Admin Inside a Route
+
+You can include a react-admin app inside another app, using a react-router `<Route>`:
+
+```tsx
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { StoreFront } from './StoreFront';
+import { StoreAdmin } from './StoreAdmin';
+
+export const App = () => (
+    <BrowserRouter>
+        <Routes>
+            <Route path="/" element={<StoreFront />} />
+            <Route path="/admin/*" element={<StoreAdmin />} />
+        </Routes>
+    </BrowserRouter>
+);
+```
+
+React-admin will have to prefix all the internal links with `/admin`. Use the `<Admin basename>` prop for that:
+
+```tsx
+// in src/StoreAdmin.js
+import { Admin, Resource } from 'react-admin';
+
+export const StoreAdmin = () => (
+    <Admin basename="/admin" dataProvider={...}>
+        <Resource name="posts" {...posts} />
+    </Admin>
+);
+```
+
+This will let react-admin build absolute URLs including the sub path.
 
 ## Declaring resources at runtime
 
@@ -796,7 +975,7 @@ The `<Admin>` component accepts a function as one of its children and this funct
 
 For instance, getting the resource from an API might look like:
 
-```jsx
+```tsx
 import * as React from "react";
 import { Admin, Resource } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
@@ -809,7 +988,7 @@ const knownResources = [
     <Resource name="comments" list={CommentList} />,
 ];
 
-const fetchResources = permissions =>
+const fetchResources = (permissions: any) =>
     fetch('https://myapi/resources', {
         method: 'POST',
         headers: {
@@ -835,43 +1014,55 @@ So it's impossible, for instance, to have a dynamic list of resources based on a
 
 To overcome this limitation, you can build your own `<Admin>` component using two lower-level components: `<AdminContext>` (responsible for putting the providers in contexts) and `<AdminUI>` (responsible for displaying the UI). Through this approach you'll have to bring your own i18n provider and store. Luckily react-admin provides easy to use defaults for you. Here is an example:
 
-``` jsx
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+```tsx
+import * as React from "react";
+import { useEffect, useState } from "react";
 import {
     AdminContext,
     AdminUI,
+    DataProvider,
     defaultI18nProvider,
     localStorageStore,
     Resource,
     ListGuesser,
     Loading,
     useDataProvider,
-} from 'react-admin';
+} from "react-admin";
+import myDataProvider from "./myDataProvider";
 
 const store = localStorageStore();
 
 function App() {
     return (
-        <AdminContext dataProvider={myDataProvider} i18nProvider={defaultI18nProvider} store={store}>
+        <AdminContext
+            dataProvider={myDataProvider}
+            i18nProvider={defaultI18nProvider}
+            store={store}
+        >
             <AsyncResources />
         </AdminContext>
     );
 }
 
+interface MyDataProvider extends DataProvider {
+    getResources: () => Promise<{ name: string }[]>;
+}
+
 function AsyncResources() {
-    const [resources, setResources] = useState([]);
-    const dataProvider = useDataProvider();
+    const [resources, setResources] = useState<Array<{ name: string }>>(
+        [] as Array<{ name: string }>
+    );
+    const dataProvider = useDataProvider<MyDataProvider>();
 
     useEffect(() => {
         // Note that the `getResources` is not provided by react-admin. You have to implement your own custom verb.
-        dataProvider.getResources().then(r => setResources(r));
+        dataProvider.getResources().then((r) => setResources(r));
     }, []);
 
     return (
         <AdminUI ready={Loading}>
-            {resources.map(resource => (
-                <Resource name={resource.name} key={resource.key} list={ListGuesser} />
+            {resources.map((resource) => (
+                <Resource name={resource.name} key={resource.name} list={ListGuesser} />
             ))}
         </AdminUI>
     );
