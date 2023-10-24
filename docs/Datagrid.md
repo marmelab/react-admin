@@ -136,13 +136,21 @@ export default PostList;
 
 ## `bulkActionButtons`
 
+Bulk action buttons appear when users select one or several rows, and affect all the selected records. This is useful for actions like mass deletion or mass edition.
+
 <video controls autoplay playsinline muted loop>
-  <source src="./img/bulk-actions-toolbar.webm" type="video/webm"/>
   <source src="./img/bulk-actions-toolbar.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
-Bulk action buttons are buttons that affect several records at once, like mass deletion for instance. In the `<Datagrid>` component, the bulk actions toolbar appears when a user ticks the checkboxes in the first column of the table. The user can then choose a button from the bulk actions toolbar. By default, all Datagrids have a single bulk action button, the bulk delete button. You can add other bulk action buttons by passing a custom element as the `bulkActionButtons` prop of the `<Datagrid>` component:
+Users can select a range of rows by pressing the shift key while clicking on a row checkbox.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/datagrid-select-range.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+By default, all Datagrids have a single bulk action button, the bulk delete button. You can add other bulk action buttons by passing a custom element as the `bulkActionButtons` prop of the `<Datagrid>` component:
 
 ```tsx
 import { Button } from '@mui/material';
