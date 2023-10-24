@@ -14,6 +14,8 @@ import {
     CREATE,
     UPDATE,
     DELETE,
+    DELETE_MANY,
+    UPDATE_MANY,
 } from 'ra-core';
 import { IntrospectionResult, IntrospectedResource } from 'ra-data-graphql';
 
@@ -63,6 +65,8 @@ export default (introspectionResults: IntrospectionResult) => (
             return {
                 id: preparedParams.id,
             };
+        case DELETE_MANY:
+            return preparedParams;
         case CREATE:
         case UPDATE: {
             return buildCreateUpdateVariables(
@@ -71,6 +75,19 @@ export default (introspectionResults: IntrospectionResult) => (
                 preparedParams,
                 queryType
             );
+        }
+        case UPDATE_MANY: {
+            const { ids, data: resourceData } = preparedParams;
+            const { id, ...data } = buildCreateUpdateVariables(
+                resource,
+                raFetchMethod,
+                { data: resourceData },
+                queryType
+            );
+            return {
+                ids,
+                data,
+            };
         }
     }
 };
