@@ -64,7 +64,7 @@ export const OptionValue = () => (
 const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
 const authors = [{ id: 1, first_name: 'John', last_name: 'Doe' }];
 export const OptionTextFunction = () => (
-    <RecordContextProvider value={record}>
+    <RecordContextProvider value={{ id: 1 }}>
         <SelectField
             source="id"
             choices={authors}
