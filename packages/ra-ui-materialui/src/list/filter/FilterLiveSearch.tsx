@@ -1,9 +1,9 @@
-import * as React from 'react';
-import { ChangeEvent, memo, useMemo } from 'react';
+import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment } from '@mui/material';
 import { SxProps } from '@mui/system';
-import SearchIcon from '@mui/icons-material/Search';
-import { useTranslate, useListFilterContext } from 'ra-core';
+import { useListFilterContext, useTranslate } from 'ra-core';
+import * as React from 'react';
+import { ChangeEvent, memo, useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { TextInput, TextInputProps } from '../../input';
@@ -52,7 +52,10 @@ export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
 
     const form = useForm({ defaultValues: initialValues });
 
-    const onSubmit = () => undefined;
+    const onSubmit = e => {
+        e.preventDefault();
+    };
+
     return (
         <FormProvider {...form}>
             <form onSubmit={onSubmit}>
