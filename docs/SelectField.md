@@ -7,6 +7,8 @@ title: "The SelectField Component"
 
 When you need to display an enumerated field, `<SelectField>` maps the value to a string.
 
+![SelectField](./img/SelectField.png)
+
 ## Usage
 
 For instance, if the `gender` field can take values "M" and "F", here is how to display it as either "Male" or "Female":
@@ -131,10 +133,10 @@ const FullNameField = () => {
 You can customize the property to use for the lookup value instead of `id` using the `optionValue` prop.
 
 ```jsx
-const countries = [ 
-  { name: 'Afghanistan', code: 'AF'}, 
-  { name: 'Åland Islands', code: 'AX'}, 
-  { name: 'Albania', code: 'AL'}, 
+const countries = [
+  { name: 'Afghanistan', code: 'AF'},
+  { name: 'Åland Islands', code: 'AX'},
+  { name: 'Albania', code: 'AL'},
   { name: 'Algeria', code: 'DZ'},
   // ...
 ];
