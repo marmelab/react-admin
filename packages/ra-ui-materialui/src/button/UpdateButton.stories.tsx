@@ -1,17 +1,18 @@
-import * as React from 'react';
+import { createMemoryHistory } from 'history';
+import { Resource, useNotify, withLifecycleCallbacks } from 'ra-core';
+import fakeRestDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
-import { Resource, useNotify, withLifecycleCallbacks } from 'ra-core';
-import fakeRestDataProvider from 'ra-data-fakerest';
-import { createMemoryHistory } from 'history';
+import * as React from 'react';
 
-import { UpdateButton } from './UpdateButton';
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
-import { NumberField, TextField } from '../field';
 import { Show, SimpleShowLayout } from '../detail';
+import { NumberField, TextField } from '../field';
 import { TopToolbar } from '../layout';
+import { Datagrid, List } from '../list';
+import { UpdateButton } from './UpdateButton';
 
 export default { title: 'ra-ui-materialui/button/UpdateButton' };
 
@@ -44,7 +45,7 @@ const getDataProvider = () =>
                     id: 1,
                     title: 'Lorem Ipsum',
                     body: 'Lorem ipsum dolor sit amet',
-                    views: 1000,
+                    views: 500,
                 },
             ],
             authors: [],
@@ -78,6 +79,29 @@ const PostShow = () => {
         </Show>
     );
 };
+
+const PostList = () => {
+    return (
+        <List>
+            <Datagrid rowClick="show">
+                <TextField source="id" />
+                <TextField source="title" />
+                <TextField source="body" />
+                <NumberField source="views" />
+                <UpdateButton label="Reset views" data={{ views: 0 }} />
+            </Datagrid>
+        </List>
+    );
+};
+
+export const WithAList = () => (
+    <AdminContext dataProvider={getDataProvider()} i18nProvider={i18nProvider}>
+        <AdminUI>
+            {JSON.stringify(getDataProvider())}
+            <Resource name="posts" list={<PostList />} show={<PostShow />} />
+        </AdminUI>
+    </AdminContext>
+);
 
 export const Undoable = () => (
     <AdminContext
