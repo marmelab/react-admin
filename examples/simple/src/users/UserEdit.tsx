@@ -66,7 +66,9 @@ const UserEditForm = () => {
             onSubmit={newSave}
         >
             <TabbedForm.Tab label="user.form.summary" path="">
-                {permissions === 'admin' && <TextInput disabled source="id" />}
+                {permissions === 'admin' && (
+                    <TextInput source="id" InputProps={{ disabled: true }} />
+                )}
                 <TextInput
                     source="name"
                     defaultValue="slim shady"
