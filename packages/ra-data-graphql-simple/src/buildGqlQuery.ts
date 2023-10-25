@@ -22,26 +22,30 @@ import isList from './isList';
 import isRequired from './isRequired';
 
 type SparseFields = (string | { [k: string]: SparseFields })[];
+type ExpandedSparseFields = { linkedType?: string; fields: SparseFields }[];
 
 function processSparseFields(
     resourceFields: readonly IntrospectionField[],
     sparseFields: SparseFields
-) {
+): {
+    fields: readonly IntrospectionField[];
+    linkedSparseFields: ExpandedSparseFields;
+} {
     if (!sparseFields || sparseFields.length == 0)
         return { fields: resourceFields, linkedSparseFields: [] }; // default (which is all available resource fields) if sparse fields not specified
 
     const resourceFNames = resourceFields.map(f => f.name);
 
-    const expandedSparseFields = sparseFields.map(sP => {
+    const expandedSparseFields: ExpandedSparseFields = sparseFields.map(sP => {
         if (typeof sP == 'string') return { fields: [sP] };
 
         const [linkedType, linkedSparseFields] = Object.entries(sP)[0];
 
-        return { linkedType, fields: linkedSparseFields as string[] };
+        return { linkedType, fields: linkedSparseFields };
     });
 
     const permittedSparseFields = expandedSparseFields.filter(sF =>
-        resourceFNames.includes(sF.linkedType || sF.fields[0])
+        resourceFNames.includes((sF.linkedType || sF.fields[0]) as string)
     ); // ensure the requested fields are available
 
     const sparseFNames = permittedSparseFields.map(
