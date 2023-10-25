@@ -45,7 +45,7 @@ After modification by the user, the value is stored as an array of objects with 
 * `src`: An [object URL](https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL) for the `File`, e.g. 'blob:https://example.com/1e67e00e-860d-40a5-89ae-6ab0cbee6273'
 * `rawFile`: [The `File` object](https://developer.mozilla.org/fr/docs/Web/API/File) itself
 
-It is the responsibility of your `dataProvider` to send the file to the server (encoded in Base64, or using multipart upload) and to transform the `src` property. See [the Data Provider documentation](./DataProviders.md#handling-file-uploads) for an example.
+It is the responsibility of your `dataProvider` to send the file to the server (encoded in Base64, or using multipart upload) and to transform the `src` property. See [the Handling File Uploads](#handling-file-uploads) for an example.
 
 Files are accepted or rejected based on the `accept`, `multiple`, `minSize` and `maxSize` props.
 
@@ -170,3 +170,68 @@ The `<ImageInput>` component accepts the usual `className` prop. You can also ov
 | `& .RaFileInput-removeButton`  | Styles pass to the underlying `FileInput` component |
 
 To override the style of all instances of `<ImageInput>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaImageInput` key.
+
+## Handling File Uploads
+
+Handling file uploads in react-admin depends on how your server expects the file to be sent (e.g. as a Base64 string, as a multipart/form-data request, uploaded to a CDN via an AJAX request, etc.). When a user submits a form with a file input, the dataProvider method (`create` or `delete`) receives [a `File` object](https://developer.mozilla.org/en-US/docs/Web/API/File). It's the dataProvider's job to convert that `File`, e.g. using the `FileReader` API.
+
+For instance, the following Data Provider extends an existing data provider to convert images passed to `dataProvider.update('posts')` into Base64 strings. The example leverages [`withLifecycleCallbacks`](#adding-lifecycle-callbacks) to modify the `dataProvider.update()` method for the `posts` resource only.
+
+```js
+import { withLifecycleCallbacks } from 'react-admin';
+import simpleRestProvider from 'ra-data-simple-rest';
+
+const dataProvider = withLifecycleCallbacks(simpleRestProvider('http://path.to.my.api/'), [
+    {
+        /**
+         * For posts update only, convert uploaded images to base 64 and attach them to
+         * the `picture` sent property, with `src` and `title` attributes.
+         */
+        resource: 'posts',
+        beforeUpdate: async (params, dataProvider) => {
+            // Freshly dropped pictures are File objects and must be converted to base64 strings
+            const newPictures = params.data.pictures.filter(
+                p => p.rawFile instanceof File
+            );
+            const formerPictures = params.data.pictures.filter(
+                p => !(p.rawFile instanceof File)
+            );
+
+            const base64Pictures = await Promise.all(
+                newPictures.map(convertFileToBase64)
+            )
+            const pictures = [
+                ...base64Pictures.map((dataUrl, index) => ({
+                    src: dataUrl,
+                    title: newPictures[index].name,
+                })),
+                ...formerPictures,
+            ];
+            return dataProvider.update(
+                resource,
+                { data: { ...params.data, pictures } }
+            );  
+        }
+    }
+]);
+
+/**
+ * Convert a `File` object returned by the upload input into a base 64 string.
+ * That's not the most optimized way to store images in production, but it's
+ * enough to illustrate the idea of data provider decoration.
+ */
+const convertFileToBase64 = file =>
+    new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file.rawFile);
+    });
+
+export default myDataProvider;
+```
+
+**Tip**: Use `beforeSave` instead of `beforeUpdate` to do the same for both create and update calls.
+
+You can use the same technique to upload images to an object storage service, and then update the record using the URL of that stored object.
+
