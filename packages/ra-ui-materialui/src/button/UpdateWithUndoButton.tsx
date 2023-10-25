@@ -1,22 +1,21 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import { ReactElement } from 'react';
-import PropTypes from 'prop-types';
 import ActionUpdate from '@mui/icons-material/Update';
-import { alpha } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles';
+import PropTypes from 'prop-types';
 import {
-    useRefresh,
-    useNotify,
-    useResourceContext,
     RaRecord,
-    useRecordContext,
-    useUpdate,
     UpdateParams,
+    useNotify,
+    useRecordContext,
+    useRefresh,
+    useResourceContext,
+    useUpdate,
 } from 'ra-core';
+import * as React from 'react';
+import { ReactElement } from 'react';
 import { UseMutationOptions } from 'react-query';
 
-import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
+import { Button, ButtonProps } from './Button';
 
 export const UpdateWithUndoButton = (props: UpdateWithUndoButtonProps) => {
     const record = useRecordContext(props);
@@ -80,6 +79,7 @@ export const UpdateWithUndoButton = (props: UpdateWithUndoButtonProps) => {
         if (typeof onClick === 'function') {
             onClick(e);
         }
+        e.stopPropagation();
     };
 
     return (

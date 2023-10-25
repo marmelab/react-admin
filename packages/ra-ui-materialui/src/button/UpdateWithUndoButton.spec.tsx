@@ -1,12 +1,13 @@
-import * as React from 'react';
-import { screen, render, waitFor, fireEvent } from '@testing-library/react';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
-import { MutationMode, CoreAdminContext, testDataProvider } from 'ra-core';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { CoreAdminContext, MutationMode, testDataProvider } from 'ra-core';
+import * as React from 'react';
 
-import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
+import { SimpleForm, Toolbar } from '../form';
 import { TextInput } from '../input';
+import { WithAList } from './UpdateButton.stories';
 import { UpdateWithUndoButton } from './UpdateWithUndoButton';
 
 const theme = createTheme();
@@ -58,7 +59,7 @@ describe('<UpdateWithUndoButton />', () => {
             // @ts-ignore
             getOne: () =>
                 Promise.resolve({
-                    data: { id: 123, title: 'lorem', views: 1000 },
+                    data: { id: 123, title: 'lorem', views: 500 },
                 }),
             // @ts-ignore
             update: () => Promise.resolve({ data: { id: 123 } }),
@@ -95,11 +96,23 @@ describe('<UpdateWithUndoButton />', () => {
                     id: 123,
                     data: { views: 0 },
                     meta: undefined,
-                    previousData: { id: 123, title: 'lorem', views: 1000 },
+                    previousData: { id: 123, title: 'lorem', views: 500 },
                     resource: 'posts',
                 },
                 { snapshot: expect.any(Array) }
             );
         });
+    });
+
+    it("should'nt open the show page caused by click propagation", async () => {
+        render(<WithAList />);
+        const startedUrl = global.window.location.pathname;
+        const resetButton = await screen.findByRole('button', {
+            name: 'Reset views',
+        });
+        screen.getByText('500');
+        fireEvent.click(resetButton);
+        expect(screen.queryByText('500')).not.toBeNull();
+        expect(global.window.location.pathname).toEqual(startedUrl);
     });
 });
