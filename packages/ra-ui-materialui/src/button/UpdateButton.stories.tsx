@@ -1,18 +1,18 @@
-import { createMemoryHistory } from 'history';
-import { Resource, useNotify, withLifecycleCallbacks } from 'ra-core';
-import fakeRestDataProvider from 'ra-data-fakerest';
+import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
-import * as React from 'react';
+import { Resource, useNotify, withLifecycleCallbacks } from 'ra-core';
+import fakeRestDataProvider from 'ra-data-fakerest';
+import { createMemoryHistory } from 'history';
 
+import { UpdateButton } from './UpdateButton';
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
-import { Show, SimpleShowLayout } from '../detail';
 import { NumberField, TextField } from '../field';
+import { Show, SimpleShowLayout } from '../detail';
 import { TopToolbar } from '../layout';
 import { Datagrid, List } from '../list';
-import { UpdateButton } from './UpdateButton';
 
 export default { title: 'ra-ui-materialui/button/UpdateButton' };
 
@@ -61,38 +61,34 @@ const getDataProvider = () =>
         ]
     );
 
-const PostShow = () => {
-    return (
-        <Show
-            actions={
-                <TopToolbar>
-                    <UpdateButton label="Reset views" data={{ views: 0 }} />
-                </TopToolbar>
-            }
-        >
-            <SimpleShowLayout>
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="body" />
-                <NumberField source="views" />
-            </SimpleShowLayout>
-        </Show>
-    );
-};
-
-const PostList = () => {
-    return (
-        <List>
-            <Datagrid rowClick="show">
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="body" />
-                <NumberField source="views" />
+const PostShow = () => (
+    <Show
+        actions={
+            <TopToolbar>
                 <UpdateButton label="Reset views" data={{ views: 0 }} />
-            </Datagrid>
-        </List>
-    );
-};
+            </TopToolbar>
+        }
+    >
+        <SimpleShowLayout>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="body" />
+            <NumberField source="views" />
+        </SimpleShowLayout>
+    </Show>
+);
+
+const PostList = () => (
+    <List>
+        <Datagrid rowClick="show">
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="body" />
+            <NumberField source="views" />
+            <UpdateButton label="Reset views" data={{ views: 0 }} />
+        </Datagrid>
+    </List>
+);
 
 export const InsideAList = () => (
     <AdminContext dataProvider={getDataProvider()} i18nProvider={i18nProvider}>
@@ -114,28 +110,26 @@ export const Undoable = () => (
     </AdminContext>
 );
 
-const PostShowPessimistic = () => {
-    return (
-        <Show
-            actions={
-                <TopToolbar>
-                    <UpdateButton
-                        mutationMode="pessimistic"
-                        label="Reset views"
-                        data={{ views: 0 }}
-                    />
-                </TopToolbar>
-            }
-        >
-            <SimpleShowLayout>
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="body" />
-                <NumberField source="views" />
-            </SimpleShowLayout>
-        </Show>
-    );
-};
+const PostShowPessimistic = () => (
+    <Show
+        actions={
+            <TopToolbar>
+                <UpdateButton
+                    mutationMode="pessimistic"
+                    label="Reset views"
+                    data={{ views: 0 }}
+                />
+            </TopToolbar>
+        }
+    >
+        <SimpleShowLayout>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="body" />
+            <NumberField source="views" />
+        </SimpleShowLayout>
+    </Show>
+);
 
 export const Pessimistic = () => (
     <AdminContext
@@ -149,28 +143,26 @@ export const Pessimistic = () => (
     </AdminContext>
 );
 
-const PostShowOptimistic = () => {
-    return (
-        <Show
-            actions={
-                <TopToolbar>
-                    <UpdateButton
-                        mutationMode="optimistic"
-                        label="Reset views"
-                        data={{ views: 0 }}
-                    />
-                </TopToolbar>
-            }
-        >
-            <SimpleShowLayout>
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="body" />
-                <NumberField source="views" />
-            </SimpleShowLayout>
-        </Show>
-    );
-};
+const PostShowOptimistic = () => (
+    <Show
+        actions={
+            <TopToolbar>
+                <UpdateButton
+                    mutationMode="optimistic"
+                    label="Reset views"
+                    data={{ views: 0 }}
+                />
+            </TopToolbar>
+        }
+    >
+        <SimpleShowLayout>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="body" />
+            <NumberField source="views" />
+        </SimpleShowLayout>
+    </Show>
+);
 
 export const Optimistic = () => (
     <AdminContext
@@ -225,28 +217,26 @@ export const MutationOptions = () => (
     </AdminContext>
 );
 
-const PostShowSx = () => {
-    return (
-        <Show
-            actions={
-                <TopToolbar>
-                    <UpdateButton
-                        sx={{ border: '1px solid red' }}
-                        label="Reset views"
-                        data={{ views: 0 }}
-                    />
-                </TopToolbar>
-            }
-        >
-            <SimpleShowLayout>
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="body" />
-                <NumberField source="views" />
-            </SimpleShowLayout>
-        </Show>
-    );
-};
+const PostShowSx = () => (
+    <Show
+        actions={
+            <TopToolbar>
+                <UpdateButton
+                    sx={{ border: '1px solid red' }}
+                    label="Reset views"
+                    data={{ views: 0 }}
+                />
+            </TopToolbar>
+        }
+    >
+        <SimpleShowLayout>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="body" />
+            <NumberField source="views" />
+        </SimpleShowLayout>
+    </Show>
+);
 
 export const Sx = () => (
     <AdminContext
