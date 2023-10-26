@@ -104,7 +104,7 @@ describe('<UpdateWithUndoButton />', () => {
         });
     });
 
-    it("should'nt open the show page caused by click propagation", async () => {
+    it("should prevent click propagation", async () => {
         render(<WithAList />);
         const startedUrl = global.window.location.pathname;
         const resetButton = await screen.findByRole('button', {
