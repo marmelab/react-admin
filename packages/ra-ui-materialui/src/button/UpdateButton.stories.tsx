@@ -94,7 +94,7 @@ const PostList = () => {
     );
 };
 
-export const WithAList = () => (
+export const InsideAList = () => (
     <AdminContext dataProvider={getDataProvider()} i18nProvider={i18nProvider}>
         <AdminUI>
             {JSON.stringify(getDataProvider())}
